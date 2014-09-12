@@ -1,0 +1,12 @@
+Vagrantfile
+init.7.sh
+.vagrant
+.bashrc
+*DS_Store
+application/logs/*
+*swp
+*swo
+*swn
+.mysql_*
+.vim*
+.bash*
