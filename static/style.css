@@ -1,0 +1,930 @@
+.new_header {
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    width: 100%;
+    height: 58px;
+    background-color:#fff;
+}
+
+
+.new_content {
+    padding: 58px 0 0 0;
+    width: 100%;
+    float: left;
+}
+/*BY DARKLORD 2011-10*/
+body{padding:0px; margin:0px; background-color:#FFF; overflow:hidden; position:relative; width:100%; height:100%;font-family:Arial;}
+html{width:100%; height:100%;}
+select{ width:100%;}
+table{ margin-top:0px;}
+.t_table{overflow: auto;}
+tr{
+    height:30px;
+}
+a, a:visited {
+    text-decoration: none;
+    color: #3597B2;
+    cursor: pointer;
+}
+#warp {
+    width:100%; float:left;
+}
+img { border:0px;}
+td{font-size:14px;word-break:break-all;padding-left:10px;}
+ul li,ol li {list-style-type: none; text-align: left; margin:0px; padding:0px;}
+
+.font16b{ font-size:16px; font-weight:bold;}
+.font18gb{ font-size:18px; font-weight:bold; color:#93CD23; text-shadow:rgba(256,256,256,1.0) 1px 1px 1px;}
+.font16rb{ font-size:16px; font-weight:bold; color:#ff0000;}
+.font14hb{ font-size:14px; font-weight:bold; color:#757F79; text-shadow:rgba(256,256,256,1.0) 1px 1px 1px;}
+.font14h{ font-size:14px; color:#757F79; text-shadow:rgba(256,256,256,1.0) 1px 1px 1px;}
+.font14lb{ font-size:14px; font-weight:bold; color:#6CF;}
+.font14rb{ font-size:14px; font-weight:bold; color:#ff0000;}
+.font14hbb{ font-size:14px; font-weight:bold; color:#ffffff; background-color:#757F79;}
+
+.lb_xx{ width:100%; margin:0px; padding:0px; float:left; margin-bottom:10px;}
+.li_m{ width:200px; float:left; text-align:left; color:#999;}
+.li_t{ width:200px; float:right; text-align:right; color:#999;}
+.ss{ width:100%; float:left; padding:0px; background-color:#D8D8D8;}
+.lb-li-bg{ background-image:url(images/ui-bar-c-bg.png); background-repeat:no-repeat; background-color:#F7F7F7; word-break:break-all; word-wrap:break-word;}
+.lb-tit-bg{ background-image:url(images/ui-bar-c-bg.png); background-repeat:no-repeat; background-color:#F7F7F7; word-break:break-all; word-wrap:break-word; width:100%; height:28px; padding-top:10px; color:#A60200; font-weight:bold; text-align:center;}
+.lb-text{ padding:10px; line-height:180%;}
+.pl-tit-bg{ height:28px; margin:5px 10px; color:#A60200; font-weight:bold; text-align:left; border-bottom:1px solid #A60200;}
+.pl-text{ margin:5px 10px; border-bottom:1px solid #cfcfcf; font-size:14px;}
+.ui-corner-top{ background-color:#A60200;}
+
+.header{width:100%; height:58px; float:left; overflow:hidden; background-color:#fff;}
+/* new design */
+.new_header{
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    width:100%;
+    height:58px;
+}
+.new_content{
+    padding:58px 0 0 0;
+    width:100%;
+    float:left;
+    /*
+    overflow-y:auto;
+    overflow-x:hidden;
+    min-height:300px;
+     */
+}
+.new_lj{
+    position: fixed;
+    z-index: 99999;
+    top: 58px;
+    width:100%;
+    height:20px;
+    padding:3px 0px 0px 0px;
+    margin:0px;
+    background-image:url(/static/images/lj_bg.png);
+}
+.lj{float:left; width:100%; height:20px; padding:3px 0px 0px 0px; margin:0px; background-image:url(/static/images/lj_bg.png);}
+.new_lj span{float:left; margin-left:15px; font-size:16px; font-weight:bold; color:#444444; text-shadow:rgba(256,256,256,1.0) 1px 1px 1px;
+}
+.lj span{float:left; margin-left:15px; font-size:16px; font-weight:bold; color:#444444; text-shadow:rgba(256,256,256,1.0) 1px 1px 1px;
+}
+.js{float:left; width:100%; padding-top:15px; padding-bottom:10px;}
+.js span{float:left; margin-left:15px; margin-right:15px; font-size:16px; color:#757F79; line-height:150%; text-align:left; text-shadow:rgba(256,256,256,1.0) 1px 1px 1px;}
+.content{ padding:0; width:100%; float:left; overflow-y:auto; overflow-x:hidden; min-height:300px;}
+.content_n{ padding:10px; margin:5px 0px;}
+.cg_s{ width:100%; text-align:center; padding:30px 0px; line-height:130%;}
+.cg_x{ padding:20px; padding-top:0px; }
+.tj_tj{ padding:20px; font-size:14px; color:#757F79; text-shadow:rgba(256,256,256,1.0) 1px 1px 1px;}
+.bottom{
+    position: fixed;
+    opacity:0.8;
+    z-index: 99;
+    bottom: 5px;
+    height:35px;
+    width:100%;
+    text-align:center;
+    font-size:14px;
+    font-weight:bold;
+    padding:0 10px;
+    /*background: #0972F2; /* Old browsers */
+    /*background: -moz-linear-gradient(top,  #00C3F1 0%, #0057C0 100%); /* FF3.6+ */
+    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#00C3F1), color-stop(100%,#0057C0)); /* Chrome,Safari4+ */
+    /*background: -webkit-linear-gradient(top,  #00C3F1 0%,#0057C0 100%); /* Chrome10+,Safari5.1+ */
+    /*background: -o-linear-gradient(top,  #00C3F1 0%,#0057C0 100%); /* Opera 11.10+ */
+    /*background: -ms-linear-gradient(top,  #00C3F1 0%,#0057C0 100%); /* IE10+ */
+    /*background: linear-gradient(top,  #00C3F1 0%,#0057C0 100%); /* W3C */
+                                                                        }
+                                                                        #bottom{padding-top:0px;}
+                                                                        .fc{
+                                                                            float:left;
+                                                                            width:100%;
+                                                                            height:100%;
+                                                                            background-color:#000000;
+                                                                            position:absolute;
+                                                                            top:0px;
+                                                                            left:0px;opacity:0.4;
+                                                                            filter:alpha(opacity=40);
+                                                                                                                }
+                                                                                                                .fc_k{
+                                                                                                                    float:left;
+                                                                                                                    width:240px;
+                                                                                                                    height:150px;
+                                                                                                                    text-align:center;
+                                                                                                                    color:#ffffff;
+                                                                                                                    line-height:140%;
+                                                                                                                    font-size:14px;
+                                                                                                                    font-weight:bold;
+                                                                                                                    position:absolute;
+                                                                                                                    top:100px;
+                                                                                                                    left:50%;
+                                                                                                                    margin-left:-120px;
+                                                                                                                    background-color:#FFFFFF;
+                                                                                                                    border-radius:15px;
+                                                                                                                    box-shadow:rgba(35,35,35,0.1) 2px 2px 2px;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    .fc_ktit{width:100%;
+                                                                                                                                                                                        border-top-left-radius:15px;
+                                                                                                                                                                                        border-top-right-radius:15px;
+                                                                                                                                                                                        padding-top:5px;
+                                                                                                                                                                                        padding-bottom:5px;
+                                                                                                                                                                                        background: #0972F2; /* Old browsers */
+                                                                                                                                                                                        background: -moz-linear-gradient(top,  #00C3F1 0%, #0057C0 100%); /* FF3.6+ */
+                                                                                                                                                                                        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#00C3F1), color-stop(100%,#0057C0)); /* Chrome,Safari4+ */
+                                                                                                                                                                                        background: -webkit-linear-gradient(top,  #00C3F1 0%,#0057C0 100%); /* Chrome10+,Safari5.1+ */
+                                                                                                                                                                                        background: -o-linear-gradient(top,  #00C3F1 0%,#0057C0 100%); /* Opera 11.10+ */
+                                                                                                                                                                                        background: -ms-linear-gradient(top,  #00C3F1 0%,#0057C0 100%); /* IE10+ */
+                                                                                                                                                                                        background: linear-gradient(top,  #00C3F1 0%,#0057C0 100%); /* W3C */
+                                                                                                                                                                                    }
+                                                                                                                                                                                    .fc_ktext{
+                                                                                                                                                                                        padding:20px;
+                                                                                                                                                                                        color:#000000;
+                                                                                                                                                                                        text-align:left;
+                                                                                                                                                                                        font-weight:normal;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    .fc_kbtn{
+                                                                                                                                                                                        text-align:center;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    .srk{width:100%; float:left; color:#999999; font-size:14px; font-weight: normal;}
+                                                                                                                                                                                    .srk_li{ background-color:#FFFFFF; line-height:200%;}
+
+
+                                                                                                                                                                                    .dl_bd{
+                                                                                                                                                                                        margin:0px auto; 
+                                                                                                                                                                                        background-color:#FFFFFF; 
+                                                                                                                                                                                        border:1px #A7A7A7 solid; 
+                                                                                                                                                                                        float:left; 
+                                                                                                                                                                                        margin:0px; 
+                                                                                                                                                                                        padding:0px; 
+                                                                                                                                                                                        width:100%; 
+                                                                                                                                                                                        border-radius:5px; 
+                                                                                                                                                                                        /* box-shadow:rgba(35,35,35,0.1) 2px 2px 2px;  */
+                                                                                                                                                                                    }
+                                                                                                                                                                                    p.info{margin:15px;}
+                                                                                                                                                                                    .dl_bd li{
+                                                                                                                                                                                        padding:0px; margin:0px;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    table.dl_input input{ border:0px; color:#777; width:90%; font-size:16px;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    table.dl_input label,select{ color:#777; font-size:16px;}
+                                                                                                                                                                                    table.dl_input td{border-bottom:1px solid #A7A7A7;padding: 12px 5px 12px 10px;}
+                                                                                                                                                                                    table.dl_input tr:last-child td{border-bottom:0px;}
+                                                                                                                                                                                    .dl_btn{width:100%; float:left; margin-top:30px;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    table#qqweibo {padding:20px 0 10px;}
+                                                                                                                                                                                    table#qqweibo td {padding-left:0;}
+                                                                                                                                                                                    /* button */
+                                                                                                                                                                                    .button {
+                                                                                                                                                                                        display: block;
+                                                                                                                                                                                        margin-top: 20px;
+                                                                                                                                                                                        float:left;
+                                                                                                                                                                                        padding: 0px;
+                                                                                                                                                                                        text-align: center;
+                                                                                                                                                                                        text-decoration: none;
+                                                                                                                                                                                        font-weight:bold;
+
+
+                                                                                                                                                                                        -webkit-border-radius: 4px;
+                                                                                                                                                                                        -moz-border-radius: 4px;
+                                                                                                                                                                                        border-radius: 4px;
+
+
+                                                                                                                                                                                    }
+
+                                                                                                                                                                                    /* Blue Color */
+
+                                                                                                                                                                                    a.blue {
+                                                                                                                                                                                        color: #ffffff;
+                                                                                                                                                                                        background: #0972F2; /* Old browsers */
+
+                                                                                                                                                                                        /*-webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+                                                                                                                                                                                        /*-moz-box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+                                                                                                                                                                                        /*box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+
+                                                                                                                                                                                        /*background: -moz-linear-gradient(top,  #00C3F1 0%, #0057C0 100%); /* FF3.6+ */
+                                                                                                                                                                                        /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#00C3F1), color-stop(100%,#0057C0)); /* Chrome,Safari4+ */
+                                                                                                                                                                                        /*background: -webkit-linear-gradient(top,  #00C3F1 0%,#0057C0 100%); /* Chrome10+,Safari5.1+ */
+                                                                                                                                                                                        /*background: -o-linear-gradient(top,  #00C3F1 0%,#0057C0 100%); /* Opera 11.10+ */
+                                                                                                                                                                                        /*background: -ms-linear-gradient(top,  #00C3F1 0%,#0057C0 100%); /* IE10+ */
+                                                                                                                                                                                        /*background: linear-gradient(top,  #00C3F1 0%,#0057C0 100%); /* W3C */
+                                                                                                                                                                                    }
+                                                                                                                                                                                    a.gray {
+                                                                                                                                                                                        color: #3f3f3f;
+                                                                                                                                                                                        background: #EDEDED; /* Old browsers */
+
+                                                                                                                                                                                        /*-webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+                                                                                                                                                                                        /*-moz-box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+                                                                                                                                                                                        /*box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+
+                                                                                                                                                                                        /*background: -moz-linear-gradient(top,  #EDEDED 0%, #c9c9c9 100%); /* FF3.6+ */
+                                                                                                                                                                                        /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#EDEDED), color-stop(100%,#c9c9c9)); /* Chrome,Safari4+ */
+                                                                                                                                                                                        /*background: -webkit-linear-gradient(top,  #EDEDED 0%,#c9c9c9 100%); /* Chrome10+,Safari5.1+ */
+                                                                                                                                                                                        /*background: -o-linear-gradient(top,  #EDEDED 0%,#c9c9c9 100%); /* Opera 11.10+ */
+                                                                                                                                                                                        /*background: -ms-linear-gradient(top,  #EDEDED 0%,#c9c9c9 100%); /* IE10+ */
+                                                                                                                                                                                        /*background: linear-gradient(top,  #EDEDED 0%,#c9c9c9 100%); /* W3C */
+                                                                                                                                                                                    }
+                                                                                                                                                                                    a.red {
+                                                                                                                                                                                        color: #ffffff;
+                                                                                                                                                                                        background: #FF1F10; /* Old browsers */
+
+                                                                                                                                                                                        /*-webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+                                                                                                                                                                                        /*-moz-box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+                                                                                                                                                                                        /*box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+
+                                                                                                                                                                                        /*background: -moz-linear-gradient(top,  #FF1F10 0%, #932922 100%); /* FF3.6+ */
+                                                                                                                                                                                        /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FF1F10), color-stop(100%,#932922)); /* Chrome,Safari4+ */
+                                                                                                                                                                                        /*background: -webkit-linear-gradient(top,  #FF1F10 0%,#932922 100%); /* Chrome10+,Safari5.1+ */
+                                                                                                                                                                                        /*background: -o-linear-gradient(top,  #FF1F10 0%,#932922 100%); /* Opera 11.10+ */
+                                                                                                                                                                                        /*background: -ms-linear-gradient(top,  #FF1F10 0%,#932922 100%); /* IE10+ */
+                                                                                                                                                                                        /*background: linear-gradient(top,  #FF1F10 0%,#932922 100%); /* W3C */
+                                                                                                                                                                                    }
+                                                                                                                                                                                    a.green {
+                                                                                                                                                                                        color: #fff;
+                                                                                                                                                                                        background: #57a319; 
+                                                                                                                                                                                    }
+                                                                                                                                                                                    /* Big Button Style */
+
+                                                                                                                                                                                    .big {
+                                                                                                                                                                                        padding: 0px;
+                                                                                                                                                                                        padding-top: 10px;
+                                                                                                                                                                                        height: 30px;
+                                                                                                                                                                                        width:100%;
+                                                                                                                                                                                        text-transform: uppercase;
+                                                                                                                                                                                        font-weight:bold;
+                                                                                                                                                                                        font-size:16px;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    .all {
+                                                                                                                                                                                        width:100%;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    .half {width:48%;}
+                                                                                                                                                                                    .fright{float:right;}
+                                                                                                                                                                                    .small {
+                                                                                                                                                                                        padding: 0px;
+                                                                                                                                                                                        padding-top: 6px;
+                                                                                                                                                                                        height: 25px;
+                                                                                                                                                                                        width:100px;
+                                                                                                                                                                                        text-transform: uppercase;
+                                                                                                                                                                                        font-weight:bold;
+                                                                                                                                                                                        font-size:14px;
+                                                                                                                                                                                        margin-right:20px;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    .smallsmall {
+                                                                                                                                                                                        padding: 0px;
+                                                                                                                                                                                        padding-top: 3px;
+                                                                                                                                                                                        height: 20px;
+                                                                                                                                                                                        width:50px;
+                                                                                                                                                                                        text-transform: uppercase;
+                                                                                                                                                                                        font-size:14px;
+                                                                                                                                                                                        margin-right:0;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    .smalltable {
+                                                                                                                                                                                        padding: 0px;
+                                                                                                                                                                                        padding-top: 6px;
+                                                                                                                                                                                        height: 23px;
+                                                                                                                                                                                        width: 96px;
+                                                                                                                                                                                        text-transform: uppercase;
+                                                                                                                                                                                        font-weight: bold;
+                                                                                                                                                                                        font-size: 14px;
+                                                                                                                                                                                        margin-top: 0;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    .big span {
+                                                                                                                                                                                        display: block;
+                                                                                                                                                                                        text-transform: none;
+                                                                                                                                                                                        font: italic normal 12px/18px Georgia, sans-serif;
+                                                                                                                                                                                        text-shadow: 1px 1px 1px rgba(255,255,255, .12);
+                                                                                                                                                                                    }
+                                                                                                                                                                                    .blue:hover {
+                                                                                                                                                                                        background: #3D87E0; /* Old browsers */
+                                                                                                                                                                                        /*-webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+                                                                                                                                                                                        /*-moz-box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+                                                                                                                                                                                        /*box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+
+                                                                                                                                                                                        /*background: -moz-linear-gradient(top,  #5FDCFA 0%, #3D87E0 100%); /* FF3.6+ */
+                                                                                                                                                                                        /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5FDCFA), color-stop(100%,#3D87E0)); /* Chrome,Safari4+ */
+                                                                                                                                                                                        /*background: -webkit-linear-gradient(top,  #5FDCFA 0%,#3D87E0 100%); /* Chrome10+,Safari5.1+ */
+                                                                                                                                                                                        /*background: -o-linear-gradient(top,  #5FDCFA 0%,#3D87E0 100%); /* Opera 11.10+ */
+                                                                                                                                                                                        /*background: -ms-linear-gradient(top,  #5FDCFA 0%,#3D87E0 100%); /* IE10+ */
+                                                                                                                                                                                        /*background: linear-gradient(top,  #5FDCFA 0%,#3D87E0 100%); /* W3C */
+                                                                                                                                                                                    }
+                                                                                                                                                                                    .button:active {
+                                                                                                                                                                                        background: #3D87E0; /* Old browsers */
+                                                                                                                                                                                        /*-webkit-box-shadow: inset 0px 0px 3px rgba(0,0,0, .8);
+                                                                                                                                                                                        /*-moz-box-shadow: inset 0px 0px 3px rgba(0,0,0, .8);
+                                                                                                                                                                                        /*box-shadow: inset 0px 0px 3px rgba(0,0,0, .8);*/
+                                                                                                                                                                                    }
+                                                                                                                                                                                    table.trade {
+                                                                                                                                                                                        border: 1px solid #888888;
+                                                                                                                                                                                        border-collapse: collapse;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    table.trade th {
+                                                                                                                                                                                        background-color: #DEDEDE;
+                                                                                                                                                                                        border: 1px solid #888888;
+                                                                                                                                                                                        line-height: 25px;
+                                                                                                                                                                                        vertical-align: baseline;
+                                                                                                                                                                                        font-size:14px;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    table.trade td {
+                                                                                                                                                                                        border: 1px solid #AAAAAA;
+                                                                                                                                                                                        line-height: 25px;
+                                                                                                                                                                                        vertical-align: text-top;
+                                                                                                                                                                                        text-align: center;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    table#main td{
+                                                                                                                                                                                        height: 130px;
+                                                                                                                                                                                        text-align: center;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    /*
+                                                                                                                                                                                    table#main a img{
+                                                                                                                                                                                    -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+                                                                                                                                                                                    -moz-box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+                                                                                                                                                                                    box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+                                                                                                                                                                                    }
+                                                                                                                                                                                     */
+    tr.down{
+        color:#3DA72E;
+        font-weight:bold;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    tr.up{
+                                                                                                                                                                                        color:#BF1F11;
+                                                                                                                                                                                        font-weight:bold;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    #hispriceview {
+                                                                                                                                                                                        width   : 100%;
+                                                                                                                                                                                        height  : 100%;
+}
+#priceview {
+    width   : 100%;
+    height  : 100%;
+    float:left;
+}
+ul.downbutton {
+    padding:0;
+    margin:0;
+    height:32px;
+    width:100%;
+    border-radius: 10px;
+    border: solid 1px #48a1d5;
+    overflow: hidden;
+}
+ul.downbutton li {
+    float:left;
+    font-size:14px;
+    padding-top:8px;
+    height:24px;
+    width:50%;
+    text-align: center;
+}
+ul.downbutton li.up {
+    color: #48a1d5;
+    background: #EDEDED; /* Old browsers */
+    /*
+    -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+    -moz-box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+    box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+    8?
+    /*background: -moz-linear-gradient(top,  #EDEDED 0%, #c9c9c9 100%); /* FF3.6+ */
+    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#EDEDED), color-stop(100%,#c9c9c9)); /* Chrome,Safari4+ */
+    /*background: -webkit-linear-gradient(top,  #EDEDED 0%,#c9c9c9 100%); /* Chrome10+,Safari5.1+ */
+    /*background: -o-linear-gradient(top,  #EDEDED 0%,#c9c9c9 100%); /* Opera 11.10+ */
+    /*background: -ms-linear-gradient(top,  #EDEDED 0%,#c9c9c9 100%); /* IE10+ */
+    /*background: linear-gradient(top,  #EDEDED 0%,#c9c9c9 100%); /* W3C */
+}
+ul.downbutton li.down {
+    color: #fff;
+    background: #48a1d5; /* Old browsers */
+    /*
+    -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+    -moz-box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+    box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+     */
+    /*background: -moz-linear-gradient(top,  #c9c9c9 0%, #EDEDED 100%); /* FF3.6+ */
+    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#EDEDED), color-stop(100%,#c9c9c9)); /* Chrome,Safari4+ */
+    /*background: -webkit-linear-gradient(top,  #c9c9c9 0%,#EDEDED 100%); /* Chrome10+,Safari5.1+ */
+    /*background: -o-linear-gradient(top,  #c9c9c9 0%,#EDEDED 100%); /* Opera 11.10+ */
+    /*background: -ms-linear-gradient(top,  #c9c9c9 0%,#EDEDED 100%); /* IE10+ */
+    /*background: linear-gradient(top,  #c9c9c9 0%,#EDEDED 100%); /* W3C */
+}
+span.down {
+    background: url(/static/images/down_small.gif) no-repeat scroll left center transparent;
+    color:#3DA72E;
+    font-weight:bold;
+    padding-left:20px;
+}
+span.up {
+    background:url(/static/images/up_small.gif) no-repeat scroll left center transparent;
+    color:#BF1F11;
+    font-weight:bold;
+    padding-left:20px;
+}
+span.nochange {
+    background:url(/static/images/no_change_security.gif) no-repeat scroll left center transparent;
+    color:#999999;
+    font-weight:bold;
+    padding-left:20px;
+}
+div.divempty{
+    margin:0;
+    padding-bottom:0;
+}
+span.line{
+    line-height:1px;
+    border-bottom:0px;
+}
+span.pricelab{
+    color:#AAA;
+}
+h3.priceh3{
+    margin-bottom:0;
+    margin-top:0.6em;
+}
+div#product{
+    padding:10px;
+}
+.floatnone{
+    float:none;
+}
+.redcolor{
+    color:red;
+}
+p.description{
+    line-height: 25px;
+    margin: 0 0 6px 0;
+    font-size:14px;
+}
+.padding10{
+    padding:10px;
+}
+.width55{
+    width:55%;
+}
+div#description{
+    line-height: 30px;
+}
+table.home td{
+    font-size:1em;
+}
+.home_banner{
+    overflow: hidden;
+    width: 100%;
+    height:150px;
+}
+.home_banner_margin{
+    overflow: hidden;
+    margin: 5px;
+    position: relative;
+}
+ul#home_banner_imgul{
+    position: absolute;
+    top:0px;
+    left:0px;
+    padding: 0px;
+    margin: 0px;
+    white-space: nowrap;
+    font-size:0;
+}
+ul#home_banner_imgul li{
+    display:inline;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+}
+.home_banner_img{
+    height: 150px;
+    width: 355px;
+    padding: 0px;
+    margin: 0px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    /*border: 1px dotted;*/
+}
+ul#home_banner_li_no{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: 3px;
+    margin: 0;
+    padding: 0;
+}
+ul#home_banner_li_no li{
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    float: left;
+    display: block;
+    height: 8px;
+    width: 8px;
+    margin-left: 8px;
+}
+ul#home_banner_li_no li.select{
+    background-color: #4892ee;
+}
+#home_content{
+    width: 100%;
+    float: left;
+}
+#homearticle{
+    overflow: hidden;
+    width: 100%;
+    height:30px;
+}
+#homearticle_margin{
+    overflow: hidden;
+    margin:0 10px;
+    position: relative;
+    height:30px;
+}
+#homearticle ul{
+    position: absolute;
+    top:0px;
+    left:0px;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+}
+#homearticle ul li{
+    display: block;
+    height: 30px;
+    width: 100%;
+    font-size: 1.1em;
+    line-height: 30px;
+}
+#homearticle ul li span.right {
+    position: absolute;
+    right: 0;
+    padding-right: 0;
+    color: #666666;
+    font-size: 0.8em;
+    font-style: italic;
+    font-weight: normal;
+    padding: 0;
+}
+div#homeblockdiv{
+}
+div#homeblockdiv td{
+    padding:5px 10px;
+}
+div.homeblock{
+    height: 76px;
+    width: 100%;
+    background-color: #4892ee;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    position: relative;
+}
+.homeblockh1{
+    color: white;
+    font-size: 16px;
+    font-weight: 800;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    padding: 0;
+    margin: 0;
+}
+.homeblockimg{
+    position: absolute;
+    right: 0px;
+    top:5px;
+    border: 0;
+    height: 65px;
+}
+.homeblockp{
+    position: absolute;
+    left: 10px;
+    top:25px;
+    font-size: 12px;
+}
+div.clearing_block {
+    clear: left;
+    display: block;
+    height: 0;
+    margin: 0;
+}
+/* new trade */
+.trade_header{
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    width:100%;
+    background:#48a1d5;
+    height:45px;
+    overflow:hidden;
+}
+.trade_content{
+    padding: 45px 0 0 0;
+    width: 100%;
+    float: left;
+}
+#trade_header_table tr{
+    padding:0 15px;
+}
+#trade_header_table td{
+    text-align:center;
+    height:45px;
+    vertical-align:middle;
+    padding:0;
+    font-size:16px;
+    color:#fff;
+    font-weight:normal;
+}
+#trade_header_table td a{
+    color:#fff;
+}
+#trade_header_table td.select{
+    font-size:20px;
+    color:#fff;
+    font-weight:bold;
+    border-top-style: solid;
+    border-top-width: 3px ;
+}
+div.tradediv {
+    padding: 10px;
+    margin:0;
+    background-color:#fff;
+}
+div.detailsdiv {
+    margin: 0px auto;
+    float: left;
+    margin: 0px;
+    padding: 0px;
+    width: 60%;
+}
+div.detailsdiv input{
+    border:0px;
+    font-size:16px;
+    width:100%;
+    text-align:center;
+}
+select#code{
+    border:0px;
+    -webkit-appearance: none;
+    text-align:center;
+    font-size:14px;
+    width:100%;
+}
+select#code option{
+    text-align:center;
+}
+td.tradeinput{
+    border:solid 1px #FF1F10;
+    padding: 7px 3px;
+}
+td.tradeinfo{
+    padding:2px 0;
+}
+.kong{
+    height:10px;
+    padding:0px;
+    margin:0;
+}
+span#up_limit{
+    color:#FF1F10;
+    font-weight:bold;
+}
+span#low_limit{
+    color:#57b84f;
+    font-weight:bold;
+}
+td#cantrade span{
+    color:#f07230;
+    font-size:16px;
+}
+td.tradea{
+    padding:0;
+}
+a.tradebig {
+    padding: 0px;
+    margin:0;
+    padding-top: 8px;
+    height: 28px;
+    width:100%;
+    text-transform: uppercase;
+    font-weight:bold;
+    font-size:16px;
+}
+div#entrustfivediv {
+    margin: 0px auto;
+    border: 1px #A7A7A7 solid;
+    float: right;
+    margin: 0px;
+    padding: 0px;
+    width: 37%;
+}
+table#entrustfive{
+    width   : 100%;
+}
+table#entrustfive tr{
+    height  : 13px;
+}
+table#entrustfive td{
+    font-size:12px;
+    padding-left:0;
+}
+table#entrustfive td:first-child{
+    padding-left:5px;
+}
+table#entrustfive td:last-child{
+    padding-right:5px;
+}
+.line{
+    border-bottom:1px #A7A7A7 solid;
+}
+td.price{
+    color:#FF1F10;
+}
+div#blackback { 
+    position: fixed;
+    background-color:rgba(0,0,0,0.2); 
+    opacity:0.9;
+    display:none;
+    top:0;
+    left:0;
+    width:100%; 
+    height:100%;
+    overflow:hidden;
+    margin:0 auto; 
+    padding:0;
+    z-index: 101;
+}
+div#info_div {
+    background-color: #FFF;
+    height: auto;
+    padding: 0;
+    display:none;/* */
+    position: fixed;
+    width: 100%;
+    z-index: 102;
+    top:35%;
+}
+div#info_div td{
+    padding:0 10px;
+}
+/* new jour */
+.sws{
+    display:none;
+}
+table.datepiker{
+    margin-bottom:5px;
+}
+table.datepiker tr{
+    height:25px;
+}
+table.datepiker td{
+    width:50%;
+    padding:0;
+    text-align:center;
+    height:25px;
+}
+table.datepiker input[type="date"]{
+    font-size: 16px;
+    font-weight:bold;
+    background-color: #F3F3F3;
+    border: 0px;
+    text-align: right;
+    -webkit-appearance: none;
+}
+table.new_jour th{
+    font-size:14px;
+    font-weight:normal;
+    border-right:solid 1px #e4e4e4;
+    border-bottom:solid 1px #e4e4e4;
+    background:#eee;
+    height: 35px;
+}
+table.new_jour th:last-child {
+    border-right:0px;
+}
+table.new_jour tr.buy td{
+    color:#FF1F10;
+}
+table.new_jour tr.sell td{
+    color:#3597B2;
+}
+table.new_jour tr.cancel td{
+    color:#aaa;
+}
+table.new_jour td{
+    font-size:14px;
+    text-align:right;
+    height: 65px;
+    border-bottom:solid 1px #e4e4e4;
+    padding-left:5px;
+    padding-right:5px;
+    background:#f5f5f5;
+}
+table.new_jour p{
+    margin:5px 0;
+}
+table.new_jour p.sm{
+    font-size:12px;
+}
+table.new_jour tr td:last-child{
+    text-align:center;
+}
+span.buy_yuan{
+    border: 1px #FF1F10 solid;
+    border-radius: 20px;
+    font-size: 16px;
+    padding: 4px 5px;
+    float:left;
+    margin-top:15px;
+}
+span.sell_yuan{
+    border: 1px #3597B2 solid;
+    border-radius: 20px;
+    font-size: 16px;
+    padding: 4px 5px;
+    float:left;
+    margin-top:15px;
+}
+span.cancel_yuan{
+    border: 1px #aaa solid;
+    border-radius: 20px;
+    font-size: 16px;
+    padding: 4px 5px;
+    float:left;
+    margin-top:15px;
+}
+div#assetdiv{
+    background:#fff;
+    padding:0 5px 10px 5px;
+    overflow: auto;
+}
+table.asset {
+    float:left;
+}
+table.asset th{
+    font-size:12px;
+    font-weight:normal;
+    text-align:left;
+    border-bottom:dashed 1px #ccc;
+    background:#f9f6f3;
+    height: 30px;
+    padding:0 5px;
+}
+table.asset td{
+    font-size:14px;
+    text-align:center;
+    height: 55px;
+    border-bottom:solid 1px #ccc;
+    background:#f9f6f3;
+    padding:0 5px;
+}
+table.asset p{
+    margin:5px 0;
+}
+.xiaohui{
+    color:#aaa;
+    font-size:14px;
+}
+p.num{
+    font-weight:bold;
+}
+ul.morelist{
+    background:#fff;
+    width:100%;
+    border-top:solid 1px #e4e4e4;
+    border-bottom:solid 1px #e4e4e4;
+    padding:0;
+}
+ul.morelist li{
+    border-bottom:solid 1px #e4e4e4;
+    line-height:40px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+span.arrow{
+    float:right;
+    color:#ccc;
+    font-weight:bold;
+}
+
+
+.pos {
+    width: 100px;
+}
+.notice {
+    color: red;
+    margin-right: 5px;
+    float:left;
+}

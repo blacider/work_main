@@ -14,8 +14,9 @@
 | path to your installation.
 |
 */
-$config['base_url']	= '';
-
+$config['base_url'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
+$config['base_url'] .= "://".$_SERVER['HTTP_HOST'];
+$config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -26,7 +27,7 @@ $config['base_url']	= '';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +45,7 @@ $config['index_page'] = 'index.php';
 | 'ORIG_PATH_INFO'	Uses the ORIG_PATH_INFO
 |
 */
-$config['uri_protocol']	= 'AUTO';
+$config['uri_protocol']	= 'REQUEST_URI';
 
 /*
 |--------------------------------------------------------------------------
@@ -91,6 +92,7 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
+$config['enable_hooks'] = TRUE;
 $config['enable_hooks'] = FALSE;
 
 
@@ -106,7 +108,7 @@ $config['enable_hooks'] = FALSE;
 | http://codeigniter.com/user_guide/general/creating_libraries.html
 |
 */
-$config['subclass_prefix'] = 'MY_';
+$config['subclass_prefix'] = 'REIM_';
 
 
 /*
@@ -180,7 +182,7 @@ $config['directory_trigger']	= 'd'; // experimental not currently in use
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 4;
 
 /*
 |--------------------------------------------------------------------------

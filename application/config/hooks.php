@@ -8,9 +8,17 @@
 |
 |	http://codeigniter.com/user_guide/general/hooks.html
 |
-*/
+ */
 
 
 
 /* End of file hooks.php */
 /* Location: ./application/config/hooks.php */
+
+
+$hook['pre_controller'][] = array(
+    'class' => 'ReimAdminHook'
+    ,'function' => 'check'
+    ,'filename' => 'reimadminhook.php'
+    ,'filepath' => 'hooks'
+);
