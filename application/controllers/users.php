@@ -74,7 +74,7 @@ class Users extends REIM_Controller {
         }
     }
 
-    public function update(){
+    public function update() {
         $password = $this->input->post('password');
         $nickname = $this->input->post('nickname');
         $role = $this->input->post('role');

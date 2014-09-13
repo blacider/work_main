@@ -24,7 +24,7 @@ class User_model extends CI_Model {
         return $this->db->get_where($this->_table_name, array('id' => $id))->row_array();
     }
 
-    public function get_user_by_museum($role_id){
+    public function get_user_by_role($role_id){
         $query = $this->db->get_where($this->_table_name, array('mid' => $role_id));
         return $query->result();
     }
@@ -52,13 +52,8 @@ class User_model extends CI_Model {
 
 
     public function remove_by_id($id){
-	if(!$id) return false;
+        if(!$id) return false;
         return $this->db->delete($this->_table_name, array('id' => $id));
-    }
-
-    public function remove_by_museum($role_id){
-        $this->db->where('mid', $role_id);
-        return $this->db->update($this->_table_name, $data);
     }
 
     public function create($username, $password, $nickname, $ascription = 1, $role = 1){
@@ -71,8 +66,8 @@ class User_model extends CI_Model {
             'passwd' => md5($password),
             'nickname' => $nickname,
             'create_dt' => $create_time,
-	    'ascription' => $ascription,
-	    'role' => $role
+            'ascription' => $ascription,
+            'role' => $role
         );
         $insert_res = $this->db->insert($this->_table_name, $data);
         if($insert_res){
