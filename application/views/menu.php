@@ -5,10 +5,10 @@
 	  <li>
 	    <a href="<?php echo base_url('customers'); ?>">客户管理</a>
 	  </li>
-<!--
 	  <li>
-	    <a href="<?php echo base_url('admin/capture'); ?>">采集管理</a>
+	    <a href="<?php echo base_url('logs'); ?>">运行日志管理</a>
 	  </li>
+<!--
 	  <li>
 	    <a href="<?php echo base_url('admin/surveys'); ?>">问卷管理</a>
 	  </li>
