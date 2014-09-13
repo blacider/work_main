@@ -42,44 +42,34 @@ top:50%;
 消息
  </th>
  <th>
+类型
+ </th>
+ <th>
 级别
  </th>
  <th>
 时间
  </th>
- <th>
- 操作
- </th>
  </tr>
  <?php
- $m_dict = array();
-//foreach($customers as $m){
-//    $m_dict[$m['id']] = $m;
-//}
 foreach($alist as $item){
-//$role = $item['role'] == 1 ? '工作人员' : '管理员';
-//$key = $item['ascription'];
-//$museum = $item['ascription'] == 0 ? '平台' : '';
-//if($museum == ''){
-//    if(array_key_exists($key, $m_dict)){
-//        $museum = $m_dict[$key]['name'];
-//    }
-//    $museum = $museum == "" ? '隶属商户已删除' : $museum;
-//}
 $str = '<tr>';
 $username = '<td class="u_username">' . $item['host'] . '</td>';
-$nickname = '<td class="u_nickname">' . $item['message'] . '</td>';
+$nickname = '<td class="u_nickname"><p title="' . $item['message'] . '">' . mb_substr($item['message'], 0, 30) . '</p></td>';
+$type =  '<td class="u_type_name">' . $item['type'] . '</td>';
 $role_id =  '<td class="u_role_name">' . $item['level'] . '</td>';
 $ascription =  '<td class="u_role_name">' . $item['lastdt'] . '</td>';
-$operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class="edit" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
-
-$str = $str . $username . $nickname . $role_id . $ascription . $operation_upd . '</tr>';
+$str = $str . $username . $nickname . $type . $role_id . $ascription . '</tr>';
 echo $str;
 }
 ?>
 </tbody> <!-- /tbody -->
 </table> <!-- /table -->
+                <div>
+                    <?php echo $pager; ?>
+                </div>
 </div> <!-- /.well -->
+
 </div><!--/span-->
 </div><!--/row-->
 

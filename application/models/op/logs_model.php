@@ -29,7 +29,7 @@ class Logs_model extends CI_Model {
         if($type){
             $this->db->where('type', $type);
         }
-        $total = $this->db->count_all();
+        $total = $this->db->count_all($this->_table_name);
 
         if($host){
             $this->db->where('host', $host);
@@ -40,6 +40,7 @@ class Logs_model extends CI_Model {
         if($type){
             $this->db->where('type', $type);
         }
+        $this->db->order_by('lastdt', 'desc');
         $data = $this->db->get($this->_table_name, $pagesize, $page * $pagesize)->result_array();
         return array('data' => $data, 'total' => $total);
 
