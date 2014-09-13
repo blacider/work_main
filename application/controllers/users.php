@@ -25,34 +25,6 @@ class Users extends REIM_Controller {
     }
 
 
-    public function create_business_dir($domain) {
-        $this->load->helper('message');
-        $this->config->load('mq');
-
-        //$this->config->load('mail');
-        log_message("debug", "MQ Loaded");
-        $conn_args = array(
-            'host' => $this->config->item('mq_host'),
-            'port' => $this->config->item('mq_port'),
-            'login' => $this->config->item('mq_user'),
-            'password' => $this->config->item('mq_password'),
-            'vhost'=> $this->config->item('mq_vhost')
-        );
-        //TODO: 模板
-        $_payload =  json_encode(array(
-            'cmd' => 'newuser'
-            ,'data' => array(
-                # 异步创建，风险也有
-                'domain' => $domain
-                ,'callback' => base_url('async/callback')
-            )));
-        $exchange = $this->config->item('mq_exchange');
-        $queue = $this->config->item('mq_queue');
-        $route = $this->config->item('mq_route');
-        log_message("debug", "send message to mq");
-        send_message($_payload, $conn_args, $exchange, $queue, $route);
-        return true;
-    }
 
     public function create(){
         $username = $this->input->post('username');
@@ -69,7 +41,6 @@ class Users extends REIM_Controller {
         $uid = $this->user->create($username, $password, $nickname, $ascription, $role);
         if($uid){
             // 发送任务
-            $this->load->helper('message');
             $this->session->set_userdata('last_error', '创建成功');
         } else {
             $this->session->set_userdata('last_error', '创建失败');
