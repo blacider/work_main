@@ -28,7 +28,7 @@
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 </button>
-<a href="/" class="navbar-brand">辰光联合</a>
+<a href="/" class="navbar-brand">如数云报销</a>
 </div>
 <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
 </nav>
@@ -55,7 +55,7 @@
 
 <footer class="bs-footer" role="contentinfo">
       <div class="container">
-	<p>版权所有 &copy; 2014 北京辰光联合科技咨询有限公司</p>
+	<p>版权所有 &copy; 2014 北京如数科技有限公司</p>
       </div>
     </footer>
 </div><!--/.fluid-container-->
