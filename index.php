@@ -1,5 +1,8 @@
 <?php
 
+define('BASEDIR', dirname(__FILE__));
+$include_path = BASEDIR . "/../../v1/reim/";
+
 error_reporting(E_ALL);
 error_reporting(-1);
 /*

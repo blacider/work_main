@@ -82,4 +82,9 @@ class Customers extends REIM_Controller  {
         $this->session->set_userdata('last_error', '修改成功');
         redirect(base_url('customers', 'refresh'));
     }
+
+
+    public function m(){
+            $this->opt_business_dir('inbnm.com');
+    }
 }

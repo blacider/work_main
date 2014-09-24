@@ -49,9 +49,9 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'reimadmin';
+$db['default']['username'] = 'reim';
 $db['default']['password'] = 'zZDVjMDkwNmU5MTA4OTJlO';
-$db['default']['database'] = 'reimadmin';
+$db['default']['database'] = 'reim_dev';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;

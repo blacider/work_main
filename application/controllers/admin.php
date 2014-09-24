@@ -9,15 +9,15 @@ class Admin extends REIM_Controller {
     public function index(){
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-        $users = $this->users->get_all();
-        $total_user = $users['total'];
-        $users = $users['data'];
-        $customers= $this->cmodel->get_all_customers();
+        //$users = $this->users->get_all();
+        //$total_user = $users['total'];
+        //$users = $users['data'];
+        //$customers= $this->cmodel->get_all_customers();
         $this->eload('user/index',
             array(
                 'title' => '用户管理'
-                , 'alist' => $users
-                , 'customers' => $customers['data']
+                //, 'alist' => $users
+                //, 'customers' => $customers['data']
             )
         );
     }
