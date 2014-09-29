@@ -1,6 +1,36 @@
 <?php
 
+define("API_SERVER", "http://api.1in1.cn/dev/");
+define("PUBKEY", "1NDgzZGY1OWViOWRmNjI5ZT");
+
 class Reim_Model extends CI_Model {
+    public function __construct(){
+        parent::__construct();
+        $this->load->library('JWT', 'jwt');
+    }
+
+
+    public function get_url($part){
+        return API_SERVER . $part;
+    }
+
+	public function get_jwt($username, $password, $server_token = ''){
+        if(!$server_token) $server_token = $this->session->userdata('server_token');
+		$users  = array(
+			'email' => $username
+			, 'password' => $password
+			,'device_type' => 'admin'
+			,'device_token' => ''
+            ,'server_token' => $server_token
+		);
+		return $this->get_header($users);
+	}
+
+
+	private function get_header($config){
+		return array('X-REIM-JWT: ' . JWT::encode($config, PUBKEY), 'X-ADMIN-API: 1');
+	}
+    
     public function do_Post($url, $fields, $extraheader = array()){
         $ch  = curl_init() ;
         curl_setopt($ch , CURLOPT_URL, $url ) ;

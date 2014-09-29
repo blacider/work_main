@@ -3,8 +3,8 @@ class Admin extends REIM_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('users/user_model', 'users');
-        $this->load->model('users/customer_model', 'cmodel');
+        $this->load->model('user_model', 'users');
+        //$this->load->model('users/customer_model', 'cmodel');
     }
     public function index(){
         $error = $this->session->userdata('last_error');

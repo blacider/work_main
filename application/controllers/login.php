@@ -3,7 +3,7 @@
 class Login extends REIM_Controller {
     public function __construct() {
         parent::__construct();
-        $this->load->model('users/user_model', 'users');
+        $this->load->model('user_model', 'users');
     }
 
     public function index()
@@ -18,19 +18,13 @@ class Login extends REIM_Controller {
     public function dologin(){
         $username = $this->input->post('u', TRUE);
         $password = $this->input->post('p', TRUE);
-        $user = $this->users->get_user($username);
-        if(!$user) {
-            $this->session->set_userdata('login_error', '用户不存在');
+        $user = $this->users->get_user($username, $password);
+        if(!$user['status']) {
+            $this->session->set_userdata('login_error', $user['data']['msg']);
             redirect(base_url('login'));
             die();
         }
-
-        if($user['passwd'] != md5($password)){
-            $this->session->set_userdata('login_error', '密码错误');
-            redirect(base_url('login'));
-            die();
-        }
-        redirect(base_url('admin/index'));
+        redirect(base_url('items'));
     }
 
     public function dologout()
