@@ -7,10 +7,10 @@
     -->
     <base href="<?php echo base_url();?>">
     <!-- Le styles -->
-    <link href="<?php echo base_url();?>static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo base_url();?>static/css/docs3.css" rel="stylesheet">
-    <script src="<?php echo base_url('static/js/jquery.min.js');?>"></script>
-    <script language="javascript" src="<?php echo base_url('static/js/bootstrap.min.js'); ?>"></script>
+    <link href="<?php echo base_url();?>statics/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo base_url();?>statics/css/docs3.css" rel="stylesheet">
+    <script src="<?php echo base_url('statics/js/jquery.min.js');?>"></script>
+    <script language="javascript" src="<?php echo base_url('statics/js/bootstrap.min.js'); ?>"></script>
     <title><?php echo $title;?></title>
     <script language="javascript">
     var __BASEURL = "<?php echo base_url(); ?>";
