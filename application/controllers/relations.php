@@ -56,6 +56,8 @@ class Relations extends REIM_Controller {
                     $n['icon'] = base_url('statics/img/executive.png'); 
                 }
             }
+            $base = array('id' => 0, 'nickname' => $ginfo['group_name'], 'icon' => base_url('statics/img/executive.png'), 'open' => true);
+            array_push($gmember, $base);
             //while(count($gmember) > 1){
             //    $gmember = $this->_find_leaves($gmember);
             //}

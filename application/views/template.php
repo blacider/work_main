@@ -7,9 +7,10 @@
 	-->
     <base href="<?php echo base_url();?>">
     <!-- Le styles -->
-    <link href="<?php echo base_url();?>static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo base_url();?>static/css/docs3.css" rel="stylesheet">
-    <script src="<?php echo base_url('static/js/jquery.min.js');?>"></script>
+    <link href="<?php echo base_url();?>statics/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo base_url();?>statics/css/docs3.css" rel="stylesheet">
+    <script src="<?php echo base_url('statics/js/jquery.min.js');?>"></script>
+    <link rel="stylesheet" href="<?php echo base_url();?>statics/third-party/jgrowl/jquery.jgrowl.min.css">
     <script language="javascript" src="<?php echo base_url('static/js/bootstrap.min.js'); ?>"></script> 
     <title><?php echo $title;?></title>
     <script language="javascript">
@@ -59,5 +60,13 @@
       </div>
     </footer>
 </div><!--/.fluid-container-->
+<script src="<?php echo base_url();?>statics/third-party/jgrowl/jquery.jgrowl.min.js"></script>
+<script langauge="javascript">
+function show_notify(msg, life){
+    if(!life || life ==undefined)
+        life = 1000;
+    $.jGrowl(msg, {'life' : life});
+}
+</script>
 </body>
 </html>

@@ -22,5 +22,17 @@ class Group_Model extends Reim_Model {
 		$obj = json_decode($buf, true);
         return $obj;
     }
+
+
+    public function change_group_name($name){
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $data = array('name' => $name);
+		$url = $this->get_url('groups');
+		$buf = $this->do_Put($url, $data, $jwt);
+        log_message("debug", "model:" . $buf);
+		//$obj = json_decode($buf, true);
+        return $buf;
+    }
 }
 
