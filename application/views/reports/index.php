@@ -50,18 +50,12 @@
  <?php
  $m_dict = array();
 foreach($items as $item){
-    print_r($items);
-    $img = "有发票";
-    if($item['path'] == 0){
-    $img = "无发票";
-    }
-    $billable = $item['billable'] == 0 ? '不需要预审批' : '需要预审批';
 $str = '<tr>';
-$username = '<td class="u_username">' . $item['amount'] . '</td>';
-$nickname = '<td class="u_nickname">' . $item['merchants'] . '</td>';
+$username = '<td class="u_username">' . $item['title'] . '</td>';
+$nickname = '<td class="u_nickname">' . 0 . '</td>';
 $role_id =  '<td class="u_role_name">' . date('Y-m-d H:i:s', $item['lastdt']) . '</td>';
-$ascription =  '<td class="u_role_name">' . $billable . '</td>';
-$image =  '<td class="u_role_name">' . $img  . '</td>';
+$ascription =  '<td class="u_role_name">' . $item['nickname'] . '</td>';
+$image =  '';//'<td class="u_role_name">' . $img  . '</td>';
 $operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class="edit" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
 
 $str = $str . $username . $nickname . $role_id . $ascription . $image . $operation_upd . '</tr>';

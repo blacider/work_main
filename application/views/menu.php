@@ -8,4 +8,7 @@
 	  <li>
 	    <a href="<?php echo base_url('groups'); ?>">组管理</a>
 	  </li>
+	  <li>
+	    <a href="<?php echo base_url('relations'); ?>">组织关系图</a>
+	  </li>
       </ul>

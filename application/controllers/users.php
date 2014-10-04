@@ -91,4 +91,7 @@ class Users extends REIM_Controller {
         $this->session->set_userdata('last_error', '更新成功');
         redirect(base_url('users', 'refresh'));
     }
+
+    public function register(){
+    }
 }

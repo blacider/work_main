@@ -12,5 +12,16 @@ class User_Model extends Reim_Model {
         return $obj;
     }
 
+
+    public function register($email = '', $password = '', $phone = '', $code = ''){
+        $data  = array('email' => $email, 'password' => $password, 'phone' => $phone, 'code' => $code);
+		$url = $this->get_url('users');
+        $jwt = $this->session->userdata('jwt');
+        $buf = $this->do_Post($url, $data, $jwt);
+        log_message("debug", $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
 }
 

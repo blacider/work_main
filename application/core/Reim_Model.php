@@ -1,6 +1,6 @@
 <?php
 
-define("API_SERVER", "http://api.1in1.cn/dev/");
+define("API_SERVER", "http://api.rushucloud.com/stage/");
 define("PUBKEY", "1NDgzZGY1OWViOWRmNjI5ZT");
 
 class Reim_Model extends CI_Model {
@@ -54,6 +54,7 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
         curl_setopt($ch, CURLOPT_BINARYTRANSFER, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
         curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
+        log_message("debug", "Get Success");
         $output = curl_exec($ch) ;
         curl_close($ch);
         return $output;
