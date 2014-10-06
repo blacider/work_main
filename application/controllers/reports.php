@@ -8,15 +8,30 @@ class Reports extends REIM_Controller {
     public function index(){
         $items = $this->items->get_list();
         if(!$items) redirect(base_url('login'));
+        $item_data = array();
         if($items && $items['status']) {
             $data = $items['data'];
             $item_data = $data['reports'];
-            $this->eload('reports/index',
-                array(
-                    'title' => '报销管理'
-                    ,'items' => $item_data
-                ));
         }
+        $this->eload('reports/index',
+            array(
+                'title' => '报销管理'
+                ,'items' => $item_data
+            ));
+    }
+
+    public function create(){
+        $items = $this->items->get_list();
+        if(!$items) redirect(base_url('login'));
+        $item_data = array();
+        if($items && $items['status']) {
+            $data = $items['data'];
+            $item_data = $data['reports'];
+        }
+        $this->eload('reports/create',
+            array(
+                'title' => '创建报表'
+            ));
     }
 }
 

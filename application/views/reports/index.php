@@ -1,31 +1,11 @@
  <div class="bs-doc-section">
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">添加新报表</h3>
-  </div>
-  <div class="panel-body">
-
-    <div class="form-group">
-      <label for="exampleInputEmail1">报表名称</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="报表名称">
-    </div>
-
-    <div class="form-group">
-      <label for="exampleInputEmail1">关联报销单</label>
-<select name="related_ids" class="form-control" >
-<option value="1">1</option>
-</select>
-    </div>
-
-  </div>
-</div>
 
  <div class="col-md-3">
  <h4>报表列表</h4>
  </div>
  <div class="col-md-3" style="float:right;padding-top:5px;">
- <button id="add_new_btn" class="btn btn-sm btn-primary" style="float:right;" type="button">添加列表</button>
+ <button id="add_new_btn" class="btn btn-sm btn-primary" style="float:right;" type="button">添加报销单</button>
  </div>
 
  <table class="table table-bordered table-striped">
@@ -187,3 +167,11 @@ echo "<option value='" . $item['id'] ."'>" . $item['name'] . "</option>";
 </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<script language="javascript">
+$(document).ready(function(){
+
+    $('#add_new_btn').click(function(){
+        location.href = __BASEURL + "reports/create";
+    });
+});
+</script>

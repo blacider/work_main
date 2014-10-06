@@ -31,7 +31,7 @@ foreach($members as $member){
     } else {
         $info .= "<td><span class='' style='margin-right:22px'></span>" . $member['nickname'] . '</td>';
     }
-    $info .= '<td style="width:50px;">   <a href="javascript:void(0);" class="edit" data-id="'.$member['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$member['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
+    $info .= '<td style="width:50px;">   <a href="javascript:void(0);" class="edit" data-id="'.$member['id'].'"><span class="glyphicon glyphicon-user"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$member['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
     $info .= "</tr>";
     echo $info;
     
@@ -70,6 +70,21 @@ foreach($members as $member){
 $(document).ready(function(){
     $('#new_invite_btn').click(function(){
         $('#invite').modal(true);
+    });
+    $('.edit').each(function(idx, item){
+        $(item).click(function(){
+            var _uid = $(this).data('id');
+            location.href = __BASEURL + "groups/setadmin/" + _uid;
+            /*
+            $.get(__BASEURL + "groups/setadmin/" + _uid)
+                .success(function(){
+                        show_notify("修改权限成功");
+                })
+                    .error(function(){
+                        show_notify("修改权限失败");
+                    });
+             */
+        });
     });
 });
 </script>

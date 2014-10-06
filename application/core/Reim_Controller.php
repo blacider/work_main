@@ -3,12 +3,15 @@
 class REIM_Controller extends CI_Controller{
 
     public function  eload($view_name, $custom_data){
+        if(!$this->session->userdata('jwt')) redirect(base_url('login'));
+        $profile = $this->session->userdata('profile');
+        if(!$profile) redirect(base_url('login'));
         $menu =  $this->load->view('menu', $custom_data, True);
         $body =  $this->load->view($view_name, $custom_data, True);
         $custom_data['menu'] = $menu;
         $custom_data['body'] = $body;
+        $custom_data['profile'] = $profile;
         $this->load->view('template', $custom_data);
-        if(!$this->session->userdata('jwt')) redirect(base_url('login'));
 
     }
 

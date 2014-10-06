@@ -7,6 +7,7 @@ class Items_Model extends Reim_Model {
         if(!$jwt) return false;
 		$url = $this->get_url('sync/0');
 		$buf = $this->do_Get($url, $jwt);
+        log_message("debug", $buf);
 		$obj = json_decode($buf, true);
         return $obj;
     }

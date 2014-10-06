@@ -33,10 +33,10 @@ class Reim_Model extends CI_Model {
     
     public function do_Post($url, $fields, $extraheader = array()){
         $ch  = curl_init() ;
-        curl_setopt($ch , CURLOPT_URL, $url ) ;
-        curl_setopt($ch , CURLOPT_POST, count ( $fields )) ;
-        curl_setopt($ch , CURLOPT_POSTFIELDS, $fields );
-        curl_setopt($ch,CURLOPT_HTTPHEADER, $extraheader);
+        curl_setopt($ch, CURLOPT_URL, $url) ;
+        curl_setopt($ch, CURLOPT_POST, count($fields)) ;
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
         curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
         ob_start();
         curl_exec($ch );

@@ -34,5 +34,15 @@ class Group_Model extends Reim_Model {
 		//$obj = json_decode($buf, true);
         return $buf;
     }
+
+    public function setadmin($uid){
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $data = array('admin' => 'update', 'uid' => $uid);
+		$url = $this->get_url('users');
+		$buf = $this->do_Put($url, $data, $jwt);
+        log_message("debug", "model:" . $buf);
+        return $buf;
+    }
 }
 

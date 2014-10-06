@@ -9,6 +9,12 @@ class User_Model extends Reim_Model {
 		$buf = $this->do_Get($url, $jwt);
         log_message("debug", $buf);
 		$obj = json_decode($buf, true);
+        $profile = array();
+        if($obj['status']){
+            $profile = $obj['data']['profile'];
+            log_message("debug", json_encode($profile));
+            $this->session->set_userdata('profile', $profile);
+        }
         return $obj;
     }
 
@@ -41,6 +47,58 @@ class User_Model extends Reim_Model {
         //$obj = json_decode($buf, true);
         //return $obj;
         return $buf;
+    }
+
+
+    public function update_profile($email = '', $phone = '', $nickname = ''){
+        $profile = $this->session->userdata('profile');
+        $data = array('nickname' => $nickname
+            ,'uid' => $profile['id']
+            ,'email' => $email
+            ,'phone' => $phone
+        );
+		$url = $this->get_url('users');
+        $jwt = $this->session->userdata('jwt');
+        $buf = $this->do_Put($url, $data, $jwt);
+        log_message("debug", $buf);
+        //$obj = json_decode($buf, true);
+        //return $obj;
+        return $buf;
+    }
+
+    public function update_password($old_password, $new_password){
+        $profile = $this->session->userdata('profile');
+        $data = array('new_password' => $new_password
+            ,'old_password' => $old_password
+        );
+		$url = $this->get_url('users');
+        $jwt = $this->session->userdata('jwt');
+        $buf = $this->do_Put($url, $data, $jwt);
+        log_message("debug", $buf);
+        //$obj = json_decode($buf, true);
+        //return $obj;
+        return $buf;
+    }
+
+
+    private function upload_avatar($file){
+        log_message("debug", realpath($file));
+        $sfile = realpath($file); //要上传的文件
+        $data = array();
+        $data['file'] = new CURLFile($sfile);//'@'.$sfile;
+        $data['type'] = 0;
+		$url = $this->get_url('images');
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", json_encode($jwt));
+        log_message("debug", json_encode($data));
+        log_message("debug", $url);
+        $buf = $this->do_Post($url, $data, $jwt);
+        log_message("debug", $buf);
+        return json_decode($buf, true);
+    }
+
+    public function update_avatar($file) {
+        return $this->upload_avatar($file);
     }
 }
 
