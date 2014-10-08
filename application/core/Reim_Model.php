@@ -54,8 +54,9 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
         curl_setopt($ch, CURLOPT_BINARYTRANSFER, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
         curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
-        log_message("debug", "Get Success");
+        log_message("debug", "Start Request");
         $output = curl_exec($ch) ;
+        log_message("debug", "Get Success");
         curl_close($ch);
         return $output;
     }

@@ -36,7 +36,7 @@ $(document).ready(function(){
             id: 'swf',
                 file: __BASEURL + "statics/fl/fullAvatarEditor.swf",
                 upload_url: 'users/update_avatar',
-                avatar_sizes: "32*32",
+                avatar_sizes: "200*200",
                 avatar_tools_visible: false,
                 src_upload:false
         }, function (msg) {

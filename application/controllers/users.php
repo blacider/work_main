@@ -151,12 +151,12 @@ class Users extends REIM_Controller {
                     $successNum++;
                     $i++;
                     $obj = $this->user->update_avatar($virtualPath);
-                    if($obj['status'] > 0){
-                        // iid
-                        $iid = $obj['data']['id'];
-                        $profile = $this->session->userdata('profile');
-                        $profile['avatar'] = $obj['data']['path'];
-                        $this->session->set_userdata('profile', $profile);
+                    if($obj['status'] < 1){
+                        //// iid
+                        //$iid = $obj['data']['id'];
+                        //$profile = $this->session->userdata('profile');
+                        //$profile['avatar'] = $obj['data']['path'];
+                        //$this->session->set_userdata('profile', $profile);
                     } else {
                         $this->session->set_userdata('last_error', '更新失败');
                     }

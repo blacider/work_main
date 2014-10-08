@@ -5,23 +5,23 @@
 <script src="<?php echo base_url('statics/third-party/zTree_v3/js/jquery.ztree.all-3.5.min.js');?>"></script>
 <script language="javascript">
 var __PREFIX = "<?php echo base_url(); ?>";
-var __DATA = (new Function("", "return " + '<?php echo $members; ?>'))();
+var __DATA = (new Function("", "return " + '<?php echo $category; ?>'))();
 $(document).ready(function(){
     var setting = {  
         view: {
-            dblClickExpand: false,
+            dblClickExpand: function(treeId, treeNode){return treeNode.level > 0;},
                 showLine: true,
                 selectedMulti: false
         },
         data: {
             key : {
-                name : 'nickname'
+                name : 'category_name'
             },
             simpleData: {
                 enable:true,
-                    name : 'nickname',
+                    name : 'category_name',
                     idKey: "id",
-                    pIdKey: "manager_id",
+                    pIdKey: "pid",
                     rootPId: "0"
             }
         },
@@ -81,3 +81,4 @@ $(document).ready(function(){
     $.fn.zTree.init($("#tree"), setting, __DATA); 
 });
 </script>
+

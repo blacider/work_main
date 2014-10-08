@@ -1,9 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class REIM_Controller extends CI_Controller{
+    public function __construct(){
+        parent::__construct();
+        if(!in_array($this->uri->uri_string(), array('login', 'login/dologin')) && $this->session->userdata('jwt') == "") redirect(base_url('login'));
+    }
 
     public function  eload($view_name, $custom_data){
-        if(!$this->session->userdata('jwt')) redirect(base_url('login'));
         $profile = $this->session->userdata('profile');
         if(!$profile) redirect(base_url('login'));
         $menu =  $this->load->view('menu', $custom_data, True);

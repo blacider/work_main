@@ -8,7 +8,6 @@ class Login extends REIM_Controller {
 
     public function index()
     {
-        log_message("debug", "IN Login");
         $error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
         $body = $this->load->view('user/login', array('errors' => $error), True);

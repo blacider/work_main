@@ -2,16 +2,32 @@
 
 class User_Model extends Reim_Model {
 
+    private function _fetch_avatar($path){
+        $jwt = $this->session->userdata('jwt');
+		$url = $this->get_url($path . "/1");
+		$buf = $this->do_Get($url, $jwt);
+        $new_file_path = "/static/users_data/". md5($path) . ".jpg";
+        log_message("debug", "Avatar:" . $new_file_path . ", with length:" . strlen($buf) . ", FromURL:" . $url);
+        file_put_contents(BASEPATH . "../" . $new_file_path, $buf);
+        return $new_file_path;
+    }
+
     public function get_user($username, $password){
         $jwt = $this->get_jwt($username, $password);
         $this->session->set_userdata('jwt', $jwt);
 		$url = $this->get_url('common/0');
+        log_message("debug", "in get user : request [ $url ]");
 		$buf = $this->do_Get($url, $jwt);
+        log_message("debug", "in get user :success ");
         log_message("debug", $buf);
 		$obj = json_decode($buf, true);
         $profile = array();
         if($obj['status']){
             $profile = $obj['data']['profile'];
+            // 下载头像
+            $avatar = $profile['avatar'];
+            $avatar = $this->_fetch_avatar($avatar);
+            $profile['avatar'] = base_url($avatar);
             log_message("debug", json_encode($profile));
             $this->session->set_userdata('profile', $profile);
         }
@@ -98,7 +114,18 @@ class User_Model extends Reim_Model {
     }
 
     public function update_avatar($file) {
-        return $this->upload_avatar($file);
+        $obj = $this->upload_avatar($file);
+        if($obj['status']){
+            $profile = $this->session->userdata('profile');
+            // 下载头像
+            $avatar = $obj['data']['avatar'];
+            log_message("debug", "update avatar:" . $avatar);
+            $avatar = $this->_fetch_avatar($avatar);
+            $profile['avatar'] = base_url($avatar);
+            log_message("debug", json_encode($profile));
+            $this->session->set_userdata('profile', $profile);
+        }
+        return $obj;
     }
 }
 
