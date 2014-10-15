@@ -69,7 +69,14 @@ if(isset($errors) && !empty($errors)){
     <span>注册</span>
     </h2>
     <div>
-    <input type="text" name='u' class="form-control" placeholder="用户名(邮箱或手机号)">
+<?php
+$placeholder = '用户名(邮箱或手机号)';
+if($name){
+    $placeholder =  $name;
+}
+
+?>
+    <input type="text" name='u' class="form-control" placeholder="<?php echo $name; ?>">
     <input type="password" name='p' class="form-control" placeholder="密码">
     <div align = "left" >
     </div>

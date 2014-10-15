@@ -40,10 +40,12 @@ class Users extends REIM_Controller {
 
     public function profile(){
         $profile = $this->session->userdata('profile');
+        $path = base_url($this->user->get_hg_avatar());
         $this->eload('user/profile',
             array(
                 'title' => '个人管理'
                 ,'profile' => $profile
+                ,'avatar_path' => $path
             ));
     }
 

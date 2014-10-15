@@ -1,9 +1,25 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class REIM_Controller extends CI_Controller{
+    private function startsWith($haystack, $needle)
+    {
+        return $needle === "" || strpos($haystack, $needle) === 0;
+    }
+
+
     public function __construct(){
         parent::__construct();
-        if(!in_array($this->uri->uri_string(), array('login', 'login/dologin')) && $this->session->userdata('jwt') == "") redirect(base_url('login'));
+        if($this->session->userdata('jwt') == ""){
+            $uri = $this->uri->uri_string();
+            $flag = 1;
+            $prefixs = array('login', 'register');
+            foreach($prefixs as $prefix){
+                if($this->startsWith($uri, $prefix)){
+                    $flag = 0;
+                }
+            }
+            if($flag) redirect(base_url('login'));
+        }
     }
 
     public function  eload($view_name, $custom_data){

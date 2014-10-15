@@ -23,7 +23,7 @@ class Login extends REIM_Controller {
             redirect(base_url('login'));
             die();
         }
-        redirect(base_url('items'));
+        redirect(base_url('groups'));
     }
 
     public function dologout()

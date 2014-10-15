@@ -18,7 +18,7 @@ class Reim_Model extends CI_Model {
         if(!$server_token) $server_token = $this->session->userdata('server_token');
 		$users  = array(
 			'email' => $username
-			, 'password' => $password
+			,'password' => $password
 			,'device_type' => 'admin'
 			,'device_token' => ''
             ,'server_token' => $server_token
@@ -36,7 +36,9 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_URL, $url) ;
         curl_setopt($ch, CURLOPT_POST, count($fields)) ;
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
+        if($extraheader) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
+        }
         curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
         ob_start();
         curl_exec($ch );

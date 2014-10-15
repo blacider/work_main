@@ -6,6 +6,9 @@
   <div class="panel-body">
 
   <form id="profile_form" class="form-horizontal" role="form" method="post" action="<?php echo base_url('users/update_profile'); ?>">
+    <div class="form-group text-center">
+    <img src="<?php echo $avatar_path; ?>" alt="" class="img-rounded">
+    </div>
     <div class="form-group">
       <label for="exampleInputEmail1" class="col-sm-2 control-label">用户昵称</label>
  <div class="col-sm-10">
@@ -56,7 +59,7 @@ $admin = '';
     <div class="form-group">
       <label for="exampleInputEmail1" class="col-sm-2 control-label">最近一次更新</label>
     <div class="col-sm-10">
-        <label for="exampleInputEmail1" class="control-label"><?php echo $profile['lastdt']; ?></label>
+        <label for="exampleInputEmail1" class="control-label"><?php echo date('Y-m-d', $profile['lastdt']); ?></label>
     </div>
     </div>
     <div class="form-group text-center">

@@ -2,11 +2,13 @@
 
 class User_Model extends Reim_Model {
 
-    private function _fetch_avatar($path){
+    private function _fetch_avatar($path, $type = 1){
+        $new_file_path = "/static/users_data/". md5($path . $type) . ".jpg";
+        if(file_exists(BASEPATH . "../" . $new_file_path)) return $new_file_path;
+        
         $jwt = $this->session->userdata('jwt');
-		$url = $this->get_url($path . "/1");
+		$url = $this->get_url($path . "/" . $type);
 		$buf = $this->do_Get($url, $jwt);
-        $new_file_path = "/static/users_data/". md5($path) . ".jpg";
         log_message("debug", "Avatar:" . $new_file_path . ", with length:" . strlen($buf) . ", FromURL:" . $url);
         file_put_contents(BASEPATH . "../" . $new_file_path, $buf);
         return $new_file_path;
@@ -26,6 +28,7 @@ class User_Model extends Reim_Model {
             $profile = $obj['data']['profile'];
             // 下载头像
             $avatar = $profile['avatar'];
+            $profile['src_avatar'] = $avatar;
             $avatar = $this->_fetch_avatar($avatar);
             $profile['avatar'] = base_url($avatar);
             log_message("debug", json_encode($profile));
@@ -119,6 +122,7 @@ class User_Model extends Reim_Model {
             $profile = $this->session->userdata('profile');
             // 下载头像
             $avatar = $obj['data']['avatar'];
+            $profile['src_avatar'] = $avatar;
             log_message("debug", "update avatar:" . $avatar);
             $avatar = $this->_fetch_avatar($avatar);
             $profile['avatar'] = base_url($avatar);
@@ -126,6 +130,15 @@ class User_Model extends Reim_Model {
             $this->session->set_userdata('profile', $profile);
         }
         return $obj;
+    }
+
+
+    public function get_hg_avatar(){
+        $profile = $this->session->userdata('profile');
+        // 下载头像
+        $avatar = $profile['src_avatar'];
+        log_message("debug", "avatar: $avatar");
+        return $this->_fetch_avatar($avatar, 3);
     }
 }
 
