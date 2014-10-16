@@ -53,12 +53,25 @@ class Register extends REIM_Controller {
         }
         $ret = $this->users->register($email, $pass, $phone, $code);
         if($ret['status']) {
-            redirect(base_url('thankyou'));
+            redirect(base_url('register/success'));
         } else {
             $msg = $ret['data']['msg'];
             $this->session->set_userdata('last_error', $msg);
             return redirect(base_url('register/index'));
         }
+    }
+
+    public function success($code = 0, $name = ''){
+
+        $name = urldecode($name);
+        $args = array('name' => '');
+        if($name){
+            $args = json_decode($name, True);
+        }
+        $this->input->set_cookie($this->cookie_user, $args['name'], $this->cookie_life);
+
+        $body = $this->load->view('user/register_success', array('name' => $args['name']), True);
+        $this->load->view('default', array('nav' => '', 'body' => $body, 'title' => '登录'));
     }
 
 }
