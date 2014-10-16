@@ -14,17 +14,22 @@ class Join extends REIM_Controller {
         if($obj['status']) {
             echo "Success";
             // TODO: 引导进入成功页面
-            $this->active($code);
+            $this->active_succ($code);
         } else {
             echo "Failed";
             // TODO：进入错误页面
-//            $this->active($code);
+            $this->active_fail();
         }
     }
 
 
-    private function active($code = 0, $name = ''){
-        $body = $this->load->view('user/active_account', array('name' => $name,'code'=>$code), True);
-        $this->load->view('default', array('nav' => '', 'body' => $body, 'title' => '激活'));
+    private function active_succ($code = 0, $name = ''){
+        $body = $this->load->view('user/active_succ', array('name' => $name,'code'=>$code), True);
+        $this->load->view('default', array('nav' => '', 'body' => $body, 'title' => '激活成功'));
+    }
+
+    private function active_fail(){
+        $body = $this->load->view('user/active_fail', array(), True);
+        $this->load->view('default', array('nav' => '', 'body' => $body, 'title' => '激活失败'));
     }
 }
