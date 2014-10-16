@@ -23,7 +23,8 @@ class Register extends REIM_Controller {
         }
         $this->input->set_cookie($this->cookie_user, $args['name'], $this->cookie_life);
         if($this->agent->is_mobile()){
-            $this->load->view('user/mobile_register', array('name' => $args['name'], 'code' => $code));
+            $body =$this->load->view('user/mobile_register', array('name' => $args['name'], 'code' => $code),true);
+            $this->load->view('default', array('nav' => '', 'body' => $body, 'title' => '登录'));
         } else {
             $body = $this->load->view('user/register', array('name' => $args['name'], 'errors' => $error), True);
             $this->load->view('default', array('nav' => '', 'body' => $body, 'title' => '登录'));
@@ -52,12 +53,25 @@ class Register extends REIM_Controller {
         }
         $ret = $this->users->register($email, $pass, $phone, $code);
         if($ret['status']) {
-            redirect(base_url('thankyou'));
+            redirect(base_url('register/success'));
         } else {
             $msg = $ret['data']['msg'];
             $this->session->set_userdata('last_error', $msg);
             return redirect(base_url('register/index'));
         }
+    }
+
+    public function success($code = 0, $name = ''){
+
+        $name = urldecode($name);
+        $args = array('name' => '');
+        if($name){
+            $args = json_decode($name, True);
+        }
+        $this->input->set_cookie($this->cookie_user, $args['name'], $this->cookie_life);
+
+        $body = $this->load->view('user/register_success', array('name' => $args['name']), True);
+        $this->load->view('default', array('nav' => '', 'body' => $body, 'title' => '登录'));
     }
 
 }
