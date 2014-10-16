@@ -76,7 +76,7 @@ if($name){
 }
 
 ?>
-    <input type="text" name='u' class="form-control" placeholder="<?php echo $name; ?>">
+    <input type="text" name='u' class="form-control" placeholder="<?php echo $placeholder; ?>">
     <input type="password" name='p' class="form-control" placeholder="密码">
     <div align = "left" >
     </div>

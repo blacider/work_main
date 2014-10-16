@@ -23,7 +23,8 @@ class Register extends REIM_Controller {
         }
         $this->input->set_cookie($this->cookie_user, $args['name'], $this->cookie_life);
         if($this->agent->is_mobile()){
-            $this->load->view('user/mobile_register', array('name' => $args['name'], 'code' => $code));
+            $body =$this->load->view('user/mobile_register', array('name' => $args['name'], 'code' => $code),true);
+            $this->load->view('default', array('nav' => '', 'body' => $body, 'title' => '登录'));
         } else {
             $body = $this->load->view('user/register', array('name' => $args['name'], 'errors' => $error), True);
             $this->load->view('default', array('nav' => '', 'body' => $body, 'title' => '登录'));
