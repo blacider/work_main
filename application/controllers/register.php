@@ -74,4 +74,17 @@ class Register extends REIM_Controller {
         $this->load->view('default', array('nav' => '', 'body' => $body, 'title' => '登录'));
     }
 
+    public function active($code = 0, $name = ''){
+
+        $name = urldecode($name);
+        $args = array('name' => '');
+        if($name){
+            $args = json_decode($name, True);
+        }
+        $this->input->set_cookie($this->cookie_user, $args['name'], $this->cookie_life);
+
+        $body = $this->load->view('user/active_account', array('name' => $args['name']), True);
+        $this->load->view('default', array('nav' => '', 'body' => $body, 'title' => '激活'));
+    }
+
 }

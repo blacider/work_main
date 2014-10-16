@@ -140,5 +140,17 @@ class User_Model extends Reim_Model {
         log_message("debug", "avatar: $avatar");
         return $this->_fetch_avatar($avatar, 3);
     }
+
+    public function joingroup($code) {
+        //$jwt = $this->get_jwt($username, $password);
+        //$this->session->set_userdata('jwt', $jwt);
+		$url = $this->get_url('invite/' . $code);
+        log_message("debug", "in get user : request [ $url ]");
+		$buf = $this->do_Get($url);
+        log_message("debug", "in get user :success ");
+        log_message("debug", $buf);
+		$obj = json_decode($buf, true);
+        return $obj;
+    }
 }
 
