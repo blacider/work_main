@@ -142,11 +142,11 @@ class User_Model extends Reim_Model {
     }
 
     public function joingroup($code) {
-        //$jwt = $this->get_jwt($username, $password);
+        $jwt = $this->get_jwt('', '');
         //$this->session->set_userdata('jwt', $jwt);
 		$url = $this->get_url('invite/' . $code);
         log_message("debug", "in get user : request [ $url ]");
-		$buf = $this->do_Get($url);
+		$buf = $this->do_Get($url, $jwt);
         log_message("debug", "in get user :success ");
         log_message("debug", $buf);
 		$obj = json_decode($buf, true);
