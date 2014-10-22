@@ -3,6 +3,7 @@
 class User_Model extends Reim_Model {
 
     private function _fetch_avatar($path, $type = 1){
+        $path = "images/" . $path;
         $new_file_path = "/static/users_data/". md5($path . $type) . ".jpg";
         if(file_exists(BASEPATH . "../" . $new_file_path)) return $new_file_path;
         
@@ -152,5 +153,21 @@ class User_Model extends Reim_Model {
 		$obj = json_decode($buf, true);
         return $obj;
     }
+
+    public function active_user($code){
+        $jwt = $this->get_jwt('', '');
+        //$this->session->set_userdata('jwt', $jwt);
+		$url = $this->get_url('active/' . $code);
+        log_message("debug", "in get user : request [ $url ]");
+		$buf = $this->do_Get($url, $jwt);
+        log_message("debug", "in get user :success ");
+        log_message("debug", $buf);
+		$obj = json_decode($buf, true);
+        return $obj;
+    }
+
+
 }
+
+
 

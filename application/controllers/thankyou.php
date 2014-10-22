@@ -7,11 +7,13 @@ class Thankyou extends REIM_Controller {
     }
 
     public function index(){
-        if($this->agent->is_mobile()){
-            $this->load->view('user/thankyou_mob');
-        }else {
-            $this->load->view('user/thankyou_web');
-        }
+        $body = $this->load->view('user/thankyou', array(), True);
+        $this->load->view('default', array('nav' => '', 'body' => $body, 'title' => 'Thankyou'));
+//        if($this->agent->is_mobile()){
+//            $this->load->view('user/thankyou_mob');
+//        }else {
+//            $this->load->view('user/thankyou_web');
+//        }
     }
 }
 

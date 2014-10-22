@@ -57,6 +57,11 @@ p {
 	<div id="container">
 		<h1><?php echo $heading; ?></h1>
 		<?php echo $message; ?>
+
+        <section >
+            <img src="http://admin.rushucloud.com/statics/img/404-image.jpg" alt="I swear!" width="695">
+        </section>
+
 	</div>
 </body>
 </html>

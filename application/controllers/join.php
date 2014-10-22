@@ -32,4 +32,23 @@ class Join extends REIM_Controller {
         $body = $this->load->view('user/active_fail', array(), True);
         $this->load->view('default', array('nav' => '', 'body' => $body, 'title' => '激活失败'));
     }
+
+
+    public function active($code = ''){
+        if($code == "") {
+            // TODO: 展示出错页面
+            return;
+        } 
+        $obj = $this->users->active_user($code);
+        // TODO: 检查是否需要使用统一 的成功页面
+        if($obj['status']) {
+            echo "Success";
+            // TODO: 引导进入成功页面
+            $this->active_succ($code);
+        } else {
+            echo "Failed";
+            // TODO：进入错误页面
+            $this->active_fail();
+        }
+    }
 }
