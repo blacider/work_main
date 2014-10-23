@@ -12,11 +12,9 @@ class Join extends REIM_Controller {
         } 
         $obj = $this->users->joingroup($code);
         if($obj['status']) {
-            echo "Success";
             // TODO: 引导进入成功页面
             $this->active_succ($code);
         } else {
-            echo "Failed";
             // TODO：进入错误页面
             $this->active_fail();
         }
@@ -42,11 +40,9 @@ class Join extends REIM_Controller {
         $obj = $this->users->active_user($code);
         // TODO: 检查是否需要使用统一 的成功页面
         if($obj['status']) {
-            echo "Success";
             // TODO: 引导进入成功页面
             $this->active_succ($code);
         } else {
-            echo "Failed";
             // TODO：进入错误页面
             $this->active_fail();
         }

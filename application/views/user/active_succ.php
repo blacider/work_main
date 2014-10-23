@@ -12,8 +12,8 @@
 
         <div class="row">
             <!-- /col-lg-6 -->
-            <div class="col-lg-6">
-                <img class="img-responsive" src="<?php echo base_url();?>statics/img/ipad-hand.png" alt="">
+            <div class="col-lg-6 col-md-push-1">
+                <img style="margin-left:50px;" class="img-responsive" src="<?php echo base_url();?>statics/img/ipad-hand.png" alt="">
             </div><!-- /col-lg-6 -->
         </div>
 
