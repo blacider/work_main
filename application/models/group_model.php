@@ -44,5 +44,15 @@ class Group_Model extends Reim_Model {
         log_message("debug", "model:" . $buf);
         return $buf;
     }
+
+    public function create_group($name){
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $data = array('name' => $name);
+		$url = $this->get_url('groups');
+		$buf = $this->do_Post($url, $data, $jwt);
+        log_message("debug", "model:" . $buf);
+        return $buf;
+    }
 }
 

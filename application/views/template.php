@@ -42,7 +42,7 @@ if($profile['avatar']){
 ?>
     <li class="dropdown">
         <a href="" style="padding-top:8px;padding-bottom:0px;" class="dropdown-toggle" data-toggle="dropdown">
-            <img src="<?php echo $avatar; ?>" alt="头像" class="img-circle"></a>
+            <img src="<?php echo $avatar; ?>" alt="头像" class="img-circle" width=36 height=36></a>
             <ul class="dropdown-menu" role="menu">
             <li><a href="<?php echo base_url('users/profile'); ?>" id="profile">个人信息</a></li>
                 <li><a href="<?php echo base_url('users/avatar'); ?>" id="avatar">修改头像</a></li>

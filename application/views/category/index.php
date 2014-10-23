@@ -42,7 +42,9 @@ foreach($category as $item){
     if($item['pid'] == 0){
         $img = "顶级分类";
     } else {
-        $img = $top_category[$item['pid']]['category_name'];
+        if(array_key_exists($item['pid'], $top_category)){
+            $img = $top_category[$item['pid']]['category_name'];
+        }
     }
     $billable = $item['prove_before'] == 1 ? '前置审批' : '不需要前置审批';
 $str = '<tr>';
