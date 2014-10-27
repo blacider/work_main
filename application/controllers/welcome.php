@@ -21,6 +21,12 @@ class Welcome extends CI_Controller {
 	{
 		$this->load->view('welcome_message');
 	}
+
+    public function items($id = 0) {
+        $this->load->model('items_model', 'items');
+        $buf = $this->items->get_exports($id);
+        print_r($buf);
+    }
 }
 
 /* End of file welcome.php */

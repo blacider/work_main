@@ -66,5 +66,14 @@ class Groups extends REIM_Controller {
         redirect(base_url('groups'));
     }
 
+    public function show_exports(){
+        $this->load->model('items_model', 'items');
+        $obj = $this->items->get_exports(1);
+        if($obj && $obj['status']){
+            $data = $obj['data'];
+            print_r($data);
+        }
+    }
+
 }
 
