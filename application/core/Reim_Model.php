@@ -1,6 +1,6 @@
 <?php
 
-define("API_SERVER", "http://api.rushucloud.com/online/");
+define("API_SERVER", "http://stage.rushucloud.com/stage/");
 define("PUBKEY", "1NDgzZGY1OWViOWRmNjI5ZT");
 
 class Reim_Model extends CI_Model {
@@ -42,7 +42,9 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
         ob_start();
         curl_exec($ch );
+        log_message("debug", "Start Request");
         $result  = ob_get_contents() ;
+        log_message("debug", "Get Success");
         ob_end_clean();
         curl_close($ch ) ;
         return $result;
@@ -82,10 +84,10 @@ class Reim_Model extends CI_Model {
     public function do_Delete($url, $fields, $extraheader = array()){
         $ch  = curl_init() ;
         curl_setopt($ch , CURLOPT_URL, $url ) ;
-        curl_setopt($ch , CURLOPT_POST, count ($fields)) ;
+        //curl_setopt($ch , CURLOPT_POST, count ($fields)) ;
         curl_setopt ($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
         curl_setopt($ch , CURLOPT_POSTFIELDS, $fields);
-        curl_setopt($ch,CURLOPT_HTTPHEADER, $extraheader);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
         curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
         ob_start();
         curl_exec($ch );

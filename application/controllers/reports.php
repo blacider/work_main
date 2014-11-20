@@ -3,6 +3,7 @@ class Reports extends REIM_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('items_model', 'items');
+        $this->load->model('report_model', 'reports');
     }
 
     public function index(){
@@ -32,6 +33,14 @@ class Reports extends REIM_Controller {
             array(
                 'title' => '创建报表'
             ));
+    }
+
+    public function del($id = 0){
+        if($id == 0) {
+            return redirect(base_url('reports/index'));
+        }
+        $obj = $this->reports->delete_report($id);
+        return redirect(base_url('reports/index'));
     }
 }
 
