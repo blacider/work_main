@@ -67,6 +67,7 @@ class Relations extends REIM_Controller {
                 if(in_array($n['id'], $leaves)){
                     $n['icon'] = base_url('statics/img/executive.png'); 
                 }
+                $n['nickname'] = $n['nickname'] . "- [ " . $n['email'] . " ]"; 
             }
             $base = array('id' => 0, 'nickname' => $nickname, 'icon' => base_url('statics/img/executive.png'), 'open' => true);
             array_push($gmember, $base);

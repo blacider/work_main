@@ -7,11 +7,42 @@
     -->
     <base href="<?php echo base_url();?>">
     <!-- Le styles -->
-    <link href="<?php echo base_url();?>statics/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo base_url();?>statics/css/docs3.css" rel="stylesheet">
-<script src="<?php echo base_url('statics/js/jquery.min.js');?>"></script>
-<link rel="stylesheet" href="<?php echo base_url();?>statics/third-party/jgrowl/jquery.jgrowl.min.css">
-<script language="javascript" src="<?php echo base_url('static/js/bootstrap.min.js'); ?>"></script> 
+    <!-- <link href="<?php echo base_url();?>res/css/bootstrap.min.css" rel="stylesheet"> -->
+
+    <!-- jQuery -->
+    <script src="res/js/jquery.js"></script>
+    <!-- Bootstrap Core CSS -->
+    <link href="res/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="res/css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Timeline CSS -->
+    <link href="res/css/plugins/timeline.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="res/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="res/css/plugins/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="res/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="<?php echo base_url();?>res/third-party/jgrowl/jquery.jgrowl.min.css">
+
+<!--
+<script src="<?php echo base_url('res/js/jquery.js');?>"></script>
+<script language="javascript" src="<?php echo base_url('res/js/bootstrap.min.js'); ?>"></script> 
+-->
 <title><?php echo $title;?></title>
 <script language="javascript">
 var __BASEURL = "<?php echo base_url(); ?>";
@@ -19,52 +50,16 @@ var __BASEURL = "<?php echo base_url(); ?>";
   </head>
   <body>
 
-
-
-<nav class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">如数云科技</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right" style="margin-right:30px;">
-<?php
-$avatar = base_url() . "statics/img/default.avatar.png";
-if($profile['avatar']){
-    $avatar = $profile['avatar'];
-}
-?>
-    <li class="dropdown">
-        <a href="" style="padding-top:8px;padding-bottom:0px;" class="dropdown-toggle" data-toggle="dropdown">
-            <img src="<?php echo $avatar; ?>" alt="头像" class="img-circle" width=36 height=36></a>
-            <ul class="dropdown-menu" role="menu">
-            <li><a href="<?php echo base_url('users/profile'); ?>" id="profile">个人信息</a></li>
-                <li><a href="<?php echo base_url('users/avatar'); ?>" id="avatar">修改头像</a></li>
-                <li><a href="<?php echo base_url('users/password'); ?>" id="avatar">修改密码</a></li>
-                <li class="divider"></li>
-                <li><a href="<?php echo base_url('users/logout'); ?>">注销</a></li>
-              </ul>
-</li>
-          </ul>
+ <div id="wrapper">
+    <?php echo $nav; ?>
+    <div id="page-wrapper" style="min-height: 754px;">
+      <div class="row">
+        <div class="col-lg-12">
+              <?php echo $body; ?>
         </div>
       </div>
-    </nav>
+    </div>
 
-<div class="container" style="margin-top:10px;">
-  <div class="row">
-    <div class="col-md-3 bs-docs-sidebar">
-    </div>
-<?php echo $menu; ?>
-    <div class="col-md-9">
-      <?php echo $body; ?>
-    </div>
-  </div>
 </div>
 
 
@@ -79,7 +74,22 @@ if($profile['avatar']){
       </div>
     </footer>
 </div><!--/.fluid-container-->
-<script src="<?php echo base_url();?>statics/third-party/jgrowl/jquery.jgrowl.min.js"></script>
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="res/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="res/js/plugins/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <script src="res/js/plugins/morris/raphael.min.js"></script>
+    <script src="res/js/plugins/morris/morris.min.js"></script>
+    <script src="res/js/plugins/morris/morris-data.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="res/js/sb-admin-2.js"></script>
+<script src="<?php echo base_url();?>res/third-party/jgrowl/jquery.jgrowl.min.js"></script>
 <script langauge="javascript">
 function show_notify(msg, life){
     if(!life || life ==undefined)

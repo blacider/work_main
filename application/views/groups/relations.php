@@ -10,8 +10,9 @@ $(document).ready(function(){
     var setting = {  
         view: {
             dblClickExpand: false,
-                showLine: true,
-                selectedMulti: false
+                showLine: true
+                ,selectedMulti: false
+                ,fontCss : 'nickcss'
         },
         data: {
             key : {
@@ -27,6 +28,7 @@ $(document).ready(function(){
         },
             edit : {
                 enable : true
+                    ,showRemoveBtn : false
             }
         ,callback: {
             onRename: function(event, treeId, treeNode, isCancel){
@@ -37,7 +39,6 @@ $(document).ready(function(){
                 $.post(__PREFIX + "users/update_nickname", _data)
                     .success(function(data){
                         data = $.parseJSON(data);
-                        console.log(data);
                         if(data.code < 0){
                             show_notify(data.data.msg);
                         } else {
