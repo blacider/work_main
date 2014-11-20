@@ -12,7 +12,7 @@ class REIM_Controller extends CI_Controller{
         if($this->session->userdata('jwt') == ""){
             $uri = $this->uri->uri_string();
             $flag = 1;
-            $prefixs = array('login', 'register', 'join');
+            $prefixs = array('admin/login', 'login', 'register', 'join');
             foreach($prefixs as $prefix){
                 if($this->startsWith($uri, $prefix)){
                     $flag = 0;

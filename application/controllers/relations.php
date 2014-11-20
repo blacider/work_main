@@ -42,9 +42,21 @@ class Relations extends REIM_Controller {
         $ginfo = array();
         $gmember = array();
         $members = array();
+        $nickname = '尚未创建公司';
         if($group) {
-            $ginfo = $group['data']['ginfo'];
-            $gmember = $group['data']['gmember'];
+            if(array_key_exists('ginfo', $group['data'])){
+                $ginfo = $group['data']['ginfo'];
+            }
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+            if(array_key_exists('group_name', $ginfo)){
+                $nickname = $ginfo['group_name'];
+            }
+
+            //$ginfo = $group['data']['ginfo'];
+            //$gmember = $group['data']['gmember'];
             $gmember = $gmember ? $gmember : array();
             $leaves = array();
             foreach($gmember as $node){
@@ -56,7 +68,7 @@ class Relations extends REIM_Controller {
                     $n['icon'] = base_url('statics/img/executive.png'); 
                 }
             }
-            $base = array('id' => 0, 'nickname' => $ginfo['group_name'], 'icon' => base_url('statics/img/executive.png'), 'open' => true);
+            $base = array('id' => 0, 'nickname' => $nickname, 'icon' => base_url('statics/img/executive.png'), 'open' => true);
             array_push($gmember, $base);
             //while(count($gmember) > 1){
             //    $gmember = $this->_find_leaves($gmember);
