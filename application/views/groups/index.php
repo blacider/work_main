@@ -1,28 +1,36 @@
- <div class="bs-doc-section">
-<div class="panel panel-default">
-  <div class="panel-heading" style="min-height:40px">
-<div class="panel-title">
-<div class="col-xs-8">
-<?php
-if($group) {
-?>
-    <?php echo $group['group_name']; ?>
-</div>
-<div class="text-right col-xs-4" title="邀请新员工"><span id="new_invite_btn" class="glyphicon glyphicon-plus"></span></div>
-<?php
-} else {
-?>
-    我的组
-</div>
-<div class="text-right col-xs-4" title="创建我的公司"><span id="create_group" class="glyphicon glyphicon-cog"></span></div>
-<?php
-}
-?>
-</div>
-  </div>
+<div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">组织关系管理</h1>
+                </div>
+</div> 
+
+<div class="row">
+    <div class="panel panel-default">
+      <div class="panel-heading" style="min-height:40px">
+        <div class="panel-title">
+            <div class="col-xs-8">
+            <?php
+                if($group) {
+            ?>
+                <?php echo $group['group_name']; ?>
+                </div>
+                <div class="text-right col-xs-4" title="邀请新员工"><span id="new_invite_btn" class="glyphicon glyphicon-plus"></span></div>
+            <?php
+                } else {
+            ?>
+                我的组
+                </div>
+                <div class="text-right col-xs-4" title="创建我的公司"><span id="create_group" class="glyphicon glyphicon-cog"></span></div>
+            <?php
+                }
+            ?>
+        </div>
+    </div>
  <table class="table table-striped" id="member_table">
 <tr>
 <td>成员昵称</td> 
+<td>邮箱</td> 
+<td>手机</td> 
 <td>操作</td> 
 </tr>
 <?php
@@ -30,10 +38,16 @@ foreach($members as $member){
     $info = '<tr>';
     if($member['admin'] == 1) {
         $info .= "<td><span class='glyphicon glyphicon-user' style='margin-right:10px'></span>" . $member['nickname'] . '</td>';
+        $info .= "<td><span class='' ></span>" . $member['email'] .'</td>';
+        $info .= "<td><span class='' ></span>" . $member['phone'] .'</td>';
     } else {
-        $info .= "<td><span class='' style='margin-right:22px'></span>" . $member['nickname'] . '</td>';
+        $info .= "<td><span class='' ></span>" . $member['nickname'] .'</td>';
+        $info .= "<td><span class='' ></span>" . $member['email'] .'</td>';
+        $info .= "<td><span class='' ></span>" . $member['phone'] .'</td>';
     }
-    $info .= '<td style="width:50px;">   <a href="javascript:void(0);" class="edit" data-id="'.$member['id'].'"><span class="glyphicon glyphicon-user"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$member['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
+    $info .= '<td style="width:80px;">   ';
+    //$info .= '<a href="javascript:void(0);" title="设置为财务人员" class="mark" data-id="'.$member['id'].'"><span class="glyphicon glyphicon-usd"></span></a>';
+    $info .= '<a href="javascript:void(0);" title="设置为管理员" class="edit" data-id="'.$member['id'].'"><span class="glyphicon glyphicon-user"></span></a>  <a href="javascript:void(0);" class="del" data-id="'.$member['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
     $info .= "</tr>";
     echo $info;
 }
@@ -106,15 +120,6 @@ $(document).ready(function(){
         $(item).click(function(){
             var _uid = $(this).data('id');
             location.href = __BASEURL + "groups/setadmin/" + _uid;
-            /*
-            $.get(__BASEURL + "groups/setadmin/" + _uid)
-                .success(function(){
-                        show_notify("修改权限成功");
-                })
-                    .error(function(){
-                        show_notify("修改权限失败");
-                    });
-             */
         });
     });
 });

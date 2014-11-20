@@ -1,6 +1,11 @@
 <link rel="stylesheet" href="<?php echo base_url('statics/third-party/zTree_v3/css/zTreeStyle/zTreeStyle.css');?>" type="text/css"> 
+<style>
+.nickcss {
+font-size: 20px;
+}
+</style>
 <div class="bs-doc-section">
-<div class="ztree" id="tree"></div>
+<div class="ztree" id="tree" style="min-height:300px"></div>
 </div>
 <script src="<?php echo base_url('statics/third-party/zTree_v3/js/jquery.ztree.all-3.5.min.js');?>"></script>
 <script language="javascript">
@@ -10,8 +15,10 @@ $(document).ready(function(){
     var setting = {  
         view: {
             dblClickExpand: false,
-                showLine: true,
-                selectedMulti: false
+                showLine: true
+                ,selectedMulti: false
+                ,fontCss : 'nickcss'
+
         },
         data: {
             key : {
@@ -27,6 +34,7 @@ $(document).ready(function(){
         },
             edit : {
                 enable : true
+                    ,showRemoveBtn : false
             }
         ,callback: {
             onRename: function(event, treeId, treeNode, isCancel){
@@ -37,7 +45,6 @@ $(document).ready(function(){
                 $.post(__PREFIX + "users/update_nickname", _data)
                     .success(function(data){
                         data = $.parseJSON(data);
-                        console.log(data);
                         if(data.code < 0){
                             show_notify(data.data.msg);
                         } else {
