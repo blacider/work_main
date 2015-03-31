@@ -251,6 +251,9 @@
                         <li>
                             <a class="node" href="<?php echo base_url('tags'); ?>"><i class="glyphicon glyphicon-user"></i>报销标签管理</a>
                         </li>
+                        <li>
+                            <a class="node" href="<?php echo base_url('items'); ?>"><i class="glyphicon glyphicon-user"></i>报销条目管理</a>
+                        </li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -262,7 +265,6 @@
 $(document).ready(function(){
     $('.node').each(function(){
         $(this).removeClass('active');
-        console.log($(this));
     });
 });
 </script>

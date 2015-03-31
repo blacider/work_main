@@ -26,7 +26,7 @@ class Groups extends REIM_Controller {
         }
         $this->eload('groups/index',
             array(
-                'title' => '公司管理'
+                'title' => '公司成员'
                 ,'group' => $ginfo
                 ,'members' => $gmember
             )
@@ -51,7 +51,13 @@ class Groups extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-        $info = $this->groups->setadmin($uid);
+        $ids = $this->input->post('data');
+        if(count($ids) == 0){
+            die("");
+        }
+        $_ids = implode(',', $ids);
+        $_type = $this->input->post('type');
+        $info = $this->groups->setadmin($_ids, $_type);
         redirect(base_url('groups'));
     }
 
@@ -71,7 +77,6 @@ class Groups extends REIM_Controller {
         $obj = $this->items->get_exports(2, 'tianyu.an@rushucloud.com');
         if($obj && $obj['status']){
             $data = $obj['data'];
-            print_r($data);
         }
     }
 

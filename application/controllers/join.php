@@ -10,7 +10,7 @@ class Join extends REIM_Controller {
             // TODO: 展示出错页面
             return;
         } 
-        $obj = $this->users->joingroup($code);
+        $obj = $this->users->reim_joingroup($code);
         if($obj['status']) {
             // TODO: 引导进入成功页面
             $this->active_succ($code);
@@ -37,7 +37,7 @@ class Join extends REIM_Controller {
             // TODO: 展示出错页面
             return;
         } 
-        $obj = $this->users->active_user($code);
+        $obj = $this->users->reim_active_user($code);
         // TODO: 检查是否需要使用统一 的成功页面
         if($obj['status']) {
             // TODO: 引导进入成功页面
@@ -48,3 +48,4 @@ class Join extends REIM_Controller {
         }
     }
 }
+

@@ -11,7 +11,8 @@ class ReimAdminHook extends CI_Controller {
         $uri_string = $this->uri->uri_string();
         if($uri_string == "") 
         if(($uri_string == "") || ($this->startsWith($uri_string, 'admin') && $uri_string != 'user' && $uri_string != 'login/dologin' && $uri_string != 'login')){
-            if(!$this->session->userdata('username')){
+
+            if($this->session->userdata('jwt') == "" && $this->session->userdata('uid') == ""){
                 redirect(base_url().'login', 'refresh');
             }
         }

@@ -54,14 +54,22 @@ p {
 </style>
 </head>
 <body>
-	<div id="container">
-		<h1><?php echo $heading; ?></h1>
+	<div id="container" style="display:none">
+        <h1><?php echo $heading; ?></h1>
 		<?php echo $message; ?>
 
         <section >
-            <img src="http://admin.rushucloud.com/statics/img/404-image.jpg" alt="I swear!" width="695">
+            <img src="/static/images/icon_404.png" alt="I swear!" >
         </section>
 
-	</div>
+    </div>
+    <div style="position:absolute; top:0; right:0; bottom:0; left:0; width:50%; height:50%; margin:auto; color:white; line-height:20px; text-align:center;">
+    <div align="center">
+        <img src="/static/images/icon_404.png" />
+    </div>
+    <div align="center" style="color:#ff575b">呃，页面暂时不能访问</div>
+
+    <div align="center" style="color:#ff575b">我们正在努力抢修</div>
+</div>
 </body>
 </html>

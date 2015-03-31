@@ -49,12 +49,12 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'reim';
-$db['default']['password'] = 'zZDVjMDkwNmU5MTA4OTJlO';
-$db['default']['database'] = 'reim_dev';
+$db['default']['username'] = 'admin';
+$db['default']['password'] = 'xODJhZjY2MzQ4ZfdsaTBjMjMzMjZlZWM2OTFmN';
+$db['default']['database'] = 'reimadmin';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
-$db['default']['pconnect'] = TRUE;
+$db['default']['pconnect'] = FALSE;
 $db['default']['db_debug'] = TRUE;
 $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = '';
@@ -64,6 +64,21 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
+$db['data']['hostname'] = 'localhost';
+$db['data']['username'] = 'reim';
+$db['data']['password'] = 'zZDVjMDkwNmU5MTA4OTJlO';
+$db['data']['database'] = 'reim';
+$db['data']['dbdriver'] = 'mysql';
+$db['data']['dbprefix'] = '';
+$db['data']['pconnect'] = FALSE;
+$db['data']['db_debug'] = TRUE;
+$db['data']['cache_on'] = FALSE;
+$db['data']['cachedir'] = '';
+$db['data']['char_set'] = 'utf8';
+$db['data']['dbcollat'] = 'utf8_general_ci';
+$db['data']['swap_pre'] = '';
+$db['data']['autoinit'] = TRUE;
+$db['data']['stricton'] = FALSE;
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */
