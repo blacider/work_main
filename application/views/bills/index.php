@@ -219,16 +219,17 @@ $(document).ready(function(){
     $('#sall').change(function(){
         if($("#sall").attr("checked")) {
             $('#data tbody tr').each(function(){
-                $(this).toggleClass('selected');
+                $(this).addClass('selected');
             });
             $('.chb').each(function(){
                 $(this).attr('checked', true);
             });
         } else {
             $('#data tbody tr').each(function(){
-                $(this).toggleClass('selected');
+                $(this).removeClass('selected');
             });
             $('.chb').each(function(){
+
                 $(this).attr('checked', false);
             });
         } 
@@ -250,9 +251,18 @@ $(document).ready(function(){
                         "next"  : '下一页',
                         "previous"  : '上一页',
                     },
-    },
+            },
     });
     $('#data tbody').on('click', 'tr', function (e, data) {
+        try{
+            var _sch = $($(this).find('input').get(0)).attr('checked');
+            if(_sch){
+                $($(this).find('input').get(0)).attr('checked', false);
+            } else {
+                $($(this).find('input').get(0)).attr('checked', true);
+            }
+        }catch(e){console.log(e); }
+        var _item = $(this);
         _LAST = null;
         var id = $(this).data('id');
         if(_LAST) {
