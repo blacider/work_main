@@ -1,14 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 class Users extends REIM_Controller {
+
     public function __construct() {
         parent::__construct();
         $this->load->model('user_model', 'user');
         $this->load->model('group_model', 'groups');
         //$this->load->model('users/customer_model', 'cmodel');  
-    }
-
-
-    public function register(){
     }
 
     public function update_nickname(){
@@ -29,7 +27,7 @@ class Users extends REIM_Controller {
         $manager = $this->input->post('manager_id');
         log_message("debug", "update manager: " . $manager);
         log_message("debug", "update uid: " . $uid);
-        return $this->user->update_manager($uid, $manager);
+        return $this->user->reim_update_manager($uid, $manager);
     }
 
     public function logout(){
@@ -40,13 +38,30 @@ class Users extends REIM_Controller {
 
     public function profile(){
         $profile = $this->session->userdata('profile');
-        $path = base_url($this->user->get_hg_avatar());
+        if($profile){
+            $path = base_url($this->user->reim_get_hg_avatar());
+        } else  {
+            $user = $this->session->userdata('user');
+            log_message("debug", json_encode($user));
+            $profile['nickname'] = $user->nickname;
+            $profile['email'] = $user->email;
+            $profile['phone'] = '不管';
+            $profile['group'] = array('group_name' => '如数管理员');
+            $profile['admin'] = array();
+            $profile['wx_token'] = '不管';
+            $profile['lastdt'] = $user->create_time;
+
+            $path = '';//base_url();
+        }
+
         $this->eload('user/profile',
             array(
                 'title' => '个人管理'
                 ,'profile' => $profile
                 ,'avatar_path' => $path
-            ));
+            ),
+            'menu.profile.php'
+        );
     }
 
     public function validate_pwd(){
@@ -54,7 +69,12 @@ class Users extends REIM_Controller {
         log_message("debug", "password:" . $pwd);
         $profile = $this->session->userdata('profile');
         log_message("debug", "profile:" . json_encode($profile));
-        $user = $this->user->get_user($profile['email'], $pwd);
+        if(!$profile){
+            $user = $this->session->userdata('user');
+        } else {
+            $user = $this->user->get_user($profile['email'], $pwd);
+        }
+
         die(json_encode($user));
     }
 
@@ -63,12 +83,10 @@ class Users extends REIM_Controller {
         $nickname = $this->input->post('nickname');
         $email = $this->input->post('email');
         $phone = $this->input->post('phone');
-        //$password = $this->input->post('password');
-        //$old_password = $this->input->post('old_password');
         if(!($nickname || $email || $phone)){
             redirect(base_url('users/profile'));
         }
-        $info = json_decode($this->user->update_profile($email, $phone, $nickname), true);
+        $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname), true);
         if($info['status'] > 0){
             $this->session->unset_userdata('jwt');
             $this->session->unset_userdata('profile');
@@ -94,12 +112,17 @@ class Users extends REIM_Controller {
 
     public function update_password(){
         $old_password = $this->input->post('old_password');
-        $new_password = $this->input->post('new_password');
-        if(!($old_password && $new_password)){
+        $new_password = $this->input->post('password');
+        $re_password = $this->input->post('repassword');
+        if(!($old_password && $new_password && $re_password)){
             $this->session->set_userdata('login_error', '参数错误');
-            return redirect('users/password');
+            return redirect('users/profile');
         }
-        $info = json_decode($this->user->update_password($old_password, $new_password), true);
+        if($re_password != $new_password) {
+            $this->session->set_userdata('login_error', '新密码不相同');
+            return redirect('users/profile');
+        }
+        $info = json_decode($this->user->reim_update_password($old_password, $new_password), true);
         if($info['status'] > 0){
             $this->session->unset_userdata('jwt');
             $this->session->unset_userdata('profile');
@@ -181,5 +204,10 @@ class Users extends REIM_Controller {
             $randomCode .= $randomChars { mt_rand(0, 35) };
         }
         return $randomCode;
+    }
+
+    public function info($uid = 0){
+        if(!$uid) return die(json_encode(array('code' => -1)));
+        die($this->user->reim_get_info($uid));
     }
 }

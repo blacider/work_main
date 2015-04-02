@@ -359,6 +359,7 @@ $config['rewrite_short_tags'] = FALSE;
 |
 */
 $config['proxy_ips'] = '';
+$config['static_base'] = '/data/www/';
 
 
 /* End of file config.php */

@@ -3,8 +3,8 @@
 class Customers extends REIM_Controller  {
     public function __construct(){   
         parent::__construct(); 
-        $this->load->model('users/user_model');  
-        $this->load->model('users/customer_model', 'cmodel');  
+        $this->load->model('user_model');  
+        $this->load->model('customer_model', 'cmodel');  
     }
 
     public function index(){
@@ -13,7 +13,7 @@ class Customers extends REIM_Controller  {
         $customers= $this->cmodel->get_all_customers();
         $total = $customers['count'];
         $customers = $customers['data'];
-        $this->eload('user/customers', array('title' => '客户管理', 'alist' => $customers, 'error' => $error));
+        $this->eload('customers', array('title' => '客户管理', 'alist' => $customers, 'error' => $error));
     }
 
     public function create(){

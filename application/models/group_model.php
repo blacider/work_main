@@ -35,12 +35,13 @@ class Group_Model extends Reim_Model {
         return $buf;
     }
 
-    public function setadmin($uid){
+    public function setadmin($uid, $_type){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-        $data = array('admin' => 'update', 'uid' => $uid);
-		$url = $this->get_url('users');
-		$buf = $this->do_Put($url, $data, $jwt);
+        $data = array('admin' => $_type, 'uid' => $uid);
+		$url = $this->get_url('set_admin');
+        log_message("debug", "Admin Data:" . json_encode($data));
+		$buf = $this->do_Post($url, $data, $jwt);
         log_message("debug", "model:" . $buf);
         return $buf;
     }
