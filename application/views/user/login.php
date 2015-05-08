@@ -12,8 +12,7 @@
         <link rel="shortcut icon" href="favicon.ico" />
         <link rel="icon" href="/static/favicon.ico">
         <link rel="stylesheet" type="text/css" href="/static/css/main.login.css" />
-<script type="text/javascript" src="/static/js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="/static/js/base.js"></script>
+<script type="text/javascript" src="/static/ace/js/jquery.min.js"></script>
 <!--[if IE 6]>
 <script src="js/DD_belatedPNG_0.0.8a-min.js"></script>
 <script>
@@ -26,7 +25,7 @@ DD_belatedPNG.fix('*');
                                             <div class="mainForm_logo"><img src="/static/images/logo2.png" /></div>
                                             <div class="mainForm_body">
                                                 <form action="<?php echo base_url('login/dologin');  ?>" method="post" id="login_form">
-                                                    <input name="u" type="text" class="br2 inp inp_1" placeholder="邮箱/手机" />
+                                                    <input name="u" type="text" class="br2 inp inp_1" placeholder="邮箱/手机" autofocus="autofocus" />
                                                     <input name="p" type="password" class="br2 inp inp_2" placeholder="密码" />
                                                     <input id="submitbtn" type="button" class="br2 btn" value="登录" />
                                                     <div class="clear mainForm_ft">

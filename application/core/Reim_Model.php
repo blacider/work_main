@@ -1,6 +1,6 @@
 <?php
 
-define("API_SERVER", "https://api.rushucloud.com/stage/");
+define("API_SERVER", "http://api.rushucloud.com/stage/");
 //define("API_SERVER", "https://api.rushucloud.com/online/");
 //define("API_SERVER", "https://api.cloudbaoxiao.com/online/");
 define("PUBKEY", "1NDgzZGY1OWViOWRmNjI5ZT");
@@ -51,13 +51,19 @@ class Reim_Model extends CI_Model {
 		return array('X-REIM-JWT: ' . JWT::encode($config, PUBKEY), 'X-ADMIN-API: 1');
 	}
     
-    public function do_Post($url, $fields, $extraheader = array()){
+    public function do_Post($url, $fields, $extraheader = array(), $force_bin = 0){
+        log_message("debug", json_encode($fields));
         $ch  = curl_init() ;
         curl_setopt($ch, CURLOPT_URL, $url) ;
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
         curl_setopt($ch, CURLOPT_POST, count($fields)) ;
+        //curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+        //if($force_bin == 1){
+        //curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
+        //}
         if($extraheader) {
+            log_message("debug", json_encode($extraheader));
             curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
         }
         curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
@@ -65,7 +71,7 @@ class Reim_Model extends CI_Model {
         curl_exec($ch );
         log_message("debug", "Start Request");
         $result  = ob_get_contents() ;
-        log_message("debug", "Get Success");
+        log_message("debug", "Get Success" . $result);
         ob_end_clean();
         curl_close($ch ) ;
         return $result;
@@ -78,11 +84,10 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch,CURLOPT_HTTPHEADER, $extraheader);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
-        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
         curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
         log_message("debug", "Start Request");
         $output = curl_exec($ch) ;
-        log_message("debug", "Get Success");
+        log_message("debug", "Get Success:" . $output);
         curl_close($ch);
         return $output;
     }

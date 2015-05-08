@@ -12,10 +12,10 @@ class Group_Model extends Reim_Model {
     }
 
     // type : -0 邮箱 1 手机
-    public function set_invite($username = '', $type = 0){
+    public function set_invite($username, $nickname, $phone, $credit, $groups){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-        $data = array('name' => $username, 'type' => $type);
+        $data = array('name' => $username, 'phone' => $phone, 'nickname' => $nickname, 'credit_card' => $credit, 'groups' => $groups);
 		$url = $this->get_url('invite');
 		$buf = $this->do_Post($url, $data, $jwt);
         log_message("debug", "model:" . $buf);
@@ -55,5 +55,18 @@ class Group_Model extends Reim_Model {
         log_message("debug", "model:" . $buf);
         return $buf;
     }
+
+
+    public function update_profile($nickname, $email, $phone, $credit_card, $admin, $id){
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $data = array('admin' => $admin, 'uid' => $id, 'credit_card' => $credit_card, 'email' => $email, 'phone' => $phone);
+		$url = $this->get_url('users');
+        log_message("debug", "Admin Data:" . json_encode($data));
+		$buf = $this->do_Put($url, $data, $jwt);
+        log_message("debug", "model:" . $buf);
+        return $buf;
+    }
+
 }
 

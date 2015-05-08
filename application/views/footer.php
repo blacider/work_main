@@ -2,8 +2,7 @@
     <div class="fl fl footer_l">&copy;2014-2015 如数科技 all rights reserved</div>
     <div class="fr fl footer_r">京ICP备13019086-2号</div>
 </div>
-<script  type="text/javascript" src="/static/js/jquery-ui-1.8.12.custom.min.js"></script>
-<script type="text/javascript" src="/static/js/base.js"></script>
+<script language="javascript" src="/static/js/bootstrap.min.js"></script>
 <!--[if IE 6]>
 <script src="/static/js/DD_belatedPNG_0.0.8a-min.js"></script>
 <script>

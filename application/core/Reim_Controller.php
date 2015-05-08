@@ -59,26 +59,6 @@ class REIM_Controller extends CI_Controller{
         $this->load->view($menu_page, $custom_data);
         $this->load->view($view_name, $custom_data);
         $this->load->view('footer', $custom_data);
-        /*
-        $this->load->view('menu', $custom_data);
-        $this->load->view($view_name, $custom_data);
-        $this->load->view('footer', $custom_data);
-         */
-        //$this->load->view('template', $custom_data);
-
-        /*
-        $profile = $this->session->userdata('profile');
-        if(!$profile) redirect(base_url('login'));
-        $menu =  $this->load->view('menu', $custom_data, True);
-        $nav =  $this->load->view('nav', array('profile' => $profile), True);
-        $body =  $this->load->view($view_name, $custom_data, True);
-        $custom_data['menu'] = $menu;
-        $custom_data['nav'] = $nav;
-        $custom_data['body'] = $body;
-        $custom_data['profile'] = $profile;
-        $this->load->view('template', $custom_data);
-         */
-
     }
 
     public function jsalert($msg, $target = ''){
@@ -129,6 +109,41 @@ class REIM_Controller extends CI_Controller{
         }
     }
 
+
+    public function  bsload($view_name, $custom_data, $menu_page = 'menu.bs.php'){
+        $this->load->model('user_model');
+        $this->load->model('module_tip_model');
+        $uid = $this->session->userdata('uid');
+        $profile = $this->session->userdata('profile');
+        if(!($profile || $uid)){
+            // 重定向到登陆
+            log_message("debug","Nothing ");
+            redirect(base_url('login'), 'refresh');
+        }
+
+        if(!$profile){
+            $custom_data['opt_error'] = $this->session->userdata('last_error');
+            $custom_data['username'] = $this->session->userdata('username');
+            $custom_data['uid'] = $this->session->userdata('uid');
+            $custom_data['tip'] = $this->module_tip_model->get_tip($custom_data['uid']);
+            $custom_data['menu'] = $this->user_model->get_menu($custom_data['uid']);
+            $custom_data['description'] =  '';
+        } else {
+            $this->session->set_userdata('user', $profile);
+            $custom_data['menu'] = $this->user_model->get_menu(0, 1);
+            $custom_data['profile'] = $profile;
+        }
+
+        $this->config->load('apps', TRUE);
+        $custom_data['appname'] = $this->config->item('appname');
+        $custom_data['base_url'] = base_url();
+        $this->load->view('header.bs.php', $custom_data);
+        $this->load->view($menu_page, $custom_data);
+        $this->load->view($view_name, $custom_data);
+        $this->load->view('footer.bs.php', $custom_data);
+    }
+
+
     public function  aeload($view_name, $custom_data){
         $this->load->model('user_model');
         $this->load->model('module_tip_model');
@@ -160,4 +175,6 @@ class REIM_Controller extends CI_Controller{
         $this->load->view('footer.old.php', $custom_data);
     }
 
+    public function show_error($msg){
+    }
 }

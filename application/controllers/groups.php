@@ -4,7 +4,22 @@ class Groups extends REIM_Controller {
 
     public function __construct() {
         parent::__construct();
+        $this->load->model('usergroup_model', 'ug');
         $this->load->model('group_model', 'groups');
+    }
+
+
+
+
+    public function update(){
+        $name = $this->input->post('gname');
+        $uids = $this->input->post('uids');
+        $uids = implode(",", $uids);
+        $info = $this->ug->update_data($uids, $name);
+        if($info['status'] > 0){
+            redirect(base_url('groups/index'));
+        }
+
     }
 
     public function index(){
@@ -24,13 +39,42 @@ class Groups extends REIM_Controller {
             $gmember = $gmember ? $gmember : array();
 
         }
-        $this->eload('groups/index',
+        $this->bsload('groups/index',
             array(
-                'title' => '公司成员'
+                'title' => '成员组管理'
                 ,'group' => $ginfo
                 ,'members' => $gmember
             )
         );
+    }
+
+
+    public function save(){
+        $nickname = $this->input->post('nickname');
+        $email = $this->input->post('email');
+        $phone = $this->input->post('phone');
+        $credit_card = $this->input->post('credit_card');
+        $admin = $this->input->post('admin');
+        $id = $this->input->post('id');
+        $oper = $this->input->post('oper');
+
+        if($oper == "edit"){
+            die($this->groups->update_profile($nickname, $email, $phone, $credit_card, $admin, $id));
+        }
+
+
+
+    }
+
+    public function listdata(){
+        $page = $this->input->get('page');
+        $rows = $this->input->get('rows');
+        $sort = $this->input->get('sord');
+        $group = $this->ug->get_my_list();
+        log_message("debug", "LISTDATA:" . json_encode($group));
+        if($group['status']){
+            die(json_encode($group['data']));
+        }
     }
 
     public function invite() {

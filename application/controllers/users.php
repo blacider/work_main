@@ -210,4 +210,16 @@ class Users extends REIM_Controller {
         if(!$uid) return die(json_encode(array('code' => -1)));
         die($this->user->reim_get_info($uid));
     }
+
+
+    public function detail($id = 0){
+        if($id == 0) {
+            die(json_encode(array('status' => false)));
+        }
+
+        $obj = $this->user->reim_get_info($id);
+        die(json_encode(array('status' => true, 'data' => $obj)));
+
+
+    }
 }

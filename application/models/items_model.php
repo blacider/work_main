@@ -59,4 +59,105 @@ class Items_Model extends Reim_Model {
 		$obj = json_decode($buf, true);
         return $obj;
     }
+
+    public function upload_image($image_path, $type){
+        $jwt = $this->session->userdata('jwt');
+        $file = realpath($image_path);
+        //array_push($jwt, 'Content-Type: '. $type);
+        log_message("debug", $file);
+        if(!$jwt) return false;
+        $data = array();
+        $fileSize = filesize($image_path);
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $finfo = finfo_file($finfo, $image_path);
+        $cFile = new CURLFile($image_path, $finfo, basename($image_path));
+        $data = array('file' => $cFile, 'type' => $type);
+        $url = $this->get_url('images');
+        log_message("debug", json_encode($data));
+        $buf = $this->do_Post($url, $data, $jwt, 1);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
+
+    public function create($amount, $category, $tags, $dt, $merchant, $type, $note, $images, $uids = ''){
+        $items = array();
+        $s = array(
+            'local_id' => 1,
+            'category' => $category,
+            'amount' => $amount,
+            'category' => $category,
+            'uids' => $uids,
+            'prove_ahead' => $type,
+            'image_id' => $images,
+            'dt' => $dt, 
+            'note' => $note,
+            'reimbursed' => 1,
+            'tags' => $tags, 
+            'location' => 0,
+            'latitude' => 0,
+            'longitude' => 0,
+            'merchants' => $merchant,
+            'type' => 1);
+        array_push($items, $s);
+        $data = array('items' => json_encode($items));
+        $jwt = $this->session->userdata('jwt');
+        $url = $this->get_url('item');
+        $buf = $this->do_Post($url, $data, $jwt, 1);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
+    public function remove($id = 0){
+        if($id == 0) return false;
+        $jwt = $this->session->userdata('jwt');
+        $url = $this->get_url('item/'. $id);
+        $data = array();
+        $buf = $this->do_Delete($url, $data, $jwt);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
+    public function get_by_id($id = 0){
+        if(0 === $id) return array();
+        $jwt = $this->session->userdata('jwt');
+        $url = $this->get_url('item/'. $id);
+        $data = array();
+        log_message("debug", "-------------------");
+        log_message("debug", $url);
+        $buf = $this->do_Get($url, $jwt);
+        $obj = json_decode($buf, true);
+        log_message("debug", "-------------------");
+        return $obj;
+
+    }
+
+    public function update($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images, $uids = ''){
+        $items = array();
+        $s = array(
+            'local_id' => 1,
+            'id' => $id,
+            'category' => $category,
+            'amount' => $amount,
+            'category' => $category,
+            'uids' => $uids,
+            'prove_ahead' => $type,
+            'image_id' => $images,
+            'dt' => $dt, 
+            'note' => $note,
+            'reimbursed' => 1,
+            'tags' => $tags, 
+            'location' => 0,
+            'latitude' => 0,
+            'longitude' => 0,
+            'merchants' => $merchant,
+            'type' => 1);
+        array_push($items, $s);
+        $data = array('items' => json_encode($items));
+        $jwt = $this->session->userdata('jwt');
+        $url = $this->get_url('item');
+        $buf = $this->do_Put($url, $data, $jwt, 1);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
 }

@@ -239,6 +239,30 @@
                             </div>
                         </li>
                         -->
+
+                        <li class="hsub open">
+                        <a href="#" class="dropdown-toggle">
+                            <i class="menu-icon fa fa-desktop"></i>
+                            <span class="menu-text"> UI &amp; Elements </span>
+
+                            <b class="arrow fa fa-angle-down"></b>
+                        </a>
+                        <b class="arrow"></b>
+                        <ul class="submenu nav-show" style="display: block;">
+                            <li class="hsub">
+                            <a href="#" class="dropdown-toggle">
+                                <i class="menu-icon fa fa-caret-right"></i>
+
+                                Layouts
+                                <b class="arrow fa fa-angle-down"></b>
+                            </a>
+
+                            <b class="arrow"></b>
+
+                            </li>
+                        </ul>
+                            </li>
+
                         <li>
                             <a class="active node" href="<?php echo base_url('groups'); ?>"><i class="fa fa-dashboard fa-fw"></i> 公司人员管理</a>
                         </li>

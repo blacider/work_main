@@ -206,9 +206,13 @@ class User_Model extends Reim_Model {
         return $new_file_path;
     }
 
-    public function reim_get_user($username, $password){
-        $jwt = $this->get_jwt($username, $password);
-        $this->session->set_userdata('jwt', $jwt);
+    public function reim_get_user($username = '', $password = ''){
+        if('' !== $username && '' !== $password) {
+            $jwt = $this->get_jwt($username, $password);
+            $this->session->set_userdata('jwt', $jwt);
+        } else {
+            $jwt = $this->session->userdata('jwt');
+        }
 		$url = $this->get_url('common/0');
 		$buf = $this->do_Get($url, $jwt);
         log_message("debug", $buf);
@@ -276,8 +280,22 @@ class User_Model extends Reim_Model {
         return $obj;
     }
 
+    public function reim_detail($uid){
+        $jwt = $this->session->userdata('jwt');
+		$url = $this->get_url('profile/' . $uid);
+		$buf = $this->do_Get($url, $jwt);
+		$obj = json_decode($buf, true);
+        log_message("debug", "Get:" . $buf . ",JWT: " . json_encode($jwt));
+        if($obj['status'] && $obj['data']['avatar']) {
+            $avatar = $obj['data']['avatar'];
+            $obj['avatar'] = $this->reim_get_hg_avatar($avatar);
+        } else {
+            $obj['avatar'] = "";
+        }
+        return json_encode($obj);
+    }
     public function reim_get_info($uid){
-        $jwt = $this->get_jwt('', '');
+        $jwt = $this->session->userdata('jwt');
 		$url = $this->get_url('users/' . $uid);
 		$buf = $this->do_Get($url, $jwt);
 		$obj = json_decode($buf, true);

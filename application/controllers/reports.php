@@ -3,11 +3,12 @@ class Reports extends REIM_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('items_model', 'items');
+        $this->load->model('category_model', 'category');
+        $this->load->model('user_model', 'users');
         $this->load->model('report_model', 'reports');
     }
 
     public function index($type = 1){
-        //$items = $this->items->get_list();
         $items = $this->items->get_suborinate($type);
         if(!$items['status']){
             die(json_encode(array()));
@@ -19,7 +20,7 @@ class Reports extends REIM_Controller {
             $data = $items['data'];
             $item_data = $data['data'];
         }
-        $this->eload('reports/index',
+        $this->bsload('reports/index',
             array(
                 'title' => '报销管理'
                 ,'items' => $item_data
@@ -27,6 +28,166 @@ class Reports extends REIM_Controller {
             ));
     }
 
+    public function _getitems(){
+        $items = $this->items->get_list();
+        $category = $this->category->get_list();
+        $categories = array();
+        $tags = array();
+        if($category && array_key_exists('data', $category) && array_key_exists('categories', $category['data'])){
+            $categories = $category['data']['categories'];
+            $tags = $category['data']['tags'];
+        }
+        $_items =  array();
+        if($items && $items['status']) {
+            $_cates = array();
+            foreach($categories as $c){
+                $_cates[$c['id']] = $c['category_name'];
+            }
+            $data = $items['data'];
+            $item_data = $data['items'];
+            foreach($item_data as &$s){
+                log_message("debug", "Item:" . json_encode($s));
+                if($s['istatus'] < 0) continue;
+                $s['cate_str'] = '未指定的分类';
+                $s['createdt'] = strftime("%Y-%m-%d %H:%M", intval($s['createdt']));
+                $_type = '报销';
+                switch($s['type']){
+                case 1: {$_type = '预算';};break;
+                case 2: {$_type = '借款';};break;
+                }
+                $s['type'] = $_type;
+
+                if(array_key_exists($s['category'], $_cates)){
+                    $s['cate_str'] = $_cates[$s['category']];
+                }
+                $_report = '尚未添加到报告';
+                if($_report) {
+                }
+                $s['report'] = $_report;
+                $s['img_str'] = $s['image_id'] == "" ? '无发票' : '有发票';
+                $images = explode(',', $s['image_paths']);
+                if(count($images) > 0){
+                    $s['img_str'] = '';
+                    foreach($images as $i){
+                        if($i){
+                            $d = explode(".", $i);
+                            $sufix = array_pop($d);
+                            $last = array_pop($d);
+                            $last .= "_32";
+                            array_push($d, $last);
+                            array_push($d, $sufix);
+                            $i = implode(".", $d);
+                            $s['img_str'] .= '<span><img src="http://reim-avatar.oss-cn-beijing.aliyuncs.com/' . $i . '"></span>';
+                        }
+                    }
+                }
+                $s['amount'] = '￥' . $s['amount'];
+                $s['status_str'] = '';
+                $trash= $s['istatus'] === 0 ? 'gray' : 'red';
+                $edit = $s['istatus'] === 0 ? 'gray' : 'green';
+                $s['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
+                    . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $s['id'] . '"></span>'
+                    . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>'
+                    . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $s['id'] . '"></span></div>';
+                switch($s['istatus']){
+                case 0: {
+                    $s['status_str'] = '<button class="btn  btn-minier btn-yellow disabled">待提交</button>';
+                };break;
+                case 1: {
+                    $s['status_str'] = '审核中';
+                };break;
+                case 2: {
+                    $s['status_str'] = '已通过';
+                };break;
+                case 3: {
+                    $s['status_str'] = '已退回';
+                };break;
+                case 4: {
+                    $s['status_str'] = '已完成';
+                };break;
+                case 5: {
+                    $s['status_str'] = '已完成';
+                };break;
+                case 6: {
+                    $s['status_str'] = '待支付';
+                };break;
+                default: {
+                    $s['status_str'] = $s['status'];
+                }
+                }
+                array_push($_items, $s);
+            }
+        }
+        return $_items;
+    }
+    public function newreport(){
+        $_members = array();
+        $members = $this->users->reim_get_user();
+        if($members['status'] > 0){
+            $_members = $members['data']['members'];
+        }
+
+        $_items = $this->_getitems();
+
+        $this->bsload('reports/new',
+            array(
+                'title' => '新建报告',
+                'members' => $_members,
+                'items' => $_items
+            ));
+    }
+
+    public function listdata(){
+        $page = $this->input->get('page');
+        $rows = $this->input->get('rows');
+        $sort = $this->input->get('sord');
+        $items = $this->items->get_suborinate();
+        if(!$items['status']){
+            die(json_encode(array()));
+        }
+
+        $data = $items['data']['data'];
+        foreach($data as &$d){
+                $trash= $d['status'] === 1 ? 'gray' : 'red';
+                $edit = ($d['status'] === 1)   ? 'gray' : 'green';
+                $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+                    . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
+                    . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>'
+                    . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
+            $d['date_str'] = date('Y年m月d日', $d['createdt']);
+            $d['status_str'] = '待提交';
+            $prove_ahead = '报销';
+            switch($d['prove_ahead']){
+            case 1: {$prove_ahead = '<font color="red">借款</font>';};break;
+            case 2: {$prove_ahead = '<font color="green">预算</font>';};break;
+            }
+            $d['prove_ahead'] = $prove_ahead;
+            switch($d['status']) {
+                case 0: {
+                    $d['status_str'] = '<button class="btn  btn-minier btn-yellow disabled">待提交</button>';
+                };break;
+                case 1: {
+                    $d['status_str'] = '<button class="btn  btn-minier btn-green disabled">审核中</button>';
+                };break;
+                case 2: {
+                    $d['status_str'] = '<button class="btn  btn-minier btn-gray disabled">已通过</button>';
+                };break;
+                case 3: {
+                    $d['status_str'] = '<button class="btn  btn-minier btn-purple disabled">退回</button>';
+                };break;
+                case 4: {
+                    $d['status_str'] = '<button class="btn  btn-minier btn-gray disabled">已完成</button>';
+                };break;
+                case 5: {
+                    $d['status_str'] = '<button class="btn  btn-minier btn-gray disabled">已完成</button>';
+                };break;
+                case 6: {
+                    $d['status_str'] = '<button class="btn  btn-minier btn-green disabled">待结算</button>';
+                };break;
+            }
+        }
+        die(json_encode($data));
+    }
 
     public function detail($id){
         if($id == 0) {
@@ -38,17 +199,13 @@ class Reports extends REIM_Controller {
     }
 
     public function create(){
-        $items = $this->items->get_list();
-        if(!$items) redirect(base_url('login'));
-        $item_data = array();
-        if($items && $items['status']) {
-            $data = $items['data'];
-            $item_data = $data['reports'];
-        }
-        $this->eload('reports/create',
-            array(
-                'title' => '创建报表'
-            ));
+        $items = $this->input->post('item');
+        $title = $this->input->post('title');
+        $receiver = $this->input->post('receiver');
+        $cc = $this->input->post('cc');
+        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items));
+        log_message("debug", json_encode($ret));
+        return redirect(base_url('reports'));
     }
 
     public function del($id = 0){
@@ -90,5 +247,167 @@ class Reports extends REIM_Controller {
         print_r(json_encode(array('data' => $ret)));
     }
 
+
+    public function edit($id = 0){
+        if($id == 0) return redirect(base_url('reports/index'));
+        $report = $this->reports->get_detail($id);
+        if($report['status'] < 1){
+            return redirect(base_url('reports/index'));
+        }
+
+        $report = $report['data'];
+        $_members = array();
+        $members = $this->users->reim_get_user();
+        if($members['status'] > 0){
+            $_members = $members['data']['members'];
+        }
+
+        $_managers = array();
+        foreach($report['receivers']['managers'] as $m){
+            array_push($_managers, $m['id']);
+        }
+        $_ccs = array();
+        foreach($report['receivers']['cc'] as $m){
+            array_push($_ccs, $m['id']);
+        }
+        $report['receivers']['managers'] = $_managers;/* implode(',', $_managers); */
+        $report['receivers']['cc'] = $_ccs; /*implode(',', $_ccs);*/
+        $_items = $this->_getitems();
+        //print_r($report);
+
+        $this->bsload('reports/edit',
+            array(
+                'title' => '修改报告',
+                'members' => $_members,
+                'items' => $_items,
+                'report' => $report
+            ));
+    }
+
+    public function show($id = 0){
+        if($id == 0) return redirect(base_url('reports/index'));
+        $report = $this->reports->get_detail($id);
+        $report = $report['data'];
+        if($report['status'] < 1){
+            return redirect(base_url('reports/index'));
+        }
+        $_managers = array();
+        foreach($report['receivers']['managers'] as $m){
+            array_push($_managers, $m['nickname']);
+        }
+        $_ccs = array();
+        foreach($report['receivers']['cc'] as $m){
+            array_push($_ccs, $m['nickname']);
+        }
+        $report['receivers']['managers'] = implode(',', $_managers);
+        $report['receivers']['cc'] = implode(',', $_ccs);
+        $prove_ahead = $report['prove_ahead'];
+        switch($prove_ahead) {
+        case 0:{$_type = '报销';};break;
+        case 1:{$_type = '预算';};break;
+        case 2:{$_type = '借款';};break;
+        }
+        $report['prove_ahead'] =  $_type;
+        $this->bsload('reports/view',
+            array(
+                'title' => '报告详情',
+                'report' => $report
+            ));
+    }
+
+    public function update(){
+        $id = $this->input->post('id');
+        $items = $this->input->post('item');
+        $title = $this->input->post('title');
+        $receiver = $this->input->post('receiver');
+        $cc = $this->input->post('cc');
+        $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items));
+        log_message("debug", json_encode($ret));
+        return redirect(base_url('reports'));
+    }
+
+
+    public function audit(){
+        $items = $this->items->get_suborinate();
+        if(!$items['status']){
+            die(json_encode(array()));
+        }
+        $ret = array();
+        if(!$items) redirect(base_url('login'));
+        $item_data = array();
+        if($items && $items['status']) {
+            $data = $items['data'];
+            $item_data = $data['data'];
+        }
+        $this->bsload('reports/audit',
+            array(
+                'title' => '待审核报销'
+                ,'items' => $item_data
+            ));
+    }
+
+    public function listauditdata(){
+        $page = $this->input->get('page');
+        $rows = $this->input->get('rows');
+        $sort = $this->input->get('sord');
+        $items = $this->items->get_suborinate(1);
+        if(!$items['status']){
+            die(json_encode(array()));
+        }
+        $_members = array();
+        $members = $this->users->reim_get_user();
+        if($members['status'] > 0){
+            $_members = $members['data']['members'];
+        }
+        $__members = array();
+        foreach($_members as $m){
+            $__members[$m['id']] = $m;
+        }
+
+        $data = $items['data']['data'];
+        foreach($data as &$d){
+                $trash= $d['status'] === 1 ? 'gray' : 'red';
+                $edit = ($d['status'] === 1)   ? 'gray' : 'green';
+                $d['author'] = '';
+                if(array_key_exists($d['uid'], $__members)){
+                    $d['author'] = $__members[$d['uid']]['nickname'];
+                }
+                $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
+                    /*
+                     */
+            $d['date_str'] = date('Y年m月d日', $d['createdt']);
+            $d['status_str'] = '待提交';
+            $prove_ahead = '报销';
+            switch($d['prove_ahead']){
+            case 1: {$prove_ahead = '<font color="red">借款</font>';};break;
+            case 2: {$prove_ahead = '<font color="green">预算</font>';};break;
+            }
+            $d['prove_ahead'] = $prove_ahead;
+            switch($d['status']) {
+                case 0: {
+                    $d['status_str'] = '<button class="btn  btn-minier btn-yellow disabled">待提交</button>';
+                };break;
+                case 1: {
+                    $d['status_str'] = '<button class="btn  btn-minier btn-green disabled">审核中</button>';
+                };break;
+                case 2: {
+                    $d['status_str'] = '<button class="btn  btn-minier btn-gray disabled">已通过</button>';
+                };break;
+                case 3: {
+                    $d['status_str'] = '<button class="btn  btn-minier btn-purple disabled">退回</button>';
+                };break;
+                case 4: {
+                    $d['status_str'] = '<button class="btn  btn-minier btn-gray disabled">已完成</button>';
+                };break;
+                case 5: {
+                    $d['status_str'] = '<button class="btn  btn-minier btn-gray disabled">已完成</button>';
+                };break;
+                case 6: {
+                    $d['status_str'] = '<button class="btn  btn-minier btn-green disabled">待结算</button>';
+                };break;
+            }
+        }
+        die(json_encode($data));
+    }
 }
 

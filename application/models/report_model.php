@@ -37,15 +37,55 @@ class Report_Model extends Reim_Model {
     }
 
 
-    public function mark_success($data){
+    public function mark_success($data, $status = 4){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         log_message("debug", "JWT:" . json_encode($jwt));
 		$url = $this->get_url("success");
-        $buf = $this->do_Post($url, array('rids' => $data), $jwt);
+        $buf = $this->do_Post($url, array('rids' => $data, 'status' => $status), $jwt);
         log_message("debug", "From Server [ $url ]:" . $buf);
 		//$obj = json_decode($buf, true);
         return $buf;
+    }
+
+    public function create($title, $receiver, $cc, $iids, $type = 0, $status = 1){
+        $data = array(
+            'manager_id' => $receiver
+            ,'cc' => $cc
+            ,'type' => $type
+            ,'status' => $status
+            ,'title' => $title
+            ,'iids' => $iids
+            ,'createdt' => time()
+        );
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+		$url = $this->get_url("report");
+        $buf = $this->do_Post($url, $data, $jwt);
+		$obj = json_decode($buf, true);
+        return $buf;
+
+    }
+
+    public function update($id, $title, $receiver, $cc, $iids, $type = 0, $status = 1){
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $data = array(
+            'manager_id' => $receiver
+            ,'cc' => $cc
+            ,'type' => $type
+            ,'status' => $status
+            ,'title' => $title
+            ,'iids' => $iids
+            ,'createdt' => time()
+        );
+        log_message("debug", "Update:" . json_encode($data));
+		$url = $this->get_url("report/$id");
+        log_message("debug", "URL:" . $url);
+        $buf = $this->do_Put($url, $data, $jwt);
+		$obj = json_decode($buf, true);
+        return $buf;
+
     }
 
 
