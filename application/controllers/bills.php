@@ -13,9 +13,9 @@ class Bills extends REIM_Controller {
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
         $reports = $this->reports->get_bills();
-        $tags = $this->tags->get_list();
-        if($tags){
-            $tags = $tags['data']['tags'];
+        $_tags = $this->tags->get_list();
+        if($_tags && array_key_exists('tags', $_tags['data'])){
+            $_tags = $_tags['data']['tags'];
         }
         log_message("debug", json_encode($reports));
         $data = array();
@@ -25,7 +25,7 @@ class Bills extends REIM_Controller {
             array(
                 'title' => '财务核算'
                 ,'reports' => $data
-                ,'category' => $tags
+                ,'category' => $_tags
                 ,'error' => $error
             )
         );
