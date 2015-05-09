@@ -201,6 +201,15 @@ class Members extends REIM_Controller {
         }
     }
 
+    public function export(){
+        $group = $this->ug->get_my_list();
+        $this->bsload('members/exports',
+            array(
+                'title' => '导入员工',
+                'groups' => $group['data']
+            )
+        );
+    }
 
 
 

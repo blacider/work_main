@@ -260,13 +260,13 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         <li class="hsub" id="add">
         <a href="<?php echo base_url('members/add'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
-            部门管理
+            新建部门
         </a>
 
         <b class="arrow"></b>
 
         </li>
-        <li class="hsub" id="newreport">
+        <li class="hsub" id="newmember">
         <a href="<?php echo base_url('members/newmember'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
             添加员工

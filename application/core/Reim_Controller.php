@@ -1,6 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class REIM_Controller extends CI_Controller{
+    public function __construct(){
+        parent::__construct();
+        $this->load->library('PHPExcel');
+        $this->load->library('PHPExcel/IOFactory');
+    }
     private function startsWith($haystack, $needle)
     {
         return $needle === "" || strpos($haystack, $needle) === 0;
@@ -10,9 +15,9 @@ class REIM_Controller extends CI_Controller{
     public function __construct(){
         parent::__construct();
         $uri = $this->uri->uri_string();
-            log_message("debug", "Request: $uri");
-            log_message("debug", "JWT: $uri" . json_encode($this->session->userdata('jwt')));
-            log_message("debug", "JWT: $uri" . json_encode($this->session->userdata('uid')));
+        log_message("debug", "Request: $uri");
+        log_message("debug", "JWT: $uri" . json_encode($this->session->userdata('jwt')));
+        log_message("debug", "JWT: $uri" . json_encode($this->session->userdata('uid')));
         if($this->session->userdata('jwt') == "" && $this->session->userdata('uid') == ""){
             log_message("debug", "Not Not Request: $uri");
             $flag = 1;
@@ -177,4 +182,69 @@ class REIM_Controller extends CI_Controller{
 
     public function show_error($msg){
     }
+
+    public function save_to_local($title, $data, $excle_name) {
+        $exclefile = $excle_name;
+        $objwriter = $this->return_buf($title, $data);
+        $objwriter->save($exclefile);
+        return $exclefile;
+
+    }
+
+    public function render_to_download($title, $data, $excle_name){
+        $objwriter = $this->return_buf($title, $data);
+        header("Pragma: public");
+        header("Content-Type: application/force-download");
+        header("Content-Type: application/octet-stream");
+        header("Content-Type: application/download");
+        header("Content-Type:text/html;charset=utf-8");
+        header("Content-Type:application/vnd.ms-execl");
+        header('Content-Disposition:attachment;filename=' . $excle_name);
+        header("Content-Transfer-Encoding: binary");
+        header("Expires: Mon, 26 Jul 1970 05:00:00 GMT");
+        header("Pragma: no-cache");
+        $objwriter->save('php://output');
+    }
+
+    public  function return_buf($title, $data) {
+
+        $Excel = new PHPExcel();
+        $Excel->getProperties()->setCreator(" Mag Group")
+            ->setLastModifiedBy("Mag Group")
+            ->setTitle($title)
+            ->setSubject($title);
+
+        $Excel->setActiveSheetIndex(0);
+        $Excel->getSheet()->setTitle($title);
+
+        $cell_one = $data[0];
+        $j = 0;
+        foreach ($cell_one as $k => $v) {
+            $Excel->getSheet()->setCellValue($this->getCharByNunber($j) . '1', $k);
+            $j++;
+        }
+
+        $x = 2;
+        foreach ($data as $value) {
+            $y = 0;
+            foreach ($value as $k => $v) {
+                $Excel->getSheet()->setCellValue($this->getCharByNunber($y) . $x, $v);
+                $y++;
+            }
+            $x++;
+        }
+
+        //$objwriter = new PHPExcel_Writer_Excel2007($Excel);
+        $objwriter = IOFactory::createWriter($Excel, 'Excel2007');
+        return $objwriter;
+    }
+
+
+    protected static function getCharByNunber($num) {
+        $num = intval($num);
+        $arr = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',);
+        return $arr[$num];
+    }
+
+
 }
