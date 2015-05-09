@@ -211,15 +211,32 @@ class Members extends REIM_Controller {
         );
     }
 
+    public function exports(){
+        $group = $this->groups->get_my_list();
+        $ginfo = array();
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('ginfo', $group['data'])){
+                $ginfo = $group['data']['ginfo'];
+            }
+            if(array_key_exists('gmember', $group['data'])){
+            $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
 
-
-
-
-
-
-
-
-
+        }
+        $data = array();
+        foreach($gmember as $m){
+            $obj = array();
+            $obj['昵称'] = $m['nickname'];
+            $obj['邮箱'] = $m['email'];
+            $obj['手机号'] = $m['phone'];
+            $obj['银行卡号'] = $m['credit_card'];
+            array_push($data, $obj);
+        }
+        $this->render_to_download('人员', $data, '员工信息.xlsx');
+        print_r($gmember);
+    }
 
 
 }

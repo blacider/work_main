@@ -1,11 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class REIM_Controller extends CI_Controller{
-    public function __construct(){
-        parent::__construct();
-        $this->load->library('PHPExcel');
-        $this->load->library('PHPExcel/IOFactory');
-    }
     private function startsWith($haystack, $needle)
     {
         return $needle === "" || strpos($haystack, $needle) === 0;
@@ -14,6 +9,8 @@ class REIM_Controller extends CI_Controller{
 
     public function __construct(){
         parent::__construct();
+        $this->load->library('PHPExcel');
+        $this->load->library('PHPExcel/IOFactory');
         $uri = $this->uri->uri_string();
         log_message("debug", "Request: $uri");
         log_message("debug", "JWT: $uri" . json_encode($this->session->userdata('jwt')));
@@ -197,13 +194,14 @@ class REIM_Controller extends CI_Controller{
         header("Content-Type: application/force-download");
         header("Content-Type: application/octet-stream");
         header("Content-Type: application/download");
-        header("Content-Type:text/html;charset=utf-8");
-        header("Content-Type:application/vnd.ms-execl");
-        header('Content-Disposition:attachment;filename=' . $excle_name);
+        header("Content-Type: text/html;charset=utf-8");
+        header("Content-Type: application/vnd.ms-execl");
+        header('Content-Disposition: attachment;filename=' . $excle_name);
         header("Content-Transfer-Encoding: binary");
         header("Expires: Mon, 26 Jul 1970 05:00:00 GMT");
         header("Pragma: no-cache");
-        $objwriter->save('php://output');
+        $objwriter->save("php://output");
+        exit();
     }
 
     public  function return_buf($title, $data) {
