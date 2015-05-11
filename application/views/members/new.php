@@ -61,11 +61,13 @@
                             </div>
 
                             <input type="hidden" id="renew" name="renew" value="0" />
-
+                            <input type="reset" style="display:none;" id="reset">
                             <div class="clearfix form-actions">
                                 <div class="col-md-offset-3 col-md-9">
-                                    <a class="btn btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save bigger-110"></i>保存</a>
-                                    <a class="btn btn-primary renew" data-renew="1"><i class="ace-icon fa fa-check bigger-110"></i>保存再录入</a>
+                                    <a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
+                                    <a class="btn btn-white btn-default renew" data-renew="1"><i class="ace-icon fa fa-check "></i>保存再记</a>
+
+                                    <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
                                 </div>
                             </div>
 
@@ -89,6 +91,9 @@ $(document).ready(function(){
     $('.renew').click(function(){
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
+    });
+    $('.cancel').click(function(){
+        $('#reset').click();
     });
 });
 </script>

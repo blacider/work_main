@@ -25,6 +25,11 @@ class Reports extends REIM_Controller {
                 'title' => '报销管理'
                 ,'items' => $item_data
                 ,'type' => $type
+                    ,'breadcrumbs' => array(
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa fa-home home-icon')
+                        ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
+                        ,array('url'  => '', 'name' => '报告列表', 'class' => '')
+                    ),
             ));
     }
 
@@ -46,7 +51,6 @@ class Reports extends REIM_Controller {
             $data = $items['data'];
             $item_data = $data['items'];
             foreach($item_data as &$s){
-                log_message("debug", "Item:" . json_encode($s));
                 if($s['istatus'] < 0) continue;
                 $s['cate_str'] = '未指定的分类';
                 $s['createdt'] = strftime("%Y-%m-%d %H:%M", intval($s['createdt']));
@@ -91,25 +95,25 @@ class Reports extends REIM_Controller {
                     . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $s['id'] . '"></span></div>';
                 switch($s['istatus']){
                 case 0: {
-                    $s['status_str'] = '<button class="btn  btn-minier btn-yellow disabled">待提交</button>';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#A07358;background:#A07358 !important;">待提交</button>';
                 };break;
                 case 1: {
-                    $s['status_str'] = '审核中';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
                 };break;
                 case 2: {
-                    $s['status_str'] = '已通过';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#42B698;background:#42B698 !important;">已通过</button>';
                 };break;
                 case 3: {
-                    $s['status_str'] = '已退回';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#B472B1;background:#B472B1 !important;">已退回</button>';
                 };break;
                 case 4: {
-                    $s['status_str'] = '已完成';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
                 };break;
                 case 5: {
-                    $s['status_str'] = '已完成';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
                 };break;
                 case 6: {
-                    $s['status_str'] = '待支付';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#CFD1D2;background:#42B698 !important;">待支付</button>';
                 };break;
                 default: {
                     $s['status_str'] = $s['status'];
@@ -134,6 +138,11 @@ class Reports extends REIM_Controller {
                 'title' => '新建报告',
                 'members' => $_members,
                 'items' => $_items
+                    ,'breadcrumbs' => array(
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa fa-home home-icon')
+                        ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
+                        ,array('url'  => '', 'name' => '新建报告', 'class' => '')
+                    ),
             ));
     }
 
@@ -156,6 +165,7 @@ class Reports extends REIM_Controller {
                     . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
             $d['status_str'] = '待提交';
+            $d['amount'] = '￥' . $d['amount'];
             $prove_ahead = '报销';
             switch($d['prove_ahead']){
             case 1: {$prove_ahead = '<font color="red">借款</font>';};break;
@@ -164,25 +174,25 @@ class Reports extends REIM_Controller {
             $d['prove_ahead'] = $prove_ahead;
             switch($d['status']) {
                 case 0: {
-                    $d['status_str'] = '<button class="btn  btn-minier btn-yellow disabled">待提交</button>';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#A07358;background:#A07358 !important;">待提交</button>';
                 };break;
                 case 1: {
-                    $d['status_str'] = '<button class="btn  btn-minier btn-green disabled">审核中</button>';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
                 };break;
                 case 2: {
-                    $d['status_str'] = '<button class="btn  btn-minier btn-gray disabled">已通过</button>';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#42B698;background:#42B698 !important;">已通过</button>';
                 };break;
                 case 3: {
-                    $d['status_str'] = '<button class="btn  btn-minier btn-purple disabled">退回</button>';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#B472B1;background:#B472B1 !important;">已退回</button>';
                 };break;
                 case 4: {
-                    $d['status_str'] = '<button class="btn  btn-minier btn-gray disabled">已完成</button>';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
                 };break;
                 case 5: {
-                    $d['status_str'] = '<button class="btn  btn-minier btn-gray disabled">已完成</button>';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
                 };break;
                 case 6: {
-                    $d['status_str'] = '<button class="btn  btn-minier btn-green disabled">待结算</button>';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#CFD1D2;background:#42B698 !important;">待支付</button>';
                 };break;
             }
         }
@@ -203,7 +213,8 @@ class Reports extends REIM_Controller {
         $title = $this->input->post('title');
         $receiver = $this->input->post('receiver');
         $cc = $this->input->post('cc');
-        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items));
+        $save = $this->input->post('renew');
+        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save);
         log_message("debug", json_encode($ret));
         return redirect(base_url('reports'));
     }
@@ -281,6 +292,11 @@ class Reports extends REIM_Controller {
                 'members' => $_members,
                 'items' => $_items,
                 'report' => $report
+                    ,'breadcrumbs' => array(
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa fa-home home-icon')
+                        ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
+                        ,array('url'  => '', 'name' => '修改报告', 'class' => '')
+                    ),
             ));
     }
 
@@ -343,6 +359,11 @@ class Reports extends REIM_Controller {
             array(
                 'title' => '待审核报销'
                 ,'items' => $item_data
+                    ,'breadcrumbs' => array(
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa fa-home home-icon')
+                        ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
+                        ,array('url'  => '', 'name' => '待审批的报告', 'class' => '')
+                    ),
             ));
     }
 

@@ -17,7 +17,7 @@
 
 <div class="page-content">
     <div class="page-content-area">
-        <form role="form" action="<?php echo base_url('reports/create');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" >
+        <form role="form" action="<?php echo base_url('reports/create');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
             <div class="row">
                 <div class="container">
                     <div class="row">
@@ -91,13 +91,18 @@ foreach($items as $i){
                             </div>
 
 
+                            <input type="hidden" id="renew" value="0" name="renew">
+                            <input type="reset" style="display:none;" id="reset">
+                            <div class="clearfix form-actions">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <a class="btn btn-white btn-primary renew" data-renew="1"><i class="ace-icon fa fa-save "></i>提交</a>
 
-                            <div class="form-group" style="margin-bottom: 10px;min-weight:40px;">
-                                <center>
-                                    <button class="btn btn-success">提交</button>
-                                </center>
+                                    <a class="btn btn-white btn-default renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
+
+                                    <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
+                                </div>
                             </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -167,6 +172,13 @@ $(document).ready(function(){
     }
      */
 
+    $('.renew').click(function(){
+        $('#renew').val($(this).data('renew'));
+        $('#mainform').submit();
+    });
+    $('.cancel').click(function(){
+        $('#reset').click();
+    });
 
 });
 </script>

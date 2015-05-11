@@ -136,6 +136,10 @@ class REIM_Controller extends CI_Controller{
             $custom_data['profile'] = $profile;
         }
 
+        $custom_data['groupname'] = $this->session->userdata('groupname');
+        log_message("debug", "Get From Cache =====================");
+        log_message("debug", $custom_data['groupname']);
+        log_message("debug", "Get From Cache =====================");
         $this->config->load('apps', TRUE);
         $custom_data['appname'] = $this->config->item('appname');
         $custom_data['base_url'] = base_url();

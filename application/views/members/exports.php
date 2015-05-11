@@ -3,7 +3,7 @@
 
 <div class="page-content">
     <div class="page-content-area">
-        <form role="form" class="form-horizontal">
+        <form action="<?php echo base_url('members/imports'); ?>" method="post" enctype="multipart/form-data" id="imports" >
             <div class="row">
                 <div class="col-xs-12 col-sm-12">
                     <div class="form-group">
@@ -29,7 +29,8 @@
                     <div class="space-4"></div>
                     <div class="form-group">
                         <div class=" col-md-9">
-                            <a class="btn btn-primary renew" data-renew="1"><i class="ace-icon glyphicon glyphicon-log-in bigger-110"></i>导出</a>
+                                <input type="file" id="memebers" name="members" style="display:none;">
+                                <a class="btn btn-primary upload" data-renew="1"><i class="ace-icon glyphicon glyphicon-log-in bigger-110"></i>导入</a>
                         </div>
                     </div>
                 </div>
@@ -38,3 +39,18 @@
     </div>
 </div>
 
+<script language="javascript">
+$(document).ready(function(){
+    $('#memebers').on('change', function(){
+        console.log("1");
+        $('#imports').submit();
+        console.log("1");
+    });
+    $('.upload').click(function(){
+        try{
+            $('#memebers').click();
+        }catch(e){
+        }
+    });
+});
+</script>

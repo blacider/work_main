@@ -1,4 +1,4 @@
-<div id="navbar" class="navbar navbar-default">
+<div id="navbar" class="navbar navbar-default" style="background:#2C3E50;">
 			<script type="text/javascript">
 				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
 			</script>
@@ -15,7 +15,17 @@
 				<div class="navbar-header pull-left">
 					<a href="#" class="navbar-brand">
 						<small>
-                            <img src="/static/images/logo.icon.png" class="logoimg" />
+                            <div>
+                                <div style="float:left;vertical-align:top;min-height:25px;margin-top:2px">
+                                    <img src="/static/images/logo_1.png" /> 
+                                </div>
+                                <div style="float:right;margin-left:10px;margin-top:5px;font-size:14px;font-weight:normal">
+                                    <?php if($groupname) { echo " · &nbsp;&nbsp;" . $groupname;} ?>
+                                </div>
+                                <div style="float:right;margin-left:10px;margin-top:3px;">
+                                    云报销 
+                                </div>
+                            </div>
 						</small>
 					</a>
 				</div>
@@ -105,11 +115,10 @@ if($user->nickname){
 ?>
 
 						<!-- #section:basics/navbar.user_menu -->
-						<li class="light-blue">
-							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+						<li class="light-blue" style="background:#2C3E50">
+							<a data-toggle="dropdown" href="#" class="dropdown-toggle" style="background:#2C3E50">
                                 <img class="nav-user-photo" src="<?php echo $user['avatar']; ?>">
-								<span class="user-info">
-									<small>欢迎</small>
+								<span class="user-info" style="top:13px;">
                                     <?php echo $username; ?>
 								</span>
 
@@ -118,15 +127,8 @@ if($user->nickname){
 
 							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 								<li>
-									<a href="#">
-										<i class="ace-icon fa fa-cog"></i>
-										Settings
-									</a>
-								</li>
-
-								<li>
 									<a href="profile.html">
-										<i class="ace-icon fa fa-user"></i>
+										<i class="ace-icon fa fa-info-circle"></i>
 										个人信息
 									</a>
 								</li>
@@ -163,8 +165,8 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 
     <li class="hsub" id="items" >
     <a href="#" class="dropdown-toggle">
-        <i class="menu-icon fa fa-desktop"></i>
-        <span class="menu-text"> 费用管理 </span>
+        <i class="menu-icon fa fa-list-alt"></i>
+        <span class="menu-text"> 消费 </span>
 
         <b class="arrow fa fa-angle-down"></b>
     </a>
@@ -173,7 +175,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         <li class="hsub" id="newitem">
         <a href="<?php echo base_url('items/newitem'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
-            新建费用
+            新建消费
         </a>
 
         <b class="arrow"></b>
@@ -182,7 +184,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         <li class="hsub"  id="index">
         <a href="<?php echo base_url('items'); ?>">
             <i class="menu-icon fa fa-caret-right"></i>
-            消费列表
+            我的消费
         </a>
 
         <b class="arrow"></b>
@@ -196,7 +198,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 
     <li class="hsub" id="reports">
     <a href="#" class="dropdown-toggle">
-        <i class="menu-icon fa fa-desktop"></i>
+        <i class="menu-icon fa fa-file-text"></i>
         <span class="menu-text"> 报告 </span>
 
         <b class="arrow fa fa-angle-down"></b>
@@ -215,7 +217,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         <li class="hsub" id="index">
         <a href="<?php echo base_url('reports'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
-            报告列表
+            我的报告
         </a>
 
         <b class="arrow"></b>
@@ -224,7 +226,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         <li class="hsub" id="audit">
         <a href="<?php echo base_url('reports/audit'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
-            审批报告列表
+            收到的报告
         </a>
 
         <b class="arrow"></b>
@@ -236,35 +238,32 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 
 
 
-<li class="rsmenu" id="bills">
-<a href="<?php echo base_url('bills'); ?>">
-<i class="menu-icon fa fa-money"></i>
-<span class="menu-text"> 账单管理 </span>
-</a>
-
-<b class="arrow"></b>
-</li>
-
 
 
 
     <li class="hsub" id="members">
     <a href="#" class="dropdown-toggle">
-        <i class="menu-icon fa fa-desktop"></i>
-        <span class="menu-text"> 成员管理 </span>
+        <i class="menu-icon fa fa-users"></i>
+        <span class="menu-text"> 员工&部门 </span>
 
         <b class="arrow fa fa-angle-down"></b>
     </a>
     <b class="arrow"></b>
     <ul class="submenu nav-show" style="display: block;">
-        <li class="hsub" id="add">
-        <a href="<?php echo base_url('members/add'); ?>" >
+        <li class="hsub" id="index">
+        <a href="<?php echo base_url('members/index'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
-            新建部门
+            员工列表
+        </a>
+        <b class="arrow"></b>
+        </li>
+        <li class="rsmenu" id="groups">
+        <a href="<?php echo base_url('members/groups'); ?>">
+            <i class="menu-icon fa fa-caret-right"></i>
+            <span class="menu-text"> 部门列表 </span>
         </a>
 
         <b class="arrow"></b>
-
         </li>
         <li class="hsub" id="newmember">
         <a href="<?php echo base_url('members/newmember'); ?>" >
@@ -275,19 +274,19 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         <b class="arrow"></b>
 
         </li>
-        <li class="hsub" id="index">
-        <a href="<?php echo base_url('members/index'); ?>" >
+        <li class="hsub" id="add">
+        <a href="<?php echo base_url('members/add'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
-            员工列表
+            添加部门
         </a>
 
         <b class="arrow"></b>
 
         </li>
-        <li class="hsub" id="audit">
+        <li class="hsub" id="export">
         <a href="<?php echo base_url('members/export'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
-            导入导出员工
+            导入/导出员工
         </a>
 
         <b class="arrow"></b>
@@ -298,10 +297,19 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 
 
 
+<li class="rsmenu" id="bills">
+<a href="<?php echo base_url('bills'); ?>">
+<i class="menu-icon fa fa-money"></i>
+<span class="menu-text"> 账单 </span>
+</a>
+
+<b class="arrow"></b>
+</li>
 
 
 
 
+<!--
 
 <li class="rsmenu" id="groups">
 <a href="<?php echo base_url('groups'); ?>">
@@ -320,6 +328,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 
 <b class="arrow"></b>
 </li>
+-->
 
 
 </ul>
@@ -344,6 +353,53 @@ try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
 <div class="main-content">
 
 
+    <div class="breadcrumbs" id="breadcrumbs">
+<script type="text/javascript">
+try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+</script>
+
+<ul class="breadcrumb" style="margin-top: 10px;">
+<?php 
+foreach($breadcrumbs as $b){
+?>
+<?php if("" == $b['url']) { ?>
+    <li class="active">
+    <?php } else { ?>
+    <li>
+    <?php } ?>
+    <?php if("" != $b['class']) { ?>
+    <i class="<?php echo $b['class']; ?>"></i>
+    <?php  } 
+
+    if("" != $b['url']) {
+    ?>
+    <a href="<?php echo $b['url']; ?>"><?php echo $b['name']; ?></a>
+    <?php } else { ?>
+    <?php echo $b['name']; ?>
+    <?php }?>
+
+    </li>
+<?php
+}
+?>
+
+</ul><!-- /.breadcrumb -->
+
+<!-- #section:basics/content.searchbox -->
+<!--
+<div class="nav-search" id="nav-search">
+    <form class="form-search">
+        <span class="input-icon">
+            <input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off">
+            <i class="ace-icon fa fa-search nav-search-icon"></i>
+        </span>
+    </form>
+</div>
+-->
+<!-- /.nav-search -->
+
+<!-- /section:basics/content.searchbox -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
 
 
 
@@ -358,14 +414,17 @@ $(document).ready(function(){
     var _path = window.location.pathname;
     var buf = _path.split("/");
     buf.shift();
-    console.log(buf);
     var _controller = 'items';
     var _method = 'index';
     if(buf.length > 0) {
-    _controller = buf[0];
+        _controller = buf[0];
     }
     if(buf.length > 1) {
-    _method = buf[1];
+        _method = buf[1];
+    }
+    // 导入导出有步骤，合并在一起
+    if(_controller == "members" && _method == "imports"){
+        _method = "export";
     }
     $('.hsub').each(function(){
         $(this).removeClass('active open');

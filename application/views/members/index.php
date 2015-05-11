@@ -64,10 +64,8 @@ $(document).ready(function(){
             dataType: 'json',
             success: function(data) {
                 //data = eval("(" + data + ")");
-                dbdata = data.data;
                 var _data = Array();
-                $(dbdata).each(function(idx, val){
-                    console.log(val);
+                $(data).each(function(idx, val){
                     _data.push({name : val.name, type : 'item', additionalParameters : {id : val.id}});
                 });
                 var treeDataSource = new DataSource({data : _data});

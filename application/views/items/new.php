@@ -17,7 +17,7 @@
 
 <div class="page-content">
     <div class="page-content-area">
-        <form role="form" action="<?php echo base_url('items/create');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" >
+        <form role="form" action="<?php echo base_url('items/create');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="itemform">
             <div class="row">
                 <div class="container">
                     <div class="row">
@@ -100,12 +100,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" style="margin-bottom: 10px;min-weight:40px;">
-                                <center>
-                                    <button class="btn btn-success">提交</button>
-                                </center>
+
+                            <input type="hidden" id="renew" value="0" name="renew">
+                            <div class="clearfix form-actions">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
+                                    <a class="btn btn-white btn-default renew" data-renew="1"><i class="ace-icon fa fa-check "></i>保存再记</a>
+
+                                    <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
+                                </div>
                             </div>
-                            </div>
+                            <input type="reset" style="display:none;" id="reset">
+
                         </div>
                     </div>
                 </div>
@@ -173,6 +179,13 @@ $(document).ready(function(){
         alert('Dropzone.js does not support older browsers!');
     }
 
+    $('.renew').click(function(){
+        $('#renew').val($(this).data('renew'));
+        $('#itemform').submit();
+    });
+    $('.cancel').click(function(){
+        $('#reset').click();
+    });
 
 });
 </script>

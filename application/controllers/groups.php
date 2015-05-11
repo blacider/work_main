@@ -17,7 +17,7 @@ class Groups extends REIM_Controller {
         $uids = implode(",", $uids);
         $info = $this->ug->update_data($uids, $name);
         if($info['status'] > 0){
-            redirect(base_url('groups/index'));
+            redirect(base_url('members/groups'));
         }
 
     }
@@ -61,6 +61,9 @@ class Groups extends REIM_Controller {
         if($oper == "edit"){
             die($this->groups->update_profile($nickname, $email, $phone, $credit_card, $admin, $id));
         }
+        if($oper == "del") {
+            die($this->groups->delete_group($id));
+        }
 
 
 
@@ -73,6 +76,10 @@ class Groups extends REIM_Controller {
         $group = $this->ug->get_my_list();
         log_message("debug", "LISTDATA:" . json_encode($group));
         if($group['status']){
+            foreach($group['data'] as &$s){
+                $s['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
+                    . '<span class="ui-icon ui-icon-trash tdel" data-id="' . $s['id'] . '"></span></div>';
+            }
             die(json_encode($group['data']));
         }
     }
@@ -113,7 +120,7 @@ class Groups extends REIM_Controller {
         } else {
             $this->session->set_userdata('last_error', '创建失败');
         }
-        redirect(base_url('groups'));
+        redirect(base_url('members/groups'));
     }
 
     public function show_exports(){

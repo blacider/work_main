@@ -37,7 +37,14 @@ class Login extends REIM_Controller {
                 redirect(base_url('login'));
                 die();
             }
-            redirect(base_url('groups'));
+            $data = $user['data']['profile'];
+            $__g = '';
+            if(array_key_exists('group_name', $data)){
+                $__g = $data['group_name'];
+            }
+            $this->session->set_userdata("groupname", $__g);
+            // 获取一下组信息，然后设置一下
+            redirect(base_url('items'));
         }
     }
 

@@ -13,6 +13,7 @@
         <link rel="icon" href="/static/favicon.ico">
         <link rel="stylesheet" type="text/css" href="/static/css/main.login.css" />
 <script type="text/javascript" src="/static/ace/js/jquery.min.js"></script>
+<script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
 <!--[if IE 6]>
 <script src="js/DD_belatedPNG_0.0.8a-min.js"></script>
 <script>
@@ -34,10 +35,22 @@ DD_belatedPNG.fix('*');
                                                     </div>
                                                 </form>
                                             </div>
+                                            <div id="qr_weixin"></div>
                                         </div>
 <script language="javascript">
 
 $(document).ready(function(){
+    /*
+    var obj = new WxLogin({
+        id:"qr_weixin", 
+            appid: "wx0900af80a9517d1f", 
+            scope: "snsapi_userinfo,snsapi_login", 
+            redirect_uri: encodeURIComponent("http://dadmin.cloudbaoxiao.com/oauth"),
+            state: "",
+            style: "black",
+            href: ""
+    });
+     */
     $('#login_form').keydown(function(e){  
         if(e.keyCode==13){  
             $('#login_form').submit();
