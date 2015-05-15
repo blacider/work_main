@@ -135,6 +135,7 @@ jQuery(grid_selector).jqGrid({
     mtype: "GET",
     datatype: "local",
     height: 250,
+    loadtext: '',
     colNames:['昵称','邮箱', '手机', '银行卡', '权限'],
     loadonce: true,
     rownumbers: false, // show row numbers

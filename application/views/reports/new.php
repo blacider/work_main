@@ -9,9 +9,10 @@
 <script src="/static/ace/js/dropzone.min.js"></script>
 
 
-<script src="/static/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="/static/ace/js/date-time/moment.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
-<script  type="text/javascript" src="/static/ace/js/date-time/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>
+<script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script>
+
 
 
 
@@ -57,11 +58,13 @@
                                     <table class="table table-border">
                                         <tr>
                                             <thead>
-                                                <td><input type="checkbox" class="form-controller"></td>
+                                                <td>
+                                                    <!-- <input type="checkbox" class="form-controller"> -->
+                                                </td>
                                                 <td>消费时间</td>
-                                                <td>类别</td>
-                                                <td>金额</td>
                                                 <td>类型</td>
+                                                <td>金额</td>
+                                                <td>类别</td>
                                                 <td>商家</td>
                                                 <td>操作</td>
                                             </thead>
@@ -73,15 +76,26 @@ foreach($items as $i){
                                         <tr>
                                             <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller"></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
-                                            <td><?php echo $i['category'];  echo $i['status'];?></td>
+                                            <td><?php echo $i['cate_str'];?></td>
                                             <td><?php echo $i['amount']; ?></td>
-                                            <td><?php echo $i['prove_ahead']; ?></td>
+                                            <td><?php 
+        
+                                                $buf = '';
+switch($i['prove_ahead']) {
+case 0 : $buf = '报销';break;
+case 1 : $buf = '借款';break;
+case 2 : $buf = '预算';break;
+} 
+echo $buf;
+
+
+                                                ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td>
                                                 <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
-                                                    <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="3905"></span>
-                                                    <span class="ui-icon green ui-icon-pencil tedit" data-id="3905"></span>
-                                                    <span class="ui-icon ui-icon-trash red  tdel" data-id="3905"></span>
+                                                    <span class="ui-icon ui-icon ace-icon fa fa-search-plus txdetail" data-id="<?php echo $i['id']; ?>"></span>
+                                                    <span class="ui-icon green ui-icon-pencil txedit" data-id="<?php echo $i['id']; ?>"></span>
+                                                    <span class="ui-icon ui-icon-trash red  txdel" data-id="<?php echo $i['id']; ?>"></span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -90,12 +104,11 @@ foreach($items as $i){
                                 </div>
                             </div>
 
-
                             <input type="hidden" id="renew" value="0" name="renew">
                             <input type="reset" style="display:none;" id="reset">
-                            <div class="clearfix form-actions">
+                            <div class="clearfix form-actions col-md-10">
                                 <div class="col-md-offset-3 col-md-9">
-                                    <a class="btn btn-white btn-primary renew" data-renew="1"><i class="ace-icon fa fa-save "></i>提交</a>
+                                    <a class="btn btn-white btn-primary renew" data-renew="1"><i class="ace-icon fa fa-check"></i>提交</a>
 
                                     <a class="btn btn-white btn-default renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
 
@@ -138,6 +151,24 @@ $(document).ready(function(){
             })
         }).trigger('resize.chosen');
 
+    $('.txdetail').each(function(){
+        $(this).click(function(){
+            var _id = $(this).data('id');
+            location.href = __BASE + "items/show/" + _id;
+        });
+    $('.txdel').each(function() {
+        $(this).click(function(){
+            var _id = $(this).data('id');
+            location.href = __BASE + "items/del/" + _id;
+        });
+    });
+    $('.txedit').each(function() {
+        $(this).click(function(){
+            var _id = $(this).data('id');
+            location.href = __BASE + "items/edit/" + _id;
+        });
+    });
+    });
     /*
     Dropzone.autoDiscover = false;
     try {

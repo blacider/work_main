@@ -17,7 +17,7 @@ function bind_event(){
     $('.tedit').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
-            location.href = __BASE + "items/edit/" + _id;
+            location.href = __BASE + "members/editgroup/" + _id;
         });
     });
 }
@@ -34,6 +34,7 @@ jQuery(grid_selector).jqGrid({
     caption: "公司员工",
     editurl: __BASE + 'groups/save',
     datatype: "json",
+    loadtext: '',
     autowidth: true,
 
     colModel:[

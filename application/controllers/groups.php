@@ -19,7 +19,6 @@ class Groups extends REIM_Controller {
         if($info['status'] > 0){
             redirect(base_url('members/groups'));
         }
-
     }
 
     public function index(){

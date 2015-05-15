@@ -8,13 +8,31 @@
 <div class="col-xs-4">
     <div class="panel panel-primary">
         <div class="panel-heading"><h3 class="panel-title default">组织架构</h3></div>
-            <div class="panel-body">
-<div id="grouptree" class="tree"></div>
-                      </div>
-                  </div>
+        <div class="panel-body">
+            <div id="grouptree" class="tree"></div>
+        </div>
+    </div>
 </div>
 <div class="col-xs-8">
-<table id="grid-table"></table>
+    <!--
+    <table id="grid-table"></table>
+    -->
+    <div class="panel panel-primary">
+        <div class="panel-heading"><h3 class="panel-title default" id="gname">人员信息</h3></div>
+        <div class="panel-body">
+            <table class="table" id="gtable">
+                <tr>
+                    <th>昵称</th>
+                    <th>邮箱</th>
+                    <th>手机</th>
+                    <th>银行卡</th>
+                    <th>权限</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
 <div id="grid-pager"></div>
 </div>
 </div>
@@ -33,7 +51,6 @@ var __BASE = "<?php echo $base_url; ?>";
 
 </script>
 <script src="/static/js/base.js" ></script>
-<script src="/static/js/members.js" ></script>
 <script language="javascript">
 var DataSource = function (options) {
     this._formatter = options.formatter;
@@ -57,13 +74,88 @@ DataSource.prototype = {
             }
         }
 };
+
+
+var ___GID = 0;
+function update_admin(_admin, uid){
+    $.ajax({
+        url: __BASE + "/members/setadmin/" + uid + "/" + _admin,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                    show_notify('设置用户信息成功');
+                    load_group();
+            },
+                error: function(data) {
+                    show_notify('设置用户信息失败');
+                }
+    });
+}
+
+
+function load_group(gid){
+    if(gid > 0) {
+        ___GID = gid;
+    } else { 
+        gid = ___GID;
+    }
+    $.ajax({
+        url: __BASE + "/members/singlegroup/" + gid,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                if(!data.status) {
+                    show_notify('获取信息失败');
+                } else {
+                    show_notify('获取信息成功');
+                    data = data.data;
+                    var _group = data.group;
+                    var _member = data.member;
+                    $('#gname').html(_group.name);
+                    $('#gtable').html("");
+                    console.log(_member);
+
+                var _th = '<tr>'
+                    + '<th>昵称</th>'
+                    + '<th>邮箱</th>'
+                    + '<th>手机</th>'
+                    + '<th>银行卡</th>'
+                    + '<th>权限</th>'
+                    + '</tr>';
+                    $(_th).appendTo($('#gtable'));
+
+                    $(_member).each(function(idx, item){
+                        var _c = 'gray';
+                        var _p = '员工';
+                    switch(item.admin) {
+                    case '0' : {
+                        _p = '点击设置为管理员'; 
+                    }; break;
+                    case '1' : {
+                        _c = 'green';
+                        _p = '点击设置为员工'; 
+                    }; break;
+                    }
+                _th = '<tr>'
+                    + '<td><a href="' + __BASE + '/members/editmember/' + item.id + '">' + item.nickname+ '</a></td>'
+                    + '<td>' + item.email + '</td>'
+                    + '<td>' + item.phone + '</td>'
+                    + '<td>' + item.credit_card+ '</td>'
+                    + '<td><a href="javascript:void(0)" alt="' + _p + '" data-id="' + item.id + '" onclick="update_admin(' + item.admin + ', '+ item.id +')"><i alt="' + _p + '" class="ace-icon align-top bigger-125 fa fa-user ' + _c + '"></i></td>'
+                    + '</tr>';
+                    $(_th).appendTo($('#gtable'));
+
+                    });
+                }
+            }
+            });
+}
 $(document).ready(function(){
     $.ajax({
         url: __BASE + "/members/listgroup",
             method: 'GET',
             dataType: 'json',
             success: function(data) {
-                //data = eval("(" + data + ")");
                 var _data = Array();
                 $(data).each(function(idx, val){
                     _data.push({name : val.name, type : 'item', additionalParameters : {id : val.id}});
@@ -84,6 +176,8 @@ $(document).ready(function(){
                     .on('selected', function(e, result) {
                         var _data = result.info[0];
                         console.log(_data);
+                        var _gid  =  _data.additionalParameters.id;
+                        load_group(_gid);
                     })
                     .on('unselected', function(e) { })
                     .on('opened', function(e) { })
@@ -91,57 +185,5 @@ $(document).ready(function(){
 
             }
     });
-    /*
-    var treeDataSource = new DataSource({
-        data: [
-            { 
-                name: 'Folder 1', type: 'folder', additionalParameters: { id: 'F1' },
-                    data: [
-            { name: 'Sub Folder 1', type: 'folder', additionalParameters: { id: 'FF1' } },
-            { name: 'Sub Folder 2', 
-            data: [
-            {name: 'sub sub folder 1', type: 'folder', additionalParameters: { id: 'FF21' }},
-            {name: 'sub sub item', type: 'item', additionalParameters: { id: 'FI2' }}
-            ], 
-            type: 'folder', additionalParameters: { id: 'FF2' }
-            },
-            { name: 'Item 2 in Folder 1', type: 'item', additionalParameters: { id: 'FI2' } }
-            ]
-            },
-                    { name: 'Folder 2', type: 'folder', additionalParameters: { id: 'F2' } },
-                    { name: 'Item 1', type: 'item', additionalParameters: { id: 'I1' } },
-                    { name: 'Item 2', type: 'item', additionalParameters: { id: 'I2' } }
-            ],
-            delay: 400
-    });
-
-    $('#grouptree').ace_tree({
-        dataSource: treeDataSource ,
-        multiSelect:false,
-        loadingHTML:'<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
-        'open-icon' : 'ace-icon tree-minus',
-        'close-icon' : 'ace-icon tree-plus',
-        'selectable' : true,
-        'selected-icon' : 'ace-icon fa fa-check',
-        'unselected-icon' : 'ace-icon fa fa-times'
-    });
-     */ 
-
-
-
-
-                        /**
-                            $('#tree1').on('loaded', function (evt, data) {
-                            });
-
-                            $('#tree1').on('opened', function (evt, data) {
-                            });
-
-                            $('#tree1').on('closed', function (evt, data) {
-                            });
-
-                            $('#tree1').on('selected', function (evt, data) {
-                            });
-                         */
 });
 </script>

@@ -16,14 +16,15 @@
 					<a href="#" class="navbar-brand">
 						<small>
                             <div>
-                                <div style="float:left;vertical-align:top;min-height:25px;margin-top:2px">
-                                    <img src="/static/images/logo_1.png" /> 
+                                <div class="home-logo"></div>
+                                <!-- 
+                                <div style="
+                                    float:left;vertical-align:top;min-height:25px;margin-top:2px">
+                                    <img src="/static/images/logo_1.png" style="min-height:25px;height:25px;"/> 
                                 </div>
+                                -->
                                 <div style="float:right;margin-left:10px;margin-top:5px;font-size:14px;font-weight:normal">
                                     <?php if($groupname) { echo " · &nbsp;&nbsp;" . $groupname;} ?>
-                                </div>
-                                <div style="float:right;margin-left:10px;margin-top:3px;">
-                                    云报销 
                                 </div>
                             </div>
 						</small>
@@ -114,10 +115,16 @@ if($user->nickname){
 }
 ?>
 
+<?php 
+$path = "http://reim-avatar.oss-cn-beijing.aliyuncs.com/" . $user['apath'];
+if("" == $user['apath']) {
+    $path = base_url('/static/default.png');
+}
+?>
 						<!-- #section:basics/navbar.user_menu -->
 						<li class="light-blue" style="background:#2C3E50">
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle" style="background:#2C3E50">
-                                <img class="nav-user-photo" src="<?php echo $user['avatar']; ?>">
+                                <img class="nav-user-photo" src="<?php echo $path; ?>">
 								<span class="user-info" style="top:13px;">
                                     <?php echo $username; ?>
 								</span>
@@ -127,7 +134,7 @@ if($user->nickname){
 
 							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 								<li>
-									<a href="profile.html">
+                                <a href="<?php echo base_url('users/profile'); ?>">
 										<i class="ace-icon fa fa-info-circle"></i>
 										个人信息
 									</a>
@@ -161,6 +168,38 @@ if($user->nickname){
 try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 </script>
 
+<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+    <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+        <button class="btn btn-success img-circle">
+            <i class="ace-icon fa fa-signal"></i>
+        </button>
+
+        <button class="btn btn-info">
+            <i class="ace-icon fa fa-pencil"></i>
+        </button>
+
+        <!-- #section:basics/sidebar.layout.shortcuts -->
+        <button class="btn btn-warning">
+            <i class="ace-icon fa fa-users"></i>
+        </button>
+
+        <button class="btn btn-danger">
+            <i class="ace-icon fa fa-cogs"></i>
+        </button>
+
+        <!-- /section:basics/sidebar.layout.shortcuts -->
+    </div>
+
+    <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+        <span class="btn btn-success"></span>
+
+        <span class="btn btn-info"></span>
+
+        <span class="btn btn-warning"></span>
+
+        <span class="btn btn-danger"></span>
+    </div>
+</div>
 <ul class="nav nav-list">
 
     <li class="hsub" id="items" >
@@ -226,7 +265,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         <li class="hsub" id="audit">
         <a href="<?php echo base_url('reports/audit'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
-            收到的报告
+             待审批的报告
         </a>
 
         <b class="arrow"></b>
@@ -265,6 +304,9 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 
         <b class="arrow"></b>
         </li>
+<?php 
+if($profile['admin'] == 1){
+?>
         <li class="hsub" id="newmember">
         <a href="<?php echo base_url('members/newmember'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
@@ -274,6 +316,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         <b class="arrow"></b>
 
         </li>
+
         <li class="hsub" id="add">
         <a href="<?php echo base_url('members/add'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
@@ -292,10 +335,14 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         <b class="arrow"></b>
 
         </li>
+        <?php } ?>
     </ul>
     </li>
 
 
+<?php 
+if($profile['admin'] == 1){
+?>
 
 <li class="rsmenu" id="bills">
 <a href="<?php echo base_url('bills'); ?>">
@@ -305,6 +352,9 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 
 <b class="arrow"></b>
 </li>
+<?php 
+}
+?>
 
 
 
@@ -370,7 +420,6 @@ foreach($breadcrumbs as $b){
     <?php if("" != $b['class']) { ?>
     <i class="<?php echo $b['class']; ?>"></i>
     <?php  } 
-
     if("" != $b['url']) {
     ?>
     <a href="<?php echo $b['url']; ?>"><?php echo $b['name']; ?></a>

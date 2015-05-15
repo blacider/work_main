@@ -25,7 +25,7 @@
                         <div class="col-xs-12 col-sm-12">
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">部门名称</label>
-                                <div class="col-xs-9 col-sm-9">
+                                <div class="col-xs-6 col-sm-6">
                                     <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname">
                                 </div>
                             </div>
@@ -33,7 +33,7 @@
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">员工</label>
-                                <div class="col-xs-9 col-sm-9">
+                                <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" name="uids[]" multiple="multiple" data-placeholder="请选择标签">
                                     <?php 
                                     foreach($member as $m){

@@ -68,15 +68,6 @@ class Group_Model extends Reim_Model {
         return $buf;
     }
 
-    public function delete_group($id) {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $data = array();
-		$url = $this->get_url('user_group/' . $id);
-		$buf = $this->do_Delete($url, $data, $jwt);
-        log_message("debug", "model:" . $buf);
-        return $buf;
-    }
 
 }
 

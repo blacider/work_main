@@ -5,6 +5,7 @@ class Members extends REIM_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('usergroup_model', 'ug');
+        $this->load->model('user_model', 'users');
         $this->load->model('group_model', 'groups');
     }
 
@@ -31,8 +32,9 @@ class Members extends REIM_Controller {
                 ,'group' => $ginfo
                 ,'members' => $gmember
                     ,'breadcrumbs' => array(
-                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa fa-home home-icon')
-                        ,array('url'  => '', 'name' => '成员管理', 'class' => '')
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                        ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
+                        ,array('url'  => '', 'name' => '员工列表', 'class' => '')
                     ),
             )
         );
@@ -66,9 +68,9 @@ class Members extends REIM_Controller {
                 ,'group' => $ginfo
                 ,'members' => $gmember
                 ,'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa fa-home home-icon')
-                    ,array('url'  => base_url('members/index'), 'name' => '成员管理', 'class' => '')
-                    ,array('url'  => '', 'name' => '部门管理', 'class' => '')
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                        ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
+                        ,array('url'  => '', 'name' => '部门列表', 'class' => '')
                 ),
             )
         );
@@ -137,18 +139,21 @@ class Members extends REIM_Controller {
         redirect(base_url('groups'));
     }
 
-    public function setadmin($uid = 0){
+    public function setadmin($uid = 0, $type = 0){
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-        $ids = $this->input->post('data');
-        if(count($ids) == 0){
-            die("");
+        //$ids = $this->input->post('data');
+
+        if($type == 0){
+            $type = 2; 
+        } else {
+            $type = 1; 
         }
-        $_ids = implode(',', $ids);
-        $_type = $this->input->post('type');
-        $info = $this->groups->setadmin($_ids, $_type);
-        redirect(base_url('groups'));
+        $_ids = implode(',', array($uid));
+        //$_type = $this->input->post('type');
+        $info = $this->groups->setadmin($_ids, $type);
+        die($info);
     }
 
     public function create(){
@@ -187,9 +192,9 @@ class Members extends REIM_Controller {
                 'title' => '成员组管理',
                 'member' => $gmember
                     ,'breadcrumbs' => array(
-                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa fa-home home-icon')
-                        ,array('url'  => base_url('members/index'), 'name' => '成员管理', 'class' => '')
-                        ,array('url'  => '', 'name' => '新建部门', 'class' => '')
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                        ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
+                        ,array('url'  => '', 'name' => '添加部门', 'class' => '')
                     ),
             )
         );
@@ -200,13 +205,13 @@ class Members extends REIM_Controller {
         $rows = $this->input->get('rows');
         $sort = $this->input->get('sord');
         $group = $this->ug->get_my_list();
-        log_message("debug", "LISTDATA:" . json_encode($group));
         /// 结构好奇怪啊
         //
         if($group['status']){
             //die(json_encode(array('data' => $group['data'])));
             foreach($group['data'] as &$s){
                 $s['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
+                    . '<span class="ui-icon ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>'
                     . '<span class="ui-icon ui-icon-trash tdel" data-id="' . $s['id'] . '"></span></div>';
             }
             die(json_encode($group['data']));
@@ -221,9 +226,9 @@ class Members extends REIM_Controller {
                 'title' => '成员组管理',
                 'groups' => $group['data']
                     ,'breadcrumbs' => array(
-                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa fa-home home-icon')
-                        ,array('url'  => base_url('members/index'), 'name' => '成员管理', 'class' => '')
-                        ,array('url'  => '', 'name' => '录入新员工资料', 'class' => '')
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                        ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
+                        ,array('url'  => '', 'name' => '添加员工', 'class' => '')
                     ),
             )
         );
@@ -261,9 +266,9 @@ class Members extends REIM_Controller {
                 'title' => '导出员工',
                 'groups' => $group['data']
                     ,'breadcrumbs' => array(
-                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa fa-home home-icon')
-                        ,array('url'  => base_url('members/index'), 'name' => '成员管理', 'class' => '')
-                        ,array('url'  => '', 'name' => '导入导出', 'class' => '')
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                        ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
+                        ,array('url'  => '', 'name' => '导入/导出员工', 'class' => '')
                     ),
             )
         );
@@ -353,9 +358,9 @@ class Members extends REIM_Controller {
                 'title' => '导入员工',
                 'members' => $data
                     ,'breadcrumbs' => array(
-                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa fa-home home-icon')
-                        ,array('url'  => base_url('members/index'), 'name' => '成员管理', 'class' => '')
-                        ,array('url'  => base_url('members/export'), 'name' => '导入/导出', 'class' => '')
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                        ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
+                        ,array('url'  => base_url('members/export'), 'name' => '导入/导出员工', 'class' => '')
                         ,array('url'  => '', 'name' => '确认导入', 'class' => '')
                     ),
             )
@@ -382,12 +387,97 @@ class Members extends REIM_Controller {
 
     public function delgroup($id = 0){
         if($id == 0) redirect(base_url('members/groups'));
-        $this->groups->delete_group($id);
+        $this->ug->delete_group($id);
         redirect(base_url('members/groups'));
 
     }
 
+    public function singlegroup($gid = 0) {
+        if(0 == $gid) {
+            die(json_encode(array('status' => false, 'msg' => '参数错误')));
+        }
+        $info = $this->ug->get_single_group($gid);
+        die($info);
+    }
 
+    public function editgroup($id = 0){
+        if($id == 0) redirect(base_url('members/groups'));
+        $group = $this->groups->get_my_list();
+        $ginfo = array();
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('ginfo', $group['data'])){
+                $ginfo = $group['data']['ginfo'];
+            }
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
+        $info = json_decode($this->ug->get_single_group($id), True);
+        if($info['status'] > 0){
+            $info = $info['data'];
+            $group = $info['group'];
+            $member = $info['member'];
+            $mid = array();
+            foreach($member as $m){
+                array_push($mid, $m['id']);
+            }
+            $this->bsload('members/edit_group',
+                array(
+                    'title' => '修改部门',
+                    'smember' => $mid
+                    ,'group' => $group
+                    ,'member' => $gmember
+                    ,'breadcrumbs' => array(
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                        ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
+                        ,array('url'  => '', 'name' => '修改部门', 'class' => '')
+                    ),
+                )
+            );
+        }
+        /*
+        $this->groups->delete_group($id);
+        redirect(base_url('members/groups'));
+         */
+    }
+
+
+    public function updategroup(){
+        $name = $this->input->post('gname');
+        $uids = $this->input->post('uids');
+        $gid = $this->input->post('gid');
+        $uids = implode(",", $uids);
+        $info = $this->ug->update_data($uids, $name, $gid);
+        if($info['status'] > 0){
+            redirect(base_url('members/groups'));
+        }
+    }
+
+
+    public function editmember($id = 0){
+        if($id == 0) {
+            redirect(base_url('members/index'));
+            exit();
+        }
+        $info = json_decode($this->users->reim_get_info($id), True);
+        $info =  $info['data'];
+        //print_r($info);
+        $this->bsload('user/profile',
+            array(
+                'title' => '个人管理'
+                ,'member' => $info
+                ,'self' => 0
+                ,'avatar_path' => $info['avatar']
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
+                    ,array('url'  => '', 'name' => '修改资料', 'class' => '')
+                ),
+            )
+        );
+    }
 }
 
 

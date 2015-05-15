@@ -16,58 +16,58 @@
                         <div class="col-xs-12 col-sm-12">
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">金额</label>
-                                <div class="col-xs-9 col-sm-9">
-                                    <label> ￥ <?php echo $item['amount']; ?> </label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="金额" value=" ￥<?php echo $item['amount']; ?> " disabled>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">分类</label>
-                                <div class="col-xs-9 col-sm-9">
-                                    <label> <?php echo $item['category']; ?> </label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="分类" value=" <?php echo $item['category']; ?> " disabled>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">消费时间</label>
-                                <div class="col-xs-9 col-sm-9">
-                                    <label> <?php echo $item['dt']; ?> </label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="消费时间" value=" <?php echo $item['dt']; ?> " disabled>
                                 </div>
                             </div>
 
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">商家</label>
-                                <div class="col-xs-9 col-sm-9">
-                                    <label> <?php echo $item['merchants']; ?> </label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="商家" value=" <?php echo $item['merchants']; ?> " disabled>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">标签</label>
-                                <div class="col-xs-9 col-sm-9">
+                                <div class="col-xs-6 col-sm-6">
 
-                                    <label> <?php echo $item['tags']; ?> </label>
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $item['tags']; ?> " disabled>
                                 </div>
                             </div>
 
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">类型</label>
-                                <div class="col-xs-9 col-sm-9">
-                                    <label> <?php echo $item['prove_ahead']; ?> </label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $item['prove_ahead']; ?> " disabled>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">留言</label>
-                                <div class="col-xs-9 col-sm-9">
-                                    <label> <?php echo $item['note']; ?> </label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $item['note']; ?> " disabled>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">照片</label>
-                                <div class="col-xs-9 col-sm-9 ">
+                                <div class="col-xs-6 col-sm-6 ">
                                     <div class="fallback">
                                         <?php foreach($item['images'] as $i){ ?>
                                         <div class="col-xs-6 col-md-3">
@@ -79,12 +79,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" style="margin-bottom: 10px;min-weight:40px;">
-                                <center>
-                                    <button class="btn gray" onclick="javascript:history.go(-1);">返回</button>
-                                    <a class="btn btn-success" href="<?php echo base_url('/items/edit/' . $item['id']); ?>">修改</a>
-                                </center>
-                            </div>
+
+<div class="clearfix form-actions col-sm-8 col-xs-8">
+                                <div class="col-md-offset-3 col-md-6">
+                                    <a class="btn btn-white btn-primary renew" href="<?php echo base_url('items/edit/' . $item['id']); ?>" data-renew="1"><i class="ace-icon fa fa-check"></i>修改</a>
+
+                                    <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>返回</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -122,5 +123,8 @@ $(document).ready(function(){
     };
 
     $('.fallback [data-rel="colorbox"]').colorbox(colorbox_params);
+    $('.cancel').click(function(){
+        history.go(-1);
+    });
 });
 </script>

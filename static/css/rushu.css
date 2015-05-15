@@ -6,6 +6,9 @@
     padding-bottom: 30px;
 }
 
+.ace-nav {
+    padding-top:2px !important;
+}
 .ace-nav .nav-user-photo{
     width: 40px;
     height: 40px;
@@ -14,4 +17,274 @@
 .logoimg {
     width: 80px;
     height: 30px;
+}
+
+
+.btn {
+    text-shadow: none !important;
+}
+
+
+.sidebar {
+    border-color: #5C6773 !important;
+    background-color:#5C6773 !important;
+
+
+}
+
+.nav-list>li .submenu>li.active:not(.open)>a {
+    background-color: #E63754 !important;
+}
+.nav-list>li {
+    border-color: #5C6773 !important;
+    background-color:#5C6773 !important;
+}
+.nav-list>li>a {
+    border-color: #5C6773 !important;
+    background-color:#5C6773 !important;
+    color:#fff !important;
+    font-size: 17px !important;
+    height: 50px !important;
+    padding-top: 16px !important;
+    padding-bottom: 14px !important;
+}
+ .nav-list>li .submenu>li>a {
+    border-color: #344556!important;
+    background-color:#344556!important;
+    color:#fff !important;
+ }
+ .nav-list>li>.submenu {
+     border: 0px !important;
+ }
+ .nav-list>li>.submenu:before {
+     border: 0px !important;
+ }
+ .nav-list>li>.submenu>li:before  {
+     border: 0px !important;
+ }
+.nav-list li.active>a {
+    /*background:#344556 !important;*/
+    border-color:#344556 !important;
+    border: 0px;
+ }
+
+.nav-list li.active>a:after {
+     border: 0px;
+ }
+
+
+ .breadcrumbs {
+     position: relative !important; 
+     z-index: auto !important; 
+     border-bottom: none !important; 
+     background-color: #F2F6FA !important; 
+     min-height: 51px !important; 
+     line-height: 50px !important; 
+     padding: 5px 12px 0 0 !important;
+
+ }
+ .breadcrumb>li>a {
+     display: inline-block !important; 
+     color: #FE575C !important;
+ }
+.breadcrumb>li, .breadcrumb>li.active { color: #34495E;  padding: 0 3px;}
+.breadcrumb>li+li:before {
+    color: #FE575C !important; 
+    content: "\f0da" !important; 
+}
+
+.nav-list>li>a:before {
+    border: 0px !important;
+}
+.nav-list li.active:after {
+    border: 0px !important;
+}
+
+.nav-list li a:before {
+    border: 0px !important;
+}
+.nav-list li:after {
+    border: 0px !important;
+}
+.nav-list li:before {
+    border: 0px !important;
+}
+
+.nav-list>li>.submenu:before, 
+.nav-list>li>.submenu>li:before {
+    border: 0px !important;
+}
+.nav-list>li>.submenu>li:before {
+    border: 0px !important;
+}
+.nav-list>li>.submenu:before  {
+    border: 0px !important;
+}
+.sidebar .sidebar-shortcuts  {
+    background-color:#5C6773 !important;
+    height: 68px !important;
+    min-height: 68px !important;
+    padding-top: 13px !important;
+    padding-bottom: 10px !important;
+    border-bottom: 1px solid #BDC3C7 !important;
+
+}
+.sidebar .sidebar-shortcuts-large>.btn {
+    height: 40px !important;
+    width: 40px !important;
+    margin-left: 10px;
+    -webkit-border-radius: 40px;
+    -moz-border-radius: 40px;
+    border-radius: 40px;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffbcc9d5', endColorstr='#ffabbac3', GradientType=0)!important;
+    border-top-left-radius: 42px;
+    border-top-right-radius: 42px;
+}
+.nav-list li a .menu-icon  {
+    vertical-align: top !important;
+}
+.nav-list li:before  {
+    background-color:#fff;
+    width: 0px;
+}
+
+.nav-list li.active a:after {
+    border: 0px !important;
+}
+
+.nav-list li a:after {
+    border: 0px !important;
+}
+
+
+.home-logo {
+    background-image: url(../images/icon_logo.png);
+    background-image: -webkit-image-set(url(../images/icon_logo.png) 1x,url(../images/icon_logo@2x.png) 2x);
+    background-image: -moz-image-set(url(../images/icon_logo.png) 1x,url(../images/icon_logo@2x.png) 2x);
+    background-image: -o-image-set(url(../images/icon_logo.png) 1x,url(../images/icon_logo@2x.png) 2x);
+    background-image: -ms-image-set(url(../images/icon_logo.png) 1x,url(../images/icon_logo@2x.png) 2x);
+    width: 101px;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 30px;
+    float:left;
+}
+.nav-list>li:hover{
+    border: 0px !important;
+}
+
+.nav-list>li{
+    border: 0px !important;
+}
+
+.nav-list>li a{
+    border: 0px !important;
+}
+.nav-list>li a:hover{
+    border: 0px !important;
+}
+.nav-list>li .submenu>li>a {
+    border-top-width: 0px;
+}
+
+
+.sidebar.h-sidebar .sidebar-shortcuts-large {
+    border: 0px !important;
+}
+
+.sidebar.responsive:before {
+    border: 0px !important;
+}
+.sidebar {
+    width: 268px !important;
+    border-width: 0 0px 0 0 !important;
+}
+.sidebar+.main-content {
+    margin-left: 268px !important;
+}
+ .sidebar.responsive-min .nav-list > li > .submenu:after {
+    border: 0px !important;
+ }
+
+
+  .nav-list>li>a {
+    border: 0px !important;
+  }
+  .nav-list > li.hover:before {
+    border: 0px !important;
+      width: 0px !important;
+
+  }
+  .nav-list > li:before {
+      width: 0px !important;
+    border: 0px !important;
+
+  }
+  .sidebar~.footer .footer-inner  {
+      left: 268px !important;
+      }
+.nav-list>li a>.arrow {
+    top: 16px !important;
+}
+.nav-list>li .submenu>li.active>a>.menu-icon {
+color:#fff !important;
+}
+.nav-list>li .submenu>li {
+    height: 40px !important;
+}
+.nav-list>li .submenu>li>a {
+    height: 40px !important;
+    padding-top: 9px;
+}
+.nav-list>li .submenu>li.active>a {
+    height: 40px !important;
+    padding-top: 9px;
+    color: #fff !important;
+}
+.ui-jqgrid-sortable { 
+padding-left: 4px !important; 
+font-size: 14px !important; 
+color: #34495E !important; 
+font-weight: 300 !important;
+}
+
+.ui-jqgrid .loading { 
+    width: 50px;
+    height: 50px;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    background: url(../images/loading.gif); 
+}
+.ace-thumbnails>li {
+    border: 0px !important;
+}
+.ui-jqgrid-titlebar {
+    display:none !important;
+}
+.ui-jqgrid-btable .ui-widget-content.ui-state-highlight {
+    background-color: #ECF0F1 !important;
+}
+.ui-jqgrid-htable {
+    margin-top: 10px;
+}
+.ui-jqgrid {
+    margin-top: 10px !important;
+}
+.ui-jqgrid .ui-jqgrid-labels {
+    background: #F2F6FA !important;
+}
+
+.chosen-container-multi .chosen-choices li.search-field input[type=text] {
+    height: 34px !important;
+}
+.form-group input[type=color], .form-group input[type=date], .form-group input[type=datetime-local], .form-group input[type=datetime], .form-group input[type=email], .form-group input[type=month], .form-group input[type=number], .form-group input[type=password], .form-group input[type=search], .form-group input[type=tel], .form-group input[type=text], .form-group input[type=time], .form-group input[type=url], .form-group input[type=week], .form-group select, .form-group textarea {
+    /* border-color: #FE575c !important;*/
+}
+.control-label {
+    padding-top: 6px !important;
+}
+.jqgrow {
+    min-height: 37px !important;
+    height: 37px !important;
 }

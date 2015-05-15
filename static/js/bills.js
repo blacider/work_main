@@ -42,17 +42,17 @@ function bind_event(){
 
 jQuery(grid_selector).jqGrid({
     url: __BASE + 'bills/listdata',
-    multiselect: true,
     mtype: "GET",
     datatype: "local",
     height: 250,
+    loadtext: '',
     colNames:['提交日期','报告名', '条目数', '提交者', '金额', '状态', '操作'],
     loadonce: true,
-    rownumbers: false, // show row numbers
     caption: "费用审计",
     editurl: __BASE + 'bills/save',
     datatype: "json",
     autowidth: true,
+    hoverrows : true,
 
     colModel:[
     {name:'date_str', index:'date_str', width:100,editable: false,editoptions:{size:"20",maxlength:"30"}},
@@ -69,7 +69,7 @@ jQuery(grid_selector).jqGrid({
         bind_event();
         var table = this;
         setTimeout(function(){
-            styleCheckbox(table);
+            //styleCheckbox(table);
             updateActionIcons(table);
             updatePagerIcons(table);
             enableTooltips(table);
@@ -79,13 +79,13 @@ jQuery(grid_selector).jqGrid({
 
     //page: 1,
     width: 780,
-    height: 430,
-    rowNum: 50,
+    height: 380,
+    rowNum: 10,
     scrollPopUp:true,
     scrollLeftOffset: "83%",
     viewrecords: true,
     scroll: 0, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
-    emptyrecords: 'Scroll to bottom to retrieve new page', // the message will be displayed at the bottom 
+    emptyrecords: '没有账单', // the message will be displayed at the bottom 
     pager : pager_selector,
 
     });

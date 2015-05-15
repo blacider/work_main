@@ -37,12 +37,21 @@ class Users extends REIM_Controller {
     }
 
     public function profile(){
-        $profile = $this->session->userdata('profile');
+        // 重新获取
+        $profile = $this->user->reim_get_user();
+        //print_r($profile);
+        //$profile = $this->session->userdata('prOfile');
         if($profile){
+            //print_r($profile);
+            $profile = $profile['data']['profile'];
+            $uid = $profile['id'];
+            $profile = json_decode($this->user->reim_get_info($uid), True);
+            $profile =  $profile['data'];
             $path = base_url($this->user->reim_get_hg_avatar());
+            //print_r($profile);
         } else  {
             $user = $this->session->userdata('user');
-            log_message("debug", json_encode($user));
+            //log_message("debug", json_encode($user));
             $profile['nickname'] = $user->nickname;
             $profile['email'] = $user->email;
             $profile['phone'] = '不管';
@@ -54,13 +63,18 @@ class Users extends REIM_Controller {
             $path = '';//base_url();
         }
 
-        $this->eload('user/profile',
+        //print_r($profile);
+        $this->bsload('user/profile',
             array(
                 'title' => '个人管理'
-                ,'profile' => $profile
+                ,'member' => $profile
+                ,'self' => 1
                 ,'avatar_path' => $path
-            ),
-            'menu.profile.php'
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => '', 'name' => '修改资料', 'class' => '')
+                ),
+            )
         );
     }
 
@@ -83,21 +97,18 @@ class Users extends REIM_Controller {
         $nickname = $this->input->post('nickname');
         $email = $this->input->post('email');
         $phone = $this->input->post('phone');
-        if(!($nickname || $email || $phone)){
+        $credit_card = $this->input->post('credit_card');
+        if(!($nickname || $email || $phone || $credit_card)){
             redirect(base_url('users/profile'));
         }
-        $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname), true);
+        $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card), true);
         if($info['status'] > 0){
-            $this->session->unset_userdata('jwt');
-            $this->session->unset_userdata('profile');
-            $this->session->set_userdata('login_error', '密码修改成功');
-            redirect(base_url('login'));
+            $this->session->set_userdata('login_error', '信息修改成功');
         } else {
-            $this->session->unset_userdata('jwt');
-            $this->session->unset_userdata('profile');
             $this->session->set_userdata('login_error', '信息修改失败');
             redirect(base_url('login'));
         }
+        redirect(base_url('users/profile'));
     }
 
 

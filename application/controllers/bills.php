@@ -25,7 +25,7 @@ class Bills extends REIM_Controller {
             array(
                 'title' => '财务核算'
                 , 'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa fa-home home-icon')
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '账单管理', 'class' => '')
                 )
                 ,'reports' => $data
@@ -46,7 +46,9 @@ class Bills extends REIM_Controller {
         }
         $data = $bills['data']['data'];
         foreach($data as &$d){
+            log_message("debug", "Bill:" . json_encode($d));
             $d['date_str'] = date('Y-m-d H:i:s', $d['createdt']);
+            $d['amount'] = '￥' . $d['amount'];
             $d['status_str'] = $d['status'] == 2 ? '<font color="red">待付款</font>' : '<font color="grey">已完成</font>';
             $edit = $d['status'] != 2 ? 'gray' : 'green';
             $extra = $d['status'] == 2 ? '<span class="ui-icon ui-icon ace-icon fa fa-check tapprove green" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon ui-icon red ace-icon fa fa-times tdeny" data-id="' . $d['id'] . '"></span>' : '';

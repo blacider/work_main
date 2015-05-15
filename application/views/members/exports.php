@@ -16,7 +16,7 @@
                     <div class="space-4"></div>
                     <div class="form-group">
                         <div class=" col-md-9">
-                            <a class="btn btn-primary renew" data-renew="0"><i class="ace-icon fa fa-download bigger-110"></i>下载模板</a>
+                            <a href="/static/members.xls" class="btn btn-primary renew" data-renew="0"><i class="ace-icon fa fa-download bigger-110"></i>下载模板</a>
                             <a class="btn btn-primary renew" data-renew="1"><i class="ace-icon glyphicon glyphicon-log-out  bigger-110"></i>导出</a>
                         </div>
                     </div>

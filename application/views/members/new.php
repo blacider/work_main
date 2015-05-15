@@ -22,37 +22,37 @@
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">姓名</label>
-                                <div class="col-xs-9 col-sm-9">
+                                <div class="col-xs-6 col-sm-6">
                                     <input type="text" class="form-controller col-xs-12" name="nickname" placeholder="姓名">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">手机</label>
-                                <div class="col-xs-9 col-sm-9">
+                                <div class="col-xs-6 col-sm-6">
                                     <input type="text" class="form-controller col-xs-12" name="mobile" placeholder="手机">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">银行卡号</label>
-                                <div class="col-xs-9 col-sm-9">
+                                <div class="col-xs-6 col-sm-6">
                                     <input type="text" class="form-controller col-xs-12" name="credit" placeholder="银行卡号">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">邮箱</label>
-                                <div class="col-xs-9 col-sm-9">
+                                <div class="col-xs-6 col-sm-6">
                                     <input type="text" class="form-controller col-xs-12" name="email" placeholder="邮箱">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">部门</label>
-                                <div class="col-xs-9 col-sm-9">
+                                <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" name="groups" multiple="multiple" data-placeholder="请选择部门">
-                                        <option value="0">请选择部门</option>
+                                        <!-- <option value="0">请选择部门</option> -->
                                         <?php foreach($groups as $g) { ?>
                                         <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
                                         <?php } ?>

@@ -224,9 +224,9 @@ class User_Model extends Reim_Model {
             // 下载头像
             $avatar = $profile['avatar'];
             if($avatar) {
-            $profile['src_avatar'] = $avatar;
-            $avatar = $this->reim_fetch_avatar($avatar, 3);
-            $profile['avatar'] = base_url($avatar);
+                $profile['src_avatar'] = $avatar;
+                $avatar = 'http://reim-avatar.oss-cn-beijing.aliyuncs.com/' . $avatar;
+                $profile['avatar'] = $avatar;//base_url($avatar);
             } else {
             $profile['avatar'] = base_url('/static/default.png');
             }
@@ -234,6 +234,11 @@ class User_Model extends Reim_Model {
         }
         return $obj;
     }
+
+
+    public function get_other_member($uid){
+    }
+
 
     public function reim_update_avatar($file) {
         $obj = $this->upload_avatar($file);
@@ -302,7 +307,7 @@ class User_Model extends Reim_Model {
         log_message("debug", "Get:" . $buf . ",JWT: " . json_encode($jwt));
         if($obj['status'] && $obj['data']['avatar']) {
             $avatar = $obj['data']['avatar'];
-            $obj['avatar'] = $this->reim_get_hg_avatar($avatar);
+            $obj['avatar'] = 'http://reim-avatar.oss-cn-beijing.aliyuncs.com/' . $obj['data']['apath']; //$this->reim_get_hg_avatar($avatar);
         } else {
             $obj['avatar'] = "";
         }
@@ -326,9 +331,12 @@ class User_Model extends Reim_Model {
         return $buf;
     }
 
-    public function reim_update_profile($email, $phone, $nickname){
+    public function reim_update_profile($email, $phone, $nickname, $credit_card){
         if(!empty($nickname)) {
             $data['nickname'] = $nickname;
+        }
+        if(!empty($credit_card)) {
+            $data['credit_card'] = $credit_card;
         }
         if(!empty($email)) {
             $data['email'] = $email;

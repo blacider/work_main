@@ -21,7 +21,6 @@ function bind_event(){
 }
 
 jQuery(grid_selector).jqGrid({
-
     url: __BASE + 'reports/listdata',
     multiselect: false,
     mtype: "GET",
@@ -29,12 +28,11 @@ jQuery(grid_selector).jqGrid({
     height: 250,
     colNames:['标题', '类型', '创建日期', '金额','消费条目数', '状态', '操作'],
     loadonce: true,
-    //rownumbers: true, // show row numbers
     caption: "报告列表",
     editurl: __BASE + 'reports/save',
     datatype: "json",
     autowidth: true,
-
+    loadtext: '',
     colModel:[
         {name:'title', index:'title', width:120,editable: false,editoptions:{size:"20",maxlength:"30"}},
         {name:'prove_ahead', index:'prove_ahead', width:30,editable: false,editoptions:{size:"20",maxlength:"30"}},

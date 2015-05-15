@@ -35,6 +35,7 @@ jQuery(grid_selector).jqGrid({
     caption: "报告列表",
     editurl: __BASE + 'reports/save',
     datatype: "json",
+    loadtext: '',
     autowidth: true,
 
     colModel:[

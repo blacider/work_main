@@ -30,6 +30,7 @@ jQuery(grid_selector).jqGrid({
     mtype: "GET",
     datatype: "local",
     height: 250,
+    loadtext: '',
     colNames:['创建时间', '类别', '金额', '类型', '商家', '状态', '操作'],
     loadonce: true,
     //rownumbers: true, 
@@ -55,7 +56,7 @@ jQuery(grid_selector).jqGrid({
         bind_event();
         var table = this;
         setTimeout(function(){
-            styleCheckbox(table);
+            //styleCheckbox(table);
             updateActionIcons(table);
             updatePagerIcons(table);
             enableTooltips(table);

@@ -4,6 +4,7 @@ var grid_selector = "#grid-table";
 jQuery(grid_selector).jqGrid({
 
     url: __BASE + 'rules/listdata',
+    loadtext: '',
     multiselect: true,
     mtype: "GET",
     height: 250,

@@ -17,7 +17,7 @@
 
 <div class="page-content">
     <div class="page-content-area">
-        <form role="form" action="<?php echo base_url('reports/update');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" >
+        <form role="form" action="<?php echo base_url('reports/update');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform" >
             <input type="hidden" name="id" value="<?php echo $report['id']; ?>">
             <div class="row">
                 <div class="container">
@@ -70,9 +70,9 @@ foreach($members as $m) {
                                             <thead>
                                                 <td><input type="checkbox" class="form-controller"></td>
                                                 <td>消费时间</td>
-                                                <td>类别</td>
-                                                <td>金额</td>
                                                 <td>类型</td>
+                                                <td>金额</td>
+                                                <td>类别</td>
                                                 <td>商家</td>
                                                 <td>操作</td>
                                             </thead>
@@ -83,9 +83,18 @@ foreach($report['items'] as $i){
                                         <tr>
                                             <td><input checked='true' name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller"></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
-                                            <td><?php echo $i['category'];  echo $i['status'];?></td>
+                                            <td><?php echo $i['category_name']; ?></td>
                                             <td><?php echo $i['amount']; ?></td>
-                                            <td><?php echo $i['prove_ahead']; ?></td>
+                                            <td><?php 
+                                                $buf = '';
+switch(intval($i['prove_ahead'])) {
+case 0 : $buf = '报销';break;
+case 1 : $buf = '借款';break;
+case 2 : $buf = '预算';break;
+} 
+echo $buf;
+
+?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td>
                                                 <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
@@ -120,14 +129,18 @@ foreach($items as $i){
                                 </div>
                             </div>
 
+                            <input type="hidden" id="renew" value="0" name="renew">
+                            <input type="reset" style="display:none;" id="reset">
+                            <div class="clearfix form-actions col-md-10">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <a class="btn btn-white btn-primary renew" data-renew="1"><i class="ace-icon fa fa-check"></i>提交</a>
 
+                                    <a class="btn btn-white btn-default renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
 
-                            <div class="form-group" style="margin-bottom: 10px;min-weight:40px;">
-                                <center>
-                                    <button class="btn btn-success">提交</button>
-                                </center>
+                                    <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
+                                </div>
                             </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -198,5 +211,12 @@ $(document).ready(function(){
      */
 
 
+    $('.renew').click(function(){
+        $('#renew').val($(this).data('renew'));
+        $('#mainform').submit();
+    });
+    $('.cancel').click(function(){
+        $('#reset').click();
+    });
 });
 </script>

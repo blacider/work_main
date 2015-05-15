@@ -9,11 +9,15 @@ class Items extends REIM_Controller {
 
     public function images(){
         if(!empty($_FILES)) {
+            // 默认是item
+            $type = $this->input->post('type');
+            if(!$type) $type = 1;
             log_message("debug", json_encode($_FILES));
+            log_message("debug", "type: " . $type);
             $uploaddir = '/data/uploads/';
             $uploadfile = $uploaddir . md5(time()) . "_" . basename($_FILES['file']['name']);
             if(move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
-                $img = $this->items->upload_image($uploadfile, $_FILES['file']['type']);
+                $img = $this->items->upload_image($uploadfile, $type);
                 if($img['status'] > 0) unlink($uploadfile);
                 die(json_encode($img));
             }
@@ -37,7 +41,7 @@ class Items extends REIM_Controller {
             array(
                 'title' => '新建报销'
                 ,'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa fa-home home-icon')
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
                     ,array('url'  => '', 'name' => '新建消费', 'class' => '')
                 ),
@@ -64,9 +68,9 @@ class Items extends REIM_Controller {
                     'tags' => $tags,
                     'items' => $item_data
                     ,'breadcrumbs' => array(
-                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa fa-home home-icon')
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
-                        ,array('url'  => '', 'name' => '消费列表', 'class' => '')
+                        ,array('url'  => '', 'name' => '我的消费', 'class' => '')
                     ),
                 ));
         }
@@ -115,7 +119,7 @@ class Items extends REIM_Controller {
             $data = $items['data'];
             $item_data = $data['items'];
             foreach($item_data as &$s){
-                if($s['istatus'] < 0) continue;
+                //if($s['status'] < 0) continue;
                 $s['cate_str'] = '未指定的分类';
                 $s['createdt'] = strftime("%Y-%m-%d %H:%M", intval($s['createdt']));
                 $_type = '报销';
@@ -151,33 +155,37 @@ class Items extends REIM_Controller {
                 }
                 $s['amount'] = '￥' . $s['amount'];
                 $s['status_str'] = '';
-                $trash= $s['istatus'] === 0 ? 'gray' : 'red';
-                $edit = $s['istatus'] === 0 ? 'gray' : 'green';
+                log_message("debug", "Item:" . json_encode($s));
+                $trash= $s['status'] === 0 ? 'gray' : 'red';
+                $edit = $s['status'] === 0 ? 'gray' : 'green';
                 $s['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $s['id'] . '"></span>'
                     . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>'
                     . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $s['id'] . '"></span></div>';
-                switch($s['istatus']){
+                switch($s['status']){
+                case -1: {
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
+                };break;
                 case 0: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#A07358;background:#A07358 !important;">待提交</button>';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
                 };break;
                 case 1: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
                 };break;
                 case 2: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#42B698;background:#42B698 !important;">已通过</button>';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>';
                 };break;
                 case 3: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#B472B1;background:#B472B1 !important;">已退回</button>';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#B472B1;background:#B472B1 !important;">退回</button>';
                 };break;
                 case 4: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
                 };break;
                 case 5: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
                 };break;
                 case 6: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="border-color:#CFD1D2;background:#42B698 !important;">待支付</button>';
+                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#42B698 !important;">待支付</button>';
                 };break;
                 default: {
                     $s['status_str'] = $s['status'];
@@ -243,7 +251,7 @@ class Items extends REIM_Controller {
                 'tags' => $tags,
                 'item' => $item
                 ,'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa fa-home home-icon')
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
                     ,array('url'  => '', 'name' => '查看消费', 'class' => '')
                 ),
@@ -293,7 +301,7 @@ class Items extends REIM_Controller {
                 'item' => $item,
                 'images_ids' => implode(",", $_image_ids)
                 ,'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa fa-home home-icon')
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
                     ,array('url'  => '', 'name' => '修改消费', 'class' => '')
                 ),
