@@ -49,7 +49,7 @@ class Bills extends REIM_Controller {
             log_message("debug", "Bill:" . json_encode($d));
             $d['date_str'] = date('Y-m-d H:i:s', $d['createdt']);
             $d['amount'] = '￥' . $d['amount'];
-            $d['status_str'] = $d['status'] == 2 ? '<font color="red">待付款</font>' : '<font color="grey">已完成</font>';
+            $d['status_str'] = $d['status'] == 2 ? '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>' : '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
             $edit = $d['status'] != 2 ? 'gray' : 'green';
             $extra = $d['status'] == 2 ? '<span class="ui-icon ui-icon ace-icon fa fa-check tapprove green" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon ui-icon red ace-icon fa fa-times tdeny" data-id="' . $d['id'] . '"></span>' : '';
 

@@ -42,7 +42,7 @@ jQuery(grid_selector).jqGrid({
         {name:'title', index:'title', width:120,editable: false,editoptions:{size:"20",maxlength:"30"}},
         {name:'prove_ahead', index:'prove_ahead', width:30,editable: false,editoptions:{size:"20",maxlength:"30"}},
         {name:'date_str', index:'date_str', width:70,editable: false,editoptions:{size:"20",maxlength:"30"}},
-        {name:'amount', index:'amount', width:50,editable: true,editoptions:{size:"20",maxlength:"30"}},
+        {name:'amount', index:'amount',sorttype: myCustomSort, width:50,editable: true,editoptions:{size:"20",maxlength:"30"}},
         {name:'item_count', index:'item_count', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
         {name:'author', index:'author', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
         {name:'status_str',index:'status_str', width:70, editable: false,editoptions: {size:"20", maxlength : "30"}/*,unformat: aceSwitch*/},

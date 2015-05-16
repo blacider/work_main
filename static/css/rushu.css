@@ -288,3 +288,6 @@ font-weight: 300 !important;
     min-height: 37px !important;
     height: 37px !important;
 }
+#cboxClose {
+    margin-top: 16px !important;
+}

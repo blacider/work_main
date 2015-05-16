@@ -28,24 +28,24 @@ jQuery(grid_selector).jqGrid({
     url: __BASE + 'items/listdata',
     //multiselect: true,
     mtype: "GET",
-    datatype: "local",
+    //datatype: "local",
     height: 250,
     loadtext: '',
     colNames:['创建时间', '类别', '金额', '类型', '商家', '状态', '操作'],
-    loadonce: true,
     //rownumbers: true, 
     caption: "消费列表",
     editurl: __BASE + 'items/save',
     datatype: "json",
+    loadonce: true,
     autowidth: true,
     hoverrows : true,
-
+    sorttype: "int",
     colModel:[
 
     
     {name:'createdt', index:'createdt', width:120,editable: true,editoptions:{size:"20",maxlength:"30"}},
     {name:'type', index:'type', width:50,editable: true,editoptions:{size:"20",maxlength:"30"}},
-    {name:'amount', index:'amount', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
+    {name:'amount', index:'amount', width:150,sorttype: myCustomSort,editable: true,editoptions:{size:"20",maxlength:"30"}},
     {name:'cate_str', index:'cate_str', width:100,editable: false,editoptions:{size:"20",maxlength:"30"}},
     {name:'merchants', index:'merchants', width:120,editable: false,editoptions:{size:"20",maxlength:"30"}},
     {name:'status_str',index:'status_str', width:55, editable: false,editoptions: {size:"20", maxlength : "60"},unformat: aceSwitch},

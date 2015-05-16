@@ -1,4 +1,8 @@
 
+var myCustomSort = function(cell,rowObject) {
+    cell = cell.substr(1);
+    return parseFloat(cell);
+}
 var pager_selector = "#grid-pager";
 var grid_selector = "#grid-table";
 

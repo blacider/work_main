@@ -153,6 +153,7 @@ class Items extends REIM_Controller {
                         }
                     }
                 }
+                //$s['amount'] = '￥' . $s['amount'];
                 $s['amount'] = '￥' . $s['amount'];
                 $s['status_str'] = '';
                 log_message("debug", "Item:" . json_encode($s));

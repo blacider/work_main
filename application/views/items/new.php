@@ -258,7 +258,7 @@ $(document).ready(function(){
                                     var _new_img = '<li style="border:0px;">'
                                         + '<a href="' + _path + '" data-rel="colorbox" class="cboxElement" style="border:0px;">'
                                         + '<img width="150" height="150" alt="150x150" src="' + _path + '"></a>'
-                                        + '<div class="tools tools-top text-right" style="text-align:right"><a href="javascript:void(0)" class="rimg" data-id="' + _id + '"><i class="ace-icon fa fa-times red"></i></a></div>'
+                                        + '<div class="tools tools-top text-right" style="text-align:right"><a href="javascript:void(0)" class="rimg" data-id="' + _id + '"><i class="ace-icon fa fa-times red" style="padding-top: 5px;"></i></a></div>'
                                         + '</li>';
                                     $(_new_img).appendTo($('#timages'));
                                     bind_event();
