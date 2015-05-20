@@ -44,7 +44,7 @@
   <div class="block1 block">
     <div class="main-block">
       <div class="login">
-        <div class="login-left"><br>对报销的怨言，<br>到此为止</div>
+        <div class="login-left"><br>对报销的怨言，<br>到此为止。</div>
         <div class="login-right">
           <form id="form-login" onsubmit="return checkLogin()" action="<?php echo base_url('login/dologin');  ?>" method="post">
             <div class="form-phone">

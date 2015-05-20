@@ -40,6 +40,9 @@ background-color: #ff7075;
 #form-phone-step2 {
 	display: none;
 }
+.form-phone  {
+	margin: 20px auto 15px 0;
+}
 #form-phone h1 {
 	margin: 34px auto 25px 0;
 }
@@ -187,8 +190,11 @@ a {
 }
 @media screen and (max-width: 739px) and (min-width: 1px) {
 /*----------block1------------------*/
+#form-phone {
+	margin: 34px auto 15px 0;
+}
 #form-phone h1 {
-	margin: 34px auto 5px 0;
+	margin: 34px auto 15px 0;
 }
 #form-phone-step1 h1 {
 	margin: 23px auto -4px 0;
@@ -354,7 +360,7 @@ input[type="submit"] {
 /*----------block1------------------*/
 .login {
 	width: 725px;
-	margin: 165px auto auto auto;
+	margin: 135px auto auto auto;
 }
 .login-left {
 	vertical-align: middle;
@@ -397,7 +403,7 @@ input[type="submit"] {
 .find-password {
     cursor: pointer;
 	float: right;
-	margin-top: 43px;
+	margin-top: 48px;
 }
 .find-password:hover {
     cursor: pointer;
