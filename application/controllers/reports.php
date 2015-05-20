@@ -436,5 +436,60 @@ class Reports extends REIM_Controller {
         }
         die(json_encode($data));
     }
+
+    public function exports(){
+        $ids = $this->input->post('ids');
+        //$_ids = explode(",", $ids);
+        if("" == $ids) die("");
+        $data = $this->reports->get_reports_by_ids($ids);
+        $_excel = array();
+        $_members = array();
+        if($data['status'] > 0){
+            $reports = $data['data'];
+            foreach($reports as &$r){
+                if(!array_key_exists($r['uid'], $_members)){
+                    $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
+                }
+                $r['total'] = 0;
+                $r['paid'] = 0;
+                $_items = $r['items'];
+                foreach($_items as $i){
+                    $r['total'] += $i['amount'];
+                    if($i['prove_ahead'] > 0){
+                        $r['paid'] += $i['pa_amount'];
+                    }
+                }
+                if($report['status'] == 4){
+                    // 已完成状态的，付款额度就是已付额度
+                    $r['paid'] = $r['total'];
+                }
+                $r['last'] = $r['total'] - $r['paid'];
+                $_members[$r['uid']]['paid'] = $r['last'];
+                $obj = array();
+                $obj['报告名'] = $r['title'];
+                $obj['创建者'] = $r['nickname'];
+                $obj['创建日期'] = strftime('%Y年%m月%d日', $r['createdt']);
+                $obj['金额'] = $r['total'];
+                $obj['已付'] = $r['paid'];
+                $obj['应付'] = $r['last'];
+                array_push($_excel, $obj);
+            }
+            $members = array();
+            foreach($_members as $x){
+                $o = array();
+                $o['帐号'] = $x['credit_card'];
+                $o['户名'] = $x['nickname'];
+                $o['金额'] = $x['paid'];
+                $o['开户行'] = '';
+                $o['开户地'] = '';
+                $o['注释'] = '';
+                array_push($members, $o);
+            }
+            //print_r($_excel);
+            //print_r($r);
+            self::render_to_download('Sheet1', $members, 'Finace_' . date('Y-m-d', time()) . ".xlsx", '财务报告', $_excel);
+
+        }
+    }
 }
 

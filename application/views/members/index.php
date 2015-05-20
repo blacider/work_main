@@ -28,6 +28,37 @@
                     <th>银行卡</th>
                     <th>权限</th>
                 </tr>
+<?php 
+foreach($members as $m){
+?>
+<tr>
+    <td>
+        <?php echo $m['nickname']; ?>
+    </td>
+    <td>
+        <?php echo $m['email']; ?>
+    </td>
+    <td>
+
+        <?php echo $m['phone']; ?>
+    </td>
+    <td>
+
+        <?php echo $m['credit_card']; ?>
+    </td>
+    <td>
+<?php 
+    if($m['admin'] == 1){
+        echo '管理员';
+    } else {
+        echo '员工';
+    }
+?>
+    </td>
+</tr>
+<?php 
+}
+?>
             </table>
         </div>
     </div>

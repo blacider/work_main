@@ -21,10 +21,9 @@ class Members extends REIM_Controller {
                 $ginfo = $group['data']['ginfo'];
             }
             if(array_key_exists('gmember', $group['data'])){
-            $gmember = $group['data']['gmember'];
+                $gmember = $group['data']['gmember'];
             }
             $gmember = $gmember ? $gmember : array();
-
         }
         $this->bsload('members/index',
             array(
@@ -98,7 +97,7 @@ class Members extends REIM_Controller {
         $rows = $this->input->get('rows');
         $sort = $this->input->get('sord');
         $group = $this->groups->get_my_list();
-        log_message("debug", json_encode($group));
+        log_message("debug", "Group:" . json_encode($group));
         $ginfo = array();
         $gmember = array();
         if($group) {
@@ -207,9 +206,10 @@ class Members extends REIM_Controller {
         $group = $this->ug->get_my_list();
         /// 结构好奇怪啊
         //
+        log_message("debug", "ListGroup:" . json_encode($group));
         if($group['status']){
             //die(json_encode(array('data' => $group['data'])));
-            foreach($group['data'] as &$s){
+            foreach($group['data']['group'] as &$s){
                 $s['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
                     . '<span class="ui-icon ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>'
                     . '<span class="ui-icon ui-icon-trash tdel" data-id="' . $s['id'] . '"></span></div>';
@@ -370,7 +370,7 @@ class Members extends REIM_Controller {
     public function import_single(){
         $member = $this->input->post('member');
         $id = $this->input->post('id');
-        if(!$member) die(json_encodE(array('status' => false, 'id' => $id, 'msg' => '参数错误')));
+        if(!$member) die(json_encode(array('status' => false, 'id' => $id, 'msg' => '参数错误')));
         $obj = json_decode(base64_decode($member), True);
 
         $email = $obj['email'];
@@ -379,9 +379,10 @@ class Members extends REIM_Controller {
         $credit = $obj['credit_card'];
         $groups = '';
         if($phone == $email && $email == ""){
-            die(json_encodE(array('status' => false, 'id' => $id, 'msg' => '邮箱手机必须有一个')));
+            die(json_encode(array('status' => false, 'id' => $id, 'msg' => '邮箱手机必须有一个')));
         }
-        $this->groups->set_invite($email, $nickname, $phone, $credit, $groups);
+        $this->groups->doimports($email, $nickname, $phone, $credit, $groups);
+        //$this->groups->set_invite($email, $nickname, $phone, $credit, $groups);
         die(json_encode(array('status' => true, 'id' => $id)));
     }
 

@@ -192,8 +192,8 @@ class REIM_Controller extends CI_Controller{
 
     }
 
-    public function render_to_download($title, $data, $excle_name){
-        $objwriter = $this->return_buf($title, $data);
+    public function render_to_download($title, $data, $excle_name, $title_2 = '', $data_2 = array()){
+        $objwriter = $this->return_buf($title, $data, $title_2, $data_2);
         header("Pragma: public");
         header("Content-Type: application/force-download");
         header("Content-Type: application/octet-stream");
@@ -208,11 +208,11 @@ class REIM_Controller extends CI_Controller{
         exit();
     }
 
-    public  function return_buf($title, $data) {
+    public function return_buf($title, $data, $title_2 = '', $data_2 = array()) {
 
         $Excel = new PHPExcel();
-        $Excel->getProperties()->setCreator(" Mag Group")
-            ->setLastModifiedBy("Mag Group")
+        $Excel->getProperties()->setCreator("RushuCloud Ltd.co")
+            ->setLastModifiedBy("RushuCloud.Ltd.co")
             ->setTitle($title)
             ->setSubject($title);
 
@@ -234,6 +234,32 @@ class REIM_Controller extends CI_Controller{
                 $y++;
             }
             $x++;
+        }
+
+
+
+        // TODO: 如此肮脏，算了，先推下来再说吧。
+        if($title_2 && count($data_2) > 0){
+            $Excel->createSheet();
+            $Excel->setActiveSheetIndex(1);
+            $Excel->getSheet(1)->setTitle($title_2);
+
+            $cell_one = $data_2[0];
+            $j = 0;
+            foreach ($cell_one as $k => $v) {
+                $Excel->getSheet(1)->setCellValue($this->getCharByNunber($j) . '1', $k);
+                $j++;
+            }
+
+            $x = 2;
+            foreach ($data_2 as $value) {
+                $y = 0;
+                foreach ($value as $k => $v) {
+                    $Excel->getSheet(1)->setCellValue($this->getCharByNunber($y) . $x, $v);
+                    $y++;
+                }
+                $x++;
+            }
         }
 
         //$objwriter = new PHPExcel_Writer_Excel2007($Excel);

@@ -14,7 +14,9 @@ if("" == $user['apath']) {
     $path = base_url('/static/default.png');
 }
 ?>
-                            <a id="avatar_container" style="height:140px;width:140px" href="javascript:void(0)" class="avatar thumbnail"><img src="<?php echo $path;?>" style="height:130px;width:130px" /> </a>
+
+<!--avatar_container <a id="btn_cimg" style="height:140px;width:140px" href="javascript:void(0)" class="avatar thumbnail"> btn btn-primary btn-white-->
+          <a id="btn_cimg" style="height:144px;width:155px" class="btn btn-primary btn-white"><img src="<?php echo $path;?>" style="height:130px;width:130px" /> </a>
                         </div>
                     </div>
 
@@ -65,7 +67,6 @@ if("" == $user['apath']) {
 </div>
 
 
-
 <div class="modal fade" id="select_img_modal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -83,7 +84,6 @@ if("" == $user['apath']) {
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 
 
 <div class="modal fade" id="password_modal">

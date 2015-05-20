@@ -365,4 +365,30 @@ class User_Model extends Reim_Model {
         return $buf;
     }
 
+
+    public function reset_pwd($pass, $code) {
+        $url = $this->get_url('password');
+        $data = array(
+            'password' => $pass
+            ,'code' => $code
+            );
+        $jwt = $this->session->userdata('jwt');
+        $buf = $this->do_Put($url, $data, $jwt);
+        log_message("debug", $buf);
+        return $buf;
+    }
+
+    public function forget($type, $name, $code = 0) {
+        $url = $this->get_url('password');
+        $data = array(
+            'type' => $type,
+            'name' => $name,
+            'vcode' => $code
+            );
+        $jwt = $this->session->userdata('jwt');
+        $buf = $this->do_Post($url, $data, $jwt);
+        log_message("debug", $buf);
+        return $buf;
+    }
+
 }

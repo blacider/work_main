@@ -1,0 +1,13 @@
+.block1-button {
+	    background-color: #FE575C;
+    
+    }
+    .block1-button:hover {
+	background-color: #ff7075;
+}
+input[type="submit"] {
+	background-color: #FE575C;
+}
+input[type="submit"]:hover {
+	background-color: #ff7075;
+}

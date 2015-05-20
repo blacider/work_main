@@ -101,7 +101,7 @@
         </ul>
     </div>
     <div class="col-xs-12 col-sm-12" style="padding-left: 0px; padding-top: 10px;">
-        <a class="btn btn-primary btn-white" id="btn_simg" >添加图片</a>
+        <a class="btn btn-primary btn-white" id="btn_cimg" >添加图片</a>
     </div>
 </div>
 <!--
@@ -148,7 +148,6 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 
 
 <!--
@@ -255,9 +254,9 @@ $(document).ready(function(){
                                         }
                                         $('#images').val(_exists.join(','));
                                     }
-                                    var _new_img = '<li style="border:0px;">'
+                                    var _new_img = '<li style="border:0px;" height="150">'
                                         + '<a href="' + _path + '" data-rel="colorbox" class="cboxElement" style="border:0px;">'
-                                        + '<img width="150" height="150" alt="150x150" src="' + _path + '"></a>'
+                                        + '<img  width="150" alt="150x150" src="' + _path + '"></a>'
                                         + '<div class="tools tools-top text-right" style="text-align:right"><a href="javascript:void(0)" class="rimg" data-id="' + _id + '"><i class="ace-icon fa fa-times red" style="padding-top: 5px;"></i></a></div>'
                                         + '</li>';
                                     $(_new_img).appendTo($('#timages'));

@@ -233,4 +233,18 @@ class Users extends REIM_Controller {
 
 
     }
+
+    public function forget(){
+        $type = $this->input->post('type');
+        $name = $this->input->post('name');
+        $code = $this->input->post('code');
+        die($this->user->forget($type, $name, $code));
+    }
+
+    public function reset(){
+        $pass = $this->input->post('pass');
+        $code= $this->input->post('code');
+        die($this->user->reset_pwd($pass, $code));
+
+    }
 }
