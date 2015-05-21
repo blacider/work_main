@@ -22,13 +22,15 @@ class Register extends REIM_Controller {
             $args = json_decode($name, True);
         }
         $this->input->set_cookie($this->cookie_user, $args['name'], $this->cookie_life);
-        if($this->agent->is_mobile()){
-            $body =$this->load->view('user/mobile_register', array('name' => $args['name'], 'code' => $code),true);
-            $this->load->view('default', array('nav' => '', 'body' => $body, 'title' => '登录'));
+        $this->load->view('user/register', array('name' => $args['name']));
+        /*
+        if($this->agent->is_mobile()) {
+            $this->load->view('user/mobile_register', array('nav' => '', 'body' => $body, 'title' => '注册'));
         } else {
             $body = $this->load->view('user/register', array('name' => $args['name'], 'errors' => $error), True);
             $this->load->view('default', array('nav' => '', 'body' => $body, 'title' => '登录'));
         }
+         */
     }
 
     public function doregister(){
@@ -53,16 +55,16 @@ class Register extends REIM_Controller {
         }
         $ret = $this->users->register($email, $pass, $phone, $code);
         if($ret['status']) {
-            redirect(base_url('register/success'));
+        $this->load->view('user/active_succ', array('name' => array(),'code'=>$code, 'msg' => '恭喜，你的账号已经注册成功，请点击<a href="https://admin.cloudbaoxiao.com">这里</a>登录。'));
         } else {
-            $msg = $ret['data']['msg'];
-            $this->session->set_userdata('last_error', $msg);
-            return redirect(base_url('register/index'));
+        $this->load->view('user/active_fail', array('name' => array(),'code'=>$code, 'msg' => '抱歉帐号注册失败，请稍后尝试。'));
         }
     }
 
     public function success($code = 0, $name = ''){
+        $this->load->view('user/active_succ', array('name' => array(),'code'=>$code, 'msg' => '恭喜，你的账号已经注册成功，请点击<a href="https://admin.cloudbaoxiao.com">这里</a>登录。'));
 
+        /*
         $name = urldecode($name);
         $args = array('name' => '');
         if($name){
@@ -72,6 +74,7 @@ class Register extends REIM_Controller {
 
         $body = $this->load->view('user/register_success', array('name' => $args['name']), True);
         $this->load->view('default', array('nav' => '', 'body' => $body, 'title' => '登录'));
+         */
     }
 
 

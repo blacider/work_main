@@ -1,88 +1,144 @@
-<style type="text/css">
-     body {
-     padding-top: 40px;
-     padding-bottom: 40px;
-     background-color: #f5f5f5;
- }
-
-     .form-signin {
-         text-align:center;
-         max-width: 350px;
- padding: 19px 29px 29px;
- margin: 0 auto 20px;
-     background-color: #fff;
- border: 1px solid #e5e5e5;
-     -webkit-border-radius: 5px;
-     -moz-border-radius: 5px;
-     border-radius: 5px;
-     -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-     box-shadow: 0 1px 2px rgba(0,0,0,.05);
-      }
-     .form-signin .form-signin-heading,
-     .form-signin .checkbox {
-         margin-bottom: 10px;
-      }
-     .form-signin input[type="text"],
-     .form-signin input[type="password"] {
-         font-size: 16px;
- height: auto;
-     margin-bottom: 15px;
- padding: 7px 9px;
-      }
-
-     .line {
-         text-align: center;
- margin: 15px 0 10px 0;
- background: url('<?php echo base_url("/static/img/line.gif"); ?>') center repeat-x;
-     margin-bottom : 20px;
-      }
-     h2 span {
-     background: #FFF;
-     color: #0067cc;
-     padding: 0 20px;
-     }
-
-</style>
-
-<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-     <!--[if lt IE 9]>
-<script src="../assets/js/html5shiv.js"></script>
-<![endif]-->
-
-
-<div class="container">
-<form class="form-signin" method="POST" action="<?php echo base_url('register/doregister'); ?>">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>云报销,让报销简单点</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link rel="shortcut icon" href="/static/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/static/css/login.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/normalize.css">
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="/static/css/ie.css">
+    <![endif]-->
+    <!--[if gte IE 9]>
+      <link rel="stylesheet" type="text/css" href="/static/css/notie.css">
+    <![endif]-->
+    <!--[if !IE]><!-->
+      <link rel="stylesheet" type="text/css" href="/static/css/notie.css">
+    <!--<![endif]-->
+<script language="javascript">
+    var __BASE = "<?php echo base_url(); ?>";
+</script>
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script type="text/javascript" src="/static/js/index.js"></script>
+    <script type="text/javascript" src="/static/js/login.js"></script>
+</head>
+<body>
+  <div class="header">
+  	<div class="main-block">
+        <a href="http://www.cloudbaoxiao.com">
+            <div class="home-logo"> </div>
+        </a>
+  		<div class="header-link">
+  			<ul>
+                <!-- 
+  				<li><a href="#">Blog</a></li>
+  				<li id="min-margin"><a href="#">登录</a></li>
+                -->
+  				<li class="header-button ie-button1"><a href="http://www.cloudbaoxiao.com/#sign">申请试用</a></li>
+  			</ul>
+  		</div>
+  	</div>
+  </div>
+  <div class="block1 block">
+    <div class="main-block">
+      <div class="login">
+          <div class="login-left" style="padding-top:36px;font-size:25px;"><br>为邮箱设置密码<br> <span style="color:#ff575b"><?php echo $name; ?></span><br></div>
+        <div class="login-right">
+          <form id="form-login" onsubmit="return checkLogin()" action="<?php echo base_url('login/dologin');  ?>" method="post" style="display:none;">
+            <div class="form-phone">
+              <span>手机号/邮箱</span>
+              <span class="error">请输入手机或邮箱</span>
+              <span class="error">手机或邮箱输入格式有误</span>
+              <input type="text" name="u">
+            </div>
+            <div class="form-password">
+              <span>密码</span>
+              <span class="error">请输入密码</span>
+              <input type="password" name="p">
+            </div>
+            <div id="button-div" class="form-submit ie-button1"><input type="submit" value="登录"></div>
+            <a onclick="findPassword()" class="find-password">找回密码</a>
+          </form>
+          <form id="form-phone" onsubmit="return checkPhone()">
+            <div class="form-phone">
+              <h1>忘记密码</h1>
+              <span>输入手机号/邮箱</span>
+              <span class="error">请输入手机或邮箱</span>
+              <span class="error">手机或邮箱输入格式有误</span>
+              <span class="error">用户不存在</span>
+              <span id="cerror" class="error" ></span>
+              <input type="text" name="phone">
+            </div>
+            <div id="button-div" class="form-submit ie-button1"><input type="submit" value="找回密码"></div>
+            <a onclick="backLogin()" class="find-password">返回登录</a>
+          </form>
+          <form id="form-phone-step1" onsubmit="return checkPhone2()">
+            <div class="form-phone">
+              <h1>忘记密码</h1>
+              <span>输入手机号/邮箱</span>
+              <span class="error"></span>
+              <span id="verror" class="error"></span>
+              <input type="text" name="phone" readonly="readonly">
+            </div>
+            <div class="form-code">
+              <span>输入验证码</span>
+              <span class="error">验证码不正确</span>
+              <input type="text" name="code">
+            </div>
+            <div id="send-again">重新发送 60</div>
+            <div id="button-div" class="form-submit ie-button1"><input type="submit" value="下一步"></div>
+            <a onclick="backStep1()" class="find-password">上一步</a>
+          </form>
+          <form id="form-phone-step2" onsubmit="return register()" style="display:block;" method="POST" action="<?php echo base_url('register/doregister'); ?>">
+            <div class="form-password">
 <?php
-if(isset($errors) && !empty($errors)){
-?>
-
-    <div class="alert alert-block alert-error fade in">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        <strong>出错啦!</strong>
-        <?php echo $errors; ?>
-        </div>
-<?php
-}
-?>
-<h2 class="form-signin-heading line">
-    <span>注册</span>
-    </h2>
-    <div>
-<?php
-$placeholder = '用户名(邮箱或手机号)';
+$placeholder = '';
 if($name){
     $placeholder =  $name;
 }
 
 ?>
-    <input type="text" name='u' class="form-control" placeholder="<?php echo $placeholder; ?>">
-    <input type="password" name='p' class="form-control" placeholder="密码">
-    <div align = "left" >
+              <span>密码</span>
+              <span class="error">请输入密码</span>
+              <input type="password" id="pass" name="password">
+            </div>
+            <div class="form-password">
+              <span>重新输入密码</span>
+              <span class="error">两次输入不一致</span>
+              <input type="password" id="pass2" name="password2">
+            </div>
+              <input type="hidden" id="phone_hidden" />
+              <input type="hidden" id="code_hidden" />
+            <div id="button-div" class="form-submit ie-button1"><input type="submit" value="注册"></div>
+    <input type="hidden" name='u' class="form-control" value="<?php echo $placeholder; ?>">
+            <!-- <a onclick="backStep2()" class="find-password">上一步</a> -->
+          </form>
+          <div id="email">
+            <p></p>
+            <div><a href="index.html">注册</a></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <button class="btn btn-success" type="submit">注册</button>
-    <?php /*<a href="<?php echo base_url();?>/user/register" class="btn  btn-primary">注册</a> */?>
-    </div>
-    </form>
-
-    </div> <!-- /container -->
+  </div>
+  <div class="footer">
+    <div class="main-block">
+      <div class="copyright">
+        <p class="footer-text">© 2014-2015 如数科技有限公司 / All Rights Reserved</p>
+      </div>
+  	  <div class="footer-link">
+  	  	<ul>
+  			<li><a href="http://www.cloudbaoxiao.com/contact.html">关于我们</a></li>
+  			<li><a href="http://www.cloudbaoxiao.com/help.html">帮助中心</a></li>
+  			<li><a href="http://www.cloudbaoxiao.com/joinus.html">加入我们</a></li>
+  		</ul>
+  	  </div>
+  	  <div class="record">
+  		<p class="footer-text">京ICP备 14046885号-2</p>
+  	  </div>
+  	</div>
+  </div>
+</body>
+</html>

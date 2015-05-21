@@ -19,6 +19,7 @@
     <!--<![endif]-->
 <script language="javascript">
     var __BASE = "<?php echo base_url(); ?>";
+    var _error = "<?php echo $errors; ?>";
 </script>
     <script type="text/javascript" src="/static/js/jquery.js"></script>
     <script type="text/javascript" src="/static/js/index.js"></script>
@@ -51,6 +52,7 @@
               <span>手机号/邮箱</span>
               <span class="error">请输入手机或邮箱</span>
               <span class="error">手机或邮箱输入格式有误</span>
+              <span class="error" id="error_bad_pass">用户名或者密码错误</span>
               <input type="text" name="u">
             </div>
             <div class="form-password">

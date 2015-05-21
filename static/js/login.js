@@ -120,8 +120,6 @@ function checkPhone3() {
 	formDOM.childNodes[3].getElementsByTagName('span')[1].style.display = 'none';
     var _pass = $('#pass').val();
     var _pass2 = $('#pass2').val();
-    console.log(inputDOMS[8].value);
-    console.log(inputDOMS[9].value);
 	if (!inputDOMS[7].value) {
 		formDOM.childNodes[1].getElementsByTagName('span')[1].style.display = 'block';
 	} else if (inputDOMS[8].value != inputDOMS[9].value) {
@@ -203,3 +201,33 @@ function show_cerror(msg, _id) {
     $('#' + _id).html(msg);
     $('#' + _id).show();
 }
+function register(){
+	var formDOM = document.getElementsByTagName('form')[3];
+	var inputDOMS = document.getElementsByTagName('input');
+	formDOM.childNodes[1].getElementsByTagName('span')[1].style.display = 'none';
+	formDOM.childNodes[3].getElementsByTagName('span')[1].style.display = 'none';
+    var _pass = $('#pass').val();
+    var _pass2 = $('#pass2').val();
+	if (!inputDOMS[7].value) {
+		formDOM.childNodes[1].getElementsByTagName('span')[1].style.display = 'block';
+	} else if (inputDOMS[8].value != inputDOMS[9].value) {
+		formDOM.childNodes[3].getElementsByTagName('span')[1].style.display = 'block';
+	} 
+	else {
+		//------------success
+        formDOM.submit();
+	}
+	return false;
+
+}
+
+
+function show_init_error() {
+    if(_error != ''){
+        var formDOM = document.getElementsByTagName('form')[1];
+        $('#error_bad_pass').show();
+    }
+}
+$(document).ready(function(){
+    show_init_error();
+});
