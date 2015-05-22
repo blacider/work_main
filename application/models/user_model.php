@@ -1,7 +1,6 @@
 <?php
 
 class User_Model extends Reim_Model {
-
     const MIN_UID = 100000;
     public function __construct(){
         parent::__construct();
@@ -10,7 +9,6 @@ class User_Model extends Reim_Model {
     public function get(){
         return $this->db->get(self::USER_TABLE)->result();
     }
-
 
     public function update_avatar($path, $uid){
         $data = array('pic_url' => $path);
@@ -25,7 +23,10 @@ class User_Model extends Reim_Model {
         return $this->db->get_where(self::USER_TABLE, array('username' => $username, 'password' => md5($password)))->row();
     }
 
-    public function get_by_id($id){
+
+
+
+    public function get_by_id($id) {
         return $this->db->get_where(self::USER_TABLE, array('id' => $id))->row();
     }
 
@@ -206,6 +207,43 @@ class User_Model extends Reim_Model {
         return $new_file_path;
     }
 
+    public function reim_oauth($unionid = '', $openid = '', $token = ''){
+        /*
+        if('' !== $username && '' !== $password) {
+            $jwt = $this->get_jwt($username, $password);
+            $this->session->set_userdata('jwt', $jwt);
+        } else {
+            $jwt = $this->session->userdata('jwt');
+        }
+		$url = $this->get_url('common/0');
+		$buf = $this->do_Get($url, $jwt);
+        log_message("debug", $buf);
+         */
+        $jwt = $this->get_jwt($unionid, "");
+		$url = $this->get_url('oauth');
+        $data = array('openid' => $openid, 'unionid' => $unionid, 'token' => $token);
+		$buf = $this->do_Post($url, $data, $jwt);
+        log_message("debug", $buf);
+
+		$obj = json_decode($buf, true);
+        $profile = array();
+        if($obj['status']){
+            $profile = $obj['data']['profile'];
+            log_message("debug", json_encode($profile));
+            // 下载头像
+            $avatar = $profile['avatar'];
+            if($avatar) {
+                $profile['src_avatar'] = $avatar;
+                $avatar = 'http://reim-avatar.oss-cn-beijing.aliyuncs.com/' . $avatar;
+                $profile['avatar'] = $avatar;//base_url($avatar);
+            } else {
+            $profile['avatar'] = base_url('/static/default.png');
+            }
+            $this->session->set_userdata('profile', $profile);
+        }
+        return $obj;
+    }
+
     public function reim_get_user($username = '', $password = ''){
         if('' !== $username && '' !== $password) {
             $jwt = $this->get_jwt($username, $password);
@@ -234,6 +272,8 @@ class User_Model extends Reim_Model {
         }
         return $obj;
     }
+
+
 
 
     public function get_other_member($uid){
