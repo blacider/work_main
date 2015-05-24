@@ -6,19 +6,18 @@ class REIM_Controller extends CI_Controller{
         return $needle === "" || strpos($haystack, $needle) === 0;
     }
 
-
     public function __construct(){
         parent::__construct();
         $this->load->library('PHPExcel');
         $this->load->library('PHPExcel/IOFactory');
         $uri = $this->uri->uri_string();
         log_message("debug", "Request: $uri");
-        log_message("debug", "JWT: $uri" . json_encode($this->session->userdata('jwt')));
-        log_message("debug", "JWT: $uri" . json_encode($this->session->userdata('uid')));
+        log_message("debug", "JWT: $uri, " . json_encode($this->session->userdata('jwt')));
+        log_message("debug", "JWT: $uri," . json_encode($this->session->userdata('uid')));
         if($this->session->userdata('jwt') == "" && $this->session->userdata('uid') == ""){
             log_message("debug", "Not Not Request: $uri");
             $flag = 1;
-            $prefixs = array('login', 'register', 'join', 'install', 'errors', 'resetpwd');
+            $prefixs = array('login', 'register', 'join', 'install', 'errors', 'resetpwd', 'pub');
             foreach($prefixs as $prefix){
                 if($this->startsWith($uri, $prefix)){
                     $flag = 0;

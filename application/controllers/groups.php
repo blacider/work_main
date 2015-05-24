@@ -8,9 +8,6 @@ class Groups extends REIM_Controller {
         $this->load->model('group_model', 'groups');
     }
 
-
-
-
     public function update(){
         $name = $this->input->post('gname');
         $uids = $this->input->post('uids');
@@ -129,6 +126,5 @@ class Groups extends REIM_Controller {
             $data = $obj['data'];
         }
     }
-
 }
 

@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-
-
 <html lang="zh">
     <head>
         <meta charset="utf-8">
@@ -55,7 +53,7 @@ if ('ontouchstart' in document.documentElement) document.write("<script src='/st
                                             </div>
 
                                             <div>
-                                                <a href="itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.plist" class="btn btn-block btn-success">
+                                                <a href="itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.plist" class="btn btn-block btn-success ios_down">
                                                     <i class="ace-icon fa fa-cloud-download bigger-110"></i>
                                                     <span>下载</span>
                                                 </a>
@@ -127,19 +125,28 @@ if ('ontouchstart' in document.documentElement) document.write("<script src='/st
         </div>
 
     </body>
+<script language="javascript" src="/static/ace/js/bootstrap.min.js"></script>
 <script language="javascript">
-    $(document).ready(function(){
-            //$('#modal-form').modal('hide');
-            a();
-    });
-function a(){
+$(document).ready(function(){
     var ua = navigator.userAgent.toLowerCase();
-    if (/iphone|ipod/.test(ua)) {
+    if (/iphone|ipod|ipad/.test(ua)) {
+        $('#android_form').hide();
+    } else if (/android/.test(ua)) {
+        $('#ios_form').hide();
+    }
+    $('.ios_down').click(function(){
+    var ua = navigator.userAgent.toLowerCase();
+    if (/iphone|ipod|ipad/.test(ua)) {
+        alert("find");
         if(/micromessenger/.test(ua)){
+            try{
             $('#modal-form').modal('show');
+            }catch(e){
+            }
         }
     }
-}
+    });
+});
+
 </script>
-<script language="javascript" src="/static/js/bootstrap.min.js"></script>
 </html>
