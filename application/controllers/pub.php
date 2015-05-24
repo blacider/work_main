@@ -6,6 +6,7 @@ class Pub extends REIM_Controller {
         parent::__construct();
         $this->load->model('tags_model', 'tags');
         $this->load->model('group_model', 'groups');
+        $this->load->model('user_model', 'users');
         $this->load->model('report_model', 'reports');
     }
 
@@ -115,40 +116,62 @@ class Pub extends REIM_Controller {
         }
     }
 
-    public function s(){
-        $msg = '<xml> <ToUserName><![CDATA[gh_3cc13bf56bfa]]></ToUserName> <Encrypt><![CDATA[bWKhCYduzT+3lE9v++eWnBQoJBX7dKOwKC6tJoBbMtHG5T5IQS5IFJN/OaZ75+Gdtuo8H2GUWnY3z/U5l1eX6vMhc8XjRZL0RQNAsIwySq9/eBp090wktyummGMbb1+bkhE+FSencMQYHneb37OzESNzBptAsL22B9XeVihbRW+2W8tdEWbBArtfg0pEjHMwk2cyrOaXUiSCQDH1bVmmCpYKy3+LNCHxwE6Oc25zwdKU8yiATas0XGO4jOu88NL8RBF2j9XmxpsyxC03pHC2Bdmkf0fzxokQ+ORK9jOgZtsNtiW4D05VSH6gqlLtkdBec/obYBWq08DD/ELXH7Aa+rkj52xtpdwKLl7wakfMU1ZCCwVWFm2+udBwhjknftQiIPB8scvRUTobeSwGRcLMEH353owy1SYzMZV6AcYTU1I=]]></Encrypt> </xml>';
 
-        $msg = '<xml>
-                <ToUserName><![CDATA[gh_3cc13bf56bfa]]></ToUserName>
-                    <Encrypt><![CDATA[kCSccM/CIHl9TvFdEVl8s4dhaA1nsGc7p0Ujoon0vbB7s1ArpCkky7KgKkr2m8A8u2D6rJtJl39Q/qyOACoottk8XJdXU23eR3Rma/Ko5UYxQs4fEaId9T7vMpihNsHB7pYSC5DWliLmUx0mDYagNCPRSJyXBBfyOTKYShmKatfYl8lKBx8H1nebUyae7zhRRtLRgWPKNCNhkr/ZBzb8aPXLDsJfk30qDcXlA4dsBq0T7xOTcqEZbGqqZU5IXIRt5lkafuC1L/UdxipawBC5uHeuQ+MhKD8g6ER1TmuFsKGxkcw/s4YtHsg7mOH2ehi1KS4bkUnVOyb73fdFDeJwrT/3JPxR8XTk9yiKscdHArsM0Jw1HEdAlEDSmGAl6X2TzKHnkHHsQlLuUvdzntgDzXcab/h7FzmlKV36ddaiJAg=]]></Encrypt>
-                    </xml>';
+    public function oauth($params = ''){
+        $code = $this->input->get('code');
+        if(!$code) die("参数错误");
+        $this->load->config('reim');
+        $appid = $this->config->item('appid');
+        $appsec = $this->config->item('appsec');
+        #"https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code"
+        $uri = sprintf("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code", $appid, $appsec, $code);
+        log_message("debug", "Oauth:" . $uri);
+        $buf = $this->do_Get($uri);
+        log_message("debug", "Oauth:" . $buf);
+        $obj = json_decode($buf, True);
+        if(array_key_exists('errcode', $obj)) {
+            //TODO: 
+        } else {
+            $openid  = $obj['openid'];
+            $token = $obj['access_token'];
+            $unionid = $obj['unionid'];
 
-        $msg = '<xml>
-                <ToUserName><![CDATA[gh_3cc13bf56bfa]]></ToUserName>
-                    <Encrypt><![CDATA[kcXz21tppMjZnFob24Sguzv7EeqfyUohja83FU2vQJeZsIMcE4qJuwBMSSZIfeI7OmegZKmwyEkoVxC/4+I5LCDCZVfw+TK0HvwSxJg7U3MMhIhjltoAyy961Mj8ypJal1mmHuT/BScqC6cjpW7n8RRZ+immsKyRQbFBA1fEIrJITy1lSOVHSGIOC3x3RFxsI1KLtYtRuVYZjGkyKbcvRWpbJ5iO0Qnf6oyeHsoxowki8+f1VL/jIXeamu3P6fGe/APY3vHzqsR8u5Hy/TzDop02hXqPbh8odk5+H+o4kGmC9YEc20NC8wQ+o38Zu5lEsfb73NkPwIVZF9AF1Rde3oLa+rn69eH97rFWrIZZWZ1dt6aLF+wXsMeKy2TI0FNxZfPKRHArHZjwp1iEoK9z/cYKxxKf6udDMsCPOsRkwbk=]]></Encrypt>
-                    </xml>';
+            $this->session->set_userdata('openid', $openid);
+            $this->session->set_userdata('unionid', $unionid);
+            $this->session->set_userdata('access_token', $token);
 
-        $TOKEN = 'Rushu0915';
-            $params = array(
-                'token' => $TOKEN
-                ,'encodingAesKey' => 'Sw6N3Bb7a7mGbUjpn7w1wc3TK8ZbjlbtVEsvJ89kB5A'
-                ,'appId' => 'wx068349d5d3a73855'
-            );
-            $this->load->library('wxlib', $params);
-            $sMsg = '';
-            $signature = '529ee9ab0b037418b23f886f89a52120f953965b';
-            $timestamp =  '1432459323';
-            $nonce =  '1260402563';
-            print_r($msg);
-            $xml_tree = new DOMDocument();
-            $xml_tree->loadXML($msg);
-            $array_e = $xml_tree->getElementsByTagName('Encrypt');
-            //$array_s = $xml_tree->getElementsByTagName('MsgSignature');
-            $encrypt = $array_e->item(0)->nodeValue;
-            //$msg_sign = $array_s->item(0)->nodeValue;
-            $errCode = $this->wxlib->DecryptMsg($signature, $timestamp, $nonce, $msg, $sMsg);
+            # 创建帐号
+            $user = $this->users->reim_oauth($unionid, $openid, $token);
 
-            echo $errCode;
+            if(!$user['status']) {
+                // TODO @abjkl, 看看出错了怎么搞
+                $this->session->set_userdata('login_error', '用户名或者密码错误');
+                redirect(base_url('login'));
+                die();
+            } else {
+                // 展示页面
+                //$reim_info = $this->input->get('reim');
+                $s = json_decode(base64_decode($params), True);
+                //log_message("debug", "$params");
+                $nickname = $s['nickname'];
+                $gid = $s['gid'];
+                $gname = $s['gname'];
+                $user_nick = $user['data']['profile']['nickname'];
+                die("你好 $user_nick ， 你的好友：$nickname 邀请您加入: $gname, 它的组ID是 $gid");
+
+            }
+        }
+    }
+
+    public function d(){
+        $this->load->config('reim');
+        $appid = $this->config->item('appid');
+        $appsec = $this->config->item('appsec');
+        $params = base64_encode(json_encode(array('nickname' => '老杨', 'gid' => '123', 'gname' => '我家娃还没起CODENAME')));
+        $ruri = urlencode(base_url('pub/oauth/' . $params));
+        $scope = 'snsapi_userinfo';
+        $uri = sprintf('https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=reim_debug#wechat_redirect', $appid, $ruri, $scope);
+        echo $uri;
     }
 }
 
