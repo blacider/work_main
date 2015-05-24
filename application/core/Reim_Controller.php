@@ -274,5 +274,19 @@ class REIM_Controller extends CI_Controller{
         return $arr[$num];
     }
 
+    public function do_Get($url, $extraheader = array()){
+        $ch = curl_init();
+        curl_setopt($ch , CURLOPT_URL, $url ) ;
+        curl_setopt($ch,CURLOPT_HTTPHEADER, $extraheader);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+        curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
+        log_message("debug", "Start Request");
+        $output = curl_exec($ch) ;
+        log_message("debug", "Get Success:" . $output);
+        curl_close($ch);
+        return $output;
+    }
+
 
 }
