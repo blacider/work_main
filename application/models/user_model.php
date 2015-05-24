@@ -220,22 +220,32 @@ class User_Model extends Reim_Model {
         log_message("debug", $buf);
          */
         $jwt = $this->get_jwt($unionid, "");
+        $this->session->set_userdata('jwt', $jwt);
 		$url = $this->get_url('oauth');
         $data = array('openid' => $openid, 'unionid' => $unionid, 'token' => $token);
 		$buf = $this->do_Post($url, $data, $jwt);
-        log_message("debug", $buf);
 
 		$obj = json_decode($buf, true);
+        $jwt = $this->get_jwt($unionid, "", $obj['server_token'], 'pc');
+        $this->session->set_userdata('jwt', $jwt);
+        log_message("debug", "Reim Oauth - save jwt:" . json_encode($jwt));
         $profile = array();
         if($obj['status']){
             $profile = $obj['data']['profile'];
-            log_message("debug", json_encode($profile));
             // 下载头像
             $avatar = $profile['avatar'];
+            $abs_path = $profile['abs_path'];
+            log_message("debug", json_encode($profile['abs_path']));
             if($avatar) {
-                $profile['src_avatar'] = $avatar;
-                $avatar = 'http://reim-avatar.oss-cn-beijing.aliyuncs.com/' . $avatar;
-                $profile['avatar'] = $avatar;//base_url($avatar);
+                if($abs_path){
+                    $profile['src_avatar'] = $avatar;
+                    $avatar = $profile['apath'];//avatar;
+                    $profile['avatar'] = $avatar;//base_url($avatar);
+                } else {
+                    $profile['src_avatar'] = $avatar;
+                    $avatar = 'http://reim-avatar.oss-cn-beijing.aliyuncs.com/' . $avatar;
+                    $profile['avatar'] = $avatar;//base_url($avatar);
+                }
             } else {
             $profile['avatar'] = base_url('/static/default.png');
             }
@@ -245,9 +255,11 @@ class User_Model extends Reim_Model {
     }
 
     public function reim_get_user($username = '', $password = ''){
+        log_message("debug", "Reim Get User");
         if('' !== $username && '' !== $password) {
             $jwt = $this->get_jwt($username, $password);
             $this->session->set_userdata('jwt', $jwt);
+            log_message("debug", "login set jwt:" . $jwt);
         } else {
             $jwt = $this->session->userdata('jwt');
         }

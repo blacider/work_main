@@ -12,6 +12,10 @@
 $path = "http://reim-avatar.oss-cn-beijing.aliyuncs.com/" . $user['apath'];
 if("" == $user['apath']) {
     $path = base_url('/static/default.png');
+} else {
+    if(1 == $user['abs_path']){
+        $path = $user['apath'];
+    }
 }
 ?>
 
@@ -526,7 +530,6 @@ foreach($member['banks'] as $b) {
     }
 
     function bind_event(){
-        console.log("Bind Event");
         $('.del_bank').click(function(){
             del_credit(this);
         });
@@ -599,7 +602,6 @@ $(document).ready(function(){
             dataType : 'json',
             method : 'POST',
             success : function(data){
-                console.log(data);
                 if(data.status){
                     //TODO: 设置定时器
                     $('.gitvcode').hide();

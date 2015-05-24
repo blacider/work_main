@@ -104,14 +104,14 @@ $user = $this->session->userdata('user');
 if(!$user) redirect(base_url('login'));
 if(is_array($user)){
     $username = $user['email'];
-if($user['nickname']){
-    $username = $user['nickname'];
-}
+    if($user['nickname']){
+        $username = $user['nickname'];
+    }
 } else {
-$username = $user->username;
-if($user->nickname){
-    $username = $user->nickname;
-}
+    $username = $user->username;
+    if($user->nickname){
+        $username = $user->nickname;
+    }
 }
 ?>
 
@@ -119,6 +119,10 @@ if($user->nickname){
 $path = "http://reim-avatar.oss-cn-beijing.aliyuncs.com/" . $user['apath'];
 if("" == $user['apath']) {
     $path = base_url('/static/default.png');
+} else {
+    if(1 == $user['abs_path']){
+        $path = $user['apath']; 
+    }
 }
 ?>
 						<!-- #section:basics/navbar.user_menu -->

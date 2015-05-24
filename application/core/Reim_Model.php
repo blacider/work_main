@@ -19,7 +19,7 @@ class Reim_Model extends CI_Model {
         return API_SERVER . $part;
     }
 
-	public function get_jwt($username, $password, $server_token = ''){
+	public function get_jwt($username, $password, $server_token = '',$device_type = 'admin'){
         if(!$username){
             $username = $this->session->userdata('email');
             $password = $this->session->userdata('password');
@@ -33,7 +33,7 @@ class Reim_Model extends CI_Model {
 		$users  = array(
 			'email' => $username
 			,'password' => $password
-			,'device_type' => 'admin'
+			,'device_type' => $device_type
 			,'device_token' => ''
             ,'server_token' => $server_token
 		);
@@ -50,7 +50,8 @@ class Reim_Model extends CI_Model {
 
 
 	private function get_header($config){
-		return array('X-REIM-JWT: ' . JWT::encode($config, PUBKEY), 'X-ADMIN-API: 1');
+		return array('X-REIM-JWT: ' . JWT::encode($config, PUBKEY));
+		//return array('X-REIM-JWT: ' . JWT::encode($config, PUBKEY), 'X-ADMIN-API: 1');
 	}
     
     public function do_Post($url, $fields, $extraheader = array(), $force_bin = 0){

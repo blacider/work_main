@@ -123,6 +123,8 @@ class Login extends REIM_Controller {
             if(array_key_exists('group_name', $data)){
                 $__g = $data['group_name'];
             }
+            $this->session->set_userdata("email", $unionid);
+            $this->session->set_userdata("server_token", $user['server_token']);
             $this->session->set_userdata("groupname", $__g);
             // 获取一下组信息，然后设置一下
             redirect(base_url('items'));
