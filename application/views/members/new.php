@@ -53,7 +53,8 @@
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" name="groups" multiple="multiple" data-placeholder="请选择部门">
                                         <!-- <option value="0">请选择部门</option> -->
-                                        <?php foreach($groups as $g) { ?>
+                                        <?php foreach($groups['group'] as $g) { ?>
+                                        
                                         <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
                                         <?php } ?>
                                     </select>

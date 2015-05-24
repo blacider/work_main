@@ -391,4 +391,64 @@ class User_Model extends Reim_Model {
         return $buf;
     }
 
+
+    public function getvcode($phone){
+        $url = $this->get_url('vcode');
+        $data = array(
+            'phone' => $phone
+            );
+        $jwt = $this->session->userdata('jwt');
+        $buf = $this->do_Post($url, $data, $jwt);
+        log_message("debug", $buf);
+        return $buf;
+    }
+
+    public function bind_phone($phone, $vcode){
+        $url = $this->get_url('users');
+        $data = array(
+            'phone' => $phone,
+            'vcode' => $vcode
+        );
+        $jwt = $this->session->userdata('jwt');
+        $buf = $this->do_Put($url, $data, $jwt);
+        log_message("debug", $buf);
+        return $buf;
+    }
+
+    public function update_credit($id, $account, $cardno, $cardbank, $cardloc) {
+        $url = $this->get_url('bank/' . $id);
+        $data = array(
+            'bank_name' => $cardbank
+            ,'bank_location' => $cardloc
+            ,'cardno' => $cardno
+            ,'account' => $account
+        );
+        $jwt = $this->session->userdata('jwt');
+        $buf = $this->do_Put($url, $data, $jwt);
+        log_message("debug", $buf);
+        return $buf;
+    }
+
+
+    public function new_credit($account, $cardno, $cardbank, $cardloc) {
+        $url = $this->get_url('bank');
+        $data = array(
+            'bank_name' => $cardbank
+            ,'bank_location' => $cardloc
+            ,'cardno' => $cardno
+            ,'account' => $account
+        );
+        $jwt = $this->session->userdata('jwt');
+        $buf = $this->do_Post($url, $data, $jwt);
+        log_message("debug", $buf);
+        return $buf;
+    }
+
+    public function del_credit($id){
+        $url = $this->get_url('bank/' . $id);
+        $jwt = $this->session->userdata('jwt');
+        $buf = $this->do_Delete($url, array(), $jwt);
+        log_message("debug", $buf);
+        return $buf;
+    }
 }

@@ -367,7 +367,7 @@ class Reports extends REIM_Controller {
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
-                        ,array('url'  => '', 'name' => '待审批的报告', 'class' => '')
+                        ,array('url'  => '', 'name' => '待审批 - 收到的报告', 'class' => '')
                     ),
             ));
     }

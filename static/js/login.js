@@ -1,3 +1,4 @@
+
 function checkLogin() {
 	var inputDOMS = document.getElementsByTagName('input');
     var formDOM = document.getElementsByTagName('form')[0];
@@ -85,6 +86,15 @@ function findPassword() {
 	formDOM[0].style.display = 'none';
 	formDOM[1].style.display = 'block';
 }
+
+function weixinlogin(){
+    var _target = encodeURIComponent('http://admin.cloudbaoxiao.com/login/wxlogin');
+    var appid = 'wxa718c52caef08633';
+    var scope = 'snsapi_login';
+    var httpurl = "https://open.weixin.qq.com/connect/qrconnect?appid=" + appid + "&redirect_uri=" + _target + "&response_type=code&scope=" + scope + "&state=xfjajfldaj#wechat_redirect";
+     window.location.href = httpurl;
+}
+
 function checkPhone2() {
 	//key = '1234';
 	var formDOM = document.getElementsByTagName('form');

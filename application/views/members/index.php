@@ -25,7 +25,6 @@
                     <th>昵称</th>
                     <th>邮箱</th>
                     <th>手机</th>
-                    <th>银行卡</th>
                     <th>权限</th>
                 </tr>
 <?php 
@@ -33,7 +32,7 @@ foreach($members as $m){
 ?>
 <tr>
     <td>
-        <?php echo $m['nickname']; ?>
+        <a href="/members/editmember/<?php echo $m['id']; ?>"> <?php echo $m['nickname']; ?> </a>
     </td>
     <td>
         <?php echo $m['email']; ?>
@@ -43,17 +42,15 @@ foreach($members as $m){
         <?php echo $m['phone']; ?>
     </td>
     <td>
-
-        <?php echo $m['credit_card']; ?>
-    </td>
-    <td>
 <?php 
+        $desc = '点击设置为管理员';
+        $color = 'grey';
     if($m['admin'] == 1){
-        echo '管理员';
-    } else {
-        echo '员工';
+    $desc = '点击设置为员工';
+    $color = 'green';
     }
 ?>
+<a href="javascript:void(0)" alt="<?php echo $desc; ?>" data-id="<?php echo $m['id']; ?>" onclick="update_admin(<?php echo $m['admin']; ?>, <?php echo $m['id']; ?>)"><i alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 fa fa-user  <?php echo $color; ?>"></i></a>
     </td>
 </tr>
 <?php 
@@ -124,8 +121,43 @@ function update_admin(_admin, uid){
 }
 
 
+function build_invite(data){
+    var _member = data;
+    $('#gname').html('已邀请人员');
+    $('#gtable').html("");
+
+    var _th = '<tr>'
+        + '<th>名称</th>'
+        + '<th>邀请日期</th>'
+        + '<th>状态</th>'
+        + '</tr>';
+    $(_th).appendTo($('#gtable'));
+
+    $(_member).each(function(idx, item){
+        var _c = 'gray';
+        var _p = '未决定';
+        //var _p = '已加入';
+        if(item['actived'] == 1){
+            _p = '已拒绝';
+        }
+        if(item['actived'] == 2){
+            _p = '已加入';
+        }
+
+
+        _th = '<tr>'
+            + '<td>' + item.name + '</td>'
+            + '<td>' + item.invitedt+ '</td>'
+            + '<td>' + _p + '</td>'
+            + '</tr>';
+        $(_th).appendTo($('#gtable'));
+
+    });
+}
+
+
 function load_group(gid){
-    if(gid > 0) {
+    if(gid != 0) {
         ___GID = gid;
     } else { 
         gid = ___GID;
@@ -138,19 +170,21 @@ function load_group(gid){
                 if(!data.status) {
                     show_notify('获取信息失败');
                 } else {
-                    show_notify('获取信息成功');
+                    //show_notify('获取信息成功');
+                    if(gid == -1){
+                        build_invite(data.data);
+                        return;
+                    }
                     data = data.data;
                     var _group = data.group;
                     var _member = data.member;
                     $('#gname').html(_group.name);
                     $('#gtable').html("");
-                    console.log(_member);
 
                 var _th = '<tr>'
                     + '<th>昵称</th>'
                     + '<th>邮箱</th>'
                     + '<th>手机</th>'
-                    + '<th>银行卡</th>'
                     + '<th>权限</th>'
                     + '</tr>';
                     $(_th).appendTo($('#gtable'));
@@ -171,7 +205,6 @@ function load_group(gid){
                     + '<td><a href="' + __BASE + '/members/editmember/' + item.id + '">' + item.nickname+ '</a></td>'
                     + '<td>' + item.email + '</td>'
                     + '<td>' + item.phone + '</td>'
-                    + '<td>' + item.credit_card+ '</td>'
                     + '<td><a href="javascript:void(0)" alt="' + _p + '" data-id="' + item.id + '" onclick="update_admin(' + item.admin + ', '+ item.id +')"><i alt="' + _p + '" class="ace-icon align-top bigger-125 fa fa-user ' + _c + '"></i></td>'
                     + '</tr>';
                     $(_th).appendTo($('#gtable'));
@@ -206,7 +239,6 @@ $(document).ready(function(){
                 })
                     .on('selected', function(e, result) {
                         var _data = result.info[0];
-                        console.log(_data);
                         var _gid  =  _data.additionalParameters.id;
                         load_group(_gid);
                     })

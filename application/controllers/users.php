@@ -62,6 +62,8 @@ class Users extends REIM_Controller {
 
             $path = '';//base_url();
         }
+        $error = $this->session->userdata('last_error');
+        $this->session->set_userdata('last_error', '');
 
         //print_r($profile);
         $this->bsload('user/profile',
@@ -69,6 +71,7 @@ class Users extends REIM_Controller {
                 'title' => '个人管理'
                 ,'member' => $profile
                 ,'self' => 1
+                ,'error' => $error
                 ,'avatar_path' => $path
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -247,4 +250,56 @@ class Users extends REIM_Controller {
         die($this->user->reset_pwd($pass, $code));
 
     }
+
+
+    public function getvcode(){
+        $phone = $this->input->post('phone');
+        if(!$phone) {
+            die(json_encode(array('status' => false, 'msg' => '参数错误')));
+        } else {
+            die($this->user->getvcode($phone));
+        }
+    }
+
+
+    public function update_phone(){
+        $phone = $this->input->post('phone');
+        $vcode = $this->input->post('vcode');
+        if(!$phone || !$vcode) {
+            die(json_encode(array('status' => false, 'data' => array('msg' => '参数错误'))));
+        } else {
+            $buf = $this->user->bind_phone($phone, $vcode);
+            $obj = json_decode($buf, True);
+            if($obj['status']) {
+                redirect(base_url('users/logout'));
+            } else {
+                $this->session->set_userdata('last_error', $obj['data']['msg']);
+                redirect(base_url('users/profile'));
+            }
+        }
+    }
+
+
+    public function new_credit() {
+        $account = $this->input->post('account');
+        $cardbank = $this->input->post('cardbank');
+        $cardno = $this->input->post('cardno');
+        $cardloc = $this->input->post('cardloc');
+        $id = $this->input->post('id');
+
+        if($id) {
+        $buf = $this->user->update_credit($id, $account, $cardno, $cardbank, $cardloc);
+        } else {
+        $buf = $this->user->new_credit($account, $cardno, $cardbank, $cardloc);
+        }
+        //$obj = json_decode($buf, True);
+        die($buf);
+    }
+
+
+    public function del_credit($id = 0){
+        $buf = $this->user->del_credit($id);
+        die($buf);
+    }
 }
+

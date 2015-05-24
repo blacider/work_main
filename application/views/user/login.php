@@ -23,7 +23,8 @@
 </script>
     <script type="text/javascript" src="/static/js/jquery.js"></script>
     <script type="text/javascript" src="/static/js/index.js"></script>
-    <script type="text/javascript" src="/static/js/login.js"></script>
+<script type="text/javascript" src="/static/js/login.js"></script>
+<script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
 </head>
 <body>
   <div class="header">
@@ -62,7 +63,9 @@
             </div>
             <div id="button-div" class="form-submit ie-button1"><input type="submit" value="登录"></div>
             <a onclick="findPassword()" class="find-password">找回密码</a>
-          </form>
+           <a onclick="weixinlogin()" class="weixin-login" style=" margin-right: 15px; ">微信登录</a>                                                  
+
+        </form>
           <form id="form-phone" onsubmit="return checkPhone()">
             <div class="form-phone">
               <h1>忘记密码</h1>

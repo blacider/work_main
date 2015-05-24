@@ -39,17 +39,22 @@ class Login extends REIM_Controller {
             redirect(base_url() . 'admin/index', 'refresh');
         } else {
             $user = $this->users->reim_get_user($username, $password);
+            $this->session->set_userdata('email', $username);
+            $this->session->set_userdata('password', $password);
             if(!$user['status']) {
                 $this->session->set_userdata('login_error', '用户名或者密码错误');
                 redirect(base_url('login'));
                 die();
             }
+            $server_token = $user['server_token'];
             $data = $user['data']['profile'];
             $__g = '';
             if(array_key_exists('group_name', $data)){
                 $__g = $data['group_name'];
             }
+            log_message("debug", "Login: server token:" . $server_token);
             $this->session->set_userdata("groupname", $__g);
+            $this->session->set_userdata("server_token", $server_token);
             // 获取一下组信息，然后设置一下
             redirect(base_url('items'));
         }

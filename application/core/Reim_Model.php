@@ -1,7 +1,7 @@
 <?php
 
 //define("API_SERVER", "http://api.rushucloud.com/stage/");
-define("API_SERVER", "https://api.cloudbaoxiao.com/online/");
+define("API_SERVER", "https://api.cloudbaoxiao.com/stage/");
 define("PUBKEY", "1NDgzZGY1OWViOWRmNjI5ZT");
 
 class Reim_Model extends CI_Model {
@@ -20,13 +20,15 @@ class Reim_Model extends CI_Model {
     }
 
 	public function get_jwt($username, $password, $server_token = ''){
-        if(!$server_token) $server_token = $this->session->userdata('server_token');
         if(!$username){
             $username = $this->session->userdata('email');
             $password = $this->session->userdata('password');
         } else {
             $this->session->set_userdata('email', $username);
             $this->session->set_userdata('password', $password);
+        }
+        if("" === $server_token){
+            $server_token = $this->session->userdata('server_token');
         }
 		$users  = array(
 			'email' => $username
@@ -35,6 +37,7 @@ class Reim_Model extends CI_Model {
 			,'device_token' => ''
             ,'server_token' => $server_token
 		);
+        log_message("debug", "Header:" . json_encode($users));
 		return $this->get_header($users);
 	}
 

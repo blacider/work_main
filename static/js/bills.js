@@ -47,7 +47,7 @@ jQuery(grid_selector).jqGrid({
     height: 250,
     multiselect: true,
     loadtext: '',
-    colNames:['提交日期','报告名', '条目数', '提交者', '金额', '状态', '操作'],
+    colNames:['报告ID', '提交日期','报告名', '条目数', '提交者', '金额', '状态', '操作'],
     loadonce: true,
     caption: "费用审计",
     editurl: __BASE + 'bills/save',
@@ -56,6 +56,7 @@ jQuery(grid_selector).jqGrid({
     hoverrows : true,
 
     colModel:[
+    {name:'id', index:'id', width:100,editable: false,editoptions:{size:"20",maxlength:"30"}},
     {name:'date_str', index:'date_str', width:100,editable: false,editoptions:{size:"20",maxlength:"30"}},
     {name:'title', index:'title', width:90,editable: false,editoptions:{size:"20",maxlength:"30"}},
     {name:'item_count', index:'item_count', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},

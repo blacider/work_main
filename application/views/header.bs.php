@@ -61,7 +61,9 @@ var __BASE = "<?php echo $base_url; ?>";
     <![endif]-->
     <script type="text/javascript">
         if ('ontouchstart' in document.documentElement) document.write("<script src='/static/ace/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+        var __BASE = "<?php echo base_url(); ?>";
     </script>
+
 <!-- page specific plugin scripts -->
 
 <script src="/static/ace/js/jqGrid/jquery.jqGrid.min.js"></script>

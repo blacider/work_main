@@ -206,7 +206,6 @@ class Members extends REIM_Controller {
         $group = $this->ug->get_my_list();
         /// 结构好奇怪啊
         //
-        log_message("debug", "ListGroup:" . json_encode($group));
         if($group['status']){
             //die(json_encode(array('data' => $group['data'])));
             foreach($group['data']['group'] as &$s){
@@ -214,7 +213,9 @@ class Members extends REIM_Controller {
                     . '<span class="ui-icon ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>'
                     . '<span class="ui-icon ui-icon-trash tdel" data-id="' . $s['id'] . '"></span></div>';
             }
-            die(json_encode($group['data']));
+            array_push($group['data']['group'], array('option' => '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="-1">' . '<span class="ui-icon ui-icon-pencil tedit" data-id="-1"></span>' . '<span class="ui-icon ui-icon-trash tdel" data-id="-1"></span></div>', 'name' => '已邀请', 'id' => "-1"));
+
+            die(json_encode($group['data']['group']));
         }
     }
 

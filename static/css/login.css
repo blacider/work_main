@@ -234,6 +234,15 @@ input[type="submit"] {
 	font-size: 23px;
 	float: left;
 }
+.weixin-login{
+    cursor: pointer;
+    float: right;
+    margin-top: 35px;
+}
+.weixin-login:hover{
+    cursor: pointer;
+    font-weight: bold;
+}
 .find-password {
     cursor: pointer;
 	float: right;
@@ -320,6 +329,15 @@ input[type="submit"] {
 	float: left;
 	font-size: 23px;
 }
+.weixin-login {
+    float: right;
+    margin-top: 29px;
+}
+.weixin-login:hover {
+    font-weight: bold;
+} 
+
+
 .find-password {
 	float: right;
 	margin-top: 29px;
@@ -400,6 +418,18 @@ input[type="submit"] {
 	float: left;
 	font-size: 23px;
 }
+
+.weixin-login {
+    cursor: pointer;
+    float: right;
+    margin-top: 48px;
+}
+.weixin-login:hover {
+    cursor: pointer;
+    font-weight: bold;
+} 
+
+
 .find-password {
     cursor: pointer;
 	float: right;
