@@ -100,6 +100,7 @@ jQuery(grid_selector).jqGrid({
         addicon : 'ace-icon fa fa-plus-circle purple',
         del: true,
         delicon : 'ace-icon fa fa-print',
+        deltitle: '导出选中报告',
         delfunc : function(rowids, p){
             var form=$("<form>");//定义一个form表单
             form.attr("style","display:none");

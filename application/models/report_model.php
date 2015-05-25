@@ -103,4 +103,18 @@ class Report_Model extends Reim_Model {
     }
 
 
+    public function audit_report($rid, $status, $receivers) {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $data = array(
+            'status' => $status
+            ,'manager_id' => $receivers
+        );
+        log_message("debug", "Update:" . json_encode($data));
+		$url = $this->get_url("report/$rid");
+        $buf = $this->do_Put($url, $data, $jwt);
+		$obj = json_decode($buf, true);
+        return $obj;
+    }
+
 }

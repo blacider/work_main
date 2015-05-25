@@ -298,7 +298,7 @@ class Members extends REIM_Controller {
             $obj['银行卡号'] = $m['credit_card'];
             array_push($data, $obj);
         }
-        $this->render_to_download('人员', $data, '员工信息.xlsx');
+        $this->render_to_download('人员', $data, '员工信息.xls');
     }
 
 

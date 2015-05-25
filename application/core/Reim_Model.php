@@ -1,7 +1,7 @@
 <?php
 
-//define("API_SERVER", "http://api.rushucloud.com/stage/");
-define("API_SERVER", "https://api.cloudbaoxiao.com/online/");
+define("API_SERVER", "http://api.rushucloud.com/stage/");
+//define("API_SERVER", "https://api.cloudbaoxiao.com/online/");
 define("PUBKEY", "1NDgzZGY1OWViOWRmNjI5ZT");
 
 class Reim_Model extends CI_Model {
@@ -38,7 +38,7 @@ class Reim_Model extends CI_Model {
             ,'server_token' => $server_token
 		);
         log_message("debug", "Header:" . json_encode($users));
-		return $this->get_header($users);
+		return $this->get_header($users, $device_type != "admin");
 	}
 
     public function get_admin_jwt(){
@@ -49,9 +49,12 @@ class Reim_Model extends CI_Model {
     } 
 
 
-	private function get_header($config){
-		return array('X-REIM-JWT: ' . JWT::encode($config, PUBKEY));
-		//return array('X-REIM-JWT: ' . JWT::encode($config, PUBKEY), 'X-ADMIN-API: 1');
+	private function get_header($config, $without_admin = 0){
+        if($without_admin) {
+            return array('X-REIM-JWT: ' . JWT::encode($config, PUBKEY));
+        } else {
+            return array('X-REIM-JWT: ' . JWT::encode($config, PUBKEY), 'X-ADMIN-API: 1');
+        }
 	}
     
     public function do_Post($url, $fields, $extraheader = array(), $force_bin = 0){

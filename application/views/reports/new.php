@@ -169,39 +169,6 @@ $(document).ready(function(){
         });
     });
     });
-    /*
-    Dropzone.autoDiscover = false;
-    try {
-        var myDropzone = new Dropzone("#dropzone" , {
-            paramName: "file", 
-                url: __BASE + '/items/images',
-                maxFilesize: 1.5,
-                addRemoveLinks : true,
-                dictDefaultMessage : '<i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i><br /><span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i> 把发票照片拖拽至虚线框</span>  <br /><span class="smaller-80 grey">(或者点击上传)</span> <br />',
-                dictResponseError: '照片上传出错!',
-                previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-details\">\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n    <div class=\"dz-size\" data-dz-size></div>\n    <img data-dz-thumbnail />\n  </div>\n  <div class=\"progress progress-small progress-striped active\"><div class=\"progress-bar progress-bar-success\" data-dz-uploadprogress></div></div>\n  <div class=\"dz-success-mark\"><span></span></div>\n  <div class=\"dz-error-mark\"><span></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n</div>"
-        });
-        myDropzone.on('success', function(ev, str_data){
-            data = eval("(" + str_data + ")"); 
-            if(data.status > 0){
-                var _data =  data.data;
-                var _id = _data.id;
-                if(_id > 0){
-                    var _exists = ($('#images').val()).split(",");
-                    if($.inArray(_id, _exists) < 0){
-                        _exists.push(_id);
-                    }
-                    $('#images').val(_exists.join(','));
-                }
-            }
-        });
-        myDropzone.on('removedfile', function(ev, str_data) {
-        });
-    } catch(e) {
-        console.log(e);
-        alert('Dropzone.js does not support older browsers!');
-    }
-     */
 
     $('.renew').click(function(){
         $('#renew').val($(this).data('renew'));

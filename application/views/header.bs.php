@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title><?php echo $title; ?></title>
+        <title>云报销 - <?php echo $title; ?></title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
         <link rel="shortcut icon" href="/static/favicon.ico" />
         <meta charset="utf-8"/>

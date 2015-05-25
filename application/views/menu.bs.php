@@ -120,9 +120,9 @@ $path = "http://reim-avatar.oss-cn-beijing.aliyuncs.com/" . $user['apath'];
 if("" == $user['apath']) {
     $path = base_url('/static/default.png');
 } else {
-    if(1 == $user['abs_path']){
-        $path = $user['apath']; 
-    }
+    $path = $user['apath']; 
+    //if(1 == $user['abs_path']){
+    //}
 }
 ?>
 						<!-- #section:basics/navbar.user_menu -->
