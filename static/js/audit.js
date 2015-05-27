@@ -38,7 +38,7 @@ jQuery(grid_selector).jqGrid({
     mtype: "GET",
     datatype: "local",
     height: 250,
-    colNames:['标题', '类型', '创建日期', '金额','消费条目数','发起人', '状态', '操作'],
+    colNames:['标题', '类型', '创建日期', '金额','消费条目数','发起人', '状态', '操作', ''],
     loadonce: true,
     //rownumbers: true, // show row numbers
     caption: "报告列表",
@@ -56,7 +56,10 @@ jQuery(grid_selector).jqGrid({
         {name:'author', index:'author', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
         {name:'status_str',index:'status_str', width:70, editable: false,editoptions: {size:"20", maxlength : "30"}/*,unformat: aceSwitch*/},
         {name:'options',index:'options', width:55, editable: false,editoptions: {size:"20", maxlength : "60"},unformat: aceSwitch},
+        { name : 'lastdt', index : 'lastdt', hidden:true , sortable : true}
     ], 
+    sortorder: "desc",
+    sortorder: "desc",
     loadComplete : function() {
         bind_event();
         var table = this;

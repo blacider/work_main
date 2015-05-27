@@ -150,13 +150,23 @@ class Pub extends REIM_Controller {
                 die();
             } else {
                 // 展示页面
-                //$reim_info = $this->input->get('reim');
                 $s = json_decode(base64_decode($params), True);
-                //log_message("debug", "$params");
                 $nickname = $s['nickname'];
                 $gid = $s['gid'];
                 $gname = $s['gname'];
                 $user_nick = $user['data']['profile']['nickname'];
+                if(!$gid)  {
+                    // TODO @abjkl, 看看出错了怎么搞
+                    $this->session->set_userdata('login_error', '用户名或者密码错误');
+                    redirect(base_url('login'));
+                    die();
+                }
+                $_group = $this->groups->get_by_id($gid);
+                log_message("debug", "$gid Group:" . json_encode($_group));
+                if($user['gid'] == $gid) {
+                    $this->load->view('wx/success', array('msg' => '你已加入'));
+                }
+                //
                 die("你好 $user_nick ， 你的好友：$nickname 邀请您加入: $gname, 它的组ID是 $gid");
 
             }
@@ -173,6 +183,7 @@ class Pub extends REIM_Controller {
         $uri = sprintf('https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=reim_debug#wechat_redirect', $appid, $ruri, $scope);
         echo $uri;
     }
+
 }
 
 

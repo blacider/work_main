@@ -175,20 +175,24 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 <div class="sidebar-shortcuts" id="sidebar-shortcuts">
     <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
         <button class="btn btn-success img-circle">
-            <i class="ace-icon fa fa-signal"></i>
+            <i class="ace-icon fa fa-dashboard"></i>
         </button>
 
-        <button class="btn btn-info">
-            <i class="ace-icon fa fa-pencil"></i>
-        </button>
+         <button class="btn btn-info" onClick="window.open('https://www.cloudbaoxiao.com/help.html#one')" > 
+             <!-- <a  href = "https://www.cloudbaoxiao.com/help.html#one" class="btn btn-info"-->
+               <i class="ace-icon fa fa-question-circle"></i>
+               <!-- </a>-->
+               </button>
 
         <!-- #section:basics/sidebar.layout.shortcuts -->
         <button class="btn btn-warning">
-            <i class="ace-icon fa fa-users"></i>
+            <i class="ace-icon fa fa-comments"></i>
         </button>
 
-        <button class="btn btn-danger">
-            <i class="ace-icon fa fa-cogs"></i>
+        <button class="btn btn-danger" onClick="location.href='<?php echo base_url('users/profile'); ?>'">
+           <!-- <a href="<?php echo base_url('users/profile'); ?>"-->
+                <i class="ace-icon fa fa-gears"></i>
+           <!-- </a>-->
         </button>
 
         <!-- /section:basics/sidebar.layout.shortcuts -->
@@ -269,7 +273,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         <li class="hsub" id="audit">
         <a href="<?php echo base_url('reports/audit'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
-             待审批的报告
+             收到的报告
         </a>
 
         <b class="arrow"></b>

@@ -12,10 +12,24 @@ class Group_Model extends Reim_Model {
     }
 
 
-    public function doimports($username, $nickname, $phone, $credit, $groups){
+    public function doimports($username, $nickname, $phone, $admin, $groups, $account, $cardno, $cardbank, $cardloc){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-        $data = array('users' => json_encode(array(array('email' => $username, 'phone' => $phone, 'name' => $nickname, 'credit_card' => $credit, 'groups' => $groups))));
+        $data = array('users' => json_encode(
+            array(
+                array(
+                    'email' => $username
+                    ,'phone' => $phone
+                    ,'name' => $nickname
+                    ,'admin' => $admin
+                    ,'groups' => $groups
+                    ,'account' => $account
+                    ,'cardno' => $cardno
+                    ,'cardbank' => $cardbank
+                    ,'cardloc' => $cardloc
+                )
+            )
+        ));
 		$url = $this->get_url('imports');
 		$buf = $this->do_Post($url, $data, $jwt);
         log_message("debug", "model:" . $buf);
@@ -80,6 +94,15 @@ class Group_Model extends Reim_Model {
         return $buf;
     }
 
+    public function get_by_id($gid){
+        log_message("debug", "Reim Get Group by id");
+        $jwt = $this->session->userdata('jwt');
+		$url = $this->get_url('group/' . $gid);
+		$buf = $this->do_Get($url, $jwt);
+        log_message("debug", $buf);
+		$obj = json_decode($buf, true);
+        return $obj;
+    }
 
 }
 

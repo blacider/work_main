@@ -104,7 +104,7 @@ DataSource.prototype = {
 };
 
 
-var ___GID = 0;
+var ___GID = -2;
 function update_admin(_admin, uid){
     $.ajax({
         url: __BASE + "/members/setadmin/" + uid + "/" + _admin,
@@ -119,7 +119,6 @@ function update_admin(_admin, uid){
                 }
     });
 }
-
 
 function build_invite(data){
     var _member = data;
@@ -157,6 +156,7 @@ function build_invite(data){
 
 
 function load_group(gid){
+    if(gid == undefined) gid = -2;
     if(gid != 0) {
         ___GID = gid;
     } else { 
@@ -175,10 +175,17 @@ function load_group(gid){
                         build_invite(data.data);
                         return;
                     }
-                    data = data.data;
-                    var _group = data.group;
-                    var _member = data.member;
-                    $('#gname').html(_group.name);
+                    if(gid == -2){
+                        var _gname = '全体员工';
+                        var _member = data.data;
+                        console.log(_member);
+                    } else {
+                        data = data.data;
+                        var _group = data.group;
+                        var _member = data.member;
+                        var _gname = _group.name;
+                    }
+                    $('#gname').html(_gname);
                     $('#gtable').html("");
 
                 var _th = '<tr>'
@@ -216,14 +223,23 @@ function load_group(gid){
 }
 $(document).ready(function(){
     $.ajax({
-        url: __BASE + "/members/listgroup",
+        url: __BASE + "/members/listtreegroup",
             method: 'GET',
             dataType: 'json',
             success: function(data) {
                 var _data = Array();
+                var _root = Array();
                 $(data).each(function(idx, val){
+                    //_key = 'item' + idx;
+                    //_data[_key] = {name : val.name, type : 'item', additionalParameters : {id : val.id}};
+                    // $(_data).push({name : val.name, type : 'item', additionalParameters : {id : val.id}});
                     _data.push({name : val.name, type : 'item', additionalParameters : {id : val.id}});
+
                 });
+                console.log(_data);
+                //_root = {'root' : {name : '全体员工', 'type' : 'folder', 'additionalParameters' : {id : -2, children : _data}}};
+                //console.log(_root);
+                //var treeDataSource = new DataSource({data : _root});
                 var treeDataSource = new DataSource({data : _data});
                 $('#grouptree').ace_tree({
                     dataSource: treeDataSource ,

@@ -14,9 +14,6 @@ if("" == $user['apath']) {
     $path = base_url('/static/default.png');
 } else {
     $path = $user['apath'];
-    //if(1 == $user['abs_path']){
-    //    $path = $user['apath'];
-    //}
 }
 ?>
 
@@ -81,6 +78,7 @@ foreach($member['banks'] as $b) {
                                     <div class="btn-group">
                                         <a href="javascript:void(0)" class="btn btn-success new_credit">
                                             <i class="ace-icon fa fa-credit-card icon-only"></i>
+                                            添加银行卡
                                         </a>
                                     </div><!-- /.btn-group -->
                                 </div>
@@ -103,6 +101,7 @@ foreach($member['banks'] as $b) {
 </div>
 
 
+<input type="file" style="display:none;" id="src" name="file" data-url="<?php echo base_url('items/avatar'); ?>" data-form-data='{"type": "1"}'>
 <div class="modal fade" id="select_img_modal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -114,8 +113,7 @@ foreach($member['banks'] as $b) {
                 <div id="div_thumbnail" class="thumbnail" style="display:none;">
                     <img src="/static/images/loading.gif">
                 </div>
-                <input type="file" style="display:none;" id="src" name="file" data-url="<?php echo base_url('items/images'); ?>" data-form-data='{"type": "0"}'>
-                <a class="btn btn-primary btn-white" id="btn_cimg" >选择图片</a>
+                <a class="btn btn-primary btn-white" id="mbtn_cimg" >选择图片</a>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -250,7 +248,23 @@ foreach($member['banks'] as $b) {
                                 <label class="col-sm-2 control-label no-padding-right">开卡行</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select id="cardbank" name="cardbank" class="form-control">
-                                        <option value='D.F.S.I'>D.F.S.I</option>
+				    	<option value='工商银行'>工商银行</option>
+					<option value='农业银行'>农业银行</option>
+					<option value='中国银行'>中国银行</option>
+					<option value='建设银行'>建设银行</option>
+					<option value='招商银行'>招商银行</option>
+					<option value='平安银行'>平安银行</option>
+					<option value='交通银行'>交通银行</option>
+					<option value='中信银行'>中信银行</option>
+					<option value='兴业银行'>兴业银行</option>
+					<option value='光大银行'>光大银行</option>
+					<option value='民生银行'>民生银行</option>
+					<option value='华夏银行'>华夏银行</option>
+					<option value='广发银行'>广发银行</option>
+					<option value='北京银行'>北京银行</option>
+					<option value='中国邮政储蓄银行'>中国邮政储蓄银行</option>
+					<option value='上海浦东银行'>上海浦东银行</option>
+					<option value='D.F.S.I'>D.F.S.I</option>
                                         <option value='金华市商业银行'>金华市商业银行</option>
                                         <option value='徐州市郊农村信用合作联社'>徐州市郊农村信用合作联社</option>
                                         <option value='花旗银行有限公司'>花旗银行有限公司</option>
@@ -268,7 +282,6 @@ foreach($member['banks'] as $b) {
                                         <option value='陕西省农村信用社联合社'>陕西省农村信用社联合社</option>
                                         <option value='大西洋银行股份有限公司'>大西洋银行股份有限公司</option>
                                         <option value='常熟农村商业银行'>常熟农村商业银行</option>
-                                        <option value='广东发展银行'>广东发展银行</option>
                                         <option value='淮安市商业银行'>淮安市商业银行</option>
                                         <option value='嘉兴市商业银行'>嘉兴市商业银行</option>
                                         <option value='AEON信贷财务'>AEON信贷财务</option>
@@ -282,13 +295,11 @@ foreach($member['banks'] as $b) {
                                         <option value='辽阳市商业银行'>辽阳市商业银行</option>
                                         <option value='湖州市商业银行'>湖州市商业银行</option>
                                         <option value='大同市商业银行'>大同市商业银行</option>
-                                        <option value='建设银行'>建设银行</option>
                                         <option value='东莞市商业银行'>东莞市商业银行</option>
                                         <option value='莱芜市商业银行'>莱芜市商业银行</option>
                                         <option value='吴江农村商业银行'>吴江农村商业银行</option>
                                         <option value='恒丰银行'>恒丰银行</option>
                                         <option value='哈尔滨市商业银行'>哈尔滨市商业银行</option>
-                                        <option value='北京银行'>北京银行</option>
                                         <option value='桂林市商业银行'>桂林市商业银行</option>
                                         <option value='温州商业银行'>温州商业银行</option>
                                         <option value='廖创兴银行有限公司'>廖创兴银行有限公司</option>
@@ -299,16 +310,13 @@ foreach($member['banks'] as $b) {
                                         <option value='绵阳市商业银行'>绵阳市商业银行</option>
                                         <option value='台州市商业银行'>台州市商业银行</option>
                                         <option value='成都农信社'>成都农信社</option>
-                                        <option value='光大银行'>光大银行</option>
                                         <option value='深圳市商业银行'>深圳市商业银行</option>
                                         <option value='烟台市商业银行'>烟台市商业银行</option>
-                                        <option value='中信银行'>中信银行</option>
                                         <option value='阜新市商业银行'>阜新市商业银行</option>
                                         <option value='成都商业银行'>成都商业银行</option>
                                         <option value='西安市商业银行'>西安市商业银行</option>
                                         <option value='丹东商行'>丹东商行</option>
                                         <option value='九江市商业银行'>九江市商业银行</option>
-                                        <option value='浦东发展银行'>浦东发展银行</option>
                                         <option value='江苏农信社'>江苏农信社</option>
                                         <option value='南京市商业银行'>南京市商业银行</option>
                                         <option value='三门峡市城市信用社'>三门峡市城市信用社</option>
@@ -332,7 +340,6 @@ foreach($member['banks'] as $b) {
                                         <option value='深圳发展银行'>深圳发展银行</option>
                                         <option value='徐州市商业银行'>徐州市商业银行</option>
                                         <option value='绍兴市商业银行'>绍兴市商业银行</option>
-                                        <option value='交通银行'>交通银行</option>
                                         <option value='渤海银行'>渤海银行</option>
                                         <option value='常州商业银行'>常州商业银行</option>
                                         <option value='佛山市禅城区农村信用联社'>佛山市禅城区农村信用联社</option>
@@ -347,7 +354,6 @@ foreach($member['banks'] as $b) {
                                         <option value='贵州省农村信用社联合社'>贵州省农村信用社联合社</option>
                                         <option value='徽商银行安庆分行'>徽商银行安庆分行</option>
                                         <option value='澳门国际银行'>澳门国际银行</option>
-                                        <option value='农业银行'>农业银行</option>
                                         <option value='泸州市商业银行'>泸州市商业银行</option>
                                         <option value='澳门永亨银行股份有限公司'>澳门永亨银行股份有限公司</option>
                                         <option value='柳州市商业银行'>柳州市商业银行</option>
@@ -358,23 +364,18 @@ foreach($member['banks'] as $b) {
                                         <option value='大丰银行有限公司'>大丰银行有限公司</option>
                                         <option value='扬州市商业银行'>扬州市商业银行</option>
                                         <option value='深圳市农村信用合作社联合社'>深圳市农村信用合作社联合社</option>
-                                        <option value='中国银行'>中国银行</option>
-                                        <option value='华夏银行'>华夏银行</option>
                                         <option value='福建省农村信用社联合社'>福建省农村信用社联合社</option>
                                         <option value='贵阳市商业银行'>贵阳市商业银行</option>
                                         <option value='大庆市商业银行'>大庆市商业银行</option>
-                                        <option value='青岛商行'>青岛商行</option>
+					<option value='青岛商行'>青岛商行</option>
                                         <option value='佛山市三水区农村信用合作社'>佛山市三水区农村信用合作社</option>
                                         <option value='南通市商业银行'>南通市商业银行</option>
                                         <option value='南宁市商业银行'>南宁市商业银行</option>
-                                        <option value='招商银行'>招商银行</option>
                                         <option value='徽商银行芜湖分行'>徽商银行芜湖分行</option>
                                         <option value='北京农联社'>北京农联社</option>
                                         <option value='深圳农联社'>深圳农联社</option>
-                                        <option value='民生银行'>民生银行</option>
                                         <option value='徽商银行'>徽商银行</option>
                                         <option value='哈萨克斯坦国民储蓄银行'>哈萨克斯坦国民储蓄银行</option>
-                                        <option value='工商银行'>工商银行</option>
                                         <option value='大连市商业银行'>大连市商业银行</option>
                                         <option value='Travelex'>Travelex</option>
                                         <option value='山东农村信用联合社'>山东农村信用联合社</option>
@@ -398,7 +399,6 @@ foreach($member['banks'] as $b) {
                                         <option value='抚顺市商业银行'>抚顺市商业银行</option>
                                         <option value='深圳商业银行'>深圳商业银行</option>
                                         <option value='江阴市农村商业银行'>江阴市农村商业银行</option>
-                                        <option value='兴业银行'>兴业银行</option>
                                         <option value='吉林市商业银行'>吉林市商业银行</option>
                                         <option value='徽商银行马鞍山分行'>徽商银行马鞍山分行</option>
                                         <option value='恒生银行有限公司'>恒生银行有限公司</option>
@@ -468,8 +468,6 @@ foreach($member['banks'] as $b) {
 <script language="javascript">
 
     function reset_bank(disable, title) {
-        console.log("reset bank");
-        console.log(disable);
         $('#modal_title').val();
         $('#account' ).val("");
         $('#id' ).val("");
@@ -477,14 +475,12 @@ foreach($member['banks'] as $b) {
         $('#cardno'  ).val("");
         $('#cardbank').val("");
         if(!disable) {
-            console.log("Disable bank");
             $('.new_card').hide();
             $('#account').attr("disabled",  true);
             $('#cardloc').attr("disabled",  true);
             $('#cardno').attr("disabled",   true);
             $('#cardbank').attr("disabled", true);
         } else {
-            console.log("Disable bank");
             $('.new_card').show();
             $('#account').attr("disabled",  false);
             $('#cardloc').attr("disabled",  false);
@@ -550,11 +546,21 @@ $(document).ready(function(){
                     {
                         dataType: 'json',
                         progressall: function (e, data) {
-                                $('#div_thumbnail').show();
+                                //$('#div_thumbnail').show();
                                 $('#btn_cimg').hide();
                             var progress = parseInt(data.loaded / data.total * 100, 10);
                         },
                             done: function (e, data) {
+                                var _server_data = data.result;
+                                if(_server_data.status == 0) {
+                                    show_notify('保存失败');
+                                } else {
+                                    var _path = _server_data.data.url;
+                                    var _id = _server_data.data.id;
+                                    $('#btn_cimg').html('<img src="' + _path + '" style="height:130px;width:130px;">');
+                                    $('#btn_cimg').show();
+                                }
+                                /*
                                 $('#div_thumbnail').hide();
                                 $('#select_img_modal').modal('hide');
                                 $('#btn_cimg').show();
@@ -566,6 +572,7 @@ $(document).ready(function(){
                                     var _id = _server_data.data.id;
                                     $('#avatar_container').html('<img src="' + _path + '" style="height:130px;width:130px;">');
                                 }
+                                 */
                             },
                                 fileuploadfail : function (){
                                     show_notify('保存失败');
