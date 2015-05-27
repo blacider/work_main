@@ -82,10 +82,13 @@ class Pub extends REIM_Controller {
                 $msg_type = $xml_msg->getElementsByTagName('MsgType')->item(0)->nodeValue;
                 $from = $xml_msg->getElementsByTagName('FromUserName')->item(0)->nodeValue;
                 $to = $xml_msg->getElementsByTagName('ToUserName')->item(0)->nodeValue;
+                $content = $xml_msg->getElementsByTagName('Content')->item(0)->nodeValue;
                 if($msg_type == "text") {
-                    $msg = $this->response_text("您的消息已经被我们的系统自动接收了", $timestamp, $nonce, $this->wxlib, $from, $to);
-                    log_message("debug", "EMSG:" . $msg);
-                    die($msg);
+                    //$result = file_get_contents("http://i.itpk.cn/api.php?question=" . $content);
+                    //$msg = $this->response_text($result, $timestamp, $nonce, $this->wxlib, $from, $to);
+                    //$msg = $this->response_text("您的消息已经被我们的系统自动接收了", $timestamp, $nonce, $this->wxlib, $from, $to);
+                    //log_message("debug", "EMSG:" . $msg);
+                    //die($msg);
                     // 用户发来了消息
                 } else if ($msg_type == "event") {
                     // 处理关注和取消关注的事情
@@ -155,9 +158,32 @@ class Pub extends REIM_Controller {
                 //log_message("debug", "$params");
                 $nickname = $s['nickname'];
                 $gid = $s['gid'];
-                $gname = $s['gname'];
                 $user_nick = $user['data']['profile']['nickname'];
-                die("你好 $user_nick ， 你的好友：$nickname 邀请您加入: $gname, 它的组ID是 $gid");
+                $user = $user['data']['profile'];
+                if(!$gid)  {
+                    // TODO @abjkl, 看看出错了怎么搞
+                    $this->session->set_userdata('login_error', '用户名或者密码错误');
+                    redirect(base_url('login'));
+                    die();
+                }
+                $_group = $this->groups->get_by_id($gid);
+                if(!$_group['status']){
+                    $this->session->set_userdata('login_error', '用户名或者密码错误');
+                    redirect(base_url('login'));
+                    die();
+                }
+                $_group = $_group['data']['ginfo'];
+                $gname = $_group['group_name'];
+                log_message("debug", "$gid Group:" . json_encode($_group));
+                log_message("debug", "$gid Group:" . json_encode($user));
+                if($user['gid'] == $gid) {
+                    $msg = '您已加入' . $gname;
+                    $this->load->view('wx/success', array('msg' => $msg, 'gname' => $gname));
+                } else {
+                    $this->load->view('wx/apply', array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
+                }
+                //
+                //die("你好 $user_nick ， 你的好友：$nickname 邀请您加入: $gname, 它的组ID是 $gid");
 
             }
         }
@@ -173,6 +199,30 @@ class Pub extends REIM_Controller {
         $uri = sprintf('https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=reim_debug#wechat_redirect', $appid, $ruri, $scope);
         echo $uri;
     }
+
+
+    public function dojoin(){
+        $name = $this->input->post('name');
+        $gid = $this->input->post('gid');
+        $uid = $this->input->post('uid');
+        if(!$uid) die(json_encode(array('status' => false, 'msg' => '参数错误')));
+        if(!$gid) die(json_encode(array('status' => false, 'msg' => '参数错误')));
+        if(!$name) die(json_encode(array('status' => false, 'msg' => '参数错误')));
+
+        // 修改昵称
+        $info = $this->users->reim_update_profile("", "", $name);
+
+        $info = json_decode($info, True);
+        if(!$info['status']) die(json_encode(array('status' => false, 'msg' => '修改参数失败')));
+        // 提交申请
+        $info = $this->users->doapply($gid);
+        log_message("debug", "Do Apply Profile: $info");
+        die($info);
+
+
+    }
 }
+
+
 
 

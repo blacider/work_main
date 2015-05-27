@@ -80,6 +80,15 @@ class Group_Model extends Reim_Model {
         return $buf;
     }
 
+    public function get_by_id($gid){
+        log_message("debug", "Reim Get Group by id");
+        $jwt = $this->session->userdata('jwt');
+		$url = $this->get_url('groups/' . $gid);
+		$buf = $this->do_Get($url, $jwt);
+        log_message("debug", $buf);
+		$obj = json_decode($buf, true);
+        return $obj;
+    }
 
 }
 

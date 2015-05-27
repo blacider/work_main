@@ -1,9 +1,9 @@
 function dataAjax() {
   $.ajax({
     type: "post",
-    url: "#",
+    url: __BASEURL + "/pub/dojoin",
     data: $('form').serialize(),
-    dataType:'jsonp',
+    dataType:'json',
     success: function(data) {
       if (data.status)
           ajaxSuccess();

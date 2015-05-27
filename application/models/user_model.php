@@ -503,4 +503,11 @@ class User_Model extends Reim_Model {
         log_message("debug", $buf);
         return $buf;
     }
+    public function doapply($gid){
+        $url = $this->get_url('apply');
+        $jwt = $this->session->userdata('jwt');
+        $buf = $this->do_Post($url, array('gid' => $gid), $jwt);
+        log_message("debug", $buf);
+        return $buf;
+    }
 }

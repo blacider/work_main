@@ -137,7 +137,6 @@ $(document).ready(function(){
     $('.ios_down').click(function(){
     var ua = navigator.userAgent.toLowerCase();
     if (/iphone|ipod|ipad/.test(ua)) {
-        alert("find");
         if(/micromessenger/.test(ua)){
             try{
             $('#modal-form').modal('show');
