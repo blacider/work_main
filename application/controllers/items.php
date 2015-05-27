@@ -6,6 +6,28 @@ class Items extends REIM_Controller {
         $this->load->model('category_model', 'category');
     }
 
+    public function avatar(){
+        if(!empty($_FILES)) {
+            // 默认是item
+            //$type = $this->input->post('type');
+            //if(!$type) $type = 0;
+            $type = 0;
+            log_message("debug", json_encode($_FILES));
+            log_message("debug", "type: " . $type);
+            $uploaddir = '/data/uploads/';
+            $uploadfile = $uploaddir . md5(time()) . "_" . basename($_FILES['file']['name']);
+            if(move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
+                $img = $this->items->upload_image($uploadfile, $type);
+                if($img['status'] > 0) unlink($uploadfile);
+                die(json_encode($img));
+            }
+        } else {
+            die("");
+
+        }
+        //$file = realpath('snapshot.jpg'); //要上传的文件
+
+    }
 
     public function images(){
         if(!empty($_FILES)) {

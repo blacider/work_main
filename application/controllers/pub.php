@@ -153,9 +153,7 @@ class Pub extends REIM_Controller {
                 die();
             } else {
                 // 展示页面
-                //$reim_info = $this->input->get('reim');
                 $s = json_decode(base64_decode($params), True);
-                //log_message("debug", "$params");
                 $nickname = $s['nickname'];
                 $gid = $s['gid'];
                 $user_nick = $user['data']['profile']['nickname'];
@@ -182,9 +180,6 @@ class Pub extends REIM_Controller {
                 } else {
                     $this->load->view('wx/apply', array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
                 }
-                //
-                //die("你好 $user_nick ， 你的好友：$nickname 邀请您加入: $gname, 它的组ID是 $gid");
-
             }
         }
     }
@@ -200,6 +195,7 @@ class Pub extends REIM_Controller {
         echo $uri;
     }
 
+<<<<<<< HEAD
 
     public function dojoin(){
         $name = $this->input->post('name');
@@ -221,6 +217,8 @@ class Pub extends REIM_Controller {
 
 
     }
+=======
+>>>>>>> 2e6254bac61801213b10a60e4d1c6915f3cf819b
 }
 
 

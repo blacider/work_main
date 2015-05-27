@@ -72,12 +72,12 @@ class Bills extends REIM_Controller {
     }
 
 
-    public function marksuccess($id = 0, $type = 0){
+    public function marksuccess($id = 0, $type = -1){
         if(0 === $id){
             $type = $this->input->post('type');
             $data = $this->input->post('data');
             $id = implode(",", $data);
-            $status = 3;
+            $status = 2;
             if(0 === $type) {
                 $status = 4;
             }

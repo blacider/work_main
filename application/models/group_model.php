@@ -12,10 +12,24 @@ class Group_Model extends Reim_Model {
     }
 
 
-    public function doimports($username, $nickname, $phone, $credit, $groups){
+    public function doimports($username, $nickname, $phone, $admin, $groups, $account, $cardno, $cardbank, $cardloc){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-        $data = array('users' => json_encode(array(array('email' => $username, 'phone' => $phone, 'name' => $nickname, 'credit_card' => $credit, 'groups' => $groups))));
+        $data = array('users' => json_encode(
+            array(
+                array(
+                    'email' => $username
+                    ,'phone' => $phone
+                    ,'name' => $nickname
+                    ,'admin' => $admin
+                    ,'groups' => $groups
+                    ,'account' => $account
+                    ,'cardno' => $cardno
+                    ,'cardbank' => $cardbank
+                    ,'cardloc' => $cardloc
+                )
+            )
+        ));
 		$url = $this->get_url('imports');
 		$buf = $this->do_Post($url, $data, $jwt);
         log_message("debug", "model:" . $buf);

@@ -199,6 +199,23 @@ class Members extends REIM_Controller {
         );
     }
 
+    public function listtreegroup(){
+        $group = $this->ug->get_my_list();
+        /// 结构好奇怪啊
+        //
+        if($group['status']){
+            $_data = array();
+            //die(json_encode(array('data' => $group['data'])));
+            foreach($group['data']['group'] as &$s){
+                $s['type'] = 'item';
+            }
+            array_push($group['data']['group'], array('option' => '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="-1">' . '<span class="ui-icon ui-icon-pencil tedit" data-id="-1"></span>' . '<span class="ui-icon ui-icon-trash tdel" data-id="-1"></span></div>', 'name' => '已邀请', 'id' => "-1", 'type' => 'item'));
+            //$group['data']['group'] = array('name' => '全体员工', 'id' => "-2", "additionalParameters" => array('children' => $group['data']['group']), 'type' => 'folder');
+            array_push($group['data']['group'], array('name' => '全体员工', 'id' => "-2", "additionalParameters" => array('children' => $group['data']['group']), 'type' => 'folder'));
+            die(json_encode($group['data']['group']));
+        }
+    }
+
     public function listgroup(){
         $page = $this->input->get('page');
         $rows = $this->input->get('rows');
@@ -207,14 +224,17 @@ class Members extends REIM_Controller {
         /// 结构好奇怪啊
         //
         if($group['status']){
+            $_data = array();
             //die(json_encode(array('data' => $group['data'])));
             foreach($group['data']['group'] as &$s){
+                $s['type'] = 'item';
                 $s['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
                     . '<span class="ui-icon ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>'
                     . '<span class="ui-icon ui-icon-trash tdel" data-id="' . $s['id'] . '"></span></div>';
             }
             array_push($group['data']['group'], array('option' => '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="-1">' . '<span class="ui-icon ui-icon-pencil tedit" data-id="-1"></span>' . '<span class="ui-icon ui-icon-trash tdel" data-id="-1"></span></div>', 'name' => '已邀请', 'id' => "-1"));
-
+            //$group['data']['group'] = array('name' => '全体员工', 'id' => "-2", "additionalParameters" => array('children' => $group['data']['group']), 'type' => 'folder');
+            array_push($group['data']['group'], array('name' => '全体员工', 'id' => "-2", "additionalParameters" => array('children' => $group['data']['group']), 'type' => 'folder'));
             die(json_encode($group['data']['group']));
         }
     }
@@ -236,28 +256,41 @@ class Members extends REIM_Controller {
     }
 
     public function docreate(){
-        $nickname = $this->input->post('nickname');
-        $phone = $this->input->post('mobile');
-        $credit = $this->input->post('credit');
-        $email = $this->input->post('email');
-        $groups = $this->input->post('groups');
+
         $renew = $this->input->post('renew');
-        if($email == "" && $phone == ""){
-            // 出错
-            $this->show_error('手机号或者邮箱必须填写一项');
+        //$member = $this->input->post('member');
+        //$id = $this->input->post('id');
+        //if(!$member) die(json_encode(array('status' => false, 'id' => $id, 'msg' => '参数错误')));
+        //$obj = json_decode(base64_decode($member), True);
+
+        $email = $this->input->post('email');
+        $nickname = $this->input->post('name');
+        $phone = $this->input->post('mobile');
+        $groups = $this->input->post('groups');
+
+        // 银行信息
+        $cardloc = $this->input->post('cardloc');
+        $cardno = $this->input->post('cardno');
+        $cardbank = $this->input->post('cardbank');
+        $account = $this->input->post('account');
+
+
+        $admin = $this->input->post('admin');
+        $renew = $this->input->post('renew');
+        if($phone == $email && $email == ""){
+            die(json_encode(array('status' => false, 'id' => $id, 'msg' => '邮箱手机必须有一个')));
         }
-        $name = $email;
-        if(!$name) {
-            $name = $phone;
-            $phone = '';
-        }
-        // 等逻辑
-        $this->groups->set_invite($email, $nickname, $phone, $credit, $groups);
-        if($renew) {
-            redirect(base_url('members/newmember'));
+        $info = $this->groups->doimports($email, $nickname, $phone, $admin, $groups, $account, $cardno, $cardbank, $cardloc);
+        if($info['status']) {
+            $this->session->set_userdata('last_error', '添加成功');
         } else {
-            redirect(base_url('members/index'));
+            $this->session->set_userdata('last_error', '添加失败');
         }
+        redirect(base_url('members/index'));
+        //print_r($info);
+        //$this->groups->set_invite($email, $nickname, $phone, $credit, $groups);
+        //die(json_encode(array('status' => true, 'id' => $id)));
+
     }
 
     public function export(){
@@ -397,6 +430,21 @@ class Members extends REIM_Controller {
     public function singlegroup($gid = 0) {
         if(0 == $gid) {
             die(json_encode(array('status' => false, 'msg' => '参数错误')));
+        }
+        if(-2 == $gid){
+            $group = $this->groups->get_my_list();
+            $ginfo = array();
+            $gmember = array();
+            if($group) {
+                if(array_key_exists('ginfo', $group['data'])){
+                    $ginfo = $group['data']['ginfo'];
+                }
+                if(array_key_exists('gmember', $group['data'])){
+                    $gmember = $group['data']['gmember'];
+                }
+                $gmember = $gmember ? $gmember : array();
+            }
+            die(json_encode(array('status' => 1, 'data' => $gmember)));
         }
         $info = $this->ug->get_single_group($gid);
         die($info);

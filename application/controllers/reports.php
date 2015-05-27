@@ -368,14 +368,14 @@ class Reports extends REIM_Controller {
         $_error = $this->session->userdata('last_error');
         $this->bsload('reports/audit',
             array(
-                'title' => '待审核报销'
+                'title' => '收到的报告'
                 ,'items' => $item_data
                 ,'members' => $_members
                 ,'error' => $_error
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
-                    ,array('url'  => '', 'name' => '待审批 - 收到的报告', 'class' => '')
+                    ,array('url'  => '', 'name' => '收到的报告', 'class' => '')
                 ),
             ));
     }
@@ -418,10 +418,10 @@ class Reports extends REIM_Controller {
                 if(array_key_exists($d['uid'], $__members)){
                     $d['author'] = $__members[$d['uid']]['nickname'];
                 }
-                if($d['mdecision'] == 0){
+                if($d['mdecision'] == 1){
                 $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
                 } else {
-                $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span></div>';
+                    $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span></div>';
                 }
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
             $d['status_str'] = '待提交';
@@ -467,7 +467,13 @@ class Reports extends REIM_Controller {
         $_excel = array();
         $_members = array();
         if($data['status'] > 0){
-            $reports = $data['data'];
+            $_reports = $data['data'];
+            $reports = $_reports['report'];
+            $banks = $_reports['banks'];
+            $_banks = array();
+            foreach($banks as $b){
+                $_banks[$b['uid']] = $b;
+            }
             foreach($reports as &$r){
                 if(!array_key_exists($r['uid'], $_members)){
                     $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
@@ -487,6 +493,7 @@ class Reports extends REIM_Controller {
                 }
                 $r['last'] = $r['total'] - $r['paid'];
                 $_members[$r['uid']]['paid'] = $r['last'];
+                $_members[$r['uid']]['uid'] = $r['uid'];
                 $obj = array();
                 $obj['报告名'] = $r['title'];
                 $obj['创建者'] = $r['nickname'];
@@ -498,12 +505,16 @@ class Reports extends REIM_Controller {
             }
             $members = array();
             foreach($_members as $x){
+                log_message("debug", json_encode($x));
+                $_bank = array('cardno' => '', 'account' => '', 'bankloc' => '', 'bankname' => '');
+                if(array_key_exists($x['uid'], $_banks)) $_bank = $_banks[$x['uid']];
                 $o = array();
-                $o['帐号'] = $x['credit_card'];
-                $o['户名'] = $x['nickname'];
+                $o['帐号'] = $_bank['cardno'];
+                $o['户名'] = $_bank['account'];
                 $o['金额'] = $x['paid'];
-                $o['开户行'] = '';
-                $o['开户地'] = '';
+                $o['开户行'] = $_bank['bankname'];
+                $o['开户地'] = $_bank['bankloc'];
+                $o['昵称'] = $x['nickname'];
                 $o['注释'] = '';
                 array_push($members, $o);
             }
