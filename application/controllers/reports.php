@@ -360,16 +360,35 @@ class Reports extends REIM_Controller {
             $data = $items['data'];
             $item_data = $data['data'];
         }
+        $_members = array();
+        $members = $this->users->reim_get_user();
+        if($members['status'] > 0){
+            $_members = $members['data']['members'];
+        }
+        $_error = $this->session->userdata('last_error');
         $this->bsload('reports/audit',
             array(
                 'title' => '待审核报销'
                 ,'items' => $item_data
-                    ,'breadcrumbs' => array(
-                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                        ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
-                        ,array('url'  => '', 'name' => '待审批 - 收到的报告', 'class' => '')
-                    ),
+                ,'members' => $_members
+                ,'error' => $_error
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
+                    ,array('url'  => '', 'name' => '待审批 - 收到的报告', 'class' => '')
+                ),
             ));
+    }
+
+
+    public function listgroupmember(){
+        $_members = array();
+        $members = $this->users->reim_get_user();
+        if($members['status'] > 0){
+            $_members = $members['data']['members'];
+        }
+        die(json_encode($_members));
+
     }
 
     public function listauditdata(){
@@ -392,15 +411,18 @@ class Reports extends REIM_Controller {
 
         $data = $items['data']['data'];
         foreach($data as &$d){
-                $trash= $d['status'] === 1 ? 'gray' : 'red';
-                $edit = ($d['status'] === 1)   ? 'gray' : 'green';
+            log_message("debug", "xxx audit data:" . json_encode($d));
+                $trash= $d['status'] === 1 ? 'grey' : 'red';
+                $edit = ($d['status'] === 1)   ? 'grey' : 'green';
                 $d['author'] = '';
                 if(array_key_exists($d['uid'], $__members)){
                     $d['author'] = $__members[$d['uid']]['nickname'];
                 }
+                if($d['mdecision'] == 0){
                 $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
-                    /*
-                     */
+                } else {
+                $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span></div>';
+                }
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
             $d['status_str'] = '待提交';
             $prove_ahead = '报销';
@@ -459,7 +481,7 @@ class Reports extends REIM_Controller {
                         $r['paid'] += $i['pa_amount'];
                     }
                 }
-                if($report['status'] == 4){
+                if($r['status'] == 4){
                     // 已完成状态的，付款额度就是已付额度
                     $r['paid'] = $r['total'];
                 }
@@ -487,9 +509,35 @@ class Reports extends REIM_Controller {
             }
             //print_r($_excel);
             //print_r($r);
-            self::render_to_download('Sheet1', $members, 'Finace_' . date('Y-m-d', time()) . ".xlsx", '财务报告', $_excel);
+            self::render_to_download('报告汇总', $members, 'Finace_' . date('Y-m-d', time()) . ".xls", '报告明细', $_excel);
 
         }
+    }
+
+
+    public function permit($status = 3, $rid = 0){
+        if($rid == 0){
+            $rid = $this->input->post('rid');
+            $status = $this->input->post('status');
+            $receivers = implode(',', $this->input->post('receiver'));
+            if('' == $receivers){
+                redirect(base_url('reports/audit'));
+                die("");
+            }
+        } else {
+            $receivers = '';
+        }
+        $buf = $this->reports->audit_report($rid, $status, $receivers);
+        if(!$buf['status']) {
+            $this->session->set_userdata('last_error', '操作失败');
+        }
+        redirect(base_url('reports/audit'));
+
+        /*
+        print_r($receivers);
+        print_r($status);
+        print_r($rid);
+         */
     }
 }
 

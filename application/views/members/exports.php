@@ -40,11 +40,16 @@
 </div>
 
 <script language="javascript">
+    var __BASE = "<?php echo base_url(); ?>";
 $(document).ready(function(){
+
     $('#memebers').on('change', function(){
         console.log("1");
         $('#imports').submit();
         console.log("1");
+    });
+    $('.renew').click(function(){
+        location.href = __BASE + "members/exports";
     });
     $('.upload').click(function(){
         try{

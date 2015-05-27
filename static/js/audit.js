@@ -1,4 +1,8 @@
+var __MEMBER_DATA = null;
 
+function show_modal(){
+            $('#modal_next').modal('show');
+}
 function bind_event(){
     $('.tdetail').each(function() {
         $(this).click(function(){
@@ -6,20 +10,25 @@ function bind_event(){
             location.href = __BASE + "reports/show/" + _id;
         });
     });
-    /*
-    $('.tdel').each(function() {
+    $('.tpass').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
-            location.href = __BASE + "reports/del/" + _id;
+            $('#rid').val(_id);
+            $('#status').val(2);
+            show_modal();
         });
     });
-    $('.tedit').each(function() {
+    $('.tdeny').each(function() {
         $(this).click(function(){
-            var _id = $(this).data('id');
+            if(confirm("确认要退回吗？") == true) {
+                var _id = $(this).data('id');
+                location.href = __BASE + "reports/permit/3/" + _id;
+            }
+            /*
             location.href = __BASE + "reports/edit/" + _id;
+            */
         });
     });
-    */
 }
 
 jQuery(grid_selector).jqGrid({

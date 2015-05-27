@@ -262,7 +262,8 @@ class REIM_Controller extends CI_Controller{
         }
 
         //$objwriter = new PHPExcel_Writer_Excel2007($Excel);
-        $objwriter = IOFactory::createWriter($Excel, 'Excel2007');
+        $objwriter = IOFactory::createWriter($Excel, 'Excel5');
+        //$objwriter = IOFactory::createWriter($Excel, 'Excel2007');
         return $objwriter;
     }
 
