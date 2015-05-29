@@ -202,7 +202,6 @@ class Users extends REIM_Controller {
                     die(json_encode(array(
                         'success' => true
                     )));
-                    //return redirect(base_url('users/profile'));
                 }
             }
         }

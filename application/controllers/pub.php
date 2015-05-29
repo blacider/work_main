@@ -121,6 +121,9 @@ class Pub extends REIM_Controller {
 
 
     public function oauth($params = ''){
+        if(!strstr(strtolower($this->input->user_agent()), 'micromessenger')) {
+            redirect(base_url('pub/success/'));
+        }
         $code = $this->input->get('code');
         if(!$code) die("参数错误");
         $this->load->config('reim');
@@ -134,6 +137,8 @@ class Pub extends REIM_Controller {
         $obj = json_decode($buf, True);
         if(array_key_exists('errcode', $obj)) {
             //TODO: 
+                $this->session->set_userdata('login_error', '用户名或者密码错误');
+                redirect(base_url('login'));
         } else {
             $openid  = $obj['openid'];
             $token = $obj['access_token'];
@@ -145,7 +150,7 @@ class Pub extends REIM_Controller {
 
             # 创建帐号
             $user = $this->users->reim_oauth($unionid, $openid, $token);
-
+            log_message("debug", "REIM OAUTH:" . json_encode($user));
             if(!$user['status']) {
                 // TODO @abjkl, 看看出错了怎么搞
                 $this->session->set_userdata('login_error', '用户名或者密码错误');
@@ -154,6 +159,7 @@ class Pub extends REIM_Controller {
             } else {
                 // 展示页面
                 $s = json_decode(base64_decode($params), True);
+                log_message("debug", "GID: $params : " . json_encode($s));
                 $nickname = $s['nickname'];
                 $gid = $s['gid'];
                 $user_nick = $user['data']['profile']['nickname'];
@@ -164,6 +170,7 @@ class Pub extends REIM_Controller {
                     redirect(base_url('login'));
                     die();
                 }
+                log_message("debug", "GID:" . $gid);
                 $_group = $this->groups->get_by_id($gid);
                 if(!$_group['status']){
                     $this->session->set_userdata('login_error', '用户名或者密码错误');
@@ -175,7 +182,7 @@ class Pub extends REIM_Controller {
                 log_message("debug", "$gid Group:" . json_encode($_group));
                 log_message("debug", "$gid Group:" . json_encode($user));
                 if($user['gid'] == $gid) {
-                    $msg = '您已加入' . $gname;
+                    $msg = $gname;
                     $this->load->view('wx/success', array('msg' => $msg, 'gname' => $gname));
                 } else {
                     $this->load->view('wx/apply', array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
@@ -195,8 +202,6 @@ class Pub extends REIM_Controller {
         echo $uri;
     }
 
-<<<<<<< HEAD
-
     public function dojoin(){
         $name = $this->input->post('name');
         $gid = $this->input->post('gid');
@@ -206,19 +211,21 @@ class Pub extends REIM_Controller {
         if(!$name) die(json_encode(array('status' => false, 'msg' => '参数错误')));
 
         // 修改昵称
-        $info = $this->users->reim_update_profile("", "", $name);
+        $info = $this->users->reim_update_profile("", "", $name, "");
 
         $info = json_decode($info, True);
         if(!$info['status']) die(json_encode(array('status' => false, 'msg' => '修改参数失败')));
         // 提交申请
         $info = $this->users->doapply($gid);
-        log_message("debug", "Do Apply Profile: $info");
-        die($info);
 
+        redirect(base_url('pub/success/' . $name));
 
     }
-=======
->>>>>>> 2e6254bac61801213b10a60e4d1c6915f3cf819b
+
+    public function success($gname = ''){
+        $msg = '';
+        $this->load->view('wx/success', array('msg' => $gname, 'gname' => $gname));
+    }
 }
 
 

@@ -1,151 +1,63 @@
 <!DOCTYPE html>
-<html lang="zh">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>云报销-安装</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui">
-        <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="/static/assets/css/font-awesome.min.css"/>
-        <link rel="stylesheet" href="/static/assets/css/ace-fonts.css"/>
-        <link rel="stylesheet" href="/static/assets/css/ace-rtl.min.css"/>
-        <link rel="stylesheet" href="/static/assets/css/ace.onpage-help.css"/>
-        <link rel="stylesheet" href="/static/assets/css/ace.min.css" id="main-ace-style"/>
-        <style>
-            .gray { 
-                -webkit-filter: grayscale(100%); 
-                -moz-filter: grayscale(100%); 
-                -ms-filter: grayscale(100%); 
-                -o-filter: grayscale(100%); 
-                filter: grayscale(100%); 
-                filter: gray; 
-            } 
-        </style>
-<script type="text/javascript">
-window.jQuery || document.write("<script src='/static/assets/js/jquery.min.js'>" + "<" + "/script>");
-if ('ontouchstart' in document.documentElement) document.write("<script src='/static/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
-</script>
-
-    </head>
-    <body class="no-skin">
-        <div class="main-container">
-            <div class="main-content">
-                <div class="page-content">
-                    <div class="page-content-area">
-                        <div class="col-xs-12">
-                            <!-- PAGE CONTENT BEGINS -->
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-6 widget-container-col ui-sortable" id="ios_form">
-                                    <div class="widget-box widget-color-red">
-                                        <div class="widget-header">
-                                            <h5 class="widget-title bigger lighter">
-                                                <i class="ace-icon fa fa-apple bigger-110"></i>
-                                            </h5>
-                                        </div>
-
-                                        <div class="widget-body">
-                                            <div class="widget-main">
-                                                <div class="center">
-                                                    <a href="itms-services://?action=download-manifest&url=https://reiminstall.sinaapp.com/reim.plist" >
-                                                        <img src='/static/logo.png' >
-                                                    </a>
-                                                </div>
-                                            </div>
-
-                                            <div>
-                                                <a href="itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.plist" class="btn btn-block btn-success ios_down">
-                                                    <i class="ace-icon fa fa-cloud-download bigger-110"></i>
-                                                    <span>下载</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- #section:custom/widget-box -->
-                                </div><!-- /.span -->
-
-
-                                <div class="col-xs-12 col-sm-6 widget-container-col ui-sortable" id="android_form">
-                                    <div class="widget-box widget-color-red">
-                                        <div class="widget-header">
-                                            <h5 class="widget-title bigger lighter">
-                                                <i class="ace-icon fa fa-android bigger-110"></i>
-                                            </h5>
-                                        </div>
-
-                                        <div class="widget-body">
-                                            <div class="widget-main">
-                                                <div class="center">
-                                                    <a href="#" >
-                                                        <img src='/static/logo.png' >
-                                                    </a>
-                                                </div>
-                                            </div>
-
-                                            <div>
-                                                <a href="/release/android/reim.apk" class="btn btn-block btn-success">
-                                                    <i class="ace-icon fa fa-cloud-download bigger-110"></i>
-                                                    <span>下载</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- #section:custom/widget-box -->
-                                </div><!-- /.span -->
-
-
-
-                            </div><!-- /.row -->
-                        </div>
-                    </div>
-                </div><!-- PAGE CONTENT ENDS -->
-            </div>
-        </div>
-
-        <div id="modal-form" class="modal in" tabindex="-1" aria-hidden="false" >
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">×</button>
-                        <h5 class="blue bigger">请用浏览器打开</h5>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-12">
-                                <label>微信不让下载呀，请你用浏览器打开吧</label>
-                                <label>为啥不给你指引？因为我特马只是一只程序猿呀，我特马不会做设计呀!T_T</label>
-                                <div class="space"></div>
-                                <label>右上角 --> 在浏览器打开 --> 妥</label>
-
-                            </div>
-
-                        </div>
-                    </div>
-            </div>
-        </div>
-
-    </body>
-<script language="javascript" src="/static/ace/js/bootstrap.min.js"></script>
+<html>
+<head>
+	<title>云报销 - 下载</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes">
+  <link rel="shortcut icon" href="http://www.cloudbaoxiao.com/favicon.ico">
+  <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="/static/wx/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="/static/wx/css/index.css">
+    <script type="text/javascript" src="/static/wx/js/jquery.js"></script>
+    <script type="text/javascript" src="/static/wx/js/index.js"></script>
 <script language="javascript">
-$(document).ready(function(){
-    var ua = navigator.userAgent.toLowerCase();
-    if (/iphone|ipod|ipad/.test(ua)) {
-        $('#android_form').hide();
-    } else if (/android/.test(ua)) {
-        $('#ios_form').hide();
-    }
-    $('.ios_down').click(function(){
-    var ua = navigator.userAgent.toLowerCase();
-    if (/iphone|ipod|ipad/.test(ua)) {
-        if(/micromessenger/.test(ua)){
-            try{
-            $('#modal-form').modal('show');
-            }catch(e){
-            }
-        }
-    }
-    });
-});
-
+    var __BASEURL = "<?php echo base_url(); ?>";
 </script>
+</head>
+<body>
+  <div id="winxin">
+    <div class="triangle-up"></div>
+    <div class="weixin-content">
+      <h2 class="ios safari">请在菜单中选择：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp使用Safari打开</h2>
+      <h2 class="android explore">请在菜单中选择:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp使用浏览器打开</h2>
+    </div>
+  </div>
+  <div class="header">
+    <div class="main-block">
+      <div class="home-logo"></div>
+    </div>
+  </div>
+  <div class="contain">
+  <div class="block1">
+    <div class="main-block">
+        <div style="width:100%">
+            <img style="width:100%" src="http://www.cloudbaoxiao.com/img/text_title_42@2x.png">
+        </div>
+      <div id="download" style="display:block" onclick="download()">
+        <div class="content">
+          <div class="android android-img">下载安装</div>
+          <div class="ios ios-img">App Store 下载</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="main-block">
+      <div class="copyright">
+        <p class="footer-text">© 2014-2015 如数科技有限公司 / All Rights Reserved</p>
+      </div>
+      <div class="footer-link">
+        <ul>
+        <li><a href="https://www.cloudbaoxiao.com/contact.html">关于我们</a></li>
+        <li><a href="https://www.cloudbaoxiao.com/help.html">帮助中心</a></li>
+        <li><a href="https://www.cloudbaoxiao.com/joinus.html">加入我们</a></li>
+      </ul>
+      </div>
+      <div class="record">
+      <p class="footer-text">京ICP备 14046885号-2</p>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
 </html>
