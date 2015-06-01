@@ -31,17 +31,19 @@
                 <input type="hidden" name="status" value="" id="status">
             </div>
             <div class="modal-body">
-                    <div class="form-group">
-                        <div class="col-xs-9 col-sm-9">
-                            <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="receiver[]" multiple="multiple" id="modal_managers" style="width:300px;">
-                                <?php foreach($members as $m) { ?>
-                                <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
+                <div class="form-group">
+                    <div class="col-xs-9 col-sm-9">
+                        <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="receiver[]" multiple="multiple" id="modal_managers" style="width:300px;">
+                            <?php foreach($members as $m) { ?>
+                            <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                            <?php } ?>
+                        </select>
                     </div>
+                </div>
             </div>
             <div class="modal-footer">
+                <input type="hidden" id="pass" name="pass" value="0" />
+                <input type="submit" class="btn btn-primary pass" value="直接通过" />
                 <input type="submit" class="btn btn-primary" value="提交" />
             </div>
                 </form>
@@ -68,6 +70,9 @@ $(document).ready(function(){
                 $this.next().css({'width': $this.parent().width()});
             })
         }).trigger('resize.chosen');
+    $('.pass').click(function(){
+        $('#pass').val(1);
+    });
 });
 </script>
 

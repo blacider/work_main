@@ -383,7 +383,10 @@ class User_Model extends Reim_Model {
         return $buf;
     }
 
-    public function reim_update_profile($email, $phone, $nickname, $credit_card){
+    public function reim_update_profile($email, $phone, $nickname, $credit_card, $uid = 0){
+        if($uid > 0) {
+            $data['uid'] = $uid;
+        }
         if(!empty($nickname)) {
             $data['nickname'] = $nickname;
         }

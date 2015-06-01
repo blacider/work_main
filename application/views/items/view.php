@@ -80,10 +80,16 @@
                                 </div>
                             </div>
 
-<div class="clearfix form-actions col-sm-8 col-xs-8">
+                            <div class="clearfix form-actions col-sm-8 col-xs-8">
                                 <div class="col-md-offset-3 col-md-6">
+                                    <?php 
+$user = $this->session->userdata('user');
+if($user['id'] == $item['uid']) {
+                                     ?>
                                     <a class="btn btn-white btn-primary renew" href="<?php echo base_url('items/edit/' . $item['id']); ?>" data-renew="1"><i class="ace-icon fa fa-check"></i>修改</a>
-
+<?php
+}
+?>
                                     <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>返回</a>
                                 </div>
                             </div>

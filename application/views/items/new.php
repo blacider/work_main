@@ -61,6 +61,7 @@
 </div>
 </div>
 
+<?php if(count($tags) > 0){ ?>
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">标签</label>
 <div class="col-xs-6 col-sm-6">
@@ -73,6 +74,7 @@
 
 </div>
 </div>
+<?php  } ?>
 
 
 <div class="form-group">

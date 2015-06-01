@@ -531,9 +531,8 @@ class Reports extends REIM_Controller {
             $rid = $this->input->post('rid');
             $status = $this->input->post('status');
             $receivers = implode(',', $this->input->post('receiver'));
-            if('' == $receivers){
-                redirect(base_url('reports/audit'));
-                die("");
+            if($this->input->post('pass') == 1) {
+                $receivers = '';
             }
         } else {
             $receivers = '';
@@ -543,12 +542,6 @@ class Reports extends REIM_Controller {
             $this->session->set_userdata('last_error', '操作失败');
         }
         redirect(base_url('reports/audit'));
-
-        /*
-        print_r($receivers);
-        print_r($status);
-        print_r($rid);
-         */
     }
 }
 

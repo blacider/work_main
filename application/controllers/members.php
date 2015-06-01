@@ -258,10 +258,6 @@ class Members extends REIM_Controller {
     public function docreate(){
 
         $renew = $this->input->post('renew');
-        //$member = $this->input->post('member');
-        //$id = $this->input->post('id');
-        //if(!$member) die(json_encode(array('status' => false, 'id' => $id, 'msg' => '参数错误')));
-        //$obj = json_decode(base64_decode($member), True);
 
         $email = $this->input->post('email');
         $nickname = $this->input->post('name');
@@ -519,6 +515,7 @@ class Members extends REIM_Controller {
                 'title' => '个人管理'
                 ,'member' => $info
                 ,'self' => 0
+                ,'error' => ''
                 ,'avatar_path' => $info['avatar']
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')

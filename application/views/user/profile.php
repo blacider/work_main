@@ -25,6 +25,13 @@ if("" == $user['apath']) {
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">邮箱</label>
                         <div class="col-xs-6 col-sm-6">
+<?php
+if($self != 1) {
+?>
+<input type='hidden' id="uid" name='uid' value="<?php echo $user['id']; ?>">
+<?php
+}
+?>
                             <!-- <input type="hidden" name="email" value="<?php echo $user['email']; ?>"> -->
                             <!-- <input type="text" class="col-xs-6 col-sm-6 form-control" value="<?php echo $user['email']; ?>" /> -->
                 <input type="text" name="email" class="col-xs-6 col-sm-6 form-control" value="<?php echo $user['email']; ?>">
@@ -85,6 +92,24 @@ foreach($member['banks'] as $b) {
                             </div>
                         </div>
                     </div>
+<?php 
+$me = $this->session->userdata('user');
+if($user['id'] != $me['id']) {
+?>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">管理员</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <label style="margin-top:8px;">
+                                        <input name="admin" class="ace ace-switch btn-rotate" type="checkbox"  id="setadmin" style="margin-top:4px;" />
+                                        <span class="lbl"></span>
+                                    </label>
+
+                                </div>
+                            </div>
+<?php 
+}
+?>
+
 
                     <div class="clearfix form-actions col-md-8">
                         <div class="col-md-offset-3 col-md-12">
@@ -248,23 +273,23 @@ foreach($member['banks'] as $b) {
                                 <label class="col-sm-2 control-label no-padding-right">开卡行</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select id="cardbank" name="cardbank" class="form-control">
-				    	<option value='工商银行'>工商银行</option>
-					<option value='农业银行'>农业银行</option>
-					<option value='中国银行'>中国银行</option>
-					<option value='建设银行'>建设银行</option>
-					<option value='招商银行'>招商银行</option>
-					<option value='平安银行'>平安银行</option>
-					<option value='交通银行'>交通银行</option>
-					<option value='中信银行'>中信银行</option>
-					<option value='兴业银行'>兴业银行</option>
-					<option value='光大银行'>光大银行</option>
-					<option value='民生银行'>民生银行</option>
-					<option value='华夏银行'>华夏银行</option>
-					<option value='广发银行'>广发银行</option>
-					<option value='北京银行'>北京银行</option>
-					<option value='中国邮政储蓄银行'>中国邮政储蓄银行</option>
-					<option value='上海浦东银行'>上海浦东银行</option>
-					<option value='D.F.S.I'>D.F.S.I</option>
+                                        <option value='工商银行'>工商银行</option>
+                                        <option value='农业银行'>农业银行</option>
+                                        <option value='中国银行'>中国银行</option>
+                                        <option value='建设银行'>建设银行</option>
+                                        <option value='招商银行'>招商银行</option>
+                                        <option value='平安银行'>平安银行</option>
+                                        <option value='交通银行'>交通银行</option>
+                                        <option value='中信银行'>中信银行</option>
+                                        <option value='兴业银行'>兴业银行</option>
+                                        <option value='光大银行'>光大银行</option>
+                                        <option value='民生银行'>民生银行</option>
+                                        <option value='华夏银行'>华夏银行</option>
+                                        <option value='广发银行'>广发银行</option>
+                                        <option value='北京银行'>北京银行</option>
+                                        <option value='中国邮政储蓄银行'>中国邮政储蓄银行</option>
+                                        <option value='上海浦东银行'>上海浦东银行</option>
+                                        <option value='D.F.S.I'>D.F.S.I</option>
                                         <option value='金华市商业银行'>金华市商业银行</option>
                                         <option value='徐州市郊农村信用合作联社'>徐州市郊农村信用合作联社</option>
                                         <option value='花旗银行有限公司'>花旗银行有限公司</option>
@@ -439,7 +464,12 @@ foreach($member['banks'] as $b) {
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">开户地</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input id="cardloc" name="cardloc" type="text" class="form-controller col-xs-12 br3 inp" placeholder="开户地" />
+                                    <select name="province" id="province">
+                                    </select>
+                                    <select name="city" id="city">
+                                        <option>北京市</option>
+                                    </select>
+                                    <input id="cardloc" name="cardloc" type="hidden" class="form-controller col-xs-12 br3 inp" placeholder="开户地" />
                                 </div>
                             </div>
 
@@ -466,6 +496,33 @@ foreach($member['banks'] as $b) {
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script>
 <script src="/static/third-party/jfu/js/jquery.fileupload.js"></script>
 <script language="javascript">
+    var __PROVINCE = Array();
+function get_province(){
+        $.ajax({
+            url : __BASE + "static/province.json",
+            dataType : 'json',
+            method : 'GET',
+            success : function(data){
+                __PROVINCE = data;
+                $(data).each(function(idx, item){
+                    var _h = "<option value='" +  item.name + "'>"+  item.name + " </option>";
+                    $('#province').append(_h);
+                });
+            }
+        });
+        $('#province').change(function(){
+            var _p = $(this).val();
+            $('#city').html('');
+            $(__PROVINCE).each(function(idx, item) {
+                if(item.name == _p){
+                    $(item.city).each(function(_idx, _item){
+                    var _h = "<option value='" +  _item + "'>"+  _item + " </option>";
+                    $('#city').append(_h);
+                    });
+                }
+            });
+        });
+}
 
     function reset_bank(disable, title) {
         $('#modal_title').val();
@@ -541,6 +598,7 @@ foreach($member['banks'] as $b) {
     }
 
 $(document).ready(function(){
+    get_province();
     if(__error) show_notify(__error);
     $('#src').fileupload(
                     {
@@ -560,19 +618,6 @@ $(document).ready(function(){
                                     $('#btn_cimg').html('<img src="' + _path + '" style="height:130px;width:130px;">');
                                     $('#btn_cimg').show();
                                 }
-                                /*
-                                $('#div_thumbnail').hide();
-                                $('#select_img_modal').modal('hide');
-                                $('#btn_cimg').show();
-                                var _server_data = data.result;
-                                if(_server_data.status == 0) {
-                                    show_notify('保存失败');
-                                } else {
-                                    var _path = _server_data.data.url;
-                                    var _id = _server_data.data.id;
-                                    $('#avatar_container').html('<img src="' + _path + '" style="height:130px;width:130px;">');
-                                }
-                                 */
                             },
                                 fileuploadfail : function (){
                                     show_notify('保存失败');
@@ -625,10 +670,12 @@ $(document).ready(function(){
         $('#credit_model').modal({keyborard: false});
     });
     $('.new_card').click(function(){
+        var _p = $('#province').val();
+        var _c = $('#city').val();
         var _account = $('#account').val();
         var _bank = $('#cardbank').val();
         var _no = $('#cardno').val();
-        var _loc = $('#cardloc').val();
+        var _loc = _p + _c;//$('#cardloc').val();
         var _id = $('#id').val();
         $.ajax({
             url : __BASE + "users/new_credit",
@@ -672,6 +719,23 @@ $(document).ready(function(){
     });
 
     bind_event();
+    $('#setadmin').change(function(){
+        var _admin = $('#setadmin').is(':checked') ? 0 : 1;
+        var uid = $('#uid').val();
+    $.ajax({
+        url: __BASE + "/members/setadmin/" + uid + "/" + _admin,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                if(!data.status ) {
+                    show_notify(data.data.msg);
+                }
+            },
+                error: function(data) {
+                    show_notify('设置用户信息失败');
+                }
+    });
+    });
 
 });
 </script>

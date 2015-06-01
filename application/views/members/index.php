@@ -50,7 +50,7 @@ foreach($members as $m){
     $color = 'green';
     }
 ?>
-<a href="javascript:void(0)" alt="<?php echo $desc; ?>" data-id="<?php echo $m['id']; ?>" onclick="update_admin(<?php echo $m['admin']; ?>, <?php echo $m['id']; ?>)"><i alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 fa fa-user  <?php echo $color; ?>"></i></a>
+<a href="javascript:void(0)" alt="<?php echo $desc; ?>" data-id="<?php echo $m['id']; ?>" onclick="update_admin(<?php echo $m['admin']; ?>, <?php echo $m['id']; ?>)"><i alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 fa fa-user  <?php echo $color; ?>"></i></a><a href="/members/editmember/<?php echo $m['id']; ?>"><i  style="margin-left:10px;" alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 fa fa-pencil"></i></a>
     </td>
 </tr>
 <?php 
@@ -178,7 +178,6 @@ function load_group(gid){
                     if(gid == -2){
                         var _gname = '全体员工';
                         var _member = data.data;
-                        console.log(_member);
                     } else {
                         data = data.data;
                         var _group = data.group;
@@ -212,7 +211,7 @@ function load_group(gid){
                     + '<td><a href="' + __BASE + '/members/editmember/' + item.id + '">' + item.nickname+ '</a></td>'
                     + '<td>' + item.email + '</td>'
                     + '<td>' + item.phone + '</td>'
-                    + '<td><a href="javascript:void(0)" alt="' + _p + '" data-id="' + item.id + '" onclick="update_admin(' + item.admin + ', '+ item.id +')"><i alt="' + _p + '" class="ace-icon align-top bigger-125 fa fa-user ' + _c + '"></i></td>'
+                    + '<td><a href="javascript:void(0)" alt="' + _p + '" data-id="' + item.id + '" onclick="update_admin(' + item.admin + ', '+ item.id +')"><i alt="' + _p + '" class="ace-icon align-top bigger-125 fa fa-user ' + _c + '"></i></a><a href="' + __BASE + '/members/editmember/' + item.id + '"><i alt="' + _p + '" class="ace-icon align-top bigger-125 fa fa-pencil' + _c + '" style="margin-left:10px;" ></i></a></td>'
                     + '</tr>';
                     $(_th).appendTo($('#gtable'));
 

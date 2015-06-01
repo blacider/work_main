@@ -269,7 +269,6 @@
                                 </div>
                             </div>
 
-                            <!--
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">管理员</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -280,7 +279,6 @@
 
                                 </div>
                             </div>
-                            -->
 
                             <input type="hidden" id="renew" name="renew" value="0" />
                             <input type="reset" style="display:none;" id="reset">
