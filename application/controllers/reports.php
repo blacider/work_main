@@ -482,6 +482,7 @@ class Reports extends REIM_Controller {
                 $r['paid'] = 0;
                 $_items = $r['items'];
                 foreach($_items as $i){
+                    if($item['reimbursed'] == 0) continue;
                     $r['total'] += $i['amount'];
                     if($i['prove_ahead'] > 0){
                         $r['paid'] += $i['pa_amount'];
