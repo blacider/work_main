@@ -28,7 +28,7 @@
                                 <input type="hidden" name="id" value="<?php echo $item['id']; ?>" />
                                 <label class="col-sm-1 control-label no-padding-right">金额</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input type="text" value="<?php echo $item['amount']; ?>" class="form-controller col-xs-12" name="amount" placeholder="金额">
+                                    <input type="text" value="<?php echo $item['amount']; ?>" class="form-controller col-xs-12" name="amount" placeholder="金额" id="amount">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -391,6 +391,24 @@ $(document).ready(function(){
 
 
     $('.renew').click(function(){
+        if($('#amount').val() == 0) {
+            show_notify('请输入金额');
+            $('#amount').focus();
+            return false;
+        }
+        if($('#amount').val() == "0") {
+            show_notify('请输入有效金额');
+            $('#amount').val('');
+            $('#amount').focus();
+            return false;
+        }
+        return false;
+        if(isNaN($('#amount').val())) {
+            show_notify('请输入有效金额');
+            $('#amount').val('');
+            $('#amount').focus();
+            return false;
+        }
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
     });

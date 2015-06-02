@@ -374,7 +374,10 @@ class Members extends REIM_Controller {
             $obj['name'] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue());
             $obj['email'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue());
             $obj['phone'] = trim($sheet->getCellByColumnAndRow(2, $row)->getValue());
-            $obj['credit_card'] = trim($sheet->getCellByColumnAndRow(3, $row)->getValue());
+            $obj['accounts'] = trim($sheet->getCellByColumnAndRow(3, $row)->getValue());
+            $obj['cardno'] = trim($sheet->getCellByColumnAndRow(4, $row)->getValue());
+            $obj['cardbank'] = trim($sheet->getCellByColumnAndRow(5, $row)->getValue());
+            $obj['cardloc'] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue());
             if("" == $obj['email'] && "" == $obj['phone']) continue;
             $obj['status'] = 0;
             if(in_array($obj['email'], $_emails) || in_array($obj['phone'], $_phones)){
@@ -406,13 +409,16 @@ class Members extends REIM_Controller {
         $email = $obj['email'];
         $nickname = $obj['name'];
         $phone = $obj['phone'];
-        $credit = $obj['credit_card'];
+        $account = $obj['accounts'];
+        $cardloc = $obj['cardloc'];
+        $cardbank = $obj['cardbank'];
+        $cardno = $obj['cardno'];
         $groups = '';
         if($phone == $email && $email == ""){
             die(json_encode(array('status' => false, 'id' => $id, 'msg' => '邮箱手机必须有一个')));
         }
-        $this->groups->doimports($email, $nickname, $phone, $credit, $groups);
         //$this->groups->set_invite($email, $nickname, $phone, $credit, $groups);
+        $info = $this->groups->doimports($email, $nickname, $phone, 0, '', $account, $cardno, $cardbank, $cardloc);
         die(json_encode(array('status' => true, 'id' => $id)));
     }
 

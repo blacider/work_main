@@ -11,7 +11,10 @@
                                     <th>姓名</th>
                                     <th>邮箱</th>
                                     <th>手机</th>
-                                    <th>银行卡</th>
+                                    <th>开户名</th>
+                                    <th>银行卡号</th>
+                                    <th>开户行</th>
+                                    <th>开户地</th>
                                     <th>状态</th>
                                 </tr>
                                 <?php foreach($members as $d){ ?>
@@ -21,7 +24,10 @@
                                         <?php echo $d['name']; ?></td>
                                     <td><?php echo $d['email']; ?></td>
                                     <td><?php echo $d['phone']; ?></td>
-                                    <td><?php echo $d['credit_card']; ?></td>
+                                    <td><?php echo $d['accounts']; ?></td>
+                                    <td><?php echo $d['cardno']; ?></td>
+                                    <td><?php echo $d['cardbank']; ?></td>
+                                    <td><?php echo $d['cardloc']; ?></td>
                                     <td>
                                         <a alt="<?php echo $d['status'] == 1 ? '已经是同一个公司的同事' : '还不是一个公司的同事'; ?>"><i id="m_<?php echo md5($d['email']); ?>"   
                                                 class="<?php echo $d['status'] == 1 ? 'green fa-check' : 'fa-times red' ; ?> menu-icon fa "></i></a>
@@ -38,11 +44,6 @@
                                     保存
                                 </button>
 
-                                &nbsp; &nbsp; &nbsp;
-                                <button class="btn" type="reset" id="resave" >
-                                    <i class="ace-icon fa fa-undo bigger-110"></i>
-                                    重新上传
-                                </button>
                             </div>
                         </div>
                     </form>
