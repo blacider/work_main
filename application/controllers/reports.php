@@ -483,7 +483,7 @@ class Reports extends REIM_Controller {
                 log_message('debug', json_encode($r));
                 $_items = $r['items'];
                 foreach($_items as $i){
-                    if($item['reimbursed'] == 0) continue;
+                    if($i['reimbursed'] == 0) continue;
                     $r['total'] += $i['amount'];
                     if($i['prove_ahead'] > 0){
                         $r['paid'] += $i['pa_amount'];
