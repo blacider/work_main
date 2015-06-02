@@ -12,3 +12,4 @@ application/logs/*
 .bash*
 release/*
 static/users_data/*
+release/*
