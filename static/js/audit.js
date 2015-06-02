@@ -47,6 +47,7 @@ jQuery(grid_selector).jqGrid({
     loadtext: '',
     autowidth: true,
 
+    viewsortcols : [true,'vertical',true],
     colModel:[
         {name:'title', index:'title', width:120,editable: false,editoptions:{size:"20",maxlength:"30"}},
         {name:'prove_ahead', index:'prove_ahead', width:30,editable: false,editoptions:{size:"20",maxlength:"30"}},

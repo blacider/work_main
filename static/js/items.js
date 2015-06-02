@@ -42,6 +42,7 @@ jQuery(grid_selector).jqGrid({
     sorttype: "int",
     colModel:[
 
+
     
     {name:'createdt', index:'createdt', width:120,editable: true,editoptions:{size:"20",maxlength:"30"}},
     {name:'type', index:'type', width:50,editable: true,editoptions:{size:"20",maxlength:"30"}},
@@ -76,6 +77,8 @@ jQuery(grid_selector).jqGrid({
     scroll: 0, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
     emptyrecords: '没有费用', // the message will be displayed at the bottom 
     pager : pager_selector,
+    //viewsortcols: [true,'vertical',false],
+    viewsortcols : [true,'vertical',true]
 
     });
 

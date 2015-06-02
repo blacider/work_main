@@ -82,6 +82,7 @@ jQuery(grid_selector).jqGrid({
     //page: 1,
     width: 780,
     height: 380,
+    viewsortcols : [true,'vertical',true],
     rowNum: 10,
     scrollPopUp:true,
     scrollLeftOffset: "83%",

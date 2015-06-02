@@ -15,6 +15,7 @@ jQuery(grid_selector).jqGrid({
     editurl: __BASE + 'rules/save',
     datatype: "json",
     autowidth: true,
+    viewsortcols : [true,'vertical',true],
 
     colModel:[
     {name:'name', index:'credit_card', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},

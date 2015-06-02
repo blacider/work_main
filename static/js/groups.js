@@ -36,6 +36,7 @@ jQuery(grid_selector).jqGrid({
     datatype: "json",
     loadtext: '',
     autowidth: true,
+    viewsortcols : [true,'vertical',true],
 
     colModel:[
     {name:'name', index:'name', width:150,editable: false,editoptions:{size:"20",maxlength:"30"}},
