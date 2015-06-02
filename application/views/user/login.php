@@ -138,5 +138,17 @@
   	  </div>
   	</div>
   </div>
+<script language="javascript">
+$(window).resize(function(){
+    if(document.body.scrollWidth > 900){
+        $('.block1').css('height', String(document.body.scrollHeight-220));
+    }
+});
+$(document).ready(function(){
+    if(document.body.scrollWidth > 900){
+        $('.block1').css('height', String(document.body.scrollHeight-220));
+    }
+});
+</script>
 </body>
 </html>
