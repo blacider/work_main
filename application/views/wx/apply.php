@@ -64,7 +64,7 @@ var __BASEURL = "<?php echo base_url(); ?>";
                     </ul>
                 </div>
                 <div class="record">
-                    <p class="footer-text">京ICP备 14046885号-2</p>
+                    <p class="footer-text">京ICP备14046885号-2</p>
                 </div>
             </div>
         </div>
