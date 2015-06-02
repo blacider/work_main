@@ -171,6 +171,9 @@ $(document).ready(function(){
     });
 
     $('.renew').click(function(){
+
+        var s = $('#receiver').val();
+
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
     });
