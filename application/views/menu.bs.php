@@ -300,14 +300,14 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         <li class="hsub" id="index">
         <a href="<?php echo base_url('members/index'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
-           组织架构 
+            组织结构
         </a>
         <b class="arrow"></b>
         </li>
         <li class="rsmenu" id="groups">
         <a href="<?php echo base_url('members/groups'); ?>">
             <i class="menu-icon fa fa-caret-right"></i>
-            <span class="menu-text"> 公司部门</span>
+            <span class="menu-text"> 公司部门 </span>
         </a>
 
         <b class="arrow"></b>
