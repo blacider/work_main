@@ -265,7 +265,12 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">开户地</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input id="cardloc" name="cardloc" type="text" class="form-controller col-xs-12 br3 inp" placeholder="开户地" />
+                                    <select name="province" id="province">
+                                    </select>
+                                    <select name="city" id="city">
+                                        <option>北京市</option>
+                                    </select>
+                                    <input id="cardloc" name="cardloc" type="hidden" class="form-controller col-xs-12 br3 inp" placeholder="开户地" />
                                 </div>
                             </div>
 
@@ -298,6 +303,33 @@
 </div>
 
 <script language="javascript">
+    var __PROVINCE = Array();
+function get_province(){
+        $.ajax({
+            url : __BASE + "static/province.json",
+            dataType : 'json',
+            method : 'GET',
+            success : function(data){
+                __PROVINCE = data;
+                $(data).each(function(idx, item){
+                    var _h = "<option value='" +  item.name + "'>"+  item.name + " </option>";
+                    $('#province').append(_h);
+                });
+            }
+        });
+        $('#province').change(function(){
+            var _p = $(this).val();
+            $('#city').html('');
+            $(__PROVINCE).each(function(idx, item) {
+                if(item.name == _p){
+                    $(item.city).each(function(_idx, _item){
+                    var _h = "<option value='" +  _item + "'>"+  _item + " </option>";
+                    $('#city').append(_h);
+                    });
+                }
+            });
+        });
+}
 function reset_bank(disable, title) {
     $('#modal_title').val();
     $('#account' ).val("");
@@ -320,6 +352,8 @@ function reset_bank(disable, title) {
     }
 }
 $(document).ready(function(){
+
+    get_province();
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
         .off('resize.chosen')
@@ -330,6 +364,11 @@ $(document).ready(function(){
             })
         }).trigger('resize.chosen');
     $('.renew').click(function(){
+        
+        var _p = $('#province').val();
+        var _c = $('#city').val();
+        var _loc = _p + _c;//$('#cardloc').val();
+        $('#cardloc').val(_loc);
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
     });
@@ -340,6 +379,8 @@ $(document).ready(function(){
         reset_bank(1, '添加新银行卡');
         $('#credit_model').modal({keyborard: false});
     });
+
+
 });
 </script>
 
