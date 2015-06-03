@@ -61,7 +61,7 @@ class Items extends REIM_Controller {
         }
         $this->bsload('items/new',
             array(
-                'title' => '新建报销'
+                'title' => '新建消费'
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
@@ -85,7 +85,7 @@ class Items extends REIM_Controller {
             $item_data = $data['items'];
             $this->bsload('items/index',
                 array(
-                    'title' => '消费列表',
+                    'title' => '我的消费',
                     'category' => $categories,
                     'tags' => $tags,
                     'items' => $item_data
@@ -269,7 +269,7 @@ class Items extends REIM_Controller {
         $item['prove_ahead'] = $_type;
         $this->bsload('items/view',
             array(
-                'title' => '查看报销',
+                'title' => '查看消费',
                 'categories' => $categories,
                 'tags' => $tags,
                 'item' => $item
@@ -317,7 +317,7 @@ class Items extends REIM_Controller {
         }
         $this->bsload('items/edit',
             array(
-                'title' => '修改报销',
+                'title' => '修改消费',
                 'categories' => $categories,
                 'tags' => $tags,
                 'images' => json_encode($_images),

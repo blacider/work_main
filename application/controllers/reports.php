@@ -326,7 +326,7 @@ class Reports extends REIM_Controller {
         $report['prove_ahead'] =  $_type;
         $this->bsload('reports/view',
             array(
-                'title' => '报告详情',
+                'title' => '查看报告',
                 'report' => $report
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')

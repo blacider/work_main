@@ -23,7 +23,7 @@ class Bills extends REIM_Controller {
             $data = $reports['data']['data'];
         $this->bsload('bills/index',
             array(
-                'title' => '财务核算'
+                'title' => '账单管理'
                 , 'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '账单管理', 'class' => '')

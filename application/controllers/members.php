@@ -27,7 +27,7 @@ class Members extends REIM_Controller {
         }
         $this->bsload('members/index',
             array(
-                'title' => '公司成员'
+                'title' => '组织结构'
                 ,'group' => $ginfo
                 ,'members' => $gmember
                     ,'breadcrumbs' => array(
@@ -63,7 +63,7 @@ class Members extends REIM_Controller {
         }
         $this->bsload('groups/index',
             array(
-                'title' => '成员组管理'
+                'title' => '公司部门'
                 ,'group' => $ginfo
                 ,'members' => $gmember
                 ,'breadcrumbs' => array(
@@ -188,7 +188,7 @@ class Members extends REIM_Controller {
         }
         $this->bsload('groups/new',
             array(
-                'title' => '成员组管理',
+                'title' => '添加部门',
                 'member' => $gmember
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -244,7 +244,7 @@ class Members extends REIM_Controller {
         $group = $this->ug->get_my_list();
         $this->bsload('members/new',
             array(
-                'title' => '成员组管理',
+                'title' => '添加员工',
                 'groups' => $group['data']
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -293,7 +293,7 @@ class Members extends REIM_Controller {
         $group = $this->ug->get_my_list();
         $this->bsload('members/exports',
             array(
-                'title' => '导出员工',
+                'title' => '导入/导出员工',
                 'groups' => $group['data']
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -388,7 +388,7 @@ class Members extends REIM_Controller {
 
         $this->bsload('members/imports',
             array(
-                'title' => '导入员工',
+                'title' => '确认导入',
                 'members' => $data
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -518,7 +518,7 @@ class Members extends REIM_Controller {
         //print_r($info);
         $this->bsload('user/profile',
             array(
-                'title' => '个人管理'
+                'title' => '修改资料'
                 ,'member' => $info
                 ,'self' => 0
                 ,'error' => ''
