@@ -480,10 +480,11 @@ class Reports extends REIM_Controller {
                 }
                 $r['total'] = 0;
                 $r['paid'] = 0;
+                log_message('debug', json_encode($r));
                 $_items = $r['items'];
                 foreach($_items as $i){
-                    if($i['reimbursed'] == 0) continue;
                     $r['total'] += $i['amount'];
+                    if($i['reimbursed'] == 0) continue;
                     if($i['prove_ahead'] > 0){
                         $r['paid'] += $i['pa_amount'];
                     }
