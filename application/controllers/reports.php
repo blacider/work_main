@@ -529,17 +529,19 @@ class Reports extends REIM_Controller {
 
 
     public function permit($status = 3, $rid = 0){
+        $content = '';
         if($rid == 0){
             $rid = $this->input->post('rid');
             $status = $this->input->post('status');
             $receivers = implode(',', $this->input->post('receiver'));
+            $content = $this->input->post('content');
             if($this->input->post('pass') == 1) {
                 $receivers = '';
             }
         } else {
             $receivers = '';
         }
-        $buf = $this->reports->audit_report($rid, $status, $receivers);
+        $buf = $this->reports->audit_report($rid, $status, $receivers, $content);
         if(!$buf['status']) {
             $this->session->set_userdata('last_error', '操作失败');
         }

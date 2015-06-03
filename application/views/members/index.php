@@ -43,14 +43,15 @@ foreach($members as $m){
     </td>
     <td>
 <?php 
-        $desc = '点击设置为管理员';
-        $color = 'grey';
+        $desc = '员工';
+        $color = '<span class="label label-info arrowed">员工</span>';
     if($m['admin'] == 1){
-    $desc = '点击设置为员工';
-    $color = 'green';
+        $desc = '管理员';
+        $color = '<span class="label label-success arrowed">管理员</span>';
     }
 ?>
-<a href="javascript:void(0)" alt="<?php echo $desc; ?>" data-id="<?php echo $m['id']; ?>" onclick="update_admin(<?php echo $m['admin']; ?>, <?php echo $m['id']; ?>)"><i alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 fa fa-user  <?php echo $color; ?>"></i></a><a href="/members/editmember/<?php echo $m['id']; ?>"><i  style="margin-left:10px;" alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 fa fa-pencil"></i></a>
+<a href="/members/editmember/<?php echo $m['id']; ?>"><i  style="margin-left:10px;" alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 fa fa-pencil"></i></a>
+<a href="javascript:void(0)" title="<?php echo $desc; ?>" data-id="<?php echo $m['id']; ?>" ><?php echo $color; ?></a>
     </td>
 </tr>
 <?php 
@@ -198,11 +199,14 @@ function load_group(gid){
                     $(_member).each(function(idx, item){
                         var _c = 'gray';
                         var _p = '员工';
+                        var _color = '<span class="label label-success arrowed">管理员</span>';
                     switch(item.admin) {
                     case '0' : {
                         _p = '点击设置为管理员'; 
+                            var _color = '<span class="label label-success arrowed">管理员</span>';
                     }; break;
                     case '1' : {
+                        var _color = '<span class="label label-info arrowed">员工</span>';
                         _c = 'green';
                         _p = '点击设置为员工'; 
                     }; break;
@@ -211,7 +215,7 @@ function load_group(gid){
                     + '<td><a href="' + __BASE + '/members/editmember/' + item.id + '">' + item.nickname+ '</a></td>'
                     + '<td>' + item.email + '</td>'
                     + '<td>' + item.phone + '</td>'
-                    + '<td><a href="javascript:void(0)" alt="' + _p + '" data-id="' + item.id + '" onclick="update_admin(' + item.admin + ', '+ item.id +')"><i alt="' + _p + '" class="ace-icon align-top bigger-125 fa fa-user ' + _c + '"></i></a><a href="' + __BASE + '/members/editmember/' + item.id + '"><i alt="' + _p + '" class="ace-icon align-top bigger-125 fa fa-pencil' + _c + '" style="margin-left:10px;" ></i></a></td>'
+                    + '<td><a href="' + __BASE + '/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a><a href="javascript:void(0)">' + _color + '</a></td>'
                     + '</tr>';
                     $(_th).appendTo($('#gtable'));
 

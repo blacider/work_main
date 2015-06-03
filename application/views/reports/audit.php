@@ -18,6 +18,32 @@
 
 </div>
 
+<div class="modal fade" id="comment_dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">退回理由</h4>
+            </div>
+            <form action="<?php echo base_url('/reports/permit'); ?>" method="post" id="form_discard">
+                <div class="modal-body">
+                    <input type="hidden" id="div_id" class="thumbnail" name="rid" style="display:none;" value=""/>
+                    <input type="hidden" id="status"  name="status" style="display:none;" value="3" />
+                    <div class="form-group">
+                        <textarea class="form-control" name="content"></textarea>
+                    </div>
+                    <div class="clearfix form-actions">
+                        <div class="col-md-offset-3 col-md-9">
+                            <a class="btn btn-white btn-primary new_card" data-renew="0"><i class="ace-icon fa fa-save "></i>退回</a>
+                            <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 
 <div class="modal fade" id="modal_next">
@@ -55,12 +81,14 @@
 <!-- page specific plugin scripts -->
 <script src="/static/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="/static/ace/js/jqGrid/jquery.jqGrid.min.js"></script>
-<script src="/static/ace/js/jqGrid/i18n/grid.locale-en.js"></script>
 
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 $(document).ready(function(){
+    $('.new_card').click(function(){
+        $('#form_discard').submit();
+    });
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
         .off('resize.chosen')

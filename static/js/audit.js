@@ -20,10 +20,16 @@ function bind_event(){
     });
     $('.tdeny').each(function() {
         $(this).click(function(){
+            var _id = $(this).data('id');
+            $('#div_id').val(_id);
+            $('#comment_dialog').modal('show');
+
+            /*
             if(confirm("确认要退回吗？") == true) {
                 var _id = $(this).data('id');
                 location.href = __BASE + "reports/permit/3/" + _id;
             }
+            */
             /*
             location.href = __BASE + "reports/edit/" + _id;
             */
@@ -83,6 +89,8 @@ jQuery(grid_selector).jqGrid({
     //scroll: 1, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
     emptyrecords: '没有数据', // the message will be displayed at the bottom 
     pager : pager_selector,
+    //viewsortcols: [true,'vertical',false],
+    viewsortcols : [true,'vertical',true]
 
     });
 

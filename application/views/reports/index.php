@@ -7,8 +7,8 @@
             </div>
         </div>
     </div>
-
 </div>
+
 
 
 
@@ -17,7 +17,6 @@
 <!-- page specific plugin scripts -->
 <script src="/static/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="/static/ace/js/jqGrid/jquery.jqGrid.min.js"></script>
-<script src="/static/ace/js/jqGrid/i18n/grid.locale-en.js"></script>
 
 
 <script language="javascript">
