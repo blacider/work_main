@@ -34,6 +34,10 @@ class App_Model extends Reim_Model {
         $this->db->where(array('platform' => $type, 'online' => 1));
         $this->db->order_by('id', 'desc');
         return $this->db->get(self::APP_TABLE, 1)->row_array();
-
+    }
+    public function find_all_online(){
+        $this->db->where(array('online' => 1));
+        $this->db->order_by('id', 'desc');
+        return $this->db->get(self::APP_TABLE)->result_array();
     }
 }

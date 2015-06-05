@@ -72,9 +72,9 @@ function download() {
 		    },50);
 	} else {
 		if(!isIos()) {
-			window.location.href = 'https://admin.cloudbaoxiao.com/release/android/reim.apk';
+			window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/reim.apk';
 		} else {
-			window.location.href = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.plist';
+			window.location.href = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.104.plist';
 		}
 	}
 }

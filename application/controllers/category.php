@@ -14,7 +14,7 @@ class Category extends REIM_Controller {
         if($category){
             $_group = $category['data']['categories'];
         }
-        $this->eload('category/index',
+        $this->bsload('category/index',
             array(
                 'title' => '分类管理'
                 ,'category' => $_group

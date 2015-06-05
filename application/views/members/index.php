@@ -5,7 +5,7 @@
 <div class="page-content">
 <div class="page-content-area">
 <div class="row">
-<div class="col-xs-4">
+<div class="col-xs-3">
     <div class="panel panel-primary">
         <div class="panel-heading"><h3 class="panel-title default">组织架构</h3></div>
         <div class="panel-body">
@@ -13,7 +13,7 @@
         </div>
     </div>
 </div>
-<div class="col-xs-8">
+<div class="col-xs-9">
     <!--
     <table id="grid-table"></table>
     -->
@@ -25,7 +25,8 @@
                     <th>昵称</th>
                     <th>邮箱</th>
                     <th>手机</th>
-                    <th>权限</th>
+                    <th>身份</th>
+                    <th>操作</th>
                 </tr>
 <?php 
 foreach($members as $m){
@@ -50,9 +51,11 @@ foreach($members as $m){
         $color = '<span class="label label-success arrowed">管理员</span>';
     }
 ?>
-<a href="/members/editmember/<?php echo $m['id']; ?>"><i  style="margin-left:10px;" alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 fa fa-pencil"></i></a>
 <a href="javascript:void(0)" title="<?php echo $desc; ?>" data-id="<?php echo $m['id']; ?>" ><?php echo $color; ?></a>
     </td>
+    <td>
+<a href="/members/editmember/<?php echo $m['id']; ?>"><i  style="margin-left:10px;" alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 fa fa-pencil"></i></a>
+</td>
 </tr>
 <?php 
 }
@@ -192,7 +195,8 @@ function load_group(gid){
                     + '<th>昵称</th>'
                     + '<th>邮箱</th>'
                     + '<th>手机</th>'
-                    + '<th>权限</th>'
+                    + '<th>身份</th>'
+                    + '<th>操作</th>'
                     + '</tr>';
                     $(_th).appendTo($('#gtable'));
 
@@ -215,7 +219,8 @@ function load_group(gid){
                     + '<td><a href="' + __BASE + '/members/editmember/' + item.id + '">' + item.nickname+ '</a></td>'
                     + '<td>' + item.email + '</td>'
                     + '<td>' + item.phone + '</td>'
-                    + '<td><a href="' + __BASE + '/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a><a href="javascript:void(0)">' + _color + '</a></td>'
+                    + '<td><a href="javascript:void(0)">' + _color + '</a>'
+                    + '<td><a href="' + __BASE + '/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a></td>'
                     + '</tr>';
                     $(_th).appendTo($('#gtable'));
 

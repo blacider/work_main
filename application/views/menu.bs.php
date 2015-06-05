@@ -352,7 +352,6 @@ if($profile['admin'] == 1){
 <i class="menu-icon fa fa-money"></i>
 <span class="menu-text"> 财务核算 </span>
 </a>
-
 <b class="arrow"></b>
 </li>
 <?php 

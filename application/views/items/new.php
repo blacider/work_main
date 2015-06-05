@@ -83,7 +83,7 @@
 <select class="form-control" name="type" data-placeholder="请选择类型">
 <option value="0">报销</option>
 <option value="1">预算</option>
-<option value="2">借款</option>
+<option value="2">预借</option>
 </select>
 </div>
 </div>
@@ -120,8 +120,6 @@
 <div class="col-md-offset-3 col-md-8">
 <a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
 <a class="btn btn-white btn-default renew" data-renew="1"><i class="ace-icon fa fa-check "></i>保存再记</a>
-
-<a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
 </div>
 </div>
 <input type="reset" style="display:none;" id="reset">
@@ -285,14 +283,12 @@ $(document).ready(function(){
             $('#amount').focus();
             return false;
         }
-        return false;
         if(isNaN($('#amount').val())) {
             show_notify('请输入有效金额');
             $('#amount').val('');
             $('#amount').focus();
             return false;
         }
-
 
         $('#renew').val($(this).data('renew'));
         $('#itemform').submit();
