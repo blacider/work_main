@@ -35,7 +35,7 @@ class Register extends REIM_Controller {
 
     public function doregister(){
         $name = $this->input->post('u');
-        $pass = $this->input->post('p');
+        $pass = $this->input->post('password');
         $_name = $this->input->cookie($this->cookie_user);
         log_message("debug", "Name: " . $name);
         log_message("debug", "_Name: " . $_name);
@@ -54,10 +54,12 @@ class Register extends REIM_Controller {
             $phone = $name;
         }
         $ret = $this->users->register($email, $pass, $phone, $code);
+        $ret = json_decode($ret, True);
         if($ret['status']) {
         $this->load->view('user/active_succ', array('name' => array(),'code'=>$code, 'msg' => '恭喜，你的账号已经注册成功，请点击<a href="https://admin.cloudbaoxiao.com">这里</a>登录。'));
         } else {
-        $this->load->view('user/active_fail', array('name' => array(),'code'=>$code, 'msg' => '抱歉帐号注册失败，请稍后尝试。'));
+            $this->load->view('user/active_fail', array('name' => array(),'code'=>$code, 'msg' => '抱歉帐号注册失败，请稍后尝试。'));
+            //$this->load->view('user/active_fail', array('name' => array(),'code'=>$code, 'msg' => '抱歉帐号注册失败，请稍后尝试。'));
         }
     }
 

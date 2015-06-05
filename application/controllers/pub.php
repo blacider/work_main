@@ -5,6 +5,7 @@ class Pub extends REIM_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('tags_model', 'tags');
+        $this->load->model('app_model');
         $this->load->model('group_model', 'groups');
         $this->load->model('user_model', 'users');
         $this->load->model('report_model', 'reports');
@@ -226,7 +227,16 @@ class Pub extends REIM_Controller {
         $msg = '';
         $this->load->view('wx/success', array('msg' => $gname, 'gname' => $gname));
     }
+
+    public function version(){
+        $info = $this->app_model->find_all_online();
+        die(json_encode($info));
+    }
+
+
 }
+
+
 
 
 

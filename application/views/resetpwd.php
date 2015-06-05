@@ -26,10 +26,10 @@
         <!--[if lte IE 9]>
         <link rel="stylesheet" href="/static/assets/css/ace-ie.min.css"/>
         <![endif]-->
+ <link rel="stylesheet" href="/static/jgrowl/jquery.jgrowl.css" />
         <link rel="stylesheet" href="/static/assets/css/ace.onpage-help.css"/>
 <script language="javascript" src="/static/js/jquery.min.js"></script>
 <script language="javascript" src="/static/jgrowl/jquery.jgrowl.min.js"></script>
-        <link rel="stylesheet" href="/static/jgrowl/jquery.jgrowl.css"/>
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 

@@ -22,12 +22,13 @@ class Resetpwd extends REIM_Controller  {
             $this->session->set_userdata('last_error', "密码不匹配");
             redirect(base_url('resetpwd/index/' . $code . "/" . $cid));
         }
-        $category = $this->user_model->reim_update_password($code, $pass, $cid);
+        $category = $this->user_model->reset_pwd($pass,$code);
+        //$category = $this->user_model->reim_update_password($code, $pass, $cid);
         $obj = json_decode($category, True);
         log_message("debug", $category);
         if($obj['status'] > 0){
             $this->session->set_userdata('last_error', "修改成功");
-            redirect(base_url('resetpwd/index/' . $code . "/" . $cid));
+            redirect(base_url('login'));
         } else {
             $this->session->set_userdata('last_error', "修改失败");
             redirect(base_url('resetpwd/index/' . $code . "/" . $cid));

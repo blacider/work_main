@@ -171,7 +171,7 @@ if("" == $user['apath']) {
 <script type="text/javascript">
 try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 </script>
-
+<!--
 <div class="sidebar-shortcuts" id="sidebar-shortcuts">
     <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
         <button class="btn btn-success img-circle">
@@ -179,23 +179,17 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         </button>
 
          <button class="btn btn-info" onClick="window.open('https://www.cloudbaoxiao.com/help.html#one')" > 
-             <!-- <a  href = "https://www.cloudbaoxiao.com/help.html#one" class="btn btn-info"-->
                <i class="ace-icon fa fa-question-circle"></i>
-               <!-- </a>-->
                </button>
 
-        <!-- #section:basics/sidebar.layout.shortcuts -->
         <button class="btn btn-warning">
             <i class="ace-icon fa fa-comments"></i>
         </button>
 
         <button class="btn btn-danger" onClick="location.href='<?php echo base_url('users/profile'); ?>'">
-           <!-- <a href="<?php echo base_url('users/profile'); ?>"-->
                 <i class="ace-icon fa fa-gears"></i>
-           <!-- </a>-->
         </button>
 
-        <!-- /section:basics/sidebar.layout.shortcuts -->
     </div>
 
     <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
@@ -208,6 +202,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         <span class="btn btn-danger"></span>
     </div>
 </div>
+-->
 <ul class="nav nav-list">
 
     <li class="hsub" id="items" >
@@ -387,9 +382,8 @@ if($profile['admin'] == 1){
 <li class="rsmenu" id="bills">
 <a href="<?php echo base_url('bills'); ?>">
 <i class="menu-icon fa fa-money"></i>
-<span class="menu-text"> 账单 </span>
+<span class="menu-text"> 财务核算 </span>
 </a>
-
 <b class="arrow"></b>
 </li>
 

@@ -65,6 +65,8 @@ jQuery(grid_selector).jqGrid({
     //scroll: 1, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
     emptyrecords: '没有数据', // the message will be displayed at the bottom 
     pager : pager_selector,
+    //viewsortcols: [true,'vertical',false],
+    viewsortcols : [true,'vertical',true]
 
     });
 
