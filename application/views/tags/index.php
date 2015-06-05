@@ -7,14 +7,6 @@
 
     <!-- /section:settings.box -->
     <div class="page-content-area">
-        <div class="page-header">
-            <h1>
-                标签管理
-                <small>
-                    <i class="ace-icon fa fa-angle-double-right"></i>
-                </small>
-            </h1>
-        </div><!-- /.page-header -->
 
         <div class="row">
             <div class="col-xs-12">
