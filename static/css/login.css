@@ -40,9 +40,6 @@ background-color: #ff7075;
 #form-phone-step2 {
 	display: none;
 }
-.form-phone  {
-	margin: 20px auto 15px 0;
-}
 #form-phone h1 {
 	margin: 34px auto 25px 0;
 }
@@ -69,6 +66,9 @@ form h1 {
 	margin: 37px 11px auto auto;
 	text-align: center;
 	line-height: 30px;
+}
+#send-again:hover,a {
+	cursor: pointer;
 }
 .form-code {
 	width: 50%;
@@ -162,7 +162,7 @@ a {
 .copyright {
 	font-size: 14px;
 	color: #fff;
-	width: 334px;
+	width: 324px;
 }
 .footer-text {
 	margin: 0;
@@ -190,11 +190,8 @@ a {
 }
 @media screen and (max-width: 739px) and (min-width: 1px) {
 /*----------block1------------------*/
-#form-phone {
-	margin: 34px auto 15px 0;
-}
 #form-phone h1 {
-	margin: 34px auto 15px 0;
+	margin: 34px auto 5px 0;
 }
 #form-phone-step1 h1 {
 	margin: 23px auto -4px 0;
@@ -234,22 +231,11 @@ input[type="submit"] {
 	font-size: 23px;
 	float: left;
 }
-.weixin-login{
-    cursor: pointer;
-    float: right;
-    margin-top: 35px;
-}
-.weixin-login:hover{
-    cursor: pointer;
-    font-weight: bold;
-}
 .find-password {
-    cursor: pointer;
 	float: right;
 	margin-top: 35px;
 }
 .find-password:hover {
-    cursor: pointer;
 	font-weight: bold;
 }
 .block1 {
@@ -329,15 +315,6 @@ input[type="submit"] {
 	float: left;
 	font-size: 23px;
 }
-.weixin-login {
-    float: right;
-    margin-top: 29px;
-}
-.weixin-login:hover {
-    font-weight: bold;
-} 
-
-
 .find-password {
 	float: right;
 	margin-top: 29px;
@@ -378,7 +355,7 @@ input[type="submit"] {
 /*----------block1------------------*/
 .login {
 	width: 725px;
-	margin: 135px auto auto auto;
+	margin: 165px auto auto auto;
 }
 .login-left {
 	vertical-align: middle;
@@ -418,25 +395,11 @@ input[type="submit"] {
 	float: left;
 	font-size: 23px;
 }
-
-.weixin-login {
-    cursor: pointer;
-    float: right;
-    margin-top: 48px;
-}
-.weixin-login:hover {
-    cursor: pointer;
-    font-weight: bold;
-} 
-
-
 .find-password {
-    cursor: pointer;
 	float: right;
-	margin-top: 48px;
+	margin-top: 43px;
 }
 .find-password:hover {
-    cursor: pointer;
 	font-weight: bold;
 }
 .block1 {

@@ -149,6 +149,20 @@ input[type="text"] {
     background-image: -o-image-set(url(../img/explore-app.png) 1x,url(../img/explore-app@2x.png) 2x);
     background-image: -ms-image-set(url(../img/explore-app.png) 1x,url(../img/explore-app@2x.png) 2x);
 }
+.pc-img {
+    background-position: 18px;
+	text-align: center;
+	position: relative;
+	left: 18px;
+	font-size: 19px;
+	background-repeat: no-repeat;
+	background-image: url(../img/download.png); 
+    background-image: -webkit-image-set(url(../img/download.png) 1x,url(../img/download@2x.png) 2x);
+    background-image: -moz-image-set(url(../img/download.png) 1x,url(../img/download@2x.png) 2x);
+    background-image: -o-image-set(url(../img/download.png) 1x,url(../img/download@2x.png) 2x);
+    background-image: -ms-image-set(url(../img/download.png) 1x,url(../img/download@2x.png) 2x);
+
+}
 .ios-img {
     background-position: 18px;
 	text-align: center;
