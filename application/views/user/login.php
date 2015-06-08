@@ -5,6 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <link rel="shortcut icon" href="favicon.ico" />
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/login.css">
     <link rel="stylesheet" type="text/css" href="/static/css/normalize.css">
     <!--[if lt IE 9]>
@@ -21,7 +22,6 @@
     var __BASE = "<?php echo base_url(); ?>";
     var _error = "<?php echo $errors; ?>";
 </script>
-    <script type="text/javascript" src="/static/js/jquery.js"></script>
     <script type="text/javascript" src="/static/js/index.js"></script>
 <script type="text/javascript" src="/static/js/login.js"></script>
 <script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
@@ -61,10 +61,11 @@
               <span class="error">请输入密码</span>
               <input type="password" name="p">
             </div>
-            <div id="button-div" class="form-submit ie-button1"><input type="submit" value="登录"></div>
+            <div class="form-submit login-button-div"><input type="submit" value="登录">
+                <p class="button-text">登录</p>
+            </div>
             <a onclick="findPassword()" class="find-password">找回密码</a>
-           <a onclick="weixinlogin()" class="weixin-login" style=" margin-right: 15px; ">微信登录</a>                                                  
-
+           <a onclick="weixinlogin()" class="weixin-login find-password" style=" margin-right: 15px;">微信登录</a>
         </form>
           <form id="form-phone" onsubmit="return checkPhone()">
             <div class="form-phone">
@@ -139,15 +140,20 @@
   	</div>
   </div>
 <script language="javascript">
+    /*
 $(window).resize(function(){
     if(document.body.scrollWidth > 900){
         $('.block1').css('height', String(document.body.scrollHeight-220));
     }
 });
+     */
 $(document).ready(function(){
     if(document.body.scrollWidth > 900){
         $('.block1').css('height', String(document.body.scrollHeight-220));
     }
+    $('.login-button-div').click(function(){
+        $('#form-login').submit();
+    });
 });
 </script>
 </body>
