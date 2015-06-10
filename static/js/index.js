@@ -26,22 +26,19 @@ function check() {
     var ifFalse = false;
   	for (var i = 0; i <= 2; i++)
   		if (isNull(inputDOMS[i].value)) {
-  			formDOM.childNodes[(i+1)*2-1].getElementsByTagName('p')[1].style.visibility = 'visible';
+  			formDOM.getElementsByTagName('p')[2*i+1].style.visibility = 'visible';
   			ifFalse = true;
   		}
       if(ifFalse) return false;
   	if (isEmail(inputDOMS[2].value) || checkMobile(inputDOMS[2].value)) {
   		dataAjax();
   	} else {
-      formDOM.childNodes[5].getElementsByTagName('p')[2].style.visibility = 'visible';
+      formDOM.getElementsByTagName('p')[6].style.visibility = 'visible';
   	}
     return false;
 }
 function clearError() {
-  var formDOM = document.getElementsByTagName('form')[0];
-  formDOM.childNodes[5].getElementsByTagName('p')[2].style.visibility = 'hidden';
-  for (var i = 0; i <= 2; i++)
-        formDOM.childNodes[(i+1)*2-1].getElementsByTagName('p')[1].style.visibility = 'hidden';
+    $('.error').css('visibility', 'hidden');
 }
 function isNull(str){ 
     if (str == "") return true; 

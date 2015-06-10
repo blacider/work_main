@@ -11,3 +11,6 @@ input[type="submit"] {
 input[type="submit"]:hover {
 	background-color: #ff7075;
 }
+.button-text{
+	display: none;
+}

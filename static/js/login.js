@@ -6,7 +6,7 @@ function checkLogin() {
     var ifFalse = false;
   	for (var i = 0; i <= 1; i++)
   		if (isNull(inputDOMS[i].value)) {
-  			formDOM.childNodes[(i+1)*2-1].getElementsByTagName('span')[1].style.display = 'block';
+  			formDOM.getElementsByTagName('span')[i == 0?1:4].style.display = 'block';
   			ifFalse = true;
   		}
       if(ifFalse) return false;
@@ -14,24 +14,20 @@ function checkLogin() {
         return true;
   		/*----------------success--------------*/
   	} else {
-      formDOM.childNodes[1].getElementsByTagName('span')[2].style.display = 'block';
+      formDOM.getElementsByTagName('span')[2].style.display = 'block';
   	}
     return false;
 }
 function clearError2() {
-  var formDOM = document.getElementsByTagName('form')[0];
-  formDOM.childNodes[1].getElementsByTagName('span')[2].style.display = 'none';
-  for (var i = 0; i <= 1; i++)
-        formDOM.childNodes[(i+1)*2-1].getElementsByTagName('span')[1].style.display = 'none';
+    $('.error').css('display','none');
 }
 function checkPhone() {
 	var inputDOMS = document.getElementsByTagName('input');
     var formDOM = document.getElementsByTagName('form')[1];
-    formDOM.childNodes[1].getElementsByTagName('span')[2].style.display = 'none';
-    formDOM.childNodes[1].getElementsByTagName('span')[1].style.display = 'none';
+    clearError2();
     var ifFalse = false;
   	if (isNull(inputDOMS[3].value)) {
-  		formDOM.childNodes[1].getElementsByTagName('span')[1].style.display = 'block';
+  		formDOM.getElementsByTagName('span')[1].style.display = 'block';
   		ifFalse = true;
   	}
     if(ifFalse) return false;
@@ -77,7 +73,7 @@ function checkPhone() {
             }
         });
   	} else {
-      formDOM.childNodes[1].getElementsByTagName('span')[2].style.display = 'block';
+      formDOM.getElementsByTagName('span')[2].style.display = 'block';
   	}
     return false;
 }
@@ -99,7 +95,7 @@ function checkPhone2() {
 	//key = '1234';
 	var formDOM = document.getElementsByTagName('form');
 	var inputDOMS = document.getElementsByTagName('input');
-	formDOM[2].childNodes[3].getElementsByTagName('span')[1].style.display = 'none';
+	clearError2();
     var _uv = inputDOMS[6].value;
     var _phone = inputDOMS[3].value;
         $.ajax({
@@ -126,14 +122,13 @@ function checkPhone2() {
 function checkPhone3() {
 	var formDOM = document.getElementsByTagName('form')[3];
 	var inputDOMS = document.getElementsByTagName('input');
-	formDOM.childNodes[1].getElementsByTagName('span')[1].style.display = 'none';
-	formDOM.childNodes[3].getElementsByTagName('span')[1].style.display = 'none';
+        clearError2();
     var _pass = $('#pass').val();
     var _pass2 = $('#pass2').val();
-	if (!inputDOMS[7].value) {
-		formDOM.childNodes[1].getElementsByTagName('span')[1].style.display = 'block';
+	if (!inputDOMS[8].value) {
+		formDOM.getElementsByTagName('span')[1].style.display = 'block';
 	} else if (inputDOMS[8].value != inputDOMS[9].value) {
-		formDOM.childNodes[3].getElementsByTagName('span')[1].style.display = 'block';
+		formDOM.getElementsByTagName('span')[3].style.display = 'block';
 	} 
 	else {
 		//------------success
@@ -241,3 +236,4 @@ function show_init_error() {
 $(document).ready(function(){
     show_init_error();
 });
+

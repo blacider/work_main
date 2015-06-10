@@ -1,5 +1,8 @@
 <script src="/static/ace/js/fuelux/fuelux.tree.min.js"></script>
 
+<script language='javascript'>
+    var _admin = "<?php echo $profile['admin']; ?>";
+</script>
 
 
 <div class="page-content">
@@ -26,7 +29,11 @@
                     <th>邮箱</th>
                     <th>手机</th>
                     <th>身份</th>
+<?php
+if($profile['admin'] == 1) {
+?>
                     <th>操作</th>
+<?php } ?>
                 </tr>
 <?php 
 foreach($members as $m){
@@ -53,9 +60,16 @@ foreach($members as $m){
 ?>
 <a href="javascript:void(0)" title="<?php echo $desc; ?>" data-id="<?php echo $m['id']; ?>" ><?php echo $color; ?></a>
     </td>
+
+<?php
+if($profile['admin'] == 1) {
+?>
     <td>
 <a href="/members/editmember/<?php echo $m['id']; ?>"><i  style="margin-left:10px;" alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 fa fa-pencil"></i></a>
 </td>
+<?php 
+    }
+?>
 </tr>
 <?php 
 }
@@ -195,9 +209,11 @@ function load_group(gid){
                     + '<th>昵称</th>'
                     + '<th>邮箱</th>'
                     + '<th>手机</th>'
-                    + '<th>身份</th>'
-                    + '<th>操作</th>'
-                    + '</tr>';
+                    + '<th>身份</th>';
+                    if(_admin == 1){
+                        _th += '<th>操作</th>'
+                    }
+                    _th += '</tr>';
                     $(_th).appendTo($('#gtable'));
 
                     $(_member).each(function(idx, item){
@@ -219,9 +235,11 @@ function load_group(gid){
                     + '<td><a href="' + __BASE + '/members/editmember/' + item.id + '">' + item.nickname+ '</a></td>'
                     + '<td>' + item.email + '</td>'
                     + '<td>' + item.phone + '</td>'
-                    + '<td><a href="javascript:void(0)">' + _color + '</a>'
-                    + '<td><a href="' + __BASE + '/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a></td>'
-                    + '</tr>';
+                    + '<td><a href="javascript:void(0)">' + _color + '</a>';
+                    if(_admin == 1){
+                    _th += '<td><a href="' + __BASE + '/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a></td>'
+                    }
+                    _th += '</tr>';
                     $(_th).appendTo($('#gtable'));
 
                     });
