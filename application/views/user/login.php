@@ -95,7 +95,8 @@
               <span id="cerror" class="error" ></span>
               <input type="text" name="phone" />
             </div>
-            <div id="button-div" class="form-submit ie-button1"><input type="submit" value="找回密码"></div>
+            <div class="form-submit login-button-div"><input type="submit" value="找回密码">
+            <p class="button-text">找回密码</p></div>
             <a onclick="backLogin()" class="find-password">返回登录</a>
           </form>
           <form id="form-phone-step1" onsubmit="return checkPhone2()">

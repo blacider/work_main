@@ -17,7 +17,7 @@ class REIM_Controller extends CI_Controller{
         if($this->session->userdata('jwt') == "" && $this->session->userdata('uid') == ""){
             log_message("debug", "Not Not Request: $uri");
             $flag = 1;
-            $prefixs = array('login', 'register', 'join', 'install', 'errors', 'resetpwd', 'pub');
+            $prefixs = array('login', 'register', 'join', 'install', 'errors', 'resetpwd', 'pub', 'users');
             foreach($prefixs as $prefix){
                 if($this->startsWith($uri, $prefix)){
                     $flag = 0;
