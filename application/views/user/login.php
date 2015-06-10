@@ -96,7 +96,8 @@
               <span id="cerror" class="error" ></span>
               <input type="text" name="phone">
             </div>
-            <div id="button-div" class="form-submit ie-button1"><input type="submit" value="找回密码"></div>
+            <div class="form-submit login-button-div"><input type="submit" value="找回密码">
+            <p class="button-text">找回密码</p></div>
             <a onclick="backLogin()" class="find-password">返回登录</a>
           </form>
           <form id="form-phone-step1" onsubmit="return checkPhone2()">
@@ -113,7 +114,8 @@
               <input type="text" name="code">
             </div>
             <div id="send-again">重新发送 60</div>
-            <div id="button-div" class="form-submit ie-button1"><input type="submit" value="下一步"></div>
+            <div id="button-div" class="form-submit ie-button1"><input type="submit" value="下一步">
+<p class="button-text">下一步</p></div>
             <a onclick="backStep1()" class="find-password">上一步</a>
           </form>
           <form id="form-phone-step2" onsubmit="return checkPhone3()">
@@ -130,7 +132,8 @@
             </div>
               <input type="hidden" id="phone_hidden" />
               <input type="hidden" id="code_hidden" />
-            <div id="button-div" class="form-submit ie-button1"><input type="submit" value="修改密码"></div>
+            <div id="button-div" class="form-submit ie-button1"><input type="submit" value="修改密码">
+             <p class="button-text">修改密码</p></div>
             <a onclick="backStep2()" class="find-password">上一步</a>
           </form>
           <div id="email">
