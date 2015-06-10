@@ -15,11 +15,15 @@ class Tags extends REIM_Controller {
         if($tags){
             $tags = $tags['data']['tags'];
         }
-        $this->eload('tags/index',
+        $this->bsload('tags/index',
             array(
-                'title' => '分类管理'
+                'title' => '标签管理'
                 ,'category' => $tags
                 ,'error' => $error
+                    ,'breadcrumbs' => array(
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa home-icon')
+                        ,array('url'  => base_url('tags/index'), 'name' => '标签管理', 'class' => '')
+                    ),
             )
         );
     }

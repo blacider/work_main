@@ -1,16 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html>
 <head>
     <title>云报销 - 登录</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
     <link rel="shortcut icon" href="favicon.ico" />
     <script type="text/javascript" src="/static/js/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/login.css">
     <link rel="stylesheet" type="text/css" href="/static/css/normalize.css">
     <!--[if lt IE 9]>
       <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-      <link rel="stylesheet" type="text/css" href="/static/css/ie.css">
+    <script>
+      $(function(){
+      $('.login-button-div').click(function(event) {
+          /* Act on the event */
+          this.getElementsByTagName('input')[0].click();
+      });
+      });
+      </script>  
+    <link rel="stylesheet" type="text/css" href="/static/css/ie.css">
     <![endif]-->
     <!--[if gte IE 9]>
       <link rel="stylesheet" type="text/css" href="/static/css/notie.css">
@@ -22,33 +31,43 @@
     var __BASE = "<?php echo base_url(); ?>";
     var _error = "<?php echo $errors; ?>";
 </script>
-    <script type="text/javascript" src="/static/js/index.js"></script>
+<script>
+    $(function(){
+        if(document.body.scrollWidth > 900) {
+      $('.block1').css('height', String(document.documentElement.clientHeight-220));
+      }
+     });
+</script>
+   <script type="text/javascript" src="/static/js/index.js"></script>
 <script type="text/javascript" src="/static/js/login.js"></script>
 <script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
 </head>
 <body>
   <div class="header">
-  	<div class="main-block">
+    <div class="main-block">
         <a href="http://www.cloudbaoxiao.com">
             <div class="home-logo"> </div>
         </a>
-  		<div class="header-link">
-  			<ul>
+      <div class="header-link">
+        <ul>
                 <!-- 
-  				<li><a href="#">Blog</a></li>
-  				<li id="min-margin"><a href="#">登录</a></li>
+          <li><a href="#">Blog</a></li>
+          <li id="min-margin"><a href="#">登录</a></li>
                 -->
-  				<li class="header-button ie-button1"><a href="http://www.cloudbaoxiao.com/#sign">申请试用</a></li>
-  			</ul>
-  		</div>
-  	</div>
+          <li class="header-button ie-button1"><a href="http://www.cloudbaoxiao.com/#sign">申请试用</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
   <div class="block1 block">
+  <!--[if lt IE 9]>
+  <img id="block1-img" src="static/img/hero_bg.jpg">
+    <![endif]-->
     <div class="main-block">
       <div class="login">
         <div class="login-left"><br>对报销的怨言，<br>到此为止。</div>
         <div class="login-right">
-          <form id="form-login" onsubmit="return checkLogin()" action="<?php echo base_url('login/dologin');  ?>" method="post">
+          <form id="form-login" onsubmit="return checkLogin()" action="https://admin.cloudbaoxiao.com/login/dologin" method="post">
             <div class="form-phone">
               <span>手机号/邮箱</span>
               <span class="error">请输入手机或邮箱</span>
@@ -127,34 +146,17 @@
       <div class="copyright">
         <p class="footer-text">© 2014-2015 如数科技有限公司 / All Rights Reserved</p>
       </div>
-  	  <div class="footer-link">
-  	  	<ul>
-  			<li><a href="http://www.cloudbaoxiao.com/contact.html">关于我们</a></li>
-  			<li><a href="http://www.cloudbaoxiao.com/help.html">帮助中心</a></li>
-  			<li><a href="http://www.cloudbaoxiao.com/joinus.html">加入我们</a></li>
-  		</ul>
-  	  </div>
-  	  <div class="record">
-  		<p class="footer-text">京ICP备 14046885号-2</p>
-  	  </div>
-  	</div>
+      <div class="footer-link">
+        <ul>
+        <li><a href="http://www.cloudbaoxiao.com/contact.html">关于我们</a></li>
+        <li><a href="http://www.cloudbaoxiao.com/help.html">帮助中心</a></li>
+        <li><a href="http://www.cloudbaoxiao.com/joinus.html">加入我们</a></li>
+      </ul>
+      </div>
+      <div class="record">
+      <p class="footer-text">京ICP备 14046885号-2</p>
+      </div>
+    </div>
   </div>
-<script language="javascript">
-    /*
-$(window).resize(function(){
-    if(document.body.scrollWidth > 900){
-        $('.block1').css('height', String(document.body.scrollHeight-220));
-    }
-});
-     */
-$(document).ready(function(){
-    if(document.body.scrollWidth > 900){
-        $('.block1').css('height', String(document.body.scrollHeight-220));
-    }
-    $('.login-button-div').click(function(){
-        $('#form-login').submit();
-    });
-});
-</script>
 </body>
 </html>

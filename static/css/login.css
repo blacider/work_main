@@ -3,6 +3,15 @@ body {
 	min-width: 291px;
 	font-family: "Avenir-Light", "HelveticaNeue-Light", "Segoe UI Light", "Roboto-Light", "Lantinghei SC Extralight", "MicrosoftYaHeiLight" ,"STXihei", sans-serif;
 }
+#block1-img{
+	position: absolute;
+	min-width: 100%;
+	min-height: 100%;
+	max-width: 100%;
+}
+.block1 {
+	position: relative;
+}
 #email a{
     color: white;
 }
@@ -95,7 +104,10 @@ form h1 {
     background-image: -o-image-set(url(../img/hero_bg.jpg) 1x,url(../img/hero_bg@2x.jpg) 2x);
     background-image: -ms-image-set(url(../img/hero_bg.jpg) 1x,url(../img/hero_bg@2x.jpg) 2x);
     background-size: cover;
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='../img/hero_bg.jpg', sizingMethod='scale');
+    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/hero_bg.jpg',sizingMethod='scale')";
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
+    src='../img/hero_bg.jpg',
+    sizingMethod='scale');
 }
 .main-block {
 	margin-left: auto;
