@@ -8,7 +8,7 @@
   <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" type="text/css" href="/static/wx/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="/static/wx/css/index.css">
-    <script type="text/javascript" src="/static/wx/js/jquery.js"></script>
+    <script type="text/javascript" src="/static/wx/js/jquery.min.js"></script>
     <script type="text/javascript" src="/static/wx/js/index.js"></script>
 <script language="javascript">
     var __BASEURL = "<?php echo base_url(); ?>";
@@ -28,15 +28,25 @@
     </div>
   </div>
   <div class="contain">
-  <div class="block1">
+  <div class="block1" style="min-height:500px;">
     <div class="main-block">
         <div style="width:100%">
             <img style="width:100%" src="http://www.cloudbaoxiao.com/img/text_title_42@2x.png">
         </div>
-      <div id="download" style="display:block" onclick="download()">
+      <div id="download" class="android" style="" onclick="download()">
         <div class="content">
           <div class="android android-img">下载安装</div>
+        </div>
+      </div>
+      <div id="download" class="ios" style="" onclick="download()">
+        <div class="content">
           <div class="ios ios-img">App Store 下载</div>
+        </div>
+      </div>
+      <div id="download pc" style="" onclick="download()">
+            <div class="pc">
+                <img src="/static/img/download.png" style="width:160px;height:160px;">
+            <div class="">扫描即可下载 iOS、Android 客户端</div>
         </div>
       </div>
     </div>
@@ -59,5 +69,10 @@
     </div>
   </div>
   </div>
+<script language="javascript">
+    $(document).ready(function(){
+        $('#block1').css({'height': document.body.scrollHeight + 'px', 'min-height' : document.body.scrollHeight + 'px'});
+    });
+</script>
 </body>
 </html>

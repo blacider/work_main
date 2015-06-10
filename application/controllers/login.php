@@ -13,6 +13,12 @@ class Login extends REIM_Controller {
         $body = $this->load->view('user/login.old.php', array('errors' => $error, 'title' => '登录'));
     }
 
+    public function index2()
+    {
+        $error = $this->session->userdata('login_error');
+        $this->session->unset_userdata('login_error');
+        $body = $this->load->view('user/login2', array('errors' => $error, 'title' => '登录'));
+    }
 
     public function index()
     {

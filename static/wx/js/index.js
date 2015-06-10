@@ -53,6 +53,14 @@ function isWeixin(){
 		return false;
 	}
 }
+function isAndroid(){
+	var ua = navigator.userAgent.toLowerCase();
+	if(ua.match(/android/i)=="android") {
+		return true;
+ 	} else {
+		return false;
+	}
+}
 function isIos() {
 	var u = navigator.userAgent, app = navigator.appVersion;
 	var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
@@ -83,8 +91,26 @@ $(document).ready(function() {
 	$('.contain').css('height', String(document.body.scrollHeight));
 	/*单页面所做的改变*/
 	if (isIos()) {
-		$('.android').css('display', 'none');
+        window.location.href = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.104.plist';
+        $('.android').hide();
+		$('.pc').hide();
+		$('#download').css('display', 'block');
+		$('#download').hide();
+        $('.ios').show();
 		$('.ios').css('display', 'block');
-	}
+        $('.ios').show();
+	} else if(isAndroid()) {
+        window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/reim.apk';
+		$('#download ').css('display', 'block');
+        $('.android').show();
+		$('.android').css('display', 'block');
+		$('.ios').css('display', 'none');
+		$('.pc').css('display', 'none');
+    } else {
+        $('.download').hide();
+		$('.android').hide();
+		$('.ios').hide();
+		$('.pc').show();
+    }
 	$('body').scrollTop(0);
 });

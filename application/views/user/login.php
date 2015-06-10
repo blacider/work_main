@@ -4,11 +4,11 @@
     <title>云报销 - 登录</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-    <link rel="shortcut icon" href="favicon.ico">
     <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="favicon.ico" />
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/login.css">
     <link rel="stylesheet" type="text/css" href="/static/css/normalize.css">
-   <script type="text/javascript" src="/static/js/jquery.js"></script>
     <!--[if lt IE 9]>
       <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <script>
