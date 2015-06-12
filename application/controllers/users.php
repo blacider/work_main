@@ -241,12 +241,14 @@ class Users extends REIM_Controller {
         $type = $this->input->post('type');
         $name = $this->input->post('name');
         $code = $this->input->post('code');
+        //if(!$code) die(json_encode(array('status' => 0, 'data' => array('msg' => '请输入验证码'))));
         die($this->user->forget($type, $name, $code));
     }
 
     public function reset(){
         $pass = $this->input->post('pass');
         $code= $this->input->post('code');
+        if(!$code) die(json_encode(array('status' => 0, 'data' => array('msg' => '请输入验证码'))));
         die($this->user->reset_pwd($pass, $code));
 
     }

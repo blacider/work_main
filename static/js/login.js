@@ -1,4 +1,4 @@
-
+var flag = 0;
 function checkLogin() {
 	var inputDOMS = document.getElementsByTagName('input');
     var formDOM = document.getElementsByTagName('form')[0];
@@ -44,7 +44,10 @@ function checkPhone() {
                     formDOM[1].style.display = 'none';
                     formDOM[2].getElementsByTagName('input')[0].value = inputDOMS[3].value;
                     formDOM[2].style.display = 'block';
-                    time();
+                    if (!flag) {
+                      time();
+                      flag = 1;
+                    }
                 } else {
                     _msg = data.data.msg
                     show_cerror(_msg);
@@ -155,12 +158,16 @@ function checkPhone3() {
 }
 function time() {
     var x = document.getElementById('send-again').innerHTML;
+    if (x == '重新发送') {
+       document.getElementById('send-again').innerHTML = '重新发送 60';
+       x = '重新发送 60';
+    }
     var y = Number(x.split(' ')[1]);
     if (y == 1) {
-    	document.getElementById('send-again').innerHTML = x.split(' ')[0];
+    	document.getElementById('send-again').innerHTML = '重新发送';
     	document.getElementById('send-again').click(function() {
             checkPhone();
-
+            flag = 0;
     		//sendAgin();
     	});
     } else {

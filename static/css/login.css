@@ -10,6 +10,7 @@ body {
 	max-width: 100%;
 }
 .block1 {
+        min-height:500px;
 	position: relative;
 }
 #email a{
@@ -172,7 +173,7 @@ a {
 .copyright {
 	font-size: 14px;
 	color: #fff;
-	width: 324px;
+	width: auto;
 }
 .footer-text {
 	margin: 0;

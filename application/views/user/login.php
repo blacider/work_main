@@ -32,7 +32,7 @@
     var _error = "<?php echo $errors; ?>";
     $(function(){
         if(document.body.scrollWidth > 900) {
-      $('.block1').css('height', String(document.documentElement.clientHeight-220));
+      $('.block1').css('height', String(document.documentElement.clientHeight-240));
       }
      });
 </script>
@@ -65,7 +65,7 @@
       <div class="login">
         <div class="login-left"><br />对报销的怨言，<br />到此为止。</div>
         <div class="login-right">
-          <form id="form-login" onsubmit="return checkLogin()" action="https://admin.cloudbaoxiao.com/login/dologin" method="post">
+            <form id="form-login" onsubmit="return checkLogin()" action="<?php echo base_url('login/dologin'); ?>" method="post">
             <div class="form-phone">
               <span>手机号/邮箱</span>
               <span class="error">请输入手机或邮箱</span>
@@ -113,7 +113,8 @@
               <input type="text" name="code" />
             </div>
             <div id="send-again">重新发送 60</div>
-            <div id="button-div2" class="form-submit ie-button1"><input type="submit" value="下一步"></div>
+            <div class="form-submit login-button-div"><input type="submit" value="下一步">
+            <p class="button-text">下一步</p></div>
             <a onclick="backStep1()" class="find-password">上一步</a>
           </form>
           <form id="form-phone-step2" onsubmit="return checkPhone3()">
@@ -130,8 +131,10 @@
             </div>
               <input type="hidden" id="phone_hidden" />
               <input type="hidden" id="code_hidden" />
-            <div id="button-div3" class="form-submit ie-button1"><input type="submit" value="修改密码" /></div>
-            <a onclick="backStep2()" class="find-password">上一步</a>
+            <div class="form-submit login-button-div">
+            <input type="submit" value="修改密码">
+             <p class="button-text">修改密码</p></div>
+<a onclick="backStep2()" class="find-password">上一步</a>
           </form>
           <div id="email">
             <p></p>

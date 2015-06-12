@@ -14,3 +14,6 @@ input[type="submit"]:hover {
 .button-text{
 	display: none;
 }
+.block1 {
+min-height:500px;
+}
