@@ -414,7 +414,9 @@ class User_Model extends Reim_Model {
             'password' => $pass,
             'phone' => $phone,
             'code' => $code);
-        $jwt = $this->session->userdata('jwt');
+
+        $jwt = $this->get_jwt($email, $pass, '', 'admin');
+        //$jwt = $this->session->userdata('jwt');
         $buf = $this->do_Post($url, $data, $jwt);
         log_message("debug", $buf);
         return $buf;

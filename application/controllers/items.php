@@ -146,8 +146,8 @@ class Items extends REIM_Controller {
                 $s['createdt'] = strftime("%Y-%m-%d %H:%M", intval($s['createdt']));
                 $_type = '报销';
                 switch($s['type']){
-                case 1: {$_type = '预算';};break;
-                case 2: {$_type = '借款';};break;
+                case 1: {$_type = '预借';};break;
+                case 2: {$_type = '预算';};break;
                 }
                 $s['type'] = $_type;
 
@@ -263,8 +263,8 @@ class Items extends REIM_Controller {
         $prove_ahead = $item['prove_ahead'];
         switch($prove_ahead) {
         case 0:{$_type = '报销';};break;
-        case 1:{$_type = '预算';};break;
-        case 2:{$_type = '借款';};break;
+        case 1:{$_type = '预借';};break;
+        case 2:{$_type = '预算';};break;
         }
         $item['prove_ahead'] = $_type;
         $this->bsload('items/view',

@@ -66,6 +66,7 @@ if($profile['admin'] == 1) {
 ?>
     <td>
 <a href="/members/editmember/<?php echo $m['id']; ?>"><i  style="margin-left:10px;" alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 fa fa-pencil"></i></a>
+<a href="javascript:void(0)" class="remove_user" data-id="<?php echo $m['id']; ?>"><i  style="margin-left:10px;" alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 red fa fa-trash-o"></i></a>
 </td>
 <?php 
     }
@@ -237,7 +238,8 @@ function load_group(gid){
                     + '<td>' + item.phone + '</td>'
                     + '<td><a href="javascript:void(0)">' + _color + '</a>';
                     if(_admin == 1){
-                    _th += '<td><a href="' + __BASE + '/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a></td>'
+                    _th += '<td><a href="' + __BASE + '/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a>'
+                    _th += '<a href="javascript:void(0)" class="remove_user" data-id="' + item.id + '"><i  style="margin-left:10px;"  class="ace-icon align-top bigger-125 red fa fa-trash-o"></i></a></td>';
                     }
                     _th += '</tr>';
                     $(_th).appendTo($('#gtable'));
@@ -247,7 +249,16 @@ function load_group(gid){
             }
             });
 }
+function bind_event() {
+    $('.remove_user').click(function(){
+        if(confirm('删除后，用户当前的item也会被删掉，是否继续？') == true){
+            var _id = $(this).data('id');
+            location.href= __BASE + "/members/remove_member/" + _id;
+        }
+    });
+}
 $(document).ready(function(){
+    bind_event();
     $.ajax({
         url: __BASE + "/members/listtreegroup",
             method: 'GET',

@@ -104,5 +104,16 @@ class Group_Model extends Reim_Model {
         return $obj;
     }
 
+
+    public function remove_user($uid = 0){
+        log_message("debug", "Reim Get Group by id");
+        $jwt = $this->session->userdata('jwt');
+		$url = $this->get_url('staff/' . $uid);
+		$buf = $this->do_Delete($url, array(), $jwt);
+        log_message("debug", $buf);
+		$obj = json_decode($buf, true);
+        return $obj;
+    }
+
 }
 

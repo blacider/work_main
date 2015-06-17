@@ -531,6 +531,13 @@ class Members extends REIM_Controller {
             )
         );
     }
+
+    public function remove_member($id = 0){
+        if($id == 0) return redirect(base_url('members/index'));
+        $this->groups->remove_user($id);
+        return redirect(base_url('members/index'));
+
+    }
 }
 
 

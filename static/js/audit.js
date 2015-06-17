@@ -15,7 +15,7 @@ function bind_event(){
             var _id = $(this).data('id');
             $('#rid').val(_id);
             $('#status').val(2);
-            show_modal();
+            $('#modal_next').modal('show');
         });
     });
     $('.tdeny').each(function() {
@@ -23,16 +23,6 @@ function bind_event(){
             var _id = $(this).data('id');
             $('#div_id').val(_id);
             $('#comment_dialog').modal('show');
-
-            /*
-            if(confirm("确认要退回吗？") == true) {
-                var _id = $(this).data('id');
-                location.href = __BASE + "reports/permit/3/" + _id;
-            }
-            */
-            /*
-            location.href = __BASE + "reports/edit/" + _id;
-            */
         });
     });
 }

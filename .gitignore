@@ -13,3 +13,5 @@ application/logs/*
 release/*
 static/users_data/*
 release/*
+*.apk
+*.ipa

@@ -54,7 +54,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">选择后续审批人</h4>
                 <input type="hidden" name="rid" value="" id="rid">
-                <input type="hidden" name="status" value="" id="status">
+                <input type="hidden" name="status" value="2" id="status">
             </div>
             <div class="modal-body">
                 <div class="form-group">

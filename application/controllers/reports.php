@@ -56,8 +56,8 @@ class Reports extends REIM_Controller {
                 $s['createdt'] = strftime("%Y-%m-%d %H:%M", intval($s['createdt']));
                 $_type = '报销';
                 switch($s['type']){
-                case 1: {$_type = '预算';};break;
-                case 2: {$_type = '借款';};break;
+                case 1: {$_type = '预借';};break;
+                case 2: {$_type = '预算';};break;
                 }
                 $s['type'] = $_type;
 
@@ -168,8 +168,8 @@ class Reports extends REIM_Controller {
             $d['amount'] = '￥' . $d['amount'];
             $prove_ahead = '报销';
             switch($d['prove_ahead']){
-            case 1: {$prove_ahead = '<font color="red">借款</font>';};break;
-            case 2: {$prove_ahead = '<font color="green">预算</font>';};break;
+            case 2: {$prove_ahead = '<font color="red">预借</font>';};break;
+            case 1: {$prove_ahead = '<font color="green">预算</font>';};break;
             }
             $d['prove_ahead'] = $prove_ahead;
             switch($d['status']) {
@@ -320,8 +320,8 @@ class Reports extends REIM_Controller {
         $prove_ahead = $report['prove_ahead'];
         switch($prove_ahead) {
         case 0:{$_type = '报销';};break;
-        case 1:{$_type = '预算';};break;
-        case 2:{$_type = '借款';};break;
+        case 1:{$_type = '预借';};break;
+        case 2:{$_type = '预算';};break;
         }
         $report['prove_ahead'] =  $_type;
         $this->bsload('reports/view',
@@ -427,7 +427,7 @@ class Reports extends REIM_Controller {
             $d['status_str'] = '待提交';
             $prove_ahead = '报销';
             switch($d['prove_ahead']){
-            case 1: {$prove_ahead = '<font color="red">借款</font>';};break;
+            case 1: {$prove_ahead = '<font color="red">预借</font>';};break;
             case 2: {$prove_ahead = '<font color="green">预算</font>';};break;
             }
             $d['amount'] = '￥' . $d['amount'];
