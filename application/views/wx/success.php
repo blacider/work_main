@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/static/wx/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="/static/wx/css/index.css">
     <script type="text/javascript" src="/static/wx/js/jquery.js"></script>
-    <script type="text/javascript" src="/static/wx/js/index.js"></script>
+    <!-- <script type="text/javascript" src="/static/wx/js/index.js"></script>-->
 <script language="javascript">
     var __BASEURL = "<?php echo base_url(); ?>";
 </script>
@@ -23,7 +23,7 @@
     </div>
   </div>
   <div class="header">
-    <div class="main-block">
+      <div class="main-block">
       <div class="home-logo"></div>
     </div>
   </div>

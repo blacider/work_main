@@ -91,7 +91,7 @@ $(document).ready(function() {
 	$('.contain').css('height', String(document.body.scrollHeight));
 	/*单页面所做的改变*/
 	if (isIos()) {
-        window.location.href = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.111.plist';
+        //window.location.href = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.111.plist';
         $('.android').hide();
 		$('.pc').hide();
 		$('#download').css('display', 'block');
@@ -100,7 +100,7 @@ $(document).ready(function() {
 		$('.ios').css('display', 'block');
         $('.ios').show();
 	} else if(isAndroid()) {
-        window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/1.1.1/reim.apk';
+        //window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/1.1.1/reim.apk';
 		$('#download ').css('display', 'block');
         $('.android').show();
 		$('.android').css('display', 'block');

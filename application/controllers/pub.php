@@ -122,7 +122,9 @@ class Pub extends REIM_Controller {
 
 
     public function oauth($params = ''){
-        if(!strstr(strtolower($this->input->user_agent()), 'micromessenger')) {
+        log_message("debug", "Agent:" . strtolower($this->input->user_agent()));
+        if(strpos(strtolower($this->input->user_agent()), 'micromessenger') === FALSE ) {
+            log_message("debug", "----------- ***************** ------> Not Micro Group:" );
             redirect(base_url('pub/success/'));
         }
         $code = $this->input->get('code');
@@ -130,7 +132,6 @@ class Pub extends REIM_Controller {
         $this->load->config('reim');
         $appid = $this->config->item('appid');
         $appsec = $this->config->item('appsec');
-        #"https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code"
         $uri = sprintf("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code", $appid, $appsec, $code);
         log_message("debug", "Oauth:" . $uri);
         $buf = $this->do_Get($uri);
@@ -183,9 +184,11 @@ class Pub extends REIM_Controller {
                 log_message("debug", "$gid Group:" . json_encode($_group));
                 log_message("debug", "$gid Group:" . json_encode($user));
                 if($user['gid'] == $gid) {
+                    log_message("debug", "------> Same Group:" );
                     $msg = $gname;
                     $this->load->view('wx/success', array('msg' => $msg, 'gname' => $gname));
                 } else {
+                    log_message("debug", "------> Same Group:" );
                     $this->load->view('wx/apply', array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
                 }
             }
@@ -224,6 +227,7 @@ class Pub extends REIM_Controller {
     }
 
     public function success($gname = ''){
+            log_message("debug", "----------- ***************** ------> Not Micro :" );
         $msg = '';
         $this->load->view('wx/success', array('msg' => $gname, 'gname' => $gname));
     }
