@@ -178,7 +178,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
             <i class="ace-icon fa fa-dashboard"></i>
         </button>
 
-         <button class="btn btn-info" onClick="window.open('https://www.cloudbaoxiao.com/help.html#one')" > 
+         <button class="btn btn-info" onClick="window.open('https://www.yunbaoxiao.com/help.html#one')" > 
                <i class="ace-icon fa fa-question-circle"></i>
                </button>
 

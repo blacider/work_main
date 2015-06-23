@@ -37,12 +37,12 @@
 <body>
   <div class="header">
   	<div class="main-block">
-        <a href="http://www.cloudbaoxiao.com">
+        <a href="http://www.yunbaoxiao.com">
             <div class="home-logo"> </div>
         </a>
   		<div class="header-link">
   			<ul>
-  				<li class="header-button ie-button1"><a href="http://www.cloudbaoxiao.com/#sign">申请试用</a></li>
+  				<li class="header-button ie-button1"><a href="http://www.yunbaoxiao.com/#sign">申请试用</a></li>
   			</ul>
   		</div>
   	</div>
@@ -61,9 +61,9 @@
       </div>
   	  <div class="footer-link">
   	  	<ul>
-  			<li><a href="http://www.cloudbaoxiao.com/contact.html">关于我们</a></li>
-  			<li><a href="http://www.cloudbaoxiao.com/help.html">帮助中心</a></li>
-  			<li><a href="http://www.cloudbaoxiao.com/joinus.html">加入我们</a></li>
+  			<li><a href="http://www.yunbaoxiao.com/contact.html">关于我们</a></li>
+  			<li><a href="http://www.yunbaoxiao.com/help.html">帮助中心</a></li>
+  			<li><a href="http://www.yunbaoxiao.com/joinus.html">加入我们</a></li>
   		</ul>
   	  </div>
   	  <div class="record">

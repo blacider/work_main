@@ -4,12 +4,12 @@
 	<title>云报销 - 下载</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes">
-  <link rel="shortcut icon" href="http://www.cloudbaoxiao.com/favicon.ico">
+  <link rel="shortcut icon" href="http://www.yunbaoxiao.com/favicon.ico">
   <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" type="text/css" href="/static/wx/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="/static/wx/css/index.css">
     <script type="text/javascript" src="/static/wx/js/jquery.js"></script>
-    <!-- <script type="text/javascript" src="/static/wx/js/index.js"></script>-->
+    <script type="text/javascript" src="/static/wx/js/index.js"></script>
 <script language="javascript">
     var __BASEURL = "<?php echo base_url(); ?>";
 </script>
@@ -34,7 +34,7 @@
         <?php
 if($msg == "") {
         ?>
-            <img style="width:100%" src="http://www.cloudbaoxiao.com/img/text_title_42@2x.png">
+            <img style="width:100%" src="http://www.yunbaoxiao.com/img/text_title_42@2x.png">
 <?php
 } else {
 ?>
@@ -60,9 +60,9 @@ if($msg == "") {
       </div>
       <div class="footer-link">
         <ul>
-        <li><a href="https://www.cloudbaoxiao.com/contact.html">关于我们</a></li>
-        <li><a href="https://www.cloudbaoxiao.com/help.html">帮助中心</a></li>
-        <li><a href="https://www.cloudbaoxiao.com/joinus.html">加入我们</a></li>
+        <li><a href="https://www.yunbaoxiao.com/contact.html">关于我们</a></li>
+        <li><a href="https://www.yunbaoxiao.com/help.html">帮助中心</a></li>
+        <li><a href="https://www.yunbaoxiao.com/joinus.html">加入我们</a></li>
       </ul>
       </div>
       <div class="record">
