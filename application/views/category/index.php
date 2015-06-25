@@ -29,7 +29,7 @@
                                     <th>消费限制</th>
                                     <th>上级分类</th>
                                     <th>创建时间</th>
-                                    <th>预审批</th>
+                                    <!-- <th>预审批</th> -->
                                     <th class="hidden-680">
                                         <a href="#modal-table" role="button" class="green" data-toggle="modal">
                                             <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
@@ -61,13 +61,13 @@ $username = '<td class="u_username">' . $item['category_name'] . '</td>';
 $nickname = '<td class="u_nickname">' . $img . '</td>';
 $max_limit = '<td class="u_nickname">' . $item['max_limit'] . '</td>';
 $role_id =  '<td class="u_role_name">' . date('Y-m-d H:i:s', $item['lastdt']) . '</td>';
-$ascription =  '<td class="u_role_name">' . $billable . '</td>';
+//$ascription =  '<td class="u_role_name">' . $billable . '</td>';
     //$role_id = '<td class="u_role_name">' . $item->role_name . '</td>';
 $operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class="edit" data-max="' . $item['max_limit'] . '" data-pid="'. $item['pid'] . '" data-pb="' . $item['prove_before'] . '" data-title="' . $item['category_name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
     $operation = '<td style="width:50px;"><a class="btn btn-xs btn-danger" href="' .  base_url('admin/user/del?id='. $item['id']) .'">
         <i class="ace-icon fa fa-trash-o bigger-120"></i>
         </a></td>';
-$str = $str . $username . $max_limit . $nickname . $role_id . $ascription .  $operation_upd . '</tr>';
+$str = $str . $username . $max_limit . $nickname . $role_id  .  $operation_upd . '</tr>';
 echo $str;
 }
 ?>
