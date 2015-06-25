@@ -367,10 +367,6 @@ if($profile['admin'] == 1){
         <b class="arrow"></b>
         </li>
 
-        <li class="hsub" id="newcategory">
-        <a href="<?php echo base_url('category/newcategory'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建分类 </a> 
-        <b class="arrow"></b> 
-        </li>
 
         <li class="hsub" id="index">
         <a href="<?php echo base_url('category'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 分类管理 </a>
