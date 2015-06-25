@@ -351,6 +351,7 @@ class Items extends REIM_Controller {
         } else {
             redirect(base_url('items/index'));
         }
+        
 
     }
 
