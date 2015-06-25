@@ -12,7 +12,13 @@
 <script src="/static/ace/js/date-time/moment.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script>
-
+    
+     
+	 
+	   <script src="/static/ace/js/jquery.colorbox-min.js"></script>
+	   
+	     <!-- page specific plugin styles -->
+	     <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 
 
 
@@ -26,7 +32,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">名称</label>
                                 <div class="col-xs-9 col-sm-9">
-                                    <input type="text" class="form-controller col-xs-12" name="title" placeholder="名称">
+                                    <input type="text" id="title" class="form-controller col-xs-12" name="title"  placeholder="名称">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -173,6 +179,27 @@ $(document).ready(function(){
     $('.renew').click(function(){
 
         var s = $('#receiver').val();
+        var title = $('#title').val();
+	console.log(title);
+	console.log(isNaN(s));
+	console.log(s == null);
+	console.log(s);
+        if(title == "") {
+             show_notify('请添加消费');
+             $('#title').focus();
+             return false;
+         }
+	
+	if(isNaN(s)){
+	     show_notify('请选择审批人');
+	     $('#receiver').focus();
+	     return false;
+	}
+	if(s == null){
+	     show_notify('请选择审批人');
+	     $('#receiver').focus();
+	     return false;
+	}
 
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
