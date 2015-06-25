@@ -28,7 +28,7 @@ class Tags extends REIM_Controller {
         );
     }
 
-
+   
     public function create(){
         $name = $this->input->post('category_name');
         $id = $this->input->post('category_id');

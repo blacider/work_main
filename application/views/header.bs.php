@@ -79,6 +79,7 @@ var __BASE = "<?php echo $base_url; ?>";
 <script src="/static/ace/js/ace/ace.onpage-help.js"></script>
 <script src="/static/third-party/jgrowl/jquery.jgrowl.min.js"></script>
 
+
 <!--[if IE 6]>
 <script src="/static/js/DD_belatedPNG_0.0.8a-min.js"></script>
 <script>

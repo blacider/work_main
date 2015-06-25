@@ -1,3 +1,4 @@
+
 <div id="navbar" class="navbar navbar-default" style="background:#2C3E50;">
 			<script type="text/javascript">
 				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
@@ -347,7 +348,7 @@ if($profile['admin'] == 1){
 if($profile['admin'] == 1){
 ?>
 
-    <li class="hsub" id="tags">
+    <li class="hsub" id="category">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-users"></i>
         <span class="menu-text"> 标签和分类 </span>
@@ -356,17 +357,17 @@ if($profile['admin'] == 1){
     </a>
     <b class="arrow"></b>
     <ul class="submenu nav-show" style="display: block;">
-        <li class="hsub" id="newreport"> 
+       <!-- <li class="hsub" id="newreport"> 
         <a href="<?php echo base_url('tags/newtags'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建标签 </a> 
         <b class="arrow"></b> 
-        </li>
+        </li> -->
 
-        <li class="hsub" id="index">
-        <a href="<?php echo base_url('tags'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 标签管理 </a>
+        <li class="hsub" id="tags">
+        <a href="<?php echo base_url('category/tags'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 标签管理 </a>
         <b class="arrow"></b>
         </li>
 
-        <li class="hsub" id="newreport">
+        <li class="hsub" id="newcategory">
         <a href="<?php echo base_url('category/newcategory'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建分类 </a> 
         <b class="arrow"></b> 
         </li>
@@ -508,6 +509,7 @@ $(document).ready(function(){
     if(buf.length > 1) {
         _method = buf[1];
     }
+    
     // 导入导出有步骤，合并在一起
     if(_controller == "members" && _method == "imports"){
         _method = "export";
