@@ -277,7 +277,8 @@ $(document).ready(function(){
             $('#amount').focus();
             return false;
         }
-        if($('#amount').val() == "0") {
+	var amount = parseInt($('#amount').val());
+        if(amount <= 0) {
             show_notify('请输入有效金额');
             $('#amount').val('');
             $('#amount').focus();
