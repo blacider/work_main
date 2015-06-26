@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/static/wx/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="/static/wx/css/index.css">
     <script type="text/javascript" src="/static/wx/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/wx/js/index.js"></script>
+    <!-- <script type="text/javascript" src="/static/wx/js/index.js"></script> -->
 <script language="javascript">
     var __BASEURL = "<?php echo base_url(); ?>";
 </script>
@@ -67,6 +67,10 @@
     $('body').scrollTop(0);
     $('#block1').css({'height': document.body.scrollHeight + 'px', 'min-height' : document.body.scrollHeight + 'px'});
     });
+
+    function download() {
+        window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/1.1.1/reim.apk'; 
+    }
 </script>
 </body>
 </html>
