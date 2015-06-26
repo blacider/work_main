@@ -39,9 +39,12 @@
                                 <label class="col-sm-1 control-label no-padding-right">发送至</label>
                                 <div class="col-xs-9 col-sm-9">
                                     <select class="chosen-select tag-input-style" name="receiver[]" multiple="multiple" data-placeholder="请选择标签" id="receiver">
-                                        <?php foreach($members as $m) {?>
+                                        <?php 
+					$user = $this->session->userdata('user');
+					foreach($members as $m) {
+					if($user['id'] != $m['id']){?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
-                                        <?php } ?>
+                                        <?php }} ?>
                                     </select>
                                 </div>
                             </div>
@@ -50,9 +53,11 @@
                                 <label class="col-sm-1 control-label no-padding-right">抄送至</label>
                                 <div class="col-xs-9 col-sm-9">
                                     <select class="chosen-select tag-input-style" name="cc[]" multiple="multiple" data-placeholder="请选择标签">
-                                        <?php foreach($members as $m) {?>
+                                        <?php foreach($members as $m) {
+					if($user['id'] != $m['id']){
+					?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
-                                        <?php } ?>
+                                        <?php }} ?>
                                     </select>
                                 </div>
                             </div>
