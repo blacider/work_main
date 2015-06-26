@@ -33,23 +33,12 @@
         <div style="width:100%">
             <img style="width:100%" src="http://www.cloudbaoxiao.com/img/text_title_42@2x.png">
         </div>
-      <div id="download" class="android" style="" onclick="download()">
-        <div class="content">
-          <div class="android android-img">下载安装</div>
-        </div>
-      </div>
-      <div id="download" class="ios" style="" onclick="download()">
+           <div id="download" class="ios" style="" onclick="download()">
         <div class="content">
           <div class="ios ios-img">App Store 下载</div>
         </div>
       </div>
-      <div id="download pc" style="" onclick="download()">
-            <div class="pc">
-                <img src="/static/img/download.png" style="width:160px;height:160px;">
-            <div class="">扫描即可下载 iOS、Android 客户端</div>
-        </div>
-      </div>
-    </div>
+         </div>
   </div>
   <div class="footer">
     <div class="main-block">
