@@ -74,7 +74,28 @@
     });
 
     function download() {
+      if(isWeixin()) {
+        $('#winxin').css('display', 'block');
+        setTimeout(function(){
+          $('.block1')[0].onclick = function() {
+              $('#winxin').css('display', 'none');
+              $('.block1')[0].onclick = function() {
+                return;
+              }
+            }
+        },50);
+    } else{
         window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/1.1.1/reim.apk'; 
+        }
+    }
+
+    function isWeixin(){
+    var ua = navigator.userAgent.toLowerCase();
+    if(ua.match(/MicroMessenger/i)=="micromessenger") {
+      return true;
+    } else {
+      return false;
+    }
     }
 </script>
 </body>

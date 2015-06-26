@@ -72,7 +72,20 @@
     });
 
     function download() {
+      if(isWeixin()) {
+        $('#winxin').css('display', 'block');
+        setTimeout(function(){
+          $('.block1')[0].onclick = function() {
+              $('#winxin').css('display', 'none');
+              $('.block1')[0].onclick = function() {
+                return;
+              }
+            }
+        },50);
+      } else
+      {
         window.location.href = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.111.plist';
+      }
     }
 </script>
 </body>
