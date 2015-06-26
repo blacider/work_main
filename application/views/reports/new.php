@@ -80,7 +80,7 @@ foreach($items as $i){
     if($i['rid'] == 0 && $i['prove_ahead'] == 0){
                                         ?>
                                         <tr>
-                                            <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller"></td>
+                                            <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $i['amount'] ?>" ></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['cate_str'];?></td>
                                             <td><?php echo $i['amount']; ?></td>
@@ -180,10 +180,6 @@ $(document).ready(function(){
 
         var s = $('#receiver').val();
         var title = $('#title').val();
-	console.log(title);
-	console.log(isNaN(s));
-	console.log(s == null);
-	console.log(s);
         if(title == "") {
              show_notify('请添加消费');
              $('#title').focus();
@@ -201,6 +197,22 @@ $(document).ready(function(){
 	     return false;
 	}
 
+	sum=0;
+
+	$('.amount').each(function(){
+		if($(this).is(':checked')){
+			var amount = $(this).data('amount');
+			amount = parseInt(amount.substr(1));
+			sum+=amount;
+		//	console.log(amount);
+		//	console.log(sum);
+		};
+	});
+	if(sum <= 0)
+	{
+		show_notify("报告总额不能小于等于0");
+		return false;
+	}
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
     });
