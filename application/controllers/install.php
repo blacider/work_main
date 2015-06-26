@@ -3,9 +3,22 @@
 class Install extends REIM_Controller {
     public function __construct() {
         parent::__construct();
+	$this->load->library('user_agent');
     }
 
     public function index(){
-        $this->load->view('install');
+    	if ($this->agent->is_mobile('iphone'))
+	{
+	    $this->load->view('install/index');
+	}
+	else if ($this->agent->is_mobile())
+	{
+	    $this->load->view('install/adroid');
+	}
+	else
+	{
+		$this->load->view('install/index');
+	}
+//        $this->load->view('install');
     }
 }
