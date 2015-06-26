@@ -87,6 +87,15 @@
         window.location.href = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.111.plist';
       }
     }
+
+    function isWeixin(){
+    var ua = navigator.userAgent.toLowerCase();
+    if(ua.match(/MicroMessenger/i)=="micromessenger") {
+      return true;
+    } else {
+      return false;
+    }
+    }
 </script>
 </body>
 </html>
