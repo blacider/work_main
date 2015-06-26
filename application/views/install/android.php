@@ -63,6 +63,11 @@
     $(document).ready(function(){
     /* Act on the event */
     $('.contain').css('height', String(document.body.scrollHeight));
+    $('#download ').css('display', 'block');
+    $('.android').show();
+    $('.android').css('display', 'block');
+    $('.ios').css('display', 'none');
+    $('.pc').css('display', 'none');
     /*单页面所做的改变*/
     $('body').scrollTop(0);
     $('#block1').css({'height': document.body.scrollHeight + 'px', 'min-height' : document.body.scrollHeight + 'px'});

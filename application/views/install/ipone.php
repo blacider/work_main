@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/static/wx/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="/static/wx/css/index.css">
     <script type="text/javascript" src="/static/wx/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/wx/js/index.js"></script>
+    <!-- <script type="text/javascript" src="/static/wx/js/index.js"></script> -->
 <script language="javascript">
     var __BASEURL = "<?php echo base_url(); ?>";
 </script>
@@ -60,8 +60,20 @@
   </div>
 <script language="javascript">
     $(document).ready(function(){
-        $('#block1').css({'height': document.body.scrollHeight + 'px', 'min-height' : document.body.scrollHeight + 'px'});
+    /* Act on the event */
+    $('.contain').css('height', String(document.body.scrollHeight));
+    $('#download').css('display', 'block');
+    $('.ios').show();
+    $('.ios').css('display', 'block');
+    $('.ios').show();
+    /*单页面所做的改变*/
+    $('body').scrollTop(0);
+    $('#block1').css({'height': document.body.scrollHeight + 'px', 'min-height' : document.body.scrollHeight + 'px'});
     });
+
+    function download() {
+        window.location.href = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.111.plist';
+    }
 </script>
 </body>
 </html>
