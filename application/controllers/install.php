@@ -12,11 +12,11 @@ class Install extends REIM_Controller {
     public function index(){
     	if ($this->agent->is_mobile('iphone'))
 	{
-	    $this->load->view('install/index');
+	    $this->load->view('install/iphone');
 	}
 	else if ($this->agent->is_mobile())
 	{
-	    $this->load->view('install/adroid');
+	    $this->load->view('install/android');
 	}
 	else
 	{
