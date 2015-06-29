@@ -89,9 +89,13 @@ public function common(){
    {
    	$pid = 0;
    	$ischecked = $this->input->post('isadmin');
-	if($ischecked)
+	if($ischecked == 'on')
 	{
 		$pid = 1;
+	}
+	else
+	{
+		$ischecked = 'off';
 	}
 	$data = $this->company->profile($pid);
         $this->bsload('company/common',

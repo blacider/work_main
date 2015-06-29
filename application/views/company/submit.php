@@ -46,23 +46,9 @@
 <script type="text/javascript">
    $(document).ready(function(){
    	$('.renew').click(function(){
-	$("input[name='admin'][checked]").each(function () {
-	    console.log(this.value);
-	    });
-
-    var _checked = $("#isadmin").is('checked');
+    var _checked = $('#isadmin').is('checked');
     console.log("checked" + _checked);
-    if(_checked)
-    {
-        $('#isadmin').val(1);
-    }
-    else
-    {
-        $('#isadmin').val(0);
-    }
-//		console.log('hello');
-	//console.log($("input[name='admin']:checkbox:checked").length);
-    
+   
     $('#profile').submit();
 	});
 
