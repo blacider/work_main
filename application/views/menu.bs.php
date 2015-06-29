@@ -411,14 +411,30 @@ if($profile['admin'] == 1){
     </ul>
     </li>
 
-<li class="rsmenu" id="bills">
-<a href="<?php echo base_url('bills'); ?>">
-<i class="menu-icon fa fa-money"></i>
-<span class="menu-text"> 财务核算 </span>
-</a>
-<b class="arrow"></b>
-</li>
 
+    <li class="hsub" id="bills">
+    <a href="#" class="dropdown-toggle">
+        <i class="menu-icon fa fa-money"></i>
+        <span class="menu-text"> 财务和核算</span>
+
+        <b class="arrow fa fa-angle-down"></b>
+    </a>
+    <b class="arrow"></b>
+    <ul class="submenu nav-show" style="display: block;">
+
+        <li class="hsub" id="index">
+        <a href="<?php echo base_url('bills/index'); ?>" > 财务</a>
+
+        <b class="arrow"></b>
+        </li>
+
+        <li class="hsub" id="exports">
+        <a href="<?php echo base_url('bills/exports'); ?>" > 核算</a>
+        <b class="arrow"></b>
+        </li>
+
+    </ul>
+    </li>
 
 
 <?php 

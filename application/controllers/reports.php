@@ -474,6 +474,7 @@ class Reports extends REIM_Controller {
             foreach($banks as $b){
                 $_banks[$b['uid']] = $b;
             }
+            $_t_items = array();
             foreach($reports as &$r){
                 if(!array_key_exists($r['uid'], $_members)){
                     $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
@@ -483,11 +484,13 @@ class Reports extends REIM_Controller {
                 log_message('debug', json_encode($r));
                 $_items = $r['items'];
                 foreach($_items as $i){
-                    $r['total'] += $i['amount'];
+                    $r['total'] += ($i['amount'] * $i['rate'] / 100);
                     if($i['reimbursed'] == 0) continue;
                     if($i['prove_ahead'] > 0){
                         $r['paid'] += $i['pa_amount'];
                     }
+                    $i['nickname'] = $r['nickname'];
+                    array_push($_t_items, $i);
                 }
                 if($r['status'] == 4){
                     // 已完成状态的，付款额度就是已付额度
@@ -505,6 +508,9 @@ class Reports extends REIM_Controller {
                 $obj['应付'] = $r['last'];
                 array_push($_excel, $obj);
             }
+
+
+
             $members = array();
             foreach($_members as $x){
                 log_message("debug", json_encode($x));
@@ -520,9 +526,43 @@ class Reports extends REIM_Controller {
                 $o['注释'] = '';
                 array_push($members, $o);
             }
+
+
+            $_detail_items = array();
+            foreach($_t_items as $i){
+                if(!array_key_exists($r['uid'], $_members)){
+                    $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
+                }
+                log_message("debug", "export item:" . json_encode($i));
+                $o = array();
+                $o['日期'] = date('Y年m月d日', date($i['createdt']));
+                $o['时间'] = date('H:i:s', date($i['createdt']));
+                $o['创建者'] = $i['nickname'];
+                $o['类别'] = $i['category_name'];
+                $o['商家'] = $i['merchants'];
+                $o['参与人员'] = $i['relates'];
+                $o['备注'] = $i['note'];
+                $_rate = 1;
+                if($i['rate'] != 1){
+                    $_rate = $i['rate'] / 100;
+                }
+                $o['金额'] = $i['amount'] * $_rate;
+                $_paid = 0;
+                if($i['prove_ahead'] > 0){
+                    $_paid = $i['pa_amount'];
+                }
+                $_last = $i['amount'] - $_paid;
+                $o['已付'] = $_paid * $_rate;
+                $o['应付'] = $_last * $_rate;
+                $o['报告名'] = $i['title'];
+                array_push($_detail_items, $o);
+            }
+
+            log_message("debug", json_encode($o));
+
             //print_r($_excel);
             //print_r($r);
-            self::render_to_download('报告汇总', $members, 'Finace_' . date('Y-m-d', time()) . ".xls", '报告明细', $_excel);
+            self::render_to_download('报告汇总', $members, 'Finace_' . date('Y-m-d', time()) . ".xls", '报告明细', $_excel, '消费明细', $_detail_items);
 
         }
     }
