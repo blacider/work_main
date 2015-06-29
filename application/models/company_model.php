@@ -16,19 +16,35 @@ class Company_Model extends Reim_Model {
         return $obj;
     }
 
-    public function profile($same_category, $prove_ahead = 0, $maxlimit = 0) {
+    /*public function profile($same_category, $template, $maxlimit = 0) {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(
-            'same_category' => $same_category
-	    ,
+            'config' => $config
+            ,
         );
         $url = $this->get_url('company_admin');
         $buf = $this->do_Post($url, $data, $jwt);
         log_message("debug", $buf);
         $obj = json_decode($buf, true);
         return $obj;
+    }*/
+
+     public function profile($config, $maxlimit = 0) {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $data = array(
+            'config' => json_encode($config)
+            ,
+        );
+
+        $url = $this->get_url('company_admin');
+        $buf = $this->do_Post($url, $data, $jwt);
+        log_message("debug", $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
     }
+
     public function update($cid, $name, $pid, $prove_ahead = 0, $maxlimit = 0) {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;

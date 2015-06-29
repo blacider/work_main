@@ -88,29 +88,28 @@ public function common(){
    public function profile()
    {
    	$pid = 0;
-   	$ischecked = $this->input->post('isadmin');
-	if($ischecked == 'on')
+   	$ischecked = $this->input->post('ischecked');
+	$template = $this->input->post('template');
+	if($ischecked == true)
 	{
 		$pid = 1;
 	}
-	else
-	{
-		$ischecked = 'off';
-	}
-	$data = $this->company->profile($pid);
-        $this->bsload('company/common',
-            array(
-	    	'id' => $pid 
-	    	,'ischecked' => $ischecked
-		,'backdata' => $data
-		,'title' => '公司设置'
-                //,'company' => json_encode($_group)
-                ,'breadcrumbs' => array(
-                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                        ,array('url'  => base_url('company/submit'), 'name' => '公司设置', 'class' => '')
-                        ,array('url'  => '', 'name' => '提交规则', 'class' => '')
-                    ),
-            )
-	);
+	$data = $this->company->get();
+//	$config = $data['data']['config'];
+//	if(array_key_exists('same_category',$confarr))
+//	{
+//		$confarr['same_category'] = $pid;
+//	}
+//	if(array_key_exists('template',$confarr))
+//	{
+//		$confarr['template'] = $template;
+//	}
+	
+	$in=array();
+	$in['same_category'] = $pid;
+	$in['template'] = $template;
+	$this->company->profile($in);
+	$re = array('name' => $ischecked,'template' => $template,'obj' => $data['data']['config']);
+	die(json_encode($re));
    }
 }

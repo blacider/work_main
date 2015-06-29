@@ -1,3 +1,4 @@
+
 <!-- /section:basics/sidebar -->
 <div class="main-content">
     <!-- #section:basics/content.breadcrumbs -->
@@ -29,13 +30,14 @@
 
             </div>
         </div>
+           <select id="temp" >
+                <option value="a4.yaml">A4模板</option>
+                <option value="b5.yaml">B5模板</option>
+           </select>
 
-        <div class="clearfix form-actions">
-             <div class="col-md-offset-3 col-md-9">
+        <div class=" form-actions">
+             <div >
                  <a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
-                 <a class="btn btn-white btn-default renew" data-renew="1"><i class="ace-icon fa fa-check "></i>保存再记</a>
-
-                 <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
              </div>
          </div>
          </form>
@@ -44,15 +46,31 @@
 </div>
 </div>
 <script type="text/javascript">
+var __BASE = "<?php echo $base_url; ?>";
    $(document).ready(function(){
-   	$('.renew').click(function(){
+   /*	$('.renew').click(function(){
     var _checked = $('#isadmin').is('checked');
     console.log("checked" + _checked);
-   
     $('#profile').submit();
-	});
-
-   }); 
+	});*/
+        $('.renew').click(function(){
+           $.ajax({
+                type:"post",
+                url:__BASE+"company/profile",
+                data:{ischecked:$('#isadmin').is(':checked'),template:$('#temp option:selected').val()},
+                dataType:'json',
+                success:function(data){
+                        console.log(data);
+                        console.log(data['hello'])
+                       show_notify('保存成功');
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log(XMLHttpRequest.status);
+                        console.log(XMLHttpRequest.readyState);
+                        console.log(textStatus);
+                    },            });
+       }); 
+    });
 </script>
 
        
