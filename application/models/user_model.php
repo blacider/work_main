@@ -259,7 +259,7 @@ class User_Model extends Reim_Model {
         if('' !== $username && '' !== $password) {
             $jwt = $this->get_jwt($username, $password);
             $this->session->set_userdata('jwt', $jwt);
-            log_message("debug", "login set jwt:" . $jwt);
+            log_message("debug", "login set jwt:" . json_encode($jwt));
         } else {
             $jwt = $this->session->userdata('jwt');
         }
@@ -517,4 +517,5 @@ class User_Model extends Reim_Model {
         log_message("debug", $buf);
         return $buf;
     }
+    
 }

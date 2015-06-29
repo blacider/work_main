@@ -1,29 +1,32 @@
 <?php
-class Category_Model extends Reim_Model {
 
-    public function get_list(){
+class Company_Model extends Reim_Model {
+   // const MIN_UID = 100000;
+    public function __construct(){
+        parent::__construct();
+    }
+
+        public function get(){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-		$url = $this->get_url('common/0');
-		$buf = $this->do_Get($url, $jwt);
+        $url = $this->get_url('company_admin');
+        $buf = $this->do_Get($url, $jwt);
         log_message("debug", $buf);
-		$obj = json_decode($buf, true);
+        $obj = json_decode($buf, true);
         return $obj;
     }
 
-    public function create($name, $pid, $prove_ahead = 0, $maxlimit = 0) {
+    public function profile($same_category, $prove_ahead = 0, $maxlimit = 0) {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(
-            'name' => $name
-            ,'pid' => $pid
-            ,'limit' => $maxlimit
-            ,'pb' => $prove_ahead
+            'same_category' => $same_category
+	    ,
         );
-		$url = $this->get_url('category');
-		$buf = $this->do_Post($url, $data, $jwt);
+        $url = $this->get_url('company_admin');
+        $buf = $this->do_Post($url, $data, $jwt);
         log_message("debug", $buf);
-		$obj = json_decode($buf, true);
+        $obj = json_decode($buf, true);
         return $obj;
     }
     public function update($cid, $name, $pid, $prove_ahead = 0, $maxlimit = 0) {
@@ -35,10 +38,10 @@ class Category_Model extends Reim_Model {
             ,'limit' => $maxlimit
             ,'pb' => $prove_ahead
         );
-		$url = $this->get_url('category/' . $cid);
-		$buf = $this->do_Put($url, $data, $jwt);
+        $url = $this->get_url('category/' . $cid);
+        $buf = $this->do_Put($url, $data, $jwt);
         log_message("debug", $buf);
-		$obj = json_decode($buf, true);
+        $obj = json_decode($buf, true);
         return $obj;
     }
 
@@ -46,10 +49,11 @@ class Category_Model extends Reim_Model {
         $jwt = $this->session->userdata('jwt');
         log_message("debug", "JWT: " . $jwt);
         if(!$jwt) return false;
-		$url = $this->get_url('category/' . $cid);
-		$buf = $this->do_Delete($url, array(), $jwt);
+        $url = $this->get_url('category/' . $cid);
+        $buf = $this->do_Delete($url, array(), $jwt);
         log_message("debug", $buf);
-		$obj = json_decode($buf, true);
+        $obj = json_decode($buf, true);
         return $obj;
     }
+
 }
