@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>云报销 - 下载</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes">
+  <title>云报销 - 下载</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes">
   <link rel="shortcut icon" href="http://www.cloudbaoxiao.com/favicon.ico">
   <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" type="text/css" href="/static/wx/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="/static/wx/css/index.css">
     <script type="text/javascript" src="/static/wx/js/jquery.min.js"></script>
-   <!-- <script type="text/javascript" src="/static/wx/js/index.js"></script> -->
+    <!-- <script type="text/javascript" src="/static/wx/js/index.js"></script> -->
 <script language="javascript">
     var __BASEURL = "<?php echo base_url(); ?>";
 </script>
@@ -33,7 +33,7 @@
         <div style="width:100%">
             <img style="width:100%" src="http://www.cloudbaoxiao.com/img/text_title_42@2x.png">
         </div>
-     
+      
       <div id="download pc" style="" onclick="download()">
             <div class="pc">
                 <img src="/static/img/download.png" style="width:160px;height:160px;">
@@ -61,8 +61,7 @@
   </div>
   </div>
 <script language="javascript">
-    
-    $(document).ready(function() {
+   $(document).ready(function() {
   /* Act on the event */
   $('.contain').css('height', String(document.body.scrollHeight));
   /*单页面所做的改变*/
@@ -75,8 +74,6 @@ function download() {
     window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/1.1.1/reim.apk'; 
 }
 </script>
-<script type="text/javascript">
-  
-</script>
 </body>
 </html>
+
