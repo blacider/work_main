@@ -89,7 +89,7 @@ public function common(){
    {
    	$pid = 0;
    	$ischecked = $this->input->post('isadmin');
-	if($profile)
+	if($ischecked)
 	{
 		$pid = 1;
 	}
