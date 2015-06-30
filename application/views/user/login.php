@@ -52,7 +52,7 @@
           <li><a href="#">Blog</a></li>
           <li id="min-margin"><a href="#">登录</a></li>
                 -->
-          <li class="header-button ie-button1"><a href="http://www.cloudbaoxiao.com/#sign">申请试用</a></li>
+          <li class="header-button ie-button1"><a href="http://sandbox.cloudbaoxiao.com/">直接试用</a></li>
         </ul>
       </div>
     </div>

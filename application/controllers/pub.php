@@ -229,7 +229,8 @@ class Pub extends REIM_Controller {
     public function success($gname = ''){
             log_message("debug", "----------- ***************** ------> Not Micro :" );
         $msg = '';
-        $this->load->view('wx/success', array('msg' => $gname, 'gname' => $gname));
+       // $this->load->view('wx/success', array('msg' => $gname, 'gname' => $gname));
+       redirect(base_url('install'));
     }
 
     public function version(){
