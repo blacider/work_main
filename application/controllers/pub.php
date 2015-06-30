@@ -9,6 +9,8 @@ class Pub extends REIM_Controller {
         $this->load->model('group_model', 'groups');
         $this->load->model('user_model', 'users');
         $this->load->model('report_model', 'reports');
+        $this->load->library('user_agent');
+
     }
 
     public function invite($gid = 0, $uid = 0){
@@ -180,17 +182,42 @@ class Pub extends REIM_Controller {
                     redirect(base_url('login'));
                     die();
                 }
+
                 $_group = $_group['data']['ginfo'];
-                $gname = $_group['group_name'];
+
                 log_message("debug", "$gid Group:" . json_encode($_group));
                 log_message("debug", "$gid Group:" . json_encode($user));
+
+                $_group = json_encde($_group);
+                if(array_key_exists('group_name', $_group))
+                {
+                     $gname = $_group['group_name'];
+                }
+                else
+                {
+                    $gname = '';
+                }
                 if($user['gid'] == $gid) {
                     log_message("debug", "------> Same Group:" );
                     $msg = $gname;
                     $this->load->view('wx/success', array('msg' => $msg, 'gname' => $gname));
+                    //redirect(base_url('install'));
                 } else {
                     log_message("debug", "------> Same Group:" );
-                    $this->load->view('wx/apply', array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
+                    //$this->load->view('wx/apply', array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
+                   // redirect(base_url('install/wx/').'?'.'gname='.$gname);
+                    if ($this->agent->is_mobile('iphone'))
+                        {
+                            $this->load->view('wx/iphone',array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
+                        }
+                        else if ($this->agent->is_mobile())
+                        {
+                            $this->load->view('wx/adroid',array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
+                        }
+                        else
+                        {
+                            $this->load->view('wx/index',array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
+                        }
                 }
             }
         }
@@ -230,7 +257,7 @@ class Pub extends REIM_Controller {
     public function success($gname = ''){
             log_message("debug", "----------- ***************** ------> Not Micro :" );
         $msg = '';
-       // $this->load->view('wx/success', array('msg' => $gname, 'gname' => $gname));
+        //$this->load->view('wx/success', array('msg' => $gname, 'gname' => $gname));
        redirect(base_url('install'));
     }
 
