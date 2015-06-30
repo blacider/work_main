@@ -53,7 +53,7 @@ function isWeixin(){
 		return false;
 	}
 }
-/*function isAndroid(){
+function isAndroid(){
 	var ua = navigator.userAgent.toLowerCase();
 	if(ua.match(/android/i)=="android") {
 		return true;
@@ -88,9 +88,9 @@ function download() {
 }
 $(document).ready(function() {
 	/* Act on the event */
-//	$('.contain').css('height', String(document.body.scrollHeight));
+	$('.contain').css('height', String(document.body.scrollHeight));
 	/*单页面所做的改变*/
-/*	if (isIos()) {
+	if (isIos()) {
         //window.location.href = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.111.plist';
         $('.android').hide();
 		$('.pc').hide();
@@ -114,4 +114,3 @@ $(document).ready(function() {
     }
 	$('body').scrollTop(0);
 });
-*/
