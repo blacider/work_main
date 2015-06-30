@@ -40,7 +40,7 @@
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-rigtht">报销单模板选择</label>
-                                <div class="col-xs-3 col-sm-3">
+                                <div class="col-xs-2 col-sm-2">
                                     <select id="temp" class="chosen-select tag-input-style" name="uids[]"  data-placeholder="请选择标签">
                                     <option value="a4.yaml">A4模板</option>
                                     <option value="b5.yaml">B5模板</option>
