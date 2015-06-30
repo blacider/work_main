@@ -150,8 +150,9 @@ class Pub extends REIM_Controller {
             $this->session->set_userdata('unionid', $unionid);
             $this->session->set_userdata('access_token', $token);
 
+            $check = 0;
             # 创建帐号
-            $user = $this->users->reim_oauth($unionid, $openid, $token);
+            $user = $this->users->reim_oauth($unionid, $openid, $token, $check);
             log_message("debug", "REIM OAUTH:" . json_encode($user));
             if(!$user['status']) {
                 // TODO @abjkl, 看看出错了怎么搞
