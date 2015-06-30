@@ -464,13 +464,11 @@ class Reports extends REIM_Controller {
         //$_ids = explode(",", $ids);
         if("" == $ids) die("");
         $data = $this->reports->get_reports_by_ids($ids);
-        log_message("debug", "NICK NAMES:" . json_encode($data));
-        $nicks = $data['nick'];
-        log_message("debug", "NICK NAMES:" . json_encode($nick));
         $_excel = array();
         $_members = array();
         if($data['status'] > 0){
             $_reports = $data['data'];
+            $nicks = $_reports['nicks'];
             $reports = $_reports['report'];
             $banks = $_reports['banks'];
             $_banks = array();
@@ -530,11 +528,22 @@ class Reports extends REIM_Controller {
                 array_push($members, $o);
             }
 
+            $__members = array();
+            foreach($nicks as $i){
+                $__members[$i['uid']] =  $i['nickname'];
+            }
 
             $_detail_items = array();
             foreach($_t_items as $i){
                 if(!array_key_exists($r['uid'], $_members)){
                     $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
+                }
+                $_relates = explode(',', $i['relates']);
+                $__relates = array();
+                foreach($_relates as $r){
+                    if(array_key_exists($r, $__members)){
+                        array_push($__relates, $__members[$r]);
+                    }
                 }
                 log_message("debug", "export item:" . json_encode($i));
                 $o = array();
@@ -543,7 +552,7 @@ class Reports extends REIM_Controller {
                 $o['创建者'] = $i['nickname'];
                 $o['类别'] = $i['category_name'];
                 $o['商家'] = $i['merchants'];
-                $o['参与人员'] = $i['relates'];
+                $o['参与人员'] = implode(',', $__relates);
                 $o['备注'] = $i['note'];
                 $_rate = 1;
                 if($i['rate'] != 1){
