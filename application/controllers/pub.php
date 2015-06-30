@@ -187,7 +187,7 @@ class Pub extends REIM_Controller {
                 log_message("debug", "$gid Group:" . json_encode($_group));
                 log_message("debug", "$gid Group:" . json_encode($user));
 
-                $_group = json_encde($_group);
+                $_group = json_decode($_group);
                 if(array_key_exists('group_name', $_group))
                 {
                      $gname = $_group['group_name'];
