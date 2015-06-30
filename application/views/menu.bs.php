@@ -380,7 +380,7 @@ if($profile['admin'] == 1){
 
     <li class="hsub" id="company">
     <a href="#" class="dropdown-toggle">
-        <i class="menu-icon fa fa-rocket"></i>
+        <i class="menu-icon fa fa-institution"></i>
         <span class="menu-text"> 公司设置 </span>
 
         <b class="arrow fa fa-angle-down"></b>
@@ -392,7 +392,7 @@ if($profile['admin'] == 1){
         <a href="<?php echo base_url('company/submit'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 提交规则 </a>
         <b class="arrow"></b>
         </li>
-
+<!--
         <li class="hsub" id="common">
         <a href="<?php echo base_url('company/common'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 通用规则 </a>
         <b class="arrow"></b>
@@ -407,7 +407,7 @@ if($profile['admin'] == 1){
         <a href="<?php echo base_url('company/setting'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 公司通用设置 </a>
         <b class="arrow"></b>
         </li>
-
+-->
     </ul>
     </li>
 
