@@ -5,6 +5,9 @@ class Install extends REIM_Controller {
         parent::__construct();
 	$this->load->library('user_agent');
     }
+    public function stage(){
+        $this->load->view('stage');
+    }
 
     public function index(){
     	if ($this->agent->is_mobile('iphone'))

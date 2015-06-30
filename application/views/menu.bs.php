@@ -179,7 +179,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
             <i class="ace-icon fa fa-dashboard"></i>
         </button>
 
-         <button class="btn btn-info" onClick="window.open('https://www.cloudbaoxiao.com/help.html#one')" > 
+         <button class="btn btn-info" onClick="window.open('https://www.yunbaoxiao.com/help.html#one')" > 
                <i class="ace-icon fa fa-question-circle"></i>
                </button>
 
@@ -413,14 +413,30 @@ if($profile['admin'] == 1){
     </ul>
     </li>
 
-<li class="rsmenu" id="bills">
-<a href="<?php echo base_url('bills'); ?>">
-<i class="menu-icon fa fa-money"></i>
-<span class="menu-text"> 财务核算 </span>
-</a>
-<b class="arrow"></b>
-</li>
 
+    <li class="hsub" id="bills">
+    <a href="#" class="dropdown-toggle">
+        <i class="menu-icon fa fa-money"></i>
+        <span class="menu-text"> 财务核算</span>
+
+        <b class="arrow fa fa-angle-down"></b>
+    </a>
+    <b class="arrow"></b>
+    <ul class="submenu nav-show" style="display: block;">
+
+        <li class="hsub" id="index">
+        <a href="<?php echo base_url('bills/index'); ?>" >待结算</a>
+
+        <b class="arrow"></b>
+        </li>
+
+        <li class="hsub" id="exports">
+        <a href="<?php echo base_url('bills/exports'); ?>" > 已结束</a>
+        <b class="arrow"></b>
+        </li>
+
+    </ul>
+    </li>
 
 
 <?php 

@@ -207,7 +207,7 @@ class User_Model extends Reim_Model {
         return $new_file_path;
     }
 
-    public function reim_oauth($unionid = '', $openid = '', $token = ''){
+    public function reim_oauth($unionid = '', $openid = '', $token = '', $check = 1){
         /*
         if('' !== $username && '' !== $password) {
             $jwt = $this->get_jwt($username, $password);
@@ -222,7 +222,7 @@ class User_Model extends Reim_Model {
         $jwt = $this->get_jwt($unionid, "");
         $this->session->set_userdata('jwt', $jwt);
 		$url = $this->get_url('oauth');
-        $data = array('openid' => $openid, 'unionid' => $unionid, 'token' => $token);
+        $data = array('openid' => $openid, 'unionid' => $unionid, 'token' => $token, 'check' => $check);
 		$buf = $this->do_Post($url, $data, $jwt);
 
 		$obj = json_decode($buf, true);

@@ -4,7 +4,7 @@
 	<title>云报销 - 下载</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes">
-  <link rel="shortcut icon" href="http://www.cloudbaoxiao.com/favicon.ico">
+  <link rel="shortcut icon" href="http://www.yunbaoxiao.com/favicon.ico">
   <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" type="text/css" href="/static/wx/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="/static/wx/css/index.css">
@@ -31,7 +31,7 @@
   <div class="block1" style="min-height:500px;">
     <div class="main-block">
         <div style="width:100%">
-            <img style="width:100%" src="http://www.cloudbaoxiao.com/img/text_title_42@2x.png">
+            <img style="width:100%" src="http://www.yunbaoxiao.com/img/text_title_42@2x.png">
         </div>
       <div id="download" class="android" style="" onclick="download()">
         <div class="content">
@@ -58,9 +58,9 @@
       </div>
       <div class="footer-link">
         <ul>
-        <li><a href="https://www.cloudbaoxiao.com/contact.html">关于我们</a></li>
-        <li><a href="https://www.cloudbaoxiao.com/help.html">帮助中心</a></li>
-        <li><a href="https://www.cloudbaoxiao.com/joinus.html">加入我们</a></li>
+        <li><a href="https://www.yunbaoxiao.com/contact.html">关于我们</a></li>
+        <li><a href="https://www.yunbaoxiao.com/help.html">帮助中心</a></li>
+        <li><a href="https://www.yunbaoxiao.com/joinus.html">加入我们</a></li>
       </ul>
       </div>
       <div class="record">

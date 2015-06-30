@@ -43,7 +43,7 @@
 <body>
   <div class="header">
     <div class="main-block">
-        <a href="http://www.cloudbaoxiao.com">
+        <a href="http://www.yunbaoxiao.com">
             <span class="home-logo"> &nbsp;</span>
         </a>
       <div class="header-link">
@@ -151,9 +151,9 @@
       </div>
       <div class="footer-link">
         <ul>
-        <li><a href="http://www.cloudbaoxiao.com/contact.html">关于我们</a></li>
-        <li><a href="http://www.cloudbaoxiao.com/help.html">帮助中心</a></li>
-        <li><a href="http://www.cloudbaoxiao.com/joinus.html">加入我们</a></li>
+        <li><a href="http://www.yunbaoxiao.com/contact.html">关于我们</a></li>
+        <li><a href="http://www.yunbaoxiao.com/help.html">帮助中心</a></li>
+        <li><a href="http://www.yunbaoxiao.com/joinus.html">加入我们</a></li>
       </ul>
       </div>
       <div class="record">

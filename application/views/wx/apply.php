@@ -53,9 +53,9 @@ var __BASEURL = "<?php echo base_url(); ?>";
                 </div>
                 <div class="footer-link">
                     <ul>
-                        <li><a href="http://www.cloudbaoxiao.com/contact.html">关于我们</a></li>
-                        <li><a href="http://www.cloudbaoxiao.com/help.html">帮助中心</a></li>
-                        <li><a href="http://www.cloudbaoxiao.com/joinus.html">加入我们</a></li>
+                        <li><a href="http://www.yunbaoxiao.com/contact.html">关于我们</a></li>
+                        <li><a href="http://www.yunbaoxiao.com/help.html">帮助中心</a></li>
+                        <li><a href="http://www.yunbaoxiao.com/joinus.html">加入我们</a></li>
                     </ul>
                 </div>
                 <div class="record">

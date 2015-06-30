@@ -14,6 +14,7 @@
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
+var __STATUS = "<?php echo $status; ?>";
 </script>
 <script src="/static/js/base.js" ></script>
 <script src="/static/js/bills.js" ></script>

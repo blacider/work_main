@@ -1,4 +1,3 @@
-
 function bind_event(){
     $('.tdetail').each(function() {
         $(this).click(function(){
@@ -41,7 +40,7 @@ function bind_event(){
 
 
 jQuery(grid_selector).jqGrid({
-    url: __BASE + 'bills/listdata',
+    url: __BASE + 'bills/listdata/' + __STATUS,
     mtype: "GET",
     datatype: "local",
     height: 250,

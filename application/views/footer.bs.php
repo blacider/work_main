@@ -6,7 +6,7 @@
         <!-- #section:basics/footer -->
         <div class="footer-content">
             <span class="bigger-120">
-                <span class="blue bolder"><a href="http://www.cloudbaoxiao.com" target="_blank">如数科技</a></span>
+                <span class="blue bolder"><a href="http://www.yunbaoxiao.com" target="_blank">如数科技</a></span>
                 © 2014-2015
             </span>
 

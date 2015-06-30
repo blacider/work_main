@@ -152,8 +152,9 @@ class Pub extends REIM_Controller {
             $this->session->set_userdata('unionid', $unionid);
             $this->session->set_userdata('access_token', $token);
 
+            $check = 0;
             # 创建帐号
-            $user = $this->users->reim_oauth($unionid, $openid, $token);
+            $user = $this->users->reim_oauth($unionid, $openid, $token, $check);
             log_message("debug", "REIM OAUTH:" . json_encode($user));
             if(!$user['status']) {
                 // TODO @abjkl, 看看出错了怎么搞
@@ -186,6 +187,7 @@ class Pub extends REIM_Controller {
 
                 log_message("debug", "$gid Group:" . json_encode($_group));
                 log_message("debug", "$gid Group:" . json_encode($user));
+<<<<<<< HEAD
                 if($_group)
                 {
                     $_group = json_decode($_group);
@@ -202,6 +204,17 @@ class Pub extends REIM_Controller {
                  {
                     $gname = '';
                  }
+=======
+
+                $gname = '';
+                $__group = array();
+                if($_group) {
+                    //$__group = json_decode($_group, True);
+                    if(array_key_exists('group_name', $_group)) {
+                        $gname = $_group['group_name'];
+                    }
+                }
+>>>>>>> origin/master
                 if($user['gid'] == $gid) {
                     log_message("debug", "------> Same Group:" );
                     $msg = $gname;
