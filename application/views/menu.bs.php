@@ -380,7 +380,7 @@ if($profile['admin'] == 1){
 
     <li class="hsub" id="company">
     <a href="#" class="dropdown-toggle">
-        <i class="menu-icon fa fa-rocket"></i>
+        <i class="menu-icon fa fa-institution"></i>
         <span class="menu-text"> 公司设置 </span>
 
         <b class="arrow fa fa-angle-down"></b>
@@ -389,10 +389,10 @@ if($profile['admin'] == 1){
     <ul class="submenu nav-show" style="display: block;">
 
         <li class="hsub" id="submit">
-        <a href="<?php echo base_url('company/submit'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 提交规则 </a>
+        <a href="<?php echo base_url('company/submit'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 通用规则 </a>
         <b class="arrow"></b>
         </li>
-
+<!--
         <li class="hsub" id="common">
         <a href="<?php echo base_url('company/common'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 通用规则 </a>
         <b class="arrow"></b>
@@ -407,7 +407,7 @@ if($profile['admin'] == 1){
         <a href="<?php echo base_url('company/setting'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 公司通用设置 </a>
         <b class="arrow"></b>
         </li>
-
+-->
     </ul>
     </li>
 
@@ -415,7 +415,7 @@ if($profile['admin'] == 1){
     <li class="hsub" id="bills">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-money"></i>
-        <span class="menu-text"> 财务和核算</span>
+        <span class="menu-text"> 财务核算</span>
 
         <b class="arrow fa fa-angle-down"></b>
     </a>
@@ -423,13 +423,13 @@ if($profile['admin'] == 1){
     <ul class="submenu nav-show" style="display: block;">
 
         <li class="hsub" id="index">
-        <a href="<?php echo base_url('bills/index'); ?>" > 财务</a>
+        <a href="<?php echo base_url('bills/index'); ?>" >待结算</a>
 
         <b class="arrow"></b>
         </li>
 
         <li class="hsub" id="exports">
-        <a href="<?php echo base_url('bills/exports'); ?>" > 核算</a>
+        <a href="<?php echo base_url('bills/exports'); ?>" > 已结束</a>
         <b class="arrow"></b>
         </li>
 
