@@ -350,7 +350,7 @@ if($profile['admin'] == 1){
 
     <li class="hsub" id="category">
     <a href="#" class="dropdown-toggle">
-        <i class="menu-icon fa fa-users"></i>
+        <i class="menu-icon fa fa-tags"></i>
         <span class="menu-text"> 标签和分类 </span>
 
         <b class="arrow fa fa-angle-down"></b>
@@ -372,18 +372,69 @@ if($profile['admin'] == 1){
         <a href="<?php echo base_url('category'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 分类管理 </a>
         <b class="arrow"></b>
         </li>
+
         
     </ul>
     </li>
 
-<li class="rsmenu" id="bills">
-<a href="<?php echo base_url('bills'); ?>">
-<i class="menu-icon fa fa-money"></i>
-<span class="menu-text"> 财务核算 </span>
-</a>
-<b class="arrow"></b>
-</li>
 
+    <li class="hsub" id="company">
+    <a href="#" class="dropdown-toggle">
+        <i class="menu-icon fa fa-rocket"></i>
+        <span class="menu-text"> 公司设置 </span>
+
+        <b class="arrow fa fa-angle-down"></b>
+    </a>
+    <b class="arrow"></b>
+    <ul class="submenu nav-show" style="display: block;">
+
+        <li class="hsub" id="submit">
+        <a href="<?php echo base_url('company/submit'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 提交规则 </a>
+        <b class="arrow"></b>
+        </li>
+
+        <li class="hsub" id="common">
+        <a href="<?php echo base_url('company/common'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 通用规则 </a>
+        <b class="arrow"></b>
+        </li>
+
+         <li class="hsub" id="review">
+        <a href="<?php echo base_url('company/review'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 审核规则 </a>
+        <b class="arrow"></b>
+        </li>
+
+        <li class="hsub" id="setting">
+        <a href="<?php echo base_url('company/setting'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 公司通用设置 </a>
+        <b class="arrow"></b>
+        </li>
+
+    </ul>
+    </li>
+
+
+    <li class="hsub" id="bills">
+    <a href="#" class="dropdown-toggle">
+        <i class="menu-icon fa fa-money"></i>
+        <span class="menu-text"> 财务和核算</span>
+
+        <b class="arrow fa fa-angle-down"></b>
+    </a>
+    <b class="arrow"></b>
+    <ul class="submenu nav-show" style="display: block;">
+
+        <li class="hsub" id="index">
+        <a href="<?php echo base_url('bills/index'); ?>" > 财务</a>
+
+        <b class="arrow"></b>
+        </li>
+
+        <li class="hsub" id="exports">
+        <a href="<?php echo base_url('bills/exports'); ?>" > 核算</a>
+        <b class="arrow"></b>
+        </li>
+
+    </ul>
+    </li>
 
 
 <?php 

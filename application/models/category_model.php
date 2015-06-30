@@ -52,5 +52,4 @@ class Category_Model extends Reim_Model {
 		$obj = json_decode($buf, true);
         return $obj;
     }
-
 }

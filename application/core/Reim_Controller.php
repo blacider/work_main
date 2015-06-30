@@ -191,8 +191,8 @@ class REIM_Controller extends CI_Controller{
 
     }
 
-    public function render_to_download($title, $data, $excle_name, $title_2 = '', $data_2 = array()){
-        $objwriter = $this->return_buf($title, $data, $title_2, $data_2);
+    public function render_to_download($title, $data, $excle_name, $title_2 = '', $data_2 = array(), $title_3 = '', $data_3 = array()){
+        $objwriter = $this->return_buf($title, $data, $title_2, $data_2, $title_3, $data_3);
         header("Pragma: public");
         header("Content-Type: application/force-download");
         header("Content-Type: application/octet-stream");
@@ -207,7 +207,7 @@ class REIM_Controller extends CI_Controller{
         exit();
     }
 
-    public function return_buf($title, $data, $title_2 = '', $data_2 = array()) {
+    public function return_buf($title, $data, $title_2 = '', $data_2 = array(), $title_3 = '', $data_3 = array()) {
 
         $Excel = new PHPExcel();
         $Excel->getProperties()->setCreator("RushuCloud Ltd.co")
@@ -260,6 +260,30 @@ class REIM_Controller extends CI_Controller{
                 $x++;
             }
         }
+        // TODO: 如此肮脏，算了，先推下来再说吧。
+        if($title_3 && count($data_3) > 0){
+            $Excel->createSheet();
+            $Excel->setActiveSheetIndex(2);
+            $Excel->getSheet(2)->setTitle($title_3);
+
+            $cell_one = $data_3[0];
+            $j = 0;
+            foreach ($cell_one as $k => $v) {
+                $Excel->getSheet(2)->setCellValue($this->getCharByNunber($j) . '1', $k);
+                $j++;
+            }
+
+            $x = 2;
+            foreach ($data_3 as $value) {
+                $y = 0;
+                foreach ($value as $k => $v) {
+                    $Excel->getSheet(2)->setCellValue($this->getCharByNunber($y) . $x, $v);
+                    $y++;
+                }
+                $x++;
+            }
+        }
+
 
         //$objwriter = new PHPExcel_Writer_Excel2007($Excel);
         $objwriter = IOFactory::createWriter($Excel, 'Excel5');
