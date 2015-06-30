@@ -204,9 +204,9 @@ class Pub extends REIM_Controller {
                     //redirect(base_url('install'));
                 } else {
                     log_message("debug", "------> Same Group:" );
-                    //$this->load->view('wx/apply', array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
+                    $this->load->view('wx/apply', array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
                    // redirect(base_url('install/wx/').'?'.'gname='.$gname);
-                    if ($this->agent->is_mobile('iphone'))
+                   /* if ($this->agent->is_mobile('iphone'))
                         {
                             $this->load->view('wx/iphone',array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
                         }
@@ -217,7 +217,7 @@ class Pub extends REIM_Controller {
                         else
                         {
                             $this->load->view('wx/index',array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
-                        }
+                        }*/
                 }
             }
         }
