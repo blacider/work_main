@@ -389,7 +389,7 @@ if($profile['admin'] == 1){
     <ul class="submenu nav-show" style="display: block;">
 
         <li class="hsub" id="submit">
-        <a href="<?php echo base_url('company/submit'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 提交规则 </a>
+        <a href="<?php echo base_url('company/submit'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 通用规则 </a>
         <b class="arrow"></b>
         </li>
 <!--
