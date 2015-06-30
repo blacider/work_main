@@ -415,7 +415,7 @@ if($profile['admin'] == 1){
     <li class="hsub" id="bills">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-money"></i>
-        <span class="menu-text"> 财务和核算</span>
+        <span class="menu-text"> 财务核算</span>
 
         <b class="arrow fa fa-angle-down"></b>
     </a>
@@ -423,13 +423,13 @@ if($profile['admin'] == 1){
     <ul class="submenu nav-show" style="display: block;">
 
         <li class="hsub" id="index">
-        <a href="<?php echo base_url('bills/index'); ?>" > 财务</a>
+        <a href="<?php echo base_url('bills/index'); ?>" >待结算</a>
 
         <b class="arrow"></b>
         </li>
 
         <li class="hsub" id="exports">
-        <a href="<?php echo base_url('bills/exports'); ?>" > 核算</a>
+        <a href="<?php echo base_url('bills/exports'); ?>" > 已结束</a>
         <b class="arrow"></b>
         </li>
 
