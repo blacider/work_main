@@ -13,7 +13,7 @@ class Install extends REIM_Controller {
 	}
 	else if ($this->agent->is_mobile())
 	{
-	    $this->load->view('install/android');
+	    $this->load->view('install/adroid');
 	}
 	else
 	{
@@ -21,4 +21,22 @@ class Install extends REIM_Controller {
 	}
 //        $this->load->view('install');
     }
+
+     public function wx(){
+    	if ($this->agent->is_mobile('iphone'))
+	{
+	    $this->load->view('wx/index');
+	}
+	else if ($this->agent->is_mobile())
+	{
+	    $this->load->view('wx/adroid');
+	}
+	else
+	{
+		$this->load->view('wx/index');
+	}
+//        $this->load->view('install');
+    }
+
+
 }

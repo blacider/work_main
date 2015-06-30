@@ -1,0 +1,61 @@
+.ie-button1 {
+	border:0;
+	background-image: url(../img/button-white.png);
+	background-repeat: no-repeat;
+	width: 90px;
+	height: 30px;
+    padding: 6px 16px;
+}
+.ie-button2 {
+	background-image: url(../img/button-red.png);
+	background-repeat: no-repeat;
+	background-size: cover;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
+    src='img/button-red1.png',
+    sizingMethod='scale');
+}
+.ie-button2 input{
+	visibility: hidden;
+}
+#button-div {
+	width: 220px;
+	height: 50px;
+	background-image: url(../img/button-red.png);
+	background-repeat: no-repeat;
+	background-size: cover;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
+    src='img/button-red.png',
+    sizingMethod='scale');
+    margin-top: 31px;
+    margin-left: 36%;
+}
+@media screen and (max-width: 739px) and (min-width: 1px) {
+	margin-left: 1%;
+}
+.login-button-div {
+	margin-top: 20px;
+	width: 160px;
+	height: 55px;
+	background-image: url(../img/call-to-action.png);
+	background-repeat: no-repeat;
+	background-size: cover;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
+    src='img/call-to-action.png',
+    sizingMethod='scale');
+    float: left;
+    clear: left;
+}
+.login-button-div input{
+	display: none;
+}
+input {
+	line-height: 30px;
+}
+.button-text {
+	line-height: 56px;
+	font-size: 24px;
+	margin:0;
+	width: 100%;
+	text-align: center;
+	color: white;
+}
