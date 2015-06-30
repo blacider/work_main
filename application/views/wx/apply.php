@@ -43,12 +43,7 @@ var __BASEURL = "<?php echo base_url(); ?>";
                         <div class="ios ios-img">App Store 下载</div>
                     </div>
                 </div>
-                <div id="download" onclick="download()">
-                    <div class="content">
-                        <div class="android android-img">下载安装</div>
-                        <div class="ios ios-img">App Store 下载</div>
-                    </div>
-                </div>
+               
             </div>
         </div>
         <div class="footer">

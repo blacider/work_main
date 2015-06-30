@@ -179,10 +179,21 @@ class Pub extends REIM_Controller {
                     redirect(base_url('login'));
                     die();
                 }
+
                 $_group = $_group['data']['ginfo'];
-                $gname = $_group['group_name'];
+
                 log_message("debug", "$gid Group:" . json_encode($_group));
                 log_message("debug", "$gid Group:" . json_encode($user));
+
+                $_group = json_encde($_group);
+                if(array_key_exists('group_name', $_group))
+                {
+                     $gname = $_group['group_name'];
+                }
+                else
+                {
+                    $gname = '';
+                }
                 if($user['gid'] == $gid) {
                     log_message("debug", "------> Same Group:" );
                     $msg = $gname;
@@ -229,8 +240,8 @@ class Pub extends REIM_Controller {
     public function success($gname = ''){
             log_message("debug", "----------- ***************** ------> Not Micro :" );
         $msg = '';
-       // $this->load->view('wx/success', array('msg' => $gname, 'gname' => $gname));
-       redirect(base_url('install'));
+        $this->load->view('wx/success', array('msg' => $gname, 'gname' => $gname));
+       //redirect(base_url('install'));
     }
 
     public function version(){
