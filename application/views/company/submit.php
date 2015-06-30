@@ -27,24 +27,24 @@
                                 <label class="col-sm-2 control-label no-padding-right">允许不同类目消费记录</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
-                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
                                         <label style="margin-top:8px;">
                                             <input name="isadmin" class="ace ace-switch btn-rotate" type="checkbox" id="isadmin" style="margin-top:4px;" />
                                             <span class="lbl"></span>
                                         </label>
 
-                                    </div>
+                                   <!-- </div> -->
                                 </div>
                             </div>
 
 
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">模板选择</label>
+                                <label class="col-sm-2 control-label no-padding-rigtht">报销单模板选择</label>
                                 <div class="col-xs-3 col-sm-3">
                                     <select id="temp" class="chosen-select tag-input-style" name="uids[]"  data-placeholder="请选择标签">
                                     <option value="a4.yaml">A4模板</option>
                                     <option value="b5.yaml">B5模板</option>
-                                     </select>
+                                </select>
                                 </div>
                             </div>
 
