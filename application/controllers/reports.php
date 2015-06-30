@@ -464,6 +464,9 @@ class Reports extends REIM_Controller {
         //$_ids = explode(",", $ids);
         if("" == $ids) die("");
         $data = $this->reports->get_reports_by_ids($ids);
+        log_message("debug", "NICK NAMES:" . json_encode($data));
+        $nicks = $data['nick'];
+        log_message("debug", "NICK NAMES:" . json_encode($nick));
         $_excel = array();
         $_members = array();
         if($data['status'] > 0){

@@ -52,29 +52,6 @@ class Bills extends REIM_Controller {
         return $this->_logic(4);
     }
 
-    public function listcompletedata(){
-        $page = $this->input->get('page');
-        $rows = $this->input->get('rows');
-        $sort = $this->input->get('sord');
-        $bills = $this->reports->get_bills();
-        if($bills['status'] < 1){
-            die(json_encode(array()));
-        }
-        $data = $bills['data']['data'];
-        foreach($data as &$d){
-            log_message("debug", "Bill:" . json_encode($d));
-            $d['date_str'] = date('Y-m-d H:i:s', $d['createdt']);
-            $d['amount'] = '￥' . $d['amount'];
-            $d['status_str'] = $d['status'] == 2 ? '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>' : '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-            $edit = $d['status'] != 2 ? 'gray' : 'green';
-            $extra = $d['status'] == 2 ? '<span class="ui-icon ui-icon ace-icon fa fa-check tapprove green" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon ui-icon red ace-icon fa fa-times tdeny" data-id="' . $d['id'] . '"></span>' : '';
-
-            $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
-                . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . $extra
-                . '</div>';
-        }
-        die(json_encode($data));
-    }
     public function listdata($type = 2){
         $page = $this->input->get('page');
         $rows = $this->input->get('rows');
