@@ -517,4 +517,5 @@ class User_Model extends Reim_Model {
         log_message("debug", $buf);
         return $buf;
     }
+    
 }
