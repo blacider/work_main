@@ -93,6 +93,7 @@ public function common(){
    	$pid = 0;
    	$ischecked = $this->input->post('ischecked');
 	$template = $this->input->post('template');
+	$user_confirm = $this->input->post('limit');
 	if($ischecked == true)
 	{
 		$pid = 1;
@@ -111,6 +112,7 @@ public function common(){
 	$in=array();
 	$in['same_category'] = $pid;
 	$in['template'] = $template;
+	$in['user_confirm'] = $user_confirm;
 	$this->company->profile($in);
 	$re = array('name' => $ischecked,'template' => $template,'obj' => $data['data']['config']);
 	die(json_encode($re));
