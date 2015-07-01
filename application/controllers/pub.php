@@ -187,22 +187,15 @@ class Pub extends REIM_Controller {
 
                 log_message("debug", "$gid Group:" . json_encode($_group));
                 log_message("debug", "$gid Group:" . json_encode($user));
-                if($_group)
-                {
-                    $_group = json_decode($_group);
-                    if(array_key_exists('group_name', $_group))
-                    {
-                         $gname = $_group['group_name'];
+
+                $gname = '';
+                $__group = array();
+                if($_group) {
+                    //$__group = json_decode($_group, True);
+                    if(array_key_exists('group_name', $_group)) {
+                        $gname = $_group['group_name'];
                     }
-                    else
-                    {
-                        $gname = '';
-                    }
-                 }
-                 else
-                 {
-                    $gname = '';
-                 }
+                }
                 if($user['gid'] == $gid) {
                     log_message("debug", "------> Same Group:" );
                     $msg = $gname;
