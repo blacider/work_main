@@ -16,6 +16,7 @@ class Reim_Model extends CI_Model {
     }
 
 
+
     public function get_url($part){
         return API_SERVER . $part;
     }

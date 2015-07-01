@@ -1,0 +1,292 @@
+body {
+	margin: 0;
+	min-width: 270px;
+	height: 100%;
+	font-family: "Avenir-Light", "HelveticaNeue-Light", "Segoe UI Light", "Roboto-Light", "Lantinghei SC Extralight", "MicrosoftYaHeiLight" ,"STXihei", sans-serif;
+}
+.header-link ul {
+	padding: 0;
+	height: 50px;
+	margin-top: 15px;
+}
+.header {
+	height: 50px;
+	width: 100%;
+	background: rgba(44,62,80,0.9);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#E52C3E50,endColorstr=#E52C3E50);
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 1;
+}
+.home-logo {
+	float: left;
+	background-image: url(../img/icon_logo.png); 
+    background-image: -webkit-image-set(url(../img/icon_logo.png) 1x,url(../img/icon_logo@2x.png) 2x);
+    background-image: -moz-image-set(url(../img/icon_logo.png) 1x,url(../img/icon_logo@2x.png) 2x);
+    background-image: -o-image-set(url(../img/icon_logo.png) 1x,url(../img/icon_logo@2x.png) 2x);
+    background-image: -ms-image-set(url(../img/icon_logo.png) 1x,url(../img/icon_logo@2x.png) 2x);
+	width: 101px;
+	background-position: center;
+	background-repeat: no-repeat;
+	height: 50px;
+}
+.header-link {
+	float: right;
+	width: auto;
+	height: 50px;
+}
+.header-link * {
+	color: #FFF;
+}
+.header-link ul li{
+	float: left;
+	list-style: none;
+	margin-right: 25px;
+}
+.header-link ul li :hover {
+	color: #FFF;
+	font-weight: bold;
+}
+.header-link * {
+	font-size: 13px;
+}
+.header-button {
+	display: none;
+}
+.contain {
+}
+.block1 {
+	height: 77%;
+	overflow: hidden;
+}
+.block1 {
+    background-image: url(../img/hero_bg.jpg); 
+    background-image: -webkit-image-set(url(../img/hero_bg.jpg) 1x,url(../img/hero_bg@2x.jpg) 2x);
+    background-image: -moz-image-set(url(../img/hero_bg.jpg) 1x,url(../img/hero_bg@2x.jpg) 2x);
+    background-image: -o-image-set(url(../img/hero_bg.jpg) 1x,url(../img/hero_bg@2x.jpg) 2x);
+    background-image: -ms-image-set(url(../img/hero_bg.jpg) 1x,url(../img/hero_bg@2x.jpg) 2x);
+    background-size: cover;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
+    src='../img/hero_bg.jpg',
+    sizingMethod='scale');
+}
+.main-block {
+	width: 270px;
+	margin: 0 auto;
+}
+/*--------------------main*/
+.block1 p,.block1 h1{
+	margin: 0;
+	font-weight: normal;
+	padding:0;
+}
+.block1 {
+	color: #ffffff;
+	font-size: 13px;
+	min-height: 327px;
+}
+.block1 .main-block {
+	position: relative;
+	top: 50%;
+	margin-top: -114px;
+}
+.block1 h1 {
+	font-size: 23px;
+	margin-bottom: 41px;
+}
+form {
+	margin-top: 14px;
+}
+#error {
+	color: red;
+	margin-top: -4px;
+	visibility: hidden;
+}
+input[type="submit"] {
+	width: 220px;
+	border-radius: 26px;
+	border:0;
+	height: 53px;
+	background-color: #FE575C;
+	font-size: 25px;
+}
+input[type="submit"]:hover {
+	background-color:#ff7075;
+}
+input[type="text"] {
+	width: 270px;
+	height: 36px;
+	margin:1px auto 11px 0;
+	color: black;
+	font-size: 15px;
+	padding-left: 5px;
+	border:0;
+}
+#download {
+	display: none;
+	margin-top: 19px;
+	width: 220px;
+	height: 53px;
+	border-radius: 26px;
+	background-color: #FE575C;
+	line-height: 53px;
+}
+#download:hover {
+	cursor:pointer;
+	background-color:#ff7075;
+}
+.android-img {
+	background-position: 31px;
+	position: relative;
+	text-align: center;
+	left: 20px;
+	font-size: 21px;
+	background-repeat: no-repeat;
+	background-image: url(../img/explore-app.png); 
+    background-image: -webkit-image-set(url(../img/explore-app.png) 1x,url(../img/explore-app@2x.png) 2x);
+    background-image: -moz-image-set(url(../img/explore-app.png) 1x,url(../img/explore-app@2x.png) 2x);
+    background-image: -o-image-set(url(../img/explore-app.png) 1x,url(../img/explore-app@2x.png) 2x);
+    background-image: -ms-image-set(url(../img/explore-app.png) 1x,url(../img/explore-app@2x.png) 2x);
+}
+.pc-img {
+    background-position: 18px;
+	text-align: center;
+	position: relative;
+	left: 18px;
+	font-size: 19px;
+	background-repeat: no-repeat;
+	background-image: url(../img/download.png); 
+    background-image: -webkit-image-set(url(../img/download.png) 1x,url(../img/download@2x.png) 2x);
+    background-image: -moz-image-set(url(../img/download.png) 1x,url(../img/download@2x.png) 2x);
+    background-image: -o-image-set(url(../img/download.png) 1x,url(../img/download@2x.png) 2x);
+    background-image: -ms-image-set(url(../img/download.png) 1x,url(../img/download@2x.png) 2x);
+
+}
+.ios-img {
+    background-position: 18px;
+	text-align: center;
+	position: relative;
+	left: 18px;
+	font-size: 19px;
+	background-repeat: no-repeat;
+	background-image: url(../img/apple.png); 
+    background-image: -webkit-image-set(url(../img/apple.png) 1x,url(../img/apple@2x.png) 2x);
+    background-image: -moz-image-set(url(../img/apple.png) 1x,url(../img/apple@2x.png) 2x);
+    background-image: -o-image-set(url(../img/apple.png) 1x,url(../img/apple@2x.png) 2x);
+    background-image: -ms-image-set(url(../img/apple.png) 1x,url(../img/apple@2x.png) 2x);
+
+}
+.android {
+	display: block;
+}
+.ios {
+	display: none;
+}
+#winxin {
+	position: absolute;
+	right: 5px;
+	width: auto;
+	height: 57px;
+	display: none;
+	z-index: 2;
+}
+.triangle-up {
+	margin-right: 15px;
+	float: right;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 12px solid #FE575C;
+}
+.weixin-content {
+	clear: both;
+	background-color: #FE575C;
+	font-size: 9px;
+	padding:0 15px;
+	font-weight: normal;
+	color: white;
+	border-radius: 5px;
+}
+.safari {
+	margin: 0;
+    line-height: 57px;
+    background-position: 111px;
+	background-repeat: no-repeat;
+	background-image: url(../img/explorer-iOS.png); 
+    background-image: -webkit-image-set(url(../img/explorer-iOS.png) 1x,url(../img/explorer-iOS@2x.png) 2x);
+    background-image: -moz-image-set(url(../img/explorer-iOS.png) 1x,url(../img/explorer-iOS@2x.png) 2x);
+    background-image: -o-image-set(url(../img/explorer-iOS.png) 1x,url(../img/explorer-iOS@2x.png) 2x);
+    background-image: -ms-image-set(url(../img/explorer-iOS.png) 1x,url(../img/explorer-iOS@2x.png) 2x);
+}
+.explore {
+	margin: 0;
+    line-height: 57px;
+    background-position: 105px;
+	background-repeat: no-repeat;
+	background-image: url(../img/explorer-android.png); 
+    background-image: -webkit-image-set(url(../img/explorer-android.png) 1x,url(../img/explorer-android@2x.png) 2x);
+    background-image: -moz-image-set(url(../img/explorer-android.png) 1x,url(../img/explorer-android@2x.png) 2x);
+    background-image: -o-image-set(url(../img/explorer-android.png) 1x,url(../img/explorer-android@2x.png) 2x);
+    background-image: -ms-image-set(url(../img/explorer-android.png) 1x,url(../img/explorer-android@2x.png) 2x);
+}
+/*-----------footer*/
+.footer {
+	width: 100%;
+	background-color: #2C3E50;
+	overflow: hidden;
+	min-height: 77px;
+}
+.copyright {
+	font-size: 12px;
+	color: #fff;
+	width: 324px;
+}
+.footer-text {
+	margin: 0;
+	padding:0;
+}
+.footer-link ul {
+	margin:0;
+}
+.footer-link li {
+	float: left;
+	margin-right: 25px;
+	list-style: none;
+}
+.footer-link li a {
+	font-size: 12px;
+	color: #ECF0F1;
+}
+.footer-link li a:hover {
+	color: #fff;
+	font-weight: bold;
+}
+a {
+	text-decoration: none;
+}
+.record p{
+	font-size: 12px;
+	color: #95a5a6;
+}
+.footer .main-block {
+	position: relative;
+	top: 50%;
+	margin-top: -36px;
+}
+.footer {
+	height: 23%;
+	position: relative;
+}
+.footer-link {
+	overflow: hidden;
+	margin-top: 10px;
+}
+.footer-link ul {
+	padding:0;
+}
+.record {
+	margin-top: 12px;
+
+}

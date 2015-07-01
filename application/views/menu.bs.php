@@ -392,11 +392,13 @@ if($profile['admin'] == 1){
         <a href="<?php echo base_url('company/submit'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 通用规则 </a>
         <b class="arrow"></b>
         </li>
-<!--
+
         <li class="hsub" id="common">
         <a href="<?php echo base_url('company/common'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 通用规则 </a>
         <b class="arrow"></b>
         </li>
+
+<!--
 
          <li class="hsub" id="review">
         <a href="<?php echo base_url('company/review'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 审核规则 </a>
