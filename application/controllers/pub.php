@@ -135,7 +135,7 @@ class Pub extends REIM_Controller {
         $appid = $this->config->item('appid');
         $appsec = $this->config->item('appsec');
         $uri = sprintf("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code", $appid, $appsec, $code);
-        log_message("debug", "Oauth:" . $uri);
+        log_message("debug", "Oauth:" . $params);
         $buf = $this->do_Get($uri);
         log_message("debug", "Oauth:" . $buf);
         $obj = json_decode($buf, True);
@@ -158,10 +158,12 @@ class Pub extends REIM_Controller {
             log_message("debug", "REIM OAUTH:" . json_encode($user));
             if(!$user['status']) {
                 // TODO @abjkl, 看看出错了怎么搞
+                log_message("debug", "Redirect to Login without status");
                 $this->session->set_userdata('login_error', '用户名或者密码错误');
                 redirect(base_url('login'));
                 die();
             } else {
+                $params = urldecode($params);
                 // 展示页面
                 $s = json_decode(base64_decode($params), True);
                 log_message("debug", "GID: $params : " . json_encode($s));
@@ -169,10 +171,16 @@ class Pub extends REIM_Controller {
                 $gid = $s['gid'];
                 $user_nick = $user['data']['profile']['nickname'];
                 $user = $user['data']['profile'];
+                // * 新人，还没有组，
                 if(!$gid)  {
                     // TODO @abjkl, 看看出错了怎么搞
                     $this->session->set_userdata('login_error', '用户名或者密码错误');
-                    redirect(base_url('login'));
+                    log_message("debug", "Exists without GID ");
+                    //$this->load->view('wx/apply', array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
+                    //redirect(base_url('login'));
+                    $gname = '';
+                    $msg = '';
+                    $this->load->view('wx/success', array('msg' => $msg, 'gname' => $gname));
                     die();
                 }
                 log_message("debug", "GID:" . $gid);
@@ -182,7 +190,6 @@ class Pub extends REIM_Controller {
                     redirect(base_url('login'));
                     die();
                 }
-
                 $_group = $_group['data']['ginfo'];
 
                 log_message("debug", "$gid Group:" . json_encode($_group));
