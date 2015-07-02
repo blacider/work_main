@@ -173,8 +173,25 @@ class Members extends REIM_Controller {
             $data = $obj['data'];
         }
     }
+
+    public function show() {
+        $this->bsload('groups/show',
+            array(
+                'title' => '添加部门' 
+                    ,'breadcrumbs' => array(
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                        ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
+                        ,array('url'  => '', 'name' => '添加部门', 'class' => '')
+                    ),
+            )
+        );
+    }
     public function add() {
         $group = $this->groups->get_my_list();
+        $_gnames = $this->ug->get_my_list();
+	$single = $this->ug->get_single_group(18);
+        $gnames = $_gnames['data']['group'];
+
         $ginfo = array();
         $gmember = array();
         if($group) {
@@ -190,6 +207,9 @@ class Members extends REIM_Controller {
             array(
                 'title' => '添加部门',
                 'member' => $gmember
+                ,'group' => $gnames
+                ,'ginfo' => $_gnames
+                ,'info' => $single
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
@@ -198,6 +218,8 @@ class Members extends REIM_Controller {
             )
         );
     }
+    
+
 
     public function listtreegroup(){
         $group = $this->ug->get_my_list();
@@ -209,13 +231,28 @@ class Members extends REIM_Controller {
             foreach($group['data']['group'] as &$s){
                 $s['type'] = 'item';
             }
-            array_push($group['data']['group'], array('option' => '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="-1">' . '<span class="ui-icon ui-icon-pencil tedit" data-id="-1"></span>' . '<span class="ui-icon ui-icon-trash tdel" data-id="-1"></span></div>', 'name' => '已邀请', 'id' => "-1", 'type' => 'item'));
+           // array_push($group['data']['group'], array('option' => '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="-1">' . '<span class="ui-icon ui-icon-pencil tedit" data-id="-1"></span>' . '<span class="ui-icon ui-icon-trash tdel" data-id="-1"></span></div>', 'name' => '已邀请', 'id' => "-1", 'type' => 'item'));
             //$group['data']['group'] = array('name' => '全体员工', 'id' => "-2", "additionalParameters" => array('children' => $group['data']['group']), 'type' => 'folder');
-            array_unshift($group['data']['group'], array('name' => '全体员工', 'id' => "-2", "additionalParameters" => array('children' => $group['data']['group']), 'type' => 'folder'));
-            die(json_encode($group['data']['group']));
+           // array_unshift($group['data']['group'], array('name' => '全体员工', 'id' => "-2", "additionalParameters" => array('children' => $group['data']['group']), 'type' => 'folder'));
+            $groups = $group['data']['group'];
+            $re = array();
+            foreach($groups as &$g)
+            {
+                $temp = array();
+                $members = $this->ug->get_single_group($g['id']);
+                array_push($re, array('members'=>json_decode($members,true)['data']['member'],'id' => $g['id'],'pid' => $g['pid'],'name'=>$g['name']));
+
+            }
+            die(json_encode($re));
+            $re = $this->ug->get_single_group(6);
+
+           // die(json_encode($re));
         }
     }
 
+    public function getgroups()
+    {
+    }
     public function listgroup(){
         $page = $this->input->get('page');
         $rows = $this->input->get('rows');
