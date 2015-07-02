@@ -71,6 +71,7 @@
         </form>
     </div>
 </div>
+
 <script type="text/javascript">
 var __BASE = "<?php echo $base_url; ?>";
    $(document).ready(function(){
@@ -79,6 +80,27 @@ var __BASE = "<?php echo $base_url; ?>";
     console.log("checked" + _checked);
     $('#profile').submit();
 	});*/
+   $.ajax({
+    type:"get",
+    url:__BASE+"company/getsetting",
+    dataType:'json',
+    success:function(data){
+
+        if(data.same_category!=undefined)
+        {
+            $('#isadmin').attr('checked', data.same_category);
+        }
+        if(data.template != undefined) {
+            $("#temp").val( data.template ).attr('selected',true);
+            $(".chosen-select").trigger("chosen:updated");
+        }
+
+        if(data.user_confirm != undefined) {
+            $('#limit').val(data.user_confirm);
+        }
+    }
+   });
+
         $('.renew').click(function(){
 	   var lval = parseInt($('#limit').val());
 	   if(lval>0)

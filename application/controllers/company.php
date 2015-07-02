@@ -15,8 +15,9 @@ class Company extends REIM_Controller {
         $this->bsload('company/submit',
             array(
                 'title' => '公司设置'
-                ,'company' => $company
+                ,'company' => $company['data']['config']
                 ,'error' => $error
+
                 //,'company' => json_encode($_group)
                 ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -25,6 +26,12 @@ class Company extends REIM_Controller {
                     ),
             )
         );
+    }
+    public function getsetting()
+    {
+        $company = $this->company->get();
+        $config = $company['data']['config'];
+        die($config);
     }
 
 public function common(){
