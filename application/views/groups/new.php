@@ -44,6 +44,7 @@
                                 <label class="col-sm-1 control-label no-padding-right">上级部门</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" name= "pgroup"  data-placeholder="请选择部门">
+                                    <option value=0>顶级部门</option>
                                     <?php 
                                     foreach($group as $m){
                                     ?>
