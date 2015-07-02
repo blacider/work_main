@@ -163,7 +163,6 @@ class Pub extends REIM_Controller {
                 redirect(base_url('login'));
                 die();
             } else {
-                $params = urldecode($params);
                 // 展示页面
                 $s = json_decode(base64_decode($params), True);
                 log_message("debug", "GID: $params : " . json_encode($s));
@@ -173,15 +172,24 @@ class Pub extends REIM_Controller {
                 $user = $user['data']['profile'];
                 // * 新人，还没有组，
                 if(!$gid)  {
-                    // TODO @abjkl, 看看出错了怎么搞
-                    $this->session->set_userdata('login_error', '用户名或者密码错误');
-                    log_message("debug", "Exists without GID ");
-                    //$this->load->view('wx/apply', array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
-                    //redirect(base_url('login'));
-                    $gname = '';
-                    $msg = '';
-                    $this->load->view('wx/success', array('msg' => $msg, 'gname' => $gname));
-                    die();
+                    $params = urldecode($params);
+                    $s = json_decode(base64_decode($params), True);
+                    log_message("debug", "GID: $params : " . json_encode($s));
+                    $nickname = $s['nickname'];
+                    $gid = $s['gid'];
+                    $user_nick = $user['data']['profile']['nickname'];
+                    $user = $user['data']['profile'];
+                    if(!$gid) {
+                        // TODO @abjkl, 看看出错了怎么搞
+                        $this->session->set_userdata('login_error', '用户名或者密码错误');
+                        log_message("debug", "Exists without GID ");
+                        //$this->load->view('wx/apply', array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
+                        //redirect(base_url('login'));
+                        $gname = '';
+                        $msg = '';
+                        $this->load->view('wx/success', array('msg' => $msg, 'gname' => $gname));
+                        die();
+                    }
                 }
                 log_message("debug", "GID:" . $gid);
                 $_group = $this->groups->get_by_id($gid);

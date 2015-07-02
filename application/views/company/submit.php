@@ -40,11 +40,18 @@
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-rigtht">报销单模板选择</label>
-                                <div class="col-xs-2 col-sm-2">
-                                    <select id="temp" class="chosen-select tag-input-style" name="uids[]"  data-placeholder="请选择标签">
+                                <div class="col-xs-4 col-sm-4">
+                                    <select id="temp" class="chosen-select tag-input-style" name="temp"  data-placeholder="请选择标签">
                                     <option value="a4.yaml">A4模板</option>
                                     <option value="b5.yaml">B5模板</option>
                                 </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-rigtht">需要用户确认额度</label>
+                                <div class="col-xs-4 col-sm-4">
+					<input id="limit" type="text" class="form-controller col-xs-12" name="limit" placeholder="输入额度">
                                 </div>
                             </div>
 
@@ -73,14 +80,16 @@ var __BASE = "<?php echo $base_url; ?>";
     $('#profile').submit();
 	});*/
         $('.renew').click(function(){
+	   var lval = parseInt($('#limit').val());
+	   if(lval>0)
+	   {
            $.ajax({
                 type:"post",
                 url:__BASE+"company/profile",
-                data:{ischecked:$('#isadmin').is(':checked'),template:$('#temp option:selected').val()},
+                data:{ischecked:$('#isadmin').is(':checked'),template:$('#temp option:selected').val(),limit:lval},
                 dataType:'json',
                 success:function(data){
                         console.log(data);
-                        console.log(data['hello'])
                        show_notify('保存成功');
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -88,6 +97,14 @@ var __BASE = "<?php echo $base_url; ?>";
                         console.log(XMLHttpRequest.readyState);
                         console.log(textStatus);
                     },            });
+	 }
+	 else
+	 {
+	 	show_notify('请输入有效额度');
+	 	$('#limit').val('');
+		$('#limit').focus();
+		return false;
+	 }
        }); 
 
         $('.chosen-select').chosen({allow_single_deselect:true}); 

@@ -9,6 +9,8 @@ class Groups extends REIM_Controller {
     }
 
     public function update(){
+        $pid = $this->input->post('pgroup');
+        $manager = $this->input->post('manager');
         $name = $this->input->post('gname');
         $uids = $this->input->post('uids');
         if($uids) {
