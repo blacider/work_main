@@ -10,19 +10,34 @@ class UserGroup_Model extends Reim_Model {
         return $obj;
     }
 
+    public function create_group($uids,$name,$pid)
+    {
+           $jwt = $this->session->userdata('jwt');
+           if(!$jwt) return false;
+                $data = array(
+                    'name' => $name
+                    ,'uids' => $uids
+                    ,'pid' => $pid
+            );
+            $url = $this->get_url('user_group');
+            $buf = $this->do_Post($url,$data,$jwt);
+            $obj = json_decode($buf,true);
+            return $obj;
+    }
 
-    public function update_data($uids, $name, $gid = 0){
+    public function update_data($uids, $name,$pid,$gid = 0){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(
             'name' => $name
             ,'uids' => $uids
+	    ,'pid' => $pid
             ,'id' => $gid
         );
         log_message("debug", json_encode($data));
 		$url = $this->get_url('user_group');
 		$buf = $this->do_Post($url, $data, $jwt);
-        log_message("debug", $buf);
+        log_message("debug", "#####".$buf."####");
 		$obj = json_decode($buf, true);
         return $obj;
     }
