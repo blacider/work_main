@@ -65,8 +65,8 @@ $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
 $db['data']['hostname'] = 'localhost';
-$db['data']['username'] = 'reim';
-$db['data']['password'] = 'zZDVjMDkwNmU5MTA4OTJlO';
+$db['default']['username'] = 'admin';
+$db['default']['password'] = 'xODJhZjY2MzQ4ZfdsaTBjMjMzMjZlZWM2OTFmN';
 $db['data']['database'] = 'reim';
 $db['data']['dbdriver'] = 'mysql';
 $db['data']['dbprefix'] = '';

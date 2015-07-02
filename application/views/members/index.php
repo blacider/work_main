@@ -222,11 +222,11 @@ function load_group(gid){
                         var _p = '员工';
                         var _color = '<span class="label label-success arrowed">管理员</span>';
                     switch(item.admin) {
-                    case '0' : {
+                    case '1' : {
                         _p = '点击设置为管理员'; 
                             var _color = '<span class="label label-success arrowed">管理员</span>';
                     }; break;
-                    case '1' : {
+                    case '0' : {
                         var _color = '<span class="label label-info arrowed">员工</span>';
                         _c = 'green';
                         _p = '点击设置为员工'; 
