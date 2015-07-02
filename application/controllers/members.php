@@ -231,7 +231,29 @@ class Members extends REIM_Controller {
             foreach($group['data']['group'] as &$s){
                 $s['type'] = 'item';
             }
-           // array_push($group['data']['group'], array('option' => '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="-1">' . '<span class="ui-icon ui-icon-pencil tedit" data-id="-1"></span>' . '<span class="ui-icon ui-icon-trash tdel" data-id="-1"></span></div>', 'name' => '已邀请', 'id' => "-1", 'type' => 'item'));
+            array_push($group['data']['group'], array('option' => '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="-1">' . '<span class="ui-icon ui-icon-pencil tedit" data-id="-1"></span>' . '<span class="ui-icon ui-icon-trash tdel" data-id="-1"></span></div>', 'name' => '已邀请', 'id' => "-1", 'type' => 'item'));
+            //$group['data']['group'] = array('name' => '全体员工', 'id' => "-2", "additionalParameters" => array('children' => $group['data']['group']), 'type' => 'folder');
+            array_unshift($group['data']['group'], array('name' => '全体员工', 'id' => "-2", "additionalParameters" => array('children' => $group['data']['group']), 'type' => 'folder'));
+            $groups = $group['data']['group'];
+           
+            die(json_encode($groups));
+          
+           // die(json_encode($re));
+        }
+    }
+
+    public function getgroups()
+    {
+            $group = $this->ug->get_my_list();
+        /// 结构好奇怪啊
+        //
+        if($group['status']){
+            $_data = array();
+            //die(json_encode(array('data' => $group['data'])));
+            foreach($group['data']['group'] as &$s){
+                $s['type'] = 'item';
+            }
+            //array_push($group['data']['group'], array('option' => '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="-1">' . '<span class="ui-icon ui-icon-pencil tedit" data-id="-1"></span>' . '<span class="ui-icon ui-icon-trash tdel" data-id="-1"></span></div>', 'name' => '已邀请', 'id' => "-1", 'type' => 'item'));
             //$group['data']['group'] = array('name' => '全体员工', 'id' => "-2", "additionalParameters" => array('children' => $group['data']['group']), 'type' => 'folder');
            // array_unshift($group['data']['group'], array('name' => '全体员工', 'id' => "-2", "additionalParameters" => array('children' => $group['data']['group']), 'type' => 'folder'));
             $groups = $group['data']['group'];
@@ -248,10 +270,6 @@ class Members extends REIM_Controller {
 
            // die(json_encode($re));
         }
-    }
-
-    public function getgroups()
-    {
     }
     public function listgroup(){
         $page = $this->input->get('page');
