@@ -1,18 +1,8 @@
 <link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
-
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 <!-- <link rel="stylesheet" href="/static/third-party/jqui/jquery-ui.min.css" id="main-ace-style" /> -->
-<script src="/static/ace/js/chosen.jquery.min.js"></script>
-<script src="/static/ace/js/dropzone.min.js"></script>
-
-
-<script src="/static/ace/js/date-time/moment.js"></script>
-<script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
-<script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script>
-
-<script src="/static/ace/js/jquery.colorbox-min.js"></script>
 
 <!-- page specific plugin styles -->
 <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
@@ -154,10 +144,36 @@
 <script src="/static/third-party/jquery.ajaxfileupload.js"></script>
 <script src="/static/third-party/jquery-image-upload.min.js"></script>
 -->
+<!--
+<script src="/static/ace/js/chosen.jquery.min.js"></script>
+<script src="/static/ace/js/dropzone.min.js"></script>
 
+
+<script src="/static/ace/js/date-time/moment.js"></script>
+<script src="/static/ace/js/date-time/locale/zh-cn.js"></script>
+
+<script src="/static/ace/js/jquery.colorbox-min.js"></script>
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script>
-<script src="/static/third-party/jfu/js/jquery.fileupload.js"></script>
+-->
+
+<script src="/static/ace/js/jquery1x.min.js"></script>
+<script src="/static/ace/js/chosen.jquery.min.js"></script>
+<script src="/static/ace/js/dropzone.min.js"></script>
+
+
+<script src="/static/ace/js/date-time/moment.js"></script>
+<!--
+<script src="/static/ace/js/date-time/locale/zh-cn.js"></script>
+-->
+
+<script src="/static/ace/js/jquery.colorbox-min.js"></script>
+<!--
+<script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
+<script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script>
+-->
+<script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
+<script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script>
 
 
 <script language="javascript">
@@ -206,8 +222,7 @@ function bind_event(){
 }
 
 $(document).ready(function(){
-
-    $('#fileupload').fileupload();
+    $('#fileupload').uploadFile();
     //var now = moment();
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
@@ -229,7 +244,7 @@ $(document).ready(function(){
                 $this.next().css({'width': $this.parent().width()});
             })
         }).trigger('resize.chosen');
-    $('#src').fileupload(
+    $('#src').uploadFile(
                     {
                         dataType: 'json',
                         progressall: function (e, data) {
@@ -270,8 +285,9 @@ $(document).ready(function(){
     );
 
     $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange'></i>");//let's add a custom loading icon
-
+ 
     $('.renew').click(function(){
+        console.log("hello");
         if($('#amount').val() == 0) {
             show_notify('请输入金额');
             $('#amount').focus();
