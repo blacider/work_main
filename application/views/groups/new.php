@@ -57,9 +57,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">部门名称</label>
+                                <label class="col-sm-1 control-label no-padding-right" >部门名称</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input type="text" placeholder="部门名称" class="col-xs-12" required="required" name="gname">
+                                    <input type="text" placeholder="部门名称" id="gname" class="col-xs-12" required="required" name="gname" >
                                 </div>
                             </div>
 
@@ -122,6 +122,14 @@ $(document).ready(function(){
         }).trigger('resize.chosen');
     $('.renew').click(function(){
         $('#renew').val($(this).data('renew'));
+
+        var gname = $('#gname').val();
+       
+        if(gname == ""){
+         show_notify('请输入部门名称');
+         $('#receiver').focus();
+         return false;
+    }
         $('#mainform').submit();
     });
     $('.cancel').click(function(){
