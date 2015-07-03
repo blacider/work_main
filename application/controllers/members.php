@@ -539,6 +539,8 @@ class Members extends REIM_Controller {
                     ,'smember' => $mid
                     ,'group' => $group
                     ,'member' => $gmember
+		    ,'pid' => $group['pid']
+		    ,'manager' => $group['manager']
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
