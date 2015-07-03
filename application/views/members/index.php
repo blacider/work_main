@@ -459,7 +459,10 @@ var __BASE = "<?php echo $base_url; ?>";
                             load_group(_gid);
                         }
                     })
-                    .on('closed', function(e) {
+                    .on('closed', function(e,result) {
+                          var _gid = result.id;
+                            console.log(_gid);
+                            load_group(_gid);
                     });
 
             },
