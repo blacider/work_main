@@ -378,32 +378,19 @@ $(document).ready(function(){
 	if(name=='')
 	{	
 		show_notify('请输入用户名');
+        $('#name').focus();
 		return false;
 	}
 
-	if(phone=='')
+	if(phone==''&& email=='')
 	{	
-		show_notify('请输入手机号码');
+		show_notify('请输入手机号码或email');
+        $('#phone').focus();
+        $('#email').focus();
 		return false;
 	}
-	if(email=='')
-	{	
-		show_notify('请输入email');
-		return false;
-	}
-	if(groups==null)
-	{	
-		show_notify('请选择部门');
-		return false;
-	}
-	if(account=='')
-	{
-		show_notify('请输入银行名');
-	}
-	if(credit_card=='')
-	{
-		show_notify('请输入卡号');
-	}
+	
+
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
     });

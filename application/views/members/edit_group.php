@@ -1,4 +1,6 @@
 
+
+
 <link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
@@ -23,6 +25,38 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
+
+                         <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">部门管理员</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select class="chosen-select tag-input-style" name="manager" data-placeholder="请选择标签">
+                                    <?php 
+                                    foreach($member as $m){
+                                    ?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">上级部门</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select class="chosen-select tag-input-style" name= "pgroup"  data-placeholder="请选择部门">
+                                    <option value=0>顶级部门</option>
+                                    <?php 
+                                    foreach($gnames as $m){
+                                    ?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">部门名称</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -91,6 +125,7 @@ $(document).ready(function(){
             })
         }).trigger('resize.chosen');
     $('.renew').click(function(){
+
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
     });
