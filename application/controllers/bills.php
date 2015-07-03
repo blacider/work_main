@@ -29,12 +29,14 @@ class Bills extends REIM_Controller {
                 }
             }
         }
+	if($status == 2){
         $this->bsload('bills/index',
             array(
-                'title' => '账单管理'
+                'title' => '待结算'
                 , 'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => '', 'name' => '账单管理', 'class' => '')
+                    ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
+		    ,array('url' => '','name' => '待结算','class' => '')
                 )
                 ,'reports' => $data
                 ,'status' => $status
@@ -42,6 +44,24 @@ class Bills extends REIM_Controller {
                 ,'error' => $error
             )
         );
+	}
+	else
+	{
+	$this->bsload('bills/index',
+            array(
+                'title' => '已结束'
+                , 'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
+		    ,array('url' => '','name' => '已结束','class' => '')
+                )
+                ,'reports' => $data
+                ,'status' => $status
+                ,'category' => $_tags
+                ,'error' => $error
+            )
+	);
+	}
     }
 
     public function index(){

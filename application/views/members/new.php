@@ -23,28 +23,28 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">姓名</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input type="text" class="form-controller col-xs-12" name="nickname" placeholder="姓名">
+                                    <input type="text" class="form-controller col-xs-12" id="name" name="nickname" placeholder="姓名">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">手机</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input type="text" class="form-controller col-xs-12" name="mobile" placeholder="手机">
+                                    <input type="text" class="form-controller col-xs-12" id="phone" name="mobile" placeholder="手机">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">邮箱</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input type="text" class="form-controller col-xs-12" name="email" placeholder="邮箱">
+                                    <input type="text" class="form-controller col-xs-12" name="email" id="email"  placeholder="邮箱">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">部门</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <select class="chosen-select tag-input-style" name="groups" multiple="multiple" data-placeholder="请选择部门">
+                                    <select class="chosen-select tag-input-style" name="groups" id="ugroups" multiple="multiple" data-placeholder="请选择部门">
                                         <!-- <option value="0">请选择部门</option> -->
                                         <?php foreach($groups['group'] as $g) { ?>
                                         
@@ -64,7 +64,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">银行卡号</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input type="text" class="form-controller col-xs-12" name="cardno" placeholder="银行卡号">
+                                    <input type="text" class="form-controller col-xs-12" name="cardno" id="credit_card" placeholder="银行卡号">
                                 </div>
                             </div>
 
@@ -369,6 +369,41 @@ $(document).ready(function(){
         var _c = $('#city').val();
         var _loc = _p + _c;//$('#cardloc').val();
         $('#cardloc').val(_loc);
+	var name = $('#name').val();
+	var phone = $('#phone').val();
+	var email = $('#email').val();
+	var groups = $('#ugroups').val();
+	var account = $('#account').val();
+	var credit_card = $('#credit_card').val();
+	if(name=='')
+	{	
+		show_notify('请输入用户名');
+		return false;
+	}
+
+	if(phone=='')
+	{	
+		show_notify('请输入手机号码');
+		return false;
+	}
+	if(email=='')
+	{	
+		show_notify('请输入email');
+		return false;
+	}
+	if(groups==null)
+	{	
+		show_notify('请选择部门');
+		return false;
+	}
+	if(account=='')
+	{
+		show_notify('请输入银行名');
+	}
+	if(credit_card=='')
+	{
+		show_notify('请输入卡号');
+	}
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
     });
