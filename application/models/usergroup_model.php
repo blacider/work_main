@@ -10,7 +10,7 @@ class UserGroup_Model extends Reim_Model {
         return $obj;
     }
 
-    public function create_group($uids,$name,$pid)
+    public function create_group($uids,$name,$pid,$manager)
     {
            $jwt = $this->session->userdata('jwt');
            if(!$jwt) return false;
@@ -18,6 +18,7 @@ class UserGroup_Model extends Reim_Model {
                     'name' => $name
                     ,'uids' => $uids
                     ,'pid' => $pid
+		    ,'manager' => $manager
             );
             $url = $this->get_url('user_group');
             $buf = $this->do_Post($url,$data,$jwt);
