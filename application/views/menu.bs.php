@@ -332,15 +332,7 @@ if($profile['admin'] == 1){
         </li>
 
 
-         <li class="hsub" id="add">
-        <a href="<?php echo base_url('members/show'); ?>" >
-            <i class="menu-icon fa fa-caret-right"></i>
-            部门展示
-        </a>
-
-        <b class="arrow"></b>
-
-        </li>
+    
 
         <li class="hsub" id="export">
         <a href="<?php echo base_url('members/export'); ?>" >
