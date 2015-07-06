@@ -557,12 +557,13 @@ class Members extends REIM_Controller {
 
 
     public function updategroup(){
+    	$manager = $this->input->post('manager');
         $name = $this->input->post('gname');
         $uids = $this->input->post('uids');
         $pid = $this->input->post('pgroup');
         $gid = $this->input->post('gid');
         $uids = implode(",", $uids);
-        $info = $this->ug->update_data($uids, $name,$pid,$gid);
+        $info = $this->ug->update_data($manager,$uids, $name,$pid,$gid);
         if($info['status'] > 0){
             redirect(base_url('members/groups'));
         }
