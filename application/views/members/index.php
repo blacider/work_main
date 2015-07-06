@@ -364,8 +364,8 @@ var __BASE = "<?php echo $base_url; ?>";
 
                         if(data[i]['pid'] == "0")
                         {
-                            js_data[data[i]['name']] = {name: data[i]['name'], id:data[i]['id'] ,type: 'folder', 'icon-class':'red'};   
-                            var item = js_data[data[i]['name']];
+                            js_data[data[i]['id']] = {name: data[i]['name'], id:data[i]['id'] ,type: 'folder', 'icon-class':'red'};   
+                            var item = js_data[data[i]['id']];
                             item['additionalParameters']={'children':{}};
                            /* item['additionalParameters']['children']['members']['additionalParameters']={};
                             var param = item['additionalParameters']['children']['members']['additionalParameters'];
@@ -377,7 +377,7 @@ var __BASE = "<?php echo $base_url; ?>";
                                 mem.push(temp);
                             }*/
 
-                            obj.push({id:data[i]['id'],'item':js_data[data[i]['name']]});
+                            obj.push({id:data[i]['id'],'item':js_data[data[i]['id']]});
 
                         }
                         else if(data[i]['pid'] > 0)
@@ -396,8 +396,8 @@ var __BASE = "<?php echo $base_url; ?>";
                                 if(unroot[unum]['pid'] == obj[num]['id'])
                                 {
 
-                                      obj[num]['item']['additionalParameters']['children'][unroot[unum]['name']]={name:unroot[unum]['name'],id:unroot[unum]['id'], type: 'folder', 'icon-class':'pink'};
-                                      var tempitem = obj[num]['item']['additionalParameters']['children'][unroot[unum]['name']];
+                                      obj[num]['item']['additionalParameters']['children'][unroot[unum]['id']]={name:unroot[unum]['name'],id:unroot[unum]['id'], type: 'folder', 'icon-class':'pink'};
+                                      var tempitem = obj[num]['item']['additionalParameters']['children'][unroot[unum]['id']];
                                       tempitem['additionalParameters'] = {'children':{}};
                                    //   tempitem['additionalParameters']['children']['members']['additionalParameters']={};
                                    //   var param = tempitem['additionalParameters']['children']['members']['additionalParameters'];

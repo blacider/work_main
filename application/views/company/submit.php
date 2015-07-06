@@ -103,7 +103,12 @@ var __BASE = "<?php echo $base_url; ?>";
 
         $('.renew').click(function(){
 	   var lval = parseInt($('#limit').val());
-	   if(lval>0)
+       console.log(lval);
+       if(isNaN(lval))
+       {
+            lval = 0;
+       }
+	   if(lval>=0)
 	   {
            $.ajax({
                 type:"post",

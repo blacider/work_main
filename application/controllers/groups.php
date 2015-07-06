@@ -13,10 +13,10 @@ class Groups extends REIM_Controller {
         $manager = $this->input->post('manager');
         $name = $this->input->post('gname');
         $uids = $this->input->post('uids');
-        if($uids) {
-            $uids = implode(",", $uids);
-        }
-        $info = $this->ug->update_data($uids, $name);
+        $pid = $this->input->post('pgroup');
+        $manager = $this->input->post('manager');
+        $uids = implode(",", $uids);
+        $info = $this->ug->create_group($uids, $name,$pid,$manager);
         if($info['status'] > 0){
             redirect(base_url('members/groups'));
         }
