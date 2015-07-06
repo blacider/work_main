@@ -354,11 +354,11 @@ var __BASE = "<?php echo $base_url; ?>";
                     //class="'+ace_icon+' fa fa-file-text grey"
                     //becomes
                     //class="ace-icon fa fa-file-text grey"
-                    console.log(data);
                     var js_data = {};
                     var obj = new Array();
                     var unroot = new Array();
-                   // js_data['全体员工'] = {name:'全体员工'，id:'-2'，type:'folder','icon-class':'red'};
+                   // js_data[-2] = {name:'全体员工'，id:'-2'，type:'folder','icon-class':'red'};
+                    js_data['0'] = {name: '全体员工', id:'-2' ,type: 'folder', 'icon-class':'red'}; 
                     for(var i = 0 ; i < data.length ; i++)
                     {
 
@@ -413,19 +413,16 @@ var __BASE = "<?php echo $base_url; ?>";
                                       unroot.remove(unum);
                                 }
                             }
-                            console.log("#tempobj:");
-                            console.log(tempobj);
-                            console.log("#obj");
-                            console.log(obj);
                         }
 
                         obj = tempobj;
                     } 
 
-                    js_data['全体员工'] = {name: '全体员工', id:'-2' ,type: 'folder', 'icon-class':'red'}; 
+                   // js_data['全体员工'] = {name: '全体员工', id:'-2' ,type: 'folder', 'icon-class':'red'}; 
                     
                     js_data['已邀请'] = {name: '已邀请', id:'-1' ,type: 'folder', 'icon-class':'red'}; 
 
+		    console.log(js_data);
                     var treeDataSource = new DataSourceTree({data: js_data});
 
                     $('#tree2').ace_tree({
