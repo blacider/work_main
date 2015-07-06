@@ -1,4 +1,6 @@
 
+
+
 <link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
@@ -23,6 +25,40 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
+
+                         <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">部门管理员</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select class="chosen-select tag-input-style" id="manager" name="manager" data-placeholder="请选择标签">
+                                    <?php 
+                                    foreach($member as $m){
+                                    ?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">上级部门</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select class="chosen-select tag-input-style" id="pgroups" name= "pgroup"  data-placeholder="请选择部门">
+                                    <option value=0>顶级部门</option>
+                                    <?php 
+                                    foreach($gnames as $m){
+                                        if($m['id'] != $group['id']){
+                                    ?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                    <?php
+                                        }
+                                    }
+                                    ?>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">部门名称</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -67,7 +103,8 @@
         </form>
     </div>
 </div>
-
+<script type="text/javascript">var _pid="<?php echo $pid ?>" ;</script>
+<script type="text/javascript">var _manager="<?php echo $manager ?>" ;</script>
 <script language="javascript">
 function move_list_items(sourceid, destinationid) {
     $("#"+sourceid+"  option:selected").appendTo("#"+destinationid);
@@ -75,6 +112,14 @@ function move_list_items(sourceid, destinationid) {
 
 var __BASE = "<?php echo $base_url; ?>";
 $(document).ready(function(){
+    $("#manager").val( _manager ).attr('selected',true);
+    $("#manager").trigger("chosen:updated");
+
+    $("#pgroups").val(_pid).attr('selected',true);
+    $("#pgroups").trigger("chosen:updated");
+    //$("#year option[text="+_pid+"]").attr("selected",true);
+
+
     $('#moveleft').click(function(){
         move_list_items('uids', 'srcs');
     });
@@ -91,6 +136,7 @@ $(document).ready(function(){
             })
         }).trigger('resize.chosen');
     $('.renew').click(function(){
+
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
     });

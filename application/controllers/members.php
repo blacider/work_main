@@ -510,6 +510,8 @@ class Members extends REIM_Controller {
     public function editgroup($id = 0){
         if($id == 0) redirect(base_url('members/groups'));
         $group = $this->groups->get_my_list();
+        $_gnames = $this->ug->get_my_list();
+        $gnames = $_gnames['data']['group'];
         $ginfo = array();
         $gmember = array();
         if($group) {
@@ -532,10 +534,13 @@ class Members extends REIM_Controller {
             }
             $this->bsload('members/edit_group',
                 array(
-                    'title' => '修改部门',
-                    'smember' => $mid
+                    'title' => '修改部门'
+	            ,'gnames' => $gnames
+                    ,'smember' => $mid
                     ,'group' => $group
                     ,'member' => $gmember
+		    ,'pid' => $group['pid']
+		    ,'manager' => $group['manager']
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
@@ -552,11 +557,13 @@ class Members extends REIM_Controller {
 
 
     public function updategroup(){
+    	$manager = $this->input->post('manager');
         $name = $this->input->post('gname');
         $uids = $this->input->post('uids');
+        $pid = $this->input->post('pgroup');
         $gid = $this->input->post('gid');
         $uids = implode(",", $uids);
-        $info = $this->ug->update_data($uids, $name, $gid);
+        $info = $this->ug->update_data($manager,$uids, $name,$pid,$gid);
         if($info['status'] > 0){
             redirect(base_url('members/groups'));
         }
