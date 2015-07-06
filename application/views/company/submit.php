@@ -43,7 +43,9 @@
                                 <div class="col-xs-4 col-sm-4">
                                     <select id="temp" class="chosen-select tag-input-style" name="temp"  data-placeholder="请选择标签">
                                     <option value="a4.yaml">A4模板</option>
+                                    <option value="a5.yaml">A5模板</option>
                                     <option value="b5.yaml">B5模板</option>
+                                
                                 </select>
                                 </div>
                             </div>
