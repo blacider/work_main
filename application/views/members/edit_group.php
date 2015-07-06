@@ -49,9 +49,11 @@
                                     <option value=0>顶级部门</option>
                                     <?php 
                                     foreach($gnames as $m){
+                                        if($m['id'] != $group['id']){
                                     ?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
                                     <?php
+                                        }
                                     }
                                     ?>
                                     </select>
