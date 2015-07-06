@@ -110,8 +110,8 @@ function move_list_items(sourceid, destinationid) {
 
 var __BASE = "<?php echo $base_url; ?>";
 $(document).ready(function(){
-      //$("#manager").val( _manager ).attr('selected',true);
-    //$("#manager").trigger("chosen:updated");
+    $("#manager").val( _manager ).attr('selected',true);
+    $("#manager").trigger("chosen:updated");
 
     $("#pgroups").val(_pid).attr('selected',true);
     $("#pgroups").trigger("chosen:updated");

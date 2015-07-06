@@ -567,6 +567,12 @@ $(document).ready(function(){
     if(_controller == "members" && _method == "imports"){
         _method = "export";
     }
+    if(_controller == "members" && _method == "editmember"){
+    	_method = "newmember";
+	}
+    if(_controller == "members" && _method == "editgroup"){
+    	_method = "groups";
+	}
     $('.hsub').each(function(){
         $(this).removeClass('active open');
     });

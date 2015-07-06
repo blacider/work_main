@@ -26,13 +26,14 @@ class UserGroup_Model extends Reim_Model {
             return $obj;
     }
 
-    public function update_data($uids, $name,$pid,$gid = 0){
+    public function update_data($manager,$uids, $name,$pid,$gid = 0){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(
-            'name' => $name
+            'manager' => $manager
+            ,'name' => $name
             ,'uids' => $uids
-	    ,'pid' => $pid
+	       ,'pid' => $pid
             ,'id' => $gid
         );
         log_message("debug", json_encode($data));
