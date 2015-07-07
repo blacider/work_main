@@ -1,169 +1,276 @@
-<p><?php echo $groups ?></p>
-				<li class="">
-						<a href="#" class="dropdown-toggle">
-							<i class="menu-icon fa fa-desktop"></i>
-							<span class="menu-text"> UI &amp; Elements </span>
 
-							<b class="arrow fa fa-angle-down"></b>
-						</a>
 
-						<b class="arrow"></b>
 
-						<ul class="submenu">
-							<li class="">
-								<a href="#" class="dropdown-toggle">
-									<i class="menu-icon fa fa-caret-right"></i>
+	<div class="col-xs-12">
+		<!-- PAGE CONTENT BEGINS -->
 
-									Layouts
-									<b class="arrow fa fa-angle-down"></b>
-								</a>
+		<!-- #section:plugins/fuelux.treeview -->
+		
 
-								<b class="arrow"></b>
+			<div class="col-sm-6">
+				<div class="widget-box widget-color-green2">
+					<div class="widget-header">
+						<h4 class="widget-title lighter smaller">Browse Files</h4>
+					</div>
 
-								<ul class="submenu">
-									<li class="">
-										<a href="top-menu.html">
-											<i class="menu-icon fa fa-caret-right"></i>
-											Top Menu
-										</a>
+					<div class="widget-body">
+						<div class="widget-main padding-8">
+							<div id="tree2" class="tree"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		
 
-										<b class="arrow"></b>
-									</li>
+		<!-- /section:plugins/fuelux.treeview -->
+		<script type="text/javascript">
+			var $assets = "../../assets";//this will be used in fuelux.tree-sampledata.js
+		</script>
 
-									<li class="">
-										<a href="mobile-menu-1.html">
-											<i class="menu-icon fa fa-caret-right"></i>
-											Default Mobile Menu
-										</a>
+		<!-- PAGE CONTENT ENDS -->
+	</div><!-- /.col -->
 
-										<b class="arrow"></b>
-									</li>
+<!-- page specific plugin scripts -->
+<script type="text/javascript">
+	var scripts = [null,"/static/ace/js/fuelux/fuelux.tree.min.js", null]
+	ace.load_ajax_scripts(scripts, function() {
+	  //inline scripts related to this page
+		 jQuery(function($){
 
-									<li class="">
-										<a href="mobile-menu-2.html">
-											<i class="menu-icon fa fa-caret-right"></i>
-											Mobile Menu 2
-										</a>
+		/*$('#tree1').ace_tree({
+			dataSource: treeDataSource ,
+			multiSelect:true,
+			loadingHTML:'<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+			'open-icon' : 'ace-icon tree-minus',
+			'close-icon' : 'ace-icon tree-plus',
+			'selectable' : true,
+			'selected-icon' : 'ace-icon fa fa-check',
+			'unselected-icon' : 'ace-icon fa fa-times'
+		});*/
 
-										<b class="arrow"></b>
-									</li>
+		$('#tree2').ace_tree({
+			dataSource: treeDataSource2 ,
+			loadingHTML:'<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+			'open-icon' : 'ace-icon fa fa-folder-open',
+			'close-icon' : 'ace-icon fa fa-folder',
+			'selectable' : false,
+			'selected-icon' : null,
+			'unselected-icon' : null
+		});
+		
+		
+		$('#tree1')
+		.on('updated', function(e, result) {
+			//result.info  >> an array containing selected items
+			//result.item
+			//result.eventType >> (selected or unselected)
+		})
+		.on('selected', function(e) {
+		})
+		.on('unselected', function(e) {
+		})
+		.on('opened', function(e) {
+		})
+		.on('closed', function(e) {
+		});
 
-									<li class="">
-										<a href="mobile-menu-3.html">
-											<i class="menu-icon fa fa-caret-right"></i>
-											Mobile Menu 3
-										</a>
 
-										<b class="arrow"></b>
-									</li>
-								</ul>
-							</li>
 
-							<li class="">
-								<a href="typography.html">
-									<i class="menu-icon fa fa-caret-right"></i>
-									Typography
-								</a>
+		/**
+		$('#tree1').on('loaded', function (evt, data) {
+		});
 
-								<b class="arrow"></b>
-							</li>
+		$('#tree1').on('opened', function (evt, data) {
+		});
 
-							<li class="">
-								<a href="elements.html">
-									<i class="menu-icon fa fa-caret-right"></i>
-									Elements
-								</a>
+		$('#tree1').on('closed', function (evt, data) {
+		});
 
-								<b class="arrow"></b>
-							</li>
+		$('#tree1').on('selected', function (evt, data) {
+		});
+		*/
+});
+	});
+</script>
+<script type="text/javascript">
+	
+	var DataSourceTree = function(options) {
+	this._data 	= options.data;
+	this._delay = options.delay;
+}
 
-							<li class="">
-								<a href="buttons.html">
-									<i class="menu-icon fa fa-caret-right"></i>
-									Buttons &amp; Icons
-								</a>
+DataSourceTree.prototype.data = function(options, callback) {
+	var self = this;
+	var $data = null;
 
-								<b class="arrow"></b>
-							</li>
+	if(!("name" in options) && !("type" in options)){
+		$data = this._data;//the root tree
+		callback({ data: $data });
+		return;
+	}
+	else if("type" in options && options.type == "folder") {
+		if("additionalParameters" in options && "children" in options.additionalParameters)
+			$data = options.additionalParameters.children;
+		else $data = {}//no data
+	}
+	
+	if($data != null)//this setTimeout is only for mimicking some random delay
+		setTimeout(function(){callback({ data: $data });} , parseInt(Math.random() * 500) + 200);
 
-							<li class="">
-								<a href="treeview.html">
-									<i class="menu-icon fa fa-caret-right"></i>
-									Treeview
-								</a>
+	//we have used static data here
+	//but you can retrieve your data dynamically from a server using ajax call
+	//checkout examples/treeview.html and examples/treeview.js for more info
+};
 
-								<b class="arrow"></b>
-							</li>
+/*var tree_data = {
+	'for-sale' : {name: 'For Sale', type: 'folder'}	,
+	'vehicles' : {name: 'Vehicles', type: 'folder'}	,
+	'rentals' : {name: 'Rentals', type: 'folder'}	,
+	'real-estate' : {name: 'Real Estate', type: 'folder'}	,
+	'pets' : {name: 'Pets', type: 'folder'}	,
+	'tickets' : {name: 'Tickets', type: 'item'}	,
+	'services' : {name: 'Services', type: 'item'}	,
+	'personals' : {name: 'Personals', type: 'item'}
+}
+tree_data['for-sale']['additionalParameters'] = {
+	'children' : {
+		'appliances' : {name: 'Appliances', type: 'item'},
+		'arts-crafts' : {name: 'Arts & Crafts', type: 'item'},
+		'clothing' : {name: 'Clothing', type: 'item'},
+		'computers' : {name: 'Computers', type: 'item'},
+		'jewelry' : {name: 'Jewelry', type: 'item'},
+		'office-business' : {name: 'Office & Business', type: 'item'},
+		'sports-fitness' : {name: 'Sports & Fitness', type: 'item'}
+	}
+}
+tree_data['vehicles']['additionalParameters'] = {
+	'children' : {
+		'cars' : {name: 'Cars', type: 'folder'},
+		'motorcycles' : {name: 'Motorcycles', type: 'item'},
+		'boats' : {name: 'Boats', type: 'item'}
+	}
+}
+tree_data['vehicles']['additionalParameters']['children']['cars']['additionalParameters'] = {
+	'children' : {
+		'classics' : {name: 'Classics', type: 'item'},
+		'convertibles' : {name: 'Convertibles', type: 'item'},
+		'coupes' : {name: 'Coupes', type: 'item'},
+		'hatchbacks' : {name: 'Hatchbacks', type: 'item'},
+		'hybrids' : {name: 'Hybrids', type: 'item'},
+		'suvs' : {name: 'SUVs', type: 'item'},
+		'sedans' : {name: 'Sedans', type: 'item'},
+		'trucks' : {name: 'Trucks', type: 'item'}
+	}
+}
 
-							<li class="">
-								<a href="jquery-ui.html">
-									<i class="menu-icon fa fa-caret-right"></i>
-									jQuery UI
-								</a>
+tree_data['rentals']['additionalParameters'] = {
+	'children' : {
+		'apartments-rentals' : {name: 'Apartments', type: 'item'},
+		'office-space-rentals' : {name: 'Office Space', type: 'item'},
+		'vacation-rentals' : {name: 'Vacation Rentals', type: 'item'}
+	}
+}
+tree_data['real-estate']['additionalParameters'] = {
+	'children' : {
+		'apartments' : {name: 'Apartments', type: 'item'},
+		'villas' : {name: 'Villas', type: 'item'},
+		'plots' : {name: 'Plots', type: 'item'}
+	}
+}
+tree_data['pets']['additionalParameters'] = {
+	'children' : {
+		'cats' : {name: 'Cats', type: 'item'},
+		'dogs' : {name: 'Dogs', type: 'item'},
+		'horses' : {name: 'Horses', type: 'item'},
+		'reptiles' : {name: 'Reptiles', type: 'item'}
+	}
+}
 
-								<b class="arrow"></b>
-							</li>
+var treeDataSource = new DataSourceTree({data: tree_data});
 
-							<li class="">
-								<a href="nestable-list.html">
-									<i class="menu-icon fa fa-caret-right"></i>
-									Nestable Lists
-								</a>
+*/
 
-								<b class="arrow"></b>
-							</li>
 
-							<li class="">
-								<a href="#" class="dropdown-toggle">
-									<i class="menu-icon fa fa-caret-right"></i>
 
-									Three Level Menu
-									<b class="arrow fa fa-angle-down"></b>
-								</a>
 
-								<b class="arrow"></b>
 
-								<ul class="submenu">
-									<li class="">
-										<a href="#">
-											<i class="menu-icon fa fa-leaf green"></i>
-											Item #1
-										</a>
 
-										<b class="arrow"></b>
-									</li>
 
-									<li class="">
-										<a href="#" class="dropdown-toggle">
-											<i class="menu-icon fa fa-pencil orange"></i>
+var ace_icon = ace.vars['icon'];
+//class="'+ace_icon+' fa fa-file-text grey"
+//becomes
+//class="ace-icon fa fa-file-text grey"
+var tree_data_2 = {
+	'pictures' : {name: 'Pictures', type: 'folder', 'icon-class':'red'}	,
+	'music' : {name: 'Music', type: 'folder', 'icon-class':'orange'}	,
+	'video' : {name: 'Video', type: 'folder', 'icon-class':'blue'}	,
+	'documents' : {name: 'Documents', type: 'folder', 'icon-class':'green'}	,
+	'backup' : {name: 'Backup', type: 'folder'}	,
+	'readme' : {name: '<i class="'+ace_icon+' fa fa-file-text grey"></i> ReadMe.txt', type: 'item'},
+	'manual' : {name: '<i class="'+ace_icon+' fa fa-book blue"></i> Manual.html', type: 'item'}
+}
+tree_data_2['music']['additionalParameters'] = {
+	'children' : [
+		{name: '<i class="'+ace_icon+' fa fa-music blue"></i> song1.ogg', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-music blue"></i> song2.ogg', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-music blue"></i> song3.ogg', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-music blue"></i> song4.ogg', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-music blue"></i> song5.ogg', type: 'item'}
+	]
+}
+tree_data_2['video']['additionalParameters'] = {
+	'children' : [
+		{name: '<i class="'+ace_icon+' fa fa-film blue"></i> movie1.avi', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-film blue"></i> movie2.avi', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-film blue"></i> movie3.avi', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-film blue"></i> movie4.avi', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-film blue"></i> movie5.avi', type: 'item'}
+	]
+}
+tree_data_2['pictures']['additionalParameters'] = {
+	'children' : {
+		'wallpapers' : {name: 'Wallpapers', type: 'folder', 'icon-class':'pink'},
+		'camera' : {name: 'Camera', type: 'folder', 'icon-class':'pink'}
+	}
+}
+tree_data_2['pictures']['additionalParameters']['children']['wallpapers']['additionalParameters'] = {
+	'children' : [
+		//'music' : {name: 'Music', type: 'folder', 'icon-class':'orange'}
+		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> wallpaper1.jpg', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> wallpaper2.jpg', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> wallpaper3.jpg', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> wallpaper4.jpg', type: 'item'}
+	]
+}
+tree_data_2['pictures']['additionalParameters']['children']['camera']['additionalParameters'] = {
+	'children' : [
+		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> photo1.jpg', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> photo2.jpg', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> photo3.jpg', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> photo4.jpg', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> photo5.jpg', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> photo6.jpg', type: 'item'}
+	]
+}
 
-											4th level
-											<b class="arrow fa fa-angle-down"></b>
-										</a>
 
-										<b class="arrow"></b>
+tree_data_2['documents']['additionalParameters'] = {
+	'children' : [
+		{name: '<i class="'+ace_icon+' fa fa-file-text red"></i> document1.pdf', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-file-text grey"></i> document2.doc', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-file-text grey"></i> document3.doc', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-file-text red"></i> document4.pdf', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-file-text grey"></i> document5.doc', type: 'item'}
+	]
+}
 
-										<ul class="submenu">
-											<li class="">
-												<a href="#">
-													<i class="menu-icon fa fa-plus purple"></i>
-													Add Product
-												</a>
-
-												<b class="arrow"></b>
-											</li>
-
-											<li class="">
-												<a href="#">
-													<i class="menu-icon fa fa-eye pink"></i>
-													View Products
-												</a>
-
-												<b class="arrow"></b>
-											</li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</li>
+tree_data_2['backup']['additionalParameters'] = {
+	'children' : [
+		{name: '<i class="'+ace_icon+' fa fa-archive brown"></i> backup1.zip', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-archive brown"></i> backup2.zip', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-archive brown"></i> backup3.zip', type: 'item'},
+		{name: '<i class="'+ace_icon+' fa fa-archive brown"></i> backup4.zip', type: 'item'}
+	]
+}
+var treeDataSource2 = new DataSourceTree({data: tree_data_2});
+</script>
