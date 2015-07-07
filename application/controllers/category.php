@@ -52,12 +52,12 @@ class Category extends REIM_Controller {
             //  ,'acc_sets' => $acc_sets
               //  ,'acc_sets' => $acc_sets
                 ,'ugroups' => $ugroups['data']['group']
-                ,'sob_data' => $data[$gid]
+                ,'sob_data' => $data[$gid]['groups']
                 ,'sob_id' => $gid
                  ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
                     ,array('url' => base_url('category/index'),'name' => '标签和分类','class' => '')
-                    ,array('url' => '','name' => '跟新帐套','class' => '')
+                    ,array('url' => '','name' => '更新帐套','class' => '')
                 ),
             )   
         );
@@ -97,7 +97,7 @@ class Category extends REIM_Controller {
         $sob_name = $this->input->post('sob_name');
         $groups = $this->input->post('groups');
         //$save = $this->input->post('renew');
-        log_message("debug","-----------------$groups");
+        //log_message("debug","-----------------$groups");
         $ret = $this->account_set->create_account_set($sob_name, implode(',', $groups));
         $re = json_encode($ret);
         log_message("debug", "***&&*&*&*:$re");

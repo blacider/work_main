@@ -53,22 +53,20 @@
                 </div>
             </div>
 
-<div class="col-xs-9">
+<div class="col-xs-8">
     <!--
     <table id="grid-table"></table>
     -->
     <div class="panel panel-primary">
-        <div class="panel-heading  clearfix">
-        <h3 class="panel-title default" id="gname">部门信息</h3>
+        <div class="panel-heading  clearfix ">
+        <h3 class="panel-title default col-sm-4 col-md-2" id="gname">部门信息</h3>
          <div class="btn-group pull-right" id = "fix">
       </div>
   </div>
               
         <div class="panel-body">
-            <table class="table" id="gtable">
-                <tr>
-                    <th>部门名称</th>
-                </tr>
+            <table class="table table-striped" id="gtable">
+               
 <?php 
 foreach($ugroups as $m){
 ?>
@@ -128,7 +126,7 @@ function load_group(gid,data){
 
                     var _fix = "";
                     if(_admin == 1){
-                    _fix += '<a href="' + __BASE + '/category/sob_update/' + gid + '"><i class="ace-icon align-top bigger-125 fa fa-pencil white" style="margin-left:10px;" ></i></a>'
+                    _fix += '<a href="' + __BASE + 'category/sob_update/' + gid + '"><i class="ace-icon align-top bigger-125 fa fa-pencil white" style="margin-left:10px;" ></i></a>'
                     _fix += '<a href="javascript:void(0)" class="remove_user" data-id="' + gid + '"><i  style="margin-left:10px;"  class="ace-icon align-top bigger-125 white fa fa-trash-o"></i></a>';
                     }
 
@@ -138,7 +136,7 @@ function load_group(gid,data){
 
                 var _th = '<tr>'
                     //+ '<th>部门号</th>'
-                    + '<th>部门名称</th>';
+                   // + '<th>部门名称</th>';
                    /* if(_admin == 1){
                         _th += '<th>操作</th>'
                     }*/
@@ -167,17 +165,17 @@ function load_group(gid,data){
 }
 
 function bind_event() {
-    console.log("called");
+    //console.log("called");
     
     $('.remove_user').each(function(idx, item){
         $(item).unbind('click');
         $(item).click(function(){
-            console.log(this);
+           // console.log(this);
             if(confirm('当前帐套会被删除，是否继续？') == true){
                 var _id = $(this).data('id');
 
                 if(_id !== undefined) {
-                    console.log(_id);
+                   // console.log(_id);
                     location.href= __BASE + "category/remove_sob/" + _id;
                 }
             }
@@ -206,13 +204,13 @@ function bind_event() {
             method:'GET',
             dataType:'json',
             success:function(data){
-                console.log(data);
+              //  console.log(data);
                  //bind_event();
                  var ace_icon = ace.vars['icon'];
                  var js_data = {};
                  for(var idx in data)
                  {
-                    console.log(idx);
+                  //  console.log(idx);
                     js_data[idx] = {name: data[idx]['sob_name'], id: idx ,type: 'folder', 'icon-class':'red'};   
                  };
 
@@ -244,15 +242,15 @@ function bind_event() {
                         //var _gid = _data;
                         
                             var _gid = result.id;
-                            console.log(result.id);
-                            console.log(data[_gid]);
+                            //console.log(result.id);
+                            //console.log(data[_gid]);
                             load_group(_gid,data);
                         
                     })
                     .on('closed', function(e,result) {
                           var _gid = result.id;
-                            console.log(result.id);
-                            console.log(data[_gid]);
+                         //   console.log(result.id);
+                           // console.log(data[_gid]);
                             load_group(_gid,data);
                     });
 
