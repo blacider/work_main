@@ -23,40 +23,46 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-right">允许不同类目消费记录</label>
-                                <div class="col-xs-6 col-sm-6">
-                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
-                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
-                                        <label style="margin-top:8px;">
-                                            <input name="isadmin" class="ace ace-switch btn-rotate" type="checkbox" id="isadmin" style="margin-top:4px;" />
-                                            <span class="lbl"></span>
-                                        </label>
+                     
 
-                                   <!-- </div> -->
+                           <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-rigtht">帐套名</label>
+                                <div class="col-xs-4 col-sm-4">
+                                <input id="sob_name" type="text" class="form-controller col-xs-12" name="sob_name" placeholder="输入帐套名">
                                 </div>
                             </div>
 
-
                             <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-rigtht">报销单模板选择</label>
+                                <label class="col-sm-2 control-label no-padding-rigtht">部门选择</label>
                                 <div class="col-xs-4 col-sm-4">
-                                    <select id="temp" class="chosen-select tag-input-style" name="temp"  data-placeholder="请选择模板">
-                                    <option value="a4.yaml">A4模板</option>
-                                    <option value="a5.yaml">A5模板</option>
-                                    <option value="b5.yaml">B5模板</option>
-                                
+                                    <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
+                                      <option value="0">公司</option>
+                                    <?php
+                                      $exit = array();
+                                    foreach($sob_data as $ug){
+                                    ?>
+                                             <option selected value="<?php echo $ug['group_id']; ?>"><?php echo $ug['group_name']; ?></option>
+                                    <?php
+                                        array_push($exit, $ug['group_id']);
+                                    }
+
+                                    foreach($ugroups as $ug){
+                                        if(!in_array($ug['id'], $exit))
+                                        {
+                                            ?>
+                                            <option select value="<?php echo $ug['id']; ?>"><?php echo $ug['name']; ?></option>
+                                            <?php
+                                        }
+                                    }
+
+                                    ?>                                
                                 </select>
                                 </div>
                             </div>
+                            
+                      
 
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-rigtht">需要用户确认额度</label>
-                                <div class="col-xs-4 col-sm-4">
-					<input id="limit" type="text" class="form-controller col-xs-12" name="limit" placeholder="输入额度">
-                                </div>
-                            </div>
-
+                            <input type="hidden" id="sob_id" name="sob_id" value="<?php echo $sob_id?>" />
                             <input type="hidden" id="renew" name="renew" value="0" />
                             <input type="reset" style="display:none;" id="reset">
                             <div class="clearfix form-actions">
@@ -74,67 +80,73 @@
     </div>
 </div>
 
+
 <script type="text/javascript">
 var __BASE = "<?php echo $base_url; ?>";
+var _sob_id = "<?php echo $sob_id ?>";
    $(document).ready(function(){
    /*	$('.renew').click(function(){
     var _checked = $('#isadmin').is('checked');
     console.log("checked" + _checked);
     $('#profile').submit();
 	});*/
-   $.ajax({
-    type:"get",
-    url:__BASE+"company/getsetting",
-    dataType:'json',
-    success:function(data){
+        $.ajax({
+            type:"get",
+            url:__BASE+"category/getsobs",
+            dataType:"json",
+            success:function(data){
+                console.log(data);
+                console.log(data[_sob_id]);
+                var _sob_data = data[_sob_id];
+                var _sob_name = _sob_data['sob_name'];
+                var _sob_groups = _sob_data['groups'];
+                console.log(_sob_name);
+                $('#sob_name').val(_sob_name);
+                console.log(_sob_groups);
+            },
+             error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log(XMLHttpRequest.status);
+                        console.log(XMLHttpRequest.readyState);
+                        console.log(textStatus);
+                    },
+        });
 
-        if(data.same_category!=undefined)
-        {
-            $('#isadmin').attr('checked', data.same_category);
-        }
-        if(data.template != undefined) {
-            $("#temp").val( data.template ).attr('selected',true);
-            $(".chosen-select").trigger("chosen:updated");
-        }
-
-        if(data.user_confirm != undefined) {
-            $('#limit').val(data.user_confirm);
-        }
-    }
-   });
 
         $('.renew').click(function(){
-	   var lval = parseInt($('#limit').val());
-       console.log(lval);
-       if(isNaN(lval))
-       {
-            lval = 0;
-       }
-	   if(lval>=0)
-	   {
-           $.ajax({
+
+            var sname = $('#sob_name').val();
+            var sgroups = $('#group').val();
+            //if(sname)
+      
+            if(sname == '')
+            {
+                $('#sob_name').focus();
+                show_notify("请输入用户名");
+                return false;
+            }
+            if(sgroups == null)
+            {
+                $('#group').focus();
+                show_notify("请选择部门");
+                return false;
+            }
+
+	              $.ajax({
                 type:"post",
-                url:__BASE+"company/profile",
-                data:{ischecked:$('#isadmin').is(':checked'),template:$('#temp option:selected').val(),limit:lval},
+                url:__BASE+"category/update_sob",
+                data:{sob_name:$('#sob_name').val(),groups:$('#group').val(),sid:$('#sob_id').val()},
                 dataType:'json',
                 success:function(data){
-                        console.log(data);
                        show_notify('保存成功');
+                       window.location.href=__BASE+"category/account_set";
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(XMLHttpRequest.status);
                         console.log(XMLHttpRequest.readyState);
                         console.log(textStatus);
                     },            });
-	 }
-	 else
-	 {
-	 	show_notify('请输入有效额度');
-	 	$('#limit').val('');
-		$('#limit').focus();
-		return false;
-	 }
-       }); 
+	 
+	       }); 
 
         $('.chosen-select').chosen({allow_single_deselect:true}); 
         $(window)
