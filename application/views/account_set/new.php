@@ -76,15 +76,31 @@ var __BASE = "<?php echo $base_url; ?>";
 
 
         $('.renew').click(function(){
-	           console.log($('#group').val());
-	              $.ajax({
+            var sname = $('#sob_name').val();
+            var sgroups = $('#group').val();
+            //if(sname)
+            console.log(sname);
+            console.log(sgroups);
+            if(sname == '')
+            {
+                $('#sob_name').focus();
+                show_notify("请输入用户名");
+                return false;
+            }
+            if(sgroups == null)
+            {
+                $('#group').focus();
+                show_notify("请选择部门");
+                return false;
+            }
+	       $.ajax({
                 type:"post",
                 url:__BASE+"category/create_sob",
                 data:{sob_name:$('#sob_name').val(),groups:$('#group').val()},
                 dataType:'json',
                 success:function(data){
-                        console.log(data);
                        show_notify('保存成功');
+                        window.location.href=__BASE+"category/account_set";
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(XMLHttpRequest.status);

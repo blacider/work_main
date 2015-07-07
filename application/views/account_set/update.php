@@ -77,16 +77,14 @@ var __BASE = "<?php echo $base_url; ?>";
 
 
         $('.renew').click(function(){
-	           console.log($('#group').val());
-              // console.log();
 	              $.ajax({
                 type:"post",
                 url:__BASE+"category/update_sob",
                 data:{sob_name:$('#sob_name').val(),groups:$('#group').val(),sid:$('#sob_id').val()},
                 dataType:'json',
                 success:function(data){
-                        console.log(data);
                        show_notify('保存成功');
+                       window.location.href=__BASE+"category/account_set";
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(XMLHttpRequest.status);
