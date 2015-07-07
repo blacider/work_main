@@ -53,7 +53,7 @@ if($self != 1) {
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">昵称</label>
                         <div class="col-xs-6 col-sm-6">
-                            <input type="text" class="col-xs-6 col-sm-6 form-control" value="<?php echo $user['nickname']; ?>" <?php echo $disabled; ?> />
+                            <input type="text" class="col-xs-6 col-sm-6 form-control" name="nickname" value="<?php echo $user['nickname']; ?>" <?php echo $disabled; ?> />
                         </div>
                     </div>
                     <div class="form-group">
@@ -228,7 +228,9 @@ if($user['id'] != $me['id']) {
                                 <div class="col-md-offset-3 col-md-9">
                                     <a class="btn btn-white btn-primary update_password" data-renew="0"><i class="ace-icon fa fa-save "></i>修改并登出</a>
 
+                                    <!--
                                     <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
+                                    -->
                                 </div>
                             </div>
 
@@ -494,7 +496,7 @@ if($user['id'] != $me['id']) {
 
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script>
-<script src="/static/third-party/jfu/js/jquery.fileupload.js"></script>
+<script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script>
 <script language="javascript">
     var __PROVINCE = Array();
 function get_province(){
@@ -600,7 +602,7 @@ function get_province(){
 $(document).ready(function(){
     get_province();
     if(__error) show_notify(__error);
-    $('#src').fileupload(
+    $('#src').uploadFile(
                     {
                         dataType: 'json',
                         progressall: function (e, data) {
