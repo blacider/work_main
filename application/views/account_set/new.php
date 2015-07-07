@@ -79,8 +79,6 @@ var __BASE = "<?php echo $base_url; ?>";
             var sname = $('#sob_name').val();
             var sgroups = $('#group').val();
             //if(sname)
-            console.log(sname);
-            console.log(sgroups);
             if(sname == '')
             {
                 $('#sob_name').focus();

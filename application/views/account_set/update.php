@@ -38,9 +38,23 @@
                                     <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
                                       <option value="0">公司</option>
                                     <?php
-                                    foreach($ugroups as $ug){
-                                        echo "<option value='" . $ug['id'] ."'>" . $ug['name'] . "</option>";
+                                      $exit = array();
+                                    foreach($sob_data as $ug){
+                                    ?>
+                                             <option selected value="<?php echo $ug['group_id']; ?>"><?php echo $ug['group_name']; ?></option>
+                                    <?php
+                                        array_push($exit, $ug['group_id']);
                                     }
+
+                                    foreach($ugroups as $ug){
+                                        if(!in_array($ug['id'], $exit))
+                                        {
+                                            ?>
+                                            <option select value="<?php echo $ug['id']; ?>"><?php echo $ug['name']; ?></option>
+                                            <?php
+                                        }
+                                    }
+
                                     ?>                                
                                 </select>
                                 </div>
@@ -65,18 +79,58 @@
         </form>
     </div>
 </div>
-<p><?php echo $sob_id ?></p>
+
+
 <script type="text/javascript">
 var __BASE = "<?php echo $base_url; ?>";
+var _sob_id = "<?php echo $sob_id ?>";
    $(document).ready(function(){
    /*	$('.renew').click(function(){
     var _checked = $('#isadmin').is('checked');
     console.log("checked" + _checked);
     $('#profile').submit();
 	});*/
+        $.ajax({
+            type:"get",
+            url:__BASE+"category/getsobs",
+            dataType:"json",
+            success:function(data){
+                console.log(data);
+                console.log(data[_sob_id]);
+                var _sob_data = data[_sob_id];
+                var _sob_name = _sob_data['sob_name'];
+                var _sob_groups = _sob_data['groups'];
+                console.log(_sob_name);
+                $('#sob_name').val(_sob_name);
+                console.log(_sob_groups);
+            },
+             error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log(XMLHttpRequest.status);
+                        console.log(XMLHttpRequest.readyState);
+                        console.log(textStatus);
+                    },
+        });
 
 
         $('.renew').click(function(){
+
+            var sname = $('#sob_name').val();
+            var sgroups = $('#group').val();
+            //if(sname)
+      
+            if(sname == '')
+            {
+                $('#sob_name').focus();
+                show_notify("请输入用户名");
+                return false;
+            }
+            if(sgroups == null)
+            {
+                $('#group').focus();
+                show_notify("请选择部门");
+                return false;
+            }
+
 	              $.ajax({
                 type:"post",
                 url:__BASE+"category/update_sob",
