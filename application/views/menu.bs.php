@@ -366,6 +366,11 @@ if($profile['admin'] == 1){
         <b class="arrow"></b> 
         </li> -->
 
+        <li class="hsub" id="account_set">
+        <a href="<?php echo base_url('category/account_set'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 帐套管理 </a>
+        <b class="arrow"></b>
+        </li>
+
         <li class="hsub" id="tags">
         <a href="<?php echo base_url('category/tags'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 标签管理 </a>
         <b class="arrow"></b>
@@ -377,6 +382,10 @@ if($profile['admin'] == 1){
         <b class="arrow"></b>
         </li>
 
+          <li class="hsub" id="new_sob">
+        <a href="<?php echo base_url('category/new_sob'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建帐套 </a>
+        <b class="arrow"></b>
+        </li>
         
     </ul>
     </li>
@@ -574,6 +583,10 @@ $(document).ready(function(){
     if(_controller == "members" && _method == "editgroup"){
     	_method = "groups";
 	}
+    if(_controller == "category" && _method == "sob_update")
+    {
+        _method = "account_set";
+    }
     $('.hsub').each(function(){
         $(this).removeClass('active open');
     });
