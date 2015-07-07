@@ -58,28 +58,16 @@
     <table id="grid-table"></table>
     -->
     <div class="panel panel-primary">
-        <div class="panel-heading"><h3 class="panel-title default" id="gname">部门信息</h3>
+        <div class="panel-heading  clearfix">
+        <h3 class="panel-title default" id="gname">部门信息</h3>
+         <div class="btn-group pull-right" id = "fix">
+      </div>
   </div>
-              <a href="/members/editmember"><i  style="margin-left:10px;" alt="" class="ace-icon align-top bigger-125 fa fa-pencil"></i></a>
-        <a href="javascript:void(0)" class="remove_user" data-id=""><i  style="margin-left:10px;" alt="" class="ace-icon align-top bigger-125 red fa fa-trash-o"></i></a>
+              
         <div class="panel-body">
             <table class="table" id="gtable">
                 <tr>
                     <th>部门名称</th>
-                    <th>上级部门</th>
-                    <th>部门管理员</th>
-                   <!-- <th>身份</th> -->
-                
-<?php
-if($profile['admin'] == 1) {
-?>
-                    <th>操作</th>
-<?php } ?>
-               <th class="hidden-680">
-                            <a href="#modal-table" role="button" class="blue" data-toggle="modal">
-                                <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" >添加帐套</i>
-                            </a>
-                   </th> 
                 </tr>
 <?php 
 foreach($ugroups as $m){
@@ -88,25 +76,7 @@ foreach($ugroups as $m){
     <td>
         <p> <?php echo $m['name']; ?> </p>
     </td>
-    <td>
-        <?php echo $m['pid']; ?>
-    </td>
-    <td>
 
-        <?php echo $m['manager']; ?>
-    </td>
-    
-
-<?php
-if($profile['admin'] == 1) {
-?>
-    <td>
-<a href="/members/editmember/<?php echo $m['id']; ?>"><i  style="margin-left:10px;" alt="" class="ace-icon align-top bigger-125 fa fa-pencil"></i></a>
-<a href="javascript:void(0)" class="remove_user" data-id="<?php echo $m['id']; ?>"><i  style="margin-left:10px;" alt="" class="ace-icon align-top bigger-125 red fa fa-trash-o"></i></a>
-</td>
-<?php 
-    }
-?>
 </tr>
 <?php 
 }
@@ -119,67 +89,6 @@ if($profile['admin'] == 1) {
 <div id="grid-pager"></div>
 </div>
 
-
-<div id="modal-table" class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="blue bigger"> 创建帐套 </h4>
-            </div>
-            <form method="post" action="<?php echo base_url('category/create_sob'); ?>">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12">
-
-                            <div class="form-group">
-                                <label for="form-field-username">帐套名称</label>
-                                <div>
-                                    <input class="input-large" type="text" placeholder="帐套名称" id="sob_name" name="sob_name" />
-                                    <!--<input type="hidden"  id="category_id" name="category_id" value="0" required /> -->
-                                </div>
-                            </div>
-                            <div class="space-4"></div>
-
-                            <div class="form-group">
-                                <label for="form-field-username">部门选择</label>
-                                <div>
-                                    <input class="input-large" type="text" placeholder="帐套名称" id="sob_name" name="sob_name" />
-                                    <!--<input type="hidden"  id="category_id" name="category_id" value="0" required /> -->
-                                </div>
-                            </div>
-                            <div class="space-4"></div>
-       
-                            <div class="form-group">
-                                <label for="form-field-username">部门选择</label>
-                                <div>
-                                    <select name="gid[]" id="gid" multiple="multiple" class="chosen-select tag-input-style" >
-                                    <option value="0">公司</option>
-                                    <?php
-                                    foreach($ugroups as $ug){
-                                        echo "<option value='" . $ug['id'] ."'>" . $ug['name'] . "</option>";
-                                    }
-                                    ?>
-                                    </select>
-                                </div>
-                            </div>                                <div class="space-4"></div>
-
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button class="btn btn-sm" data-dismiss="modal">
-                        <i class="ace-icon fa fa-times"></i>
-                        取消
-                    </button>
-                    <input type="submit" class="btn btn-sm btn-primary">
-                </div>
-            </form>
-        </div>
-    </div>
-</div><!-- PAGE CONTENT ENDS -->
 
 
 </div>
@@ -216,15 +125,25 @@ function load_group(gid,data){
                         var _gname = _data['sob_name'];
                     }
                     $('#gname').html(_gname);
+
+                    var _fix = "";
+                    if(_admin == 1){
+                    _fix += '<a href="' + __BASE + '/category/sob_update/' + gid + '"><i class="ace-icon align-top bigger-125 fa fa-pencil white" style="margin-left:10px;" ></i></a>'
+                    _fix += '<a href="javascript:void(0)" class="remove_user" data-id="' + gid + '"><i  style="margin-left:10px;"  class="ace-icon align-top bigger-125 white fa fa-trash-o"></i></a>';
+                    }
+
+                    $('#fix').html(_fix);
                     $('#gtable').html("");
 
+
                 var _th = '<tr>'
-                    + '<th>部门号</th>'
+                    //+ '<th>部门号</th>'
                     + '<th>部门名称</th>';
-                    if(_admin == 1){
+                   /* if(_admin == 1){
                         _th += '<th>操作</th>'
-                    }
-                    _th += '</tr>';
+                    }*/
+                  
+                    _th += '</tr><tr></tr>';
                     $(_th).appendTo($('#gtable'));
 
                     $(_member).each(function(idx, item){
@@ -233,13 +152,11 @@ function load_group(gid,data){
                         var _color = '<span class="label label-success arrowed">管理员</span>';
                     
                 _th = '<tr>'
-                    + '<td><a href="">' + item.group_id+ '</a></td>'
+                 //   + '<td><a href="">' + item.group_id+ '</a></td>'
                     + '<td>' + item.group_name + '</td>'
                   ;
-                    if(_admin == 1){
-                    _th += '<td><a href="' + __BASE + '/category/sob_update/' + gid + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a>'
-                    _th += '<a href="javascript:void(0)" class="remove_user" data-id="' + gid + '"><i  style="margin-left:10px;"  class="ace-icon align-top bigger-125 red fa fa-trash-o"></i></a></td>';
-                    }
+                  _th +='<td></td>';
+                   
                     _th += '</tr>';
                     $(_th).appendTo($('#gtable'));
 
@@ -253,7 +170,6 @@ function bind_event() {
     console.log("called");
     
     $('.remove_user').each(function(idx, item){
-        console.log(item);
         $(item).unbind('click');
         $(item).click(function(){
             console.log(this);
