@@ -245,6 +245,7 @@ public function tags(){
     public function create(){
         $name = $this->input->post('category_name');
         $pid = $this->input->post('pid');
+        $sob_id = $this->input->post('sob_id');
         $prove_ahead= $this->input->post('prove_ahead');
         $max_limit = $this->input->post('max_limit');
         $cid = $this->input->post('category_id');
@@ -253,9 +254,9 @@ public function tags(){
         $msg = '添加分类失败';
         $obj = null;
         if($cid > 0){
-            $obj = $this->category->update($cid, $name, $pid, $prove_ahead, $max_limit);
+            $obj = $this->category->update($cid, $name, $pid, $sob_id, $prove_ahead, $max_limit);
         } else {
-            $obj = $this->category->create($name, $pid, $prove_ahead, $max_limit);
+            $obj = $this->category->create($name, $pid, $sob_id, $prove_ahead, $max_limit);
         }
         if($obj && $obj['status']){
             $msg = '添加分类成功';

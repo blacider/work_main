@@ -22,13 +22,33 @@ function bind_event(){
     });
 }
 
+var _cols = ['组名称','创建时间', '操作'];
+var _models = [
+    {name:'name', index:'name', width:150,editable: false,editoptions:{size:"20",maxlength:"30"}},
+    {name:'createdt',index:'admin', width:70, editable: false ,edittype:"select",editoptions: {value:"1:管理员;0:员工"},unformat: aceSwitch},
+    {name:'options',index:'options', width:70, editable: false},
+    ];
+try{
+    if(_admin == 0) {
+        _cols = ['组名称','创建时间'];
+_models = [
+    {name:'name', index:'name', width:150,editable: false,editoptions:{size:"20",maxlength:"30"}},
+    {name:'createdt',index:'admin', width:70, editable: false ,edittype:"select",editoptions: {value:"1:管理员;0:员工"},unformat: aceSwitch},
+    ];
+    }
+}catch(e) 
+{
+    console.log(e);
+}
+console.log(_cols);
+
 jQuery(grid_selector).jqGrid({
 
     url: __BASE + 'members/listgroup',
     multiselect: true,
     mtype: "GET",
     height: 250,
-    colNames:['组名称','创建时间', '操作'],
+    colNames: _cols,
     loadonce: true,
     rownumbers: false, // show row numbers
     caption: "公司员工",
@@ -38,11 +58,7 @@ jQuery(grid_selector).jqGrid({
     autowidth: true,
     viewsortcols : [true,'vertical',true],
 
-    colModel:[
-    {name:'name', index:'name', width:150,editable: false,editoptions:{size:"20",maxlength:"30"}},
-    {name:'createdt',index:'admin', width:70, editable: false ,edittype:"select",editoptions: {value:"1:管理员;0:员工"},unformat: aceSwitch},
-    {name:'options',index:'options', width:70, editable: false},
-    ], 
+    colModel: _models,
     loadComplete : function() {
         bind_event();
         var table = this;
