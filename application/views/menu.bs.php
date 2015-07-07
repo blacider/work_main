@@ -583,6 +583,10 @@ $(document).ready(function(){
     if(_controller == "members" && _method == "editgroup"){
     	_method = "groups";
 	}
+    if(_controller == "category" && _method == "sob_update")
+    {
+        _method = "account_set";
+    }
     $('.hsub').each(function(){
         $(this).removeClass('active open');
     });
