@@ -265,6 +265,7 @@ function load_group(gid){
                 }
             }
             });
+
 }
 function bind_event() {
     $('.remove_user').click(function(){
@@ -343,6 +344,7 @@ var __BASE = "<?php echo $base_url; ?>";
     var scripts = [null,"/static/ace/js/fuelux/fuelux.tree.min.js", null]
     ace.load_ajax_scripts(scripts, function() {
       //inline scripts related to this page
+      bind_event();
          jQuery(function($){
          $.ajax({
             url:__BASE+ "/members/getgroups",

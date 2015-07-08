@@ -42,7 +42,7 @@ class Report_Model extends Reim_Model {
         if(!$jwt) return false;
         log_message("debug", "JWT:" . json_encode($jwt));
 		$url = $this->get_url("success");
-        $buf = $this->do_Post($url, array('rids' => $data, 'status' => $status), $jwt);
+        $buf = $this->do_Put($url, array('rids' => $data, 'status' => $status), $jwt);
         log_message("debug", "From Server [ $url ]:" . $buf);
 		//$obj = json_decode($buf, true);
         return $buf;

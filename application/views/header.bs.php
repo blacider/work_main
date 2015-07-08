@@ -48,6 +48,7 @@ var __BASE = "<?php echo $base_url; ?>";
     <![endif]-->
 
     <!--[if !IE]> -->
+<script src='/static/ace/js/jquery.min.js'></script>
     <script type="text/javascript">
         window.jQuery || document.write("<script src='/static/ace/js/jquery.min.js'>" + "<" + "/script>");
     </script> 
