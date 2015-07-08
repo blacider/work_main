@@ -153,6 +153,9 @@ echo $str;
 </div><!-- /.page-content-area -->
 </div><!-- /.page-content -->
 </div><!-- /.main-content -->
+<script type="text/javascript">
+    __BASEURL = "<?php echo $base_url; ?>"
+</script>
 <script language="javascript">
 
 $(document).ready(function(){
