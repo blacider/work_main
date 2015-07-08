@@ -116,6 +116,19 @@ echo $str;
                                 </div>
                             </div>
                             <div class="space-4"></div>
+              
+                            <div class="form-group">
+                                <label for="form-field-username">部门</label>
+                                <div>
+                                    <select name="sob_id" id="sob_id"  class="form-control">
+                                        <option value="0">请选择部门</option>
+                                        <?php foreach($ugroups as $g) { ?>
+
+                                            <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <label for="form-field-username">隶属</label>
@@ -172,6 +185,7 @@ $(document).ready(function(){
         $(this).click(function(){
             var _title = $(this).data('title');
             var _pid = $(this).data('pid');
+            var _sob_id = $(this).data('sob_id';);
             var _id = $(this).data('id');
             var _pa = $(this).data('pb');
             var _max_limit = $(this).data('max');
@@ -182,6 +196,7 @@ $(document).ready(function(){
             $('#max_limit').val(_max_limit);
             $('#prove_ahead').val(_pa);
             $('#pid').val(_pid);
+	    $('#sob_id').val(_sob_id);
         $('#modal-table').modal();
 
         });
