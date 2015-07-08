@@ -477,7 +477,7 @@ class Reports extends REIM_Controller {
             $_t_items = array();
             foreach($reports as &$r){
                 if(!array_key_exists($r['uid'], $_members)){
-                    $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
+t                    $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
                 }
                 $r['total'] = 0;
                 $r['paid'] = 0;
@@ -545,9 +545,6 @@ class Reports extends REIM_Controller {
             }
             $_detail_items = array();
             foreach($_t_items as $i){
-                if(!array_key_exists($r['uid'], $_members)){
-                    $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
-                }
                 $_relates = explode(',', $i['relates']);
                 $__relates = array();
                 foreach($_relates as $r){
