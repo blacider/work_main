@@ -406,24 +406,16 @@ if($profile['admin'] == 1){
         <b class="arrow"></b>
         </li>
 
-
-<!--
-        <li class="hsub" id="common">
-        <a href="<?php echo base_url('company/common'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 通用规则 </a>
+ <!--       <li class="hsub" id="show">
+        <a href="<?php echo base_url('company/show'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 提交规则 </a>
         <b class="arrow"></b>
         </li>
 
+        <li class="hsub" id="create">
+        <a href="<?php echo base_url('company/create'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建规则 </a>
+          <b class="arrow"></b>
+        </li> -->
 
-         <li class="hsub" id="review">
-        <a href="<?php echo base_url('company/review'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 审核规则 </a>
-        <b class="arrow"></b>
-        </li>
-
-        <li class="hsub" id="setting">
-        <a href="<?php echo base_url('company/setting'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 公司通用设置 </a>
-        <b class="arrow"></b>
-        </li>
--->
     </ul>
     </li>
 

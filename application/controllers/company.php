@@ -7,6 +7,38 @@ class Company extends REIM_Controller {
        $this->load->model('group_model', 'groups');
     }
 
+    public function show(){
+    	$error = $this->session->userdata('last_error');
+	$this->session->unset_userdata('last_erro');
+	$this->bsload('company/show',
+		array(
+			'title'=>'新建规则'
+			,'error'=>$error
+			,'breadcrumbs'=> array(
+				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>'','name'=>'新建规则','class'=>'')
+			),
+		)
+	);
+    }
+
+    public function create(){
+    	$error = $this->session->userdata('last_error');
+	$this->session->unset_userdata('last_erro');
+	$this->bsload('company/rule',
+		array(
+			'title'=>'提交规则'
+			,'error'=>$error
+			,'breadcrumbs'=> array(
+				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>'','name'=>'提交规则','class'=>'')
+			),
+		)
+	);
+    }
+
     public function submit(){
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
@@ -22,7 +54,7 @@ class Company extends REIM_Controller {
                 ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('company/submit'), 'name' => '公司设置', 'class' => '')
-                        ,array('url'  => '', 'name' => '提交规则', 'class' => '')
+                        ,array('url'  => '', 'name' => '通用规则', 'class' => '')
                     ),
             )
         );

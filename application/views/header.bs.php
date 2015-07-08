@@ -51,7 +51,7 @@ var __BASE = "<?php echo $base_url; ?>";
 <script src='/static/ace/js/jquery.min.js'></script>
     <script type="text/javascript">
         window.jQuery || document.write("<script src='/static/ace/js/jquery.min.js'>" + "<" + "/script>");
-    </script>
+    </script> 
 
     <!-- <![endif]-->
 
