@@ -116,6 +116,19 @@ echo $str;
                                 </div>
                             </div>
                             <div class="space-4"></div>
+              
+                            <div class="form-group">
+                                <label for="form-field-username">部门</label>
+                                <div>
+                                    <select name="sob_id" id="sob_id"  class="form-control">
+                                        <option value="0">请选择部门</option>
+                                        <?php foreach($ugroups as $g) { ?>
+
+                                            <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <label for="form-field-username">隶属</label>
