@@ -337,7 +337,13 @@ class Members extends REIM_Controller {
         } else {
             $this->session->set_userdata('last_error', '添加失败');
         }
-        redirect(base_url('members/index'));
+	if($renew == 0)
+	{
+        	return redirect(base_url('members/index'));
+	}
+        	return redirect(base_url('members/newmember'));
+
+
         //print_r($info);
         //$this->groups->set_invite($email, $nickname, $phone, $credit, $groups);
         //die(json_encode(array('status' => true, 'id' => $id)));
