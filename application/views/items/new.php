@@ -139,7 +139,6 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<p><?php echo json_encode($tags) ?></p>
 <!--
 <script src="/static/third-party/jquery.ajaxfileupload.js"></script>
 <script src="/static/third-party/jquery-image-upload.min.js"></script>
@@ -157,7 +156,7 @@
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script>
 -->
 
-<script src="/static/ace/js/jquery1x.min.js"></script>
+<!--<script src="/static/ace/js/jquery1x.min.js"></script> -->
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
 <script src="/static/ace/js/dropzone.min.js"></script>
 
