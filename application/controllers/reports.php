@@ -484,18 +484,22 @@ class Reports extends REIM_Controller {
                 log_message('debug', json_encode($r));
                 $_items = $r['items'];
                 foreach($_items as $i){
+                    log_message('debug', "Itemx :" .json_encode($i));
                     $_rate = 1.0;
                     if(array_key_exists('currency', $i) && strtolower($i['currency']) == 'cny') {
                         $_rate = $i['rate'] / 100;
                     }
+                    log_message("debug", "Items23:"  . json_encode($i));
                     $r['total'] += ($i['amount'] * $_rate);
+                    $i['nickname'] = $r['nickname'];
                     //$r['total'] += ($i['amount'] * $i['rate'] / 100);
+                    log_message("debug", "Items2:"  . json_encode($i));
+                    array_push($_t_items, $i);
                     if($i['reimbursed'] == 0) continue;
                     if($i['prove_ahead'] > 0){
                         $r['paid'] += $i['pa_amount'];
                     }
-                    $i['nickname'] = $r['nickname'];
-                    array_push($_t_items, $i);
+
                 }
                 if($r['status'] == 4){
                     // 已完成状态的，付款额度就是已付额度
@@ -513,6 +517,7 @@ class Reports extends REIM_Controller {
                 $obj['应付'] = $r['last'];
                 array_push($_excel, $obj);
             }
+            log_message("debug", "export --> " . json_encode($_t_items));
 
 
 
@@ -532,7 +537,6 @@ class Reports extends REIM_Controller {
                 array_push($members, $o);
             }
 
-            /*
             $nicks = $_reports['nicks'];
 
             $__members = array();
@@ -576,13 +580,12 @@ class Reports extends REIM_Controller {
                 array_push($_detail_items, $o);
             }
 
-*/
             log_message("debug", json_encode($o));
 
             //print_r($_excel);
             //print_r($r);
-            self::render_to_download('报告汇总', $members, 'Finace_' . date('Y-m-d', time()) . ".xls", '报告明细', $_excel/*, '消费明细', $_detail_items*/);
-            //self::render_to_download('报告汇总', $members, 'Finace_' . date('Y-m-d', time()) . ".xls", '报告明细', $_excel, '消费明细', $_detail_items);
+            //self::render_to_download('报告汇总', $members, 'Finace_' . date('Y-m-d', time()) . ".xls", '报告明细', $_excel/*, '消费明细', $_detail_items*/);
+            self::render_to_download('报告汇总', $members, 'Finace_' . date('Y-m-d', time()) . ".xls", '报告明细', $_excel, '消费明细', $_detail_items);
 
         }
     }

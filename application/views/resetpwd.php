@@ -1,146 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-        <meta charset="utf-8"/>
-        <title>重置密码</title>
-
-        <meta name="description" content="如数云管理后台"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-
-        <!-- bootstrap & fontawesome -->
-        <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="/static/assets/css/font-awesome.min.css"/>
-
-        <!-- text fonts -->
-        <link rel="stylesheet" href="/static/assets/css/ace-fonts.css"/>
-
-        <!-- ace styles -->
-        <link rel="stylesheet" href="/static/assets/css/ace.min.css" id="main-ace-style"/>
-
-        <!--[if lte IE 9]>
-        <link rel="stylesheet" href="/static/assets/css/ace-part2.min.css"/>
-        <![endif]-->
-        <link rel="stylesheet" href="/static/assets/css/ace-rtl.min.css"/>
-
-        <!--[if lte IE 9]>
-        <link rel="stylesheet" href="/static/assets/css/ace-ie.min.css"/>
-        <![endif]-->
- <link rel="stylesheet" href="/static/jgrowl/jquery.jgrowl.css" />
-        <link rel="stylesheet" href="/static/assets/css/ace.onpage-help.css"/>
-<script language="javascript" src="/static/js/jquery.min.js"></script>
-<script language="javascript" src="/static/jgrowl/jquery.jgrowl.min.js"></script>
-
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-
-        <!--[if lt IE 9]>
-<script src="/static/assets/js/html5shiv.js"></script>
-<script src="/static/assets/js/respond.min.js"></script>
-<![endif]-->
-
-<!--[if !IE]> -->
-<script type="text/javascript">
-window.jQuery || document.write("<script src='/static/assets/js/jquery.min.js'>" + "<" + "/script>");
-</script>
-
-<!-- <![endif]-->
-
-<!--[if IE]>
-<script type="text/javascript">
-window.jQuery || document.write("<script src='/static/assets/js/jquery1x.min.js'>" + "<" + "/script>");
-</script>
-<![endif]-->
-<script type="text/javascript">
-if ('ontouchstart' in document.documentElement) document.write("<script src='/static/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
-</script>
-
-
-
-</head>
-
-<body  class="login-layout light-login">
-    <div class="main-container">
-        <div class="main-content">
-            <div class="row">
-                <div class="col-sm-10 col-sm-offset-1">
-                    <div class="login-container">
-                        <div class="center">
-                            <h1>
-                            </h1>
-                        </div>
-
-                        <div class="space-6"></div>
-
-                        <div class="position-relative">
-
-                            <div id="login-box" class="login-box visible widget-box no-border">
-                                <div class="widget-body">
-                                    <div class="widget-main">
-                                        <h4 class="header blue lighter bigger">
-                                            <i class="ace-icon fa fa-key green"></i>
-                                            重置密码
-                                        </h4>
-
-                                        <div class="space-6"></div>
-
-                                        <form action="/resetpwd/doupdate" method="post" id="reform">
-                                            <fieldset>
-                                                <label class="block clearfix">
-                                                    <span class="block input-icon input-icon-right">
-                                                        <input type="password" name="pass" class="form-control" placeholder="新密码" />
-                                                    </span>
-                                                </label>
-
-                                                <label class="block clearfix">
-                                                    <span class="block input-icon input-icon-right">
-                                                        <input type="password" name="passc" class="form-control" placeholder="重复密码" />
-                                                    </span>
-                                                </label>
-
-                                                <div class="space"></div>
-                                                <input type="hidden" name="code" value="<?php echo $code; ?>" />
-                                                <input type="hidden" name="cid" value="<?php echo $cid; ?>" />
-
-                                                <div class="clearfix">
-
-                                                    <button id="submitbtn" type="button" class="width-35 pull-right btn btn-sm btn-primary">
-                                                        <i class="ace-icon fa fa-key"></i>
-                                                        <span class="bigger-110">修改</span>
-                                                    </button>
-                                                </div>
-
-                                                <div
-                                                    class="space-4"></div>
-                                            </fieldset>
-                                        </form>
-
-                                    </div><!-- /.widget-main -->
-
-                                </div><!-- /.widget-body -->
-                            </div><!--
-                            /.login-box
-                            -->
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.main-content -->
-            </div><!-- /.main-container -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>云报销,让报销简单点</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link rel="shortcut icon" href="/static/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/static/css/login.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/normalize.css">
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="/static/css/ie.css">
+    <![endif]-->
+    <!--[if gte IE 9]>
+      <link rel="stylesheet" type="text/css" href="/static/css/notie.css">
+    <![endif]-->
+    <!--[if !IE]><!-->
+      <link rel="stylesheet" type="text/css" href="/static/css/notie.css">
+    <!--<![endif]-->
 <script language="javascript">
-    var _error = "<?php echo $error; ?>";
-$(document).ready(function(){
-    $('#submitbtn').click(function(){
-        $('#reform').submit();
-    });
-    if(_error) {
-        show_notify(_error);
-    }
-});
-function show_notify(msg, life){
-        if(!life || life ==undefined)
-                    life = 1000;
-            $.jGrowl(msg, {'life' : life});
+    var __BASE = "<?php echo base_url(); ?>";
+    var _error = "";
+</script>
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script type="text/javascript" src="/static/js/index.js"></script>
+    <script type="text/javascript" src="/static/js/login.js"></script>
+</head>
+<body>
+  <div class="header">
+  	<div class="main-block">
+        <a href="http://www.yunbaoxiao.com">
+            <div class="home-logo"> </div>
+        </a>
+  		<div class="header-link">
+  			<ul>
+                <!-- 
+  				<li><a href="#">Blog</a></li>
+  				<li id="min-margin"><a href="#">登录</a></li>
+                -->
+  				<li class="header-button ie-button1"><a href="http://www.yunbaoxiao.com/#sign">申请试用</a></li>
+  			</ul>
+  		</div>
+  	</div>
+  </div>
+  <div class="block1 block">
+    <div class="main-block">
+      <div class="login">
+          <div class="login-left" style="padding-top:36px;font-size:25px;"><br>为邮箱设置密码<br> <span style="color:#ff575b"><?php echo $name; ?></span><br></div>
+        <div class="login-right">
+          <form id="form-phone-step2" style="display:block;" method="POST" action="<?php echo base_url('resetpwd/doupdate'); ?>">
+            <div class="form-password">
+<?php
+$placeholder = '';
+if($name){
+    $placeholder =  $name;
 }
 
-</script>
-
-        </body>
-    </html>
+?>
+              <span>密码</span>
+              <span class="error">请输入密码</span>
+              <input type="password" id="pass" name="passc">
+            </div>
+            <div class="form-password">
+              <span>重新输入密码</span>
+              <span class="error">两次输入不一致</span>
+              <input type="password" id="pass2" name="pass">
+            </div>
+              <input type="hidden" id="phone_hidden" />
+              <input type="hidden" name="code" value="<?php echo $code; ?>" />
+                                                <input type="hidden" name="cid" value="<?php echo $cid; ?>" />
+              <input type="hidden" id="code_hidden" />
+            <div id="button-div" class="form-submit ie-button1"><input type="submit" value="注册"></div>
+    <input type="hidden" name='u' class="form-control" value="<?php echo $placeholder; ?>">
+            <!-- <a onclick="backStep2()" class="find-password">上一步</a> -->
+          </form>
+          <div id="email">
+            <p></p>
+            <div><a href="index.html">注册</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="main-block">
+      <div class="copyright">
+        <p class="footer-text">© 2014-2015 如数科技有限公司 / All Rights Reserved</p>
+      </div>
+  	  <div class="footer-link">
+  	  	<ul>
+  			<li><a href="http://www.yunbaoxiao.com/contact.html">关于我们</a></li>
+  			<li><a href="http://www.yunbaoxiao.com/help.html">帮助中心</a></li>
+  			<li><a href="http://www.yunbaoxiao.com/joinus.html">加入我们</a></li>
+  		</ul>
+  	  </div>
+  	  <div class="record">
+  		<p class="footer-text">京ICP备 14046885号-2</p>
+  	  </div>
+  	</div>
+  </div>
+</body>
+</html>

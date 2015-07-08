@@ -28,7 +28,8 @@ class Resetpwd extends REIM_Controller  {
             $args = json_decode($name, True);
         }
         $this->input->set_cookie($this->cookie_user, $args['name'], $this->cookie_life);
-        $this->load->view('user/register', array('name' => $args['name']));
+        $this->load->view('resetpwd', array('name' => $args['name'], 'code' => $code, 'cid' => $name, 'error' => $error));
+        //$this->load->view('user/register', array('name' => $args['name']));
     }
 
     public function doupdate(){
