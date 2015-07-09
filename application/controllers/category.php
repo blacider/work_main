@@ -186,11 +186,14 @@ class Category extends REIM_Controller {
 
         $_sobs = $sobs['data'];
         $sob_data = array();
+        $_sob_data_keys = array();
         foreach($_sobs as $item)
         {
-            if(!array_key_exists($item['sob_id'],$sob_data))
+            $_sob_id = $item['sob_id'];
+            if(!in_array($_sob_id,$_sob_data_keys))
             {
-                $sob_data[$item['sob_id']]=$item['sob_name'];
+                array_push($_sob_data_keys, $_sob_id);
+                array_push($sob_data, $item);
             }
         }
         $ugroups = $this->ug->get_my_list();
@@ -221,7 +224,7 @@ class Category extends REIM_Controller {
             array(
                 'title' => '分类管理'
                 ,'category' => $category_group
-                ,'sobs' => $sobs['data']
+                //,'sobs' => $sobs['data']
                 ,'error' => $error
                 ,'ugroups' => $ugroups['data']['group']
 		,'sobs' => $sob_data
