@@ -2,7 +2,7 @@
 
 //define("API_SERVER", "http://api.rushucloud.com/stage/");
 //define("API_SERVER", "https://api.cloudbaoxiao.com/online/");
-define("API_SERVER", "https://api.cloudbaoxiao.com/stage/");
+define("API_SERVER", "https://api.cloudbaoxiao.com/online/");
 define("PUBKEY", "1NDgzZGY1OWViOWRmNjI5ZT");
 
 class Reim_Model extends CI_Model {

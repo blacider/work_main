@@ -315,8 +315,18 @@ class Reports extends REIM_Controller {
         foreach($report['receivers']['cc'] as $m){
             array_push($_ccs, $m['nickname']);
         }
-        $report['receivers']['managers'] = implode(',', $_managers);
-        $report['receivers']['cc'] = implode(',', $_ccs);
+        $_msg = '公司管理员';
+        if(count($_managers) > 0) {
+            $report['receivers']['managers'] = implode(',', $_managers);
+        } else {
+            $report['receivers']['managers'] = $_msg;
+        }
+        if(count($_ccs) > 0){
+            $report['receivers']['cc'] = implode(',', $_ccs);
+        } else {
+            $report['receivers']['cc'] = ' ';
+        }
+        log_message("debug", "Recievers: ---> " . json_encode($report));
         $prove_ahead = $report['prove_ahead'];
         switch($prove_ahead) {
         case 0:{$_type = '报销';};break;
@@ -477,7 +487,7 @@ class Reports extends REIM_Controller {
             $_t_items = array();
             foreach($reports as &$r){
                 if(!array_key_exists($r['uid'], $_members)){
-t                    $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
+                    $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
                 }
                 $r['total'] = 0;
                 $r['paid'] = 0;
