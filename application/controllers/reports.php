@@ -328,6 +328,7 @@ class Reports extends REIM_Controller {
             array(
                 'title' => '查看报告',
                 'report' => $report
+		'flow' => array()
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
@@ -594,10 +595,13 @@ class Reports extends REIM_Controller {
             $receivers = '';
         }
         $buf = $this->reports->audit_report($rid, $status, $receivers, $content);
+	$buf_json = json_encode($buf);
+	log_message("debug","#########:$buf_json");
         if(!$buf['status']) {
             $this->session->set_userdata('last_error', '操作失败');
+	    log_message("debug","**********:$buf");
         }
-        redirect(base_url('reports/audit'));
+       redirect(base_url('reports/audit'));
     }
 }
 

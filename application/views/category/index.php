@@ -73,6 +73,7 @@ echo $str;
 ?>
 </tbody>
 </table>
+<p><?php echo json_encode($sobs) ?></p>
 </div><!-- /.span -->
 </div><!-- /.row -->
 
@@ -116,6 +117,19 @@ echo $str;
                                 </div>
                             </div>
                             <div class="space-4"></div>
+
+                              <div class="form-group">
+                                <label for="form-field-username">帐套选择</label>
+                                <div>
+                                    <select name="sob_id" id="sob_id"  class="form-control">
+                                    <?php
+                                    foreach($sobs as $item){
+                                    echo "<option value='" . $item['sob_id'] ."'>" . $item['sob_name'] . "</option>";
+                                    }
+                                    ?>
+                                    </select>
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <label for="form-field-username">隶属</label>

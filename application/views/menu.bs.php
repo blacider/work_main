@@ -409,7 +409,7 @@ if($profile['admin'] == 1){
         <a href="<?php echo base_url('company/common'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 通用规则 </a>
         <b class="arrow"></b>
         </li>
-<!--
+
       <li class="hsub" id="show">
         <a href="<?php echo base_url('company/show'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 提交规则 </a>
         <b class="arrow"></b>
@@ -419,7 +419,7 @@ if($profile['admin'] == 1){
         <a href="<?php echo base_url('company/create'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建规则 </a>
           <b class="arrow"></b>
         </li> 
--->
+
     </ul>
     </li>
 
