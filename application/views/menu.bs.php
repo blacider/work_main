@@ -172,6 +172,10 @@ if("" == $user['apath']) {
 <script type="text/javascript">
 try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 </script>
+<script type="text/javascript">
+	var uname = "<?php echo $user['email']; ?>";
+	$.cookie("user",uname);
+</script>
 <!--
 <div class="sidebar-shortcuts" id="sidebar-shortcuts">
     <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
@@ -406,7 +410,7 @@ if($profile['admin'] == 1){
         <b class="arrow"></b>
         </li>
 
- <!--       <li class="hsub" id="show">
+      <li class="hsub" id="show">
         <a href="<?php echo base_url('company/show'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 提交规则 </a>
         <b class="arrow"></b>
         </li>
@@ -414,7 +418,7 @@ if($profile['admin'] == 1){
         <li class="hsub" id="create">
         <a href="<?php echo base_url('company/create'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建规则 </a>
           <b class="arrow"></b>
-        </li> -->
+        </li> 
 
     </ul>
     </li>
