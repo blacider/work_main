@@ -299,7 +299,6 @@ class Reports extends REIM_Controller {
                     ),
             ));
     }
-
     public function show($id = 0){
         if($id == 0) return redirect(base_url('reports/index'));
         $report = $this->reports->get_detail($id);
@@ -326,7 +325,49 @@ class Reports extends REIM_Controller {
         } else {
             $report['receivers']['cc'] = ' ';
         }
-        log_message("debug", "Recievers: ---> " . json_encode($report));
+        $_flow = $this->reports->report_flow($id);
+
+        $flow = array();
+        array_push($flow, array(
+            'nickname' => '发起者'
+            ,'ts' => date('Y-m-d H:i:s', $report['createdt'])
+            ,'status' => '提交'
+            ,'step' => 0
+        ));
+
+
+        // 先找到提交的信息
+        // 昵称，审核意见，时间，step
+	log_message("debug", 'flow data:' . json_encode($_flow));
+        if($_flow['status'] == 1) {
+            foreach($_flow['data']['data'] as $s){
+                $_s = $s['status'] % 100;
+                $audit = '无';
+                if($_s == 2)  {
+                    $audit = '通过';
+                }
+                if($_s == 3)  {
+                    $audit = '拒绝';
+                }
+                array_push($flow, array(
+                    'status' => $audit
+                    ,'nickname' => $s['nickname']
+                    ,'ts' => date('Y-m-d H:i:s', $s['udt'])
+                    ,'step' => $s['step']
+                ));
+            }
+        }
+	usort($flow, function($a,$b)
+	{
+		if($a['step'] == $b['step'])
+		{
+			return 0;
+		}
+		return ($a['step'] < $b['step']) ?-1:1;
+	});
+        log_message("debug", "Recievers: ---> " . json_encode($flow));
+
+
         $prove_ahead = $report['prove_ahead'];
         switch($prove_ahead) {
         case 0:{$_type = '报销';};break;
@@ -337,7 +378,8 @@ class Reports extends REIM_Controller {
         $this->bsload('reports/view',
             array(
                 'title' => '查看报告',
-                'report' => $report
+                'report' => $report,
+                'flow' => $flow
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
@@ -612,10 +654,13 @@ class Reports extends REIM_Controller {
             $receivers = '';
         }
         $buf = $this->reports->audit_report($rid, $status, $receivers, $content);
+	$buf_json = json_encode($buf);
+	log_message("debug","#########:$buf_json");
         if(!$buf['status']) {
             $this->session->set_userdata('last_error', '操作失败');
+	    log_message("debug","**********:$buf");
         }
-        redirect(base_url('reports/audit'));
+       redirect(base_url('reports/audit'));
     }
 }
 

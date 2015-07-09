@@ -419,7 +419,8 @@ if($profile['admin'] == 1){
         <a href="<?php echo base_url('company/create'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建规则 </a>
           <b class="arrow"></b>
         </li> 
--->
+
+    -->
     </ul>
     </li>
 

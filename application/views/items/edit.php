@@ -7,7 +7,7 @@
 <script src="/static/ace/js/jquery.colorbox-min.js"></script>
 
 <!-- page specific plugin styles -->
-<script src="/static/ace/js/jquery1x.min.js"></script>
+<!--<script src="/static/ace/js/jquery1x.min.js"></script> -->
 <script src="/static/ace/js/date-time/moment.min.js"></script>
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
 <script src="/static/ace/js/dropzone.min.js"></script>
@@ -178,6 +178,10 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<!--
+<script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
+<script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
+<script src="/static/third-party/jfu/js/jquery.fileupload.js"></script>
 
 <script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script>
 
@@ -391,6 +395,7 @@ $(document).ready(function(){
 
 
     $('.renew').click(function(){
+        console.log($('#amount').val());
         if($('#amount').val() == 0) {
             show_notify('请输入金额');
             $('#amount').focus();
@@ -402,6 +407,7 @@ $(document).ready(function(){
             $('#amount').focus();
             return false;
         }
+
         //return false;
         if(isNaN($('#amount').val())) {
             show_notify('请输入有效金额');
@@ -426,4 +432,5 @@ $(document).ready(function(){
         $('#src').click();
     });
 });
+
 </script>
