@@ -286,7 +286,6 @@ $(document).ready(function(){
     $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange'></i>");//let's add a custom loading icon
  
     $('.renew').click(function(){
-        console.log("hello");
         if($('#amount').val() == 0) {
             show_notify('请输入金额');
             $('#amount').focus();

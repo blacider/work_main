@@ -299,7 +299,6 @@ class Reports extends REIM_Controller {
                     ),
             ));
     }
-
     public function show($id = 0){
         if($id == 0) return redirect(base_url('reports/index'));
         $report = $this->reports->get_detail($id);
@@ -315,8 +314,59 @@ class Reports extends REIM_Controller {
         foreach($report['receivers']['cc'] as $m){
             array_push($_ccs, $m['nickname']);
         }
-        $report['receivers']['managers'] = implode(',', $_managers);
-        $report['receivers']['cc'] = implode(',', $_ccs);
+        $_msg = '公司管理员';
+        if(count($_managers) > 0) {
+            $report['receivers']['managers'] = implode(',', $_managers);
+        } else {
+            $report['receivers']['managers'] = $_msg;
+        }
+        if(count($_ccs) > 0){
+            $report['receivers']['cc'] = implode(',', $_ccs);
+        } else {
+            $report['receivers']['cc'] = ' ';
+        }
+        $_flow = $this->reports->report_flow($id);
+
+        $flow = array();
+        array_push($flow, array(
+            'nickname' => '发起者'
+            ,'ts' => date('Y-m-d H:i:s', $report['createdt'])
+            ,'status' => '提交'
+            ,'step' => 0
+        ));
+
+
+        // 先找到提交的信息
+        // 昵称，审核意见，时间，step
+	log_message("debug", 'flow data:' . json_encode($_flow));
+        if($_flow['status'] == 1) {
+            foreach($_flow['data']['data'] as $s){
+                $audit = '无';
+                if($s['status'] == 2)  {
+                    $audit = '通过';
+                }
+                if($s['status'] == 3)  {
+                    $audit = '拒绝';
+                }
+                array_push($flow, array(
+                    'status' => $audit
+                    ,'nickname' => $s['nickname']
+                    ,'ts' => date('Y-m-d H:i:s', $s['udt'])
+                    ,'step' => $s['step']
+                ));
+            }
+        }
+	usort($flow, function($a,$b)
+	{
+		if($a['step'] == $b['step'])
+		{
+			return 0;
+		}
+		return ($a['step'] < $b['step']) ?-1:1;
+	});
+        log_message("debug", "Recievers: ---> " . json_encode($flow));
+
+
         $prove_ahead = $report['prove_ahead'];
         switch($prove_ahead) {
         case 0:{$_type = '报销';};break;
@@ -327,8 +377,8 @@ class Reports extends REIM_Controller {
         $this->bsload('reports/view',
             array(
                 'title' => '查看报告',
-                'report' => $report
-		'flow' => array()
+                'report' => $report,
+                'flow' => $flow
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
@@ -469,7 +519,6 @@ class Reports extends REIM_Controller {
         $_members = array();
         if($data['status'] > 0){
             $_reports = $data['data'];
-            $nicks = $_reports['nicks'];
             $reports = $_reports['report'];
             $banks = $_reports['banks'];
             $_banks = array();
@@ -486,13 +535,22 @@ class Reports extends REIM_Controller {
                 log_message('debug', json_encode($r));
                 $_items = $r['items'];
                 foreach($_items as $i){
-                    $r['total'] += ($i['amount'] * $i['rate'] / 100);
+                    log_message('debug', "Itemx :" .json_encode($i));
+                    $_rate = 1.0;
+                    if(array_key_exists('currency', $i) && strtolower($i['currency']) == 'cny') {
+                        $_rate = $i['rate'] / 100;
+                    }
+                    log_message("debug", "Items23:"  . json_encode($i));
+                    $r['total'] += ($i['amount'] * $_rate);
+                    $i['nickname'] = $r['nickname'];
+                    //$r['total'] += ($i['amount'] * $i['rate'] / 100);
+                    log_message("debug", "Items2:"  . json_encode($i));
+                    array_push($_t_items, $i);
                     if($i['reimbursed'] == 0) continue;
                     if($i['prove_ahead'] > 0){
                         $r['paid'] += $i['pa_amount'];
                     }
-                    $i['nickname'] = $r['nickname'];
-                    array_push($_t_items, $i);
+
                 }
                 if($r['status'] == 4){
                     // 已完成状态的，付款额度就是已付额度
@@ -510,6 +568,7 @@ class Reports extends REIM_Controller {
                 $obj['应付'] = $r['last'];
                 array_push($_excel, $obj);
             }
+            log_message("debug", "export --> " . json_encode($_t_items));
 
 
 
@@ -529,16 +588,14 @@ class Reports extends REIM_Controller {
                 array_push($members, $o);
             }
 
+            $nicks = $_reports['nicks'];
+
             $__members = array();
             foreach($nicks as $i){
                 $__members[$i['uid']] =  $i['nickname'];
             }
-
             $_detail_items = array();
             foreach($_t_items as $i){
-                if(!array_key_exists($r['uid'], $_members)){
-                    $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
-                }
                 $_relates = explode(',', $i['relates']);
                 $__relates = array();
                 foreach($_relates as $r){
@@ -575,6 +632,7 @@ class Reports extends REIM_Controller {
 
             //print_r($_excel);
             //print_r($r);
+            //self::render_to_download('报告汇总', $members, 'Finace_' . date('Y-m-d', time()) . ".xls", '报告明细', $_excel/*, '消费明细', $_detail_items*/);
             self::render_to_download('报告汇总', $members, 'Finace_' . date('Y-m-d', time()) . ".xls", '报告明细', $_excel, '消费明细', $_detail_items);
 
         }

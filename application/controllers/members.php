@@ -315,7 +315,7 @@ class Members extends REIM_Controller {
         $renew = $this->input->post('renew');
 
         $email = $this->input->post('email');
-        $nickname = $this->input->post('name');
+        $nickname = $this->input->post('nickname');
         $phone = $this->input->post('mobile');
         $groups = $this->input->post('groups');
 

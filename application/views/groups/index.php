@@ -1,3 +1,7 @@
+
+<script language='javascript'>
+    var _admin = "<?php echo $profile['admin']; ?>";
+</script>
 <div class="page-content">
     <div class="page-content-area">
         <div class="row">

@@ -261,26 +261,28 @@ class REIM_Controller extends CI_Controller{
             }
         }
         // TODO: 如此肮脏，算了，先推下来再说吧。
-        if($title_3 && count($data_3) > 0){
+        if($title_3){
             $Excel->createSheet();
             $Excel->setActiveSheetIndex(2);
             $Excel->getSheet(2)->setTitle($title_3);
 
-            $cell_one = $data_3[0];
-            $j = 0;
-            foreach ($cell_one as $k => $v) {
-                $Excel->getSheet(2)->setCellValue($this->getCharByNunber($j) . '1', $k);
-                $j++;
-            }
-
-            $x = 2;
-            foreach ($data_3 as $value) {
-                $y = 0;
-                foreach ($value as $k => $v) {
-                    $Excel->getSheet(2)->setCellValue($this->getCharByNunber($y) . $x, $v);
-                    $y++;
+            if(count($data_3) > 0) {
+                $cell_one = $data_3[0];
+                $j = 0;
+                foreach ($cell_one as $k => $v) {
+                    $Excel->getSheet(2)->setCellValue($this->getCharByNunber($j) . '1', $k);
+                    $j++;
                 }
-                $x++;
+
+                $x = 2;
+                foreach ($data_3 as $value) {
+                    $y = 0;
+                    foreach ($value as $k => $v) {
+                        $Excel->getSheet(2)->setCellValue($this->getCharByNunber($y) . $x, $v);
+                        $y++;
+                    }
+                    $x++;
+                }
             }
         }
 

@@ -45,15 +45,15 @@
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php 
                                                 $buf = '';
-switch($i['prove_ahead']) {
-case 0 : $buf = '报销';break;
-case 1 : $buf = '预算';break;
-case 2 : $buf = '预借';break;
-} 
-echo $buf;
+                                                switch($i['prove_ahead']) {
+                                                case 0 : $buf = '报销';break;
+                                                case 1 : $buf = '预算';break;
+                                                case 2 : $buf = '预借';break;
+                                                } 
+                                                echo $buf;
 
 
-?></td>
+                                                ?></td>
                                             <td><?php echo $i['amount']; ?></td>
                                             <td><?php echo $i['category_name']; ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
@@ -63,6 +63,35 @@ echo $buf;
                                     </table>
                                 </div>
                             </div>
+
+                        <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">审批流程</label>
+                                <div class="col-xs-9 col-sm-9">
+                                    <table class="table table-bordered table-striped">
+                                        <tr>
+                                            <td>审批时间</td>
+                                            <td>审批人</td>
+                                            <td>审批意见</td>
+                                            <td>审批步骤</td>
+                                       
+                                            <!--
+                                            <td>操作</td>
+                                            -->
+                                        </tr>
+                                        <?php foreach($flow as $i){ ?>
+                                        <tr>
+                                            <td><?php echo $i['ts']; ?></td>
+                                   
+                                            <td><?php echo $i['nickname']; ?></td>
+                                            <td><?php echo $i['status']; ?></td>
+                                            <td><?php echo $i['step']; ?></td>
+                                        </tr>
+                                        <?php } ?>
+                                    </table>
+                                </div>
+                            </div>
+
+
 
 <div class="clearfix form-actions col-sm-10 col-xs-10">
                                 <div class="col-md-offset-3 col-md-6">

@@ -118,4 +118,12 @@ class Report_Model extends Reim_Model {
         return $obj;
     }
 
+    public function report_flow($rid){
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+		$url = $this->get_url("report_flow/$rid");
+        $buf = $this->do_Get($url, $jwt);
+		$obj = json_decode($buf, true);
+        return $obj;
+    }
 }

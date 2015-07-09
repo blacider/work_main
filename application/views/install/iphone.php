@@ -83,7 +83,7 @@
         },50);
       } else
       {
-        window.location.href = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.111.plist';
+        window.location.href = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.121.plist';
       }
     }
 

@@ -183,6 +183,9 @@
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
 <script src="/static/third-party/jfu/js/jquery.fileupload.js"></script>
 
+<script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script>
+
+<script src="/static/ace/js/jquery.colorbox-min.js"></script>
 
 
 
@@ -350,7 +353,7 @@ $(document).ready(function(){
         alert('Dropzone.js does not support older browsers!');
     }
      */
-    $('#src').fileupload(
+    $('#src').uploadFile(
                     {
                         dataType: 'json',
                         progressall: function (e, data) {
@@ -405,6 +408,7 @@ $(document).ready(function(){
             return false;
         }
 
+        //return false;
         if(isNaN($('#amount').val())) {
             show_notify('请输入有效金额');
             $('#amount').val('');
