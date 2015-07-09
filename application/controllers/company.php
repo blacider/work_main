@@ -7,9 +7,42 @@ class Company extends REIM_Controller {
        $this->load->model('group_model', 'groups');
     }
 
+    public function create_rule()
+    {
+    	$error = $this->session->userdata('last_error');
+	$this->session->unset_userdata('last_error');
+	
+	$rname = $this->input->post('rule_name');
+	$sob_id = $this->input->post('sobs');
+	$category_id = $this->input->post('category');
+	
+	$amount = $this->input->post('rule_amount');
+	$amount_unlimit = $this->input->post('amount_unlimit');
+	$amount_time = $this->input->post('amount_time');
+	
+	$frequency = $this->input->post('frequency');
+	$frequency = $this->input->post('frequency_unlimit');
+	$frequency = $this->input->post('frequency_time');
+
+	$start_time = $this->input->post('sdt');
+	$end_time = $this->input->post('edt');
+	
+	$this->bsload('company/test',
+		array(
+			'title'=>'test'
+			,'sdt' => $start_time
+			,'edt' => $end_time
+			,'sob_id' => $sob_id
+			,'breadcrumbs' => array(
+				
+			),
+		)	
+	);
+    }
+
     public function show(){
     	$error = $this->session->userdata('last_error');
-	$this->session->unset_userdata('last_erro');
+	$this->session->unset_userdata('last_error');
 	$this->bsload('company/show',
 		array(
 			'title'=>'新建规则'
@@ -25,8 +58,8 @@ class Company extends REIM_Controller {
 
     public function create(){
     	$error = $this->session->userdata('last_error');
-	$this->session->unset_userdata('last_erro');
-	$this->bsload('company/rule',
+	$this->session->unset_userdata('last_error');
+	$this->bsload('company/create',
 		array(
 			'title'=>'提交规则'
 			,'error'=>$error
@@ -39,12 +72,12 @@ class Company extends REIM_Controller {
 	);
     }
 
-    public function submit(){
+    public function common(){
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
         $company = $this->company->get();
-        $this->bsload('company/submit',
+        $this->bsload('company/common',
             array(
                 'title' => '公司设置'
                 ,'company' => $company['data']['config']
@@ -65,7 +98,7 @@ class Company extends REIM_Controller {
         $config = $company['data']['config'];
         die($config);
     }
-
+/*
 public function common(){
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
@@ -86,7 +119,7 @@ public function common(){
             )
         );
     }
-
+*/
     public function review(){
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
@@ -129,13 +162,13 @@ public function common(){
     }
    public function profile()
    {
-   	$pid = 0;
+   	$pids = 0;
    	$ischecked = $this->input->post('ischecked');
 	$template = $this->input->post('template');
 	$user_confirm = $this->input->post('limit');
-	if($ischecked == true)
+	if($ischecked == "true")
 	{
-		$pid = 1;
+		$pids = 1;
 	}
 	$data = $this->company->get();
 //	$config = $data['data']['config'];
@@ -147,9 +180,9 @@ public function common(){
 //	{
 //		$confarr['template'] = $template;
 //	}
-	
+	log_message("debug","@@@@@@@@@@@@:$ischecked++++$pids");
 	$in=array();
-	$in['same_category'] = $pid;
+	$in['same_category'] = $pids;
 	$in['template'] = $template;
 	$in['user_confirm'] = $user_confirm;
 	$this->company->profile($in);
