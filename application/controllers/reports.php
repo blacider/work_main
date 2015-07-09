@@ -341,11 +341,12 @@ class Reports extends REIM_Controller {
 	log_message("debug", 'flow data:' . json_encode($_flow));
         if($_flow['status'] == 1) {
             foreach($_flow['data']['data'] as $s){
+                $_s = $s['status'] % 100;
                 $audit = '无';
-                if($s['status'] == 2)  {
+                if($_s == 2)  {
                     $audit = '通过';
                 }
-                if($s['status'] == 3)  {
+                if($_s == 3)  {
                     $audit = '拒绝';
                 }
                 array_push($flow, array(

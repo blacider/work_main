@@ -28,6 +28,7 @@
                                     <th>分类名称</th>
                                     <th>消费限制</th>
                                     <th>上级分类</th>
+                                    <th>所属帐套</th>
                                     <th>创建时间</th>
                                     <!-- <th>预审批</th> -->
                                     <th class="hidden-680">
@@ -60,6 +61,7 @@ foreach($category as $item){
 $username = '<td class="u_username">' . $item['category_name'] . '</td>';
 $nickname = '<td class="u_nickname">' . $img . '</td>';
 $max_limit = '<td class="u_nickname">' . $item['max_limit'] . '</td>';
+$acc_name = '<td class="u_sobname">' . $item['sob_name'] . '</td>';
 $role_id =  '<td class="u_role_name">' . date('Y-m-d H:i:s', $item['lastdt']) . '</td>';
 //$ascription =  '<td class="u_role_name">' . $billable . '</td>';
     //$role_id = '<td class="u_role_name">' . $item->role_name . '</td>';
@@ -67,13 +69,12 @@ $operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class
     $operation = '<td style="width:50px;"><a class="btn btn-xs btn-danger" href="' .  base_url('admin/user/del?id='. $item['id']) .'">
         <i class="ace-icon fa fa-trash-o bigger-120"></i>
         </a></td>';
-$str = $str . $username . $max_limit . $nickname . $role_id  .  $operation_upd . '</tr>';
+$str = $str . $username . $max_limit . $nickname . $acc_name . $role_id  .  $operation_upd . '</tr>';
 echo $str;
 }
 ?>
 </tbody>
 </table>
-<p><?php echo json_encode($sobs) ?></p>
 </div><!-- /.span -->
 </div><!-- /.row -->
 
@@ -119,15 +120,17 @@ echo $str;
                             <div class="space-4"></div>
               
                             <div class="form-group">
-                                <label for="form-field-username">部门</label>
+                                <label for="form-field-username">帐套</label>
                                 <div>
                                     <select name="sob_id" id="sob_id"  class="form-control">
-                                        <option value="0">请选择部门</option>
-                                        <?php foreach($ugroups as $g) { ?>
+                                        <option value="0">请选择帐套</option>
+                                        <?php foreach($sobs as $sob) {
 
-                                            <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
-                                        <?php } ?>
+                                           echo "<option value='" . $sob['sob_id'] . "'>" . $sob['sob_name'] . "</option>";
+                                        }
+                                        ?>
                                     </select>
+
                                 </div>
                             </div>
 
