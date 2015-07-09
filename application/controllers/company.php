@@ -163,12 +163,18 @@ public function common(){
    public function profile()
    {
    	$pids = 0;
+	$remark_id = 0;
    	$ischecked = $this->input->post('ischecked');
+	$isremark = $this->input->post('isremark');
 	$template = $this->input->post('template');
 	$user_confirm = $this->input->post('limit');
 	if($ischecked == "true")
 	{
 		$pids = 1;
+	}
+	if($isremark == "true")
+	{
+		$remark_id = 1;
 	}
 	$data = $this->company->get();
 //	$config = $data['data']['config'];
@@ -183,10 +189,11 @@ public function common(){
 	log_message("debug","@@@@@@@@@@@@:$ischecked++++$pids");
 	$in=array();
 	$in['same_category'] = $pids;
+	$in['export_no_note'] = $remark_id;
 	$in['template'] = $template;
 	$in['user_confirm'] = $user_confirm;
 	$this->company->profile($in);
-	$re = array('name' => $ischecked,'template' => $template,'obj' => $data['data']['config']);
+	$re = array('name' => $ischecked,'remark'=>$isremark,'template' => $template,'obj' => $data['data']['config']);
 	die(json_encode($re));
    }
 }
