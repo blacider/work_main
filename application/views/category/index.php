@@ -119,21 +119,6 @@ echo $str;
                             </div>
                             <div class="space-4"></div>
               
-                            <div class="form-group">
-                                <label for="form-field-username">帐套</label>
-                                <div>
-                                    <select name="sob_id" id="sob_id"  class="form-control">
-                                        <option value="0">请选择帐套</option>
-                                        <?php foreach($sobs as $sob) {
-
-                                           echo "<option value='" . $sob['sob_id'] . "'>" . $sob['sob_name'] . "</option>";
-                                        }
-                                        ?>
-                                    </select>
-
-                                </div>
-                            </div>
-
                               <div class="form-group">
                                 <label for="form-field-username">帐套选择</label>
                                 <div>
