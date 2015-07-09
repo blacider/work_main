@@ -177,14 +177,31 @@ class Category extends REIM_Controller {
         $category = $this->category->get_list();
         $ugroups = $this->ug->get_my_list();
         $_ug = json_encode($ugroups['data']['group']);
+        $sobs = $this->account_set->get_account_set_list();
+        $_sobs = $sobs['data'];
         log_message("debug", "UG#########: $_ug");
         if($category){
             $_group = $category['data']['categories'];
         }
+        $category_group = array();
+        foreach ($_group as $item) {
+            foreach ($_sobs as $sob) {
+                if ($item['sob_id'] == $sob['sob_id']) {
+                    $item['sob_name'] = $sob['sob_name'];
+                    break;
+                } else if($item['sob_id'] == 0) {
+                    $item['sob_name'] = "没有帐套";
+                    break;
+                }
+            }
+            $category_group[] = $item;
+        }
+
         $this->bsload('category/index',
             array(
                 'title' => '分类管理'
-                ,'category' => $_group
+                ,'category' => $category_group
+                ,'sobs' => $sobs['data']
                 ,'error' => $error
                 ,'ugroups' => $ugroups['data']['group']
                 //,'category' => json_encode($_group)
@@ -246,6 +263,7 @@ class Category extends REIM_Controller {
         $name = $this->input->post('category_name');
         $pid = $this->input->post('pid');
         $sob_id = $this->input->post('sob_id');
+
         $prove_ahead= $this->input->post('prove_ahead');
         $max_limit = $this->input->post('max_limit');
         $cid = $this->input->post('category_id');
