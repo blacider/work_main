@@ -7,6 +7,7 @@
     <meta name="format-detection" content="telephone=no" />
     <link rel="shortcut icon" href="favicon.ico" />
     <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/login.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/normalize.css" />
     <!--[if lt IE 9]>
@@ -71,12 +72,12 @@
               <span class="error">请输入手机或邮箱</span>
               <span class="error">手机或邮箱输入格式有误</span>
               <span class="error" id="error_bad_pass">用户名或者密码错误</span>
-              <input type="text" name="u" />
+              <input id="user" type="text" name="u" />
             </div>
             <div class="form-password">
               <span>密码</span>
               <span class="error">请输入密码</span>
-              <input type="password" name="p" />
+              <input id="pw" type="password" name="p" />
             </div>
             <div class="form-submit login-button-div">
                 <input type="submit" value="登录" />
@@ -144,6 +145,17 @@
       </div>
     </div>
   </div>
+  <script>
+	$(document).ready(function(){	
+		$('#user').focus();
+//	        console.log($.cookie('user'));
+		if($.cookie('user')!=undefined)
+		{
+			$('#pw').focus();
+			$('#user').val($.cookie('user'));
+		}
+	});
+  </script> 
   <div class="footer">
     <div class="main-block">
       <div class="copyright">
