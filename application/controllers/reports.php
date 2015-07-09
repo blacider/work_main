@@ -326,7 +326,39 @@ class Reports extends REIM_Controller {
         } else {
             $report['receivers']['cc'] = ' ';
         }
-        log_message("debug", "Recievers: ---> " . json_encode($report));
+        $_flow = $this->reports->report_flow($id);
+        
+        $flow = array();
+        array_push($flow, array(
+            'nickname' => '发起者'
+            ,'ts' => date('Y-m-d H:i:s', $report['createdt'])
+            ,'status' => '提交'
+            ,'step' => 1
+        ));
+
+
+        // 先找到提交的信息
+        // 昵称，审核意见，时间，step
+        if($_flow['status'] == 0) {
+            foreach($_flow['data']['data'] as $s){
+                $audit = '无';
+                if($s['status'] == 2)  {
+                    $audit = '通过';
+                }
+                if($s['status'] == 3)  {
+                    $audit = '拒绝';
+                }
+                array_push($flow, array(
+                    'audit' => $audit
+                    ,'nickname' => $s['nickname']
+                    ,'ts' => date('Y-m-d H:i:s', $s['udt'])
+                    ,'step' => $s['step']
+                ));
+            }
+        }
+        log_message("debug", "Recievers: ---> " . json_encode($flow));
+
+
         $prove_ahead = $report['prove_ahead'];
         switch($prove_ahead) {
         case 0:{$_type = '报销';};break;
@@ -338,6 +370,7 @@ class Reports extends REIM_Controller {
             array(
                 'title' => '查看报告',
                 'report' => $report
+                'flow' => $flow
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
