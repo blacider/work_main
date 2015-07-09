@@ -1,276 +1,164 @@
+<link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
+<link rel="stylesheet" href="/static/ace/css/chosen.css" />
+<link rel="stylesheet" href="/static/ace/css/dropzone.css" />
+
+<link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
+<script src="/static/ace/js/date-time/moment.min.js"></script>
+<!-- <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script> -->
+<script src="/static/ace/js/chosen.jquery.min.js"></script>
+<script src="/static/ace/js/dropzone.min.js"></script>
+
+
+<script src="/static/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
+<script  type="text/javascript" src="/static/ace/js/date-time/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>
 
 
 
-	<div class="col-xs-12">
-		<!-- PAGE CONTENT BEGINS -->
 
-		<!-- #section:plugins/fuelux.treeview -->
-		
+<div class="page-content">
+    <div class="page-content-area">
+        <form role="form"  class="form-horizontal"  enctype="multipart/form-data" id="mainform">
+            <div class="row">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right">允许不同类目消费记录</label>
+                                <div class="col-xs-6 col-sm-6">
+                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
+                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
+                                        <label style="margin-top:8px;">
+                                            <input name="isadmin" class="ace ace-switch btn-rotate" type="checkbox" id="isadmin" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
 
-			<div class="col-sm-6">
-				<div class="widget-box widget-color-green2">
-					<div class="widget-header">
-						<h4 class="widget-title lighter smaller">Browse Files</h4>
-					</div>
+                                   <!-- </div> -->
+                                </div>
+                            </div>
 
-					<div class="widget-body">
-						<div class="widget-main padding-8">
-							<div id="tree2" class="tree"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		
 
-		<!-- /section:plugins/fuelux.treeview -->
-		<script type="text/javascript">
-			var $assets = "../../assets";//this will be used in fuelux.tree-sampledata.js
-		</script>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-rigtht">报销单模板选择</label>
+                                <div class="col-xs-4 col-sm-4">
+                                    <select id="temp" class="chosen-select tag-input-style" name="temp"  data-placeholder="请选择模板">
+                                    <option value="a4.yaml">A4模板</option>
+                                    <option value="a5.yaml">A5模板</option>
+                                    <option value="b5.yaml">B5模板</option>
+                                
+                                </select>
+                                </div>
+                            </div>
 
-		<!-- PAGE CONTENT ENDS -->
-	</div><!-- /.col -->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-rigtht">需要用户确认额度</label>
+                                <div class="col-xs-4 col-sm-4">
+					<input id="limit" type="text" class="form-controller col-xs-12" name="limit" placeholder="输入额度">
+                                </div>
+                            </div>
 
-<!-- page specific plugin scripts -->
+                            <input type="hidden" id="renew" name="renew" value="0" />
+                            <input type="reset" style="display:none;" id="reset">
+                            <div class="clearfix form-actions">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
+
+                                    <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script type="text/javascript">
-	var scripts = [null,"/static/ace/js/fuelux/fuelux.tree.min.js", null]
-	ace.load_ajax_scripts(scripts, function() {
-	  //inline scripts related to this page
-		 jQuery(function($){
+var __BASE = "<?php echo $base_url; ?>";
+   $(document).ready(function(){
+   /*	$('.renew').click(function(){
+    var _checked = $('#isadmin').is('checked');
+    console.log("checked" + _checked);
+    $('#profile').submit();
+	});*/
+   $.ajax({
+    type:"get",
+    url:__BASE+"company/getsetting",
+    dataType:'json',
+    success:function(data){
 
-		/*$('#tree1').ace_tree({
-			dataSource: treeDataSource ,
-			multiSelect:true,
-			loadingHTML:'<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
-			'open-icon' : 'ace-icon tree-minus',
-			'close-icon' : 'ace-icon tree-plus',
-			'selectable' : true,
-			'selected-icon' : 'ace-icon fa fa-check',
-			'unselected-icon' : 'ace-icon fa fa-times'
-		});*/
+        console.log(data);
+        if(data.same_category!=undefined)
+        {
+            console.log(data.same_category);
+            if(data.same_category==1)
+            {
+            $('#isadmin').attr('checked', data.same_category);
+            $("#isadmin").trigger("chosen:updated");
+            }
 
-		$('#tree2').ace_tree({
-			dataSource: treeDataSource2 ,
-			loadingHTML:'<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
-			'open-icon' : 'ace-icon fa fa-folder-open',
-			'close-icon' : 'ace-icon fa fa-folder',
-			'selectable' : false,
-			'selected-icon' : null,
-			'unselected-icon' : null
-		});
-		
-		
-		$('#tree1')
-		.on('updated', function(e, result) {
-			//result.info  >> an array containing selected items
-			//result.item
-			//result.eventType >> (selected or unselected)
-		})
-		.on('selected', function(e) {
-		})
-		.on('unselected', function(e) {
-		})
-		.on('opened', function(e) {
-		})
-		.on('closed', function(e) {
-		});
+        }
+        if(data.template != undefined) {
+            $("#temp").val( data.template ).attr('selected',true);
+            $(".chosen-select").trigger("chosen:updated");
+        }
 
+        if(data.user_confirm != undefined) {
+            $('#limit').val(data.user_confirm);
+        }
+    }
+   });
 
+        $('.renew').click(function(){
+	   var lval = parseInt($('#limit').val());
+       console.log(lval);
+       console.log($('#isadmin').is(':checked'));
+       if(isNaN(lval))
+       {
+            lval = 0;
+       }
+	   if(lval>=0)
+	   {
+           $.ajax({
+                type:"post",
+                url:__BASE+"company/profile",
+                data:{ischecked:$('#isadmin').is(':checked'),template:$('#temp option:selected').val(),limit:lval},
+                dataType:'json',
+                success:function(data){
+                        console.log(data);
+                       show_notify('保存成功');
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log(XMLHttpRequest.status);
+                        console.log(XMLHttpRequest.readyState);
+                        console.log(textStatus);
+                    },            });
+	 }
+	 else
+	 {
+	 	show_notify('请输入有效额度');
+	 	$('#limit').val('');
+		$('#limit').focus();
+		return false;
+	 }
+       }); 
 
-		/**
-		$('#tree1').on('loaded', function (evt, data) {
-		});
-
-		$('#tree1').on('opened', function (evt, data) {
-		});
-
-		$('#tree1').on('closed', function (evt, data) {
-		});
-
-		$('#tree1').on('selected', function (evt, data) {
-		});
-		*/
-});
-	});
+        $('.chosen-select').chosen({allow_single_deselect:true}); 
+        $(window)
+            .off('resize.chosen')
+            .on('resize.chosen', function() {
+                $('.chosen-select').each(function() {
+                    var $this = $(this);
+                    $this.next().css({'width': $this.parent().width()});
+                })
+            }).trigger('resize.chosen');
+       
+        $('.cancel').click(function(){
+            $('#reset').click();
+        });
+    });
 </script>
-<script type="text/javascript">
-	
-	var DataSourceTree = function(options) {
-	this._data 	= options.data;
-	this._delay = options.delay;
-}
 
-DataSourceTree.prototype.data = function(options, callback) {
-	var self = this;
-	var $data = null;
+       
 
-	if(!("name" in options) && !("type" in options)){
-		$data = this._data;//the root tree
-		callback({ data: $data });
-		return;
-	}
-	else if("type" in options && options.type == "folder") {
-		if("additionalParameters" in options && "children" in options.additionalParameters)
-			$data = options.additionalParameters.children;
-		else $data = {}//no data
-	}
-	
-	if($data != null)//this setTimeout is only for mimicking some random delay
-		setTimeout(function(){callback({ data: $data });} , parseInt(Math.random() * 500) + 200);
-
-	//we have used static data here
-	//but you can retrieve your data dynamically from a server using ajax call
-	//checkout examples/treeview.html and examples/treeview.js for more info
-};
-
-/*var tree_data = {
-	'for-sale' : {name: 'For Sale', type: 'folder'}	,
-	'vehicles' : {name: 'Vehicles', type: 'folder'}	,
-	'rentals' : {name: 'Rentals', type: 'folder'}	,
-	'real-estate' : {name: 'Real Estate', type: 'folder'}	,
-	'pets' : {name: 'Pets', type: 'folder'}	,
-	'tickets' : {name: 'Tickets', type: 'item'}	,
-	'services' : {name: 'Services', type: 'item'}	,
-	'personals' : {name: 'Personals', type: 'item'}
-}
-tree_data['for-sale']['additionalParameters'] = {
-	'children' : {
-		'appliances' : {name: 'Appliances', type: 'item'},
-		'arts-crafts' : {name: 'Arts & Crafts', type: 'item'},
-		'clothing' : {name: 'Clothing', type: 'item'},
-		'computers' : {name: 'Computers', type: 'item'},
-		'jewelry' : {name: 'Jewelry', type: 'item'},
-		'office-business' : {name: 'Office & Business', type: 'item'},
-		'sports-fitness' : {name: 'Sports & Fitness', type: 'item'}
-	}
-}
-tree_data['vehicles']['additionalParameters'] = {
-	'children' : {
-		'cars' : {name: 'Cars', type: 'folder'},
-		'motorcycles' : {name: 'Motorcycles', type: 'item'},
-		'boats' : {name: 'Boats', type: 'item'}
-	}
-}
-tree_data['vehicles']['additionalParameters']['children']['cars']['additionalParameters'] = {
-	'children' : {
-		'classics' : {name: 'Classics', type: 'item'},
-		'convertibles' : {name: 'Convertibles', type: 'item'},
-		'coupes' : {name: 'Coupes', type: 'item'},
-		'hatchbacks' : {name: 'Hatchbacks', type: 'item'},
-		'hybrids' : {name: 'Hybrids', type: 'item'},
-		'suvs' : {name: 'SUVs', type: 'item'},
-		'sedans' : {name: 'Sedans', type: 'item'},
-		'trucks' : {name: 'Trucks', type: 'item'}
-	}
-}
-
-tree_data['rentals']['additionalParameters'] = {
-	'children' : {
-		'apartments-rentals' : {name: 'Apartments', type: 'item'},
-		'office-space-rentals' : {name: 'Office Space', type: 'item'},
-		'vacation-rentals' : {name: 'Vacation Rentals', type: 'item'}
-	}
-}
-tree_data['real-estate']['additionalParameters'] = {
-	'children' : {
-		'apartments' : {name: 'Apartments', type: 'item'},
-		'villas' : {name: 'Villas', type: 'item'},
-		'plots' : {name: 'Plots', type: 'item'}
-	}
-}
-tree_data['pets']['additionalParameters'] = {
-	'children' : {
-		'cats' : {name: 'Cats', type: 'item'},
-		'dogs' : {name: 'Dogs', type: 'item'},
-		'horses' : {name: 'Horses', type: 'item'},
-		'reptiles' : {name: 'Reptiles', type: 'item'}
-	}
-}
-
-var treeDataSource = new DataSourceTree({data: tree_data});
-
-*/
-
-
-
-
-
-
-
-var ace_icon = ace.vars['icon'];
-//class="'+ace_icon+' fa fa-file-text grey"
-//becomes
-//class="ace-icon fa fa-file-text grey"
-var tree_data_2 = {
-	'pictures' : {name: 'Pictures', type: 'folder', 'icon-class':'red'}	,
-	'music' : {name: 'Music', type: 'folder', 'icon-class':'orange'}	,
-	'video' : {name: 'Video', type: 'folder', 'icon-class':'blue'}	,
-	'documents' : {name: 'Documents', type: 'folder', 'icon-class':'green'}	,
-	'backup' : {name: 'Backup', type: 'folder'}	,
-	'readme' : {name: '<i class="'+ace_icon+' fa fa-file-text grey"></i> ReadMe.txt', type: 'item'},
-	'manual' : {name: '<i class="'+ace_icon+' fa fa-book blue"></i> Manual.html', type: 'item'}
-}
-tree_data_2['music']['additionalParameters'] = {
-	'children' : [
-		{name: '<i class="'+ace_icon+' fa fa-music blue"></i> song1.ogg', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-music blue"></i> song2.ogg', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-music blue"></i> song3.ogg', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-music blue"></i> song4.ogg', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-music blue"></i> song5.ogg', type: 'item'}
-	]
-}
-tree_data_2['video']['additionalParameters'] = {
-	'children' : [
-		{name: '<i class="'+ace_icon+' fa fa-film blue"></i> movie1.avi', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-film blue"></i> movie2.avi', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-film blue"></i> movie3.avi', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-film blue"></i> movie4.avi', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-film blue"></i> movie5.avi', type: 'item'}
-	]
-}
-tree_data_2['pictures']['additionalParameters'] = {
-	'children' : {
-		'wallpapers' : {name: 'Wallpapers', type: 'folder', 'icon-class':'pink'},
-		'camera' : {name: 'Camera', type: 'folder', 'icon-class':'pink'}
-	}
-}
-tree_data_2['pictures']['additionalParameters']['children']['wallpapers']['additionalParameters'] = {
-	'children' : [
-		//'music' : {name: 'Music', type: 'folder', 'icon-class':'orange'}
-		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> wallpaper1.jpg', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> wallpaper2.jpg', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> wallpaper3.jpg', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> wallpaper4.jpg', type: 'item'}
-	]
-}
-tree_data_2['pictures']['additionalParameters']['children']['camera']['additionalParameters'] = {
-	'children' : [
-		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> photo1.jpg', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> photo2.jpg', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> photo3.jpg', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> photo4.jpg', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> photo5.jpg', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-picture-o green"></i> photo6.jpg', type: 'item'}
-	]
-}
-
-
-tree_data_2['documents']['additionalParameters'] = {
-	'children' : [
-		{name: '<i class="'+ace_icon+' fa fa-file-text red"></i> document1.pdf', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-file-text grey"></i> document2.doc', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-file-text grey"></i> document3.doc', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-file-text red"></i> document4.pdf', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-file-text grey"></i> document5.doc', type: 'item'}
-	]
-}
-
-tree_data_2['backup']['additionalParameters'] = {
-	'children' : [
-		{name: '<i class="'+ace_icon+' fa fa-archive brown"></i> backup1.zip', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-archive brown"></i> backup2.zip', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-archive brown"></i> backup3.zip', type: 'item'},
-		{name: '<i class="'+ace_icon+' fa fa-archive brown"></i> backup4.zip', type: 'item'}
-	]
-}
-var treeDataSource2 = new DataSourceTree({data: tree_data_2});
-</script>

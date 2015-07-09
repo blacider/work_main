@@ -174,10 +174,22 @@ class Category extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
+    	$sobs = $this->account_set->get_account_set_list();
         $category = $this->category->get_list();
-        $ugroups = $this->ug->get_my_list();
-        $_ug = json_encode($ugroups['data']['group']);
-        log_message("debug", "UG#########: $_ug");
+	$ugroups = $this->ug->get_my_list();
+	$_ug = json_encode($ugroups['data']['group']);
+	$_category = json_encode($category);
+	log_message("debug", "CATEGORY#########: $_category");
+	
+	$_sobs = $sobs['data'];
+	$sob_data = array();
+	foreach($_sobs as $item)
+	{
+		if(!array_key_exists($item['sob_id'],$sob_data))
+		{
+			$sob_data[$item['sob_id']]=$item['sob_name'];
+		}
+	}
         if($category){
             $_group = $category['data']['categories'];
         }
@@ -187,6 +199,8 @@ class Category extends REIM_Controller {
                 ,'category' => $_group
                 ,'error' => $error
                 ,'ugroups' => $ugroups['data']['group']
+		,'sobs' => $sob_data
+		,'ugroups' => $ugroups['data']['group']
                 //,'category' => json_encode($_group)
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -251,6 +265,9 @@ class Category extends REIM_Controller {
         $cid = $this->input->post('category_id');
         $gid = $this->input->post('gid');
         log_message("debug","\n#############GID:$gid");
+	$sob_id = $this->input->post('sob_id');
+	
+	log_message("debug","\n#############GID:$gid");
         $msg = '添加分类失败';
         $obj = null;
         if($cid > 0){
@@ -298,5 +315,22 @@ class Category extends REIM_Controller {
             array_push($tree,array($item['category_name'] => array('name' => $item['category_name'] ,'type' => 'folder','icon-class' => 'red')));
         };
         die(json_encode($tree));
+    }
+    public function get_sob_category($sob_id)
+    {
+    	$category = $this->category->get_list();
+	$categories = $category['data']['categories'];
+	$data = array();
+	foreach($categories as $item)
+	{
+		if($item['sob_id'] == $sob_id)
+		{
+			array_push($data,array($item['id'] => $item['category_name']));	
+		}
+	}
+	$json_data=json_encode($data);
+	log_message("debug","###########SOB_CATEGORY:$json_data");
+	die($json_data);
+	
     }
 }

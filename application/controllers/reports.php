@@ -317,6 +317,7 @@ class Reports extends REIM_Controller {
         }
         $report['receivers']['managers'] = implode(',', $_managers);
         $report['receivers']['cc'] = implode(',', $_ccs);
+        log_message("debug", "Receivers ------->:" . json_encode($report['receivers']));
         $prove_ahead = $report['prove_ahead'];
         switch($prove_ahead) {
         case 0:{$_type = '报销';};break;
