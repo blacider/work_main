@@ -19,7 +19,7 @@
     <!--<![endif]-->
 <script language="javascript">
     var __BASE = "<?php echo base_url(); ?>";
-    var _error = "";
+    var _error = "<?php echo $error; ?>";
 </script>
     <script type="text/javascript" src="/static/js/jquery.js"></script>
     <script type="text/javascript" src="/static/js/index.js"></script>
@@ -98,5 +98,12 @@ if($name){
   	  </div>
   	</div>
   </div>
+<script language="javascript">
+$(document).ready(function(){
+    if(_error) {
+        alert(_error);
+    }
+});
+</script>
 </body>
 </html>
