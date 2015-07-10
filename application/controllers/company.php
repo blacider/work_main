@@ -59,10 +59,20 @@ class Company extends REIM_Controller {
     public function create(){
     	$error = $this->session->userdata('last_error');
 	$this->session->unset_userdata('last_error');
+        $group = $this->groups->get_my_list();
+
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
 	$this->bsload('company/create',
 		array(
-			'title'=>'提交规则'
+			'title'=>'新建规则'
 			,'error'=>$error
+			,'member'=>$gmember
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
 				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
