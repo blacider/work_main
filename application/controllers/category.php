@@ -345,21 +345,39 @@ class Category extends REIM_Controller {
         };
         die(json_encode($tree));
     }
-    public function get_sob_category($sob_id)
+    public function get_sob_category()
     {
+        $sobs = $this->account_set->get_account_set_list();
+        $_sobs = $sobs['data'];
+        $data = array();
+        foreach($_sobs as $sob)
+        {
+            if(array_key_exists($sob['sob_id'],$data))
+            {
+                $group=$data[$sob['sob_id']]['groups'];
+                array_push($data[$sob['sob_id']]['groups'],array('group_id'=>$sob['group_id'],'group_name'=>$sob['group_name']));
+            }
+            else
+            {
+                $data[$sob['sob_id']]=array();
+                $data[$sob['sob_id']]['sob_name']=$sob['sob_name'];
+                $data[$sob['sob_id']]['groups'] = array();
+                $groups = $data[$sob['sob_id']]['groups'];
+                array_push($data[$sob['sob_id']]['groups'],array('group_id'=>$sob['group_id'],'group_name'=>$sob['group_name']));
+            }
+        }
     	$category = $this->category->get_list();
 	$categories = $category['data']['categories'];
-	$data = array();
 	foreach($categories as $item)
 	{
-		if($item['sob_id'] == $sob_id)
+		if(array_key_exists($item['sob_id'],$data))
 		{
-			array_push($data,array($item['id'] => $item['category_name']));	
+			$data[$item['sob_id']]['category'] = array();
+			array_push($data[$item['sob_id']]['category'],array('category_id'=>$item['id'],'category_name'=>$item['category_name']));
 		}
 	}
-	$json_data=json_encode($data);
-	log_message("debug","###########SOB_CATEGORY:$json_data");
-	die($json_data);
+
+        die(json_encode($data));
 	
     }
 }
