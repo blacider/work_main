@@ -183,12 +183,16 @@ class Category extends REIM_Controller {
 	
 	$_sobs = $sobs['data'];
 	$sob_data = array();
+	$_sob_id_key = array();
 	foreach($_sobs as $item)
 	{
-		if(!array_key_exists($item['sob_id'],$sob_data))
+		$_sob_id = $item['sob_id'];
+		if(!in_array($_sob_id,$_sob_id_key))
 		{
-			$sob_data[$item['sob_id']]=$item['sob_name'];
+			array_push($_sob_id_key,$_sob_id);
+			array_push($sob_data,$item);
 		}
+
 	}
         if($category){
             $_group = $category['data']['categories'];
@@ -333,6 +337,7 @@ class Category extends REIM_Controller {
                 $data[$sob['sob_id']]=array();
                 $data[$sob['sob_id']]['sob_name']=$sob['sob_name'];
                 $data[$sob['sob_id']]['groups'] = array();
+		$data[$sob['sob_id']]['category'] = array();
                 $groups = $data[$sob['sob_id']]['groups'];
                 array_push($data[$sob['sob_id']]['groups'],array('group_id'=>$sob['group_id'],'group_name'=>$sob['group_name']));
             }
@@ -341,11 +346,12 @@ class Category extends REIM_Controller {
 	$categories = $category['data']['categories'];
 	foreach($categories as $item)
 	{
+	
 		if(array_key_exists($item['sob_id'],$data))
 		{
-			$data[$item['sob_id']]['category'] = array();
 			array_push($data[$item['sob_id']]['category'],array('category_id'=>$item['id'],'category_name'=>$item['category_name']));
 		}
+		log_message("debug","@@@@@@@@@@@@".$item['sob_id']."+++".$item['category_name']);
 	}
 
         die(json_encode($data));

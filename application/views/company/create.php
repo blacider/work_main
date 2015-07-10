@@ -55,9 +55,9 @@
                                 </div>
 
                                 <div class="col-sm-2 col-sm-2">
-                                    <div class="checkbox" id="amount_unlimit">
+                                    <div class="checkbox" >
                                         <label>
-                                         <input type="checkbox" value="0">
+                                         <input type="checkbox" id="amount_unlimit" value="0">
                                             无限制
                                          </label>
                                         </div>
@@ -81,9 +81,9 @@
                                 </div>
 
                                 <div class="col-sm-2 col-sm-2">
-                                    <div class="checkbox" id="frequency_unlimit">
+                                    <div class="checkbox" >
                                         <label>
-                                         <input type="checkbox" value="0">
+                                         <input type="checkbox" value="0" id="frequency_unlimit" >
                                             无限制
                                          </label>
                                         </div>
@@ -101,7 +101,6 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="form-group">
                                     <label class="col-sm-1 control-label no-padding-right">消费时间</label>
                                     <div class="col-xs-3 col-sm-3">
                                         <div class="input-group">
@@ -121,6 +120,30 @@
                                         </div>
                                     </div>
 
+                               
+                            </div>
+                            <hr>
+                              <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">适用员工</label>
+                                <div class="col-xs-4 col-sm-4">
+                                    <select class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
+                                    <?php 
+                                    foreach($member as $m){
+                                    ?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-2 col-sm-2">
+                                    <div class="checkbox" >
+                                        <label>
+                                         <input type="checkbox" id="all_members" value="0">
+                                            全体员工
+                                         </label>
+                                        </div>
                                 </div>
                             </div>
 
@@ -284,6 +307,54 @@ $(document).ready(function(){
     $('.cancel').click(function(){
         $('#reset').click();
     });
+
+    $('#amount_unlimit').click(function(){
+        if($(this).is(':checked'))
+        {
+            $('#amount').attr("disabled",true);
+        }
+        else
+        {
+            $('#amount').attr("disabled",false);
+        }
+    });
+
+      $('#frequency_unlimit').click(function(){
+        if($(this).is(':checked'))
+        {
+            $('#frequency').attr("disabled",true);
+        }
+        else
+        {
+            $('#frequency').attr("disabled",false);
+        }
+    });
+
+    $('#all_members').click(function(){
+        if($(this).is(':checked'))
+        {
+            console.log("helleo");
+            $('#member').prop('disabled',true).trigger("chosen:updated");
+        }
+        else
+        {
+            $('#member').prop('disabled',false).trigger("chosen:updated");
+        }
+    });
+
+    /*var update_users = function () {
+    if ($("#all_members").is(":checked")) {
+        $('#member').prop('disabled', false);
+        console.log("hello");
+    }
+    else {
+        console.log("world");
+        $('#member').prop('disabled', 'disabled');
+    }
+  };
+  $(update_users);
+  $("#all_members").change(update_users);*/
+
 });
 </script>
 
