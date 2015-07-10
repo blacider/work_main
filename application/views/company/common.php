@@ -37,6 +37,19 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right">导出报告不要备注</label>
+                                <div class="col-xs-6 col-sm-6">
+                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
+                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
+                                        <label style="margin-top:8px;">
+                                            <input name="isremark" class="ace ace-switch btn-rotate" type="checkbox" id="isremark" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+
+                                   <!-- </div> -->
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-rigtht">报销单模板选择</label>
@@ -76,6 +89,8 @@
 
 <script type="text/javascript">
 var __BASE = "<?php echo $base_url; ?>";
+</script>
+<script type="text/javascript">
    $(document).ready(function(){
    /*	$('.renew').click(function(){
     var _checked = $('#isadmin').is('checked');
@@ -88,14 +103,23 @@ var __BASE = "<?php echo $base_url; ?>";
     dataType:'json',
     success:function(data){
 
-        console.log(data);
+       // console.log(data);
+       
         if(data.same_category!=undefined)
         {
-            console.log(data.same_category);
             if(data.same_category==1)
             {
             $('#isadmin').attr('checked', data.same_category);
             $("#isadmin").trigger("chosen:updated");
+            }
+
+        }
+        if(data.export_no_note!=undefined)
+        {
+            if(data.export_no_note==1)
+            {
+            $('#isremark').attr('checked', data.export_no_note);
+            $("#isremark").trigger("chosen:updated");
             }
 
         }
@@ -112,8 +136,8 @@ var __BASE = "<?php echo $base_url; ?>";
 
         $('.renew').click(function(){
 	   var lval = parseInt($('#limit').val());
-       console.log(lval);
-       console.log($('#isadmin').is(':checked'));
+    //   console.log(lval);
+      // console.log($('#isadmin').is(':checked'));
        if(isNaN(lval))
        {
             lval = 0;
@@ -123,10 +147,10 @@ var __BASE = "<?php echo $base_url; ?>";
            $.ajax({
                 type:"post",
                 url:__BASE+"company/profile",
-                data:{ischecked:$('#isadmin').is(':checked'),template:$('#temp option:selected').val(),limit:lval},
+                data:{ischecked:$('#isadmin').is(':checked'),isremark:$('#isremark').is(':checked'),template:$('#temp option:selected').val(),limit:lval},
                 dataType:'json',
                 success:function(data){
-                        console.log(data);
+                      //  console.log(data);
                        show_notify('保存成功');
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
