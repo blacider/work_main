@@ -336,6 +336,7 @@ class Members extends REIM_Controller {
             $this->session->set_userdata('last_error', '添加成功');
         } else {
             $this->session->set_userdata('last_error', '添加失败');
+	    return redirect(base_url('members/newmember'));
         }
 	if($renew == 0)
 	{
