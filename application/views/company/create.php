@@ -43,8 +43,7 @@
                                 <div class="col-xs-6 col-sm-6">
                                     <select name="sobs" id="sobs">
                                     </select>
-                                    <select name="category" id="category">
-                                        <option>类目</option>
+                                    <select name="category" id="sob_category">
                                     </select>
                                 </div>
                             </div>
@@ -145,17 +144,17 @@
 </div>
 
 <script language="javascript">
-    var __PROVINCE = Array();
+    var __INFO = Array();
 function get_sobs(){
         $.ajax({
-            url : __BASE + "category/getsobs",
+            url : __BASE + "category/get_sob_category",
             dataType : 'json',
             method : 'GET',
             success : function(data){
-               // __PROVINCE = data;
+                __INFO = data;
                console.log(data);
 	       for(var item in data){
-                    console.log(data[item]);
+                    //console.log(data[item]);
                     var _h = "<option value='" +  item + "'>"+  data[item].sob_name + " </option>";
                     $('#sobs').append(_h);
                 };
@@ -165,37 +164,53 @@ function get_sobs(){
                         console.log(XMLHttpRequest.readyState);
                         console.log(textStatus);}
         });
+
+
+        $('#sobs').change(function(){
+            var s_id = $(this).val();
+            $('#sob_category').html('');
+            //console.log(__INFO[s_id]);
+            var sob_info = __INFO[s_id];
+            if(sob_info['category']!=undefined)
+            {
+                for(var i = 0 ; i<sob_info['category'].length; i++)
+                {
+                    var _h = "<option value='" +  sob_info['category'][i]['category_id'] + "'>"+  sob_info['category'][i]['category_name'] + " </option>";
+                    $('#sob_category').append(_h);
+                   // console.log(_h);
+                }
+            }
+             });
 }
 
 $(document).ready(function(){
    
 
-        $('#sobs').change(function(){
-            var s_id = $(this).val();
-            $('#category').html('');
-
-	    $.ajax({
+	    /*$.ajax({
         url:__BASE + "category/get_sob_category/"+s_id,
         dataType:'json',
         method:'GET',
         success:function(data){
             console.log(data);
-             $(__PROVINCE).each(function(idx, item) {
-                if(item.name == _p){
-                    $(item.city).each(function(_idx, _item){
-                    var _h = "<option value='" +  _item + "'>"+  _item + " </option>";
-                    $('#city').append(_h);
-                    });
+            for(var key=0; key<data.length;key++)
+            {
+                console.log(data[key]);
+               for(var i in data[key])
+               {
+                   console.log("##"+i+data[key][i]);
+                    var _h = "<option value='" +  i + "'>"+  data[key][i] + " </option>";
+                    $('#sob_category').append(_h);
                 }
-            });
+                                 
+            }
         },
         error:function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(XMLHttpRequest.status);
                         console.log(XMLHttpRequest.readyState);
                         console.log(textStatus);}
-        });
+        });*/
            
-        });
+       
 
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
@@ -264,7 +279,7 @@ $(document).ready(function(){
 	
         show_notify("hello");*/
        // $('#renew').val($(this).data('renew'));
-        $('#mainform').submit();
+//        $('#mainform').submit();
     });
     $('.cancel').click(function(){
         $('#reset').click();
