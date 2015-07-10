@@ -187,7 +187,7 @@ $(document).ready(function(){
         $(this).click(function(){
             var _title = $(this).data('title');
             var _pid = $(this).data('pid');
-            var _sob_id = $(this).data('sob_id';);
+            var _sob_id = $(this).data('sob_id');
             var _id = $(this).data('id');
             var _pa = $(this).data('pb');
             var _max_limit = $(this).data('max');
