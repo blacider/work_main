@@ -22,18 +22,49 @@ class Company extends REIM_Controller {
 	$amount_time = $this->input->post('amount_time');
 	
 	$frequency = $this->input->post('frequency');
-	$frequency = $this->input->post('frequency_unlimit');
-	$frequency = $this->input->post('frequency_time');
+	$frequency_unlimit = $this->input->post('frequency_unlimit');
+	$frequency_time = $this->input->post('frequency_time');
 
+	$groups = $this->input->post('gids');
+	$members = $this->input->post('uids');
+	$all_members = $this->input->post('all_members');
+
+	 if($frequency_unlimit == '')
+	{
+		$frequency_unlimit = 0;
+	}
+	 if($all_members == '')
+	{
+		$all_members = 0;
+	}
+	if($frequency_unlimit == 1)
+	{
+		$frequency = -1;
+	}
+	if($all_members == 1)
+	{
+		$groups = array();
+		$members = array();
+	}
+	log_message('debug',"####:".json_encode($groups));
+	
 	$start_time = $this->input->post('sdt');
 	$end_time = $this->input->post('edt');
-	
-	$this->bsload('company/test',
+	$buf=$this->company->create_rule($rname,$category_id,$frequency,$frequency_time,$all_members,implode(',',$groups),implode(',',$members));	
+	$this->bsload('company/show',
 		array(
 			'title'=>'test'
 			,'sdt' => $start_time
 			,'edt' => $end_time
 			,'sob_id' => $sob_id
+			,'unlimit' => $frequency_unlimit
+			,'name' => $rname
+			,'category_id' => $category_id
+			,'count'=>$frequency
+			,'peroid'=>$frequency_time
+			,'groups'=>$groups
+			,'members'=>$members
+			,'all_mem'=>$all_members
 			,'breadcrumbs' => array(
 				
 			),

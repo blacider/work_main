@@ -83,7 +83,7 @@
                                 <div class="col-sm-2 col-sm-2">
                                     <div class="checkbox" >
                                         <label>
-                                         <input type="checkbox" value="0" id="frequency_unlimit" >
+                                         <input type="checkbox" id="frequency_unlimit" name="frequency_unlimit" >
                                             无限制
                                          </label>
                                         </div>
@@ -91,11 +91,10 @@
 
                                 <div class="col-sm-2 col-sm-2">
                                    
-                                        <select class="form-control" id="frequency_time">
-                                          <option >一年</option>
-                                          <option>一月</option>
-                                          <option>一周</option>
-                                          <option>一日</option>
+                                        <select class="form-control" id="frequency_time" name="frequency_time">
+                                          <option value="2">一年</option>
+                                          <option value="1">一月</option>
+                                          <option value="3">一日</option>
                                         </select>
                                 </div>
 
@@ -152,7 +151,7 @@
                                 <div class="col-sm-2 col-sm-2">
                                     <div class="checkbox" >
                                         <label>
-                                         <input type="checkbox" id="all_members" value="0">
+                                         <input type="checkbox" id="all_members"  name="all_members">
                                             全体员工
                                          </label>
                                         </div>
@@ -294,9 +293,32 @@ $(document).ready(function(){
 	var amount_time = $('#amount_time').val();
 
 	var frequency = $('#frequency').val();
-	var frequency_unlimit = $('frequency_unlimit').val();
-	var frequency_time = $('frequency_time').val();
+	//var frequency_unlimit = $('#frequency_unlimit').val();
+	var frequency_time = $('#frequency_time').val();
 
+    if($('#frequency_unlimit').is(':checked'))
+    {
+        $('#frequency_unlimit').val(1);
+        console.log($('#frequency_unlimit').val());
+    }
+    else
+    {
+        $('#frequency_unlimit').val(0);
+         console.log($('#frequency_unlimit').val());
+
+    }
+
+      if($('#all_members').is(':checked'))
+    {
+        $('#all_members').val(1);
+        console.log($('#all_members').val());
+    }
+    else
+    {
+        $('#all_members').val(0);
+         console.log($('#all_members').val());
+
+    }
 /*	if(name=='')
 	{	
 		show_notify('请输入用户名');
@@ -314,7 +336,7 @@ $(document).ready(function(){
 	
         show_notify("hello");*/
        // $('#renew').val($(this).data('renew'));
-//        $('#mainform').submit();
+        $('#mainform').submit();
     });
     $('.cancel').click(function(){
         $('#reset').click();
