@@ -329,7 +329,7 @@ class Reports extends REIM_Controller {
 
         $flow = array();
         array_push($flow, array(
-            'nickname' => '发起者'
+            'nickname' => $report['nickname']
             ,'ts' => date('Y-m-d H:i:s', $report['createdt'])
             ,'status' => '提交'
             ,'step' => 0
@@ -367,7 +367,7 @@ class Reports extends REIM_Controller {
 	});
         log_message("debug", "Recievers: ---> " . json_encode($flow));
 
-
+	log_message("debug","*********:".json_encode($report));
         $prove_ahead = $report['prove_ahead'];
         switch($prove_ahead) {
         case 0:{$_type = '报销';};break;
