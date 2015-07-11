@@ -48,7 +48,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                          <!--  <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">最大金额</label>
                                 <div class="col-xs-2 col-sm-2">
                                    <input type="text" class="form-controller col-xs-12" id="amount" name="rule_amount" placeholder="金额">
@@ -72,7 +72,7 @@
                                         </select>
                                 </div>
 
-                            </div>
+                            </div> -->
 
                                            <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">最大频次</label>
@@ -94,13 +94,14 @@
                                         <select class="form-control" id="frequency_time">
                                           <option >一年</option>
                                           <option>一月</option>
+                                          <option>一周</option>
                                           <option>一日</option>
                                         </select>
                                 </div>
 
                             </div>
 
-                            <div class="form-group">
+                        <!--   <div class="form-group">
                                     <label class="col-sm-1 control-label no-padding-right">消费时间</label>
                                     <div class="col-xs-3 col-sm-3">
                                         <div class="input-group">
@@ -121,11 +122,22 @@
                                     </div>
 
                                
-                            </div>
+                            </div> -->
                             <hr>
                               <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">适用员工</label>
-                                <div class="col-xs-4 col-sm-4">
+                                <label class="col-sm-1 control-label no-padding-right">适用范围</label>
+                                <div class="col-xs-3 col-sm-3">
+                                    <select class="chosen-select tag-input-style" id="group" name="gids[]" multiple="multiple" data-placeholder="请选择部门">
+                                    <?php 
+                                    foreach($group as $g){
+                                    ?>
+                                        <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                    </select>
+                                </div>
+                                <div class="col-xs-3 col-sm-3">
                                     <select class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
                                     <?php 
                                     foreach($member as $m){

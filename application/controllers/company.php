@@ -5,6 +5,7 @@ class Company extends REIM_Controller {
         parent::__construct();
         $this->load->model('company_model', 'company');
        $this->load->model('group_model', 'groups');
+       $this->load->model('usergroup_model','ug');
     }
 
     public function create_rule()
@@ -60,6 +61,8 @@ class Company extends REIM_Controller {
     	$error = $this->session->userdata('last_error');
 	$this->session->unset_userdata('last_error');
         $group = $this->groups->get_my_list();
+        $_gnames = $this->ug->get_my_list();
+        $gnames = $_gnames['data']['group'];
 
         $gmember = array();
         if($group) {
@@ -73,6 +76,7 @@ class Company extends REIM_Controller {
 			'title'=>'新建规则'
 			,'error'=>$error
 			,'member'=>$gmember
+			,'group'=>$gnames
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
 				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
