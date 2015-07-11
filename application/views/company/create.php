@@ -127,7 +127,7 @@
                               <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">适用范围</label>
                                 <div class="col-xs-3 col-sm-3">
-                                    <select class="chosen-select tag-input-style" id="group" name="gids[]" multiple="multiple" data-placeholder="请选择部门">
+                                    <select class="chosen-select tag-input-style" id="group" name="gids[]" multiple="multiple" data-placeholder="请选择部门" placeholder="请选择部门">
                                     <?php 
                                     foreach($group as $g){
                                     ?>
@@ -345,12 +345,14 @@ $(document).ready(function(){
     $('#all_members').click(function(){
         if($(this).is(':checked'))
         {
-            console.log("helleo");
+           // console.log("helleo");
             $('#member').prop('disabled',true).trigger("chosen:updated");
+            $('#group').prop('disabled',true).trigger("chosen:updated");
         }
         else
         {
             $('#member').prop('disabled',false).trigger("chosen:updated");
+            $('#group').prop('disabled',false).trigger("chosen:updated");
         }
     });
 
