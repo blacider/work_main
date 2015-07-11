@@ -189,6 +189,15 @@ jQuery(grid_selector).jqGrid({
                 }
             }
     )
+.navButtonAdd(pager_selector,{
+    caption:"",
+    title:"支付选中报告",
+    buttonicon:"ace-icon fa fa-search orange",
+    onClickButton:function() {
+        $('#modal-table').modal();
+    },
+    position:"last"
+});
 
 $(document).ready(function () {
     $(grid_selector).jqGrid();
