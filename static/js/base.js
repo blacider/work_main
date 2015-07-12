@@ -5,6 +5,7 @@ var myCustomSort = function(cell,rowObject) {
 }
 var pager_selector = "#grid-pager";
 var grid_selector = "#grid-table";
+var grid_selector_new = '#grid-table-new';
 
 function style_delete_form(form) {
     var buttons = form.next().find('.EditButton .fm-button');
@@ -83,14 +84,18 @@ function updatePagerIcons(table) {
 //resize to fit page size
 $(window).on('resize.jqGrid', function () {
     $(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
+    $(grid_selector_new).jqGrid( 'setGridWidth', $(".page-content").width() );
 })
 //resize on sidebar collapse/expand
 var parent_column = $(grid_selector).closest('[class*="col-"]');
+var parent_column_new = $(grid_selector_new).closest('[class*="col-"]');
+
 $(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
     if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
         //setTimeout is for webkit only to give time for DOM changes and then redraw!!!
         setTimeout(function() {
             $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
+            $(grid_selector_new).jqGrid( 'setGridWidth', parent_column_new.width() );
         }, 0);
     }
 })
