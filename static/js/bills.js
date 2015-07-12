@@ -187,24 +187,20 @@ jQuery(grid_selector).jqGrid({
                 }
             }
     )
+
 .navButtonAdd(pager_selector,{
     caption:"",
-    title:"支付选中报告",
-    buttonicon:"ace-icon fa fa-check green",
-    onClickButton:function() {
+    title:__STATUS == 2 ? "支付选中报告" : "",
+    buttonicon:__STATUS == 2 ? "ace-icon fa fa-check green" : "",
+    onClickButton:__STATUS == 2 ? function() {
          chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
          if (chosenids.length == 0) {
             alert("请选择报告!");
             return;
          }
         $('#modal-table').modal();
-        console.log(chosenids); 
         _part = chosenids.join('/');
-        // _part = "2";
-       // _part_url =  __BASE + 'bills/listdata_new/' + _part;
-       // _part_url = __BASE + 'bills/listdata_new/' + __STATUS;
        var _part_url = __BASE + 'bills/listdata_new/' + __STATUS + '/' + _part;
-       console.log(_part_url);
 
 
     jQuery(grid_selector_new).jqGrid({
@@ -258,7 +254,7 @@ jQuery(grid_selector).jqGrid({
     });
 
         $(grid_selector_new).jqGrid();  
-    },
+    } : null,
     position:"last"
 });
 
