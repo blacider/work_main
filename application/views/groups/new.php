@@ -63,6 +63,13 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" >部门代码</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input type="text" placeholder="部门代码" id="gcode" class="col-xs-12" required="required" name="gcode" >
+                                </div>
+                            </div>
+
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">员工</label>
