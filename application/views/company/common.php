@@ -70,6 +70,13 @@
                                 </div>
                             </div>
 
+                             <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-rigtht">报告提交数/月</label>
+                                <div class="col-xs-4 col-sm-4">
+                                <input id="reports_limit" type="text" class="form-controller col-xs-12" name="reports_limit" placeholder="报告数">
+                                </div>
+                            </div>
+
                             <input type="hidden" id="renew" name="renew" value="0" />
                             <input type="reset" style="display:none;" id="reset">
                             <div class="clearfix form-actions">
