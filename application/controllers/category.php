@@ -208,16 +208,19 @@ class Category extends REIM_Controller {
         }
         $category_group = array();
         foreach ($_group as $item) {
-            foreach ($_sobs as $sob) {
-                if ($item['sob_id'] == $sob['sob_id']) {
-                    $item['sob_name'] = $sob['sob_name'];
-                    break;
-                } else if($item['sob_id'] == 0) {
-                    $item['sob_name'] = "没有帐套";
-                    break;
+            if($item['sob_id'] == 0 || $item['sob_id'] == '0') {   
+                $item['sob_name'] = "没有帐套";
+                $category_group[] = $item;
+                continue;
+            } else {
+                foreach ($_sobs as $sob) {
+                    if ($item['sob_id'] == $sob['sob_id']) {
+                        $item['sob_name'] = $sob['sob_name'];
+                        $category_group[] = $item;
+                        break;
+                    }
                 }
             }
-            $category_group[] = $item;
         }
 
         $this->bsload('category/index',
