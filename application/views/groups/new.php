@@ -86,7 +86,12 @@
                                 </div>
                             </div>
 
-
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" >code</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input type="text" placeholder="code" id="code" class="col-xs-12" required="required" name="code" >
+                                </div>
+                            </div>
                           
 
                             <input type="hidden" id="renew" name="renew" value="0" />

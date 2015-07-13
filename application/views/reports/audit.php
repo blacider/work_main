@@ -6,6 +6,30 @@
         width: 400px;
     }
 </style>
+<style type="text/css">
+    #globalSearchText{
+position: absolute;
+  left: 75%;
+  top: 60px;
+  z-index: 2;
+  height: 26px;
+  width: 150px;
+  border-style: ridge;
+    }
+    #globalSearch {
+  background-color: #fe575f;
+  position: absolute;
+  left: 1130px;
+  top: 60px;
+  border: 0;
+  color: white;
+  height: 25px;
+  border-radius: 3px;   
+  font-size: 12px;
+   }
+</style>
+    <input name="key" placeholder="ID或标题" value="" type='text' id="globalSearchText">
+    <button type="button" id="globalSearch">搜索</button>
 <div class="page-content">
     <div class="page-content-area">
         <div class="row">
@@ -106,3 +130,31 @@ $(document).ready(function(){
 
 <script src="/static/js/base.js" ></script>
 <script src="/static/js/audit.js" ></script>
+<script type="text/javascript">
+$grid = $('#grid-table');
+$("#globalSearch").click(function () {
+    console.log('11111');
+    var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
+        colModel = $grid.jqGrid("getGridParam", "colModel"),
+        searchText = $("#globalSearchText").val(),
+        l = colModel.length;
+    for (i = 0; i < l; i++) {
+        cm = colModel[i];
+        if (cm.search !== false && (cm.stype === undefined || cm.stype === "text")) {
+            rules.push({
+                field: cm.name,
+                op: "cn",
+                data: searchText
+            });
+        }
+    }
+    postData.filters = JSON.stringify({
+        groupOp: "OR",
+        rules: rules
+    });
+    $grid.jqGrid("setGridParam", { search: true });
+    $grid.trigger("reloadGrid", [{page: 1, current: true}]);
+    return false;
+});
+</script>
+
