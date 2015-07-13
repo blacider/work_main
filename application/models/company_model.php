@@ -6,6 +6,69 @@ class Company_Model extends Reim_Model {
         parent::__construct();
     }
 
+	public function update_rule($rid,$name,$category,$count,$period,$all_company,$groups,$members)
+	{
+		$jwt = $this->session->userdata('jwt');
+		if(!$jwt) return false;
+		$url = $this->get_url('policy/'.$rid);
+		if($all_company==1)
+		{
+			$data=array(
+				'name'=>$name,
+				'category'=>$category,
+				'count'=>$count,
+				'period'=>$period,
+				'all_company'=>$all_company,
+			);
+		}
+		else
+		{
+			$data=array(
+				'name'=>$name,
+				'category'=>$category,
+				'count'=>$count,
+				'period'=>$period,
+				'all_company'=>$all_company,
+				'groups'=>$groups,
+				'members'=>$members,
+			);
+		}
+		$buf = $this->do_Put($url,$data,$jwt);
+		log_message("debug","@@@@@:".$buf);
+		return $buf;
+	}
+
+	public function create_rule($name,$category,$count,$period,$all_company,$groups,$members)
+	{
+		$jwt = $this->session->userdata('jwt');
+		if(!$jwt) return false;
+		$url = $this->get_url('policy');
+		if($all_company==1)
+		{
+			$data=array(
+				'name'=>$name,
+				'category'=>$category,
+				'count'=>$count,
+				'period'=>$period,
+				'all_company'=>$all_company,
+			);
+		}
+		else
+		{
+			$data=array(
+				'name'=>$name,
+				'category'=>$category,
+				'count'=>$count,
+				'period'=>$period,
+				'all_company'=>$all_company,
+				'groups'=>$groups,
+				'members'=>$members,
+			);
+		}
+		$buf = $this->do_Post($url,$data,$jwt);
+		log_message("debug","@@@@@:".$buf);
+		return $buf;
+	}
         public function get(){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;

@@ -72,6 +72,7 @@
                                 <label class="col-sm-1 control-label no-padding-right">开卡行</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select id="cardbank" name="cardbank" class="form-control">
+				    <option value=''></option>
    				    	                <option value='工商银行'>工商银行</option>
                                         <option value='农业银行'>农业银行</option>
                                         <option value='中国银行'>中国银行</option>
@@ -301,7 +302,9 @@
         </form>
     </div>
 </div>
-
+<script type="text/javascript">
+    var error = "<? echo $this->session->userdata('last_error')?>";
+</script>
 <script language="javascript">
     var __PROVINCE = Array();
 function get_province(){
@@ -352,7 +355,10 @@ function reset_bank(disable, title) {
     }
 }
 $(document).ready(function(){
-
+    if(error!='')
+    {
+        show_notify(error);
+    }
     get_province();
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)

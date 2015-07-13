@@ -5,6 +5,7 @@ class Company extends REIM_Controller {
         parent::__construct();
         $this->load->model('company_model', 'company');
        $this->load->model('group_model', 'groups');
+       $this->load->model('usergroup_model','ug');
     }
 
     public function create_rule()
@@ -21,18 +22,49 @@ class Company extends REIM_Controller {
 	$amount_time = $this->input->post('amount_time');
 	
 	$frequency = $this->input->post('frequency');
-	$frequency = $this->input->post('frequency_unlimit');
-	$frequency = $this->input->post('frequency_time');
+	$frequency_unlimit = $this->input->post('frequency_unlimit');
+	$frequency_time = $this->input->post('frequency_time');
 
+	$groups = $this->input->post('gids');
+	$members = $this->input->post('uids');
+	$all_members = $this->input->post('all_members');
+
+	 if($frequency_unlimit == '')
+	{
+		$frequency_unlimit = 0;
+	}
+	 if($all_members == '')
+	{
+		$all_members = 0;
+	}
+	if($frequency_unlimit == 1)
+	{
+		$frequency = -1;
+	}
+	if($all_members == 1)
+	{
+		$groups = array();
+		$members = array();
+	}
+	log_message('debug',"####:".json_encode($groups));
+	
 	$start_time = $this->input->post('sdt');
 	$end_time = $this->input->post('edt');
-	
-	$this->bsload('company/test',
+	$buf=$this->company->create_rule($rname,$category_id,$frequency,$frequency_time,$all_members,implode(',',$groups),implode(',',$members));	
+	$this->bsload('company/show',
 		array(
 			'title'=>'test'
 			,'sdt' => $start_time
 			,'edt' => $end_time
 			,'sob_id' => $sob_id
+			,'unlimit' => $frequency_unlimit
+			,'name' => $rname
+			,'category_id' => $category_id
+			,'count'=>$frequency
+			,'peroid'=>$frequency_time
+			,'groups'=>$groups
+			,'members'=>$members
+			,'all_mem'=>$all_members
 			,'breadcrumbs' => array(
 				
 			),
@@ -59,10 +91,23 @@ class Company extends REIM_Controller {
     public function create(){
     	$error = $this->session->userdata('last_error');
 	$this->session->unset_userdata('last_error');
+        $group = $this->groups->get_my_list();
+        $_gnames = $this->ug->get_my_list();
+        $gnames = $_gnames['data']['group'];
+
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
 	$this->bsload('company/create',
 		array(
-			'title'=>'提交规则'
+			'title'=>'新建规则'
 			,'error'=>$error
+			,'member'=>$gmember
+			,'group'=>$gnames
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
 				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
