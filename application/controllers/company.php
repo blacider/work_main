@@ -9,6 +9,110 @@ class Company extends REIM_Controller {
        $this->load->model('account_set_model','account_set');
        $this->load->model('category_model','category');
     }
+    public function update_approve()
+    {
+    	
+    }
+    public function delete_approve($pid)
+    {
+    	$error = $this->session->userdata('last_error');
+	$buf = $this->company->delete_approve($pid);
+	log_message("debug","###delte:".json_encode($buf));
+	return redirect(base_url('company/show_approve'));
+    	
+    }
+
+    public function approve_update($pid)
+    {
+    	$error = $this->session->userdata('last_error');
+	$this->session->unset_userdata('last_error');
+	$buf = $this->company->show_approve();
+	$info=json_decode($buf,true);
+	$_info=$info['data'];
+	$own_rule = $_info[$pid];
+	
+    	$category = $this->category->get_list();
+	$categories = $category['data']['categories'];
+	$sobs = $this->account_set->get_account_set_list();
+	$_sobs = $sobs['data'];
+	$s_id ='';
+	$s_name = '';
+	$c_name = '';
+	$c_id = '';
+	log_message('debug','%%%%%%%%%%'.json_encode($own_rule['categories']));
+	foreach($categories as $c)
+	{
+		if($own_rule['categories'] != [])
+		{log_message("debug","#########TRUE");
+		if($c['id'] == $own_rule['categories']['category'])
+		{
+			$c_name = $c['category_name'];
+			$c_id = $c['id'];
+			$s_id = $c['sob_id'];
+		}
+		}
+	}
+/*	foreach($_sobs as $s)
+	{
+		if($s['sob_id'] == $s_id)
+		{
+			$s_name = $s['sob_name'];
+		}
+	}
+
+        $_group = $this->groups->get_my_list();
+        $_gnames = $this->ug->get_my_list();
+        $gnames = $_gnames['data']['group'];
+
+        $gmember = array();
+        if($_group) {
+            if(array_key_exists('gmember', $_group['data'])){
+                $gmember = $_group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
+/*	$this->bsload('company/update_approve',
+		array(
+			'title'=>'修改审批'
+			,'error'=>$error
+			,'rule'=>$own_rule
+			,'member'=>$gmember
+			,'group'=>$gnames
+			,'c_id' => $c_id
+			,'c_name'=>$c_name
+			,'s_id' => $s_id
+			,'s_name'=>$s_name
+			,'breadcrumbs'=> array(
+				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>'','name'=>'修改审批','class'=>'')
+			),
+		)
+	);
+*/	
+    }
+
+    public function show_approve()
+    {
+    	$error = $this->session->userdata('last_error');
+	$this->session->unset_userdata('last_error');
+	$buf = $this->company->show_approve();
+
+	$rules = json_decode($buf,true);
+	$this->bsload('company/show_approve',
+		array(
+			'title'=>'审批规则'
+			,'error'=>$error
+			,'rules'=>$rules['data']
+			,'breadcrumbs'=> array(
+				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>'','name'=>'审批规则','class'=>'')
+			),
+		)
+	);
+    	
+    }
 
     public function create_approve()
     {
@@ -18,14 +122,16 @@ class Company extends REIM_Controller {
 	$rname = $this->input->post('rule_name');
 	$sob_id = $this->input->post('sobs');
 	$category_id = $this->input->post('category');
-	$amount = $this->input->post('max_amount');
+	$amount = $this->input->post('category_amount');
+	$total_amount = $this->input->post('total_amount');
 	$members = $this->input->post('uids');
 	$all_members = $this->input->post('all_members');
     	
-	$info = array('category'=>$category_id,'amount'=>$amount);
-	$policy =array();
-	array_push($policy,$info);
-	$buf = $this->company->create_approve($rname,implode(',',$members),$amount,json_encode($policy),$pid=-1);
+//	$info = array('category'=>$category_id,'amount'=>$amount);
+	$policy =array(array('category'=>$category_id,'amount'=>$amount));
+//	array_push($policy,$info);
+	$buf = $this->company->create_approve($rname,implode(',',$members),$total_amount,json_encode($policy),$pid=-1);
+	return redirect(base_url('company/show_approve'));
 
     }
 
