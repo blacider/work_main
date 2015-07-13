@@ -138,11 +138,16 @@ var __BASE = "<?php echo $base_url; ?>";
         if(data.user_confirm != undefined) {
             $('#limit').val(data.user_confirm);
         }
+        if(data.report_quota != undefined)
+        {
+            $('#reports_limit').val(data.report_quota);
+        }
     }
    });
 
         $('.renew').click(function(){
 	   var lval = parseInt($('#limit').val());
+       var r_limit = $('#reports_limit').val();
     //   console.log(lval);
       // console.log($('#isadmin').is(':checked'));
        if(isNaN(lval))
@@ -154,7 +159,7 @@ var __BASE = "<?php echo $base_url; ?>";
            $.ajax({
                 type:"post",
                 url:__BASE+"company/profile",
-                data:{ischecked:$('#isadmin').is(':checked'),isremark:$('#isremark').is(':checked'),template:$('#temp option:selected').val(),limit:lval},
+                data:{ischecked:$('#isadmin').is(':checked'),isremark:$('#isremark').is(':checked'),template:$('#temp option:selected').val(),limit:lval,reports_limit:r_limit},
                 dataType:'json',
                 success:function(data){
                       //  console.log(data);
