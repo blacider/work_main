@@ -94,7 +94,7 @@ $(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
         //setTimeout is for webkit only to give time for DOM changes and then redraw!!!
         setTimeout(function() {
             $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
-            (grid_selector_new).jqGrid( 'setGridWidth', parent_column_new.width() );
+            $(grid_selector_new).jqGrid( 'setGridWidth', parent_column_new.width() );
         }, 0);
     }
 })

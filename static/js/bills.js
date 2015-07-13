@@ -37,8 +37,6 @@ function bind_event(){
     });
 }
 
-
-
 jQuery(grid_selector).jqGrid({
     url: __BASE + 'bills/listdata/' + __STATUS,
     mtype: "GET",
@@ -203,29 +201,33 @@ jQuery(grid_selector).jqGrid({
         $('#modal-table').modal();
         _part = chosenids.join('/');
        var _part_url = __BASE + 'bills/listdata_new/' + __STATUS + '/' + _part;
-       jQuery(grid_selector_new).jqGrid({
-            url: _part_url,
-            mtype: "GET",
-            datatype: "local",
-            height: 250,
-            multiselect: false,
-            loadtext: '',
-            colNames:['提交日期','报告名', '条目数', '提交者', '金额', '状态', '操作'],
-            loadonce: true,
-            caption: "费用审计",
-            editurl: __BASE + 'bills/save',
-            datatype: "json",
-            autowidth: true,
-            hoverrows : true,
-            colModel:[
-            {name:'date_str', index:'date_str', width:150,editable: false,editoptions:{size:"20",maxlength:"30"}},
-            {name:'title', index:'title', width:90,editable: false,editoptions:{size:"20",maxlength:"30"}},
-            {name:'item_count', index:'item_count', width:70,editable: false,editoptions:{size:"20",maxlength:"30"}},
-            {name:'nickname', index:'nickname', width:70,editable: false,editoptions:{size:"20",maxlength:"30"}},
-            {name:'amount',index:'amount', sorttype: myCustomSort,width:70, editable: false,editoptions: {size:"20",maxlength:"30"},unformat: aceSwitch},
-            {name:'status_str',index:'status_str', width:70, editable: true,edittype:"select",editoptions: {value:"4:通过;3:拒绝"},unformat: aceSwitch},
-            {name:'options',index:'options', width:60, editable: true,edittype:"select",editoptions: {value:"4:通过;3:拒绝"},unformat: aceSwitch},
-    ],
+
+    jQuery(grid_selector_new).jqGrid({
+    url: _part_url,
+    mtype: "GET",
+    datatype: "local",
+    height: 250,
+    multiselect: false,
+    loadtext: '',
+    colNames:['提交日期','报告名', '条目数', '提交者', '金额', '状态', '操作'],
+    loadonce: true,
+    caption: "费用审计",
+    editurl: __BASE + 'bills/save',
+    datatype: "json",
+    autowidth: true,
+    hoverrows : true,
+
+    colModel:[
+    {name:'date_str', index:'date_str', width:150,editable: false,editoptions:{size:"20",maxlength:"30"}},
+    {name:'title', index:'title', width:90,editable: false,editoptions:{size:"20",maxlength:"30"}},
+    {name:'item_count', index:'item_count', width:70,editable: false,editoptions:{size:"20",maxlength:"30"}},
+    {name:'nickname', index:'nickname', width:70,editable: false,editoptions:{size:"20",maxlength:"30"}},
+    {name:'amount',index:'amount', sorttype: myCustomSort,width:70, editable: false,editoptions: {size:"20",maxlength:"30"},unformat: aceSwitch},
+    {name:'status_str',index:'status_str', width:70, editable: true,edittype:"select",editoptions: {value:"4:通过;3:拒绝"},unformat: aceSwitch},
+    {name:'options',index:'options', width:60, editable: true,edittype:"select",editoptions: {value:"4:通过;3:拒绝"},unformat: aceSwitch},
+
+
+    ], 
     loadComplete : function() {
         bind_event();
         var table = this;
@@ -244,9 +246,10 @@ jQuery(grid_selector).jqGrid({
     scrollLeftOffset: "83%",
     viewrecords: true,
     scroll: 0, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
-    emptyrecords: '没有账单', // the message will be displayed at the bottom
+    emptyrecords: '没有账单', // the message will be displayed at the bottom 
     });
-    $(grid_selector_new).jqGrid();
+
+        $(grid_selector_new).jqGrid();  
     } : null,
     position:"last"
 });

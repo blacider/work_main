@@ -99,7 +99,7 @@ class Bills extends REIM_Controller {
         die(json_encode($_data));
     }
 
-    public function listdata_new($type = 2){
+        public function listdata_new($type = 2){
         $page = $this->input->get('page');
         $rows = $this->input->get('rows');
         $sort = $this->input->get('sord');
@@ -121,14 +121,13 @@ class Bills extends REIM_Controller {
                 $d['amount'] = '￥' . $d['amount'];
                 $d['status_str'] = $d['status'] == 2 ? '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>' : '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
                 $edit = $d['status'] != 2 ? 'gray' : 'green';
-                $extra = '';
+                $extra = $d['status'] = '';
 
                 $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . $extra
                     . '</div>';
                 array_push($_data, $d);
             }
-            
         }
         die(json_encode($_data));
     }
