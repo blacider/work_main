@@ -36,7 +36,7 @@ position: absolute;
         }
     }
 </script>
-<form action="//127.0.0.1:8080/members/search" method="post" onsubmit="return searchSubmit(this)">
+<form action="<?php echo base_url('members/search') ?>" method="post" onsubmit="return searchSubmit(this)">
     <input name="key" placeholder="名字、手机或者邮箱" value="<?php echo $search ?>" type='text' id="search">
     <button type="submit" id="search-submit">搜索</button>
 </form>
