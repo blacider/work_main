@@ -17,7 +17,7 @@ position: absolute;
     #search-submit {
   background-color: #fe575f;
   position: absolute;
-  left: 1200px;
+  left: 88%;
   top: 64px;
   z-index: 2;
   border: 0;

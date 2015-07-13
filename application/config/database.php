@@ -50,7 +50,7 @@ $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'root';
-$db['default']['password'] = '123456';
+$db['default']['password'] = 'xudan0227';
 $db['default']['database'] = 'reimadmin';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
@@ -66,7 +66,7 @@ $db['default']['stricton'] = FALSE;
 
 $db['data']['hostname'] = 'localhost';
 $db['default']['username'] = 'root';
-$db['default']['password'] = '123456';
+$db['default']['password'] = 'xudan0227';
 $db['data']['database'] = 'reim';
 $db['data']['dbdriver'] = 'mysql';
 $db['data']['dbprefix'] = '';

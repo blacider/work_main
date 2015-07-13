@@ -602,7 +602,7 @@ $(document).ready(function(){
         });
         $($('#' + _controller).find('.submenu').get(0)).show();
         $($('#' + _controller).find('#' + _method).get(0)).addClass('active');
-        if (_method == 'search' || _controller == 'members')
+        if (_method == 'search' && _controller == 'members')
             $($('#' + _controller).find('#' + 'index').get(0)).addClass('active');
     }
     /*
