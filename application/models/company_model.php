@@ -6,14 +6,36 @@ class Company_Model extends Reim_Model {
         parent::__construct();
     }
 
+	public function delete_rule($pid)
+	{
+		$jwt = $this->session->userdata('jwt');
+		if(!$jwt) return false;
+		$url=$this->get_url('commit_policy/'.$pid);
+		$data = array();
+		$buf = $this->do_Delete($url,$data,$jwt);
+		log_message("debug","######DEL:".json_encode($buf));
+	}
+
+	public function show_rules()
+	{
+		$jwt = $this->session->userdata('jwt');
+		if(!$jwt) return false;
+		$url = $this->get_url('commit_policy');
+		$data = array();
+		$buf = $this->do_Get($url,$jwt);
+		log_message('debug',"######RULES:".$buf);
+		return $buf;
+	}
+
 	public function update_rule($rid,$name,$category,$count,$period,$all_company,$groups,$members)
 	{
 		$jwt = $this->session->userdata('jwt');
 		if(!$jwt) return false;
-		$url = $this->get_url('policy/'.$rid);
+		$url = $this->get_url('commit_policy');
 		if($all_company==1)
 		{
 			$data=array(
+				'id' => $rid,
 				'name'=>$name,
 				'category'=>$category,
 				'count'=>$count,
@@ -24,6 +46,7 @@ class Company_Model extends Reim_Model {
 		else
 		{
 			$data=array(
+				'pid'=>$rid,
 				'name'=>$name,
 				'category'=>$category,
 				'count'=>$count,
@@ -33,7 +56,7 @@ class Company_Model extends Reim_Model {
 				'members'=>$members,
 			);
 		}
-		$buf = $this->do_Put($url,$data,$jwt);
+		$buf = $this->do_Post($url,$data,$jwt);
 		log_message("debug","@@@@@:".$buf);
 		return $buf;
 	}
@@ -42,7 +65,7 @@ class Company_Model extends Reim_Model {
 	{
 		$jwt = $this->session->userdata('jwt');
 		if(!$jwt) return false;
-		$url = $this->get_url('policy');
+		$url = $this->get_url('commit_policy');
 		if($all_company==1)
 		{
 			$data=array(
