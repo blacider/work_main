@@ -291,7 +291,7 @@ class Category extends REIM_Controller {
         $name = $this->input->post('category_name');
         $pid = $this->input->post('pid');
         $sob_id = $this->input->post('sob_id');
-
+        $note = $this->input->post('note');
         $prove_ahead= $this->input->post('prove_ahead');
         $max_limit = $this->input->post('max_limit');
         $cid = $this->input->post('category_id');
@@ -303,12 +303,12 @@ class Category extends REIM_Controller {
         $msg = '添加分类失败';
         $obj = null;
         if($cid > 0){
-            $obj = $this->category->update($cid, $name, $pid, $sob_id, $prove_ahead, $max_limit);
+            $obj = $this->category->update($cid, $name, $pid, $sob_id, $prove_ahead, $max_limit, $note);
         } else {
-            $obj = $this->category->create($name, $pid, $sob_id, $prove_ahead, $max_limit);
+            $obj = $this->category->create($name, $pid, $sob_id, $prove_ahead, $max_limit, $note);
         }
         if($obj && $obj['status']){
-            $msg = '添加分类成功';
+            $msg = '添加分类成功' . $note;
         } else {
             $msg = $obj['data']['msg'];
         }
