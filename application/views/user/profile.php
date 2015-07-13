@@ -92,6 +92,36 @@ foreach($member['banks'] as $b) {
                             </div>
                         </div>
                     </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label no-padding-right">角色</label>
+                        <div class="col-xs-6 col-sm-6">
+                            <div class="col-xs-12 col-sm-12 "  style="margin-left:0px !important;padding-left:0px !important;" >
+                                <div class="btn-toolbar" id="btns">
+                                    <select name="admin_new" id="admin_new" class="form-control" style="width:120px"> 
+                                        <?php
+                                            $chara = array(0 => "员工", 
+                                                           1 => "管理员",
+                                                           2 => "出纳");
+                                            for ($i=0; $i < 3; $i++) { 
+                                                $str1 = '<option value="' . $i . '"';
+                                                $select = 'selected="true"';
+                                                $str2 = '>' . $chara[$i] . "</option>";
+                                                if ($i == $member['admin']) {
+                                                    echo $str1.$select.$str2;
+                                                } else {
+                                                    echo $str1.$str2;
+                                                }
+                                            }
+                                        ?>
+                                    </select>
+                                    <input type="text" name="admin_old" value="<?php echo $member['admin']; ?>" type="hidden" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 <?php 
 $me = $this->session->userdata('user');
 if($user['id'] != $me['id']) {
@@ -597,6 +627,8 @@ function get_province(){
         $('.edit_bank').click(function(){
             update_credit(this);
         });
+
+
     }
 
 $(document).ready(function(){

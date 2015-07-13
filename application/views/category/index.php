@@ -65,7 +65,7 @@ $acc_name = '<td class="u_sobname">' . $item['sob_name'] . '</td>';
 $role_id =  '<td class="u_role_name">' . date('Y-m-d H:i:s', $item['lastdt']) . '</td>';
 //$ascription =  '<td class="u_role_name">' . $billable . '</td>';
     //$role_id = '<td class="u_role_name">' . $item->role_name . '</td>';
-$operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class="edit" data-max="' . $item['max_limit'] . '" data-pid="'. $item['pid'] . '" data-pb="' . $item['prove_before'] . '" data-title="' . $item['category_name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
+$operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class="edit" data-max="' . $item['max_limit'] . '" data-sob_id="'. $item['sob_id'] . '" data-pid ="' . $item['pid'] . '" data-pb="' . $item['prove_before'] . '" data-title="' . $item['category_name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
     $operation = '<td style="width:50px;"><a class="btn btn-xs btn-danger" href="' .  base_url('admin/user/del?id='. $item['id']) .'">
         <i class="ace-icon fa fa-trash-o bigger-120"></i>
         </a></td>';
@@ -123,6 +123,7 @@ echo $str;
                                 <label for="form-field-username">帐套选择</label>
                                 <div>
                                     <select name="sob_id" id="sob_id"  class="form-control">
+                                    <option value="0">没有帐套</option>
                                     <?php
                                     foreach($sobs as $item){
                                     echo "<option value='" . $item['sob_id'] ."'>" . $item['sob_name'] . "</option>";
@@ -144,7 +145,6 @@ echo $str;
                                     ?>
                                     </select>
                                 </div>
-                            </div>
                             <div class="space-4"></div>
 
                         </div>
@@ -187,12 +187,10 @@ $(document).ready(function(){
         $(this).click(function(){
             var _title = $(this).data('title');
             var _pid = $(this).data('pid');
-            var _sob_id = $(this).data('sob_id';);
+            var _sob_id = $(this).data('sob_id');
             var _id = $(this).data('id');
             var _pa = $(this).data('pb');
             var _max_limit = $(this).data('max');
-
-
             $('#category_name').val(_title);
             $('#category_id').val(_id);
             $('#max_limit').val(_max_limit);
