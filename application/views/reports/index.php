@@ -20,7 +20,7 @@ position: absolute;
   font-size: 12px;
    }
 </style>
-    <input name="key" placeholder="标题" value="" type='text' id="globalSearchText">
+    <input name="key" placeholder="ID或标题" value="" type='text' id="globalSearchText">
     <button type="button" id="globalSearch">搜索</button>
 <div id="mysearch"></div>
 <div class="page-content">
@@ -70,7 +70,6 @@ $(function() {
 <script type="text/javascript">
 $grid = $('#grid-table');
 $("#globalSearch").click(function () {
-	console.log('11111');
     var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
         colModel = $grid.jqGrid("getGridParam", "colModel"),
         searchText = $("#globalSearchText").val(),
