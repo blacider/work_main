@@ -32,7 +32,7 @@
                         <div class="col-xs-12 col-sm-12">
 
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">规则名称</label>
+                                <label class="col-sm-2 control-label no-padding-right">规则名称</label>
                                  <div class="col-xs-6 col-sm-6">
                                     <input type="text" class="form-controller col-xs-12" id="rname" name="rule_name" placeholder="规则名称" value="<?php echo $rule['name']?>">
                                     <input type="hidden" name="rid" value="<?php echo $rule['id']?>">
@@ -40,7 +40,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">类目</label>
+                                <label class="col-sm-2 control-label no-padding-right">类目</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select name="sobs" id="sobs">
                                         <option selected value="<?php echo $s_id?>"><?php echo $s_name?></option>
@@ -78,7 +78,7 @@
                             </div> -->
 
                                 <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">最大频次</label>
+                                <label class="col-sm-2 control-label no-padding-right">最大频次/月</label>
                                 <div class="col-xs-2 col-sm-2">
                                    <input type="text" class="form-controller col-xs-12" id="frequency" name="rule_frequency" placeholder="频次">
                                 </div>
@@ -92,7 +92,7 @@
                                         </div>
                                 </div>
 
-                                <div class="col-sm-2 col-sm-2">
+                                <!-- <div class="col-sm-2 col-sm-2">
                                    
                                         <select class="form-control" id="frequency_time" name="frequency_time">
                                         <?php
@@ -109,7 +109,7 @@
                                             }
                                           ?>
                                         </select>
-                                </div>
+                                </div> -->
 
                             </div>
 
@@ -137,7 +137,7 @@
                             </div> -->
                             <hr>
                               <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">适用范围</label>
+                                <label class="col-sm-2 control-label no-padding-right">适用范围</label>
                                 <div class="col-xs-3 col-sm-3">
                                     <select class="chosen-select tag-input-style" id="group" name="gids[]" multiple="multiple" data-placeholder="请选择部门" placeholder="请选择部门">
                                     <?php 
