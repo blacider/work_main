@@ -40,25 +40,6 @@ class Company extends REIM_Controller {
 	$c_name = '';
 	$c_id = '';
 	log_message('debug','%%%%%%%%%%'.json_encode($own_rule['categories']));
-	foreach($categories as $c)
-	{
-		if($own_rule['categories'] != [])
-		{log_message("debug","#########TRUE");
-		if($c['id'] == $own_rule['categories']['category'])
-		{
-			$c_name = $c['category_name'];
-			$c_id = $c['id'];
-			$s_id = $c['sob_id'];
-		}
-		}
-	}
-/*	foreach($_sobs as $s)
-	{
-		if($s['sob_id'] == $s_id)
-		{
-			$s_name = $s['sob_name'];
-		}
-	}
 
         $_group = $this->groups->get_my_list();
         $_gnames = $this->ug->get_my_list();
@@ -71,7 +52,7 @@ class Company extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-/*	$this->bsload('company/update_approve',
+	$this->bsload('company/update_approve',
 		array(
 			'title'=>'修改审批'
 			,'error'=>$error
@@ -89,7 +70,7 @@ class Company extends REIM_Controller {
 			),
 		)
 	);
-*/	
+	
     }
 
     public function show_approve()
