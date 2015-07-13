@@ -201,9 +201,9 @@
         </form>
     </div>
 </div>
-<p><?php echo json_encode($rule['members'])?></p>
+<!--<p><?php echo json_encode($rule['members'])?></p>
 <p><?php echo json_encode($rule);?></p>
-<p><?php echo $c_id.$c_name.$s_id.$s_name?></p>
+<p><?php echo $c_id.$c_name.$s_id.$s_name?></p>-->
 <script type="text/javascript">
     var freq = "<?php echo $rule['freq_count']?>";
     var all_members = "<?php echo $rule['all_company']?>";

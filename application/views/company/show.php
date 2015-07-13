@@ -82,7 +82,7 @@ echo $str;
 
                             <div class="form-group col-sm-5">
                                 <label for="form-field-username">规则名称</label>
-                          rul      <div>
+                          <div>
                                     <input class="input-large" type="text" placeholder="规则名称" id="rule_name" name="rule_name" />
                                    <!-- <input type="hidden"  id="category_id" name="category_id" value="0" required /> -->
                                 </div>
