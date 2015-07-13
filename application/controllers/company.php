@@ -6,6 +6,165 @@ class Company extends REIM_Controller {
         $this->load->model('company_model', 'company');
        $this->load->model('group_model', 'groups');
        $this->load->model('usergroup_model','ug');
+       $this->load->model('account_set_model','account_set');
+       $this->load->model('category_model','category');
+    }
+
+    public function approve()
+    {
+    	$error = $this->session->userdata('last_error');
+	$this->session->unset_userdata('last_error');
+        $group = $this->groups->get_my_list();
+        $_gnames = $this->ug->get_my_list();
+        $gnames = $_gnames['data']['group'];
+
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
+	$this->bsload('company/approve',
+		array(
+			'title'=>'新建审批'
+			,'error'=>$error
+			,'member'=>$gmember
+			,'group'=>$gnames
+			,'breadcrumbs'=> array(
+				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>'','name'=>'新建审批','class'=>'')
+			),
+		)
+	);
+
+    }
+
+    public function update($id)
+    {
+    	$error = $this->session->userdata('last_error');
+	$this->session->unset_userdata('last_error');
+	$buf = $this->company->show_rules();
+	$info=json_decode($buf,true);
+	$_info=$info['data'];
+	$own_rule = array();
+	
+    	$category = $this->category->get_list();
+	$categories = $category['data']['categories'];
+	$sobs = $this->account_set->get_account_set_list();
+	$_sobs = $sobs['data'];
+	foreach($_info as $item)
+	{
+		if($item['id']==$id)
+		{
+			$own_rule = $item;
+		}
+	}
+	foreach($categories as $c)
+	{
+		if($c['id'] == $own_rule['category'])
+		{
+			$c_name = $c['category_name'];
+			$s_id = $c['sob_id'];
+		}
+	}
+	foreach($_sobs as $s)
+	{
+		if($s['sob_id'] == $s_id)
+		{
+			$s_name = $s['sob_name'];
+		}
+	}
+
+        $_group = $this->groups->get_my_list();
+        $_gnames = $this->ug->get_my_list();
+        $gnames = $_gnames['data']['group'];
+
+        $gmember = array();
+        if($_group) {
+            if(array_key_exists('gmember', $_group['data'])){
+                $gmember = $_group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
+	$this->bsload('company/update',
+		array(
+			'title'=>'修改规则'
+			,'error'=>$error
+			,'rule'=>$own_rule
+			,'member'=>$gmember
+			,'group'=>$gnames
+			,'c_id' => $own_rule['category']
+			,'c_name'=>$c_name
+			,'s_id' => $s_id
+			,'s_name'=>$s_name
+			,'breadcrumbs'=> array(
+				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>'','name'=>'修改规则','class'=>'')
+			),
+		)
+	);
+    	
+    }
+
+    public function update_rule()
+    {
+    	$error = $this->session->userdata('last_error');
+	$this->session->unset_userdata('last_error');
+	$id = $this->input->post('rid');
+	$rname = $this->input->post('rule_name');
+	$sob_id = $this->input->post('sobs');
+	$category_id = $this->input->post('category');
+	
+	$amount = $this->input->post('rule_amount');
+	$amount_unlimit = $this->input->post('amount_unlimit');
+	$amount_time = $this->input->post('amount_time');
+	
+	$frequency = $this->input->post('frequency');
+	$frequency_unlimit = $this->input->post('frequency_unlimit');
+	$frequency_time = $this->input->post('frequency_time');
+
+	$groups = $this->input->post('gids');
+	$members = $this->input->post('uids');
+	$all_members = $this->input->post('all_members');
+
+	if($frequency == '')
+	{
+		$frequency = 0;
+	}
+	 if($frequency_unlimit == '')
+	{
+		$frequency_unlimit = 0;
+	}
+	 if($all_members == '')
+	{
+		$all_members = 0;
+	}
+	if($frequency_unlimit == 1)
+	{
+		$frequency = -1;
+	}
+	if($all_members == 1)
+	{
+		$groups = array();
+		$members = array();
+	}
+	log_message('debug',"####:".json_encode($groups));
+	
+	$start_time = $this->input->post('sdt');
+	$end_time = $this->input->post('edt');
+	$buf=$this->company->update_rule($id,$rname,$category_id,$frequency,$frequency_time,$all_members,implode(',',$groups),implode(',',$members));	
+	log_message("debug","####CREATE:".json_encode($buf));
+	    	return redirect(base_url('company/show'));
+    }
+    public function delete_rule($pid)
+    {
+    	$error = $this->session->userdata('last_error');
+	$buf = $this->company->delete_rule($pid);
+	log_message("debug","###delte:".json_encode($buf));
+	return redirect(base_url('company/show'));
     }
 
     public function create_rule()
@@ -29,6 +188,10 @@ class Company extends REIM_Controller {
 	$members = $this->input->post('uids');
 	$all_members = $this->input->post('all_members');
 
+	if($frequency == '')
+	{
+		$frequency = 0;
+	}
 	 if($frequency_unlimit == '')
 	{
 		$frequency_unlimit = 0;
@@ -51,34 +214,20 @@ class Company extends REIM_Controller {
 	$start_time = $this->input->post('sdt');
 	$end_time = $this->input->post('edt');
 	$buf=$this->company->create_rule($rname,$category_id,$frequency,$frequency_time,$all_members,implode(',',$groups),implode(',',$members));	
-	$this->bsload('company/show',
-		array(
-			'title'=>'test'
-			,'sdt' => $start_time
-			,'edt' => $end_time
-			,'sob_id' => $sob_id
-			,'unlimit' => $frequency_unlimit
-			,'name' => $rname
-			,'category_id' => $category_id
-			,'count'=>$frequency
-			,'peroid'=>$frequency_time
-			,'groups'=>$groups
-			,'members'=>$members
-			,'all_mem'=>$all_members
-			,'breadcrumbs' => array(
-				
-			),
-		)	
-	);
+	log_message("debug","####CREATE:".json_encode($buf));
+	    	return redirect(base_url('company/show'));
     }
 
     public function show(){
     	$error = $this->session->userdata('last_error');
 	$this->session->unset_userdata('last_error');
+	$buf = $this->company->show_rules();
+	$rules = json_decode($buf,true);
 	$this->bsload('company/show',
 		array(
 			'title'=>'新建规则'
 			,'error'=>$error
+			,'rules'=>$rules['data']
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
 				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')

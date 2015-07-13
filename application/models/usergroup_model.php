@@ -10,12 +10,13 @@ class UserGroup_Model extends Reim_Model {
         return $obj;
     }
 
-    public function create_group($uids,$name,$pid,$manager)
+    public function create_group($uids,$name,$code,$pid,$manager)
     {
            $jwt = $this->session->userdata('jwt');
            if(!$jwt) return false;
                 $data = array(
                     'name' => $name
+		    ,'code' => $code
                     ,'uids' => $uids
                     ,'pid' => $pid
 		    ,'manager' => $manager
@@ -26,12 +27,13 @@ class UserGroup_Model extends Reim_Model {
             return $obj;
     }
 
-    public function update_data($manager,$uids, $name,$pid,$gid = 0){
+    public function update_data($manager,$uids, $name,$code,$pid,$gid = 0){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(
             'manager' => $manager
             ,'name' => $name
+	    ,'code' => $code
             ,'uids' => $uids
 	       ,'pid' => $pid
             ,'id' => $gid

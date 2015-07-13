@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <head>
 <title>404 Page Not Found</title>
 <style type="text/css">
