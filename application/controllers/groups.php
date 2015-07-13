@@ -16,8 +16,8 @@ class Groups extends REIM_Controller {
         $uids = $this->input->post('uids');
         $pid = $this->input->post('pgroup');
         $manager = $this->input->post('manager');
-        $code = $this->input->post('code');
         $uids = implode(",", $uids);
+        $info = $this->ug->create_group($uids, $name,$code,$pid,$manager);
            redirect(base_url('members/groups'));
     }
 
