@@ -12,7 +12,21 @@ class Company extends REIM_Controller {
 
     public function create_approve()
     {
+    	$error = $this->session->userdata('last_error');
+	$this->session->unset_userdata('last_error');
+	
+	$rname = $this->input->post('rule_name');
+	$sob_id = $this->input->post('sobs');
+	$category_id = $this->input->post('category');
+	$amount = $this->input->post('max_amount');
+	$members = $this->input->post('uids');
+	$all_members = $this->input->post('all_members');
     	
+	$info = array('category'=>$category_id,'amount'=>$amount);
+	$policy =array();
+	array_push($policy,$info);
+	$buf = $this->company->create_approve($rname,implode(',',$members),$amount,json_encode($policy),$pid=-1);
+
     }
 
     public function approve()
@@ -129,7 +143,8 @@ class Company extends REIM_Controller {
 	
 	$frequency = $this->input->post('frequency');
 	$frequency_unlimit = $this->input->post('frequency_unlimit');
-	$frequency_time = $this->input->post('frequency_time');
+//	$frequency_time = $this->input->post('frequency_time');
+	$frequency_time = 1;
 
 	$groups = $this->input->post('gids');
 	$members = $this->input->post('uids');
@@ -187,7 +202,8 @@ class Company extends REIM_Controller {
 	
 	$frequency = $this->input->post('frequency');
 	$frequency_unlimit = $this->input->post('frequency_unlimit');
-	$frequency_time = $this->input->post('frequency_time');
+//	$frequency_time = $this->input->post('frequency_time');
+	$frequency_time = 1;
 
 	$groups = $this->input->post('gids');
 	$members = $this->input->post('uids');

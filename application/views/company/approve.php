@@ -39,6 +39,23 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">总金额</label>
+                                <div class="col-xs-2 col-sm-2">
+                                   <input type="text" class="form-controller col-xs-12" id="total" name="total_amount" placeholder="总金额">
+                                </div>
+
+                                <div class="col-sm-2 col-sm-2">
+                                    <div class="checkbox" >
+                                        <label>
+                                         <input type="checkbox" id="frequency_unlimit" name="frequency_unlimit" >
+                                            无限制
+                                         </label>
+                                        </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">类目</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select name="sobs" id="sobs">
@@ -46,7 +63,7 @@
                                     <select name="category" id="sob_category">
                                     </select>
 
-                                    <input type="text" class="form-controller col-xs-6" id="max_amount" name="rule_frequency" placeholder="最大金额">
+                                    <input type="text" class="form-controller col-xs-6" id="max_amount" name="category_amount" placeholder="最大金额">
                                 </div>
                                 
 
