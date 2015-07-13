@@ -383,6 +383,7 @@ public function common(){
 	$isremark = $this->input->post('isremark');
 	$template = $this->input->post('template');
 	$user_confirm = $this->input->post('limit');
+	$reports_limit = $this->input->post('reports_limit');
 	if($ischecked == "true")
 	{
 		$pids = 1;
@@ -407,6 +408,7 @@ public function common(){
 	$in['export_no_note'] = $remark_id;
 	$in['template'] = $template;
 	$in['user_confirm'] = $user_confirm;
+	$in['report_quota'] = $reports_limit;
 	$this->company->profile($in);
 	$re = array('name' => $ischecked,'remark'=>$isremark,'template' => $template,'obj' => $data['data']['config']);
 	die(json_encode($re));
