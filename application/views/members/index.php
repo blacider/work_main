@@ -4,7 +4,42 @@
     var _admin = "<?php echo $profile['admin']; ?>";
 </script>
 
-
+<style type="text/css">
+    #search{
+position: absolute;
+  left: 75%;
+  top: 64px;
+  z-index: 2;
+  height: 26px;
+  width: 150px;
+  border-style: ridge;
+    }
+    #search-submit {
+  background-color: #fe575f;
+  position: absolute;
+  left: 1200px;
+  top: 64px;
+  z-index: 2;
+  border: 0;
+  color: white;
+  height: 25px;
+  border-radius: 3px;   
+  font-size: 12px;
+   }
+</style>
+<script type="text/javascript">
+    function searchSubmit(form) {
+        if (form.key.value != '') return true;
+        else {
+            form.key.focus();
+            return false;
+        }
+    }
+</script>
+<form action="//127.0.0.1:8080/members/search" method="post" onsubmit="return searchSubmit(this)">
+    <input name="key" placeholder="名字、手机或者邮箱" value="<?php echo $search ?>" type='text' id="search">
+    <button type="submit" id="search-submit">搜索</button>
+</form>
 <div class="page-content">
 <div class="page-content-area">
 <div class="row">
@@ -54,6 +89,11 @@ if($profile['admin'] == 1) {
                 </tr>
 <?php 
 foreach($members as $m){
+?>
+<?php
+if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['email'],$search) + substr_count($m['phone'],$search) == 0) {
+    continue;
+}
 ?>
 <tr>
     <td>

@@ -145,9 +145,9 @@ jQuery(grid_selector).jqGrid({
     autowidth: true,
 
     colModel:[
-    {name:'nickname', index:'nickname', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
-    {name:'email', index:'email', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
-    {name:'phone', index:'phone', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
+    {name:'nickname', index:'nickname', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}, search:true},
+    {name:'email', index:'email', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}, search:true},
+    {name:'phone', index:'phone', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}, search:true},
     {name:'credit_card', index:'credit_card', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
     {name:'admin',index:'admin', width:70, editable: true,edittype:"select",editoptions: {value:"1:管理员;0:员工"},unformat: aceSwitch},
 

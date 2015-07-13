@@ -34,7 +34,7 @@ jQuery(grid_selector).jqGrid({
     mtype: "GET",
     datatype: "local",
     height: 250,
-    colNames:['标题', '类型', '创建日期', '金额','消费条目数','发起人', '状态', '操作', ''],
+    colNames:['ID','标题', '类型', '创建日期', '金额','消费条目数','发起人', '状态', '操作', ''],
     loadonce: true,
     //rownumbers: true, // show row numbers
     caption: "报告列表",
@@ -45,15 +45,16 @@ jQuery(grid_selector).jqGrid({
 
     viewsortcols : [true,'vertical',true],
     colModel:[
-        {name:'title', index:'title', width:120,editable: false,editoptions:{size:"20",maxlength:"30"}},
-        {name:'prove_ahead', index:'prove_ahead', width:30,editable: false,editoptions:{size:"20",maxlength:"30"}},
-        {name:'date_str', index:'date_str', width:70,editable: false,editoptions:{size:"20",maxlength:"30"}},
-        {name:'amount', index:'amount',sorttype: myCustomSort, width:50,editable: true,editoptions:{size:"20",maxlength:"30"}},
-        {name:'item_count', index:'item_count', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
+        {name:'id', index:'id', width:20,editable: false,editoptions:{size:"20",maxlength:"30"}},
+        {name:'title', index:'title', width:90,editable: false,editoptions:{size:"20",maxlength:"30"}},
+        {name:'prove_ahead', index:'prove_ahead', width:30,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
+        {name:'date_str', index:'date_str', width:70,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
+        {name:'amount', index:'amount',sorttype: myCustomSort, width:50,editable: true,editoptions:{size:"20",maxlength:"30"},search:false},
+        {name:'item_count', index:'item_count', width:50,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
         {name:'author', index:'author', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
-        {name:'status_str',index:'status_str', width:70, editable: false,editoptions: {size:"20", maxlength : "30"}/*,unformat: aceSwitch*/},
-        {name:'options',index:'options', width:55, editable: false,editoptions: {size:"20", maxlength : "60"},unformat: aceSwitch},
-        { name : 'lastdt', index : 'lastdt', hidden:true , sortable : true}
+        {name:'status_str',index:'status_str', width:70, editable: false,editoptions: {size:"20", maxlength : "30",search:false}/*,unformat: aceSwitch*/},
+        {name:'options',index:'options', width:55, editable: false,editoptions: {size:"20", maxlength : "60"},unformat: aceSwitch,search:false},
+        { name : 'lastdt', index : 'lastdt', hidden:true , sortable : true,search:false}
     ], 
     sortorder: "desc",
     sortorder: "desc",
