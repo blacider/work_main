@@ -160,4 +160,15 @@ class Items_Model extends Reim_Model {
         $obj = json_decode($buf, true);
         return $obj;
     }
+
+    public function item_flow($iid){
+        if(0 === $iid) return array();
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $url = $this->get_url("item_flow/601");
+        $buf = $this->do_Get($url, $jwt);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
 }
