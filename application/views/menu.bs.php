@@ -420,6 +420,13 @@ if($profile['admin'] == 1){
           <b class="arrow"></b>
         </li> 
 
+
+        <li class="hsub" id="show_approve">
+        <a href="<?php echo base_url('company/show_approve'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 审批规则 </a>
+          <b class="arrow"></b>
+        </li> 
+
+
         <li class="hsub" id="approve">
         <a href="<?php echo base_url('company/approve'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建审批 </a>
           <b class="arrow"></b>
