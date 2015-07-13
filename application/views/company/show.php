@@ -26,27 +26,30 @@
                                 </tr>
                             </thead>
                             <tbody>
-<!-- <?php
+ <?php
  $m_dict = array();
  $top_category = array();
-foreach($category as $item){
+foreach($rules as $item){
+            //echo json_encode($item);
     $img = "";
     $str = '<tr>';
 $username = '<td class="u_username">' . $item['name'] . '</td>';
-$role_id =  '<td class="u_role_name">' . date('Y-m-d H:i:s', $item['lastdt']) . '</td>';
+$role_id =  '<td class="u_role_name">' . $item['lastdt'] . '</td>';
     //$role_id = '<td class="u_role_name">' . $item->role_name . '</td>';
 $operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class="edit"  data-title="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
-    $operation = '<td style="width:50px;"><a class="btn btn-xs btn-danger" href="' .  base_url('admin/user/del?id='. $item['id']) .'">
+    $operation = '<td style="width:50px;"><a class="btn btn-xs btn-danger" href="' .  base_url('/company/delet_rule/'. $item['id']) .'">
         <i class="ace-icon fa fa-trash-o bigger-120"></i>
         </a></td>';
 $str = $str . $username . $role_id . $operation_upd . '</tr>';
 echo $str;
+
 }
-?> -->
+?> 
 </tbody>
 </table>
 </div><!-- /.span -->
 </div><!-- /.row -->
+
 
 <div id="modal-table" class="modal" tabindex="-1">
     <div class="modal-dialog">
@@ -79,7 +82,7 @@ echo $str;
 
                             <div class="form-group col-sm-5">
                                 <label for="form-field-username">规则名称</label>
-                                <div>
+                          rul      <div>
                                     <input class="input-large" type="text" placeholder="规则名称" id="rule_name" name="rule_name" />
                                    <!-- <input type="hidden"  id="category_id" name="category_id" value="0" required /> -->
                                 </div>
@@ -107,6 +110,9 @@ echo $str;
 </div><!-- /.page-content-area -->
 </div><!-- /.page-content -->
 </div><!-- /.main-content -->
+<script type="text/javascript">
+    var __BASEURL = "<?php echo $base_url; ?>";
+</script>
 <script language="javascript">
 
 $(document).ready(function(){
@@ -117,17 +123,14 @@ $(document).ready(function(){
             var _title = $(this).data('title');
             var _id = $(this).data('id');
 
-            $('#category_name').val(_title);
-            $('#category_id').val(_id);
-
-            $('#modal-table').modal();
+           location.href=__BASEURL+"/company/update/"+ _id;
         });
     });
     $('.del').each(function(){
         $(this).click(function(){
             if(confirm('确认要删除吗?')){
                 var _id = $(this).data('id');
-                location.href = __BASEURL + "/tags/drop/" + _id;
+                location.href = __BASEURL + "/company/delete_rule/" + _id;
             }
         });
     });
