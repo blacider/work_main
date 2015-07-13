@@ -6,6 +6,54 @@ class Company_Model extends Reim_Model {
         parent::__construct();
     }
 
+	public function delete_approve($pid)
+	{
+		$jwt = $this->session->userdata('jwt');
+		if(!$jwt) return false;
+		$url = $this->get_url('audit_policy/'.$pid);
+		$buf = $this->do_Delete($url,$jwt);
+		log_message("debug","####DeleteAPP:".json_encode($buf));
+		return $buf;
+	}
+	public function show_approve()
+	{
+		$jwt=$this->session->userdata('jwt');		
+		if(!$jwt) return false;
+		$url = $this->get_url('audit_policy');
+		$data = array();
+		$buf = $this->do_Get($url,$jwt);
+		log_message('debug',"@@@@:APPRSHOW:".json_encode($buf));
+		return $buf;
+	}
+    	public function create_approve($name,$members,$amount,$policies,$pid=-1)
+	{
+		$jwt = $this->session->userdata('jwt');
+		if(!$jwt) return false;
+		$url = $this->get_url('audit_policy');
+		if($pid == -1)
+		{
+			$data = array(
+				'name'=>$name
+				,'members'=>$members
+				,'amount'=>$amount
+				,'policies'=>$policies
+			);
+		}
+		else
+		{
+			$data = array(
+				'pid'=>$pid
+				,'name'=>$name
+				,'members'=>$members
+				,'amount'=>$amount
+				,'policies'=>$policies
+			);
+		}
+		$buf = $this->do_Post($url,$data,$jwt);
+		log_message("debug","@@@@APPR:".json_encode($buf));
+		return $buf;
+	}
+
 	public function delete_rule($pid)
 	{
 		$jwt = $this->session->userdata('jwt');
