@@ -10,7 +10,7 @@ class Members extends REIM_Controller {
     }
 
     public function search() {
-        $key = $this->input->post('key');
+        $key = $this->input->get('key');
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
