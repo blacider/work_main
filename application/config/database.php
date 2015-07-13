@@ -49,6 +49,7 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
+<<<<<<< HEAD
 $db['default']['username'] = 'admin';
 $db['default']['password'] = 'xODJhZjY2MzQ4ZfdsaTBjMjMzMjZlZWM2OTFmN';
 $db['default']['database'] = 'reimadmin';
@@ -65,6 +66,7 @@ $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
 $db['data']['hostname'] = 'localhost';
+<<<<<<< HEAD
 $db['default']['username'] = 'admin';
 $db['default']['password'] = 'xODJhZjY2MzQ4ZfdsaTBjMjMzMjZlZWM2OTFmN';
 $db['data']['database'] = 'reim';

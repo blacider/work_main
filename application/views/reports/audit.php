@@ -28,7 +28,7 @@ position: absolute;
   font-size: 12px;
    }
 </style>
-    <input name="key" placeholder="ID或标题" value="" type='text' id="globalSearchText">
+    <input name="key" placeholder="ID、标题或发起人" value="" type='text' id="globalSearchText">
     <button type="button" id="globalSearch">搜索</button>
 <div class="page-content">
     <div class="page-content-area">
