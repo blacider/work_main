@@ -57,16 +57,15 @@
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">类目</label>
-                                <div class="col-xs-6 col-sm-6">
+                                <div class="col-xs-3 col-sm-3">
                                     <select name="sobs" id="sobs">
                                     </select>
                                     <select name="category" id="sob_category">
                                     </select>
-
+                                </div>
+                                <div class="col-xs-3 col-sm-3">
                                     <input type="text" class="form-controller col-xs-6" id="max_amount" name="category_amount" placeholder="最大金额">
                                 </div>
-                                
-
                             </div>
 
                           <!--  <div class="form-group">
