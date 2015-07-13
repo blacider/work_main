@@ -116,7 +116,7 @@ foreach($member['banks'] as $b) {
                                             }
                                         ?>
                                     </select>
-                                    <input type="text" name="admin_old" value="<?php echo $member['admin']; ?>" type="hidden" />
+                                    <input type="hidden" name="admin_old" value="<?php echo $member['admin']; ?>" type="hidden" />
                                 </div>
                             </div>
                         </div>
