@@ -18,9 +18,7 @@ class Groups extends REIM_Controller {
         $manager = $this->input->post('manager');
         $code = $this->input->post('code');
         $uids = implode(",", $uids);
-        if($info['status'] > 0){
            redirect(base_url('members/groups'));
-        }
     }
 
     public function index(){
