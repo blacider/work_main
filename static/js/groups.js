@@ -60,6 +60,8 @@ jQuery(grid_selector).jqGrid({
 
     colModel: _models,
     loadComplete : function() {
+        $("#grid-table [title='已邀请']").parent().css('display','none');
+        $("#grid-table [title='全体员工']").parent().css('display','none');
         bind_event();
         var table = this;
         setTimeout(function(){
@@ -78,9 +80,9 @@ jQuery(grid_selector).jqGrid({
     scrollPopUp:true,
     scrollLeftOffset: "83%",
     viewrecords: true,
-    scroll: 0, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
+    //scroll: 0, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
     //emptyrecords: 'Scroll to bottom to retrieve new page', // the message will be displayed at the bottom 
-    //pager : pager_selector,
+    pager : pager_selector,
 
     });
 
@@ -115,7 +117,7 @@ jQuery(grid_selector).jqGrid({
                 //width: 700,
                 closeAfterAdd: true,
                 recreateForm: true,
-                viewPagerButtons: false,
+                viewPagerButtons: true,
                 beforeShowForm : function(e) {
                     var form = $(e[0]);
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
