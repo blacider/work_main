@@ -261,12 +261,12 @@ class Members extends REIM_Controller {
             foreach($groups as &$g)
             {
                 $temp = array();
-                $members = $this->ug->get_single_group($g['id']);
-                array_push($re, array('members'=>json_decode($members,true)['data']['member'],'id' => $g['id'],'pid' => $g['pid'],'name'=>$g['name']));
-
+             //   $members = $this->ug->get_single_group($g['id']);
+              //  array_push($re, array('members'=>json_decode($members,true)['data']['member'],'id' => $g['id'],'pid' => $g['pid'],'name'=>$g['name']));
+                array_push($re, array('id' => $g['id'],'pid' => $g['pid'],'name'=>$g['name']));
             }
             die(json_encode($re));
-            $re = $this->ug->get_single_group(6);
+           // $re = $this->ug->get_single_group(6);
 
            // die(json_encode($re));
         }
