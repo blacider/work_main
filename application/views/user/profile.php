@@ -122,23 +122,7 @@ foreach($member['banks'] as $b) {
                         </div>
                     </div>
 
-<?php 
-$me = $this->session->userdata('user');
-if($user['id'] != $me['id']) {
-?>
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">管理员</label>
-                                <div class="col-xs-6 col-sm-6">
-                                    <label style="margin-top:8px;">
-                                        <input name="admin" class="ace ace-switch btn-rotate" type="checkbox"  id="setadmin" style="margin-top:4px;" />
-                                        <span class="lbl"></span>
-                                    </label>
 
-                                </div>
-                            </div>
-<?php 
-}
-?>
 
 
                     <div class="clearfix form-actions col-md-8">
