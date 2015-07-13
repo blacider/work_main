@@ -38,7 +38,6 @@ class UserGroup_Model extends Reim_Model {
             ,'uids' => $uids
 	       ,'pid' => $pid
             ,'id' => $gid
-            ,'pid' => 0
         );
         log_message("debug", json_encode($data));
 		$url = $this->get_url('user_group');
