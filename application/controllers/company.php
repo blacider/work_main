@@ -10,6 +10,11 @@ class Company extends REIM_Controller {
        $this->load->model('category_model','category');
     }
 
+    public function create_approve()
+    {
+    	
+    }
+
     public function approve()
     {
     	$error = $this->session->userdata('last_error');

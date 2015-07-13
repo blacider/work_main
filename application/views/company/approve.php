@@ -27,7 +27,7 @@
 
 <div class="page-content">
     <div class="page-content-area">
-        <form role="form" action="<?php echo base_url('company/create_rule');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
+        <form role="form" action="<?php echo base_url('company/create_approve');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
 
@@ -45,7 +45,8 @@
                                     </select>
                                     <select name="category" id="sob_category">
                                     </select>
-                                    <input type="text" class="form-controller col-xs-6" id="frequency" name="rule_frequency" placeholder="最大金额">
+
+                                    <input type="text" class="form-controller col-xs-6" id="max_amount" name="rule_frequency" placeholder="最大金额">
                                 </div>
                                 
 
@@ -128,7 +129,7 @@
                             <hr>
                               <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">适用范围</label>
-                                <div class="col-xs-3 col-sm-3">
+                                <!--<div class="col-xs-3 col-sm-3">
                                     <select class="chosen-select tag-input-style" id="group" name="gids[]" multiple="multiple" data-placeholder="请选择部门" placeholder="请选择部门">
                                     <?php 
                                     foreach($group as $g){
@@ -138,7 +139,7 @@
                                     }
                                     ?>
                                     </select>
-                                </div>
+                                </div> -->
                                 <div class="col-xs-3 col-sm-3">
                                     <select class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
                                     <?php 
