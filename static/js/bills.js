@@ -198,7 +198,12 @@ jQuery(grid_selector).jqGrid({
             alert("请选择报告!");
             return;
          }
-        $('#modal-table').modal();
+        $('#modal-table').modal().css({
+            width:'auto',
+            'margin-left':function () {
+                return -(($(this).width() - $('#modal-table').width) / 2);
+            }
+        });
         _part = chosenids.join('/');
        var _part_url = __BASE + 'bills/listdata_new/' + __STATUS + '/' + _part;
 
@@ -215,6 +220,7 @@ jQuery(grid_selector).jqGrid({
     editurl: __BASE + 'bills/save',
     datatype: "json",
     autowidth: true,
+    shrinkToFit:false,
     hoverrows : true,
 
     colModel:[
