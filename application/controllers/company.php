@@ -40,12 +40,27 @@ class Company extends REIM_Controller {
 	log_message("debug","sobs:".json_encode($_sobs));
 	$approve_categories = $own_rule['categories'];
 	$cate_arr = array();
-/*	foreach($approve_categories as $item)
+	foreach($approve_categories as $item)
 	{
-		array_push($cate_arr,array$item['category']=>array('category_id'=>$item['category']));
+		$cate_arr[$item['category']]=array('category_id'=>$item['category']);
+		foreach($categories as $cate)
+		{
+			if($cate['id'] == $item['category'])
+			{
+				$cate_arr[$item['category']]['category_name'] = $cate['category_name'];
+				$cate_arr[$item['category']]['sob_id'] = $cate['sob_id'];
+			}
+		}
+		foreach($_sobs as $s)
+		{
+			if($s['sob_id'] == $cate_arr[$item['category']]['sob_id'])
+			{
+				$cate_arr[$item['category']]['sob_name'] = $s['sob_name'];
+			}
+		}
 	}
-	log_message("debug","array:".json_encode($cate_arr));*/
-	$s_id ='';
+	log_message("debug","array:".json_encode($cate_arr));
+/*	$s_id ='';
 	$s_name = '';
 	$c_name = '';
 	$c_id = '';
@@ -82,7 +97,7 @@ class Company extends REIM_Controller {
 			),
 		)
 	);
-	
+	*/	
     }
 
     public function show_approve()

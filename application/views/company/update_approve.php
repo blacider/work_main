@@ -307,7 +307,8 @@
         </form>
     </div>
 </div>
-<!-- <p><?php echo json_encode($rule)?></p> 
+<p><?php echo json_encode($rule)?>
+<!--
  <?php foreach ($rule['members'] as $key => $value) {
                                         # code...
                                 echo $value['id'];     //   array_push($mem,$rule['members']['id']);
