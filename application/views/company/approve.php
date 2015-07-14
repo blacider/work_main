@@ -27,46 +27,99 @@
 
 <div class="page-content">
     <div class="page-content-area">
-        <form role="form" action="<?php echo base_url('company/create_approve');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
+        <form role="form" action='<?php echo base_url("company/create_approve/".$pid);  ?>' method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
 
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">规则名称</label>
-                                 <div class="col-xs-6 col-sm-6">
-                                    <input type="text" class="form-controller col-xs-12" id="rname" name="rule_name" placeholder="规则名称">
+                                <label class="col-sm-2 control-label no-padding-right">规则名</label>
+                                 <div class="col-xs-2 col-sm-2">
+                                    <input type="text" style="height: 30px;margin-top: 2px" class="form-controller" id="rname" name="rule_name" placeholder="规则名称">
+                                    <input type="hidden" name="rid">
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">总金额</label>
-                                <div class="col-xs-2 col-sm-2">
-                                   <input type="text" class="form-controller col-xs-12" id="total" name="total_amount" placeholder="总金额">
+                             <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right">总金额</label>
+                                <div class="col-xs-1 col-sm-1">
+                                   <input type="text" style="height: 30px;width:160%;margin-top: 2px" class="form-controller col-xs-12" id="total" name="total_amount" placeholder="总金额">
                                 </div>
 
                                 <div class="col-sm-2 col-sm-2">
-                                    <div class="checkbox" >
+                                    <div class="checkbox" style="margin-left:35px;">
                                         <label>
                                          <input type="checkbox" id="frequency_unlimit" name="frequency_unlimit" >
                                             无限制
                                          </label>
                                         </div>
-                                </div>
+                             </div>
 
                             </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">类目</label>
-                                <div class="col-xs-3 col-sm-3">
-                                    <select name="sobs" id="sobs">
-                                    </select>
-                                    <select name="category" id="sob_category">
+                        
+                            <label style="margin-left: -7px;" class="col-sm-2 control-label no-padding-right">审查类目</label>
+                
+                        <div class="form-group CategoryRow">
+                                <div class="col-xs-1 col-sm-1" style="margin-top:2px">
+                                    <select name="sobs" class="sobs chosen-select-niu" data-placeholder="套帐">
                                     </select>
                                 </div>
-                                <div class="col-xs-3 col-sm-3">
-                                    <input type="text" class="form-controller col-xs-6" id="max_amount" name="category_amount" placeholder="最大金额">
+                                <div class="col-xs-1 col-sm-1" style="margin:2px 20px auto 20px;">
+                                    <select name="category" class="sob_category chosen-select-niu" data-placeholder="类目">
+                                    </select>
                                 </div>
-                            </div>
+                                <div class="col-xs-1 col-sm-1">
+                                    <input type="text" style="width:160%;width:160%;height:30px;margin-top: 2px" class="form-controller" name="category_amount" value="" placeholder="最大金额">
+                                </div>
+                                <div class="col-xs-1 col-sm-1">
+                                    <div class="addCategoryRow" onclick="addCategoryRow()">+</div>   
+                                </div>
+                        </div>
+                        <script type="text/javascript">
+                            function updateSelectSob(data) {
+                                $(".sobs").empty();
+                                $(".sobs").append(data);
+                                $(".sobs").trigger("chosen:updated");
+                            }
+                            function removeCategoryRow(div) {
+                                $(div).parent().parent().remove();
+                                initCategoryRow();
+                            }
+                            function addCategoryRow(div) {
+                                var addDom = $('.addCategoryRow');
+                                var category = "<div class='form-group CategoryRow'><div class='col-xs-1 col-sm-1 notFirstCategoryRow' style='margin-top:2px;'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-1 col-sm-1' style='margin:2px 20px auto 20px;''><select name='category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='col-xs-1 col-sm-1'><input type='text' style='width:160%;width:160%;height:30px;margin-top: 2px' class='form-controller' name='category_amount' value='' placeholder='最大金额'></div><div class='col-xs-1 col-sm-1'><div class='addCategoryRow' onclick='addCategoryRow()''>+</div>   </div></div>"
+                                addDom.removeClass('addCategoryRow');
+                                addDom.attr('onclick', 'removeCategoryRow(this)');
+                                addDom.addClass('removeCategoryRow');
+                                addDom.text('-');
+                                addDom.parent().parent().after(category);
+                                $(".chosen-select-niu").chosen({width:"160%"});
+                                $($(".sobs")[$(".sobs").length-1]).append(selectDataSobs);
+                                $(".sobs").trigger("chosen:updated");
+                                $('.sobs').change(function(){
+                                    var s_id = $(this).val();
+                                    if(selectDataCategory[s_id] != undefined){
+                                        for(var i = 0 ; i < selectDataCategory[s_id].length; i++) {
+                                            var _h = "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                                        }
+                                    }
+                                    var selectDom = this.parentNode.nextElementSibling.children[0]
+                                    $(selectDom).empty().append(_h).trigger("chosen:updated");
+                                });
+                            }
+                            $(document).ready(function($) {
+                                $(".chosen-select-niu").chosen({width:"160%"});
+                                initCategoryRow();
+                            });
+                            function initCategoryRow() {
+                                var rows = $('.CategoryRow');
+                                for (var i = 0; i < rows.length; i++) {
+                                    if (i == 0)
+                                        rows[i].firstChild.className = 'col-xs-1 col-sm-1 firstCategoryRow';
+                                    else
+                                        rows[i].firstChild.className = 'col-xs-1 col-sm-1 notFirstCategoryRow';
+                                }
+                            }
+                        </script>
 
                           <!--  <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">最大金额</label>
@@ -94,31 +147,27 @@
 
                             </div> -->
 
-                              <!--  <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">最大频次</label>
-                                <div class="col-xs-2 col-sm-2">
-                                   <input type="text" class="form-controller col-xs-12" id="frequency" name="rule_frequency" placeholder="频次">
-                                </div>
 
-                                <div class="col-sm-2 col-sm-2">
-                                    <div class="checkbox" >
-                                        <label>
-                                         <input type="checkbox" id="frequency_unlimit" name="frequency_unlimit" >
-                                            无限制
-                                         </label>
-                                        </div>
-                                </div>
-
-                                <div class="col-sm-2 col-sm-2">
+                                <!-- <div class="col-sm-2 col-sm-2">
                                    
                                         <select class="form-control" id="frequency_time" name="frequency_time">
-                                          <option value="2">一年</option>
-                                          <option value="1">一月</option>
-                                          <option value="3">一日</option>
+                                        <?php
+                                            $period = array(1=>"一月",2=>"一年",3=>"一日");
+                                            foreach ($period as $key => $value) {
+                                                if($key == $rule['freq_period'])
+                                                {
+                                        ?>
+                                            <option selected value="<?php echo $key ?>"><?php echo $value?></option>
+                                            <?php } else {?>
+                                          <option value="<?php echo $key?>"><?php echo $value?></option>
+                                          <?php
+                                            }
+                                            }
+                                          ?>
                                         </select>
-                                </div>
+                                </div> -->
 
-                            </div> -->
+                        
 
                         <!--   <div class="form-group">
                                     <label class="col-sm-1 control-label no-padding-right">消费时间</label>
@@ -143,8 +192,8 @@
                                
                             </div> -->
                             <hr>
-                              <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">适用范围</label>
+                            <div class="form-group" style="margin-top:30px;">
+                                <label class="col-sm-2 control-label no-padding-right">适用范围</label>
                                 <!--<div class="col-xs-3 col-sm-3">
                                     <select class="chosen-select tag-input-style" id="group" name="gids[]" multiple="multiple" data-placeholder="请选择部门" placeholder="请选择部门">
                                     <?php 
@@ -156,29 +205,41 @@
                                     ?>
                                     </select>
                                 </div> -->
+
                                 <div class="col-xs-3 col-sm-3">
                                     <select class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
                                     <?php 
+                                    $mem = array();
+                                    foreach ($rule['members'] as $key => $value) {
+                                        # code...
+                                        array_push($mem,$value['uid']);
+                                    }
                                     foreach($member as $m){
+                                        if(in_array($m['id'], $mem)){
                                     ?>
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                    <?php } else { ?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
                                     <?php
                                     }
+                                    }
                                     ?>
+         
                                     </select>
                                 </div>
 
-                                <div class="col-sm-2 col-sm-2">
+                               <div class="col-xm-2 col-sm-2">
                                     <div class="checkbox" >
                                         <label>
                                          <input type="checkbox" id="all_members"  name="all_members">
                                             全体员工
                                          </label>
-                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                           
+
+                           <!--
 
                             <input type="hidden" id="renew" name="renew" value="0" />
                             <input type="reset" style="display:none;" id="reset">
@@ -191,27 +252,76 @@
                                 </div>
                             </div>
 
+                            -->
+                            <div class="form-group">
+                                <div class="col-xm-2 col-sm-2">
+                                    <input type="submit" value="保存">
+                                </div>
+                                <div class="col-xm-2 col-sm-2">
+                                    <div><a href="" style="cursor:pointer;color:grey;position: relative;left:150px;top:64px;">取消</a></div>
+                                </div>
+                                
+                            </div>
                         </div>
             </div>
         </form>
     </div>
 </div>
-
+<!-- <p><?php echo json_encode($rule)?></p> 
+ <?php foreach ($rule['members'] as $key => $value) {
+                                        # code...
+                                echo $value['id'];     //   array_push($mem,$rule['members']['id']);
+                                    }?>
+<p><?php echo json_encode($rule['members'])?></p>
+<p><?php echo json_encode($rule);?></p>
+<p><?php echo $c_id.$c_name.$s_id.$s_name?></p>-->
+<style type="text/css">
+    .notFirstCategoryRow {
+        margin-left: 167px !important;
+    }
+    .firstCategoryRow {
+        margin-left: 0px;
+    }
+    .form-group {
+        margin-bottom: 30px;
+    }
+    .addCategoryRow, .removeCategoryRow{
+        margin:2px auto auto 25px;
+        font-size:20px;
+        cursor:pointer;
+    }
+    input[type="submit"]:hover {
+        background-color: #ff7075;
+    }
+    input[type="submit"] {
+        width:100%;
+        background-color: #FE575C;
+        color:white;
+        border-radius: 25px;
+        font-size: 23px;
+        width: 160px;
+        height: 50px;
+        border:0;
+        margin: 50px auto auto 130px;
+    }
+</style>
 <script language="javascript">
-    var __INFO = Array();
+    //updateSelect()
+    selectDataSobs = '';
+    selectDataCategory = {};
 function get_sobs(){
         $.ajax({
             url : __BASE + "category/get_sob_category",
             dataType : 'json',
             method : 'GET',
             success : function(data){
-                __INFO = data;
-               console.log(data);
-	       for(var item in data){
-                    //console.log(data[item]);
+                for(var item in data){
                     var _h = "<option value='" +  item + "'>"+  data[item].sob_name + " </option>";
-                    $('#sobs').append(_h);
-                };
+                    selectDataCategory[item] = data[item]['category'];
+                    selectDataSobs += _h;
+                }
+                selectPostData = data;
+                updateSelectSob(selectDataSobs);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(XMLHttpRequest.status);
@@ -220,27 +330,26 @@ function get_sobs(){
         });
 
 
-        $('#sobs').change(function(){
+        $('.sobs').change(function(){
             var s_id = $(this).val();
-            $('#sob_category').html('');
-            //console.log(__INFO[s_id]);
-            var sob_info = __INFO[s_id];
-            if(sob_info['category']!=undefined)
+            if(selectDataCategory[s_id] != undefined)
             {
-                for(var i = 0 ; i<sob_info['category'].length; i++)
+                for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
                 {
-                    var _h = "<option value='" +  sob_info['category'][i]['category_id'] + "'>"+  sob_info['category'][i]['category_name'] + " </option>";
-                    $('#sob_category').append(_h);
+                    var _h = "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                    
                    // console.log(_h);
                 }
             }
-             });
+            var selectDom = this.parentNode.nextElementSibling.children[0]
+            $(selectDom).empty().append(_h).trigger("chosen:updated");
+        });
 }
 
 $(document).ready(function(){
    
 
-	    /*$.ajax({
+        /*$.ajax({
         url:__BASE + "category/get_sob_category/"+s_id,
         dataType:'json',
         method:'GET',
@@ -264,8 +373,11 @@ $(document).ready(function(){
                         console.log(textStatus);}
         });*/
            
-       
+    
 
+
+   
+  
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
             useCurrent: true,
@@ -305,16 +417,16 @@ $(document).ready(function(){
     $('.renew').click(function(){
         
         var rname = $('#rname').val();
-        var sobs = $('#sobs').val();
-	var category = $('#category').val();
+        var sobs = $('.sobs').val();
+    var category = $('.category').val();
 
-	var amount = $('#amount').val();
-	var amount_unlimit = $('#amount_unlimit').val();
-	var amount_time = $('#amount_time').val();
+    var amount = $('#amount').val();
+    var amount_unlimit = $('#amount_unlimit').val();
+    var amount_time = $('#amount_time').val();
 
-	var frequency = $('#frequency').val();
-	//var frequency_unlimit = $('#frequency_unlimit').val();
-	var frequency_time = $('#frequency_time').val();
+    var frequency = $('#frequency').val();
+    //var frequency_unlimit = $('#frequency_unlimit').val();
+    var frequency_time = $('#frequency_time').val();
 
     if($('#frequency_unlimit').is(':checked'))
     {
@@ -339,21 +451,21 @@ $(document).ready(function(){
          console.log($('#all_members').val());
 
     }
-/*	if(name=='')
-	{	
-		show_notify('请输入用户名');
+/*  if(name=='')
+    {   
+        show_notify('请输入用户名');
         $('#name').focus();
-		return false;
-	}
+        return false;
+    }
 
-	if(phone==''&& email=='')
-	{	
-		show_notify('请输入手机号码或email');
+    if(phone==''&& email=='')
+    {   
+        show_notify('请输入手机号码或email');
         $('#phone').focus();
         $('#email').focus();
-		return false;
-	}
-	
+        return false;
+    }
+    
         show_notify("hello");*/
        // $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
