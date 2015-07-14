@@ -27,7 +27,7 @@
 
 <div class="page-content">
     <div class="page-content-area">
-        <form role="form" action="<?php echo base_url('company/create_approve');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
+        <form role="form" action='<?php echo base_url("company/create_approve/".$pid);  ?>' method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
 

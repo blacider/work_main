@@ -55,6 +55,7 @@ class Company extends REIM_Controller {
 	$this->bsload('company/update_approve',
 		array(
 			'title'=>'修改审批'
+			,'pid'=>$pid
 			,'error'=>$error
 			,'rule'=>$own_rule
 			,'member'=>$gmember
@@ -95,7 +96,7 @@ class Company extends REIM_Controller {
     	
     }
 
-    public function create_approve()
+    public function create_approve($pid=-1)
     {
     	$error = $this->session->userdata('last_error');
 	$this->session->unset_userdata('last_error');
@@ -111,7 +112,7 @@ class Company extends REIM_Controller {
 //	$info = array('category'=>$category_id,'amount'=>$amount);
 	$policy =array(array('category'=>$category_id,'amount'=>$amount));
 //	array_push($policy,$info);
-	$buf = $this->company->create_approve($rname,implode(',',$members),$total_amount,json_encode($policy),$pid=-1);
+	$buf = $this->company->create_approve($rname,implode(',',$members),$total_amount,json_encode($policy),$pid);
 	return redirect(base_url('company/show_approve'));
 
     }
