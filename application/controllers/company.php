@@ -35,6 +35,16 @@ class Company extends REIM_Controller {
 	$categories = $category['data']['categories'];
 	$sobs = $this->account_set->get_account_set_list();
 	$_sobs = $sobs['data'];
+	log_message('debug',"approve:".json_encode($own_rule));
+	log_message("debug","categories:".json_encode($categories));
+	log_message("debug","sobs:".json_encode($_sobs));
+	$approve_categories = $own_rule['categories'];
+	$cate_arr = array();
+/*	foreach($approve_categories as $item)
+	{
+		array_push($cate_arr,array$item['category']=>array('category_id'=>$item['category']));
+	}
+	log_message("debug","array:".json_encode($cate_arr));*/
 	$s_id ='';
 	$s_name = '';
 	$c_name = '';
@@ -108,11 +118,24 @@ class Company extends REIM_Controller {
 	$total_amount = $this->input->post('total_amount');
 	$members = $this->input->post('uids');
 	$all_members = $this->input->post('all_members');
-    	
+	$category_ids = $this->input->post('category_ids');
+	$category_ids = json_decode($category_ids);
+	$category_amounts = $this->input->post('category_amounts');
+	$category_amounts = json_decode($category_amounts);
+    	$policies = array();
+	$length = count($category_ids);
+
+	for($i = 0 ; $i < $length ; $i++)
+	{
+		$item = array('category'=>$category_ids[$i],'amount'=>$category_amounts[$i]);
+		array_push($policies,$item);
+	}
+	log_message("debug","accepted:".json_encode($policies));
+	log_message("debug","accepted:".$category_amounts[0]);
 //	$info = array('category'=>$category_id,'amount'=>$amount);
-	$policy =array(array('category'=>$category_id,'amount'=>$amount));
+// 	$policy =array(array('category'=>$category_id,'amount'=>$amount));
 //	array_push($policy,$info);
-	$buf = $this->company->create_approve($rname,implode(',',$members),$total_amount,json_encode($policy),$pid);
+	$buf = $this->company->create_approve($rname,implode(',',$members),$total_amount,json_encode($policies),$pid);
 	return redirect(base_url('company/show_approve'));
 
     }
@@ -229,7 +252,7 @@ class Company extends REIM_Controller {
 	$amount_unlimit = $this->input->post('amount_unlimit');
 	$amount_time = $this->input->post('amount_time');
 	
-	$frequency = $this->input->post('frequency');
+	$frequency = $this->input->post('rule_frequency');
 	$frequency_unlimit = $this->input->post('frequency_unlimit');
 //	$frequency_time = $this->input->post('frequency_time');
 	$frequency_time = 1;
@@ -288,7 +311,7 @@ class Company extends REIM_Controller {
 	$amount_unlimit = $this->input->post('amount_unlimit');
 	$amount_time = $this->input->post('amount_time');
 	
-	$frequency = $this->input->post('frequency');
+	$frequency = $this->input->post('rule_frequency');
 	$frequency_unlimit = $this->input->post('frequency_unlimit');
 //	$frequency_time = $this->input->post('frequency_time');
 	$frequency_time = 1;
@@ -318,7 +341,7 @@ class Company extends REIM_Controller {
 		$groups = array();
 		$members = array();
 	}
-	log_message('debug',"####:".json_encode($groups));
+	log_message('debug',"####:".json_encode($frequency));
 	
 	$start_time = $this->input->post('sdt');
 	$end_time = $this->input->post('edt');
