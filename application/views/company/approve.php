@@ -332,11 +332,12 @@ function get_sobs(){
 
         $('.sobs').change(function(){
             var s_id = $(this).val();
+            var _h = '';
             if(selectDataCategory[s_id] != undefined)
             {
                 for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
                 {
-                    var _h = "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                    _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
                     
                    // console.log(_h);
                 }
@@ -474,14 +475,14 @@ $(document).ready(function(){
         $('#reset').click();
     });
 
-    $('#amount_unlimit').click(function(){
+    $('#frequency_unlimit').click(function(){
         if($(this).is(':checked'))
         {
-            $('#amount').attr("disabled",true);
+            $('#total').attr("disabled",true);
         }
         else
         {
-            $('#amount').attr("disabled",false);
+            $('#total').attr("disabled",false);
         }
     });
 
