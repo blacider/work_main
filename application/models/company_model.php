@@ -11,7 +11,7 @@ class Company_Model extends Reim_Model {
 		$jwt = $this->session->userdata('jwt');
 		if(!$jwt) return false;
 		$url = $this->get_url('audit_policy/'.$pid);
-		$buf = $this->do_Delete($url,$jwt);
+		$buf = $this->do_Delete($url, array(), $jwt);
 		log_message("debug","####DeleteAPP:".json_encode($buf));
 		return $buf;
 	}
