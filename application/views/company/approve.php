@@ -70,7 +70,6 @@
                                 <div class="col-xs-1 col-sm-1">
                                     <input type="text" style="width:160%;width:160%;height:30px;margin-top: 2px" class="form-controller" name="category_amount" value="" placeholder="最大金额">
                                 </div>
-<<<<<<< HEAD
                                 <div class="col-xs-1 col-sm-1">
                                     <div class="addCategoryRow" onclick="addCategoryRow()">+</div>   
                                 </div>
