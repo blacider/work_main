@@ -176,31 +176,58 @@ class Category extends REIM_Controller {
         $this->session->unset_userdata('last_error');
     	$sobs = $this->account_set->get_account_set_list();
         $category = $this->category->get_list();
-	$ugroups = $this->ug->get_my_list();
-	$_ug = json_encode($ugroups['data']['group']);
-	$_category = json_encode($category);
-	log_message("debug", "CATEGORY#########: $_category");
-	
-	$_sobs = $sobs['data'];
-	$sob_data = array();
-	$_sob_id_key = array();
-	foreach($_sobs as $item)
-	{
-		$_sob_id = $item['sob_id'];
-		if(!in_array($_sob_id,$_sob_id_key))
-		{
-			array_push($_sob_id_key,$_sob_id);
-			array_push($sob_data,$item);
-		}
 
-	}
-        if($category){
+
+        //TODO: 重新审核此段代码 Start
+        $ugroups = $this->ug->get_my_list();
+        $_ug = json_encode($ugroups['data']['group']);
+        $_category = json_encode($category);
+        log_message("debug", "CATEGORY#########: $_category");
+
+        $_sobs = $sobs['data'];
+        $sob_data = array();
+        $_sob_data_keys = array();
+        foreach($_sobs as $item)
+        {
+            $_sob_id = $item['sob_id'];
+            if(!in_array($_sob_id,$_sob_data_keys))
+            {
+                array_push($_sob_data_keys, $_sob_id);
+                array_push($sob_data, $item);
+            }
+        }
+        $ugroups = $this->ug->get_my_list();
+        $_ug = json_encode($ugroups['data']['group']);
+        $sobs = $this->account_set->get_account_set_list();
+        $_sobs = $sobs['data'];
+        log_message("debug", "UG#########: $_ug");
+        //TODO: 重新审核此段代码  END  庆义，长远
+
+         if($category){
             $_group = $category['data']['categories'];
         }
+        $category_group = array();
+        foreach ($_group as $item) {
+            if($item['sob_id'] == 0 || $item['sob_id'] == '0') {   
+                $item['sob_name'] = "没有帐套";
+                $category_group[] = $item;
+                continue;
+            } else {
+                foreach ($_sobs as $sob) {
+                    if ($item['sob_id'] == $sob['sob_id']) {
+                        $item['sob_name'] = $sob['sob_name'];
+                        $category_group[] = $item;
+                        break;
+                    }
+                }
+            }
+        }
+
         $this->bsload('category/index',
             array(
                 'title' => '分类管理'
-                ,'category' => $_group
+                ,'category' => $category_group
+                //,'sobs' => $sobs['data']
                 ,'error' => $error
                 ,'ugroups' => $ugroups['data']['group']
 		,'sobs' => $sob_data
@@ -264,6 +291,7 @@ class Category extends REIM_Controller {
         $name = $this->input->post('category_name');
         $pid = $this->input->post('pid');
         $sob_id = $this->input->post('sob_id');
+        $note = $this->input->post('note');
         $prove_ahead= $this->input->post('prove_ahead');
         $max_limit = $this->input->post('max_limit');
         $cid = $this->input->post('category_id');
@@ -275,12 +303,12 @@ class Category extends REIM_Controller {
         $msg = '添加分类失败';
         $obj = null;
         if($cid > 0){
-            $obj = $this->category->update($cid, $name, $pid, $sob_id, $prove_ahead, $max_limit);
+            $obj = $this->category->update($cid, $name, $pid, $sob_id, $prove_ahead, $max_limit, $note);
         } else {
-            $obj = $this->category->create($name, $pid, $sob_id, $prove_ahead, $max_limit);
+            $obj = $this->category->create($name, $pid, $sob_id, $prove_ahead, $max_limit, $note);
         }
         if($obj && $obj['status']){
-            $msg = '添加分类成功';
+            $msg = '添加分类成功' . $note;
         } else {
             $msg = $obj['data']['msg'];
         }

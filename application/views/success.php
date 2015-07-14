@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>云报销 - 下载</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes">
+  <title>云报销 - 下载</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes">
   <link rel="shortcut icon" href="http://www.cloudbaoxiao.com/favicon.ico">
   <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" type="text/css" href="/static/wx/css/normalize.css">
@@ -13,12 +13,23 @@
 <script language="javascript">
     var __BASEURL = "<?php echo base_url(); ?>";
 </script>
+<style>
+    .lead {
+        background-position: 31px;
+        position: relative;
+        text-align: center;
+        left: 00px;
+        font-size: 21px;
+        background-repeat: no-repeat;
+    }
+</style>
 </head>
 <body>
   <div id="winxin">
     <div class="triangle-up"></div>
     <div class="weixin-content">
       <h2 class="ios safari">请在菜单中选择：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp使用Safari打开</h2>
+      <h2 class="android explore">请在菜单中选择:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp使用浏览器打开</h2>
     </div>
   </div>
   <div class="header">
@@ -30,14 +41,17 @@
   <div class="block1" style="min-height:500px;">
     <div class="main-block">
         <div style="width:100%">
-            <img style="width:100%" src="http://www.cloudbaoxiao.com/img/text_title_42@2x.png">
         </div>
-           <div id="download" class="ios" style="" onclick="download()">
+      
+        <div id="download pc center" style="" onclick="download()">
+            <h1>密码设置成功</h1>
+        </div>
+      <div id="download" class="android" style="display:block;" onclick="download()">
         <div class="content">
-          <div class="ios ios-img">App Store 下载</div>
+            <div class="android lead">下载「云报销」</div>
         </div>
-      </div>
-         </div>
+        </div>
+    </div>
   </div>
   <div class="footer">
     <div class="main-block">
@@ -58,43 +72,16 @@
   </div>
   </div>
 <script language="javascript">
-    $(document).ready(function(){
-    /* Act on the event */
+    var _install = "<?php echo base_url('install/index'); ?>";
+$(document).ready(function() {
     $('.contain').css('height', String(document.body.scrollHeight));
-    $('#download').css('display', 'block');
-    $('.ios').show();
-    $('.ios').css('display', 'block');
-    $('.ios').show();
-    /*单页面所做的改变*/
     $('body').scrollTop(0);
     $('#block1').css({'height': document.body.scrollHeight + 'px', 'min-height' : document.body.scrollHeight + 'px'});
+    $('.lead').click(function(){
+        location.href = _install;
     });
-
-    function download() {
-      if(isWeixin()) {
-        $('#winxin').css('display', 'block');
-        setTimeout(function(){
-          $('.block1')[0].onclick = function() {
-              $('#winxin').css('display', 'none');
-              $('.block1')[0].onclick = function() {
-                return;
-              }
-            }
-        },50);
-      } else
-      {
-        window.location.href = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.plist';
-      }
-    }
-
-    function isWeixin(){
-    var ua = navigator.userAgent.toLowerCase();
-    if(ua.match(/MicroMessenger/i)=="micromessenger") {
-      return true;
-    } else {
-      return false;
-    }
-    }
+});
 </script>
 </body>
 </html>
+

@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style"/>
     <link rel="stylesheet" href="/static/ace/css/ace-skins.min.css"/>
 
-    <link rel="stylesheet" href="/static/third-party/jgrowl/jquery.jgrowl.min.css"/>
+    <link rel="stylesheet" href="/static/third-party/jg/jquery.jgrowl.min.css"/>
     <!-- ace styles -->
 
     <!--[if lte IE 9]>
@@ -78,7 +78,7 @@ var __BASE = "<?php echo $base_url; ?>";
 <script type="text/javascript"> ace.vars['base'] = '..'; </script>
 <script src="/static/ace/js/ace/elements.onpage-help.js"></script>
 <script src="/static/ace/js/ace/ace.onpage-help.js"></script>
-<script src="/static/third-party/jgrowl/jquery.jgrowl.min.js"></script>
+<script src="/static/third-party/jg/jquery.jgrowl.min.js"></script>
 <script src="/static/js/jquery.cookie.js"></script>
 
 <!--[if IE 6]>

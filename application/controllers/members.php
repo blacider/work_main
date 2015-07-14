@@ -9,6 +9,37 @@ class Members extends REIM_Controller {
         $this->load->model('group_model', 'groups');
     }
 
+    public function search() {
+        $key = $this->input->get('key');
+        $error = $this->session->userdata('last_error');
+        // 获取当前所属的组
+        $this->session->unset_userdata('last_error');
+        $group = $this->groups->get_my_list();
+        $ginfo = array();
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('ginfo', $group['data'])){
+                $ginfo = $group['data']['ginfo'];
+            }
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
+        $this->bsload('members/index',
+            array(
+                'title' => '组织结构'
+                ,'group' => $ginfo
+                ,'members' => $gmember
+                    ,'breadcrumbs' => array(
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                        ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
+                        ,array('url'  => base_url('members/index'), 'name' => '组织结构', 'class' => '')
+                        ,array('url'  => '', 'name' => '搜索结果', 'class' => '')
+                    ),'search' => $key
+            )
+        );
+    }
     public function index(){
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
@@ -34,7 +65,7 @@ class Members extends REIM_Controller {
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
                         ,array('url'  => '', 'name' => '组织结构', 'class' => '')
-                    ),
+                    ), 'search' => ''
             )
         );
     }

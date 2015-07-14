@@ -49,6 +49,7 @@ class Company extends REIM_Controller {
 			{
 				$cate_arr[$item['category']]['category_name'] = $cate['category_name'];
 				$cate_arr[$item['category']]['sob_id'] = $cate['sob_id'];
+				$cate_arr[$item['category']]['amount'] = $item['amount'];
 			}
 		}
 		foreach($_sobs as $s)
@@ -60,11 +61,6 @@ class Company extends REIM_Controller {
 		}
 	}
 	log_message("debug","array:".json_encode($cate_arr));
-/*	$s_id ='';
-	$s_name = '';
-	$c_name = '';
-	$c_id = '';
-	log_message('debug','%%%%%%%%%%'.json_encode($own_rule['categories']));
 
         $_group = $this->groups->get_my_list();
         $_gnames = $this->ug->get_my_list();
@@ -81,14 +77,11 @@ class Company extends REIM_Controller {
 		array(
 			'title'=>'修改审批'
 			,'pid'=>$pid
+			,'cate_arr'=>$cate_arr
 			,'error'=>$error
 			,'rule'=>$own_rule
 			,'member'=>$gmember
 			,'group'=>$gnames
-			,'c_id' => $c_id
-			,'c_name'=>$c_name
-			,'s_id' => $s_id
-			,'s_name'=>$s_name
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
 				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
@@ -96,7 +89,6 @@ class Company extends REIM_Controller {
 			),
 		)
 	);
-	*/	
     }
 
     public function show_approve()
@@ -104,7 +96,8 @@ class Company extends REIM_Controller {
     	$error = $this->session->userdata('last_error');
 	$this->session->unset_userdata('last_error');
 	$buf = $this->company->show_approve();
-
+	log_message("debug","APPRO".$buf);
+	
 	$rules = json_decode($buf,true);
 	$this->bsload('company/show_approve',
 		array(
@@ -132,25 +125,62 @@ class Company extends REIM_Controller {
 	$amount = $this->input->post('category_amount');
 	$total_amount = $this->input->post('total_amount');
 	$members = $this->input->post('uids');
+	$members = implode(',',$members);
 	$all_members = $this->input->post('all_members');
-	$category_ids = $this->input->post('category_ids');
-	$category_ids = json_decode($category_ids);
-	$category_amounts = $this->input->post('category_amounts');
-	$category_amounts = json_decode($category_amounts);
-    	$policies = array();
-	$length = count($category_ids);
-
-	for($i = 0 ; $i < $length ; $i++)
+	if($all_members == 1)
 	{
-		$item = array('category'=>$category_ids[$i],'amount'=>$category_amounts[$i]);
-		array_push($policies,$item);
+		$members = -1;
 	}
+	
+	$allow_all_category = $this->input->post('all_all_category');
+	$allow_category_ids = $this->input->post('allow_category_ids');
+	$allow_category_ids = json_decode($allow_category_ids);
+	$allow_category_amounts = $this->input->post('allow_category_amounts');
+	$allow_category_amounts = json_decode($allow_category_amounts);
+	$defaults = $this->input->post('default_categorys');
+	$defaults = json_decode($defaults);
+
+	$deny_category_ids = $this->input->post('deny_category_ids');
+	$deny_category_ids = json_decode($deny_category_ids);
+	$deny_category_amounts = $this->input->post('deny_category_amounts');
+	$deny_category_amounts = json_decode($deny_category_amounts);
+
+    	$allow = array();
+	$allow_length = count($allow_category_ids);
+	for($i = 0 ; $i < $allow_length ; $i++)
+	{
+		$item = array('category'=>$allow_category_ids[$i],'default'=>defaults[$i],'amount'=>$allow_category_amounts[$i]);
+		array_push($allow,$item);
+	}
+	$deny = array();
+	$deny_length = count($deny_category_ids);
+	for($i = 0; $i < $deny_length ; $i++)
+	{
+		$item = array('category'=>$deny_category_ids[$i],'amount'=>$deny_category_amounts[$i]);
+		array_push($deny,$item);
+	}
+
+	if(allow_all_category > 0)
+	{
+		$policies = array('allow'=>$allow,'deny'=>array());
+	}
+	else if(allow_all_category < 0 )
+	{
+		$policies = array('allow'=>array(),'deny'=>$deny);
+	}
+
+	if((allow_all_category!=1)||(allow_all_category!=-1))
+	{
+		allow_all_category = 0;
+	}
+
+
 	log_message("debug","accepted:".json_encode($policies));
 	log_message("debug","accepted:".$category_amounts[0]);
 //	$info = array('category'=>$category_id,'amount'=>$amount);
 // 	$policy =array(array('category'=>$category_id,'amount'=>$amount));
 //	array_push($policy,$info);
-	$buf = $this->company->create_approve($rname,implode(',',$members),$total_amount,json_encode($policies),$pid);
+	$buf = $this->company->create_approve($rname,$members,$total_amount,$allow_all_category,json_encode($policies),$pid);
 	return redirect(base_url('company/show_approve'));
 
     }

@@ -11,13 +11,14 @@ class Category_Model extends Reim_Model {
         return $obj;
     }
 
-    public function create($name, $pid, $sob_id, $prove_ahead = 0, $maxlimit = 0) {
+    public function create($name, $pid, $sob_id, $prove_ahead = 0, $maxlimit = 0, $note = "") {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(
             'name' => $name
             ,'pid' => $pid
             ,'sob_id' => $sob_id
+            ,'note' => $note
             ,'limit' => $maxlimit
             ,'pb' => $prove_ahead
         );
@@ -27,13 +28,14 @@ class Category_Model extends Reim_Model {
 		$obj = json_decode($buf, true);
         return $obj;
     }
-    public function update($cid, $name, $pid, $sob_id, $prove_ahead = 0, $maxlimit = 0) {
+    public function update($cid, $name, $pid, $sob_id, $prove_ahead = 0, $maxlimit = 0, $note = "") {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(
             'name' => $name
             ,'pid' => $pid
             ,'sob_id' => $sob_id
+            ,'note' => $note
             ,'limit' => $maxlimit
             ,'pb' => $prove_ahead
         );

@@ -341,11 +341,12 @@ class Reports extends REIM_Controller {
 	log_message("debug", 'flow data:' . json_encode($_flow));
         if($_flow['status'] == 1) {
             foreach($_flow['data']['data'] as $s){
+                $_s = $s['status'] % 100;
                 $audit = '无';
-                if($s['status'] == 2)  {
+                if($_s == 2)  {
                     $audit = '通过';
                 }
-                if($s['status'] == 3)  {
+                if($_s == 3)  {
                     $audit = '拒绝';
                 }
                 array_push($flow, array(
@@ -504,6 +505,12 @@ class Reports extends REIM_Controller {
                 };break;
                 case 6: {
                     $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#42B698 !important;">待支付</button>';
+                };break;
+                case 7: {
+                    $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成待确认</button>';
+                };break;
+                case 8: {
+                    $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成已确认</button>';
                 };break;
             }
         }

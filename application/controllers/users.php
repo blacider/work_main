@@ -102,10 +102,11 @@ class Users extends REIM_Controller {
         $phone = $this->input->post('phone');
         $uid = $this->input->post('uid');
         $credit_card = $this->input->post('credit_card');
+        $admin = $this->input->post('admin_new');
         if(!($nickname || $email || $phone || $credit_card)){
             redirect(base_url('users/profile'));
         }
-        $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $uid), true);
+        $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $uid, $admin), true);
         if($info['status'] > 0){
             $this->session->set_userdata('login_error', '信息修改成功');
         } else {

@@ -353,6 +353,7 @@ if($profile['admin'] == 1){
 
 
 <?php 
+if($profile['admin'] > 0){
 if($profile['admin'] == 1){
 ?>
 
@@ -436,6 +437,7 @@ if($profile['admin'] == 1){
     </ul>
     </li>
 
+<?php  } ?>
 
     <li class="hsub" id="bills">
     <a href="#" class="dropdown-toggle">
@@ -609,6 +611,8 @@ $(document).ready(function(){
         });
         $($('#' + _controller).find('.submenu').get(0)).show();
         $($('#' + _controller).find('#' + _method).get(0)).addClass('active');
+        if (_method == 'search' && _controller == 'members')
+            $($('#' + _controller).find('#' + 'index').get(0)).addClass('active');
     }
     /*
     if(_path.substr(0, 8) == "/reports") {

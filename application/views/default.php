@@ -18,7 +18,7 @@
       <link href="<?php echo base_url();?>statics/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="<?php echo base_url();?>statics/css/docs3.css" rel="stylesheet">
     <script src="<?php echo base_url('statics/js/jquery.min.js');?>"></script>
-    <link rel="stylesheet" href="<?php echo base_url();?>statics/third-party/jgrowl/jquery.jgrowl.min.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>statics/third-party/jg/jquery.jgrowl.min.css">
     <script language="javascript" src="<?php echo base_url('statics/js/bootstrap.min.js'); ?>"></script>
     <title><?php echo $title;?></title>
     <script language="javascript">
@@ -46,6 +46,6 @@
       </div>
     </footer>
 </div><!--/.fluid-container-->
-<script src="<?php echo base_url();?>statics/third-party/jgrowl/jquery.jgrowl.min.js"></script>
+<script src="<?php echo base_url();?>statics/third-party/jg/jquery.jgrowl.min.js"></script>
 </body>
 </html>

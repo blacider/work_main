@@ -245,6 +245,8 @@ class Items extends REIM_Controller {
         $cid = $item['category'];
         $_tags = $item['tags'];
         $__tags_name = array();
+
+
         // TODO 去提升效率
         foreach(explode(',', $_tags) as $t){
             foreach($tags as $_t){
@@ -267,12 +269,27 @@ class Items extends REIM_Controller {
         case 2:{$_type = '预算';};break;
         }
         $item['prove_ahead'] = $_type;
+
+        $_flow = $this->items->item_flow($id);
+        $flow = array();
+        if ($_flow['status'] == 1) {
+            foreach ($_flow['data'] as $d) {
+                $peropt = $this->str_split_unicode($d['newvalue'],1);
+                array_push($flow, array(
+                    'operator' => $peropt['name'],
+                    'optdate' => $d['submitdt'],
+                    'operation' => $peropt['opt'],
+                    ));
+            }
+        }
+
         $this->bsload('items/view',
             array(
                 'title' => '查看消费',
                 'categories' => $categories,
                 'tags' => $tags,
-                'item' => $item
+                'item' => $item,
+                'flow' => $flow
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
@@ -280,6 +297,40 @@ class Items extends REIM_Controller {
                 ),
             ));
     }
+
+     function str_split_unicode($str, $l = 0) {
+        if ($l > 0) {
+            $ret = array();
+            $len = mb_strlen($str, "UTF-8");
+            for ($i = 0; $i < $len; $i += $l) {
+                $ret[] = mb_substr($str, $i, $l, "UTF-8");
+            }
+        $arr = $ret;
+        $i = 0;
+        for (; $i < count($arr); $i++) { 
+            if (preg_match("/^[\x{4e00}-\x{9fa5}]+$/u",$arr[$i])) {
+                break;
+            }
+        }
+        $name = array();
+        $opt = array();
+        for ($j = 0; $j < count($arr); $j++) {
+            if ($j < $i) {
+                array_push($name, $arr[$j]);
+            } else {
+                array_push($opt, $arr[$j]);
+            }   
+        }
+        $name = join($name);
+        $opt = join($opt);
+        return array(
+            'name' => $name,
+            'opt' => $opt
+            );
+     }
+
+     return preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY);
+ }
 
     public function edit($id = 0){
         if(0 === $id) redirect(base_url('items'));

@@ -37,7 +37,7 @@
 <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 
-<link rel="stylesheet" href="<?php echo base_url();?>res/third-party/jgrowl/jquery.jgrowl.min.css">
+<link rel="stylesheet" href="<?php echo base_url();?>res/third-party/jg/jquery.jgrowl.min.css">
 
 <!--
 <script src="<?php echo base_url('res/js/jquery.js');?>"></script>
@@ -89,7 +89,7 @@ var __BASEURL = "<?php echo base_url(); ?>";
 
     <!-- Custom Theme JavaScript -->
     <script src="res/js/sb-admin-2.js"></script>
-<script src="<?php echo base_url();?>res/third-party/jgrowl/jquery.jgrowl.min.js"></script>
+<script src="<?php echo base_url();?>res/third-party/jg/jquery.jgrowl.min.js"></script>
 <script langauge="javascript">
 function show_notify(msg, life){
     if(!life || life ==undefined)
