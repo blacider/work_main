@@ -115,6 +115,11 @@
                                 </div>
                         </div>
                         <script type="text/javascript">
+                            function updateSelectSob(data) {
+                                $(".sobs").empty();
+                                $(".sobs").append(data);
+                                $(".sobs").trigger("chosen:updated");
+                            }
                             function removeCategoryRow(div) {
                                 $(div).parent().parent().remove();
                                 initCategoryRow();
@@ -128,6 +133,18 @@
                                 addDom.text('-');
                                 addDom.parent().parent().after(category);
                                 $(".chosen-select-niu").chosen({width:"160%"});
+                                $($(".sobs")[$(".sobs").length-1]).append(selectDataSobs);
+                                $(".sobs").trigger("chosen:updated");
+                                $('.sobs').change(function(){
+                                    var s_id = $(this).val();
+                                    if(selectDataCategory[s_id] != undefined){
+                                        for(var i = 0 ; i < selectDataCategory[s_id].length; i++) {
+                                            var _h = "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                                        }
+                                    }
+                                    var selectDom = this.parentNode.nextElementSibling.children[0]
+                                    $(selectDom).empty().append(_h).trigger("chosen:updated");
+                                });
                             }
                             $(document).ready(function($) {
                                 $(".chosen-select-niu").chosen({width:"160%"});
@@ -329,20 +346,22 @@
     }
 </style>
 <script language="javascript">
-    var __INFO = Array();
+    //updateSelect()
+    selectDataSobs = '';
+    selectDataCategory = {};
 function get_sobs(){
         $.ajax({
             url : __BASE + "category/get_sob_category",
             dataType : 'json',
             method : 'GET',
             success : function(data){
-                __INFO = data;
-               console.log(data);
-	       for(var item in data){
-                    //console.log(data[item]);
+                for(var item in data){
                     var _h = "<option value='" +  item + "'>"+  data[item].sob_name + " </option>";
-                    $('.sobs').append(_h);
-                };
+                    selectDataCategory[item] = data[item]['category'];
+                    selectDataSobs += _h;
+                }
+                selectPostData = data;
+                updateSelectSob(selectDataSobs);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(XMLHttpRequest.status);
@@ -353,19 +372,18 @@ function get_sobs(){
 
         $('.sobs').change(function(){
             var s_id = $(this).val();
-            $('.sob_category').html('');
-            //console.log(__INFO[s_id]);
-            var sob_info = __INFO[s_id];
-            if(sob_info['category']!=undefined)
+            if(selectDataCategory[s_id] != undefined)
             {
-                for(var i = 0 ; i<sob_info['category'].length; i++)
+                for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
                 {
-                    var _h = "<option value='" +  sob_info['category'][i]['category_id'] + "'>"+  sob_info['category'][i]['category_name'] + " </option>";
-                    $('.sob_category').append(_h);
+                    var _h = "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                    
                    // console.log(_h);
                 }
             }
-             });
+            var selectDom = this.parentNode.nextElementSibling.children[0]
+            $(selectDom).empty().append(_h).trigger("chosen:updated");
+        });
 }
 
 $(document).ready(function(){
