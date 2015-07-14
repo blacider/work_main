@@ -24,7 +24,6 @@
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 <script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script>
 
-
 <div class="page-content">
     <div class="page-content-area">
         <form role="form" action='<?php echo base_url("company/create_approve/".$pid);  ?>' method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
