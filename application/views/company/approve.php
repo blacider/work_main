@@ -66,8 +66,10 @@
                                 <div class="col-xs-3 col-sm-3">
                                     <input type="text" class="form-controller col-xs-6" id="max_amount" name="category_amount" placeholder="最大金额">
                                 </div>
+                                   
                             </div>
-
+                                     <input type='hidden' id="category_ids" name="category_ids">
+                                     <input type='hidden' id="category_amounts" name="category_amounts">
                           <!--  <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">最大金额</label>
                                 <div class="col-xs-2 col-sm-2">
@@ -356,6 +358,21 @@ $(document).ready(function(){
 	
         show_notify("hello");*/
        // $('#renew').val($(this).data('renew'));
+        var categories = [];
+        var amounts = [];
+        var els =document.getElementsByName("category");
+        for (var i = 0, j = els.length; i < j; i++){
+        console.log(els[i].value);
+        categories.push(els[i].value);
+        }
+
+        var els =document.getElementsByName("category_amount");
+        for (var i = 0, j = els.length; i < j; i++){
+        console.log(els[i].value);
+        amounts.push(els[i].value);
+        }
+        $('#category_ids').val(JSON.stringify(categories));
+        $('#category_amounts').val(JSON.stringify(amounts));
         $('#mainform').submit();
     });
     $('.cancel').click(function(){
