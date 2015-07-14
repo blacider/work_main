@@ -91,7 +91,7 @@
                                     <input type="text" style="width:160%;width:160%;height:30px;margin-top: 2px" class="form-controller" name="category_amount" value="" placeholder="最大金额">
                                 </div>
                                 <div class="col-xs-1 col-sm-1">
-                                    <div class="addCategoryRow" onclick="addCategoryRow()">+</div>   
+                                    <div class="addCategoryRow" onclick="addCategoryRow()">-</div>   
                                 </div>
                         </div>
                             <?php
@@ -99,7 +99,7 @@
                             ?>
 
                         <div class="form-group CategoryRow">
-                                <div class="col-xs-1 col-sm-1" style="margin-top:2px">
+                                <div class="col-xs-1 col-sm-1 notFirstCategoryRow" style="margin-top:2px">
                                     <select name="sobs" class="sobs chosen-select-niu" data-placeholder="套帐">
                                     </select>
                                 </div>
@@ -146,7 +146,7 @@
                                     $(selectDom).empty().append(_h).trigger("chosen:updated");
                                 });
                             }
-                            $(document).ready(function($) {
+                            $(document).ready(function() {
                                 $(".chosen-select-niu").chosen({width:"160%"});
                                 initCategoryRow();
                             });
@@ -154,9 +154,9 @@
                                 var rows = $('.CategoryRow');
                                 for (var i = 0; i < rows.length; i++) {
                                     if (i == 0)
-                                        rows[i].firstChild.className = 'col-xs-1 col-sm-1 firstCategoryRow';
+                                        rows[i].children[0].className = 'col-xs-1 col-sm-1 firstCategoryRow';
                                     else
-                                        rows[i].firstChild.className = 'col-xs-1 col-sm-1 notFirstCategoryRow';
+                                        rows[i].children[0].className = 'col-xs-1 col-sm-1 notFirstCategoryRow';
                                 }
                             }
                         </script>
@@ -372,11 +372,12 @@ function get_sobs(){
 
         $('.sobs').change(function(){
             var s_id = $(this).val();
+            var _h = '';
             if(selectDataCategory[s_id] != undefined)
             {
                 for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
                 {
-                    var _h = "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                    _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
                     
                    // console.log(_h);
                 }
