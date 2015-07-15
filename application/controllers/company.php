@@ -272,6 +272,7 @@ class Company extends REIM_Controller {
 	$_info=$info['data'];
 	$own_rule = array();
 	
+	log_message("debug","######".$buf);
     	$category = $this->category->get_list();
 	$categories = $category['data']['categories'];
 	$sobs = $this->account_set->get_account_set_list();
@@ -283,19 +284,22 @@ class Company extends REIM_Controller {
 			$own_rule = $item;
 		}
 	}
+	$cate_arr = array();
+	$s_id = '';
 	foreach($categories as $c)
 	{
 		if($c['id'] == $own_rule['category'])
 		{
 			$c_name = $c['category_name'];
 			$s_id = $c['sob_id'];
+			$cate_arr[$own_rule['category']] = array('category_id' => $own_rule['category'],'category_name'=>$c['category_name'],'sob_id'=>$c['sob_id']);
 		}
 	}
 	foreach($_sobs as $s)
 	{
 		if($s['sob_id'] == $s_id)
 		{
-			$s_name = $s['sob_name'];
+			$cate_arr[$own_rule['category']]['sob_name'] = $s['sob_name'];
 		}
 	}
 
@@ -317,6 +321,7 @@ class Company extends REIM_Controller {
 			,'rule'=>$own_rule
 			,'member'=>$gmember
 			,'group'=>$gnames
+			,'cate_arr'=>$cate_arr
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
 				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
@@ -324,6 +329,7 @@ class Company extends REIM_Controller {
 			),
 		)
 	);
+	*/
     	
     }
 
