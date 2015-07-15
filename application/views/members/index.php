@@ -11,7 +11,7 @@ position: absolute;
   top: 64px;
   z-index: 2;
   height: 26px;
-  width: 150px;
+  width: 12%;
   border-style: ridge;
     }
     #search-submit {

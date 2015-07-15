@@ -13,19 +13,22 @@ position: absolute;
   top: 60px;
   z-index: 2;
   height: 26px;
-  width: 150px;
+  width: 12%;
   border-style: ridge;
     }
     #globalSearch {
   background-color: #fe575f;
   position: absolute;
-  left: 1130px;
+  left: 88%;
   top: 60px;
   border: 0;
   color: white;
   height: 25px;
   border-radius: 3px;   
   font-size: 12px;
+   }
+   #globalSearch:hover {
+    background-color: #ff7075;
    }
 </style>
     <input name="key" placeholder="ID、标题或发起人" value="" type='text' id="globalSearchText">
