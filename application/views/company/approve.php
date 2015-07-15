@@ -59,23 +59,23 @@
                             <label style="margin-left: -7px;" class="col-sm-2 control-label no-padding-right">审查类目</label>
                             <div id="category-content" style="margin-left:167px;width:48%;">
                                 <div class="form-group">
-                                    <div class="checkbox col-xs-4 col-sm-4">
+                                    <div class="radio col-xs-4 col-sm-4">
                                         <label>
-                                         <input type="checkbox" class="fourParts" id="frequency_unlimit" name="all_able" vlaue = "1" >
+                                         <input type="radio" class="fourParts" id="frequency_unlimit" name="all_able" value="1">
                                             全部均允许审核
                                          </label>
                                     </div>
-                                    <div class="checkbox col-xs-4 col-sm-4" style="margin-left:-35px;">
+                                    <div class="radio col-xs-4 col-sm-4" style="margin-left:-35px;">
                                         <label>
-                                         <input type="checkbox" class="fourParts" id="frequency_unlimit" name="all_able" value = "-1">
+                                         <input type="radio" class="fourParts" id="frequency_unlimit" name="all_able" value='-1'>
                                             全部均禁止审核
                                          </label>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="checkbox col-xs-6 col-sm-6">
+                                    <div class="radio col-xs-6 col-sm-6">
                                         <label>
-                                         <input type="checkbox" class="fourParts" id="frequency_unlimit" name="all_able" value = "2" >
+                                         <input type="radio" class="fourParts" id="frequency_unlimit" name="all_able" value="2">
                                             仅部分类目可以审核
                                          </label>
                                     </div>
@@ -101,9 +101,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="checkbox col-xs-6 col-sm-6">
+                                    <div class="radio col-xs-6 col-sm-6">
                                         <label>
-                                         <input type="checkbox" class="fourParts" id="frequency_unlimit" name="all_able" value="-2">
+                                         <input type="radio" class="fourParts" id="frequency_unlimit" name="all_able" value='-2'>
                                             仅部分类目禁止审核
                                          </label>
                                     </div>
@@ -158,17 +158,6 @@
                             }
                             $(document).ready(function($) {
                                 $(".chosen-select-niu").chosen({width:"160%"});
-                                $('.fourParts').click(function(event) {
-                                    if ($(this).is(':checked')) {
-                                        $(".fourParts").each(function(index, el) {
-                                            if (!this.checked) this.disabled = true;
-                                        });
-                                    } else {
-                                        $(".fourParts").each(function(index, el) {
-                                            if (!this.checked) this.disabled = false;
-                                        });
-                                    }
-                                });
                             });
                             function addDisableCategoryRow() {
                                 var addDom = $('.disableCategoryRow .addDisableCategoryRow');
@@ -358,6 +347,10 @@
     .form-group {
         margin-bottom: 30px;
     }
+    .radio {
+        position: relative;
+        left: -2px;
+    }
     .addCategoryRow, .addDisableCategoryRow, .removeCategoryRow{
         margin:2px auto auto 25px;
         font-size:20px;
@@ -526,7 +519,7 @@ $(document).ready(function(){
 
     }
 
-    $('.fourParts').each(function(){
+    /*$('.fourParts').each(function(){
         if($(this).is(':checked'))
         {
             $(this).val(1);
@@ -537,7 +530,7 @@ $(document).ready(function(){
             $(this).val(0);
             console.log("xxx"+$(this).val());
         }
-    });
+    }); */
 
         $('.def').each(function(){
         if($(this).is(':checked'))

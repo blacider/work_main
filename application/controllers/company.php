@@ -38,11 +38,14 @@ class Company extends REIM_Controller {
 	log_message('debug',"approve:".json_encode($own_rule));
 	log_message("debug","categories:".json_encode($categories));
 	log_message("debug","sobs:".json_encode($_sobs));
+	log_message("debug","#######buf".$buf);
 	$approve_categories = $own_rule['categories'];
 	$cate_arr = array();
 	foreach($approve_categories as $item)
 	{
-		$cate_arr[$item['category']]=array('category_id'=>$item['category']);
+		if($item['category']!=0)
+		{
+		$cate_arr[$item['category']]=array('category_id'=>$item['category'],'act'=>$item['act']);
 		foreach($categories as $cate)
 		{
 			if($cate['id'] == $item['category'])
@@ -58,6 +61,7 @@ class Company extends REIM_Controller {
 			{
 				$cate_arr[$item['category']]['sob_name'] = $s['sob_name'];
 			}
+		}
 		}
 	}
 	log_message("debug","array:".json_encode($cate_arr));
@@ -142,29 +146,12 @@ class Company extends REIM_Controller {
 		$members = -1;
 	}
 	
-	$all_able = $this->input->post('allow_all_category');
-	$all_able = json_decode($all_able);
-	$allow_all_category = 1;
-	if($all_able[0] == 1)
-	{
-		$allow_all_category = 1;
-	}
+//	$all_able = $this->input->post('allow_all_category');
+	$allow_all_category = $this->input->post('all_able');
+//	$all_able = json_decode($all_able);
+//	log_message("debug","@@@@@:all_able:".$choose);
 
-	if($all_able[1] == 1)
-	{
-		$allow_all_category = -1;
-	}
 
-	if($all_able[2] == 1)
-	{
-		$allow_all_category = 2;
-	}
-
-	if($all_able[3] == 1)
-	{
-		$allow_all_category = -2;
-	}
-	log_message("debug","@@@@@@@@".json_encode($all_able));
 //	log_message("debug","######:".json_encode($all_able));
 //	$allow_all_category = $this->input->post('all_all_category');
 	$allow_category_ids = $this->input->post('allow_category_ids');
@@ -185,32 +172,49 @@ class Company extends REIM_Controller {
 	$allow_length = count($allow_category_ids);
 	for($i = 0 ; $i < $allow_length ; $i++)
 	{
-		$item = array('category'=>$allow_category_ids[$i],'default'=>$defaults[$i]);
+		if($allow_category_ids[$i])
+		{
+		$item = array('category'=>$allow_category_ids[$i],'default'=>$defaults[$i],'amount'=>0);
 		array_push($allow,$item);
+		}
 	}
 	$deny = array();
 	$deny_length = count($deny_category_ids);
 	for($i = 0; $i < $deny_length ; $i++)
 	{
-		$item = array('category'=>$deny_category_ids[$i]);
+		if($deny_category_ids[$i])
+		{
+		$item = array('category'=>$deny_category_ids[$i],'default'=>'-1','amount'=>0);
 		array_push($deny,$item);
+		}
 	}
 
-	if($allow_all_category > 0)
-	{
-		$policies = array('allow'=>$allow,'deny'=>array());
-	}
-	else if($allow_all_category < 0 )
+	if($allow_all_category == 1)
 	{
 		$policies = array('allow'=>array(),'deny'=>$deny);
 	}
+	else if($allow_all_category == -1 )
+	{
+		$policies = array('allow'=>$allow,'deny'=>array());
+	}
+	else if($allow_all_category == 2)
+	{
+		$policies = array('allow'=>$allow,'deny'=>array());
+	}
+	else
+	{
+		$policies = array('allow'=>array(),'deny'=>$deny);
+	}
+	
+	log_message("debug","allow_all:".$allow_all_category);
+	log_message("debug","allow_all:".$deny_length);
 
-	if(($allow_all_category!=1)||($allow_all_category!=-1))
+	if(($allow_all_category!=1)&&($allow_all_category!=-1))
 	{
 		$allow_all_category = 0;
 	}
 
-
+	
 	log_message("debug","accepted:".json_encode($policies));
 //	log_message("debug","accepted:".$category_amounts[0]);
 //	$info = array('category'=>$category_id,'amount'=>$amount);
@@ -218,7 +222,7 @@ class Company extends REIM_Controller {
 //	array_push($policy,$info);
 	$buf = $this->company->create_approve($rname,$members,$total_amount,$allow_all_category,json_encode($policies),$pid);
 	log_message('debug',"#######".json_encode($buf));
-	return redirect(base_url('company/show_approve'));
+//	return redirect(base_url('company/show_approve'));
 
     }
 

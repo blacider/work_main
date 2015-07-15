@@ -36,7 +36,7 @@ class Company_Model extends Reim_Model {
 				'name'=>$name
 				,'members'=>$members
 				,'amount'=>$amount
-				,'allow_all_category'=>$allow_all_category
+				,'allow_all_cates'=>$allow_all_category
 				,'policies'=>$policies
 			);
 		}
