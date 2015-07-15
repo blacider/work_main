@@ -399,9 +399,7 @@ class User_Model extends Reim_Model {
         if(!empty($phone)) {
             $data['phone'] = $phone;
         }
-        if(!empty($admin)) {
-            $data['admin'] = $admin;
-        }
+        $data['admin'] = $admin;
         $url = $this->get_url('users');
         $jwt = $this->session->userdata('jwt');
         $buf = $this->do_Put($url, $data, $jwt);
