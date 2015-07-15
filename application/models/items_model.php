@@ -165,7 +165,7 @@ class Items_Model extends Reim_Model {
         if(0 === $iid) return array();
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-        $url = $this->get_url("item_flow/601");
+        $url = $this->get_url("item_flow/". $iid);
         $buf = $this->do_Get($url, $jwt);
         $obj = json_decode($buf, true);
         return $obj;
