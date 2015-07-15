@@ -42,7 +42,7 @@
                              <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">总金额</label>
                                 <div class="col-xs-1 col-sm-1">
-                                   <input type="text" style="height: 30px;width:160%;margin-top: 2px" class="form-controller col-xs-12" id="total" name="total_amount" value="<?php echo $rule['amount']?>" placeholder="总金额">
+                                   <input type="text" style="height: 30px;width:160%;margin-top: 2px" class="form-controller col-xs-12" id="total" name="total_amount" value="" placeholder="总金额">
                                 </div>
 
                                 <div class="col-sm-2 col-sm-2">
@@ -59,7 +59,7 @@
                             <label style="margin-left: -7px;" class="col-sm-2 control-label no-padding-right">审查类目</label>
                         
                         <?php
-                            foreach($rule['categories'] as $category)
+                            foreach($cate_arr as $category)
                             {
                         ?> <!--
                         <div class="form-group CategoryRow">
@@ -88,7 +88,7 @@
                                     </select>
                                 </div>
                                 <div class="col-xs-1 col-sm-1">
-                                    <input type="text" style="width:160%;width:160%;height:30px;margin-top: 2px" class="form-controller" name="category_amount" value="" placeholder="最大金额">
+                                    <input type="text" style="width:160%;width:160%;height:30px;margin-top: 2px" class="form-controller" name="category_amount" value="<?php echo $category['amount']?>" placeholder="最大金额" >
                                 </div>
                                 <div class="col-xs-1 col-sm-1">
                                     <div class="addCategoryRow" onclick="addCategoryRow()">-</div>   
@@ -307,7 +307,7 @@
         </form>
     </div>
 </div>
-<p><?php echo json_encode($rule)?>
+
 <!--
  <?php foreach ($rule['members'] as $key => $value) {
                                         # code...
