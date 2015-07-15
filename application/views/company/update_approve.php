@@ -147,7 +147,7 @@
                                 <div class="form-group">
                                     <div class="radio col-xs-6 col-sm-6">
                                         <label>
-                                        <?php if ($rule['allow_all_cates'] == 0 && $flag == 0) {?>
+                                        <?php if ($rule['allow_all_cates'] == 0 && $flag == -1) {?>
                                             <input type="radio" checked class="fourParts" id="frequency_unlimit" name="all_able" value='-2'>
                                         <?php } else { ?>
                                             <input type="radio" class="fourParts" id="frequency_unlimit" name="all_able" value='-2'>
@@ -174,6 +174,7 @@
                             </div>
                         
                         <script type="text/javascript">
+                            console.log(<?php echo $flag ?>);
                             //selectCache = <?php echo json_encode($rule)?>;
                             selectCache = (<?php echo json_encode($cate_arr)?>);
                             function appendChecked(selectJqDom, data, item) {
@@ -387,7 +388,7 @@
                                         <?php if ($rule['all_member'] == 1) {?>
                                          <input type="checkbox" id="all_members" checked="true"  name="all_members">
                                          <?php } else {?>
-                                         <input type="checkbox" id="all_members" checked="true"  name="all_members">
+                                         <input type="checkbox" id="all_members"  name="all_members">
                                          <?php }?>
                                             全体员工
                                          </label>
