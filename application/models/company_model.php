@@ -11,7 +11,7 @@ class Company_Model extends Reim_Model {
 		$jwt = $this->session->userdata('jwt');
 		if(!$jwt) return false;
 		$url = $this->get_url('audit_policy/'.$pid);
-		$buf = $this->do_Delete($url,$jwt);
+		$buf = $this->do_Delete($url, array(), $jwt);
 		log_message("debug","####DeleteAPP:".json_encode($buf));
 		return $buf;
 	}
@@ -25,7 +25,7 @@ class Company_Model extends Reim_Model {
 		log_message('debug',"@@@@:APPRSHOW:".json_encode($buf));
 		return $buf;
 	}
-    	public function create_approve($name,$members,$amount,$policies,$pid=-1)
+    	public function create_approve($name,$members,$amount,$allow_all_category,$policies,$pid=-1)
 	{
 		$jwt = $this->session->userdata('jwt');
 		if(!$jwt) return false;
@@ -36,6 +36,7 @@ class Company_Model extends Reim_Model {
 				'name'=>$name
 				,'members'=>$members
 				,'amount'=>$amount
+				,'allow_all_cates'=>$allow_all_category
 				,'policies'=>$policies
 			);
 		}

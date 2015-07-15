@@ -353,6 +353,7 @@ if($profile['admin'] == 1){
 
 
 <?php 
+if($profile['admin'] > 0){
 if($profile['admin'] == 1){
 ?>
 
@@ -436,6 +437,7 @@ if($profile['admin'] == 1){
     </ul>
     </li>
 
+<?php  } ?>
 
     <li class="hsub" id="bills">
     <a href="#" class="dropdown-toggle">

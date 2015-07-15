@@ -27,22 +27,22 @@
 
 <div class="page-content">
     <div class="page-content-area">
-        <form role="form" action='<?php echo base_url("company/create_approve/");  ?>' method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
+        <form role="form" action='<?php echo base_url("company/create_approve/".$pid);  ?>' method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">规则名</label>
                                  <div class="col-xs-2 col-sm-2">
-                                    <input type="text" style="height: 30px;margin-top: 2px" class="form-controller" id="rname" name="rule_name" placeholder="规则名称">
-                                    <input type="hidden" name="rid">
+                                    <input type="text" style="height: 30px;margin-top: 2px" class="form-controller" id="rname" name="rule_name" placeholder="规则名称" value="<?php echo $rule['name']?>">
+                                    <input type="hidden" name="rid" value="<?php echo $rule['id']?>">
                                 </div>
                             </div>
 
                              <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">总金额</label>
                                 <div class="col-xs-1 col-sm-1">
-                                   <input type="text" style="height: 30px;width:160%;margin-top: 2px" class="form-controller col-xs-12" id="total" name="total_amount" placeholder="总金额">
+                                   <input type="text" style="height: 30px;width:160%;margin-top: 2px" class="form-controller col-xs-12" id="total" name="total_amount" value="" placeholder="总金额">
                                 </div>
 
                                 <div class="col-sm-2 col-sm-2">
@@ -57,75 +57,64 @@
                             </div>
                         
                             <label style="margin-left: -7px;" class="col-sm-2 control-label no-padding-right">审查类目</label>
-                            <div id="category-content" style="margin-left:167px;width:48%;">
-                                <div class="form-group">
-                                    <div class="radio col-xs-4 col-sm-4">
-                                        <label>
-                                         <input type="radio" class="fourParts" id="frequency_unlimit" name="all_able" value="1">
-                                            全部均允许审核
-                                         </label>
-                                    </div>
-                                    <div class="radio col-xs-4 col-sm-4" style="margin-left:-35px;">
-                                        <label>
-                                         <input type="radio" class="fourParts" id="frequency_unlimit" name="all_able" value='-1'>
-                                            全部均禁止审核
-                                         </label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="radio col-xs-6 col-sm-6">
-                                        <label>
-                                         <input type="radio" class="fourParts" id="frequency_unlimit" name="all_able" value="2">
-                                            仅部分类目可以审核
-                                         </label>
-                                    </div>
-                                </div>
-                                <div class="form-group CategoryRow">
-                                    <div class="col-xs-2 col-sm-2" style="margin-top:2px">
-                                        <select name="sobs" class="sobs chosen-select-niu" data-placeholder="套帐">
-                                        </select>
-                                    </div>
-                                    <div class="col-xs-2 col-sm-2" style="margin:2px 20px auto 20px;">
-                                        <select name="allow_category" class="sob_category chosen-select-niu" data-placeholder="类目">
-                                        </select>
-                                    </div>
-                                        <div class="checkbox col-xs-3 col-sm-3">
-                                            <label>
-                                                <input type="checkbox" class="def" id="frequency_unlimit" name="default" >
-                                                默认审批
-                                            </label>
-                                        </div>
-                                    
-                                    <div class="col-xs-2 col-sm-2">
-                                        <div class="addCategoryRow" style="margin-left:-15px" onclick="addCategoryRow()">+</div>   
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="radio col-xs-6 col-sm-6">
-                                        <label>
-                                         <input type="radio" class="fourParts" id="frequency_unlimit" name="all_able" value='-2'>
-                                            仅部分类目禁止审核
-                                         </label>
-                                    </div>
-                                </div>
-                                <div class="form-group disableCategoryRow">
-                                    <div class="col-xs-2 col-sm-2" style="margin-top:2px">
-                                        <select name="sobs" class="sobs chosen-select-niu" data-placeholder="套帐">
-                                        </select>
-                                    </div>
-                                    <div class="col-xs-2 col-sm-2" style="margin:2px 20px auto 20px;">
-                                        <select name="deny_category" class="sob_category chosen-select-niu" data-placeholder="类目">
-                                        </select>
-                                    </div>
-                                       
-                                    <div class="col-xs-2 col-sm-2">
-                                        <div class="addDisableCategoryRow" onclick="addDisableCategoryRow()">+</div>   
-                                    </div>
-                                </div>
-                            </div>
                         
-                        <script type="text/javascript">
+                        <?php
+                            foreach($cate_arr as $category)
+                            {
+                        ?> <!--
+                        <div class="form-group CategoryRow">
+                                <div class="col-xs-2 col-sm-2">
+                                    <select name="sobs" id="sobs">
+                                    </select>
+                                </div>
+                                <div class="col-xs-2 col-sm-2">
+                                    <select name="category" id="sob_category">
+                                    </select>
+                                </div>
+                                <div class="col-xs-2 col-sm-2">
+                                    <input type="text" class="form-controller col-xs-6" id="max_amount" name="category_amount" value="<?php echo $category['amount']?>" placeholder="最大金额">
+                                </div>
+                                <div class="col-xs-1 col-sm-1">
+                                    <div class="removeCategoryRow">-</div>   
+                                </div>
+                        </div> -->
+                        <div class="form-group CategoryRow">
+                                <div class="col-xs-1 col-sm-1" style="margin-top:2px">
+                                    <select name="sobs" class="sobs chosen-select-niu" data-placeholder="套帐">
+                                    </select>
+                                </div>
+                                <div class="col-xs-1 col-sm-1" style="margin:2px 20px auto 20px;">
+                                    <select name="category" class="sob_category chosen-select-niu" data-placeholder="类目">
+                                    </select>
+                                </div>
+                                <div class="col-xs-1 col-sm-1">
+                                    <input type="text" style="width:160%;width:160%;height:30px;margin-top: 2px" class="form-controller" name="category_amount" value="<?php echo $category['amount']?>" placeholder="最大金额" >
+                                </div>
+                                <div class="col-xs-1 col-sm-1">
+                                    <div class="addCategoryRow" onclick="addCategoryRow()">-</div>   
+                                </div>
+                        </div>
+                            <?php
+                            }
+                            ?>
 
+                        <div class="form-group CategoryRow">
+                                <div class="col-xs-1 col-sm-1 notFirstCategoryRow" style="margin-top:2px">
+                                    <select name="sobs" class="sobs chosen-select-niu" data-placeholder="套帐">
+                                    </select>
+                                </div>
+                                <div class="col-xs-1 col-sm-1" style="margin:2px 20px auto 20px;">
+                                    <select name="category" class="sob_category chosen-select-niu" data-placeholder="类目">
+                                    </select>
+                                </div>
+                                <div class="col-xs-1 col-sm-1">
+                                    <input type="text" style="width:160%;width:160%;height:30px;margin-top: 2px" class="form-controller" name="category_amount" value="" placeholder="最大金额">
+                                </div>
+                                <div class="col-xs-1 col-sm-1">
+                                    <div class="addCategoryRow" onclick="addCategoryRow()">+</div>   
+                                </div>
+                        </div>
+                        <script type="text/javascript">
                             function updateSelectSob(data) {
                                 $(".sobs").empty();
                                 $(".sobs").append(data);
@@ -133,19 +122,20 @@
                             }
                             function removeCategoryRow(div) {
                                 $(div).parent().parent().remove();
+                                initCategoryRow();
                             }
-                            function addCategoryRow() {
-                                var addDom = $('.CategoryRow .addCategoryRow');
-                                var category = "<div class='form-group CategoryRow'><div class='col-xs-2 col-sm-2' style='margin-top:2px;'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-2 col-sm-2' style='margin:2px 20px auto 20px;''><select name='allow_category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='checkbox col-xs-3 col-sm-3'><label><input type='checkbox' class='def' id='frequency_unlimit' name='default' >默认审批</label></div><div class='col-xs-2 col-sm-2'><div class='addCategoryRow'  style='margin-left:-15px' onclick='addCategoryRow()''>+</div>   </div></div>"
+                            function addCategoryRow(div) {
+                                var addDom = $('.addCategoryRow');
+                                var category = "<div class='form-group CategoryRow'><div class='col-xs-1 col-sm-1 notFirstCategoryRow' style='margin-top:2px;'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-1 col-sm-1' style='margin:2px 20px auto 20px;''><select name='category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='col-xs-1 col-sm-1'><input type='text' style='width:160%;width:160%;height:30px;margin-top: 2px' class='form-controller' name='category_amount' value='' placeholder='最大金额'></div><div class='col-xs-1 col-sm-1'><div class='addCategoryRow' onclick='addCategoryRow()''>+</div>   </div></div>"
                                 addDom.removeClass('addCategoryRow');
                                 addDom.attr('onclick', 'removeCategoryRow(this)');
                                 addDom.addClass('removeCategoryRow');
                                 addDom.text('-');
                                 addDom.parent().parent().after(category);
                                 $(".chosen-select-niu").chosen({width:"160%"});
-                                $($(".CategoryRow .sobs")[$(".CategoryRow .sobs").length-1]).append(selectDataSobs);
-                                $(".CategoryRow .sobs").trigger("chosen:updated");
-                                $('.CategoryRow .sobs').change(function(){
+                                $($(".sobs")[$(".sobs").length-1]).append(selectDataSobs);
+                                $(".sobs").trigger("chosen:updated");
+                                $('.sobs').change(function(){
                                     var s_id = $(this).val();
                                     if(selectDataCategory[s_id] != undefined){
                                         for(var i = 0 ; i < selectDataCategory[s_id].length; i++) {
@@ -156,30 +146,18 @@
                                     $(selectDom).empty().append(_h).trigger("chosen:updated");
                                 });
                             }
-                            $(document).ready(function($) {
+                            $(document).ready(function() {
                                 $(".chosen-select-niu").chosen({width:"160%"});
+                                initCategoryRow();
                             });
-                            function addDisableCategoryRow() {
-                                var addDom = $('.disableCategoryRow .addDisableCategoryRow');
-                                var category = "<div class='form-group disableCategoryRow'><div class='col-xs-2 col-sm-2' style='margin-top:2px;'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-2 col-sm-2' style='margin:2px 20px auto 20px;''><select name='deny_category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='col-xs-2 col-sm-2'><div class='addDisableCategoryRow' onclick='addDisableCategoryRow()''>+</div>   </div></div>"
-                                addDom.removeClass('addDisableCategoryRow');
-                                addDom.attr('onclick', 'removeCategoryRow(this)');
-                                addDom.addClass('removeCategoryRow');
-                                addDom.text('-');
-                                addDom.parent().parent().after(category);
-                                $(".chosen-select-niu").chosen({width:"160%"});
-                                $($(".disableCategoryRow .sobs")[$(".disableCategoryRow .sobs").length-1]).append(selectDataSobs);
-                                $(".disableCategoryRow .sobs").trigger("chosen:updated");
-                                $('.disableCategoryRow .sobs').change(function(){
-                                    var s_id = $(this).val();
-                                    if(selectDataCategory[s_id] != undefined){
-                                        for(var i = 0 ; i < selectDataCategory[s_id].length; i++) {
-                                            var _h = "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
-                                        }
-                                    }
-                                    var selectDom = this.parentNode.nextElementSibling.children[0]
-                                    $(selectDom).empty().append(_h).trigger("chosen:updated");
-                                });
+                            function initCategoryRow() {
+                                var rows = $('.CategoryRow');
+                                for (var i = 0; i < rows.length; i++) {
+                                    if (i == 0)
+                                        rows[i].children[0].className = 'col-xs-1 col-sm-1 firstCategoryRow';
+                                    else
+                                        rows[i].children[0].className = 'col-xs-1 col-sm-1 notFirstCategoryRow';
+                                }
                             }
                         </script>
 
@@ -315,15 +293,9 @@
                             </div>
 
                             -->
-                             <input type='hidden' id="allow_category_ids" name="allow_category_ids">
-                             <input type='hidden' id="deny_category_ids" name="deny_category_ids">
-                             <input type='hidden' id="four" name="allow_all_category">
-                             <input type='hidden' id="defaults" name="defaults">
-
-
                             <div class="form-group">
                                 <div class="col-xm-2 col-sm-2">
-                                    <input type="button" id='renew' value="保存">
+                                    <input type="submit" value="保存">
                                 </div>
                                 <div class="col-xm-2 col-sm-2">
                                     <div><a href="" style="cursor:pointer;color:grey;position: relative;left:150px;top:64px;">取消</a></div>
@@ -335,7 +307,10 @@
         </form>
     </div>
 </div>
-<!-- <p><?php echo json_encode($rule)?></p> 
+
+<p><?php echo json_encode($rule);?></p>
+<p><?php echo json_encode($cate_arr)?></p>
+<!--
  <?php foreach ($rule['members'] as $key => $value) {
                                         # code...
                                 echo $value['id'];     //   array_push($mem,$rule['members']['id']);
@@ -344,22 +319,24 @@
 <p><?php echo json_encode($rule);?></p>
 <p><?php echo $c_id.$c_name.$s_id.$s_name?></p>-->
 <style type="text/css">
+    .notFirstCategoryRow {
+        margin-left: 167px !important;
+    }
+    .firstCategoryRow {
+        margin-left: 0px;
+    }
     .form-group {
         margin-bottom: 30px;
     }
-    .radio {
-        position: relative;
-        left: -2px;
-    }
-    .addCategoryRow, .addDisableCategoryRow, .removeCategoryRow{
+    .addCategoryRow, .removeCategoryRow{
         margin:2px auto auto 25px;
         font-size:20px;
         cursor:pointer;
     }
-    input[type="button"]:hover {
+    input[type="submit"]:hover {
         background-color: #ff7075;
     }
-    input[type="button"] {
+    input[type="submit"] {
         width:100%;
         background-color: #FE575C;
         color:white;
@@ -416,7 +393,7 @@ function get_sobs(){
 $(document).ready(function(){
    
 
-        /*$.ajax({
+	    /*$.ajax({
         url:__BASE + "category/get_sob_category/"+s_id,
         dataType:'json',
         method:'GET',
@@ -481,19 +458,19 @@ $(document).ready(function(){
                 $this.next().css({'width': $this.parent().width()});
             })
         }).trigger('resize.chosen');
-    $('#renew').click(function(){
+    $('.renew').click(function(){
         
         var rname = $('#rname').val();
         var sobs = $('.sobs').val();
-    var category = $('.category').val();
+	var category = $('.category').val();
 
-    var amount = $('#amount').val();
-    var amount_unlimit = $('#amount_unlimit').val();
-    var amount_time = $('#amount_time').val();
+	var amount = $('#amount').val();
+	var amount_unlimit = $('#amount_unlimit').val();
+	var amount_time = $('#amount_time').val();
 
-    var frequency = $('#frequency').val();
-    //var frequency_unlimit = $('#frequency_unlimit').val();
-    var frequency_time = $('#frequency_time').val();
+	var frequency = $('#frequency').val();
+	//var frequency_unlimit = $('#frequency_unlimit').val();
+	var frequency_time = $('#frequency_time').val();
 
     if($('#frequency_unlimit').is(':checked'))
     {
@@ -518,110 +495,37 @@ $(document).ready(function(){
          console.log($('#all_members').val());
 
     }
-
-    /*$('.fourParts').each(function(){
-        if($(this).is(':checked'))
-        {
-            $(this).val(1);
-            console.log("hhhh"+$(this).val());
-        }
-        else
-        {
-            $(this).val(0);
-            console.log("xxx"+$(this).val());
-        }
-    }); */
-
-        $('.def').each(function(){
-        if($(this).is(':checked'))
-        {
-            $(this).val(1);
-            console.log("hhhh"+$(this).val());
-        }
-        else
-        {
-            $(this).val(0);
-            console.log("xxx"+$(this).val());
-        }
-    });
-/*  if(name=='')
-    {   
-        show_notify('请输入用户名');
+/*	if(name=='')
+	{	
+		show_notify('请输入用户名');
         $('#name').focus();
-        return false;
-    }
+		return false;
+	}
 
-    if(phone==''&& email=='')
-    {   
-        show_notify('请输入手机号码或email');
+	if(phone==''&& email=='')
+	{	
+		show_notify('请输入手机号码或email');
         $('#phone').focus();
         $('#email').focus();
-        return false;
-    }
-    
+		return false;
+	}
+	
         show_notify("hello");*/
        // $('#renew').val($(this).data('renew'));
-        var allow_categories = [];
-         var deny_categories = [];
-
-        var amounts = [];
-        var fourParts = [];
-        var defaults = [] ;
-        var els =document.getElementsByName("allow_category");
-        for (var i = 0, j = els.length; i < j; i++){
-        console.log(els[i].value);
-        allow_categories.push(els[i].value);
-        }
-
-        var els =document.getElementsByName("deny_category");
-        for (var i = 0, j = els.length; i < j; i++){
-        console.log(els[i].value);
-        deny_categories.push(els[i].value);
-        }
-
-        var els =document.getElementsByName("all_able");
-        for (var i = 0, j = els.length; i < j; i++){
-        console.log(els[i].value);
-        fourParts.push(els[i].value);
-        }
-
-        var els =document.getElementsByName("default");
-        for (var i = 0, j = els.length; i < j; i++){
-        console.log(els[i].value);
-        defaults.push(els[i].value);
-        }
-        var els =document.getElementsByName("category_amount");
-        for (var i = 0, j = els.length; i < j; i++){
-        console.log(els[i].value);
-        amounts.push(els[i].value);
-        }
-
-         
-
-        $('#allow_category_ids').val(JSON.stringify(allow_categories));
-
-        $('#deny_category_ids').val(JSON.stringify(deny_categories));
-
-        $('#defaults').val(JSON.stringify(defaults));
-        console.log('jjjj'+JSON.stringify(defaults));
-
-        $('#four').val(JSON.stringify(fourParts));
-
-        $('#category_amounts').val(JSON.stringify(amounts));
         $('#mainform').submit();
     });
     $('.cancel').click(function(){
         $('#reset').click();
     });
 
-    $('#frequency_unlimit').click(function(){
+    $('#amount_unlimit').click(function(){
         if($(this).is(':checked'))
         {
-            $('#total').attr("disabled",true);
+            $('#amount').attr("disabled",true);
         }
         else
         {
-            $('#total').attr("disabled",false);
+            $('#amount').attr("disabled",false);
         }
     });
 

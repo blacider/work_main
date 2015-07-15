@@ -35,30 +35,41 @@ class Company extends REIM_Controller {
 	$categories = $category['data']['categories'];
 	$sobs = $this->account_set->get_account_set_list();
 	$_sobs = $sobs['data'];
-	$s_id ='';
-	$s_name = '';
-	$c_name = '';
-	$c_id = '';
-	log_message('debug','%%%%%%%%%%'.json_encode($own_rule['categories']));
-	foreach($categories as $c)
+	log_message('debug',"approve:".json_encode($own_rule));
+	log_message("debug","categories:".json_encode($categories));
+	log_message("debug","sobs:".json_encode($_sobs));
+	log_message("debug","#######buf".$buf);
+	$approve_categories = $own_rule['categories'];
+	$cate_arr = array();
+	$flag = 1;
+	foreach($approve_categories as $item)
 	{
-		if($own_rule['categories'] != [])
-		{log_message("debug","#########TRUE");
-		if($c['id'] == $own_rule['categories']['category'])
+		if($item['category']!=0)
 		{
-			$c_name = $c['category_name'];
-			$c_id = $c['id'];
-			$s_id = $c['sob_id'];
+			if($item['act'] == -1)
+			{
+				$flag = -1;
+			}
+		$cate_arr[$item['category']]=array('category_id'=>$item['category'],'act'=>$item['act']);
+		foreach($categories as $cate)
+		{
+			if($cate['id'] == $item['category'])
+			{
+				$cate_arr[$item['category']]['category_name'] = $cate['category_name'];
+				$cate_arr[$item['category']]['sob_id'] = $cate['sob_id'];
+				$cate_arr[$item['category']]['amount'] = $item['amount'];
+			}
+		}
+		foreach($_sobs as $s)
+		{
+			if($s['sob_id'] == $cate_arr[$item['category']]['sob_id'])
+			{
+				$cate_arr[$item['category']]['sob_name'] = $s['sob_name'];
+			}
 		}
 		}
 	}
-/*	foreach($_sobs as $s)
-	{
-		if($s['sob_id'] == $s_id)
-		{
-			$s_name = $s['sob_name'];
-		}
-	}
+	log_message("debug","array:".json_encode($cate_arr));
 
         $_group = $this->groups->get_my_list();
         $_gnames = $this->ug->get_my_list();
@@ -71,17 +82,16 @@ class Company extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-/*	$this->bsload('company/update_approve',
+	$this->bsload('company/update_approve',
 		array(
 			'title'=>'修改审批'
+			,'pid'=>$pid
+			,'flag'=>$flag
+			,'cate_arr'=>$cate_arr
 			,'error'=>$error
 			,'rule'=>$own_rule
 			,'member'=>$gmember
 			,'group'=>$gnames
-			,'c_id' => $c_id
-			,'c_name'=>$c_name
-			,'s_id' => $s_id
-			,'s_name'=>$s_name
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
 				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
@@ -89,7 +99,6 @@ class Company extends REIM_Controller {
 			),
 		)
 	);
-*/	
     }
 
     public function show_approve()
@@ -97,7 +106,8 @@ class Company extends REIM_Controller {
     	$error = $this->session->userdata('last_error');
 	$this->session->unset_userdata('last_error');
 	$buf = $this->company->show_approve();
-
+	log_message("debug","APPRO".$buf);
+	
 	$rules = json_decode($buf,true);
 	$this->bsload('company/show_approve',
 		array(
@@ -114,7 +124,7 @@ class Company extends REIM_Controller {
     	
     }
 
-    public function create_approve()
+    public function create_approve($pid=-1)
     {
     	$error = $this->session->userdata('last_error');
 	$this->session->unset_userdata('last_error');
@@ -123,14 +133,101 @@ class Company extends REIM_Controller {
 	$sob_id = $this->input->post('sobs');
 	$category_id = $this->input->post('category');
 	$amount = $this->input->post('category_amount');
+		
+	$total_amount_limit = $this->input->post('frequency_unlimit');
 	$total_amount = $this->input->post('total_amount');
+	if($total_amount_limit == 1)
+	{
+		$total_amount = -1;	
+	}
+
 	$members = $this->input->post('uids');
+	if($members)
+	{
+		$members = implode(',',$members);
+	}
 	$all_members = $this->input->post('all_members');
-    	
+	if($all_members == 1)
+	{
+		$members = -1;
+	}
+	
+//	$all_able = $this->input->post('allow_all_category');
+	$allow_all_category = $this->input->post('all_able');
+//	$all_able = json_decode($all_able);
+//	log_message("debug","@@@@@:all_able:".$choose);
+
+
+//	log_message("debug","######:".json_encode($all_able));
+//	$allow_all_category = $this->input->post('all_all_category');
+	$allow_category_ids = $this->input->post('allow_category_ids');
+	$allow_category_ids = json_decode($allow_category_ids);
+	$allow_category_amounts = $this->input->post('allow_category_amounts');
+	$allow_category_amounts = json_decode($allow_category_amounts);
+	$defaults = $this->input->post('defaults');
+	$defaults = json_decode($defaults);
+	log_message("debug","%%%%".json_encode($defaults));
+
+	$deny_category_ids = $this->input->post('deny_category_ids');
+	log_message("debug","@@@@@".$deny_category_ids);
+	$deny_category_ids = json_decode($deny_category_ids);
+	$deny_category_amounts = $this->input->post('deny_category_amounts');
+	$deny_category_amounts = json_decode($deny_category_amounts);
+
+    	$allow = array();
+	$allow_length = count($allow_category_ids);
+	for($i = 0 ; $i < $allow_length ; $i++)
+	{
+		if($allow_category_ids[$i])
+		{
+		$item = array('category'=>$allow_category_ids[$i],'default'=>$defaults[$i],'amount'=>0);
+		array_push($allow,$item);
+		}
+	}
+	$deny = array();
+	$deny_length = count($deny_category_ids);
+	for($i = 0; $i < $deny_length ; $i++)
+	{
+		if($deny_category_ids[$i])
+		{
+		$item = array('category'=>$deny_category_ids[$i],'default'=>'-1','amount'=>0);
+		array_push($deny,$item);
+		}
+	}
+
+	if($allow_all_category == 1)
+	{
+		$policies = array('allow'=>array(),'deny'=>$deny);
+	}
+	else if($allow_all_category == -1 )
+	{
+		$policies = array('allow'=>$allow,'deny'=>array());
+	}
+	else if($allow_all_category == 2)
+	{
+		$policies = array('allow'=>$allow,'deny'=>array());
+	}
+	else
+	{
+		$policies = array('allow'=>array(),'deny'=>$deny);
+	}
+	
+	log_message("debug","allow_all:".$allow_all_category);
+	log_message("debug","allow_all:".$deny_length);
+
+	if(($allow_all_category!=1)&&($allow_all_category!=-1))
+	{
+		$allow_all_category = 0;
+	}
+
+	
+	log_message("debug","accepted:".json_encode($policies));
+//	log_message("debug","accepted:".$category_amounts[0]);
 //	$info = array('category'=>$category_id,'amount'=>$amount);
-	$policy =array(array('category'=>$category_id,'amount'=>$amount));
+// 	$policy =array(array('category'=>$category_id,'amount'=>$amount));
 //	array_push($policy,$info);
-	$buf = $this->company->create_approve($rname,implode(',',$members),$total_amount,json_encode($policy),$pid=-1);
+	$buf = $this->company->create_approve($rname,$members,$total_amount,$allow_all_category,json_encode($policies),$pid);
+	log_message('debug',"#######".json_encode($buf));
 	return redirect(base_url('company/show_approve'));
 
     }
@@ -247,7 +344,7 @@ class Company extends REIM_Controller {
 	$amount_unlimit = $this->input->post('amount_unlimit');
 	$amount_time = $this->input->post('amount_time');
 	
-	$frequency = $this->input->post('frequency');
+	$frequency = $this->input->post('rule_frequency');
 	$frequency_unlimit = $this->input->post('frequency_unlimit');
 //	$frequency_time = $this->input->post('frequency_time');
 	$frequency_time = 1;
@@ -306,7 +403,7 @@ class Company extends REIM_Controller {
 	$amount_unlimit = $this->input->post('amount_unlimit');
 	$amount_time = $this->input->post('amount_time');
 	
-	$frequency = $this->input->post('frequency');
+	$frequency = $this->input->post('rule_frequency');
 	$frequency_unlimit = $this->input->post('frequency_unlimit');
 //	$frequency_time = $this->input->post('frequency_time');
 	$frequency_time = 1;
@@ -336,7 +433,7 @@ class Company extends REIM_Controller {
 		$groups = array();
 		$members = array();
 	}
-	log_message('debug',"####:".json_encode($groups));
+	log_message('debug',"####:".json_encode($frequency));
 	
 	$start_time = $this->input->post('sdt');
 	$end_time = $this->input->post('edt');

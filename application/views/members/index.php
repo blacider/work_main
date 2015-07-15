@@ -11,7 +11,7 @@ position: absolute;
   top: 64px;
   z-index: 2;
   height: 26px;
-  width: 150px;
+  width: 12%;
   border-style: ridge;
     }
     #search-submit {
@@ -36,7 +36,7 @@ position: absolute;
         }
     }
 </script>
-<form action="<?php echo base_url('members/search') ?>" method="post" onsubmit="return searchSubmit(this)">
+<form action="<?php echo base_url('members/search') ?>" method="get" onsubmit="return searchSubmit(this)">
     <input name="key" placeholder="名字、手机或者邮箱" value="<?php echo $search ?>" type='text' id="search">
     <button type="submit" id="search-submit">搜索</button>
 </form>
@@ -115,7 +115,7 @@ if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['emai
         $color = '<span class="label label-success arrowed">管理员</span>';
     } else if ($m['admin'] == 2){
         $desc = '出纳';
-        $color = '<span class="label label-success-new">出纳</span>';
+        $color = '<span class="label label-warning arrowed">出纳</span>';
     }
 ?>
 <a href="javascript:void(0)" title="<?php echo $desc; ?>" data-id="<?php echo $m['id']; ?>" ><?php echo $color; ?></a>
