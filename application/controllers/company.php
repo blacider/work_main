@@ -197,11 +197,11 @@ class Company extends REIM_Controller {
 
 	if($allow_all_category == 1)
 	{
-		$policies = array('allow'=>array(),'deny'=>$deny);
+		$policies = array('allow'=>array(),'deny'=>array());
 	}
 	else if($allow_all_category == -1 )
 	{
-		$policies = array('allow'=>$allow,'deny'=>array());
+		$policies = array('allow'=>array(),'deny'=>array());
 	}
 	else if($allow_all_category == 2)
 	{
