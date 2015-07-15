@@ -24,7 +24,6 @@
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 <script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script>
 
-
 <div class="page-content">
     <div class="page-content-area">
         <form role="form" action='<?php echo base_url("company/create_approve/");  ?>' method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
@@ -158,6 +157,9 @@
                             }
                             $(document).ready(function($) {
                                 $(".chosen-select-niu").chosen({width:"160%"});
+                                $('input[type="radio"]').click(function() {
+                                    changeAble(this.value);
+                                });
                             });
                             function addDisableCategoryRow() {
                                 var addDom = $('.disableCategoryRow .addDisableCategoryRow');
@@ -664,5 +666,21 @@ $(document).ready(function(){
   $("#all_members").change(update_users);*/
 
 });
+function changeAble(value) {
+        console.log(value);
+        if (value == 1 || value == -1) {
+            $('.chosen-select-niu').prop('disabled',true).trigger("chosen:updated");
+            $('.def').attr('disabled', 'true');
+
+        } else if (value == -2) {
+            $('.disableCategoryRow .chosen-select-niu').prop('disabled',false).trigger("chosen:updated");
+            $('.CategoryRow .chosen-select-niu').prop('disabled',true).trigger("chosen:updated");
+            $('.def').attr('disabled', 'false');
+        } else {
+            $('.def').removeAttr('disabled');
+            $('.disableCategoryRow .chosen-select-niu').prop('disabled',true).trigger("chosen:updated");
+            $('.CategoryRow .chosen-select-niu').prop('disabled',false).trigger("chosen:updated");
+        }
+      }
 </script>
 
