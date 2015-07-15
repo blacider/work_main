@@ -144,24 +144,27 @@ class Bills extends REIM_Controller {
     }
 
 
-    public function marksuccess($id = 0, $type = -1){
-        if(0 === $id){
-            $type = $this->input->post('type');
-            $data = $this->input->post('data');
-            $id = implode(",", $data);
-            $status = 2;
-            if(0 === $type) {
-                $status = 4;
+    public function marksuccess($ids = '0', $type = -1){
+        $ids = explode('%23', $ids);
+        foreach ($ids as $id ) {
+            if(0 === $id){
+                $type = $this->input->post('type');
+                $data = $this->input->post('data');
+                $id = implode(",", $data);
+                $status = 2;
+                if(0 === $type) {
+                    $status = 4;
+                }
+                die($this->reports->mark_success($id, $status));
+            } else {
+                $status = 3;
+                if(0 === intval($type)) {
+                    $status = 4;
+                }
+                $this->reports->mark_success($id, $status);
             }
-            die($this->reports->mark_success($id, $status));
-        } else {
-            $status = 3;
-            if(0 === intval($type)) {
-                $status = 4;
-            }
-            $this->reports->mark_success($id, $status);
-            redirect(base_url('bills'));
         }
+        redirect(base_url('bills'));
     }
 
 }
