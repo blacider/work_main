@@ -228,7 +228,7 @@ class Company extends REIM_Controller {
 //	array_push($policy,$info);
 	$buf = $this->company->create_approve($rname,$members,$total_amount,$allow_all_category,json_encode($policies),$pid);
 	log_message('debug',"#######".json_encode($buf));
-//	return redirect(base_url('company/show_approve'));
+	return redirect(base_url('company/show_approve'));
 
     }
 
