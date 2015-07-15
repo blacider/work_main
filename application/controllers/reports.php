@@ -618,6 +618,7 @@ class Reports extends REIM_Controller {
                 $o['类别'] = $i['category_name'];
                 $o['商家'] = $i['merchants'];
                 $o['参与人员'] = implode(',', $__relates);
+                $o['会计科目'] = $i['category_code'];
                 $o['备注'] = $i['note'];
                 $_rate = 1;
                 if($i['rate'] != 1){

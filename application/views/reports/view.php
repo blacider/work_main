@@ -54,7 +54,7 @@
 
 
                                                 ?></td>
-                                            <td><?php echo $i['amount']; ?></td>
+                                            <td><?php echo $i['currency_logo']; ?> &nbsp;<?php echo $i['amount']; ?></td>
                                             <td><?php echo $i['category_name']; ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td><?php $link = base_url('items/show/' . $i['id']); ?><a href="<?php echo $link; ?>">详情</a></td>
