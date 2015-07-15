@@ -59,7 +59,7 @@
     -->
     <div class="panel panel-primary">
         <div class="panel-heading  clearfix ">
-        <h3 class="panel-title default col-sm-4 col-md-2" id="gname">部门信息</h3>
+        <h3 class="panel-title default" id="gname">部门信息</h3>
          <div class="btn-group pull-right" id = "fix">
       </div>
   </div>
