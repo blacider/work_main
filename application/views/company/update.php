@@ -216,6 +216,11 @@
    var selectPostData = {};
    var selectDataCategory = {};
    var selectDataSobs = '';
+       function updateSelectSob(data) {
+                                $("#sobs").empty();
+                                $("#sobs").append(data);
+                                $("#sobs").trigger("chosen:updated");
+                            }
 function get_sobs(){
         $.ajax({
             url : __BASE + "category/get_sob_category",
