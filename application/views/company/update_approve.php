@@ -387,7 +387,7 @@
                                         <?php if ($rule['all_member'] == 1) {?>
                                          <input type="checkbox" id="all_members" checked="true"  name="all_members">
                                          <?php } else {?>
-                                         <input type="checkbox" id="all_members" checked="true"  name="all_members">
+                                         <input type="checkbox" id="all_members"   name="all_members">
                                          <?php }?>
                                             全体员工
                                          </label>
@@ -705,6 +705,36 @@ $(document).ready(function(){
         $('#four').val(JSON.stringify(fourParts));
 
         $('#category_amounts').val(JSON.stringify(amounts));
+
+
+
+        if($('#rname').val() == '')
+        {
+            $('#rname').focus();
+            show_notify("请输入规则名");
+            return false;
+        }
+
+        if(($('#total').val() == '')&&($('#frequency_unlimit').val()==0))
+        {
+            $('#total').focus();
+            show_notify("请输入总金额");
+            return false;
+        }
+
+        if($('input[name="all_able"]:checked').val() == undefined)
+        {
+            show_notify("请选择类目类型");
+            return false;
+        }
+
+        if(($('#member').val() == null)&&($('#all_members').val()==0))
+        {
+            $('#member').focus();
+            show_notify("请输入适用人员");
+            return false;
+        }
+
         $('#mainform').submit();
     });
     $('.cancel').click(function(){

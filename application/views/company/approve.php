@@ -500,24 +500,24 @@ $(document).ready(function(){
     if($('#frequency_unlimit').is(':checked'))
     {
         $('#frequency_unlimit').val(1);
-        console.log($('#frequency_unlimit').val());
+      //  console.log($('#frequency_unlimit').val());
     }
     else
     {
         $('#frequency_unlimit').val(0);
-         console.log($('#frequency_unlimit').val());
+     //    console.log($('#frequency_unlimit').val());
 
     }
 
       if($('#all_members').is(':checked'))
     {
         $('#all_members').val(1);
-        console.log($('#all_members').val());
+   //     console.log($('#all_members').val());
     }
     else
     {
         $('#all_members').val(0);
-         console.log($('#all_members').val());
+   //      console.log($('#all_members').val());
 
     }
 
@@ -538,12 +538,12 @@ $(document).ready(function(){
         if($(this).is(':checked'))
         {
             $(this).val(1);
-            console.log("hhhh"+$(this).val());
+       //     console.log("hhhh"+$(this).val());
         }
         else
         {
             $(this).val(0);
-            console.log("xxx"+$(this).val());
+      //      console.log("xxx"+$(this).val());
         }
     });
 /*  if(name=='')
@@ -571,30 +571,30 @@ $(document).ready(function(){
         var defaults = [] ;
         var els =document.getElementsByName("allow_category");
         for (var i = 0, j = els.length; i < j; i++){
-        console.log(els[i].value);
+    //    console.log(els[i].value);
         allow_categories.push(els[i].value);
         }
 
         var els =document.getElementsByName("deny_category");
         for (var i = 0, j = els.length; i < j; i++){
-        console.log(els[i].value);
+    //    console.log(els[i].value);
         deny_categories.push(els[i].value);
         }
 
         var els =document.getElementsByName("all_able");
         for (var i = 0, j = els.length; i < j; i++){
-        console.log(els[i].value);
+  //      console.log(els[i].value);
         fourParts.push(els[i].value);
         }
 
         var els =document.getElementsByName("default");
         for (var i = 0, j = els.length; i < j; i++){
-        console.log(els[i].value);
+    //    console.log(els[i].value);
         defaults.push(els[i].value);
         }
         var els =document.getElementsByName("category_amount");
         for (var i = 0, j = els.length; i < j; i++){
-        console.log(els[i].value);
+    //    console.log(els[i].value);
         amounts.push(els[i].value);
         }
 
@@ -605,11 +605,39 @@ $(document).ready(function(){
         $('#deny_category_ids').val(JSON.stringify(deny_categories));
 
         $('#defaults').val(JSON.stringify(defaults));
-        console.log('jjjj'+JSON.stringify(defaults));
+       // console.log('jjjj'+JSON.stringify(defaults));
 
         $('#four').val(JSON.stringify(fourParts));
 
         $('#category_amounts').val(JSON.stringify(amounts));
+
+        if($('#rname').val() == '')
+        {
+            $('#rname').focus();
+            show_notify("请输入规则名");
+            return false;
+        }
+
+        if(($('#total').val() == '')&&($('#frequency_unlimit').val()==0))
+        {
+            $('#total').focus();
+            show_notify("请输入总金额");
+            return false;
+        }
+
+        if($('input[name="all_able"]:checked').val() == undefined)
+        {
+            show_notify("请选择类目类型");
+            return false;
+        }
+
+        if(($('#member').val() == null)&&($('#all_members').val()==0))
+        {
+            $('#member').focus();
+            show_notify("请输入适用人员");
+            return false;
+        }
+
         $('#mainform').submit();
     });
     $('.cancel').click(function(){
