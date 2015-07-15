@@ -19,9 +19,9 @@
                                     <th>规则名称</th>
                                     <th>创建时间</th>
                                     <th class="hidden-680">
-                                       <!-- <a href="#modal-table" role="button" class="green" data-toggle="modal">
+                                        <a href="<?php echo base_url('company/approve')?>" role="button" class="green" >
                                             <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
-                                        </a> -->
+                                        </a> 
                                     </th>
                                 </tr>
                             </thead>

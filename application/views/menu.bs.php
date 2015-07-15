@@ -416,10 +416,10 @@ if($profile['admin'] == 1){
         <b class="arrow"></b>
         </li>
 
-        <li class="hsub" id="create">
+        <!-- <li class="hsub" id="create">
         <a href="<?php echo base_url('company/create'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建规则 </a>
           <b class="arrow"></b>
-        </li> 
+        </li> -->
 
 
         <li class="hsub" id="show_approve">
@@ -428,10 +428,10 @@ if($profile['admin'] == 1){
         </li> 
 
 
-        <li class="hsub" id="approve">
+       <!-- <li class="hsub" id="approve">
         <a href="<?php echo base_url('company/approve'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建审批 </a>
           <b class="arrow"></b>
-        </li> 
+        </li>  -->
 
     
     </ul>
