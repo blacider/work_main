@@ -317,10 +317,6 @@ class Company extends REIM_Controller {
 			,'rule'=>$own_rule
 			,'member'=>$gmember
 			,'group'=>$gnames
-			,'c_id' => $own_rule['category']
-			,'c_name'=>$c_name
-			,'s_id' => $s_id
-			,'s_name'=>$s_name
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
 				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
