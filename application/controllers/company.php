@@ -41,10 +41,15 @@ class Company extends REIM_Controller {
 	log_message("debug","#######buf".$buf);
 	$approve_categories = $own_rule['categories'];
 	$cate_arr = array();
+	$flag = 1;
 	foreach($approve_categories as $item)
 	{
 		if($item['category']!=0)
 		{
+			if($item['act'] == -1)
+			{
+				$flag = -1;
+			}
 		$cate_arr[$item['category']]=array('category_id'=>$item['category'],'act'=>$item['act']);
 		foreach($categories as $cate)
 		{
@@ -81,6 +86,7 @@ class Company extends REIM_Controller {
 		array(
 			'title'=>'修改审批'
 			,'pid'=>$pid
+			,'flag'=>$flag
 			,'cate_arr'=>$cate_arr
 			,'error'=>$error
 			,'rule'=>$own_rule
