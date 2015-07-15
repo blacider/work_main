@@ -26,7 +26,7 @@
                             <thead>
                                 <tr>
                                     <th>分类名称</th>
-                                    <th>消费限制</th>
+                                  <!--  <th>消费限制</th> -->
                                     <th>上级分类</th>
                                     <th>所属帐套</th>
                                     <th>帐套说明</th>
@@ -71,7 +71,7 @@ $operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class
     $operation = '<td style="width:50px;"><a class="btn btn-xs btn-danger" href="' .  base_url('admin/user/del?id='. $item['id']) .'">
         <i class="ace-icon fa fa-trash-o bigger-120"></i>
         </a></td>';
-$str = $str . $username . $max_limit . $nickname . $acc_name .  $note . $role_id  .  $operation_upd . '</tr>';
+$str = $str . $username  . $nickname . $acc_name .  $note . $role_id  .  $operation_upd . '</tr>';
 echo $str;
 }
 ?>
@@ -101,7 +101,7 @@ echo $str;
                             </div>
                             <div class="space-4"></div>
 
-
+                            <!--
                             <div class="form-group">
                                 <label for="form-field-username">消费限制</label>
                                 <div>
@@ -118,7 +118,7 @@ echo $str;
                                         <option value="1">需要预审核</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div>  -->
                             <div class="space-4"></div>
               
                               <div class="form-group">
