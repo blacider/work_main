@@ -519,7 +519,7 @@ $(document).ready(function(){
 
     }
 
-    $('.fourParts').each(function(){
+    /*$('.fourParts').each(function(){
         if($(this).is(':checked'))
         {
             $(this).val(1);
@@ -530,7 +530,7 @@ $(document).ready(function(){
             $(this).val(0);
             console.log("xxx"+$(this).val());
         }
-    });
+    }); */
 
         $('.def').each(function(){
         if($(this).is(':checked'))
