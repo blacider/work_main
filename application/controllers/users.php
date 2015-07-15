@@ -73,6 +73,7 @@ class Users extends REIM_Controller {
                 ,'self' => 1
                 ,'error' => $error
                 ,'avatar_path' => $path
+                ,'isOther' => 0
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '修改资料', 'class' => '')
@@ -96,7 +97,7 @@ class Users extends REIM_Controller {
     }
 
 
-    public function update_profile(){
+    public function update_profile($isOther){
         $nickname = $this->input->post('nickname');
         $email = $this->input->post('email');
         $phone = $this->input->post('phone');
@@ -113,7 +114,10 @@ class Users extends REIM_Controller {
             $this->session->set_userdata('login_error', '信息修改失败');
             redirect(base_url('login'));
         }
-        redirect(base_url('users/profile'));
+        if ($isOther == 1)
+            redirect(base_url('members/index'));
+        else
+            redirect(base_url('users/profile'));
     }
 
 

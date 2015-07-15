@@ -1,6 +1,6 @@
 <div class="page-content">
     <div class="page-content-area">
-        <form id="profile_form" class="form-horizontal" role="form" method="post" action="<?php echo base_url('users/update_profile'); ?>">
+        <form id="profile_form" class="form-horizontal" role="form" method="post" action="<?php echo base_url('users/update_profile'); ?>/<?php echo $isOther ?>/">
             <div class="row">
                 <div class="col-xs-12 col-sm-12">
                     <div class="form-group">
