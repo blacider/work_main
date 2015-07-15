@@ -610,6 +610,8 @@ class Reports extends REIM_Controller {
                         array_push($__relates, $__members[$r]);
                     }
                 }
+                $s = $i['category_code'];
+                if($s == 0) $s = '';
                 log_message("debug", "export item:" . json_encode($i));
                 $o = array();
                 $o['日期'] = date('Y年m月d日', date($i['createdt']));
@@ -618,7 +620,7 @@ class Reports extends REIM_Controller {
                 $o['类别'] = $i['category_name'];
                 $o['商家'] = $i['merchants'];
                 $o['参与人员'] = implode(',', $__relates);
-                $o['会计科目'] = $i['category_code'];
+                $o['会计科目'] = $s;
                 $o['备注'] = $i['note'];
                 $_rate = 1;
                 if($i['rate'] != 1){
