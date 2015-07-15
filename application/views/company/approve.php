@@ -61,13 +61,13 @@
                                 <div class="form-group">
                                     <div class="checkbox col-xs-4 col-sm-4">
                                         <label>
-                                         <input type="checkbox" class="fourParts" id="frequency_unlimit" name="all_able" >
+                                         <input type="checkbox" class="fourParts" id="frequency_unlimit" name="all_able" vlaue = "1" >
                                             全部均允许审核
                                          </label>
                                     </div>
                                     <div class="checkbox col-xs-4 col-sm-4" style="margin-left:-35px;">
                                         <label>
-                                         <input type="checkbox" class="fourParts" id="frequency_unlimit" name="all_disable" >
+                                         <input type="checkbox" class="fourParts" id="frequency_unlimit" name="all_able" value = "-1">
                                             全部均禁止审核
                                          </label>
                                     </div>
@@ -75,7 +75,7 @@
                                 <div class="form-group">
                                     <div class="checkbox col-xs-6 col-sm-6">
                                         <label>
-                                         <input type="checkbox" class="fourParts" id="frequency_unlimit" name="all_able" >
+                                         <input type="checkbox" class="fourParts" id="frequency_unlimit" name="all_able" value = "2" >
                                             仅部分类目可以审核
                                          </label>
                                     </div>
@@ -86,16 +86,16 @@
                                         </select>
                                     </div>
                                     <div class="col-xs-2 col-sm-2" style="margin:2px 20px auto 20px;">
-                                        <select name="category" class="sob_category chosen-select-niu" data-placeholder="类目">
+                                        <select name="allow_category" class="sob_category chosen-select-niu" data-placeholder="类目">
                                         </select>
                                     </div>
                                         <div class="checkbox col-xs-3 col-sm-3">
                                             <label>
-                                                <input type="checkbox" id="frequency_unlimit" name="all_able" >
+                                                <input type="checkbox" class="def" id="frequency_unlimit" name="default" >
                                                 默认审批
                                             </label>
                                         </div>
-                                        <input type='hidden' id="category_ids" name="category_ids">
+                                    
                                     <div class="col-xs-2 col-sm-2">
                                         <div class="addCategoryRow" style="margin-left:-15px" onclick="addCategoryRow()">+</div>   
                                     </div>
@@ -103,7 +103,7 @@
                                 <div class="form-group">
                                     <div class="checkbox col-xs-6 col-sm-6">
                                         <label>
-                                         <input type="checkbox" class="fourParts" id="frequency_unlimit" name="all_able" >
+                                         <input type="checkbox" class="fourParts" id="frequency_unlimit" name="all_able" value="-2">
                                             仅部分类目禁止审核
                                          </label>
                                     </div>
@@ -114,10 +114,10 @@
                                         </select>
                                     </div>
                                     <div class="col-xs-2 col-sm-2" style="margin:2px 20px auto 20px;">
-                                        <select name="category" class="sob_category chosen-select-niu" data-placeholder="类目">
+                                        <select name="deny_category" class="sob_category chosen-select-niu" data-placeholder="类目">
                                         </select>
                                     </div>
-                                        <input type='hidden' id="category_ids" name="category_ids">
+                                       
                                     <div class="col-xs-2 col-sm-2">
                                         <div class="addDisableCategoryRow" onclick="addDisableCategoryRow()">+</div>   
                                     </div>
@@ -136,7 +136,7 @@
                             }
                             function addCategoryRow() {
                                 var addDom = $('.CategoryRow .addCategoryRow');
-                                var category = "<div class='form-group CategoryRow'><div class='col-xs-2 col-sm-2' style='margin-top:2px;'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-2 col-sm-2' style='margin:2px 20px auto 20px;''><select name='category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='checkbox col-xs-3 col-sm-3'><label><input type='checkbox' id='frequency_unlimit' name='all_able' >默认审批</label></div><div class='col-xs-2 col-sm-2'><div class='addCategoryRow'  style='margin-left:-15px' onclick='addCategoryRow()''>+</div>   </div></div>"
+                                var category = "<div class='form-group CategoryRow'><div class='col-xs-2 col-sm-2' style='margin-top:2px;'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-2 col-sm-2' style='margin:2px 20px auto 20px;''><select name='allow_category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='checkbox col-xs-3 col-sm-3'><label><input type='checkbox' class='def' id='frequency_unlimit' name='default' >默认审批</label></div><div class='col-xs-2 col-sm-2'><div class='addCategoryRow'  style='margin-left:-15px' onclick='addCategoryRow()''>+</div>   </div></div>"
                                 addDom.removeClass('addCategoryRow');
                                 addDom.attr('onclick', 'removeCategoryRow(this)');
                                 addDom.addClass('removeCategoryRow');
@@ -172,7 +172,7 @@
                             });
                             function addDisableCategoryRow() {
                                 var addDom = $('.disableCategoryRow .addDisableCategoryRow');
-                                var category = "<div class='form-group disableCategoryRow'><div class='col-xs-2 col-sm-2' style='margin-top:2px;'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-2 col-sm-2' style='margin:2px 20px auto 20px;''><select name='category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='col-xs-2 col-sm-2'><div class='addDisableCategoryRow' onclick='addDisableCategoryRow()''>+</div>   </div></div>"
+                                var category = "<div class='form-group disableCategoryRow'><div class='col-xs-2 col-sm-2' style='margin-top:2px;'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-2 col-sm-2' style='margin:2px 20px auto 20px;''><select name='deny_category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='col-xs-2 col-sm-2'><div class='addDisableCategoryRow' onclick='addDisableCategoryRow()''>+</div>   </div></div>"
                                 addDom.removeClass('addDisableCategoryRow');
                                 addDom.attr('onclick', 'removeCategoryRow(this)');
                                 addDom.addClass('removeCategoryRow');
@@ -326,6 +326,12 @@
                             </div>
 
                             -->
+                             <input type='hidden' id="allow_category_ids" name="allow_category_ids">
+                             <input type='hidden' id="deny_category_ids" name="deny_category_ids">
+                             <input type='hidden' id="four" name="allow_all_category">
+                             <input type='hidden' id="defaults" name="defaults">
+
+
                             <div class="form-group">
                                 <div class="col-xm-2 col-sm-2">
                                     <input type="button" id='renew' value="保存">
@@ -519,6 +525,32 @@ $(document).ready(function(){
          console.log($('#all_members').val());
 
     }
+
+    $('.fourParts').each(function(){
+        if($(this).is(':checked'))
+        {
+            $(this).val(1);
+            console.log("hhhh"+$(this).val());
+        }
+        else
+        {
+            $(this).val(0);
+            console.log("xxx"+$(this).val());
+        }
+    });
+
+        $('.def').each(function(){
+        if($(this).is(':checked'))
+        {
+            $(this).val(1);
+            console.log("hhhh"+$(this).val());
+        }
+        else
+        {
+            $(this).val(0);
+            console.log("xxx"+$(this).val());
+        }
+    });
 /*  if(name=='')
     {   
         show_notify('请输入用户名');
@@ -536,20 +568,52 @@ $(document).ready(function(){
     
         show_notify("hello");*/
        // $('#renew').val($(this).data('renew'));
-        var categories = [];
+        var allow_categories = [];
+         var deny_categories = [];
+
         var amounts = [];
-        var els =document.getElementsByName("category");
+        var fourParts = [];
+        var defaults = [] ;
+        var els =document.getElementsByName("allow_category");
         for (var i = 0, j = els.length; i < j; i++){
         console.log(els[i].value);
-        categories.push(els[i].value);
+        allow_categories.push(els[i].value);
         }
 
+        var els =document.getElementsByName("deny_category");
+        for (var i = 0, j = els.length; i < j; i++){
+        console.log(els[i].value);
+        deny_categories.push(els[i].value);
+        }
+
+        var els =document.getElementsByName("all_able");
+        for (var i = 0, j = els.length; i < j; i++){
+        console.log(els[i].value);
+        fourParts.push(els[i].value);
+        }
+
+        var els =document.getElementsByName("default");
+        for (var i = 0, j = els.length; i < j; i++){
+        console.log(els[i].value);
+        defaults.push(els[i].value);
+        }
         var els =document.getElementsByName("category_amount");
         for (var i = 0, j = els.length; i < j; i++){
         console.log(els[i].value);
         amounts.push(els[i].value);
         }
-        $('#category_ids').val(JSON.stringify(categories));
+
+         
+
+        $('#allow_category_ids').val(JSON.stringify(allow_categories));
+
+        $('#deny_category_ids').val(JSON.stringify(deny_categories));
+
+        $('#defaults').val(JSON.stringify(defaults));
+        console.log('jjjj'+JSON.stringify(defaults));
+
+        $('#four').val(JSON.stringify(fourParts));
+
         $('#category_amounts').val(JSON.stringify(amounts));
         $('#mainform').submit();
     });

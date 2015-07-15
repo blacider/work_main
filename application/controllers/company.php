@@ -123,24 +123,60 @@ class Company extends REIM_Controller {
 	$sob_id = $this->input->post('sobs');
 	$category_id = $this->input->post('category');
 	$amount = $this->input->post('category_amount');
+		
+	$total_amount_limit = $this->input->post('frequency_unlimit');
 	$total_amount = $this->input->post('total_amount');
+	if($total_amount_limit == 1)
+	{
+		$total_amount = -1;	
+	}
+
 	$members = $this->input->post('uids');
-	$members = implode(',',$members);
+	if($members)
+	{
+		$members = implode(',',$members);
+	}
 	$all_members = $this->input->post('all_members');
 	if($all_members == 1)
 	{
 		$members = -1;
 	}
 	
-	$allow_all_category = $this->input->post('all_all_category');
+	$all_able = $this->input->post('allow_all_category');
+	$all_able = json_decode($all_able);
+	$allow_all_category = 1;
+	if($all_able[0] == 1)
+	{
+		$allow_all_category = 1;
+	}
+
+	if($all_able[1] == 1)
+	{
+		$allow_all_category = -1;
+	}
+
+	if($all_able[2] == 1)
+	{
+		$allow_all_category = 2;
+	}
+
+	if($all_able[3] == 1)
+	{
+		$allow_all_category = -2;
+	}
+	log_message("debug","@@@@@@@@".json_encode($all_able));
+//	log_message("debug","######:".json_encode($all_able));
+//	$allow_all_category = $this->input->post('all_all_category');
 	$allow_category_ids = $this->input->post('allow_category_ids');
 	$allow_category_ids = json_decode($allow_category_ids);
 	$allow_category_amounts = $this->input->post('allow_category_amounts');
 	$allow_category_amounts = json_decode($allow_category_amounts);
-	$defaults = $this->input->post('default_categorys');
+	$defaults = $this->input->post('defaults');
 	$defaults = json_decode($defaults);
+	log_message("debug","%%%%".json_encode($defaults));
 
 	$deny_category_ids = $this->input->post('deny_category_ids');
+	log_message("debug","@@@@@".$deny_category_ids);
 	$deny_category_ids = json_decode($deny_category_ids);
 	$deny_category_amounts = $this->input->post('deny_category_amounts');
 	$deny_category_amounts = json_decode($deny_category_amounts);
@@ -149,38 +185,39 @@ class Company extends REIM_Controller {
 	$allow_length = count($allow_category_ids);
 	for($i = 0 ; $i < $allow_length ; $i++)
 	{
-		$item = array('category'=>$allow_category_ids[$i],'default'=>defaults[$i],'amount'=>$allow_category_amounts[$i]);
+		$item = array('category'=>$allow_category_ids[$i],'default'=>$defaults[$i]);
 		array_push($allow,$item);
 	}
 	$deny = array();
 	$deny_length = count($deny_category_ids);
 	for($i = 0; $i < $deny_length ; $i++)
 	{
-		$item = array('category'=>$deny_category_ids[$i],'amount'=>$deny_category_amounts[$i]);
+		$item = array('category'=>$deny_category_ids[$i]);
 		array_push($deny,$item);
 	}
 
-	if(allow_all_category > 0)
+	if($allow_all_category > 0)
 	{
 		$policies = array('allow'=>$allow,'deny'=>array());
 	}
-	else if(allow_all_category < 0 )
+	else if($allow_all_category < 0 )
 	{
 		$policies = array('allow'=>array(),'deny'=>$deny);
 	}
 
-	if((allow_all_category!=1)||(allow_all_category!=-1))
+	if(($allow_all_category!=1)||($allow_all_category!=-1))
 	{
-		allow_all_category = 0;
+		$allow_all_category = 0;
 	}
 
 
 	log_message("debug","accepted:".json_encode($policies));
-	log_message("debug","accepted:".$category_amounts[0]);
+//	log_message("debug","accepted:".$category_amounts[0]);
 //	$info = array('category'=>$category_id,'amount'=>$amount);
 // 	$policy =array(array('category'=>$category_id,'amount'=>$amount));
 //	array_push($policy,$info);
 	$buf = $this->company->create_approve($rname,$members,$total_amount,$allow_all_category,json_encode($policies),$pid);
+	log_message('debug',"#######".json_encode($buf));
 	return redirect(base_url('company/show_approve'));
 
     }
