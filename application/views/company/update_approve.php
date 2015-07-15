@@ -308,6 +308,8 @@
     </div>
 </div>
 
+<p><?php echo json_encode($rule);?></p>
+<p><?php echo json_encode($cate_arr)?></p>
 <!--
  <?php foreach ($rule['members'] as $key => $value) {
                                         # code...
