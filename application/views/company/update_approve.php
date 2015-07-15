@@ -176,7 +176,7 @@
                         <script type="text/javascript">
                             //selectCache = <?php echo json_encode($rule)?>;
                             selectCache = (<?php echo json_encode($cate_arr)?>);
-                            function appendChecked(selectJqDom, data) {
+                            function appendChecked(selectJqDom, data, item) {
                                 //第一个 selectJqDom.children()[0].children[0]
                                 //$(selectJqDom.children()[0].children[0]).parent().children().remove('div'); 
                                 $(selectJqDom.children()[0].children[0]).find("option[value='"+data['sob_id']+"']").attr("selected",true);
@@ -195,16 +195,15 @@
                             }
                             function initSelectCache() {
                                 var pointer = 0, disablePointer = 0;
-                                var ableDom = $('.CategoryRow'), disableDom = $('.disableCategoryRow');
                                 for (item in selectCache) {
                                     if (item != undefined) {
                                         if (selectCache[item]['act'] == -1) {
                                             if (disablePointer != 0) addDisableCategoryRow();
-                                            appendChecked($(disableDom[pointer]), selectCache[item]);
+                                            appendChecked($($('.disableCategoryRow')[disablePointer]), selectCache[item]);
                                             disablePointer += 1;
                                         } else {
                                             if (pointer != 0) addCategoryRow();
-                                            appendChecked($(ableDom[disablePointer]), selectCache[item]);
+                                            appendChecked($($('.CategoryRow')[pointer]), selectCache[item]);
                                             pointer += 1;
                                         }
                                     }
