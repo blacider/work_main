@@ -10,7 +10,7 @@ class UserGroup_Model extends Reim_Model {
         return $obj;
     }
 
-    public function create_group($uids,$name,$pid,$manager,$code)
+    public function create_group($manager,$uids,$name,$code,$pid)
     {
            $jwt = $this->session->userdata('jwt');
            if(!$jwt) return false;
