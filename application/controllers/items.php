@@ -110,7 +110,7 @@ class Items extends REIM_Controller {
         $type = $this->input->post('type');
         $note = $this->input->post('note');
         $images = $this->input->post('images');
-        $renew = $item['renew'];
+        $renew = $this->input->post('renew');
         $obj = $this->items->create($amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
         // TODO: 提醒的Tips
         if($renew){
@@ -282,7 +282,7 @@ class Items extends REIM_Controller {
                     ));
             }
         }
-
+	log_message("debug","flow:".json_encode($_flow));
         $this->bsload('items/view',
             array(
                 'title' => '查看消费',
