@@ -24,7 +24,7 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-right">允许不同类目消费记录</label>
+                                <label class="col-sm-3 control-label no-padding-right">同一报告中是否允许包含不同类目消费</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
@@ -38,7 +38,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-right">导出报告不要备注</label>
+                                <label class="col-sm-3 control-label no-padding-right">报销单是否包含备注</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
@@ -52,7 +52,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-rigtht">报销单模板选择</label>
+                                <label class="col-sm-3 control-label no-padding-rigtht">报销单打印模板设置</label>
                                 <div class="col-xs-4 col-sm-4">
                                     <select id="temp" class="chosen-select tag-input-style" name="temp"  data-placeholder="请选择模板">
                                     <option value="a4.yaml">A4模板</option>
@@ -64,14 +64,14 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-rigtht">需要用户确认额度</label>
+                                <label class="col-sm-3 control-label no-padding-rigtht">报告结算后需员工确认的额度</label>
                                 <div class="col-xs-4 col-sm-4">
 					<input id="limit" type="text" class="form-controller col-xs-12" name="limit" placeholder="输入额度">
                                 </div>
                             </div>
 
                              <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-rigtht">报告提交数/月</label>
+                                <label class="col-sm-3 control-label no-padding-rigtht">每月最多可提交的报告数量</label>
                                 <div class="col-xs-4 col-sm-4">
                                 <input id="reports_limit" type="text" class="form-controller col-xs-12" name="reports_limit" placeholder="报告数">
                                 </div>

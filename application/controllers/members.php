@@ -303,6 +303,7 @@ class Members extends REIM_Controller {
            // die(json_encode($re));
         }
     }
+
     public function listgroup(){
         $page = $this->input->get('page');
         $rows = $this->input->get('rows');
@@ -632,6 +633,7 @@ class Members extends REIM_Controller {
                 ,'member' => $info
                 ,'self' => 0
                 ,'error' => ''
+                ,'isOther' => 1
                 ,'avatar_path' => $info['avatar']
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
