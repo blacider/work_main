@@ -216,10 +216,11 @@ function get_sobs(){
             }
              });
 }
-
+$(window).load(function() {
+    $('input')[3].style.width = '100px';
+$('input')[4].style.width = '100px';
+})
 $(document).ready(function(){
-   
-
 	    /*$.ajax({
         url:__BASE + "category/get_sob_category/"+s_id,
         dataType:'json',
