@@ -37,7 +37,7 @@
                                     <input type="text" class="form-controller col-xs-12" id="rname" name="rule_name" placeholder="规则名称">
                                 </div>
                             </div>
-
+<!--
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">类目</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -47,7 +47,24 @@
                                     </select>
                                 </div>
                             </div>
-
+                            -->
+                            <div class="form-group disableCategoryRow">
+                                    <label class="col-sm-2 control-label no-padding-right">类目</label>
+                                    <div class="col-xs-6 col-sm-6" style="margin-top:2px">
+                                        <select name="sobs" id="sobs" class="sobs chosen-select-niu" data-placeholder="套帐">
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2" style="margin:2px 20px auto 20px;">
+                                        <select name="deny_category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
+                                        </select>
+                                    </div>
+                                       
+                                </div>
+                            <script type="text/javascript">
+                                $(document).ready(function($) {
+                                $(".chosen-select-niu").chosen({width:"100%"});
+                            });
+                            </script>
                           <!--  <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">最大金额</label>
                                 <div class="col-xs-2 col-sm-2">
@@ -178,20 +195,24 @@
 </div>
 
 <script language="javascript">
-    var __INFO = Array();
+    function updateSelectSob(data) {
+                                $("#sobs").empty();
+                                $("#sobs").append(data);
+                                $("#sobs").trigger("chosen:updated");
+                            }
 function get_sobs(){
         $.ajax({
             url : __BASE + "category/get_sob_category",
             dataType : 'json',
             method : 'GET',
             success : function(data){
-                __INFO = data;
-               console.log(data);
-	       for(var item in data){
-                    //console.log(data[item]);
+                for(var item in data){
                     var _h = "<option value='" +  item + "'>"+  data[item].sob_name + " </option>";
-                    $('#sobs').append(_h);
-                };
+                    selectDataCategory[item] = data[item]['category'];
+                    selectDataSobs += _h;
+                }
+                selectPostData = data;
+                updateSelectSob(selectDataSobs);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(XMLHttpRequest.status);
@@ -202,19 +223,19 @@ function get_sobs(){
 
         $('#sobs').change(function(){
             var s_id = $(this).val();
-            $('#sob_category').html('');
-            //console.log(__INFO[s_id]);
-            var sob_info = __INFO[s_id];
-            if(sob_info['category']!=undefined)
+            var _h = '';
+            if(selectDataCategory[s_id] != undefined)
             {
-                for(var i = 0 ; i<sob_info['category'].length; i++)
+                for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
                 {
-                    var _h = "<option value='" +  sob_info['category'][i]['category_id'] + "'>"+  sob_info['category'][i]['category_name'] + " </option>";
-                    $('#sob_category').append(_h);
+                    _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                    
                    // console.log(_h);
                 }
             }
-             });
+            var selectDom = this.parentNode.nextElementSibling.children[0]
+            $(selectDom).empty().append(_h).trigger("chosen:updated");
+        });
 }
 $(window).load(function() {
     $('input')[3].style.width = '100px';
