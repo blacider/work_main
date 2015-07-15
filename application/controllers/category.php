@@ -196,18 +196,15 @@ class Category extends REIM_Controller {
                 array_push($sob_data, $item);
             }
         }
-        $ugroups = $this->ug->get_my_list();
-        $_ug = json_encode($ugroups['data']['group']);
-        $sobs = $this->account_set->get_account_set_list();
-        $_sobs = $sobs['data'];
         log_message("debug", "UG#########: $_ug");
         //TODO: 重新审核此段代码  END  庆义，长远
 
-         if($category){
+        if($category){
             $_group = $category['data']['categories'];
         }
         $category_group = array();
         foreach ($_group as $item) {
+            log_message("debug", "Item:" . json_encode($item));
             if($item['sob_id'] == 0 || $item['sob_id'] == '0') {   
                 $item['sob_name'] = "没有帐套";
                 $category_group[] = $item;
@@ -289,6 +286,7 @@ class Category extends REIM_Controller {
 
     public function create(){
         $name = $this->input->post('category_name');
+        $sob_code = $this->input->post('sob_code');
         $pid = $this->input->post('pid');
         $sob_id = $this->input->post('sob_id');
         $note = $this->input->post('note');
@@ -297,15 +295,15 @@ class Category extends REIM_Controller {
         $cid = $this->input->post('category_id');
         $gid = $this->input->post('gid');
         log_message("debug","\n#############GID:$gid");
-	$sob_id = $this->input->post('sob_id');
+        $sob_id = $this->input->post('sob_id');
 	
 	log_message("debug","\n#############GID:$gid");
         $msg = '添加分类失败';
         $obj = null;
         if($cid > 0){
-            $obj = $this->category->update($cid, $name, $pid, $sob_id, $prove_ahead, $max_limit, $note);
+            $obj = $this->category->update($cid, $name, $pid, $sob_id, $prove_ahead, $max_limit, $note, $sob_code);
         } else {
-            $obj = $this->category->create($name, $pid, $sob_id, $prove_ahead, $max_limit, $note);
+            $obj = $this->category->create($name, $pid, $sob_id, $prove_ahead, $max_limit, $note, $sob_code);
         }
         if($obj && $obj['status']){
             $msg = '添加分类成功' . $note;
