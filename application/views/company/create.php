@@ -50,7 +50,7 @@
                             -->
                             <div class="form-group disableCategoryRow">
                                     <label class="col-sm-2 control-label no-padding-right">类目</label>
-                                    <div class="col-xs-6 col-sm-6" style="margin-top:2px">
+                                    <div class="col-xs-2 col-sm-2" style="margin-top:2px">
                                         <select name="sobs" id="sobs" class="sobs chosen-select-niu" data-placeholder="套帐">
                                         </select>
                                     </div>
