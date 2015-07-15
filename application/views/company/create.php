@@ -195,6 +195,9 @@
 </div>
 
 <script language="javascript">
+   var selectPostData = {};
+   var selectDataCategory = {};
+   var selectDataSobs = '';
     function updateSelectSob(data) {
                                 $("#sobs").empty();
                                 $("#sobs").append(data);

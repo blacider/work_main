@@ -213,7 +213,9 @@
     var freq_period = "<?php echo $rule['freq_period']?>";
 </script>
 <script language="javascript">
-    var __INFO = Array();
+   var selectPostData = {};
+   var selectDataCategory = {};
+   var selectDataSobs = '';
 function get_sobs(){
         $.ajax({
             url : __BASE + "category/get_sob_category",
