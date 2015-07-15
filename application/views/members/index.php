@@ -278,11 +278,20 @@ function load_group(gid){
                     $(_th).appendTo($('#gtable'));
 
                     $(_member).each(function(idx, item){
+                        console.log("admin:"+item.admin);
                         var _c = 'gray';
                         var _p = '员工';
-                        var _color = '<span class="label label-success arrowed">管理员</span>';
+                    var _color = '<span class="label label-success arrowed">管理员</span>';
                     switch(item.admin) {
+                         case '2' : {
+                        //$desc = '出纳';
+
+                        _color = '<span class="label label-warning arrowed">出纳</span>';                        
+                        _c = 'green';
+                        _p = '点击设置为员工'; 
+                    }; break;
                     case '1' : {
+                        console.log(item.admin);
                         _p = '点击设置为管理员'; 
                             var _color = '<span class="label label-success arrowed">管理员</span>';
                     }; break;
@@ -291,6 +300,7 @@ function load_group(gid){
                         _c = 'green';
                         _p = '点击设置为员工'; 
                     }; break;
+            
                     }
                 _th = '<tr>'
                     + '<td><a href="' + __BASE + '/members/editmember/' + item.id + '">' + item.nickname+ '</a></td>'
@@ -306,6 +316,8 @@ function load_group(gid){
 
                     });
                 }
+
+                bind_event();
             }
             });
 
