@@ -1,3 +1,32 @@
+<style type="text/css">
+    #globalSearchText{
+position: absolute;
+  left: 75%;
+  top: 60px;
+  z-index: 2;
+  height: 26px;
+  width: 12%;
+  border-style: ridge;
+    }
+    #globalSearch {
+  background-color: #fe575f;
+  position: absolute;
+  left: 88%;
+  top: 60px;
+  border: 0;
+  color: white;
+  height: 25px;
+  border-radius: 3px;   
+  font-size: 12px;
+   }
+   #globalSearch:hover {
+    background-color: #ff7075;
+   }
+</style>
+    <input name="key" placeholder="ID、报告名或提交者" value="" type='text' id="globalSearchText">
+    <button type="button" id="globalSearch">搜索</button>
+
+
 <div class="page-content">
     <div class="page-content-area">
         <div class="row">
@@ -8,6 +37,7 @@
         </div>
     </div>
 </div>
+
 
 <div class="modal fade" id="modal-table">
   <div class="modal-dialog">
@@ -56,4 +86,30 @@ var __STATUS = "<?php echo $status; ?>";
             form.append(input1);
             form.submit();//表单提交
     }
+</script>
+<script type="text/javascript">
+$grid = $('#grid-table');
+$("#globalSearch").click(function () {
+    var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
+        colModel = $grid.jqGrid("getGridParam", "colModel"),
+        searchText = $("#globalSearchText").val(),
+        l = colModel.length;
+    for (i = 0; i < l; i++) {
+        cm = colModel[i];
+        if (cm.search !== false && (cm.stype === undefined || cm.stype === "text")) {
+            rules.push({
+                field: cm.name,
+                op: "cn",
+                data: searchText
+            });
+        }
+    }
+    postData.filters = JSON.stringify({
+        groupOp: "OR",
+        rules: rules
+    });
+    $grid.jqGrid("setGridParam", { search: true });
+    $grid.trigger("reloadGrid", [{page: 1, current: true}]);
+    return false;
+});
 </script>
