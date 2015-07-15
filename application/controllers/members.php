@@ -56,6 +56,7 @@ class Members extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
+	log_message("debug","gmembers:".json_encode($gmember));
         $this->bsload('members/index',
             array(
                 'title' => '组织结构'
@@ -601,11 +602,18 @@ class Members extends REIM_Controller {
         $uids = $this->input->post('uids');
         $pid = $this->input->post('pgroup');
         $gid = $this->input->post('gid');
-        $uids = implode(",", $uids);
+	if($uids)
+	{
+       		 $uids = implode(",", $uids);
+	}
+	else
+	{
+		$uids='';
+	}
         $info = $this->ug->update_data($manager,$uids, $name,$code,$pid,$gid);
 	log_message("debug","@@@@@@@@@".json_encode($info));
         if($info['status'] > 0){
-            redirect(base_url('members/groups'));
+           redirect(base_url('members/groups'));
         }
     }
 
