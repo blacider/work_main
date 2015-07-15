@@ -329,7 +329,6 @@ class Company extends REIM_Controller {
 			),
 		)
 	);
-	*/
     	
     }
 
