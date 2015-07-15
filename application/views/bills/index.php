@@ -67,11 +67,10 @@ var __STATUS = "<?php echo $status; ?>";
 <script src="/static/js/bills.js" ></script>
 <script language="javascript">
     function pay() {
-      for (var i = 0; i < chosenids.length; i++) {
-        var _id = chosenids[i];
-        location.href = __BASE + "bills/marksuccess/" + _id + "/0";
-      };
+      var _id = chosenids.join('%23');
+      location.href = __BASE + "bills/marksuccess/" + _id + "/0";
     }
+
     function exportExel() {
             var form=$("<form>");//定义一个form表单
             form.attr("style","display:none");
