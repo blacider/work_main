@@ -208,6 +208,13 @@
                                         }
                                     }
                                 }
+                                var value;
+                                for (var item in $("input[type='radio']")) {
+                                    if (item != undefined && $("input[type='radio']")[item].checked) {
+                                        value = $("input[type='radio']")[item].value;
+                                    }
+                                }
+                                changeAble(value);
                             }
                             console.log(<?php echo json_encode($rule)?>);
                             function updateSelectSob(data) {
@@ -725,7 +732,9 @@ $(document).ready(function(){
             $('#frequency').attr("disabled",false);
         }
     });
-
+      $('input[type="radio"]').click(function() {
+        changeAble(this.value);
+      });
     $('#all_members').click(function(){
         if($(this).is(':checked'))
         {
@@ -754,5 +763,21 @@ $(document).ready(function(){
   $("#all_members").change(update_users);*/
 
 });
+function changeAble(value) {
+        console.log(value);
+        if (value == 1 || value == -1) {
+            $('.chosen-select-niu').prop('disabled',true).trigger("chosen:updated");
+            $('.def').attr('disabled', 'true');
+
+        } else if (value == -2) {
+            $('.disableCategoryRow .chosen-select-niu').prop('disabled',false).trigger("chosen:updated");
+            $('.CategoryRow .chosen-select-niu').prop('disabled',true).trigger("chosen:updated");
+            $('.def').attr('disabled', 'false');
+        } else {
+            $('.def').removeAttr('disabled');
+            $('.disableCategoryRow .chosen-select-niu').prop('disabled',true).trigger("chosen:updated");
+            $('.CategoryRow .chosen-select-niu').prop('disabled',false).trigger("chosen:updated");
+        }
+      }
 </script>
 
