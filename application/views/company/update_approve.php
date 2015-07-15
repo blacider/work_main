@@ -110,7 +110,7 @@
                                     <?php if ($rule['allow_all_cates'] == 0 && $flag == 1) {?>
                                         <div class="radio col-xs-6 col-sm-6">
                                             <label>
-                                             <input type="radio" checkedclass="fourParts" id="frequency_unlimit" name="all_able" value="2">
+                                             <input type="radio" checked checkedclass="fourParts" id="frequency_unlimit" name="all_able" value="2">
                                                 仅部分类目可以审核
                                             </label>
                                         </div>
@@ -174,8 +174,43 @@
                             </div>
                         
                         <script type="text/javascript">
-                            selectCache = <?php echo json_encode($cate_arr)?>;
-                            console.log(<?php echo json_encode($rule)?>)
+                            //selectCache = <?php echo json_encode($rule)?>;
+                            selectCache = (<?php echo json_encode($cate_arr)?>);
+                            function appendChecked(selectJqDom, data) {
+                                //第一个 selectJqDom.children()[0].children[0]
+                                //$(selectJqDom.children()[0].children[0]).parent().children().remove('div'); 
+                                $(selectJqDom.children()[0].children[0]).find("option[value='"+data['sob_id']+"']").attr("selected",true);
+                                $(selectJqDom.children()[0].children[0]).trigger("chosen:updated");
+                                //$(selectJqDom.children()[0].children[0]).change();
+                                //第二个
+                                $(selectJqDom.children()[0].children[0]).change();
+                                $(selectJqDom.children()[1].children[0]).find("option[value='"+data['category_id']+"']").attr("selected",true);
+                                $(selectJqDom.children()[1].children[0]).trigger("chosen:updated");
+                                //$(selectJqDom.children()[1].children[0]).find("option[value="+ data['sob_name']+"]").attr("selected",true);
+                                //checkbox
+                                //selectJqDom.find("option[text="+ data+"]").attr("selected",true);
+                                if (data['act'] == 1) {
+                                    selectJqDom.find("input[type='checkbox']")[0].checked = true;
+                                }
+                            }
+                            function initSelectCache() {
+                                var pointer = 0, disablePointer = 0;
+                                var ableDom = $('.CategoryRow'), disableDom = $('.disableCategoryRow');
+                                for (item in selectCache) {
+                                    if (item != undefined) {
+                                        if (selectCache[item]['act'] == -1) {
+                                            if (disablePointer != 0) addDisableCategoryRow();
+                                            appendChecked($(disableDom[pointer]), selectCache[item]);
+                                            disablePointer += 1;
+                                        } else {
+                                            if (pointer != 0) addCategoryRow();
+                                            appendChecked($(ableDom[disablePointer]), selectCache[item]);
+                                            pointer += 1;
+                                        }
+                                    }
+                                }
+                            }
+                            console.log(<?php echo json_encode($rule)?>);
                             function updateSelectSob(data) {
                                 $(".sobs").empty();
                                 $(".sobs").append(data);
@@ -323,7 +358,7 @@
                                     <?php 
                                     $mem = array();
                                     foreach ($rule['members'] as $key => $value) {
-                                        # code...
+                                        # code…
                                         array_push($mem,$value['uid']);
                                     }
                                     foreach($member as $m){
@@ -343,9 +378,14 @@
                                <div class="col-xm-2 col-sm-2">
                                     <div class="checkbox" >
                                         <label>
-                                         <input type="checkbox" id="all_members"  name="all_members">
+                                        <?php if ($rule['all_member'] == 1) {?>
+                                         <input type="checkbox" id="all_members" checked="true"  name="all_members">
+                                         <?php } else {?>
+                                         <input type="checkbox" id="all_members" checked="true"  name="all_members">
+                                         <?php }?>
                                             全体员工
                                          </label>
+
                                     </div>
                                 </div>
                             </div>
