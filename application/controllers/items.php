@@ -247,14 +247,20 @@ class Items extends REIM_Controller {
         $__tags_name = array();
 
 
+	log_message("debug","_tags*****".json_encode(explode(',', $_tags)));
+	log_message("debug","tags#####".json_encode($tags));
         // TODO 去提升效率
         foreach(explode(',', $_tags) as $t){
             foreach($tags as $_t){
                 if($_t['id'] == $t){
-                    array_push($__tags_name, $_t['tag_name']);
+		    if(array_key_exists('tag_name',$_t))
+		    {
+                   	 array_push($__tags_name, $_t['tag_name']);
+		    }
                 }
             }
         }
+	
         $item['tags'] = implode(',', $__tags_name);
         foreach($categories as $c){
             if($c['id'] == $cid) {
