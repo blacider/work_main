@@ -173,6 +173,7 @@
                                 addDom.parent().parent().after(category);
                                 $(".chosen-select-niu").chosen({width:"100%"});
                                 $($(".disableCategoryRow .sobs")[$(".disableCategoryRow .sobs").length-1]).append(selectDataSobs);
+                                
                                 $(".disableCategoryRow .sobs").trigger("chosen:updated");
                                 $('.disableCategoryRow .sobs').change(function(){
                                     var s_id = $(this).val();

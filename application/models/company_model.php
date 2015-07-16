@@ -85,7 +85,7 @@ class Company_Model extends Reim_Model {
 		if($all_company==1)
 		{
 			$data=array(
-				'id' => $rid,
+				'pid' => $rid,
 				'name'=>$name,
 				'category'=>$category,
 				'count'=>$count,
