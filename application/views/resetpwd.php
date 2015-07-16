@@ -45,7 +45,7 @@
   <div class="block1 block">
     <div class="main-block">
       <div class="login">
-          <div class="login-left" style="padding-top:36px;font-size:25px;"><br>为邮箱设置密码<br> <span style="color:#ff575b"><?php echo $name; ?></span><br></div>
+          <div class="login-left" style="padding-top:36px;font-size:25px;"><br>为邮箱设置密码<br> <div style="color:#ff575b;  word-wrap: break-word;"><?php echo $name; ?></div><br></div>
         <div class="login-right">
           <form id="form-phone-step2" style="display:block;" method="POST" action="<?php echo base_url('resetpwd/doupdate'); ?>/<?php echo $active?>/">
             <div class="form-password">
@@ -69,7 +69,7 @@ if($name){
               <input type="hidden" name="code" value="<?php echo $code; ?>" />
                                                 <input type="hidden" name="cid" value="<?php echo $cid; ?>" />
               <input type="hidden" id="code_hidden" />
-            <div id="button-div" class="form-submit ie-button1"><input type="submit" value="注册"></div>
+            <div id="button-div" class="form-submit ie-button1"><input type="submit" value="重置密码"></div>
     <input type="hidden" name='u' class="form-control" value="<?php echo $placeholder; ?>">
             <!-- <a onclick="backStep2()" class="find-password">上一步</a> -->
           </form>
