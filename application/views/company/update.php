@@ -38,17 +38,17 @@
                                     <input type="hidden" name="rid" value="<?php echo $rule['id']?>">
                                 </div>
                             </div>
-
-                            <div class="form-group disableCategoryRow">
-                                    <label class="col-sm-2 control-label no-padding-right">类目</label>
+                            <label style="margin-left: -8px;" class="col-sm-2 control-label no-padding-right">类目</label>
+                            <div class="form-group CategoryRow">
                                     <div class="col-xs-2 col-sm-2" style="margin-top:2px">
                                         <select name="sobs" id="sobs" class="sobs chosen-select-niu" data-placeholder="套帐">
                                         </select>
                                     </div>
                                     <div class="col-xs-2 col-sm-2" style="margin:2px 20px auto 20px;">
-                                        <select name="deny_category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
+                                        <select name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
                                         </select>
                                     </div>
+
                                        
                                 </div>
                             <script type="text/javascript">
@@ -213,12 +213,33 @@
     var freq_period = "<?php echo $rule['freq_period']?>";
 </script>
 <script language="javascript">
+    var selectCache = <?php echo json_encode($cate_arr)?>;
+                            function appendChecked(selectJqDom, data) {
+                                //第一个 selectJqDom.children()[0].children[0]
+                                //$(selectJqDom.children()[0].children[0]).parent().children().remove('div'); 
+                                console.log(data);
+                                $(selectJqDom.children()[0].children[0]).find("option[value='"+data['sob_id']+"']").attr("selected",true);
+                                $(selectJqDom.children()[0].children[0]).trigger("chosen:updated");
+                                //$(selectJqDom.children()[0].children[0]).change();
+                                //第二个
+                                $(selectJqDom.children()[0].children[0]).change();
+                                $(lectJqDom.children()[1].children[0]).find("option[value='"+data['category_id']+"']").attr("selected",true);
+                                $(selectJqDom.children()[1].children[0]).trigger("chosen:updated");
+                            }
+                            function initSelectCache() {
+                                for (item in selectCache) {
+                                    if (item != undefined) {
+                                            appendChecked($($('.CategoryRow')[0]), selectCache[item]);
+                                        }
+                                    }
+                                }
    var selectPostData = {};
    var selectDataCategory = {};
    var selectDataSobs = '';
        function updateSelectSob(data) {
                                 $("#sobs").empty();
                                 $("#sobs").append(data);
+                                $("#sobs").trigger('change');
                                 $("#sobs").trigger("chosen:updated");
                             }
 function get_sobs(){
@@ -234,6 +255,8 @@ function get_sobs(){
                 }
                 selectPostData = data;
                 updateSelectSob(selectDataSobs);
+                console.log('begin');
+                initSelectCache();
             },
             error:function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(XMLHttpRequest.status);
@@ -425,8 +448,7 @@ $(document).ready(function(){
            // console.log("helleo");
             $('#member').prop('disabled',true).trigger("chosen:updated");
             $('#group').prop('disabled',true).trigger("chosen:updated");
-        }
-        else
+        } else
         {
             $('#member').prop('disabled',false).trigger("chosen:updated");
             $('#group').prop('disabled',false).trigger("chosen:updated");

@@ -176,7 +176,7 @@
                         <script type="text/javascript">
                             console.log(<?php echo $flag ?>);
                             //selectCache = <?php echo json_encode($rule)?>;
-                            selectCache = (<?php echo json_encode($cate_arr)?>);
+                            selectCache = <?php echo json_encode($cate_arr)?>;
                             function appendChecked(selectJqDom, data, item) {
                                 //第一个 selectJqDom.children()[0].children[0]
                                 //$(selectJqDom.children()[0].children[0]).parent().children().remove('div'); 
@@ -247,6 +247,7 @@
                                     var selectDom = this.parentNode.nextElementSibling.children[0]
                                     $(selectDom).empty().append(_h).trigger("chosen:updated");
                                 });
+                                $(".CategoryRow .sobs").trigger('change');
                             }
                             $(document).ready(function($) {
                                 $(".chosen-select-niu").chosen({width:"160%"});
@@ -272,6 +273,7 @@
                                     var selectDom = this.parentNode.nextElementSibling.children[0]
                                     $(selectDom).empty().append(_h).trigger("chosen:updated");
                                 });
+                                $(".disableCategoryRow .sobs").trigger('change');
                             }
                         </script>
 
