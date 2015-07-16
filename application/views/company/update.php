@@ -39,17 +39,23 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-right">类目</label>
-                                <div class="col-xs-6 col-sm-6">
-                                    <select name="sobs" id="sobs">
-                                        <option selected value="<?php echo $s_id?>"><?php echo $s_name?></option>
-                                    </select>
-                                    <select name="category" id="sob_category">
-                                        <option selected value="<?php echo $rule['category']?>"><?php echo $c_name?></option>
-                                    </select>
+                            <div class="form-group disableCategoryRow">
+                                    <label class="col-sm-2 control-label no-padding-right">类目</label>
+                                    <div class="col-xs-2 col-sm-2" style="margin-top:2px">
+                                        <select name="sobs" id="sobs" class="sobs chosen-select-niu" data-placeholder="套帐">
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2" style="margin:2px 20px auto 20px;">
+                                        <select name="deny_category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
+                                        </select>
+                                    </div>
+                                       
                                 </div>
-                            </div>
+                            <script type="text/javascript">
+                                $(document).ready(function($) {
+                                $(".chosen-select-niu").chosen({width:"100%"});
+                            });
+                            </script>
 
                           <!--  <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">最大金额</label>
@@ -192,7 +198,7 @@
                                     <a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
                                 
 
-                                    <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
+                                    <a style="margin-left: 80px;" href="" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
                                 </div>
                             </div>
 
@@ -208,20 +214,27 @@
     var freq_period = "<?php echo $rule['freq_period']?>";
 </script>
 <script language="javascript">
-    var __INFO = Array();
+   var selectPostData = {};
+   var selectDataCategory = {};
+   var selectDataSobs = '';
+       function updateSelectSob(data) {
+                                $("#sobs").empty();
+                                $("#sobs").append(data);
+                                $("#sobs").trigger("chosen:updated");
+                            }
 function get_sobs(){
         $.ajax({
             url : __BASE + "category/get_sob_category",
             dataType : 'json',
             method : 'GET',
             success : function(data){
-                __INFO = data;
-               console.log(data);
-	       for(var item in data){
-                    //console.log(data[item]);
+                for(var item in data){
                     var _h = "<option value='" +  item + "'>"+  data[item].sob_name + " </option>";
-                    $('#sobs').append(_h);
-                };
+                    selectDataCategory[item] = data[item]['category'];
+                    selectDataSobs += _h;
+                }
+                selectPostData = data;
+                updateSelectSob(selectDataSobs);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(XMLHttpRequest.status);
@@ -232,19 +245,19 @@ function get_sobs(){
 
         $('#sobs').change(function(){
             var s_id = $(this).val();
-            $('#sob_category').html('');
-            //console.log(__INFO[s_id]);
-            var sob_info = __INFO[s_id];
-            if(sob_info['category']!=undefined)
+            var _h = '';
+            if(selectDataCategory[s_id] != undefined)
             {
-                for(var i = 0 ; i<sob_info['category'].length; i++)
+                for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
                 {
-                    var _h = "<option value='" +  sob_info['category'][i]['category_id'] + "'>"+  sob_info['category'][i]['category_name'] + " </option>";
-                    $('#sob_category').append(_h);
+                    _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                    
                    // console.log(_h);
                 }
             }
-             });
+            var selectDom = this.parentNode.nextElementSibling.children[0]
+            $(selectDom).empty().append(_h).trigger("chosen:updated");
+        });
 }
 
 $(document).ready(function(){
@@ -383,9 +396,6 @@ $(document).ready(function(){
         show_notify("hello");*/
        // $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
-    });
-    $('.cancel').click(function(){
-        $('#reset').click();
     });
 
     $('#amount_unlimit').click(function(){
