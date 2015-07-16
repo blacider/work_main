@@ -207,7 +207,7 @@
         </form>
     </div>
 </div>
-<p><?php echo json_encode($cate_arr)?></p>
+<!--<p><?php echo json_encode($cate_arr)?></p>-->
 <script type="text/javascript">
     var freq = "<?php echo $rule['freq_count']?>";
     var all_members = "<?php echo $rule['all_company']?>";
@@ -258,6 +258,8 @@ function get_sobs(){
             var selectDom = this.parentNode.nextElementSibling.children[0]
             $(selectDom).empty().append(_h).trigger("chosen:updated");
         });
+
+       
 }
 
 $(document).ready(function(){

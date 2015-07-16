@@ -128,6 +128,7 @@
                             function updateSelectSob(data) {
                                 $(".sobs").empty();
                                 $(".sobs").append(data);
+                                $(".sobs").trigger("change");
                                 $(".sobs").trigger("chosen:updated");
                             }
                             function removeCategoryRow(div) {
@@ -171,6 +172,7 @@
                                 addDom.parent().parent().after(category);
                                 $(".chosen-select-niu").chosen({width:"160%"});
                                 $($(".disableCategoryRow .sobs")[$(".disableCategoryRow .sobs").length-1]).append(selectDataSobs);
+                                
                                 $(".disableCategoryRow .sobs").trigger("chosen:updated");
                                 $('.disableCategoryRow .sobs').change(function(){
                                     var s_id = $(this).val();
