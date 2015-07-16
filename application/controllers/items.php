@@ -38,16 +38,21 @@ class Items extends REIM_Controller {
             log_message("debug", "type: " . $type);
             $uploaddir = '/data/uploads/';
             $uploadfile = $uploaddir . md5(time()) . "_" . basename($_FILES['file']['name']);
+            log_message("debug", "还行~haixing");
             if(move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
+                
                 $img = $this->items->upload_image($uploadfile, $type);
-                if($img['status'] > 0) unlink($uploadfile);
-                die(json_encode($img));
+                die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
+                //if($img['status'] > 0) unlink($uploadfile);
+                //log_message("debug", "还行~haixing");
             }
         } else {
-            die("");
+            die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
 
         }
+        //log_message("debug", "还行~haixing");
         //$file = realpath('snapshot.jpg'); //要上传的文件
+        
 
     }
 
