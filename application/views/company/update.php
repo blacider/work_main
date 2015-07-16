@@ -201,6 +201,7 @@
         </form>
     </div>
 </div>
+<p><?php echo json_encode($cate_arr)?></p>
 <script type="text/javascript">
     var freq = "<?php echo $rule['freq_count']?>";
     var all_members = "<?php echo $rule['all_company']?>";
