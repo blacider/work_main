@@ -46,7 +46,7 @@
                                         </select>
                                     </div>
                                     <div class="col-xs-2 col-sm-2" style="margin:2px 20px auto 20px;">
-                                        <select name="deny_category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
+                                        <select name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
                                         </select>
                                     </div>
                                        
