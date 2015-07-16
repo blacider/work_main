@@ -380,6 +380,34 @@ $(document).ready(function(){
 	//var frequency_unlimit = $('#frequency_unlimit').val();
 	var frequency_time = $('#frequency_time').val();
 
+
+    if(rname == '')
+    {
+        $('#rname').focus();
+        show_notify("请输入规则名");
+        return false;
+    }
+    if(($('#frequency').val() == '')&&(!$('#frequency_unlimit').is(':checked')))
+    {
+        $('#frequency').focus();
+        show_notify("请输入频次");
+        return false;
+    }
+    else if(isNaN(Number($('#frequency').val())))
+    {
+        $('#frequency').focus();
+        show_notify("请输入数字");
+        return false;
+
+    }
+
+    if(($('#group').val() == null)&&($('#member').val() == null)&&(!$('#all_members').is(':checked')))
+    {
+        show_notify('请选择适用范围');
+        return false;
+    }
+    
+
     if($('#frequency_unlimit').is(':checked'))
     {
         $('#frequency_unlimit').val(1);
