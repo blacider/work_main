@@ -240,6 +240,9 @@ function get_sobs(){
             var selectDom = this.parentNode.nextElementSibling.children[0]
             $(selectDom).empty().append(_h).trigger("chosen:updated");
         });
+
+        
+
 }
 $(window).load(function() {
     $('input')[3].style.width = '100px';
