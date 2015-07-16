@@ -94,11 +94,29 @@ jQuery(grid_selector).jqGrid({
             {   //navbar options
                 edit: false,
         editicon : 'ace-icon fa fa-pencil blue',
-        add: false,
-        addicon : 'ace-icon fa fa-plus-circle purple',
+        add: true,
+        addicon : 'ace-icon fa fa-database',
+        addtitle: '导出U8',
+        addfunc : function(rowids, p){
+            var rowid = $(grid_selector).jqGrid('getGridParam','selarrrow');
+            console.log(rowid);
+            var form=$("<form>");//定义一个form表单
+            form.attr("style","display:none");
+            form.attr("target","");
+            form.attr("method","post");
+            form.attr("action", __BASE + "/reports/export_u8");
+            //form.attr("action", __BASE + "/reports/exports");
+            var input1=$("<input>");
+            input1.attr("type","hidden");
+            input1.attr("name","ids");
+            input1.attr("value", rowid.join(','));
+            $("body").append(form);//将表单放置在web中
+            form.append(input1);
+            form.submit();//表单提交
+        },
         del: true,
         delicon : 'ace-icon fa fa-print',
-        deltitle: '导出选中报告',
+        deltitle: '导出excel',
         delfunc : function(rowids, p){
             var form=$("<form>");//定义一个form表单
             form.attr("style","display:none");
