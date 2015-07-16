@@ -128,7 +128,7 @@
                             function updateSelectSob(data) {
                                 $(".sobs").empty();
                                 $(".sobs").append(data);
-                                $(".sobs").trigger("change");
+                                $(".sobs").trigger('change');
                                 $(".sobs").trigger("chosen:updated");
                             }
                             function removeCategoryRow(div) {
@@ -155,6 +155,7 @@
                                     var selectDom = this.parentNode.nextElementSibling.children[0]
                                     $(selectDom).empty().append(_h).trigger("chosen:updated");
                                 });
+                                $(".sobs").trigger('change');
                             }
                             $(document).ready(function($) {
                                 $(".chosen-select-niu").chosen({width:"160%"});
@@ -184,6 +185,7 @@
                                     var selectDom = this.parentNode.nextElementSibling.children[0]
                                     $(selectDom).empty().append(_h).trigger("chosen:updated");
                                 });
+                                $(".sobs").trigger('change');
                             }
                         </script>
 

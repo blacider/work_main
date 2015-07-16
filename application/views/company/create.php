@@ -201,7 +201,7 @@
     function updateSelectSob(data) {
                                 $("#sobs").empty();
                                 $("#sobs").append(data);
-                                $("#sobs").trigger("change");
+                                $("#sobs").trigger('change');
                                 $("#sobs").trigger("chosen:updated");
                             }
 function get_sobs(){
