@@ -82,7 +82,9 @@ class Items_Model extends Reim_Model {
         $url = $this->get_url('images');
         log_message("debug", json_encode($data));
         $buf = $this->do_Post($url, $data, $jwt, 1);
+        log_message("debug", $buf);
         $obj = json_decode($buf, true);
+        log_message("debug", $obj);
         return $obj;
     }
 
