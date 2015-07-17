@@ -77,14 +77,12 @@ class Items_Model extends Reim_Model {
         $cFile = new CURLFile($image_path, $finfo, basename($image_path));
         //$cFile = new CURLFile($image_path, $finfo, 'testpic');
         //$cFile = new CURLFile($image_path);
-        log_message("debug", '2');
         $data = array('file' => $cFile, 'type' => $type);
         $url = $this->get_url('images');
-        log_message("debug", json_encode($data));
         $buf = $this->do_Post($url, $data, $jwt, 1);
-        log_message("debug", $buf);
         $obj = json_decode($buf, true);
         log_message("debug", $obj);
+        log_message("debug", $obj['status']);
         return $obj;
     }
 
