@@ -94,7 +94,7 @@ class Company extends REIM_Controller {
 			,'group'=>$gnames
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>'','name'=>'公司设置','class'=> '')
 				,array('url'=>'','name'=>'修改审批','class'=>'')
 			),
 		)
@@ -116,7 +116,7 @@ class Company extends REIM_Controller {
 			,'rules'=>$rules['data']
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>'','name'=>'公司设置','class'=> '')
 				,array('url'=>'','name'=>'审批规则','class'=>'')
 			),
 		)
@@ -255,7 +255,7 @@ class Company extends REIM_Controller {
 			,'group'=>$gnames
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>base_url('company'),'name'=>'公司设置','class'=> '')
 				,array('url'=>'','name'=>'新建审批','class'=>'')
 			),
 		)
@@ -324,7 +324,7 @@ class Company extends REIM_Controller {
 			,'cate_arr'=>$cate_arr
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>'','name'=>'公司设置','class'=> '')
 				,array('url'=>'','name'=>'修改规则','class'=>'')
 			),
 		)
@@ -455,7 +455,7 @@ class Company extends REIM_Controller {
 			,'rules'=>$rules['data']
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>'','name'=>'公司设置','class'=> '')
 				,array('url'=>'','name'=>'新建规则','class'=>'')
 			),
 		)
@@ -484,7 +484,7 @@ class Company extends REIM_Controller {
 			,'group'=>$gnames
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>'','name'=>'公司设置','class'=> '')
 				,array('url'=>'','name'=>'提交规则','class'=>'')
 			),
 		)
@@ -505,7 +505,7 @@ class Company extends REIM_Controller {
                 //,'company' => json_encode($_group)
                 ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                        ,array('url'  => base_url('company/submit'), 'name' => '公司设置', 'class' => '')
+                        ,array('url'  => '', 'name' => '公司设置', 'class' => '')
                         ,array('url'  => '', 'name' => '通用规则', 'class' => '')
                     ),
             )
@@ -552,7 +552,7 @@ public function common(){
                 //,'company' => json_encode($_group)
                 ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                        ,array('url'  => base_url('company/submit'), 'name' => '公司设置', 'class' => '')
+                        ,array('url'  => '', 'name' => '公司设置', 'class' => '')
                         ,array('url'  => '', 'name' => '审核规则', 'class' => '')
                     ),
             )
@@ -573,7 +573,7 @@ public function common(){
                 //,'company' => json_encode($_group)
                 ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                        ,array('url'  => base_url('company/submit'), 'name' => '公司设置', 'class' => '')
+                        ,array('url'  => '', 'name' => '公司设置', 'class' => '')
                         ,array('url'  => '', 'name' => '公司通用设置', 'class' => '')
                     ),
             )
