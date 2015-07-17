@@ -4,6 +4,13 @@ function show_modal(){
             $('#modal_next').modal('show');
 }
 function bind_event(){
+    $('.texport').each(function(){
+    	$(this).click(function(){
+	    var _id = $(this).data('id');
+	    console.log(_id);
+	    $('#report_id').val(_id);
+	});
+    });
     $('.tdetail').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
