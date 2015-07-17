@@ -171,6 +171,7 @@
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script>
 -->
+
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 <script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script>
 
@@ -221,7 +222,7 @@ function bind_event(){
 }
 
 $(document).ready(function(){
-    $('#fileupload').uploadFile();
+    $('#src').uploadFile();
     //var now = moment();
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
@@ -318,6 +319,7 @@ $(document).ready(function(){
 
     $('#btn_cimg').click(function(){
         $('#src').click();
+        //$('#src').uploadFile();
     });
 });
 </script>
