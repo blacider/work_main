@@ -333,7 +333,8 @@ foreach($acc_sets as $item){
 $username = '<td class="u_username">' . $item['name'] . '</td>';
 $role_id =  '<td class="u_role_name">' . date('Y-m-d H:i:s', $item['lastdt']) . '</td>';
     //$role_id = '<td class="u_role_name">' . $item->role_name . '</td>';
-$operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class="edit"  data-title="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
+$url_edit = base_url('category/sob_update/'. $item['id']);
+$operation_upd = '<td style="width:50px;">   <a href="' . $url_edit .'" class="edit"  data-title="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
     $operation = '<td style="width:50px;"><a class="btn btn-xs btn-danger" href="' .  base_url('category/remove_sob/?id='. $item['id']) .'">
         <i class="ace-icon fa fa-trash-o bigger-120"></i>
         </a></td>';
