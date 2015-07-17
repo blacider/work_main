@@ -322,6 +322,12 @@ class Reports extends REIM_Controller {
     }
     public function show($id = 0){
         if($id == 0) return redirect(base_url('reports/index'));
+	$temp = explode('i',$id);
+	$id=$temp[0];
+	if(count($temp) == 2)
+	{
+		$this->session->set_userdata('item_update_in','1');
+	}
         $report = $this->reports->get_detail($id);
         $report = $report['data'];
         if($report['status'] < 0){

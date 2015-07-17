@@ -30,6 +30,7 @@ class Bills extends REIM_Controller {
             }
         }
 	if($status == 2){
+	$this->session->set_userdata('item_update_in','2');
         $this->bsload('bills/index',
             array(
                 'title' => '待结算'
@@ -47,6 +48,7 @@ class Bills extends REIM_Controller {
 	}
 	else
 	{
+	$this->session->set_userdata('item_update_in','3');
 	$this->bsload('bills/index',
             array(
                 'title' => '已结束'
