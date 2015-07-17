@@ -23,6 +23,7 @@ function bind_event(){
             $('#rid').val(_id);
             $('#status').val(2);
             $('#modal_next').modal('show');
+            console.log($(this).data('id'));
         });
     });
     $('.tdeny').each(function() {

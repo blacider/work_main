@@ -421,7 +421,13 @@ class Reports extends REIM_Controller {
         return redirect(base_url('reports'));
     }
 
-
+    public function check_permission() {
+        //{'complete' => 0/1, 'suggestion' => array($uid1, $uid2, $uid3)}
+        $rid = $this->input->get('rid');
+        $rep = $this->reports->get_permission($rid);
+        die($rep);
+        //niu
+    }
     public function audit(){
         $items = $this->items->get_suborinate();
         if(!$items['status']){

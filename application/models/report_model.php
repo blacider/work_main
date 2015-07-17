@@ -15,7 +15,13 @@ class Report_Model extends Reim_Model {
 	log_message("debug","send_report".json_encode($buf));
 	return $buf;
     }
-
+    public function get_permission($rid) {
+        $url = $this->get_url("check_approval_permission/$rid");
+        $buf = $this->do_Get($url);
+        log_message("debug", "From Server [ $url ]:" . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
     public function get_detail($rid){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
