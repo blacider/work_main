@@ -322,7 +322,7 @@ uploader.on( 'uploadAccept', function( file, response ) {
         // 通过return false来告诉组件，此文件上传有错。
         console.log(response);
         $("input[name='images']").val(response['data']['id']);
-        return ture;
+        return true;
     } else return false;
 });
 
