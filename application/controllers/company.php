@@ -94,7 +94,7 @@ class Company extends REIM_Controller {
 			,'group'=>$gnames
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>base_url('company/show'),'name'=>'公司设置','class'=> '')
 				,array('url'=>'','name'=>'修改审批','class'=>'')
 			),
 		)
@@ -116,7 +116,7 @@ class Company extends REIM_Controller {
 			,'rules'=>$rules['data']
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>base_url('company/show'),'name'=>'公司设置','class'=> '')
 				,array('url'=>'','name'=>'审批规则','class'=>'')
 			),
 		)
@@ -255,7 +255,7 @@ class Company extends REIM_Controller {
 			,'group'=>$gnames
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>base_url('company/show'),'name'=>'公司设置','class'=> '')
 				,array('url'=>'','name'=>'新建审批','class'=>'')
 			),
 		)
@@ -302,6 +302,7 @@ class Company extends REIM_Controller {
 			$cate_arr[$own_rule['category']]['sob_name'] = $s['sob_name'];
 		}
 	}
+	log_message("debug","#####".json_encode($cate_arr));
 
         $_group = $this->groups->get_my_list();
         $_gnames = $this->ug->get_my_list();
@@ -324,12 +325,11 @@ class Company extends REIM_Controller {
 			,'cate_arr'=>$cate_arr
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>base_url('company/show'),'name'=>'公司设置','class'=> '')
 				,array('url'=>'','name'=>'修改规则','class'=>'')
 			),
 		)
 	);
-    	
     }
 
     public function update_rule()
@@ -455,7 +455,7 @@ class Company extends REIM_Controller {
 			,'rules'=>$rules['data']
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>base_url('company/show'),'name'=>'公司设置','class'=> '')
 				,array('url'=>'','name'=>'新建规则','class'=>'')
 			),
 		)
@@ -484,7 +484,7 @@ class Company extends REIM_Controller {
 			,'group'=>$gnames
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-				,array('url'=>base_url('company/submit'),'name'=>'公司设置','class'=> '')
+				,array('url'=>base_url('company/show'),'name'=>'公司设置','class'=> '')
 				,array('url'=>'','name'=>'提交规则','class'=>'')
 			),
 		)
@@ -505,7 +505,7 @@ class Company extends REIM_Controller {
                 //,'company' => json_encode($_group)
                 ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                        ,array('url'  => base_url('company/submit'), 'name' => '公司设置', 'class' => '')
+                        ,array('url'  => base_url('company/show'), 'name' => '公司设置', 'class' => '')
                         ,array('url'  => '', 'name' => '通用规则', 'class' => '')
                     ),
             )
@@ -552,7 +552,7 @@ public function common(){
                 //,'company' => json_encode($_group)
                 ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                        ,array('url'  => base_url('company/submit'), 'name' => '公司设置', 'class' => '')
+                        ,array('url'  => base_url('company/show'), 'name' => '公司设置', 'class' => '')
                         ,array('url'  => '', 'name' => '审核规则', 'class' => '')
                     ),
             )
@@ -573,7 +573,7 @@ public function common(){
                 //,'company' => json_encode($_group)
                 ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                        ,array('url'  => base_url('company/submit'), 'name' => '公司设置', 'class' => '')
+                        ,array('url'  => base_url('company/show'), 'name' => '公司设置', 'class' => '')
                         ,array('url'  => '', 'name' => '公司通用设置', 'class' => '')
                     ),
             )
@@ -583,8 +583,10 @@ public function common(){
    {
    	$pids = 0;
 	$remark_id = 0;
+	$company_id = 0;
    	$ischecked = $this->input->post('ischecked');
 	$isremark = $this->input->post('isremark');
+	$iscompany = $this->input->post('iscompany');
 	$template = $this->input->post('template');
 	$user_confirm = $this->input->post('limit');
 	$reports_limit = $this->input->post('reports_limit');
@@ -595,6 +597,10 @@ public function common(){
 	if($isremark == "true")
 	{
 		$remark_id = 1;
+	}
+	if($iscompany == "true")
+	{
+		$company_id = 1;
 	}
 	$data = $this->company->get();
 //	$config = $data['data']['config'];
@@ -608,6 +614,7 @@ public function common(){
 //	}
 	log_message("debug","@@@@@@@@@@@@:$ischecked++++$pids");
 	$in=array();
+	$in['export_no_company']=$company_id;
 	$in['same_category'] = $pids;
 	$in['export_no_note'] = $remark_id;
 	$in['template'] = $template;
