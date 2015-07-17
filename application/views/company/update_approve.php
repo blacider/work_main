@@ -70,18 +70,18 @@
                                 <?php } ?>
                             </div>
                         
-                            <label style="margin-left: -7px;" class="col-sm-2 control-label no-padding-right">审查类目</label>
-                            <div id="category-content" style="margin-left:167px;width:48%;">
+                            <label style="margin-left: -19px; position:relative;left:12px" class="col-sm-2 control-label no-padding-right">审查类目</label>
+                            <div id="category-content" class="col-sm-offset-2 col-xs-offset-2" style="position:relative;left:7px;">
                                 <div class="form-group">
                                 <?php if ($rule['allow_all_cates'] == 1) {?>
-                                    <div class="radio col-xs-4 col-sm-4">
+                                    <div class="radio col-xs-3 col-sm-3">
                                         <label>
                                          <input type="radio" checked class="fourParts" id="frequency_unlimit" name="all_able" value="1">
                                             全部均允许审核
                                          </label>
                                     </div>
                                 <?php } else { ?>
-                                    <div class="radio col-xs-4 col-sm-4">
+                                    <div class="radio col-xs-3 col-sm-3">
                                         <label>
                                          <input type="radio" class="fourParts" id="frequency_unlimit" name="all_able" value="1">
                                             全部均允许审核
@@ -89,14 +89,14 @@
                                     </div>
                                 <?php } ?>
                                 <?php if ($rule['allow_all_cates'] == -1) {?>
-                                    <div class="radio col-xs-4 col-sm-4" style="margin-left:-35px;">
+                                    <div class="radio col-xs-3 col-sm-3" style="margin-left:-35px;">
                                         <label>
                                          <input type="radio" checked class="fourParts" id="frequency_unlimit" name="all_able" value='-1'>
                                             全部均禁止审核
                                          </label>
                                     </div>
                                 <?php } else { ?>
-                                    <div class="radio col-xs-4 col-sm-4" style="margin-left:-35px;">
+                                    <div class="radio col-xs-3 col-sm-3" style="margin-left:-35px;">
                                         <label>
                                          <input type="radio" class="fourParts" id="frequency_unlimit" name="all_able" value='-1'>
                                             全部均禁止审核
@@ -125,23 +125,23 @@
                                     
                                 </div>
                                 <div class="form-group CategoryRow">
-                                    <div class="col-xs-2 col-sm-2" style="margin-top:2px">
+                                    <div class="col-xs-3 col-sm-3">
                                         <select name="sobs" class="sobs chosen-select-niu" data-placeholder="套帐">
                                         </select>
                                     </div>
-                                    <div class="col-xs-2 col-sm-2" style="margin:2px 20px auto 20px;">
+                                    <div class="col-xs-3 col-sm-3">
                                         <select name="allow_category" class="sob_category chosen-select-niu" data-placeholder="类目">
                                         </select>
                                     </div>
-                                        <div class="checkbox col-xs-3 col-sm-3">
+                                        <div class="checkbox col-xs-2 col-sm-2">
                                             <label>
                                                 <input type="checkbox" class="def" id="frequency_unlimit" name="default" >
                                                 默认审批
                                             </label>
                                         </div>
                                     
-                                    <div class="col-xs-2 col-sm-2">
-                                        <div class="addCategoryRow" style="margin-left:-15px" onclick="addCategoryRow()">+</div>   
+                                    <div class="col-xs-1 col-sm-1">
+                                        <div class="addCategoryRow" onclick="addCategoryRow()">+</div>   
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -158,16 +158,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group disableCategoryRow">
-                                    <div class="col-xs-2 col-sm-2" style="margin-top:2px">
+                                    <div class="col-xs-3 col-sm-3">
                                         <select name="sobs" class="sobs chosen-select-niu" data-placeholder="套帐">
                                         </select>
                                     </div>
-                                    <div class="col-xs-2 col-sm-2" style="margin:2px 20px auto 20px;">
+                                    <div class="col-xs-3 col-sm-3">
                                         <select name="deny_category" class="sob_category chosen-select-niu" data-placeholder="类目">
                                         </select>
                                     </div>
                                        
-                                    <div class="col-xs-2 col-sm-2">
+                                    <div class="col-xs-1 col-sm-1">
                                         <div class="addDisableCategoryRow" onclick="addDisableCategoryRow()">+</div>   
                                     </div>
                                 </div>
@@ -229,13 +229,13 @@
                             }
                             function addCategoryRow() {
                                 var addDom = $('.CategoryRow .addCategoryRow');
-                                var category = "<div class='form-group CategoryRow'><div class='col-xs-2 col-sm-2' style='margin-top:2px;'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-2 col-sm-2' style='margin:2px 20px auto 20px;''><select name='allow_category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='checkbox col-xs-3 col-sm-3'><label><input type='checkbox' class='def' id='frequency_unlimit' name='default' >默认审批</label></div><div class='col-xs-2 col-sm-2'><div class='addCategoryRow'  style='margin-left:-15px' onclick='addCategoryRow()''>+</div>   </div></div>"
+                                var category = "<div class='form-group CategoryRow'><div class='col-xs-3 col-sm-3'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-3 col-sm-3'><select name='allow_category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='checkbox col-xs-2 col-sm-2'><label><input type='checkbox' class='def' id='frequency_unlimit' name='default' >默认审批</label></div><div class='col-xs-1 col-sm-1'><div class='addCategoryRow' onclick='addCategoryRow()''>+</div>   </div></div>"
                                 addDom.removeClass('addCategoryRow');
                                 addDom.attr('onclick', 'removeCategoryRow(this)');
                                 addDom.addClass('removeCategoryRow');
                                 addDom.text('-');
                                 addDom.parent().parent().after(category);
-                                $(".chosen-select-niu").chosen({width:"160%"});
+                                $(".chosen-select-niu").chosen({width:"100%"});
                                 $($(".CategoryRow .sobs")[$(".CategoryRow .sobs").length-1]).append(selectDataSobs);
                                 $(".CategoryRow .sobs").trigger("chosen:updated");
                                 $('.CategoryRow .sobs').change(function(){
@@ -251,17 +251,17 @@
                                 $(".CategoryRow .sobs").trigger('change');
                             }
                             $(document).ready(function($) {
-                                $(".chosen-select-niu").chosen({width:"160%"});
+                                $(".chosen-select-niu").chosen({width:"100%"});
                             });
                             function addDisableCategoryRow() {
                                 var addDom = $('.disableCategoryRow .addDisableCategoryRow');
-                                var category = "<div class='form-group disableCategoryRow'><div class='col-xs-2 col-sm-2' style='margin-top:2px;'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-2 col-sm-2' style='margin:2px 20px auto 20px;''><select name='deny_category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='col-xs-2 col-sm-2'><div class='addDisableCategoryRow' onclick='addDisableCategoryRow()''>+</div>   </div></div>"
+                                var category = "<div class='form-group disableCategoryRow'><div class='col-xs-3 col-sm-3'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-3 col-sm-3'><select name='deny_category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='col-xs-1 col-sm-1'><div class='addDisableCategoryRow' onclick='addDisableCategoryRow()''>+</div>   </div></div>"
                                 addDom.removeClass('addDisableCategoryRow');
                                 addDom.attr('onclick', 'removeCategoryRow(this)');
                                 addDom.addClass('removeCategoryRow');
                                 addDom.text('-');
                                 addDom.parent().parent().after(category);
-                                $(".chosen-select-niu").chosen({width:"160%"});
+                                $(".chosen-select-niu").chosen({width:"100%"});
                                 $($(".disableCategoryRow .sobs")[$(".disableCategoryRow .sobs").length-1]).append(selectDataSobs);
                                 $(".disableCategoryRow .sobs").trigger("chosen:updated");
                                 $('.disableCategoryRow .sobs').change(function(){

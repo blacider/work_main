@@ -816,6 +816,7 @@ class Reports extends REIM_Controller {
                     }
                     $_gname = implode('/', $_name);
                 }
+                log_message("debug", json_encode($r));
                 $r['total'] = 0;
                 $r['paid'] = 0;
                 $_items = $r['items'];
@@ -826,7 +827,7 @@ class Reports extends REIM_Controller {
                     $o['凭证ID'] = $idx;
                     $o['凭证号'] = $r['id'];
                     $o['科目编码'] = $i['category_code'];
-                    $o['摘要'] = '计提' . date('m月') . '员工报销 - ' . $_gname . " - " . $i['category_name']; 
+                    $o['摘要'] = '计提' . date('m月') . '员工报销 - ' . $i['category_name']  . ' - ' . $r['nickname']; 
                     $rate = 1.0;
                     if(trim($i['currency']) != '' && strtolower($i['currency']) != 'cny') {
                         $rate = $i['rate'] / 100;

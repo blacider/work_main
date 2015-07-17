@@ -70,10 +70,15 @@ class Items_Model extends Reim_Model {
         $fileSize = filesize($image_path);
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $finfo = finfo_file($finfo, $image_path);
+         log_message("debug", "xiamian shi finfo");
+        log_message("debug", $fileSize);
+        log_message("debug", $image_path);
+        log_message("debug", basename($image_path));
         $cFile = new CURLFile($image_path, $finfo, basename($image_path));
+        //$cFile = new CURLFile($image_path, $finfo, 'testpic');
+        //$cFile = new CURLFile($image_path);
         $data = array('file' => $cFile, 'type' => $type);
         $url = $this->get_url('images');
-        log_message("debug", json_encode($data));
         $buf = $this->do_Post($url, $data, $jwt, 1);
         $obj = json_decode($buf, true);
         return $obj;

@@ -38,16 +38,20 @@ class Items extends REIM_Controller {
             log_message("debug", "type: " . $type);
             $uploaddir = '/data/uploads/';
             $uploadfile = $uploaddir . md5(time()) . "_" . basename($_FILES['file']['name']);
+            log_message("debug", "还行~haixing");
             if(move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
+                
                 $img = $this->items->upload_image($uploadfile, $type);
-                if($img['status'] > 0) unlink($uploadfile);
+                if ($img['status'] > 0) unlink($uploadfile);
                 die(json_encode($img));
             }
         } else {
-            die("");
+            die('');
 
         }
+        //log_message("debug", "还行~haixing");
         //$file = realpath('snapshot.jpg'); //要上传的文件
+        
 
     }
 
@@ -288,10 +292,11 @@ class Items extends REIM_Controller {
                     ));
             }
         }
-	log_message("debug","flow:".json_encode($_flow));
+        log_message("debug","flow:".json_encode($_flow));
+        log_message("debug","category:".json_encode($item));
         $this->bsload('items/view',
             array(
-                'title' => '查看消费',
+                'tiftle' => '查看消费',
                 'categories' => $categories,
                 'tags' => $tags,
                 'item' => $item,
