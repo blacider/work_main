@@ -317,6 +317,14 @@ uploader.on( 'uploadError', function( file ) {
     $error.text('上传失败');
 });
 
+uploader.on( 'uploadAccept', function( file, response ) {
+    if ( 1 ) {
+        // 通过return false来告诉组件，此文件上传有错。
+        console.log(response);
+        return false;
+    }
+});
+
 // 完成上传完了，成功或者失败，先删除进度条。
 uploader.on( 'uploadComplete', function( file ) {
     $( '#'+file.id ).find('.progress').remove();
