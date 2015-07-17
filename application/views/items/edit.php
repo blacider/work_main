@@ -290,7 +290,14 @@ function bind_event(){
 function load_exists(){
     var images = eval("(" + _images + ")");
     $('#timages').empty();
+    var result = '', flag_ = 0;
     $(images).each(function(idx, item) {
+        if (flag_ == 0) {
+            result = String(item.id);
+            flag_ = 1;
+        }   else {
+            result += ',' + String(item.id);
+        }
         var _path = item.url;
         var _id = item.id;
         var _new_img = '<li style="border:0px;">'
@@ -300,6 +307,7 @@ function load_exists(){
             + '</li>';
         $(_new_img).appendTo($('#timages'));
     });
+    $('input[name="images"]').val(result);
     bind_event();
 }
 $(document).ready(function(){
