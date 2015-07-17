@@ -3,6 +3,25 @@ var __MEMBER_DATA = null;
 function show_modal(){
             $('#modal_next').modal('show');
 }
+function chose_others_zero(item) {
+    console.log(item);
+    for (var item in getData) {
+        if (item != undefined) {
+            console.log(getData[item]);
+            $($('.chosen-select')[0]).find("option[value='"+getData[item]+"']").attr("selected",true);
+            $($('.chosen-select')[0]).trigger("chosen:updated");
+        }
+    }
+    $('#status').val(2);
+    $('#modal_next').modal('show');
+}
+function chose_others(_id) {
+    $('#modal_next_').modal('hide');
+    $('#rid').val(_id);
+    $('#status').val(2);
+    $('#modal_next').modal('show');
+}
+var getData = {};
 function bind_event(){
     $('.texport').each(function(){
     	$(this).click(function(){
@@ -20,10 +39,31 @@ function bind_event(){
     $('.tpass').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
-            $('#rid').val(_id);
-            $('#status').val(2);
-            $('#modal_next').modal('show');
-            console.log($(this).data('id'));
+            $.ajax({
+                type:"GET",
+                url:__BASE + "reports/check_permission",
+                data: {
+                    rid:_id
+                },
+                dataType: "json",
+                success: function(data){
+                    if (data['status'] > 0) {
+                        getData = data['data'].suggestion;
+                        console.log(data['data']);
+                        if (data['data'].complete == 0) {
+                            $('#rid').val(_id);
+                            //$('#status').val(2);
+                            //$('#modal_next').modal('show');
+                            chose_others_zero(_id);
+                        } else {
+                            //TODOmodal_next_
+                            $('#rid_').val(_id);
+                            $('#status_').val(2);
+                            $('#modal_next_').modal('show'); 
+                        }
+                    }
+                }
+            });
         });
     });
     $('.tdeny').each(function() {
