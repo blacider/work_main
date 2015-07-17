@@ -8,6 +8,15 @@ class Reports extends REIM_Controller {
         $this->load->model('report_model', 'reports');
     }
 
+    public function sendout()
+    {
+    	$rid = $this->input->post('report_id');	
+	$email = $this->input->post('email');
+	$buf = $this->reports->sendout($rid,$email);
+	log_message("debug","###".json_encode($buf));
+	die($buf);
+    }
+
     public function index($type = 1){
         $items = $this->items->get_suborinate($type);
         if(!$items['status']){
@@ -159,10 +168,22 @@ class Reports extends REIM_Controller {
         foreach($data as &$d){
                 $trash= $d['status'] === 1 ? 'gray' : 'red';
                 $edit = ($d['status'] === 1)   ? 'gray' : 'green';
+                $export = ($d['status'] === 1)   ? 'gray' : 'grey';
+		if(in_array($d['status'],[2,4,5]))
+		{
+                $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+                    . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
+                    . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>'
+                    . '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>'
+                    . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
+		}
+		else
+		{
                 $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
                     . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>'
                     . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
+		}
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
             $d['status_str'] = '待提交';
             $d['amount'] = '￥' . $d['amount'];
@@ -466,15 +487,28 @@ class Reports extends REIM_Controller {
             log_message("debug", "xxx audit data:" . json_encode($d));
                 $trash= $d['status'] === 1 ? 'grey' : 'red';
                 $edit = ($d['status'] === 1)   ? 'grey' : 'green';
+		$exports = ($d['status'] === 1) ? 'grey' : 'grey';
                 $d['author'] = '';
                 if(array_key_exists($d['uid'], $__members)){
                     $d['author'] = $__members[$d['uid']]['nickname'];
                 }
+		if(in_array($d['status'],[2,4,5,7,8]))
+		{
+                if($d['mdecision'] == 1){
+                $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in texport' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>' .  '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
+                } else {
+                    $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in ' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span></div>';
+                }
+
+		}
+		else
+		{
                 if($d['mdecision'] == 1){
                 $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
                 } else {
                     $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span></div>';
                 }
+		}
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
             $d['status_str'] = '待提交';
             $prove_ahead = '报销';
