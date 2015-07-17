@@ -417,8 +417,8 @@ $(document).ready(function(){
     $('#btn_simg').click(function(){
         $('#filePicker').show();
         $('#select_img_modal').modal({keyborard: false});
+        initUploader();
     });
-    initUploader();
 });
 
 </script>
