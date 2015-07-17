@@ -235,7 +235,7 @@ uploader.on( 'uploadError', function( file ) {
 uploader.on( 'uploadAccept', function( file, response ) {
     if ( response['status'] > 0 ) {
         var x = JSON.parse(_images);
-        x.push(response);
+        x.push(response['data']);
         _images = JSON.stringify(x)
         load_exists();
     } else return false;
@@ -289,6 +289,7 @@ function bind_event(){
 }
 function load_exists(){
     var images = eval("(" + _images + ")");
+    $('#timages').empty();
     $(images).each(function(idx, item) {
         var _path = item.url;
         var _id = item.id;
