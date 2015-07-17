@@ -297,6 +297,7 @@ uploader.on( 'uploadAccept', function( file, response ) {
             $("input[name='images']").val(response['data']['id']);
         } else {
             $("input[name='images']").val($("input[name='images']").val() + ',' + response['data']['id']);
+            load_exists();
         }
         return true;
     } else return false;
@@ -417,7 +418,7 @@ $(document).ready(function(){
         $('#filePicker').show();
         $('#select_img_modal').modal({keyborard: false});
     });
-
+    initUploader();
 });
 
 </script>
