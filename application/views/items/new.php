@@ -188,53 +188,6 @@
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
-
-function bind_event(){
-    var $overflow = '';
-    var colorbox_params = {
-        rel: 'colorbox',
-            reposition:true,
-            scalePhotos:true,
-            scrolling:false,
-            previous:'<i class="ace-icon fa fa-arrow-left"></i>',
-            next:'<i class="ace-icon fa fa-arrow-right"></i>',
-            close:'&times;',
-            current:'{current} of {total}',
-            maxWidth:'100%',
-            maxHeight:'100%',
-            onOpen:function(){
-                $overflow = document.body.style.overflow;
-                document.body.style.overflow = 'hidden';
-            },
-                onClosed:function(){
-                    document.body.style.overflow = $overflow;
-                },
-                    onComplete:function(){
-                        $.colorbox.resize();
-                    }
-    };
-
-    $('.rimg').click(function(){
-        var _id = $(this).data('id');
-        var _new = Array();
-        if(_id > 0){
-            var _exists = ($('#images').val()).split(",");
-            $(_exists).each(function(idx, val){
-                if(val != _id) {
-                    _new.push(val);
-                }
-            });
-            $('#images').val(_new.join(','));
-        }
-        $(this).parents('li').remove();
-    });
-    $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
-}
-
-$(document).ready(function(){
-    //$('#fileupload').uploadFile();
-    //var now = moment();
-    // 初始化Web Uploader
 var uploader = WebUploader.create({
 
     // 选完文件后，是否自动上传。
@@ -330,6 +283,53 @@ uploader.on( 'uploadAccept', function( file, response ) {
 uploader.on( 'uploadComplete', function( file ) {
     $( '#'+file.id ).find('.progress').remove();
 });
+function bind_event(){
+    var $overflow = '';
+    var colorbox_params = {
+        rel: 'colorbox',
+            reposition:true,
+            scalePhotos:true,
+            scrolling:false,
+            previous:'<i class="ace-icon fa fa-arrow-left"></i>',
+            next:'<i class="ace-icon fa fa-arrow-right"></i>',
+            close:'&times;',
+            current:'{current} of {total}',
+            maxWidth:'100%',
+            maxHeight:'100%',
+            onOpen:function(){
+                $overflow = document.body.style.overflow;
+                document.body.style.overflow = 'hidden';
+            },
+                onClosed:function(){
+                    document.body.style.overflow = $overflow;
+                },
+                    onComplete:function(){
+                        $.colorbox.resize();
+                    }
+    };
+
+    $('.rimg').click(function(){
+        var _id = $(this).data('id');
+        var _new = Array();
+        if(_id > 0){
+            var _exists = ($('#images').val()).split(",");
+            $(_exists).each(function(idx, val){
+                if(val != _id) {
+                    _new.push(val);
+                }
+            });
+            $('#images').val(_new.join(','));
+        }
+        $(this).parents('li').remove();
+    });
+    $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
+}
+
+
+$(document).ready(function(){
+    //$('#fileupload').uploadFile();
+    //var now = moment();
+    // 初始化Web Uploader
 
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
