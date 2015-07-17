@@ -42,12 +42,11 @@ class Items extends REIM_Controller {
             if(move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
                 
                 $img = $this->items->upload_image($uploadfile, $type);
-                die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
-                //if($img['status'] > 0) unlink($uploadfile);
-                //log_message("debug", "还行~haixing");
+                if ($img['status'] > 0) unlink($uploadfile);
+                die(json_encode($img));
             }
         } else {
-            die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+            die('');
 
         }
         //log_message("debug", "还行~haixing");
@@ -293,10 +292,11 @@ class Items extends REIM_Controller {
                     ));
             }
         }
-	log_message("debug","flow:".json_encode($_flow));
+        log_message("debug","flow:".json_encode($_flow));
+        log_message("debug","category:".json_encode($item));
         $this->bsload('items/view',
             array(
-                'title' => '查看消费',
+                'tiftle' => '查看消费',
                 'categories' => $categories,
                 'tags' => $tags,
                 'item' => $item,
