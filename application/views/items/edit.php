@@ -130,7 +130,7 @@
                                 <label class="col-sm-1 control-label no-padding-right">照片</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <div class="col-xs-12 col-sm-12">
-                                        <ul class="ace-thumbnails clearfix" id="timages">
+                                        <ul class="ace-thumbnails clearfix" id="imageList">
                                         </ul>
                                     </div>
                                     <div class="col-xs-12 col-sm-12">
@@ -207,6 +207,35 @@ var uploader = WebUploader.create({
     }
 });
 
+// 当有文件添加进来的时候
+uploader.on( 'fileQueued', function( file ) {
+    var $li = $(
+            '<div id="' + file.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
+                '<img>' +
+                '<div class="glyphicon glyphicon-trash red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
+            '</div>'
+            ),
+        $img = $li.find('img');
+
+
+    // $list为容器jQuery实例
+    $('#imageList').append( $li );
+
+    // 创建缩略图
+    // 如果为非图片文件，可以不用调用此方法。
+    // thumbnailWidth x thumbnailHeight 为 100 x 100
+    uploader.makeThumb( file, function( error, src ) {
+        if ( error ) {
+            $img.replaceWith('<span>不能预览</span>');
+            return;
+        }
+
+        $img.attr( 'src', src );
+        bind_event();
+    }, 150, 150 );
+});
+
+
 // 文件上传过程中创建进度条实时显示。
 uploader.on( 'uploadProgress', function( file, percentage ) {
     var $li = $( '#'+file.id ),
@@ -224,20 +253,42 @@ uploader.on( 'uploadProgress', function( file, percentage ) {
 
 // 文件上传成功，给item添加成功class, 用样式标记上传成功。
 uploader.on( 'uploadSuccess', function( file ) {
-    show_notify("上传成功");
+    var $li = $( '#'+file.id ),
+        $success = $li.find('div.success');
+
+    // 避免重复创建
+    if ( !$success.length ) {
+        $success = $('<div class="success blue center"></div>').appendTo( $li );
+    }
+
+    $success.text('上传成功');
 });
+
 
 // 文件上传失败，显示上传出错。
 uploader.on( 'uploadError', function( file ) {
-    show_notify("上传失败");
+    var $li = $( '#'+file.id ),
+        $error = $li.find('div.error');
+
+    // 避免重复创建
+    if ( !$error.length ) {
+        $error = $('<div class="error red center"></div>').appendTo( $li );
+    }
+
+    $error.text('上传失败');
 });
+
 
 uploader.on( 'uploadAccept', function( file, response ) {
     if ( response['status'] > 0 ) {
-        var x = JSON.parse(_images);
-        x.push(response['data']);
-        _images = JSON.stringify(x)
-        load_exists();
+        // 通过return false来告诉组件，此文件上传有错。
+        console.log(response);
+        if ($("input[name='images']").val() == '') {
+            $("input[name='images']").val(response['data']['id']);
+        } else {
+            $("input[name='images']").val($("input[name='images']").val() + ',' + response['data']['id']);
+        }
+        return true;
     } else return false;
 });
 
@@ -247,49 +298,26 @@ uploader.on( 'uploadComplete', function( file ) {
 });
 }
 function bind_event(){
-    var $overflow = '';
-    var colorbox_params = {
-        rel: 'colorbox',
-            reposition:true,
-            scalePhotos:true,
-            scrolling:false,
-            previous:'<i class="ace-icon fa fa-arrow-left"></i>',
-            next:'<i class="ace-icon fa fa-arrow-right"></i>',
-            close:'&times;',
-            current:'{current} of {total}',
-            maxWidth:'100%',
-            maxHeight:'100%',
-            onOpen:function(){
-                $overflow = document.body.style.overflow;
-                document.body.style.overflow = 'hidden';
-            },
-                onClosed:function(){
-                    document.body.style.overflow = $overflow;
-                },
-                    onComplete:function(){
-                        $.colorbox.resize();
-                    }
-    };
-
-    $('.rimg').click(function(){
-        var _id = $(this).data('id');
-        var _new = Array();
-        if(_id > 0){
-            var _exists = ($('#images').val()).split(",");
-            $(_exists).each(function(idx, val){
-                if(val != _id) {
-                    _new.push(val);
+    $('.del-button').click(function(e) {
+            console.log(e);
+            var key = this.parentNode.id;
+            var images = $("input[name='images']").val();
+            var arr_img = images.split(',');
+            var result = '';
+            for (var item = 0; item < arr_img.length; item++) {
+                if (arr_img[item] != key) {
+                    if (item == 0) result += arr_img[item];
+                    else result += ',' + arr_img[item];
                 }
-            });
-            $('#images').val(_new.join(','));
-        }
-        $(this).parents('li').remove();
-    });
-    $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
+            }
+            console.log(result);
+            $("input[name='images']").val(result);
+            $(this.parentNode).remove();
+        });
 }
 function load_exists(){
     var images = eval("(" + _images + ")");
-    $('#timages').empty();
+    $('#imageList').empty();
     var result = '', flag_ = 0;
     $(images).each(function(idx, item) {
         if (flag_ == 0) {
@@ -298,14 +326,22 @@ function load_exists(){
         }   else {
             result += ',' + String(item.id);
         }
-        var _path = item.url;
-        var _id = item.id;
-        var _new_img = '<li style="border:0px;">'
-            + '<a href="' + _path + '" data-rel="colorbox" class="cboxElement" style="border:0px;">'
-            + '<img width="150" height="150" alt="150x150" src="' + _path + '"></a>'
-            + '<div class="tools tools-top text-right" style="text-align:right"><a href="javascript:void(0)" class="rimg" data-id="' + _id + '"><i class="ace-icon fa fa-times red"></i></a></div>'
-            + '</li>';
-        $(_new_img).appendTo($('#timages'));
+        var $li = $(
+            '<div id="' + item.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
+                '<img style="width:150px;height:150px;">' +
+                '<div class="glyphicon glyphicon-trash red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
+            '</div>'
+            ),$img = $li.find('img');
+
+
+    // $list为容器jQuery实例
+    $('#imageList').append( $li );
+
+    // 创建缩略图
+    // 如果为非图片文件，可以不用调用此方法。
+    // thumbnailWidth x thumbnailHeight 为 100 x 100
+
+        $img.attr('src', item['url']);
     });
     $('input[name="images"]').val(result);
     bind_event();

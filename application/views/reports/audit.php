@@ -181,7 +181,6 @@ $(document).ready(function(){
 <script type="text/javascript">
 $grid = $('#grid-table');
 $("#globalSearch").click(function () {
-    console.log('11111');
     var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
         colModel = $grid.jqGrid("getGridParam", "colModel"),
         searchText = $("#globalSearchText").val(),
