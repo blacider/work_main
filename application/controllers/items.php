@@ -76,6 +76,7 @@ class Items extends REIM_Controller {
             ));
     }
     public function index(){
+    	$this->session->set_userdata('item_update_in','0');
         $items = $this->items->get_list();
         $category = $this->category->get_list();
         $categories = array();
@@ -234,12 +235,6 @@ class Items extends REIM_Controller {
 
     public function show($id = 0){
         if(0 === $id) redirect(base_url('items'));
-	$temp = explode('i',$id);
-	$id = $temp[0];
-	if(count($temp) == 2)
-	{
-	$this->session->set_userdata('item_update_in',$temp[1]);
-	}
         $obj = $this->items->get_by_id($id);
         if($obj['status'] < 1){
             redirect(base_url('items'));
