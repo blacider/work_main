@@ -152,16 +152,30 @@ class Category extends REIM_Controller {
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
         $acc_sets = $this->account_set->get_account_set_list();
-        $ugroups = $this->ug->get_my_list();
-        $_ug = json_encode($ugroups['data']['group']);
+	$sobs = $acc_sets['data'];
+	$keys = array();
+
+	$acc_set = array();
+	foreach($sobs as $item)
+	{
+		if(!in_array($item['sob_id'],$keys))
+		{
+			array_push($keys,$item['sob_id']);
+			array_push($acc_set,array('name'=>$item['sob_name'],'id'=>$item['sob_id'],'lstdt'=>$item['createdt']));
+		}
+
+	}
+        //$ugroups = $this->ug->get_my_list();
+//        $_ug = json_encode($ugroups['data']['group']);
         $_acc = json_encode($acc_sets);
-        log_message("debug","sob#############$_acc");
+        log_message("debug","sob#############".json_encode($acc_set));
+
         $this->bsload('account_set/index',
             array(
                 'title' => '帐套管理'
                 //	,'acc_sets' => $acc_sets
-                ,'acc_sets' => $acc_sets
-                ,'ugroups' => $ugroups['data']['group']
+                ,'acc_set' => $acc_set
+                //,'ugroups' => $ugroups['data']['group']
                 ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
                     ,array('url' => base_url('category/index'),'name' => '标签和分类','class' => '')
