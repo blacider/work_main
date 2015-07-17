@@ -3,7 +3,7 @@ function bind_event(){
     $('.tdetail').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
-            location.href = __BASE + "reports/show/" + _id + 'i1';
+            location.href = __BASE + "reports/show/" + _id;
         });
     });
     $('.tdel').each(function() {
@@ -15,7 +15,7 @@ function bind_event(){
     $('.tedit').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
-            location.href = __BASE + "reports/edit/" + _id+ '&1';
+            location.href = __BASE + "reports/edit/" + _id;
         });
     });
     $('.texport').each(function(){
