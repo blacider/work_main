@@ -325,7 +325,7 @@ DataSourceTree.prototype.data = function(options, callback) {
                             </thead>
                             <tbody>
 <?php
-echo json_encode($acc_sets);
+//echo json_encode($acc_sets);
 
 foreach($acc_sets as $item){
     $img = "";
@@ -340,7 +340,7 @@ $operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class
 $str = $str . $username . $role_id . $operation_upd . '</tr>';
 echo $str;
 
-?>
+}?>
 </tbody>
 </table>
 </div><!-- /.span -->

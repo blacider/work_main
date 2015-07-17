@@ -388,12 +388,12 @@ if($profile['admin'] == 1){
         </li>
 
 
-
+<!--
           <li class="hsub" id="new_sob">
         <a href="<?php echo base_url('category/new_sob'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建帐套 </a>
         <b class="arrow"></b>
         </li>
-        
+-->        
     </ul>
     </li>
 

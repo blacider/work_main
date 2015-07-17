@@ -161,7 +161,7 @@ class Category extends REIM_Controller {
 		if(!in_array($item['sob_id'],$keys))
 		{
 			array_push($keys,$item['sob_id']);
-			array_push($acc_set,array('name'=>$item['sob_name'],'id'=>$item['sob_id'],'lstdt'=>$item['createdt']));
+			array_push($acc_set,array('name'=>$item['sob_name'],'id'=>$item['sob_id'],'lastdt'=>$item['createdt']));
 		}
 
 	}
@@ -174,7 +174,7 @@ class Category extends REIM_Controller {
             array(
                 'title' => '帐套管理'
                 //	,'acc_sets' => $acc_sets
-                ,'acc_set' => $acc_set
+                ,'acc_sets' => $acc_set
                 //,'ugroups' => $ugroups['data']['group']
                 ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
