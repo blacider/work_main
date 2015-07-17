@@ -200,63 +200,14 @@
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var _images = '<?php echo $images; ?> ';
-function bind_event(){
-    var $overflow = '';
-    var colorbox_params = {
-        rel: 'colorbox',
-            reposition:true,
-            scalePhotos:true,
-            scrolling:false,
-            previous:'<i class="ace-icon fa fa-arrow-left"></i>',
-            next:'<i class="ace-icon fa fa-arrow-right"></i>',
-            close:'&times;',
-            current:'{current} of {total}',
-            maxWidth:'100%',
-            maxHeight:'100%',
-            onOpen:function(){
-                $overflow = document.body.style.overflow;
-                document.body.style.overflow = 'hidden';
-            },
-                onClosed:function(){
-                    document.body.style.overflow = $overflow;
-                },
-                    onComplete:function(){
-                        $.colorbox.resize();
-                    }
-    };
-
-    $('.rimg').click(function(){
-        var _id = $(this).data('id');
-        var _new = Array();
-        if(_id > 0){
-            var _exists = ($('#images').val()).split(",");
-            $(_exists).each(function(idx, val){
-                if(val != _id) {
-                    _new.push(val);
-                }
-            });
-            $('#images').val(_new.join(','));
-        }
-        $(this).parents('li').remove();
-    });
-    $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
-}
-function load_exists(){
-    var images = eval("(" + _images + ")");
-    $(images).each(function(idx, item) {
-        var _path = item.url;
-        var _id = item.id;
-        var _new_img = '<li style="border:0px;">'
-            + '<a href="' + _path + '" data-rel="colorbox" class="cboxElement" style="border:0px;">'
-            + '<img width="150" height="150" alt="150x150" src="' + _path + '"></a>'
-            + '<div class="tools tools-top text-right" style="text-align:right"><a href="javascript:void(0)" class="rimg" data-id="' + _id + '"><i class="ace-icon fa fa-times red"></i></a></div>'
-            + '</li>';
-        $(_new_img).appendTo($('#timages'));
-    });
-    bind_event();
-}
-$(document).ready(function(){
-    var uploader = WebUploader.create({
+var flag = 0;
+function initUploader() {
+    if (flag == 1) {
+        return;
+    } else {
+        flag =1;
+    }
+var uploader = WebUploader.create({
 
     // 选完文件后，是否自动上传。
     auto: true,
@@ -342,7 +293,11 @@ uploader.on( 'uploadAccept', function( file, response ) {
     if ( response['status'] > 0 ) {
         // 通过return false来告诉组件，此文件上传有错。
         console.log(response);
-        $("input[name='images']").val(response['data']['id']);
+        if ($("input[name='images']").val() == '') {
+            $("input[name='images']").val(response['data']['id']);
+        } else {
+            $("input[name='images']").val($("input[name='images']").val() + ',' + response['data']['id']);
+        }
         return true;
     } else return false;
 });
@@ -351,6 +306,63 @@ uploader.on( 'uploadAccept', function( file, response ) {
 uploader.on( 'uploadComplete', function( file ) {
     $( '#'+file.id ).find('.progress').remove();
 });
+}
+function bind_event(){
+    var $overflow = '';
+    var colorbox_params = {
+        rel: 'colorbox',
+            reposition:true,
+            scalePhotos:true,
+            scrolling:false,
+            previous:'<i class="ace-icon fa fa-arrow-left"></i>',
+            next:'<i class="ace-icon fa fa-arrow-right"></i>',
+            close:'&times;',
+            current:'{current} of {total}',
+            maxWidth:'100%',
+            maxHeight:'100%',
+            onOpen:function(){
+                $overflow = document.body.style.overflow;
+                document.body.style.overflow = 'hidden';
+            },
+                onClosed:function(){
+                    document.body.style.overflow = $overflow;
+                },
+                    onComplete:function(){
+                        $.colorbox.resize();
+                    }
+    };
+
+    $('.rimg').click(function(){
+        var _id = $(this).data('id');
+        var _new = Array();
+        if(_id > 0){
+            var _exists = ($('#images').val()).split(",");
+            $(_exists).each(function(idx, val){
+                if(val != _id) {
+                    _new.push(val);
+                }
+            });
+            $('#images').val(_new.join(','));
+        }
+        $(this).parents('li').remove();
+    });
+    $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
+}
+function load_exists(){
+    var images = eval("(" + _images + ")");
+    $(images).each(function(idx, item) {
+        var _path = item.url;
+        var _id = item.id;
+        var _new_img = '<li style="border:0px;">'
+            + '<a href="' + _path + '" data-rel="colorbox" class="cboxElement" style="border:0px;">'
+            + '<img width="150" height="150" alt="150x150" src="' + _path + '"></a>'
+            + '<div class="tools tools-top text-right" style="text-align:right"><a href="javascript:void(0)" class="rimg" data-id="' + _id + '"><i class="ace-icon fa fa-times red"></i></a></div>'
+            + '</li>';
+        $(_new_img).appendTo($('#timages'));
+    });
+    bind_event();
+}
+$(document).ready(function(){
     var _dt = $('#dt').val();
     var images = eval("(" + _images + ")");
 
