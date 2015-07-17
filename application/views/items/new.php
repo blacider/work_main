@@ -318,7 +318,7 @@ uploader.on( 'uploadError', function( file ) {
 });
 
 uploader.on( 'uploadAccept', function( file, response ) {
-    if ( respose['status'] > 0 ) {
+    if ( response['status'] > 0 ) {
         // 通过return false来告诉组件，此文件上传有错。
         console.log(response);
         $("input[name='images']").val(response['data']['id']);
