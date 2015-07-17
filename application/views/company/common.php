@@ -51,6 +51,25 @@
                                 </div>
                             </div>
 
+
+
+
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right">报销单是否包含公司</label>
+                                <div class="col-xs-6 col-sm-6">
+                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
+                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
+                                        <label style="margin-top:8px;">
+                                            <input name="iscompany" class="ace ace-switch btn-rotate" type="checkbox" id="iscompany" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+
+                                   <!-- </div> -->
+                                </div>
+                            </div>
+
+
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">报销单打印模板设置</label>
                                 <div class="col-xs-4 col-sm-4">
@@ -130,6 +149,17 @@ var __BASE = "<?php echo $base_url; ?>";
             }
 
         }
+
+        if(data.export_no_company!=undefined)
+        {
+            if(data.export_no_company==1)
+            {
+            $('#isremark').attr('checked', data.export_no_company);
+            $("#isremark").trigger("chosen:updated");
+            }
+
+        }
+
         if(data.template != undefined) {
             $("#temp").val( data.template ).attr('selected',true);
             $(".chosen-select").trigger("chosen:updated");
@@ -159,7 +189,7 @@ var __BASE = "<?php echo $base_url; ?>";
            $.ajax({
                 type:"post",
                 url:__BASE+"company/profile",
-                data:{ischecked:$('#isadmin').is(':checked'),isremark:$('#isremark').is(':checked'),template:$('#temp option:selected').val(),limit:lval,reports_limit:r_limit},
+                data:{ischecked:$('#isadmin').is(':checked'),isremark:$('#isremark').is(':checked'),iscompany:$('#iscompany').is(':checked'),template:$('#temp option:selected').val(),limit:lval,reports_limit:r_limit},
                 dataType:'json',
                 success:function(data){
                       //  console.log(data);
