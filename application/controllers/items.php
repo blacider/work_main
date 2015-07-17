@@ -46,7 +46,7 @@ class Items extends REIM_Controller {
                 die(json_encode($img));
             }
         } else {
-            die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+            die('');
 
         }
         //log_message("debug", "还行~haixing");

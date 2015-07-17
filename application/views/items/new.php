@@ -318,11 +318,12 @@ uploader.on( 'uploadError', function( file ) {
 });
 
 uploader.on( 'uploadAccept', function( file, response ) {
-    if ( 1 ) {
+    if ( respose['status'] > 0 ) {
         // 通过return false来告诉组件，此文件上传有错。
         console.log(response);
-        return false;
-    }
+        $("input[name='images']").val(response['data']['id']);
+        return ture;
+    } else return false;
 });
 
 // 完成上传完了，成功或者失败，先删除进度条。
