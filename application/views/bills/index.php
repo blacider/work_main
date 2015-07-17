@@ -1,4 +1,4 @@
-<style type="text/css">
+ <style type="text/css">
     #globalSearchText{
 position: absolute;
   left: 75%;
@@ -59,6 +59,46 @@ position: absolute;
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div id="modal-table1" class="modal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="blue bigger"> 导出报告 </h4>
+          </div>
+          <form method="post" >
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+
+
+                  <div class="form-group">
+                    <label for="form-field-username">请输入报告发送的email地址:</label>
+                    <div>
+                      <input class=" col-xs-8 col-sm-8" type="text" id="email" name="email" class="form-control"></input>
+                      <input type="hidden" id="report_id" name="report_id">
+                    </div>
+                    
+                  </div>
+                  <div class="space-4"></div>
+
+
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button class="btn btn-sm" data-dismiss="modal">
+                  <i class="ace-icon fa fa-times"></i>
+                  取消
+                </button>
+                <input type="button" id='send' class="btn btn-sm btn-primary" value="发送">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div><!-- PAGE CONTENT ENDS -->
+
+
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var __STATUS = "<?php echo $status; ?>";
@@ -110,5 +150,35 @@ $("#globalSearch").click(function () {
     $grid.jqGrid("setGridParam", { search: true });
     $grid.trigger("reloadGrid", [{page: 1, current: true}]);
     return false;
+});
+
+
+$('#send').click(function(){
+    $.ajax({
+      url:__BASE+'reports/sendout'
+      ,method:"post"
+      ,dataType:"json"
+      ,data:{report_id:$('#report_id').val(),email:$('#email').val()}
+      ,success:function(data){
+        console.log(data);
+          if(data.status== 1)
+          {
+            $('#modal-table1').modal('hide')
+            show_notify("pdf已经成功发送至您的邮箱");
+          }
+          else
+          {
+              if(data.data.msg != undefined)
+              {
+                show_notify(data.data.msg);
+              }
+              else
+              {
+                show_notify("输入邮箱错误");
+              }
+          }
+      }
+    });
+
 });
 </script>

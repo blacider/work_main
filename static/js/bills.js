@@ -35,6 +35,13 @@ function bind_event(){
             location.href = __BASE + "reports/edit/" + _id;
         });
     });
+    $('.texport').each(function(){
+    	$(this).click(function(){
+	    var _id = $(this).data('id');
+	    console.log(_id);
+	    $('#report_id').val(_id);
+	});
+    });
 }
 
 jQuery(grid_selector).jqGrid({
