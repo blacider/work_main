@@ -154,8 +154,8 @@ var __BASE = "<?php echo $base_url; ?>";
         {
             if(data.export_no_company==1)
             {
-            $('#isremark').attr('checked', data.export_no_company);
-            $("#isremark").trigger("chosen:updated");
+            $('#iscompany').attr('checked', data.export_no_company);
+            $("#iscompany").trigger("chosen:updated");
             }
 
         }
