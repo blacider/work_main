@@ -234,6 +234,12 @@ class Items extends REIM_Controller {
 
     public function show($id = 0){
         if(0 === $id) redirect(base_url('items'));
+	$temp = explode('i',$id);
+	$id = $temp[0];
+	if(count($temp) == 2)
+	{
+	$this->session->set_userdata('item_update_in',$temp[1]);
+	}
         $obj = $this->items->get_by_id($id);
         if($obj['status'] < 1){
             redirect(base_url('items'));
@@ -292,8 +298,8 @@ class Items extends REIM_Controller {
                     ));
             }
         }
-        log_message("debug","flow:".json_encode($_flow));
-        log_message("debug","category:".json_encode($item));
+	log_message("debug","item_updta_in".$this->session->userdata("item_update_in"));
+	log_message("debug","id".$id);
         $this->bsload('items/view',
             array(
                 'tiftle' => '查看消费',
@@ -346,6 +352,7 @@ class Items extends REIM_Controller {
     public function edit($id = 0){
         if(0 === $id) redirect(base_url('items'));
         $item = $this->items->get_by_id($id);
+	$item_update_in = $this->session->userdata('item_update_in');
         if($item['status'] < 1){
             redirect(base_url('items'));
         }
@@ -377,6 +384,7 @@ class Items extends REIM_Controller {
             $ob = array('name' => $i['id'], 'size' => $_size, 'type' => $_type, 'url' => $i['path'], 'id' => $i['id']);
             array_push($_images, $ob);
         }
+	log_message('debug','#######'.$item_update_in);
         $this->bsload('items/edit',
             array(
                 'title' => '修改消费',
@@ -394,6 +402,7 @@ class Items extends REIM_Controller {
     }
 
     public function update(){
+    	$item_update_in = $this->session->userdata('item_update_in');
         $id = $this->input->post('id');
         $amount = $this->input->post('amount');
         $category= $this->input->post('category');
@@ -408,11 +417,29 @@ class Items extends REIM_Controller {
         $images = $this->input->post('images');
         $obj = $this->items->update($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
         // TODO: 提醒的Tips
-        if($obj['status'] > 0){
+      /*  if($obj['status'] > 0){
             redirect(base_url('items/index'));
         } else {
             redirect(base_url('items/index'));
-        }
+        } */
+	switch($item_update_in)
+	{
+		case 0:
+			return redirect(base_url('items/index'));
+			break;
+		case 1:
+			return redirect(base_url('reports'));
+			break;
+		case 2:
+			return redirect(base_url('bills/index'));
+			break;
+		case 3:
+			return redirect(base_url('bills/exports'));
+			break;
+		default:
+			return redirect(base_url('items/index'));
+			break;
+	}
         
 
     }
