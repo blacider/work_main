@@ -89,8 +89,16 @@
         <ul class="ace-thumbnails clearfix" id="timages">
         </ul>
     </div>
+    <div class="col-xs-12 col-sm-12">
+        <div id="uploader-demo">
+    <!--用来存放item-->
+            <div id="fileList" class="uploader-list"></div>
+            <div id="imageList" style="width:200%;"></div>
+        </div>
+    </div>
+    
     <div class="col-xs-12 col-sm-12" style="padding-left: 0px; padding-top: 10px;">
-        <a class="btn btn-primary btn-white" id="btn_simg" >添加图片</a>
+        <a class="filePicker" id="btn_simg" >添加图片</a>
     </div>
 </div>
 
@@ -118,7 +126,7 @@
 </form>
 </div>
 </div>
-
+<!--
 <div class="modal" id="select_img_modal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -127,25 +135,12 @@
                 <h4 class="modal-title">选择图片</h4>
             </div>
             <div class="modal-body">
-            <!--
-                <div id="div_thumbnail" class="thumbnail" style="display:none;">
-                    <img src="/static/images/loading.gif">
-                </div>
-                <input type="file" style="display:none;" id="src" name="file[]" data-url="<?php echo base_url('items/images'); ?>">
-                <a class="btn btn-primary btn-white" id="btn_cimg" >选择图片</a>
-            </div>
-            -->
-            <!--dom结构部分-->
-<div id="uploader-demo">
-    <!--用来存放item-->
-    <div id="fileList" class="uploader-list"></div>
-    <div id="filePicker">选择图片</div>
-    <div id="imageList"></div>
-</div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
+
+        </div>
+    </div>
+</div>
+-->
 <!--
 <script src="/static/third-party/jquery.ajaxfileupload.js"></script>
 <script src="/static/third-party/jquery-image-upload.min.js"></script>
@@ -208,7 +203,7 @@ var uploader = WebUploader.create({
 
     // 选择文件的按钮。可选。
     // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-    pick: '#filePicker',
+    pick: '.filePicker',
 
     // 只允许选择图片文件。
     accept: {
@@ -220,9 +215,9 @@ var uploader = WebUploader.create({
 // 当有文件添加进来的时候
 uploader.on( 'fileQueued', function( file ) {
     var $li = $(
-            '<div id="' + file.id + '" class="file-item thumbnail">' +
+            '<div id="' + file.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
                 '<img>' +
-                '<div class="info">' + file.name + '</div>' +
+                '<div class="glyphicon glyphicon-trash red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
             '</div>'
             ),
         $img = $li.find('img');
@@ -241,7 +236,8 @@ uploader.on( 'fileQueued', function( file ) {
         }
 
         $img.attr( 'src', src );
-    }, 100, 100 );
+        bind_event();
+    }, 150, 150 );
 });
 
 // 文件上传过程中创建进度条实时显示。
@@ -261,7 +257,15 @@ uploader.on( 'uploadProgress', function( file, percentage ) {
 
 // 文件上传成功，给item添加成功class, 用样式标记上传成功。
 uploader.on( 'uploadSuccess', function( file ) {
-    $( '#'+file.id ).addClass('upload-state-done');
+    var $li = $( '#'+file.id ),
+        $success = $li.find('div.success');
+
+    // 避免重复创建
+    if ( !$success.length ) {
+        $success = $('<div class="success blue center"></div>').appendTo( $li );
+    }
+
+    $success.text('上传成功');
 });
 
 // 文件上传失败，显示上传出错。
@@ -271,7 +275,7 @@ uploader.on( 'uploadError', function( file ) {
 
     // 避免重复创建
     if ( !$error.length ) {
-        $error = $('<div class="error"></div>').appendTo( $li );
+        $error = $('<div class="error red center"></div>').appendTo( $li );
     }
 
     $error.text('上传失败');
@@ -296,45 +300,21 @@ uploader.on( 'uploadComplete', function( file ) {
 });
 }
 function bind_event(){
-    var $overflow = '';
-    var colorbox_params = {
-        rel: 'colorbox',
-            reposition:true,
-            scalePhotos:true,
-            scrolling:false,
-            previous:'<i class="ace-icon fa fa-arrow-left"></i>',
-            next:'<i class="ace-icon fa fa-arrow-right"></i>',
-            close:'&times;',
-            current:'{current} of {total}',
-            maxWidth:'100%',
-            maxHeight:'100%',
-            onOpen:function(){
-                $overflow = document.body.style.overflow;
-                document.body.style.overflow = 'hidden';
-            },
-                onClosed:function(){
-                    document.body.style.overflow = $overflow;
-                },
-                    onComplete:function(){
-                        $.colorbox.resize();
-                    }
-    };
-
-    $('.rimg').click(function(){
-        var _id = $(this).data('id');
-        var _new = Array();
-        if(_id > 0){
-            var _exists = ($('#images').val()).split(",");
-            $(_exists).each(function(idx, val){
-                if(val != _id) {
-                    _new.push(val);
+        $('.del-button').click(function(e) {
+            console.log(e);
+            var key = this.parentNode.id.split("WU_FILE_")[1];
+            var images = $("input[name='images']").val();
+            var arr_img = images.split(',');
+            var result = '';
+            for (var item = 0; item < arr_img.length; item++) {
+                if (arr_img[item] != key) {
+                    if (item == 0) result += arr_img[item];
+                    else result += ',' + arr_img[item];
                 }
-            });
-            $('#images').val(_new.join(','));
-        }
-        $(this).parents('li').remove();
-    });
-    $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
+            }
+            $("input[name='images']").val(result);
+            $(this.parentNode).remove();
+        });
 }
 
 
@@ -433,10 +413,6 @@ $(document).ready(function(){
     $('.cancel').click(function(){
         $('#reset').click();
     });
-    $('#btn_simg').click(function(){
-        $('#select_img_modal').modal({keyborard: false});
-        initUploader();
-    });
-
+    initUploader();
 });
 </script>

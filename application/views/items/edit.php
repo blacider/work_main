@@ -134,7 +134,8 @@
                                         </ul>
                                     </div>
                                     <div class="col-xs-12 col-sm-12">
-                                        <a class="btn btn-primary btn-white" id="btn_simg" >选择图片</a>
+                                        <a id="filePicker" >选择图片</a>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -159,32 +160,6 @@
         </form>
     </div>
 </div>
-
-<div class="modal" id="select_img_modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">选择图片</h4>
-            </div>
-            <div class="modal-body">
-            <!--
-                <div id="div_thumbnail" class="thumbnail" style="display:none;">
-                    <img src="/static/images/loading.gif">
-                </div>
-                <input type="file" style="display:none;" id="src" name="file" data-url="<?php echo base_url('items/images'); ?>">
-                <a class="btn btn-primary btn-white" id="btn_cimg" >选择图片</a>
-            -->
-                 <div id="uploader-demo">
-                    <!--用来存放item-->
-                    <div id="fileList" class="uploader-list"></div>
-                    <div id="filePicker">选择图片</div>
-                    <div id="imageList"></div>
-                </div>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
 <!--
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
@@ -231,32 +206,6 @@ var uploader = WebUploader.create({
         mimeTypes: 'image/*'
     }
 });
-// 当有文件添加进来的时候
-uploader.on( 'fileQueued', function( file ) {
-    var $li = $(
-            '<div id="' + file.id + '" class="file-item thumbnail">' +
-                '<img>' +
-                '<div class="info">' + file.name + '</div>' +
-            '</div>'
-            ),
-        $img = $li.find('img');
-
-
-    // $list为容器jQuery实例
-    $('#imageList').append( $li );
-
-    // 创建缩略图
-    // 如果为非图片文件，可以不用调用此方法。
-    // thumbnailWidth x thumbnailHeight 为 100 x 100
-    uploader.makeThumb( file, function( error, src ) {
-        if ( error ) {
-            $img.replaceWith('<span>不能预览</span>');
-            return;
-        }
-
-        $img.attr( 'src', src );
-    }, 150, 150 );
-});
 
 // 文件上传过程中创建进度条实时显示。
 uploader.on( 'uploadProgress', function( file, percentage ) {
@@ -275,33 +224,20 @@ uploader.on( 'uploadProgress', function( file, percentage ) {
 
 // 文件上传成功，给item添加成功class, 用样式标记上传成功。
 uploader.on( 'uploadSuccess', function( file ) {
-    $( '#'+file.id ).addClass('upload-state-done');
+    show_notify("上传成功");
 });
 
 // 文件上传失败，显示上传出错。
 uploader.on( 'uploadError', function( file ) {
-    var $li = $( '#'+file.id ),
-        $error = $li.find('div.error');
-
-    // 避免重复创建
-    if ( !$error.length ) {
-        $error = $('<div class="error"></div>').appendTo( $li );
-    }
-
-    $error.text('上传失败');
+    show_notify("上传失败");
 });
 
 uploader.on( 'uploadAccept', function( file, response ) {
     if ( response['status'] > 0 ) {
-        // 通过return false来告诉组件，此文件上传有错。
-        console.log(response);
-        if ($("input[name='images']").val() == '') {
-            $("input[name='images']").val(response['data']['id']);
-        } else {
-            $("input[name='images']").val($("input[name='images']").val() + ',' + response['data']['id']);
-            load_exists();
-        }
-        return true;
+        var x = JSON.parse(_images);
+        x.push(response);
+        _images = JSON.stringify(x)
+        load_exists();
     } else return false;
 });
 
@@ -415,11 +351,7 @@ $(document).ready(function(){
         history.go(-1);
         //$('#reset').click();
     });
-
-    $('#btn_simg').click(function(){
-        $('#select_img_modal').modal({keyborard: false});
-        initUploader();
-    });
+    initUploader();
 });
 
 </script>
