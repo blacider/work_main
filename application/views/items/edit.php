@@ -160,7 +160,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="select_img_modal">
+<div class="modal" id="select_img_modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -203,8 +203,10 @@ var _images = '<?php echo $images; ?> ';
 var flag = 0;
 function initUploader() {
     if (flag == 1) {
+        console.log(1);
         return;
     } else {
+        console.log(2);
         flag =1;
     }
 var uploader = WebUploader.create({
@@ -253,7 +255,7 @@ uploader.on( 'fileQueued', function( file ) {
         }
 
         $img.attr( 'src', src );
-    }, 100, 100 );
+    }, 150, 150 );
 });
 
 // 文件上传过程中创建进度条实时显示。
@@ -415,7 +417,6 @@ $(document).ready(function(){
     });
 
     $('#btn_simg').click(function(){
-        $('#filePicker').show();
         $('#select_img_modal').modal({keyborard: false});
         initUploader();
     });
