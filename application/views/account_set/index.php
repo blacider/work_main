@@ -1,11 +1,10 @@
-<script src="/static/ace/js/fuelux/fuelux.tree.min.js"></script>
+<!--<script src="/static/ace/js/fuelux/fuelux.tree.min.js"></script>
 <link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 <script src="/static/ace/js/date-time/moment.min.js"></script>
-<!-- <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script> -->
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
 
 
@@ -17,7 +16,6 @@
      
        <script src="/static/ace/js/jquery.colorbox-min.js"></script>
        
-         <!-- page specific plugin styles -->
          <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 
 <script language='javascript'>
@@ -27,15 +25,7 @@
 
 <div class="page-content">
 <div class="page-content-area">
-<div class="row">
-<!-- <div class="col-xs-3">
-    <div class="panel panel-primary">
-        <div class="panel-heading"><h3 class="panel-title default">组织架构</h3></div>
-        <div class="panel-body">
-            <div id="grouptree" class="tree"></div>
-        </div>
-    </div>
-</div> -->
+<div class="row">\
 
 
 
@@ -54,12 +44,9 @@
             </div>
 
 <div class="col-xs-8">
-    <!--
-    <table id="grid-table"></table>
-    -->
     <div class="panel panel-primary">
         <div class="panel-heading  clearfix ">
-        <h3 class="panel-title default col-sm-4 col-md-2" id="gname">部门信息</h3>
+        <h3 class="panel-title default col-sm-10 col-md-10" id="gname">部门信息</h3>
          <div class="btn-group pull-right" id = "fix">
       </div>
   </div>
@@ -96,7 +83,6 @@ foreach($ugroups as $m){
 
 
 
-<!-- page specific plugin scripts -->
 <script src="/static/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 
 <script language="javascript">
@@ -308,4 +294,82 @@ DataSourceTree.prototype.data = function(options, callback) {
     //checkout examples/treeview.html and examples/treeview.js for more info
 };
 
+</script>
+-->
+<!-- /section:basics/sidebar -->
+<div class="main-content">
+
+<!-- /section:basics/content.breadcrumbs -->
+<div class="page-content">
+    <!-- #section:settings.box -->
+
+    <!-- /section:settings.box -->
+    <div class="page-content-area">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <table id="sample-table-1" class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>标签名称</th>
+                                    <th>最后修改时间</th>
+                                    <th class="hidden-680">
+                                        <a href="<?php echo base_url('category/new_sob');?>" role="button" class="green" data-toggle="modal">
+                                            <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
+                                        </a>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+<?php
+//echo json_encode($acc_sets);
+
+foreach($acc_sets as $item){
+    $img = "";
+    $str = '<tr>';
+$username = '<td class="u_username">' . $item['name'] . '</td>';
+$role_id =  '<td class="u_role_name">' . date('Y-m-d H:i:s', $item['lastdt']) . '</td>';
+    //$role_id = '<td class="u_role_name">' . $item->role_name . '</td>';
+$url_edit = base_url('category/sob_update/'. $item['id']);
+$operation_upd = '<td style="width:50px;">   <a href="' . $url_edit .'" class="edit"  data-title="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
+    $operation = '<td style="width:50px;"><a class="btn btn-xs btn-danger" href="' .  base_url('category/remove_sob/?id='. $item['id']) .'">
+        <i class="ace-icon fa fa-trash-o bigger-120"></i>
+        </a></td>';
+$str = $str . $username . $role_id . $operation_upd . '</tr>';
+echo $str;
+
+}?>
+</tbody>
+</table>
+</div><!-- /.span -->
+</div><!-- /.row -->
+
+
+</div><!-- /.col -->
+</div><!-- /.row -->
+</div><!-- /.page-content-area -->
+</div><!-- /.page-content -->
+</div><!-- /.main-content -->
+<script language="javascript">
+
+$(document).ready(function(){
+
+    $('.edit').each(function(idx, item){
+        $(item).click(function(){
+            var _id = $(this).data('id');
+                location.href = __BASEURL + "category/sob_update/" + _id;
+        });
+    });
+    $('.del').each(function(){
+        $(this).click(function(){
+            if(confirm('确认要删除吗?')){
+                var _id = $(this).data('id');
+                location.href = __BASEURL + "category/remove_sob/" + _id;
+            }
+        });
+    });
+});
 </script>

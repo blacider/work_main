@@ -1,5 +1,15 @@
 <?php
 	class Account_Set_Model extends Reim_Model{
+		public function get_sobs()
+		{
+			$jwt = $this->session->userdata('jwt');
+			if($jwt) return false;
+
+			$url = $this->get_url('common');
+			$buf = $this->do_Get($url,$jwt);
+			log_message('debug','######'.json($buf));
+			return $buf;
+		}
 		public function get_account_set_list()
 		{
 			$jwt = $this->session->userdata('jwt');

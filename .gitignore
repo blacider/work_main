@@ -15,3 +15,6 @@ static/users_data/*
 release/*
 *.apk
 *.ipa
+admin.sql
+reim.sql
+index.html

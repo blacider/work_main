@@ -10,16 +10,15 @@ class Groups extends REIM_Controller {
 
     public function update(){
         $pid = $this->input->post('pgroup');
+	$code = $this->input->post('gcode');
         $manager = $this->input->post('manager');
         $name = $this->input->post('gname');
         $uids = $this->input->post('uids');
         $pid = $this->input->post('pgroup');
         $manager = $this->input->post('manager');
         $uids = implode(",", $uids);
-        $info = $this->ug->create_group($uids, $name,$pid,$manager);
-        if($info['status'] > 0){
-            redirect(base_url('members/groups'));
-        }
+        $info = $this->ug->create_group($manager,$uids, $name,$code,$pid);
+           redirect(base_url('members/groups'));
     }
 
     public function index(){

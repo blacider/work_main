@@ -30,6 +30,7 @@
                                 <label class="col-sm-1 control-label no-padding-right">部门管理员</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" id="manager" name="manager" data-placeholder="请选择标签">
+                                         <option value=0>无</option>
                                     <?php 
                                     foreach($member as $m){
                                     ?>
@@ -62,10 +63,16 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">部门名称</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname" value="<?php echo $group['name']; ?>">
+                                    <input type="text" placeholder="部门名称" class="col-xs-12" required="required" name="gname" value="<?php echo $group['name']; ?>">
                                 </div>
                             </div>
 
+                             <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">部门代码</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input type="text" placeholder="部门代码" class="col-xs-12" required="required" name="gcode" value="<?php echo $group['code']; ?>">
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">员工</label>

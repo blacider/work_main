@@ -152,16 +152,30 @@ class Category extends REIM_Controller {
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
         $acc_sets = $this->account_set->get_account_set_list();
-        $ugroups = $this->ug->get_my_list();
-        $_ug = json_encode($ugroups['data']['group']);
+	$sobs = $acc_sets['data'];
+	$keys = array();
+
+	$acc_set = array();
+	foreach($sobs as $item)
+	{
+		if(!in_array($item['sob_id'],$keys))
+		{
+			array_push($keys,$item['sob_id']);
+			array_push($acc_set,array('name'=>$item['sob_name'],'id'=>$item['sob_id'],'lastdt'=>$item['createdt']));
+		}
+
+	}
+        //$ugroups = $this->ug->get_my_list();
+//        $_ug = json_encode($ugroups['data']['group']);
         $_acc = json_encode($acc_sets);
-        log_message("debug","sob#############$_acc");
+        log_message("debug","sob#############".json_encode($acc_set));
+
         $this->bsload('account_set/index',
             array(
                 'title' => '帐套管理'
                 //	,'acc_sets' => $acc_sets
-                ,'acc_sets' => $acc_sets
-                ,'ugroups' => $ugroups['data']['group']
+                ,'acc_sets' => $acc_set
+                //,'ugroups' => $ugroups['data']['group']
                 ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
                     ,array('url' => base_url('category/index'),'name' => '标签和分类','class' => '')
@@ -196,10 +210,6 @@ class Category extends REIM_Controller {
                 array_push($sob_data, $item);
             }
         }
-        $ugroups = $this->ug->get_my_list();
-        $_ug = json_encode($ugroups['data']['group']);
-        $sobs = $this->account_set->get_account_set_list();
-        $_sobs = $sobs['data'];
         log_message("debug", "UG#########: $_ug");
         //TODO: 重新审核此段代码  END  庆义，长远
 
@@ -208,16 +218,20 @@ class Category extends REIM_Controller {
         }
         $category_group = array();
         foreach ($_group as $item) {
-            foreach ($_sobs as $sob) {
-                if ($item['sob_id'] == $sob['sob_id']) {
-                    $item['sob_name'] = $sob['sob_name'];
-                    break;
-                } else if($item['sob_id'] == 0) {
-                    $item['sob_name'] = "没有帐套";
-                    break;
+            log_message("debug", "Item:" . json_encode($item));
+            if($item['sob_id'] == 0 || $item['sob_id'] == '0') {   
+                $item['sob_name'] = "没有帐套";
+                $category_group[] = $item;
+                continue;
+            } else {
+                foreach ($_sobs as $sob) {
+                    if ($item['sob_id'] == $sob['sob_id']) {
+                        $item['sob_name'] = $sob['sob_name'];
+                        $category_group[] = $item;
+                        break;
+                    }
                 }
             }
-            $category_group[] = $item;
         }
 
         $this->bsload('category/index',
@@ -286,26 +300,27 @@ class Category extends REIM_Controller {
 
     public function create(){
         $name = $this->input->post('category_name');
+        $sob_code = $this->input->post('sob_code');
         $pid = $this->input->post('pid');
         $sob_id = $this->input->post('sob_id');
-
+        $note = $this->input->post('note');
         $prove_ahead= $this->input->post('prove_ahead');
         $max_limit = $this->input->post('max_limit');
         $cid = $this->input->post('category_id');
         $gid = $this->input->post('gid');
         log_message("debug","\n#############GID:$gid");
-	$sob_id = $this->input->post('sob_id');
+        $sob_id = $this->input->post('sob_id');
 	
 	log_message("debug","\n#############GID:$gid");
         $msg = '添加分类失败';
         $obj = null;
         if($cid > 0){
-            $obj = $this->category->update($cid, $name, $pid, $sob_id, $prove_ahead, $max_limit);
+            $obj = $this->category->update($cid, $name, $pid, $sob_id, $prove_ahead, $max_limit, $note, $sob_code);
         } else {
-            $obj = $this->category->create($name, $pid, $sob_id, $prove_ahead, $max_limit);
+            $obj = $this->category->create($name, $pid, $sob_id, $prove_ahead, $max_limit, $note, $sob_code);
         }
         if($obj && $obj['status']){
-            $msg = '添加分类成功';
+            $msg = '添加分类成功' . $note;
         } else {
             $msg = $obj['data']['msg'];
         }
@@ -345,21 +360,41 @@ class Category extends REIM_Controller {
         };
         die(json_encode($tree));
     }
-    public function get_sob_category($sob_id)
+    public function get_sob_category()
     {
+        $sobs = $this->account_set->get_account_set_list();
+        $_sobs = $sobs['data'];
+        $data = array();
+        foreach($_sobs as $sob)
+        {
+            if(array_key_exists($sob['sob_id'],$data))
+            {
+                $group=$data[$sob['sob_id']]['groups'];
+                array_push($data[$sob['sob_id']]['groups'],array('group_id'=>$sob['group_id'],'group_name'=>$sob['group_name']));
+            }
+            else
+            {
+                $data[$sob['sob_id']]=array();
+                $data[$sob['sob_id']]['sob_name']=$sob['sob_name'];
+                $data[$sob['sob_id']]['groups'] = array();
+		$data[$sob['sob_id']]['category'] = array();
+                $groups = $data[$sob['sob_id']]['groups'];
+                array_push($data[$sob['sob_id']]['groups'],array('group_id'=>$sob['group_id'],'group_name'=>$sob['group_name']));
+            }
+        }
     	$category = $this->category->get_list();
 	$categories = $category['data']['categories'];
-	$data = array();
 	foreach($categories as $item)
 	{
-		if($item['sob_id'] == $sob_id)
+	
+		if(array_key_exists($item['sob_id'],$data))
 		{
-			array_push($data,array($item['id'] => $item['category_name']));	
+			array_push($data[$item['sob_id']]['category'],array('category_id'=>$item['id'],'category_name'=>$item['category_name']));
 		}
+		log_message("debug","@@@@@@@@@@@@".$item['sob_id']."+++".$item['category_name']);
 	}
-	$json_data=json_encode($data);
-	log_message("debug","###########SOB_CATEGORY:$json_data");
-	die($json_data);
+
+        die(json_encode($data));
 	
     }
 }

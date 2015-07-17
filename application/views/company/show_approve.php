@@ -19,7 +19,7 @@
                                     <th>规则名称</th>
                                     <th>创建时间</th>
                                     <th class="hidden-680">
-                                         <a href="<?php echo base_url('company/create')?>" role="button" class="green" data-toggle="modal">
+                                        <a href="<?php echo base_url('company/approve')?>" role="button" class="green" >
                                             <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
                                         </a> 
                                     </th>
@@ -104,7 +104,7 @@ echo $str;
         </div>
     </div>
 </div><!-- PAGE CONTENT ENDS -->
-
+<!-- <p><?php echo json_encode($rules)."hello" ?></p> -->
 </div><!-- /.col -->
 </div><!-- /.row -->
 </div><!-- /.page-content-area -->
@@ -123,14 +123,14 @@ $(document).ready(function(){
             var _title = $(this).data('title');
             var _id = $(this).data('id');
 
-           location.href=__BASEURL+"/company/update/"+ _id;
+           location.href=__BASEURL+"/company/approve_update/"+_id;
         });
     });
     $('.del').each(function(){
         $(this).click(function(){
             if(confirm('确认要删除吗?')){
                 var _id = $(this).data('id');
-                location.href = __BASEURL + "/company/delete_rule/" + _id;
+                location.href = __BASEURL + "/company/delete_approve/" + _id;
             }
         });
     });

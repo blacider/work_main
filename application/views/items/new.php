@@ -1,13 +1,10 @@
 <link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
-<link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 <!-- <link rel="stylesheet" href="/static/third-party/jqui/jquery-ui.min.css" id="main-ace-style" /> -->
 
 <!-- page specific plugin styles -->
 <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
-
-
 <div class="page-content">
 <div class="page-content-area">
 <form role="form" action="<?php echo base_url('items/create');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="itemform">
@@ -92,10 +89,19 @@
         <ul class="ace-thumbnails clearfix" id="timages">
         </ul>
     </div>
+    <div class="col-xs-12 col-sm-12">
+        <div id="uploader-demo">
+    <!--用来存放item-->
+            <div id="fileList" class="uploader-list"></div>
+            <div id="imageList" style="width:200%;"></div>
+        </div>
+    </div>
+    
     <div class="col-xs-12 col-sm-12" style="padding-left: 0px; padding-top: 10px;">
-        <a class="btn btn-primary btn-white" id="btn_cimg" >添加图片</a>
+        <a class="filePicker" id="btn_simg" >添加图片</a>
     </div>
 </div>
+
 <!--
 <div class="col-xs-6 col-sm-6 dropzone" id="dropzone">
 <div class="fallback">
@@ -120,8 +126,8 @@
 </form>
 </div>
 </div>
-
-<div class="modal fade" id="select_img_modal">
+<!--
+<div class="modal" id="select_img_modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -129,16 +135,12 @@
                 <h4 class="modal-title">选择图片</h4>
             </div>
             <div class="modal-body">
-                <div id="div_thumbnail" class="thumbnail" style="display:none;">
-                    <img src="/static/images/loading.gif">
-                </div>
-                <input type="file" style="display:none;" id="src" name="file" data-url="<?php echo base_url('items/images'); ?>">
-                <a class="btn btn-primary btn-white" id="btn_cimg" >选择图片</a>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
+
+        </div>
+    </div>
+</div>
+-->
 <!--
 <script src="/static/third-party/jquery.ajaxfileupload.js"></script>
 <script src="/static/third-party/jquery-image-upload.min.js"></script>
@@ -157,8 +159,9 @@
 -->
 
 <!--<script src="/static/ace/js/jquery1x.min.js"></script> -->
+
+
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
-<script src="/static/ace/js/dropzone.min.js"></script>
 
 
 <script src="/static/ace/js/date-time/moment.js"></script>
@@ -171,58 +174,156 @@
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script>
 -->
-<script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
-<script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script>
 
+<script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/static/third-party/webUploader/webuploader.css">
+
+<!--引入JS-->
+<script type="text/javascript" src="/static/third-party/webUploader/webuploader.js"></script>
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
+var flag = 0;
+function initUploader() {
+    if (flag == 1) {
+        return;
+    } else {
+        flag =1;
+    }
+var uploader = WebUploader.create({
 
-function bind_event(){
-    var $overflow = '';
-    var colorbox_params = {
-        rel: 'colorbox',
-            reposition:true,
-            scalePhotos:true,
-            scrolling:false,
-            previous:'<i class="ace-icon fa fa-arrow-left"></i>',
-            next:'<i class="ace-icon fa fa-arrow-right"></i>',
-            close:'&times;',
-            current:'{current} of {total}',
-            maxWidth:'100%',
-            maxHeight:'100%',
-            onOpen:function(){
-                $overflow = document.body.style.overflow;
-                document.body.style.overflow = 'hidden';
-            },
-                onClosed:function(){
-                    document.body.style.overflow = $overflow;
-                },
-                    onComplete:function(){
-                        $.colorbox.resize();
-                    }
-    };
+    // 选完文件后，是否自动上传。
+    auto: true,
 
-    $('.rimg').click(function(){
-        var _id = $(this).data('id');
-        var _new = Array();
-        if(_id > 0){
-            var _exists = ($('#images').val()).split(",");
-            $(_exists).each(function(idx, val){
-                if(val != _id) {
-                    _new.push(val);
-                }
-            });
-            $('#images').val(_new.join(','));
+    // swf文件路径
+    swf: '/static/third-party/webUploader/Uploader.swf',
+
+    // 文件接收服务端。
+    server: '<?php echo base_url('items/images'); ?>',
+
+    // 选择文件的按钮。可选。
+    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+    pick: '.filePicker',
+
+    // 只允许选择图片文件。
+    accept: {
+        title: 'Images',
+        extensions: 'gif,jpg,jpeg,bmp,png',
+        mimeTypes: 'image/*'
+    }
+});
+// 当有文件添加进来的时候
+uploader.on( 'fileQueued', function( file ) {
+    var $li = $(
+            '<div id="' + file.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
+                '<img>' +
+                '<div class="glyphicon glyphicon-trash red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
+            '</div>'
+            ),
+        $img = $li.find('img');
+
+
+    // $list为容器jQuery实例
+    $('#imageList').append( $li );
+
+    // 创建缩略图
+    // 如果为非图片文件，可以不用调用此方法。
+    // thumbnailWidth x thumbnailHeight 为 100 x 100
+    uploader.makeThumb( file, function( error, src ) {
+        if ( error ) {
+            $img.replaceWith('<span>不能预览</span>');
+            return;
         }
-        $(this).parents('li').remove();
-    });
-    $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
+
+        $img.attr( 'src', src );
+        bind_event();
+    }, 150, 150 );
+});
+
+// 文件上传过程中创建进度条实时显示。
+uploader.on( 'uploadProgress', function( file, percentage ) {
+    var $li = $( '#'+file.id ),
+        $percent = $li.find('.progress span');
+
+    // 避免重复创建
+    if ( !$percent.length ) {
+        $percent = $('<p class="progress"><span></span></p>')
+                .appendTo( $li )
+                .find('span');
+    }
+
+    $percent.css( 'width', percentage * 100 + '%' );
+});
+
+// 文件上传成功，给item添加成功class, 用样式标记上传成功。
+uploader.on( 'uploadSuccess', function( file ) {
+    var $li = $( '#'+file.id ),
+        $success = $li.find('div.success');
+
+    // 避免重复创建
+    if ( !$success.length ) {
+        $success = $('<div class="success blue center"></div>').appendTo( $li );
+    }
+
+    $success.text('上传成功');
+});
+
+// 文件上传失败，显示上传出错。
+uploader.on( 'uploadError', function( file ) {
+    var $li = $( '#'+file.id ),
+        $error = $li.find('div.error');
+
+    // 避免重复创建
+    if ( !$error.length ) {
+        $error = $('<div class="error red center"></div>').appendTo( $li );
+    }
+
+    $error.text('上传失败');
+});
+
+uploader.on( 'uploadAccept', function( file, response ) {
+    if ( response['status'] > 0 ) {
+        // 通过return false来告诉组件，此文件上传有错。
+        console.log(response);
+        if ($("input[name='images']").val() == '') {
+            $("input[name='images']").val(response['data']['id']);
+        } else {
+            $("input[name='images']").val($("input[name='images']").val() + ',' + response['data']['id']);
+        }
+        return true;
+    } else return false;
+});
+
+// 完成上传完了，成功或者失败，先删除进度条。
+uploader.on( 'uploadComplete', function( file ) {
+    $( '#'+file.id ).find('.progress').remove();
+});
+}
+function bind_event(){
+        $('.del-button').click(function(e) {
+            console.log(e);
+            var key = this.parentNode.id.split("WU_FILE_")[1];
+            var images = $("input[name='images']").val();
+            var arr_img = images.split(',');
+            var result = '';
+            for (var item = 0; item < arr_img.length; item++) {
+                if (arr_img[item] != key) {
+                    if (item == 0) result += arr_img[item];
+                    else result += ',' + arr_img[item];
+                }
+            }
+            $("input[name='images']").val(result);
+            $(this.parentNode).remove();
+        });
 }
 
+
 $(document).ready(function(){
-    $('#fileupload').uploadFile();
+    //$('#fileupload').uploadFile();
     //var now = moment();
+    // 初始化Web Uploader
+
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
             useCurrent: true,
@@ -243,6 +344,7 @@ $(document).ready(function(){
                 $this.next().css({'width': $this.parent().width()});
             })
         }).trigger('resize.chosen');
+    /*
     $('#src').uploadFile(
                     {
                         dataType: 'json',
@@ -251,7 +353,8 @@ $(document).ready(function(){
                                 $('#btn_cimg').hide();
                             var progress = parseInt(data.loaded / data.total * 100, 10);
                         },
-                            done: function (e, data) {
+                        done: function (e, data) {
+                                console.log(11);
                                 $('#div_thumbnail').hide();
                                 $('#select_img_modal').modal('hide');
                                 $('#btn_cimg').show();
@@ -281,7 +384,7 @@ $(document).ready(function(){
                                     show_notify('保存失败');
                                 }
                     }
-    );
+    );*/
 
     $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange'></i>");//let's add a custom loading icon
  
@@ -311,13 +414,6 @@ $(document).ready(function(){
     $('.cancel').click(function(){
         $('#reset').click();
     });
-    $('#btn_simg').click(function(){
-        $('#btn_cimg').show();
-        $('#select_img_modal').modal({keyborard: false});
-    });
-
-    $('#btn_cimg').click(function(){
-        $('#src').click();
-    });
+    initUploader();
 });
 </script>

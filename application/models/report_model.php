@@ -2,6 +2,28 @@
 
 class Report_Model extends Reim_Model {
 
+    public function sendout($rid,$email)
+    {
+    	$jwt = $this->session->userdata('jwt');
+	if(!$jwt) return false;
+	$url = $this->get_url('exports');
+	$data = array(
+		'rid' => $rid
+		,'email' => $email
+	);
+	$buf = $this->do_Post($url,$data,$jwt);
+	log_message("debug","send_report".json_encode($buf));
+	return $buf;
+    }
+    public function get_permission($rid) {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", $rid);
+        $url = $this->get_url("check_approval_permission/$rid");
+        $buf = $this->do_Get($url,$jwt);
+        log_message("debug", "From Server [ $url ]:" . $buf);
+        //$obj = json_decode($buf, true);
+        return $buf;
+    }
     public function get_detail($rid){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;

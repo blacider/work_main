@@ -9,7 +9,8 @@ class Members extends REIM_Controller {
         $this->load->model('group_model', 'groups');
     }
 
-    public function index(){
+    public function search() {
+        $key = $this->input->get('key');
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
@@ -33,8 +34,39 @@ class Members extends REIM_Controller {
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
+                        ,array('url'  => base_url('members/index'), 'name' => '组织结构', 'class' => '')
+                        ,array('url'  => '', 'name' => '搜索结果', 'class' => '')
+                    ),'search' => $key
+            )
+        );
+    }
+    public function index(){
+        $error = $this->session->userdata('last_error');
+        // 获取当前所属的组
+        $this->session->unset_userdata('last_error');
+        $group = $this->groups->get_my_list();
+        $ginfo = array();
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('ginfo', $group['data'])){
+                $ginfo = $group['data']['ginfo'];
+            }
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
+	log_message("debug","gmembers:".json_encode($gmember));
+        $this->bsload('members/index',
+            array(
+                'title' => '组织结构'
+                ,'group' => $ginfo
+                ,'members' => $gmember
+                    ,'breadcrumbs' => array(
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                        ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
                         ,array('url'  => '', 'name' => '组织结构', 'class' => '')
-                    ),
+                    ), 'search' => ''
             )
         );
     }
@@ -261,16 +293,17 @@ class Members extends REIM_Controller {
             foreach($groups as &$g)
             {
                 $temp = array();
-                $members = $this->ug->get_single_group($g['id']);
-                array_push($re, array('members'=>json_decode($members,true)['data']['member'],'id' => $g['id'],'pid' => $g['pid'],'name'=>$g['name']));
-
+             //   $members = $this->ug->get_single_group($g['id']);
+              //  array_push($re, array('members'=>json_decode($members,true)['data']['member'],'id' => $g['id'],'pid' => $g['pid'],'name'=>$g['name']));
+                array_push($re, array('id' => $g['id'],'pid' => $g['pid'],'name'=>$g['name']));
             }
             die(json_encode($re));
-            $re = $this->ug->get_single_group(6);
+           // $re = $this->ug->get_single_group(6);
 
            // die(json_encode($re));
         }
     }
+
     public function listgroup(){
         $page = $this->input->get('page');
         $rows = $this->input->get('rows');
@@ -336,6 +369,7 @@ class Members extends REIM_Controller {
             $this->session->set_userdata('last_error', '添加成功');
         } else {
             $this->session->set_userdata('last_error', '添加失败');
+	    return redirect(base_url('members/newmember'));
         }
 	if($renew == 0)
 	{
@@ -565,13 +599,22 @@ class Members extends REIM_Controller {
     public function updategroup(){
     	$manager = $this->input->post('manager');
         $name = $this->input->post('gname');
+	$code = $this->input->post('gcode');
         $uids = $this->input->post('uids');
         $pid = $this->input->post('pgroup');
         $gid = $this->input->post('gid');
-        $uids = implode(",", $uids);
-        $info = $this->ug->update_data($manager,$uids, $name,$pid,$gid);
+	if($uids)
+	{
+       		 $uids = implode(",", $uids);
+	}
+	else
+	{
+		$uids='';
+	}
+        $info = $this->ug->update_data($manager,$uids, $name,$code,$pid,$gid);
+	log_message("debug","@@@@@@@@@".json_encode($info));
         if($info['status'] > 0){
-            redirect(base_url('members/groups'));
+           redirect(base_url('members/groups'));
         }
     }
 
@@ -590,6 +633,7 @@ class Members extends REIM_Controller {
                 ,'member' => $info
                 ,'self' => 0
                 ,'error' => ''
+                ,'isOther' => 1
                 ,'avatar_path' => $info['avatar']
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')

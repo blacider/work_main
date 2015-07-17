@@ -38,16 +38,20 @@ class Items extends REIM_Controller {
             log_message("debug", "type: " . $type);
             $uploaddir = '/data/uploads/';
             $uploadfile = $uploaddir . md5(time()) . "_" . basename($_FILES['file']['name']);
+            log_message("debug", "还行~haixing");
             if(move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
+                
                 $img = $this->items->upload_image($uploadfile, $type);
-                if($img['status'] > 0) unlink($uploadfile);
+                if ($img['status'] > 0) unlink($uploadfile);
                 die(json_encode($img));
             }
         } else {
-            die("");
+            die('');
 
         }
+        //log_message("debug", "还行~haixing");
         //$file = realpath('snapshot.jpg'); //要上传的文件
+        
 
     }
 
@@ -72,6 +76,7 @@ class Items extends REIM_Controller {
             ));
     }
     public function index(){
+    	$this->session->set_userdata('item_update_in','0');
         $items = $this->items->get_list();
         $category = $this->category->get_list();
         $categories = array();
@@ -110,7 +115,7 @@ class Items extends REIM_Controller {
         $type = $this->input->post('type');
         $note = $this->input->post('note');
         $images = $this->input->post('images');
-        $renew = $item['renew'];
+        $renew = $this->input->post('renew');
         $obj = $this->items->create($amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
         // TODO: 提醒的Tips
         if($renew){
@@ -245,14 +250,22 @@ class Items extends REIM_Controller {
         $cid = $item['category'];
         $_tags = $item['tags'];
         $__tags_name = array();
+
+
+	log_message("debug","_tags*****".json_encode(explode(',', $_tags)));
+	log_message("debug","tags#####".json_encode($tags));
         // TODO 去提升效率
         foreach(explode(',', $_tags) as $t){
             foreach($tags as $_t){
                 if($_t['id'] == $t){
-                    array_push($__tags_name, $_t['tag_name']);
+		    if(array_key_exists('tag_name',$_t))
+		    {
+                   	 array_push($__tags_name, $_t['tag_name']);
+		    }
                 }
             }
         }
+	
         $item['tags'] = implode(',', $__tags_name);
         foreach($categories as $c){
             if($c['id'] == $cid) {
@@ -267,12 +280,28 @@ class Items extends REIM_Controller {
         case 2:{$_type = '预算';};break;
         }
         $item['prove_ahead'] = $_type;
+
+        $_flow = $this->items->item_flow($id);
+        $flow = array();
+        if ($_flow['status'] == 1) {
+            foreach ($_flow['data'] as $d) {
+                $peropt = $this->str_split_unicode($d['newvalue'],1);
+                array_push($flow, array(
+                    'operator' => $peropt['name'],
+                    'optdate' => $d['submitdt'],
+                    'operation' => $peropt['opt'],
+                    ));
+            }
+        }
+	log_message("debug","item_updta_in".$this->session->userdata("item_update_in"));
+	log_message("debug","id".$id);
         $this->bsload('items/view',
             array(
-                'title' => '查看消费',
+                'tiftle' => '查看消费',
                 'categories' => $categories,
                 'tags' => $tags,
-                'item' => $item
+                'item' => $item,
+                'flow' => $flow
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
@@ -281,9 +310,44 @@ class Items extends REIM_Controller {
             ));
     }
 
+     function str_split_unicode($str, $l = 0) {
+        if ($l > 0) {
+            $ret = array();
+            $len = mb_strlen($str, "UTF-8");
+            for ($i = 0; $i < $len; $i += $l) {
+                $ret[] = mb_substr($str, $i, $l, "UTF-8");
+            }
+        $arr = $ret;
+        $i = 0;
+        for (; $i < count($arr); $i++) { 
+            if (preg_match("/^[\x{4e00}-\x{9fa5}]+$/u",$arr[$i])) {
+                break;
+            }
+        }
+        $name = array();
+        $opt = array();
+        for ($j = 0; $j < count($arr); $j++) {
+            if ($j < $i) {
+                array_push($name, $arr[$j]);
+            } else {
+                array_push($opt, $arr[$j]);
+            }   
+        }
+        $name = join($name);
+        $opt = join($opt);
+        return array(
+            'name' => $name,
+            'opt' => $opt
+            );
+     }
+
+     return preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY);
+ }
+
     public function edit($id = 0){
         if(0 === $id) redirect(base_url('items'));
         $item = $this->items->get_by_id($id);
+	$item_update_in = $this->session->userdata('item_update_in');
         if($item['status'] < 1){
             redirect(base_url('items'));
         }
@@ -315,6 +379,7 @@ class Items extends REIM_Controller {
             $ob = array('name' => $i['id'], 'size' => $_size, 'type' => $_type, 'url' => $i['path'], 'id' => $i['id']);
             array_push($_images, $ob);
         }
+	log_message('debug','#######'.$item_update_in);
         $this->bsload('items/edit',
             array(
                 'title' => '修改消费',
@@ -332,6 +397,7 @@ class Items extends REIM_Controller {
     }
 
     public function update(){
+    	$item_update_in = $this->session->userdata('item_update_in');
         $id = $this->input->post('id');
         $amount = $this->input->post('amount');
         $category= $this->input->post('category');
@@ -346,11 +412,29 @@ class Items extends REIM_Controller {
         $images = $this->input->post('images');
         $obj = $this->items->update($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
         // TODO: 提醒的Tips
-        if($obj['status'] > 0){
+      /*  if($obj['status'] > 0){
             redirect(base_url('items/index'));
         } else {
             redirect(base_url('items/index'));
-        }
+        } */
+	switch($item_update_in)
+	{
+		case 0:
+			return redirect(base_url('items/index'));
+			break;
+		case 1:
+			return redirect(base_url('reports'));
+			break;
+		case 2:
+			return redirect(base_url('bills/index'));
+			break;
+		case 3:
+			return redirect(base_url('bills/exports'));
+			break;
+		default:
+			return redirect(base_url('items/index'));
+			break;
+	}
         
 
     }

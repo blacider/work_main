@@ -174,7 +174,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 </script>
 <script type="text/javascript">
 	var uname = "<?php echo $user['email']; ?>";
-	$.cookie("user",uname);
+//	$.cookie("user",uname);
 </script>
 <!--
 <div class="sidebar-shortcuts" id="sidebar-shortcuts">
@@ -353,6 +353,7 @@ if($profile['admin'] == 1){
 
 
 <?php 
+if($profile['admin'] > 0){
 if($profile['admin'] == 1){
 ?>
 
@@ -375,22 +376,24 @@ if($profile['admin'] == 1){
         <b class="arrow"></b>
         </li>
 
+        <li class="hsub" id="index">
+        <a href="<?php echo base_url('category'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 分类管理 </a>
+        <b class="arrow"></b>
+        </li>
+
+
         <li class="hsub" id="tags">
         <a href="<?php echo base_url('category/tags'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 标签管理 </a>
         <b class="arrow"></b>
         </li>
 
 
-        <li class="hsub" id="index">
-        <a href="<?php echo base_url('category'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 分类管理 </a>
-        <b class="arrow"></b>
-        </li>
-
+<!--
           <li class="hsub" id="new_sob">
         <a href="<?php echo base_url('category/new_sob'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建帐套 </a>
         <b class="arrow"></b>
         </li>
-        
+-->        
     </ul>
     </li>
 
@@ -409,21 +412,34 @@ if($profile['admin'] == 1){
         <a href="<?php echo base_url('company/common'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 通用规则 </a>
         <b class="arrow"></b>
         </li>
-<!--
+
   <li class="hsub" id="show">
         <a href="<?php echo base_url('company/show'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 提交规则 </a>
         <b class="arrow"></b>
         </li>
 
-        <li class="hsub" id="create">
+        <!-- <li class="hsub" id="create">
         <a href="<?php echo base_url('company/create'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建规则 </a>
+          <b class="arrow"></b>
+        </li> -->
+
+
+        <li class="hsub" id="show_approve">
+        <a href="<?php echo base_url('company/show_approve'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 审批规则 </a>
           <b class="arrow"></b>
         </li> 
 
-    -->
+
+       <!-- <li class="hsub" id="approve">
+        <a href="<?php echo base_url('company/approve'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建审批 </a>
+          <b class="arrow"></b>
+        </li>  -->
+
+    
     </ul>
     </li>
 
+<?php  } ?>
 
     <li class="hsub" id="bills">
     <a href="#" class="dropdown-toggle">
@@ -597,6 +613,8 @@ $(document).ready(function(){
         });
         $($('#' + _controller).find('.submenu').get(0)).show();
         $($('#' + _controller).find('#' + _method).get(0)).addClass('active');
+        if (_method == 'search' && _controller == 'members')
+            $($('#' + _controller).find('#' + 'index').get(0)).addClass('active');
     }
     /*
     if(_path.substr(0, 8) == "/reports") {

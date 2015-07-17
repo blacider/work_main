@@ -6,6 +6,33 @@
         width: 400px;
     }
 </style>
+<style type="text/css">
+    #globalSearchText{
+position: absolute;
+  left: 75%;
+  top: 60px;
+  z-index: 2;
+  height: 26px;
+  width: 12%;
+  border-style: ridge;
+    }
+    #globalSearch {
+  background-color: #fe575f;
+  position: absolute;
+  left: 88%;
+  top: 60px;
+  border: 0;
+  color: white;
+  height: 25px;
+  border-radius: 3px;   
+  font-size: 12px;
+   }
+   #globalSearch:hover {
+    background-color: #ff7075;
+   }
+</style>
+    <input name="key" placeholder="ID、标题或发起人" value="" type='text' id="globalSearchText">
+    <button type="button" id="globalSearch">搜索</button>
 <div class="page-content">
     <div class="page-content-area">
         <div class="row">
@@ -69,13 +96,85 @@
             </div>
             <div class="modal-footer">
                 <input type="hidden" id="pass" name="pass" value="0" />
-                <input type="submit" class="btn btn-primary pass" value="直接通过" />
                 <input type="submit" class="btn btn-primary" value="提交" />
             </div>
                 </form>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<div class="modal fade" id="modal_next_">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <form action="<?php echo base_url('reports/permit'); ?>" method="post" class="form-horizontal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <input type="hidden" name="rid" value="" id="rid_">
+                <input type="hidden" name="status" value="2" id_="status">
+                <h4 class="modal-title">是否结束</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="col-xs-9 col-sm-9">
+                        <select style="display:none;" class="chosen-select_ tag-input-style form-control col-xs-12 col-sm-12" name="receiver[]" multiple="multiple" id="modal_managers" style="width:300px;">
+                        </select>
+                        <h4 class="modal-title">是否结束这条报告?</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="pass" name="pass" value="0">
+                <input type="submit" class="btn btn-primary pass" value="确认结束">
+                <div class="btn btn-primary pass" onClick="chose_others(this.parentNode.parentNode.rid.value)">继续选择</div>
+            </div>
+                </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div id="modal-table" class="modal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="blue bigger"> 导出报告 </h4>
+          </div>
+          <form method="post" >
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+
+
+                  <div class="form-group">
+                    <label for="form-field-username">请输入报告发送的email地址:</label>
+                    <div>
+                      <input class=" col-xs-8 col-sm-8" type="text" id="email" name="email" class="form-control"></input>
+                      <input type="hidden" id="report_id" name="report_id">
+                    </div>
+                    
+                  </div>
+                  <div class="space-4"></div>
+                <br>
+                <br>
+                <br>
+                <br>
+
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button class="btn btn-sm" data-dismiss="modal">
+                  <i class="ace-icon fa fa-times"></i>
+                  取消
+                </button>
+                <input type="button" id='send' class="btn btn-sm btn-primary" value="发送">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div><!-- PAGE CONTENT ENDS -->
+
+
 
 
 <!-- page specific plugin scripts -->
@@ -106,3 +205,58 @@ $(document).ready(function(){
 
 <script src="/static/js/base.js" ></script>
 <script src="/static/js/audit.js" ></script>
+<script type="text/javascript">
+$grid = $('#grid-table');
+$("#globalSearch").click(function () {
+    var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
+        colModel = $grid.jqGrid("getGridParam", "colModel"),
+        searchText = $("#globalSearchText").val(),
+        l = colModel.length;
+    for (i = 0; i < l; i++) {
+        cm = colModel[i];
+        if (cm.search !== false && (cm.stype === undefined || cm.stype === "text")) {
+            rules.push({
+                field: cm.name,
+                op: "cn",
+                data: searchText
+            });
+        }
+    }
+    postData.filters = JSON.stringify({
+        groupOp: "OR",
+        rules: rules
+    });
+    $grid.jqGrid("setGridParam", { search: true });
+    $grid.trigger("reloadGrid", [{page: 1, current: true}]);
+    return false;
+});
+
+$('#send').click(function(){
+    $.ajax({
+      url:__BASE+'reports/sendout'
+      ,method:"post"
+      ,dataType:"json"
+      ,data:{report_id:$('#report_id').val(),email:$('#email').val()}
+      ,success:function(data){
+          if(data.status== 1)
+          {
+            $('#modal-table').modal('hide')
+            show_notify("pdf已经成功发送至您的邮箱");
+          }
+          else
+          {
+              if(data.data.msg != undefined)
+              {
+                show_notify(data.data.msg);
+              }
+              else
+              {
+                show_notify("输入邮箱错误");
+              }
+          }
+      }
+    });
+
+});
+</script>
+

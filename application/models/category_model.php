@@ -11,15 +11,17 @@ class Category_Model extends Reim_Model {
         return $obj;
     }
 
-    public function create($name, $pid, $sob_id, $prove_ahead = 0, $maxlimit = 0) {
+    public function create($name, $pid, $sob_id, $prove_ahead = 0, $maxlimit = 0, $note = "", $sob_code = 0) {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(
             'name' => $name
             ,'pid' => $pid
             ,'sob_id' => $sob_id
+            ,'note' => $note
             ,'limit' => $maxlimit
             ,'pb' => $prove_ahead
+            ,'sob_code' => $sob_code
         );
 		$url = $this->get_url('category');
 		$buf = $this->do_Post($url, $data, $jwt);
@@ -27,13 +29,15 @@ class Category_Model extends Reim_Model {
 		$obj = json_decode($buf, true);
         return $obj;
     }
-    public function update($cid, $name, $pid, $sob_id, $prove_ahead = 0, $maxlimit = 0) {
+    public function update($cid, $name, $pid, $sob_id, $prove_ahead = 0, $maxlimit = 0, $note = "", $sob_code = 0) {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(
             'name' => $name
             ,'pid' => $pid
             ,'sob_id' => $sob_id
+            ,'sob_code' => $sob_code
+            ,'note' => $note
             ,'limit' => $maxlimit
             ,'pb' => $prove_ahead
         );

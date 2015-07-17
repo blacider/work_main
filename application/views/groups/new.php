@@ -28,6 +28,7 @@
                                 <label class="col-sm-1 control-label no-padding-right">部门管理员</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" name="manager" data-placeholder="请选择标签">
+                                        <option value=0>无</option>
                                     <?php 
                                     foreach($member as $m){
                                     ?>
@@ -63,6 +64,13 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" >部门代码</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input type="text" placeholder="部门代码" id="code" class="col-xs-12" required="required" name="gcode" >
+                                </div>
+                            </div>
+
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">员工</label>
@@ -78,8 +86,14 @@
                                     </select>
                                 </div>
                             </div>
-
-
+<!--
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" >部门代码</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input type="text" placeholder="code" id="code" class="col-xs-12" required="required" name="部门代码" >
+                                </div>
+                            </div>
+-->
                           
 
                             <input type="hidden" id="renew" name="renew" value="0" />

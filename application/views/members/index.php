@@ -4,7 +4,42 @@
     var _admin = "<?php echo $profile['admin']; ?>";
 </script>
 
-
+<style type="text/css">
+    #search{
+position: absolute;
+  left: 75%;
+  top: 64px;
+  z-index: 2;
+  height: 26px;
+  width: 12%;
+  border-style: ridge;
+    }
+    #search-submit {
+  background-color: #fe575f;
+  position: absolute;
+  left: 88%;
+  top: 64px;
+  z-index: 2;
+  border: 0;
+  color: white;
+  height: 25px;
+  border-radius: 3px;   
+  font-size: 12px;
+   }
+</style>
+<script type="text/javascript">
+    function searchSubmit(form) {
+        if (form.key.value != '') return true;
+        else {
+            form.key.focus();
+            return false;
+        }
+    }
+</script>
+<form action="<?php echo base_url('members/search') ?>" method="get" onsubmit="return searchSubmit(this)">
+    <input name="key" placeholder="名字、手机或者邮箱" value="<?php echo $search ?>" type='text' id="search">
+    <button type="submit" id="search-submit">搜索</button>
+</form>
 <div class="page-content">
 <div class="page-content-area">
 <div class="row">
@@ -45,7 +80,7 @@
                     <th>昵称</th>
                     <th>邮箱</th>
                     <th>手机</th>
-                    <th>身份</th>
+                    <th>角色</th>
 <?php
 if($profile['admin'] == 1) {
 ?>
@@ -54,6 +89,11 @@ if($profile['admin'] == 1) {
                 </tr>
 <?php 
 foreach($members as $m){
+?>
+<?php
+if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['email'],$search) + substr_count($m['phone'],$search) == 0) {
+    continue;
+}
 ?>
 <tr>
     <td>
@@ -73,6 +113,9 @@ foreach($members as $m){
     if($m['admin'] == 1){
         $desc = '管理员';
         $color = '<span class="label label-success arrowed">管理员</span>';
+    } else if ($m['admin'] == 2){
+        $desc = '出纳';
+        $color = '<span class="label label-warning arrowed">出纳</span>';
     }
 ?>
 <a href="javascript:void(0)" title="<?php echo $desc; ?>" data-id="<?php echo $m['id']; ?>" ><?php echo $color; ?></a>
@@ -235,11 +278,20 @@ function load_group(gid){
                     $(_th).appendTo($('#gtable'));
 
                     $(_member).each(function(idx, item){
+                        console.log("admin:"+item.admin);
                         var _c = 'gray';
                         var _p = '员工';
-                        var _color = '<span class="label label-success arrowed">管理员</span>';
+                    var _color = '<span class="label label-success arrowed">管理员</span>';
                     switch(item.admin) {
+                         case '2' : {
+                        //$desc = '出纳';
+
+                        _color = '<span class="label label-warning arrowed">出纳</span>';                        
+                        _c = 'green';
+                        _p = '点击设置为员工'; 
+                    }; break;
                     case '1' : {
+                        console.log(item.admin);
                         _p = '点击设置为管理员'; 
                             var _color = '<span class="label label-success arrowed">管理员</span>';
                     }; break;
@@ -248,6 +300,7 @@ function load_group(gid){
                         _c = 'green';
                         _p = '点击设置为员工'; 
                     }; break;
+            
                     }
                 _th = '<tr>'
                     + '<td><a href="' + __BASE + '/members/editmember/' + item.id + '">' + item.nickname+ '</a></td>'
@@ -263,6 +316,8 @@ function load_group(gid){
 
                     });
                 }
+
+                bind_event();
             }
             });
 

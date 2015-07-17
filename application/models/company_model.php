@@ -6,6 +6,142 @@ class Company_Model extends Reim_Model {
         parent::__construct();
     }
 
+	public function delete_approve($pid)
+	{
+		$jwt = $this->session->userdata('jwt');
+		if(!$jwt) return false;
+		$url = $this->get_url('audit_policy/'.$pid);
+		$buf = $this->do_Delete($url, array(), $jwt);
+		log_message("debug","####DeleteAPP:".json_encode($buf));
+		return $buf;
+	}
+	public function show_approve()
+	{
+		$jwt=$this->session->userdata('jwt');		
+		if(!$jwt) return false;
+		$url = $this->get_url('audit_policy');
+		$data = array();
+		$buf = $this->do_Get($url,$jwt);
+		log_message('debug',"@@@@:APPRSHOW:".json_encode($buf));
+		return $buf;
+	}
+    	public function create_approve($name,$members,$amount,$allow_all_category,$policies,$pid=-1)
+	{
+		$jwt = $this->session->userdata('jwt');
+		if(!$jwt) return false;
+		$url = $this->get_url('audit_policy');
+		if($pid == -1)
+		{
+			$data = array(
+				'name'=>$name
+				,'members'=>$members
+				,'amount'=>$amount
+				,'allow_all_category'=>$allow_all_category
+				,'policies'=>$policies
+			);
+		}
+		else
+		{
+			$data = array(
+				'pid'=>$pid
+				,'name'=>$name
+				,'members'=>$members
+				,'amount'=>$amount
+				,'allow_all_category'=>$allow_all_category
+				,'policies'=>$policies
+			);
+		}
+		$buf = $this->do_Post($url,$data,$jwt);
+		log_message("debug","@@@@APPR:".json_encode($buf));
+		return $buf;
+	}
+
+	public function delete_rule($pid)
+	{
+		$jwt = $this->session->userdata('jwt');
+		if(!$jwt) return false;
+		$url=$this->get_url('commit_policy/'.$pid);
+		$data = array();
+		$buf = $this->do_Delete($url,$data,$jwt);
+		log_message("debug","######DEL:".json_encode($buf));
+	}
+
+	public function show_rules()
+	{
+		$jwt = $this->session->userdata('jwt');
+		if(!$jwt) return false;
+		$url = $this->get_url('commit_policy');
+		$data = array();
+		$buf = $this->do_Get($url,$jwt);
+		log_message('debug',"######RULES:".$buf);
+		return $buf;
+	}
+
+	public function update_rule($rid,$name,$category,$count,$period,$all_company,$groups,$members)
+	{
+		$jwt = $this->session->userdata('jwt');
+		if(!$jwt) return false;
+		$url = $this->get_url('commit_policy');
+		if($all_company==1)
+		{
+			$data=array(
+				'pid' => $rid,
+				'name'=>$name,
+				'category'=>$category,
+				'count'=>$count,
+				'period'=>$period,
+				'all_company'=>$all_company,
+			);
+		}
+		else
+		{
+			$data=array(
+				'pid'=>$rid,
+				'name'=>$name,
+				'category'=>$category,
+				'count'=>$count,
+				'period'=>$period,
+				'all_company'=>$all_company,
+				'groups'=>$groups,
+				'members'=>$members,
+			);
+		}
+		$buf = $this->do_Post($url,$data,$jwt);
+		log_message("debug","@@@@@:".$buf);
+		return $buf;
+	}
+
+	public function create_rule($name,$category,$count,$period,$all_company,$groups,$members)
+	{
+		$jwt = $this->session->userdata('jwt');
+		if(!$jwt) return false;
+		$url = $this->get_url('commit_policy');
+		if($all_company==1)
+		{
+			$data=array(
+				'name'=>$name,
+				'category'=>$category,
+				'count'=>$count,
+				'period'=>$period,
+				'all_company'=>$all_company,
+			);
+		}
+		else
+		{
+			$data=array(
+				'name'=>$name,
+				'category'=>$category,
+				'count'=>$count,
+				'period'=>$period,
+				'all_company'=>$all_company,
+				'groups'=>$groups,
+				'members'=>$members,
+			);
+		}
+		$buf = $this->do_Post($url,$data,$jwt);
+		log_message("debug","@@@@@:".$buf);
+		return $buf;
+	}
         public function get(){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;

@@ -6,7 +6,7 @@ function bind_event(){
     $('.tdetail').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
-            location.href = __BASE + "items/show/" + _id;
+            location.href = __BASE + "items/show/" + _id ;
         });
     });
     $('.tdel').each(function() {

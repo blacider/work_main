@@ -3,7 +3,33 @@ var __MEMBER_DATA = null;
 function show_modal(){
             $('#modal_next').modal('show');
 }
+function chose_others_zero(item) {
+    console.log(item);
+    for (var item in getData) {
+        if (item != undefined) {
+            console.log(getData[item]);
+            $($('.chosen-select')[0]).find("option[value='"+getData[item]+"']").attr("selected",true);
+            $($('.chosen-select')[0]).trigger("chosen:updated");
+        }
+    }
+    $('#status').val(2);
+    $('#modal_next').modal('show');
+}
+function chose_others(_id) {
+    $('#modal_next_').modal('hide');
+    $('#rid').val(_id);
+    $('#status').val(2);
+    $('#modal_next').modal('show');
+}
+var getData = {};
 function bind_event(){
+    $('.texport').each(function(){
+    	$(this).click(function(){
+	    var _id = $(this).data('id');
+	    console.log(_id);
+	    $('#report_id').val(_id);
+	});
+    });
     $('.tdetail').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
@@ -13,9 +39,31 @@ function bind_event(){
     $('.tpass').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
-            $('#rid').val(_id);
-            $('#status').val(2);
-            $('#modal_next').modal('show');
+            $.ajax({
+                type:"GET",
+                url:__BASE + "reports/check_permission",
+                data: {
+                    rid:_id
+                },
+                dataType: "json",
+                success: function(data){
+                    if (data['status'] > 0) {
+                        getData = data['data'].suggestion;
+                        console.log(data['data']);
+                        if (data['data'].complete == 0) {
+                            $('#rid').val(_id);
+                            //$('#status').val(2);
+                            //$('#modal_next').modal('show');
+                            chose_others_zero(_id);
+                        } else {
+                            //TODOmodal_next_
+                            $('#rid_').val(_id);
+                            $('#status_').val(2);
+                            $('#modal_next_').modal('show'); 
+                        }
+                    }
+                }
+            });
         });
     });
     $('.tdeny').each(function() {
@@ -34,7 +82,7 @@ jQuery(grid_selector).jqGrid({
     mtype: "GET",
     datatype: "local",
     height: 250,
-    colNames:['标题', '类型', '创建日期', '金额','消费条目数','发起人', '状态', '操作', ''],
+    colNames:['ID','标题', '类型', '创建日期', '金额','消费条目数','发起人', '状态', '操作', ''],
     loadonce: true,
     //rownumbers: true, // show row numbers
     caption: "报告列表",
@@ -45,15 +93,16 @@ jQuery(grid_selector).jqGrid({
 
     viewsortcols : [true,'vertical',true],
     colModel:[
-        {name:'title', index:'title', width:120,editable: false,editoptions:{size:"20",maxlength:"30"}},
-        {name:'prove_ahead', index:'prove_ahead', width:30,editable: false,editoptions:{size:"20",maxlength:"30"}},
-        {name:'date_str', index:'date_str', width:70,editable: false,editoptions:{size:"20",maxlength:"30"}},
-        {name:'amount', index:'amount',sorttype: myCustomSort, width:50,editable: true,editoptions:{size:"20",maxlength:"30"}},
-        {name:'item_count', index:'item_count', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
+        {name:'id', index:'id', width:20,editable: false,editoptions:{size:"20",maxlength:"30"}},
+        {name:'title', index:'title', width:90,editable: false,editoptions:{size:"20",maxlength:"30"}},
+        {name:'prove_ahead', index:'prove_ahead', width:30,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
+        {name:'date_str', index:'date_str', width:70,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
+        {name:'amount', index:'amount',sorttype: myCustomSort, width:50,editable: true,editoptions:{size:"20",maxlength:"30"},search:false},
+        {name:'item_count', index:'item_count', width:50,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
         {name:'author', index:'author', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
-        {name:'status_str',index:'status_str', width:70, editable: false,editoptions: {size:"20", maxlength : "30"}/*,unformat: aceSwitch*/},
-        {name:'options',index:'options', width:55, editable: false,editoptions: {size:"20", maxlength : "60"},unformat: aceSwitch},
-        { name : 'lastdt', index : 'lastdt', hidden:true , sortable : true}
+        {name:'status_str',index:'status_str', width:70, editable: false,editoptions: {size:"20", maxlength : "30",search:false}/*,unformat: aceSwitch*/},
+        {name:'options',index:'options', width:55, editable: false,editoptions: {size:"20", maxlength : "60"},unformat: aceSwitch,search:false},
+        { name : 'lastdt', index : 'lastdt', hidden:true , sortable : true,search:false}
     ], 
     sortorder: "desc",
     sortorder: "desc",
