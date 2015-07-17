@@ -96,8 +96,35 @@ position: absolute;
             </div>
             <div class="modal-footer">
                 <input type="hidden" id="pass" name="pass" value="0" />
-                <input type="submit" class="btn btn-primary pass" value="直接通过" />
                 <input type="submit" class="btn btn-primary" value="提交" />
+            </div>
+                </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="modal_next_">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <form action="<?php echo base_url('reports/permit'); ?>" method="post" class="form-horizontal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <input type="hidden" name="rid" value="" id="rid_">
+                <input type="hidden" name="status" value="2" id_="status">
+                <h4 class="modal-title">是否结束</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="col-xs-9 col-sm-9">
+                        <select style="display:none;" class="chosen-select_ tag-input-style form-control col-xs-12 col-sm-12" name="receiver[]" multiple="multiple" id="modal_managers" style="width:300px;">
+                        </select>
+                        <h4 class="modal-title">是否结束这条报告?</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="pass" name="pass" value="0">
+                <input type="submit" class="btn btn-primary pass" value="确认结束">
+                <div class="btn btn-primary pass" onClick="chose_others(this.parentNode.parentNode.rid.value)">继续选择</div>
             </div>
                 </form>
         </div><!-- /.modal-content -->
