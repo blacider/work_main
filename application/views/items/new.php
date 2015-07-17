@@ -119,7 +119,7 @@
 </div>
 </div>
 
-<div class="modal fade" id="select_img_modal">
+<div class="modal fad" id="select_img_modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -188,6 +188,13 @@
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
+var flag = 0;
+function initUploader() {
+    if (flag == 1) {
+        return;
+    } else {
+        flag =1;
+    }
 var uploader = WebUploader.create({
 
     // 选完文件后，是否自动上传。
@@ -274,7 +281,11 @@ uploader.on( 'uploadAccept', function( file, response ) {
     if ( response['status'] > 0 ) {
         // 通过return false来告诉组件，此文件上传有错。
         console.log(response);
-        $("input[name='images']").val(response['data']['id']);
+        if ($("input[name='images']").val() == '') {
+            $("input[name='images']").val(response['data']['id']);
+        } else {
+            $("input[name='images']").val($("input[name='images']").val() + ',' + response['data']['id']);
+        }
         return true;
     } else return false;
 });
@@ -283,6 +294,7 @@ uploader.on( 'uploadAccept', function( file, response ) {
 uploader.on( 'uploadComplete', function( file ) {
     $( '#'+file.id ).find('.progress').remove();
 });
+}
 function bind_event(){
     var $overflow = '';
     var colorbox_params = {
@@ -423,6 +435,7 @@ $(document).ready(function(){
     });
     $('#btn_simg').click(function(){
         $('#select_img_modal').modal({keyborard: false});
+        initUploader();
     });
 
 });
