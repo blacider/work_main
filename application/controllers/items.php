@@ -294,6 +294,7 @@ class Items extends REIM_Controller {
             }
         }
 	log_message("debug","flow:".json_encode($_flow));
+    log_message("debug","flow:".json_encode($category));
         $this->bsload('items/view',
             array(
                 'title' => '查看消费',
