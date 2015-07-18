@@ -615,6 +615,9 @@ $(document).ready(function(){
         $($('#' + _controller).find('#' + _method).get(0)).addClass('active');
         if (_method == 'search' && _controller == 'members')
             $($('#' + _controller).find('#' + 'index').get(0)).addClass('active');
+        if (_method == 'common' && _controller == 'company') {
+            $($('#' + _controller).find('#' + 'submit').get(0)).addClass('active');
+        }
     }
     /*
     if(_path.substr(0, 8) == "/reports") {
