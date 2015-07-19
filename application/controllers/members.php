@@ -276,31 +276,24 @@ class Members extends REIM_Controller {
 
     public function getgroups()
     {
-            $group = $this->ug->get_my_list();
+        $group = $this->ug->get_my_list();
         /// 结构好奇怪啊
         //
+        log_message("debug", "Get Groups:" . $group['status']);
         if($group['status']){
             $_data = array();
-            //die(json_encode(array('data' => $group['data'])));
             foreach($group['data']['group'] as &$s){
                 $s['type'] = 'item';
             }
-            //array_push($group['data']['group'], array('option' => '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="-1">' . '<span class="ui-icon ui-icon-pencil tedit" data-id="-1"></span>' . '<span class="ui-icon ui-icon-trash tdel" data-id="-1"></span></div>', 'name' => '已邀请', 'id' => "-1", 'type' => 'item'));
-            //$group['data']['group'] = array('name' => '全体员工', 'id' => "-2", "additionalParameters" => array('children' => $group['data']['group']), 'type' => 'folder');
-           // array_unshift($group['data']['group'], array('name' => '全体员工', 'id' => "-2", "additionalParameters" => array('children' => $group['data']['group']), 'type' => 'folder'));
             $groups = $group['data']['group'];
             $re = array();
             foreach($groups as &$g)
             {
                 $temp = array();
-             //   $members = $this->ug->get_single_group($g['id']);
-              //  array_push($re, array('members'=>json_decode($members,true)['data']['member'],'id' => $g['id'],'pid' => $g['pid'],'name'=>$g['name']));
                 array_push($re, array('id' => $g['id'],'pid' => $g['pid'],'name'=>$g['name']));
             }
+            log_message("debug", "Get Groups:" . json_encode($re));
             die(json_encode($re));
-           // $re = $this->ug->get_single_group(6);
-
-           // die(json_encode($re));
         }
     }
 
