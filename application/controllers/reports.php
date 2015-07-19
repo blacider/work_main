@@ -743,6 +743,7 @@ class Reports extends REIM_Controller {
             $_headers =  array(
                 '凭证ID' => 0
                 ,'会计年' => date('Y')
+                ,'会计期间' => date('m')
                 ,'制单日期' => date('Y-m-d')
                 ,'凭证类别' => '转'
                 ,'凭证号' => 0
