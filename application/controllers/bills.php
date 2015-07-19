@@ -24,8 +24,12 @@ class Bills extends REIM_Controller {
             $data = $reports['data']['data'];
 
             foreach($data as $item) {
-                if($item['status'] == $status){
+                if($item['status'] == 2){
                     array_push($_data, $item);
+                } 
+                if($status == 4) {
+                    if(in_array($item['status'], array(4, 7, 8)))
+                        array_push($_data, $item);
                 }
             }
         }
@@ -85,8 +89,19 @@ class Bills extends REIM_Controller {
         $data = $bills['data']['data'];
         $_data = array();
         foreach($data as $d){
-            log_message("debug", "Bill: $type: " . json_encode($d));
-            if($d['status'] != $type) continue;
+            log_message("debug", "Bill: [ $type] $type: " . json_encode($d['status']));
+            if($type == 4 ) {
+                if(!in_array(intval($d['status']), array(4, 7, 8))) {
+                    log_message("debug", "Continue...");
+                    continue;
+                }
+            } else {
+                log_message("debug", "xContinue...");
+                if($d['status'] != $type) continue;
+            }
+            log_message("debug", "xBill: $type: " . json_encode($d));
+            log_message("debug", "nICe");
+
             $d['date_str'] = date('Y-m-d H:i:s', $d['createdt']);
             $d['amount'] = '￥' . $d['amount'];
             $d['status_str'] = $d['status'] == 2 ? '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>' : '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';

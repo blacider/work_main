@@ -406,16 +406,127 @@ var __BASE = "<?php echo $base_url; ?>";
             method:'GET',
             dataType:'json',
             success:function(data){
-
                     var ace_icon = ace.vars['icon'];
-                    //class="'+ace_icon+' fa fa-file-text grey"
-                    //becomes
-                    //class="ace-icon fa fa-file-text grey"
                     var js_data = {};
                     var obj = new Array();
                     var unroot = new Array();
-                   // js_data[-2] = {name:'全体员工'，id:'-2'，type:'folder','icon-class':'red'};
-                    js_data['0'] = {name: '全体员工', id:'-2' ,type: 'folder', 'icon-class':'red'}; 
+                    js_data['0'] = {name: '全体员工', id:'-2' ,type: 'folder', 'icon-class':'red', additionalParameters : {children : []}}; 
+                    var _tree_structure = [];
+                    var _all_node = [];
+                    $(data).each(function(idx, item){
+                        var _id = item['id'];
+                        var _pid = item['pid'];
+                        if(_all_node[_id] == undefined) {
+                            _all_node[_id] = {};
+                            _all_node[_id]['child'] = [];
+                            _all_node[_id]['item'] = item;
+                        }
+                        if(_all_node[_pid] == undefined) {
+                            _all_node[_pid] = {};
+                            _all_node[_pid]['child'] = [];
+                            _all_node[_pid]['item'] = {'pid' : _pid, 'name' : ''};
+                            //_all_node[_pid]['item'] = {};
+                        }
+                        _all_node[_id]['item'] = item;
+                        _all_node[_pid]['child'][_id] = item;
+                    });
+                    var _valid_node = [];
+                    var _stop_flag = 1;
+                    var _idx = 0;
+                    while(_stop_flag) {
+                        if(_idx > 3) {
+                            _stop_flag = 0;
+                            continue;
+                        }
+                        _idx += 1;
+                        _stop_flag = 0;
+                        $(_all_node).each(function(idx, item){
+                            if(idx == 0) {
+                                return;
+                            }
+                            if(item == undefined) return;
+                            var _pid = item['item']['pid'];
+                            var _id = item['item']['id'];
+                            _all_node[_pid]['child'][_id] = item;
+                            //if(item['pid'] != 0)
+                            //    _all_node[_id]['child'] = [];
+                        });
+                        var _s_all_node = [];
+
+                        $(_all_node).each(function(idx, item) {
+                            if(item == undefined) return;
+                            if(item['child'].length == 0) return;
+                            if(typeof item['pid'] == undefined) return;
+                            //if(item['item']['pid'] == 0) return;
+                            var _pid = item['item']['pid'];
+                            var _id = item['item']['id'];
+                            if(_pid != 0 && _all_node[_pid]['child'][_id] != undefined) return;
+                            _s_all_node[idx] = item;
+                            _stop_flag = 1;
+                            
+                        });
+                        _all_node = _s_all_node;
+                        _stop_flag = 0;
+                        // 如果都是顶级节点了，那么就可以退出了
+                        _s_all_node = [];
+                        $(_all_node).each(function(idx, item){
+                            if(item == undefined) return;
+                            if(item['item']['name'] == "") _s_all_node[idx] = item;
+                            if(item['item']['pid'] == 0) return;
+                            _stop_flag = 1;
+                        });
+                        _all_node = _s_all_node;
+                    }
+                    
+                    var build_node = function(pid, item){
+                        var node = {name: item['item']['name'], id:item['item']['id'], additionalParameters : {children : []} ,type: 'folder', 'icon-class':'red'};   
+                        if(item['child'].length > 0) {
+                            $(item['child']).each(function(idx, _item){
+                                if(_item == undefined) return;
+                                _child = build_node(_item['item']['id'], _item);
+                                node['additionalParameters']['children'].push(_child);
+                            });
+                        }
+                        return node;
+                    }
+                    _sdata = [];
+                    if(_all_node[0] != undefined)  {
+                        $(_all_node[0]['child']).each(function(idx, item){
+                            if(item != undefined){
+                                _sdata.push(item);
+                            }
+                        });
+                    }
+
+                    $(_sdata).each(function(idx, item){
+                        _child = build_node(idx, item);
+                        js_data[0]['additionalParameters']['children'].push(_child);
+                    });
+                    
+                        /*
+                        // 存储所有的数据，构成一个一维的数组，其key为id
+                        if(item['pid'] == 0) {
+                            if(js_data[item['id']] == undefined){
+                                js_data[item['id']] = {name: item['name'], id:item['id'] ,type: 'folder', 'icon-class':'red', additionalParameters : {children : {}}};   
+                            } else {
+                                js_data[item['id']]['name'] = item['name'];
+                                js_data[item['id']]['type'] =  'folder'; 
+                                js_data[item['id']]['icon-class'] = 'red';
+                            }
+                        }
+                        else {
+                            if(item['id'] < 0) return;
+                            if(js_data[item['pid']] == undefined){
+                                js_data[item['pid']] = {name: item['name'], id:item['pid'] ,type: 'folder', 'icon-class':'red', additionalParameters : {children : {}}};   
+                            }
+                            js_data[item['pid']]['additionalParameters']['children'][item['id']] = {name: item['name'], id:item['id'] ,type: 'folder', 'icon-class':'pink', additionalParameters : {children : {}}};   
+
+                        }
+                         */
+                    //});
+
+                    js_data['已邀请'] = {name: '已邀请', id:'-1' ,type: 'folder', 'icon-class':'red'}; 
+                    /*
                     for(var i = 0 ; i < data.length ; i++)
                     {
 
@@ -424,16 +535,6 @@ var __BASE = "<?php echo $base_url; ?>";
                             js_data[data[i]['id']] = {name: data[i]['name'], id:data[i]['id'] ,type: 'folder', 'icon-class':'red'};   
                             var item = js_data[data[i]['id']];
                             item['additionalParameters']={'children':{}};
-                           /* item['additionalParameters']['children']['members']['additionalParameters']={};
-                            var param = item['additionalParameters']['children']['members']['additionalParameters'];
-                            param['children'] = [];
-                            var mem = param['children'];
-                            for(var j = 0; j< data[i]['members'].length; j++)
-                            {
-                                var temp = {name: '<i class="'+ace_icon+' fa fa-users blue"></i>'+data[i]['members'][j]['nickname'],type:'item'};
-                                mem.push(temp);
-                            }*/
-
                             obj.push({id:data[i]['id'],'item':js_data[data[i]['id']]});
 
                         }
@@ -442,7 +543,6 @@ var __BASE = "<?php echo $base_url; ?>";
                             unroot.push(data[i]);
                         }
                     }
-                    //寻找子部门
                     while(unroot.length!=0)
                     {
                         var tempobj = new Array();
@@ -452,21 +552,10 @@ var __BASE = "<?php echo $base_url; ?>";
                             {
                                 if(unroot[unum]['pid'] == obj[num]['id'])
                                 {
-
                                       obj[num]['item']['additionalParameters']['children'][unroot[unum]['id']]={name:unroot[unum]['name'],id:unroot[unum]['id'], type: 'folder', 'icon-class':'pink'};
                                       var tempitem = obj[num]['item']['additionalParameters']['children'][unroot[unum]['id']];
                                       tempitem['additionalParameters'] = {'children':{}};
-                                   //   tempitem['additionalParameters']['children']['members']['additionalParameters']={};
-                                   //   var param = tempitem['additionalParameters']['children']['members']['additionalParameters'];
-                                      //param['children'] = [];
-                                     // var mem = param['children'];
-
-                                  /*    for(var j = 0; j< unroot[unum]['members'].length; j++)
-                                        {
-                                            var temp = {name: '<i class="'+ace_icon+' fa fa-users blue"></i>'+unroot[unum]['members'][j]['nickname'],type:'item'};
-                                            mem.push(temp);
-                                        }*/
-                                        tempobj.push({id:unroot[unum]['id'],'item':tempitem});
+                                      tempobj.push({id:unroot[unum]['id'],'item':tempitem});
                                       unroot.remove(unum);
                                 }
                             }
@@ -475,11 +564,9 @@ var __BASE = "<?php echo $base_url; ?>";
                         obj = tempobj;
                     } 
 
-                   // js_data['全体员工'] = {name: '全体员工', id:'-2' ,type: 'folder', 'icon-class':'red'}; 
-                    
                     js_data['已邀请'] = {name: '已邀请', id:'-1' ,type: 'folder', 'icon-class':'red'}; 
 
-		    console.log(js_data);
+                     */
                     var treeDataSource = new DataSourceTree({data: js_data});
 
                     $('#tree2').ace_tree({
@@ -492,36 +579,27 @@ var __BASE = "<?php echo $base_url; ?>";
                         'unselected-icon' : null
                     });
                     
-                    
                     $('#tree2')
                     .on('updated', function(e, result) {
-                        //result.info  >> an array containing selected items
-                        //result.item
-                        //result.eventType >> (selected or unselected)
                     })
                     .on('selected', function(e) {
-                        console.log("group selected");
                     })
                     .on('unselected', function(e) {
                     })
                     .on('opened', function(e,result) {
-                        //var _gid = _data;
                         if(result.id != undefined)
                         {
                             var _gid = result.id;
-                            console.log(_gid);
                             load_group(_gid);
                         }
                     })
                     .on('closed', function(e,result) {
                           var _gid = result.id;
-                            console.log(_gid);
                             load_group(_gid);
                     });
 
             },
             error:function(){
-                console.log("error");
             }
 
     });

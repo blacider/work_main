@@ -496,10 +496,14 @@ class Company extends REIM_Controller {
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
         $company = $this->company->get();
+        $_config = array();
+        if(array_key_exists('data', $company) && array_key_exists('config', $company['data'])){
+            $_config = $company['data']['config'];
+        }
         $this->bsload('company/common',
             array(
                 'title' => '公司设置'
-                ,'company' => $company['data']['config']
+                ,'company' => $_config
                 ,'error' => $error
 
                 //,'company' => json_encode($_group)
