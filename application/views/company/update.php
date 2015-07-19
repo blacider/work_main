@@ -224,7 +224,7 @@
                                 //$(selectJqDom.children()[0].children[0]).change();
                                 //第二个
                                 $(selectJqDom.children()[0].children[0]).change();
-                                $(lectJqDom.children()[1].children[0]).find("option[value='"+data['category_id']+"']").attr("selected",true);
+                                $(selectJqDom.children()[1].children[0]).find("option[value='"+data['category_id']+"']").attr("selected",true);
                                 $(selectJqDom.children()[1].children[0]).trigger("chosen:updated");
                             }
                             function initSelectCache() {
