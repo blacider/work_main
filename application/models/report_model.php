@@ -2,6 +2,17 @@
 
 class Report_Model extends Reim_Model {
 
+    public function revoke($rid)
+    {
+    	$jwt = $this->session->userdata('jwt');
+	if(!$jwt) return false;
+
+    	$url = $this->get_url('revoke/'.$rid);
+	$buf = $this->do_Get($url,$jwt);
+	log_message('debug','######'.json_encode($buf));
+
+	return $buf;
+    }
     public function sendout($rid,$email)
     {
     	$jwt = $this->session->userdata('jwt');

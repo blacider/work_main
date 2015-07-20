@@ -95,7 +95,14 @@
 
 <div class="clearfix form-actions col-sm-10 col-xs-10">
                                 <div class="col-md-offset-3 col-md-6">
-
+                                <?php
+                                    if(($report['status'] == 1) || ($report['status'] == 2) ) 
+                                    {
+                                ?>
+                                    <a style="margin-left: 80px;" class="btn btn-white callback" data-renew="-2"><i class="ace-icon fa fa-undo gray bigger-110"></i>撤回</a>
+                                <?php 
+                                    }
+                                ?>                               
                                     <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>返回</a>
                                 </div>
                             </div>
@@ -115,9 +122,16 @@
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
+var rid = "<?php echo $rid?>";
 $(document).ready(function(){
     $('.cancel').click(function(){
         history.go(-1);
+    });
+
+    $('.callback').click(function(){
+       if(confirm('确认要撤回报告吗?')){
+                location.href = __BASE + "/reports/revoke/" + rid;
+            }
     });
 });
 </script>
