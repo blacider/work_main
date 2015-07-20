@@ -192,20 +192,15 @@ function initUploader() {
         flag =1;
     }
 var uploader = WebUploader.create({
-
     // 选完文件后，是否自动上传。
     auto: true,
-
     // swf文件路径
     swf: '/static/third-party/webUploader/Uploader.swf',
-
     // 文件接收服务端。
     server: '<?php echo base_url('items/images'); ?>',
-
     // 选择文件的按钮。可选。
     // 内部根据当前运行是创建，可能是input元素，也可能是flash.
     pick: '.filePicker',
-
     // 只允许选择图片文件。
     accept: {
         title: 'Images',
@@ -222,8 +217,6 @@ uploader.on( 'fileQueued', function( file ) {
             '</div>'
             ),
         $img = $li.find('img');
-
-
     // $list为容器jQuery实例
     $('#imageList').append( $li );
 

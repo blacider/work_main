@@ -1,3 +1,8 @@
+<style>
+.webuploader-pick  {
+background:#fff !important;
+}
+</style>
 <div class="page-content">
     <div class="page-content-area">
         <form id="profile_form" class="form-horizontal" role="form" method="post" action="<?php echo base_url('users/update_profile'); ?>/<?php echo $isOther ?>/">
@@ -5,7 +10,7 @@
                 <div class="col-xs-12 col-sm-12">
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">头像</label>
-                        <div class="col-xs-6 col-sm-6">
+                        <div class="col-xs-6 col-sm-6 filePicker">
                             <?php $user = $member; ?>
                             <?php $disabled = $self == 1 ? '' : 'disabled'; ?>
 <?php 
@@ -18,7 +23,7 @@ if("" == $user['apath']) {
 ?>
 
 <!--avatar_container <a id="btn_cimg" style="height:140px;width:140px" href="javascript:void(0)" class="avatar thumbnail"> btn btn-primary btn-white-->
-          <a id="btn_cimg" style="height:144px;width:155px" class="btn btn-primary btn-white"><img src="<?php echo $path;?>" style="height:130px;width:130px" /> </a>
+          <a id="btn_cimg" class="filePicker"  style="height:144px;width:155px" class="btn btn-primary btn-white"><img src="<?php echo $path;?>" style="height:130px;width:130px" id="avatar_src" /> </a>
                         </div>
                     </div>
 
@@ -141,6 +146,7 @@ foreach($member['banks'] as $b) {
 
 
 <input type="file" style="display:none;" id="src" name="file" data-url="<?php echo base_url('items/avatar'); ?>" data-form-data='{"type": "1"}'>
+
 <div class="modal fade" id="select_img_modal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -508,10 +514,54 @@ foreach($member['banks'] as $b) {
 </div>
 
 
-<script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
-<script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script>
-<script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script>
+<!--  <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script> -->
+<!--  <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
+<!-- <script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script> -->
+<link rel="stylesheet" type="text/css" href="/static/third-party/webUploader/webuploader.css">
+
+<!--引入JS-->
+<script type="text/javascript" src="/static/third-party/webUploader/webuploader.js"></script>
+
 <script language="javascript">
+var __BASE = "<?php echo $base_url; ?>";
+var flag = 0;
+function initUploader() {
+    if (flag == 1) {
+        return;
+    } else {
+        flag =1;
+    }
+}
+var uploader = WebUploader.create({
+    // 选完文件后，是否自动上传。
+    auto: true,
+    // swf文件路径
+    swf: '/static/third-party/webUploader/Uploader.swf',
+    // 文件接收服务端。
+    server: '<?php echo base_url('items/images'); ?>',
+    // 选择文件的按钮。可选。
+    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+    pick: '.filePicker',
+    // 只允许选择图片文件。
+    accept: {
+        title: 'Images',
+        extensions: 'gif,jpg,jpeg,bmp,png',
+        mimeTypes: 'image/*'
+    }
+
+});
+
+uploader.on( 'uploadSuccess', function( file, resp ) {
+    if(resp.status > 0) {
+        var _src = resp['data']['url'];
+        $('#avatar_src').attr( 'src', _src);
+    }
+
+
+});
+
+
+
     var __PROVINCE = Array();
 function get_province(){
         $.ajax({
@@ -618,6 +668,7 @@ function get_province(){
 $(document).ready(function(){
     get_province();
     if(__error) show_notify(__error);
+    /*
     $('#src').uploadFile(
                     {
                         dataType: 'json',
@@ -647,14 +698,17 @@ $(document).ready(function(){
         $('#btn_cimg').show();
         $('#select_img_modal').modal({keyborard: false});
     });
+         */
 
     $('.renew').click(function(){
         $('#profile_form').submit();
     });
 
+        /*
     $('#btn_cimg').click(function(){
         $('#src').click();
     });
+         */
     $('.password').click(function(){
         $('#password_modal').modal({keyborard: false});
     });
