@@ -543,9 +543,7 @@ foreach($member['banks'] as $b) {
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var flag = 0;
-$(document).ready(function(){
-    $('.nyroModal').nyroModal();
-});
+var is_other = "<?php echo $isOther; ?>";
 function show_loading(){
     $('#loading').show();
 }
@@ -554,13 +552,7 @@ function close_loading(){
     $('#loading').hide();
     //$.nmTop().close();
 }
-function initUploader() {
-    if (flag == 1) {
-        return;
-    } else {
-        flag =1;
-    }
-}
+if(is_other == 0) {
 var uploader = WebUploader.create({
     // 选完文件后，是否自动上传。
     auto: true,
@@ -590,6 +582,7 @@ uploader.on( 'uploadSuccess', function( file, resp ) {
         $('#avatar_src').attr( 'src', _src);
     }
 });
+}
 
 
 
