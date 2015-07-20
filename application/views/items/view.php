@@ -122,8 +122,7 @@ if($user['id'] == $item['uid'] || (($user['admin']>0)&&($item['rstatus'] == 2) |
         </form>
     </div>
 </div>
-<p><?php echo json_encode($user) ?></p>
-<p><?php echo "item%%%%%%:".json_encode($item) ?></p>
+
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
