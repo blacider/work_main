@@ -1,6 +1,17 @@
 <style>
 .webuploader-pick  {
 background:#fff !important;
+
+}
+#loading{
+position:absolute;
+width:300px;
+top:0px;
+left:50%;
+margin-left:-150px;
+text-align:center;
+padding:7px 0 0 0;
+font:bold 11px Arial, Helvetica, sans-serif;
 }
 </style>
 <div class="page-content">
@@ -514,6 +525,11 @@ foreach($member['banks'] as $b) {
 </div>
 
 
+<div id="loading">
+                    <img src="/static/images/loading.gif">
+</div>
+
+
 <!--  <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script> -->
 <!--  <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
 <!-- <script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script> -->
@@ -522,9 +538,22 @@ foreach($member['banks'] as $b) {
 <!--引入JS-->
 <script type="text/javascript" src="/static/third-party/webUploader/webuploader.js"></script>
 
+
+<script type="text/javascript">$(window).load(function(){$("#loading").hide();})</script>
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var flag = 0;
+$(document).ready(function(){
+    $('.nyroModal').nyroModal();
+});
+function show_loading(){
+    $('#loading').show();
+}
+
+function close_loading(){
+    $('#loading').hide();
+    //$.nmTop().close();
+}
 function initUploader() {
     if (flag == 1) {
         return;
@@ -551,13 +580,15 @@ var uploader = WebUploader.create({
 
 });
 
+uploader.on( 'uploadProgress', function( file, percentage ) {
+    show_loading();
+});
 uploader.on( 'uploadSuccess', function( file, resp ) {
+    close_loading();
     if(resp.status > 0) {
         var _src = resp['data']['url'];
         $('#avatar_src').attr( 'src', _src);
     }
-
-
 });
 
 
