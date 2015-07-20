@@ -7,6 +7,12 @@ class Reports extends REIM_Controller {
         $this->load->model('user_model', 'users');
         $this->load->model('report_model', 'reports');
     }
+    
+    public function revoke($id = 0)
+    {
+    	$buf = $this->reports->revoke($id);
+	return redirect('reports');
+    }
 
     public function sendout()
     {
@@ -397,11 +403,12 @@ class Reports extends REIM_Controller {
         case 2:{$_type = '预算';};break;
         }
         $report['prove_ahead'] =  $_type;
-        $this->bsload('reports/view',
+	$this->bsload('reports/view',
             array(
                 'title' => '查看报告',
                 'report' => $report,
                 'flow' => $flow
+		,'rid' => $id
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
