@@ -106,7 +106,7 @@
                                 <div class="col-md-offset-3 col-md-6">
                                     <?php 
 $user = $this->session->userdata('user');
-if($user['id'] == $item['uid']) {
+if($user['id'] == $item['uid'] || (($user['admin']>0)&&($item['rstatus'] == 2) ||(($user['id'] == $user['manager_id'])&&($item['rstatus']==1)) )) {
                                      ?>
                                     <a class="btn btn-white btn-primary renew" href="<?php echo base_url('items/edit/' . $item['id']); ?>" data-renew="1"><i class="ace-icon fa fa-check"></i>修改</a>
 <?php
@@ -122,6 +122,8 @@ if($user['id'] == $item['uid']) {
         </form>
     </div>
 </div>
+<p><?php echo json_encode($user) ?></p>
+<p><?php echo "item%%%%%%:".json_encode($item) ?></p>
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";

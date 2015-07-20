@@ -297,7 +297,7 @@ class Items extends REIM_Controller {
 	log_message("debug","id".$id);
         $this->bsload('items/view',
             array(
-                'tiftle' => '查看消费',
+                'title' => '查看消费',
                 'categories' => $categories,
                 'tags' => $tags,
                 'item' => $item,
