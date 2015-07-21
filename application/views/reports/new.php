@@ -42,8 +42,12 @@
                                         <?php 
 					$user = $this->session->userdata('user');
 					foreach($members as $m) {
-					if($user['id'] != $m['id']){?>
+					if($user['id'] != $m['id']){
+                        if ($user['manager_id'] != $m['id']){?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
+                                        <?php } else {?>
+                                        <option selected="true" value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
+                                        <?php } ?>
                                         <?php }} ?>
                                     </select>
                                 </div>
@@ -55,8 +59,11 @@
                                     <select class="chosen-select tag-input-style" name="cc[]" multiple="multiple" data-placeholder="请选择标签">
                                         <?php foreach($members as $m) {
 					if($user['id'] != $m['id']){
-					?>
+					if ($user['manager_id'] != $m['id']){?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
+                                        <?php } else {?>
+                                        <option selected="true" value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
+                                        <?php } ?>
                                         <?php }} ?>
                                     </select>
                                 </div>
@@ -137,6 +144,7 @@ echo $buf;
 </div>
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
+console.log(<?php echo $user['manager_id'] ?>);
 $(document).ready(function(){
     //var now = moment();
     $('#date-timepicker1').datetimepicker({
