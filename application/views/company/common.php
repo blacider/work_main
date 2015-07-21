@@ -19,7 +19,7 @@
 <div class="page-content">
     <div class="page-content-area">
         <form role="form"  class="form-horizontal"  enctype="multipart/form-data" id="mainform">
-            <div class="row">
+            <!-- <div class="row"> -->
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
@@ -98,17 +98,17 @@
 
                             <input type="hidden" id="renew" name="renew" value="0" />
                             <input type="reset" style="display:none;" id="reset">
-                            <div class="clearfix form-actions">
+                            <div class="clearfix form-actions col-sm-10 col-md-10">
                                 <div class="col-md-offset-3 col-md-9">
                                     <a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
 
-                                    <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
+                                    <a  class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <!--</div>-->
         </form>
     </div>
 </div>
