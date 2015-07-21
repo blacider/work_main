@@ -588,6 +588,9 @@ public function common(){
    	$pids = 0;
 	$remark_id = 0;
 	$company_id = 0;
+	$need_bank_info = 0;
+	
+	$need_bank = $this->input->post('need_bank_info');
    	$ischecked = $this->input->post('ischecked');
 	$isremark = $this->input->post('isremark');
 	$iscompany = $this->input->post('iscompany');
@@ -605,6 +608,10 @@ public function common(){
 	if($iscompany == "true")
 	{
 		$company_id = 1;
+	}
+	if($need_bank == "true")
+	{
+		$need_bank_info = 1;
 	}
 	$data = $this->company->get();
 //	$config = $data['data']['config'];
@@ -624,6 +631,7 @@ public function common(){
 	$in['template'] = $template;
 	$in['user_confirm'] = $user_confirm;
 	$in['report_quota'] = $reports_limit;
+	$in['need_bank_info'] = $need_bank_info;
 	$this->company->profile($in);
 	$re = array('name' => $ischecked,'remark'=>$isremark,'template' => $template,'obj' => $data['data']['config']);
 	die(json_encode($re));
