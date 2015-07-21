@@ -56,13 +56,32 @@ class Items extends REIM_Controller {
     }
 
     public function newitem(){
+        $profile = $this->session->userdata('profile');
+        $sobs = $profile['sob'];
+        $_sob_id = array();
+        $_sobs = array();
+        foreach($sobs as $i) {
+            log_message('debug', "alvayang:" . json_encode($i));
+            array_push($_sob_id, $i['sob_id']);
+            array_push($_sobs, $i);
+        }
         $category = $this->category->get_list();
+        log_message('debug', "category:" . json_encode($category));
         $categories = array();
         $tags = array();
         if($category && array_key_exists('data', $category) && array_key_exists('categories', $category['data'])){
             $categories = $category['data']['categories'];
             $tags = $category['data']['tags'];
         }
+
+        $_categories = array();
+        foreach($categories as $cate) {
+            if(in_array($cate['sob_id'], $_sob_id)) {
+                log_message('debug', "alvayang category:" . json_encode($cate));
+                array_push($_categories, $cate);
+            }
+        }
+
         $this->bsload('items/new',
             array(
                 'title' => '新建消费'
@@ -72,6 +91,8 @@ class Items extends REIM_Controller {
                     ,array('url'  => '', 'name' => '新建消费', 'class' => '')
                 ),
                 'categories' => $categories,
+                'sobs' => $_sobs,
+                'categories' => $_categories,
                 'tags' => $tags
             ));
     }

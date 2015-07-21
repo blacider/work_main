@@ -219,10 +219,7 @@ function get_sobs(){
                 updateSelectSob(selectDataSobs);
             },
             error:function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.log(XMLHttpRequest.status);
-                        console.log(XMLHttpRequest.readyState);
-                        console.log(textStatus);}
-        });
+            });
 
 
         $('#sobs').change(function(){
@@ -234,7 +231,6 @@ function get_sobs(){
                 {
                     _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
                     
-                   // console.log(_h);
                 }
             }
             var selectDom = this.parentNode.nextElementSibling.children[0]
