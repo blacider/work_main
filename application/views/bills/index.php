@@ -80,6 +80,7 @@ position: absolute;
                     </div>
                     
                   </div>
+                  </div>
                   <div class="space-4"></div>
 
                   <br>
@@ -100,6 +101,7 @@ position: absolute;
           </div>
         </div>
       </div><!-- PAGE CONTENT ENDS -->
+
 
 
 <script language="javascript">
