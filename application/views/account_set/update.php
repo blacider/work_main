@@ -69,7 +69,7 @@
                                 <div class="col-md-offset-3 col-md-9">
                                     <a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
 
-                                    <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
+                                    <a style="position:relative;left:80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
                                 </div>
                             </div>
                         </div>
@@ -97,9 +97,9 @@ var _sob_id = "<?php echo $sob_id ?>";
             success:function(data){
                 console.log(data);
                 console.log(data[_sob_id]);
-                var _sob_data = data[_sob_id];
-                var _sob_name = _sob_data['sob_name'];
-                var _sob_groups = _sob_data['groups'];
+                _sob_data = data[_sob_id];
+                _sob_name = _sob_data['sob_name'];
+                _sob_groups = _sob_data['groups'];
                 console.log(_sob_name);
                 $('#sob_name').val(_sob_name);
                 console.log(_sob_groups);
@@ -159,7 +159,16 @@ var _sob_id = "<?php echo $sob_id ?>";
             }).trigger('resize.chosen');
        
         $('.cancel').click(function(){
-            $('#reset').click();
+            $('#sob_name').val(_sob_name);
+            $("#group").val('');
+            for (var item in _sob_groups) {
+                if (item != undefined) {
+                    var _id = _sob_groups[item].group_id;
+                    $('select').find('option[value="'+ _id +'"]').attr('selected', 'true');
+                }
+            }
+            $('#group').trigger("chosen:updated");
+
         });
     });
 </script>
