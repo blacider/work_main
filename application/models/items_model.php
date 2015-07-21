@@ -91,7 +91,7 @@ class Items_Model extends Reim_Model {
         $fileSize = filesize($image_path);
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $finfo = finfo_file($finfo, $image_path);
-         log_message("debug", "xiamian shi finfo");
+        log_message("debug", "xiamian shi finfo");
         log_message("debug", $fileSize);
         log_message("debug", $image_path);
         log_message("debug", basename($image_path));

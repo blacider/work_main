@@ -1,3 +1,19 @@
+<style>
+.webuploader-pick  {
+background:#fff !important;
+
+}
+#loading{
+position:absolute;
+width:300px;
+top:0px;
+left:50%;
+margin-left:-150px;
+text-align:center;
+padding:7px 0 0 0;
+font:bold 11px Arial, Helvetica, sans-serif;
+}
+</style>
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 
@@ -10,7 +26,7 @@
                 <div class="col-xs-12 col-sm-12">
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">头像</label>
-                        <div class="col-xs-6 col-sm-6">
+                        <div class="col-xs-6 col-sm-6 filePicker">
                             <?php $user = $member; ?>
                             <?php $disabled = $self == 1 ? '' : 'disabled'; ?>
 <?php 
@@ -23,7 +39,7 @@ if("" == $user['apath']) {
 ?>
 
 <!--avatar_container <a id="btn_cimg" style="height:140px;width:140px" href="javascript:void(0)" class="avatar thumbnail"> btn btn-primary btn-white-->
-          <a id="btn_cimg" style="height:144px;width:155px" class="btn btn-primary btn-white"><img src="<?php echo $path;?>" style="height:130px;width:130px" /> </a>
+          <a id="btn_cimg" class="filePicker"  style="height:144px;width:155px" class="btn btn-primary btn-white"><img src="<?php echo $path;?>" style="height:130px;width:130px" id="avatar_src" /> </a>
                         </div>
                     </div>
 
@@ -171,6 +187,7 @@ foreach($member['banks'] as $b) {
 
 
 <input type="file" style="display:none;" id="src" name="file" data-url="<?php echo base_url('items/avatar'); ?>" data-form-data='{"type": "1"}'>
+
 <div class="modal fade" id="select_img_modal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -536,12 +553,74 @@ foreach($member['banks'] as $b) {
         </div>
     </div>
 </div>
+
+
+<div id="loading">
+                    <img src="/static/images/loading.gif">
+</div>
+
+
+<!--  <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script> -->
+<!--  <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
+<!-- <script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script> -->
+<link rel="stylesheet" type="text/css" href="/static/third-party/webUploader/webuploader.css">
+
+<!--引入JS-->
+<script type="text/javascript" src="/static/third-party/webUploader/webuploader.js"></script>
+
+
+<script type="text/javascript">$(window).load(function(){$("#loading").hide();})</script>
 <!--
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
 <script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script> 
 <script language="javascript">
+var __BASE = "<?php echo $base_url; ?>";
+var flag = 0;
+var is_other = "<?php echo $isOther; ?>";
+function show_loading(){
+    $('#loading').show();
+}
+
+function close_loading(){
+    $('#loading').hide();
+    //$.nmTop().close();
+}
+if(is_other == 0) {
+var uploader = WebUploader.create({
+    // 选完文件后，是否自动上传。
+    auto: true,
+    // swf文件路径
+    swf: '/static/third-party/webUploader/Uploader.swf',
+    // 文件接收服务端。
+    server: '<?php echo base_url('items/images'); ?>',
+    // 选择文件的按钮。可选。
+    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+    pick: '.filePicker',
+    // 只允许选择图片文件。
+    accept: {
+        title: 'Images',
+        extensions: 'gif,jpg,jpeg,bmp,png',
+        mimeTypes: 'image/*'
+    }
+
+});
+
+uploader.on( 'uploadProgress', function( file, percentage ) {
+    show_loading();
+});
+uploader.on( 'uploadSuccess', function( file, resp ) {
+    close_loading();
+    if(resp.status > 0) {
+        var _src = resp['data']['url'];
+        $('#avatar_src').attr( 'src', _src);
+    }
+});
+}
+
+
+
     var __PROVINCE = Array();
 function get_province(){
         $.ajax({
@@ -648,6 +727,7 @@ function get_province(){
 $(document).ready(function(){
     get_province();
     if(__error) show_notify(__error);
+    /*
     $('#src').uploadFile(
                     {
                         dataType: 'json',
@@ -672,7 +752,7 @@ $(document).ready(function(){
                                 }
                     }
     );
-
+         */
 
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
@@ -695,9 +775,11 @@ $(document).ready(function(){
         $('#profile_form').submit();
     });
 
+        /*
     $('#btn_cimg').click(function(){
         $('#src').click();
     });
+         */
     $('.password').click(function(){
         $('#password_modal').modal({keyborard: false});
     });
