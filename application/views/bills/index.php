@@ -73,7 +73,7 @@ position: absolute;
 
 
                   <div class="form-group">
-                    <label for="form-field-username">请输入报告发送的email地址:</label>
+                    <label for="form-field-username">请输入报告发送的Email地址:</label>
                     <div>
                       <input class=" col-xs-8 col-sm-8" type="text" id="email" name="email" class="form-control"></input>
                       <input type="hidden" id="report_id" name="report_id">
