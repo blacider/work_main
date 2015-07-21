@@ -76,8 +76,12 @@ class Items extends REIM_Controller {
 
         $_categories = array();
         foreach($categories as $cate) {
-            if(in_array($cate['sob_id'], $_sob_id)) {
-                log_message('debug', "alvayang category:" . json_encode($cate));
+            log_message('debug', "alvayang category:" . json_encode($cate));
+            if(count($_sob_id) > 0) {
+                if(in_array('sob_id', $cate) && in_array($cate['sob_id'], $_sob_id)) {
+                    array_push($_categories, $cate);
+                }
+            } else {
                 array_push($_categories, $cate);
             }
         }

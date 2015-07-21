@@ -38,12 +38,12 @@ function bind_event(){
     $('.texport').each(function(){
     	$(this).click(function(){
 	    var _id = $(this).data('id');
-	    console.log(_id);
 	    $('#report_id').val(_id);
 	});
     });
 }
 
+try{
 jQuery(grid_selector).jqGrid({
     url: __BASE + 'bills/listdata/' + __STATUS,
     mtype: "GET",
@@ -96,7 +96,11 @@ jQuery(grid_selector).jqGrid({
     pager : pager_selector,
 
     });
+}catch(e) {
+    alert(e);
+}
 
+try{
     jQuery(grid_selector).jqGrid('navGrid',pager_selector,
             {   //navbar options
                 edit: false,
@@ -106,7 +110,6 @@ jQuery(grid_selector).jqGrid({
         addtitle: '导出U8',
         addfunc : function(rowids, p){
             var rowid = $(grid_selector).jqGrid('getGridParam','selarrrow');
-            console.log(rowid);
             var form=$("<form>");//定义一个form表单
             form.attr("style","display:none");
             form.attr("target","");
@@ -282,6 +285,9 @@ jQuery(grid_selector).jqGrid({
     } : null,
     position:"last"
 });
+} catch(e) {
+    alert(e);
+}
 
 $(document).ready(function () {
     $(grid_selector).jqGrid();
