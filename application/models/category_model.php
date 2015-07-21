@@ -50,7 +50,7 @@ class Category_Model extends Reim_Model {
 
     public function remove($cid){
         $jwt = $this->session->userdata('jwt');
-        log_message("debug", "JWT: " . $jwt);
+        //log_message("debug", "JWT: " $jwt);
         if(!$jwt) return false;
 		$url = $this->get_url('category/' . $cid);
 		$buf = $this->do_Delete($url, array(), $jwt);

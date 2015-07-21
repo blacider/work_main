@@ -49,7 +49,7 @@
                                 <label class="col-sm-1 control-label no-padding-right">消费时间</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <div class="input-group">
-                                        <input id="date-timepicker1" type="text" class="form-control" />
+                                        <input id="date-timepicker1" name = 'dt1' type="text" class="form-control" />
                                         <input type="hidden" name="dt" id="dt" value="<?php echo $item['dt']; ?>">
                                         <span class="input-group-addon">
                                             <i class="fa fa-clock-o bigger-110"></i>
@@ -394,8 +394,9 @@ $(document).ready(function(){
 
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
-                defaultDate: _dt,
-            format: 'YYYY-MM-DD HH:mm'
+        defaultDate: _dt,
+        format: 'YYYY-MM-DD HH:mm',
+        linkField: "dt1",
     }).next().on(ace.click_event, function(){
         $(this).prev().focus();
     });
