@@ -38,7 +38,7 @@ function bind_event(){
     $('.texport').each(function(){
     	$(this).click(function(){
 	    var _id = $(this).data('id');
-	    console.log(_id);
+	    //console.log(_id);
 	    $('#report_id').val(_id);
 	});
     });
@@ -106,7 +106,7 @@ jQuery(grid_selector).jqGrid({
         addtitle: '导出U8',
         addfunc : function(rowids, p){
             var rowid = $(grid_selector).jqGrid('getGridParam','selarrrow');
-            console.log(rowid);
+            //console.log(rowid);
             var form=$("<form>");//定义一个form表单
             form.attr("style","display:none");
             form.attr("target","");

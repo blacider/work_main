@@ -90,6 +90,7 @@ class REIM_Controller extends CI_Controller{
         $config['upload_path'] = $this->config->item('static_base') . $prefix;
         $relate_file = $config['upload_path'];
         if(!file_exists($config['upload_path'])){
+            //echo $config['upload_path'];
             $mkres = mkdir($config['upload_path'], 0777, true);
             if(!$mkres){
                 log_message("debug", "mkdir error: " . $config['upload_path']);
