@@ -218,7 +218,7 @@ function get_sobs(){
                 selectPostData = data;
                 updateSelectSob(selectDataSobs);
             },
-            error:function(XMLHttpRequest, textStatus, errorThrown) {
+            error:function(XMLHttpRequest, textStatus, errorThrown) {}
             });
 
 
@@ -237,12 +237,10 @@ function get_sobs(){
             $(selectDom).empty().append(_h).trigger("chosen:updated");
         });
 
-        
-
 }
 $(window).load(function() {
     $('input')[3].style.width = '100px';
-$('input')[4].style.width = '100px';
+    $('input')[4].style.width = '100px';
 })
 $(document).ready(function(){
 	    /*$.ajax({
