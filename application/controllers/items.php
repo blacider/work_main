@@ -56,13 +56,36 @@ class Items extends REIM_Controller {
     }
 
     public function newitem(){
+        $profile = $this->session->userdata('profile');
+        $sobs = $profile['sob'];
+        $_sob_id = array();
+        $_sobs = array();
+        foreach($sobs as $i) {
+            log_message('debug', "alvayang:" . json_encode($i));
+            array_push($_sob_id, $i['sob_id']);
+            array_push($_sobs, $i);
+        }
         $category = $this->category->get_list();
+        log_message('debug', "category:" . json_encode($category));
         $categories = array();
         $tags = array();
         if($category && array_key_exists('data', $category) && array_key_exists('categories', $category['data'])){
             $categories = $category['data']['categories'];
             $tags = $category['data']['tags'];
         }
+
+        $_categories = array();
+        foreach($categories as $cate) {
+            log_message('debug', "alvayang category:" . json_encode($cate));
+            if(count($_sob_id) > 0) {
+                if(in_array('sob_id', $cate) && in_array($cate['sob_id'], $_sob_id)) {
+                    array_push($_categories, $cate);
+                }
+            } else {
+                array_push($_categories, $cate);
+            }
+        }
+
         $this->bsload('items/new',
             array(
                 'title' => '新建消费'
@@ -72,6 +95,8 @@ class Items extends REIM_Controller {
                     ,array('url'  => '', 'name' => '新建消费', 'class' => '')
                 ),
                 'categories' => $categories,
+                'sobs' => $_sobs,
+                'categories' => $_categories,
                 'tags' => $tags
             ));
     }
@@ -294,7 +319,7 @@ class Items extends REIM_Controller {
             }
         }
 	log_message("debug","item_updta_in".$this->session->userdata("item_update_in"));
-	log_message("debug","id".$id);
+	log_message("debug","flow".json_encode($_flow));
         $this->bsload('items/view',
             array(
                 'title' => '查看消费',
@@ -401,8 +426,11 @@ class Items extends REIM_Controller {
         $id = $this->input->post('id');
         $amount = $this->input->post('amount');
         $category= $this->input->post('category');
-        $timestamp = strtotime($this->input->post('dt'));
-        log_message("debug", "TM:" . $timestamp);
+	log_message('debug', "##TM SRC:" . $this->input->post('dt1'));
+	$time = $this->input->post('dt1');
+        $timestamp = strtotime($this->input->post('dt1'));
+	$temestamp = $timestamp*1000;
+        log_message("debug", "##TM:" . $timestamp);
         //$timestamp = mktime(0, $dt['tm_min'], $dt['tm_hour'], $dt['tm_mon']+1, $dt['tm_mday'], $dt['tm_year'] + 1900);
 
         $merchant = $this->input->post('merchant');
@@ -410,7 +438,46 @@ class Items extends REIM_Controller {
         $type = $this->input->post('type');
         $note = $this->input->post('note');
         $images = $this->input->post('images');
-        $obj = $this->items->update($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
+	if($item_update_in!=0)
+	{
+		$item_data = $this->items->get_by_id($id);
+		$data = $item_data['data'];
+		if($amount == $data['amount'])
+		{
+			$amount=-1;
+		}
+		if($category == $data['category'])
+		{
+			$category = -1;
+		}
+		if($tags == $data['tags'])
+		{
+			$tags = -1;
+		}
+		log_message("debug",'time:'.strtotime($time));
+		log_message("debug","gettime:".strtotime($data['dt']));
+		log_message("debug","gettime:".strtotime($data['dt']));
+	
+		if(strtotime($time) == strtotime($data['dt']) || $time == '')
+		{
+			$timestamp = -1;
+		}
+		if($merchant == $data['merchants'])
+		{
+			$merchant = -1;
+		}
+		if($note == $data['note'])
+		{
+			$note = -1;
+		}
+		log_message('debug','item_data:'.json_encode($data));
+        	$obj = $this->items->update_item($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
+
+	}
+	else
+	{
+        	$obj = $this->items->update($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
+	}
         // TODO: 提醒的Tips
       /*  if($obj['status'] > 0){
             redirect(base_url('items/index'));
@@ -435,8 +502,6 @@ class Items extends REIM_Controller {
 			return redirect(base_url('items/index'));
 			break;
 	}
-        
-
     }
 
 }

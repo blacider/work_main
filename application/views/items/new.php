@@ -19,13 +19,19 @@
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">类别</label>
 <div class="col-xs-6 col-sm-6">
-<select class="form-control" name="category">
-<!-- <option value="0">请选择分类</option> -->
-<?php foreach($categories as $category) { ?>
-<option value="<?php echo $category['id']; ?>"><?php echo $category['category_name']; ?></option>
-<?php } ?>
+
+<div class="col-xs-6 col-sm-6">
+<select class="form-control" name="sob" id="sobs">
 </select>
 </div>
+<div class="col-xs-6 col-sm-6">
+<select name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
+</select>
+</div>
+
+</div>
+
+
 </div>
 
 <div class="form-group">
@@ -311,12 +317,51 @@ function bind_event(){
         });
 }
 
+    function updateSelectSob(data) {
+                                $("#sobs").empty();
+                                $("#sobs").append(data);
+                                $("#sobs").trigger('change');
+                                $("#sobs").trigger("chosen:updated");
+                            }
+function get_sobs(){
+   var selectPostData = {};
+   var selectDataCategory = {};
+   var selectDataSobs = '';
+        $.ajax({
+            url : __BASE + "category/get_my_sob_category",
+            dataType : 'json',
+            method : 'GET',
+            success : function(data){
+                for(var item in data) {
+                    var _h = "<option value='" +  item + "'>"+  data[item].sob_name + " </option>";
+                    selectDataCategory[item] = data[item]['category'];
+                    selectDataSobs += _h;
+                }
+                selectPostData = data;
+                updateSelectSob(selectDataSobs);
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown) {}
+        });
+
+
+        $('#sobs').change(function(){
+            var s_id = $(this).val();
+            var _h = '';
+            if(selectDataCategory[s_id] != undefined)
+            {
+                for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
+                {
+                    _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                    
+                }
+            }
+            var selectDom = this.parentNode.nextElementSibling.children[0]
+            $(selectDom).empty().append(_h).trigger("chosen:updated");
+        });
+}
 
 $(document).ready(function(){
-    //$('#fileupload').uploadFile();
-    //var now = moment();
-    // 初始化Web Uploader
-
+    get_sobs();
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
             useCurrent: true,
@@ -337,50 +382,8 @@ $(document).ready(function(){
                 $this.next().css({'width': $this.parent().width()});
             })
         }).trigger('resize.chosen');
-    /*
-    $('#src').uploadFile(
-                    {
-                        dataType: 'json',
-                        progressall: function (e, data) {
-                                $('#div_thumbnail').show();
-                                $('#btn_cimg').hide();
-                            var progress = parseInt(data.loaded / data.total * 100, 10);
-                        },
-                        done: function (e, data) {
-                                console.log(11);
-                                $('#div_thumbnail').hide();
-                                $('#select_img_modal').modal('hide');
-                                $('#btn_cimg').show();
-                                var _server_data = data.result;
-                                if(_server_data.status == 0) {
-                                    show_notify('保存失败');
-                                } else {
-                                    var _path = _server_data.data.url;
-                                    var _id = _server_data.data.id;
-                                    if(_id > 0){
-                                        var _exists = ($('#images').val()).split(",");
-                                        if($.inArray(_id, _exists) < 0){
-                                            _exists.push(_id);
-                                        }
-                                        $('#images').val(_exists.join(','));
-                                    }
-                                    var _new_img = '<li style="border:0px;" height="150">'
-                                        + '<a href="' + _path + '" data-rel="colorbox" class="cboxElement" style="border:0px;">'
-                                        + '<img  width="150" alt="150x150" src="' + _path + '"></a>'
-                                        + '<div class="tools tools-top text-right" style="text-align:right"><a href="javascript:void(0)" class="rimg" data-id="' + _id + '"><i class="ace-icon fa fa-times red" style="padding-top: 5px;"></i></a></div>'
-                                        + '</li>';
-                                    $(_new_img).appendTo($('#timages'));
-                                    bind_event();
-                                }
-                            },
-                                fileuploadfail : function (){
-                                    show_notify('保存失败');
-                                }
-                    }
-    );*/
 
     $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange'></i>");//let's add a custom loading icon
- 
     $('.renew').click(function(){
         if($('#amount').val() == 0) {
             show_notify('请输入金额');
@@ -407,6 +410,6 @@ $(document).ready(function(){
     $('.cancel').click(function(){
         $('#reset').click();
     });
-    initUploader();
+    //initUploader();
 });
 </script>

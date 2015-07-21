@@ -23,8 +23,9 @@ position: absolute;
     background-color: #ff7075;
    }
 </style>
-    <input name="key" placeholder="ID、报告名或提交者" value="" type='text' id="globalSearchText">
-    <button type="button" id="globalSearch">搜索</button>
+
+<input name="key" placeholder="ID、报告名或提交者" value="" type='text' id="globalSearchText" />
+<button type="button" id="globalSearch">搜索</button>
 
 
 <div class="page-content">
@@ -47,7 +48,6 @@ position: absolute;
         <h4 class="modal-title">支付以下报告</h4>
       </div>
       <div class="modal-body">
-
         <table id="grid-table-new"></table> 
       </div>
       <div class="modal-footer">
@@ -60,77 +60,70 @@ position: absolute;
 </div><!-- /.modal -->
 
 <div id="modal-table1" class="modal" tabindex="-1">
-      <div class="modal-dialog">
+  <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="blue bigger"> 导出报告 </h4>
           </div>
-          <form method="post" >
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-xs-12 col-sm-12">
-
-
+         <div class="modal-body">
+           <div class="container">
+              <div class="col-xs-12 col-sm-12">
+                <div class="row">
                   <div class="form-group">
-                    <label for="form-field-username">请输入报告发送的email地址:</label>
-                    <div>
-                      <input class=" col-xs-8 col-sm-8" type="text" id="email" name="email" class="form-control"></input>
-                      <input type="hidden" id="report_id" name="report_id">
-                    </div>
-                    
-                  </div>
-                  <div class="space-4"></div>
-
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                </div>
-              </div>
-
-              <div class="modal-footer">
-                <button class="btn btn-sm" data-dismiss="modal">
-                  <i class="ace-icon fa fa-times"></i>
-                  取消
-                </button>
-                <input type="button" id='send' class="btn btn-sm btn-primary" value="发送">
-              </div>
-            </form>
-          </div>
+                      <label for="form-field-username">请输入报告发送的Email地址:</label>
+                      <div>
+                        <input class="col-xs-4 col-sm-4" type="text" id="email" name="email" class="form-control" />
+                        <input type="hidden" id="report_id" name="report_id" />
+                      </div>
+                  </div>   
+                </div>    <!-- row -->
+              </div>    <!-- col-xs-12 -->
+           </div> <!--- container -->
+         </div>
+         <div class="modal-footer">
+           <button class="btn btn-sm" data-dismiss="modal">
+             <i class="ace-icon fa fa-times"></i>
+             取消
+           </button>
+           <input type="button" id='send' class="btn btn-sm btn-primary" value="发送" />
+         </div>
         </div>
-      </div><!-- PAGE CONTENT ENDS -->
+  </div>
+</div><!-- PAGE CONTENT ENDS -->
+
+
 
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var __STATUS = "<?php echo $status; ?>";
 </script>
-<script src="/static/js/base.js" ></script>
-<script src="/static/js/bills.js" ></script>
-<script language="javascript">
-    function pay() {
-      var _id = chosenids.join('%23');
-      location.href = __BASE + "bills/marksuccess/" + _id + "/0";
-    }
 
-    function exportExel() {
-            var form=$("<form>");//定义一个form表单
-            form.attr("style","display:none");
-            form.attr("target","");
-            form.attr("method","post");
-            form.attr("action", __BASE + "/reports/exports");
-            var input1=$("<input>");
-            input1.attr("type","hidden");
-            input1.attr("name","ids");
-            input1.attr("value", chosenids.join(','));
-            $("body").append(form);//将表单放置在web中
-            form.append(input1);
-            form.submit();//表单提交
-    }
-</script>
-<script type="text/javascript">
+
+<script language="javascript">
+function pay() {
+    var _id = chosenids.join('%23');
+    location.href = __BASE + "bills/marksuccess/" + _id + "/0";
+}
+
+function exportExel() {
+        var form=$("<form>");//定义一个form表单
+        form.attr("style","display:none");
+        form.attr("target","");
+        form.attr("method","post");
+        form.attr("action", __BASE + "/reports/exports");
+        var input1=$("<input>");
+        input1.attr("type","hidden");
+        input1.attr("name","ids");
+        input1.attr("value", chosenids.join(','));
+        $("body").append(form);//将表单放置在web中
+        form.append(input1);
+        form.submit();//表单提交
+}
+
 $grid = $('#grid-table');
+
 $("#globalSearch").click(function () {
     var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
         colModel = $grid.jqGrid("getGridParam", "colModel"),
@@ -163,25 +156,23 @@ $('#send').click(function(){
       ,dataType:"json"
       ,data:{report_id:$('#report_id').val(),email:$('#email').val()}
       ,success:function(data){
-        console.log(data);
-          if(data.status== 1)
-          {
+          if(data.status== 1) {
             $('#modal-table1').modal('hide')
             show_notify("pdf已经成功发送至您的邮箱");
           }
           else
           {
-              if(data.data.msg != undefined)
-              {
+              if(data.data.msg != undefined) {
                 show_notify(data.data.msg);
               }
-              else
-              {
+              else {
                 show_notify("输入邮箱错误");
               }
           }
       }
     });
-
 });
+
 </script>
+<script language="javascript" src="/static/js/base.js" ></script>
+<script language="javascript" src="/static/js/bills.js" ></script>

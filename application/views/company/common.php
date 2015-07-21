@@ -19,10 +19,26 @@
 <div class="page-content">
     <div class="page-content-area">
         <form role="form"  class="form-horizontal"  enctype="multipart/form-data" id="mainform">
-            <div class="row">
+            <!-- <div class="row"> -->
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
+
+
+                              <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right">是否有银行信息</label>
+                                <div class="col-xs-6 col-sm-6">
+                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
+                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
+                                        <label style="margin-top:8px;">
+                                            <input name="need_bank_info" class="ace ace-switch btn-rotate" type="checkbox" id="need_bank_info" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+
+                                   <!-- </div> -->
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">同一报告中是否允许包含不同类目消费</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -50,6 +66,8 @@
                                    <!-- </div> -->
                                 </div>
                             </div>
+
+
 
 
 
@@ -98,17 +116,17 @@
 
                             <input type="hidden" id="renew" name="renew" value="0" />
                             <input type="reset" style="display:none;" id="reset">
-                            <div class="clearfix form-actions">
+                            <div class="clearfix form-actions col-sm-10 col-md-10">
                                 <div class="col-md-offset-3 col-md-9">
                                     <a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
 
-                                    <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
+                                    <a  class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <!--</div>-->
         </form>
     </div>
 </div>
@@ -146,6 +164,16 @@ var __BASE = "<?php echo $base_url; ?>";
             {
             $('#isremark').attr('checked', data.export_no_note);
             $("#isremark").trigger("chosen:updated");
+            }
+
+        }
+
+         if(data.need_bank_info!=undefined)
+        {
+            if(data.need_bank_info==1)
+            {
+            $('#need_bank_info').attr('checked', data.need_bank_info);
+            $("#need_bank_info").trigger("chosen:updated");
             }
 
         }
@@ -189,7 +217,7 @@ var __BASE = "<?php echo $base_url; ?>";
            $.ajax({
                 type:"post",
                 url:__BASE+"company/profile",
-                data:{ischecked:$('#isadmin').is(':checked'),isremark:$('#isremark').is(':checked'),iscompany:$('#iscompany').is(':checked'),template:$('#temp option:selected').val(),limit:lval,reports_limit:r_limit},
+                data:{need_bank_info:$('#need_bank_info').is(':checked'),ischecked:$('#isadmin').is(':checked'),isremark:$('#isremark').is(':checked'),iscompany:$('#iscompany').is(':checked'),template:$('#temp option:selected').val(),limit:lval,reports_limit:r_limit},
                 dataType:'json',
                 success:function(data){
                       //  console.log(data);
