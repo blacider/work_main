@@ -752,7 +752,7 @@ $(document).ready(function(){
                                 }
                     }
     );
-
+         */
 
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
@@ -770,7 +770,6 @@ $(document).ready(function(){
         $('#btn_cimg').show();
         $('#select_img_modal').modal({keyborard: false});
     });
-         */
 
     $('.renew').click(function(){
         $('#profile_form').submit();

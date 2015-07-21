@@ -1,6 +1,5 @@
 <link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
-<link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
@@ -10,7 +9,6 @@
 <!--<script src="/static/ace/js/jquery1x.min.js"></script> -->
 <script src="/static/ace/js/date-time/moment.min.js"></script>
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
-<script src="/static/ace/js/dropzone.min.js"></script>
 
 <script src="/static/ace/js/date-time/moment.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
@@ -35,17 +33,15 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">分类</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <select class="form-control" name="category">
-                                        <option value="0">请选择分类</option>
-                                        <?php foreach($categories as $category) {
-                                            if($category['id'] == $item['category']){
-?>
-                                        <option selected value="<?php echo $category['id']; ?>"><?php echo $category['category_name']; ?></option>
-<?php 
-                                            } else { ?>
-                                        <option value="<?php echo $category['id']; ?>"><?php echo $category['category_name']; ?></option>
-                                        <?php }} ?>
-                                    </select>
+<div class="col-xs-6 col-sm-6">
+<select class="form-control" name="sob" id="sobs">
+</select>
+</div>
+<div class="col-xs-6 col-sm-6">
+<select name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
+</select>
+</div>
+
                                 </div>
                             </div>
 
@@ -175,15 +171,57 @@
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var _images = '<?php echo $images; ?> ';
+var _item_category = '<?php echo $item['category']; ?>';
 var flag = 0;
-function initUploader() {
-    if (flag == 1) {
-        console.log(1);
-        return;
-    } else {
-        console.log(2);
-        flag =1;
-    }
+function get_sobs(){
+   var selectPostData = {};
+   var selectDataCategory = {};
+   var selectDataSobs = '';
+        $.ajax({
+            url : __BASE + "category/get_my_sob_category",
+            dataType : 'json',
+            method : 'GET',
+            success : function(data){
+                for(var item in data) {
+                    var _h = '';
+                    if(item == _item_category) {
+                        _h = "<option selected='selected' value='" +  item + "'>"+  data[item].sob_name + " </option>";
+                    } else {
+                        _h = "<option value='" +  item + "'>"+  data[item].sob_name + " </option>";
+                    }
+                    selectDataCategory[item] = data[item]['category'];
+                    selectDataSobs += _h;
+                }
+                selectPostData = data;
+                updateSelectSob(selectDataSobs);
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown) {}
+        });
+
+
+        var _sid = 0;
+        $('#sobs').change(function(){
+            var s_id = $(this).val();
+            var _h = '';
+            if(selectDataCategory[s_id] != undefined)
+            {
+                for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
+                {
+                    if(selectDataCategory[s_id][i].category_id == _item_category) {
+                        _sid = s_id;
+                        _h += "<option selected='selected' value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                    } else {
+                        _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                    }
+                    
+                }
+            }
+            $("#sobs").attr("value", _sid);
+            var selectDom = this.parentNode.nextElementSibling.children[0]
+            $(selectDom).empty().append(_h).trigger("chosen:updated");
+        });
+}
+
 var uploader = WebUploader.create({
 
     // 选完文件后，是否自动上传。
@@ -282,7 +320,6 @@ uploader.on( 'uploadError', function( file ) {
 uploader.on( 'uploadAccept', function( file, response ) {
     if ( response['status'] > 0 ) {
         // 通过return false来告诉组件，此文件上传有错。
-        console.log(response);
         if ($("input[name='images']").val() == '') {
             $("input[name='images']").val(response['data']['id']);
         } else {
@@ -296,10 +333,15 @@ uploader.on( 'uploadAccept', function( file, response ) {
 uploader.on( 'uploadComplete', function( file ) {
     $( '#'+file.id ).find('.progress').remove();
 });
+
+function updateSelectSob(data) {
+    $("#sobs").empty();
+    $("#sobs").append(data);
+    $("#sobs").trigger('change');
+    $("#sobs").trigger("chosen:updated");
 }
 function bind_event(){
     $('.del-button').click(function(e) {
-            console.log(e);
             var key = this.parentNode.id;
             var images = $("input[name='images']").val();
             var arr_img = images.split(',');
@@ -310,7 +352,6 @@ function bind_event(){
                     else result += ',' + arr_img[item];
                 }
             }
-            console.log(result);
             $("input[name='images']").val(result);
             $(this.parentNode).remove();
         });
@@ -347,6 +388,7 @@ function load_exists(){
     bind_event();
 }
 $(document).ready(function(){
+    get_sobs();
     var _dt = $('#dt').val();
     var images = eval("(" + _images + ")");
 
@@ -369,7 +411,6 @@ $(document).ready(function(){
     load_exists();
 
     $('.renew').click(function(){
-        console.log($('#amount').val());
         if($('#amount').val() == 0) {
             show_notify('请输入金额');
             $('#amount').focus();
@@ -396,7 +437,7 @@ $(document).ready(function(){
         history.go(-1);
         //$('#reset').click();
     });
-    initUploader();
+    //initUploader();
 });
 
 </script>
