@@ -1,3 +1,8 @@
+<link rel="stylesheet" href="/static/ace/css/chosen.css" />
+<link rel="stylesheet" href="/static/ace/css/dropzone.css" />
+
+<link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
+
 <div class="page-content">
     <div class="page-content-area">
         <form id="profile_form" class="form-horizontal" role="form" method="post" action="<?php echo base_url('users/update_profile'); ?>/<?php echo $isOther ?>/">
@@ -56,6 +61,31 @@ if($self != 1) {
                             <input type="text" class="col-xs-6 col-sm-6 form-control" name="nickname" value="<?php echo $user['nickname']; ?>" <?php echo $disabled; ?> />
                         </div>
                     </div>
+
+                       <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">上级</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select class="chosen-select tag-input-style" name="manager" data-placeholder="请选择标签">
+                                    <?php 
+                                    foreach($gmember as $m){
+                                        if($m['id'] == $manager_id)
+                                        {
+                                    ?>
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                    <?php
+                                        }
+                                        else
+                                        {
+                                    ?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                    <?php
+                                        }
+                                    }
+                                    ?>
+                                    </select>
+                                </div>
+                        </div>
+
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">银行卡号</label>
                         <div class="col-xs-6 col-sm-6">
@@ -506,11 +536,11 @@ foreach($member['banks'] as $b) {
         </div>
     </div>
 </div>
-
-
+<!--
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
-<script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script>
-<script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script>
+<script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
+<script src="/static/ace/js/chosen.jquery.min.js"></script>
+<script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script> 
 <script language="javascript">
     var __PROVINCE = Array();
 function get_province(){
@@ -642,6 +672,19 @@ $(document).ready(function(){
                                 }
                     }
     );
+
+
+    $('.chosen-select').chosen({allow_single_deselect:true}); 
+    $(window)
+        .off('resize.chosen')
+        .on('resize.chosen', function() {
+            $('.chosen-select').each(function() {
+                var $this = $(this);
+                $this.next().css({'width': $this.parent().width()});
+            })
+        }).trigger('resize.chosen');
+
+
     $('.avatar').click(function(){
         if(0 == __self) return false;
         $('#btn_cimg').show();
