@@ -405,38 +405,49 @@ class Category extends REIM_Controller {
         foreach($sobs as $i) {
             log_message('debug', "alvayang:" . json_encode($i));
             array_push($_sob_id, $i['sob_id']);
-            //array_push($_sobs, $i);
         }
-
-        $sobs = $this->account_set->get_account_set_list();
-        $_sobs = $sobs['data'];
-        $data = array();
-        foreach($_sobs as $sob)
-        {
-            if(!in_array($sob['sob_id'], $_sob_id)) continue;
-            if(array_key_exists($sob['sob_id'],$data))
+        if(count($_sob_id) == 0) {
+            $__sob_id = 0;
+            $data[0]=array();
+            $data[0]['sob_name']= '默认帐套';
+            $data[0]['groups'] = array();
+            $data[0]['category'] = array();
+            $groups = $data[0]['groups'];
+        } else {
+            $sobs = $this->account_set->get_account_set_list();
+            $_sobs = $sobs['data'];
+            $data = array();
+            foreach($_sobs as $sob)
             {
-                $group=$data[$sob['sob_id']]['groups'];
-                array_push($data[$sob['sob_id']]['groups'],array('group_id'=>$sob['group_id'],'group_name'=>$sob['group_name']));
-            }
-            else
-            {
-                $data[$sob['sob_id']]=array();
-                $data[$sob['sob_id']]['sob_name']=$sob['sob_name'];
-                $data[$sob['sob_id']]['groups'] = array();
-                $data[$sob['sob_id']]['category'] = array();
-                $groups = $data[$sob['sob_id']]['groups'];
-                array_push($data[$sob['sob_id']]['groups'],array('group_id'=>$sob['group_id'],'group_name'=>$sob['group_name']));
+                if(!in_array($sob['sob_id'], $_sob_id)) continue;
+                if(array_key_exists($sob['sob_id'],$data))
+                {
+                    $group=$data[$sob['sob_id']]['groups'];
+                    array_push($data[$sob['sob_id']]['groups'],array('group_id'=>$sob['group_id'],'group_name'=>$sob['group_name']));
+                }
+                else
+                {
+                    $data[$sob['sob_id']]=array();
+                    $data[$sob['sob_id']]['sob_name']=$sob['sob_name'];
+                    $data[$sob['sob_id']]['groups'] = array();
+                    $data[$sob['sob_id']]['category'] = array();
+                    $groups = $data[$sob['sob_id']]['groups'];
+                    array_push($data[$sob['sob_id']]['groups'],array('group_id'=>$sob['group_id'],'group_name'=>$sob['group_name']));
+                }
             }
         }
         $category = $this->category->get_list();
         $categories = $category['data']['categories'];
         foreach($categories as $item)
         {
-
-            if(array_key_exists($item['sob_id'],$data))
+            log_message("debug", "alvayang Item:" . json_encode($_sob_id) . ", " . count($_sob_id));
+            if(array_key_exists('sob_id', $item) && array_key_exists($item['sob_id'],$data))
             {
                 array_push($data[$item['sob_id']]['category'],array('category_id'=>$item['id'],'category_name'=>$item['category_name']));
+            } else {
+                if(count($_sob_id) == 0) {
+                    array_push($data[0]['category'],array('category_id'=>$item['id'],'category_name'=>$item['category_name']));
+                }
             }
         }
 
