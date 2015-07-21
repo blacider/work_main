@@ -161,6 +161,7 @@ position: absolute;
 
                 </div>
               </div>
+              </div>
 
               <div class="modal-footer">
                 <button class="btn btn-sm" data-dismiss="modal">
