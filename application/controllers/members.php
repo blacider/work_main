@@ -619,6 +619,21 @@ class Members extends REIM_Controller {
         }
         $info = json_decode($this->users->reim_get_info($id), True);
         $info =  $info['data'];
+	$manager_id = $info['manager_id'];
+	$m_info = json_decode($this->users->reim_get_info($manager_id),True);
+	$manager_name = $m_info['data']['nickname'];
+
+        $group = $this->groups->get_my_list();
+
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
+	log_message('debug','@@@@manger_id:'.$manager_id);
+
         //print_r($info);
         $this->bsload('user/profile',
             array(
@@ -628,6 +643,8 @@ class Members extends REIM_Controller {
                 ,'error' => ''
                 ,'isOther' => 1
                 ,'avatar_path' => $info['avatar']
+		,'gmember' => $gmember
+		,'manager_id' => $manager_id
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
@@ -635,6 +652,7 @@ class Members extends REIM_Controller {
                 ),
             )
         );
+	
     }
 
     public function remove_member($id = 0){

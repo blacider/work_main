@@ -180,11 +180,11 @@ echo $str;
     </div>
 </div><!-- PAGE CONTENT ENDS -->
 
-</div><!-- /.col -->
-</div><!-- /.row -->
+
 </div><!-- /.page-content-area -->
 </div><!-- /.page-content -->
 </div><!-- /.main-content -->
+
 <script type="text/javascript">
     __BASEURL = "<?php echo $base_url; ?>"
 </script>

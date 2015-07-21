@@ -2,6 +2,27 @@
 
 class Items_Model extends Reim_Model {
 
+    public function update_item($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images, $uids = ''){
+        $items = array();
+        $s = array(
+	    array('type' => 1,'val' => $category)
+	    ,array('type' => 2,'val' => $note)
+	    ,array('type' => 3,'val' => $tags)
+	    ,array('type' => 4,'val' => $merchant)
+	    ,array('type' => 6,'val' => $amount)
+	    ,array('type' => 8,'val' => $dt)
+	    );
+        $data = array(
+		      "iid" => $id
+		      ,"opts" => json_encode($s)
+		     );
+        $jwt = $this->session->userdata('jwt');
+        $url = $this->get_url('update_item');
+        $buf = $this->do_Post($url, $data, $jwt);
+        $obj = json_decode($buf, true);
+	log_message('debug','####'.$buf);
+        return $obj;
+    }
     public function get_list(){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
@@ -70,7 +91,7 @@ class Items_Model extends Reim_Model {
         $fileSize = filesize($image_path);
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $finfo = finfo_file($finfo, $image_path);
-         log_message("debug", "xiamian shi finfo");
+        log_message("debug", "xiamian shi finfo");
         log_message("debug", $fileSize);
         log_message("debug", $image_path);
         log_message("debug", basename($image_path));

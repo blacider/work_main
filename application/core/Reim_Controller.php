@@ -1,6 +1,25 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class REIM_Controller extends CI_Controller{
+    public function _remap($method,$params)
+    {
+    	$jwt = $this->session->userdata('jwt');
+	$controller = $this->uri->rsegment_array();
+	$method_set = ['login','install'];
+	if(!in_array($controller[1],$method_set))
+	{
+		if(!$jwt) 
+		{
+			redirect(base_url('login'));
+		}
+		log_message('debug','no need jwt'.$controller[1]);
+	}
+	$uri=$this->uri;
+	log_message("debug","controller:".json_encode($controller));
+    	log_message("debug","uri:".json_encode($uri));
+	call_user_func_array(array($this,$method),$params);
+    }
+
     private function startsWith($haystack, $needle)
     {
         return $needle === "" || strpos($haystack, $needle) === 0;

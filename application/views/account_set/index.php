@@ -355,7 +355,6 @@ echo $str;
 </div><!-- /.main-content -->
 <script language="javascript">
 var __BASEURL = "<?php echo $base_url; ?>";
-
 $(document).ready(function(){
 
     $('.edit').each(function(idx, item){
