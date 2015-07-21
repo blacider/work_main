@@ -73,7 +73,7 @@ position: absolute;
     <table id="grid-table"></table>
     -->
     <div class="panel panel-primary">
-        <div class="panel-heading"><h3 class="panel-title default" id="gname">人员信息</h3></div>
+        <div class="panel-heading"><h3 class="panel-title default col-sm-11 col-md-11" id="gname">人员信息</h3><p id="g_du"></p></div>
         <div class="panel-body">
             <table class="table" id="gtable">
                 <tr>
@@ -250,13 +250,18 @@ function load_group(gid){
                     show_notify('获取信息失败');
                 } else {
                     //show_notify('获取信息成功');
+                    var _g_du = '<a href="' + __BASE + '/members/editgroup/' + gid + '"><i class="ace-icon align-top bigger-125 fa fa-pencil white" style="margin-left:10px;" ></i></a>'
+                                 +'<a href="javascript:void(0)" class="remove_group" data-id="' + gid + '"><i  style="margin-left:10px;"  class="ace-icon align-top bigger-125 white fa fa-trash-o"></i></a>';
+                    $('#g_du').html(_g_du);
                     if(gid == -1){
                         build_invite(data.data);
+                        $('#g_du').html('');
                         return;
                     }
                     if(gid == -2){
                         var _gname = '全体员工';
                         var _member = data.data;
+                        $('#g_du').html('');
                     } else {
                         data = data.data;
                         var _group = data.group;
@@ -318,6 +323,7 @@ function load_group(gid){
                 }
 
                 bind_event();
+                bind_event_group();
             }
             });
 
@@ -330,6 +336,16 @@ function bind_event() {
         }
     });
 }
+
+function bind_event_group() {
+    $('.remove_group').click(function(){
+        if(confirm('是否删除部门') == true){
+            var _id = $(this).data('id');
+            location.href= __BASE + "/members/delgroup/" + _id;
+        }
+    });
+}
+
 /*$(document).ready(function(){
     bind_event();
     $.ajax({

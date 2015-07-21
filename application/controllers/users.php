@@ -47,6 +47,8 @@ class Users extends REIM_Controller {
             $uid = $profile['id'];
             $profile = json_decode($this->user->reim_get_info($uid), True);
             $profile =  $profile['data'];
+	    $manager_id = $profile['manager_id'];
+	    log_message("debug","####".json_encode($profile));
             $path = base_url($this->user->reim_get_hg_avatar());
             //print_r($profile);
         } else  {
@@ -65,6 +67,15 @@ class Users extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         $this->session->set_userdata('last_error', '');
 
+        $group = $this->groups->get_my_list();
+
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
         //print_r($profile);
         $this->bsload('user/profile',
             array(
@@ -74,6 +85,8 @@ class Users extends REIM_Controller {
                 ,'error' => $error
                 ,'avatar_path' => $path
                 ,'isOther' => 0
+		,'manager_id' => $manager_id
+		,'gmember' => $gmember
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '修改资料', 'class' => '')

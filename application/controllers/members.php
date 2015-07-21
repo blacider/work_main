@@ -513,7 +513,8 @@ class Members extends REIM_Controller {
     public function delgroup($id = 0){
         if($id == 0) redirect(base_url('members/groups'));
         $this->ug->delete_group($id);
-        redirect(base_url('members/groups'));
+//        redirect(base_url('members/groups'));
+	  redirect(base_url('members/index'));
 
     }
 
@@ -607,7 +608,8 @@ class Members extends REIM_Controller {
         $info = $this->ug->update_data($manager,$uids, $name,$code,$pid,$gid);
 	log_message("debug","@@@@@@@@@".json_encode($info));
         if($info['status'] > 0){
-           redirect(base_url('members/groups'));
+//           redirect(base_url('members/groups'));
+	     redirect(base_url('members/index'));
         }
     }
 
