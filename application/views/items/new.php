@@ -410,6 +410,6 @@ $(document).ready(function(){
     $('.cancel').click(function(){
         $('#reset').click();
     });
-    //initUploader();
+    initUploader();
 });
 </script>
