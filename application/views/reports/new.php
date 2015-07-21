@@ -137,6 +137,7 @@ echo $buf;
 </div>
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
+console.log(1);
 $(document).ready(function(){
     //var now = moment();
     $('#date-timepicker1').datetimepicker({
