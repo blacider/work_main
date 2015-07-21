@@ -23,6 +23,22 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
+
+
+                              <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right">是否有银行信息</label>
+                                <div class="col-xs-6 col-sm-6">
+                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
+                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
+                                        <label style="margin-top:8px;">
+                                            <input name="need_bank_info" class="ace ace-switch btn-rotate" type="checkbox" id="need_bank_info" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+
+                                   <!-- </div> -->
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">同一报告中是否允许包含不同类目消费</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -50,6 +66,8 @@
                                    <!-- </div> -->
                                 </div>
                             </div>
+
+
 
 
 
@@ -150,6 +168,16 @@ var __BASE = "<?php echo $base_url; ?>";
 
         }
 
+         if(data.need_bank_info!=undefined)
+        {
+            if(data.need_bank_info==1)
+            {
+            $('#need_bank_info').attr('checked', data.need_bank_info);
+            $("#need_bank_info").trigger("chosen:updated");
+            }
+
+        }
+
         if(data.export_no_company!=undefined)
         {
             if(data.export_no_company==1)
@@ -189,7 +217,7 @@ var __BASE = "<?php echo $base_url; ?>";
            $.ajax({
                 type:"post",
                 url:__BASE+"company/profile",
-                data:{ischecked:$('#isadmin').is(':checked'),isremark:$('#isremark').is(':checked'),iscompany:$('#iscompany').is(':checked'),template:$('#temp option:selected').val(),limit:lval,reports_limit:r_limit},
+                data:{need_bank_info:$('#need_bank_info').is(':checked'),ischecked:$('#isadmin').is(':checked'),isremark:$('#isremark').is(':checked'),iscompany:$('#iscompany').is(':checked'),template:$('#temp option:selected').val(),limit:lval,reports_limit:r_limit},
                 dataType:'json',
                 success:function(data){
                       //  console.log(data);
