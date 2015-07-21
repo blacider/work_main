@@ -119,7 +119,9 @@ var __BASE = "<?php echo $base_url; ?>";
             }).trigger('resize.chosen');
        
         $('.cancel').click(function(){
-            $('#reset').click();
+            $('#sob_name').val('');
+            $("#group").val('');
+            $('#group').trigger("chosen:updated");
         });
     });
 </script>

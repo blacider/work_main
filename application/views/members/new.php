@@ -303,7 +303,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    var error = "<? echo $this->session->userdata('last_error')?>";
+    var error = "<?php echo $this->session->userdata('last_error');?>";
 </script>
 <script language="javascript">
     var __PROVINCE = Array();
@@ -355,10 +355,7 @@ function reset_bank(disable, title) {
     }
 }
 $(document).ready(function(){
-    if(error!='')
-    {
-        show_notify(error);
-    }
+   
     get_province();
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
