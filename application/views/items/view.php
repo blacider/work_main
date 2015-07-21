@@ -123,7 +123,6 @@ if($user['id'] == $item['uid'] || (($user['admin']>0)&&($item['rstatus'] == 2) |
     </div>
 </div>
 
-
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 $(document).ready(function(){
