@@ -452,7 +452,9 @@ class Items extends REIM_Controller {
 		}
 		log_message("debug",'time:'.strtotime($time));
 		log_message("debug","gettime:".strtotime($data['dt']));
-		if(strtotime($time) == strtotime($data['dt']))
+		log_message("debug","gettime:".strtotime($data['dt']));
+	
+		if(strtotime($time) == strtotime($data['dt']) || $time == '')
 		{
 			$timestamp = -1;
 		}
