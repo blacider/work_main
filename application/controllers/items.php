@@ -534,6 +534,9 @@ class Items extends REIM_Controller {
 		case 3:
 			return redirect(base_url('bills/exports'));
 			break;
+		case 4:
+			return redirect(base_url('reports/audit'));
+			break;
 		default:
 			return redirect(base_url('items/index'));
 			break;
