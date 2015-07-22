@@ -4,6 +4,7 @@ class Items extends REIM_Controller {
         parent::__construct();
         $this->load->model('items_model', 'items');
         $this->load->model('category_model', 'category');
+        $this->load->model('report_model', 'report');
     }
 
     public function avatar(){
@@ -283,6 +284,33 @@ class Items extends REIM_Controller {
         $_tags = $item['tags'];
         $__tags_name = array();
 
+        $user = $this->session->userdata('profile');
+        log_message("debug", "USER:" . json_encode($user));
+        $_uid = $user['id'];
+        // {"status":1,"code":"439","data":{"lastdt":"1435890939","title":"r46","rid":"1487","uid":"384","status":"3","manager_id":"445","prove_ahead":"0","step":"5","pa_approval":"0","gid":"173","createdt":"1432874356","nickname":"\u5565","id":"1487","mdecision":-1,"items":[{"id":"2325","amount":"25","merchants":"","category":"1778","image_id":"","uid":"384","prove_ahead":"0","note":"","gid":"173","reimbursed":"0","tags":"","rid":"1487","status":"3","location":"\u5317\u4eac\u5e02","pa_amount":"0","pa_approval":"0","latitude":"0","longitude":"0","currency":"cny","rate":"1","image_paths":"","relates":"384","title":"r46","lastdt":"1435890939","dt":"1432874353","createdt":"1432874353","category_name":"\u9910\u996e","category_code":"","type":"0","images":[],"currency_logo":"\uffe5"}],"comments":{"data":[],"total":0},"receivers":{"managers":[{"nickname":"\u5565","status":"1","id":"384","gid":"155","receiver":"384","submitter":"0","step":"5","sender":"439","ccflag":"0","mdecision":"1"}],"cc":[]},"cc":"0"},"server_token":"","wx":false}
+
+        $_editable = 0;
+        log_message("debug", "***** Rstatus: ********** " . $item['rstatus']);
+        if($_uid == $item['uid']) {
+            // 如果是自己的，那么检查状态
+            if(in_array($item['rstatus'], array(-1, 0, 3))) {
+                $_editable = 1;
+            }
+        } else {
+            // 收到的,检查我是否是被cc，以及状态
+            $_rid = $item['rid'];
+            $_relate_report = $this->report->get_report_by_id($_rid);
+            log_message("debug", "Find :" . json_encode($_relate_report));
+            log_message("debug", "Relate Report:" . $_relate_report['data']['status']);
+            if($_relate_report['status']){
+                $_cc = $_relate_report['data']['cc'];
+                if($_cc == 0 && in_array($_relate_report['data']['status'], array(0, 2, 3))) {
+                    // 检查状态
+                    $_editable = 1;
+                }
+            }
+        }
+
 
 	log_message("debug","_tags*****".json_encode(explode(',', $_tags)));
 	log_message("debug","tags#####".json_encode($tags));
@@ -333,6 +361,7 @@ class Items extends REIM_Controller {
                 'categories' => $categories,
                 'tags' => $tags,
                 'item' => $item,
+                'editable' => $_editable,
                 'flow' => $flow
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')

@@ -105,29 +105,7 @@
                             <div class="clearfix form-actions col-sm-8 col-xs-8">
                                 <div class="col-md-offset-3 col-md-6">
                                     <?php 
-                                        $user = $this->session->userdata('user');
-                                        $item_update_in = $this->session->userdata('item_update_in');
-                                        $ccflag = $this->session->userdata('ccflag');
-                                        $status = [0,3];
-                                        $rstatus = [0,1,2];
-                                        
-                                        if($user['id'] == $item['uid'])
-                                        {
-                                            if(in_array($item['rstatus'],$status))
-                                            {
-                                                //if($user['id'] == $item['uid'] || (($user['admin']>0)&&($item['rstatus'] == 2) ||(($user['id'] == $user['manager_id'])&&($item['rstatus']==1)) )) {
-                                         ?>
-                                            <a class="btn btn-white btn-primary renew" href="<?php echo base_url('items/edit/' . $item['id']); ?>" data-renew="1"><i class="ace-icon fa fa-check"></i>修改</a>
-                                        <?php
-                                            }
-                                        }
-                                        else if(($item_update_in == 1)&&(in_array($item['rstatus'], $rstatus)) &&($ccflag != 1) )
-                                        {
-                                        ?>
-                                            <a class="btn btn-white btn-primary renew" href="<?php echo base_url('items/edit/' . $item['id']); ?>" data-renew="1"><i class="ace-icon fa fa-check"></i>修改</a>
-                                        <?php
-                                        }
-                                        else if(($user['admin'] > 0)&&($item_update_in == 2))
+                                        if($editable == 1)
                                         {
                                         ?>
                                             <a class="btn btn-white btn-primary renew" href="<?php echo base_url('items/edit/' . $item['id']); ?>" data-renew="1"><i class="ace-icon fa fa-check"></i>修改</a>

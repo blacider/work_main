@@ -120,6 +120,15 @@ class Report_Model extends Reim_Model {
 
     }
 
+    public function get_report_by_id($id) {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        //log_message("debug", "Update:" . json_encode($data));
+		$url = $this->get_url("report/$id");
+        $buf = $this->do_Get($url, $jwt);
+		$obj = json_decode($buf, true);
+        return $obj;
+    }
 
     public function get_reports_by_ids($ids) {
         $jwt = $this->session->userdata('jwt');
