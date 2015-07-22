@@ -218,7 +218,6 @@
                             function appendChecked(selectJqDom, data) {
                                 //第一个 selectJqDom.children()[0].children[0]
                                 //$(selectJqDom.children()[0].children[0]).parent().children().remove('div'); 
-                                console.log(data);
                                 $(selectJqDom.children()[0].children[0]).find("option[value='"+data['sob_id']+"']").attr("selected",true);
                                 $(selectJqDom.children()[0].children[0]).trigger("chosen:updated");
                                 //$(selectJqDom.children()[0].children[0]).change();
@@ -256,13 +255,9 @@ function get_sobs(){
                 }
                 selectPostData = data;
                 updateSelectSob(selectDataSobs);
-                console.log('begin');
                 initSelectCache();
             },
-            error:function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.log(XMLHttpRequest.status);
-                        console.log(XMLHttpRequest.readyState);
-                        console.log(textStatus);}
+            error:function(XMLHttpRequest, textStatus, errorThrown) {}
         });
 
 
@@ -275,7 +270,6 @@ function get_sobs(){
                 {
                     _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
                     
-                   // console.log(_h);
                 }
             }
             var selectDom = this.parentNode.nextElementSibling.children[0]

@@ -4,20 +4,20 @@ class REIM_Controller extends CI_Controller{
     public function _remap($method,$params)
     {
     	$jwt = $this->session->userdata('jwt');
-	$controller = $this->uri->rsegment_array();
-	$method_set = ['login','install'];
-	if(!in_array($controller[1],$method_set))
-	{
-		if(!$jwt) 
-		{
-			redirect(base_url('login'));
-		}
-		log_message('debug','no need jwt'.$controller[1]);
-	}
-	$uri=$this->uri;
-	log_message("debug","controller:".json_encode($controller));
-    	log_message("debug","uri:".json_encode($uri));
-	call_user_func_array(array($this,$method),$params);
+        $controller = $this->uri->rsegment_array();
+        $method_set = ['login','install', 'pub'];
+        if(!in_array($controller[1],$method_set))
+        {
+            if(!$jwt) 
+            {
+                redirect(base_url('login'));
+            }
+            log_message('debug','no need jwt'.$controller[1]);
+        }
+        $uri=$this->uri;
+        log_message("debug","controller:".json_encode($controller));
+        log_message("debug","uri:".json_encode($uri));
+        call_user_func_array(array($this,$method),$params);
     }
 
     private function startsWith($haystack, $needle)
@@ -44,8 +44,13 @@ class REIM_Controller extends CI_Controller{
             }
             log_message("debug", "No Auth Info Logout $flag");
 
-            if($flag) redirect(base_url('login'));
+            if($flag == 1) {
+                redirect(base_url('login'));
+                die("");
+            }
+            return true;
         }
+        return false;
     }
 
     public function  eload($view_name, $custom_data, $menu_page = 'menu.php'){
@@ -109,6 +114,7 @@ class REIM_Controller extends CI_Controller{
         $config['upload_path'] = $this->config->item('static_base') . $prefix;
         $relate_file = $config['upload_path'];
         if(!file_exists($config['upload_path'])){
+            //echo $config['upload_path'];
             $mkres = mkdir($config['upload_path'], 0777, true);
             if(!$mkres){
                 log_message("debug", "mkdir error: " . $config['upload_path']);
