@@ -232,6 +232,21 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
     </a>
     <b class="arrow"></b>
     <ul class="submenu nav-show" style="display: block;">
+
+<?php
+$open = 1;
+if($profile['gid'] > 0){
+    $_config = $profile['group']['config'];
+    if($_config) {
+        $config = json_decode($_config, True);
+
+        if(array_key_exists('private_structure', $config) && $config['private_structure'] == 1){
+            $open = 0;
+        }
+    }
+}
+if($open == 1) {
+?>
         <li class="hsub" id="index">
         <a href="<?php echo base_url('members/index'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
@@ -239,6 +254,10 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         </a>
         <b class="arrow"></b>
         </li>
+<?php
+}
+?>
+
         <li class="rsmenu" id="groups">
         <a href="<?php echo base_url('members/groups'); ?>">
             <i class="menu-icon fa fa-caret-right"></i>
