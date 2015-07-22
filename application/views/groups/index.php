@@ -1,4 +1,36 @@
-
+<style>
+    .chosen-container  {
+        min-width: 400px;
+        width: 400px;
+    }
+</style>
+<style type="text/css">
+    #globalSearchText{
+position: absolute;
+  left: 75%;
+  top: 60px;
+  z-index: 2;
+  height: 26px;
+  width: 12%;
+  border-style: ridge;
+    }
+    #globalSearch {
+  background-color: #fe575f;
+  position: absolute;
+  left: 88%;
+  top: 60px;
+  border: 0;
+  color: white;
+  height: 25px;
+  border-radius: 3px;   
+  font-size: 12px;
+   }
+   #globalSearch:hover {
+    background-color: #ff7075;
+   }
+</style>
+    <input name="key" placeholder="部门" value="" type='text' id="globalSearchText">
+    <button type="button" id="globalSearch">搜索</button>
 <script language='javascript'>
     var _admin = "<?php echo $profile['admin']; ?>";
 </script>
@@ -24,3 +56,29 @@ var __BASE = "<?php echo $base_url; ?>";
 </script>
 <script src="/static/js/base.js" ></script>
 <script src="/static/js/groups.js" ></script>
+<script type="text/javascript">
+	$grid = $('#grid-table');
+$("#globalSearch").click(function () {
+    var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
+        colModel = $grid.jqGrid("getGridParam", "colModel"),
+        searchText = $("#globalSearchText").val(),
+        l = colModel.length;
+    for (i = 0; i < l; i++) {
+        cm = colModel[i];
+        if (cm.search !== false && (cm.stype === undefined || cm.stype === "text")) {
+            rules.push({
+                field: cm.name,
+                op: "cn",
+                data: searchText
+            });
+        }
+    }
+    postData.filters = JSON.stringify({
+        groupOp: "OR",
+        rules: rules
+    });
+    $grid.jqGrid("setGridParam", { search: true });
+    $grid.trigger("reloadGrid", [{page: 1, current: true}]);
+    return false;
+});
+</script>

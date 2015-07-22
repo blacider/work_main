@@ -25,8 +25,8 @@ function bind_event(){
 var _cols = ['组名称','创建时间', '操作'];
 var _models = [
     {name:'name', index:'name', width:150,editable: false,editoptions:{size:"20",maxlength:"30"}},
-    {name:'createdt',index:'admin', width:70, editable: false ,edittype:"select",editoptions: {value:"1:管理员;0:员工"},unformat: aceSwitch},
-    {name:'options',index:'options', width:70, editable: false},
+    {name:'createdt',index:'admin', width:70, editable: false ,edittype:"select",editoptions: {value:"1:管理员;0:员工"},unformat: aceSwitch, search:false},
+    {name:'options',index:'options', width:70, editable: false, search:false},
     ];
 try{
     if(_admin == 0) {
