@@ -222,17 +222,6 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 
 
 
-
-    <li class="hsub" id="members">
-    <a href="#" class="dropdown-toggle">
-        <i class="menu-icon fa fa-users"></i>
-        <span class="menu-text"> 员工&部门 </span>
-
-        <b class="arrow fa fa-angle-down"></b>
-    </a>
-    <b class="arrow"></b>
-    <ul class="submenu nav-show" style="display: block;">
-
 <?php
 $open = 1;
 if($profile['gid'] > 0){
@@ -245,8 +234,22 @@ if($profile['gid'] > 0){
         }
     }
 }
+if($open == 0 && $profile['admin'] > 0){ 
+    $open = 1;
+}
 if($open == 1) {
 ?>
+
+    <li class="hsub" id="members">
+    <a href="#" class="dropdown-toggle">
+        <i class="menu-icon fa fa-users"></i>
+        <span class="menu-text"> 员工和部门 </span>
+
+        <b class="arrow fa fa-angle-down"></b>
+    </a>
+    <b class="arrow"></b>
+    <ul class="submenu nav-show" style="display: block;">
+
         <li class="hsub" id="index">
         <a href="<?php echo base_url('members/index'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
@@ -254,9 +257,6 @@ if($open == 1) {
         </a>
         <b class="arrow"></b>
         </li>
-<?php
-}
-?>
 
         <li class="rsmenu" id="groups">
         <a href="<?php echo base_url('members/groups'); ?>">
@@ -305,6 +305,9 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     </ul>
     </li>
 
+<?php
+}
+?>
 
 <?php 
 if($profile['admin'] > 0){

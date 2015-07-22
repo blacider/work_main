@@ -116,6 +116,9 @@ if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['emai
     } else if ($m['admin'] == 2){
         $desc = '出纳';
         $color = '<span class="label label-warning arrowed">出纳</span>';
+    } else if ($m['admin'] == 3){
+        $desc = 'IT人员';
+        $color = '<span class="label label-purple arrowed">IT人员</span>';
     }
 ?>
 <a href="javascript:void(0)" title="<?php echo $desc; ?>" data-id="<?php echo $m['id']; ?>" ><?php echo $color; ?></a>
