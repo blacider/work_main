@@ -310,7 +310,7 @@ class Items extends REIM_Controller {
                 if($_report['uid'] == $_uid) {
                     if(in_array($_relate_report['data']['status'], array(0, 3))) {
                     }
-                } elseif ($_cc == 0 && in_array($_relate_report['data']['status'], array(1, 2))) {
+                } elseif ($_cc < 0 && in_array($_relate_report['data']['status'], array(1, 2))) {
                     $_editable = 1;
                 }
             }
