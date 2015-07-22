@@ -103,7 +103,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">报告结算后需员工确认的额度</label>
                                 <div class="col-xs-4 col-sm-4">
-					<input id="limit" type="text" class="form-controller col-xs-12" name="limit" placeholder="输入额度">
+					               <input id="limit" type="text" class="form-controller col-xs-12" name="limit" placeholder="输入额度">
                                 </div>
                             </div>
 
@@ -111,6 +111,13 @@
                                 <label class="col-sm-3 control-label no-padding-rigtht">每月最多可提交的报告数量</label>
                                 <div class="col-xs-4 col-sm-4">
                                 <input id="reports_limit" type="text" class="form-controller col-xs-12" name="reports_limit" placeholder="报告数">
+                                </div>
+                            </div>
+
+                              <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-rigtht">只可以提交最近几个月的报销限制</label>
+                                <div class="col-xs-4 col-sm-4">
+                                <input id="max_allowed_months" type="text" class="form-controller col-xs-12" name="max_allowed_months" placeholder="月数">
                                 </div>
                             </div>
 
@@ -196,6 +203,11 @@ var __BASE = "<?php echo $base_url; ?>";
         if(data.user_confirm != undefined) {
             $('#limit').val(data.user_confirm);
         }
+
+        if(data.max_allowed_months != undefined) {
+            $('#max_allowed_months').val(data.max_allowed_months);
+        }
+
         if(data.report_quota != undefined)
         {
             $('#reports_limit').val(data.report_quota);
@@ -217,7 +229,7 @@ var __BASE = "<?php echo $base_url; ?>";
            $.ajax({
                 type:"post",
                 url:__BASE+"company/profile",
-                data:{need_bank_info:$('#need_bank_info').is(':checked'),ischecked:$('#isadmin').is(':checked'),isremark:$('#isremark').is(':checked'),iscompany:$('#iscompany').is(':checked'),template:$('#temp option:selected').val(),limit:lval,reports_limit:r_limit},
+                data:{max_allowed_months:$('#max_allowed_months').val(),need_bank_info:$('#need_bank_info').is(':checked'),ischecked:$('#isadmin').is(':checked'),isremark:$('#isremark').is(':checked'),iscompany:$('#iscompany').is(':checked'),template:$('#temp option:selected').val(),limit:lval,reports_limit:r_limit},
                 dataType:'json',
                 success:function(data){
                       //  console.log(data);
