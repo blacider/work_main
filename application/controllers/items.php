@@ -24,7 +24,6 @@ class Items extends REIM_Controller {
             }
         } else {
             die("");
-
         }
         //$file = realpath('snapshot.jpg'); //要上传的文件
 
@@ -33,8 +32,8 @@ class Items extends REIM_Controller {
     public function images(){
         if(!empty($_FILES)) {
             // 默认是item
-            $type = $this->input->post('type');
-            if(!$type) $type = 1;
+            //$type = $this->input->post('type');
+             $type = 1;
             log_message("debug", json_encode($_FILES));
             log_message("debug", "type: " . $type);
             $uploaddir = '/data/uploads/';
