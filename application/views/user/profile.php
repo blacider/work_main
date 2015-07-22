@@ -140,6 +140,9 @@ foreach($member['banks'] as $b) {
                     </div>
 
 
+<?php 
+if($profile['admin'] == 1 || $profile['admin'] == 3){
+?>
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">角色</label>
                         <div class="col-xs-6 col-sm-6">
@@ -149,11 +152,18 @@ foreach($member['banks'] as $b) {
                                         <?php
                                             $chara = array(0 => "员工", 
                                                            1 => "管理员",
-                                                           2 => "出纳");
-                                            for ($i=0; $i < 3; $i++) { 
-                                                $str1 = '<option value="' . $i . '"';
+                                                           2 => "出纳",
+                                                           3 => "IT人员");
+                                            if($profile['admin'] == 3) {
+                                            $chara = array(0 => "员工", 
+                                                           2 => "出纳",
+                                                           3 => "IT人员");
+                                            }
+                                            foreach($chara as $val => $des) {
+                                            //for ($i=0; $i < 4; $i++) { 
+                                                $str1 = '<option value="' . $val . '"';
                                                 $select = 'selected="true"';
-                                                $str2 = '>' . $chara[$i] . "</option>";
+                                                $str2 = '>' . $chara[$val] . "</option>";
                                                 if ($i == $member['admin']) {
                                                     echo $str1.$select.$str2;
                                                 } else {
@@ -169,6 +179,9 @@ foreach($member['banks'] as $b) {
                     </div>
 
 
+<?php 
+}
+?>
 
 
                     <div class="clearfix form-actions col-md-8">
