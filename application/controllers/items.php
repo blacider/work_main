@@ -286,12 +286,14 @@ class Items extends REIM_Controller {
 
         $user = $this->session->userdata('profile');
         log_message("debug", "USER:" . json_encode($user));
+        log_message("debug", "ITEM:" . json_encode($item));
         $_uid = $user['id'];
 
         $_editable = 0;
-        log_message("debug", "***** Rstatus: ********** " . $item['rstatus']);
+        log_message("debug", "***** Rstatus: $_uid ********** " . $item['rstatus'] . ", " . $item['uid']);
         if($_uid == $item['uid']) {
             // 如果是自己的，那么检查状态
+        log_message("debug", "***** Rstatus: $_uid ********** " . $item['rstatus'] . ", " . $item['uid']);
             if(in_array($item['rstatus'], array(-1, 0, 3))) {
                 $_editable = 1;
             }
@@ -305,6 +307,7 @@ class Items extends REIM_Controller {
 
                 $_report = $_relate_report['data'];
                 $_cc = $_relate_report['data']['cc'];
+                log_message("debug", "Report UID:" . $_report['uid'] . ", CUID:" . $_uid);
                 if($_report['uid'] == $_uid) {
                     if(in_array($_relate_report['data']['status'], array(0, 3))) {
                     }
@@ -463,13 +466,21 @@ class Items extends REIM_Controller {
     public function update(){
     	$item_update_in = $this->session->userdata('item_update_in');
         $id = $this->input->post('id');
+        $rid = $this->input->post('rid');
+        $_uid = $this->input->post('uid');
         $amount = $this->input->post('amount');
         $category= $this->input->post('category');
-	log_message('debug', "##TM SRC:" . $this->input->post('dt1'));
-	$time = $this->input->post('dt1');
+        log_message('debug', "##TM SRC:" . $this->input->post('dt1'));
+        $time = $this->input->post('dt1');
         $timestamp = strtotime($this->input->post('dt1'));
-	$temestamp = $timestamp*1000;
+        $temestamp = $timestamp*1000;
         log_message("debug", "##TM:" . $timestamp);
+        $profile = $this->session->userdata('profile');
+            $item_update_in = 0;
+        if($profile['id'] != $_uid){
+            $item_update_in = 1;
+        }
+
         //$timestamp = mktime(0, $dt['tm_min'], $dt['tm_hour'], $dt['tm_mon']+1, $dt['tm_mday'], $dt['tm_year'] + 1900);
 
         $merchant = $this->input->post('merchant');
@@ -523,24 +534,32 @@ class Items extends REIM_Controller {
         } else {
             redirect(base_url('items/index'));
         } */
-	switch($item_update_in)
-	{
-		case 0:
+        if($rid == 0) {
 			return redirect(base_url('items/index'));
-			break;
-		case 1:
-			return redirect(base_url('reports'));
-			break;
-		case 2:
-			return redirect(base_url('bills/index'));
-			break;
-		case 3:
-			return redirect(base_url('bills/exports'));
-			break;
-		default:
-			return redirect(base_url('items/index'));
-			break;
-	}
+        } else {
+            return redirect(base_url('reports/show/'. $rid));
+        }
+        /*
+
+            switch($item_update_in)
+            {
+            case 0:
+                return redirect(base_url('items/index'));
+                break;
+            case 1:
+                return redirect(base_url('reports'));
+                break;
+            case 2:
+                return redirect(base_url('bills/index'));
+                break;
+            case 3:
+                return redirect(base_url('bills/exports'));
+                break;
+            default:
+                return redirect(base_url('items/index'));
+                break;
+            }
+         */
     }
 
 }
