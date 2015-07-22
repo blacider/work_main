@@ -8,27 +8,26 @@ class Reports extends REIM_Controller {
         $this->load->model('report_model', 'reports');
     }
     
-    public function revoke($id = 0)
-    {
-    	$buf = $this->reports->revoke($id);
-	return redirect('reports');
+    public function revoke($id = 0) {
+        $buf = $this->reports->revoke($id);
+        return redirect('reports');
     }
 
-    public function sendout()
-    {
-    	$rid = $this->input->post('report_id');	
-	$email = $this->input->post('email');
-	$buf = $this->reports->sendout($rid,$email);
-	log_message("debug","###".json_encode($buf));
-	die($buf);
+    public function sendout() {
+        $rid = $this->input->post('report_id');	
+        $email = $this->input->post('email');
+        $buf = $this->reports->sendout($rid,$email);
+        log_message("debug","###".json_encode($buf));
+        die($buf);
     }
 
-    public function index($type = 1){
+    public function index($type = 1) {
         $items = $this->items->get_suborinate($type);
         if(!$items['status']){
             die(json_encode(array()));
         }
-	$this->session->set_userdata('item_update_in','1');
+        $this->session->set_userdata('item_update_in','1');
+        $error = $this->session->userdata('last_error');
         $ret = array();
         if(!$items) redirect(base_url('login'));
         $item_data = array();
@@ -40,6 +39,7 @@ class Reports extends REIM_Controller {
             array(
                 'title' => '我的报告'
                 ,'items' => $item_data
+                ,'error' => $error
                 ,'type' => $type
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa home-icon')
@@ -185,22 +185,22 @@ class Reports extends REIM_Controller {
                     . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
 		}
 		else
-		{
-                $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
-                    . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
-                    . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>'
-                    . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
-		}
-            $d['date_str'] = date('Y年m月d日', $d['createdt']);
-            $d['status_str'] = '待提交';
-            $d['amount'] = '￥' . $d['amount'];
-            $prove_ahead = '报销';
-            switch($d['prove_ahead']){
-            case 2: {$prove_ahead = '<font color="red">预借</font>';};break;
-            case 1: {$prove_ahead = '<font color="green">预算</font>';};break;
-            }
-            $d['prove_ahead'] = $prove_ahead;
-            switch($d['status']) {
+        {
+            $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+                . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
+                . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>'
+                . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
+        }
+                $d['date_str'] = date('Y年m月d日', $d['createdt']);
+                $d['status_str'] = '待提交';
+                $d['amount'] = '￥' . $d['amount'];
+                $prove_ahead = '报销';
+                switch($d['prove_ahead']){
+                case 2: {$prove_ahead = '<font color="red">预借</font>';};break;
+                case 1: {$prove_ahead = '<font color="green">预算</font>';};break;
+                }
+                $d['prove_ahead'] = $prove_ahead;
+                switch($d['status']) {
                 case 0: {
                     $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
                 };break;
@@ -222,7 +222,7 @@ class Reports extends REIM_Controller {
                 case 6: {
                     $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#42B698 !important;">待支付</button>';
                 };break;
-            }
+                }
         }
         die(json_encode($data));
     }
@@ -243,7 +243,11 @@ class Reports extends REIM_Controller {
         $cc = $this->input->post('cc');
         $save = $this->input->post('renew');
         $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save);
-        log_message("debug", json_encode($ret));
+		$ret = json_decode($ret, true);
+        log_message("debug", "xx:" . json_encode($ret));
+        if($ret['status'] < 1){
+            $this->session->set_userdata('last_error', $ret['data']['msg']);
+        }
         return redirect(base_url('reports'));
     }
 
@@ -453,6 +457,7 @@ class Reports extends REIM_Controller {
             $_members = $members['data']['members'];
         }
         $_error = $this->session->userdata('last_error');
+        log_message("debug", "Last Error:" . $_error);
         $this->bsload('reports/audit',
             array(
                 'title' => '收到的报告'

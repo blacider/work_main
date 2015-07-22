@@ -95,7 +95,6 @@ class Report_Model extends Reim_Model {
         if(!$jwt) return false;
 		$url = $this->get_url("report");
         $buf = $this->do_Post($url, $data, $jwt);
-		$obj = json_decode($buf, true);
         return $buf;
 
     }

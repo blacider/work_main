@@ -95,7 +95,11 @@
 
   <script language="javascript">
     var __BASE = "<?php echo $base_url; ?>";
+    var _error = "<?php echo $error; ?>";
 
+    $(document).ready(function(){
+        if(_error) show_notify(_error);
+    });
 
   </script>
   <script src="/static/js/base.js" ></script>

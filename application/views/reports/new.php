@@ -214,8 +214,6 @@ $(document).ready(function(){
 			var amount = $(this).data('amount');
 			amount = parseInt(amount.substr(1));
 			sum+=amount;
-		//	console.log(amount);
-		//	console.log(sum);
 		};
 	});
 	if(sum <= 0)
