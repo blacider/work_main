@@ -170,6 +170,7 @@ class Items extends REIM_Controller {
             }
             $data = $items['data'];
             $item_data = $data['items'];
+	    log_message("debug",json_encode($data));
             foreach($item_data as &$s){
                 //if($s['status'] < 0) continue;
                 $s['cate_str'] = '未指定的分类';
@@ -239,6 +240,12 @@ class Items extends REIM_Controller {
                 };break;
                 case 6: {
                     $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#42B698 !important;">待支付</button>';
+                };break;
+                case 7: {
+                    $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成待确认</button>';
+                };break;
+                case 8: {
+                    $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成已确认</button>';
                 };break;
                 default: {
                     $s['status_str'] = $s['status'];
