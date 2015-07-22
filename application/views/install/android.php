@@ -85,7 +85,7 @@
             }
         },50);
     } else{
-        window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/1.2.4/reim.apk'; 
+        window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/1.2.6/reim.apk'; 
         }
     }
 
