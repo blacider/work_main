@@ -366,9 +366,14 @@ class Reports extends REIM_Controller {
         $_flow = $this->reports->report_flow($id);
 
         $flow = array();
+        $_ts = '';
+        log_message("debug", "Rreport" . json_encode($report));
+        if($report['createdt'] > 0) {
+            $_ts = date('Y-m-d H:i:s', $report['createdt']);
+        }
         array_push($flow, array(
             'nickname' => $report['nickname']
-            ,'ts' => date('Y-m-d H:i:s', $report['createdt'])
+            ,'ts' =>  $_ts           
             ,'status' => '提交'
             ,'step' => 0
         ));
@@ -387,10 +392,14 @@ class Reports extends REIM_Controller {
                 if($_s == 3)  {
                     $audit = '拒绝';
                 }
+                $_ts = '';
+                if($s['udt'] != '0') {
+                    $_ts = date('Y-m-d H:i:s', $s['udt']);
+                }
                 array_push($flow, array(
                     'status' => $audit
                     ,'nickname' => $s['nickname']
-                    ,'ts' => date('Y-m-d H:i:s', $s['udt'])
+                    ,'ts' => $_ts
                     ,'step' => $s['step']
                 ));
             }
@@ -403,6 +412,8 @@ class Reports extends REIM_Controller {
 		}
 		return ($a['step'] < $b['step']) ?-1:1;
 	});
+        foreach($flow as &$x) {
+        }
         log_message("debug", "Recievers: ---> " . json_encode($flow));
 
 	log_message("debug","*********:".json_encode($report));
@@ -517,9 +528,10 @@ class Reports extends REIM_Controller {
                 if(array_key_exists($d['uid'], $__members)){
                     $d['author'] = $__members[$d['uid']]['nickname'];
                 }
+            log_message("debug", "Rstatus: **** " . json_encode($d));
 		if(in_array($d['status'],[2,4,5,7,8]))
 		{
-                if($d['mdecision'] == 1 && $d['cc_flag']){
+                if($d['mdecision'] == 1 && !$d['cc_flag']){
                 $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in texport' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>' .  '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
                 } else {
                     $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in ' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span></div>';
@@ -528,7 +540,7 @@ class Reports extends REIM_Controller {
 		}
 		else
 		{
-                if($d['mdecision'] == 1 && $d['cc_flag']){
+                if($d['mdecision'] == 1 && !$d['cc_flag']){
                 $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
                 } else {
                     $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span></div>';
