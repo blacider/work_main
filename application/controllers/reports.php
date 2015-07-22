@@ -457,6 +457,7 @@ class Reports extends REIM_Controller {
         //niu
     }
     public function audit(){
+    	$this->session->set_userdata('item_update_in',4);
         $items = $this->items->get_suborinate();
         if(!$items['status']){
             die(json_encode(array()));
