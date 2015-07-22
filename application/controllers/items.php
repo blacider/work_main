@@ -287,7 +287,6 @@ class Items extends REIM_Controller {
         $user = $this->session->userdata('profile');
         log_message("debug", "USER:" . json_encode($user));
         $_uid = $user['id'];
-        // {"status":1,"code":"439","data":{"lastdt":"1435890939","title":"r46","rid":"1487","uid":"384","status":"3","manager_id":"445","prove_ahead":"0","step":"5","pa_approval":"0","gid":"173","createdt":"1432874356","nickname":"\u5565","id":"1487","mdecision":-1,"items":[{"id":"2325","amount":"25","merchants":"","category":"1778","image_id":"","uid":"384","prove_ahead":"0","note":"","gid":"173","reimbursed":"0","tags":"","rid":"1487","status":"3","location":"\u5317\u4eac\u5e02","pa_amount":"0","pa_approval":"0","latitude":"0","longitude":"0","currency":"cny","rate":"1","image_paths":"","relates":"384","title":"r46","lastdt":"1435890939","dt":"1432874353","createdt":"1432874353","category_name":"\u9910\u996e","category_code":"","type":"0","images":[],"currency_logo":"\uffe5"}],"comments":{"data":[],"total":0},"receivers":{"managers":[{"nickname":"\u5565","status":"1","id":"384","gid":"155","receiver":"384","submitter":"0","step":"5","sender":"439","ccflag":"0","mdecision":"1"}],"cc":[]},"cc":"0"},"server_token":"","wx":false}
 
         $_editable = 0;
         log_message("debug", "***** Rstatus: ********** " . $item['rstatus']);
@@ -303,9 +302,13 @@ class Items extends REIM_Controller {
             log_message("debug", "Find :" . json_encode($_relate_report));
             log_message("debug", "Relate Report:" . $_relate_report['data']['status']);
             if($_relate_report['status']){
+
+                $_report = $_relate_report['data'];
                 $_cc = $_relate_report['data']['cc'];
-                if($_cc == 0 && in_array($_relate_report['data']['status'], array(0, 2, 3))) {
-                    // 检查状态
+                if($_report['uid'] == $_uid) {
+                    if(in_array($_relate_report['data']['status'], array(0, 3))) {
+                    }
+                } elseif ($_cc == 0 && in_array($_relate_report['data']['status'], array(1, 2))) {
                     $_editable = 1;
                 }
             }
