@@ -851,7 +851,7 @@ class Reports extends REIM_Controller {
                     $_groups = $groups[$_uid];
                     foreach($_groups as $s){
                         array_push($_name, $s['gname']);
-                        array_push($_gids, $s['gid']);
+                        array_push($_gids, $s['gcode']);
                     }
                     $_gname = implode('/', $_name);
                 }

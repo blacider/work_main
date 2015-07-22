@@ -102,8 +102,9 @@ if($i['ts'] != '0000-00-00 00:00:00') {
 <div class="clearfix form-actions col-sm-10 col-xs-10">
                                 <div class="col-md-offset-3 col-md-6">
                                 <?php
-                                                $_uid = $profile['id'];
-                                                if(($report['uid'] == $_uid ) && ($report['status'] == 1) || ($report['status'] == 2) ) 
+$_ruid = $report['uid'];
+$_uid = $profile['id'];
+if($_ruid == $_uid  && (($report['status'] == 1) || ($report['status'] == 2)) ) 
                                     {
                                 ?>
                                     <a style="margin-left: 80px;" class="btn btn-white callback" data-renew="-2"><i class="ace-icon fa fa-undo gray bigger-110"></i>撤回</a>
