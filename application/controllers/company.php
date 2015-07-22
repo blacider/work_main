@@ -597,6 +597,7 @@ public function common(){
 	$template = $this->input->post('template');
 	$user_confirm = $this->input->post('limit');
 	$reports_limit = $this->input->post('reports_limit');
+	$max_allowed_months = $this->input->post('max_allowed_months');
 	if($ischecked == "true")
 	{
 		$pids = 1;
@@ -632,6 +633,7 @@ public function common(){
 	$in['user_confirm'] = $user_confirm;
 	$in['report_quota'] = $reports_limit;
 	$in['need_bank_info'] = $need_bank_info;
+	$in['max_allowed_months'] = $max_allowed_months;
 	$this->company->profile($in);
 	$re = array('name' => $ischecked,'remark'=>$isremark,'template' => $template,'obj' => $data['data']['config']);
 	die(json_encode($re));
