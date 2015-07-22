@@ -74,7 +74,7 @@
                                         <tr>
                                             <thead>
                                                 <td>
-                                                    <!-- <input type="checkbox" class="form-controller"> -->
+                                                   <input name="all_item" id="all_item" type="checkbox" class="form-controller all_item"> 全选</td>
                                                 </td>
                                                 <td>消费时间</td>
                                                 <td>类型</td>
@@ -186,6 +186,29 @@ $(document).ready(function(){
     });
     });
 
+    $('#all_item').click(function(){
+        if($('#all_item').is(":checked"))
+        {
+            //console.log("checked");
+            $('.amount').each(function(){
+                $(this).prop('checked',true);
+                //console.log($(this).is(":checked"));
+               // $(this).trigger('checked');
+            });   
+
+            //$("[name='item[]']").prop('checked',true);
+        }
+        else
+        {
+            $('.amount').each(function(){
+                $(this).prop('checked',false);
+              // $(this).removeAttr("checked"); 
+            });
+           // $("[name='item[]']").prop('checked',false);
+        }
+     });
+
+
     $('.renew').click(function(){
 
         var s = $('#receiver').val();
@@ -218,6 +241,9 @@ $(document).ready(function(){
 		//	console.log(sum);
 		};
 	});
+
+
+
 	if(sum <= 0)
 	{
 		show_notify("报告总额不能小于等于0");
