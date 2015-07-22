@@ -25,6 +25,8 @@
                         <div class="col-xs-12 col-sm-12">
                             <div class="form-group">
                                 <input type="hidden" name="id" value="<?php echo $item['id']; ?>" />
+                                <input type="hidden" name="uid" value="<?php echo $item['uid']; ?>" />
+                                <input type="hidden" name="rid" value="<?php echo $item['rid']; ?>" />
                                 <label class="col-sm-1 control-label no-padding-right">金额</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <input type="text" value="<?php echo $item['amount']; ?>" class="form-controller col-xs-12" name="amount" placeholder="金额" id="amount">
