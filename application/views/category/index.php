@@ -133,7 +133,7 @@ echo $str;
                                 <label for="form-field-username">帐套选择</label>
                                 <div>
                                     <select name="sob_id" id="sob_id"  class="form-control">
-                                    <option value="0">没有帐套</option>
+                                    <option value="0">默认帐套</option>
                                     <?php
                                     foreach($sobs as $item){
                                     echo "<option value='" . $item['sob_id'] ."'>" . $item['sob_name'] . "</option>";
