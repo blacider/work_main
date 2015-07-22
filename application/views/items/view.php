@@ -59,7 +59,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">留言</label>
+                                <label class="col-sm-1 control-label no-padding-right">备注</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $item['note']; ?> " disabled>
                                 </div>
