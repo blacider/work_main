@@ -269,6 +269,7 @@ class Items extends REIM_Controller {
     public function show($id = 0){
         if(0 === $id) redirect(base_url('items'));
         $obj = $this->items->get_by_id($id);
+	$item_update_in = $this->session->userdata('item_update_in');	
         if($obj['status'] < 1){
             redirect(base_url('items'));
         }
@@ -313,6 +314,12 @@ class Items extends REIM_Controller {
                 }
             }
         }
+	$user = $this->session->userdata('user');
+	if(($user['admin']>0)&&($item_update_in==2))
+	{
+		$_editable = 1;
+	}
+		
 
 
 	log_message("debug","_tags*****".json_encode(explode(',', $_tags)));
@@ -358,6 +365,7 @@ class Items extends REIM_Controller {
         }
 	log_message("debug","item_updta_in".$this->session->userdata("item_update_in"));
 	log_message("debug","flow".json_encode($_flow));
+	log_message("debug","users:".json_encode($user));
         $this->bsload('items/view',
             array(
                 'title' => '查看消费',
