@@ -116,7 +116,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">留言</label>
+                                <label class="col-sm-1 control-label no-padding-right">备注</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <textarea name="note" class="col-xs-12 col-sm-12  form-controller" ><?php echo trim($item['note']); ?></textarea>
                                 </div>
