@@ -322,6 +322,13 @@ DataSourceTree.prototype.data = function(options, callback) {
                                         </a>
                                     </th>
                                 </tr>
+
+                                <tr>
+                                    <td class="u_username">默认帐套</td>
+                                    <td class="u_role_name"></td>
+                                   <td style="width:50px;">   <a href="#" class="editno"  data-title="" data-id="0"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="delno" data-id="0"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                </tr>
+
                             </thead>
                             <tbody>
 <?php
@@ -372,5 +379,22 @@ $(document).ready(function(){
             }
         });
     });
+
+    $('.delno').each(function(){
+        $(this).click(function(){
+            if(confirm('默认帐套不允许删除')){
+              
+            }
+        });
+    });
+
+      $('.editno').each(function(){
+        $(this).click(function(){
+            if(confirm('默认帐套不允许修改')){
+              
+            }
+        });
+    });
+
 });
 </script>

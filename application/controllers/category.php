@@ -220,7 +220,7 @@ class Category extends REIM_Controller {
         foreach ($_group as $item) {
             log_message("debug", "Item:" . json_encode($item));
             if($item['sob_id'] == 0 || $item['sob_id'] == '0') {   
-                $item['sob_name'] = "没有帐套";
+                $item['sob_name'] = "默认帐套";
                 $category_group[] = $item;
                 continue;
             } else {
