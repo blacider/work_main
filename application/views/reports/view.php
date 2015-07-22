@@ -35,6 +35,7 @@
                                             <td>金额</td>
                                             <td>类型</td>
                                             <td>商家</td>
+                                            <td>备注</td>
                                             <td>详情</td>
                                             <!--
                                             <td>操作</td>
@@ -57,6 +58,7 @@
                                             <td><?php echo $i['currency_logo']; ?> &nbsp;<?php echo $i['amount']; ?></td>
                                             <td><?php echo $i['category_name']; ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
+                                            <td><?php echo $i['note'];?></td>
                                             <td><?php $link = base_url('items/show/' . $i['id']); ?><a href="<?php echo $link; ?>">详情</a></td>
                                         </tr>
                                         <?php } ?>
