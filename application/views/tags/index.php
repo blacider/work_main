@@ -91,6 +91,7 @@ echo $str;
 </div><!-- /.page-content -->
 </div><!-- /.main-content -->
 <script language="javascript">
+__BASE = "<?php echo $base_url;?>";
 
 $(document).ready(function(){
 
@@ -110,7 +111,7 @@ $(document).ready(function(){
         $(this).click(function(){
             if(confirm('确认要删除吗?')){
                 var _id = $(this).data('id');
-                location.href = __BASEURL + "/tags/drop/" + _id;
+                location.href = __BASE + "/tags/drop/" + _id;
             }
         });
     });
