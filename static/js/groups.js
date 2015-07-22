@@ -176,7 +176,7 @@ $(document).ready(function () {
     //$('<button>').addClass('btn btn-success btn-xs').html('<i class="ace-icon fa fa-plus bigger-110 icon-only"></i>').appendTo(lst).button({ icons: { primary: "fa fa-plus " }, text: false });
 
     $(lst).click(function (e) {
-        location.href = __BASE + "groups/add"
+       // location.href = __BASE + "groups/add"
     });
 
 });
