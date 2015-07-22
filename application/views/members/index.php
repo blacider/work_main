@@ -77,7 +77,7 @@ position: absolute;
         <div class="panel-body">
             <table class="table" id="gtable">
                 <tr>
-                    <th>昵称</th>
+                    <th>名称</th>
                     <th>邮箱</th>
                     <th>手机</th>
                     <th>角色</th>
@@ -272,7 +272,7 @@ function load_group(gid){
                     $('#gtable').html("");
 
                 var _th = '<tr>'
-                    + '<th>昵称</th>'
+                    + '<th>名称</th>'
                     + '<th>邮箱</th>'
                     + '<th>手机</th>'
                     + '<th>身份</th>';
