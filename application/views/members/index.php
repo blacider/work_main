@@ -82,7 +82,7 @@ position: absolute;
                     <th>手机</th>
                     <th>角色</th>
 <?php
-if($profile['admin'] == 1) {
+if($profile['admin'] == 1 || $profile['admin'] == 3) {
 ?>
                     <th>操作</th>
 <?php } ?>
@@ -125,7 +125,7 @@ if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['emai
     </td>
 
 <?php
-if($profile['admin'] == 1) {
+if($profile['admin'] == 1 ||  $profile['admin'] == 3) {
 ?>
     <td>
 <a href="/members/editmember/<?php echo $m['id']; ?>"><i  style="margin-left:10px;" alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 fa fa-pencil"></i></a>
