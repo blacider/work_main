@@ -81,6 +81,7 @@
                                                 <td>金额</td>
                                                 <td>类别</td>
                                                 <td>商家</td>
+                                                <td>备注</td>
                                                 <td>操作</td>
                                             </thead>
                                         </tr>
@@ -106,6 +107,7 @@ echo $buf;
 
                                                 ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
+                                            <td><?php echo $i['note']; ?></td>
                                             <td>
                                                 <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
                                                     <span class="ui-icon ui-icon ace-icon fa fa-search-plus txdetail" data-id="<?php echo $i['id']; ?>"></span>
