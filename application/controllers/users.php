@@ -290,13 +290,15 @@ class Users extends REIM_Controller {
             die(json_encode(array('status' => false, 'data' => array('msg' => '参数错误'))));
         } else {
             $buf = $this->user->bind_phone($phone, $vcode);
-            $obj = json_decode($buf, True);
+	    log_message("debug","$$$$$$$$$".$buf);
+           /* $obj = json_decode($buf, True);
             if($obj['status']) {
-                redirect(base_url('users/logout'));
+              //  redirect(base_url('users/logout'));
             } else {
                 $this->session->set_userdata('last_error', $obj['data']['msg']);
-                redirect(base_url('users/profile'));
-            }
+               // redirect(base_url('users/profile'));
+            }*/
+	    die($buf);
         }
     }
 
