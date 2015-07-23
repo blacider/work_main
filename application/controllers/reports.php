@@ -349,10 +349,10 @@ class Reports extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
 
-        $report = $report['data'];
-        if($report['status'] < 0){
+        if($report['status'] <= 0){
             return redirect(base_url('reports/index'));
         }
+        $report = $report['data'];
         $_managers = array();
         foreach($report['receivers']['managers'] as $m){
             array_push($_managers, $m['nickname']);

@@ -3,6 +3,12 @@
 class REIM_Controller extends CI_Controller{
     public function _remap($method,$params)
     {
+        $this->load->library('user_agent');
+        //$this->load->helper('user_agent', 'agent');
+        $refer = $this->agent->referrer();
+        log_message('debug', 'alvayang remap refer:' . json_encode($_SERVER));
+        log_message('debug', 'alvayang remap refer:' . json_encode($method));
+        log_message('debug', 'alvayang remap refer:' . json_encode($params));
     	$jwt = $this->session->userdata('jwt');
         $controller = $this->uri->rsegment_array();
         $method_set = ['login','install', 'pub'];
@@ -28,6 +34,9 @@ class REIM_Controller extends CI_Controller{
     public function __construct(){
         parent::__construct();
         $this->load->library('PHPExcel');
+        $this->load->library('user_agent');
+        $refer = $this->agent->referrer();
+        log_message("debug", "construct:" . $refer);
         $this->load->library('PHPExcel/IOFactory');
         $uri = $this->uri->uri_string();
         log_message("debug", "Request: $uri");
@@ -45,6 +54,7 @@ class REIM_Controller extends CI_Controller{
             log_message("debug", "No Auth Info Logout $flag");
 
             if($flag == 1) {
+                $this->session->set_userdata('last_url', $uri);
                 redirect(base_url('login'));
                 die("");
             }
