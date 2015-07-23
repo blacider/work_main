@@ -135,8 +135,8 @@
                                         <a id="filePicker" >选择图片</a>
                                     </div>
                                     </div>
-                                </div>
                             </div>
+                          
                             <input type="hidden" id="renew" value="0" name="renew">
                             <input type="reset" style="display:none;" id="reset">
                             <div class="clearfix form-actions col-sm-8 col-xs-8">
@@ -158,6 +158,7 @@
         </form>
     </div>
 </div>
+
 
 <!--
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
