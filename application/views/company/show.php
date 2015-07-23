@@ -30,7 +30,6 @@
  $m_dict = array();
  $top_category = array();
 foreach($rules as $item){
-            //echo json_encode($item);
     $img = "";
     $str = '<tr>';
 $username = '<td class="u_username">' . $item['name'] . '</td>';

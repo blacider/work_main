@@ -34,71 +34,6 @@
 
 				<div class="navbar-buttons navbar-header pull-right" role="navigation">
 					<ul class="nav ace-nav">
-                <!--
-						<li class="purple">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-								<i class="ace-icon fa fa-bell icon-animated-bell"></i>
-								<span class="badge badge-important">8</span>
-							</a>
-
-							<ul class="dropdown-menu-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
-								<li class="dropdown-header">
-									<i class="ace-icon fa fa-exclamation-triangle"></i>
-									8 Notifications
-								</li>
-
-								<li>
-									<a href="#">
-										<div class="clearfix">
-											<span class="pull-left">
-												<i class="btn btn-xs no-hover btn-pink fa fa-comment"></i>
-												New Comments
-											</span>
-											<span class="pull-right badge badge-info">+12</span>
-										</div>
-									</a>
-								</li>
-
-								<li>
-									<a href="#">
-										<i class="btn btn-xs btn-primary fa fa-user"></i>
-										Bob just signed up as an editor ...
-									</a>
-								</li>
-
-								<li>
-									<a href="#">
-										<div class="clearfix">
-											<span class="pull-left">
-												<i class="btn btn-xs no-hover btn-success fa fa-shopping-cart"></i>
-												New Orders
-											</span>
-											<span class="pull-right badge badge-success">+8</span>
-										</div>
-									</a>
-								</li>
-
-								<li>
-									<a href="#">
-										<div class="clearfix">
-											<span class="pull-left">
-												<i class="btn btn-xs no-hover btn-info fa fa-twitter"></i>
-												Followers
-											</span>
-											<span class="pull-right badge badge-info">+11</span>
-										</div>
-									</a>
-								</li>
-
-								<li class="dropdown-footer">
-									<a href="#">
-										See all notifications
-										<i class="ace-icon fa fa-arrow-right"></i>
-									</a>
-								</li>
-							</ul>
-						</li>
-                        -->
 
 <?php
 $user = $this->session->userdata('user');
@@ -287,16 +222,34 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 
 
 
+<?php
+$open = 1;
+if($profile['gid'] > 0){
+    $_config = $profile['group']['config'];
+    if($_config) {
+        $config = json_decode($_config, True);
+
+        if(array_key_exists('private_structure', $config) && $config['private_structure'] == 1){
+            $open = 0;
+        }
+    }
+}
+if($open == 0 && $profile['admin'] > 0){ 
+    $open = 1;
+}
+if($open == 1) {
+?>
 
     <li class="hsub" id="members">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-users"></i>
-        <span class="menu-text"> 员工&部门 </span>
+        <span class="menu-text"> 员工和部门 </span>
 
         <b class="arrow fa fa-angle-down"></b>
     </a>
     <b class="arrow"></b>
     <ul class="submenu nav-show" style="display: block;">
+
         <li class="hsub" id="index">
         <a href="<?php echo base_url('members/index'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
@@ -304,6 +257,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         </a>
         <b class="arrow"></b>
         </li>
+
         <li class="rsmenu" id="groups">
         <a href="<?php echo base_url('members/groups'); ?>">
             <i class="menu-icon fa fa-caret-right"></i>
@@ -313,7 +267,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         <b class="arrow"></b>
         </li>
 <?php 
-if($profile['admin'] == 1){
+if($profile['admin'] == 1 || $profile['admin'] == 3){
 ?>
         <li class="hsub" id="newmember">
         <a href="<?php echo base_url('members/newmember'); ?>" >
@@ -351,10 +305,13 @@ if($profile['admin'] == 1){
     </ul>
     </li>
 
+<?php
+}
+?>
 
 <?php 
 if($profile['admin'] > 0){
-if($profile['admin'] == 1){
+if($profile['admin'] == 1 || $profile['admin'] == 3){
 ?>
 
     <li class="hsub" id="category">
@@ -386,14 +343,6 @@ if($profile['admin'] == 1){
         <a href="<?php echo base_url('category/tags'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 标签管理 </a>
         <b class="arrow"></b>
         </li>
-
-
-<!--
-          <li class="hsub" id="new_sob">
-        <a href="<?php echo base_url('category/new_sob'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建帐套 </a>
-        <b class="arrow"></b>
-        </li>
--->        
     </ul>
     </li>
 
@@ -418,28 +367,18 @@ if($profile['admin'] == 1){
         <b class="arrow"></b>
         </li>
 
-        <!-- <li class="hsub" id="create">
-        <a href="<?php echo base_url('company/create'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建规则 </a>
-          <b class="arrow"></b>
-        </li> -->
-
 
         <li class="hsub" id="show_approve">
         <a href="<?php echo base_url('company/show_approve'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 审批规则 </a>
           <b class="arrow"></b>
         </li> 
 
-
-       <!-- <li class="hsub" id="approve">
-        <a href="<?php echo base_url('company/approve'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 新建审批 </a>
-          <b class="arrow"></b>
-        </li>  -->
-
-    
     </ul>
     </li>
 
-<?php  } ?>
+<?php  } 
+if($profile['admin'] == 1 || $profile['admin'] == 2) {
+?>
 
     <li class="hsub" id="bills">
     <a href="#" class="dropdown-toggle">
@@ -465,8 +404,8 @@ if($profile['admin'] == 1){
     </ul>
     </li>
 
+<?php  } 
 
-<?php 
 }
 ?>
 

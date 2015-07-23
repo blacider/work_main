@@ -748,7 +748,11 @@ class Reports extends REIM_Controller {
     public function export_u8(){
         $ids = $this->input->post('ids');
         //$_ids = explode(",", $ids);
-        if("" == $ids) die("");
+        if("" == $ids) {
+            $this->session->set_userdata('last_error', '没有选择任何报销');
+            die("<script language='javascript'>history.go(-1); </script>");
+            //return redirect(base_url('reports/index'));
+        }
         $user = $this->session->userdata('user');
         $username = '';
         if(is_array($user)){

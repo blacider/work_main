@@ -68,7 +68,25 @@
                             </div>
 
 
+                              <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-rigtht">邮件通知报告状态变化</label>
+                                <div class="col-xs-4 col-sm-4">
+                                        <label style="margin-top:8px;">
+                                            <input name="mail_notify" class="ace ace-switch btn-rotate" type="checkbox" id="mail_notify" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+                                </div>
+                            </div>
 
+                              <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-rigtht">不开放组织结构</label>
+                                <div class="col-xs-4 col-sm-4">
+                                        <label style="margin-top:8px;">
+                                            <input name="private_structure" class="ace ace-switch btn-rotate" type="checkbox" id="private_structure" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+                                </div>
+                            </div>
 
 
 
@@ -120,6 +138,10 @@
                                 <input id="max_allowed_months" type="text" class="form-controller col-xs-12" name="max_allowed_months" placeholder="月数">
                                 </div>
                             </div>
+
+
+
+
 
                             <input type="hidden" id="renew" name="renew" value="0" />
                             <input type="reset" style="display:none;" id="reset">
@@ -194,6 +216,24 @@ var __BASE = "<?php echo $base_url; ?>";
             }
 
         }
+        if(data.mail_notify !=undefined)
+        {
+            if(data.mail_notify==1)
+            {
+            $('#mail_notify').attr('checked', data.mail_notify);
+            $("#mail_notify").trigger("chosen:updated");
+            }
+
+        }
+        if(data.private_structure !=undefined)
+        {
+            if(data.private_structure ==1)
+            {
+            $('#private_structure').attr('checked', data.private_structure);
+            $("#private_structure").trigger("chosen:updated");
+            }
+
+        }
 
         if(data.template != undefined) {
             $("#temp").val( data.template ).attr('selected',true);
@@ -229,7 +269,10 @@ var __BASE = "<?php echo $base_url; ?>";
            $.ajax({
                 type:"post",
                 url:__BASE+"company/profile",
-                data:{max_allowed_months:$('#max_allowed_months').val(),need_bank_info:$('#need_bank_info').is(':checked'),ischecked:$('#isadmin').is(':checked'),isremark:$('#isremark').is(':checked'),iscompany:$('#iscompany').is(':checked'),template:$('#temp option:selected').val(),limit:lval,reports_limit:r_limit},
+                data:{
+                    mail_notify:$('#mail_notify').is(':checked'),
+                    max_allowed_months:$('#max_allowed_months').val(),private_structure:$('#private_structure').is(':checked'),
+                        need_bank_info:$('#need_bank_info').is(':checked'),ischecked:$('#isadmin').is(':checked'),isremark:$('#isremark').is(':checked'),iscompany:$('#iscompany').is(':checked'),template:$('#temp option:selected').val(),limit:lval,reports_limit:r_limit},
                 dataType:'json',
                 success:function(data){
                       //  console.log(data);
