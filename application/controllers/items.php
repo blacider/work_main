@@ -527,7 +527,7 @@ class Items extends REIM_Controller {
     public function edit($id = 0){
         if(0 === $id) redirect(base_url('items'));
         $item = $this->items->get_by_id($id);
-	$item_update_in = $this->session->userdata('item_update_in');
+        $item_update_in = $this->session->userdata('item_update_in');
         if($item['status'] < 1){
             redirect(base_url('items'));
         }
@@ -559,7 +559,7 @@ class Items extends REIM_Controller {
             $ob = array('name' => $i['id'], 'size' => $_size, 'type' => $_type, 'url' => $i['path'], 'id' => $i['id']);
             array_push($_images, $ob);
         }
-	log_message('debug','#######'.$item_update_in);
+        log_message('debug','#######'.$item_update_in);
         $this->bsload('items/edit',
             array(
                 'title' => '修改消费',
@@ -587,12 +587,12 @@ class Items extends REIM_Controller {
         $time = $this->input->post('dt1');
         $timestamp = strtotime($this->input->post('dt1'));
         $temestamp = $timestamp*1000;
-        log_message("debug", "##TM:" . $timestamp);
         $profile = $this->session->userdata('profile');
         $item_update_in = 0;
         if($profile['id'] != $_uid){
             $item_update_in = 1;
         }
+        log_message("debug", "##UID  $_uid :" . $profile['id']);
 
         //$timestamp = mktime(0, $dt['tm_min'], $dt['tm_hour'], $dt['tm_mon']+1, $dt['tm_mday'], $dt['tm_year'] + 1900);
 
@@ -601,54 +601,52 @@ class Items extends REIM_Controller {
         $type = $this->input->post('type');
         $note = $this->input->post('note');
         $images = $this->input->post('images');
-	if($item_update_in!=0)
-	{
-		$item_data = $this->items->get_by_id($id);
-		$data = $item_data['data'];
-		if($amount == $data['amount'])
-		{
-			$amount=-1;
-		}
-		if($category == $data['category'])
-		{
-			$category = -1;
-		}
-		if($tags == $data['tags'])
-		{
-			$tags = -1;
-		}
-		log_message("debug",'time:'.strtotime($time));
-		log_message("debug","gettime:".strtotime($data['dt']));
-		log_message("debug","gettime:".strtotime($data['dt']));
-	
-		if(strtotime($time) == strtotime($data['dt']) || $time == '')
-		{
-			$timestamp = -1;
-		}
-		if($merchant == $data['merchants'])
-		{
-			$merchant = -1;
-		}
-		if($note == $data['note'])
-		{
-			$note = -1;
-		}
-		log_message('debug','item_data:'.json_encode($data));
-        	$obj = $this->items->update_item($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
+        log_message("debug", "alvayang: Item Update In:" . $item_update_in);
+        if($item_update_in != 0) {
+            $item_data = $this->items->get_by_id($id);
+            $data = $item_data['data'];
+            if($amount == $data['amount'])
+            {
+                $amount=-1;
+            }
+            if($category == $data['category'])
+            {
+                $category = -1;
+            }
+            if($tags == $data['tags'])
+            {
+                $tags = -1;
+            }
+            log_message("debug",'time:'.strtotime($time));
+            log_message("debug","gettime:".strtotime($data['dt']));
+            log_message("debug","gettime:".strtotime($data['dt']));
 
-	}
-	else
-	{
-        	$obj = $this->items->update($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
-	}
-        // TODO: 提醒的Tips
-      /*  if($obj['status'] > 0){
-            redirect(base_url('items/index'));
-        } else {
-            redirect(base_url('items/index'));
-        } */
+            if(strtotime($time) == strtotime($data['dt']) || $time == '')
+            {
+                $timestamp = -1;
+            }
+            if($merchant == $data['merchants'])
+            {
+                $merchant = -1;
+            }
+            if($note == $data['note'])
+            {
+                $note = -1;
+            }
+            $obj = $this->items->update_item($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
+            log_message('debug','xx item_data:'.json_encode($obj));
+            if(!$obj['status']) {
+                $this->session->set_userdata('last_error', $obj['data']['msg']);
+            }
+
+        }
+        else
+        {
+            $obj = $this->items->update($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
+            log_message('debug','zz item_data:'.json_encode($obj));
+        }
         if($rid == 0) {
-			return redirect(base_url('items/index'));
+            return redirect(base_url('items/index'));
         } else {
             return redirect(base_url('reports/show/'. $rid));
         }
