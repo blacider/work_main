@@ -22,6 +22,10 @@ class Login extends REIM_Controller {
 
     public function index()
     {
+        $this->load->library('user_agent');
+        //$this->load->helper('user_agent', 'agent');
+        $refer = $this->agent->referrer();
+        log_message('debug', 'alvayang refer:' . $refer);
         $error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
         $body = $this->load->view('user/login', array('errors' => $error, 'title' => '登录'));
@@ -61,8 +65,14 @@ class Login extends REIM_Controller {
             log_message("debug", "Login: server token:" . $server_token);
             $this->session->set_userdata("groupname", $__g);
             $this->session->set_userdata("server_token", $server_token);
+            $goto = $this->session->userdata('last_url');
+            log_message("debug", $goto);
             // 获取一下组信息，然后设置一下
-            redirect(base_url('items'));
+            if(!$goto) {
+                redirect(base_url('items'));
+                die('');
+            }
+            redirect(base_url($goto));
         }
     }
 
@@ -71,6 +81,7 @@ class Login extends REIM_Controller {
         $this->session->unset_userdata('userid');
         $this->session->unset_userdata('profile');
         $this->session->unset_userdata('user');
+        $this->session->unset_userdata('jwt');
         redirect(base_url());
     }
 
