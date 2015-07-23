@@ -407,12 +407,25 @@ class Members extends REIM_Controller {
 
         }
         $data = array();
+	log_message("debug","######".json_encode($gmember));
         foreach($gmember as $m){
             $obj = array();
-            $obj['昵称'] = $m['nickname'];
-            $obj['邮箱'] = $m['email'];
-            $obj['手机号'] = $m['phone'];
-            $obj['银行卡号'] = $m['credit_card'];
+	    if(array_key_exists('nickname',$m))
+	    {
+            	$obj['昵称'] = $m['nickname'];
+	    }
+	    if(array_key_exists('email',$m))
+	    {
+            	$obj['邮箱'] = $m['email'];
+	    }
+	    if(array_key_exists('phone',$m))
+	    {
+            	$obj['手机号'] = $m['phone'];
+	    }
+	    if(array_key_exists('credit_card',$m))
+	    {
+            	$obj['银行卡号'] = $m['credit_card'];
+	    }
             array_push($data, $obj);
         }
         $this->render_to_download('人员', $data, '员工信息.xls');
