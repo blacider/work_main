@@ -638,7 +638,6 @@ class Members extends REIM_Controller {
         $info =  $info['data'];
 	$manager_id = $info['manager_id'];
 	$m_info = json_decode($this->users->reim_get_info($manager_id),True);
-	$manager_name = $m_info['data']['nickname'];
 
         $group = $this->groups->get_my_list();
 
