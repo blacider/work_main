@@ -259,9 +259,15 @@ class Reports extends REIM_Controller {
 
     public function del($id = 0){
         if($id == 0) {
+            log_message("debug", "NO  Delete  ID:");
             return redirect(base_url('reports/index'));
         }
         $obj = $this->reports->delete_report($id);
+        //log_message("debug", "Delete ***********" . json_enocde($obj));
+        if(!$obj['status']) {
+            $this->session->set_userdata('last_error', $obj['data']['msg']);
+        }
+
         return redirect(base_url('reports/index'));
     }
 
