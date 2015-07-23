@@ -224,6 +224,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 
 <?php
 $open = 1;
+$close_directly = 0;
 if($profile['gid'] > 0){
     $_config = $profile['group']['config'];
     if($_config) {
@@ -231,6 +232,9 @@ if($profile['gid'] > 0){
 
         if(array_key_exists('private_structure', $config) && $config['private_structure'] == 1){
             $open = 0;
+        }
+        if(array_key_exists('close_directly', $config) && $config['close_directly'] == 1){
+            $close_directly = 1;
         }
     }
 }
@@ -508,7 +512,7 @@ foreach($breadcrumbs as $b){
 <script>
 function show_notify(msg, life){
     if(!life || life ==undefined)
-        life = 1000;
+        life = 3000;
     $.jGrowl(msg, {'life' : life});
 }
 $(document).ready(function(){

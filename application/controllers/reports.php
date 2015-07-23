@@ -28,6 +28,7 @@ class Reports extends REIM_Controller {
         }
         $this->session->set_userdata('item_update_in','1');
         $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         $ret = array();
         if(!$items) redirect(base_url('login'));
         $item_data = array();
@@ -173,25 +174,24 @@ class Reports extends REIM_Controller {
 
         $data = $items['data']['data'];
         foreach($data as &$d){
-                $trash= $d['status'] === 1 ? 'gray' : 'red';
-                $edit = ($d['status'] === 1)   ? 'gray' : 'green';
-                $export = ($d['status'] === 1)   ? 'gray' : 'grey';
-		if(in_array($d['status'],[2,4,5]))
-		{
+            $trash= $d['status'] === 1 ? 'gray' : 'red';
+            $edit = ($d['status'] === 1)   ? 'gray' : 'green';
+            $export = ($d['status'] === 1)   ? 'gray' : 'grey';
+            if(in_array($d['status'],[2,4,5]))
+            {
+                $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+                    . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
+                    . '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>'
+                    . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
+            }
+            else
+            {
                 $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
                     . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>'
-                    . '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>'
                     . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
-		}
-		else
-        {
-            $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
-                . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
-                . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>'
-                . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
-        }
-                $d['date_str'] = date('Y年m月d日', $d['createdt']);
+            }
+            $d['date_str'] = date('Y年m月d日', $d['createdt']);
                 $d['status_str'] = '待提交';
                 $d['amount'] = '￥' . $d['amount'];
                 $prove_ahead = '报销';
@@ -259,9 +259,15 @@ class Reports extends REIM_Controller {
 
     public function del($id = 0){
         if($id == 0) {
+            log_message("debug", "NO  Delete  ID:");
             return redirect(base_url('reports/index'));
         }
         $obj = $this->reports->delete_report($id);
+        log_message("debug", "Delete ***********" . json_encode($obj));
+        if(!$obj['status']) {
+            $this->session->set_userdata('last_error', $obj['data']['msg']);
+        }
+
         return redirect(base_url('reports/index'));
     }
 
@@ -340,6 +346,9 @@ class Reports extends REIM_Controller {
     public function show($id = 0){
         if($id == 0) return redirect(base_url('reports/index'));
         $report = $this->reports->get_detail($id);
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+
         $report = $report['data'];
         if($report['status'] < 0){
             return redirect(base_url('reports/index'));
@@ -428,6 +437,7 @@ class Reports extends REIM_Controller {
             array(
                 'title' => '查看报告',
                 'report' => $report,
+                'error' => $error,
                 'flow' => $flow
 		,'rid' => $id
                     ,'breadcrumbs' => array(
@@ -475,6 +485,7 @@ class Reports extends REIM_Controller {
             $_members = $members['data']['members'];
         }
         $_error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         log_message("debug", "Last Error:" . $_error);
         $this->bsload('reports/audit',
             array(
@@ -735,13 +746,13 @@ class Reports extends REIM_Controller {
             $receivers = '';
         }
         $buf = $this->reports->audit_report($rid, $status, $receivers, $content);
-	$buf_json = json_encode($buf);
-	log_message("debug","#########:$buf_json");
+        $buf_json = json_encode($buf);
+        log_message("debug","#########:$buf_json");
         if(!$buf['status']) {
             $this->session->set_userdata('last_error', '操作失败');
-	    log_message("debug","**********:$buf");
+            log_message("debug","**********:$buf");
         }
-       redirect(base_url('reports/audit'));
+        redirect(base_url('reports/audit'));
     }
 
 
@@ -855,7 +866,7 @@ class Reports extends REIM_Controller {
                     $_groups = $groups[$_uid];
                     foreach($_groups as $s){
                         array_push($_name, $s['gname']);
-                        array_push($_gids, $s['gid']);
+                        array_push($_gids, $s['gcode']);
                     }
                     $_gname = implode('/', $_name);
                 }

@@ -212,10 +212,17 @@ class Items extends REIM_Controller {
                 log_message("debug", "Item:" . json_encode($s));
                 $trash= $s['status'] === 0 ? 'gray' : 'red';
                 $edit = $s['status'] === 0 ? 'gray' : 'green';
+                $edit_str = '';
+                if(in_array($s['status'], array(-1, 0, 3))) {
+                    $edit_str =  '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>';
+                }
+
+
                 $s['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $s['id'] . '"></span>'
-                    . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>'
-                    . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $s['id'] . '"></span></div>';
+                    . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $s['id'] . '"></span>'
+                    . $edit_str
+                    . '</div>';
                 switch($s['status']){
                 case -1: {
                     $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
@@ -264,8 +271,7 @@ class Items extends REIM_Controller {
         redirect(base_url('items'));
     }
 
-
-    public function show($id = 0){
+    public function ishow($id = 0) {
         if(0 === $id) redirect(base_url('items'));
         $obj = $this->items->get_by_id($id);
 	$item_update_in = $this->session->userdata('item_update_in');	
@@ -291,15 +297,115 @@ class Items extends REIM_Controller {
 
         $_editable = 0;
         log_message("debug", "***** Rstatus: $_uid ********** " . $item['rstatus'] . ", " . $item['uid']);
-        if($_uid == $item['uid']) {
-            // 如果是自己的，那么检查状态
-        log_message("debug", "***** Rstatus: $_uid ********** " . $item['rstatus'] . ", " . $item['uid']);
-            if(in_array($item['rstatus'], array(-1, 0, 3))) {
-                $_editable = 1;
+        // 收到的,检查我是否是被cc，以及状态
+        $_rid = $item['rid'];
+        if($_rid > 0 ){
+            $_relate_report = $this->report->get_report_by_id($_rid);
+            log_message("debug", "Find :" . json_encode($_relate_report));
+            log_message("debug", "Relate Report:" . $_relate_report['data']['status']);
+            if($_relate_report['status']){
+                $_report = $_relate_report['data'];
+                $_cc = $_relate_report['data']['cc'];
+                if(in_array($_relate_report['data']['status'], array(0, 3))) {
+                    $_editable = 1;
+                }
             }
         } else {
+            $_editable = 1;
+        }
+        //}
+
+
+        // TODO 去提升效率
+        foreach(explode(',', $_tags) as $t){
+            foreach($tags as $_t){
+                if($_t['id'] == $t){
+                    if(array_key_exists('tag_name',$_t))
+                    {
+                        array_push($__tags_name, $_t['tag_name']);
+                    }
+                }
+            }
+        }
+	
+        $item['tags'] = implode(',', $__tags_name);
+        foreach($categories as $c){
+            if($c['id'] == $cid) {
+                $item['category'] = $c['category_name'];
+            }
+        }
+        $_type = '报销';
+        $prove_ahead = $item['prove_ahead'];
+        switch($prove_ahead) {
+        case 0:{$_type = '报销';};break;
+        case 1:{$_type = '预借';};break;
+        case 2:{$_type = '预算';};break;
+        }
+        $item['prove_ahead'] = $_type;
+
+        $_flow = $this->items->item_flow($id);
+        $flow = array();
+        if ($_flow['status'] == 1) {
+            foreach ($_flow['data'] as $d) {
+                $peropt = $this->str_split_unicode($d['newvalue'],1);
+                array_push($flow, array(
+                    'operator' => $peropt['name'],
+                    'optdate' => $d['submitdt'],
+                    'operation' => $peropt['opt'],
+                    ));
+            }
+        }
+        $this->bsload('items/iview',
+            array(
+                'title' => '查看消费',
+                'categories' => $categories,
+                'tags' => $tags,
+                'item' => $item,
+                'editable' => $_editable,
+                'flow' => $flow
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
+                    ,array('url'  => '', 'name' => '查看消费', 'class' => '')
+                ),
+            ));
+    }
+
+    public function show($id = 0){
+        if(0 === $id) redirect(base_url('items'));
+        $obj = $this->items->get_by_id($id);
+        if($obj['status'] < 1){
+            redirect(base_url('items'));
+        }
+        $category = $this->category->get_list();
+        $categories = array();
+        $tags = array();
+        if($category && array_key_exists('data', $category) && array_key_exists('categories', $category['data'])){
+            $categories = $category['data']['categories'];
+            $tags = $category['data']['tags'];
+        }
+        $item = $obj['data'];
+        $cid = $item['category'];
+        $_tags = $item['tags'];
+        $__tags_name = array();
+
+        $user = $this->session->userdata('profile');
+        log_message("debug", "USER:" . json_encode($user));
+        log_message("debug", "ITEM:" . json_encode($item));
+        $_uid = $user['id'];
+
+        $_editable = 0;
+        log_message("debug", "***** Rstatus: $_uid ********** " . $item['rstatus'] . ", " . $item['uid']);
+        //if($_uid == $item['uid'] ) {
+        //    // 如果是自己的，那么检查状态
+        //log_message("debug", "***** Rstatus: $_uid ********** " . $item['rstatus'] . ", " . $item['uid']);
+        //    if(in_array($item['rstatus'], array(-1, 0, 3))) {
+        //        $_editable = 1;
+        //    }
+        //} else {
             // 收到的,检查我是否是被cc，以及状态
-            $_rid = $item['rid'];
+        $_rid = $item['rid'];
+        if($_rid > 0 ){
             $_relate_report = $this->report->get_report_by_id($_rid);
             log_message("debug", "Find :" . json_encode($_relate_report));
             log_message("debug", "Relate Report:" . $_relate_report['data']['status']);
@@ -308,19 +414,21 @@ class Items extends REIM_Controller {
                 $_report = $_relate_report['data'];
                 $_cc = $_relate_report['data']['cc'];
                 log_message("debug", "Report UID:" . $_report['uid'] . ", CUID:" . $_uid);
-                if($_report['uid'] == $_uid) {
-                    if(in_array($_relate_report['data']['status'], array(0, 3))) {
-                    }
-                } elseif ($_cc < 0 && in_array($_relate_report['data']['status'], array(1, 2))) {
+                if($_cc < 0 && $user['admin'] > 0) {
                     $_editable = 1;
+                } else {
+                    if($_report['uid'] == $_uid) {
+                        if(in_array($_relate_report['data']['status'], array(0, 3))) {
+                            $_editable = 1;
+                        }
+                    } elseif (in_array($_relate_report['data']['status'], array(1, 2))) {
+                        $_editable = 1;
+                    }
                 }
             }
+        } else {
+            $_editable = 1;
         }
-	$user = $this->session->userdata('user');
-	if(($user['admin']>0)&&($item_update_in==2))
-	{
-		$_editable = 1;
-	}
 		
 
 
@@ -421,7 +529,7 @@ class Items extends REIM_Controller {
     public function edit($id = 0){
         if(0 === $id) redirect(base_url('items'));
         $item = $this->items->get_by_id($id);
-	$item_update_in = $this->session->userdata('item_update_in');
+        $item_update_in = $this->session->userdata('item_update_in');
         if($item['status'] < 1){
             redirect(base_url('items'));
         }
@@ -453,7 +561,7 @@ class Items extends REIM_Controller {
             $ob = array('name' => $i['id'], 'size' => $_size, 'type' => $_type, 'url' => $i['path'], 'id' => $i['id']);
             array_push($_images, $ob);
         }
-	log_message('debug','#######'.$item_update_in);
+        log_message('debug','#######'.$item_update_in);
         $this->bsload('items/edit',
             array(
                 'title' => '修改消费',
@@ -481,12 +589,12 @@ class Items extends REIM_Controller {
         $time = $this->input->post('dt1');
         $timestamp = strtotime($this->input->post('dt1'));
         $temestamp = $timestamp*1000;
-        log_message("debug", "##TM:" . $timestamp);
         $profile = $this->session->userdata('profile');
-            $item_update_in = 0;
+        $item_update_in = 0;
         if($profile['id'] != $_uid){
             $item_update_in = 1;
         }
+        log_message("debug", "##UID  $_uid :" . $profile['id']);
 
         //$timestamp = mktime(0, $dt['tm_min'], $dt['tm_hour'], $dt['tm_mon']+1, $dt['tm_mday'], $dt['tm_year'] + 1900);
 
@@ -495,54 +603,52 @@ class Items extends REIM_Controller {
         $type = $this->input->post('type');
         $note = $this->input->post('note');
         $images = $this->input->post('images');
-	if($item_update_in!=0)
-	{
-		$item_data = $this->items->get_by_id($id);
-		$data = $item_data['data'];
-		if($amount == $data['amount'])
-		{
-			$amount=-1;
-		}
-		if($category == $data['category'])
-		{
-			$category = -1;
-		}
-		if($tags == $data['tags'])
-		{
-			$tags = -1;
-		}
-		log_message("debug",'time:'.strtotime($time));
-		log_message("debug","gettime:".strtotime($data['dt']));
-		log_message("debug","gettime:".strtotime($data['dt']));
-	
-		if(strtotime($time) == strtotime($data['dt']) || $time == '')
-		{
-			$timestamp = -1;
-		}
-		if($merchant == $data['merchants'])
-		{
-			$merchant = -1;
-		}
-		if($note == $data['note'])
-		{
-			$note = -1;
-		}
-		log_message('debug','item_data:'.json_encode($data));
-        	$obj = $this->items->update_item($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
+        log_message("debug", "alvayang: Item Update In:" . $item_update_in);
+        if($item_update_in != 0) {
+            $item_data = $this->items->get_by_id($id);
+            $data = $item_data['data'];
+            if($amount == $data['amount'])
+            {
+                $amount=-1;
+            }
+            if($category == $data['category'])
+            {
+                $category = -1;
+            }
+            if($tags == $data['tags'])
+            {
+                $tags = -1;
+            }
+            log_message("debug",'time:'.strtotime($time));
+            log_message("debug","gettime:".strtotime($data['dt']));
+            log_message("debug","gettime:".strtotime($data['dt']));
 
-	}
-	else
-	{
-        	$obj = $this->items->update($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
-	}
-        // TODO: 提醒的Tips
-      /*  if($obj['status'] > 0){
-            redirect(base_url('items/index'));
-        } else {
-            redirect(base_url('items/index'));
-        } */
+            if(strtotime($time) == strtotime($data['dt']) || $time == '')
+            {
+                $timestamp = -1;
+            }
+            if($merchant == $data['merchants'])
+            {
+                $merchant = -1;
+            }
+            if($note == $data['note'])
+            {
+                $note = -1;
+            }
+            $obj = $this->items->update_item($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
+            log_message('debug','xx item_data:'.json_encode($obj));
+            if(!$obj['status']) {
+                $this->session->set_userdata('last_error', $obj['data']['msg']);
+            }
+
+        }
+        else
+        {
+            $obj = $this->items->update($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
+            log_message('debug','zz item_data:'.json_encode($obj));
+        }
         if($rid == 0) {
-			return redirect(base_url('items/index'));
+            return redirect(base_url('items/index'));
         } else {
             return redirect(base_url('reports/show/'. $rid));
         }

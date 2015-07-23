@@ -53,6 +53,7 @@ class Report_Model extends Reim_Model {
         log_message("debug", "JWT:" . json_encode($jwt));
 		$url = $this->get_url("report/$rid");
 		$buf = $this->do_Delete($url, array(), $jwt);
+        log_message("debug", "DETELE )))))))) :" . json_encode($jwt));
         log_message("debug", "From Server [ $url ]:" . $buf);
 		$obj = json_decode($buf, true);
         return $obj;
