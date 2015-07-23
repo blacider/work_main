@@ -205,7 +205,6 @@ $(document).ready(function(){
 </script>
 
 <script src="/static/js/base.js" ></script>
-<script src="/static/js/audit.js" ></script>
 <script type="text/javascript">
 $grid = $('#grid-table');
 $("#globalSearch").click(function () {
@@ -261,3 +260,4 @@ $('#send').click(function(){
 });
 </script>
 
+<script src="/static/js/audit.js" ></script>

@@ -173,25 +173,24 @@ class Reports extends REIM_Controller {
 
         $data = $items['data']['data'];
         foreach($data as &$d){
-                $trash= $d['status'] === 1 ? 'gray' : 'red';
-                $edit = ($d['status'] === 1)   ? 'gray' : 'green';
-                $export = ($d['status'] === 1)   ? 'gray' : 'grey';
-		if(in_array($d['status'],[2,4,5]))
-		{
+            $trash= $d['status'] === 1 ? 'gray' : 'red';
+            $edit = ($d['status'] === 1)   ? 'gray' : 'green';
+            $export = ($d['status'] === 1)   ? 'gray' : 'grey';
+            if(in_array($d['status'],[2,4,5]))
+            {
+                $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+                    . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
+                    . '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>'
+                    . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
+            }
+            else
+            {
                 $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
                     . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>'
-                    . '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>'
                     . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
-		}
-		else
-        {
-            $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
-                . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
-                . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>'
-                . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
-        }
-                $d['date_str'] = date('Y年m月d日', $d['createdt']);
+            }
+            $d['date_str'] = date('Y年m月d日', $d['createdt']);
                 $d['status_str'] = '待提交';
                 $d['amount'] = '￥' . $d['amount'];
                 $prove_ahead = '报销';
