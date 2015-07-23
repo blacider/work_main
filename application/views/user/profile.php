@@ -227,7 +227,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
             </div>
             <div class="modal-body">
 
-                <form id="password_form" class="form-horizontal" role="form" method="post" action="<?php echo base_url('users/update_phone'); ?>">
+                <form id="phone_form" class="form-horizontal" role="form" method="post" action="<?php echo base_url('users/update_phone'); ?>">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
 
@@ -242,13 +242,13 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">验证码</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input name="vcode" type="text" class="form-controller col-xs-12 br3 inp" placeholder="验证码" />
+                                    <input name="vcode" id="vcode" type="text" class="form-controller col-xs-12 br3 inp" placeholder="验证码" />
                                 </div>
                             </div>
 
                             <div class="clearfix form-actions">
                                 <div class="col-md-offset-3 col-md-9">
-                                    <a class="btn btn-white btn-primary update_password" data-renew="0"><i class="ace-icon fa fa-save "></i>修改并登出</a>
+                                    <a class="btn btn-white btn-primary update_phone" data-renew="0"><i class="ace-icon fa fa-save "></i>修改并登出</a>
 
                                 </div>
                             </div>
@@ -798,6 +798,31 @@ $(document).ready(function(){
     });
     $('.update_password').click(function(){
         $('#password_form').submit();
+    });
+    $('.update_phone').click(function(){
+        //$('#phone_form').submit();
+        var _phone = $('#phone').val();
+        var _vcode = $('#vcode').val();
+        $.ajax({
+            url:__BASE+"users/update_phone",
+            method:"POST",
+            dataType:"json",
+            data:{'phone':_phone,'vcode':_vcode},
+            success:function(data){
+                //console.log(data);
+                if(data.status==0 || data.status=='false')
+                {
+                    show_notify(data.data.msg);
+                }
+                else if(data.status == 1)
+                {
+                    $('#phone_modal').modal('hide');
+                    show_notify("手机绑定成功");
+                }
+
+               // $('#phone_modal').modal('hide');
+            }
+        });
     });
 
     $('.change_phone').click(function(){
