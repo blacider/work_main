@@ -31,10 +31,12 @@ font:bold 11px Arial, Helvetica, sans-serif;
                             <?php $disabled = $self == 1 ? '' : 'disabled'; ?>
 <?php 
 $path = "http://reim-avatar.oss-cn-beijing.aliyuncs.com/" . $user['apath'];
-if("" == $user['apath']) {
+//if("" == $user['apath']) {
+   if("" == $avatar_path) {
     $path = base_url('/static/default.png');
 } else {
-    $path = $user['apath'];
+   // $path = $user['apath'];
+    $path = $avatar_path;
 }
 ?>
 
@@ -295,6 +297,9 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                 <div class="col-xs-6 col-sm-6">
                                     <input name="repassword" type="password" class="form-controller col-xs-12 br3 inp" placeholder="重复新密码" />
                                 </div>
+                            </div>
+                            <div>
+                                <input name="pid" id="pid" type="hidden" value="<?php echo $pid;?>"/>
                             </div>
 
 

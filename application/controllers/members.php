@@ -619,6 +619,8 @@ class Members extends REIM_Controller {
             redirect(base_url('members/index'));
             exit();
         }
+	$error = $this->session->userdata('login_error');
+	$this->session->unset_userdata('login_error');
         $info = json_decode($this->users->reim_get_info($id), True);
         $info =  $info['data'];
 	$manager_id = $info['manager_id'];
@@ -635,6 +637,7 @@ class Members extends REIM_Controller {
             $gmember = $gmember ? $gmember : array();
         }
 	log_message('debug','@@@@manger_id:'.$manager_id);
+        $path = base_url($this->users->reim_get_hg_avatar($info['avatar']));
 
         //print_r($info);
         $this->bsload('user/profile',
@@ -642,11 +645,12 @@ class Members extends REIM_Controller {
                 'title' => '修改资料'
                 ,'member' => $info
                 ,'self' => 0
-                ,'error' => ''
+                ,'error' => $error 
                 ,'isOther' => 1
-                ,'avatar_path' => $info['avatar']
+                ,'avatar_path' => $path
 		,'gmember' => $gmember
 		,'manager_id' => $manager_id
+		,'pid' => $id
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
