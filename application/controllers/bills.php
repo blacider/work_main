@@ -33,41 +33,43 @@ class Bills extends REIM_Controller {
                 }
             }
         }
-	if($status == 2){
-	$this->session->set_userdata('item_update_in','2');
-        $this->bsload('bills/index',
-            array(
-                'title' => '待结算'
-                , 'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
-		    ,array('url' => '','name' => '待结算','class' => '')
+        if($status == 2){
+            $this->session->set_userdata('item_update_in','2');
+            $this->bsload('bills/index',
+                array(
+                    'title' => '待结算'
+                    ,'error' => $error
+                    , 'breadcrumbs' => array(
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                        ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
+                        ,array('url' => '','name' => '待结算','class' => '')
+                    )
+                    ,'reports' => $data
+                    ,'status' => $status
+                    ,'category' => $_tags
+                    ,'error' => $error
                 )
-                ,'reports' => $data
-                ,'status' => $status
-                ,'category' => $_tags
-                ,'error' => $error
-            )
-        );
-	}
-	else
-	{
-	$this->session->set_userdata('item_update_in','3');
-	$this->bsload('bills/index',
-            array(
-                'title' => '已结束'
-                , 'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
-		    ,array('url' => '','name' => '已结束','class' => '')
+            );
+        }
+        else
+        {
+            $this->session->set_userdata('item_update_in','3');
+            $this->bsload('bills/index',
+                array(
+                    'title' => '已结束'
+                    ,'error' => $error
+                    , 'breadcrumbs' => array(
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                        ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
+                        ,array('url' => '','name' => '已结束','class' => '')
+                    )
+                    ,'reports' => $data
+                    ,'status' => $status
+                    ,'category' => $_tags
+                    ,'error' => $error
                 )
-                ,'reports' => $data
-                ,'status' => $status
-                ,'category' => $_tags
-                ,'error' => $error
-            )
-	);
-	}
+            );
+        }
     }
 
     public function index(){

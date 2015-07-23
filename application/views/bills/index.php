@@ -98,10 +98,14 @@ position: absolute;
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var __STATUS = "<?php echo $status; ?>";
+var error = "<?php echo $error; ?>";
 </script>
 
 
 <script language="javascript">
+$(document).ready(function(){
+    if(error) show_notify(error);
+});
 function pay() {
     var _id = chosenids.join('%23');
     location.href = __BASE + "bills/marksuccess/" + _id + "/0";
