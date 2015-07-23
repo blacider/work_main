@@ -49,17 +49,19 @@ function bind_event(){
                 success: function(data){
                     if (data['status'] > 0) {
                         getData = data['data'].suggestion;
-                        console.log(data['data']);
                         if (data['data'].complete == 0) {
                             $('#rid').val(_id);
                             //$('#status').val(2);
                             //$('#modal_next').modal('show');
                             chose_others_zero(_id);
                         } else {
-                            //TODOmodal_next_
                             $('#rid_').val(_id);
                             $('#status_').val(2);
-                            $('#modal_next_').modal('show'); 
+                            if(close_directly == 0) {
+                                $('#modal_next_').modal('show'); 
+                            } else {
+                                $('#permit_form').submit();
+                            }
                         }
                     }
                 }

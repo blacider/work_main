@@ -263,7 +263,7 @@ class Reports extends REIM_Controller {
             return redirect(base_url('reports/index'));
         }
         $obj = $this->reports->delete_report($id);
-        //log_message("debug", "Delete ***********" . json_enocde($obj));
+        log_message("debug", "Delete ***********" . json_encode($obj));
         if(!$obj['status']) {
             $this->session->set_userdata('last_error', $obj['data']['msg']);
         }
@@ -485,6 +485,7 @@ class Reports extends REIM_Controller {
             $_members = $members['data']['members'];
         }
         $_error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         log_message("debug", "Last Error:" . $_error);
         $this->bsload('reports/audit',
             array(
@@ -745,13 +746,13 @@ class Reports extends REIM_Controller {
             $receivers = '';
         }
         $buf = $this->reports->audit_report($rid, $status, $receivers, $content);
-	$buf_json = json_encode($buf);
-	log_message("debug","#########:$buf_json");
+        $buf_json = json_encode($buf);
+        log_message("debug","#########:$buf_json");
         if(!$buf['status']) {
             $this->session->set_userdata('last_error', '操作失败');
-	    log_message("debug","**********:$buf");
+            log_message("debug","**********:$buf");
         }
-       redirect(base_url('reports/audit'));
+        redirect(base_url('reports/audit'));
     }
 
 

@@ -79,6 +79,15 @@
                                 </div>
                             </div>
 
+                              <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-rigtht">审批按照规则运行</label>
+                                <div class="col-xs-4 col-sm-4">
+                                        <label style="margin-top:8px;">
+                                            <input name="close_directly" class="ace ace-switch btn-rotate" type="checkbox" id="close_directly" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+                                </div>
+                            </div>
 
                               <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">邮件通知报告状态变化</label>
@@ -218,6 +227,15 @@ var __BASE = "<?php echo $base_url; ?>";
             }
 
         }
+        if(data.close_directly!=undefined)
+        {
+            if(data.close_directly==1)
+            {
+            $('#close_directly').attr('checked', data.close_directly);
+            $("#close_directly").trigger("chosen:updated");
+            }
+
+        }
         if(data.low_amount_only!=undefined)
         {
             if(data.low_amount_only==1)
@@ -292,6 +310,7 @@ var __BASE = "<?php echo $base_url; ?>";
                 url:__BASE+"company/profile",
                 data:{
                     mail_notify:$('#mail_notify').is(':checked'),
+                    close_directly :$('#close_directly').is(':checked'),
                     low_amount_only:$('#low_amount_only').is(':checked'),
                     max_allowed_months:$('#max_allowed_months').val(),private_structure:$('#private_structure').is(':checked'),
                         need_bank_info:$('#need_bank_info').is(':checked'),ischecked:$('#isadmin').is(':checked'),isremark:$('#isremark').is(':checked'),iscompany:$('#iscompany').is(':checked'),template:$('#temp option:selected').val(),limit:lval,reports_limit:r_limit},

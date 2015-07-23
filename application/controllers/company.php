@@ -592,6 +592,7 @@ public function common(){
     $private_structure = 0;
     $mail_notify = 0;
     $low_amount_only = 0;
+    $close_directly = 0;
 	
 	$need_bank = $this->input->post('need_bank_info');
    	$ischecked = $this->input->post('ischecked');
@@ -604,6 +605,7 @@ public function common(){
 	$_private_structure = $this->input->post('private_structure');
 	$_mail_notify = $this->input->post('mail_notify');
 	$_max_amount_allowd = $this->input->post('low_amount_only');
+	$_close_directly = $this->input->post('close_directly');
 	if($ischecked == "true")
 	{
 		$pids = 1;
@@ -632,6 +634,10 @@ public function common(){
 	{
 		$low_amount_only= 1;
 	}
+	if($_close_directly == "true")
+	{
+		$close_directly = 1;
+	}
 	$data = $this->company->get();
 //	$config = $data['data']['config'];
 //	if(array_key_exists('same_category',$confarr))
@@ -646,6 +652,7 @@ public function common(){
 	$in=array();
 	$in['export_no_company']=$company_id;
 	$in['same_category'] = $pids;
+	$in['close_directly'] = $close_directly;
 	$in['export_no_note'] = $remark_id;
 	$in['template'] = $template;
 	$in['user_confirm'] = $user_confirm;

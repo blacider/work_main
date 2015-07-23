@@ -105,7 +105,7 @@ position: absolute;
 <div class="modal fade" id="modal_next_">
     <div class="modal-dialog">
         <div class="modal-content">
-                <form action="<?php echo base_url('reports/permit'); ?>" method="post" class="form-horizontal">
+                <form action="<?php echo base_url('reports/permit'); ?>" method="post" class="form-horizontal" id="permit_form">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <input type="hidden" name="rid" value="" id="rid_">
@@ -175,7 +175,19 @@ position: absolute;
         </div>
       </div><!-- PAGE CONTENT ENDS -->
 
+<?php
 
+$close_directly = 0;
+if($profile['gid'] > 0){
+    $_config = $profile['group']['config'];
+    if($_config) {
+        $config = json_decode($_config, True);
+        if(array_key_exists('close_directly', $config) && $config['close_directly'] == 1){
+            $close_directly = 1;
+        }
+    }
+}
+?>
 
 
 <!-- page specific plugin scripts -->
@@ -185,6 +197,7 @@ position: absolute;
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
+var close_directly = "<?php echo $close_directly; ?>";
 $(document).ready(function(){
     $('.new_card').click(function(){
         $('#form_discard').submit();
