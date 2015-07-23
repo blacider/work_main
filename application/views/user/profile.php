@@ -157,16 +157,16 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                                            2 => "出纳",
                                                            3 => "IT人员");
                                             if($profile['admin'] == 3) {
-                                            $chara = array(0 => "员工", 
-                                                           2 => "出纳",
-                                                           3 => "IT人员");
+                                                $chara = array(0 => "员工", 
+                                                    2 => "出纳",
+                                                    3 => "IT人员");
                                             }
                                             foreach($chara as $val => $des) {
                                             //for ($i=0; $i < 4; $i++) { 
                                                 $str1 = '<option value="' . $val . '"';
                                                 $select = 'selected="true"';
                                                 $str2 = '>' . $chara[$val] . "</option>";
-                                                if ($i == $member['admin']) {
+                                                if ($val == $member['admin']) {
                                                     echo $str1.$select.$str2;
                                                 } else {
                                                     echo $str1.$str2;

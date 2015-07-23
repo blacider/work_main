@@ -632,12 +632,14 @@ class Members extends REIM_Controller {
             redirect(base_url('members/index'));
             exit();
         }
-	$error = $this->session->userdata('login_error');
-	$this->session->unset_userdata('login_error');
+        //$profile = $this->user->reim_get_user($id);
+        $error = $this->session->userdata('login_error');
+        $this->session->unset_userdata('login_error');
         $info = json_decode($this->users->reim_get_info($id), True);
+        if(!$info['status']) return redirect('members/index');
         $info =  $info['data'];
-	$manager_id = $info['manager_id'];
-	$m_info = json_decode($this->users->reim_get_info($manager_id),True);
+        $manager_id = $info['manager_id'];
+        $m_info = json_decode($this->users->reim_get_info($manager_id),True);
 
         $group = $this->groups->get_my_list();
 
@@ -648,7 +650,7 @@ class Members extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-	log_message('debug','@@@@manger_id:'.$manager_id);
+        log_message('debug','@@@@manger_id:'.$manager_id);
         $path = base_url($this->users->reim_get_hg_avatar($info['avatar']));
 
         //print_r($info);
