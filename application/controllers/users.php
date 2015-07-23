@@ -37,6 +37,8 @@ class Users extends REIM_Controller {
     }
 
     public function profile(){
+    	$error = $this->session->userdata('login_error');
+	$this->session->unset_userdata('login_error');
         // 重新获取
         $profile = $this->user->reim_get_user();
         //print_r($profile);
@@ -64,8 +66,6 @@ class Users extends REIM_Controller {
 
             $path = '';//base_url();
         }
-        $error = $this->session->userdata('last_error');
-        $this->session->set_userdata('last_error', '');
 
         $group = $this->groups->get_my_list();
 
@@ -87,6 +87,7 @@ class Users extends REIM_Controller {
                 ,'isOther' => 0
 		,'manager_id' => $manager_id
 		,'gmember' => $gmember
+		,'pid' => $uid
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '修改资料', 'class' => '')
@@ -145,28 +146,61 @@ class Users extends REIM_Controller {
     }
 
     public function update_password(){
+        $profile = $this->user->reim_get_user();
+	$profile_id = $profile['data']['profile']['id'];
         $old_password = $this->input->post('old_password');
         $new_password = $this->input->post('password');
         $re_password = $this->input->post('repassword');
+	$pid = $this->input->post('pid');
+	log_message("debug","######".$pid." ".$profile_id);
         if(!($old_password && $new_password && $re_password)){
             $this->session->set_userdata('login_error', '参数错误');
-            return redirect('users/profile');
+	    if($pid == $profile_id)
+	    {
+            	return redirect('users/profile');
+	    }
+	    else
+	    {
+	    	redirect(base_url('members/editmember/'.$pid));
+	    }
         }
         if($re_password != $new_password) {
             $this->session->set_userdata('login_error', '新密码不相同');
-            return redirect('users/profile');
+	    if($pid == $profile_id)
+	    {
+            	return redirect('users/profile');
+	    }
+	    else
+	    {
+	    	redirect(base_url('members/editmember/'.$pid));
+	    }
         }
-        $info = json_decode($this->user->reim_update_password($old_password, $new_password), true);
+        $info = json_decode($this->user->reim_update_password($old_password, $new_password,$pid), true);
         if($info['status'] > 0){
+	    if($pid==$profile_id)
+	    {
             $this->session->unset_userdata('jwt');
             $this->session->unset_userdata('profile');
             $this->session->set_userdata('login_error', '密码修改成功');
             redirect(base_url('login'));
+	    }
+	    else
+	    {
+            	$this->session->set_userdata('login_error', '密码修改成功');
+	    	redirect(base_url('members/editmember/'.$pid));
+	    }
         } else {
-            $this->session->unset_userdata('jwt');
-            $this->session->unset_userdata('profile');
             $this->session->set_userdata('login_error', '信息修改失败');
-            redirect(base_url('login'));
+	    if($pid == $profile_id)
+	    {
+	    	redirect(base_url('users/profile'));
+	    }
+	    else
+	    {
+	    	redirect(base_url('members/editmember/'.$pid));
+	    }
+	   // if()
+           // redirect(base_url(''));
         }
     }
 
