@@ -130,8 +130,10 @@ if($_ruid == $_uid  && (($report['status'] == 1) || ($report['status'] == 2)) )
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
-var rid = "<?php echo $rid?>";
+var rid = "<?php echo $rid; ?>";
+var error = "<?php echo $error; ?>";
 $(document).ready(function(){
+    if(error) show_notify(error);
     $('.cancel').click(function(){
         history.go(-1);
     });

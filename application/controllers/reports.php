@@ -340,6 +340,9 @@ class Reports extends REIM_Controller {
     public function show($id = 0){
         if($id == 0) return redirect(base_url('reports/index'));
         $report = $this->reports->get_detail($id);
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+
         $report = $report['data'];
         if($report['status'] < 0){
             return redirect(base_url('reports/index'));
@@ -428,6 +431,7 @@ class Reports extends REIM_Controller {
             array(
                 'title' => '查看报告',
                 'report' => $report,
+                'error' => $error,
                 'flow' => $flow
 		,'rid' => $id
                     ,'breadcrumbs' => array(

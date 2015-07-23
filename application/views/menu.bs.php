@@ -508,7 +508,7 @@ foreach($breadcrumbs as $b){
 <script>
 function show_notify(msg, life){
     if(!life || life ==undefined)
-        life = 1000;
+        life = 3000;
     $.jGrowl(msg, {'life' : life});
 }
 $(document).ready(function(){
