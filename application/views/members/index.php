@@ -285,7 +285,7 @@ function load_group(gid){
                     + '<th>邮箱</th>'
                     + '<th>手机</th>'
                     + '<th>身份</th>';
-                    if(_admin == 1){
+                    if(_admin == 1 || _admin == 3){
                         _th += '<th>操作</th>'
                     }
                     _th += '</tr>';
