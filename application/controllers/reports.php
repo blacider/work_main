@@ -28,6 +28,7 @@ class Reports extends REIM_Controller {
         }
         $this->session->set_userdata('item_update_in','1');
         $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         $ret = array();
         if(!$items) redirect(base_url('login'));
         $item_data = array();

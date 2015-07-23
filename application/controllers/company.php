@@ -591,6 +591,7 @@ public function common(){
 	$need_bank_info = 0;
     $private_structure = 0;
     $mail_notify = 0;
+    $low_amount_only = 0;
 	
 	$need_bank = $this->input->post('need_bank_info');
    	$ischecked = $this->input->post('ischecked');
@@ -602,6 +603,7 @@ public function common(){
 	$max_allowed_months = $this->input->post('max_allowed_months');
 	$_private_structure = $this->input->post('private_structure');
 	$_mail_notify = $this->input->post('mail_notify');
+	$_max_amount_allowd = $this->input->post('low_amount_only');
 	if($ischecked == "true")
 	{
 		$pids = 1;
@@ -626,6 +628,10 @@ public function common(){
 	{
 		$need_bank_info = 1;
 	}
+	if($_max_amount_allowd == "true")
+	{
+		$low_amount_only= 1;
+	}
 	$data = $this->company->get();
 //	$config = $data['data']['config'];
 //	if(array_key_exists('same_category',$confarr))
@@ -648,6 +654,7 @@ public function common(){
 	$in['need_bank_info'] = $need_bank_info;
 	$in['max_allowed_months'] = $max_allowed_months;
 	$in['mail_notify'] = $mail_notify;
+	$in['low_amount_only'] = $low_amount_only;
 	$this->company->profile($in);
 	$re = array('name' => $ischecked,'remark'=>$isremark,'template' => $template,'obj' => $data['data']['config']);
 	die(json_encode($re));
