@@ -255,7 +255,10 @@ function load_group(gid){
                     //show_notify('获取信息成功');
                     var _g_du = '<a href="' + __BASE + '/members/editgroup/' + gid + '"><i class="ace-icon align-top bigger-125 fa fa-pencil white" style="margin-left:10px;" ></i></a>'
                                  +'<a href="javascript:void(0)" class="remove_group" data-id="' + gid + '"><i  style="margin-left:10px;"  class="ace-icon align-top bigger-125 white fa fa-trash-o"></i></a>';
-                    $('#g_du').html(_g_du);
+                    if(_admin == 1 || _admin == 3)
+                    {
+                        $('#g_du').html(_g_du);
+                    }
                     if(gid == -1){
                         build_invite(data.data);
                         $('#g_du').html('');
@@ -271,7 +274,10 @@ function load_group(gid){
                         var _member = data.member;
                         var _gname = _group.name;
                     }
-                    $('#gname').html(_gname);
+                    
+                    
+                        $('#gname').html(_gname);
+                    
                     $('#gtable').html("");
 
                 var _th = '<tr>'
@@ -315,7 +321,7 @@ function load_group(gid){
                     + '<td>' + item.email + '</td>'
                     + '<td>' + item.phone + '</td>'
                     + '<td><a href="javascript:void(0)">' + _color + '</a>';
-                    if(_admin == 1){
+                    if(_admin == 1 || _admin == 3){
                     _th += '<td><a href="' + __BASE + '/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a>'
                     _th += '<a href="javascript:void(0)" class="remove_user" data-id="' + item.id + '"><i  style="margin-left:10px;"  class="ace-icon align-top bigger-125 red fa fa-trash-o"></i></a></td>';
                     }
