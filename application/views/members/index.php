@@ -204,7 +204,7 @@ function update_admin(_admin, uid){
 
 function build_invite(data){
     var _member = data;
-    $('#gname').html('已邀请人员');
+    $('#gname').html('已邀请人员[' + _member.length + ']');
     $('#gtable').html("");
 
     var _th = '<tr>'
@@ -262,14 +262,14 @@ function load_group(gid){
                         return;
                     }
                     if(gid == -2){
-                        var _gname = '全体员工';
                         var _member = data.data;
+                        var _gname = '全体员工 [ ' + _member.length + ' ]';
                         $('#g_du').html('');
                     } else {
                         data = data.data;
                         var _group = data.group;
                         var _member = data.member;
-                        var _gname = _group.name;
+                        var _gname = _group.name + " [ " + _member.length + ' ]';
                     }
                     $('#gname').html(_gname);
                     $('#gtable').html("");
