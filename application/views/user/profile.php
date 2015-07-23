@@ -32,7 +32,7 @@ font:bold 11px Arial, Helvetica, sans-serif;
 <?php 
 $path = "http://reim-avatar.oss-cn-beijing.aliyuncs.com/" . $user['apath'];
 //if("" == $user['apath']) {
-   if("" == $avatar_path) {
+   if("" == $user['apath']) {
     $path = base_url('/static/default.png');
 } else {
    // $path = $user['apath'];
@@ -571,8 +571,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         </div>
     </div>
 </div>
-
-
 <div id="loading">
                     <img src="/static/images/loading.gif">
 </div>
