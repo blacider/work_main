@@ -598,6 +598,8 @@ public function common(){
     $mail_notify = 0;
     $low_amount_only = 0;
     $close_directly = 0;
+    $note_compulsory = 0;
+    $not_auto_time = 0;
 	
 	$need_bank = $this->input->post('need_bank_info');
    	$ischecked = $this->input->post('ischecked');
@@ -611,6 +613,9 @@ public function common(){
 	$_mail_notify = $this->input->post('mail_notify');
 	$_max_amount_allowd = $this->input->post('low_amount_only');
 	$_close_directly = $this->input->post('close_directly');
+	$_note_compulsory = $this->input->post('note_compulsory');
+	$_not_auto_time = $this->input->post('not_auto_time');
+
 	if($ischecked == "true")
 	{
 		$pids = 1;
@@ -622,6 +627,13 @@ public function common(){
 	if($iscompany == "true")
 	{
 		$company_id = 1;
+	}
+    if($_not_auto_time == "true") {
+        $not_auto_time = 1;
+    }
+    if($_note_compulsory == "true")
+	{
+		$note_compulsory = 1;
 	}
 	if($_mail_notify == "true")
 	{
@@ -658,6 +670,8 @@ public function common(){
 	$in['export_no_company']=$company_id;
 	$in['same_category'] = $pids;
 	$in['close_directly'] = $close_directly;
+	$in['note_compulsory'] = $note_compulsory;
+	$in['not_auto_time'] = $not_auto_time;
 	$in['export_no_note'] = $remark_id;
 	$in['template'] = $template;
 	$in['user_confirm'] = $user_confirm;

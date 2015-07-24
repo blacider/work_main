@@ -109,7 +109,25 @@
                                 </div>
                             </div>
 
+                              <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-rigtht">必须填写备注</label>
+                                <div class="col-xs-4 col-sm-4">
+                                        <label style="margin-top:8px;">
+                                            <input name="note_compulsory" class="ace ace-switch btn-rotate" type="checkbox" id="note_compulsory" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+                                </div>
+                            </div>
 
+                              <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-rigtht">不默认填写消费时间</label>
+                                <div class="col-xs-4 col-sm-4">
+                                        <label style="margin-top:8px;">
+                                            <input name="not_auto_time" class="ace ace-switch btn-rotate" type="checkbox" id="not_auto_time" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+                                </div>
+                            </div>
 
 
                             <div class="form-group">
@@ -208,6 +226,26 @@ var __BASE = "<?php echo $base_url; ?>";
             }
 
         }
+
+        if(data.not_auto_time!=undefined)
+        {
+            if(data.not_auto_time==1) {
+                $('#not_auto_time').attr('checked', data.not_auto_time);
+                $("#not_auto_time").trigger("chosen:updated");
+            }
+        }
+
+
+        if(data.note_compulsory != undefined)
+        {
+            if(data.note_compulsory ==1) {
+                $('#note_compulsory').attr('checked', data.note_compulsory);
+                $("#note_compulsory").trigger("chosen:updated");
+            }
+        }
+
+
+
         if(data.export_no_note!=undefined)
         {
             if(data.export_no_note==1)
@@ -309,6 +347,8 @@ var __BASE = "<?php echo $base_url; ?>";
                 type:"post",
                 url:__BASE+"company/profile",
                 data:{
+                    note_compulsory:$('#note_compulsory').is(':checked'),
+                    not_auto_time:$('#not_auto_time').is(':checked'),
                     mail_notify:$('#mail_notify').is(':checked'),
                     close_directly :$('#close_directly').is(':checked'),
                     low_amount_only:$('#low_amount_only').is(':checked'),
