@@ -120,7 +120,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">备注</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <textarea name="note" class="col-xs-12 col-sm-12  form-controller" ><?php echo trim($item['note']); ?></textarea>
+                                    <textarea name="note" id="note" class="col-xs-12 col-sm-12  form-controller" ><?php echo trim($item['note']); ?></textarea>
                                 </div>
                             </div>
 
@@ -170,10 +170,16 @@
 <script src="/static/ace/js/jquery.colorbox-min.js"></script>
 
 
+<?php
+    $_config = $profile['group']['config'];
+?>
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var _images = '<?php echo $images; ?> ';
+var config = '<?php echo $_config?>';
+var __config = JSON.parse(config);
+
 var _item_category = '<?php echo $item['category']; ?>';
 var flag = 0;
 function get_sobs(){
@@ -434,6 +440,30 @@ $(document).ready(function(){
             $('#amount').focus();
             return false;
         }
+
+        var dateTime = $('#date-timepicker1').val()
+        if(__config['not_auto_time'] == 1)
+        {
+            if(dateTime == '')
+            {
+                show_notify('请填写时间');
+                //$('#date-timepicker1').focus();
+                return false;
+            }
+        }
+
+        var note = $('#note').val();
+        if(__config['note_compulsory'] == 1)
+        {
+            if(note.trim()=='')
+            {
+
+                show_notify('请输入备注');
+                $('#note').focus();
+                return false;
+            }
+        }
+
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
     });

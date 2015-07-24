@@ -84,7 +84,7 @@
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">备注</label>
 <div class="col-xs-6 col-sm-6">
-<textarea name="note" class="col-xs-12 col-sm-12  form-controller" > </textarea>
+<textarea name="note" id="note" class="col-xs-12 col-sm-12  form-controller" > </textarea>
 </div>
 </div>
 
@@ -132,6 +132,9 @@
 </form>
 </div>
 </div>
+<?php
+    $_config = $profile['group']['config'];
+?>
 <!--
 <div class="modal" id="select_img_modal">
     <div class="modal-dialog">
@@ -190,6 +193,10 @@
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
+var config = '<?php echo $_config?>';
+var __config = JSON.parse(config);
+
+var not_auto_note = "";
 var flag = 0;
 function initUploader() {
     if (flag == 1) {
@@ -385,6 +392,9 @@ $(document).ready(function(){
 
     $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange'></i>");//let's add a custom loading icon
     $('.renew').click(function(){
+
+
+
         if($('#amount').val() == 0) {
             show_notify('请输入金额');
             $('#amount').focus();
@@ -397,11 +407,36 @@ $(document).ready(function(){
             $('#amount').focus();
             return false;
         }
+
+
         if(isNaN($('#amount').val())) {
             show_notify('请输入有效金额');
             $('#amount').val('');
             $('#amount').focus();
             return false;
+        }
+
+         var dateTime = $('#date-timepicker1').val()
+        if(__config['not_auto_time'] == 1)
+        {
+            if(dateTime == '')
+            {
+                show_notify('请填写时间');
+                //$('#date-timepicker1').focus();
+                return false;
+            }
+        }
+
+        var note = $('#note').val();
+        if(__config['note_compulsory'] == 1)
+        {
+            if(note.trim()=='')
+            {
+
+                show_notify('请输入备注');
+                $('#note').focus();
+                return false;
+            }
         }
 
         $('#renew').val($(this).data('renew'));
