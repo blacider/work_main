@@ -166,7 +166,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                                 $str1 = '<option value="' . $val . '"';
                                                 $select = 'selected="true"';
                                                 $str2 = '>' . $chara[$val] . "</option>";
-                                                if ($i == $member['admin']) {
+                                                if ($val == $member['admin']) {
                                                     echo $str1.$select.$str2;
                                                 } else {
                                                     echo $str1.$str2;
