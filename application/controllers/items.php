@@ -175,6 +175,7 @@ class Items extends REIM_Controller {
                 //if($s['status'] < 0) continue;
                 $s['cate_str'] = '未指定的分类';
                 $s['createdt'] = strftime("%Y-%m-%d %H:%M", intval($s['createdt']));
+                $s['dt'] = strftime("%Y-%m-%d %H:%M", intval($s['dt']));
                 $_type = '报销';
                 switch($s['type']){
                 case 1: {$_type = '预借';};break;

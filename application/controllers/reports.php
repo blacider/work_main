@@ -394,7 +394,7 @@ class Reports extends REIM_Controller {
         if($_flow['status'] == 1) {
             foreach($_flow['data']['data'] as $s){
                 $_s = $s['status'] % 100;
-                $audit = '无';
+                $audit = '待审批';
                 if($_s == 2)  {
                     $audit = '通过';
                 }

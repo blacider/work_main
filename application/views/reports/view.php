@@ -55,7 +55,11 @@
 
 
                                                 ?></td>
-                                            <td><?php echo $i['currency_logo']; ?> &nbsp;<?php echo $i['amount']; ?></td>
+<?php if($i['src_amount'] > 0) { ?>
+                                                    <td><?php echo $i['currency_logo']; ?> &nbsp;<?php echo $i['amount']; ?> &nbsp;[<?php echo $i['currency_logo']; ?><?php echo $i['src_amount']; ?>, 由  <?php echo $i['lastmodifier']; ?> 修改]</td>
+<?php } else { ?>
+                                                    <td><?php echo $i['currency_logo']; ?> &nbsp;<?php echo $i['amount']; ?> </td>
+<?php } ?>
                                             <td><?php echo $i['category_name']; ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td><?php echo $i['note'];?></td>
@@ -71,10 +75,9 @@
                                 <div class="col-xs-9 col-sm-9">
                                     <table class="table table-bordered table-striped">
                                         <tr>
-                                            <td>审批时间</td>
                                             <td>审批人</td>
                                             <td>审批意见</td>
-                                            <td>审批步骤</td>
+                                            <td>审批时间</td>
                                        
                                             <!--
                                             <td>操作</td>
@@ -82,15 +85,14 @@
                                         </tr>
                                         <?php foreach($flow as $i){ ?>
                                         <tr>
+                                   
+                                            <td><?php echo $i['nickname']; ?></td>
+                                            <td><?php echo $i['status']; ?></td>
                                             <td><?php 
 if($i['ts'] != '0000-00-00 00:00:00') {
                                                 echo $i['ts']; 
 }
 ?></td>
-                                   
-                                            <td><?php echo $i['nickname']; ?></td>
-                                            <td><?php echo $i['status']; ?></td>
-                                            <td><?php echo $i['step']; ?></td>
                                         </tr>
                                         <?php } ?>
                                     </table>

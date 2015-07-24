@@ -31,7 +31,7 @@ jQuery(grid_selector).jqGrid({
     //datatype: "local",
     height: 250,
     loadtext: '',
-    colNames:['创建时间', '类别', '金额', '类型', '商家', '备注','状态', '操作'],
+    colNames:['消费时间', '类别', '金额', '类型', '商家', '备注','状态', '操作'],
     //rownumbers: true, 
     caption: "消费列表",
     editurl: __BASE + 'items/save',
@@ -44,7 +44,7 @@ jQuery(grid_selector).jqGrid({
 
 
     
-    {name:'createdt', index:'createdt', width:120,editable: true,editoptions:{size:"20",maxlength:"30"}},
+    {name:'dt', index:'dt', width:120,editable: true,editoptions:{size:"20",maxlength:"30"}},
     {name:'type', index:'type', width:50,editable: true,editoptions:{size:"20",maxlength:"30"}},
     {name:'amount', index:'amount', width:50,sorttype: myCustomSort,editable: true,editoptions:{size:"10",maxlength:"20"}},
     {name:'cate_str', index:'cate_str', width:100,editable: false,editoptions:{size:"20",maxlength:"30"}},
