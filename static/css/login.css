@@ -291,7 +291,7 @@ input[type="submit"] {
 @media screen and (max-width: 949px) and (min-width: 740px) {
 /*----------block1------------------*/
 .login {
-	width: 630px;
+	width: 830px;
 	margin: 165px auto auto auto;
 }
 .login-left {
@@ -377,7 +377,7 @@ input[type="submit"] {
 @media screen and (min-width: 950px) {
 /*----------block1------------------*/
 .login {
-	width: 725px;
+	width: 825px;
 	margin: 165px auto auto auto;
 }
 .login-left {
@@ -390,7 +390,7 @@ input[type="submit"] {
 	border-right: 1px solid rgba(255,255,255,0.2);
 }
 .login-right {
-	width: 325px;
+	width: 425px;
 	height: 297px;
 	vertical-align: middle;
 	margin-left: 80px;
