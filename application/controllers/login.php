@@ -45,12 +45,12 @@ class Login extends REIM_Controller {
 	log_message("debug","is_r:".$is_r);
 	if($is_r == 'on')
 	{
-		$this->input->set_cookie("username",$username,3600);
-		$this->input->set_cookie("password",$password,3600);
+		$this->input->set_cookie("username",$username,-1);
+		$this->input->set_cookie("password",$password,-1);
 	}
 	else
 	{
-		$this->input->set_cookie("username",$username,3600);
+		$this->input->set_cookie("username",$username,-1);
 		$this->input->set_cookie("password",'');
 	}
         if(!$username){
