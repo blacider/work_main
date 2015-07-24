@@ -4,7 +4,7 @@ class Login extends REIM_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('user_model', 'users');
-
+	$this->load->helper('cookie');
     }
     public function alogin()
     {
@@ -28,12 +28,31 @@ class Login extends REIM_Controller {
         log_message('debug', 'alvayang refer:' . $refer);
         $error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
-        $body = $this->load->view('user/login', array('errors' => $error, 'title' => '登录'));
+	$data =array();
+	$username = get_cookie('username',TRUE);
+	$password = get_cookie('password',TRUE);
+        $body = $this->load->view('user/login', array(
+						'errors' => $error
+						, 'title' => '登录'
+						, 'username' => $username
+						, 'password' => $password));
     }
 
     public function dologin(){
         $username = $this->input->post('u', TRUE);
         $password = $this->input->post('p', TRUE);
+	$is_r = $this->input->post('is_r',TRUE);
+	log_message("debug","is_r:".$is_r);
+	if($is_r == 'on')
+	{
+		$this->input->set_cookie("username",$username,-1);
+		$this->input->set_cookie("password",$password,-1);
+	}
+	else
+	{
+		$this->input->set_cookie("username",$username,-1);
+		$this->input->set_cookie("password",'');
+	}
         if(!$username){
             $this->session->set_userdata('login_error', '请输入邮箱或者手机');
             return redirect(base_url('login'));
