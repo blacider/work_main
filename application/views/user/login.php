@@ -72,17 +72,19 @@
               <span class="error">请输入手机或邮箱</span>
               <span class="error">手机或邮箱输入格式有误</span>
               <span class="error" id="error_bad_pass">用户名或者密码错误</span>
-              <input id="user" type="text" name="u" />
+              <input id="user" type="text" name="u"  style="width:80%;"/>
             </div>
             <div class="form-password">
               <span>密码</span>
               <span class="error">请输入密码</span>
-              <input id="pw" type="password" name="p" />
+            </div>
+            <div >
+              <input id="pw" type="password" name="p" style="width:80%;margin-right:10px;"/>
+                <input type="checkbox" name="is_r" id="is_r">记住我
             </div>
             <div>
               <div class="checkbox">
                 <label>
-                <input type="checkbox" name="is_r" id="is_r"> 记住密码
                 </label>
               </div>
             </div>

@@ -108,12 +108,17 @@ class Company extends REIM_Controller {
 	$buf = $this->company->show_approve();
 	log_message("debug","APPRO".$buf);
 	
-	$rules = json_decode($buf,true);
+    $rules = json_decode($buf,true);
+    $_rules = $rules['data'];
+    if(!$rules['status']) {
+        $_rules = array();
+    }
+    log_message("debug", "show approve:" . $buf);
 	$this->bsload('company/show_approve',
 		array(
 			'title'=>'审批规则'
 			,'error'=>$error
-			,'rules'=>$rules['data']
+			,'rules'=>$_rules
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
 				,array('url'=>'','name'=>'公司设置','class'=> '')
