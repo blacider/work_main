@@ -374,8 +374,8 @@ class User_Model extends Reim_Model {
         return $buf;
     }
 
-    public function reim_update_password($old_password, $new_password){
-        $data = array('new_password' => $new_password, 'old_password' => $old_password);
+    public function reim_update_password($old_password, $new_password, $pid){
+        $data = array('new_password' => $new_password, 'old_password' => $old_password, 'uid' => $pid);
         $jwt = $this->session->userdata('jwt');
         $url = $this->get_url('users');
         $buf = $this->do_Put($url, $data, $jwt);

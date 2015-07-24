@@ -177,30 +177,30 @@ class Users extends REIM_Controller {
         }
         $info = json_decode($this->user->reim_update_password($old_password, $new_password,$pid), true);
         if($info['status'] > 0){
-	    if($pid==$profile_id)
-	    {
-            $this->session->unset_userdata('jwt');
-            $this->session->unset_userdata('profile');
-            $this->session->set_userdata('login_error', '密码修改成功');
-            redirect(base_url('login'));
-	    }
-	    else
-	    {
-            	$this->session->set_userdata('login_error', '密码修改成功');
-	    	redirect(base_url('members/editmember/'.$pid));
-	    }
+            if($pid==$profile_id)
+            {
+                $this->session->unset_userdata('jwt');
+                $this->session->unset_userdata('profile');
+                $this->session->set_userdata('login_error', '密码修改成功');
+                redirect(base_url('login'));
+            }
+            else
+            {
+                $this->session->set_userdata('login_error', '密码修改成功');
+                redirect(base_url('members/editmember/'.$pid));
+            }
         } else {
             $this->session->set_userdata('login_error', '信息修改失败');
-	    if($pid == $profile_id)
-	    {
-	    	redirect(base_url('users/profile'));
-	    }
-	    else
-	    {
-	    	redirect(base_url('members/editmember/'.$pid));
-	    }
-	   // if()
-           // redirect(base_url(''));
+            if($pid == $profile_id)
+            {
+                redirect(base_url('users/profile'));
+            }
+            else
+            {
+                redirect(base_url('members/editmember/'.$pid));
+            }
+            // if()
+            // redirect(base_url(''));
         }
     }
 

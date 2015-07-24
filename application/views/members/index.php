@@ -73,7 +73,7 @@ position: absolute;
     <table id="grid-table"></table>
     -->
     <div class="panel panel-primary">
-        <div class="panel-heading"><h3 class="panel-title default col-sm-11 col-md-11" id="gname">人员信息</h3><p id="g_du"></p></div>
+    <div class="panel-heading"><h3 class="panel-title default col-sm-11 col-md-11" id="gname">人员信息[<?php echo count($members); ?>]</h3><p id="g_du"></p></div>
         <div class="panel-body">
             <table class="table" id="gtable">
                 <tr>
