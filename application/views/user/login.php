@@ -161,20 +161,22 @@
 		$('#user').focus();
 //	        console.log($.cookie('user'));
   //console.log(username + 'hehe'+ password);
-		if(username!="")
+    $('#is_r').prop('checked',true);
+		if(username!="" && password!="")
 		{
 			
 			$('#user').val(username);
       $('#pw').val(password);
-      if(password!="")
-      {
-        $('#is_r').prop('checked',true);
-      }
       $('#pw').focus();
 		}
     else
     {
-      $('#user').focus();
+      if(username!="")
+      {
+        $('#user').val(username);
+        $('#pw').focus();
+        $('#is_r').prop('checked',false);
+      }
     }
 	});
   </script> 
