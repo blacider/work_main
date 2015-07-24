@@ -4,10 +4,10 @@ function show_modal(){
             $('#modal_next').modal('show');
 }
 function chose_others_zero(item) {
-    console.log(item);
+    //console.log(item);
     for (var item in getData) {
         if (item != undefined) {
-            console.log(getData[item]);
+            //console.log(getData[item]);
             $($('.chosen-select')[0]).find("option[value='"+getData[item]+"']").attr("selected",true);
             $($('.chosen-select')[0]).trigger("chosen:updated");
         }
@@ -51,8 +51,6 @@ function bind_event(){
                         getData = data['data'].suggestion;
                         if (data['data'].complete == 0) {
                             $('#rid').val(_id);
-                            //$('#status').val(2);
-                            //$('#modal_next').modal('show');
                             chose_others_zero(_id);
                         } else {
                             $('#rid_').val(_id);
