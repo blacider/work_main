@@ -79,6 +79,13 @@
               <span class="error">请输入密码</span>
               <input id="pw" type="password" name="p" />
             </div>
+            <div>
+              <div class="checkbox">
+                <label>
+                <input type="checkbox" name="is_r" id="is_r"> 记住密码
+                </label>
+              </div>
+            </div>
             <div class="form-submit login-button-div">
                 <input type="submit" value="登录" />
                 <p class="button-text">登录</p>
@@ -146,14 +153,24 @@
     </div>
   </div>
   <script>
+  var username = "<?php echo $username ;?>";
+  var password = "<?php echo $password ;?>";
 	$(document).ready(function(){	
 		$('#user').focus();
 //	        console.log($.cookie('user'));
-		if($.cookie('user')!=undefined)
+  //console.log(username + 'hehe'+ password);
+		if(username!="")
 		{
-			$('#pw').focus();
-			$('#user').val($.cookie('user'));
+			
+			$('#user').val(username);
+      $('#pw').val(password);
+      $('#is_r').prop('checked',true);
+      $('#pw').focus();
 		}
+    else
+    {
+      $('#user').focus();
+    }
 	});
   </script> 
   <div class="footer">
