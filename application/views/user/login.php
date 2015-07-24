@@ -164,7 +164,10 @@
 			
 			$('#user').val(username);
       $('#pw').val(password);
-      $('#is_r').prop('checked',true);
+      if(password!="")
+      {
+        $('#is_r').prop('checked',true);
+      }
       $('#pw').focus();
 		}
     else

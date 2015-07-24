@@ -50,7 +50,7 @@ class Login extends REIM_Controller {
 	}
 	else
 	{
-		$this->input->set_cookie("username",'');
+		$this->input->set_cookie("username",$username,3600);
 		$this->input->set_cookie("password",'');
 	}
         if(!$username){
