@@ -4,7 +4,8 @@ class Login extends REIM_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('user_model', 'users');
-	$this->load->helper('cookie');
+        $this->load->helper('cookie');
+        $this->load->library('reim_cipher');
     }
     public function alogin()
     {
@@ -28,9 +29,16 @@ class Login extends REIM_Controller {
         log_message('debug', 'alvayang refer:' . $refer);
         $error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
-	$data =array();
-	$username = get_cookie('username',TRUE);
-	$password = get_cookie('password',TRUE);
+        $data =array();
+        /*
+        $username = get_cookie('username',TRUE);
+        $password = get_cookie('password',TRUE);
+         */
+        $username = $this->reim_cipher->decode($this->input->cookie('username'));
+        $password = $this->reim_cipher->decode($this->input->cookie('password'));
+        log_message("debug", "UserName:" . $username);
+        log_message("debug", "Password:" . $password);
+        //die($username);
         $body = $this->load->view('user/login', array(
 						'errors' => $error
 						, 'title' => '登录'
@@ -41,18 +49,34 @@ class Login extends REIM_Controller {
     public function dologin(){
         $username = $this->input->post('u', TRUE);
         $password = $this->input->post('p', TRUE);
-	$is_r = $this->input->post('is_r',TRUE);
-	log_message("debug","is_r:".$is_r);
-	if($is_r == 'on')
-	{
-		$this->input->set_cookie("username",$username,-1);
-		$this->input->set_cookie("password",$password,-1);
-	}
-	else
-	{
-		$this->input->set_cookie("username",$username,-1);
-		$this->input->set_cookie("password",'');
-	}
+        $is_r = $this->input->post('is_r',TRUE);
+        log_message("debug","is_r:".$is_r);
+        // 设置自动存储1个月
+        $expire = 3600 * 24 * 30;
+
+        if($is_r == 'on')
+        {
+            $_username = $this->reim_cipher->encode($username);
+            $_password = $this->reim_cipher->encode($password);
+            $cookie = array(
+                'name'   => 'username',
+                'value'  => $_username,
+                'expire' => $expire,
+                'domain' => '.cloudbaoxiao.com',
+                'path'   => '/',
+                'prefix' => '',
+                'secure' => TRUE
+            );
+            $this->input->set_cookie($cookie);
+            $cookie['name'] = 'password';
+            $cookie['value'] = $_password;
+            $this->input->set_cookie($cookie);
+        }
+        else
+        {
+            $this->input->set_cookie("username",$username);
+            $this->input->set_cookie("password",'');
+        }
         if(!$username){
             $this->session->set_userdata('login_error', '请输入邮箱或者手机');
             return redirect(base_url('login'));

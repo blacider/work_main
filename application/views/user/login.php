@@ -162,23 +162,19 @@
 //	        console.log($.cookie('user'));
   //console.log(username + 'hehe'+ password);
     $('#is_r').prop('checked',true);
-		if(username!="" && password!="")
-		{
-			
-			$('#user').val(username);
-      $('#pw').val(password);
-      $('#pw').focus();
-		}
-    else
-    {
-      if(username!="")
-      {
-        $('#user').val(username);
-        $('#pw').focus();
-        $('#is_r').prop('checked',false);
-      }
-    }
-	});
+		if(username!="" && password!="") {
+            $('#user').val(username);
+            $('#pw').val(password);
+            $('#pw').focus();
+		} else {
+            if(username!="")
+            {
+                $('#user').val(username);
+                $('#pw').focus();
+                $('#is_r').prop('checked',false);
+            }
+        }
+    });
   </script> 
   <div class="footer">
     <div class="main-block">
