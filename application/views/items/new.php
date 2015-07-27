@@ -294,7 +294,7 @@ uploader.on( 'uploadAccept', function( file, response ) {
         console.log(response);
         console.log(file);
         var imageDom = $('#' + file.file.id);
-        imageDom[0].id = 'WU_FILE_' + String(response['data']['id']);
+        imagesDict[file.file.id] = 'WU_FILE_' + String(response['data']['id']);
         if ($("input[name='images']").val() == '') {
             $("input[name='images']").val(response['data']['id']);
         } else {
@@ -312,7 +312,7 @@ uploader.on( 'uploadComplete', function( file ) {
 function bind_event(){
         $('.del-button').click(function(e) {
             console.log(e);
-            var key = this.parentNode.id.split("WU_FILE_")[1];
+            var key = imagesDict[this.parentNode.id].split("WU_FILE_")[1];
             var images = $("input[name='images']").val();
             var arr_img = images.split(',');
             var result = '';
@@ -450,4 +450,5 @@ $(document).ready(function(){
     });
     initUploader();
 });
+var imagesDict = {};
 </script>
