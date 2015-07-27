@@ -98,8 +98,58 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                                     </table>
                                 </div>
                             </div>
+                        <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">留言</label>
+                                <div class="col-xs-9 col-sm-9">
+                                    <table class="table table-bordered table-striped">
+                                        <tr>
+                                            <td>姓名</td>
+                                            <td>留言</td>
+                                            <td>内容</td>
+                                       
+                                            <!--
+                                            <td>操作</td>
+                                            -->
+                                        </tr>
+                                        <?php foreach($comments as $i){ ?>
+                                        <tr>
+                                   
+                                            <td><?php echo $i['nickname']; ?></td>
+                                            <td><?php 
+                                            if($i['lastdt'] != '0000-00-00 00:00:00') {
+                                                echo $i['lastdt']; 
+                                            }
+                                            ?></td>
+                                            <td><?php echo $i['comment']; ?></td>
+                                        </tr>
+                                        <?php } ?>
+                                    </table>
+                                </div>
+                            </div>
+                        <div class="form-group">
+                            <form action="/">
+                                <div class="col-xs-6 col-sm-6 col-xs-offset-1 col-sm-offset-1">
+                                    <input type="text" style="width:100%;">
+                                </div>
+                                <div class="col-xs-1 col-sm-1">
+                                    <input type="submit" id="submit" style="margin-top:2px;" value="提交留言">
+                                </div>
+                            </form>
+                        </div>
 
-
+<style type="text/css">
+     #submit {
+  background-color: #fe575f;
+  border: 0;
+  color: white;
+  height: 30px;
+  border-radius: 3px;   
+  font-size: 12px;
+   }
+   #submit:hover {
+    background-color: #ff7075;
+   }
+</style>
 
 <div class="clearfix form-actions col-sm-10 col-xs-10">
                                 <div class="col-md-offset-3 col-md-6">
