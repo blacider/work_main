@@ -6,6 +6,7 @@ class Bills extends REIM_Controller {
         $this->load->model('tags_model', 'tags');
         $this->load->model('group_model', 'groups');
         $this->load->model('report_model', 'reports');
+	$this->load->model('usergroup_model','ug');
     }
 
     public function _logic($status = 2){
@@ -14,6 +15,16 @@ class Bills extends REIM_Controller {
         $this->session->unset_userdata('last_error');
         $reports = $this->reports->get_bills();
         $_tags = $this->tags->get_list();
+	$usergroups = $this->ug->get_my_list();
+	if($usergroups['status']>0)
+	{
+		$_usergroups=$usergroups['data']['group'];
+	}
+	else
+	{
+		$_usergroups = array();
+	}
+	log_message('debug','usergroup:'.json_encode($usergroups));
         if($_tags && array_key_exists('tags', $_tags['data'])){
             $_tags = $_tags['data']['tags'];
         }
@@ -48,6 +59,7 @@ class Bills extends REIM_Controller {
                     ,'status' => $status
                     ,'category' => $_tags
                     ,'error' => $error
+		    ,'usergroups' => $_usergroups
                 )
             );
         }
@@ -67,6 +79,7 @@ class Bills extends REIM_Controller {
                     ,'status' => $status
                     ,'category' => $_tags
                     ,'error' => $error
+		    ,'usergroups' => $_usergroups
                 )
             );
         }
