@@ -294,7 +294,7 @@ uploader.on( 'uploadAccept', function( file, response ) {
         console.log(response);
         console.log(file);
         var imageDom = $('#' + file.id);
-        imageDom[0].id = 'WU_FILE_' + String(response['data']['id']);
+        //imageDom[0].id = 'WU_FILE_' + String(response['data']['id']);
         if ($("input[name='images']").val() == '') {
             $("input[name='images']").val(response['data']['id']);
         } else {
