@@ -68,7 +68,7 @@ jQuery(grid_selector).jqGrid({
     {name:'amount',index:'amount', sorttype: myCustomSort,width:70, editable: false,editoptions: {size:"20",maxlength:"30"},unformat: aceSwitch,search:false},
     {name:'status_str',index:'status_str', width:70, editable: true,edittype:"select",editoptions: {value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},
     {name:'options',index:'options', width:70, editable: true,edittype:"select",editoptions: {value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},
-    {name:'ugs', index:'ugs', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
+    {name:'ugs', index:'ugs', width:50,editable: false,editoptions:{size:"20",maxlength:"30"},hidden:true},
 
 
     ], 
