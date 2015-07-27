@@ -57,7 +57,7 @@ position: absolute;
 
 <!-- <label class="col-sm-2 control-label no-padding-right" id='userGroupLab'>适用范围</label> -->
 <div class="col-xs-2 col-sm-2" id="userGroup">
-  <select class="chosen-select tag-input-style "  name="gids[]"  data-placeholder="请选择部门" placeholder="请选择部门">
+  <select class="chosen-select tag-input-style "  name="gids"  data-placeholder="请选择部门" placeholder="请选择部门">
     <option value='0'>公司</option>
     <?php 
     foreach($usergroups as $g){
@@ -190,6 +190,7 @@ $("#globalSearch").click(function () {
         colModel = $grid.jqGrid("getGridParam", "colModel"),
         searchText = $("#globalSearchText").val(),
         l = colModel.length;
+    var groupId = $('select[name="gids"]').val();
     for (i = 0; i < l; i++) {
         cm = colModel[i];
         if (cm.search !== false && (cm.stype === undefined || cm.stype === "text")) {
@@ -200,10 +201,22 @@ $("#globalSearch").click(function () {
             });
         }
     }
-    postData.filters = JSON.stringify({
+    var groups_ = [{
+      groupOp:"AND",
+      rules:[{field:"ugs",op:"cn",data:groupId}],
+      groups:[{
         groupOp: "OR",
-        rules: rules
-    });
+        rules: rules ,
+        groups:[]
+      }]
+    }];
+    //postData.filters = JSON.stringify({
+    //    groupOp: "OR",
+    //    rules: rules ,
+    //    groups:groups_
+    //});
+    postData.filters = JSON.stringify(groups_[0]);
+    console.log(postData.filters);
     $grid.jqGrid("setGridParam", { search: true });
     $grid.trigger("reloadGrid", [{page: 1, current: true}]);
     return false;
