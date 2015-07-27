@@ -29,6 +29,8 @@
  <?php
  $m_dict = array();
  $top_category = array();
+ if($rules)
+ {
 foreach($rules as $item){
     $img = "";
     $str = '<tr>';
@@ -43,6 +45,7 @@ $str = $str . $username . $role_id . $operation_upd . '</tr>';
 echo $str;
 
 }
+ }
 ?> 
 </tbody>
 </table>

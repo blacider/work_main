@@ -453,11 +453,16 @@ class Company extends REIM_Controller {
 	$this->session->unset_userdata('last_error');
 	$buf = $this->company->show_rules();
 	$rules = json_decode($buf,true);
+    $_rules = array();
+    if($rules['status'] > 0)
+    {
+         $_rules = $rules['data'];
+    }
 	$this->bsload('company/show',
 		array(
 			'title'=>'新建规则'
 			,'error'=>$error
-			,'rules'=>$rules['data']
+			,'rules'=>$_rules
 			,'breadcrumbs'=> array(
 				array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
 				,array('url'=>'','name'=>'公司设置','class'=> '')
