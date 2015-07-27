@@ -204,6 +204,11 @@ class Category extends REIM_Controller {
         log_message("debug", "CATEGORY#########: $_category");
 
         $_sobs = $sobs['data'];
+	if(!$sobs['status'])
+	{
+		$_sobs = array();
+	}
+
         $sob_data = array();
         $_sob_data_keys = array();
         foreach($_sobs as $item)
@@ -263,9 +268,16 @@ class Category extends REIM_Controller {
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
         $tags = $this->tags->get_list();
+	if($tags['status'] > 0)
+	{
         if($tags){
             $tags = $tags['data']['tags'];
         }
+	}
+	else
+	{
+		$tags = array();
+	}
         $this->bsload('tags/index',
             array(
                 'title' => '标签管理'
