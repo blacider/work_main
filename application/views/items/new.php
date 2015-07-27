@@ -20,14 +20,14 @@
 <label class="col-sm-1 control-label no-padding-right">类别</label>
 <div class="col-xs-6 col-sm-6">
 
-<div class="col-xs-6 col-sm-6">
-<select class="form-control" name="sob" id="sobs">
+
+<select class="col-xs-6 col-sm-6" class="form-control" name="sob" id="sobs">
 </select>
-</div>
-<div class="col-xs-6 col-sm-6">
-<select name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
+
+
+<select class="col-xs-6 col-sm-6" name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
 </select>
-</div>
+
 
 </div>
 
