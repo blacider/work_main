@@ -325,6 +325,8 @@ uploader.on( 'uploadError', function( file ) {
 uploader.on( 'uploadAccept', function( file, response ) {
     if ( response['status'] > 0 ) {
         // 通过return false来告诉组件，此文件上传有错。
+        var imageDom = $('#' + file.file.id);
+        imagesDict[file.file.id] = 'WU_FILE_' + String(response['data']['id']);
         if ($("input[name='images']").val() == '') {
             $("input[name='images']").val(response['data']['id']);
         } else {
@@ -347,7 +349,7 @@ function updateSelectSob(data) {
 }
 function bind_event(){
     $('.del-button').click(function(e) {
-            var key = this.parentNode.id;
+            var key = imagesDict[this.parentNode.id].split("WU_FILE_")[1];
             var images = $("input[name='images']").val();
             var arr_img = images.split(',');
             var result = '';
@@ -469,5 +471,5 @@ $(document).ready(function(){
     });
     //initUploader();
 });
-
+var imagesDict = {};
 </script>

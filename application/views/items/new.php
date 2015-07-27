@@ -291,8 +291,6 @@ uploader.on( 'uploadError', function( file ) {
 uploader.on( 'uploadAccept', function( file, response ) {
     if ( response['status'] > 0 ) {
         // 通过return false来告诉组件，此文件上传有错。
-        console.log(response);
-        console.log(file);
         var imageDom = $('#' + file.file.id);
         imagesDict[file.file.id] = 'WU_FILE_' + String(response['data']['id']);
         if ($("input[name='images']").val() == '') {
