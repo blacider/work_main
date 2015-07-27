@@ -1,6 +1,19 @@
 <?php
 
 class Report_Model extends Reim_Model {
+    public function add_comment($rid,$comment)
+    {
+    	$jwt = $this->session->userdata('jwt');
+	if(!$jwt) return false;
+
+	$url = $this->get_url('report/'.$rid);
+	$data=array(
+			'comment'=>$comment
+		);
+	$buf = $this->do_Put($url,$data,$jwt);
+	log_message("debug","add_comment:".json_encode($buf));
+	return $buf;
+    }
 
     public function revoke($rid)
     {
