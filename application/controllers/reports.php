@@ -348,11 +348,13 @@ class Reports extends REIM_Controller {
         $report = $this->reports->get_detail($id);
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-
+	
         if($report['status'] <= 0){
             return redirect(base_url('reports/index'));
         }
         $report = $report['data'];
+
+	$comments = $report['comments']['data'];
         $_managers = array();
         foreach($report['receivers']['managers'] as $m){
             array_push($_managers, $m['nickname']);
@@ -440,12 +442,14 @@ class Reports extends REIM_Controller {
                 'error' => $error,
                 'flow' => $flow
 		,'rid' => $id
+		,'comments' => $comments
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
                         ,array('url'  => '', 'name' => '查看报告', 'class' => '')
                     ),
             ));
+	    */
     }
 
     public function update(){
