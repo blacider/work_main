@@ -449,7 +449,6 @@ class Reports extends REIM_Controller {
                         ,array('url'  => '', 'name' => '查看报告', 'class' => '')
                     ),
             ));
-	    */
     }
 
     public function update(){
