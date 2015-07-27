@@ -216,7 +216,6 @@ $("#globalSearch").click(function () {
     //    groups:groups_
     //});
     postData.filters = JSON.stringify(groups_[0]);
-    console.log(postData.filters);
     $grid.jqGrid("setGridParam", { search: true });
     $grid.trigger("reloadGrid", [{page: 1, current: true}]);
     return false;
