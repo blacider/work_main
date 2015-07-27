@@ -35,14 +35,10 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">分类</label>
                                 <div class="col-xs-6 col-sm-6">
-<div class="col-xs-6 col-sm-6">
-<select class="form-control" name="sob" id="sobs">
+<select class="col-xs-6 col-sm-6" name="sob" id="sobs">
 </select>
-</div>
-<div class="col-xs-6 col-sm-6">
-<select name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
+<select name="category" id="sob_category" class="col-xs-6 col-sm-6 sob_category chosen-select-niu" data-placeholder="类目">
 </select>
-</div>
 
                                 </div>
                             </div>
@@ -226,8 +222,8 @@ function get_sobs(){
                 }
             }
             $("#sobs").attr("value", _sid);
-            var selectDom = this.parentNode.nextElementSibling.children[0]
-            $(selectDom).empty().append(_h).trigger("chosen:updated");
+            //var selectDom = this.parentNode.nextElementSibling.children[0]
+            $(this.nextElementSibling).empty().append(_h).trigger("chosen:updated");
         });
 }
 
