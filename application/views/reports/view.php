@@ -157,7 +157,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
 
         <div class="form-group">
             <form method="post" id='comment' action="<?php echo base_url('reports/add_comment');  ?>" > 
-                <div class="col-xs-6 col-sm-6 col-xs-offset-1 col-sm-offset-1">
+                <div class="col-xs-6 col-sm-6 col-xs-offset-2 col-sm-offset-2">
                     <input type="text" name="comment" style="width:100%;">
                 </div>
                 <input type="hidden" name="rid" value="<?php echo $rid;?>">
