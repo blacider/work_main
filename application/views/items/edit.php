@@ -374,14 +374,13 @@ function load_exists(){
         }   else {
             result += ',' + String(item.id);
         }
+        imagesDict['WU_FILE_'+String(item.id)] = 'WU_FILE_'+String(item.id);
         var $li = $(
             '<div id="WU_FILE_' + item.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
                 '<img style="width:150px;height:150px;">' +
                 '<div class="glyphicon glyphicon-trash red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
             '</div>'
             ),$img = $li.find('img');
-
-
     // $list为容器jQuery实例
     $('#imageList').append( $li );
 
