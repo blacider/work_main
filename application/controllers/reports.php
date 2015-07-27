@@ -8,6 +8,14 @@ class Reports extends REIM_Controller {
         $this->load->model('report_model', 'reports');
     }
     
+    public function add_comment()
+    {
+    	$rid=$this->input->post("rid");
+	$comment = $this->input->post("comment");
+	$buf = $this->reports->add_comment($rid,$comment);
+	redirect(base_url('reports/show/' . $rid));
+    }
+
     public function revoke($id = 0) {
         $buf = $this->reports->revoke($id);
         return redirect('reports');
@@ -355,6 +363,10 @@ class Reports extends REIM_Controller {
         $report = $report['data'];
 
 	$comments = $report['comments']['data'];
+	foreach($comments as &$comment)
+	{
+		$comment['lastdt'] = date('Y-m-d H:i:s',$comment['lastdt']);
+	}
         $_managers = array();
         foreach($report['receivers']['managers'] as $m){
             array_push($_managers, $m['nickname']);
