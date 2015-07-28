@@ -46,6 +46,20 @@ class Login extends REIM_Controller {
 						, 'password' => $password));
     }
 
+
+    public function backyard_login(){
+        $username = $this->input->post('u', TRUE);
+        $password = $this->input->post('p', TRUE);
+        $user = $this->users->get_user($username, $password);
+        if($user){
+            $this->session->set_userdata('user', $user);
+            $this->session->set_userdata('uid', $user->id);
+            redirect(base_url() . 'admin/release', 'refresh');
+        } else {
+            redirect(base_url('login/alogin'), 'refresh');
+        }
+    }
+
     public function dologin(){
         $username = $this->input->post('u', TRUE);
         $password = $this->input->post('p', TRUE);
@@ -75,7 +89,7 @@ class Login extends REIM_Controller {
         else
         {
             $this->input->set_cookie("username",$username);
-            $this->input->set_cookie("password",'');
+            delete_cookie('password','.cloudbaoxiao.com','/','');
         }
         if(!$username){
             $this->session->set_userdata('login_error', '请输入邮箱或者手机');
@@ -85,38 +99,30 @@ class Login extends REIM_Controller {
             $this->session->set_userdata('login_error', '请输入密码');
             return redirect(base_url('login'));
         }
-        $user = $this->users->get_user($username, $password);
-        if($user){
-            $this->session->set_userdata('user', $user);
-            $this->session->set_userdata('uid', $user->id);
-            redirect(base_url() . 'admin/index', 'refresh');
-        } else {
-            $user = $this->users->reim_get_user($username, $password);
-            $this->session->set_userdata('email', $username);
-            $this->session->set_userdata('password', $password);
-            if(!$user['status']) {
-                $this->session->set_userdata('login_error', '用户名或者密码错误');
-                redirect(base_url('login'));
-                die();
-            }
-            $server_token = $user['server_token'];
-            $data = $user['data']['profile'];
-            $__g = '';
-            if(array_key_exists('group_name', $data)){
-                $__g = $data['group_name'];
-            }
-            log_message("debug", "Login: server token:" . $server_token);
-            $this->session->set_userdata("groupname", $__g);
-            $this->session->set_userdata("server_token", $server_token);
-            $goto = $this->session->userdata('last_url');
-            log_message("debug", $goto);
-            // 获取一下组信息，然后设置一下
-            if(!$goto) {
-                redirect(base_url('items'));
-                die('');
-            }
-            redirect(base_url($goto));
+        $user = $this->users->reim_get_user($username, $password);
+        $this->session->set_userdata('email', $username);
+        $this->session->set_userdata('password', $password);
+        if(!$user['status']) {
+            $this->session->set_userdata('login_error', '用户名或者密码错误');
+            redirect(base_url('login'));
+            die();
         }
+        $server_token = $user['server_token'];
+        $data = $user['data']['profile'];
+        $__g = '';
+        if(array_key_exists('group_name', $data)){
+            $__g = $data['group_name'];
+        }
+        $this->session->set_userdata("groupname", $__g);
+        $this->session->set_userdata("server_token", $server_token);
+        $goto = $this->session->userdata('last_url');
+        log_message("debug", $goto);
+        // 获取一下组信息，然后设置一下
+        if(!$goto) {
+            redirect(base_url('items'));
+            die('');
+        }
+        redirect(base_url($goto));
     }
 
     public function dologout()
