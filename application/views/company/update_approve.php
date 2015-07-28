@@ -174,7 +174,7 @@
                             </div>
                         
                         <script type="text/javascript">
-                            console.log(<?php echo $flag ?>);
+                       //     console.log(<?php echo $flag ?>);
                             //selectCache = <?php echo json_encode($rule)?>;
                             selectCache = <?php echo json_encode($cate_arr)?>;
                             function appendChecked(selectJqDom, data, item) {
@@ -217,7 +217,7 @@
                                 }
                                 changeAble(value);
                             }
-                            console.log(<?php echo json_encode($rule)?>);
+                    //        console.log(<?php echo json_encode($rule)?>);
                             function updateSelectSob(data) {
                                 $(".sobs").empty();
                                 $(".sobs").append(data);
@@ -241,8 +241,9 @@
                                 $('.CategoryRow .sobs').change(function(){
                                     var s_id = $(this).val();
                                     if(selectDataCategory[s_id] != undefined){
+                                            var _h = '';
                                         for(var i = 0 ; i < selectDataCategory[s_id].length; i++) {
-                                            var _h = "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                                             _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
                                         }
                                     }
                                     var selectDom = this.parentNode.nextElementSibling.children[0]
@@ -267,8 +268,9 @@
                                 $('.disableCategoryRow .sobs').change(function(){
                                     var s_id = $(this).val();
                                     if(selectDataCategory[s_id] != undefined){
+                                        var _h = '';
                                         for(var i = 0 ; i < selectDataCategory[s_id].length; i++) {
-                                            var _h = "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                                             _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
                                         }
                                     }
                                     var selectDom = this.parentNode.nextElementSibling.children[0]
@@ -599,24 +601,24 @@ $(document).ready(function(){
     if($('#frequency_unlimit').is(':checked'))
     {
         $('#frequency_unlimit').val(1);
-        console.log($('#frequency_unlimit').val());
+ //       console.log($('#frequency_unlimit').val());
     }
     else
     {
         $('#frequency_unlimit').val(0);
-         console.log($('#frequency_unlimit').val());
+ //        console.log($('#frequency_unlimit').val());
 
     }
 
       if($('#all_members').is(':checked'))
     {
         $('#all_members').val(1);
-        console.log($('#all_members').val());
+ //       console.log($('#all_members').val());
     }
     else
     {
         $('#all_members').val(0);
-         console.log($('#all_members').val());
+  //       console.log($('#all_members').val());
 
     }
 
@@ -637,12 +639,12 @@ $(document).ready(function(){
         if($(this).is(':checked'))
         {
             $(this).val(1);
-            console.log("hhhh"+$(this).val());
+//            console.log("hhhh"+$(this).val());
         }
         else
         {
             $(this).val(0);
-            console.log("xxx"+$(this).val());
+ //           console.log("xxx"+$(this).val());
         }
     });
 /*  if(name=='')
@@ -670,30 +672,30 @@ $(document).ready(function(){
         var defaults = [] ;
         var els =document.getElementsByName("allow_category");
         for (var i = 0, j = els.length; i < j; i++){
-        console.log(els[i].value);
+     //   console.log(els[i].value);
         allow_categories.push(els[i].value);
         }
 
         var els =document.getElementsByName("deny_category");
         for (var i = 0, j = els.length; i < j; i++){
-        console.log(els[i].value);
+    //    console.log(els[i].value);
         deny_categories.push(els[i].value);
         }
 
         var els =document.getElementsByName("all_able");
         for (var i = 0, j = els.length; i < j; i++){
-        console.log(els[i].value);
+    //    console.log(els[i].value);
         fourParts.push(els[i].value);
         }
 
         var els =document.getElementsByName("default");
         for (var i = 0, j = els.length; i < j; i++){
-        console.log(els[i].value);
+   //     console.log(els[i].value);
         defaults.push(els[i].value);
         }
         var els =document.getElementsByName("category_amount");
         for (var i = 0, j = els.length; i < j; i++){
-        console.log(els[i].value);
+    //    console.log(els[i].value);
         amounts.push(els[i].value);
         }
 
@@ -704,7 +706,7 @@ $(document).ready(function(){
         $('#deny_category_ids').val(JSON.stringify(deny_categories));
 
         $('#defaults').val(JSON.stringify(defaults));
-        console.log('jjjj'+JSON.stringify(defaults));
+   //     console.log('jjjj'+JSON.stringify(defaults));
 
         $('#four').val(JSON.stringify(fourParts));
 
@@ -798,7 +800,7 @@ $(document).ready(function(){
 
 });
 function changeAble(value) {
-        console.log(value);
+    //    console.log(value);
         if (value == 1 || value == -1) {
             $('.chosen-select-niu').prop('disabled',true).trigger("chosen:updated");
             $('.def').attr('disabled', 'true');
