@@ -453,11 +453,19 @@ class Company extends REIM_Controller {
 	$this->session->unset_userdata('last_error');
 	$buf = $this->company->show_rules();
 	$rules = json_decode($buf,true);
+<<<<<<< HEAD
+    $_rules = array();
+    if($rules['status'] > 0)
+    {
+         $_rules = $rules['data'];
+    }
+=======
 	$_rules = array();
 	if($rules['status'] > 0)
 	{
 		$_rules = $rules['data'];
 	}
+>>>>>>> bd62527d2a775c49a416e7bdf70ee5cbc9c0f979
 	$this->bsload('company/show',
 		array(
 			'title'=>'新建规则'

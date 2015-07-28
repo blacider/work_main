@@ -60,6 +60,7 @@
   </div>
   </div>
 <script language="javascript">
+var _url = "<?php echo $url; ?>";
     $(document).ready(function(){
     /* Act on the event */
     $('.contain').css('height', String(document.body.scrollHeight));
@@ -85,7 +86,7 @@
             }
         },50);
     } else{
-        window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/1.2.8/reim.apk'; 
+        window.location.href = _url; 
         }
     }
 

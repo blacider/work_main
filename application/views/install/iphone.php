@@ -58,6 +58,7 @@
   </div>
   </div>
 <script language="javascript">
+var _url = "<?php echo $url; ?>";
     $(document).ready(function(){
     /* Act on the event */
     $('.contain').css('height', String(document.body.scrollHeight));
@@ -83,7 +84,8 @@
         },50);
       } else
       {
-        window.location.href = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.plist';
+        window.location.href = _url; 
+        //window.location.href = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.plist';
       }
     }
 

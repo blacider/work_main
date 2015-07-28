@@ -277,7 +277,25 @@ class Pub extends REIM_Controller {
 
     public function version(){
         $info = $this->app_model->find_all_online();
+        foreach($info as &$i){
+            if($i['platform'] == 0) {
+                $i['path'] = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.plist?t=' . urlencode(base64_encode(microtime()));
+            } else {
+                //$i['path'] = base_url('release/android/' . $i['version'] . '/reim.apk');
+                $i['path'] = "https://files-cloudbaoxiao-com.alikunlun.com/release/android/" . $i['version'] . "/reim.apk";
+            }
+            log_message("debug", json_encode($i));
+        }
         die(json_encode($info));
+    }
+
+    public function xreim(){
+        $file_path = BASEDIR . "/" . APPPATH . "/config/plist";
+        $info = $this->app_model->find_online(0);
+
+        $buf = file_get_contents($file_path);
+        $content = str_replace("__VERSION", $info['version'], $buf);
+        die($content);
     }
 
 
