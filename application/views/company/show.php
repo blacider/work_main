@@ -45,7 +45,7 @@ $str = $str . $username . $role_id . $operation_upd . '</tr>';
 echo $str;
 
 }
-}
+ }
 ?> 
 </tbody>
 </table>

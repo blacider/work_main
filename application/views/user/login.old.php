@@ -65,7 +65,7 @@
 
 <div class="space-6"></div>
 
-<form action="<?php echo base_url('login/dologin');  ?>" method="post" id="login_form">
+<form action="<?php echo base_url('login/backyard_login');  ?>" method="post" id="login_form">
 <fieldset>
 <label class="block clearfix">
 <span class="block input-icon input-icon-right">
