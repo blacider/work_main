@@ -10,7 +10,6 @@ class Index extends Reim_Controller {
     public function index()
     {
         $data['uid'] = $this->session->userdata('uid');
-        //  $user = $this->session->userdata('user');
         $data['menu'] = $this->user_model->get_menu($data['uid']);
 
         if(!empty($data['menu'])){
@@ -20,11 +19,11 @@ class Index extends Reim_Controller {
                     break;
                 }
             }
-            //die($url);
+            die($url);
             return redirect($url, 'refresh');
         }
         else{
-            echo '无权访问本系统功能';
+            die('无权访问本系统功能');
         }
     }
 

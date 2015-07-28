@@ -20,14 +20,14 @@
 <label class="col-sm-1 control-label no-padding-right">类别</label>
 <div class="col-xs-6 col-sm-6">
 
-<div class="col-xs-6 col-sm-6">
-<select class="form-control" name="sob" id="sobs">
+
+<select class="col-xs-6 col-sm-6" class="form-control" name="sob" id="sobs">
 </select>
-</div>
-<div class="col-xs-6 col-sm-6">
-<select name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
+
+
+<select class="col-xs-6 col-sm-6" name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
 </select>
-</div>
+
 
 </div>
 
@@ -291,7 +291,8 @@ uploader.on( 'uploadError', function( file ) {
 uploader.on( 'uploadAccept', function( file, response ) {
     if ( response['status'] > 0 ) {
         // 通过return false来告诉组件，此文件上传有错。
-        console.log(response);
+        var imageDom = $('#' + file.file.id);
+        imagesDict[file.file.id] = 'WU_FILE_' + String(response['data']['id']);
         if ($("input[name='images']").val() == '') {
             $("input[name='images']").val(response['data']['id']);
         } else {
@@ -309,7 +310,7 @@ uploader.on( 'uploadComplete', function( file ) {
 function bind_event(){
         $('.del-button').click(function(e) {
             console.log(e);
-            var key = this.parentNode.id.split("WU_FILE_")[1];
+            var key = imagesDict[this.parentNode.id].split("WU_FILE_")[1];
             var images = $("input[name='images']").val();
             var arr_img = images.split(',');
             var result = '';
@@ -362,8 +363,8 @@ function get_sobs(){
                     
                 }
             }
-            var selectDom = this.parentNode.nextElementSibling.children[0]
-            $(selectDom).empty().append(_h).trigger("chosen:updated");
+            //var selectDom = this.parentNode.nextElementSibling.children[0]
+            $(this.nextElementSibling).empty().append(_h).trigger("chosen:updated");
         });
 }
 
@@ -447,4 +448,5 @@ $(document).ready(function(){
     });
     initUploader();
 });
+var imagesDict = {};
 </script>

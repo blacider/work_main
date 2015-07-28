@@ -8,6 +8,14 @@ class Reports extends REIM_Controller {
         $this->load->model('report_model', 'reports');
     }
     
+    public function add_comment()
+    {
+    	$rid=$this->input->post("rid");
+	$comment = $this->input->post("comment");
+	$buf = $this->reports->add_comment($rid,$comment);
+	redirect(base_url('reports/show/' . $rid));
+    }
+
     public function revoke($id = 0) {
         $buf = $this->reports->revoke($id);
         return redirect('reports');
@@ -348,11 +356,17 @@ class Reports extends REIM_Controller {
         $report = $this->reports->get_detail($id);
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-
+	
         if($report['status'] <= 0){
             return redirect(base_url('reports/index'));
         }
         $report = $report['data'];
+
+	$comments = $report['comments']['data'];
+	foreach($comments as &$comment)
+	{
+		$comment['lastdt'] = date('Y-m-d H:i:s',$comment['lastdt']);
+	}
         $_managers = array();
         foreach($report['receivers']['managers'] as $m){
             array_push($_managers, $m['nickname']);
@@ -440,6 +454,7 @@ class Reports extends REIM_Controller {
                 'error' => $error,
                 'flow' => $flow
 		,'rid' => $id
+		,'comments' => $comments
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')

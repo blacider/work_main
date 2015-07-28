@@ -98,24 +98,51 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                                     </table>
                                 </div>
                             </div>
-
-
-
-<div class="clearfix form-actions col-sm-10 col-xs-10">
-                                <div class="col-md-offset-3 col-md-6">
-                                <?php
-$_ruid = $report['uid'];
-$_uid = $profile['id'];
-if($_ruid == $_uid  && (($report['status'] == 1) || ($report['status'] == 2)) ) 
-                                    {
-                                ?>
-                                    <a style="margin-left: 80px;" class="btn btn-white callback" data-renew="-2"><i class="ace-icon fa fa-undo gray bigger-110"></i>撤回</a>
-                                <?php 
-                                    }
-                                ?>                               
-                                    <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>返回</a>
+                        <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">留言</label>
+                                <div class="col-xs-9 col-sm-9">
+                                    <table class="table table-bordered table-striped">
+                                        <tr>
+                                            <td>姓名</td>
+                                            <td>留言</td>
+                                            <td>内容</td>
+                                       
+                                            <!--
+                                            <td>操作</td>
+                                            -->
+                                        </tr>
+                                        <?php foreach($comments as $i){ ?>
+                                        <tr>
+                                   
+                                            <td><?php echo $i['nickname']; ?></td>
+                                            <td><?php 
+                                            if($i['lastdt'] != '0000-00-00 00:00:00') {
+                                                echo $i['lastdt']; 
+                                            }
+                                            ?></td>
+                                            <td><?php echo $i['comment']; ?></td>
+                                        </tr>
+                                        <?php } ?>
+                                    </table>
                                 </div>
                             </div>
+               
+
+<style type="text/css">
+     #submit1 {
+  background-color: #fe575f;
+  border: 0;
+  color: white;
+  height: 30px;
+  border-radius: 3px;   
+  font-size: 12px;
+   }
+   #submit1:hover {
+    background-color: #ff7075;
+   }
+</style>
+
+
                             <!--
                             <div class="form-group" style="margin-bottom: 10px;min-weight:40px;">
                                 <center>
@@ -123,11 +150,42 @@ if($_ruid == $_uid  && (($report['status'] == 1) || ($report['status'] == 2)) )
                                 </center>
                             </div>
                             -->
-                        </div>
-                    </div>
+                   
+                   
                     </div>
         </form>
+
+        <div class="form-group">
+            <form method="post" id='comment' action="<?php echo base_url('reports/add_comment');  ?>" > 
+                <div class="col-xs-6 col-sm-6 col-xs-offset-2 col-sm-offset-2">
+                    <input type="text" name="comment" style="width:100%;">
+                </div>
+                <input type="hidden" name="rid" value="<?php echo $rid;?>">
+                <div class="col-xs-1 col-sm-1">
+                    <input type="button" id="submit1" style="margin-top:2px;" value="提交留言">
+                </div>
+            </form>
+        </div>
+
+        <div class="clearfix form-actions col-sm-10 col-xs-10">
+            <div class="col-md-offset-3 col-md-6">
+                <?php
+                $_ruid = $report['uid'];
+                $_uid = $profile['id'];
+                if($_ruid == $_uid  && (($report['status'] == 1) || ($report['status'] == 2)) ) 
+                {
+                    ?>
+                    <a style="margin-left: 80px;" class="btn btn-white callback" data-renew="-2"><i class="ace-icon fa fa-undo gray bigger-110"></i>撤回</a>
+                    <?php 
+                }
+                ?>                               
+                <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>返回</a>
+            </div>
+        </div>
+
+
     </div>
+
 </div>
 
 <script language="javascript">
@@ -144,6 +202,11 @@ $(document).ready(function(){
        if(confirm('确认要撤回报告吗?')){
                 location.href = __BASE + "/reports/revoke/" + rid;
             }
+    });
+
+    $('#submit1').click(function(){
+        console.log('cjcj');
+        $('#comment').submit();
     });
 });
 </script>

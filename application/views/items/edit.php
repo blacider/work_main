@@ -35,14 +35,10 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">分类</label>
                                 <div class="col-xs-6 col-sm-6">
-<div class="col-xs-6 col-sm-6">
-<select class="form-control" name="sob" id="sobs">
+<select class="col-xs-6 col-sm-6" name="sob" id="sobs">
 </select>
-</div>
-<div class="col-xs-6 col-sm-6">
-<select name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
+<select name="category" id="sob_category" class="col-xs-6 col-sm-6 sob_category chosen-select-niu" data-placeholder="类目">
 </select>
-</div>
 
                                 </div>
                             </div>
@@ -226,8 +222,8 @@ function get_sobs(){
                 }
             }
             $("#sobs").attr("value", _sid);
-            var selectDom = this.parentNode.nextElementSibling.children[0]
-            $(selectDom).empty().append(_h).trigger("chosen:updated");
+            //var selectDom = this.parentNode.nextElementSibling.children[0]
+            $(this.nextElementSibling).empty().append(_h).trigger("chosen:updated");
         });
 }
 
@@ -329,6 +325,8 @@ uploader.on( 'uploadError', function( file ) {
 uploader.on( 'uploadAccept', function( file, response ) {
     if ( response['status'] > 0 ) {
         // 通过return false来告诉组件，此文件上传有错。
+        var imageDom = $('#' + file.file.id);
+        imagesDict[file.file.id] = 'WU_FILE_' + String(response['data']['id']);
         if ($("input[name='images']").val() == '') {
             $("input[name='images']").val(response['data']['id']);
         } else {
@@ -351,7 +349,7 @@ function updateSelectSob(data) {
 }
 function bind_event(){
     $('.del-button').click(function(e) {
-            var key = this.parentNode.id;
+            var key = imagesDict[this.parentNode.id].split("WU_FILE_")[1];
             var images = $("input[name='images']").val();
             var arr_img = images.split(',');
             var result = '';
@@ -376,14 +374,13 @@ function load_exists(){
         }   else {
             result += ',' + String(item.id);
         }
+        imagesDict['WU_FILE_'+String(item.id)] = 'WU_FILE_'+String(item.id);
         var $li = $(
-            '<div id="' + item.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
+            '<div id="WU_FILE_' + item.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
                 '<img style="width:150px;height:150px;">' +
                 '<div class="glyphicon glyphicon-trash red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
             '</div>'
             ),$img = $li.find('img');
-
-
     // $list为容器jQuery实例
     $('#imageList').append( $li );
 
@@ -473,5 +470,5 @@ $(document).ready(function(){
     });
     //initUploader();
 });
-
+var imagesDict = {};
 </script>

@@ -48,8 +48,8 @@
                                 </div>
                             </div>
                             -->
+                            <label style="margin-left: -8px;position: relative;" class="col-sm-2 control-label no-padding-right">类目</label>
                             <div class="form-group disableCategoryRow">
-                                    <label class="col-sm-2 control-label no-padding-right">类目</label>
                                     <div class="col-xs-2 col-sm-2" style="margin-top:2px">
                                         <select name="sobs" id="sobs" class="sobs chosen-select-niu" data-placeholder="套帐">
                                         </select>
@@ -58,7 +58,9 @@
                                         <select name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
                                         </select>
                                     </div>
-                                       
+                                    <div class="col-xs-1 col-sm-1">
+                                        <div class="addCategoryRow" onclick="addCategoryRow()">+</div>   
+                                    </div>
                                 </div>
                             <script type="text/javascript">
                                 $(document).ready(function($) {

@@ -1,10 +1,16 @@
+ <script src="/static/ace/js/chosen.jquery.min.js"></script>
+ <link rel="stylesheet" href="/static/ace/css/chosen.css" />
+ <script src="/static/ace/js/dropzone.min.js"></script>
+ <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
+<link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
+
  <style type="text/css">
     #globalSearchText{
 position: absolute;
   left: 75%;
   top: 60px;
   z-index: 2;
-  height: 26px;
+  height: 30px;
   width: 12%;
   border-style: ridge;
     }
@@ -15,20 +21,60 @@ position: absolute;
   top: 60px;
   border: 0;
   color: white;
-  height: 25px;
+  height: 30px;
   border-radius: 3px;   
   font-size: 12px;
    }
    #globalSearch:hover {
     background-color: #ff7075;
    }
+
+
+
+  #userGroup{
+  position: absolute;
+  left: 58%;
+  top: 60px;
+  z-index: 2;
+  height: 15px;
+  
+    }
+    #userGroupLab {
+  background-color: #fe575f;
+  position: absolute;
+  left: 65%;
+  top: 60px;
+  border: 0;
+  color: white;
+  height: 30px;
+  border-radius: 3px;   
+  font-size: 12px;
+   }
+   #userGroupLab:hover {
+    background-color: #ff7075;
+   }
 </style>
+
+<!-- <label class="col-sm-2 control-label no-padding-right" id='userGroupLab'>适用范围</label> -->
+<div class="col-xs-2 col-sm-2" id="userGroup">
+  <select class="chosen-select tag-input-style "  name="gids"  data-placeholder="请选择部门" placeholder="请选择部门">
+    <option value='0'>公司</option>
+    <?php 
+    foreach($usergroups as $g){
+      ?>
+      <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+      <?php
+    }
+    ?> 
+  </select>
+</div>
 
 <input name="key" placeholder="ID、报告名或提交者" value="" type='text' id="globalSearchText" />
 <button type="button" id="globalSearch">搜索</button>
 
 
 <div class="page-content">
+
     <div class="page-content-area">
         <div class="row">
             <div class="col-xs-12">
@@ -105,7 +151,18 @@ var error = "<?php echo $error; ?>";
 <script language="javascript">
 $(document).ready(function(){
     if(error) show_notify(error);
-});
+
+    $('.chosen-select').chosen({allow_single_deselect:true}); 
+    $(window)
+        .off('resize.chosen')
+        .on('resize.chosen', function() {
+            $('.chosen-select').each(function() {
+                var $this = $(this);
+                $this.next().css({'width': $this.parent().width()});
+            })
+        }).trigger('resize.chosen');
+    });
+
 function pay() {
     var _id = chosenids.join('%23');
     location.href = __BASE + "bills/marksuccess/" + _id + "/0";
@@ -133,6 +190,7 @@ $("#globalSearch").click(function () {
         colModel = $grid.jqGrid("getGridParam", "colModel"),
         searchText = $("#globalSearchText").val(),
         l = colModel.length;
+    var groupId = $('select[name="gids"]').val();
     for (i = 0; i < l; i++) {
         cm = colModel[i];
         if (cm.search !== false && (cm.stype === undefined || cm.stype === "text")) {
@@ -143,10 +201,21 @@ $("#globalSearch").click(function () {
             });
         }
     }
-    postData.filters = JSON.stringify({
+    var groups_ = [{
+      groupOp:"AND",
+      rules:[{field:"ugs",op:"cn",data:groupId}],
+      groups:[{
         groupOp: "OR",
-        rules: rules
-    });
+        rules: rules ,
+        groups:[]
+      }]
+    }];
+    //postData.filters = JSON.stringify({
+    //    groupOp: "OR",
+    //    rules: rules ,
+    //    groups:groups_
+    //});
+    postData.filters = JSON.stringify(groups_[0]);
     $grid.jqGrid("setGridParam", { search: true });
     $grid.trigger("reloadGrid", [{page: 1, current: true}]);
     return false;
