@@ -194,7 +194,14 @@
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var config = '<?php echo $_config?>';
-var __config = JSON.parse(config);
+if(config != '')
+{
+    var __config = JSON.parse(config);
+}
+else
+{
+    var __config = '';
+}
 
 var not_auto_note = "";
 var flag = 0;
