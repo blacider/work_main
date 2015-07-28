@@ -147,9 +147,12 @@
                                 $(".CategoryRow .sobs").trigger("chosen:updated");
                                 $('.CategoryRow .sobs').change(function(){
                                     var s_id = $(this).val();
+                                  //  console.log(s_id);
+                                   // console.log(selectDataCategory);
                                     if(selectDataCategory[s_id] != undefined){
+                                        var _h = '';
                                         for(var i = 0 ; i < selectDataCategory[s_id].length; i++) {
-                                            var _h = "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                                             _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
                                         }
                                     }
                                     var selectDom = this.parentNode.nextElementSibling.children[0]
@@ -178,8 +181,9 @@
                                 $('.disableCategoryRow .sobs').change(function(){
                                     var s_id = $(this).val();
                                     if(selectDataCategory[s_id] != undefined){
+                                        var _h=''
                                         for(var i = 0 ; i < selectDataCategory[s_id].length; i++) {
-                                            var _h = "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                                            _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
                                         }
                                     }
                                     var selectDom = this.parentNode.nextElementSibling.children[0]
