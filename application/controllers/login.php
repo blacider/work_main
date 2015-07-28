@@ -58,6 +58,8 @@ class Login extends REIM_Controller {
         {
             $_username = $this->reim_cipher->encode($username);
             $_password = $this->reim_cipher->encode($password);
+	    log_message('debug','_username:'.$_username);
+	    log_message('debug','_password:'.$_password);
             $cookie = array(
                 'name'   => 'username',
                 'value'  => $_username,
@@ -76,6 +78,7 @@ class Login extends REIM_Controller {
         {
             $this->input->set_cookie("username",$username);
             $this->input->set_cookie("password",'');
+	    delete_cookie('password','.cloudbaoxiao.com','/','');
         }
         if(!$username){
             $this->session->set_userdata('login_error', '请输入邮箱或者手机');
