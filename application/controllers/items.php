@@ -302,8 +302,8 @@ class Items extends REIM_Controller {
         $_rid = $item['rid'];
         if($_rid > 0 ){
             $_relate_report = $this->report->get_report_by_id($_rid);
-            log_message("debug", "Find :" . json_encode($_relate_report));
-            log_message("debug", "Relate Report:" . $_relate_report['data']['status']);
+            //log_message("debug", "Find :" . json_encode($_relate_report));
+            //log_message("debug", "Relate Report:" . $_relate_report['data']['status']);
             if($_relate_report['status']){
                 $_report = $_relate_report['data'];
                 $_cc = $_relate_report['data']['cc'];

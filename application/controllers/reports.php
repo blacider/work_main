@@ -32,7 +32,7 @@ class Reports extends REIM_Controller {
     public function index($type = 1) {
         $items = $this->items->get_suborinate($type);
         if(!$items['status']){
-            die(json_encode(array()));
+            return redirect(base_url('items'));
         }
         $this->session->set_userdata('item_update_in','1');
         $error = $this->session->userdata('last_error');
