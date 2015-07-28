@@ -326,7 +326,7 @@ DataSourceTree.prototype.data = function(options, callback) {
                                 <tr>
                                     <td class="u_username">默认帐套</td>
                                     <td class="u_role_name"></td>
-                                   <td style="width:50px;">   <a href="#" class="editno"  data-title="" data-id="0"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="delno" data-id="0"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                   <td style="width:80px;">   <a href="#" class="editno"  data-title="" data-id="0"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="copyno" data-id="0"><span class="ace-icon fa fa-copy"></span></a> <a href="javascript:void(0);" class="delno" data-id="0"><span class="glyphicon glyphicon-trash"></span></a></td>
                                 </tr>
 
                             </thead>
@@ -341,8 +341,8 @@ $username = '<td class="u_username">' . $item['name'] . '</td>';
 $role_id =  '<td class="u_role_name">' . date('Y-m-d H:i:s', $item['lastdt']) . '</td>';
     //$role_id = '<td class="u_role_name">' . $item->role_name . '</td>';
 $url_edit = base_url('category/sob_update/'. $item['id']);
-$operation_upd = '<td style="width:50px;">   <a href="' . $url_edit .'" class="edit"  data-title="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
-    $operation = '<td style="width:50px;"><a class="btn btn-xs btn-danger" href="' .  base_url('category/remove_sob/?id='. $item['id']) .'">
+$operation_upd = '<td style="width:80px;">   <a href="' . $url_edit .'" class="edit"  data-title="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="copy" data-id="'.$item['id'].'"><span class="ace-icon fa fa-copy"></span></a> <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
+    $operation = '<td style="width:80px;"><a class="btn btn-xs btn-danger" href="' .  base_url('category/remove_sob/?id='. $item['id']) .'">
         <i class="ace-icon fa fa-trash-o bigger-120"></i>
         </a></td>';
 $str = $str . $username . $role_id . $operation_upd . '</tr>';
@@ -379,9 +379,25 @@ $(document).ready(function(){
         });
     });
 
+    $('.copy').each(function(){
+        $(this).click(function(){
+            if(confirm('确认要复制吗?')){
+                var _id = $(this).data('id');
+                location.href = __BASEURL + "category/copy_sob/" + _id;
+            }
+        });
+    });
+
     $('.delno').each(function(){
         $(this).click(function(){
             if(confirm('默认帐套不允许删除')){
+              
+            }
+        });
+    });
+    $('.copyno').each(function(){
+        $(this).click(function(){
+            if(confirm('默认帐套不允许复制')){
               
             }
         });
