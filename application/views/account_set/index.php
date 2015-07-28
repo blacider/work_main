@@ -379,6 +379,7 @@ $(document).ready(function(){
         });
     });
 
+
     $('.copy').each(function(){
         $(this).click(function(){
             if(confirm('确认要复制吗?')){
@@ -387,7 +388,6 @@ $(document).ready(function(){
             }
         });
     });
-
     $('.delno').each(function(){
         $(this).click(function(){
             if(confirm('默认帐套不允许删除')){
