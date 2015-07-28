@@ -38,10 +38,10 @@ class Users extends REIM_Controller {
 
     public function profile(){
     	$error = $this->session->userdata('login_error');
-	$this->session->unset_userdata('login_error');
+        $this->session->unset_userdata('login_error');
         // 重新获取
         $profile = $this->user->reim_get_user();
-	log_message('debug','#####'.json_encode($profile));
+        log_message('debug','#####'.json_encode($profile));
         //print_r($profile);
         //$profile = $this->session->userdata('prOfile');
         if($profile){
