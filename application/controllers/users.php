@@ -41,9 +41,22 @@ class Users extends REIM_Controller {
 	$this->session->unset_userdata('login_error');
         // 重新获取
         $profile = $this->user->reim_get_user();
+	log_message('debug','#####'.json_encode($profile));
         //print_r($profile);
         //$profile = $this->session->userdata('prOfile');
         if($profile){
+	   $config = $profile['data']['profile'];
+	   if(array_key_exists('group',$config))
+	   {
+		if(array_key_exists('config',$profile['data']['profile']['group']))
+		{
+			$config = $profile['data']['profile']['group']['config'];
+		}
+	   }
+	   else
+	   {
+	   	$config =array();
+	   }
             //print_r($profile);
             $profile = $profile['data']['profile'];
             $uid = $profile['id'];
@@ -54,6 +67,7 @@ class Users extends REIM_Controller {
             $path = base_url($this->user->reim_get_hg_avatar());
             //print_r($profile);
         } else  {
+	    $config = array();
             $user = $this->session->userdata('user');
             //log_message("debug", json_encode($user));
             $profile['nickname'] = $user->nickname;
@@ -77,6 +91,7 @@ class Users extends REIM_Controller {
             $gmember = $gmember ? $gmember : array();
         }
         //print_r($profile);
+	log_message("debug","###".$config);
         $this->bsload('user/profile',
             array(
                 'title' => '个人管理'

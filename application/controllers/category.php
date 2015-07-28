@@ -399,6 +399,10 @@ class Category extends REIM_Controller {
                 array_push($data[$sob['sob_id']]['groups'],array('group_id'=>$sob['group_id'],'group_name'=>$sob['group_name']));
             }
         }
+	$data[0] = array();
+	$data[0]['sob_name'] = '默认帐套';
+	$data[0]['groups'] = array();
+	$data[0]['category'] = array();
         $category = $this->category->get_list();
         $categories = $category['data']['categories'];
         foreach($categories as $item)
@@ -411,6 +415,7 @@ class Category extends REIM_Controller {
             log_message("debug","@@@@@@@@@@@@".$item['sob_id']."+++".$item['category_name']);
         }
 
+	log_message('debug','data:' . json_encode($data));
         die(json_encode($data));
     }
     public function get_my_sob_category()
@@ -419,6 +424,7 @@ class Category extends REIM_Controller {
         $sobs = $profile['sob'];
         $_sob_id = array();
         //$_my_sobs = array();
+	log_message('debug',"__________sobs:".json_encode($sobs));
         foreach($sobs as $i) {
             log_message('debug', "alvayang:" . json_encode($i));
             array_push($_sob_id, $i['sob_id']);
