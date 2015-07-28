@@ -157,7 +157,14 @@ if($profile['admin'] == 1 ||  $profile['admin'] == 3) {
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
+var error = "<?php echo $error;?>";
 
+$(document).ready(function(){
+    if(error)
+    {
+        show_notify(error);
+    }
+});
 
 </script>
 <script src="/static/js/base.js" ></script>
@@ -249,6 +256,7 @@ function load_group(gid){
             method: 'GET',
             dataType: 'json',
             success: function(data) {
+                console.log(gid);
                 if(!data.status) {
                     show_notify('获取信息失败');
                 } else {
@@ -292,7 +300,7 @@ function load_group(gid){
                     $(_th).appendTo($('#gtable'));
 
                     $(_member).each(function(idx, item){
-                        console.log("admin:"+item.admin);
+                     //   console.log("admin:"+item.admin);
                         var _c = 'gray';
                         var _p = '员工';
                     var _color = '<span class="label label-success arrowed">管理员</span>';
@@ -305,7 +313,7 @@ function load_group(gid){
                         _p = '点击设置为员工'; 
                     }; break;
                     case '1' : {
-                        console.log(item.admin);
+               //         console.log(item.admin);
                         _p = '点击设置为管理员'; 
                             var _color = '<span class="label label-success arrowed">管理员</span>';
                     }; break;
@@ -323,7 +331,12 @@ function load_group(gid){
                     + '<td><a href="javascript:void(0)">' + _color + '</a>';
                     if(_admin == 1 || _admin == 3){
                     _th += '<td><a href="' + __BASE + '/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a>'
+                    if(gid > 0)
+                    {
+                             _th += '<a href="javascript:void(0)" class="remove_from_group" data-gid="'+gid+'" data-id="' + item.id + '"><i  style="margin-left:10px;"  class="ace-icon align-top bigger-125 blue fa fa-sign-out"></i></a>';
+                     }
                     _th += '<a href="javascript:void(0)" class="remove_user" data-id="' + item.id + '"><i  style="margin-left:10px;"  class="ace-icon align-top bigger-125 red fa fa-trash-o"></i></a></td>';
+       
                     }
                     _th += '</tr>';
                     $(_th).appendTo($('#gtable'));
@@ -333,6 +346,7 @@ function load_group(gid){
 
                 bind_event();
                 bind_event_group();
+                bind_remove_from_group();
             }
             });
 
@@ -354,6 +368,17 @@ function bind_event_group() {
         }
     });
 }
+
+function bind_remove_from_group() {
+    $('.remove_from_group').click(function(){
+        if(confirm('是否将员工从部门移除？') == true){
+            var _id = $(this).data('id');
+            var _gid = $(this).data('gid')
+            location.href= __BASE + "/members/remove_from_group/" +_gid+"/"+_id;
+        }
+    });
+}
+
 
 /*$(document).ready(function(){
     bind_event();

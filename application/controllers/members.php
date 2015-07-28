@@ -8,6 +8,71 @@ class Members extends REIM_Controller {
         $this->load->model('user_model', 'users');
         $this->load->model('group_model', 'groups');
     }
+    
+    public function remove_from_group($gid,$uid)
+    {
+        $group = json_decode($this->ug->get_single_group($gid),True);
+	if($group['status'] > 0)
+	{
+		$data = $group['data'];		
+	}
+	else
+	{
+		$this->session->set_userdata('last_error','部门信息获取错误');
+		return redirect(base_url('members/index'));
+	}
+	
+	$members = array();
+	$g_info = array();
+	if(array_key_exists('member',$data))
+	{
+		$members = $data['member'];	
+	}	
+	if(array_key_exists('group',$data))
+	{
+		$g_info = $data['group'];
+	}
+	else
+	{
+		$this->session->set_userdata('last_error','部门信息获取错误');
+		return redirect(base_url('members/index'));
+	}
+	$uids = array();
+	foreach($members as $item)
+	{
+		if($item['id'] != $uid)
+		{
+			array_push($uids,$item['id']);
+		}
+	}
+
+	$manager = $g_info['manager'];
+	$name = $g_info['name'];
+	$code = $g_info['code'];
+	$pid = $g_info['pid'];
+	
+	if($uids)
+	{
+		$uids = implode(',',$uids);
+	}
+	else
+	{
+		$uids = '';
+	}
+	$buf = $this->ug->update_data($manager,$uids, $name,$code,$pid,$gid);
+	
+	if($buf['status']>0)
+	{
+		$this->session->set_userdata('last_error','移除成功');
+		return redirect(base_url('members/index'));
+	}
+	else
+	{
+		$this->session->set_userdata('last_error','移除失败');
+		return redirect(base_url('members/index'));
+	}
+	
+    }
 
     public function search() {
         $key = $this->input->get('key');
@@ -62,6 +127,7 @@ class Members extends REIM_Controller {
                 'title' => '组织结构'
                 ,'group' => $ginfo
                 ,'members' => $gmember
+		,'error' => $error
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
