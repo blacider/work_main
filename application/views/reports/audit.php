@@ -79,7 +79,7 @@ position: absolute;
                 <form action="<?php echo base_url('reports/permit'); ?>" method="post" class="form-horizontal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">选择后续审批人</h4>
+                <h4 class="modal-title">报告将发送下一审批人，请确认</h4>
                 <input type="hidden" name="rid" value="" id="rid">
                 <input type="hidden" name="status" value="2" id="status">
             </div>
@@ -96,9 +96,16 @@ position: absolute;
             </div>
             <div class="modal-footer">
                 <input type="hidden" id="pass" name="pass" value="0" />
-                <input type="submit" class="btn btn-primary" value="提交" />
+                <input type="submit" class="btn btn-primary" value="确认" />
+                <div class="btn btn-primary" onclick="cancel_modal_next()">取消</div>
             </div>
                 </form>
+                <script type="text/javascript">
+                  function cancel_modal_next() {
+                    $('#modal_next').modal('hide');
+                    return;
+                  }
+                </script>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
