@@ -80,6 +80,22 @@ if($self != 1) {
                         </div>
                     </div>
 
+
+<?php
+$open = 1;
+if($profile['gid'] > 0){
+    $_config = $profile['group']['config'];
+    if($_config) {
+        $config = json_decode($_config, True);
+
+        if(array_key_exists('private_structure', $config) && $config['private_structure'] == 1){
+            $open = 0;
+        }
+    }
+}
+
+if($open == 1) {
+?>
                        <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">上级</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -104,6 +120,7 @@ if($self != 1) {
                                 </div>
                         </div>
 
+<?php  } ?>
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">银行卡号</label>
                         <div class="col-xs-6 col-sm-6">
