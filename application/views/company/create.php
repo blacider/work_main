@@ -75,7 +75,7 @@
                             }
                             function addCategoryRow() {
                                 var addDom = $('.CategoryRow .addCategoryRow');
-                                var category = "<div class='form-group CategoryRow'><div class='col-xs-2 col-sm-2 col-sm-offset-2' col-xs-offset-2><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-2 col-sm-2'><select name='allow_category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='col-xs-1 col-sm-1'><div class='addCategoryRow' onclick='addCategoryRow()''>+</div>   </div></div>"
+                                var category = "<div class='form-group CategoryRow'><div class='col-xs-2 col-sm-2 col-sm-offset-2' col-xs-offset-2><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-2 col-sm-2'><select name='category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='col-xs-1 col-sm-1'><div class='addCategoryRow' onclick='addCategoryRow()''>+</div>   </div></div>"
                                 addDom.removeClass('addCategoryRow');
                                 addDom.attr('onclick', 'removeCategoryRow(this)');
                                 addDom.addClass('removeCategoryRow');
@@ -214,7 +214,7 @@
                             </div>
 
                            
-
+                            <input type="hidden" id="categories" name="categories" />
                             <input type="hidden" id="renew" name="renew" value="0" />
                             <input type="reset" style="display:none;" id="reset">
                             <div class="clearfix form-actions">
@@ -406,6 +406,17 @@ $(document).ready(function(){
          console.log($('#all_members').val());
 
     }
+
+    var categories = []
+    var els =document.getElementsByName("category");
+        for (var i = 0, j = els.length; i < j; i++){
+    //    console.log(els[i].value);
+        categories.push(els[i].value);
+    }
+    $('#categories').val(JSON.stringify(categories));
+    console.log(JSON.stringify(categories));
+
+    // $('#mainform').submit();
 /*	if(name=='')
 	{	
 		show_notify('请输入用户名');
@@ -423,7 +434,7 @@ $(document).ready(function(){
 	
         show_notify("hello");*/
        // $('#renew').val($(this).data('renew'));
-        $('#mainform').submit();
+    
     });
     $('.cancel').click(function(){
         $('#reset').click();
