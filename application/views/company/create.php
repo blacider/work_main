@@ -97,7 +97,7 @@
                                     var selectDom = this.parentNode.nextElementSibling.children[0]
                                     $(selectDom).empty().append(_h).trigger("chosen:updated");
                                 });
-                                $(".sobs").trigger('change');
+                                $($(".CategoryRow .sobs")[$(".CategoryRow .sobs").length-1]).trigger('change');
                             }
                                 $(document).ready(function($) {
                                 $(".chosen-select-niu").chosen({width:"100%"});
