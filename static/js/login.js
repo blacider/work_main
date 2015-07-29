@@ -223,7 +223,7 @@ function register(){
     var _pass2 = $('#pass2').val();
 	if (!inputDOMS[8].value) {
 		formDOM.childNodes[1].getElementsByTagName('span')[1].style.display = 'block';
-	} else if (inputDOMS[9].value != inputDOMS[10].value) {
+	} else if (inputDOMS[8].value != inputDOMS[9].value) {
 		formDOM.childNodes[3].getElementsByTagName('span')[1].style.display = 'block';
 	} 
 	else {
