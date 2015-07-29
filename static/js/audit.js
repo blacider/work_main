@@ -33,12 +33,21 @@ function bind_event(){
     $('.tdetail').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
-            location.href = __BASE + "reports/show/" + _id;
+	    var _decision = $(this).data('decision');
+	    if(_decision != undefined)
+	    {
+            	location.href = __BASE + "reports/show/" + _id + "/" + _decision;
+	    }
+	    else
+	    {
+	    	location.href = __BASE + "reports/show/" + _id;
+	    }
         });
     });
     $('.tpass').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
+	    console.log("ehhhe");
             $.ajax({
                 type:"GET",
                 url:__BASE + "reports/check_permission",
