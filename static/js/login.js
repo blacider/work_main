@@ -127,9 +127,13 @@ function checkPhone3() {
         clearError2();
     var _pass = $('#pass').val();
     var _pass2 = $('#pass2').val();
-	if (!inputDOMS[9].value) {
+	if (!_pass) {
 		formDOM.getElementsByTagName('span')[1].style.display = 'block';
-	} else if (inputDOMS[9].value != inputDOMS[10].value) {
+	} else if (_pass != _pass2) {
+        try{
+            console.log('Not Equal');
+            console.log();
+        }catch(e){}
 		formDOM.getElementsByTagName('span')[3].style.display = 'block';
 	} 
 	else {
@@ -221,9 +225,9 @@ function register(){
 	formDOM.childNodes[3].getElementsByTagName('span')[1].style.display = 'none';
     var _pass = $('#pass').val();
     var _pass2 = $('#pass2').val();
-	if (!inputDOMS[8].value) {
+	if (!_pass) {
 		formDOM.childNodes[1].getElementsByTagName('span')[1].style.display = 'block';
-	} else if (inputDOMS[9].value != inputDOMS[10].value) {
+	} else if (_pass != _pass2) {
 		formDOM.childNodes[3].getElementsByTagName('span')[1].style.display = 'block';
 	} 
 	else {
@@ -234,8 +238,10 @@ function register(){
 
 }
 
+var _error = '';
 
 function show_init_error() {
+    if(_error == undefined) _error = '';
     if(_error != ''){
         var formDOM = document.getElementsByTagName('form')[1];
         $('#error_bad_pass').show();
