@@ -466,7 +466,8 @@ class Items extends REIM_Controller {
         $flow = array();
         if ($_flow['status'] == 1) {
             foreach ($_flow['data'] as $d) {
-                $peropt = $this->str_split_unicode($d['newvalue'],1);
+//                $peropt = $this->str_split_unicode($d['newvalue'],1);
+	          $peropt = $this->flow_str_split($d['newvalue']);
                 array_push($flow, array(
                     'operator' => $peropt['name'],
                     'optdate' => $d['submitdt'],
@@ -475,7 +476,7 @@ class Items extends REIM_Controller {
             }
         }
 	log_message("debug","item_updta_in".$this->session->userdata("item_update_in"));
-	log_message("debug","flow".json_encode($_flow));
+	log_message("debug","flow".json_encode($flow));
 	log_message("debug","users:".json_encode($user));
         $this->bsload('items/view',
             array(
@@ -492,6 +493,7 @@ class Items extends REIM_Controller {
                 ),
             ));
     }
+
 
      function str_split_unicode($str, $l = 0) {
         if ($l > 0) {
@@ -526,6 +528,20 @@ class Items extends REIM_Controller {
 
      return preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY);
  }
+     function flow_str_split($str)
+     {
+     	if($str!='')
+	{
+     		$temp = explode(' ',$str,2);
+		return array('name' => $temp[0]
+			    ,'opt' => $temp[1]);
+	}
+	else
+	{
+		return array('name' => ''
+			     ,'opt' => '');
+	}
+     }
 
     public function edit($id = 0){
         if(0 === $id) redirect(base_url('items'));
@@ -651,7 +667,8 @@ class Items extends REIM_Controller {
         if($rid == 0) {
             return redirect(base_url('items/index'));
         } else {
-            return redirect(base_url('reports/show/'. $rid));
+//            return redirect(base_url('reports/show/'. $rid));
+            return redirect(base_url('items/show/'. $id));
         }
         /*
 
