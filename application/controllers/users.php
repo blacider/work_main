@@ -59,6 +59,18 @@ class Users extends REIM_Controller {
 	   }
             //print_r($profile);
             $profile = $profile['data']['profile'];
+	    $sobs = array();
+	    $usergroups = array();
+
+	    if(array_key_exists('sob',$profile))
+	    {
+	    	$sobs = $profile['sob'];
+	    }
+	    if(array_key_exists('usergroups',$profile))
+	    {
+	    	$usergroups = $profile['usergroups'];
+	    }
+
             $uid = $profile['id'];
             $profile = json_decode($this->user->reim_get_info($uid), True);
             $profile =  $profile['data'];
@@ -103,6 +115,8 @@ class Users extends REIM_Controller {
 		,'manager_id' => $manager_id
 		,'gmember' => $gmember
 		,'pid' => $uid
+		,'sobs' => $sobs
+		,'usergroups' => $usergroups
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '修改资料', 'class' => '')

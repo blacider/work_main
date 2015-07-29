@@ -48,13 +48,13 @@
                                 </div>
                             </div>
                             -->
-                            <label style="margin-left: -8px;position: relative;" class="col-sm-2 control-label no-padding-right">类目</label>
-                            <div class="form-group disableCategoryRow">
-                                    <div class="col-xs-2 col-sm-2" style="margin-top:2px">
+                            <label style="margin-left: -8px;position: absolute;" class="col-sm-2 control-label no-padding-right">类目</label>
+                            <div class="form-group CategoryRow">
+                                    <div class="col-xs-2 col-sm-2 col-sm-offset-2 col-xs-offset-2" style="margin-top:2px">
                                         <select name="sobs" id="sobs" class="sobs chosen-select-niu" data-placeholder="套帐">
                                         </select>
                                     </div>
-                                    <div class="col-xs-2 col-sm-2" style="margin:2px 20px auto 20px;">
+                                    <div class="col-xs-2 col-sm-2" style="margin-top:2px;">
                                         <select name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
                                         </select>
                                     </div>
@@ -62,7 +62,43 @@
                                         <div class="addCategoryRow" onclick="addCategoryRow()">+</div>   
                                     </div>
                                 </div>
+                            <style type="text/css">
+                                .addCategoryRow, .removeCategoryRow {
+                                    font-size: 20px;
+                                    font-weight: bold;
+                                    cursor:pointer;
+                                }
+                            </style>
                             <script type="text/javascript">
+                            function removeCategoryRow(div) {
+                                $(div).parent().parent().remove();
+                            }
+                            function addCategoryRow() {
+                                var addDom = $('.CategoryRow .addCategoryRow');
+                                var category = "<div class='form-group CategoryRow'><div class='col-xs-2 col-sm-2 col-sm-offset-2' col-xs-offset-2><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-2 col-sm-2'><select name='category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='col-xs-1 col-sm-1'><div class='addCategoryRow' onclick='addCategoryRow()''>+</div>   </div></div>"
+                                addDom.removeClass('addCategoryRow');
+                                addDom.attr('onclick', 'removeCategoryRow(this)');
+                                addDom.addClass('removeCategoryRow');
+                                addDom.text('-');
+                                addDom.parent().parent().after(category);
+                                $(".chosen-select-niu").chosen({width:"100%"});
+                                $($(".CategoryRow .sobs")[$(".CategoryRow .sobs").length-1]).append(selectDataSobs);
+                                $(".CategoryRow .sobs").trigger("chosen:updated");
+                                $('.CategoryRow .sobs').change(function(){
+                                    var s_id = $(this).val();
+                                  //  console.log(s_id);
+                                   // console.log(selectDataCategory);
+                                    if(selectDataCategory[s_id] != undefined){
+                                        var _h = '';
+                                        for(var i = 0 ; i < selectDataCategory[s_id].length; i++) {
+                                             _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                                        }
+                                    }
+                                    var selectDom = this.parentNode.nextElementSibling.children[0]
+                                    $(selectDom).empty().append(_h).trigger("chosen:updated");
+                                });
+                                $($(".CategoryRow .sobs")[$(".CategoryRow .sobs").length-1]).trigger('change');
+                            }
                                 $(document).ready(function($) {
                                 $(".chosen-select-niu").chosen({width:"100%"});
                             });
@@ -178,7 +214,7 @@
                             </div>
 
                            
-
+                            <input type="hidden" id="categories" name="categories" />
                             <input type="hidden" id="renew" name="renew" value="0" />
                             <input type="reset" style="display:none;" id="reset">
                             <div class="clearfix form-actions">
@@ -350,26 +386,37 @@ $(document).ready(function(){
     if($('#frequency_unlimit').is(':checked'))
     {
         $('#frequency_unlimit').val(1);
-        console.log($('#frequency_unlimit').val());
+        //console.log($('#frequency_unlimit').val());
     }
     else
     {
         $('#frequency_unlimit').val(0);
-         console.log($('#frequency_unlimit').val());
+       //  console.log($('#frequency_unlimit').val());
 
     }
 
       if($('#all_members').is(':checked'))
     {
         $('#all_members').val(1);
-        console.log($('#all_members').val());
+      //  console.log($('#all_members').val());
     }
     else
     {
         $('#all_members').val(0);
-         console.log($('#all_members').val());
+        // console.log($('#all_members').val());
 
     }
+
+    var categories = []
+    var els =document.getElementsByName("category");
+        for (var i = 0, j = els.length; i < j; i++){
+    //    console.log(els[i].value);
+        categories.push(els[i].value);
+    }
+    $('#categories').val(JSON.stringify(categories));
+   // console.log(JSON.stringify(categories));
+
+     $('#mainform').submit();
 /*	if(name=='')
 	{	
 		show_notify('请输入用户名');
@@ -387,7 +434,7 @@ $(document).ready(function(){
 	
         show_notify("hello");*/
        // $('#renew').val($(this).data('renew'));
-        $('#mainform').submit();
+    
     });
     $('.cancel').click(function(){
         $('#reset').click();

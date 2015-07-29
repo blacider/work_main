@@ -403,7 +403,17 @@ class Company extends REIM_Controller {
 	
 	$rname = $this->input->post('rule_name');
 	$sob_id = $this->input->post('sobs');
-	$category_id = $this->input->post('category');
+//	$category_id = $this->input->post('category');
+	$_categories_id = $this->input->post('categories');
+	$category_ids = json_decode($_categories_id,True);
+	if(category_ids)
+	{
+		$category_ids = implode(',',$category_ids);
+	}
+	else
+	{
+		$category_ids = '';
+	}
 	
 	$amount = $this->input->post('rule_amount');
 	$amount_unlimit = $this->input->post('amount_unlimit');
@@ -443,7 +453,7 @@ class Company extends REIM_Controller {
 	
 	$start_time = $this->input->post('sdt');
 	$end_time = $this->input->post('edt');
-	$buf=$this->company->create_rule($rname,$category_id,$frequency,$frequency_time,$all_members,implode(',',$groups),implode(',',$members));	
+	$buf=$this->company->create_rule($rname,$category_ids,$frequency,$frequency_time,$all_members,implode(',',$groups),implode(',',$members));	
 	log_message("debug","####CREATE:".json_encode($buf));
 	    	return redirect(base_url('company/show'));
     }

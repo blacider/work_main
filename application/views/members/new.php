@@ -54,6 +54,23 @@
                                 </div>
                             </div>
 
+
+                              <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">上级</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select class="chosen-select tag-input-style" name="manager" data-placeholder="请选择标签">
+                                        <option value='0'>无</option>
+                                    <?php 
+                                    foreach($gmember as $m){
+                                    ?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                    </select>
+                                </div>
+                         </div>
+
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">银行户名</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -302,6 +319,7 @@
         </form>
     </div>
 </div>
+
 <script type="text/javascript">
     var error = "<?php echo $this->session->userdata('last_error');?>";
 </script>

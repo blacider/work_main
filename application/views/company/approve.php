@@ -158,7 +158,7 @@
                                     var selectDom = this.parentNode.nextElementSibling.children[0]
                                     $(selectDom).empty().append(_h).trigger("chosen:updated");
                                 });
-                                $(".sobs").trigger('change');
+                                $($(".CategoryRow .sobs")[$(".CategoryRow .sobs").length-1]).trigger('change');
                             }
                             $(document).ready(function($) {
                                 $(".chosen-select-niu").chosen({width:"100%"});
@@ -189,7 +189,7 @@
                                     var selectDom = this.parentNode.nextElementSibling.children[0]
                                     $(selectDom).empty().append(_h).trigger("chosen:updated");
                                 });
-                                $(".sobs").trigger('change');
+                                $($(".disableCategoryRow .sobs")[$(".disableCategoryRow .sobs").length-1]).trigger('change');
                             }
                         </script>
 
@@ -703,19 +703,28 @@ $(document).ready(function(){
 
 });
 function changeAble(value) {
-        console.log(value);
         if (value == 1 || value == -1) {
             $('.chosen-select-niu').prop('disabled',true).trigger("chosen:updated");
             $('.def').attr('disabled', 'true');
-
+            $('.addDisableCategoryRow').attr('onclick','');
+            $('.addCategoryRow').attr('onclick','')
+            $('.removeCategoryRow').attr('onclick','');
         } else if (value == -2) {
             $('.disableCategoryRow .chosen-select-niu').prop('disabled',false).trigger("chosen:updated");
             $('.CategoryRow .chosen-select-niu').prop('disabled',true).trigger("chosen:updated");
             $('.def').attr('disabled', 'false');
+            $('.addDisableCategoryRow').attr('onclick','addDisableCategoryRow()');
+            $('.addCategoryRow').attr('onclick','')
+            $('.CategoryRow .removeCategoryRow').attr('onclick','');
+            $('.disableCategoryRow .removeCategoryRow').attr('onclick','removeCategoryRow(this)');
         } else {
             $('.def').removeAttr('disabled');
             $('.disableCategoryRow .chosen-select-niu').prop('disabled',true).trigger("chosen:updated");
             $('.CategoryRow .chosen-select-niu').prop('disabled',false).trigger("chosen:updated");
+            $('.addDisableCategoryRow').attr('onclick','');
+            $('.addCategoryRow').attr('onclick','addCategoryRow()')
+            $('.CategoryRow .removeCategoryRow').attr('onclick','removeCategoryRow(this)');
+            $('.disableCategoryRow .removeCategoryRow').attr('onclick','');
         }
       }
 </script>
