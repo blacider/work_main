@@ -453,7 +453,7 @@ class Company extends REIM_Controller {
 	
 	$start_time = $this->input->post('sdt');
 	$end_time = $this->input->post('edt');
-	$buf=$this->company->create_rule($rname,$category_id,$frequency,$frequency_time,$all_members,implode(',',$groups),implode(',',$members));	
+	$buf=$this->company->create_rule($rname,$category_ids,$frequency,$frequency_time,$all_members,implode(',',$groups),implode(',',$members));	
 	log_message("debug","####CREATE:".json_encode($buf));
 	    	return redirect(base_url('company/show'));
     }
