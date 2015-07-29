@@ -386,24 +386,24 @@ $(document).ready(function(){
     if($('#frequency_unlimit').is(':checked'))
     {
         $('#frequency_unlimit').val(1);
-        console.log($('#frequency_unlimit').val());
+        //console.log($('#frequency_unlimit').val());
     }
     else
     {
         $('#frequency_unlimit').val(0);
-         console.log($('#frequency_unlimit').val());
+       //  console.log($('#frequency_unlimit').val());
 
     }
 
       if($('#all_members').is(':checked'))
     {
         $('#all_members').val(1);
-        console.log($('#all_members').val());
+      //  console.log($('#all_members').val());
     }
     else
     {
         $('#all_members').val(0);
-         console.log($('#all_members').val());
+        // console.log($('#all_members').val());
 
     }
 
@@ -414,9 +414,9 @@ $(document).ready(function(){
         categories.push(els[i].value);
     }
     $('#categories').val(JSON.stringify(categories));
-    console.log(JSON.stringify(categories));
+   // console.log(JSON.stringify(categories));
 
-    // $('#mainform').submit();
+     $('#mainform').submit();
 /*	if(name=='')
 	{	
 		show_notify('请输入用户名');
