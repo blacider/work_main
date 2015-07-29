@@ -389,10 +389,19 @@ class Members extends REIM_Controller {
 
     public function newmember(){
         $group = $this->ug->get_my_list();
+        $_group = $this->groups->get_my_list();
+        $gmember = array();
+        if($_group) {
+            if(array_key_exists('gmember', $_group['data'])){
+                $gmember = $_group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
         $this->bsload('members/new',
             array(
                 'title' => '添加员工',
-                'groups' => $group['data']
+                'groups' => $group['data'],
+		'gmember' => $gmember
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
@@ -410,6 +419,7 @@ class Members extends REIM_Controller {
         $nickname = $this->input->post('nickname');
         $phone = $this->input->post('mobile');
         $groups = $this->input->post('groups');
+	$manager = $this->input->post('manager');
 
         // 银行信息
         $cardloc = $this->input->post('cardloc');
@@ -423,7 +433,7 @@ class Members extends REIM_Controller {
         if($phone == $email && $email == ""){
             die(json_encode(array('status' => false, 'id' => $id, 'msg' => '邮箱手机必须有一个')));
         }
-        $info = $this->groups->doimports($email, $nickname, $phone, $admin, $groups, $account, $cardno, $cardbank, $cardloc);
+        $info = $this->groups->doimports($email, $nickname, $phone, $admin, $groups, $account, $cardno, $cardbank, $cardloc , $manager);
         if($info['status']) {
             $this->session->set_userdata('last_error', '添加成功');
         } else {
