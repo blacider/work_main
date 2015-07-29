@@ -66,7 +66,7 @@ class Users extends REIM_Controller {
 	    {
 	    	$sobs = $profile['sob'];
 	    }
-	    if(array_key_exists('usergroups',$profile)
+	    if(array_key_exists('usergroups',$profile))
 	    {
 	    	$usergroups = $profile['usergroups'];
 	    }
