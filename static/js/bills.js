@@ -220,8 +220,8 @@ try{
 
 .navButtonAdd(pager_selector,{
     caption:"",
-    title:__STATUS == 2 ? "下载选中中报告" : "",
-    buttonicon:__STATUS == 2 ? "ace-icon fa fa-download blue" : "",
+    title:"下载选中中报告",
+    buttonicon:"ace-icon fa fa-download blue" ,
     onClickButton:__STATUS == 2 ? function() {
          chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
          if (chosenids.length == 0) {
