@@ -222,7 +222,7 @@ try{
     caption:"",
     title:"下载选中中报告",
     buttonicon:"ace-icon fa fa-download blue" ,
-    onClickButton:__STATUS == 2 ? function() {
+    onClickButton:function() {
          chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
          if (chosenids.length == 0) {
             alert("请选择报告!");
@@ -240,7 +240,7 @@ try{
 		{
 		}
 	}); 	
-    } : null
+    } 
 	 })
 .navButtonAdd(pager_selector,{
     caption:"",
