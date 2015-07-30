@@ -7,6 +7,53 @@ class Bills extends REIM_Controller {
         $this->load->model('group_model', 'groups');
         $this->load->model('report_model', 'reports');
 	$this->load->model('usergroup_model','ug');
+	$this->load->model('user_model','user');
+    }
+
+    public function download_report()
+    {
+    	$error = $this->session->userdata('login_error');
+        $this->session->unset_userdata('login_error');
+        // 重新获取
+        $profile = $this->user->reim_get_user();
+        log_message('debug','#####'.json_encode($profile));
+        //print_r($profile);
+        //$profile = $this->session->userdata('prOfile');
+	$group = $profile['data']['profile']['group'];
+        if($profile){
+	   $config = $profile['data']['profile'];
+	   if(array_key_exists('group',$config))
+	   {
+		if(array_key_exists('config',$profile['data']['profile']['group']))
+		{
+			$config = $profile['data']['profile']['group']['config'];
+		}
+	   }
+	   else
+	   {
+	   	$config ='';
+	   }
+	   }
+	$config = json_decode($config,True);
+	$company = urlencode($group['group_name']);
+	$rid = $this->input->post('chosenids');
+	$with_no_note = $config['export_no_note'];
+	log_message('debug','note:'.$with_no_note);
+	if($with_no_note == '1')
+	{
+		$with_note = 0;
+	}
+	else
+	{
+		$with_note = 1;
+	}
+	$template = $config['template'];
+	$archive = 1;
+
+    	log_message('debug','profile'.json_encode($profile['data']['profile']['group']));
+	$url = "http://report.yunbaoxiao.com/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
+	log_message('debug','hhh'. $url);
+    	die(json_encode(array('url' => $url)));
     }
 
     public function _logic($status = 2){
