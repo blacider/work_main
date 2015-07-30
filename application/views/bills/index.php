@@ -140,10 +140,14 @@ position: absolute;
 
 
 
-
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var __STATUS = "<?php echo $status; ?>";
+var __CONFIG = '<?php echo $profile["group"]["config"]; ?>';
+if(__CONFIG!='')
+{
+	var config = JSON.parse(__CONFIG);
+}
 var error = "<?php echo $error; ?>";
 </script>
 

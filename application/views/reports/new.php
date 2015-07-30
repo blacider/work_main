@@ -216,7 +216,7 @@ $(document).ready(function(){
         var s = $('#receiver').val();
         var title = $('#title').val();
         if(title == "") {
-             show_notify('请添加消费');
+             show_notify('请添加报告名');
              $('#title').focus();
              return false;
          }

@@ -401,7 +401,7 @@ $(document).ready(function(){
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
         defaultDate: _dt,
-        format: 'YYYY-MM-DD HH:mm',
+        format: 'YYYY-MM-DD HH:mm:ss',
         linkField: "dt1",
     }).next().on(ace.click_event, function(){
         $(this).prev().focus();

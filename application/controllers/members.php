@@ -109,6 +109,11 @@ class Members extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
+	if($error == '')
+	{
+		$error = $this->session->userdata('login_error');
+		$this->session->unset_userdata('login_error');
+	}
         $group = $this->groups->get_my_list();
         $ginfo = array();
         $gmember = array();
@@ -434,7 +439,8 @@ class Members extends REIM_Controller {
             die(json_encode(array('status' => false, 'id' => $id, 'msg' => '邮箱手机必须有一个')));
         }
         $info = $this->groups->doimports($email, $nickname, $phone, $admin, $groups, $account, $cardno, $cardbank, $cardloc , $manager);
-        if($info['status']) {
+	log_message("debug","manager".$manager);
+  	if($info['status']) {
             $this->session->set_userdata('last_error', '添加成功');
         } else {
             $this->session->set_userdata('last_error', '添加失败');
@@ -445,7 +451,6 @@ class Members extends REIM_Controller {
             return redirect(base_url('members/index'));
         }
         return redirect(base_url('members/newmember'));
-
 
         //print_r($info);
         //$this->groups->set_invite($email, $nickname, $phone, $credit, $groups);
