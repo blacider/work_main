@@ -8,6 +8,7 @@ class Bills extends REIM_Controller {
         $this->load->model('report_model', 'reports');
 	$this->load->model('usergroup_model','ug');
 	$this->load->model('user_model','user');
+	$this->load->library('reim_cipher');
     }
 
     public function download_report()
@@ -36,7 +37,12 @@ class Bills extends REIM_Controller {
 	   }
 	$config = json_decode($config,True);
 	$company = urlencode($group['group_name']);
-	$rid = $this->input->post('chosenids');
+	$_rid = $this->input->post('chosenids');
+	$rid = array();
+	foreach($_rid as $r)
+	{
+		array_push($rid,$this->reim_cipher->encode($r));
+	}
 	$with_no_note = $config['export_no_note'];
 	log_message('debug','note:'.$with_no_note);
 	if($with_no_note == '1')
