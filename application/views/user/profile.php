@@ -94,6 +94,10 @@ if($profile['gid'] > 0){
     }
 }
 
+if($profile['admin'] == 1 || $profile['admin'] == 3){
+    $open = 1;
+}
+
 if($open == 1) {
 ?>
                        <div class="form-group">
