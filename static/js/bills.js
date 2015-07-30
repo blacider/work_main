@@ -220,7 +220,7 @@ try{
 
 .navButtonAdd(pager_selector,{
     caption:"",
-    title:"下载选中中报告",
+    title:"下载选中报告",
     buttonicon:"ace-icon fa fa-download blue" ,
     onClickButton:function() {
          chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
