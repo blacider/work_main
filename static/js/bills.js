@@ -220,6 +220,30 @@ try{
 
 .navButtonAdd(pager_selector,{
     caption:"",
+    title:"下载选中报告",
+    buttonicon:"ace-icon fa fa-download blue" ,
+    onClickButton:function() {
+         chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
+         if (chosenids.length == 0) {
+            alert("请选择报告!");
+            return;
+         }
+       	$.ajax({
+		url:__BASE + "/bills/download_report",
+		method:"post",
+		dataType:"json",
+		data:{"chosenids":chosenids},
+		success:function(data){
+		location.href = data['url'];
+		},
+		error:function(a,b)
+		{
+		}
+	}); 	
+    } 
+	 })
+.navButtonAdd(pager_selector,{
+    caption:"",
     title:__STATUS == 2 ? "支付选中报告" : "",
     buttonicon:__STATUS == 2 ? "ace-icon fa fa-check green" : "",
     onClickButton:__STATUS == 2 ? function() {

@@ -148,7 +148,8 @@ class Users extends REIM_Controller {
         $credit_card = $this->input->post('credit_card');
 	$manager_id = $this->input->post('manager');
         $admin = $this->input->post('admin_new');
-        if(!($nickname || $email || $phone || $credit_card)){
+	log_message("debug","#####".$nickname);
+        if(!($uid || $nickname || $email || $phone || $credit_card)){
             redirect(base_url('users/profile'));
         }
         $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $uid, $admin,$manager_id), true);

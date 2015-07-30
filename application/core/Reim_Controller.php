@@ -11,7 +11,7 @@ class REIM_Controller extends CI_Controller{
         log_message('debug', 'alvayang remap refer:' . json_encode($params));
     	$jwt = $this->session->userdata('jwt');
         $controller = $this->uri->rsegment_array();
-        $method_set = ['login','install', 'pub','users', 'register'];
+        $method_set = ['login','install', 'pub','users','register','resetpwd'];
         if(!in_array($controller[1],$method_set))
         {
             if(!$jwt) 
