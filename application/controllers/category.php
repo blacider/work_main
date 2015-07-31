@@ -9,6 +9,25 @@ class Category extends REIM_Controller {
         $this->load->model('usergroup_model','ug');
         $this->load->model('account_set_model','account_set');
     }
+    public function copy_sob()
+    {
+    	$cp_name = $this->input->post('cp_name');
+	$sob_id = $this->input->post('sob_id');
+
+	$buf = $this->account_set->copy_sob($cp_name,$sob_id);
+	log_message('debug','cp_name:' . $cp_name);
+	log_message('debug','sob_id:' . $sob_id);
+	log_message('debug','back:' . json_encode($buf));
+
+	if($buf['status'] < 0)
+	{
+		$this->session->userdata('last_error',$buf['data']['msg']);
+		return redirect(base_url('category/account_set'));
+	}
+
+	$this->session->userdata('last_error','帐套复制成功');
+	return redirect(base_url('category/account_set'));
+    }
 
     public function remove_sob($sid)
     {

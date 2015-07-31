@@ -1,5 +1,24 @@
 <?php
 	class Account_Set_Model extends Reim_Model{
+		public function copy_sob($cp_name,$sob_id)
+		{
+			log_message('debug','$$$$$$');
+			$jwt = $this->session->userdata('jwt');
+			if(!$jwt) {
+			return false;
+			}
+
+			$url = $this->get_url('sob');
+			$data = array(
+				'act' => 'dup'
+				,'name' => $cp_name
+				,'tid' => $sob_id);
+			$buf = $this->do_Post($url,$data,$jwt);
+			log_message('debug','#####');
+			log_message('debug','cp_sob_back:'.json_encode($buf));
+			return $buf;
+		}
+
 		public function get_sobs()
 		{
 			$jwt = $this->session->userdata('jwt');
