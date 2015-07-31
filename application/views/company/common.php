@@ -67,7 +67,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">报销单是否包含备注</label>
+                                <label class="col-sm-3 control-label no-padding-right">报销单是否省略备注</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
