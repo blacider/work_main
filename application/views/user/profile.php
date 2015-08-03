@@ -171,7 +171,7 @@ if($open == 1) {
                                         }
                                     foreach($ug as $g)
                                     {
-                                        if(!in_array($g['id'], $in_array))
+                                        if(!in_array($g['id'], $in_groups))
                                         {
                                              ?>
                                         <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
@@ -692,7 +692,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 <div id="loading">
                     <img src="/static/images/loading.gif">
 </div>
-
 
 <!--  <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script> -->
 <!--  <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
