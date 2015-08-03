@@ -399,9 +399,12 @@ echo $str;
 
 <script language="javascript">
 var __BASEURL = "<?php echo $base_url; ?>";
+var error = "<?php echo $error; ?> ";
 $(document).ready(function(){
-
-
+    if(error.trim())
+    {
+        show_notify(error);
+    }
 
     $('#send').click(function(){
         /*
