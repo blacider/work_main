@@ -383,7 +383,7 @@ class User_Model extends Reim_Model {
         return $buf;
     }
 
-    public function reim_update_profile($email, $phone, $nickname, $credit_card, $uid = 0, $admin = 0,$manager_id=0){
+    public function reim_update_profile($email, $phone, $nickname, $credit_card,$usergroups, $uid = 0, $admin = 0,$manager_id=0){
         if($uid > 0) {
             $data['uid'] = $uid;
         }
@@ -401,6 +401,7 @@ class User_Model extends Reim_Model {
         }
 	$data['manager_id'] = $manager_id;
         $data['admin'] = $admin;
+	$data['groups'] = $usergroups;
         $url = $this->get_url('users');
         $jwt = $this->session->userdata('jwt');
         $buf = $this->do_Put($url, $data, $jwt);
