@@ -714,6 +714,7 @@ class Members extends REIM_Controller {
             exit();
         }
         //$profile = $this->user->reim_get_user($id);
+	$pro = $this->session->userdata('profile');
         $error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
         $info = json_decode($this->users->reim_get_info($id), True);
@@ -746,6 +747,7 @@ class Members extends REIM_Controller {
 		,'gmember' => $gmember
 		,'manager_id' => $manager_id
 		,'pid' => $id
+		,'pro' => $pro
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
