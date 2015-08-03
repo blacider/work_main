@@ -92,8 +92,9 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">类型</label>
                                 <div class="col-xs-6 col-sm-6">
+    <input type="hidden" value="<?php echo $item['prove_ahead']; ?>">
 <?php 
-                                                $_prove_dict = array('0' => '报销', '1' => '预算', '2' => '预借');
+                                                $_prove_dict = array('0' => '报销', '1' => '预借', '2' => '预算');
 ?>
                                     <select class="form-control" name="type" data-placeholder="请选择类型">
 <?php 
