@@ -40,13 +40,13 @@ class Users extends REIM_Controller {
     public function profile(){
     	$error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
-	$pro = $this->session->userdata('profile');
 	$ug = $this->reim_show->usergroups();
         // 重新获取
         $profile = $this->user->reim_get_user();
         //print_r($profile);
         //$profile = $this->session->userdata('prOfile');
         if($profile){
+           $pro = $profile['data']['profile'];
 	   $config = $profile['data']['profile'];
 	   if(array_key_exists('group',$config))
 	   {
@@ -159,11 +159,19 @@ class Users extends REIM_Controller {
         $credit_card = $this->input->post('credit_card');
 	$manager_id = $this->input->post('manager');
         $admin = $this->input->post('admin_new');
+	$_usergroups = $this->input->post('usergroups');
+	$usergroups = array();
+	if($_usergroups)
+	{
+		$usergroups = implode(',',$_usergroups);
+	}
+	log_message('debug','_usergroups:' . json_encode($_usergroups));
+	log_message('debug','usergroups:' . json_encode($usergroups));
 	log_message("debug","#####".$nickname);
         if(!($uid || $nickname || $email || $phone || $credit_card)){
             redirect(base_url('users/profile'));
         }
-        $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $uid, $admin,$manager_id), true);
+        $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin,$manager_id), true);
         if($info['status'] > 0){
             $this->session->set_userdata('login_error', '信息修改成功');
         } else {
