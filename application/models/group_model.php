@@ -12,7 +12,7 @@ class Group_Model extends Reim_Model {
     }
 
 
-    public function doimports($username, $nickname, $phone, $admin, $groups, $account, $cardno, $cardbank, $cardloc){
+    public function doimports($username, $nickname, $phone, $admin, $groups, $account, $cardno, $cardbank, $cardloc, $manager){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array('users' => json_encode(
@@ -27,6 +27,7 @@ class Group_Model extends Reim_Model {
                     ,'cardno' => $cardno
                     ,'cardbank' => $cardbank
                     ,'cardloc' => $cardloc
+		    ,'manager_id' => $manager
                 )
             )
         ));
