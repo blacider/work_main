@@ -37,6 +37,10 @@ class Bills extends REIM_Controller {
 	   }
 	$config = json_decode($config,True);
 	$company = urlencode($group['group_name']);
+	if($config['export_no_company'] == '0')
+	{
+		$company = '';
+	}
 	$_rid = $this->input->post('chosenids');
 	$rid = array();
 	foreach($_rid as $r)
