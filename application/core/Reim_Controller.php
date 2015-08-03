@@ -349,5 +349,34 @@ class REIM_Controller extends CI_Controller{
         return $output;
     }
 
+    private function get_privilege(){
+        $profile = $this->session->userdata('profile');
+        if(!($profile)){
+            log_message("debug","Nothing ");
+            return redirect(base_url('login'), 'refresh');
+        }
+        return $profile['admin'];
 
+    }
+
+    public function need_group_admin(){
+        $admin = $this->get_privilege();
+        if($admin == 1) return true;
+        $this->session->set_userdata("last_error", "权限不足");
+        return redirect(base_url('items'), 'refresh');
+    }
+
+    public function need_group_it(){
+        $admin = $this->get_privilege();
+        if($admin == 1 || $admin == 3) return true;
+        $this->session->set_userdata("last_error", "权限不足");
+        return redirect(base_url('items'), 'refresh');
+    }
+
+    public function need_group_casher(){
+        $admin = $this->get_privilege();
+        if($admin == 1 || $admin == 2) return true;;
+        $this->session->set_userdata("last_error", "权限不足");
+        return redirect(base_url('items'), 'refresh');
+    }
 }
