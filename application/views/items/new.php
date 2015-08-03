@@ -75,8 +75,8 @@
 <div class="col-xs-6 col-sm-6">
 <select class="form-control" name="type" data-placeholder="请选择类型">
 <option value="0">报销</option>
-<option value="1">预算</option>
-<option value="2">预借</option>
+<option value="1">预借</option>
+<option value="2">预算</option>
 </select>
 </div>
 </div>
