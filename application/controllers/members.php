@@ -7,6 +7,7 @@ class Members extends REIM_Controller {
         $this->load->model('usergroup_model', 'ug');
         $this->load->model('user_model', 'users');
         $this->load->model('group_model', 'groups');
+	$this->load->model('reim_show_model','reim_show');
     }
     
     public function remove_from_group($gid,$uid)
@@ -714,7 +715,6 @@ class Members extends REIM_Controller {
             exit();
         }
         //$profile = $this->user->reim_get_user($id);
-	$pro = $this->session->userdata('profile');
         $error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
         $info = json_decode($this->users->reim_get_info($id), True);
@@ -722,6 +722,9 @@ class Members extends REIM_Controller {
         $info =  $info['data'];
         $manager_id = $info['manager_id'];
         $m_info = json_decode($this->users->reim_get_info($manager_id),True);
+	$pro = $info;
+	$ug = $this->reim_show->usergroups();
+	log_message('debug','m_info:' . json_encode($m_info['data']));
 
         $group = $this->groups->get_my_list();
 
@@ -748,6 +751,7 @@ class Members extends REIM_Controller {
 		,'manager_id' => $manager_id
 		,'pid' => $id
 		,'pro' => $pro
+		,'ug' => $ug
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
@@ -755,7 +759,6 @@ class Members extends REIM_Controller {
                 ),
             )
         );
-	
     }
 
     public function remove_member($id = 0){
