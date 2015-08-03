@@ -7,7 +7,7 @@ class Members extends REIM_Controller {
         $this->load->model('usergroup_model', 'ug');
         $this->load->model('user_model', 'users');
         $this->load->model('group_model', 'groups');
-	$this->load->model('reim_show_model','reim_show');
+        $this->load->model('reim_show_model','reim_show');
     }
 
     public function remove_from_group($gid,$uid)
@@ -553,6 +553,8 @@ class Members extends REIM_Controller {
             $obj['cardloc'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
             $obj['group_name'] = trim($sheet->getCellByColumnAndRow(8, $row)->getValue());
             $obj['manager'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
+            $obj['rank'] = trim($sheet->getCellByColumnAndRow(10, $row)->getValue());
+            $obj['level'] = trim($sheet->getCellByColumnAndRow(11, $row)->getValue());
             if("" == $obj['email'] && "" == $obj['phone']) continue;
             $obj['status'] = 0;
             if(in_array($obj['email'], $_emails) || in_array($obj['phone'], $_phones)){
@@ -560,6 +562,7 @@ class Members extends REIM_Controller {
             }
             array_push($data, $obj);
         }
+
 
         $this->bsload('members/imports',
             array(
