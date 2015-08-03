@@ -9,6 +9,27 @@ class Category extends REIM_Controller {
         $this->load->model('usergroup_model','ug');
         $this->load->model('account_set_model','account_set');
     }
+    public function copy_sob()
+    {
+    	$cp_name = $this->input->post('cp_name');
+	$sob_id = $this->input->post('sob_id');
+
+	$_buf = $this->account_set->copy_sob($cp_name,$sob_id);
+	$buf = json_decode($_buf,True);
+
+	log_message('debug','cp_name:' . $cp_name);
+	log_message('debug','sob_id:' . $sob_id);
+	log_message('debug','back:' . json_encode($buf));
+
+	if($buf['status'] < 0)
+	{
+		$this->session->set_userdata('last_error',$buf['data']['msg']);
+		return redirect(base_url('category/account_set'));
+	}
+
+	$this->session->set_userdata('last_error','帐套复制成功');
+	return redirect(base_url('category/account_set'));
+    }
 
     public function remove_sob($sid)
     {
@@ -149,6 +170,7 @@ class Category extends REIM_Controller {
     }
     public function account_set(){
         $error = $this->session->userdata('last_error');
+	log_message('debug','error:' . $error);
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
         $acc_sets = $this->account_set->get_account_set_list();
@@ -180,6 +202,7 @@ class Category extends REIM_Controller {
                 'title' => '帐套管理'
                 //	,'acc_sets' => $acc_sets
                 ,'acc_sets' => $acc_set
+		,'error' => $error
                 //,'ugroups' => $ugroups['data']['group']
                 ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
