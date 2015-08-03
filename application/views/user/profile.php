@@ -147,16 +147,37 @@ if($open == 1) {
                         <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">所属部门</label>
                                 <div class="col-xs-6 col-sm-6">
+                                <?php
+                                    if($profile['admin'] == 1 || $profile['admin'] == 3){
+                                        ?>
+                                        <select class="chosen-select tag-input-style" multiple="multiple" name="usergroups[]" data-placeholder="部门信息" >
+                                <?php
+                                   }
+                                   else
+                                   {
+                                ?>
                                     <select class="chosen-select tag-input-style" multiple="multiple" name="usergroups[]" data-placeholder="部门信息" disabled>
+                                    <?php
+                                }
+                                    ?>
                                     <?php 
                                     $usergroups = $pro['usergroups'];
+                                    $in_groups = array();
                                     foreach($usergroups as $m){
-                                   
+                                        array_push($in_groups,$m['id']);
                                     ?>
                                         <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
                                     <?php
                                         }
-                                 
+                                    foreach($ug as $g)
+                                    {
+                                        if(!in_array($g['id'], $in_array))
+                                        {
+                                             ?>
+                                        <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+                                            <?php
+                                        }
+                                    }
                                     ?>
                                     </select>
                                 </div>

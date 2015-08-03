@@ -6,6 +6,7 @@ class Users extends REIM_Controller {
         parent::__construct();
         $this->load->model('user_model', 'user');
         $this->load->model('group_model', 'groups');
+	$this->load->model('reim_show_model','reim_show');
         //$this->load->model('users/customer_model', 'cmodel');  
     }
 
@@ -40,6 +41,7 @@ class Users extends REIM_Controller {
     	$error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
 	$pro = $this->session->userdata('profile');
+	$ug = $this->reim_show->usergroups();
         // 重新获取
         $profile = $this->user->reim_get_user();
         //print_r($profile);
@@ -125,6 +127,7 @@ class Users extends REIM_Controller {
 		,'gmember' => $gmember
 		,'pid' => $uid
 		,'pro' => $pro
+		,'ug' => $ug
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '修改资料', 'class' => '')
