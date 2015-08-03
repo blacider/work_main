@@ -125,6 +125,80 @@ if($open == 1) {
                         </div>
 
 <?php  } ?>
+
+                        <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">所属帐套</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select class="chosen-select tag-input-style" multiple="multiple" name="sobs[]" data-placeholder="帐套信息" disabled>
+                                    <?php 
+                                    $sobs = $pro['sob'];
+                                    foreach($sobs as $m){
+                                   
+                                    ?>
+                                        <option selected value="<?php echo $m['sob_id']; ?>"><?php echo $m['sob_name']; ?></option>
+                                    <?php
+                                        }
+                                 
+                                    ?>
+                                    </select>
+                                </div>
+                        </div>
+
+                        <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">所属部门</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select class="chosen-select tag-input-style" multiple="multiple" name="usergroups[]" data-placeholder="部门信息" disabled>
+                                    <?php 
+                                    $usergroups = $pro['usergroups'];
+                                    foreach($usergroups as $m){
+                                   
+                                    ?>
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                    <?php
+                                        }
+                                 
+                                    ?>
+                                    </select>
+                                </div>
+                        </div>
+
+                          <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">提交规则</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select class="chosen-select tag-input-style" multiple="multiple" name="commits[]" data-placeholder="提交规则" disabled>
+                                    <?php 
+                                    $commits = $pro['commits'];
+                                    foreach($commits as $m){
+                                   
+                                    ?>
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                    <?php
+                                        }
+                                 
+                                    ?>
+                                    </select>
+                                </div>
+                        </div>
+
+                         <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">审批规则</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select class="chosen-select tag-input-style" multiple="multiple" name="audits[]" data-placeholder="审批规则" disabled>
+                                    <?php 
+                                    $audits = $pro['audits'];
+                                    foreach($audits as $m){
+                                   
+                                    ?>
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                    <?php
+                                        }
+                                 
+                                    ?>
+                                    </select>
+                                </div>
+                        </div>
+
+
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">银行卡号</label>
                         <div class="col-xs-6 col-sm-6">
@@ -592,6 +666,8 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         </div>
     </div>
 </div>
+
+
 <div id="loading">
                     <img src="/static/images/loading.gif">
 </div>

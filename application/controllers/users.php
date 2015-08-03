@@ -39,9 +39,9 @@ class Users extends REIM_Controller {
     public function profile(){
     	$error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
+	$pro = $this->session->userdata('profile');
         // 重新获取
         $profile = $this->user->reim_get_user();
-        log_message('debug','#####'.json_encode($profile));
         //print_r($profile);
         //$profile = $this->session->userdata('prOfile');
         if($profile){
@@ -61,6 +61,15 @@ class Users extends REIM_Controller {
             $profile = $profile['data']['profile'];
 	    $sobs = array();
 	    $usergroups = array();
+	    $audits = array();
+	    $commits = array();
+
+
+	    if(array_key_exists('commits',$profile))
+	    {
+	    	$sobs = $profile['commits'];
+	    }
+	    
 
 	    if(array_key_exists('sob',$profile))
 	    {
@@ -115,8 +124,7 @@ class Users extends REIM_Controller {
 		,'manager_id' => $manager_id
 		,'gmember' => $gmember
 		,'pid' => $uid
-		,'sobs' => $sobs
-		,'usergroups' => $usergroups
+		,'pro' => $pro
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '修改资料', 'class' => '')
