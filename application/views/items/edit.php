@@ -95,6 +95,7 @@
 <?php 
                                                 $_prove_dict = array('0' => '报销', '1' => '预算', '2' => '预借');
 ?>
+    <input type="hidden" value="<?php echo $item['prove_ahead']; ?>">
                                     <select class="form-control" name="type" data-placeholder="请选择类型">
 <?php 
                                             foreach($_prove_dict as $val => $key){
