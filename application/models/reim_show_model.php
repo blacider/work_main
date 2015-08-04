@@ -21,4 +21,15 @@ class Reim_Show_Model extends Reim_Model {
 		log_message('debug','usergroup:' . json_encode($usergroups));
         return $usergroups;
     	}
+	public function rank_level($rank = 0)
+	{
+		$jwt = $this->session->userdata('jwt');
+		if(!$jwt) return false;
+
+		$url = $this->get_url('rank');
+		$buf = $this->do_Get($url,$jwt);
+
+		log_message('debug','rank:' . json_encode($buf));
+		return $buf;
+	}
 }
