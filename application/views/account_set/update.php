@@ -214,7 +214,6 @@
     </div>
 </div>
 
-
 <script type="text/javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var _sob_id = "<?php echo $sob_id ?>";
