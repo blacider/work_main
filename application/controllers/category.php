@@ -294,6 +294,7 @@ class Category extends REIM_Controller {
         log_message("debug", "UG#########: $_ug");
         //TODO: 重新审核此段代码  END  庆义，长远
 
+	$_group = array();
         if($category){
             $_group = $category['data']['categories'];
         }
