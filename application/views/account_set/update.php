@@ -31,20 +31,14 @@
                             var _subSob = [];
                             var sob_keys = <?php echo json_encode($sob_keys);?>;
                             var all_categories = <?php echo json_encode($all_categories);?>;
-                            function showSob(sobID) {
-
-                                $('#modal_sob').modal('show');
-                            }
-                            function showSob(sobId) {
+                            function showSob(sobId, id_) {
                                 if (sobId != -1) {
                                     var name = all_categories[sobId]['name'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'];
                                     $("#form_moda").find('input[name="name"]').val(name);
                                     $("#menuImg").attr('src', img);
+                                    $('#form_moda').find('input[name="avatar"]').val(all_categories[sobId]['avatar_']);
                                     $("#form_moda").find('input[name="id"]').val(id);
-                                } else {
-                                    $("#form_moda").find('input[name="name"]').val('');
-                                    $("#menuImg").attr('src', 'http://api.cloudbaoxiao.com/online/static/1.png');
-                                    $("#form_moda").find('input[name="id"]').val('');
+                                    $("#form_moda").find('input[name="pid"]').val(id_);
                                 }
                                 $('#modal_sob').modal('show');
                             }
@@ -83,16 +77,14 @@
                                     </div>
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                                         <li role="presentation">
-                                            <a href="#" onclick="showSob(<?php echo $all_categories[$item]['id'] ?>)" role="menuitem" tabindex="-1">修改</a>
+                                            <a href="#" onclick="showSob(<?php echo $all_categories[$item]['id'] ?>,<?php echo $all_categories[$item]['pid'] ?>)" role="menuitem" tabindex="-1">修改</a>
                                         </li>
                                         <li role="presentation" class="divider"></li>
                                         <?php foreach ($all_categories[$item]['child'] as $item_) {?>
                                         <li role="presentation">
-                                            <a href="#" showSob(<?php echo $item_.id ?>
-                                                ) role="menuitem" tabindex="
-                                                <?php echo $item_.id; ?>
-                                                ">
-                                                <?php echo $item_.name ;?></a>
+                                            <a href="#" onclick="showSob(<?php echo $item_.id ?>, <?php echo $all_categories[$item]['pid']?>)" role="menuitem" tabindex="<?php echo $item_.id; ?>">
+                                                <?php echo $item_.name ;?>
+                                            </a>
                                         </li>
                                         <?php } ?>
                                         <li role="presentation">
@@ -267,8 +259,7 @@
                     </div>
                 </div>
                 -->
-                <input type="hidden" id="sob_id" name="sob_id" value="<?php echo $sob_id?>
-                " />
+                <input type="hidden" id="sob_id" name="sob_id" value="<?php echo $sob_id?>" />
                 <input type="hidden" id="renew" name="renew" value="0" />
                 <input type="reset" style="display:none;" id="reset">
                 <div class="clearfix form-actions">
@@ -318,6 +309,7 @@
             <div class="dropdown col-sm-3 col-xl-3">
                 <div class="dropdown-toggle down-image" data-toggle="dropdown" id="dropdownMenuImg">
                     <span>
+                        <input type="text" name="avatar" class="hidden" value="0">
                         <img id="menuImg" class="img-select" src="http://api.cloudbaoxiao.com/online/static/9.png" alt="png"></span>
                     <span class="caret"></span>
                 </div>
@@ -326,7 +318,7 @@
                     <li role="presentation">
                         <a href="#" onclick="changeImg(this)" role="menuitem" tabindex="-1">
                             <span>
-                                <img class="img-select" src="http://api.cloudbaoxiao.com/online/static/<?php echo $i;?>.png" alt="png"></span>
+                                <img class="img-select" src="http://api.cloudbaoxiao.com/online/static/<?php echo $i;?>.png" alt="<?php echo $i;?>"></span>
                         </a>
                     </li>
                     <?php } ?></ul>
@@ -344,6 +336,8 @@
             </div>
         </div>
     </div>
+    <input type="text" name="sob_id" class="hidden" value="<?php echo $sob_id; ?>">
+    <input type="text" name="pid" class="hidden">
 </form>
 </div>
 <!-- /.modal-content -->
@@ -361,7 +355,7 @@
     </button>
     <h4 class="modal-title">类目信息</h4>
 </div>
-<form method="post" action="<?php echo base_url('category/create'); ?>">
+<form id="create_form"> method="post" action="<?php echo base_url('category/create'); ?>">
     <div class="modal-body">
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">名称</label>
@@ -369,17 +363,19 @@
         <div class="form-group" style="height:30px">
             <label class="col-sm-2 col-xl-2">图片</label>
             <div class="dropdown col-sm-3 col-xl-3">
-                <div class="dropdown-toggle down-image" data-toggle="dropdown" id="dropdownMenuImg">
+                <div class="dropdown-toggle down-image" data-toggle="dropdown" id="dropdownMenuImg_">
                     <span>
-                        <img id="menuImg" class="img-select" src="http://api.cloudbaoxiao.com/online/static/9.png" alt="png"></span>
+                        <input type="text" name="avatar" class="hidden" value="0">
+                        <img id="menuImg_" class="img-select" src="http://api.cloudbaoxiao.com/online/static/9.png" alt="png">
+                    </span>
                     <span class="caret"></span>
                 </div>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuImg">
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuImg_">
                     <?php for($i = 1; $i <= 11; $i++){ ?>
                     <li role="presentation">
-                        <a href="#" onclick="changeImg(this)" role="menuitem" tabindex="-1">
+                        <a href="#" onclick="changeImg_(this)" role="menuitem" tabindex="-1">
                             <span>
-                                <img class="img-select" src="http://api.cloudbaoxiao.com/online/static/<?php echo $i;?>.png" alt="png"></span>
+                                <img class="img-select" src="http://api.cloudbaoxiao.com/online/static/<?php echo $i;?>.png" alt="<?php echo $i;?>"></span>
                         </a>
                     </li>
                     <?php } ?></ul>
@@ -406,6 +402,11 @@
 <script type="text/javascript">
 function changeImg(dom) {
     $('#menuImg').attr('src', $(dom).find('.img-select').attr('src'));
+    $('#form_moda').find('input[name="avatar"]') = $(dom).find('.img-select').attr('alt');
+}
+function changeImg_(dom) {
+    $('#menuImg_').attr('src', $(dom).find('.img-select').attr('src'));
+    $('#create_form').find('input[name="avatar"]') = $(dom).find('.img-select').attr('alt');
 }
 var __BASE = "<?php echo $base_url; ?>";
 var _sob_id = "<?php echo $sob_id ?>";
