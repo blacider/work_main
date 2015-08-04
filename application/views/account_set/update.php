@@ -31,14 +31,15 @@
                             var _subSob = [];
                             var sob_keys = <?php echo json_encode($sob_keys);?>;
                             var all_categories = <?php echo json_encode($all_categories);?>;
-                            function showSob(sobId, id_) {
+                            function showSob(sobId) {
                                 if (sobId != -1) {
-                                    var name = all_categories[sobId]['name'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'];
+                                    var name = all_categories[sobId]['name'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'], name = all_categories[sobId]['name'], pid = = all_categories[sobId]['pid'];
                                     $("#form_moda").find('input[name="name"]').val(name);
                                     $("#menuImg").attr('src', img);
                                     $('#form_moda').find('input[name="avatar"]').val(all_categories[sobId]['avatar_']);
-                                    $("#form_moda").find('input[name="id"]').val(id);
-                                    $("#form_moda").find('input[name="pid"]').val(id_);
+                                    $("#form_moda").find('input[name="cid"]').val(id);
+                                    $("#form_moda").find('input[name="name"]').val(name);
+                                    $("#form_moda").find('input[name="pid"]').val(pid);
                                 }
                                 $('#modal_sob').modal('show');
                             }
@@ -77,12 +78,12 @@
                                     </div>
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                                         <li role="presentation">
-                                            <a href="#" onclick="showSob(<?php echo $all_categories[$item]['id'] ?>,<?php echo $all_categories[$item]['pid'] ?>)" role="menuitem" tabindex="-1">修改</a>
+                                            <a href="#" onclick="showSob(<?php echo $all_categories[$item]['id'] ?>)" role="menuitem" tabindex="-1">修改</a>
                                         </li>
                                         <li role="presentation" class="divider"></li>
                                         <?php foreach ($all_categories[$item]['child'] as $item_) {?>
                                         <li role="presentation">
-                                            <a href="#" onclick="showSob(<?php echo $item_.id ?>, <?php echo $all_categories[$item]['pid']?>)" role="menuitem" tabindex="<?php echo $item_.id; ?>">
+                                            <a href="#" onclick="showSob(<?php echo $item_.id ?>)" role="menuitem" tabindex="<?php echo $item_.id; ?>">
                                                 <?php echo $item_.name ;?>
                                             </a>
                                         </li>
@@ -326,7 +327,7 @@
         </div>
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类目ID</label>
-            <input name="id" type="text" data-placeholder="请输入名称"></div>
+            <input name="name" type="text" data-placeholder="请输入名称"></div>
         <div class="clearfix form-actions">
             <div class="col-md-offset-3 col-md-9">
                 <a class="btn btn-white btn-primary new_card" data-renew="0">
@@ -338,6 +339,7 @@
     </div>
     <input type="text" name="sob_id" class="hidden" value="<?php echo $sob_id; ?>">
     <input type="text" name="pid" class="hidden">
+    <input type="text" name="cid" class="hidden">
 </form>
 </div>
 <!-- /.modal-content -->
@@ -383,7 +385,7 @@
         </div>
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类目代码</label>
-            <input name="id" type="text" data-placeholder="请输入名称"></div>
+            <input name="name" type="text" data-placeholder="请输入名称"></div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-sm" data-dismiss="modal">
