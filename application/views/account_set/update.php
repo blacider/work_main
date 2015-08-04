@@ -357,7 +357,7 @@
     </button>
     <h4 class="modal-title">类目信息</h4>
 </div>
-<form method="post" action="<?php echo base_url('category/create'); ?>">
+<form method="post" action="<?php echo base_url('category/create_category'); ?>">
     <div class="modal-body">
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">名称</label>
@@ -383,7 +383,7 @@
         </div>
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类目代码</label>
-            <input name="id" type="text" data-placeholder="请输入名称"></div>
+            <input name="code" type="text" data-placeholder="请输入名称"></div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-sm" data-dismiss="modal">

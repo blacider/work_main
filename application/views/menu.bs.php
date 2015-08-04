@@ -273,6 +273,15 @@ if($open == 1) {
 <?php 
 if($profile['admin'] == 1 || $profile['admin'] == 3){
 ?>
+        <li class="hsub" id="newrank">
+        <a href="<?php echo base_url('members/rank'); ?>" >
+            <i class="menu-icon fa fa-caret-right"></i>
+           职级设置 
+        </a>
+
+        <b class="arrow"></b>
+
+        </li>
         <li class="hsub" id="newmember">
         <a href="<?php echo base_url('members/newmember'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
