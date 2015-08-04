@@ -14,6 +14,10 @@
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script>
 
+<?php
+    $_config = $profile['group']['config'];
+    $__config = json_decode($_config,True);
+?>
 
 
 <div class="page-content">
@@ -104,9 +108,19 @@
 <option value="<?php echo $val; ?>" selected><?php echo $key; ?></option>
 <?php
                                                 } else {
+						if($__config['allow_borrow'] == 1 && $val == 1)
+						{
 ?>
 <option value="<?php echo $val; ?>"><?php echo $key; ?></option>
 <?php
+					    }
+					    if($__config['allow_budget'] == 1 && $val == 2)
+					    {
+?>
+<option value="<?php echo $val; ?>"><?php echo $key; ?></option>
+<?php
+					    }
+
                                             }
                                             }
 ?>
@@ -167,9 +181,6 @@
 <script src="/static/ace/js/jquery.colorbox-min.js"></script>
 
 
-<?php
-    $_config = $profile['group']['config'];
-?>
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
