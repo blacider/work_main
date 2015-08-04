@@ -52,6 +52,11 @@
                                 $('#modal-table').find('input[name="pid"]').val(id_);
                                 $('#modal-table').modal('show');
                             }
+                            function delectSob(id_) {
+                                if(confirm('确认要删除吗?')){
+                                    location.href = __BASEURL + "/category/drop/" + id_;
+                                }
+                            }
                         </script>
                         <style type="text/css">
                                     .drop-cata {
@@ -91,7 +96,7 @@
                                         </li>
                                         <li role="presentation" class="divider"></li>
                                         <li role="presentation">
-                                            <a href="#" onclick="delectSob(this)" role="menuitem" tabindex="-1">删除</a>
+                                            <a href="#" onclick="delectSob(<?php echo $all_categories[$item]['id']; ?>)" role="menuitem" tabindex="-1">删除</a>
                                         </li>
                                     </ul>
                                 </div>
