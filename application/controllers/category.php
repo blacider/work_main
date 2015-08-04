@@ -126,7 +126,6 @@ class Category extends REIM_Controller {
                 ),
             )   
         );
-	*/
     }
     public function new_sob()
     {
