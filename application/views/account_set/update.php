@@ -26,14 +26,30 @@
                      
 
                            <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-rigtht">帐套名</label>
-                                <div class="col-xs-4 col-sm-4">
+                                <label class="col-sm-2 control-label no-padding-rigtht">名称</label>
+                                <div class="col-xs-3 col-sm-3">
                                 <input id="sob_name" type="text" class="form-controller col-xs-12" name="sob_name" placeholder="输入帐套名">
                                 </div>
                             </div>
-
+                                <label style="left:0;position: absolute;" class="col-sm-2 control-label no-padding-rigtht">类目</label>
+                            
                             <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-rigtht">部门选择</label>
+                                <div class="col-xs-2 col-sm-2 col-sm-offset-2">
+                                    <input id="sob_name" type="text" class="form-controller col-xs-12 col-sm-12" name="sob_name" placeholder="输入类目">
+                                </div>
+                                <div style="position: absolute;margin-top: -5px;" class="col-sm-1 col-xs-1 btn btn-primary hidden">添加+</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-2 col-sm-offset-2 col-sm-2">
+                                    <input id="sob_name" type="text" class="form-controller col-xs-12 col-sm-12" name="sob_name" placeholder="输入类目">
+                                </div>
+                                <div style="position: absolute;margin-top: -5px;" class="col-sm-1 col-xs-1 btn btn-primary">添加+</div>
+                            </div>
+                            <label class="col-sm-2 control-label no-padding-rigtht" style="position:absolute;left:0px;">适用范围</label>
+                            <div class="form-group">
+                                <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
+                                    <input type="radio" name="range" value="0" style="position:relative;top:7px">
+                                </div>
                                 <div class="col-xs-4 col-sm-4">
                                     <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
                                       <option value="0">公司</option>
@@ -58,8 +74,126 @@
                                     ?>                                
                                 </select>
                                 </div>
+                                <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">职位</label>
                             </div>
-                            
+                            <div class="form-group">
+                                <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
+                                    <input type="radio" name="range" value="1" style="position:relative;top:7px">
+                                </div>
+                                <div class="col-xs-4 col-sm-4">
+                                    <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
+                                      <option value="0">公司</option>
+                                    <?php
+                                      $exit = array();
+                                    foreach($sob_data as $ug){
+                                    ?>
+                                             <option selected value="<?php echo $ug['group_id']; ?>"><?php echo $ug['group_name']; ?></option>
+                                    <?php
+                                        array_push($exit, $ug['group_id']);
+                                    }
+
+                                    foreach($ugroups as $ug){
+                                        if(!in_array($ug['id'], $exit))
+                                        {
+                                            ?>
+                                            <option select value="<?php echo $ug['id']; ?>"><?php echo $ug['name']; ?></option>
+                                            <?php
+                                        }
+                                    }
+
+                                    ?>                                
+                                </select>
+                                </div>
+                                <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">职级</label>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
+                                    <input type="radio" name="range" value="2" style="position:relative;top:7px">
+                                </div>
+                                <div class="col-xs-4 col-sm-4">
+                                    <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
+                                      <option value="0">公司</option>
+                                    <?php
+                                      $exit = array();
+                                    foreach($sob_data as $ug){
+                                    ?>
+                                             <option selected value="<?php echo $ug['group_id']; ?>"><?php echo $ug['group_name']; ?></option>
+                                    <?php
+                                        array_push($exit, $ug['group_id']);
+                                    }
+
+                                    foreach($ugroups as $ug){
+                                        if(!in_array($ug['id'], $exit))
+                                        {
+                                            ?>
+                                            <option select value="<?php echo $ug['id']; ?>"><?php echo $ug['name']; ?></option>
+                                            <?php
+                                        }
+                                    }
+
+                                    ?>                                
+                                </select>
+                                </div>
+                                <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">人</label>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
+                                    <input type="radio" name="range" value="3" style="position:relative;top:7px">
+                                </div>
+                                <div class="col-xs-4 col-sm-4">
+                                    <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
+                                      <option value="0">公司</option>
+                                    <?php
+                                      $exit = array();
+                                    foreach($sob_data as $ug){
+                                    ?>
+                                             <option selected value="<?php echo $ug['group_id']; ?>"><?php echo $ug['group_name']; ?></option>
+                                    <?php
+                                        array_push($exit, $ug['group_id']);
+                                    }
+
+                                    foreach($ugroups as $ug){
+                                        if(!in_array($ug['id'], $exit))
+                                        {
+                                            ?>
+                                            <option select value="<?php echo $ug['id']; ?>"><?php echo $ug['name']; ?></option>
+                                            <?php
+                                        }
+                                    }
+
+                                    ?>                                
+                                </select>
+                                </div>
+                                <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">部门</label>
+                            </div>
+                            <!--
+                            <div class="form-group">
+                       trol-label no-padding-rigtht">部门选择</label>
+                                <div class="col-xs-4 col-sm-4">
+                                    <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="groups[]"  data-placeholder /option>
+                                    <?php
+                                      $exit = array();
+                                    foreach($sob_data as $ug){
+                                    ?>
+                                             <option selected value="<?php echo $ug['group_id']; ?>"><?php echo $ug['group_name']; ?></option>
+                                    <?php
+                                        array_push($exit, $ug['group_id']);
+                                    }
+
+                                    foreach($ugroups as $ug){
+                                        if(!in_array($ug['id'], $exit))
+                                        {
+                                            ?>
+                                            <option select value="<?php echo $ug['id']; ?>"><?php echo $ug['name']; ?></option>
+                                            <?php
+                                        }
+                                    }
+
+                                    ?>                                
+                                </select>
+                                </div>
+                            </div>
+                            -->
                       
 
                             <input type="hidden" id="sob_id" name="sob_id" value="<?php echo $sob_id?>" />
