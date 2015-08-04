@@ -79,7 +79,9 @@
                                         <li role="presentation" class="divider"></li>
                                         <?php foreach ($all_categories[$item]['child'] as $item_) {?>
                                         <li role="presentation">
-                                            <a href="#" showSob(<?php echo $item_.id ?>) role="menuitem" tabindex="<?php echo $item_.id; ?>
+                                            <a href="#" showSob(<?php echo $item_.id ?>
+                                                ) role="menuitem" tabindex="
+                                                <?php echo $item_.id; ?>
                                                 ">
                                                 <?php echo $item_.name ;?></a>
                                         </li>
@@ -301,30 +303,29 @@
     <div class="modal-body">
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">名称</label>
-            <input type="text" name='name' data-placeholder="请输入名称">
-        </div>
+            <input type="text" name='name' data-placeholder="请输入名称"></div>
         <div class="form-group" style="height:30px">
             <label class="col-sm-2 col-xl-2">图片</label>
             <div class="dropdown col-sm-3 col-xl-3">
                 <div class="dropdown-toggle down-image" data-toggle="dropdown" id="dropdownMenuImg">
-                    <span><img id="menuImg" class="img-select" src="http://api.cloudbaoxiao.com/online/static/9.png" alt="png"></span>
+                    <span>
+                        <img id="menuImg" class="img-select" src="http://api.cloudbaoxiao.com/online/static/9.png" alt="png"></span>
                     <span class="caret"></span>
                 </div>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuImg">
-                        <?php for($i = 1; $i <= 11; $i++){ ?>
-                        <li role="presentation">
-                            <a href="#" onclick="changeImg(this)" role="menuitem" tabindex="-1">
-                                <span><img class="img-select" src="http://api.cloudbaoxiao.com/online/static/<?php echo $i;?>.png" alt="png"></span>
-                            </a>
-                        </li>
-                        <?php } ?>
-                    </ul>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuImg">
+                    <?php for($i = 1; $i <= 11; $i++){ ?>
+                    <li role="presentation">
+                        <a href="#" onclick="changeImg(this)" role="menuitem" tabindex="-1">
+                            <span>
+                                <img class="img-select" src="http://api.cloudbaoxiao.com/online/static/<?php echo $i;?>.png" alt="png"></span>
+                        </a>
+                    </li>
+                    <?php } ?></ul>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类目ID</label>
-            <input name="id" type="text" data-placeholder="请输入名称">
-        </div>
+            <input name="id" type="text" data-placeholder="请输入名称"></div>
         <div class="clearfix form-actions">
             <div class="col-md-offset-3 col-md-9">
                 <a class="btn btn-white btn-primary new_card" data-renew="0">
@@ -343,75 +344,55 @@
 <!-- /.modal -->
 
 <div id="modal-table" class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="blue bigger"> 创建分类 </h4>
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">类目信息</h4>
+</div>
+<form method="post" action="<?php echo base_url('category/create'); ?>">
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="col-sm-2 col-xl-2">名称</label>
+            <input type="text" name='name' data-placeholder="请输入名称"></div>
+        <div class="form-group" style="height:30px">
+            <label class="col-sm-2 col-xl-2">图片</label>
+            <div class="dropdown col-sm-3 col-xl-3">
+                <div class="dropdown-toggle down-image" data-toggle="dropdown" id="dropdownMenuImg">
+                    <span>
+                        <img id="menuImg" class="img-select" src="http://api.cloudbaoxiao.com/online/static/9.png" alt="png"></span>
+                    <span class="caret"></span>
+                </div>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuImg">
+                    <?php for($i = 1; $i <= 11; $i++){ ?>
+                    <li role="presentation">
+                        <a href="#" onclick="changeImg(this)" role="menuitem" tabindex="-1">
+                            <span>
+                                <img class="img-select" src="http://api.cloudbaoxiao.com/online/static/<?php echo $i;?>.png" alt="png"></span>
+                        </a>
+                    </li>
+                    <?php } ?></ul>
             </div>
-            <form method="post" action="<?php echo base_url('category/create'); ?>">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12">
-                            <div class="form-group">
-                                <label for="form-field-username">分类名称</label>
-                                <div>
-                                    <input class="input-large" type="text"  placeholder="分类名称" id="category_name" name="category_name" />
-                                    <input type="hidden"  id="category_id" name="category_id" value="0" required />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="form-field-username">分类代码</label>
-                                <div>
-                                    <input class="input-large" type="text"  placeholder="分类代码" id="sob_code" name="sob_code" />
-                                </div>
-                            </div>
-                            <div class="space-4"></div>
-
-                            <!--
-                            <div class="form-group">
-                                <label for="form-field-username">消费限制</label>
-                                <div>
-                                    <input class="input-large" type="text" placeholder="消费限制" id="max_limit" name="max_limit" />
-                                </div>
-                            </div>
-                            <div class="space-4"></div>
-
-                            <div class="form-group">
-                                <label for="form-field-username">预审批</label>
-                                <div>
-                                    <select name="prove_ahead" class="form-control" id="prove_ahead">
-                                        <option value="0">不需要预审核</option>
-                                        <option value="1">需要预审核</option>
-                                    </select>
-                                </div>
-                            </div>  -->
-                            <div class="space-4"></div>
-                            <input type="text" name="sob_id" class="hidden" value="<?php echo $sob_id; ?>">
-                            <div class="form-group">
-                                <label for="form-field-username">说明</label>
-                                <div>
-                                    <input type="text" id="note" name="note" class="form-control"></input>
-                                </div>
-                            </div>
-
-                            
-                            <input type="text" name="pid" class="hidden">
-                               
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button class="btn btn-sm" data-dismiss="modal">
-                        <i class="ace-icon fa fa-times"></i>
-                        取消
-                    </button>
-                    <input type="submit" class="btn btn-sm btn-primary">
-                </div>
-            </form>
         </div>
+        <div class="form-group">
+            <label class="col-sm-2 col-xl-2">类目代码</label>
+            <input name="id" type="text" data-placeholder="请输入名称"></div>
     </div>
-</div><!-- PAGE CONTENT ENDS -->
+    <div class="modal-footer">
+        <button class="btn btn-sm" data-dismiss="modal">
+            <i class="ace-icon fa fa-times"></i>
+                取消
+        </button>
+        <input type="submit" class="btn btn-sm btn-primary">
+    </div>
+    <input type="text" name="sob_id" class="hidden" value="<?php echo $sob_id; ?>">
+    <input type="text" name="pid" class="hidden"></form>
+</div>
+</div>
+</div>
+<!-- PAGE CONTENT ENDS -->
 
 <script type="text/javascript">
 function changeImg(dom) {
