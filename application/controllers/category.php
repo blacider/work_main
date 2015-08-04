@@ -57,6 +57,16 @@ class Category extends REIM_Controller {
 		$categories = $_categories['data']['categories'];
 	}
 	log_message('debug','category:' . json_encode($categories));
+	$sob_categories = array();
+	$all_categories = array();
+	foreach($categories as $cate)
+	{
+		if($cate['sob_id'] == $gid)
+		{
+			array_push($sob_categories,array('id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name']));
+		}
+		array_push($all_categories,array('id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name']));
+	}
         $_sobs = $sobs['data'];
         $data = array();
         foreach($_sobs as $sob)
@@ -85,6 +95,8 @@ class Category extends REIM_Controller {
                 ,'ugroups' => $ugroups['data']['group']
                 ,'sob_data' => $data[$gid]['groups']
                 ,'sob_id' => $gid
+		,'sob_categories' => $sob_categories
+		,'all_categories' => $all_categories
                 ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
                     ,array('url' => base_url('category/index'),'name' => '标签和分类','class' => '')
@@ -92,7 +104,6 @@ class Category extends REIM_Controller {
                 ),
             )   
         );
-
 
     }
     public function new_sob()
