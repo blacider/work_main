@@ -9,6 +9,7 @@ class Category extends REIM_Controller {
         $this->load->model('usergroup_model','ug');
         $this->load->model('account_set_model','account_set');
 	$this->load->model('reim_show_model','reim_show');
+	$this->load->model('group_model','groups');
     }
     public function copy_sob()
     {
@@ -50,7 +51,13 @@ class Category extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-	$this->reim_show->rank_level();
+	$rank_level = $this->reim_show->rank_level();
+	$_members = $this->groups->get_my_list();
+	$members = array();
+	if($_members['status'] > 0)
+	{
+		$members = $_members['data']['gmember'];
+	}
         $sobs = $this->account_set->get_account_set_list();
 	$_categories = $this->category->get_list();
 	$categories = array();
@@ -69,10 +76,10 @@ class Category extends REIM_Controller {
 		{
 			array_push($sob_keys,$cate['id']);
 		}
-		$all_categories[$cate['id']]=array('child'=>array(),'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name']);
+		$all_categories[$cate['id']]=array('child'=>array(),'avatar'=>$cate['avatar'],'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name']);
 	}
 	
-		$all_categories[0]=array('child'=>array(),'id'=>0,'pid'=>-1,'name'=>"顶级分类");
+		$all_categories[0]=array('child'=>array(),'avatar'=>0,'id'=>0,'pid'=>-1,'name'=>"顶级分类");
 	foreach($categories as $cate)
 	{
 		if($cate['pid'] !=-1)
@@ -111,6 +118,7 @@ class Category extends REIM_Controller {
                 ,'sob_id' => $gid
 		,'sob_keys' => $sob_keys
 		,'all_categories' => $all_categories
+		,'members' => $members
                 ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
                     ,array('url' => base_url('category/index'),'name' => '标签和分类','class' => '')
@@ -286,6 +294,7 @@ class Category extends REIM_Controller {
         log_message("debug", "UG#########: $_ug");
         //TODO: 重新审核此段代码  END  庆义，长远
 
+	$_group = array();
         if($category){
             $_group = $category['data']['categories'];
         }

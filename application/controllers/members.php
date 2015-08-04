@@ -530,13 +530,25 @@ class Members extends REIM_Controller {
         }
         $_emails = array();
         $_phones = array();
+	$_names = array();
+	$names = array();
         foreach($gmember as $g){
             $__email = $g['email']; 
             $__phone = $g['phone']; 
+	    $__name = $g['nickname'];
+	    if(!array_key_exists($__names,$_names))
+	    {
+	    	$names[$__name] = 1;		
+	    }
+	    else
+	    {
+	    	$names[$__name] += 1;
+   	    }
             if($__email)
                 array_push($_emails, $__email);
             if($__phone)
                 array_push($_phones, $__phone);
+	    array_push($_names,$__name);
         }
 
         $data = array();
@@ -560,9 +572,36 @@ class Members extends REIM_Controller {
             if(in_array($obj['email'], $_emails) || in_array($obj['phone'], $_phones)){
                 $obj['status'] = 1;
             }
+	    if(!array_key_exists($obj['name'],$_names))
+	    {
+	    	$names[$obj['name']] = 1;
+	    }
+	    else
+	    {
+	    	$names[$obj['name']] += 1;
+	    }
+	    array_push($_names,$obj['name']);
             array_push($data, $obj);
         }
 
+	foreach($data as $d)
+	{
+		if(array_key_exists($d['manager'],$_names))
+		{
+			if($name[$d['manager']] > 1)
+			{
+				$d['status'] = 3;	
+			}
+			else if($name[$d['name']] > 1)
+			{
+				$d['status'] = 2;
+			}
+		}
+		else
+		{
+			$d['status'] = -1;
+		}
+	}
 
         $this->bsload('members/imports',
             array(
