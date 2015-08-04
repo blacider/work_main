@@ -35,6 +35,15 @@
 
                                 $('#modal_sob').modal('show');
                             }
+                            function showSob(sobId) {
+                                if (sobId != -1) {
+                                    var name = all_categories[sobId]['name'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'];
+                                    $("#form_moda").find('input[name="name"]').val(name);
+                                    $("#menuImg").attr('src', img);
+                                    $("#form_moda").find('input[name="id"]').val(id);
+                                }
+                                $('#modal_sob').modal('show');
+                            }
                         </script>
                         <style type="text/css">
                                     .drop-cata {
@@ -57,25 +66,22 @@
                                     </div>
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                                         <li role="presentation">
-                                            <a href="#" role="menuitem" tabindex="-1">修改</a>
-                                        </li>
-                                        <li role="presentation">
-                                            <a href="#" role="menuitem" tabindex="-1">详情</a>
+                                            <a href="#" onclick="showSob(<?php echo $all_categories[$item]['id'] ?>)" role="menuitem" tabindex="-1">修改</a>
                                         </li>
                                         <li role="presentation" class="divider"></li>
                                         <?php foreach ($all_categories[$item]['child'] as $item_) {?>
                                         <li role="presentation">
-                                            <a href="#" role="menuitem" tabindex="<?php echo $item_.id; ?>
+                                            <a href="#" showSob(<?php echo $item_.id ?>) role="menuitem" tabindex="<?php echo $item_.id; ?>
                                                 ">
                                                 <?php echo $item_.name ;?></a>
                                         </li>
                                         <?php } ?>
                                         <li role="presentation">
-                                            <a href="#" role="menuitem" tabindex="-1">添加下级类目</a>
+                                            <a href="#" onclick="showSob(-1)" role="menuitem" tabindex="-1">添加下级类目</a>
                                         </li>
                                         <li role="presentation" class="divider"></li>
                                         <li role="presentation">
-                                            <a href="#" role="menuitem" tabindex="-1">删除</a>
+                                            <a href="#" onclick="delectSob(this)" role="menuitem" tabindex="-1">删除</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -274,22 +280,43 @@
     </button>
     <h4 class="modal-title">类目信息</h4>
 </div>
+<style>
+    .img-select {
+        max-height: 30px;
+        margin-right: 40px;
+    }
+    .down-image {
+        cursor: pointer;
+    }
+</style>
 <form action="/" id="form_moda">
     <div class="modal-body">
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">名称</label>
-            <input type="text" data-placeholder="请输入名称"></div>
-        <div class="form-group">
-            <select name="TODO" id="TODO">
-                <option value="1">
-                    <img src="//api.cloudbaoxiao.com/online/static/9.png" alt="9.png"></option>
-                <option value="2">
-                    <img src="//api.cloudbaoxiao.com/online/static/9.png" alt="9.png"></option>
-            </select>
-            <input type="text" data-placeholder="请输入名称"></div>
+            <input type="text" name='name' data-placeholder="请输入名称">
+        </div>
+        <div class="form-group" style="height:30px">
+            <label class="col-sm-2 col-xl-2">图片</label>
+            <div class="dropdown col-sm-3 col-xl-3">
+                <div class="dropdown-toggle down-image" data-toggle="dropdown" id="dropdownMenuImg">
+                    <span><img id="menuImg" class="img-select" src="http://api.cloudbaoxiao.com/online/static/9.png" alt="png"></span>
+                    <span class="caret"></span>
+                </div>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuImg">
+                        <?php for($i = 1; $i <= 11; $i++){ ?>
+                        <li role="presentation">
+                            <a href="#" onclick="changeImg(this)" role="menuitem" tabindex="-1">
+                                <span><img class="img-select" src="http://api.cloudbaoxiao.com/online/static/<?php echo $i;?>.png" alt="png"></span>
+                            </a>
+                        </li>
+                        <?php } ?>
+                    </ul>
+            </div>
+        </div>
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类目ID</label>
-            <input type="text" data-placeholder="请输入名称"></div>
+            <input name="id" type="text" data-placeholder="请输入名称">
+        </div>
         <div class="clearfix form-actions">
             <div class="col-md-offset-3 col-md-9">
                 <a class="btn btn-white btn-primary new_card" data-renew="0">
@@ -307,6 +334,9 @@
 </div>
 <!-- /.modal -->
 <script type="text/javascript">
+function changeImg(dom) {
+    $('#menuImg').attr('src', $(dom).find('.img-select').attr('src'));
+}
 var __BASE = "<?php echo $base_url; ?>";
 var _sob_id = "<?php echo $sob_id ?>";
    $(document).ready(function(){
