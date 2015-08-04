@@ -11,28 +11,30 @@ class Category extends REIM_Controller {
     }
     public function copy_sob()
     {
-    	$cp_name = $this->input->post('cp_name');
-	$sob_id = $this->input->post('sob_id');
+        $this->need_group_it();
+        $cp_name = $this->input->post('cp_name');
+        $sob_id = $this->input->post('sob_id');
 
-	$_buf = $this->account_set->copy_sob($cp_name,$sob_id);
-	$buf = json_decode($_buf,True);
+        $_buf = $this->account_set->copy_sob($cp_name,$sob_id);
+        $buf = json_decode($_buf,True);
 
-	log_message('debug','cp_name:' . $cp_name);
-	log_message('debug','sob_id:' . $sob_id);
-	log_message('debug','back:' . json_encode($buf));
+        log_message('debug','cp_name:' . $cp_name);
+        log_message('debug','sob_id:' . $sob_id);
+        log_message('debug','back:' . json_encode($buf));
 
-	if($buf['status'] < 0)
-	{
-		$this->session->set_userdata('last_error',$buf['data']['msg']);
-		return redirect(base_url('category/account_set'));
-	}
+        if($buf['status'] < 0)
+        {
+            $this->session->set_userdata('last_error',$buf['data']['msg']);
+            return redirect(base_url('category/account_set'));
+        }
 
-	$this->session->set_userdata('last_error','帐套复制成功');
-	return redirect(base_url('category/account_set'));
+        $this->session->set_userdata('last_error','帐套复制成功');
+        return redirect(base_url('category/account_set'));
     }
 
     public function remove_sob($sid)
     {
+        $this->need_group_it();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
@@ -43,6 +45,7 @@ class Category extends REIM_Controller {
 
     public function sob_update($gid)
     {
+        $this->need_group_it();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
@@ -94,6 +97,7 @@ class Category extends REIM_Controller {
     }
     public function new_sob()
     {
+        $this->need_group_it();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
@@ -119,6 +123,7 @@ class Category extends REIM_Controller {
 
     public function create_sob()
     {
+        $this->need_group_it();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
 
@@ -136,6 +141,7 @@ class Category extends REIM_Controller {
 
     public function update_sob()
     {
+        $this->need_group_it();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
 
@@ -154,6 +160,7 @@ class Category extends REIM_Controller {
 
     public function getsobs()
     {
+        $this->need_group_it();
         $sobs = $this->account_set->get_account_set_list();
         $_sobs = $sobs['data'];
         $data = array();
@@ -176,31 +183,32 @@ class Category extends REIM_Controller {
         die(json_encode($data));
     }
     public function account_set(){
+        $this->need_group_it();
         $error = $this->session->userdata('last_error');
-	log_message('debug','error:' . $error);
+        log_message('debug','error:' . $error);
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
         $acc_sets = $this->account_set->get_account_set_list();
-	$sobs = $acc_sets['data'];
-	if(!$acc_sets['status'])
-	{
-		$sobs = array();	
-	}
+        $sobs = $acc_sets['data'];
+        if(!$acc_sets['status'])
+        {
+            $sobs = array();	
+        }
 
-	$keys = array();
+        $keys = array();
 
-	$acc_set = array();
-	foreach($sobs as $item)
-	{
-		if(!in_array($item['sob_id'],$keys))
-		{
-			array_push($keys,$item['sob_id']);
-			array_push($acc_set,array('name'=>$item['sob_name'],'id'=>$item['sob_id'],'lastdt'=>$item['createdt']));
-		}
+        $acc_set = array();
+        foreach($sobs as $item)
+        {
+            if(!in_array($item['sob_id'],$keys))
+            {
+                array_push($keys,$item['sob_id']);
+                array_push($acc_set,array('name'=>$item['sob_name'],'id'=>$item['sob_id'],'lastdt'=>$item['createdt']));
+            }
 
-	}
+        }
         //$ugroups = $this->ug->get_my_list();
-//        $_ug = json_encode($ugroups['data']['group']);
+        //        $_ug = json_encode($ugroups['data']['group']);
         $_acc = json_encode($acc_sets);
         log_message("debug","sob#############".json_encode($acc_set));
 
@@ -209,7 +217,7 @@ class Category extends REIM_Controller {
                 'title' => '帐套管理'
                 //	,'acc_sets' => $acc_sets
                 ,'acc_sets' => $acc_set
-		,'error' => $error
+                ,'error' => $error
                 //,'ugroups' => $ugroups['data']['group']
                 ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
@@ -220,10 +228,11 @@ class Category extends REIM_Controller {
         );
     }
     public function index(){
+        $this->need_group_it();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-    	$sobs = $this->account_set->get_account_set_list();
+        $sobs = $this->account_set->get_account_set_list();
         $category = $this->category->get_list();
 
 
@@ -234,10 +243,10 @@ class Category extends REIM_Controller {
         log_message("debug", "CATEGORY#########: $_category");
 
         $_sobs = $sobs['data'];
-	if(!$sobs['status'])
-	{
-		$_sobs = array();
-	}
+        if(!$sobs['status'])
+        {
+            $_sobs = array();
+        }
 
         $sob_data = array();
         $_sob_data_keys = array();
@@ -281,8 +290,8 @@ class Category extends REIM_Controller {
                 //,'sobs' => $sobs['data']
                 ,'error' => $error
                 ,'ugroups' => $ugroups['data']['group']
-		,'sobs' => $sob_data
-		,'ugroups' => $ugroups['data']['group']
+                ,'sobs' => $sob_data
+                ,'ugroups' => $ugroups['data']['group']
                 //,'category' => json_encode($_group)
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -294,20 +303,21 @@ class Category extends REIM_Controller {
     }
 
     public function tags(){
+        $this->need_group_it();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
         $tags = $this->tags->get_list();
-	if($tags['status'] > 0)
-	{
-        if($tags){
-            $tags = $tags['data']['tags'];
+        if($tags['status'] > 0)
+        {
+            if($tags){
+                $tags = $tags['data']['tags'];
+            }
         }
-	}
-	else
-	{
-		$tags = array();
-	}
+        else
+        {
+            $tags = array();
+        }
         $this->bsload('tags/index',
             array(
                 'title' => '标签管理'
@@ -322,6 +332,7 @@ class Category extends REIM_Controller {
     }
 
     public function newcategory(){
+        $this->need_group_it();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
@@ -346,6 +357,7 @@ class Category extends REIM_Controller {
 
 
     public function create(){
+        $this->need_group_it();
         $name = $this->input->post('category_name');
         $sob_code = $this->input->post('sob_code');
         $pid = $this->input->post('pid');
@@ -357,8 +369,8 @@ class Category extends REIM_Controller {
         $gid = $this->input->post('gid');
         log_message("debug","\n#############GID:$gid");
         $sob_id = $this->input->post('sob_id');
-	
-	log_message("debug","\n#############GID:$gid");
+
+        log_message("debug","\n#############GID:$gid");
         $msg = '添加分类失败';
         $obj = null;
         if($cid > 0){
@@ -376,6 +388,7 @@ class Category extends REIM_Controller {
     }
 
     public function drop($id){
+        $this->need_group_it();
         if(!$id) {
             log_message("debug", "DROP: $id");
             $this->session->set_userdata('last_error', '参数错误');
@@ -393,6 +406,7 @@ class Category extends REIM_Controller {
         redirect(base_url('category'));
     }
     public function gettreelist(){
+        $this->need_group_it();
         $category = $this->category->get_list();
         //$data = $category['data'];
         // $group = $data['categories'];
@@ -409,6 +423,7 @@ class Category extends REIM_Controller {
     }
     public function get_sob_category()
     {
+        $this->need_group_it();
         $sobs = $this->account_set->get_account_set_list();
         $_sobs = $sobs['data'];
         $data = array();
@@ -429,10 +444,10 @@ class Category extends REIM_Controller {
                 array_push($data[$sob['sob_id']]['groups'],array('group_id'=>$sob['group_id'],'group_name'=>$sob['group_name']));
             }
         }
-	$data[0] = array();
-	$data[0]['sob_name'] = '默认帐套';
-	$data[0]['groups'] = array();
-	$data[0]['category'] = array();
+        $data[0] = array();
+        $data[0]['sob_name'] = '默认帐套';
+        $data[0]['groups'] = array();
+        $data[0]['category'] = array();
         $category = $this->category->get_list();
         $categories = $category['data']['categories'];
         foreach($categories as $item)
@@ -445,7 +460,7 @@ class Category extends REIM_Controller {
             log_message("debug","@@@@@@@@@@@@".$item['sob_id']."+++".$item['category_name']);
         }
 
-	log_message('debug','data:' . json_encode($data));
+        log_message('debug','data:' . json_encode($data));
         die(json_encode($data));
     }
     public function get_my_sob_category()
@@ -454,7 +469,7 @@ class Category extends REIM_Controller {
         $sobs = $profile['sob'];
         $_sob_id = array();
         //$_my_sobs = array();
-	log_message('debug',"__________sobs:".json_encode($sobs));
+        log_message('debug',"__________sobs:".json_encode($sobs));
         foreach($sobs as $i) {
             log_message('debug', "alvayang:" . json_encode($i));
             array_push($_sob_id, $i['sob_id']);
