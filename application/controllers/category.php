@@ -47,6 +47,13 @@ class Category extends REIM_Controller {
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
         $sobs = $this->account_set->get_account_set_list();
+	$_categories = $this->category->get_list();
+	$categories = array();
+	if($_categories['status'] > 0)
+	{
+		$categories = $_categories['data']['categories'];
+	}
+	log_message('debug','category:' . json_encode($categories));
         $_sobs = $sobs['data'];
         $data = array();
         foreach($_sobs as $sob)

@@ -9,6 +9,8 @@ class Company extends REIM_Controller {
        $this->load->model('account_set_model','account_set');
        $this->load->model('category_model','category');
     }
+
+
     public function update_approve()
     {
     	
