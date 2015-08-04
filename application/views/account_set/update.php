@@ -57,6 +57,10 @@
                                     location.href = __BASEURL + "/category/drop/" + id_;
                                 }
                             }
+                            function addCate(dom) {
+                                $('#modal-table').find('input[name="pid"]').val(0);
+                                $('#modal-table').modal('show');
+                            }
                         </script>
                         <style type="text/css">
                                     .drop-cata {
@@ -101,7 +105,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div style="border-radius:10px;" class="col-sm-1 col-xs-1 btn btn-primary addDrop">添加+</div>
+                            <div style="border-radius:10px;" onclick="addCate(this.parentNode)" class="col-sm-1 col-xs-1 btn btn-primary addDrop">添加+</div>
                         </div>
                         <?php }?>
                         <label class="col-sm-2 control-label no-padding-rigtht" style="position:absolute;left:0px;">适用范围</label>
@@ -405,12 +409,19 @@ function changeImg(dom) {
 }
 var __BASE = "<?php echo $base_url; ?>";
 var _sob_id = "<?php echo $sob_id ?>";
+   function initAddCate() {
+    var __length = $('.addDrop').length, __dom = $('.addDrop');
+        for (var i = 0; i < __length-1; i++) {
+            $(__dom[i]).remove();
+        }
+   }
    $(document).ready(function(){
    /*   $('.renew').click(function(){
     var _checked = $('#isadmin').is('checked');
     console.log("checked" + _checked);
     $('#profile').submit();
     });*/
+        initAddCate();
         $.ajax({
             type:"get",
             url:__BASE+"category/getsobs",
