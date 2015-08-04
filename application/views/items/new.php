@@ -68,6 +68,10 @@
 </div>
 </div>
 <?php  } ?>
+<?php
+    $_config = $profile['group']['config'];
+    $__config = json_decode($_config,True);
+?>
 
 
 <div class="form-group">
@@ -75,8 +79,20 @@
 <div class="col-xs-6 col-sm-6">
 <select class="form-control" name="type" data-placeholder="请选择类型">
 <option value="0">报销</option>
+<?php 
+if($__config['allow_borrow']=='1')
+{
+?>
 <option value="1">预借</option>
+<?php
+}
+if($__config['allow_budget'] == '1')
+{
+?>
 <option value="2">预算</option>
+<?php
+}
+?>
 </select>
 </div>
 </div>
@@ -132,9 +148,7 @@
 </form>
 </div>
 </div>
-<?php
-    $_config = $profile['group']['config'];
-?>
+
 <!--
 <div class="modal" id="select_img_modal">
     <div class="modal-dialog">

@@ -5,6 +5,7 @@ class Items extends REIM_Controller {
         $this->load->model('items_model', 'items');
         $this->load->model('category_model', 'category');
         $this->load->model('report_model', 'report');
+	$this->load->model('user_model','user');
     }
 
     public function avatar(){
@@ -56,7 +57,13 @@ class Items extends REIM_Controller {
     }
 
     public function newitem(){
-        $profile = $this->session->userdata('profile');
+//        $profile = $this->session->userdata('profile');
+	$_profile = $this->user->reim_get_user();	
+	$profile = array();
+	if($_profile)
+	{
+		$profile = $_profile['data']['profile'];
+	}
         $sobs = $profile['sob'];
         $_sob_id = array();
         $_sobs = array();
