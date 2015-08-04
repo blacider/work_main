@@ -29,11 +29,60 @@
                         <label style="left:0;position: absolute;" class="col-sm-2 control-label no-padding-rigtht">类目</label>
                         <script type="text/javascript">
                             var _subSob = [];
-                            var sob_categories = <?php echo json_encode($sob_keys);?>;
+                            var sob_keys = <?php echo json_encode($sob_keys);?>;
                             var all_categories = <?php echo json_encode($all_categories);?>;
+                            function showSob(sobID) {
+
+                                $('#modal_sob').modal('show');
+                            }
                         </script>
-                 
-                        
+                        <style type="text/css">
+                                    .drop-cata {
+                                                height: 42px;
+                                                border-radius: 10px;
+                                                line-height: 42px;
+                                                border: 1px solid gainsboro;
+                                                cursor: pointer;
+                                                text-align: center;
+                                    }
+                        </style>
+                        <?php foreach($sob_keys as $item) {?>
+                        <div class="form-group">
+                            <div class="col-xs-2 col-sm-2 col-sm-offset-2">
+
+                                <div class="dropdown">
+                                    <div class="dropdown-toggle drop-cata" data-toggle="dropdown">
+                                        <?php echo $all_categories[$item]['name']; ?>
+                                        <span class="caret"></span>
+                                    </div>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                        <li role="presentation">
+                                            <a href="#" role="menuitem" tabindex="-1">修改</a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="#" role="menuitem" tabindex="-1">详情</a>
+                                        </li>
+                                        <li role="presentation" class="divider"></li>
+                                        <?php foreach ($all_categories[$item]['child'] as $item_) {?>
+                                        <li role="presentation">
+                                            <a href="#" role="menuitem" tabindex="<?php echo $item_.id; ?>
+                                                ">
+                                                <?php echo $item_.name ;?></a>
+                                        </li>
+                                        <?php } ?>
+                                        <li role="presentation">
+                                            <a href="#" role="menuitem" tabindex="-1">添加下级类目</a>
+                                        </li>
+                                        <li role="presentation" class="divider"></li>
+                                        <li role="presentation">
+                                            <a href="#" role="menuitem" tabindex="-1">删除</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div style="border-radius:10px;" class="col-sm-1 col-xs-1 btn btn-primary addDrop">添加+</div>
+                        </div>
+                        <?php }?>
                         <label class="col-sm-2 control-label no-padding-rigtht" style="position:absolute;left:0px;">适用范围</label>
                         <div class="form-group">
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
@@ -216,6 +265,47 @@
 </div>
 </div>
 
+<div class="modal fade" id="modal_sob">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">类目信息</h4>
+</div>
+<form action="/" id="form_moda">
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="col-sm-2 col-xl-2">名称</label>
+            <input type="text" data-placeholder="请输入名称"></div>
+        <div class="form-group">
+            <select name="TODO" id="TODO">
+                <option value="1">
+                    <img src="//api.cloudbaoxiao.com/online/static/9.png" alt="9.png"></option>
+                <option value="2">
+                    <img src="//api.cloudbaoxiao.com/online/static/9.png" alt="9.png"></option>
+            </select>
+            <input type="text" data-placeholder="请输入名称"></div>
+        <div class="form-group">
+            <label class="col-sm-2 col-xl-2">类目ID</label>
+            <input type="text" data-placeholder="请输入名称"></div>
+        <div class="clearfix form-actions">
+            <div class="col-md-offset-3 col-md-9">
+                <a class="btn btn-white btn-primary new_card" data-renew="0">
+                    <i class="ace-icon fa fa-save "></i>
+                    退回
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 <script type="text/javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var _sob_id = "<?php echo $sob_id ?>";
