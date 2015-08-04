@@ -29,64 +29,11 @@
                         <label style="left:0;position: absolute;" class="col-sm-2 control-label no-padding-rigtht">类目</label>
                         <script type="text/javascript">
                             var _subSob = [];
-                            var sob_categories = <?php echo json_encode($sob_categories);?>;
+                            var sob_categories = <?php echo json_encode($sob_keys);?>;
                             var all_categories = <?php echo json_encode($all_categories);?>;
                         </script>
-                        <?php
-                            foreach ($sob_categories as $item) {
-                                $item.sob = Array();
-                            }
-                            foreach ($all_categories as $item) {
-                                if ($item['pid'] != 0) {
-                                    foreach ($sob_categories as $item_) {
-                                        if ($item_['id'] == $item['pid']) {
-                                            $item_['sob'].push($item);
-                                        }
-                                    }
-                                }
-                            }
-                        ?>
-                        <?php foreach($sob_categories as $item) {?>
-                        <div class="form-group">
-                            <div class="col-xs-2 col-sm-2 col-sm-offset-2">
-                                <style type="text/css">
-                                    .drop-cata {
-                                            width: 100px;
-                                            height: 40px;
-                                            border-radius: 10px;
-                                    }
-                                </style>
-                                <div class="dropdown">
-                                    <div class="btn dropdown-toggle drop-cata" data-toggle="dropdown">
-                                        <?php echo $item['name']; ?>
-                                        <span class="caret"></span>
-                                    </div>
-                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                        <li role="presentation">
-                                            <a href="#" role="menuitem" tabindex="-1">修改</a>
-                                        </li>
-                                        <li role="presentation">
-                                            <a href="#" role="menuitem" tabindex="-1">详情</a>
-                                        </li>
-                                        <li role="presentation" class="divider"></li>
-                                    <?php foreach ($item.sob as $item_) {?>
-                                        <li role="presentation">
-                                            <a href="#" role="menuitem" tabindex="<?php echo $item_.id; ?>"><?php echo $item_.name ;?></a>
-                                        </li>
-                                    <?php } ?>
-                                        <li role="presentation">
-                                            <a href="#" role="menuitem" tabindex="-1">添加下级类目</a>
-                                        </li>
-                                        <li role="presentation" class="divider"></li>
-                                        <li role="presentation">
-                                            <a href="#" role="menuitem" tabindex="-1">删除</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div style="border-radius:10px;" class="col-sm-1 col-xs-1 btn btn-primary addDrop">添加+</div>
-                        </div>
-                        <?php }?>
+                 
+                        
                         <label class="col-sm-2 control-label no-padding-rigtht" style="position:absolute;left:0px;">适用范围</label>
                         <div class="form-group">
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">

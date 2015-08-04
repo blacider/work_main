@@ -8,6 +8,7 @@ class Category extends REIM_Controller {
         $this->load->model('group_model', 'groups');
         $this->load->model('usergroup_model','ug');
         $this->load->model('account_set_model','account_set');
+	$this->load->model('reim_show_model','reim_show');
     }
     public function copy_sob()
     {
@@ -49,6 +50,7 @@ class Category extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
+	$this->reim_show->rank_level();
         $sobs = $this->account_set->get_account_set_list();
 	$_categories = $this->category->get_list();
 	$categories = array();
@@ -59,14 +61,26 @@ class Category extends REIM_Controller {
 	log_message('debug','category:' . json_encode($categories));
 	$sob_categories = array();
 	$all_categories = array();
+	$sob_keys =array();
 	foreach($categories as $cate)
 	{
+		$all_categories[$cate['id']]=array();
 		if($cate['sob_id'] == $gid)
 		{
-			array_push($sob_categories,array('id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name']));
+			array_push($sob_keys,$cate['id']);
 		}
-		array_push($all_categories,array('id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name']));
+		$all_categories[$cate['id']]=array('child'=>array(),'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name']);
 	}
+	
+		$all_categories[0]=array('child'=>array(),'id'=>0,'pid'=>-1,'name'=>"顶级分类");
+	foreach($categories as $cate)
+	{
+		if($cate['pid'] !=-1)
+		{
+		array_push($all_categories[$cate['pid']]['child'],array('id'=>$cate['id'],'name'=>$cate['category_name']));
+		}
+	}
+		
         $_sobs = $sobs['data'];
         $data = array();
         foreach($_sobs as $sob)
@@ -95,7 +109,7 @@ class Category extends REIM_Controller {
                 ,'ugroups' => $ugroups['data']['group']
                 ,'sob_data' => $data[$gid]['groups']
                 ,'sob_id' => $gid
-		,'sob_categories' => $sob_categories
+		,'sob_keys' => $sob_keys
 		,'all_categories' => $all_categories
                 ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
@@ -104,7 +118,6 @@ class Category extends REIM_Controller {
                 ),
             )   
         );
-
     }
     public function new_sob()
     {
