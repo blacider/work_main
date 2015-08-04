@@ -41,8 +41,16 @@
                                     $("#form_moda").find('input[name="name"]').val(name);
                                     $("#menuImg").attr('src', img);
                                     $("#form_moda").find('input[name="id"]').val(id);
+                                } else {
+                                    $("#form_moda").find('input[name="name"]').val('');
+                                    $("#menuImg").attr('src', 'http://api.cloudbaoxiao.com/online/static/1.png');
+                                    $("#form_moda").find('input[name="id"]').val('');
                                 }
                                 $('#modal_sob').modal('show');
+                            }
+                            function addSub(dom, id_) {
+                                $('#modal-table').find('input[name="pid"]').val(id_);
+                                $('#modal-table').modal('show');
                             }
                         </script>
                         <style type="text/css">
@@ -77,7 +85,7 @@
                                         </li>
                                         <?php } ?>
                                         <li role="presentation">
-                                            <a href="#" onclick="showSob(-1)" role="menuitem" tabindex="-1">添加下级类目</a>
+                                            <a href="#" onclick="addSub(this, <?php echo $all_categories[$item]['id']; ?>)" role="menuitem" tabindex="-1">添加下级类目</a>
                                         </li>
                                         <li role="presentation" class="divider"></li>
                                         <li role="presentation">
@@ -333,6 +341,78 @@
 <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+<div id="modal-table" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger"> 创建分类 </h4>
+            </div>
+            <form method="post" action="<?php echo base_url('category/create'); ?>">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12">
+                            <div class="form-group">
+                                <label for="form-field-username">分类名称</label>
+                                <div>
+                                    <input class="input-large" type="text"  placeholder="分类名称" id="category_name" name="category_name" />
+                                    <input type="hidden"  id="category_id" name="category_id" value="0" required />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="form-field-username">分类代码</label>
+                                <div>
+                                    <input class="input-large" type="text"  placeholder="分类代码" id="sob_code" name="sob_code" />
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+
+                            <!--
+                            <div class="form-group">
+                                <label for="form-field-username">消费限制</label>
+                                <div>
+                                    <input class="input-large" type="text" placeholder="消费限制" id="max_limit" name="max_limit" />
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+
+                            <div class="form-group">
+                                <label for="form-field-username">预审批</label>
+                                <div>
+                                    <select name="prove_ahead" class="form-control" id="prove_ahead">
+                                        <option value="0">不需要预审核</option>
+                                        <option value="1">需要预审核</option>
+                                    </select>
+                                </div>
+                            </div>  -->
+                            <div class="space-4"></div>
+                            <input type="text" name="sob_id" class="hidden" value="<?php echo $sob_id; ?>">
+                            <div class="form-group">
+                                <label for="form-field-username">说明</label>
+                                <div>
+                                    <input type="text" id="note" name="note" class="form-control"></input>
+                                </div>
+                            </div>
+
+                            
+                            <input type="text" name="pid" class="hidden">
+                               
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-sm" data-dismiss="modal">
+                        <i class="ace-icon fa fa-times"></i>
+                        取消
+                    </button>
+                    <input type="submit" class="btn btn-sm btn-primary">
+                </div>
+            </form>
+        </div>
+    </div>
+</div><!-- PAGE CONTENT ENDS -->
+
 <script type="text/javascript">
 function changeImg(dom) {
     $('#menuImg').attr('src', $(dom).find('.img-select').attr('src'));
