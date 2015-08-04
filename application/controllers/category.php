@@ -10,6 +10,7 @@ class Category extends REIM_Controller {
         $this->load->model('account_set_model','account_set');
 	$this->load->model('reim_show_model','reim_show');
 	$this->load->model('group_model','groups');
+	$this->load->model('user_model','users');
     }
     public function copy_sob()
     {
@@ -72,14 +73,16 @@ class Category extends REIM_Controller {
 	foreach($categories as $cate)
 	{
 		$all_categories[$cate['id']]=array();
+        	$path = base_url($this->users->reim_get_hg_avatar($cate['avatar']));
 		if($cate['sob_id'] == $gid)
 		{
 			array_push($sob_keys,$cate['id']);
 		}
-		$all_categories[$cate['id']]=array('child'=>array(),'avatar'=>$cate['avatar'],'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name']);
+		$all_categories[$cate['id']]=array('child'=>array(),'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name']);
 	}
-	
-		$all_categories[0]=array('child'=>array(),'avatar'=>0,'id'=>0,'pid'=>-1,'name'=>"顶级分类");
+			
+        	$path = base_url($this->users->reim_get_hg_avatar(0));
+		$all_categories[0]=array('child'=>array(),'avatar'=>$path,'id'=>0,'pid'=>-1,'name'=>"顶级分类");
 	foreach($categories as $cate)
 	{
 		if($cate['pid'] !=-1)
