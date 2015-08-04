@@ -7,7 +7,6 @@
 <!-- <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script>
 -->
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
-<script src="/static/ace/js/dropzone.min.js"></script>
 
 <script src="/static/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
@@ -33,7 +32,7 @@
                             var all_categories = <?php echo json_encode($all_categories);?>;
                             function showSob(sobId) {
                                 if (sobId != -1) {
-                                    var name = all_categories[sobId]['name'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'], name = all_categories[sobId]['name'], pid = = all_categories[sobId]['pid'];
+                                    var name = all_categories[sobId]['name'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'], name = all_categories[sobId]['name'], pid = all_categories[sobId]['pid'];
                                     $("#form_moda").find('input[name="name"]').val(name);
                                     $("#menuImg").attr('src', img);
                                     $('#form_moda').find('input[name="avatar"]').val(all_categories[sobId]['avatar_']);
@@ -65,6 +64,9 @@
                                                 border: 1px solid gainsboro;
                                                 cursor: pointer;
                                                 text-align: center;
+                                    }
+                                    .drop-cata .caret {
+                                        margin-left: 50%;
                                     }
                         </style>
                         <?php foreach($sob_keys as $item) {?>
@@ -357,7 +359,7 @@
     </button>
     <h4 class="modal-title">类目信息</h4>
 </div>
-<form id="create_form"> method="post" action="<?php echo base_url('category/create_category'); ?>">
+<form id="create_form" method="post" action="<?php echo base_url('category/create_category'); ?>">
     <div class="modal-body">
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">名称</label>
@@ -404,11 +406,11 @@
 <script type="text/javascript">
 function changeImg(dom) {
     $('#menuImg').attr('src', $(dom).find('.img-select').attr('src'));
-    $('#form_moda').find('input[name="avatar"]') = $(dom).find('.img-select').attr('alt');
+    $('#form_moda').find('input[name="avatar"]').val( $(dom).find('.img-select').attr('alt') );
 }
 function changeImg_(dom) {
     $('#menuImg_').attr('src', $(dom).find('.img-select').attr('src'));
-    $('#create_form').find('input[name="avatar"]') = $(dom).find('.img-select').attr('alt');
+    $('#create_form').find('input[name="avatar"]').val($(dom).find('.img-select').attr('alt'));
 }
 var __BASE = "<?php echo $base_url; ?>";
 var _sob_id = "<?php echo $sob_id ?>";
