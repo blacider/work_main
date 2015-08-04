@@ -453,7 +453,7 @@ class Category extends REIM_Controller {
         redirect(base_url('category'));
     }
 
-    public function drop($id){
+    public function drop($id,$sob_id = -1){
         $this->need_group_it();
         if(!$id) {
             log_message("debug", "DROP: $id");
@@ -469,7 +469,11 @@ class Category extends REIM_Controller {
             log_message("debug", "删除失败 F");
         }
         $this->session->set_userdata('last_error', $msg);
-        redirect(base_url('category'));
+	if($sob_id == -1)
+	{
+       		return  redirect(base_url('category'));
+	}
+	return redirect(base_url('category/sob_update/' . $sob_id));
     }
     public function gettreelist(){
         $this->need_group_it();

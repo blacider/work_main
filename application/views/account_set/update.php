@@ -48,7 +48,7 @@
                             }
                             function delectSob(id_) {
                                 if(confirm('确认要删除吗?')){
-                                    location.href = __BASEURL + "/category/drop/" + id_;
+                                    location.href = __BASE + "/category/drop/" + id_ + "/" + _sob_id;
                                 }
                             }
                             function addCate(dom) {
