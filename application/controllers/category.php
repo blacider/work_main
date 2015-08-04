@@ -52,7 +52,9 @@ class Category extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-	$rank_level = $this->reim_show->rank_level();
+	$rank = $this->reim_show->rank_level(1);
+	$level = $this->reim_show->rank_level(0);
+
 	$_members = $this->groups->get_my_list();
 	$members = array();
 	if($_members['status'] > 0)
@@ -78,11 +80,11 @@ class Category extends REIM_Controller {
 		{
 			array_push($sob_keys,$cate['id']);
 		}
-		$all_categories[$cate['id']]=array('child'=>array(),'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name']);
+		$all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name']);
 	}
 			
         	$path = base_url($this->users->reim_get_hg_avatar(0));
-		$all_categories[0]=array('child'=>array(),'avatar'=>$path,'id'=>0,'pid'=>-1,'name'=>"顶级分类");
+		$all_categories[0]=array('child'=>array(),'avatar_'=>0,'avatar'=>$path,'id'=>0,'pid'=>-1,'name'=>"顶级分类");
 	foreach($categories as $cate)
 	{
 		if($cate['pid'] !=-1)
@@ -391,7 +393,34 @@ class Category extends REIM_Controller {
         );
     }
 
-
+    public function create_category()
+    {
+    	$this->need_group_it();
+	$cid = $this->input->post('cid');
+	$name=$this->input->post('name');
+	$avatar = $this->input->post('avatar');
+	$code=$this->input->post('code');
+	$sob_id = $this->input->post('sob_id');
+	$pid = $this->input->post('pid');
+	if($cid == 0)
+	{
+		$obj = $this->category->create($name,$pid,$sob_id,0,0,"",$code,$avatar);
+	}
+	else
+	{
+		$obj = $this->category->update($cid,$name,$pid,$sob_id,0,0,"",$code,$avatar);
+	}
+	if($obj['status'] > 0)
+	{
+		$this->session->set_userdata('last_error','添加成功');
+		return redirect(base_url('category/sob_update/' . $sob_id));
+	}	
+	else
+	{
+		$this->session->set_userdata('last_error','添加失败');
+		return redirect(base_url('category/sob_update/' . $sob_id));
+	}
+    }
     public function create(){
         $this->need_group_it();
         $name = $this->input->post('category_name');
