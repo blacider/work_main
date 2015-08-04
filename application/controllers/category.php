@@ -113,6 +113,7 @@ class Category extends REIM_Controller {
         }
 
         $ugroups = $this->ug->get_my_list();
+	log_message('debug','all_categories:' . json_encode($all_categories));
         $this->bsload('account_set/update',
             array(
                 'title' => '新建帐套'

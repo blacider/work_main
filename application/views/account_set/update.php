@@ -85,8 +85,8 @@
                                         <li role="presentation" class="divider"></li>
                                         <?php foreach ($all_categories[$item]['child'] as $item_) {?>
                                         <li role="presentation">
-                                            <a href="#" onclick="showSob(<?php echo $item_.id ?>)" role="menuitem" tabindex="<?php echo $item_.id; ?>">
-                                                <?php echo $item_.name ;?>
+                                            <a href="#" onclick="showSob(<?php echo $item_['id'] ?>)" role="menuitem" tabindex="<?php echo $item_['id']; ?>">
+                                                <?php echo $item_['name'] ;?>
                                             </a>
                                         </li>
                                         <?php } ?>
@@ -387,7 +387,7 @@
         </div>
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类目代码</label>
-            <input name="name" type="text" data-placeholder="请输入名称"></div>
+            <input name="code" type="text" data-placeholder="请输入名称"></div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-sm" data-dismiss="modal">
