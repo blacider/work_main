@@ -15,7 +15,7 @@ class Members extends REIM_Controller {
 	
 	$name = $this->input->post('name');
 	$id = $this->input->post('rank_level_id');
-
+	log_message('debug','name:' . $name . ' ' . 'id:' .$id);
 	$buf = $this->groups->update_rank_level($rank,$id,$name);
 	if($buf['status'] > 0)
 	{

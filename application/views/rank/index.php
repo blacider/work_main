@@ -34,8 +34,7 @@ foreach($levels as $item){
 $username = '<td class="u_username">' . $item['name'] . '</td>';
 $role_id =  '<td class="u_role_name">' .  $item['lastdt'] . '</td>';
     //$role_id = '<td class="u_role_name">' . $item->role_name . '</td>';
-$url_edit = base_url('category/sob_update/'. $item['id']);
-$operation_upd = '<td style="width:80px;">   <a href="' . $url_edit .'" class="edit"  data-title="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="#modal-table1" data-toggle="modal" class= "copy" data-id="'.$item['id'].'"><span class="fa fa-copy "></span></a> <a href="javascript:void(0);" class="del" data-rank="0" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
+$operation_upd = '<td style="width:80px;">   <a href="#modal-table3" data-toggle="modal" class="ledit"  data-name="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del" data-rank="0" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
     $operation = '<td style="width:80px;"><a class="btn btn-xs btn-danger" href="' .  base_url('category/remove_sob/?id='. $item['id']) .'">
         <i class="ace-icon fa fa-trash-o bigger-120"></i>
         </a></td>';
@@ -46,9 +45,6 @@ echo $str;
 </tbody>
 </table>
 
-<br>
-<br>
-<br>
 
          <table id="sample-table-2" class="table table-striped table-bordered table-hover">
                             <thead>
@@ -72,8 +68,7 @@ foreach($ranks as $item){
 $username = '<td class="u_username">' . $item['name'] . '</td>';
 $role_id =  '<td class="u_role_name">' .  $item['lastdt'] . '</td>';
     //$role_id = '<td class="u_role_name">' . $item->role_name . '</td>';
-$url_edit = base_url('category/sob_update/'. $item['id']);
-$operation_upd = '<td style="width:80px;">   <a href="' . $url_edit .'" class="edit"  data-title="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="#modal-table1" data-toggle="modal" class= "copy" data-id="'.$item['id'].'"><span class="fa fa-copy "></span></a> <a href="javascript:void(0);" class="del" data-rank="1" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
+$operation_upd = '<td style="width:80px;">   <a href="#modal-table4" data-toggle="modal" class="redit"  data-name="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del" data-rank="1" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
     $operation = '<td style="width:80px;"><a class="btn btn-xs btn-danger" href="' .  base_url('category/remove_sob/?id='. $item['id']) .'">
         <i class="ace-icon fa fa-trash-o bigger-120"></i>
         </a></td>';
@@ -184,7 +179,7 @@ echo $str;
                         <input class="col-xs-4 col-sm-4" type="text" id="level_name" name="name" class="form-control" />
                       </div>
                       <div>
-                        <input class="col-xs-4 col-sm-4" type="hidden" id="lid" name="rank_level_id" class="form-control" />
+                        <input class="col-xs-4 col-sm-4" type="hidden" id="level_id" name="rank_level_id" class="form-control" />
                       </div>
                   </div>   
                 </div>    <!-- row -->
@@ -222,7 +217,7 @@ echo $str;
                         <input class="col-xs-4 col-sm-4" type="text" id="rank_name" name="name" class="form-control" />
                       </div>
                       <div>
-                        <input class="col-xs-4 col-sm-4" type="hidden" id="rid" name="rank_level_id" class="form-control" />
+                        <input class="col-xs-4 col-sm-4" type="hidden" id="rank_id" name="rank_level_id" class="form-control" />
                       </div>
                   </div>   
                 </div>    <!-- row -->
@@ -274,10 +269,22 @@ $(document).ready(function(){
     }); */
 });
 
-    $('.edit').each(function(idx, item){
+    $('.redit').each(function(idx, item){
         $(item).click(function(){
+		
             var _id = $(this).data('id');
-                location.href = __BASEURL + "category/sob_update/" + _id;
+	    var _name =$(this).data('name');
+	    $('#rank_id').val(_id);
+	    $('#rank_name').val(_name);
+        });
+    });
+    $('.ledit').each(function(idx, item){
+        $(item).click(function(){
+		
+            var _id = $(this).data('id');
+	    var _name =$(this).data('name');
+	    $('#level_id').val(_id);
+	    $('#level_name').val(_name);
         });
     });
     $('.del').each(function(){
