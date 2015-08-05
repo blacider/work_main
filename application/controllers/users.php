@@ -41,6 +41,20 @@ class Users extends REIM_Controller {
     	$error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
 	$ug = $this->reim_show->usergroups();
+	$_ranks = $this->groups->get_rank_level(1);
+	$_levels = $this->groups->get_rank_level(0);
+	$ranks = array();
+	$levels = array();
+
+	if($_ranks['status'] > 0)
+	{
+		$ranks = $_ranks['data'];
+	}
+
+	if($_levels['status'])
+	{
+		$levels = $_levels['data'];
+	}
         // 重新获取
         $profile = $this->user->reim_get_user();
         //print_r($profile);
@@ -128,6 +142,8 @@ class Users extends REIM_Controller {
 		,'pid' => $uid
 		,'pro' => $pro
 		,'ug' => $ug
+		,'ranks' => $ranks
+		,'levels' => $levels
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '修改资料', 'class' => '')
@@ -160,6 +176,9 @@ class Users extends REIM_Controller {
 	$manager_id = $this->input->post('manager');
         $admin = $this->input->post('admin_new');
 	$_usergroups = $this->input->post('usergroups');
+	$max_report = $this->input->post('max_report');
+	$rank = $this->input->post('rank');
+	$level = $this->input->post('level');
 	$usergroups = array();
 	if($_usergroups)
 	{
@@ -171,11 +190,12 @@ class Users extends REIM_Controller {
         if(!($uid || $nickname || $email || $phone || $credit_card)){
             redirect(base_url('users/profile'));
         }
-        $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin,$manager_id), true);
+        $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin,$manager_id,$max_report,$rank,$level), true);
+	log_message('debug','info:' . json_encode($info));
         if($info['status'] > 0){
             $this->session->set_userdata('login_error', '信息修改成功');
         } else {
-            $this->session->set_userdata('login_error', '信息修改失败');
+            $this->session->set_userdata('login_error', $info['data']['msg']);
             redirect(base_url('login'));
         }
         if ($isOther == 1)

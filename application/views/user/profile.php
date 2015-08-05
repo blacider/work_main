@@ -81,6 +81,8 @@ if($self != 1) {
                     </div>
 
 
+
+
 <?php
 $open = 1;
 if($profile['gid'] > 0){
@@ -125,6 +127,72 @@ if($open == 1) {
                         </div>
 
 <?php  } ?>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">最大报告数</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <?php 
+                                            $max_report = '';
+                                            if(array_key_exists('max_report', $pro))
+                                            {
+                                                $max_report = $pro['max_report'];
+                                            }
+                                        if($open == 1)
+                                        {
+                                    ?>
+                                        <input type="text" class="col-xs-6 col-sm-6 form-control" name="max_report" value="<?php echo $max_report; ?>" />
+                                    
+                                    <?php
+                                        }
+                                        else
+                                        {
+                                    ?>
+                                        <input type="text" class="col-xs-6 col-sm-6 form-control" name="max_report" value="<?php echo $max_report; ?>"  disabled />
+                                    <?php
+                                        }
+                                    ?>
+                                
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">职级</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select class="chosen-select tag-input-style" name="rank" data-placeholder="职级" >
+                                    <?php 
+                                    $rank = $pro['rank'];
+                                    foreach($ranks as $m){
+                                   
+                                    ?>
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                    <?php
+                                        }
+                                 
+                                    ?>
+                                    </select>
+                                </div>
+                        </div>
+
+                          <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">级别</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select class="chosen-select tag-input-style" name="level" data-placeholder="级别" >
+                                    <?php 
+                                    $level = $pro['level'];
+                                    foreach($levels as $m){
+                                   
+                                    ?>
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                    <?php
+                                        }
+                                 
+                                    ?>
+                                    </select>
+                                </div>
+                        </div>
+
+
+
 
                         <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">所属帐套</label>
@@ -218,6 +286,8 @@ if($open == 1) {
                                     </select>
                                 </div>
                         </div>
+
+                      
 
 
                     <div class="form-group">
@@ -687,7 +757,8 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         </div>
     </div>
 </div>
-
+<p><?php echo json_encode($pro);?></p>
+<p><?php echo json_encode($ranks);?></p>
 
 <div id="loading">
                     <img src="/static/images/loading.gif">

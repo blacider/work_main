@@ -52,16 +52,42 @@ class Category extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-	$rank = $this->reim_show->rank_level(1);
-	$level = $this->reim_show->rank_level(0);
+	$_ranks = $this->reim_show->rank_level(1);
+	$_levels = $this->reim_show->rank_level(0);
 
+	$ranks = array();
+	$levels = array();
+
+	if($_ranks['status']>0)
+	{
+		$ranks = $_ranks['data'];
+	}
+
+	if($_levels['status']>0)
+	{
+		$levels = $_levels['data'];
+	}
 	$_members = $this->groups->get_my_list();
 	$members = array();
 	if($_members['status'] > 0)
 	{
 		$members = $_members['data']['gmember'];
 	}
-        $sobs = $this->account_set->get_account_set_list();
+        $_sobs = $this->account_set->get_account_set_list();
+	$sobs = array();
+	$sob_groups = array();
+	if($_sobs['status'])
+	{
+		$sobs = $_sobs['data'];
+	}
+	foreach($sobs as $s)
+	{
+		if($s['sob_id'] = $gid)
+		{
+			$sob_groups = $s['groups'];	
+		}
+	}
+
 	$_categories = $this->category->get_list();
 	$categories = array();
 	if($_categories['status'] > 0)
@@ -76,7 +102,7 @@ class Category extends REIM_Controller {
 	{
 		$all_categories[$cate['id']]=array();
         	$path = base_url($this->users->reim_get_hg_avatar($cate['avatar']));
-		if($cate['sob_id'] == $gid)
+		if($cate['sob_id'] == $gid && $cate['pid'] <= 0 )
 		{
 			array_push($sob_keys,$cate['id']);
 		}
@@ -92,7 +118,7 @@ class Category extends REIM_Controller {
 		array_push($all_categories[$cate['pid']]['child'],array('id'=>$cate['id'],'name'=>$cate['category_name']));
 		}
 	}
-		
+	/*
         $_sobs = $sobs['data'];
         $data = array();
         foreach($_sobs as $sob)
@@ -111,20 +137,23 @@ class Category extends REIM_Controller {
                 array_push($data[$sob['sob_id']]['groups'],array('group_id'=>$sob['group_id'],'group_name'=>$sob['group_name']));
             }
         }
+	*/
 
         $ugroups = $this->ug->get_my_list();
 	log_message('debug','all_categories:' . json_encode($all_categories));
         $this->bsload('account_set/update',
             array(
-                'title' => '新建帐套'
+                'title' => '修改帐套'
                 //  ,'acc_sets' => $acc_sets
                 //  ,'acc_sets' => $acc_sets
                 ,'ugroups' => $ugroups['data']['group']
-                ,'sob_data' => $data[$gid]['groups']
+                ,'sob_data' => $sob_groups
                 ,'sob_id' => $gid
 		,'sob_keys' => $sob_keys
 		,'all_categories' => $all_categories
 		,'members' => $members
+		,'ranks' => $ranks
+		,'levels' => $levels
                 ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
                     ,array('url' => base_url('category/index'),'name' => '标签和分类','class' => '')
@@ -173,7 +202,7 @@ class Category extends REIM_Controller {
         $re = json_encode($ret);
         log_message("debug", "***&&*&*&*:$re");
         $arr = array('helo' => 'jack');
-        die(json_encode($arr));
+        die(json_encode($re));
         //return redirect(base_url('category/account_set'));
     }
 
@@ -199,9 +228,25 @@ class Category extends REIM_Controller {
     public function getsobs()
     {
         $this->need_group_it();
-        $sobs = $this->account_set->get_account_set_list();
-        $_sobs = $sobs['data'];
+        $_sobs = $this->account_set->get_account_set_list();
+	$sobs = array();
+	if($_sobs['status'])
+	{
+		$sobs = $_sobs['data'];
+	}
         $data = array();
+
+	foreach($sobs as $s)
+	{
+		$data[$s['sob_id']]['sob_name'] = $s['sob_name'];
+		$data[$s['sob_id']]['groups'] = array();
+		foreach($s['groups'] as $g)
+		{
+			array_push($data[$s['sob_id']]['groups'],array('group_id'=>$g['id'],'group_name'=>$g['name']));
+		}
+	}
+
+	/*
         foreach($_sobs as $sob)
         {
             if(array_key_exists($sob['sob_id'],$data))
@@ -218,6 +263,7 @@ class Category extends REIM_Controller {
                 array_push($data[$sob['sob_id']]['groups'],array('group_id'=>$sob['group_id'],'group_name'=>$sob['group_name']));
             }
         }
+	*/
         die(json_encode($data));
     }
     public function account_set(){
@@ -226,7 +272,8 @@ class Category extends REIM_Controller {
         log_message('debug','error:' . $error);
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-        $acc_sets = $this->account_set->get_account_set_list();
+        $acc_sets = $this->account_set->get_sobs();
+	log_message('debug','account:' . json_encode($acc_sets));
         $sobs = $acc_sets['data'];
         if(!$acc_sets['status'])
         {
