@@ -22,12 +22,11 @@
 		public function get_sobs()
 		{
 			$jwt = $this->session->userdata('jwt');
-			if($jwt) return false;
+			if(!$jwt) return false;
 
-			$url = $this->get_url('common');
+			$url = $this->get_url('sob');
 			$buf = $this->do_Get($url,$jwt);
-			log_message('debug','######'.json($buf));
-			return $buf;
+			return json_decode($buf,true);
 		}
 		public function get_account_set_list()
 		{
