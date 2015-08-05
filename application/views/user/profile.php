@@ -159,13 +159,23 @@ if($open == 1) {
                                 <label class="col-sm-1 control-label no-padding-right">职级</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" name="rank" data-placeholder="职级" >
+                                        <option value=0>无</option>
                                     <?php 
-                                    $rank = $pro['rank'];
+                                    $rank = $pro['rank_id'];
                                     foreach($ranks as $m){
                                    
+				   	if($m['id']==$rank && $rank!=0)
+					{
                                     ?>
                                         <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
                                     <?php
+				    	}
+					else 
+					{
+					?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+					<?php
+					}
                                         }
                                  
                                     ?>
@@ -177,13 +187,23 @@ if($open == 1) {
                                 <label class="col-sm-1 control-label no-padding-right">级别</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" name="level" data-placeholder="级别" >
+                                    <option value=0>无</option>
                                     <?php 
-                                    $level = $pro['level'];
+                                    $level = $pro['level_id'];
                                     foreach($levels as $m){
                                    
+				   	if($m['id']==$level && $level!=0)
+					{
                                     ?>
                                         <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
                                     <?php
+				    	}
+					else 
+					{
+					?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+					<?php
+					}
                                         }
                                  
                                     ?>
@@ -757,7 +777,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         </div>
     </div>
 </div>
-
+<p><?php echo json_encode($profile); ?></p>
 <div id="loading">
                     <img src="/static/images/loading.gif">
 </div>

@@ -184,14 +184,15 @@ class Users extends REIM_Controller {
 	{
 		$usergroups = implode(',',$_usergroups);
 	}
-	log_message('debug','_usergroups:' . json_encode($_usergroups));
-	log_message('debug','usergroups:' . json_encode($usergroups));
-	log_message("debug","#####".$nickname);
+	log_message('debug','rank:' . $rank);
+	log_message('debug','level:' . $level);
+	log_message('debug','max_report' . $max_report);
         if(!($uid || $nickname || $email || $phone || $credit_card)){
             redirect(base_url('users/profile'));
         }
         $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin,$manager_id,$max_report,$rank,$level), true);
 	log_message('debug','info:' . json_encode($info));
+	/*
         if($info['status'] > 0){
             $this->session->set_userdata('login_error', '信息修改成功');
         } else {
@@ -202,6 +203,7 @@ class Users extends REIM_Controller {
             redirect(base_url('members/index'));
         else
             redirect(base_url('users/profile'));
+	    */
     }
 
 

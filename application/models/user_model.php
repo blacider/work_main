@@ -407,8 +407,9 @@ class User_Model extends Reim_Model {
 	$data['level'] = $level;
         $url = $this->get_url('users');
         $jwt = $this->session->userdata('jwt');
+	if(!$jwt)  return false;
         $buf = $this->do_Put($url, $data, $jwt);
-        log_message("debug", $buf);
+        log_message("debug", 'profile:' . $buf);
         return $buf;
     }
 
