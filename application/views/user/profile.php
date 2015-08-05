@@ -757,8 +757,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         </div>
     </div>
 </div>
-<p><?php echo json_encode($pro);?></p>
-<p><?php echo json_encode($ranks);?></p>
 
 <div id="loading">
                     <img src="/static/images/loading.gif">
