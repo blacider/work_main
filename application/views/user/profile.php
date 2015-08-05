@@ -803,7 +803,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         </div>
     </div>
 </div>
-<p><?php echo json_encode($profile); ?></p>
 <div id="loading">
                     <img src="/static/images/loading.gif">
 </div>
