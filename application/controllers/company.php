@@ -529,6 +529,7 @@ class Company extends REIM_Controller {
         $this->session->unset_userdata('last_error');
         $company = $this->company->get();
         $_config = array();
+	log_message('debug','company:' . json_encode($company));
         if(array_key_exists('data', $company) && array_key_exists('config', $company['data'])){
             $_config = $company['data']['config'];
         }

@@ -1,6 +1,66 @@
 <?php
 
 class Group_Model extends Reim_Model {
+    public function update_rank_level($rank,$id,$name)
+    {
+    	$jwt = $this->session->userdata('jwt');
+	if(!$jwt) return false;
+
+	$url = $this->get_url('rank');
+	$data = array
+		(
+		  'name' => $name
+		  ,'rank' => $rank
+		  ,'id' => $id
+		);
+	$buf = $this->do_Put($url,$data,$jwt);
+	log_message('debug','update_rank_level : ' . json_encode($buf));
+
+	return json_decode($buf,True);
+    	
+    }
+
+    public function del_rank_level($rank,$id)
+    {
+		$jwt = $this->session->userdata('jwt');
+		if(!$jwt) return false;
+
+		$url = $this->get_url('rank/' . $id . '/'  . $rank);
+		$buf = $this->do_Delete($url,array(),$jwt);
+
+		log_message('debug','delete_rank:' . json_encode($buf));
+		
+		return json_decode($buf,True);
+    }
+    public function get_rank_level($rank)
+    {
+		$jwt = $this->session->userdata('jwt');
+		if(!$jwt) return false;
+
+		$url = $this->get_url('rank/' . $rank);
+		$buf = $this->do_Get($url,$jwt);
+
+		log_message('debug','rank:' . json_encode($buf));
+		return json_decode($buf,True);
+    }
+
+    public function create_rank_level($rank,$name,$uids='')
+    {
+    	$jwt = $this->session->userdata('jwt');
+	if(!$jwt) return false;
+
+	$url = $this->get_url('rank');
+	$data = array
+		(
+		  'name' => $name
+		  ,'rank' => $rank
+		);
+	$buf = $this->do_Post($url,$data,$jwt);
+	log_message('debug','create_rank_level : ' . json_encode($buf));
+
+	return json_decode($buf,True);
+    }
+
     public function get_my_list(){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
