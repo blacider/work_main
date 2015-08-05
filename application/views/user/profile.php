@@ -158,7 +158,20 @@ if($open == 1) {
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">职级</label>
                                 <div class="col-xs-6 col-sm-6">
+				<?php 
+				if($open == 1)
+				{
+				?>
                                     <select class="chosen-select tag-input-style" name="rank" data-placeholder="职级" >
+				  <?php 
+				  }
+				  else
+				  {
+				  ?>
+                                    <select class="chosen-select tag-input-style" name="rank" data-placeholder="职级" disabled>
+				  <?php
+				  }
+				  ?>
                                         <option value=0>无</option>
                                     <?php 
                                     $rank = $pro['rank_id'];
@@ -186,7 +199,20 @@ if($open == 1) {
                           <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">级别</label>
                                 <div class="col-xs-6 col-sm-6">
+				<?php 
+				if($open == 1)
+				{
+				?>
                                     <select class="chosen-select tag-input-style" name="level" data-placeholder="级别" >
+				  <?php 
+				  }
+				  else
+				  {
+				  ?>
+                                    <select class="chosen-select tag-input-style" name="level" data-placeholder="级别" disabled>
+				  <?php
+				  }
+				  ?>
                                     <option value=0>无</option>
                                     <?php 
                                     $level = $pro['level_id'];
