@@ -396,7 +396,6 @@ echo $str;
         </form>
   </div>
 </div><!-- PAGE CONTENT ENDS -->
-<p><?php echo json_encode($acc_sets)?></p>
 
 <script language="javascript">
 var __BASEURL = "<?php echo $base_url; ?>";
