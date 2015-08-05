@@ -681,7 +681,7 @@ class Reports extends REIM_Controller {
                 foreach($_items as $i){
                     log_message('debug', "Itemx :" .json_encode($i));
                     $_rate = 1.0;
-                    if(array_key_exists('currency', $i) && strtolower($i['currency']) == 'cny') {
+                    if(array_key_exists('currency', $i) && strtolower($i['currency']) != 'cny') {
                         $_rate = $i['rate'] / 100;
                     }
                     log_message("debug", "Items23:"  . json_encode($i));
@@ -701,7 +701,7 @@ class Reports extends REIM_Controller {
                     $r['paid'] = $r['total'];
                 }
                 $r['last'] = $r['total'] - $r['paid'];
-                $_members[$r['uid']]['paid'] = $r['last'];
+                $_members[$r['uid']]['paid'] += ($r['last'] * $_rate);
                 $_members[$r['uid']]['uid'] = $r['uid'];
                 $obj = array();
                 $obj['报告名'] = $r['title'];
@@ -759,8 +759,8 @@ class Reports extends REIM_Controller {
                 $o['参与人员'] = implode(',', $__relates);
                 $o['会计科目'] = $s;
                 $o['备注'] = $i['note'];
-                $_rate = 1;
-                if($i['rate'] != 1){
+                $_rate = 1.0;
+                if($i['currency'] != '' && strtolower($i['currency']) != 'cny') {
                     $_rate = $i['rate'] / 100;
                 }
                 $o['金额'] = $i['amount'] * $_rate;
@@ -776,10 +776,6 @@ class Reports extends REIM_Controller {
             }
 
             log_message("debug", json_encode($o));
-
-            //print_r($_excel);
-            //print_r($r);
-            //self::render_to_download('报告汇总', $members, 'Finace_' . date('Y-m-d', time()) . ".xls", '报告明细', $_excel/*, '消费明细', $_detail_items*/);
             self::render_to_download('报告汇总', $members, 'Finace_' . date('Y-m-d', time()) . ".xls", '报告明细', $_excel, '消费明细', $_detail_items);
 
         }
