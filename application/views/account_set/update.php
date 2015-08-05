@@ -134,34 +134,23 @@
 
                                     ?></select>
                             </div>
-                            <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">职位</label>
+                            <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">部门</label>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
                                 <input type="radio" name="range" value="1" style="position:relative;top:7px"></div>
                             <div class="col-xs-4 col-sm-4">
-                                <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
-                                    <option value="0">公司</option>
+                                <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="ranks[]"  data-placeholder="请选择职级">
+                                
                                     <?php
-                                      $exit = array();
-                                    foreach($sob_data as $ug){
+                                      
+                                    foreach($ranks as $ug){
                                     ?>
-                                    <option selected value="<?php echo $ug['group_id']; ?>
-                                        ">
-                                        <?php echo $ug['group_name']; ?></option>
-                                    <?php
-                                        array_push($exit, $ug['group_id']);
-                                    }
-
-                                    foreach($ugroups as $ug){
-                                        if(!in_array($ug['id'], $exit))
-                                        {
-                                            ?>
-                                    <option select value="<?php echo $ug['id']; ?>
+                                    <option value="<?php echo $ug['id']; ?>
                                         ">
                                         <?php echo $ug['name']; ?></option>
                                     <?php
-                                        }
+                                      
                                     }
 
                                     ?></select>
@@ -172,39 +161,27 @@
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
                                 <input type="radio" name="range" value="2" style="position:relative;top:7px"></div>
                             <div class="col-xs-4 col-sm-4">
-                                <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
-                                    <option value="0">公司</option>
+                                <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="levels[]"  data-placeholder="请选择级别">
+                                 
                                     <?php
-                                      $exit = array();
-                                    foreach($sob_data as $ug){
+                                    
+                                    foreach($levels as $ug){
                                     ?>
-                                    <option selected value="<?php echo $ug['group_id']; ?>
-                                        ">
-                                        <?php echo $ug['group_name']; ?></option>
-                                    <?php
-                                        array_push($exit, $ug['group_id']);
-                                    }
-
-                                    foreach($ugroups as $ug){
-                                        if(!in_array($ug['id'], $exit))
-                                        {
-                                            ?>
-                                    <option select value="<?php echo $ug['id']; ?>
+                                    <option selected value="<?php echo $ug['id']; ?>
                                         ">
                                         <?php echo $ug['name']; ?></option>
                                     <?php
-                                        }
                                     }
 
                                     ?></select>
                             </div>
-                            <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">部门</label>
+                            <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">级别</label>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
                                 <input type="radio" name="range" value="3" style="position:relative;top:7px"></div>
                             <div class="col-xs-4 col-sm-4">
-                                <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="members[]"  data-placeholder="请选择部门">
+                                <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="members[]"  data-placeholder="请选择员工">
                                     <?php
                                       $exit = array();
                                     foreach($members as $ug){
