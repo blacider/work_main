@@ -191,6 +191,8 @@
                                 </div>
                             </div>
 
+                             
+
                              <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">每月最多可提交的报告数量</label>
                                 <div class="col-xs-4 col-sm-4">
@@ -202,6 +204,13 @@
                                 <label class="col-sm-3 control-label no-padding-rigtht">只可以提交最近几个月的报销限制</label>
                                 <div class="col-xs-4 col-sm-4">
                                 <input id="max_allowed_months" type="text" class="form-controller col-xs-12" name="max_allowed_months" placeholder="月数">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-rigtht">自然月设置</label>
+                                <div class="col-xs-4 col-sm-4">
+                                <input id="calendar_month" type="text" class="form-controller col-xs-12" name="calendar_month" placeholder="自然月">
                                 </div>
                             </div>
 
@@ -253,6 +262,8 @@ var __BASE = "<?php echo $base_url; ?>";
             }
 
         }
+
+
 
        if(data.disable_borrow!=undefined)
         {
@@ -376,6 +387,11 @@ var __BASE = "<?php echo $base_url; ?>";
         {
             $('#reports_limit').val(data.report_quota);
         }
+
+         if(data.calendar_month != undefined)
+        {
+            $('#calendar_month').val(data.calendar_month);
+        }
     }
    });
 
@@ -384,6 +400,17 @@ var __BASE = "<?php echo $base_url; ?>";
        var r_limit = $('#reports_limit').val();
     //   console.log(lval);
       // console.log($('#isadmin').is(':checked'));
+      var calendar_month = $('#calendar_month').val();
+      if(isNaN(calendar_month))
+      {
+        calendar_month = 0;
+      }
+      if(calendar_month>=32 || calendar_month <= 0)
+      {
+        $('#calendar_month').focus();
+        show_notify('请输入有效的自然月');
+        return false;
+      }
        if(isNaN(lval))
        {
             lval = 0;
@@ -394,6 +421,7 @@ var __BASE = "<?php echo $base_url; ?>";
                 type:"post",
                 url:__BASE+"company/profile",
                 data:{
+                    calendar_month:$('#calendar_month').val(),
                     allow_borrow:$('#allow_borrow').is(':checked'),
                     allow_budget:$('#allow_budget').is(':checked'),
                     note_compulsory:$('#note_compulsory').is(':checked'),

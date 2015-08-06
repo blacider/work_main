@@ -631,7 +631,8 @@ public function common(){
         $not_auto_time = 0;
 	$disable_borrow = 0;
 	$disable_budget = 0;
-
+	
+	$calendar_month = $this->input->post('calendar_month');
         $need_bank = $this->input->post('need_bank_info');
         $ischecked = $this->input->post('ischecked');
         $isremark = $this->input->post('isremark');
@@ -723,6 +724,7 @@ public function common(){
         $in['low_amount_only'] = $low_amount_only;
 	$in['disable_borrow'] = $disable_borrow;
 	$in['disable_budget'] = $disable_budget;
+	$in['calendar_month'] = $calendar_month;
         $this->company->profile($in);
         //die(json_encode($re));
 	die(json_encode(array('msg'=>'保存成功')));
