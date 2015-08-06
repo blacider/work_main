@@ -242,7 +242,7 @@ var __BASE = "<?php echo $base_url; ?>";
     dataType:'json',
     success:function(data){
 
-        console.log(data);
+    //    console.log(data);
 
          if(data.disable_budget!=undefined)
         {
