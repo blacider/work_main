@@ -69,7 +69,11 @@
 </div>
 <?php  } ?>
 <?php
-    $_config = $profile['group']['config'];
+    $_config = '';
+    if(array_key_exists('config',$profile['group']))
+    {
+    	$_config = $profile['group']['config'];
+    }
     $__config = json_decode($_config,True);
 ?>
 
