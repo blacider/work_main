@@ -192,7 +192,6 @@ class Users extends REIM_Controller {
         }
         $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin,$manager_id,$max_report,$rank,$level), true);
 	log_message('debug','info:' . json_encode($info));
-	/*
         if($info['status'] > 0){
             $this->session->set_userdata('login_error', '信息修改成功');
         } else {
@@ -202,7 +201,6 @@ class Users extends REIM_Controller {
             redirect(base_url('members/index'));
         else
             redirect(base_url('users/profile'));
-	    */
     }
 
 
