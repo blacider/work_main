@@ -706,7 +706,6 @@ public function common(){
         //	{
         //		$confarr['template'] = $template;
         //	}
-        log_message("debug","@@@@@@@@@@@@:$allow_borrow++++$pids");
         $in=array();
         $in['export_no_company']=$company_id;
         $in['same_category'] = $pids;
@@ -725,7 +724,7 @@ public function common(){
 	$in['disable_borrow'] = $disable_borrow;
 	$in['disable_budget'] = $disable_budget;
         $this->company->profile($in);
-        $re = array('name' => $ischecked,'remark'=>$isremark,'template' => $template,'obj' => $data['data']['config']);
-        die(json_encode($re));
+        //die(json_encode($re));
+	die(json_encode(array('msg'=>'保存成功')));
     }
 }

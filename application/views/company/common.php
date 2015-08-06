@@ -39,7 +39,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">是否是否隐藏预算</label>
+                                <label class="col-sm-3 control-label no-padding-right">是否不允许预算</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
@@ -244,9 +244,9 @@ var __BASE = "<?php echo $base_url; ?>";
 
        // console.log(data);
 
-         if(data.allow_budget!=undefined)
+         if(data.disable_budget!=undefined)
         {
-            if(data.allow_budget==1)
+            if(data.disable_budget==1)
             {
             $('#allow_budget').attr('checked', data.allow_budget);
             $("#allow_budget").trigger("chosen:updated");
@@ -254,9 +254,9 @@ var __BASE = "<?php echo $base_url; ?>";
 
         }
 
-       if(data.allow_borrow!=undefined)
+       if(data.disable_borrow!=undefined)
         {
-            if(data.allow_borrow==1)
+            if(data.disable_borrow==1)
             {
             $('#allow_borrow').attr('checked', data.allow_borrow);
             $("#allow_borrow").trigger("chosen:updated");
