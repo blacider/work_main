@@ -137,8 +137,7 @@ if($open == 1) {
                                             {
                                                 $max_report = $pro['max_report'];
                                             }
-                                        if($open == 1)
-                                        {
+if($profile['admin'] == 1 || $profile['admin'] == 3){
                                     ?>
                                         <input type="text" class="col-xs-6 col-sm-6 form-control" name="max_report" value="<?php echo $max_report; ?>" />
                                     
@@ -159,8 +158,7 @@ if($open == 1) {
                                 <label class="col-sm-1 control-label no-padding-right">职级</label>
                                 <div class="col-xs-6 col-sm-6">
 				<?php 
-				if($open == 1)
-				{
+if($profile['admin'] == 1 || $profile['admin'] == 3){
 				?>
                                     <select class="chosen-select tag-input-style" name="rank" data-placeholder="职级" >
 				  <?php 
@@ -200,8 +198,7 @@ if($open == 1) {
                                 <label class="col-sm-1 control-label no-padding-right">级别</label>
                                 <div class="col-xs-6 col-sm-6">
 				<?php 
-				if($open == 1)
-				{
+if($profile['admin'] == 1 || $profile['admin'] == 3){
 				?>
                                     <select class="chosen-select tag-input-style" name="level" data-placeholder="级别" >
 				  <?php 
