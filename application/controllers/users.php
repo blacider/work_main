@@ -128,7 +128,6 @@ class Users extends REIM_Controller {
             $gmember = $gmember ? $gmember : array();
         }
         //print_r($profile);
-	log_message("debug","###".$config);
         $this->bsload('user/profile',
             array(
                 'title' => '个人管理'
