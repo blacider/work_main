@@ -626,7 +626,7 @@ class Members extends REIM_Controller {
             $__email = $g['email']; 
             $__phone = $g['phone']; 
 	    $__name = $g['nickname'];
-	    if(!array_key_exists($__names,$_names))
+	    if(!array_key_exists($__name,$_names))
 	    {
 	    	$names[$__name] = 1;		
 	    }
@@ -638,7 +638,8 @@ class Members extends REIM_Controller {
                 array_push($_emails, $__email);
             if($__phone)
                 array_push($_phones, $__phone);
-	    array_push($_names,$__name);
+	    if($__name)
+		 array_push($_names,$__name);
         }
 
         $data = array();
@@ -662,36 +663,41 @@ class Members extends REIM_Controller {
             if(in_array($obj['email'], $_emails) || in_array($obj['phone'], $_phones)){
                 $obj['status'] = 1;
             }
-	    if(!array_key_exists($obj['name'],$_names))
+	    log_message('debug','obj_name' . $obj['name']);
+	    if(!in_array($obj['name'],$_names))
 	    {
 	    	$names[$obj['name']] = 1;
 	    }
 	    else
 	    {
-	    	$names[$obj['name']] += 1;
+	    		$names[$obj['name']] += 1;
 	    }
 	    array_push($_names,$obj['name']);
             array_push($data, $obj);
         }
 
-	foreach($data as $d)
+	foreach($data as &$d)
 	{
-		if(array_key_exists($d['manager'],$_names))
+		log_message('debug','isEq:' . in_array($d['name'],$_names));
+		if(in_array($d['manager'],$_names))
 		{
-			if($name[$d['manager']] > 1)
+			if($names[$d['manager']] > 1)
 			{
-				$d['status'] = 3;	
-			}
-			else if($name[$d['name']] > 1)
-			{
-				$d['status'] = 2;
+				$d['status'] += 4;	
 			}
 		}
 		else
 		{
-			$d['status'] = -1;
+			$d['status'] += 4;
+		}
+		
+		if($names[$d['name']] > 1)
+		{
+			$d['status'] += 2;
 		}
 	}
+	log_message('debug','names:' . json_encode($names));
+	log_message('debug','names:' . json_encode($_names));
 
         $this->bsload('members/imports',
             array(
@@ -712,6 +718,7 @@ class Members extends REIM_Controller {
         $id = $this->input->post('id');
         if(!$member) die(json_encode(array('status' => false, 'id' => $id, 'msg' => '参数错误')));
         $obj = json_decode(base64_decode($member), True);
+	log_message('debug','obj:' . json_encode($obj));
 
         $email = $obj['email'];
         $nickname = $obj['name'];
@@ -720,13 +727,129 @@ class Members extends REIM_Controller {
         $cardloc = $obj['cardloc'];
         $cardbank = $obj['cardbank'];
         $cardno = $obj['cardno'];
-        $groups = '';
+	$localid = $obj['id'];
+	$group_name = $obj['group_name'];
+	$manager = $obj['manager'];
+	$rank = $obj['rank'];
+	$level = $obj['level'];
+	$status = $obj['status'];
+
+	if(!$localid)
+	{
+		$localid = 0;
+	}
         if($phone == $email && $email == ""){
             die(json_encode(array('status' => false, 'id' => $id, 'msg' => '邮箱手机必须有一个')));
         }
         //$this->groups->set_invite($email, $nickname, $phone, $credit, $groups);
-        $info = $this->groups->doimports($email, $nickname, $phone, 0, '', $account, $cardno, $cardbank, $cardloc);
+	$data = array();
+	$data['localid'] = $localid;
+	$data['nickname'] = $nickname;
+	$data['email'] = $email;
+	$data['phone'] = $phone;
+	$data['account'] = $account;
+	$data['cardno'] = $cardno;
+	$data['bank'] = $cardbank;
+	$data['cardloc'] = $cardloc;
+
+	if($obj['status']>=4)
+	{
+		$data['manager_id'] = 0;
+	}
+	else
+	{
+		$data['manager_id'] = 0;
+	         $group = $this->groups->get_my_list();
+       		 $ginfo = array();
+       		 $gmember = array();
+       		 if($group) {
+           		 if(array_key_exists('ginfo', $group['data'])){
+                	$ginfo = $group['data']['ginfo'];
+            		}
+            		if(array_key_exists('gmember', $group['data'])){
+                	$gmember = $group['data']['gmember'];
+            		}
+           		 $gmember = $gmember ? $gmember : array();
+        	}
+		foreach($gmember as $m)
+		{
+			if($m['nickname'] == $manager)
+			{
+				$data['manager_id'] = $m['id'];
+			}
+		}
+	}
+
+        $groups = array();
+	$gids = array();
+	if($group_name)
+	{
+		$groups = explode(',',$group_name);
+	}
+		
+	if($groups)
+	{
+		$_ug = $this->ug->get_my_list();
+		$ug = array();
+		if($_ug['status'] > 0)
+		{
+			$ug = $_ug['data']['group'];
+		}
+		foreach($ug as $g)
+		{
+			foreach($groups as $my_g)
+			{
+				if($my_g == $g['name'])
+				{
+					array_push($gids,$g['id']);
+				}
+			}
+		}
+	}
+	$data['gids'] = '';
+	if($gids)
+	{
+		$data['gids'] = implode(',',$gids);
+	}
+
+	$_ranks = $this->reim_show->rank_level(1);
+	$ranks = array();
+	$_levels = $this->reim_show->rank_level(0);
+	$levels = array();
+	if($_ranks['status']>0)
+	{
+		$ranks = $_rank['data'];
+	}
+	if($_levels['status']>0)
+	{
+		$levels = $_levels['data'];
+	}
+	$rank_id = 0;
+	$level_id = 0;
+	
+	foreach($ranks as $r)
+	{
+		if($rank == $r['name'])
+		{
+			$rank_id = $r['id'];
+			break;
+		}
+	}
+	foreach($levels as $l)
+	{
+		if($level == $l['name'])
+		{
+			$level_id = $l['id'];
+			break;
+		}
+	}
+	$data['rank'] = $rank_id;
+	$data['level'] = $level_id;
+	
+	log_message('debug','data:' . json_encode($data));
+       /* $info = $this->groups->doimports($email, $nickname, $phone, 0, '', $account, $cardno, $cardbank, $cardloc);
         die(json_encode(array('status' => true, 'id' => $id)));
+	*/
     }
 
     public function delgroup($id = 0){

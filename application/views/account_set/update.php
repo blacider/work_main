@@ -167,7 +167,7 @@
                                     
                                     foreach($levels as $ug){
                                     ?>
-                                    <option selected value="<?php echo $ug['id']; ?>
+                                    <option value="<?php echo $ug['id']; ?>
                                         ">
                                         <?php echo $ug['name']; ?></option>
                                     <?php
