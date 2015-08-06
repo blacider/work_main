@@ -224,11 +224,15 @@ function get_sobs(){
             {
                 for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
                 {
+                    var _note = selectDataCategory[s_id][i].note;
+                    if(_note) {
+                        _note = '(' + _note + ')';
+                    }
                     if(selectDataCategory[s_id][i].category_id == _item_category) {
                         _sid = s_id;
-                        _h += "<option selected='selected' value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                        _h += "<option selected='selected' value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name  + _note + " </option>";
                     } else {
-                        _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                        _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name  + _note + " </option>";
                     }
                     
                 }

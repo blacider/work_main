@@ -617,7 +617,7 @@ class Category extends REIM_Controller {
                     $data[$sob['sob_id']]['sob_name']=$sob['sob_name'];
                     $data[$sob['sob_id']]['groups'] = array();
                     $data[$sob['sob_id']]['category'] = array();
-		    $data[$sob['sob_id']]['groups'] = $sob['groups'];
+                    $data[$sob['sob_id']]['groups'] = $sob['groups'];
                 }
             }
         }
@@ -628,7 +628,8 @@ class Category extends REIM_Controller {
             log_message("debug", "alvayang Item:" . json_encode($_sob_id) . ", " . count($_sob_id));
             if(array_key_exists('sob_id', $item) && array_key_exists($item['sob_id'],$data))
             {
-                array_push($data[$item['sob_id']]['category'],array('category_id'=>$item['id'],'category_name'=>$item['category_name']));
+                log_message("debug", "view:" . json_encode($item));
+                array_push($data[$item['sob_id']]['category'],array('note' => $item['note'], 'category_id'=>$item['id'],'category_name'=>$item['category_name']));
             }
 	    /*
 	    else {
