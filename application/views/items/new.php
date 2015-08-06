@@ -80,13 +80,13 @@
 <select class="form-control" name="type" data-placeholder="请选择类型">
 <option value="0">报销</option>
 <?php 
-if($__config['allow_borrow']=='1')
+if($__config['disable_borrow']=='0')
 {
 ?>
 <option value="1">预借</option>
 <?php
 }
-if($__config['allow_budget'] == '1')
+if($__config['disable_budget'] == '0')
 {
 ?>
 <option value="2">预算</option>

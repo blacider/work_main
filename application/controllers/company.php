@@ -629,8 +629,8 @@ public function common(){
         $close_directly = 0;
         $note_compulsory = 0;
         $not_auto_time = 0;
-	$allow_borrow = 0;
-	$allow_budget = 0;
+	$disable_borrow = 0;
+	$disable_budget = 0;
 
         $need_bank = $this->input->post('need_bank_info');
         $ischecked = $this->input->post('ischecked');
@@ -646,16 +646,16 @@ public function common(){
         $_close_directly = $this->input->post('close_directly');
         $_note_compulsory = $this->input->post('note_compulsory');
         $_not_auto_time = $this->input->post('not_auto_time');
-	$_allow_borrow = $this->input->post('allow_borrow');
-	$_allow_budget = $this->input->post('allow_budget');
+	$_disable_borrow = $this->input->post('allow_borrow');
+	$_disable_budget = $this->input->post('allow_budget');
 
-        if($_allow_borrow == "true")
+        if($_disable_borrow == "true")
         {
-            $allow_borrow = 1;
+            $disable_borrow = 1;
         }
-        if($_allow_budget == "true")
+        if($_disable_budget == "true")
         {
-            $allow_budget = 1;
+            $disable_budget = 1;
         }
         if($ischecked == "true")
         {
@@ -722,8 +722,8 @@ public function common(){
         $in['max_allowed_months'] = $max_allowed_months;
         $in['mail_notify'] = $mail_notify;
         $in['low_amount_only'] = $low_amount_only;
-	$in['allow_borrow'] = $allow_borrow;
-	$in['allow_budget'] = $allow_budget;
+	$in['disable_borrow'] = $disable_borrow;
+	$in['disable_budget'] = $disable_budget;
         $this->company->profile($in);
         $re = array('name' => $ischecked,'remark'=>$isremark,'template' => $template,'obj' => $data['data']['config']);
         die(json_encode($re));

@@ -25,7 +25,7 @@
                         <div class="col-xs-12 col-sm-12">
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">是否允许预借</label>
+                                <label class="col-sm-3 control-label no-padding-right">是否不允许预借</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
@@ -39,7 +39,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">是否允许预算</label>
+                                <label class="col-sm-3 control-label no-padding-right">是否是否隐藏预算</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->

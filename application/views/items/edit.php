@@ -108,13 +108,13 @@
 <option value="<?php echo $val; ?>" selected><?php echo $key; ?></option>
 <?php
                                                 } else {
-						if($__config['allow_borrow'] == 1 && $val == 1)
+						if($__config['disable_borrow'] == 0 && $val == 1)
 						{
 ?>
 <option value="<?php echo $val; ?>"><?php echo $key; ?></option>
 <?php
 					    }
-					    if($__config['allow_budget'] == 1 && $val == 2)
+					    if($__config['disable_budget'] == 0 && $val == 2)
 					    {
 ?>
 <option value="<?php echo $val; ?>"><?php echo $key; ?></option>
