@@ -102,10 +102,21 @@ echo $str;
                                 </div>
                             </div>
                             <div class="form-group">
+<div class="row">
+<div class="col-xs-6 col-sm-6">
                                 <label for="form-field-username">分类代码</label>
                                 <div>
                                     <input class="input-large" type="text"  placeholder="分类代码" id="sob_code" name="sob_code" />
                                 </div>
+</div>
+<div class="col-xs-6 col-sm-6">
+                                <label for="form-field-username">必须有附件</label>
+                                <div>
+                                            <input class="ace ace-switch btn-rotate" type="checkbox" name="force_attach" id="force_attach" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                </div>
+</div>
+                            </div>
                             </div>
                             <div class="space-4"></div>
 

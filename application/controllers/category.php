@@ -479,17 +479,21 @@ class Category extends REIM_Controller {
         $prove_ahead= $this->input->post('prove_ahead');
         $max_limit = $this->input->post('max_limit');
         $cid = $this->input->post('category_id');
+        $avatar = $this->input->post('avatar');
+        $force_attach = $this->input->post('force_attach');
+        $force_attach = $force_attach == "on" ? 1 : 0;
         $gid = $this->input->post('gid');
         log_message("debug","\n#############GID:$gid");
         $sob_id = $this->input->post('sob_id');
 
         log_message("debug","\n#############GID:$gid");
+        log_message("debug","\n#############attach:$force_attach");
         $msg = '添加分类失败';
         $obj = null;
         if($cid > 0){
-            $obj = $this->category->update($cid, $name, $pid, $sob_id, $prove_ahead, $max_limit, $note, $sob_code);
+            $obj = $this->category->update($cid, $name, $pid, $sob_id, $prove_ahead, $max_limit, $note, $sob_code, $avatar, $force_attach);
         } else {
-            $obj = $this->category->create($name, $pid, $sob_id, $prove_ahead, $max_limit, $note, $sob_code);
+            $obj = $this->category->create($name, $pid, $sob_id, $prove_ahead, $max_limit, $note, $sob_code, $avatar, $force_attach);
         }
         if($obj && $obj['status']){
             $msg = '添加分类成功' . $note;
