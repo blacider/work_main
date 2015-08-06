@@ -6,7 +6,7 @@ class Group_Model extends Reim_Model {
     	$jwt = $this->session->userdata('jwt');
 	if(!$jwt) return false;
 
-	$url = $this->get_url('rank');
+	$url = $this->get_url('load');
 	$buf = $this->do_Post($url,$data,$jwt);
 
 	log_message('debug','imports_back:' . json_encode($buf));
