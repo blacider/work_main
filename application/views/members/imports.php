@@ -65,7 +65,7 @@
     </div>
 </div>
 
-<p><?php echo json_encode($members);?></p>
+
 
 <script language="javascript">
     var __BASE = "<?php echo base_url(); ?>";

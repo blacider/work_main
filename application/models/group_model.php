@@ -1,6 +1,17 @@
 <?php
 
 class Group_Model extends Reim_Model {
+    public function reim_imports($data)
+    {
+    	$jwt = $this->session->userdata('jwt');
+	if(!$jwt) return false;
+
+	$url = $this->get_url('rank');
+	$buf = $this->do_Post($url,$data,$jwt);
+
+	log_message('debug','imports_back:' . json_encode($buf));
+	return json_decode($buf,True);
+    }
     public function update_rank_level($rank,$id,$name)
     {
     	$jwt = $this->session->userdata('jwt');

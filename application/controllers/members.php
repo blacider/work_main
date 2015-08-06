@@ -818,7 +818,7 @@ class Members extends REIM_Controller {
 	$levels = array();
 	if($_ranks['status']>0)
 	{
-		$ranks = $_rank['data'];
+		$ranks = $_ranks['data'];
 	}
 	if($_levels['status']>0)
 	{
@@ -847,7 +847,18 @@ class Members extends REIM_Controller {
 	$data['level'] = $level_id;
 	
 	log_message('debug','data:' . json_encode($data));
-       /* $info = $this->groups->doimports($email, $nickname, $phone, 0, '', $account, $cardno, $cardbank, $cardloc);
+	$info = $this->groups->reim_imports($data);
+        die(json_encode(array('status' => true, 'id' => $id)));
+	/*
+	if($info['status']>0)
+	{
+		die(json_encode(array('msg' => '导入成功')));
+	}
+	else
+	{
+		die(json_encode(array('msg' => '导入失败')));
+	}
+        $info = $this->groups->doimports($email, $nickname, $phone, 0, '', $account, $cardno, $cardbank, $cardloc);
         die(json_encode(array('status' => true, 'id' => $id)));
 	*/
     }
