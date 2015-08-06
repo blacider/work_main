@@ -242,13 +242,13 @@ var __BASE = "<?php echo $base_url; ?>";
     dataType:'json',
     success:function(data){
 
-       // console.log(data);
+        console.log(data);
 
          if(data.disable_budget!=undefined)
         {
             if(data.disable_budget==1)
             {
-            $('#allow_budget').attr('checked', data.allow_budget);
+            $('#allow_budget').attr('checked', data.disable_budget);
             $("#allow_budget").trigger("chosen:updated");
             }
 
@@ -258,7 +258,7 @@ var __BASE = "<?php echo $base_url; ?>";
         {
             if(data.disable_borrow==1)
             {
-            $('#allow_borrow').attr('checked', data.allow_borrow);
+            $('#allow_borrow').attr('checked', data.disable_borrow);
             $("#allow_borrow").trigger("chosen:updated");
             }
 
