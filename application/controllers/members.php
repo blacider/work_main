@@ -839,8 +839,26 @@ class Members extends REIM_Controller {
             exit();
         }
         //$profile = $this->user->reim_get_user($id);
+	$last_error = $this->session->userdata('last_error');
+	$this->session->unset_userdata('last_error');
         $error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
+
+	$_ranks = $this->groups->get_rank_level(1);
+	$_levels = $this->groups->get_rank_level(0);
+	$ranks = array();
+	$levels = array();
+
+	if($_ranks['status'] > 0)
+	{
+		$ranks = $_ranks['data'];
+	}
+
+	if($_levels['status'])
+	{
+		$levels = $_levels['data'];
+	}
+
         $info = json_decode($this->users->reim_get_info($id), True);
         if(!$info['status']) return redirect('members/index');
         $info =  $info['data'];
@@ -869,12 +887,15 @@ class Members extends REIM_Controller {
                 ,'member' => $info
                 ,'self' => 0
                 ,'error' => $error 
+		,'last_error' => $last_error
                 ,'isOther' => 1
                 ,'avatar_path' => $path
                 ,'gmember' => $gmember
                 ,'manager_id' => $manager_id
                 ,'pid' => $id
                 ,'pro' => $pro
+		,'ranks' => $ranks
+		,'levels' => $levels
         		,'ug' => $ug
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')

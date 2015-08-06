@@ -197,7 +197,6 @@ class Users extends REIM_Controller {
             $this->session->set_userdata('login_error', '信息修改成功');
         } else {
             $this->session->set_userdata('login_error', $info['data']['msg']);
-            redirect(base_url('login'));
         }
         if ($isOther == 1)
             redirect(base_url('members/index'));
