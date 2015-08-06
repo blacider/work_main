@@ -92,6 +92,10 @@
                             $('#' + __id).innerHTML(data.msg);
                         }
                     }
+                    ,error:function(a,b,c)
+                    {
+
+                    }
             });
         });
     }
