@@ -3,32 +3,32 @@
 class Group_Model extends Reim_Model {
     public function reim_imports($data)
     {
-    	$jwt = $this->session->userdata('jwt');
-	if(!$jwt) return false;
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
 
-	$url = $this->get_url('load');
-	$buf = $this->do_Post($url,$data,$jwt);
+        $url = $this->get_url('load');
+        $buf = $this->do_Post($url,$data,$jwt);
 
-	log_message('debug','imports_back:' . json_encode($buf));
-	return json_decode($buf,True);
+        log_message('debug','imports_back:' . json_encode($buf));
+        return json_decode($buf,True);
     }
     public function update_rank_level($rank,$id,$name)
     {
-    	$jwt = $this->session->userdata('jwt');
-	if(!$jwt) return false;
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
 
-	$url = $this->get_url('rank');
-	$data = array
-		(
-		  'name' => $name
-		  ,'rank' => $rank
-		  ,'id' => $id
-		);
-	$buf = $this->do_Put($url,$data,$jwt);
-	log_message('debug','update_rank_level : ' . json_encode($buf));
+        $url = $this->get_url('rank');
+        $data = array
+            (
+                'name' => $name
+                ,'rank' => $rank
+                ,'id' => $id
+            );
+        $buf = $this->do_Put($url,$data,$jwt);
+        log_message('debug','update_rank_level : ' . json_encode($buf));
 
-	return json_decode($buf,True);
-    	
+        return json_decode($buf,True);
+
     }
 
     public function del_rank_level($rank,$id)
