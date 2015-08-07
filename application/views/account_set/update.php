@@ -140,11 +140,20 @@
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
                                 <input type="radio" name="range" value="1" style="position:relative;top:7px"></div>
                             <div class="col-xs-4 col-sm-4">
-                                <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="ranks[]"  data-placeholder="请选择职级">
+                                <select id="ranks" class="chosen-select tag-input-style" multiple="multiple" name="ranks[]"  data-placeholder="请选择职级">
                                 
                                     <?php
                                       
                                     foreach($ranks as $ug){
+				    if(in_array($ug['id'],$sob_ranks))
+				    {
+				    ?>
+                                    <option selected value="<?php echo $ug['id']; ?>
+                                        ">
+                                        <?php echo $ug['name']; ?></option>
+				    <?php
+				    }else
+				    {
                                     ?>
                                     <option value="<?php echo $ug['id']; ?>
                                         ">
@@ -152,6 +161,7 @@
                                     <?php
                                       
                                     }
+				    }
 
                                     ?></select>
                             </div>
@@ -161,17 +171,27 @@
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
                                 <input type="radio" name="range" value="2" style="position:relative;top:7px"></div>
                             <div class="col-xs-4 col-sm-4">
-                                <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="levels[]"  data-placeholder="请选择级别">
+                                <select id="levels" class="chosen-select tag-input-style" multiple="multiple" name="levels[]"  data-placeholder="请选择级别">
                                  
                                     <?php
                                     
                                     foreach($levels as $ug){
+				    if(in_array($ug['id'],$sob_levels))
+				    {
+				    ?>
+                                    <option selected value="<?php echo $ug['id']; ?>
+                                        ">
+                                        <?php echo $ug['name']; ?></option>
+				    <?php
+				    }else
+				    {
                                     ?>
                                     <option value="<?php echo $ug['id']; ?>
                                         ">
                                         <?php echo $ug['name']; ?></option>
                                     <?php
                                     }
+				    }
 
                                     ?></select>
                             </div>

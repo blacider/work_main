@@ -75,6 +75,10 @@ class Category extends REIM_Controller {
 	}
         $_sobs = $this->account_set->get_account_set_list();
 	$sobs = array();
+	$sob_ranks = array();
+	$sob_levels = array();
+	$sob_ranks_dic = array();
+	$sob_levels_dic =array();
 	$sob_groups = array();
 	if($_sobs['status'])
 	{
@@ -84,8 +88,18 @@ class Category extends REIM_Controller {
 	{
 		if($s['sob_id'] = $gid)
 		{
+			$sob_ranks = $s['ranks'];
+			$sob_levels = $s['levels'];
 			$sob_groups = $s['groups'];	
 		}
+	}
+	foreach($sob_ranks as $sr)
+	{
+		array_push($sob_ranks_dic,$sr['id']);
+	}
+	foreach($sob_levels as $sl)
+	{
+		array_push($sob_levels_dic,$sl['id']);
 	}
 
 	$_categories = $this->category->get_list();
@@ -141,6 +155,7 @@ class Category extends REIM_Controller {
 
         $ugroups = $this->ug->get_my_list();
 	log_message('debug','all_categories:' . json_encode($all_categories));
+	log_message('debug','sobs:' . json_encode($_sobs));
         $this->bsload('account_set/update',
             array(
                 'title' => '修改帐套'
@@ -154,6 +169,8 @@ class Category extends REIM_Controller {
 		,'members' => $members
 		,'ranks' => $ranks
 		,'levels' => $levels
+		,'sob_ranks' => $sob_ranks_dic
+		,'sob_levels' => $sob_levels_dic
                 ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
                     ,array('url' => base_url('category/index'),'name' => '标签和分类','class' => '')
