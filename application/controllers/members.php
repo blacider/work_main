@@ -11,81 +11,81 @@ class Members extends REIM_Controller {
     }
     public function update_rank_level($rank)
     {
-    	$this->need_group_it();	
-	
-	$name = $this->input->post('name');
-	$id = $this->input->post('rank_level_id');
-	log_message('debug','name:' . $name . ' ' . 'id:' .$id);
-	$buf = $this->groups->update_rank_level($rank,$id,$name);
-	if($buf['status'] > 0)
-	{
-		$this->session->set_userdata('last_error','修改成功');
-	}
-	else
-	{
-		$this->session->set_userdata('last_error',$buf['data']['msg']);
-	}
-	
-	return redirect(base_url('members/rank'));
+        $this->need_group_it();	
+
+        $name = $this->input->post('name');
+        $id = $this->input->post('rank_level_id');
+        log_message('debug','name:' . $name . ' ' . 'id:' .$id);
+        $buf = $this->groups->update_rank_level($rank,$id,$name);
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','修改成功');
+        }
+        else
+        {
+            $this->session->set_userdata('last_error',$buf['data']['msg']);
+        }
+
+        return redirect(base_url('members/rank'));
     }
     public function del_rank_level($rank,$id)
     {
-    	$this->need_group_it();
-	
-	$buf = $this->groups->del_rank_level($rank,$id);
-	if($buf['status'] > 0)
-	{
-		$this->session->set_userdata('last_error','删除成功');
-	}
-	else
-	{
-		$this->session->set_userdata('last_error',$buf['data']['msg']);
-	}
-    	
-	return redirect(base_url('members/rank'));
+        $this->need_group_it();
+
+        $buf = $this->groups->del_rank_level($rank,$id);
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','删除成功');
+        }
+        else
+        {
+            $this->session->set_userdata('last_error',$buf['data']['msg']);
+        }
+
+        return redirect(base_url('members/rank'));
     }
     public function create_rank_level($rank)
     {
-    	$this->need_group_it();
-    	$name = $this->input->post('name');
-	$buf = $this->groups->create_rank_level($rank,$name);
-	log_message('debug','name:' . $name);
-	if($buf['status'] > 0)
-	{
-		$this->session->set_userdata('last_error','添加成功');
-		return redirect(base_url('members/rank'));
-	}
-	else
-	{
-		$this->session->set_userdata('last_error','添加失败');
-		return redirect(base_url('members/rank'));
-	}
+        $this->need_group_it();
+        $name = $this->input->post('name');
+        $buf = $this->groups->create_rank_level($rank,$name);
+        log_message('debug','name:' . $name);
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','添加成功');
+            return redirect(base_url('members/rank'));
+        }
+        else
+        {
+            $this->session->set_userdata('last_error','添加失败');
+            return redirect(base_url('members/rank'));
+        }
     }
 
     public function rank()
     {
-    	$this->need_group_it();
-	$error = $this->session->userdata('last_error');
-	$this->session->unset_userdata('last_error');
-    	$_ranks = $this->groups->get_rank_level(1);
-    	$_levels = $this->groups->get_rank_level(0);
-	$ranks = array();
-	$levels = array();
-	if($_ranks['status'] > 0)
-	{
-		$ranks = $_ranks['data'];
-	}
+        $this->need_group_it();
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+        $_ranks = $this->groups->get_rank_level(1);
+        $_levels = $this->groups->get_rank_level(0);
+        $ranks = array();
+        $levels = array();
+        if($_ranks['status'] > 0)
+        {
+            $ranks = $_ranks['data'];
+        }
 
-	if($_levels > 0)
-	{
-		$levels = $_levels['data'];
-	}
+        if($_levels > 0)
+        {
+            $levels = $_levels['data'];
+        }
         $this->bsload('rank/index',
             array(
                 'title' => '职级设置'
-		,'levels' => $levels
-		,'ranks' => $ranks
-		,'error' => $error
+                ,'levels' => $levels
+                ,'ranks' => $ranks
+                ,'error' => $error
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/groups'), 'name' => '员工&部门', 'class' => '')
@@ -219,7 +219,6 @@ class Members extends REIM_Controller {
 
 
     public function groups(){
-    	$this->need_group_it();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
@@ -620,26 +619,26 @@ class Members extends REIM_Controller {
         }
         $_emails = array();
         $_phones = array();
-	$_names = array();
-	$names = array();
+        $_names = array();
+        $names = array();
         foreach($gmember as $g){
             $__email = $g['email']; 
             $__phone = $g['phone']; 
-	    $__name = $g['nickname'];
-	    if(!array_key_exists($__name,$_names))
-	    {
-	    	$names[$__name] = 1;		
-	    }
-	    else
-	    {
-	    	$names[$__name] += 1;
-   	    }
+            $__name = $g['nickname'];
+            if(!array_key_exists($__name,$_names))
+            {
+                $names[$__name] = 1;		
+            }
+            else
+            {
+                $names[$__name] += 1;
+            }
             if($__email)
                 array_push($_emails, $__email);
             if($__phone)
                 array_push($_phones, $__phone);
-	    if($__name)
-		 array_push($_names,$__name);
+            if($__name)
+                array_push($_names,$__name);
         }
 
         $data = array();
@@ -663,119 +662,119 @@ class Members extends REIM_Controller {
             if(in_array($obj['email'], $_emails) || in_array($obj['phone'], $_phones)){
                 $obj['status'] = 1;
             }
-	    log_message('debug','obj_name' . $obj['name']);
-	    if(!in_array($obj['name'],$_names))
-	    {
-	    	$names[$obj['name']] = 1;
-	    }
-	    else
-	    {
-	    		$names[$obj['name']] += 1;
-	    }
-	    array_push($_names,$obj['name']);
+            log_message('debug','obj_name' . $obj['name']);
+            if(!in_array($obj['name'],$_names))
+            {
+                $names[$obj['name']] = 1;
+            }
+            else
+            {
+                $names[$obj['name']] += 1;
+            }
+            array_push($_names,$obj['name']);
             array_push($data, $obj);
         }
-	$_ranks = $this->reim_show->rank_level(1);
-	$ranks = array();
-	$_levels = $this->reim_show->rank_level(0);
-	$levels = array();
-	if($_ranks['status']>0)
-	{
-		$ranks = $_ranks['data'];
-	}
-	if($_levels['status']>0)
-	{
-		$levels = $_levels['data'];
-	}
+        $_ranks = $this->reim_show->rank_level(1);
+        $ranks = array();
+        $_levels = $this->reim_show->rank_level(0);
+        $levels = array();
+        if($_ranks['status']>0)
+        {
+            $ranks = $_ranks['data'];
+        }
+        if($_levels['status']>0)
+        {
+            $levels = $_levels['data'];
+        }
 
 
 
-	$ug = array();
-	$_ug = $this->ug->get_my_list();
-	if($_ug['status'] > 0)
-	{
-		$ug = $_ug['data']['group'];
-	}
-		
+        $ug = array();
+        $_ug = $this->ug->get_my_list();
+        if($_ug['status'] > 0)
+        {
+            $ug = $_ug['data']['group'];
+        }
 
 
-	foreach($data as &$d)
-	{
-		log_message('debug','isEq:' . in_array($d['name'],$_names));
-		if(in_array($d['manager'],$_names))
-		{
-			if($names[$d['manager']] > 1)
-			{
-				$d['status'] += 4;	
-				$d['manager_id'] = 0;
-			}
-		}
-		else
-		{
-			$d['status'] += 4;
-			$d['manager_id'] = 0 ;
-		}
-		
-		if($names[$d['name']] > 1)
-		{
-			$d['status'] += 2;
-		}
-		if($d['status']<4)
-		{
-			foreach($gmember as $m)
-			{
-				if($m['nickname'] == $d['manager'])
-				{
-					$d['manager_id'] = $m['id'];
-				}
-			}
-		}
 
-		$d['rank_id'] = 0;
-		foreach($ranks as $r)
-		{
-			if($d['rank'] == $r['name'])
-			{
-				$d['rank_id'] = $r['id'];
-				break;
-			}
-		}
-		$d['level_id'] = 0;
-		foreach($levels as $l)
-		{
-			if($d == $l['name'])
-			{
-				$d['level_id'] = $l['id'];
-				break;
-			}
-		}
-		$groups = array();
-		$gids = array();
-		if($d['group_name'])
-		{
-			$groups = explode(',',$d['group_name']);
-		}
-		if($groups)
-		{
-			foreach($ug as $g)
-			{
-				foreach($groups as $my_g)
-				{
-					if($my_g == $g['name'])
-					{
-						array_push($gids,$g['id']);
-					}
-				}
-			}
-		}
-		$d['gids'] = '';
-		if($gids)
-		{
-			$d['gids'] = implode(',',$gids);
-		}
-	}
+        foreach($data as &$d)
+        {
+            log_message('debug','isEq:' . in_array($d['name'],$_names));
+            if(in_array($d['manager'],$_names))
+            {
+                if($names[$d['manager']] > 1)
+                {
+                    $d['status'] += 4;	
+                    $d['manager_id'] = 0;
+                }
+            }
+            else
+            {
+                $d['status'] += 4;
+                $d['manager_id'] = 0 ;
+            }
 
-	log_message('debug','data:' . json_encode($data));
+            if($names[$d['name']] > 1)
+            {
+                $d['status'] += 2;
+            }
+            if($d['status']<4)
+            {
+                foreach($gmember as $m)
+                {
+                    if($m['nickname'] == $d['manager'])
+                    {
+                        $d['manager_id'] = $m['id'];
+                    }
+                }
+            }
+
+            $d['rank_id'] = 0;
+            foreach($ranks as $r)
+            {
+                if($d['rank'] == $r['name'])
+                {
+                    $d['rank_id'] = $r['id'];
+                    break;
+                }
+            }
+            $d['level_id'] = 0;
+            foreach($levels as $l)
+            {
+                if($d == $l['name'])
+                {
+                    $d['level_id'] = $l['id'];
+                    break;
+                }
+            }
+            $groups = array();
+            $gids = array();
+            if($d['group_name'])
+            {
+                $groups = explode(',',$d['group_name']);
+            }
+            if($groups)
+            {
+                foreach($ug as $g)
+                {
+                    foreach($groups as $my_g)
+                    {
+                        if($my_g == $g['name'])
+                        {
+                            array_push($gids,$g['id']);
+                        }
+                    }
+                }
+            }
+            $d['gids'] = '';
+            if($gids)
+            {
+                $d['gids'] = implode(',',$gids);
+            }
+        }
+
+        log_message('debug','data:' . json_encode($data));
         $this->bsload('members/imports',
             array(
                 'title' => '确认导入',
@@ -795,9 +794,9 @@ class Members extends REIM_Controller {
         $id = $this->input->post('id');
         if(!$member) die(json_encode(array('status' => false, 'id' => $id, 'msg' => '参数错误')));
         $obj = json_decode(base64_decode($member), True);
-	log_message('debug','obj:' . json_encode($obj));
+        log_message('debug','obj:' . json_encode($obj));
 
-	$data = array();
+        $data = array();
         $data['email'] = $obj['email'];
         $data['nickname'] = $obj['name'];
         $data['phone'] = $obj['phone'];
@@ -805,34 +804,34 @@ class Members extends REIM_Controller {
         $data['cardloc'] = $obj['cardloc'];
         $data['cardbank'] = $obj['cardbank'];
         $data['cardno'] = $obj['cardno'];
-	$data['localid'] = $obj['id'];
-	$group_name = $obj['group_name'];
-	$data['manager_id'] = $obj['manager_id'];
-	$data['rank'] = $obj['rank_id'];
-	$data['level'] = $obj['level_id'];
+        $data['localid'] = $obj['id'];
+        $group_name = $obj['group_name'];
+        $data['manager_id'] = $obj['manager_id'];
+        $data['rank'] = $obj['rank_id'];
+        $data['level'] = $obj['level_id'];
 
-	if(!$data['localid'])
-	{
-		$data['localid'] = 0;
-	}
+        if(!$data['localid'])
+        {
+            $data['localid'] = 0;
+        }
         if($data['phone'] == $data['email'] && $data['email'] == ""){
             die(json_encode(array('status' => false, 'id' => $id, 'msg' => '邮箱手机必须有一个')));
         }
-	log_message('debug','data:' . json_encode($data));
-	$info = $this->groups->reim_imports($data);
+        log_message('debug','data:' . json_encode($data));
+        $info = $this->groups->reim_imports($data);
         die(json_encode(array('status' => true, 'id' => $id)));
-	/*
-	if($info['status']>0)
-	{
-		die(json_encode(array('msg' => '导入成功')));
-	}
-	else
-	{
-		die(json_encode(array('msg' => '导入失败')));
-	}
+    /*
+    if($info['status']>0)
+    {
+        die(json_encode(array('msg' => '导入成功')));
+    }
+    else
+    {
+        die(json_encode(array('msg' => '导入失败')));
+    }
         $info = $this->groups->doimports($email, $nickname, $phone, 0, '', $account, $cardno, $cardbank, $cardloc);
         die(json_encode(array('status' => true, 'id' => $id)));
-	*/
+     */
     }
 
     public function delgroup($id = 0){
@@ -945,34 +944,34 @@ class Members extends REIM_Controller {
             exit();
         }
         //$profile = $this->user->reim_get_user($id);
-	$last_error = $this->session->userdata('last_error');
-	$this->session->unset_userdata('last_error');
+        $last_error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         $error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
 
-	$_ranks = $this->groups->get_rank_level(1);
-	$_levels = $this->groups->get_rank_level(0);
-	$ranks = array();
-	$levels = array();
+        $_ranks = $this->groups->get_rank_level(1);
+        $_levels = $this->groups->get_rank_level(0);
+        $ranks = array();
+        $levels = array();
 
-	if($_ranks['status'] > 0)
-	{
-		$ranks = $_ranks['data'];
-	}
+        if($_ranks['status'] > 0)
+        {
+            $ranks = $_ranks['data'];
+        }
 
-	if($_levels['status'])
-	{
-		$levels = $_levels['data'];
-	}
+        if($_levels['status'])
+        {
+            $levels = $_levels['data'];
+        }
 
         $info = json_decode($this->users->reim_get_info($id), True);
         if(!$info['status']) return redirect('members/index');
         $info =  $info['data'];
         $manager_id = $info['manager_id'];
         $m_info = json_decode($this->users->reim_get_info($manager_id),True);
-	$pro = $info;
-	$ug = $this->reim_show->usergroups();
-	log_message('debug','m_info:' . json_encode($m_info['data']));
+        $pro = $info;
+        $ug = $this->reim_show->usergroups();
+        log_message('debug','m_info:' . json_encode($m_info['data']));
 
         $group = $this->groups->get_my_list();
 
@@ -993,16 +992,16 @@ class Members extends REIM_Controller {
                 ,'member' => $info
                 ,'self' => 0
                 ,'error' => $error 
-		,'last_error' => $last_error
+                ,'last_error' => $last_error
                 ,'isOther' => 1
                 ,'avatar_path' => $path
                 ,'gmember' => $gmember
                 ,'manager_id' => $manager_id
                 ,'pid' => $id
                 ,'pro' => $pro
-		,'ranks' => $ranks
-		,'levels' => $levels
-        		,'ug' => $ug
+                ,'ranks' => $ranks
+                ,'levels' => $levels
+                ,'ug' => $ug
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')

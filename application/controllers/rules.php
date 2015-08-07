@@ -12,6 +12,7 @@ class Rules extends REIM_Controller {
     }
 
     public function add(){
+        $this->need_group_it();
         $cates = $this->category->get_list();
         if($cates['status']){
             $cates = $cates['data']['categories'];
@@ -46,6 +47,7 @@ class Rules extends REIM_Controller {
 
 
     public function index(){
+        $this->need_group_it();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
@@ -80,6 +82,7 @@ class Rules extends REIM_Controller {
 
 
     public function update(){
+        $this->need_group_it();
         $gid = $this->input->post('src');
         $uid = $this->input->post('dest');
         $cates = $this->input->post('cates');
@@ -89,7 +92,7 @@ class Rules extends REIM_Controller {
             //return redirect(base_url('rules'));
         } 
         $this->rules->update($gid, $uid, join(',', $cates), join(',', $amounts));
-        //return redirect(base_url('rules'));
+        return redirect(base_url('rules'));
         //print_r($cates);
         //print_r($amounts);
     }
