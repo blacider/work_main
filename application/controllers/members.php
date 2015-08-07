@@ -9,12 +9,58 @@ class Members extends REIM_Controller {
         $this->load->model('group_model', 'groups');
         $this->load->model('reim_show_model','reim_show');
     }
+    public function imports_create_group()
+    {
+    	$this->need_group_it();
+	$name=$this->input->post('name');
+
+	$buf = $this->ug->create_group(0,'',$name,'',0);
+	if($buf['status']>0)
+	{
+		die(json_encode(array('msg' => '部门添加成功')));
+	}
+	else
+	{
+		die(json_encode(array('msg' => $buf['data']['msg'])));
+	}
+    }
+    public function imports_create_rank_level($rank)
+    {
+    	$this->need_group_it();
+    	$name = $this->input->post('name');
+
+	$buf = $this->groups->create_rank_level($rank,$name);
+	log_message('debug','name:' . $name);
+	if($buf['status'] > 0)
+	{
+		die(json_encode(array('msg' => '添加职位成功')));
+	}
+	else
+	{
+		die(json_encode(array('msg' => '添加职位失败')));
+	}
+    }
     public function update_rank_level($rank)
     {
     	$this->need_group_it();	
 	
 	$name = $this->input->post('name');
 	$id = $this->input->post('rank_level_id');
+
+	$_rank_level = $this->groups->get_rank_level($rank);
+	$rank_level = array();
+	if($_rank_level['status'] > 0)
+	{
+		$rank_level=$_rank_level['data'];
+	}
+	foreach($rank_level as $rl)
+	{
+		if($name == $rl['name'])
+		{
+			$this->session->set_userdata('last_error','职称已经存在,修改失败');
+			return redirect(base_url('members/rank'));
+		}
+	}
 	log_message('debug','name:' . $name . ' ' . 'id:' .$id);
 	$buf = $this->groups->update_rank_level($rank,$id,$name);
 	if($buf['status'] > 0)
@@ -48,6 +94,22 @@ class Members extends REIM_Controller {
     {
     	$this->need_group_it();
     	$name = $this->input->post('name');
+
+	$_rank_level = $this->groups->get_rank_level($rank);
+	$rank_level = array();
+	if($_rank_level['status'] > 0)
+	{
+		$rank_level=$_rank_level['data'];
+	}
+	foreach($rank_level as $rl)
+	{
+		if($name == $rl['name'])
+		{
+			$this->session->set_userdata('last_error','职称已经存在,添加失败');
+			return redirect(base_url('members/rank'));
+		}
+	}
+
 	$buf = $this->groups->create_rank_level($rank,$name);
 	log_message('debug','name:' . $name);
 	if($buf['status'] > 0)
@@ -628,11 +690,13 @@ class Members extends REIM_Controller {
 	    $__name = $g['nickname'];
 	    if(!array_key_exists($__name,$_names))
 	    {
-	    	$names[$__name] = 1;		
+	    	$names[$__name]['count'] = 1;		
+		$names[$__name]['ids']=[$g['id']];
 	    }
 	    else
 	    {
-	    	$names[$__name] += 1;
+	    	$names[$__name]['count'] += 1;
+		array_push($names[$__name]['ids'],$g['id']);
    	    }
             if($__email)
                 array_push($_emails, $__email);
@@ -666,11 +730,11 @@ class Members extends REIM_Controller {
 	    log_message('debug','obj_name' . $obj['name']);
 	    if(!in_array($obj['name'],$_names))
 	    {
-	    	$names[$obj['name']] = 1;
+	    	$names[$obj['name']]['count'] = 1;
 	    }
 	    else
 	    {
-	    		$names[$obj['name']] += 1;
+	    		$names[$obj['name']]['count'] += 1;
 	    }
 	    array_push($_names,$obj['name']);
             array_push($data, $obj);
@@ -688,8 +752,18 @@ class Members extends REIM_Controller {
 		$levels = $_levels['data'];
 	}
 
+	$ranks_dic = array();
+	foreach($ranks as $r)
+	{
+		$ranks_dic[$r['name']] = $r['id'];
+	}
 
 
+	$levels_dic = array();
+	foreach($levels as $l)
+	{
+		$levels_dic[$l['name']] = $l['id'];
+	}
 	$ug = array();
 	$_ug = $this->ug->get_my_list();
 	if($_ug['status'] > 0)
@@ -697,14 +771,31 @@ class Members extends REIM_Controller {
 		$ug = $_ug['data']['group'];
 	}
 		
+	$ug_dic = array();
+
+	foreach($ug as $u)
+	{
+		if(array_key_exists($u['name'],$ug_dic))
+		{
+			array_push($ug_dic[$u['name']],$u['id']);
+		}
+		else
+		{
+			$ug_dic[$u['name']] = [$u['id']];
+		}
+	}
 
 
+	log_message('debug','name:' . json_encode($names));
+	$no_ranks = array();
+	$no_levels = array();
+	$no_groups = array();
 	foreach($data as &$d)
 	{
 		log_message('debug','isEq:' . in_array($d['name'],$_names));
 		if(in_array($d['manager'],$_names))
 		{
-			if($names[$d['manager']] > 1)
+			if($names[$d['manager']]['count'] > 1)
 			{
 				$d['status'] += 4;	
 				$d['manager_id'] = 0;
@@ -712,12 +803,16 @@ class Members extends REIM_Controller {
 		}
 		else
 		{
-			$d['status'] += 4;
-			$d['manager_id'] = 0 ;
+			if($d['manager'])
+			{
+				$d['status'] += 4;
+			}
+			$d['manager_id'] = 0;
 		}
 		
-		if($names[$d['name']] > 1)
+		if($names[$d['name']]['count'] > 1)
 		{
+			log_message('debug','counts:' . $names[$d['name']]['count'] );
 			$d['status'] += 2;
 		}
 		if($d['status']<4)
@@ -728,58 +823,71 @@ class Members extends REIM_Controller {
 				{
 					$d['manager_id'] = $m['id'];
 				}
+				else
+				{
+					$d['manager_id'] = 0;
+				}
 			}
 		}
 
 		$d['rank_id'] = 0;
-		foreach($ranks as $r)
+		if($d['rank'])
 		{
-			if($d['rank'] == $r['name'])
+			if(array_key_exists($d['rank'],$ranks_dic))
 			{
-				$d['rank_id'] = $r['id'];
-				break;
+				$d['rank_id'] = $ranks_dic[$d['rank']];
+			}
+			else
+			{
+				if(!in_array($d['rank'],$no_ranks))
+					array_push($no_ranks,$d['rank']);
 			}
 		}
+		
 		$d['level_id'] = 0;
-		foreach($levels as $l)
+		if($d['level'])
 		{
-			if($d == $l['name'])
+			if(array_key_exists($d['level'],$levels_dic))
 			{
-				$d['level_id'] = $l['id'];
-				break;
+				$d['level_id'] = $levels_dic[$d['level']];
+			}
+			else
+			{
+				if(!in_array($d['level'],$no_levels))
+					array_push($no_levels,$d['level']);
 			}
 		}
 		$groups = array();
-		$gids = array();
+		$d['gid'] = 0;
 		if($d['group_name'])
 		{
-			$groups = explode(',',$d['group_name']);
-		}
-		if($groups)
-		{
-			foreach($ug as $g)
+			if(array_key_exists($d['group_name'],$ug_dic))
 			{
-				foreach($groups as $my_g)
-				{
-					if($my_g == $g['name'])
-					{
-						array_push($gids,$g['id']);
-					}
-				}
+				$d['gid'] = $ug_dic[$d['group_name']][0];
 			}
-		}
-		$d['gids'] = '';
-		if($gids)
-		{
-			$d['gids'] = implode(',',$gids);
+			else
+			{
+				if(!in_array($d['group_name'],$no_groups))
+					array_push($no_groups,$d['group_name']);
+			}
 		}
 	}
 
 	log_message('debug','data:' . json_encode($data));
+	log_message('debug','rank_dic:' . json_encode($ranks_dic));
+	log_message('debug','level_dic:' . json_encode($levels_dic));
+	log_message('debug','ug_dic:' . json_encode($ug_dic));
+	log_message('debug','no_ranks:' . json_encode($no_ranks));
+	log_message('debug','no_levels:' . json_encode($no_levels));
+	log_message('debug','no_groups:' . json_encode($no_groups));
+	
         $this->bsload('members/imports',
             array(
                 'title' => '确认导入',
                 'members' => $data
+		,'no_ranks' => $no_ranks
+		,'no_levels' => $no_levels
+		,'no_groups' => $no_groups
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')

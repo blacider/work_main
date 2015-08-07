@@ -27,6 +27,7 @@
                                    
                                     <td>
                                         <input type="hidden" data-id="m_<?php echo md5($d['email']); ?>" data-exist="<?php echo $d['status']; ?>"  class="data-maintainer " value="<?php echo base64_encode(json_encode($d)); ?>">
+                                       
                                          <?php echo $d['id'];?></td>
                                     <td><?php echo $d['name']; ?></td>
                                     <td><?php echo $d['email']; ?></td>
@@ -69,6 +70,24 @@
 
 <script language="javascript">
     var __BASE = "<?php echo base_url(); ?>";
+    var _no_ranks = '<?php echo json_encode($no_ranks)?>';
+    var _no_levels = '<?php echo json_encode($no_levels)?>';
+    var _no_groups = '<?php echo json_encode($no_groups)?>';
+    var no_ranks = '';
+    if(_no_ranks)
+    { no_ranks = JSON.parse(_no_ranks);}
+
+    var no_levels = '';
+    if(_no_levels)
+    { no_levels = JSON.parse(_no_levels);}
+
+    var no_groups = '';
+    if(_no_groups)
+    { no_groups = JSON.parse(_no_groups);}
+
+    console.log(no_ranks);
+    console.log(no_levels);
+    console.log(no_groups);
     function make_invite(){
         $('.data-maintainer').each(function(idx, val){
             var _status = $(this).data('exist');
@@ -97,8 +116,82 @@
 
                     }
             });
+            
+        });
+ 
+    }
+function travel()
+{
+    for(var i=0;i<no_ranks.length;i++)
+    {
+        var count = no_ranks.length;
+        $.ajax({
+            url : __BASE  + "members/imports_create_rank_level/1"
+                    ,method: 'POST'
+                    ,dataType: 'json'
+                    ,data : {'name' : no_ranks[i]}
+                    ,success : function(data){
+                       count--;
+                       if(count == 0)
+                       {
+                        show_notify('职级创建成功');
+                       }
+                    }
+                    ,error:function(a,b,c)
+                    {
+
+                    }
         });
     }
+
+    for(var i=0;i<no_levels.length;i++)
+    {
+        var count = no_levels.length;
+        $.ajax({
+            url : __BASE  + "members/imports_create_rank_level/0"
+                    ,method: 'POST'
+                    ,dataType: 'json'
+                    ,data : {'name' : no_levels[i]}
+                    ,success : function(data){
+                       count--;
+                       if(count == 0)
+                       {
+                        show_notify('级别创建成功');
+                       }
+                    }
+                    ,error:function(a,b,c)
+                    {
+
+                    }
+        });
+    }
+
+
+    for(var i=0;i<no_groups.length;i++)
+    {
+        var count = no_groups.length;
+        $.ajax({
+            url : __BASE  + "members/imports_create_group"
+                    ,method: 'POST'
+                    ,dataType: 'json'
+                    ,data : {'name' : no_groups[i]}
+                    ,success : function(data){
+                        console.log(data.msg);
+                       count--;
+                       if(count == 0)
+                       {
+                        show_notify('部门创建成功');
+                       }
+                    }
+                    ,error:function(a,b,c)
+                    {
+
+                    }
+        });
+    }
+
+}
+   
 $(document).ready(function(){
     $('.member').each(function(idx,val){
         var _id = $(this).data('id');
@@ -116,7 +209,7 @@ $(document).ready(function(){
             $(this).addClass('success');
         }
     });
-    $('#save').click(make_invite);
+    $('#save').click(travel);
     $('#resave').click(make_invite);
 });
 </script>
