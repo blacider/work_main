@@ -61,6 +61,12 @@ foreach($members as $m) {
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">总额</label>
+                                <div class="col-xs-9 col-sm-9">
+                                    <span class="middle" id="tamount">0</span>
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">选择消费</label>
@@ -81,7 +87,7 @@ foreach($members as $m) {
 foreach($report['items'] as $i){
                                         ?>
                                         <tr>
-                                            <td><input checked='true' name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller"></td>
+                                            <td><input checked='true' name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $i['amount'] ?>"></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['category_name']; ?></td>
                                             <td><?php echo $i['amount']; ?></td>
@@ -110,7 +116,7 @@ foreach($items as $i){
     if($i['rid'] == 0 && $i['prove_ahead'] == 0){
                                         ?>
                                         <tr>
-                                            <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller"></td>
+                                            <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $i['amount'] ?>"></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['category'];  echo $i['status'];?></td>
                                             <td><?php echo $i['amount']; ?></td>
@@ -218,5 +224,22 @@ $(document).ready(function(){
     $('.cancel').click(function(){
         $('#reset').click();
     });
+    $('.amount').each(function(idx, item) {
+        $(this).click(function(){
+            update_tamount();
+        });
+    });
+    update_tamount();
 });
+function update_tamount(){
+    var sum = 0;
+    $('.amount').each(function(){
+        if($(this).is(':checked')){
+            var amount = $(this).data('amount');
+            amount = parseInt(amount.substr(1));
+            sum+=amount;
+        };
+    });
+    $('#tamount').html(sum);
+}
 </script>

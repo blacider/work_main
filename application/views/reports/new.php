@@ -68,6 +68,12 @@
 
 
                             <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">总额</label>
+                                <div class="col-xs-9 col-sm-9">
+                                    <span class="middle" id="tamount">0</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">选择消费</label>
                                 <div class="col-xs-9 col-sm-9">
                                     <table class="table table-border">
@@ -143,7 +149,6 @@ echo $buf;
 </div>
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
-console.log(<?php echo $user['manager_id'] ?>);
 $(document).ready(function(){
     //var now = moment();
     $('#date-timepicker1').datetimepicker({
@@ -155,7 +160,7 @@ $(document).ready(function(){
             linkFormat: "YYYY-MM-DD HH:mm",
             sideBySide: true
     }).next().on('dp.change', function(ev){
-        console.log(ev.date);
+        //console.log(ev.date);
     }).on(ace.click_event, function(){
         $(this).prev().focus();
     });
@@ -252,9 +257,25 @@ $(document).ready(function(){
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
     });
+    $('.amount').each(function(idx, item) {
+        $(this).click(function(){
+            update_tamount();
+        });
+    });
     $('.cancel').click(function(){
         $('#reset').click();
     });
 
 });
+function update_tamount(){
+    var sum = 0;
+    $('.amount').each(function(){
+        if($(this).is(':checked')){
+            var amount = $(this).data('amount');
+            amount = parseInt(amount.substr(1));
+            sum+=amount;
+        };
+    });
+    $('#tamount').html(sum);
+}
 </script>
