@@ -412,10 +412,9 @@ class Company extends REIM_Controller {
 
         $rname = $this->input->post('rule_name');
         $sob_id = $this->input->post('sobs');
-        //	$category_id = $this->input->post('category');
         $_categories_id = $this->input->post('categories');
         $category_ids = json_decode($_categories_id,True);
-        if(category_ids)
+        if($category_ids)
         {
             $category_ids = implode(',',$category_ids);
         }
@@ -461,6 +460,7 @@ class Company extends REIM_Controller {
         log_message('debug',"####:".json_encode($frequency));
 
         $start_time = $this->input->post('sdt');
+        $policies = array();
         $end_time = $this->input->post('edt');
         $buf=$this->company->create_rule($rname,$category_ids,$frequency,$frequency_time,$all_members,implode(',',$groups),implode(',',$members));	
         log_message("debug","####CREATE:".json_encode($buf));

@@ -11,6 +11,7 @@ class Tags extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
+        $this->need_group_it();
         $tags = $this->tags->get_list();
         if($tags){
             $tags = $tags['data']['tags'];
@@ -30,6 +31,7 @@ class Tags extends REIM_Controller {
 
    
     public function create(){
+        $this->need_group_it();
         $name = $this->input->post('category_name');
         $id = $this->input->post('category_id');
         if($id > 0){
@@ -49,6 +51,7 @@ class Tags extends REIM_Controller {
 
 
     public function drop($id = 0){
+        $this->need_group_it();
         if(!$id) {
             log_message("debug", "DROP: $id");
             $this->session->set_userdata('last_error', '参数错误');
