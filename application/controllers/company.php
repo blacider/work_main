@@ -414,14 +414,14 @@ class Company extends REIM_Controller {
         $sob_id = $this->input->post('sobs');
         $_categories_id = $this->input->post('categories');
         $category_ids = json_decode($_categories_id,True);
-        if($category_ids)
-        {
-            $category_ids = implode(',',$category_ids);
-        }
-        else
-        {
-            $category_ids = '';
-        }
+
+	$_freq_counts = $this->input->post('freq_counts');
+	$freq_counts = json_decode($_freq_counts,True);
+	$_freq_periods = $this->input->post('freq_periods');
+	$freq_periods = json_decode($_freq_periods,True);
+	$_freq_unlimits = $this->input->post('freq_unlimits');
+	$freq_unlimits = json_decode($_freq_unlimits,True);
+	
 
         $amount = $this->input->post('rule_amount');
         $amount_unlimit = $this->input->post('amount_unlimit');
@@ -432,9 +432,35 @@ class Company extends REIM_Controller {
         //	$frequency_time = $this->input->post('frequency_time');
         $frequency_time = 1;
 
-        $groups = $this->input->post('gids');
-        $members = $this->input->post('uids');
+        $_groups = $this->input->post('gids');
+	$groups = array();
+        $_members = $this->input->post('uids');
+	$members = array();
+
         $all_members = $this->input->post('all_members');
+	$_ranks = $this->input->post('ranks');
+	$_levels = $this->input->post('levels');
+	$ranks = '';
+	$levels ='';
+
+	if($_groups)
+	{
+		$groups = implode(',',$_groups);
+	}
+	if($_members)
+	{
+		$members = implode(',',$_members);
+	}
+
+	if($_ranks)
+	{
+		$ranks = implode(',',$_ranks);
+	}
+
+	if($_levels)
+	{
+		$levels = implode(',',$_levels);
+	}
 
         if($frequency == '')
         {
@@ -454,17 +480,29 @@ class Company extends REIM_Controller {
         }
         if($all_members == 1)
         {
-            $groups = array();
-            $members = array();
+	    
+	    $ranks = '';
+	    $levels = '' ;
+            $groups = '';
+            $members = '';
         }
         log_message('debug',"####:".json_encode($frequency));
+	log_message('debug','ranks:' . $ranks);
+	log_message('debug','levels:' . $levels);
 
-        $start_time = $this->input->post('sdt');
         $policies = array();
-        $end_time = $this->input->post('edt');
-        $buf=$this->company->create_rule($rname,$category_ids,$frequency,$frequency_time,$all_members,implode(',',$groups),implode(',',$members));	
+	$len = count($category_ids);
+	for($i = 0 ; $i < $len ; $i++)
+	{
+		if($freq_unlimits[$i] == 1)
+			$freq_counts[$i] = 0;
+		array_push($policies,array('category'=>$category_ids[$i],'freq_count' => $freq_counts[$i] , 'freq_period' => $freq_periods[$i]));
+	}
+	/*
+        $buf=$this->company->create_rule($rname,$category_ids,$frequency,$frequency_time,$all_members,$groups,$members,$ranks,$levels);	
         log_message("debug","####CREATE:".json_encode($buf));
         return redirect(base_url('company/show'));
+	*/
     }
 
     public function show(){
@@ -496,6 +534,21 @@ class Company extends REIM_Controller {
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
+	$_ranks = $this->groups->get_rank_level(1);
+	$_levels = $this->groups->get_rank_level(0);
+	
+	$ranks = array();
+	if($_ranks['status'] > 0)
+	{
+		$ranks = $_ranks['data'];
+	}
+
+	$levels = array();
+	if($_levels['status'] > 0)
+	{
+		$levels = $_levels['data'];
+	}
+	
         $group = $this->groups->get_my_list();
         $_gnames = $this->ug->get_my_list();
         $gnames = $_gnames['data']['group'];
@@ -513,6 +566,8 @@ class Company extends REIM_Controller {
                 ,'error'=>$error
                 ,'member'=>$gmember
                 ,'group'=>$gnames
+		,'ranks' => $ranks
+		,'levels' => $levels
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')

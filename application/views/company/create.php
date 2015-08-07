@@ -181,6 +181,31 @@
                               <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">适用范围</label>
                                 <div class="col-xs-3 col-sm-3">
+                                    <select class="chosen-select tag-input-style" id="ranks" name="ranks[]" multiple="multiple" data-placeholder="请选择职级" placeholder="请选择职级">
+                                    <?php 
+                                    foreach($ranks as $g){
+                                    ?>
+                                        <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                    </select>
+                                </div>
+                                <div class="col-xs-3 col-sm-3">
+                                    <select class="chosen-select tag-input-style" id="levels" name="levels[]" multiple="multiple" data-placeholder="请选择级别">
+                                    <?php 
+                                    foreach($levels as $m){
+                                    ?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                    </select>
+                                </div>
+			     </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right"></label>
+                                <div class="col-xs-3 col-sm-3">
                                     <select class="chosen-select tag-input-style" id="group" name="gids[]" multiple="multiple" data-placeholder="请选择部门" placeholder="请选择部门">
                                     <?php 
                                     foreach($group as $g){
@@ -215,6 +240,9 @@
 
                            
                             <input type="hidden" id="categories" name="categories" />
+                            <input type="hidden" id="freq_counts" name="freq_counts" />
+                            <input type="hidden" id="freq_periods" name="freq_periods" />
+                            <input type="hidden" id="freq_unlimits" name="freq_unlimits" />
                             <input type="hidden" id="renew" name="renew" value="0" />
                             <input type="reset" style="display:none;" id="reset">
                             <div class="clearfix form-actions">
@@ -415,6 +443,28 @@ $(document).ready(function(){
     }
     $('#categories').val(JSON.stringify(categories));
    // console.log(JSON.stringify(categories));
+    var freq_periods = []
+    var els =document.getElementsByName("freq_period");
+        for (var i = 0, j = els.length; i < j; i++){
+    //    console.log(els[i].value);
+        freq_periods.push(els[i].value);
+    }
+    $('#freq_periods').val(JSON.stringify(freq_periods));
+    var freq_counts = []
+    var els =document.getElementsByName("freq_count");
+        for (var i = 0, j = els.length; i < j; i++){
+    //    console.log(els[i].value);
+        freq_counts.push(els[i].value);
+    }
+    $('#freq_counts').val(JSON.stringify(freq_counts));
+
+    var freq_unlimits = []
+    var els =document.getElementsByName("freq_unlimit");
+        for (var i = 0, j = els.length; i < j; i++){
+    //    console.log(els[i].value);
+        freq_counts.push(els[i].value);
+    }
+    $('#freq_unlimits').val(JSON.stringify(freq_unlimits));
 
      $('#mainform').submit();
 /*	if(name=='')
@@ -468,11 +518,15 @@ $(document).ready(function(){
            // console.log("helleo");
             $('#member').prop('disabled',true).trigger("chosen:updated");
             $('#group').prop('disabled',true).trigger("chosen:updated");
+	    $('#ranks').prop('disabled',true).trigger("chosen:updated");
+	    $('#levels').prop('disabled',true).trigger("chosen:updated");
         }
         else
         {
             $('#member').prop('disabled',false).trigger("chosen:updated");
             $('#group').prop('disabled',false).trigger("chosen:updated");
+	    $('#ranks').prop('disabled',false).trigger("chosen:updated");
+	    $('#levels').prop('disabled',false).trigger("chosen:updated");
         }
     });
 
