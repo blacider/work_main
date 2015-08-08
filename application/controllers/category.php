@@ -115,7 +115,7 @@ class Category extends REIM_Controller {
 	foreach($categories as $cate)
 	{
 		$all_categories[$cate['id']]=array();
-        	$path = base_url($this->users->reim_get_hg_avatar($cate['avatar']));
+		$path = "http://api.cloudbaoxiao.com/online/static/" . $cate['avatar'] .".png";
 		if($cate['sob_id'] == $gid && $cate['pid'] <= 0 )
 		{
 			array_push($sob_keys,$cate['id']);
@@ -123,7 +123,7 @@ class Category extends REIM_Controller {
 		$all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name']);
 	}
 			
-        	$path = base_url($this->users->reim_get_hg_avatar(0));
+		$path = "http://api.cloudbaoxiao.com/online/static/0.png";
 		$all_categories[0]=array('child'=>array(),'avatar_'=>0,'avatar'=>$path,'id'=>0,'pid'=>-1,'name'=>"顶级分类");
 	foreach($categories as $cate)
 	{
@@ -231,10 +231,38 @@ class Category extends REIM_Controller {
 
         $sid = $this->input->post('sid');
         $sob_name = $this->input->post('sob_name');
-        $groups = $this->input->post('groups');
+        $_groups = $this->input->post('groups');
+	$_ranks = $this->input->post('ranks');
+	$_levels = $this->input->post('levels');
+	$_members = $this->input->post('member');
+	$groups = '';
+	$ranks = '';
+	$levels = '';
+	$members = '';
+
+
+	if($_groups)
+	{
+		$groups = implode(',',$_groups);
+	}
+
+	if($_ranks)
+	{
+		$ranks = implode(',',$_ranks);
+	}
+
+	if($_levels)
+	{
+		$levels = implode(',',$_levels);
+	}
+
+	if($_members)
+	{
+		$members = implode(',',$_members);
+	}
         //$save = $this->input->post('renew');
-        log_message("debug","-----------------$sid");
-        $ret = $this->account_set->update_account_set($sid,$sob_name, implode(',', $groups));
+        log_message("debug","-----------------" . json_encode($_members));
+        $ret = $this->account_set->update_account_set($sid,$sob_name,$groups,$ranks,$levels,$members);
         $re = json_encode($ret);
         log_message("debug", "***&&*&*&*:$re");
         $arr = array('helo' => 'jack');

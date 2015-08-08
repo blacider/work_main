@@ -212,7 +212,7 @@
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
                                 <input type="radio" name="range" value="3" style="position:relative;top:7px"></div>
                             <div class="col-xs-4 col-sm-4">
-                                <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="members[]"  data-placeholder="请选择员工">
+                                <select id="member" class="chosen-select tag-input-style" multiple="multiple" name="member[]"  data-placeholder="请选择员工">
                                     <?php
                                       $exit = array();
                                     foreach($members as $ug){
@@ -460,11 +460,16 @@ var _sob_id = "<?php echo $sob_id ?>";
                   $.ajax({
                 type:"post",
                 url:__BASE+"category/update_sob",
-                data:{sob_name:$('#sob_name').val(),groups:$('#group').val(),sid:$('#sob_id').val()},
+                data:{sob_name:$('#sob_name').val()
+                      ,groups:$('#group').val()
+                      ,sid:$('#sob_id').val()
+                      ,ranks:$('#ranks').val()
+                      ,levels:$('#levels').val()
+                      ,member:$('#member').val()},
                 dataType:'json',
                 success:function(data){
                        show_notify('保存成功');
-                       window.location.href=__BASE+"category/account_set";
+                    //   window.location.href=__BASE+"category/account_set";
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(XMLHttpRequest.status);
