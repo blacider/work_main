@@ -292,6 +292,16 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 
         </li>
 
+         <li class="hsub" id="delmembers">
+        <a href="<?php echo base_url('members/delmembers'); ?>" >
+            <i class="menu-icon fa fa-caret-right"></i>
+            删除员工
+        </a>
+
+        <b class="arrow"></b>
+
+        </li>
+
         <li class="hsub" id="add">
         <a href="<?php echo base_url('members/add'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>

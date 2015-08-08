@@ -9,6 +9,22 @@ class Members extends REIM_Controller {
         $this->load->model('group_model', 'groups');
         $this->load->model('reim_show_model','reim_show');
     }
+    public function delmembers()
+    {
+    	$this->need_group_it();
+
+        $this->bsload('members/delmembers',
+            array(
+                'title' => '删除员工'
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => base_url('members/groups'), 'name' => '员工&部门', 'class' => '')
+                    ,array('url'  => '', 'name' => '删除员工', 'class' => '')
+                ),
+            )
+        );
+    }
+
     public function imports_create_group()
     {
         $this->need_group_it();
