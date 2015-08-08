@@ -77,7 +77,7 @@ class Company_Model extends Reim_Model {
 		return $buf;
 	}
 
-	public function update_rule($rid,$name,$category,$count,$period,$all_company,$groups,$members)
+	public function update_rule($rid,$name,$category,$count,$period,$all_company,$groups,$members,$ranks,$levels)
 	{
 		$jwt = $this->session->userdata('jwt');
 		if(!$jwt) return false;
@@ -111,7 +111,7 @@ class Company_Model extends Reim_Model {
 		return $buf;
 	}
 
-	public function create_rule($name,$category,$count,$period,$all_company,$groups,$members)
+	public function create_rule($name,$category,$count,$period,$all_company,$groups,$members,$ranks,$levels)
 	{
 		$jwt = $this->session->userdata('jwt');
 		if(!$jwt) return false;

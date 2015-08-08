@@ -204,7 +204,7 @@ $(document).ready(function(){
         {
             $(this).addClass('warning');
         }
-        else if((_id&4) == 1)
+        else if((_id&1) == 1)
         {
             $(this).addClass('success');
         }
