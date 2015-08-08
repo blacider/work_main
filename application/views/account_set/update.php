@@ -68,6 +68,13 @@
                                     .drop-cata .caret {
                                         margin-left: 50%;
                                     }
+                                    .addDrop {
+                                            border-radius: 10px;
+                                            height: 35px;
+                                            line-height: 35px;
+                                            text-align: center;
+                                            cursor:pointer;
+                                    }
                         </style>
                         <?php foreach($sob_keys as $item) {?>
                         <div class="form-group">
@@ -100,9 +107,13 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div style="border-radius:10px;" onclick="addCate(this.parentNode)" class="col-sm-1 col-xs-1 btn btn-primary addDrop">添加+</div>
+                            
                         </div>
                         <?php }?>
+                        <div class="form-group">
+                            <div style="border-radius:10px;" onclick="addCate(this.parentNode)" class="col-sm-1 col-xs-1 col-sm-offset-2 col-xs-offset-2 btn-primary addDrop">添加+</div>    
+                        </div>
+                        
                         <label class="col-sm-2 control-label no-padding-rigtht" style="position:absolute;left:0px;">适用范围</label>
                         <div class="form-group">
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
@@ -379,19 +390,12 @@ function changeImg_(dom) {
 }
 var __BASE = "<?php echo $base_url; ?>";
 var _sob_id = "<?php echo $sob_id ?>";
-   function initAddCate() {
-    var __length = $('.addDrop').length, __dom = $('.addDrop');
-        for (var i = 0; i < __length-1; i++) {
-            $(__dom[i]).remove();
-        }
-   }
    $(document).ready(function(){
    /*   $('.renew').click(function(){
     var _checked = $('#isadmin').is('checked');
     console.log("checked" + _checked);
     $('#profile').submit();
     });*/
-        initAddCate();
         $.ajax({
             type:"get",
             url:__BASE+"category/getsobs",
