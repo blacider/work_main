@@ -55,6 +55,15 @@
                                 $('#modal-table').find('input[name="pid"]').val(0);
                                 $('#modal-table').modal('show');
                             }
+                            function choseRange(value) {
+                                var selectDom = $('.range');
+                                for (var i = 0; i <= 3; i++) {
+                                    if (i == value)
+                                        $(selectDom[i]).prop('disabled',false).trigger("chosen:updated");
+                                    else
+                                        $(selectDom[i]).prop('disabled',true).trigger("chosen:updated");
+                                }
+                            }
                         </script>
                         <style type="text/css">
                                     .drop-cata {
@@ -117,9 +126,9 @@
                         <label class="col-sm-2 control-label no-padding-rigtht" style="position:absolute;left:0px;">适用范围</label>
                         <div class="form-group">
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
-                                <input type="radio" name="range" value="0" style="position:relative;top:7px"></div>
+                                <input type="radio" name="range" value="0" onclick="choseRange(this.value)" style="position:relative;top:7px"></div>
                             <div class="col-xs-4 col-sm-4">
-                                <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
+                                <select id="group" class="chosen-select range tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
                                     <option value="0">公司</option>
                                     <?php
                                       $exit = array();
@@ -149,9 +158,9 @@
                         </div>
                         <div class="form-group">
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
-                                <input type="radio" name="range" value="1" style="position:relative;top:7px"></div>
+                                <input type="radio" name="range" value="1" onclick="choseRange(this.value)" style="position:relative;top:7px"></div>
                             <div class="col-xs-4 col-sm-4">
-                                <select id="ranks" class="chosen-select tag-input-style" multiple="multiple" name="ranks[]"  data-placeholder="请选择职级">
+                                <select id="ranks" class="chosen-select range tag-input-style" multiple="multiple" name="ranks[]"  data-placeholder="请选择职级">
                                 
                                     <?php
                                       
@@ -180,9 +189,9 @@
                         </div>
                         <div class="form-group">
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
-                                <input type="radio" name="range" value="2" style="position:relative;top:7px"></div>
+                                <input type="radio" name="range" value="2" onclick="choseRange(this.value)" style="position:relative;top:7px"></div>
                             <div class="col-xs-4 col-sm-4">
-                                <select id="levels" class="chosen-select tag-input-style" multiple="multiple" name="levels[]"  data-placeholder="请选择级别">
+                                <select id="levels" class="chosen-select range tag-input-style" multiple="multiple" name="levels[]"  data-placeholder="请选择级别">
                                  
                                     <?php
                                     
@@ -210,9 +219,9 @@
                         </div>
                         <div class="form-group">
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
-                                <input type="radio" name="range" value="3" style="position:relative;top:7px"></div>
+                                <input type="radio" name="range" value="3" onclick="choseRange(this.value)" style="position:relative;top:7px"></div>
                             <div class="col-xs-4 col-sm-4">
-                                <select id="member" class="chosen-select tag-input-style" multiple="multiple" name="member[]"  data-placeholder="请选择员工">
+                                <select id="member" class="chosen-select range tag-input-style" multiple="multiple" name="member[]"  data-placeholder="请选择员工">
                                     <?php
                                       $exit = array();
                                     foreach($members as $ug){
