@@ -26,7 +26,7 @@
                                 <tr class="member"  data-id="<?php echo $d['status'];?>">
                                    
                                     <td>
-                                        <input type="hidden" data-id="m_<?php echo md5($d['email']); ?>" data-exist="<?php echo $d['status']; ?>"  class="data-maintainer " value="<?php echo base64_encode(json_encode($d)); ?>">
+                                        <input type="hidden" data-id="m_<?php echo md5($d['email']); ?>" data-exist="<?php echo $d['status']; ?>"  class="data-maintainer " value="<?php echo base64_encode(json_encode($d)); ?>" data-value="<?php echo base64_encode(json_encode($d)); ?>">
                                        
                                          <?php echo $d['id'];?></td>
                                     <td><?php echo $d['name']; ?></td>
@@ -189,6 +189,30 @@ function travel()
                     }
         });
     }
+    // 提交所有的员工
+
+    var members = new Array();
+    $('.data-maintainer').each(function(idx, item) {
+        var v = $(item).data('value');
+        members.push(v);
+    });
+        $.ajax({
+            url : __BASE  + "members/batch_load"
+                ,method: 'POST'
+                ,dataType: 'json'
+                ,data : {'member' : members}
+                ,success : function(data){
+                    count--;
+                    if(count == 0)
+                    {
+                        show_notify('部门创建成功');
+                    }
+                }
+            ,error:function(a,b,c)
+                    {
+
+                    }
+        });
 
 }
    
