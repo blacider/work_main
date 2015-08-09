@@ -12,7 +12,12 @@ class Members extends REIM_Controller {
     public function delmembers()
     {
     	$this->need_group_it();
-
+        $_members = $this->groups->get_my_list();
+        $members = array();
+        if($_members['status'] > 0)
+        {
+            $members = $_members['data']['gmember'];
+        }
         $this->bsload('members/delmembers',
             array(
                 'title' => '删除员工'
@@ -20,7 +25,8 @@ class Members extends REIM_Controller {
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/groups'), 'name' => '员工&部门', 'class' => '')
                     ,array('url'  => '', 'name' => '删除员工', 'class' => '')
-                ),
+                )
+                ,'members' => $members
             )
         );
     }
