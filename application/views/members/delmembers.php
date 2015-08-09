@@ -11,8 +11,7 @@
                                     <?php
                                     foreach($members as $ug){
                                     ?>
-                                    <option  value="<?php echo $ug['id']; ?>
-                                        ">
+                                    <option  value="<?php echo $ug['email']; ?>">
                                         <?php echo $ug['nickname']; ?>
                                         (<?php echo $ug['email']; ?>)</option>
                                     <?php
@@ -20,12 +19,12 @@
 
                                     ?></select>
                             </div>
-                            <div class="btn btn-primary" id="submit">开始删除</div>
+                            <div class="btn btn-primary" id="submit" onclick="delectOneUser()">开始删除</div>
                         	</div>
 
                         	<div class="form-group" style="clear:both">
                         		<label class="col-sm-2 control-label no-padding-right">结果:</label>
-
+                        		<textarea id="result" cols="50" rows="10" style="margin-top: 15px;"></textarea>
                         	</div>
                         		
                         		
@@ -35,10 +34,43 @@
     </div>
 </div>
 <script type="text/javascript">
+    var errorList = new Array();
 	$(document).ready(function(){
 		$('.chosen-select').chosen(); 
-		$('#submit').click(function(event) {
-			var members = $('#members').val();
-		});
+
+		//$('#submit').click(function() {
+		//	delectOneUser();
+		//});
 	});
+	function delectOneUser() {
+		var emails = $('.chosen-select').val();
+		if (emails != null) {
+			var email = emails.pop();
+			var log = $('#result').val() + "正在删除用户:" + email + '\n';
+			$('#result').val(log);
+			$('.chosen-select').val(emails).trigger("chosen:updated");
+			ajaxDelect(email);
+		} else if (errorList.length) {
+			errorList.join();
+			$('.chosen-select').val(errorList).trigger("chosen:updated");
+			var log = $('#result').val() + "失败删除用户:{\n" + errorList.join('\n') + '\n' + '}已在输入框显示' + '\n';
+			$('#result').val(log);
+			while (errorList.length) errorList.pop();
+		}
+	}
+	function ajaxDelect(email) {
+		//$.ajax({}); 成功转向ajaxSuccess(),失败转向ajaxError(),参数如下
+		ajaxError(email, 'test');
+	}
+	function ajaxSuccess(email) {
+		var log = $('#result').val() + "成功删除用户:" + email + '\n';
+		$('#result').val(log);
+		delectOneUser();
+	}
+	function ajaxError(email, reason) {
+		var log = $('#result').val() + "删除用户" + email + '失败!!!由于:' + reason + '\n';
+		$('#result').val(log);
+		errorList.push(email);
+		delectOneUser();
+	}
 </script>
