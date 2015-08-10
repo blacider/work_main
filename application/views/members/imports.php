@@ -42,7 +42,7 @@
                                     <td><?php echo $d['level'];?></td>
                                     <td>
                                         <a alt="<?php echo $d['status'] == 1 ? '已经是同一个公司的同事' : '还不是一个公司的同事'; ?>"><i id="m_<?php echo md5($d['email']); ?>"   
-                                                class="<?php echo $d['status'] == 1 ? 'green fa-check' : 'fa-times red' ; ?> menu-icon fa "></i></a>
+                                                class="<?php echo $d['status'] == 1 ? 'green fa-check' : 'fa-times red' ; ?> menu-icon fa judge"></i></a>
                                     </td>
                                 </tr>
                                 <?php } ?>
@@ -180,18 +180,22 @@ function travel()
                        count--;
                        if(count == 0)
                        {
+                       // $('#' + __id).removeClass('fa-times red').addClass('fa-check green');
+                       
                         show_notify('部门创建成功');
                        }
                     }
                     ,error:function(a,b,c)
                     {
-
+                        console.log(a);
+                        console.log(b);
                     }
         });
     }
     // 提交所有的员工
 
     var members = new Array();
+
     $('.data-maintainer').each(function(idx, item) {
         var v = $(item).data('value');
         members.push(v);
@@ -202,15 +206,18 @@ function travel()
                 ,dataType: 'json'
                 ,data : {'member' : members}
                 ,success : function(data){
-                    count--;
-                    if(count == 0)
-                    {
-                        show_notify('部门创建成功');
-                    }
+                    console.log(data);
+                    
+                            $('.judge').each(function(){
+                            $(this).removeClass('fa-times red').addClass('fa-check green');
+                            });
+                        show_notify('员工创建成功');
+                    
                 }
             ,error:function(a,b,c)
                     {
-
+                        console.log(a);
+                        console.log(b);
                     }
         });
 
