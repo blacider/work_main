@@ -280,12 +280,37 @@ class Company extends REIM_Controller {
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
+	$_ranks = $this->groups->get_rank_level(1);
+	$_levels = $this->groups->get_rank_level(0);
+	
+	$ranks = array();
+	if($_ranks['status'] > 0)
+	{
+		$ranks = $_ranks['data'];
+	}
+
+	$levels = array();
+	if($_levels['status'] > 0)
+	{
+		$levels = $_levels['data'];
+	}
+	
+        $group = $this->groups->get_my_list();
+        $_gnames = $this->ug->get_my_list();
+        $gnames = $_gnames['data']['group'];
+
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
         $buf = $this->company->show_rules();
         $info=json_decode($buf,true);
         $_info=$info['data'];
         $own_rule = array();
 
-        log_message("debug","######".$buf);
         $category = $this->category->get_list();
         $categories = $category['data']['categories'];
         $sobs = $this->account_set->get_account_set_list();
@@ -297,6 +322,8 @@ class Company extends REIM_Controller {
                 $own_rule = $item;
             }
         }
+	log_message('debug','own_rule:' . json_encode($own_rule));
+	/*
         $cate_arr = array();
         $s_id = '';
         foreach($categories as $c)
@@ -328,6 +355,7 @@ class Company extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
+	*/
         $this->bsload('company/update',
             array(
                 'title'=>'修改规则'
@@ -335,7 +363,10 @@ class Company extends REIM_Controller {
                 ,'rule'=>$own_rule
                 ,'member'=>$gmember
                 ,'group'=>$gnames
-                ,'cate_arr'=>$cate_arr
+         //       ,'cate_arr'=>$cate_arr
+                ,'group'=>$gnames
+		,'ranks' => $ranks
+		,'levels' => $levels
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
@@ -343,6 +374,7 @@ class Company extends REIM_Controller {
                 ),
             )
         );
+	*/
     }
 
     public function update_rule()
@@ -518,6 +550,7 @@ class Company extends REIM_Controller {
         {
             $_rules = $rules['data'];
         }
+	log_message('debug','rules:' . json_encode($_rules));
         $this->bsload('company/show',
             array(
                 'title'=>'新建规则'
