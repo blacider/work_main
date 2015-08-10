@@ -185,9 +185,34 @@ class Category extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-        // $acc_sets = $this->account_set->get_account_set_list();
-        $ugroups = $this->ug->get_my_list();
-        $_ug = json_encode($ugroups['data']['group']);
+	$_ranks = $this->reim_show->rank_level(1);
+	$_levels = $this->reim_show->rank_level(0);
+
+	$ranks = array();
+	$levels = array();
+
+	if($_ranks['status']>0)
+	{
+		$ranks = $_ranks['data'];
+	}
+
+	if($_levels['status']>0)
+	{
+		$levels = $_levels['data'];
+	}
+		
+	$members = array();
+	$_members = $this->groups->get_my_list();
+	if($_members['status'] > 0)
+	{
+		$members = $_members['data']['gmember'];
+	}
+	$groups = array();
+        $_ugroups = $this->ug->get_my_list();
+	if($_ugroups['status']>0)
+	{
+		$groups = $_ugroups['data']['group'];
+	}
         //  $_acc = json_encode($acc_sets);
         // log_message("debug","sob#############$_acc");
         $this->bsload('account_set/new',
@@ -195,7 +220,10 @@ class Category extends REIM_Controller {
                 'title' => '新建帐套'
                 //  ,'acc_sets' => $acc_sets
                 //  ,'acc_sets' => $acc_sets
-                ,'ugroups' => $ugroups['data']['group']
+                ,'ugroups' => $groups
+		,'ranks' => $ranks
+		,'levels' => $levels
+		,'members' => $members
                 ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
                     ,array('url' => base_url('category/index'),'name' => '标签和分类','class' => '')
