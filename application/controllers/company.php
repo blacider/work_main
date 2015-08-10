@@ -422,7 +422,9 @@ class Company extends REIM_Controller {
 	$_freq_unlimits = $this->input->post('freq_unlimits');
 	$freq_unlimits = json_decode($_freq_unlimits,True);
 	
+	log_message('debug','data:' . json_encode(array('categories'=>$_categories_id,'freq_counts'=>$_freq_counts,'freq_periods'=>$_freq_periods,'freq_unlimits'=>$_freq_unlimits)));
 
+	
         $amount = $this->input->post('rule_amount');
         $amount_unlimit = $this->input->post('amount_unlimit');
         $amount_time = $this->input->post('amount_time');
@@ -486,7 +488,6 @@ class Company extends REIM_Controller {
             $groups = '';
             $members = '';
         }
-        log_message('debug',"####:".json_encode($frequency));
 	log_message('debug','ranks:' . $ranks);
 	log_message('debug','levels:' . $levels);
 
@@ -498,11 +499,10 @@ class Company extends REIM_Controller {
 			$freq_counts[$i] = 0;
 		array_push($policies,array('category'=>$category_ids[$i],'freq_count' => $freq_counts[$i] , 'freq_period' => $freq_periods[$i]));
 	}
-	/*
+	log_message('debug','policies:' . json_encode($policies));
         $buf=$this->company->create_rule($rname,$category_ids,$frequency,$frequency_time,$all_members,$groups,$members,$ranks,$levels);	
         log_message("debug","####CREATE:".json_encode($buf));
-        return redirect(base_url('company/show'));
-	*/
+    //    return redirect(base_url('company/show'));
     }
 
     public function show(){
