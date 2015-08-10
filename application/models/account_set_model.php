@@ -51,17 +51,22 @@
 			$obj = json_decode($buf,true);
 			return $obj;
 		}
-		public function update_account_set($id,$name,$gids)
+		public function update_account_set($id,$name,$gids,$ranks,$levels,$members)
 		{
 			$jwt = $this->session->userdata('jwt');
 			if(!$jwt) return false;
 			$data = array(
 				'id' => $id,
 				'name' => $name,
-				'dids' => $gids
+				'dids' => $gids,
+				'ranks' => $ranks,
+				'levels' => $levels,
+				'uids' => $members
 			);
+			log_message('debug', 'data:' . json_encode($data));
 			$url = $this->get_url('sob');
 			$buf = $this->do_Put($url,$data,$jwt);
+			log_message('debug' , 'account_update_back:' . $buf);
 			$obj = json_decode($buf,true);
 			return $obj;	
 		}

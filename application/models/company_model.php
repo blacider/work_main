@@ -111,6 +111,39 @@ class Company_Model extends Reim_Model {
 		return $buf;
 	}
 
+	public function create_update_rules($name,$ugids,$mems,$level,$rank,$policies,$all_company,$pid=0)
+	{
+		log_message('debug','pid:' . $pid);
+		$jwt = $this->session->userdata('jwt');
+		if(!$jwt) return false;
+		$url = $this->get_url('commit_policy');
+		
+		$data = array(
+			'name'=>$name,
+			'groups'=>$ugids,
+			'members'=>$mems,
+			'levels'=>$level,
+			'ranks'=>$rank,
+			'policies'=>$policies,
+			'all_company'=>$all_company
+		);
+
+		if($pid == 0)
+		{
+			log_message('debug','create_rules_data:' . json_encode($data));
+			$buf = $this->do_Post($url,$data,$jwt);	
+		}
+		else
+		{
+			$data['pid'] = $pid;
+			log_message('debug','update_rules_data:' . json_encode($data));
+			$buf = $this->do_Put($url,$data,$jwt);
+		}
+
+		log_message('debug','create_update_rules:' . $buf);
+		return json_decode($buf,True);
+	}
+
 	public function create_rule($name,$category,$count,$period,$all_company,$groups,$members,$ranks,$levels)
 	{
 		$jwt = $this->session->userdata('jwt');

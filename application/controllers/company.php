@@ -499,10 +499,12 @@ class Company extends REIM_Controller {
 			$freq_counts[$i] = 0;
 		array_push($policies,array('category'=>$category_ids[$i],'freq_count' => $freq_counts[$i] , 'freq_period' => $freq_periods[$i]));
 	}
+
 	log_message('debug','policies:' . json_encode($policies));
-        $buf=$this->company->create_rule($rname,$category_ids,$frequency,$frequency_time,$all_members,$groups,$members,$ranks,$levels);	
+	$buf = $this->company->create_update_rules($rname,$groups,$members,$levels,$ranks,json_encode($policies),$all_members);
+//        $buf=$this->company->create_rule($rname,$category_ids,$frequency,$frequency_time,$all_members,$groups,$members,$ranks,$levels);	
         log_message("debug","####CREATE:".json_encode($buf));
-    //    return redirect(base_url('company/show'));
+        return redirect(base_url('company/show'));
     }
 
     public function show(){
