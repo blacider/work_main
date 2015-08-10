@@ -34,6 +34,7 @@
     </div>
 </div>
 <script type="text/javascript">
+	var __BASE = "<?php echo $base_url;?>";
     var errorList = new Array();
 	$(document).ready(function(){
 		$('.chosen-select').chosen(); 
@@ -44,7 +45,7 @@
 	});
 	function delectOneUser() {
 		var emails = $('.chosen-select').val();
-		if (emails != null) {
+		/*if (emails != null) {
 			var email = emails.pop();
 			var log = $('#result').val() + "正在删除用户:" + email + '\n';
 			$('#result').val(log);
@@ -56,11 +57,38 @@
 			var log = $('#result').val() + "失败删除用户:{\n" + errorList.join('\n') + '\n' + '}已在输入框显示' + '\n';
 			$('#result').val(log);
 			while (errorList.length) errorList.pop();
+		}*/
+		if(emails != null)
+		{
+			ajaxDelect(emails);
 		}
 	}
 	function ajaxDelect(email) {
 		//$.ajax({}); 成功转向ajaxSuccess(),失败转向ajaxError(),参数如下
-		ajaxError(email, 'test');
+		$.ajax({
+			 url:__BASE+'members/members_del',
+			 method:'POST',
+			 dataType:'json',
+			 data:{'email':emails},
+			 success:function(data){
+			 	if(data.status == 1)
+			 	{
+			 		for(var i = 0; i < emails.length ; i++)
+			 		{
+			 			ajaxSuccess(emails[i]);
+			 		}
+				 }
+				 else
+				 {
+			 		ajaxError(email,data.msg);
+				 }
+			 },
+			 error:function(a,b,c){
+			 	ajaxError(email,'test');
+			 }
+
+		});
+		//ajaxError(email, 'test');
 	}
 	function ajaxSuccess(email) {
 		var log = $('#result').val() + "成功删除用户:" + email + '\n';

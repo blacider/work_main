@@ -9,6 +9,27 @@ class Members extends REIM_Controller {
         $this->load->model('group_model', 'groups');
         $this->load->model('reim_show_model','reim_show');
     }
+    public function members_del()
+    {
+    	$this->need_group_it();
+	$_emails = $this->input->post('emails');
+	$emails = '';
+	if($emails)
+	{
+		$emails = implode(',',emails);
+	}
+	$buf = $this->users->del_email($emails);
+	
+	if($buf['status']>0)
+	{
+		die(json_enocde(array('status'=>1,'msg'=>'删除成功')));
+	}
+	else
+	{
+		die(json_enocde(array('status'=>0,'msg'=>'删除失败')));
+	}
+    }
+
     public function delmembers()
     {
     	$this->need_group_it();
