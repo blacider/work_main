@@ -1150,7 +1150,7 @@ class Members extends REIM_Controller {
         $member = $this->input->post('member');
         log_message("debug", "Member:" . json_encode($member));
         $info = $this->groups->reim_imports(array('members' => json_encode($member)));
-        die("it works");
+        die(json_encode(array('msg'=>"it works")));
     }
 }
 
