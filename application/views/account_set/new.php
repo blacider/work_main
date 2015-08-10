@@ -64,7 +64,10 @@
         </form>
     </div>
 </div>
-
+<p><?php echo json_encode($members)?></p>
+<p><?php echo json_encode($ranks)?></p>
+<p><?php echo json_encode($levels)?></p>
+<p><?php echo json_encode($ugroups)?></p>
 <script type="text/javascript">
 var __BASE = "<?php echo $base_url; ?>";
    $(document).ready(function(){

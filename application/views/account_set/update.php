@@ -40,12 +40,12 @@
                             var all_categories = <?php echo json_encode($all_categories);?>;
                             function showSob(sobId) {
                                 if (sobId != -1) {
-                                    var name = all_categories[sobId]['name'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'], name = all_categories[sobId]['name'], pid = all_categories[sobId]['pid'];
+                                    var name = all_categories[sobId]['name'], code = all_categories[sobId]['sob_code'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'], name = all_categories[sobId]['name'], pid = all_categories[sobId]['pid'];
                                     $("#form_moda").find('input[name="name"]').val(name);
                                     $("#menuImg").attr('src', img);
                                     $('#form_moda').find('input[name="avatar"]').val(all_categories[sobId]['avatar_']);
                                     $("#form_moda").find('input[name="cid"]').val(id);
-                                    $("#form_moda").find('input[name="name"]').val(name);
+                                    $("#form_moda").find('input[name="code"]').val(code);
                                     $("#form_moda").find('input[name="pid"]').val(pid);
                                 }
                                 $('#modal_sob').modal('show');
@@ -245,12 +245,22 @@
                                     <?php
                                       $exit = array();
                                     foreach($members as $ug){
+                                        if(!in_array($ug['id'],$sob_members))
+                                        {
                                     ?>
                                     <option  value="<?php echo $ug['id']; ?>
                                         ">
                                         <?php echo $ug['nickname']; ?></option>
                                     <?php
-                                        array_push($exit, $ug['group_id']);
+                                        }
+                                        else
+                                        {
+                                    ?>
+                                    <option selected value="<?php echo $ug['id']; ?>
+                                        ">
+                                        <?php echo $ug['nickname']; ?></option>
+                                    <?php
+                                        }
                                     }
 
                                     ?></select>
@@ -354,7 +364,7 @@
         </div>
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类目ID</label>
-            <input name="name" type="text" data-placeholder="请输入名称"></div>
+            <input name="code" type="text" data-placeholder="请输入类目ID"></div>
         <div class="clearfix form-actions">
             <div class="col-md-offset-3 col-md-9">
                 <a class="btn btn-white btn-primary new_card" data-renew="0">
@@ -439,12 +449,17 @@ function changeImg_(dom) {
 }
 var __BASE = "<?php echo $base_url; ?>";
 var _sob_id = "<?php echo $sob_id ?>";
+var range = "<?php echo $range?>";
    $(document).ready(function(){
    /*   $('.renew').click(function(){
     var _checked = $('#isadmin').is('checked');
     console.log("checked" + _checked);
     $('#profile').submit();
     });*/
+ 
+    $("input[name=range]:eq("+range+")").attr('checked','checked');
+    choseRange(range);
+  
         $.ajax({
             type:"get",
             url:__BASE+"category/getsobs",
@@ -467,24 +482,26 @@ var _sob_id = "<?php echo $sob_id ?>";
         });
 
 
+
+
         $('.renew').click(function(){
 
             var sname = $('#sob_name').val();
             var sgroups = $('#group').val();
             //if(sname)
-      
+         
             if(sname == '')
             {
                 $('#sob_name').focus();
                 show_notify("请输入用户名");
                 return false;
             }
-            if(sgroups == null)
+            /*if(sgroups == null)
             {
                 $('#group').focus();
                 show_notify("请选择部门");
                 return false;
-            }
+            }*/
 
                   $.ajax({
                 type:"post",
@@ -494,7 +511,8 @@ var _sob_id = "<?php echo $sob_id ?>";
                       ,sid:$('#sob_id').val()
                       ,ranks:$('#ranks').val()
                       ,levels:$('#levels').val()
-                      ,member:$('#member').val()},
+                      ,member:$('#member').val()
+                      ,range:$("input[name='range']:checked").val()},
                 dataType:'json',
                 success:function(data){
                        show_notify('保存成功');
