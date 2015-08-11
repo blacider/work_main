@@ -677,7 +677,7 @@ class Reports extends REIM_Controller {
                 }
                 $r['total'] = 0;
                 $r['paid'] = 0;
-                log_message('debug', json_encode($r));
+                //log_message('debug', json_encode($r));
                 $_items = $r['items'];
                 foreach($_items as $i){
                     log_message('debug', "Itemx :" .json_encode($i));
@@ -685,13 +685,16 @@ class Reports extends REIM_Controller {
                     if(array_key_exists('currency', $i) && strtolower($i['currency']) != 'cny') {
                         $_rate = $i['rate'] / 100;
                     }
-                    log_message("debug", "Items23:"  . json_encode($i));
+                    //log_message("debug", "Items23:"  . json_encode($i));
                     $r['total'] += ($i['amount'] * $_rate);
                     $i['nickname'] = $r['nickname'];
                     //$r['total'] += ($i['amount'] * $i['rate'] / 100);
-                    log_message("debug", "Items2:"  . json_encode($i));
+                    //log_message("debug", "Items2:"  . json_encode($i));
                     array_push($_t_items, $i);
-                    if($i['reimbursed'] == 0) continue;
+                    if($i['reimbursed'] == 0) {
+                        log_message("debug", "Ignore :"  . json_encode($i));
+                        continue;
+                    }
                     if($i['prove_ahead'] > 0){
                         $r['paid'] += $i['pa_amount'];
                     }
@@ -719,7 +722,7 @@ class Reports extends REIM_Controller {
 
             $members = array();
             foreach($_members as $x){
-                log_message("debug", json_encode($x));
+                log_message("debug", "Member:" . json_encode($x));
                 $_bank = array('cardno' => '', 'account' => '', 'bankloc' => '', 'bankname' => '');
                 if(array_key_exists($x['uid'], $_banks)) $_bank = $_banks[$x['uid']];
                 $o = array();

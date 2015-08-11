@@ -18,7 +18,7 @@
                                     <th>开户地</th>
                                     <th>部门</th>
                                     <th>上级姓名</th>
-                                    <th>职级</th>
+                                    <th>职位</th>
                                     <th>职位</th>
                                     <th>状态</th>
                                 </tr>
@@ -152,7 +152,7 @@ function travel()
                        count_ranks--;
                        if(count_ranks == 0)
                        {
-                        show_notify('职级创建成功');
+                        show_notify('职位创建成功');
                         sum-=1;
                         console.log('sum:'+sum);
                         if(sum == 0)

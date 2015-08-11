@@ -276,7 +276,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <li class="hsub" id="newrank">
         <a href="<?php echo base_url('members/rank'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
-           职级设置 
+           职位设置 
         </a>
 
         <b class="arrow"></b>

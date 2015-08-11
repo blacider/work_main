@@ -211,14 +211,14 @@ class Members extends REIM_Controller {
         }
         $this->bsload('rank/index',
             array(
-                'title' => '职级设置'
+                'title' => '职位设置'
                 ,'levels' => $levels
                 ,'ranks' => $ranks
                 ,'error' => $error
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/groups'), 'name' => '员工&部门', 'class' => '')
-                    ,array('url'  => '', 'name' => '职级设置', 'class' => '')
+                    ,array('url'  => '', 'name' => '职位设置', 'class' => '')
                 ),
             )
         );

@@ -170,7 +170,7 @@
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
                                 <input type="radio" name="range" value="1" onclick="choseRange(this.value)" style="position:relative;top:7px"></div>
                             <div class="col-xs-4 col-sm-4">
-                                <select id="ranks" class="chosen-select range tag-input-style" multiple="multiple" name="ranks[]"  data-placeholder="请选择职级">
+                                <select id="ranks" class="chosen-select range tag-input-style" multiple="multiple" name="ranks[]"  data-placeholder="请选择职位">
                                 
                                     <?php
                                       
@@ -195,7 +195,7 @@
 
                                     ?></select>
                             </div>
-                            <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">职级</label>
+                            <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">职位</label>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
