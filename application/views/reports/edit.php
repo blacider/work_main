@@ -74,7 +74,8 @@ foreach($members as $m) {
                                     <table class="table table-border">
                                         <tr>
                                             <thead>
-                                                <td><input type="checkbox" class="form-controller"></td>
+                                                <td>
+                                                   <input name="all_item" id="all_item" type="checkbox" class="form-controller all_item"> 全选</td>
                                                 <td>消费时间</td>
                                                 <td>类型</td>
                                                 <td>金额</td>
@@ -216,6 +217,28 @@ $(document).ready(function(){
     }
      */
 
+    $('#all_item').click(function(){
+        if($('#all_item').is(":checked"))
+        {
+            //console.log("checked");
+            $('.amount').each(function(){
+                $(this).prop('checked',true);
+                //console.log($(this).is(":checked"));
+               // $(this).trigger('checked');
+            });   
+
+            //$("[name='item[]']").prop('checked',true);
+        }
+        else
+        {
+            $('.amount').each(function(){
+                $(this).prop('checked',false);
+              // $(this).removeAttr("checked"); 
+            });
+           // $("[name='item[]']").prop('checked',false);
+        }
+        update_tamount();
+     });
 
     $('.renew').click(function(){
         $('#renew').val($(this).data('renew'));
@@ -231,6 +254,23 @@ $(document).ready(function(){
     });
     update_tamount();
 });
+function toDecimal2(x) {  
+    var f = parseFloat(x);  
+    if (isNaN(f)) {  
+        return false;  
+    }  
+    var f = Math.round(x*100)/100;  
+    var s = f.toString();  
+    var rs = s.indexOf('.');  
+    if (rs < 0) {  
+        rs = s.length;  
+        s += '.';  
+    }  
+    while (s.length <= rs + 2) {  
+        s += '0';  
+    }  
+    return s;  
+}  
 function update_tamount(){
     var sum = 0;
     $('.amount').each(function(){
@@ -240,6 +280,7 @@ function update_tamount(){
             sum+=amount;
         };
     });
-    $('#tamount').html(sum);
+    //$('#tamount').html(sum);
+    $('#tamount').html('￥' + toDecimal2(sum));
 }
 </script>

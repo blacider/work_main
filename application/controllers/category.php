@@ -356,6 +356,7 @@ class Category extends REIM_Controller {
 
 	}
         //$save = $this->input->post('renew');
+	log_message('debug','groups:' . $groups);
         $ret = $this->account_set->update_account_set($sid,$sob_name,$groups,$ranks,$levels,$members);
         $re = json_encode($ret);
         log_message("debug", "***&&*&*&*:$re");
