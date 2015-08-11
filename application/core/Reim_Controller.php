@@ -11,7 +11,7 @@ class REIM_Controller extends CI_Controller{
         log_message('debug', 'alvayang remap refer:' . json_encode($params));
     	$jwt = $this->session->userdata('jwt');
         $controller = $this->uri->rsegment_array();
-        $method_set = ['login','install', 'pub','users','register','resetpwd'];
+        $method_set = ['login','install', 'pub','users', 'register' ,'resetpwd'];
         if(!in_array($controller[1],$method_set))
         {
             if(!$jwt) 
@@ -45,7 +45,7 @@ class REIM_Controller extends CI_Controller{
         if($this->session->userdata('jwt') == "" && $this->session->userdata('uid') == ""){
             log_message("debug", "Not Not Request: $uri");
             $flag = 1;
-            $prefixs = array('login', 'register', 'join', 'install', 'errors', 'resetpwd', 'pub', 'users');
+            $prefixs = array('login', 'register', 'join', 'install', 'errors', 'resetpwd', 'pub', 'users', 'register');
             foreach($prefixs as $prefix){
                 if($this->startsWith($uri, $prefix)){
                     $flag = 0;

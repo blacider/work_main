@@ -177,8 +177,8 @@ class Pub extends REIM_Controller {
                     log_message("debug", "GID: $params : " . json_encode($s));
                     $nickname = $s['nickname'];
                     $gid = $s['gid'];
-                    $user_nick = $user['data']['profile']['nickname'];
-                    $user = $user['data']['profile'];
+                    //$user_nick = $user['data']['profile']['nickname'];
+                    //$user = $user['data']['profile'];
                     if(!$gid) {
                         // TODO @abjkl, 看看出错了怎么搞
                         $this->session->set_userdata('login_error', '用户名或者密码错误');
