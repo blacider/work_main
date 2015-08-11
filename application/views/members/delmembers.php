@@ -19,7 +19,7 @@
 
                                     ?></select>
                             </div>
-                            <div class="btn btn-primary" id="submit" onclick="delectOneUser()">开始删除</div>
+                            <div class="btn btn-primary" id="submit" onclick="delectOneUser_()">开始删除</div>
                         	</div>
 
                         	<div class="form-group" style="clear:both">
@@ -43,6 +43,9 @@
 		//	delectOneUser();
 		//});
 	});
+	function delectOneUser_() {
+		if (confirm("确认删除吗？") == true) delectOneUser();
+	}
 	function delectOneUser() {
 		var emails = $('.chosen-select').val();
 		if (emails != null) {
