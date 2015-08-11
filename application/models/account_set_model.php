@@ -38,13 +38,16 @@
 			log_message("debug","###########ACOUNT_SETS****:$buf");
 			return $obj;
 		}
-		public function create_account_set($name,$gids)
+		public function create_account_set($name,$gids,$ranks,$levels,$members)
 		{
 			$jwt = $this->session->userdata('jwt');
 			if(!$jwt) return false;
 			$data = array(
 				'name' => $name,
-				'dids' => $gids
+				'dids' => $gids,
+				'ranks' => $ranks,
+				'levels' => $levels,
+				'uids' => $members
 			);
 			$url = $this->get_url('sob');
 			$buf = $this->do_Post($url,$data,$jwt);

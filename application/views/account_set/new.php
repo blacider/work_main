@@ -32,7 +32,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                         <!--   <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-rigtht">部门选择</label>
                                 <div class="col-xs-4 col-sm-4">
                                     <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
@@ -44,7 +44,7 @@
                                     ?>                                
                                 </select>
                                 </div>
-                            </div>
+                            </div> -->
 
                       
 
@@ -64,10 +64,7 @@
         </form>
     </div>
 </div>
-<p><?php echo json_encode($members)?></p>
-<p><?php echo json_encode($ranks)?></p>
-<p><?php echo json_encode($levels)?></p>
-<p><?php echo json_encode($ugroups)?></p>
+
 <script type="text/javascript">
 var __BASE = "<?php echo $base_url; ?>";
    $(document).ready(function(){
@@ -88,20 +85,30 @@ var __BASE = "<?php echo $base_url; ?>";
                 show_notify("请输入用户名");
                 return false;
             }
-            if(sgroups == null)
+            /*if(sgroups == null)
             {
                 $('#group').focus();
                 show_notify("请选择部门");
                 return false;
-            }
+            }*/
 	       $.ajax({
                 type:"post",
                 url:__BASE+"category/create_sob",
                 data:{sob_name:$('#sob_name').val(),groups:$('#group').val()},
                 dataType:'json',
                 success:function(data){
-                       show_notify('保存成功');
-                        window.location.href=__BASE+"category/account_set";
+                        //console.log(data);
+                        var d = JSON.parse(data);
+                        if(d.code > 0)
+                        {
+                            show_notify('保存成功');
+                            window.location.href=__BASE+"category/sob_update/"+d.code;
+                        }
+                        else
+                        {
+                            show_notify('保存失败');
+                            window.location.href=__BASE+"category/account_set";
+                        }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(XMLHttpRequest.status);

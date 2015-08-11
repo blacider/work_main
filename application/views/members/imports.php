@@ -122,19 +122,43 @@
     }
 function travel()
 {
+    var sum = 0;
+    if((no_ranks.length == 0)&&(no_levels.length == 0)&&(no_groups.length==0) )
+    {
+        insertMem();
+    }
+    if(no_ranks.length != 0)
+    {
+        sum+=1;
+    }
+    if(no_levels.length != 0)
+    {
+        sum+=1;
+    }
+    if(no_groups.length != 0)
+    {
+        sum+=1;
+    }
     for(var i=0;i<no_ranks.length;i++)
     {
-        var count = no_ranks.length;
+        var count_ranks = no_ranks.length;
+        console.log('count_ranks:' + count_ranks);
         $.ajax({
             url : __BASE  + "members/imports_create_rank_level/1"
                     ,method: 'POST'
                     ,dataType: 'json'
                     ,data : {'name' : no_ranks[i]}
                     ,success : function(data){
-                       count--;
-                       if(count == 0)
+                       count_ranks--;
+                       if(count_ranks == 0)
                        {
                         show_notify('职级创建成功');
+                        sum-=1;
+                        console.log('sum:'+sum);
+                        if(sum == 0)
+                        {
+                            insertMem();
+                        }
                        }
                     }
                     ,error:function(a,b,c)
@@ -146,17 +170,26 @@ function travel()
 
     for(var i=0;i<no_levels.length;i++)
     {
-        var count = no_levels.length;
+        var count_level = no_levels.length;
+        console.log('count_level:' + count_level);
         $.ajax({
             url : __BASE  + "members/imports_create_rank_level/0"
                     ,method: 'POST'
                     ,dataType: 'json'
                     ,data : {'name' : no_levels[i]}
                     ,success : function(data){
-                       count--;
-                       if(count == 0)
+                       count_level--;
+                       if(count_level == 0)
                        {
+                     
                         show_notify('级别创建成功');
+                        sum-=1;
+                        console.log('sum:'+sum);
+                   
+                          if(sum == 0)
+                        {
+                            insertMem();
+                        }
                        }
                     }
                     ,error:function(a,b,c)
@@ -169,7 +202,8 @@ function travel()
 
     for(var i=0;i<no_groups.length;i++)
     {
-        var count = no_groups.length;
+        var count_groups = no_groups.length;
+        console.log(count_groups);
         $.ajax({
             url : __BASE  + "members/imports_create_group"
                     ,method: 'POST'
@@ -177,12 +211,18 @@ function travel()
                     ,data : {'name' : no_groups[i]}
                     ,success : function(data){
                         console.log(data.msg);
-                       count--;
-                       if(count == 0)
+                       count_groups--;
+                       if(count_groups == 0)
                        {
                        // $('#' + __id).removeClass('fa-times red').addClass('fa-check green');
                        
                         show_notify('部门创建成功');
+                        sum-=1;
+                         console.log('sum:'+sum);
+                          if(sum == 0)
+                        {
+                            insertMem();
+                        }
                        }
                     }
                     ,error:function(a,b,c)
@@ -194,7 +234,13 @@ function travel()
     }
     // 提交所有的员工
 
-    var members = new Array();
+   
+
+}
+
+function insertMem()
+{
+     var members = new Array();
 
     $('.data-maintainer').each(function(idx, item) {
         var v = $(item).data('value');
@@ -220,8 +266,8 @@ function travel()
                         console.log(b);
                     }
         });
-
 }
+
    
 $(document).ready(function(){
     $('.member').each(function(idx,val){
