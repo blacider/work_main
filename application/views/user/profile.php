@@ -941,6 +941,14 @@ function get_province(){
         $('#cardloc').val($(node).data('bankloc'));
         $('#cardno').val($(node).data('cardno'));
         $('#credit_model').modal('show');
+        var i = 1, loc = $(node).data('bankloc');
+        do {
+            i += 1;
+            $('select[name="province"]').val(loc.substr(0,i));
+        } while ($('select[name="province"]').val() == null);
+        var city = loc.substr(i);
+        $('select[name="province"]').change();
+        $('select[name="city"]').val(city);
     }
 
     function show_credit(node){
@@ -951,6 +959,14 @@ function get_province(){
         $('#cardloc').val($(node).data('bankloc'));
         $('#cardno').val($(node).data('cardno'));
         $('#credit_model').modal('show');
+        var i = 1, loc = $(node).data('bankloc');
+        do {
+            i += 1;
+            $('select[name="province"]').val(loc.substr(0,i));
+        } while ($('select[name="province"]').val() == null);
+        var city = loc.substr(i);
+        $('select[name="province"]').change();
+        $('select[name="city"]').val(city);
     }
 
     function bind_event(){
