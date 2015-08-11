@@ -28,11 +28,7 @@
 
                         
 
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label no-padding-rigtht">说明</label>
-                            <div class="col-xs-3 col-sm-3">
-                                <input id="sob_name" type="text" class="form-controller col-xs-12" name="sob_name" placeholder="输入说明"></div>
-                        </div>
+                        
                         <label style="left:0;position: absolute;" class="col-sm-2 control-label no-padding-rigtht">类目</label>
                         <script type="text/javascript">
                             var _subSob = [];
@@ -130,19 +126,7 @@
                         <div class="form-group">
                             <div style="border-radius:10px;" onclick="addCate(this.parentNode)" class="col-sm-1 col-xs-1 col-sm-offset-2 col-xs-offset-2 btn-primary addDrop">添加+</div>    
                         </div>
-                        <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">是否需要附件</label>
-                                <div class="col-xs-6 col-sm-6">
-                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
-                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
-                                        <label style="margin-top:8px;">
-                                            <input name="need_bank_info" class="ace ace-switch btn-rotate" type="checkbox" id="need_bank_info" style="margin-top:4px;" />
-                                            <span class="lbl"></span>
-                                        </label>
-
-                                   <!-- </div> -->
-                                </div>
-                        </div>
+                        
                         <label class="col-sm-2 control-label no-padding-rigtht" style="position:absolute;left:0px;">适用范围</label>
                         <div class="form-group">
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
@@ -342,6 +326,24 @@
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">名称</label>
             <input type="text" name='name' data-placeholder="请输入名称"></div>
+        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-rigtht">说明</label>
+                            <div class="col-xs-3 col-sm-3">
+                                <input id="sob_name" type="text" class="form-controller col-xs-12" name="sob_name" placeholder="输入说明"></div>
+        </div>
+        <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right">是否需要附件</label>
+                                <div class="col-xs-6 col-sm-6">
+                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
+                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
+                                        <label style="margin-top:8px;">
+                                            <input name="need_bank_info" class="ace ace-switch btn-rotate" type="checkbox" id="need_bank_info" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+
+                                   <!-- </div> -->
+                                </div>
+                        </div>
         <div class="form-group" style="height:30px">
             <label class="col-sm-2 col-xl-2">图片</label>
             <div class="dropdown col-sm-3 col-xl-3">
@@ -367,10 +369,11 @@
             <input name="code" type="text" data-placeholder="请输入类目ID"></div>
         <div class="clearfix form-actions">
             <div class="col-md-offset-3 col-md-9">
-                <a class="btn btn-white btn-primary new_card" data-renew="0">
-                    <i class="ace-icon fa fa-save "></i>
-                    退回
-                </a>
+                <button class="btn btn-sm" data-dismiss="modal">
+            <i class="ace-icon fa fa-times"></i>
+                取消
+        </button>
+        <input type="submit" class="btn btn-sm btn-primary">
             </div>
         </div>
     </div>
@@ -400,6 +403,24 @@
             <label class="col-sm-2 col-xl-2">名称</label>
             <input type="text" name='name' data-placeholder="请输入名称"></div>
         <div class="form-group" style="height:30px">
+        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-rigtht">说明</label>
+                            <div class="col-xs-3 col-sm-3">
+                                <input id="sob_name" type="text" class="form-controller col-xs-12" name="sob_name" placeholder="输入说明"></div>
+                        </div>
+                        <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right">是否需要附件</label>
+                                <div class="col-xs-6 col-sm-6">
+                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
+                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
+                                        <label style="margin-top:8px;">
+                                            <input name="need_bank_info" class="ace ace-switch btn-rotate" type="checkbox" id="need_bank_info" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+
+                                   <!-- </div> -->
+                                </div>
+                        </div>
             <label class="col-sm-2 col-xl-2">图片</label>
             <div class="dropdown col-sm-3 col-xl-3">
                 <div class="dropdown-toggle down-image" data-toggle="dropdown" id="dropdownMenuImg_">
