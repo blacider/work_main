@@ -322,7 +322,19 @@ class Company extends REIM_Controller {
                 $own_rule = $item;
             }
         }
+	foreach($categories as $cate)
+	{
+		foreach($own_rule['cates'] as &$p)
+		{
+			if($p['category'] == $cate['id'])
+			{
+				$p['sob_id'] = $cate['sob_id'];
+			}
+		}
+	}
 	log_message('debug','own_rule:' . json_encode($own_rule));
+	log_message('debug','_sobs:' . json_encode($_sobs));
+	log_message('debug','categories:' . json_encode($categories));
 	/*
         $cate_arr = array();
         $s_id = '';
@@ -356,6 +368,7 @@ class Company extends REIM_Controller {
             $gmember = $gmember ? $gmember : array();
         }
 	*/
+
         $this->bsload('company/update',
             array(
                 'title'=>'修改规则'
