@@ -681,7 +681,7 @@ class Reports extends REIM_Controller {
                 foreach($_items as $i){
                     log_message('debug', "Itemx :" .json_encode($i));
                     $_rate = 1.0;
-                    if(array_key_exists('currency', $i) && strtolower($i['currency']) == 'cny') {
+                    if(array_key_exists('currency', $i) && strtolower($i['currency']) != 'cny') {
                         $_rate = $i['rate'] / 100;
                     }
                     log_message("debug", "Items23:"  . json_encode($i));

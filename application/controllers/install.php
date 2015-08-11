@@ -24,6 +24,7 @@ class Install extends REIM_Controller {
             $info = $this->app_model->find_online(1);
             $url = "https://admin.cloudbaoxiao.com/release/android/" . $info['version'] . "/reim.apk";
             //$url = "http://files.cloudbaoxiao.com/android/" . $info['version'] . "/reim.apk";
+            //$url = "http://files-cloudbaoxiao-com.alikunlun.com/android/" . $info['version'] . "/reim.apk";
             //$url = "https://files-cloudbaoxiao-com.alikunlun.com/android/" . $info['version'] . "/reim.apk";
             $this->load->view('install/android', array('url' => $url));
         }
