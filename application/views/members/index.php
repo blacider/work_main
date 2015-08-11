@@ -158,17 +158,14 @@ if($profile['admin'] == 1 ||  $profile['admin'] == 3) {
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var error = "<?php echo $error;?>";
-var last_error = "<?php echo $last_error ;?>";
+
 
 $(document).ready(function(){
     if(error)
     {
         show_notify(error);
     }
-    if(last_error)
-    {
-        show_notify(last_error);
-    }
+  
 });
 
 </script>
