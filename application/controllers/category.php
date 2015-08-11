@@ -144,11 +144,11 @@ class Category extends REIM_Controller {
 		{
 			array_push($sob_keys,$cate['id']);
 		}
-		$all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code']);
+		$all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code'],'note'=>$cate['note'],'force_attach'=>$cate['force_attach']);
 	}
 			
 		$path = "http://api.cloudbaoxiao.com/online/static/0.png";
-		$all_categories[0]=array('child'=>array(),'avatar_'=>0,'avatar'=>$path,'id'=>0,'pid'=>-1,'name'=>"顶级分类",'sob_code'=>0);
+		$all_categories[0]=array('child'=>array(),'avatar_'=>0,'avatar'=>$path,'id'=>0,'pid'=>-1,'name'=>"顶级分类",'sob_code'=>0,'note'=>'','force_attach'=>0);
 	foreach($categories as $cate)
 	{
 		if($cate['pid'] !=-1)
@@ -603,12 +603,21 @@ class Category extends REIM_Controller {
 	$code=$this->input->post('code');
 	$sob_id = $this->input->post('sob_id');
 	$pid = $this->input->post('pid');
+	$note = $this->input->post('note');
+	$_force_attach = $this->input->post('force_attach');
+	$force_attach = 0;
+	if($_force_attach)
+	{
+		$force_attach = 1;
+	}
+		
 	log_message('debug','cid:' . $cid);
 	log_message('debug','name:' . $name);
 	log_message('debug','avatar:' . $avatar);
 	log_message('debug','code:' . $code);
-	$obj = $this->category->create_update($cid,$pid,$sob_id,$name,$avatar,$code);
-	
+	log_message('debug','note:' . $note);
+	log_message('debug','force_attach:' . $force_attach);
+	$obj = $this->category->create_update($cid,$pid,$sob_id,$name,$avatar,$code,$force_attach,$note);
 	if($obj['status'] > 0)
 	{
 		$this->session->set_userdata('last_error','添加成功');

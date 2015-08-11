@@ -36,13 +36,19 @@
                             var all_categories = <?php echo json_encode($all_categories);?>;
                             function showSob(sobId) {
                                 if (sobId != -1) {
-                                    var name = all_categories[sobId]['name'], code = all_categories[sobId]['sob_code'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'], name = all_categories[sobId]['name'], pid = all_categories[sobId]['pid'];
+                                    var name = all_categories[sobId]['name'], note = all_categories[sobId]['note'],force_attach=all_categories[sobId]['force_attach'],code = all_categories[sobId]['sob_code'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'], name = all_categories[sobId]['name'], pid = all_categories[sobId]['pid'];
                                     $("#form_moda").find('input[name="name"]').val(name);
                                     $("#menuImg").attr('src', img);
                                     $('#form_moda').find('input[name="avatar"]').val(all_categories[sobId]['avatar_']);
                                     $("#form_moda").find('input[name="cid"]').val(id);
                                     $("#form_moda").find('input[name="code"]').val(code);
+                                    $("#form_moda").find('input[name="note"]').val(note);
                                     $("#form_moda").find('input[name="pid"]').val(pid);
+                                    console.log('force_attach:' + force_attach);
+                                    if(force_attach == 1)
+                                    {
+                                        $("#form_moda").find('input[name="force_attach"]').attr('checked',force_attach).trigger('chosen:updated');
+                                    }
                                 }
                                 $('#modal_sob').modal('show');
                             }
@@ -321,7 +327,7 @@
         cursor: pointer;
     }
 </style>
-<form action="/" id="form_moda">
+<form action="<?echo base_url('category/create_category')?>" method="post" id="form_moda">
     <div class="modal-body">
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">名称</label>
@@ -335,7 +341,7 @@
             <label class="col-sm-3 control-label no-padding-right">是否需要附件</label>
                                 <div class="col-xs-6 col-sm-6">
                                         <label style="margin-top:8px;">
-                                            <input name="need_bank_info" class="ace ace-switch btn-rotate" type="checkbox" id="need_bank_info" style="margin-top:4px;" />
+                                            <input name="force_attach" class="ace ace-switch btn-rotate" type="checkbox" id="force_attach" style="margin-top:4px;" />
                                             <span class="lbl"></span>
                                         </label>
                                 </div>
@@ -345,7 +351,7 @@
             <div class="dropdown col-sm-3 col-xl-3">
                 <div class="dropdown-toggle down-image" data-toggle="dropdown" id="dropdownMenuImg">
                     <span>
-                        <input type="text" name="avatar" class="hidden" value="0">
+                        <input type="text" name="avatar" class="hidden" value="9">
                         <img id="menuImg" class="img-select" src="http://api.cloudbaoxiao.com/online/static/9.png" alt="png"></span>
                     <span class="caret"></span>
                 </div>
@@ -407,7 +413,7 @@
             <label class="col-sm-3 control-label no-padding-right">是否需要附件</label>
                                 <div class="col-xs-6 col-sm-6">
                                         <label style="margin-top:8px;">
-                                            <input name="need_bank_info" class="ace ace-switch btn-rotate" type="checkbox" id="need_bank_info" style="margin-top:4px;" />
+                                            <input name="force_attach" class="ace ace-switch btn-rotate" type="checkbox" id="force_attach" style="margin-top:4px;" />
                                             <span class="lbl"></span>
                                         </label>
                                 </div>
@@ -417,7 +423,7 @@
             <div class="dropdown col-sm-3 col-xl-3">
                 <div class="dropdown-toggle down-image" data-toggle="dropdown" id="dropdownMenuImg_">
                     <span>
-                        <input type="text" name="avatar" class="hidden" value="0">
+                        <input type="text" name="avatar" class="hidden" value="9">
                         <img id="menuImg_" class="img-select" src="http://api.cloudbaoxiao.com/online/static/9.png" alt="png">
                     </span>
                     <span class="caret"></span>

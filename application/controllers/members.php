@@ -12,21 +12,18 @@ class Members extends REIM_Controller {
     public function members_del()
     {
     	$this->need_group_it();
-	$_emails = $this->input->post('emails');
-	$emails = '';
-	if($emails)
-	{
-		$emails = implode(',',emails);
-	}
-	$buf = $this->users->del_email($emails);
+	$email = $this->input->post('email');
+	log_message('debug','email:' . $email);
+	$buf = $this->users->del_email($email);
+	log_message('debug','email:' . $email);
 	
 	if($buf['status']>0)
 	{
-		die(json_enocde(array('status'=>1,'msg'=>'删除成功')));
+		die(json_encode(array('status'=>1,'msg'=>'删除成功')));
 	}
 	else
 	{
-		die(json_enocde(array('status'=>0,'msg'=>'删除失败')));
+		die(json_encode(array('status'=>0,'msg'=>$buf['data']['msg'])));
 	}
     }
 
