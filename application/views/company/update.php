@@ -212,6 +212,7 @@
         </form>
     </div>
 </div>
+
 <script type="text/javascript">
     var all_members = "<?php echo $rule['all_company']?>";
 </script>
