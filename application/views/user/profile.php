@@ -156,18 +156,18 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">职级</label>
+                                <label class="col-sm-1 control-label no-padding-right">职位</label>
                                 <div class="col-xs-6 col-sm-6">
 				<?php 
 if($profile['admin'] == 1 || $profile['admin'] == 3){
 				?>
-                                    <select class="chosen-select tag-input-style" name="rank" data-placeholder="职级" >
+                                    <select class="chosen-select tag-input-style" name="rank" data-placeholder="职位" >
 				  <?php 
 				  }
 				  else
 				  {
 				  ?>
-                                    <select class="chosen-select tag-input-style" name="rank" data-placeholder="职级" disabled>
+                                    <select class="chosen-select tag-input-style" name="rank" data-placeholder="职位" disabled>
 				  <?php
 				  }
 				  ?>
