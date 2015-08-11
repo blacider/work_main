@@ -53,6 +53,19 @@ class Members extends REIM_Controller {
     {
         $this->need_group_it();
         $name=$this->input->post('name');
+        $ug = array();
+        $_ug = $this->ug->get_my_list();
+        if($_ug['status'] > 0)
+        {
+            $ug = $_ug['data']['group'];
+        }
+	foreach($ug as $u)
+	{
+		if($u['name'] == $name)
+		{
+			die(json_encode(array('msg' => '部门已经添加')));
+		}
+	}
 
         $buf = $this->ug->create_group(0,'',$name,'',0);
         if($buf['status']>0)
@@ -68,6 +81,20 @@ class Members extends REIM_Controller {
     {
         $this->need_group_it();
         $name = $this->input->post('name');
+        $_ranks_levels = $this->reim_show->rank_level($rank);
+        $ranks_levels = array();
+        if($_ranks_levels['status']>0)
+        {
+            $ranks_levels = $_ranks_levels['data'];
+        }
+
+	foreach($ranks_levels as $rl)
+	{
+		if($rl['name'] == $name)
+		{
+			die(array('msg' => '职位已经添加'));
+		}
+	}
 
         $buf = $this->groups->create_rank_level($rank,$name);
         log_message('debug','name:' . $name);
