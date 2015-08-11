@@ -86,7 +86,7 @@
                                 <div class="col-sm-2 col-sm-2">
                                     <div class="checkbox" >
                                         <label>
-                                         <input type="checkbox" id="freq_period_unlimit" name="freq_period_unlimit" >
+                                         <input type="checkbox" class="freq_period_unlimit" id="freq_period_unlimit" name="freq_period_unlimit" >
                                             无限制
                                          </label>
                                     </div>
@@ -105,12 +105,20 @@
                                 }
                             </style>
                             <script type="text/javascript">
+function bind_event() {
+    $('.freq_unlimit').click(function(event) {
+        $(this).parent().parent().parent().parent().find('input[type="text"]').attr('disabled',this.checked);
+    });
+    $('.freq_period_unlimit').click(function(event) {
+        $(this).parent().parent().parent().parent().find('input[type="text"]').attr('disabled',this.checked);
+    });
+}
                             function removeCategoryRow(div) {
                                 $(div).parent().parent().parent().remove();
                             }
                             function addCategoryRow() {
                                 var addDom = $('.addCategoryRow');
-                                var category = "<div><hr><label style='margin-left: -8px;position: absolute;' class='col-sm-2 control-label no-padding-right'>类目</label><div class='form-group CategoryRow'><div class='col-xs-2 col-sm-2 col-sm-offset-2' col-xs-offset-2><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-2 col-sm-2'><select name='category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div></div><div class='form-group'><label class='col-sm-2 control-label no-padding-right'>最大频次</label><div class='col-xs-2 col-sm-2'><input type='text' class='form-controller col-xs-12' id='freq_count' name='freq_count' placeholder='频次'></div><div class='col-sm-2 col-sm-2'><div class='checkbox' ><label><input type='checkbox' class='freq_unlimit' id='freq_unlimit' name='freq_unlimit' >无限制</label></div></div></div><div class='form-group'><label class='col-sm-2 control-label no-padding-right'>周期</label><div class='col-xs-2 col-sm-2'><input type='text' class='form-controller col-xs-12' id='freq_period' name='freq_period' placeholder='周期'></div><div class='col-sm-2 col-sm-2'><div class='checkbox' ><label><input type='checkbox' id='freq_period_unlimit' name='freq_period_unlimit' >无限制</label></div></div><div class='col-xs-1 col-sm-1'><div class='addCategoryRow' onclick='addCategoryRow()''>+</div></div></div></div>"
+                                var category = "<div><hr><label style='margin-left: -8px;position: absolute;' class='col-sm-2 control-label no-padding-right'>类目</label><div class='form-group CategoryRow'><div class='col-xs-2 col-sm-2 col-sm-offset-2' col-xs-offset-2><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-2 col-sm-2'><select name='category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div></div><div class='form-group'><label class='col-sm-2 control-label no-padding-right'>最大频次</label><div class='col-xs-2 col-sm-2'><input type='text' class='form-controller col-xs-12' id='freq_count' name='freq_count' placeholder='频次'></div><div class='col-sm-2 col-sm-2'><div class='checkbox' ><label><input type='checkbox' class='freq_unlimit' id='freq_unlimit' name='freq_unlimit' >无限制</label></div></div></div><div class='form-group'><label class='col-sm-2 control-label no-padding-right'>周期</label><div class='col-xs-2 col-sm-2'><input type='text' class='form-controller col-xs-12' id='freq_period' name='freq_period' placeholder='周期'></div><div class='col-sm-2 col-sm-2'><div class='checkbox' ><label><input type='checkbox' class='freq_period_unlimit' id='freq_period_unlimit' name='freq_period_unlimit' >无限制</label></div></div><div class='col-xs-1 col-sm-1'><div class='addCategoryRow' onclick='addCategoryRow()''>+</div></div></div></div>"
                                 addDom.removeClass('addCategoryRow');
                                 addDom.attr('onclick', 'removeCategoryRow(this)');
                                 addDom.addClass('removeCategoryRow');
@@ -133,9 +141,11 @@
                                     $(selectDom).empty().append(_h).trigger("chosen:updated");
                                 });
                                 $($(".CategoryRow .sobs")[$(".CategoryRow .sobs").length-1]).trigger('change');
+                                bind_event();
                             }
                                 $(document).ready(function($) {
                                 $(".chosen-select-niu").chosen({width:"100%"});
+                                bind_event();
                             });
                             </script>
                           <!--  <div class="form-group">

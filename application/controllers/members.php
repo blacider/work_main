@@ -11,25 +11,25 @@ class Members extends REIM_Controller {
     }
     public function members_del()
     {
-    	$this->need_group_it();
-	$email = $this->input->post('email');
-	log_message('debug','email:' . $email);
-	$buf = $this->users->del_email($email);
-	log_message('debug','email:' . $email);
-	
-	if($buf['status']>0)
-	{
-		die(json_encode(array('status'=>1,'msg'=>'删除成功')));
-	}
-	else
-	{
-		die(json_encode(array('status'=>0,'msg'=>$buf['data']['msg'])));
-	}
+        $this->need_group_it();
+        $email = $this->input->post('email');
+        log_message('debug','email:' . $email);
+        $buf = $this->users->del_email($email);
+        log_message('debug','email:' . $email);
+
+        if($buf['status']>0)
+        {
+            die(json_encode(array('status'=>1,'msg'=>'删除成功')));
+        }
+        else
+        {
+            die(json_encode(array('status'=>0,'msg'=>$buf['data']['msg'])));
+        }
     }
 
     public function delmembers()
     {
-    	$this->need_group_it();
+        $this->need_group_it();
         $_members = $this->groups->get_my_list();
         $members = array();
         if($_members['status'] > 0)
@@ -59,13 +59,13 @@ class Members extends REIM_Controller {
         {
             $ug = $_ug['data']['group'];
         }
-	foreach($ug as $u)
-	{
-		if($u['name'] == $name)
-		{
-			die(json_encode(array('msg' => '部门已经添加')));
-		}
-	}
+        foreach($ug as $u)
+        {
+            if($u['name'] == $name)
+            {
+                die(json_encode(array('msg' => '部门已经添加')));
+            }
+        }
 
         $buf = $this->ug->create_group(0,'',$name,'',0);
         if($buf['status']>0)
@@ -88,13 +88,13 @@ class Members extends REIM_Controller {
             $ranks_levels = $_ranks_levels['data'];
         }
 
-	foreach($ranks_levels as $rl)
-	{
-		if($rl['name'] == $name)
-		{
-			die(array('msg' => '职位已经添加'));
-		}
-	}
+        foreach($ranks_levels as $rl)
+        {
+            if($rl['name'] == $name)
+            {
+                die(array('msg' => '职位已经添加'));
+            }
+        }
 
         $buf = $this->groups->create_rank_level($rank,$name);
         log_message('debug','name:' . $name);
@@ -311,10 +311,24 @@ class Members extends REIM_Controller {
     }
     public function index(){
         $error = $this->session->userdata('last_error');
+        $profile = $this->session->userdata('profile');
+        $groups = $profile['group'];
+        if(array_key_exists('config', $groups) && $groups['config']) {
+            $config = json_decode($groups['config'], True);
+            if(array_key_exists('close_directly', $config)){
+                $close = $config['close_directly'];
+                log_message("debug", "Profile admin $close :" . $profile['admin']);
+                if($close == 0 && $profile['admin'] < 1) {
+                    return redirect(base_url('items/index'));
+                } 
+            }
+        }
+        log_message('debug', 'Profile:' . json_encode($groups['config']));
+        //$config = 
+        log_message('debug', 'Profile:' . json_encode($profile));
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-        if($error == '')
-        {
+        if($error == '') {
             $error = $this->session->userdata('login_error');
             $this->session->unset_userdata('login_error');
         }
