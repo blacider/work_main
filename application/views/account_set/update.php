@@ -335,7 +335,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label no-padding-rigtht">说明</label>
                             
-            <input id="sob_name" type="text" name="sob_name" placeholder="输入说明">
+            <input id="note" type="text" name="note" placeholder="输入说明">
         </div>
         <div class="form-group" style="height:30px">
             <label class="col-sm-3 control-label no-padding-right">是否需要附件</label>
@@ -407,7 +407,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label no-padding-rigtht">说明</label>
                             
-            <input id="sob_name" type="text" name="sob_name" placeholder="输入说明">
+            <input id="note" type="text" name="note" placeholder="输入说明">
         </div>
         <div class="form-group" style="height:30px">
             <label class="col-sm-3 control-label no-padding-right">是否需要附件</label>
