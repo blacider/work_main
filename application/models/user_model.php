@@ -6,6 +6,19 @@ class User_Model extends Reim_Model {
         parent::__construct();
     }
 
+    public function del_email($email)
+    {
+    	$jwt = $this->session->userdata('jwt');
+	if(!$jwt)  return false;
+
+	$url = $this->get_url('staff');
+	$data = array('emails' => $email);
+
+	$buf = $this->do_Post($url,$data,$jwt);
+	log_message('debug','del_email:' . $buf);
+	return json_decode($buf,True);
+    }
+
     public function get(){
         return $this->db->get(self::USER_TABLE)->result();
     }
