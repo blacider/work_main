@@ -26,7 +26,7 @@
 
 <div class="page-content">
     <div class="page-content-area">
-        <form role="form" action="<?php echo base_url('company/update_rule');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
+        <form role="form" action="<?php echo base_url('company/create_rule');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
 
@@ -141,9 +141,17 @@
                                     <select class="chosen-select tag-input-style" id="ranks" name="ranks[]" multiple="multiple" data-placeholder="请选择职位" placeholder="请选择职位">
                                     <?php 
                                     foreach($ranks as $g){
+                                        if(in_array($g['id'],$rule['ranks']))
+                                        {
+                                        ?>
+                                        <option selected value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+                                    <?php
+                                        }else
+                                        {
                                     ?>
                                         <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
                                     <?php
+                                    }
                                     }
                                     ?>
                                     </select>
@@ -152,9 +160,17 @@
                                     <select class="chosen-select tag-input-style" id="levels" name="levels[]" multiple="multiple" data-placeholder="请选择级别">
                                     <?php 
                                     foreach($levels as $m){
+                                        if(in_array($m['id'],$rule['levels']))
+                                        {
+                                        ?>
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                    <?php
+                                        }else
+                                        {
                                     ?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
                                     <?php
+                                    }
                                     }
                                     ?>
                                     </select>
@@ -166,10 +182,18 @@
                                     <select class="chosen-select tag-input-style" id="group" name="gids[]" multiple="multiple" data-placeholder="请选择部门" placeholder="请选择部门">
                                     <?php 
                                     foreach($group as $g){
+                                        if(in_array($g['id'],$rule['groups']))
+                                        {
+                                    ?>
+                                        <option selected value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+                                    <?php
+                                        }else
+                                        {
                                     ?>
                                         <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
                                     <?php
                                     }
+                                      }
                                     ?>
                                     </select>
                                 </div>
@@ -177,9 +201,16 @@
                                     <select class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
                                     <?php 
                                     foreach($member as $m){
+                                        if(in_array($m['id'],$rule['members']))
+                                        {
+                                    ?>
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                    <?php
+                                        }else{
                                     ?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
                                     <?php
+                                     }
                                     }
                                     ?>
                                     </select>
@@ -196,7 +227,10 @@
                             </div>
 
                            
-
+                            <input type="hidden" id="categories" name="categories" />
+                            <input type="hidden" id="freq_counts" name="freq_counts" />
+                            <input type="hidden" id="freq_periods" name="freq_periods" />
+                            <input type="hidden" id="freq_unlimits" name="freq_unlimits" />
                             <input type="hidden" id="renew" name="renew" value="0" />
                             <input type="reset" style="display:none;" id="reset">
                             <div class="clearfix form-actions">
@@ -213,6 +247,7 @@
         </form>
     </div>
 </div>
+
 <script type="text/javascript">
     var all_members = "<?php echo $rule['all_company']?>";
 </script>
@@ -374,7 +409,7 @@ bind_event();
                 $this.next().css({'width': $this.parent().width()});
             })
         }).trigger('resize.chosen');
-    $('.renew').click(function(){
+   /* $('.renew').click(function(){
         
         var rname = $('#rname').val();
         var sobs = $('#sobs').val();
@@ -395,6 +430,7 @@ bind_event();
         show_notify("请输入规则名");
         return false;
     }
+    /*
     if(($('#frequency').val() == '')&&(!$('#frequency_unlimit').is(':checked')))
     {
         $('#frequency').focus();
@@ -427,6 +463,7 @@ bind_event();
          console.log($('#frequency_unlimit').val());
 
     }
+    */
 
      
 /*	if(name=='')
@@ -446,7 +483,139 @@ bind_event();
 	
         show_notify("hello");*/
        // $('#renew').val($(this).data('renew'));
+      
+/*
         $('#mainform').submit();
+    });
+*/
+
+
+$('.renew').click(function(){
+        
+        var rname = $('#rname').val();
+        var sobs = $('#sobs').val();
+    var category = $('#category').val();
+
+    var amount = $('#amount').val();
+    var amount_unlimit = $('#amount_unlimit').val();
+    var amount_time = $('#amount_time').val();
+
+    var frequency = $('#frequency').val();
+    //var frequency_unlimit = $('#frequency_unlimit').val();
+    var frequency_time = $('#frequency_time').val();
+
+    if(rname == '')
+    {
+        $('#rname').focus();
+        show_notify("请输入规则名");
+        return false;
+    }
+    /*if(($('#frequency').val() == '')&&(!$('#frequency_unlimit').is(':checked')))
+    {
+        $('#frequency').focus();
+        show_notify("请输入频次");
+        return false;
+    }
+    else if(isNaN(Number($('#frequency').val())))
+    {
+        $('#frequency').focus();
+        show_notify("请输入数字");
+        return false;
+
+    }*/
+
+    /*if(($('#group').val() == null)&&($('#member').val() == null)&&(!$('#all_members').is(':checked')))
+    {
+        show_notify('请选择适用范围');
+        return false;
+    } */
+
+    if($('#frequency_unlimit').is(':checked'))
+    {
+        $('#frequency_unlimit').val(1);
+        //console.log($('#frequency_unlimit').val());
+    }
+    else
+    {
+        $('#frequency_unlimit').val(0);
+       //  console.log($('#frequency_unlimit').val());
+
+    }
+
+    $('.freq_unlimit').each(function(){
+        console.log('ischecked:' + $(this).is(':checked'));
+        if($(this).is(':checked'))
+        {
+            $(this).val(1);
+        }
+        else
+        {
+            $(this).val(0);
+        }
+    });
+
+      if($('#all_members').is(':checked'))
+    {
+        $('#all_members').val(1);
+      //  console.log($('#all_members').val());
+    }
+    else
+    {
+        $('#all_members').val(0);
+        // console.log($('#all_members').val());
+
+    }
+
+    var categories = []
+    var els =document.getElementsByName("category");
+        for (var i = 0, j = els.length; i < j; i++){
+    //    console.log(els[i].value);
+        categories.push(els[i].value);
+    }
+    $('#categories').val(JSON.stringify(categories));
+   // console.log(JSON.stringify(categories));
+    var freq_periods = []
+    var els =document.getElementsByName("freq_period");
+        for (var i = 0, j = els.length; i < j; i++){
+    //    console.log(els[i].value);
+        freq_periods.push(els[i].value);
+    }
+    $('#freq_periods').val(JSON.stringify(freq_periods));
+    var freq_counts = []
+    var els =document.getElementsByName("freq_count");
+        for (var i = 0, j = els.length; i < j; i++){
+    //    console.log(els[i].value);
+        freq_counts.push(els[i].value);
+    }
+    $('#freq_counts').val(JSON.stringify(freq_counts));
+
+    var freq_unlimits = []
+    var els =document.getElementsByName("freq_unlimit");
+        for (var i = 0, j = els.length; i < j; i++){
+    //    console.log(els[i].value);
+        freq_unlimits.push(els[i].value);
+    }
+    $('#freq_unlimits').val(JSON.stringify(freq_unlimits));
+
+     $('#mainform').submit();
+/*  if(name=='')
+    {   
+        show_notify('请输入用户名');
+        $('#name').focus();
+        return false;
+    }
+
+    if(phone==''&& email=='')
+    {   
+        show_notify('请输入手机号码或email');
+        $('#phone').focus();
+        $('#email').focus();
+        return false;
+    }
+    
+        show_notify("hello");*/
+       // $('#renew').val($(this).data('renew'));
+    
     });
 
     $('#amount_unlimit').click(function(){

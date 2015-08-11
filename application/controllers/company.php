@@ -465,6 +465,7 @@ class Company extends REIM_Controller {
 	$_freq_unlimits = $this->input->post('freq_unlimits');
 	$freq_unlimits = json_decode($_freq_unlimits,True);
 	
+        $id = $this->input->post('rid');
 	log_message('debug','data:' . json_encode(array('categories'=>$_categories_id,'freq_counts'=>$_freq_counts,'freq_periods'=>$_freq_periods,'freq_unlimits'=>$_freq_unlimits)));
 
 	
@@ -544,7 +545,15 @@ class Company extends REIM_Controller {
 	}
 
 	log_message('debug','policies:' . json_encode($policies));
-	$buf = $this->company->create_update_rules($rname,$groups,$members,$levels,$ranks,json_encode($policies),$all_members);
+	log_message('debug','rule_id:' . $id);
+	if($id)
+	{
+		$buf = $this->company->create_update_rules($rname,$groups,$members,$levels,$ranks,json_encode($policies),$all_members,$id);
+	}
+	else
+	{
+		$buf = $this->company->create_update_rules($rname,$groups,$members,$levels,$ranks,json_encode($policies),$all_members);
+	}
 //        $buf=$this->company->create_rule($rname,$category_ids,$frequency,$frequency_time,$all_members,$groups,$members,$ranks,$levels);	
         log_message("debug","####CREATE:".json_encode($buf));
         return redirect(base_url('company/show'));
