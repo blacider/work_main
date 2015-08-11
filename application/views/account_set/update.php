@@ -327,7 +327,7 @@
         cursor: pointer;
     }
 </style>
-<form action="<?echo base_url('category/create_category')?>" method="post" id="form_moda">
+<form action="<?php echo base_url('category/create_category')?>" method="post" id="form_moda">
     <div class="modal-body">
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">名称</label>
