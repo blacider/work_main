@@ -45,11 +45,12 @@
 	});
 	function delectOneUser() {
 		var emails = $('.chosen-select').val();
-		/*if (emails != null) {
+		if (emails != null) {
 			var email = emails.pop();
 			var log = $('#result').val() + "正在删除用户:" + email + '\n';
 			$('#result').val(log);
 			$('.chosen-select').val(emails).trigger("chosen:updated");
+			console.log(email);
 			ajaxDelect(email);
 		} else if (errorList.length) {
 			errorList.join();
@@ -57,10 +58,6 @@
 			var log = $('#result').val() + "失败删除用户:{\n" + errorList.join('\n') + '\n' + '}已在输入框显示' + '\n';
 			$('#result').val(log);
 			while (errorList.length) errorList.pop();
-		}*/
-		if(emails != null)
-		{
-			ajaxDelect(emails);
 		}
 	}
 	function ajaxDelect(email) {
@@ -69,22 +66,20 @@
 			 url:__BASE+'members/members_del',
 			 method:'POST',
 			 dataType:'json',
-			 data:{'email':emails},
+			 data:{'email':email},
 			 success:function(data){
-			 	if(data.status == 1)
+			 	if(data.status)
 			 	{
-			 		for(var i = 0; i < emails.length ; i++)
-			 		{
-			 			ajaxSuccess(emails[i]);
-			 		}
-				 }
-				 else
-				 {
+			 		ajaxSuccess(email);
+			 	}
+			 	else
+			 	{
 			 		ajaxError(email,data.msg);
-				 }
+			 	}
 			 },
 			 error:function(a,b,c){
-			 	ajaxError(email,'test');
+			 	console.log(a);
+			 	console.log(b);
 			 }
 
 		});
