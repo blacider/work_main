@@ -1,3 +1,4 @@
+//niu.splice(niu.indexOf(5),1)
 function bind_event(){
     $('.tdetail').each(function() {
         $(this).click(function(){

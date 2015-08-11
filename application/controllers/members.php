@@ -9,220 +9,40 @@ class Members extends REIM_Controller {
         $this->load->model('group_model', 'groups');
         $this->load->model('reim_show_model','reim_show');
     }
-    public function members_del()
-    {
-    	$this->need_group_it();
-	$email = $this->input->post('email');
-	log_message('debug','email:' . $email);
-	$buf = $this->users->del_email($email);
-	log_message('debug','email:' . $email);
-	
-	if($buf['status']>0)
-	{
-		die(json_encode(array('status'=>1,'msg'=>'删除成功')));
-	}
-	else
-	{
-		die(json_encode(array('status'=>0,'msg'=>$buf['data']['msg'])));
-	}
-    }
 
-    public function delmembers()
-    {
-    	$this->need_group_it();
-        $_members = $this->groups->get_my_list();
-        $members = array();
-        if($_members['status'] > 0)
-        {
-            $members = $_members['data']['gmember'];
-        }
-        $this->bsload('members/delmembers',
-            array(
-                'title' => '删除员工'
-                ,'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('members/groups'), 'name' => '员工&部门', 'class' => '')
-                    ,array('url'  => '', 'name' => '删除员工', 'class' => '')
-                )
-                ,'members' => $members
-            )
-        );
-    }
-
-    public function imports_create_group()
-    {
-        $this->need_group_it();
-        $name=$this->input->post('name');
-
-        $buf = $this->ug->create_group(0,'',$name,'',0);
-        if($buf['status']>0)
-        {
-            die(json_encode(array('msg' => '部门添加成功')));
-        }
-        else
-        {
-            die(json_encode(array('msg' => $buf['data']['msg'])));
-        }
-    }
-    public function imports_create_rank_level($rank)
-    {
-        $this->need_group_it();
-        $name = $this->input->post('name');
-
-        $buf = $this->groups->create_rank_level($rank,$name);
-        log_message('debug','name:' . $name);
-        if($buf['status'] > 0)
-        {
-            die(json_encode(array('msg' => '添加职位成功')));
-        }
-        else
-        {
-            die(json_encode(array('msg' => '添加职位失败')));
-        }
-    }
-    public function update_rank_level($rank)
-    {
-        $this->need_group_it();	
-
-        $name = $this->input->post('name');
-        $id = $this->input->post('rank_level_id');
-
-        $_rank_level = $this->groups->get_rank_level($rank);
-        $rank_level = array();
-        if($_rank_level['status'] > 0)
-        {
-            $rank_level=$_rank_level['data'];
-        }
-        foreach($rank_level as $rl)
-        {
-            if($name == $rl['name'])
-            {
-                $this->session->set_userdata('last_error','职称已经存在,修改失败');
-                return redirect(base_url('members/rank'));
-            }
-        }
-        log_message('debug','name:' . $name . ' ' . 'id:' .$id);
-        $buf = $this->groups->update_rank_level($rank,$id,$name);
-        if($buf['status'] > 0)
-        {
-            $this->session->set_userdata('last_error','修改成功');
-        }
-        else
-        {
-            $this->session->set_userdata('last_error',$buf['data']['msg']);
-        }
-
-        return redirect(base_url('members/rank'));
-    }
-    public function del_rank_level($rank,$id)
-    {
-        $this->need_group_it();
-
-        $buf = $this->groups->del_rank_level($rank,$id);
-        if($buf['status'] > 0)
-        {
-            $this->session->set_userdata('last_error','删除成功');
-        }
-        else
-        {
-            $this->session->set_userdata('last_error',$buf['data']['msg']);
-        }
-
-        return redirect(base_url('members/rank'));
-    }
-    public function create_rank_level($rank)
-    {
-        $this->need_group_it();
-        $name = $this->input->post('name');
-
-        $_rank_level = $this->groups->get_rank_level($rank);
-        $rank_level = array();
-        if($_rank_level['status'] > 0)
-        {
-            $rank_level=$_rank_level['data'];
-        }
-        foreach($rank_level as $rl)
-        {
-            if($name == $rl['name'])
-            {
-                $this->session->set_userdata('last_error','职称已经存在,添加失败');
-                return redirect(base_url('members/rank'));
-            }
-        }
-
-        $buf = $this->groups->create_rank_level($rank,$name);
-        log_message('debug','name:' . $name);
-        if($buf['status'] > 0)
-        {
-            $this->session->set_userdata('last_error','添加成功');
-            return redirect(base_url('members/rank'));
-        }
-        else
-        {
-            $this->session->set_userdata('last_error','添加失败');
-            return redirect(base_url('members/rank'));
-        }
-    }
-
-    public function rank()
-    {
-        $this->need_group_it();
-        $error = $this->session->userdata('last_error');
-        $this->session->unset_userdata('last_error');
-        $_ranks = $this->groups->get_rank_level(1);
-        $_levels = $this->groups->get_rank_level(0);
-        $ranks = array();
-        $levels = array();
-        if($_ranks['status'] > 0)
-        {
-            $ranks = $_ranks['data'];
-        }
-
-        if($_levels > 0)
-        {
-            $levels = $_levels['data'];
-        }
-        $this->bsload('rank/index',
-            array(
-                'title' => '职级设置'
-                ,'levels' => $levels
-                ,'ranks' => $ranks
-                ,'error' => $error
-                ,'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('members/groups'), 'name' => '员工&部门', 'class' => '')
-                    ,array('url'  => '', 'name' => '职级设置', 'class' => '')
-                ),
-            )
-        );
-    }
     public function remove_from_group($gid,$uid)
     {
-        $this->need_group_it();
         $group = json_decode($this->ug->get_single_group($gid),True);
-        if($group['status'] > 0) {
+        if($group['status'] > 0)
+        {
             $data = $group['data'];		
         }
-        else {
+        else
+        {
             $this->session->set_userdata('last_error','部门信息获取错误');
             return redirect(base_url('members/index'));
         }
 
         $members = array();
         $g_info = array();
-        if(array_key_exists('member',$data)) {
+        if(array_key_exists('member',$data))
+        {
             $members = $data['member'];	
         }	
-        if(array_key_exists('group',$data)) {
+        if(array_key_exists('group',$data))
+        {
             $g_info = $data['group'];
         }
-        else {
+        else
+        {
             $this->session->set_userdata('last_error','部门信息获取错误');
             return redirect(base_url('members/index'));
         }
         $uids = array();
-        foreach($members as $item) {
-            if($item['id'] != $uid) {
+        foreach($members as $item)
+        {
+            if($item['id'] != $uid)
+            {
                 array_push($uids,$item['id']);
             }
         }
@@ -232,19 +52,23 @@ class Members extends REIM_Controller {
         $code = $g_info['code'];
         $pid = $g_info['pid'];
 
-        if($uids) {
+        if($uids)
+        {
             $uids = implode(',',$uids);
         }
-        else {
+        else
+        {
             $uids = '';
         }
         $buf = $this->ug->update_data($manager,$uids, $name,$code,$pid,$gid);
 
-        if($buf['status']>0) {
+        if($buf['status']>0)
+        {
             $this->session->set_userdata('last_error','移除成功');
             return redirect(base_url('members/index'));
         }
-        else {
+        else
+        {
             $this->session->set_userdata('last_error','移除失败');
             return redirect(base_url('members/index'));
         }
@@ -928,9 +752,6 @@ class Members extends REIM_Controller {
             array(
                 'title' => '确认导入',
                 'members' => $data
-                ,'no_ranks' => $no_ranks
-                ,'no_levels' => $no_levels
-                ,'no_groups' => $no_groups
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
@@ -1150,10 +971,7 @@ class Members extends REIM_Controller {
                 ,'gmember' => $gmember
                 ,'manager_id' => $manager_id
                 ,'pid' => $id
-                ,'pro' => $pro
-                ,'ranks' => $ranks
-                ,'levels' => $levels
-                ,'ug' => $ug
+
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
@@ -1161,6 +979,8 @@ class Members extends REIM_Controller {
                 ),
             )
         );
+
+
     }
 
     public function remove_member($id = 0){
