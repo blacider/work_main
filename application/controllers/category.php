@@ -495,8 +495,12 @@ class Category extends REIM_Controller {
         $category_group = array();
         foreach ($_group as $item) {
             log_message("debug", "Item:" . json_encode($item));
+            if(array_key_exists('sob_id', $item)) {
             if($item['sob_id'] == 0 || $item['sob_id'] == '0') {   
                 $item['sob_name'] = "默认帐套";
+                $item['note'] = "";
+                $item['sob_code'] = "";
+                $item['sob_id'] = 0;
                 $category_group[] = $item;
                 continue;
             } else {
@@ -507,6 +511,14 @@ class Category extends REIM_Controller {
                         break;
                     }
                 }
+            }
+            } else {
+                $item['sob_name'] = "默认帐套";
+                $item['note'] = "";
+                $item['sob_code'] = "";
+                $item['sob_id'] = 0;
+                $category_group[] = $item;
+                continue;
             }
         }
 
