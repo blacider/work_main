@@ -219,10 +219,10 @@
     var selectCache = <?php echo json_encode($rule['cates'])?>;
                             function appendChecked(selectJqDom, data) {
                                 //第一个 selectJqDom.children()[0].children[0]
-                                //selectJqDom.find('#sobs').find("option[value='"+data['sob_id']+"']").attr("selected",true);
-                                //selectJqDom.find('#sobs').trigger("chosen:updated");
+                                selectJqDom.find('#sobs').find("option[value='"+data['sob_id']+"']").attr("selected",true);
+                                selectJqDom.find('#sobs').trigger("chosen:updated");
                                 //第二个
-                                //selectJqDom.find('#sobs').change();
+                                selectJqDom.find('#sobs').change();
                                 selectJqDom.find('#sob_category').find("option[value='"+data['category_id']+"']").attr("selected",true);
                                 selectJqDom.find('#sob_category').trigger("chosen:updated");
                                 selectJqDom.find('input[name="freq_count"]').val(data['freq_count']);
