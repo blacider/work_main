@@ -276,7 +276,7 @@ function update_tamount(){
     $('.amount').each(function(){
         if($(this).is(':checked')){
             var amount = $(this).data('amount');
-            amount = parseInt(amount.substr(1));
+            amount = parseInt(amount.replace(/[^0-9]/ig,""))/100;
             sum+=amount;
         };
     });
