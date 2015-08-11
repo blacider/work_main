@@ -67,8 +67,15 @@
 			 method:'POST',
 			 dataType:'json',
 			 data:{'email':email},
-			 success:function(){
-			 	ajaxSuccess(email);
+			 success:function(data){
+			 	if(data.status)
+			 	{
+			 		ajaxSuccess(email);
+			 	}
+			 	else
+			 	{
+			 		ajaxError(email,data.msg);
+			 	}
 			 },
 			 error:function(a,b,c){
 			 	console.log(a);
@@ -76,7 +83,7 @@
 			 }
 
 		});
-		ajaxError(email, 'test');
+		//ajaxError(email, 'test');
 	}
 	function ajaxSuccess(email) {
 		var log = $('#result').val() + "成功删除用户:" + email + '\n';
