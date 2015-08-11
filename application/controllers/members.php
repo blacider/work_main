@@ -365,6 +365,19 @@ class Members extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
+        $profile = $this->session->userdata('profile');
+        $groups = $profile['group'];
+        if(array_key_exists('config', $groups) && $groups['config']) {
+            $config = json_decode($groups['config'], True);
+            if(array_key_exists('close_directly', $config)){
+                $close = $config['close_directly'];
+                log_message("debug", "Profile admin $close :" . $profile['admin']);
+                if($close == 0 && $profile['admin'] < 1) {
+                    return redirect(base_url('items/index'));
+                } 
+            }
+        }
+        log_message('debug', 'Profile:' . json_encode($groups['config']));
         $group = $this->groups->get_my_list();
         $ginfo = array();
         $gmember = array();
