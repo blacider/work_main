@@ -374,7 +374,6 @@ class Company extends REIM_Controller {
                 ),
             )
         );
-	*/
     }
 
     public function update_rule()

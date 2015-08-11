@@ -106,6 +106,7 @@ if($open == 1) {
                                 <label class="col-sm-1 control-label no-padding-right">上级</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" name="manager" data-placeholder="请选择标签">
+                                    <option value="0" >无</option>
                                     <?php 
                                     foreach($gmember as $m){
                                         if($m['id'] == $manager_id)
