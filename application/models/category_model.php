@@ -11,7 +11,7 @@ class Category_Model extends Reim_Model {
         return $obj;
     }
     
-    public function create_update($cid = 0,$pid,$sob_id, $name, $avatar,$code,$force_attach = 0)
+    public function create_update($cid = 0,$pid,$sob_id, $name, $avatar,$code,$force_attach,$note)
     {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
@@ -22,6 +22,7 @@ class Category_Model extends Reim_Model {
 		,'avatar' => $avatar
 		,'sob_code' => $code
 		,'force_attachement' => $force_attach
+		,'note' => $note
 	);
 
 	if(0 == $cid)
@@ -61,7 +62,7 @@ class Category_Model extends Reim_Model {
 		$obj = json_decode($buf, true);
         return $obj;
     }
-    public function update($cid, $name, $pid, $sob_id, $prove_ahead = 0, $maxlimit = 0, $note = "", $sob_code = 0 , $avatar = 0) {
+    public function update($cid, $name, $pid, $sob_id, $prove_ahead = 0, $maxlimit = 0, $note = "", $sob_code = 0 , $avatar = 0,$force_attach) {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(
@@ -73,6 +74,7 @@ class Category_Model extends Reim_Model {
             ,'limit' => $maxlimit
             ,'pb' => $prove_ahead
 	    ,'avatar' => $avatar
+            ,'force_attachement' => $force_attach
         );
 		$url = $this->get_url('category/' . $cid);
 		$buf = $this->do_Put($url, $data, $jwt);
