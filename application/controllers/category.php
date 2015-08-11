@@ -266,10 +266,9 @@ class Category extends REIM_Controller {
         $this->session->unset_userdata('last_error');
 
         $sob_name = $this->input->post('sob_name');
-        $groups = $this->input->post('groups');
         //$save = $this->input->post('renew');
         //log_message("debug","-----------------$groups");
-        $ret = $this->account_set->create_account_set($sob_name, implode(',', $groups));
+        $ret = $this->account_set->create_account_set($sob_name,'','','','');
         $re = json_encode($ret);
         log_message("debug", "***&&*&*&*:$re");
         $arr = array('helo' => 'jack');

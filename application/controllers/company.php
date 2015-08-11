@@ -362,7 +362,6 @@ class Company extends REIM_Controller {
                 ,'error'=>$error
                 ,'rule'=>$own_rule
                 ,'member'=>$gmember
-                ,'group'=>$gnames
          //       ,'cate_arr'=>$cate_arr
                 ,'group'=>$gnames
 		,'ranks' => $ranks
