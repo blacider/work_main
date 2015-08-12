@@ -89,7 +89,7 @@ class Category extends REIM_Controller {
 	}
 	foreach($sobs as $s)
 	{
-		if($s['sob_id'] = $gid)
+		if($s['sob_id'] == $gid)
 		{
 			$sob_ranks = $s['ranks'];
 			$sob_levels = $s['levels'];

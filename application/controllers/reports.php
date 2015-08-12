@@ -687,6 +687,12 @@ class Reports extends REIM_Controller {
                     }
                     //log_message("debug", "Items23:"  . json_encode($i));
                     $r['total'] += ($i['amount'] * $_rate);
+                    if(in_array($r['status'], array(4, 7, 8))){
+                        // 已完成状态的，付款额度就是已付额度
+                        $i['paid'] = ($i['amount'] * $_rate);
+                    } else {
+                        $i['paid'] = 0;
+                    }
                     $i['nickname'] = $r['nickname'];
                     //$r['total'] += ($i['amount'] * $i['rate'] / 100);
                     //log_message("debug", "Items2:"  . json_encode($i));
@@ -696,16 +702,19 @@ class Reports extends REIM_Controller {
                         continue;
                     }
                     if($i['prove_ahead'] > 0){
-                        $r['paid'] += $i['pa_amount'];
+                        $r['paid'] += ($i['pa_amount'] * $_rate);
                     }
 
                 }
-                if($r['status'] == 4){
+                if(in_array($r['status'], array(4, 7, 8))){
                     // 已完成状态的，付款额度就是已付额度
                     $r['paid'] = $r['total'];
                 }
                 $r['last'] = $r['total'] - $r['paid'];
-                $_members[$r['uid']]['paid'] += ($r['last'] * $_rate);
+                log_message("debug", $r['status'] . "," . $r['id'] . " Total:" . $r['total']);
+                log_message("debug", $r['status'] . "," . $r['id'] . " Paid:" . $r['paid']);
+                log_message("debug", $r['status'] . "," . $r['id'] . " Last:" . $r['last']);
+                $_members[$r['uid']]['paid'] += $r['last'];
                 $_members[$r['uid']]['uid'] = $r['uid'];
                 $obj = array();
                 $obj['报告名'] = $r['title'];
@@ -773,8 +782,8 @@ class Reports extends REIM_Controller {
                     $_paid = $i['pa_amount'];
                 }
                 $_last = $i['amount'] - $_paid;
-                $o['已付'] = $_paid * $_rate;
-                $o['应付'] = $_last * $_rate;
+                $o['已付'] = $i['paid'];
+                $o['应付'] = ($i['amount'] * $_rate) - $i['paid'];
                 $o['报告名'] = $i['title'];
                 array_push($_detail_items, $o);
             }
