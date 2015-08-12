@@ -157,6 +157,19 @@ class Items extends REIM_Controller {
         $amount = $this->input->post('amount');
         $category= $this->input->post('category');
         $timestamp = strtotime($this->input->post('dt'));
+	$endtime = strtotime($this->input->post('dt_end'));
+	$config_id = $this->input->post('config_id');
+	$config_type = $this->input->post('config_type');
+	log_message('debug','config_id:' . $config_id);
+	log_message('debug','config_type:' . $config_type);
+	$extra = array();
+	$_extra = array();
+	if($config_type)
+	{
+		$_extra = array('id'=>$config_id ,'type'=>$config_type,'value'=>$endtime);
+	}
+	array_push($extra,$_extra);
+	$__extra = json_encode($extra);
         log_message("debug", "TM:" . $timestamp);
         //$timestamp = mktime(0, $dt['tm_min'], $dt['tm_hour'], $dt['tm_mon']+1, $dt['tm_mday'], $dt['tm_year'] + 1900);
 
@@ -166,7 +179,8 @@ class Items extends REIM_Controller {
         $note = $this->input->post('note');
         $images = $this->input->post('images');
         $renew = $this->input->post('renew');
-        $obj = $this->items->create($amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
+        $obj = $this->items->create($amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra);
+	log_message('debug','extra:' . $__extra);
         // TODO: 提醒的Tips
         if($renew){
             redirect(base_url('items/newitem'));
@@ -571,10 +585,34 @@ class Items extends REIM_Controller {
     public function edit($id = 0){
     	log_message('debug','item_id' . $id);
         if(0 === $id) redirect(base_url('items'));
+	$_profile = $this->user->reim_get_user();	
+	$profile = array();
+	$group_config = array();
+	$item_configs = array();
+	$item_config = array();
+	if($_profile)
+	{
+		$profile = $_profile['data']['profile'];
+	}
+	log_message('debug' , 'profile:' . json_encode($profile));
+	if(array_key_exists('group',$profile))
+	{
+		$group_config = $profile['group'];
+		if(array_key_exists('item_config',$group_config))
+		{
+			$item_configs = $group_config['item_config'];
+			foreach($item_configs as $conf)
+			{
+				array_push($item_config,array('id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid']));	
+			}
+		}
+	}
+	log_message('debug' , 'item_config:' . json_encode($item_configs));
         $item = $this->items->get_by_id($id);
         $item_update_in = $this->session->userdata('item_update_in');
 	log_message('debug','items_info:' . json_encode($item));
         if($item['status'] < 1){
+	    $this->session->set_userdata('last_error',$item['status']['msg']);
             redirect(base_url('items'));
         }
         $item = $item['data'];
@@ -612,7 +650,8 @@ class Items extends REIM_Controller {
                 'categories' => $categories,
                 'tags' => $tags,
                 'images' => json_encode($_images),
-                'item' => $item,
+                'item' => $item
+		,'item_config'=>$item_config,
                 'images_ids' => implode(",", $_image_ids)
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
