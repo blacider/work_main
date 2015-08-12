@@ -139,7 +139,6 @@
                                 <input type="radio" name="range" value="0" onclick="choseRange(this.value)" style="position:relative;top:7px"></div>
                             <div class="col-xs-4 col-sm-4">
                                 <select id="group" class="chosen-select range tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
-                    
                                     <?php
                                       $exit = array();
                                     foreach($sob_data as $ug){

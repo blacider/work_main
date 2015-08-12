@@ -308,6 +308,7 @@ class Items extends REIM_Controller {
     public function del($id = 0){
         if(0 === $id) redirect(base_url('items'));
         $obj = $this->items->remove($id);
+	log_message('debug' , 'del_item:' . json_encode($obj));
         redirect(base_url('items'));
     }
 
@@ -648,9 +649,9 @@ class Items extends REIM_Controller {
             array(
                 'title' => '修改消费',
                 'categories' => $categories,
-                'tags' => $tags,
                 'images' => json_encode($_images),
                 'item' => $item
+		,'tags' => $tags
 		,'item_config'=>$item_config,
                 'images_ids' => implode(",", $_image_ids)
                 ,'breadcrumbs' => array(
