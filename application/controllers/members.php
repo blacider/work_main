@@ -628,6 +628,21 @@ class Members extends REIM_Controller {
         $this->need_group_it();
         $group = $this->ug->get_my_list();
         $_group = $this->groups->get_my_list();
+        $_ranks = $this->reim_show->rank_level(1);
+        $_levels = $this->reim_show->rank_level(0);
+
+        $ranks = array();
+        $levels = array();
+
+        if($_ranks['status']>0)
+        {
+            $ranks = $_ranks['data'];
+        }
+
+        if($_levels['status']>0)
+        {
+            $levels = $_levels['data'];
+        }
         $gmember = array();
         if($_group) {
             if(array_key_exists('gmember', $_group['data'])){
@@ -637,9 +652,11 @@ class Members extends REIM_Controller {
         }
         $this->bsload('members/new',
             array(
-                'title' => '添加员工',
-                'groups' => $group['data'],
-                'gmember' => $gmember
+                'title' => '添加员工'
+                ,'groups' => $group['data']
+                ,'gmember' => $gmember
+                ,'ranks' => $ranks
+                ,'levels' => $levels
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
@@ -665,13 +682,15 @@ class Members extends REIM_Controller {
         $cardbank = $this->input->post('cardbank');
         $account = $this->input->post('account');
 
+        $rank = $this->input->post('rank');
+        $level = $this->input->post('level');
 
         $admin = $this->input->post('admin');
         $renew = $this->input->post('renew');
         if($phone == $email && $email == ""){
             die(json_encode(array('status' => false, 'id' => $id, 'msg' => '邮箱手机必须有一个')));
         }
-        $info = $this->groups->doimports($email, $nickname, $phone, $admin, $groups, $account, $cardno, $cardbank, $cardloc , $manager);
+        $info = $this->groups->doimports($email, $nickname, $phone, $admin, $groups, $account, $cardno, $cardbank, $cardloc , $manager, $rank, $level);
         log_message("debug","manager".$manager);
         if($info['status']) {
             $this->session->set_userdata('last_error', '添加成功');
