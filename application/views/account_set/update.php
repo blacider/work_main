@@ -48,6 +48,8 @@
                                     if(force_attach == 1)
                                     {
                                         $("#form_moda").find('input[name="force_attach"]').attr('checked',force_attach).trigger('chosen:updated');
+                                    } else {
+                                        $("#form_moda").find('input[name="force_attach"]').removeAttr('checked').trigger('chosen:updated');
                                     }
                                 }
                                 $('#modal_sob').modal('show');
