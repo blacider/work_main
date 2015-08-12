@@ -479,9 +479,9 @@ class Company extends REIM_Controller {
         $frequency_time = 1;
 
         $_groups = $this->input->post('gids');
-	$groups = array();
+	$groups = '';
         $_members = $this->input->post('uids');
-	$members = array();
+	$members = '';
 
         $all_members = $this->input->post('all_members');
 	$_ranks = $this->input->post('ranks');
