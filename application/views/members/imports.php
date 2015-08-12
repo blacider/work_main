@@ -23,7 +23,7 @@
                                     <th>状态</th>
                                 </tr>
                                 <?php foreach($members as $d){ ?>
-                                <tr class="member"  data-id="<?php echo $d['status'];?>">
+                                <tr class="member"  data-id="<?php echo $d['status'];?>" >
                                    
                                     <td>
                                         <input type="hidden" data-id="m_<?php echo md5($d['email']); ?>" data-exist="<?php echo $d['status']; ?>"  class="data-maintainer " value="<?php echo base64_encode(json_encode($d)); ?>" data-value="<?php echo base64_encode(json_encode($d)); ?>">
@@ -42,7 +42,7 @@
                                     <td><?php echo $d['level'];?></td>
                                     <td>
                                         <a alt="<?php echo $d['status'] == 1 ? '已经是同一个公司的同事' : '还不是一个公司的同事'; ?>"><i id="m_<?php echo md5($d['email']); ?>"   
-                                                class="<?php echo $d['status'] == 1 ? 'green fa-check' : 'fa-times red' ; ?> menu-icon fa judge"></i></a>
+                                              data-id="<?php echo $d['id'];?>"  class="<?php echo $d['status'] == 1 ? 'green fa-check' : 'fa-times red' ; ?> menu-icon fa judge"></i></a>
                                     </td>
                                 </tr>
                                 <?php } ?>
@@ -85,14 +85,14 @@
     if(_no_groups)
     { no_groups = JSON.parse(_no_groups);}
 
-    console.log(no_ranks);
-    console.log(no_levels);
-    console.log(no_groups);
+  //  console.log(no_ranks);
+   // console.log(no_levels);
+    //console.log(no_groups);
     function make_invite(){
         $('.data-maintainer').each(function(idx, val){
             var _status = $(this).data('exist');
             if(1 == _status) {
-                console.log('skip');
+             //   console.log('skip');
                 return;
             }
             var _member = $(this).val();
@@ -142,7 +142,7 @@ function travel()
     for(var i=0;i<no_ranks.length;i++)
     {
         var count_ranks = no_ranks.length;
-        console.log('count_ranks:' + count_ranks);
+      //  console.log('count_ranks:' + count_ranks);
         $.ajax({
             url : __BASE  + "members/imports_create_rank_level/1"
                     ,method: 'POST'
@@ -154,7 +154,7 @@ function travel()
                        {
                         show_notify('职位创建成功');
                         sum-=1;
-                        console.log('sum:'+sum);
+                    //    console.log('sum:'+sum);
                         if(sum == 0)
                         {
                             insertMem();
@@ -171,7 +171,7 @@ function travel()
     for(var i=0;i<no_levels.length;i++)
     {
         var count_level = no_levels.length;
-        console.log('count_level:' + count_level);
+       // console.log('count_level:' + count_level);
         $.ajax({
             url : __BASE  + "members/imports_create_rank_level/0"
                     ,method: 'POST'
@@ -184,7 +184,7 @@ function travel()
                      
                         show_notify('级别创建成功');
                         sum-=1;
-                        console.log('sum:'+sum);
+                  //      console.log('sum:'+sum);
                    
                           if(sum == 0)
                         {
@@ -203,7 +203,7 @@ function travel()
     for(var i=0;i<no_groups.length;i++)
     {
         var count_groups = no_groups.length;
-        console.log(count_groups);
+      //  console.log(count_groups);
         $.ajax({
             url : __BASE  + "members/imports_create_group"
                     ,method: 'POST'
@@ -218,7 +218,7 @@ function travel()
                        
                         show_notify('部门创建成功');
                         sum-=1;
-                         console.log('sum:'+sum);
+                    //     console.log('sum:'+sum);
                           if(sum == 0)
                         {
                             insertMem();
@@ -227,8 +227,8 @@ function travel()
                     }
                     ,error:function(a,b,c)
                     {
-                        console.log(a);
-                        console.log(b);
+              //          console.log(a);
+              //          console.log(b);
                     }
         });
     }
@@ -252,18 +252,22 @@ function insertMem()
                 ,dataType: 'json'
                 ,data : {'member' : members}
                 ,success : function(data){
-                    console.log(data);
-                    
+                    var back_info = data['data'];
                             $('.judge').each(function(){
-                            $(this).removeClass('fa-times red').addClass('fa-check green');
+                                //console.log($(this).data('id'));
+                                var _id = $(this).data('id');
+                                if(back_info[_id] != undefined)
+                                {
+                                    $(this).removeClass('fa-times red').addClass('fa-check green');
+                                }
                             });
                         show_notify('员工创建成功');
                     
                 }
             ,error:function(a,b,c)
                     {
-                        console.log(a);
-                        console.log(b);
+                       // console.log(a);
+                       // console.log(b);
                     }
         });
 }
