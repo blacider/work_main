@@ -323,9 +323,9 @@ class Members extends REIM_Controller {
                 } 
             }
         }
-        log_message('debug', 'Profile:' . json_encode($groups['config']));
+        //log_message('debug', 'Profile:' . json_encode($groups['config']));
         //$config = 
-        log_message('debug', 'Profile:' . json_encode($profile));
+        //log_message('debug', 'Profile:' . json_encode($profile));
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
         if($error == '') {
