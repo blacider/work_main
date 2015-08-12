@@ -46,6 +46,20 @@
 </div>
 </div>
 
+<div class="form-group" id="endTime" hidden>
+<label class="col-sm-1 control-label no-padding-right">至</label>
+<div class="col-xs-6 col-sm-6">
+<div class="input-group">
+<input id="date-timepicker2" name="dt_end" type="text" class="form-control" />
+<input type="hidden" id="config_id" name="config_id" />
+<input type="hidden" id="config_type" name="config_type"/>
+<span class="input-group-addon">
+<i class="fa fa-clock-o bigger-110"></i>
+</span>
+</div>
+</div>
+</div>
+
 
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">商家</label>
@@ -187,7 +201,6 @@ if($__config['disable_budget'] == '0')
 
 <!--<script src="/static/ace/js/jquery1x.min.js"></script> -->
 
-<p><?php echo json_encode($item_config);?></p>
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
 
 
@@ -406,6 +419,7 @@ function get_sobs(){
             }
             //var selectDom = this.parentNode.nextElementSibling.children[0]
             $(this.nextElementSibling).empty().append(_h).trigger("chosen:updated");
+            $('#sob_category').trigger('change');
         });
 }
 
@@ -422,6 +436,19 @@ $(document).ready(function(){
     }).on(ace.click_event, function(){
         $(this).prev().focus();
     });
+
+    $('#date-timepicker2').datetimepicker({
+        language: 'zh-cn',
+            useCurrent: true,
+            format: 'YYYY-MM-DD HH:mm',
+            linkField: "dt",
+            linkFormat: "YYYY-MM-DD HH:mm",
+            sideBySide: true
+    }).next().on('dp.change', function(ev){
+    }).on(ace.click_event, function(){
+        $(this).prev().focus();
+    });
+
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
         .off('resize.chosen')
@@ -433,6 +460,26 @@ $(document).ready(function(){
         }).trigger('resize.chosen');
 
     $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange'></i>");//let's add a custom loading icon
+    
+    $('#sob_category').change(function(){
+        var category_id = $('#sob_category').val();
+        if(category_id == _item_config['cid'])
+        {
+            $('#config_id').val(_item_config['id']);
+            console.log(_item_config['id']);
+            $('#config_type').val(_item_config['type']);
+            $('#date-timepicker2').val('');
+            $('#endTime').show();
+        }
+        else
+        {
+            $('#config_id').val('');
+            $('#config_type').val('');
+            $('#date-timepicker2').val(-1);
+            $('#endTime').hide();
+        }
+    });
+
     $('.renew').click(function(){
 
 
@@ -465,6 +512,23 @@ $(document).ready(function(){
             {
                 show_notify('请填写时间');
                 //$('#date-timepicker1').focus();
+                return false;
+            }
+        }
+
+         var dateTime2 = $('#date-timepicker2').val()
+        if(__config['not_auto_time'] == 1)
+        {
+            if(dateTime2 == '')
+            {
+                show_notify('请填写结束时间');
+                //$('#date-timepicker1').focus();
+                return false;
+            }
+            console.log((dateTime2>0));
+            if((dateTime2>0) && (dateTime2 < dateTime))
+            {
+                show_notify('结束时间应该大于开始时间');
                 return false;
             }
         }

@@ -800,10 +800,11 @@ class Members extends REIM_Controller {
             $__email = $g['email']; 
             $__phone = $g['phone']; 
             $__name = $g['nickname'];
-            if(!array_key_exists($__name,$_names))
+            if(!in_array($__name,$_names))
             {
                 $names[$__name]['count'] = 1;		
-                $names[$__name]['ids']=[$g['id']];
+                $names[$__name]['ids']=array();
+		array_push($names[$__name]['ids'],$g['id']);	
             }
             else
             {
