@@ -185,7 +185,12 @@ class Reports extends REIM_Controller {
             $trash= $d['status'] === 1 ? 'gray' : 'red';
             $edit = ($d['status'] === 1)   ? 'gray' : 'green';
             $export = ($d['status'] === 1)   ? 'gray' : 'grey';
-            if(in_array($d['status'],[2,4,5]))
+            if($d['status'] == 1) {
+                $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+                    . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
+                    . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
+            } else {
+            if(in_array($d['status'],array(2,4,5)))
             {
                 $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
@@ -196,8 +201,9 @@ class Reports extends REIM_Controller {
             {
                 $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
-                    . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>'
-                    . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
+                    . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>'
+                    . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span></div>';
+            }
             }
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
                 $d['status_str'] = '待提交';
@@ -687,6 +693,7 @@ class Reports extends REIM_Controller {
                     }
                     //log_message("debug", "Items23:"  . json_encode($i));
                     $r['total'] += ($i['amount'] * $_rate);
+                    $i['paid'] = ($i['amount'] * $_rate);
                     if(in_array($r['status'], array(4, 7, 8))){
                         // 已完成状态的，付款额度就是已付额度
                         $i['paid'] = ($i['amount'] * $_rate);
@@ -714,7 +721,7 @@ class Reports extends REIM_Controller {
                 log_message("debug", $r['status'] . "," . $r['id'] . " Total:" . $r['total']);
                 log_message("debug", $r['status'] . "," . $r['id'] . " Paid:" . $r['paid']);
                 log_message("debug", $r['status'] . "," . $r['id'] . " Last:" . $r['last']);
-                $_members[$r['uid']]['paid'] += $r['last'];
+                $_members[$r['uid']]['paid'] += $r['total'];//$r['last'];
                 $_members[$r['uid']]['uid'] = $r['uid'];
                 $obj = array();
                 $obj['报告名'] = $r['title'];

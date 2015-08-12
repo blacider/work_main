@@ -177,7 +177,7 @@ class Items extends REIM_Controller {
             }
             $data = $items['data'];
             $item_data = $data['items'];
-	    log_message("debug",json_encode($data));
+	    log_message("debug","list item:" . json_encode($data));
             foreach($item_data as &$s){
                 //if($s['status'] < 0) continue;
                 $s['cate_str'] = '未指定的分类';
