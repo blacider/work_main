@@ -295,6 +295,7 @@ class Reports extends REIM_Controller {
                 $this->session->set_userdata('last_error', $ret['data']['msg']);
             }
         }
+
         return redirect(base_url('reports'));
     }
 
@@ -512,11 +513,11 @@ class Reports extends REIM_Controller {
         $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items));
         log_message("debug", $ret);
 	$_ret = json_decode($ret,True);
-	if($_ret['status'] < 0)
+	if($_ret['status'] <= 0)
 	{
 		$this->session->set_userdata('last_error',$_ret['data']['msg']);
 	}
-        return redirect(base_url('reports'));
+        return redirect(base_url('reports/index'));
     }
 
     public function check_permission() {
