@@ -465,9 +465,14 @@ $(document).ready(function(){
                 return false;
             }
         }
+        //console.log($('#sob_category').val());
+        if($('#sob_category').val() == null)
+        {
+            show_notify('请选择类目');
+        }
 
         $('#renew').val($(this).data('renew'));
-        $('#itemform').submit();
+        //$('#itemform').submit();
     });
     $('.cancel').click(function(){
         $('#reset').click();
