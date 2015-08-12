@@ -148,6 +148,7 @@ echo $buf;
     </div>
 </div>
 <script language="javascript">
+update_tamount();
 var __BASE = "<?php echo $base_url; ?>";
 function toDecimal(x) {  
     var f = parseFloat(x);  
