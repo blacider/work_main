@@ -385,7 +385,7 @@ function get_sobs(){
    var selectDataCategory = {};
    var selectDataSobs = '';
         $.ajax({
-            url : __BASE + "category/get_my_sob_category",
+            url : __BASE + "category/get_sob_category",
             dataType : 'json',
             method : 'GET',
             success : function(data){
