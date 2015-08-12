@@ -44,6 +44,7 @@ foreach($report['items'] as $i) {
     }
     $amount += $i['amount'] * $rate;
 }
+    $amount = sprintf("%.02f", $amount);
 ?>
     <span class="middle" id="tamount">￥  <?php echo $amount; ?></span>
                                 </div>
