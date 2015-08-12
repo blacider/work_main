@@ -62,6 +62,7 @@ class Items extends REIM_Controller {
 	$profile = array();
 	$group_config = array();
 	$item_configs = array();
+	$item_config = array();
 	if($_profile)
 	{
 		$profile = $_profile['data']['profile'];
@@ -73,6 +74,10 @@ class Items extends REIM_Controller {
 		if(array_key_exists('item_config',$group_config))
 		{
 			$item_configs = $group_config['item_config'];
+			foreach($item_configs as $conf)
+			{
+				array_push($item_config,array('id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid']));	
+			}
 		}
 	}
 	log_message('debug' , 'item_config:' . json_encode($item_configs));
@@ -117,7 +122,7 @@ class Items extends REIM_Controller {
                 'sobs' => $_sobs,
                 'categories' => $_categories,
                 'tags' => $tags,
-		'item_configs' => $item_configs
+		'item_config' => $item_config
             ));
     }
     public function index(){
