@@ -942,10 +942,22 @@ function get_province(){
         $('#cardno').val($(node).data('cardno'));
         $('#credit_model').modal('show');
         var i = 1, loc = $(node).data('bankloc');
+        
         do {
             i += 1;
+            console.log(i);
+            console.log(loc.length);
             $('select[name="province"]').val(loc.substr(0,i));
-        } while ($('select[name="province"]').val() == null);
+            if(i>loc.length+1)
+            {
+                break;
+            }
+        } while ($('select[name="province"]').val() == null); 
+        /*for(var i=1;i<=loc.length+1;i++)
+        {
+            console.log(loc.substr(0,i));
+             $('select[name="province"]').val(loc.substr(0,i));
+        }*/
         var city = loc.substr(i);
         $('select[name="province"]').change();
         $('select[name="city"]').val(city);

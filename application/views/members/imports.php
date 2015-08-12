@@ -12,10 +12,10 @@
                                     <th>姓名</th>
                                     <th>邮箱</th>
                                     <th>手机</th>
-                                    <th>开户名</th>
+                                   <!-- <th>开户名</th> -->
                                     <th>银行卡号</th>
                                     <th>开户行</th>
-                                    <th>开户地</th>
+                                 <!--   <th>开户地</th> -->
                                     <th>部门</th>
                                     <th>上级姓名</th>
                                     <th>职位</th>
@@ -32,10 +32,10 @@
                                     <td><?php echo $d['name']; ?></td>
                                     <td><?php echo $d['email']; ?></td>
                                     <td><?php echo $d['phone']; ?></td>
-                                    <td><?php echo $d['accounts']; ?></td>
+                                    <!--<td><?php echo $d['accounts']; ?></td> -->
                                     <td><?php echo $d['cardno']; ?></td>
                                     <td><?php echo $d['cardbank']; ?></td>
-                                    <td><?php echo $d['cardloc']; ?></td>
+                                    <!--<td><?php echo $d['cardloc']; ?></td> -->
                                     <td><?php echo $d['group_name'];?></td>
                                     <td><?php echo $d['manager'];?></td>
                                     <td><?php echo $d['rank'];?></td>
