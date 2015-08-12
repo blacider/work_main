@@ -5,6 +5,19 @@ class User_Model extends Reim_Model {
     public function __construct(){
         parent::__construct();
     }
+    
+    public function get_common()
+    {
+    	$jwt = $this->session->userdata('jwt');
+	if(!$jwt)  return false;
+
+	$url = $this->get_url('common');
+	$buf = $this->do_Get($url,$jwt);
+
+	log_message('debug','common:' . $buf);
+
+	return json_decode($buf,True);
+    }
 
     public function del_email($email)
     {
