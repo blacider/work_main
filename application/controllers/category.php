@@ -704,8 +704,8 @@ class Category extends REIM_Controller {
     }
     public function get_sob_category()
     {
-        $this->need_group_it();
         $sobs = $this->account_set->get_account_set_list();
+	log_message('debug','sobs:' . json_encode($sobs));
 	$_sobs = array();
 	if($sobs['status']>0)
 	{
