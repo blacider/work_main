@@ -139,13 +139,13 @@
                                 <input type="radio" name="range" value="0" onclick="choseRange(this.value)" style="position:relative;top:7px"></div>
                             <div class="col-xs-4 col-sm-4">
                                 <select id="group" class="chosen-select range tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
-                    
+                                    <option selected value="0">
+                                        公司</option>
                                     <?php
                                       $exit = array();
                                     foreach($sob_data as $ug){
                                     ?>
-                                    <option selected value="<?php echo $ug['id']; ?>
-                                        ">
+                                    <option selected value="<?php echo $ug['id']; ?>">
                                         <?php echo $ug['name']; ?></option>
                                     <?php
                                         array_push($exit, $ug['id']);
@@ -155,8 +155,7 @@
                                         if(!in_array($ug['id'], $exit))
                                         {
                                             ?>
-                                    <option select value="<?php echo $ug['id']; ?>
-                                        ">
+                                    <option select value="<?php echo $ug['id']; ?>">
                                         <?php echo $ug['name']; ?></option>
                                     <?php
                                         }
