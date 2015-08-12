@@ -187,7 +187,7 @@ if($__config['disable_budget'] == '0')
 
 <!--<script src="/static/ace/js/jquery1x.min.js"></script> -->
 
-
+<p><?php echo json_encode($item_config);?></p>
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
 
 
@@ -212,6 +212,21 @@ if($__config['disable_budget'] == '0')
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var config = '<?php echo $_config?>';
+var __item_config = '<?php echo json_encode($item_config);?>';
+var item_config = '';
+if(__item_config!='')
+{
+    item_config = JSON.parse(__item_config);
+}
+var _item_config = [];
+for(var i = 0 ; i < item_config.length; i++)
+{
+    if(item_config[i].type == 2)
+    {
+        _item_config = item_config[i];
+    }
+}
+console.log(_item_config);
 var __config = '';
 if(config !='')
 {
