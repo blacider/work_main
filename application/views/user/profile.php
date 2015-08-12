@@ -128,7 +128,7 @@ if($open == 1) {
                         </div>
 
 <?php  } ?>
-
+<!--
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">最大报告数</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -154,7 +154,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                 
                                 </div>
                             </div>
-
+-->
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">职位</label>
                                 <div class="col-xs-6 col-sm-6">

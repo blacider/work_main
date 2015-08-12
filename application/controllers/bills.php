@@ -163,7 +163,11 @@ class Bills extends REIM_Controller {
         $ugs = $bills['data']['ugs'];
         $_data = array();
         foreach($data as $d){
-            log_message("debug", "Bill: [ $type] $type: " . json_encode($d['status']));
+            log_message("debug", "Bill: [ $type] $type: " . json_encode($d));
+            //$_rate = 1.0;
+            //if($d['currency'] && strtolower($d['currency']) != 'cny') {
+            //    $_rate = $d['rate'] / 100;
+            //}
             if($type == 4 ) {
                 if(!in_array(intval($d['status']), array(4, 7, 8))) {
                     log_message("debug", "Continue...");
@@ -189,7 +193,7 @@ class Bills extends REIM_Controller {
             }
             array_push($d['ugs'],'0');
             $d['ugs'] = implode(',',$d['ugs']);
-            $d['amount'] = '￥' . $d['amount'];
+            $d['amount'] = '￥' . ($d['amount'] );
             $d['status_str'] = $d['status'] == 2 ? '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>' : '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
             $edit = $d['status'] != 2 ? 'gray' : 'green';
             $extra = $d['status'] == 2 ? '<span class="ui-icon ui-icon ace-icon fa fa-check tapprove green" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon ui-icon red ace-icon fa fa-times tdeny" data-id="' . $d['id'] . '"></span>' : '';

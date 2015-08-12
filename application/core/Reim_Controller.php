@@ -6,9 +6,9 @@ class REIM_Controller extends CI_Controller{
         $this->load->library('user_agent');
         //$this->load->helper('user_agent', 'agent');
         $refer = $this->agent->referrer();
-        log_message('debug', 'alvayang remap refer:' . json_encode($_SERVER));
-        log_message('debug', 'alvayang remap refer:' . json_encode($method));
-        log_message('debug', 'alvayang remap refer:' . json_encode($params));
+        //log_message('debug', 'alvayang remap refer:' . json_encode($_SERVER));
+        //log_message('debug', 'alvayang remap refer:' . json_encode($method));
+        //log_message('debug', 'alvayang remap refer:' . json_encode($params));
     	$jwt = $this->session->userdata('jwt');
         $controller = $this->uri->rsegment_array();
         $method_set = ['login','install', 'pub','users', 'register' ,'resetpwd'];
@@ -18,7 +18,7 @@ class REIM_Controller extends CI_Controller{
             {
                 redirect(base_url('login'));
             }
-            log_message('debug','no need jwt'.$controller[1]);
+            //log_message('debug','no need jwt'.$controller[1]);
         }
         $uri=$this->uri;
         log_message("debug","controller:".json_encode($controller));
@@ -36,14 +36,14 @@ class REIM_Controller extends CI_Controller{
         $this->load->library('PHPExcel');
         $this->load->library('user_agent');
         $refer = $this->agent->referrer();
-        log_message("debug", "construct:" . $refer);
+        //log_message("debug", "construct:" . $refer);
         $this->load->library('PHPExcel/IOFactory');
         $uri = $this->uri->uri_string();
-        log_message("debug", "Request: $uri");
-        log_message("debug", "JWT: $uri, " . json_encode($this->session->userdata('jwt')));
-        log_message("debug", "JWT: $uri," . json_encode($this->session->userdata('uid')));
+        //log_message("debug", "Request: $uri");
+        //log_message("debug", "JWT: $uri, " . json_encode($this->session->userdata('jwt')));
+        //log_message("debug", "JWT: $uri," . json_encode($this->session->userdata('uid')));
         if($this->session->userdata('jwt') == "" && $this->session->userdata('uid') == ""){
-            log_message("debug", "Not Not Request: $uri");
+            //log_message("debug", "Not Not Request: $uri");
             $flag = 1;
             $prefixs = array('login', 'register', 'join', 'install', 'errors', 'resetpwd', 'pub', 'users', 'register');
             foreach($prefixs as $prefix){
@@ -51,7 +51,7 @@ class REIM_Controller extends CI_Controller{
                     $flag = 0;
                 }
             }
-            log_message("debug", "No Auth Info Logout $flag");
+            //log_message("debug", "No Auth Info Logout $flag");
 
             if($flag == 1) {
                 $this->session->set_userdata('last_url', $uri);
