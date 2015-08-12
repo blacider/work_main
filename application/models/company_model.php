@@ -137,7 +137,7 @@ class Company_Model extends Reim_Model {
 		{
 			$data['pid'] = $pid;
 			log_message('debug','update_rules_data:' . json_encode($data));
-			$buf = $this->do_Put($url,$data,$jwt);
+			$buf = $this->do_Post($url,$data,$jwt);
 		}
 
 		log_message('debug','create_update_rules:' . $buf);
