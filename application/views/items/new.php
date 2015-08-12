@@ -469,10 +469,11 @@ $(document).ready(function(){
         if($('#sob_category').val() == null)
         {
             show_notify('请选择类目');
+            return false;
         }
 
         $('#renew').val($(this).data('renew'));
-        //$('#itemform').submit();
+        $('#itemform').submit();
     });
     $('.cancel').click(function(){
         $('#reset').click();

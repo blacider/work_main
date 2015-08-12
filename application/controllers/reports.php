@@ -516,7 +516,12 @@ class Reports extends REIM_Controller {
         $receiver = $this->input->post('receiver');
         $cc = $this->input->post('cc');
         $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items));
-        log_message("debug", json_encode($ret));
+        log_message("debug", $ret);
+	$_ret = json_decode($ret,True);
+	if($_ret['status'] < 0)
+	{
+		$this->session->set_userdata('last_error',$_ret['data']['msg']);
+	}
         return redirect(base_url('reports'));
     }
 

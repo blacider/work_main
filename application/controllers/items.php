@@ -551,9 +551,11 @@ class Items extends REIM_Controller {
      }
 
     public function edit($id = 0){
+    	log_message('debug','item_id' . $id);
         if(0 === $id) redirect(base_url('items'));
         $item = $this->items->get_by_id($id);
         $item_update_in = $this->session->userdata('item_update_in');
+	log_message('debug','items_info:' . json_encode($item));
         if($item['status'] < 1){
             redirect(base_url('items'));
         }
