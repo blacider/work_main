@@ -796,6 +796,7 @@ class Category extends REIM_Controller {
                 array_push($data[$item['sob_id']]['category'],array('note' => $item['note'], 'category_id'=>$item['id'],'category_name'=>$item['category_name']));
             }
         }
+	log_message('debug','mysobs:' . json_encode($_sob_id));
 
         die(json_encode($data));
     }
