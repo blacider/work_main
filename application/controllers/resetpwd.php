@@ -12,6 +12,25 @@ class Resetpwd extends REIM_Controller  {
         $this->load->library('user_agent');
     }
 
+    public function newcomer($code = '', $name = '') {
+        /*
+        if(!$code || !$cid) redirect(base_url('login'));
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+        $this->load->view('resetpwd', array('code' => $code, 'cid' => $cid, 'error' => $error));
+         */
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+        $this->input->set_cookie($this->cookie_register_name, $code, $this->cookie_life);
+        //$name = urldecode($name);
+        $args = array('name' => '');
+        if($name){
+            $args = json_decode(urldecode($name), True);
+        }
+        $this->input->set_cookie($this->cookie_user, $args['name'], $this->cookie_life);
+        $this->load->view('newcomer', array('active'=>0,'name' => $args['name'], 'code' => $code, 'cid' => $name, 'error' => $error));
+        //$this->load->view('user/register', array('name' => $args['name']));
+    }
     public function index($code = '', $name = '') {
         /*
         if(!$code || !$cid) redirect(base_url('login'));
