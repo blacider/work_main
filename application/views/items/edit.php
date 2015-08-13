@@ -61,6 +61,21 @@
                             </div>
 
 
+                            <div class="form-group" id="endTime" hidden>
+                                <label class="col-sm-1 control-label no-padding-right">至</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <div class="input-group">
+                                        <input id="date-timepicker2" name="dt_end" type="text" class="form-control" />
+                                        <input type="hidden" id="config_id" name="config_id" />
+                                        <input type="hidden" id="config_type" name="config_type"/>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-clock-o bigger-110"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">商家</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -187,6 +202,22 @@
 var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
 var _images = '<?php echo $images; ?> ';
+
+var __item_config = '<?php echo json_encode($item_config);?>';
+var item_config = '';
+if(__item_config!='')
+{
+    item_config = JSON.parse(__item_config);
+}
+var _item_config = [];
+for(var i = 0 ; i < item_config.length; i++)
+{
+    if(item_config[i].type == 2)
+    {
+        _item_config = item_config[i];
+    }
+}
+
 var config = '<?php echo $_config?>';
 var __config = JSON.parse(config);
 
@@ -197,7 +228,7 @@ function get_sobs(){
    var selectDataCategory = {};
    var selectDataSobs = '';
         $.ajax({
-            url : __BASE + "category/get_sob_category",
+            url : __BASE + "category/get_my_sob_category",
             dataType : 'json',
             method : 'GET',
             success : function(data){
@@ -238,6 +269,7 @@ function get_sobs(){
             $("#sobs").attr("value", _sid);
             //var selectDom = this.parentNode.nextElementSibling.children[0]
             $(this.nextElementSibling).empty().append(_h).trigger("chosen:updated");
+            $('#sob_category').trigger('change');
         });
 }
 
@@ -420,6 +452,19 @@ $(document).ready(function(){
     }).next().on(ace.click_event, function(){
         $(this).prev().focus();
     });
+
+ $('#date-timepicker2').datetimepicker({
+        language: 'zh-cn',
+            useCurrent: true,
+            format: 'YYYY-MM-DD HH:mm',
+            linkField: "dt",
+            linkFormat: "YYYY-MM-DD HH:mm",
+            sideBySide: true
+    }).next().on('dp.change', function(ev){
+    }).on(ace.click_event, function(){
+        $(this).prev().focus();
+    });
+
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
         .off('resize.chosen')
@@ -430,6 +475,27 @@ $(document).ready(function(){
             })
         }).trigger('resize.chosen');
     load_exists();
+
+
+
+$('#sob_category').change(function(){
+        var category_id = $('#sob_category').val();
+        if(category_id == _item_config['cid'])
+        {
+            $('#config_id').val(_item_config['id']);
+            console.log(_item_config['id']);
+            $('#config_type').val(_item_config['type']);
+            $('#date-timepicker2').val('');
+            $('#endTime').show();
+        }
+        else
+        {
+            $('#config_id').val('');
+            $('#config_type').val('');
+            $('#date-timepicker2').val(-1);
+            $('#endTime').hide();
+        }
+    });
 
     $('.renew').click(function(){
         if($('#amount').val() == 0) {
