@@ -199,10 +199,12 @@
 
 
 <script language="javascript">
+var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
 var _images = '<?php echo $images; ?> ';
 var item_value = '<?php echo $item_value; ?>';
 
+var sob_id = <?php echo $sob_id; ?>;
 var __item_config = '<?php echo json_encode($item_config);?>';
 var item_config = '';
 if(__item_config!='')
@@ -234,7 +236,7 @@ function get_sobs(){
             success : function(data){
                 for(var item in data) {
                     var _h = '';
-                    if(item == _item_category) {
+                    if(item == sob_id) {
                         _h = "<option selected='selected' value='" +  item + "'>"+  data[item].sob_name + " </option>";
                     } else {
                         _h = "<option value='" +  item + "'>"+  data[item].sob_name + " </option>";
@@ -305,7 +307,7 @@ uploader.on( 'fileQueued', function( file ) {
             '</div>'
             ),
         $img = $li.find('img');
-
+    ifUp = 0;
 
     // $list为容器jQuery实例
     $('#imageList').append( $li );
@@ -336,7 +338,7 @@ uploader.on( 'uploadProgress', function( file, percentage ) {
                 .appendTo( $li )
                 .find('span');
     }
-
+    ifUp = 0;
     $percent.css( 'width', percentage * 100 + '%' );
 });
 
@@ -349,7 +351,7 @@ uploader.on( 'uploadSuccess', function( file ) {
     if ( !$success.length ) {
         $success = $('<div class="success blue center"></div>').appendTo( $li );
     }
-
+    ifUp = 1;
     $success.text('上传成功');
 });
 
@@ -358,7 +360,7 @@ uploader.on( 'uploadSuccess', function( file ) {
 uploader.on( 'uploadError', function( file ) {
     var $li = $( '#'+file.id ),
         $error = $li.find('div.error');
-
+    ifUp = 1;
     // 避免重复创建
     if ( !$error.length ) {
         $error = $('<div class="error red center"></div>').appendTo( $li );
@@ -544,7 +546,10 @@ $('#sob_category').change(function(){
                 return false;
             }
         }
-
+        if (ifUp == 0) {
+            show_notify('正在上传图片，请稍候');
+            return false;
+        }
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
     });

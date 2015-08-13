@@ -223,6 +223,7 @@ if($__config['disable_budget'] == '0')
 <script type="text/javascript" src="/static/third-party/webUploader/webuploader.js"></script>
 
 <script language="javascript">
+var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
 var config = '<?php echo $_config?>';
 var __item_config = '<?php echo json_encode($item_config);?>';
@@ -281,7 +282,7 @@ uploader.on( 'fileQueued', function( file ) {
         $img = $li.find('img');
     // $list为容器jQuery实例
     $('#imageList').append( $li );
-
+    ifUp = 0;
     // 创建缩略图
     // 如果为非图片文件，可以不用调用此方法。
     // thumbnailWidth x thumbnailHeight 为 100 x 100
@@ -300,7 +301,7 @@ uploader.on( 'fileQueued', function( file ) {
 uploader.on( 'uploadProgress', function( file, percentage ) {
     var $li = $( '#'+file.id ),
         $percent = $li.find('.progress span');
-
+        ifUp = 0;
     // 避免重复创建
     if ( !$percent.length ) {
         $percent = $('<p class="progress"><span></span></p>')
@@ -354,6 +355,7 @@ uploader.on( 'uploadAccept', function( file, response ) {
 // 完成上传完了，成功或者失败，先删除进度条。
 uploader.on( 'uploadComplete', function( file ) {
     $( '#'+file.id ).find('.progress').remove();
+    ifUp = 1;
 });
 }
 function bind_event(){
@@ -497,7 +499,10 @@ $(document).ready(function(){
             return false;
         }
 
-
+        if (ifUp == 0) {
+            show_notify('正在上传图片，请稍候');
+            return false;
+        }
         if(isNaN($('#amount').val())) {
             show_notify('请输入有效金额');
             $('#amount').val('');
