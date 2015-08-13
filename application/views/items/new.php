@@ -387,7 +387,7 @@ function get_sobs(){
    var selectDataCategory = {};
    var selectDataSobs = '';
         $.ajax({
-            url : __BASE + "category/get_sob_category",
+            url : __BASE + "category/get_my_sob_category",
             dataType : 'json',
             method : 'GET',
             success : function(data){
@@ -430,9 +430,9 @@ $(document).ready(function(){
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
             useCurrent: true,
-            format: 'YYYY-MM-DD HH:mm',
+            format: 'YYYY-MM-DD HH:mm:ss',
             linkField: "dt",
-            linkFormat: "YYYY-MM-DD HH:mm",
+            linkFormat: "YYYY-MM-DD HH:mm:ss",
             sideBySide: true
     }).next().on('dp.change', function(ev){
     }).on(ace.click_event, function(){
@@ -442,9 +442,9 @@ $(document).ready(function(){
     $('#date-timepicker2').datetimepicker({
         language: 'zh-cn',
             useCurrent: true,
-            format: 'YYYY-MM-DD HH:mm',
-            linkField: "dt",
-            linkFormat: "YYYY-MM-DD HH:mm",
+            format: 'YYYY-MM-DD HH:mm:ss',
+            linkField: "dt_end",
+            linkFormat: "YYYY-MM-DD HH:mm:ss",
             sideBySide: true
     }).next().on('dp.change', function(ev){
     }).on(ace.click_event, function(){
@@ -531,7 +531,7 @@ $(document).ready(function(){
                 return false;
             }
             console.log((dateTime2>0));
-            if((dateTime2>0) && (dateTime2 < dateTime))
+            if((dateTime2>'0') && (dateTime2 < dateTime))
             {
                 show_notify('结束时间应该大于开始时间');
                 return false;
