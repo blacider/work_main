@@ -221,7 +221,10 @@ for(var i = 0 ; i < item_config.length; i++)
 }
 
 var config = '<?php echo $_config?>';
+if(config != '')
+{
 var __config = JSON.parse(config);
+}
 
 var _item_category = '<?php echo $item['category']; ?>';
 var flag = 0;
