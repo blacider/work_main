@@ -552,7 +552,7 @@ $(document).ready(function(){
         }
 
         $('#renew').val($(this).data('renew'));
-       // $('#itemform').submit();
+        $('#itemform').submit();
     });
     $('.cancel').click(function(){
         $('#reset').click();
