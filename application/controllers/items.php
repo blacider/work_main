@@ -691,7 +691,7 @@ class Items extends REIM_Controller {
 	$item_sob = 0;
 	foreach($categories as $cate)
 	{
-//		if($cate['id'] == $item['category']);
+		if($cate['id'] == $item['category']);
 		{
 			$item_sob = $cate['sob_id'];
 		}
