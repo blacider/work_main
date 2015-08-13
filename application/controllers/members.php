@@ -315,10 +315,12 @@ class Members extends REIM_Controller {
         $groups = $profile['group'];
         if(array_key_exists('config', $groups) && $groups['config']) {
             $config = json_decode($groups['config'], True);
-            if(array_key_exists('close_directly', $config)){
-                $close = $config['close_directly'];
+            if(array_key_exists('private_structure', $config)){
+	    //TODO 修改是否开放组织结构
+                //$close = $config['close_directly'];
+		$close = $config['private_structure'];
                 log_message("debug", "Profile admin $close :" . $profile['admin']);
-                if($close == 0 && $profile['admin'] < 1) {
+                if($close == 1 && $profile['admin'] < 1) {
                     return redirect(base_url('items/index'));
                 } 
             }
@@ -369,10 +371,10 @@ class Members extends REIM_Controller {
         $groups = $profile['group'];
         if(array_key_exists('config', $groups) && $groups['config']) {
             $config = json_decode($groups['config'], True);
-            if(array_key_exists('close_directly', $config)){
-                $close = $config['close_directly'];
+            if(array_key_exists('private_structure', $config)){
+                $close = $config['private_structure'];
                 log_message("debug", "Profile admin $close :" . $profile['admin']);
-                if($close == 0 && $profile['admin'] < 1) {
+                if($close == 1 && $profile['admin'] < 1) {
                     return redirect(base_url('items/index'));
                 } 
             }
