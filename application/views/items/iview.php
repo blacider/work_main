@@ -34,6 +34,20 @@
                                 </div>
                             </div>
 
+                            <?php
+                                if($item_value)
+                                {
+                            ?>
+                             <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">至</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="消费时间" value=" <?php echo $item_value; ?> " disabled>
+                                </div>
+                            </div>
+
+                            <?php
+                                }
+                            ?>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">商家</label>
