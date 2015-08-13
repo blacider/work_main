@@ -385,7 +385,7 @@ function get_sobs(){
    var selectDataCategory = {};
    var selectDataSobs = '';
         $.ajax({
-            url : __BASE + "category/get_sob_category",
+            url : __BASE + "category/get_my_sob_category",
             dataType : 'json',
             method : 'GET',
             success : function(data){
@@ -526,7 +526,7 @@ $(document).ready(function(){
                 return false;
             }
             console.log((dateTime2>0));
-            if((dateTime2>0) && (dateTime2 < dateTime))
+            if((dateTime2>'0') && (dateTime2 < dateTime))
             {
                 show_notify('结束时间应该大于开始时间');
                 return false;
@@ -552,7 +552,7 @@ $(document).ready(function(){
         }
 
         $('#renew').val($(this).data('renew'));
-        $('#itemform').submit();
+       // $('#itemform').submit();
     });
     $('.cancel').click(function(){
         $('#reset').click();
