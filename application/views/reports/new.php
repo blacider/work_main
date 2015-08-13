@@ -68,6 +68,12 @@
 
 
                             <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">总额</label>
+                                <div class="col-xs-9 col-sm-9">
+                                    <span class="middle" id="tamount">0</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">选择消费</label>
                                 <div class="col-xs-9 col-sm-9">
                                     <table class="table table-border">
@@ -85,9 +91,29 @@
                                                 <td>操作</td>
                                             </thead>
                                         </tr>
-<?php 
+<?php
+    $_config = '';
+    if(array_key_exists('config',$profile['group']))
+    {
+        $_config = $profile['group']['config'];
+    }
+    $__config = json_decode($_config,True);
+
+$item_type = array();
+array_push($item_type,0);
+if($__config)
+{
+    if($__config['disable_borrow'] == '0')
+    {
+        array_push($item_type,2);
+    }
+    if($__config['disable_budget'] == '0')
+    {
+        array_push($item_type,1);
+    }
+}
 foreach($items as $i){
-    if($i['rid'] == 0 && $i['prove_ahead'] == 0){
+    if($i['rid'] == 0 && in_array($i['prove_ahead'], $item_type)){
                                         ?>
                                         <tr>
                                             <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $i['amount'] ?>" ></td>
@@ -141,9 +167,39 @@ echo $buf;
         </form>
     </div>
 </div>
+
+
 <script language="javascript">
+update_tamount();
 var __BASE = "<?php echo $base_url; ?>";
-console.log(<?php echo $user['manager_id'] ?>);
+function toDecimal(x) {  
+    var f = parseFloat(x);  
+    if (isNaN(f)) {  
+        return;  
+    }  
+    f = Math.round(x*100)/100;  
+    return f;  
+}  
+//制保留2位小数，如：2，会在2后面补上00.即2.00  
+function toDecimal2(x) {  
+    var f = parseFloat(x);  
+    if (isNaN(f)) {  
+        return false;  
+    }  
+    var f = Math.round(x*100)/100;  
+    var s = f.toString();  
+    var rs = s.indexOf('.');  
+    if (rs < 0) {  
+        rs = s.length;  
+        s += '.';  
+    }  
+    while (s.length <= rs + 2) {  
+        s += '0';  
+    }  
+    return s;  
+}  
+
+
 $(document).ready(function(){
     //var now = moment();
     $('#date-timepicker1').datetimepicker({
@@ -155,7 +211,7 @@ $(document).ready(function(){
             linkFormat: "YYYY-MM-DD HH:mm",
             sideBySide: true
     }).next().on('dp.change', function(ev){
-        console.log(ev.date);
+        //console.log(ev.date);
     }).on(ace.click_event, function(){
         $(this).prev().focus();
     });
@@ -208,6 +264,7 @@ $(document).ready(function(){
             });
            // $("[name='item[]']").prop('checked',false);
         }
+        update_tamount();
      });
 
 
@@ -252,9 +309,25 @@ $(document).ready(function(){
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
     });
+    $('.amount').each(function(idx, item) {
+        $(this).click(function(){
+            update_tamount();
+        });
+    });
     $('.cancel').click(function(){
         $('#reset').click();
     });
 
 });
+function update_tamount(){
+    var sum = 0;
+    $('.amount').each(function(){
+        if($(this).is(':checked')){
+            var amount = $(this).data('amount');
+            amount = parseInt(amount.substr(1));
+            sum+=amount;
+        };
+    });
+    $('#tamount').html('￥' + toDecimal2(sum));
+}
 </script>

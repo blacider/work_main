@@ -80,6 +80,7 @@ position: absolute;
                     <th>名称</th>
                     <th>邮箱</th>
                     <th>手机</th>
+                    <th>部门</th>
                     <th>角色</th>
 <?php
 if($profile['admin'] == 1 || $profile['admin'] == 3) {
@@ -103,8 +104,10 @@ if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['emai
         <?php echo $m['email']; ?>
     </td>
     <td>
-
         <?php echo $m['phone']; ?>
+    </td>
+    <td>
+        <?php echo $m['d']; ?>
     </td>
     <td>
 <?php 
@@ -159,11 +162,13 @@ if($profile['admin'] == 1 ||  $profile['admin'] == 3) {
 var __BASE = "<?php echo $base_url; ?>";
 var error = "<?php echo $error;?>";
 
+
 $(document).ready(function(){
     if(error)
     {
         show_notify(error);
     }
+  
 });
 
 </script>
@@ -292,6 +297,7 @@ function load_group(gid){
                     + '<th>名称</th>'
                     + '<th>邮箱</th>'
                     + '<th>手机</th>'
+                    + '<th>部门</th>'
                     + '<th>身份</th>';
                     if(_admin == 1 || _admin == 3){
                         _th += '<th>操作</th>'
@@ -328,6 +334,7 @@ function load_group(gid){
                     + '<td><a href="' + __BASE + '/members/editmember/' + item.id + '">' + item.nickname+ '</a></td>'
                     + '<td>' + item.email + '</td>'
                     + '<td>' + item.phone + '</td>'
+                    + '<td>' + item.d + '</td>'
                     + '<td><a href="javascript:void(0)">' + _color + '</a>';
                     if(_admin == 1 || _admin == 3){
                     _th += '<td><a href="' + __BASE + '/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a>'

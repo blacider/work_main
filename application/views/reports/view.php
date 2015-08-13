@@ -32,6 +32,23 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">总额</label>
+                                <div class="col-xs-9 col-sm-9">
+<?php
+$amount = 0;
+foreach($report['items'] as $i) {
+    $rate = 1.0;
+    if($i['currency'] && strtolower($i['currency']) != 'cny') {
+        $rate = $i['rate'] / 100;
+    }
+    $amount += $i['amount'] * $rate;
+}
+    $amount = sprintf("%.02f", $amount);
+?>
+    <span class="middle" id="tamount">￥  <?php echo $amount; ?></span>
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">消费列表</label>

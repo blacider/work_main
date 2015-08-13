@@ -70,7 +70,7 @@ $role_id =  '<td class="u_role_name">' . date('Y-m-d H:i:s', $item['lastdt']) . 
 //$ascription =  '<td class="u_role_name">' . $billable . '</td>';
 //
     //$role_id = '<td class="u_role_name">' . $item->role_name . '</td>';
-$operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class="edit" data-code="' . $item['sob_code'] . '" data-max="' . $item['max_limit'] . '" data-sob_id="'. $item['sob_id'] . '" data-note="'. $item['note'] . '" data-pid ="' . $item['pid'] . '" data-pb="' . $item['prove_before'] . '" data-title="' . $item['category_name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
+$operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class="edit" data-code="' . $item['sob_code'] . '" data-max="' . $item['max_limit'] . '" data-sob_id="'. $item['sob_id'] . '" data-note="'. $item['note'] . '" data-pid ="' . $item['pid'] . '" data-pb="' . $item['prove_before'] . '" data-title="' . $item['category_name'] . '" data-id="'.$item['id'].'" " data-force="'.$item['force_attach'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
     $operation = '<td style="width:50px;"><a class="btn btn-xs btn-danger" href="' .  base_url('admin/user/del?id='. $item['id']) .'">
         <i class="ace-icon fa fa-trash-o bigger-120"></i>
         </a></td>';
@@ -102,10 +102,21 @@ echo $str;
                                 </div>
                             </div>
                             <div class="form-group">
+<div class="row">
+<div class="col-xs-6 col-sm-6">
                                 <label for="form-field-username">分类代码</label>
                                 <div>
                                     <input class="input-large" type="text"  placeholder="分类代码" id="sob_code" name="sob_code" />
                                 </div>
+</div>
+<div class="col-xs-6 col-sm-6">
+                                <label for="form-field-username">必须有附件</label>
+                                <div>
+                                            <input class="ace ace-switch btn-rotate" type="checkbox" name="force_attach" id="force_attach" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                </div>
+</div>
+                            </div>
                             </div>
                             <div class="space-4"></div>
 
@@ -210,6 +221,7 @@ $(document).ready(function(){
             var _id = $(this).data('id');
             var _pa = $(this).data('pb');
             var _max_limit = $(this).data('max');
+            var _force_attach = $(this).data('force');
             $('#category_name').val(_title);
             $('#sob_code').val(_code);
             $('#category_id').val(_id);
@@ -218,7 +230,12 @@ $(document).ready(function(){
             $('#pid').val(_pid);
             $('#sob_id').val(_sob_id);
             $('#note').val(_note);
-            $('#modal-table').modal();      
+            if(_force_attach == 1)
+            {
+                 $('#force_attach').attr('checked',true).trigger('chosen:updated');  
+            } 
+            $('#modal-table').modal(); 
+
 
         });
     });

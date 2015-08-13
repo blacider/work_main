@@ -24,6 +24,33 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
 
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right">不允许预借</label>
+                                <div class="col-xs-6 col-sm-6">
+                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
+                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
+                                        <label style="margin-top:8px;">
+                                            <input name="allow_borrow" class="ace ace-switch btn-rotate" type="checkbox" id="allow_borrow" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+
+                                   <!-- </div> -->
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right">不允许预算</label>
+                                <div class="col-xs-6 col-sm-6">
+                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
+                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
+                                        <label style="margin-top:8px;">
+                                            <input name="allow_budget" class="ace ace-switch btn-rotate" type="checkbox" id="allow_budget" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+
+                                   <!-- </div> -->
+                                </div>
+                            </div>
 
                               <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">是否有银行信息</label>
@@ -164,6 +191,8 @@
                                 </div>
                             </div>
 
+                             
+
                              <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">每月最多可提交的报告数量</label>
                                 <div class="col-xs-4 col-sm-4">
@@ -175,6 +204,13 @@
                                 <label class="col-sm-3 control-label no-padding-rigtht">只可以提交最近几个月的报销限制</label>
                                 <div class="col-xs-4 col-sm-4">
                                 <input id="max_allowed_months" type="text" class="form-controller col-xs-12" name="max_allowed_months" placeholder="月数">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-rigtht">自然月设置</label>
+                                <div class="col-xs-4 col-sm-4">
+                                <input id="calendar_month" type="text" class="form-controller col-xs-12" name="calendar_month" placeholder="自然月">
                                 </div>
                             </div>
 
@@ -215,7 +251,29 @@ var __BASE = "<?php echo $base_url; ?>";
     dataType:'json',
     success:function(data){
 
-       // console.log(data);
+    //    console.log(data);
+
+         if(data.disable_budget!=undefined)
+        {
+            if(data.disable_budget==1)
+            {
+            $('#allow_budget').attr('checked', data.disable_budget);
+            $("#allow_budget").trigger("chosen:updated");
+            }
+
+        }
+
+
+
+       if(data.disable_borrow!=undefined)
+        {
+            if(data.disable_borrow==1)
+            {
+            $('#allow_borrow').attr('checked', data.disable_borrow);
+            $("#allow_borrow").trigger("chosen:updated");
+            }
+
+        }
        
         if(data.same_category!=undefined)
         {
@@ -329,6 +387,11 @@ var __BASE = "<?php echo $base_url; ?>";
         {
             $('#reports_limit').val(data.report_quota);
         }
+
+         if(data.calendar_month != undefined)
+        {
+            $('#calendar_month').val(data.calendar_month);
+        }
     }
    });
 
@@ -337,6 +400,17 @@ var __BASE = "<?php echo $base_url; ?>";
        var r_limit = $('#reports_limit').val();
     //   console.log(lval);
       // console.log($('#isadmin').is(':checked'));
+      var calendar_month = $('#calendar_month').val();
+      if(isNaN(calendar_month))
+      {
+        calendar_month = 0;
+      }
+      if(calendar_month>=32 || calendar_month <= 0)
+      {
+        $('#calendar_month').focus();
+        show_notify('请输入有效的自然月');
+        return false;
+      }
        if(isNaN(lval))
        {
             lval = 0;
@@ -347,6 +421,9 @@ var __BASE = "<?php echo $base_url; ?>";
                 type:"post",
                 url:__BASE+"company/profile",
                 data:{
+                    calendar_month:$('#calendar_month').val(),
+                    allow_borrow:$('#allow_borrow').is(':checked'),
+                    allow_budget:$('#allow_budget').is(':checked'),
                     note_compulsory:$('#note_compulsory').is(':checked'),
                     not_auto_time:$('#not_auto_time').is(':checked'),
                     mail_notify:$('#mail_notify').is(':checked'),

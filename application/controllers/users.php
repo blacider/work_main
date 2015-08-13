@@ -6,6 +6,7 @@ class Users extends REIM_Controller {
         parent::__construct();
         $this->load->model('user_model', 'user');
         $this->load->model('group_model', 'groups');
+	$this->load->model('reim_show_model','reim_show');
         //$this->load->model('users/customer_model', 'cmodel');  
     }
 
@@ -39,12 +40,27 @@ class Users extends REIM_Controller {
     public function profile(){
     	$error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
+	$ug = $this->reim_show->usergroups();
+	$_ranks = $this->groups->get_rank_level(1);
+	$_levels = $this->groups->get_rank_level(0);
+	$ranks = array();
+	$levels = array();
+
+	if($_ranks['status'] > 0)
+	{
+		$ranks = $_ranks['data'];
+	}
+
+	if($_levels['status'])
+	{
+		$levels = $_levels['data'];
+	}
         // 重新获取
         $profile = $this->user->reim_get_user();
-        log_message('debug','#####'.json_encode($profile));
         //print_r($profile);
         //$profile = $this->session->userdata('prOfile');
         if($profile){
+           $pro = $profile['data']['profile'];
 	   $config = $profile['data']['profile'];
 	   if(array_key_exists('group',$config))
 	   {
@@ -61,6 +77,15 @@ class Users extends REIM_Controller {
             $profile = $profile['data']['profile'];
 	    $sobs = array();
 	    $usergroups = array();
+	    $audits = array();
+	    $commits = array();
+
+
+	    if(array_key_exists('commits',$profile))
+	    {
+	    	$sobs = $profile['commits'];
+	    }
+	    
 
 	    if(array_key_exists('sob',$profile))
 	    {
@@ -103,7 +128,6 @@ class Users extends REIM_Controller {
             $gmember = $gmember ? $gmember : array();
         }
         //print_r($profile);
-	log_message("debug","###".$config);
         $this->bsload('user/profile',
             array(
                 'title' => '个人管理'
@@ -115,8 +139,10 @@ class Users extends REIM_Controller {
 		,'manager_id' => $manager_id
 		,'gmember' => $gmember
 		,'pid' => $uid
-		,'sobs' => $sobs
-		,'usergroups' => $usergroups
+		,'pro' => $pro
+		,'ug' => $ug
+		,'ranks' => $ranks
+		,'levels' => $levels
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '修改资料', 'class' => '')
@@ -148,16 +174,27 @@ class Users extends REIM_Controller {
         $credit_card = $this->input->post('credit_card');
 	$manager_id = $this->input->post('manager');
         $admin = $this->input->post('admin_new');
-	log_message("debug","#####".$nickname);
+	$_usergroups = $this->input->post('usergroups');
+	$max_report = $this->input->post('max_report');
+	$rank = $this->input->post('rank');
+	$level = $this->input->post('level');
+	$usergroups = array();
+	if($_usergroups)
+	{
+		$usergroups = implode(',',$_usergroups);
+	}
+	log_message('debug','rank:' . $rank);
+	log_message('debug','level:' . $level);
+	log_message('debug','max_report' . $max_report);
         if(!($uid || $nickname || $email || $phone || $credit_card)){
             redirect(base_url('users/profile'));
         }
-        $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $uid, $admin,$manager_id), true);
+        $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin,$manager_id,$max_report,$rank,$level), true);
+	log_message('debug','info:' . json_encode($info));
         if($info['status'] > 0){
             $this->session->set_userdata('login_error', '信息修改成功');
         } else {
-            $this->session->set_userdata('login_error', '信息修改失败');
-            redirect(base_url('login'));
+            $this->session->set_userdata('login_error', $info['data']['msg']);
         }
         if ($isOther == 1)
             redirect(base_url('members/index'));

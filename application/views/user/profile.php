@@ -81,6 +81,8 @@ if($self != 1) {
                     </div>
 
 
+
+
 <?php
 $open = 1;
 if($profile['gid'] > 0){
@@ -104,6 +106,7 @@ if($open == 1) {
                                 <label class="col-sm-1 control-label no-padding-right">上级</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" name="manager" data-placeholder="请选择标签">
+                                    <option value="0" >无</option>
                                     <?php 
                                     foreach($gmember as $m){
                                         if($m['id'] == $manager_id)
@@ -125,6 +128,212 @@ if($open == 1) {
                         </div>
 
 <?php  } ?>
+<!--
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">最大报告数</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <?php 
+                                            $max_report = '';
+                                            if(array_key_exists('max_report', $pro))
+                                            {
+                                                $max_report = $pro['max_report'];
+                                            }
+if($profile['admin'] == 1 || $profile['admin'] == 3){
+                                    ?>
+                                        <input type="text" class="col-xs-6 col-sm-6 form-control" name="max_report" value="<?php echo $max_report; ?>" />
+                                    
+                                    <?php
+                                        }
+                                        else
+                                        {
+                                    ?>
+                                        <input type="text" class="col-xs-6 col-sm-6 form-control" name="max_report" value="<?php echo $max_report; ?>"  disabled />
+                                    <?php
+                                        }
+                                    ?>
+                                
+                                </div>
+                            </div>
+-->
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">职位</label>
+                                <div class="col-xs-6 col-sm-6">
+				<?php 
+if($profile['admin'] == 1 || $profile['admin'] == 3){
+				?>
+                                    <select class="chosen-select tag-input-style" name="rank" data-placeholder="职位" >
+				  <?php 
+				  }
+				  else
+				  {
+				  ?>
+                                    <select class="chosen-select tag-input-style" name="rank" data-placeholder="职位" disabled>
+				  <?php
+				  }
+				  ?>
+                                        <option value=0>无</option>
+                                    <?php 
+                                    $rank = $pro['rank_id'];
+                                    foreach($ranks as $m){
+                                   
+				   	if($m['id']==$rank && $rank!=0)
+					{
+                                    ?>
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                    <?php
+				    	}
+					else 
+					{
+					?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+					<?php
+					}
+                                        }
+                                 
+                                    ?>
+                                    </select>
+                                </div>
+                        </div>
+
+                          <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">级别</label>
+                                <div class="col-xs-6 col-sm-6">
+				<?php 
+if($profile['admin'] == 1 || $profile['admin'] == 3){
+				?>
+                                    <select class="chosen-select tag-input-style" name="level" data-placeholder="级别" >
+				  <?php 
+				  }
+				  else
+				  {
+				  ?>
+                                    <select class="chosen-select tag-input-style" name="level" data-placeholder="级别" disabled>
+				  <?php
+				  }
+				  ?>
+                                    <option value=0>无</option>
+                                    <?php 
+                                    $level = $pro['level_id'];
+                                    foreach($levels as $m){
+                                   
+				   	if($m['id']==$level && $level!=0)
+					{
+                                    ?>
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                    <?php
+				    	}
+					else 
+					{
+					?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+					<?php
+					}
+                                        }
+                                 
+                                    ?>
+                                    </select>
+                                </div>
+                        </div>
+
+
+
+
+                        <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">所属帐套</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select class="chosen-select tag-input-style" multiple="multiple" name="sobs[]" data-placeholder="帐套信息" disabled>
+                                    <?php 
+                                    $sobs = $pro['sob'];
+                                    foreach($sobs as $m){
+                                   
+                                    ?>
+                                        <option selected value="<?php echo $m['sob_id']; ?>"><?php echo $m['sob_name']; ?></option>
+                                    <?php
+                                        }
+                                 
+                                    ?>
+                                    </select>
+                                </div>
+                        </div>
+
+                        <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">所属部门</label>
+                                <div class="col-xs-6 col-sm-6">
+                                <?php
+                                    if($profile['admin'] == 1 || $profile['admin'] == 3){
+                                        ?>
+                                        <select class="chosen-select tag-input-style" multiple="multiple" name="usergroups[]" data-placeholder="部门信息" >
+                                <?php
+                                   }
+                                   else
+                                   {
+                                ?>
+                                    <select class="chosen-select tag-input-style" multiple="multiple" name="usergroups[]" data-placeholder="部门信息" disabled>
+                                    <?php
+                                }
+                                    ?>
+                                    <?php 
+                                    $usergroups = $pro['usergroups'];
+                                    $in_groups = array();
+                                    foreach($usergroups as $m){
+                                        array_push($in_groups,$m['id']);
+                                    ?>
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                    <?php
+                                        }
+                                    foreach($ug as $g)
+                                    {
+                                        if(!in_array($g['id'], $in_groups))
+                                        {
+                                             ?>
+                                        <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                    </select>
+                                </div>
+                        </div>
+
+                          <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">提交规则</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select class="chosen-select tag-input-style" multiple="multiple" name="commits[]" data-placeholder="提交规则" disabled>
+                                    <?php 
+                                    $commits = $pro['commits'];
+                                    foreach($commits as $m){
+                                   
+                                    ?>
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                    <?php
+                                        }
+                                 
+                                    ?>
+                                    </select>
+                                </div>
+                        </div>
+
+                         <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">审批规则</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select class="chosen-select tag-input-style" multiple="multiple" name="audits[]" data-placeholder="审批规则" disabled>
+                                    <?php 
+                                    $audits = $pro['audits'];
+                                    foreach($audits as $m){
+                                   
+                                    ?>
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                    <?php
+                                        }
+                                 
+                                    ?>
+                                    </select>
+                                </div>
+                        </div>
+
+                      
+
+
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">银行卡号</label>
                         <div class="col-xs-6 col-sm-6">
@@ -596,7 +805,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                     <img src="/static/images/loading.gif">
 </div>
 
-
 <!--  <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script> -->
 <!--  <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
 <!-- <script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script> -->
@@ -733,6 +941,26 @@ function get_province(){
         $('#cardloc').val($(node).data('bankloc'));
         $('#cardno').val($(node).data('cardno'));
         $('#credit_model').modal('show');
+        var i = 1, loc = $(node).data('bankloc');
+        
+        do {
+            i += 1;
+            console.log(i);
+            console.log(loc.length);
+            $('select[name="province"]').val(loc.substr(0,i));
+            if(i>loc.length+1)
+            {
+                break;
+            }
+        } while ($('select[name="province"]').val() == null); 
+        /*for(var i=1;i<=loc.length+1;i++)
+        {
+            console.log(loc.substr(0,i));
+             $('select[name="province"]').val(loc.substr(0,i));
+        }*/
+        var city = loc.substr(i);
+        $('select[name="province"]').change();
+        $('select[name="city"]').val(city);
     }
 
     function show_credit(node){
@@ -743,6 +971,14 @@ function get_province(){
         $('#cardloc').val($(node).data('bankloc'));
         $('#cardno').val($(node).data('cardno'));
         $('#credit_model').modal('show');
+        var i = 1, loc = $(node).data('bankloc');
+        do {
+            i += 1;
+            $('select[name="province"]').val(loc.substr(0,i));
+        } while ($('select[name="province"]').val() == null);
+        var city = loc.substr(i);
+        $('select[name="province"]').change();
+        $('select[name="city"]').val(city);
     }
 
     function bind_event(){

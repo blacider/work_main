@@ -6,78 +6,82 @@ class Bills extends REIM_Controller {
         $this->load->model('tags_model', 'tags');
         $this->load->model('group_model', 'groups');
         $this->load->model('report_model', 'reports');
-	$this->load->model('usergroup_model','ug');
-	$this->load->model('user_model','user');
-	$this->load->library('reim_cipher');
+        $this->load->model('usergroup_model','ug');
+        $this->load->model('user_model','user');
+        $this->load->library('reim_cipher');
     }
 
     public function download_report()
     {
-    	$error = $this->session->userdata('login_error');
+        $this->need_group_casher();
+        $error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
         // 重新获取
         $profile = $this->user->reim_get_user();
         log_message('debug','#####'.json_encode($profile));
-        //print_r($profile);
-        //$profile = $this->session->userdata('prOfile');
-	$group = $profile['data']['profile']['group'];
+        $group = $profile['data']['profile']['group'];
         if($profile){
-	   $config = $profile['data']['profile'];
-	   if(array_key_exists('group',$config))
-	   {
-		if(array_key_exists('config',$profile['data']['profile']['group']))
-		{
-			$config = $profile['data']['profile']['group']['config'];
-		}
-	   }
-	   else
-	   {
-	   	$config ='';
-	   }
-	   }
-	$config = json_decode($config,True);
-	$company = urlencode($group['group_name']);
-	$_rid = $this->input->post('chosenids');
-	$rid = array();
-	foreach($_rid as $r)
-	{
-		array_push($rid,$this->reim_cipher->encode($r));
-	}
-	$with_no_note = $config['export_no_note'];
-	log_message('debug','note:'.$with_no_note);
-	if($with_no_note == '1')
-	{
-		$with_note = 0;
-	}
-	else
-	{
-		$with_note = 1;
-	}
-	$template = $config['template'];
-	$archive = 1;
+            $config = $profile['data']['profile'];
+            if(array_key_exists('group',$config))
+            {
+                if(array_key_exists('config',$profile['data']['profile']['group']))
+                {
+                    $config = $profile['data']['profile']['group']['config'];
+                }
+            }
+            else
+            {
+                $config ='';
+            }
+        }
+        $config = json_decode($config,True);
+        $company = urlencode($group['group_name']);
+        if($config['export_no_company'] == '0')
+        {
+            $company = '';
+        }
+        $_rid = $this->input->post('chosenids');
+        $rid = array();
+        foreach($_rid as $r)
+        {
+            array_push($rid,$this->reim_cipher->encode($r));
+        }
+        $with_no_note = $config['export_no_note'];
+        log_message('debug','note:'.$with_no_note);
+        if($with_no_note == '1')
+        {
+            $with_note = 0;
+        }
+        else
+        {
+            $with_note = 1;
+        }
+        $template = $config['template'];
+        $archive = 1;
 
-    	log_message('debug','profile'.json_encode($profile['data']['profile']['group']));
-	$url = "http://report.yunbaoxiao.com/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
-	log_message('debug','hhh'. $url);
-    	die(json_encode(array('url' => $url)));
+        log_message('debug','profile'.json_encode($profile['data']['profile']['group']));
+        $url = "http://report.yunbaoxiao.com/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
+        log_message('debug','hhh'. $url);
+        die(json_encode(array('url' => $url)));
     }
 
     public function _logic($status = 2){
+        $this->need_group_casher();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
         $reports = $this->reports->get_bills();
         $_tags = $this->tags->get_list();
-	$usergroups = $this->ug->get_my_list();
-	if($usergroups['status']>0)
-	{
-		$_usergroups=$usergroups['data']['group'];
-	}
-	else
-	{
-		$_usergroups = array();
-	}
-	log_message('debug','usergroup:'.json_encode($usergroups));
+        $usergroups = $this->ug->get_my_list();
+        if($usergroups['status']>0)
+        {
+            $_usergroups=$usergroups['data']['group'];
+        }
+        else
+        {
+            $_usergroups = array();
+        }
+        log_message('debug','usergroup:'.json_encode($usergroups));
         if($_tags && array_key_exists('tags', $_tags['data'])){
             $_tags = $_tags['data']['tags'];
         }
@@ -112,7 +116,7 @@ class Bills extends REIM_Controller {
                     ,'status' => $status
                     ,'category' => $_tags
                     ,'error' => $error
-		    ,'usergroups' => $_usergroups
+                    ,'usergroups' => $_usergroups
                 )
             );
         }
@@ -132,7 +136,7 @@ class Bills extends REIM_Controller {
                     ,'status' => $status
                     ,'category' => $_tags
                     ,'error' => $error
-		    ,'usergroups' => $_usergroups
+                    ,'usergroups' => $_usergroups
                 )
             );
         }
@@ -147,6 +151,7 @@ class Bills extends REIM_Controller {
     }
 
     public function listdata($type = 2){
+        $this->need_group_casher();
         $page = $this->input->get('page');
         $rows = $this->input->get('rows');
         $sort = $this->input->get('sord');
@@ -155,10 +160,14 @@ class Bills extends REIM_Controller {
             die(json_encode(array()));
         }
         $data = $bills['data']['data'];
-	$ugs = $bills['data']['ugs'];
+        $ugs = $bills['data']['ugs'];
         $_data = array();
         foreach($data as $d){
-            log_message("debug", "Bill: [ $type] $type: " . json_encode($d['status']));
+            log_message("debug", "Bill: [ $type] $type: " . json_encode($d));
+            //$_rate = 1.0;
+            //if($d['currency'] && strtolower($d['currency']) != 'cny') {
+            //    $_rate = $d['rate'] / 100;
+            //}
             if($type == 4 ) {
                 if(!in_array(intval($d['status']), array(4, 7, 8))) {
                     log_message("debug", "Continue...");
@@ -170,21 +179,21 @@ class Bills extends REIM_Controller {
             }
             log_message("debug", "xBill: $type: " . json_encode($d));
             log_message("debug", "nICe");
-	    log_message("debug", "ugs:".json_encode($bills['data']['ugs']));
+            log_message("debug", "ugs:".json_encode($bills['data']['ugs']));
 
             $d['date_str'] = date('Y-m-d H:i:s', $d['createdt']);
-	    $d['ugs'] = array();
-	    if($ugs)
-	    {
-	    	if(array_key_exists($d['uid'],$ugs))
-		{
-			$d['ugs'] = $ugs[$d['uid']];		
-		}
+            $d['ugs'] = array();
+            if($ugs)
+            {
+                if(array_key_exists($d['uid'],$ugs))
+                {
+                    $d['ugs'] = $ugs[$d['uid']];		
+                }
 
-	    }
-	    array_push($d['ugs'],'0');
-	    $d['ugs'] = implode(',',$d['ugs']);
-            $d['amount'] = '￥' . $d['amount'];
+            }
+            array_push($d['ugs'],'0');
+            $d['ugs'] = implode(',',$d['ugs']);
+            $d['amount'] = '￥' . ($d['amount'] );
             $d['status_str'] = $d['status'] == 2 ? '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>' : '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
             $edit = $d['status'] != 2 ? 'gray' : 'green';
             $extra = $d['status'] == 2 ? '<span class="ui-icon ui-icon ace-icon fa fa-check tapprove green" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon ui-icon red ace-icon fa fa-times tdeny" data-id="' . $d['id'] . '"></span>' : '';
@@ -197,7 +206,8 @@ class Bills extends REIM_Controller {
         die(json_encode($_data));
     }
 
-        public function listdata_new($type = 2){
+    public function listdata_new($type = 2){
+        $this->need_group_casher();
         $page = $this->input->get('page');
         $rows = $this->input->get('rows');
         $sort = $this->input->get('sord');
@@ -231,6 +241,7 @@ class Bills extends REIM_Controller {
     }
 
     public function save(){
+        $this->need_group_casher();
         $status = $this->input->post('status_str');
         $id = $this->input->post('id');
         $oper = $this->input->post('oper');
@@ -243,6 +254,7 @@ class Bills extends REIM_Controller {
 
 
     public function marksuccess($ids = '0', $type = -1){
+        $this->need_group_casher();
         $ids = explode('%23', $ids);
         foreach ($ids as $id ) {
             if(0 === $id){

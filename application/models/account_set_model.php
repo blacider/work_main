@@ -22,12 +22,11 @@
 		public function get_sobs()
 		{
 			$jwt = $this->session->userdata('jwt');
-			if($jwt) return false;
+			if(!$jwt) return false;
 
-			$url = $this->get_url('common');
+			$url = $this->get_url('sob');
 			$buf = $this->do_Get($url,$jwt);
-			log_message('debug','######'.json($buf));
-			return $buf;
+			return json_decode($buf,true);
 		}
 		public function get_account_set_list()
 		{
@@ -39,30 +38,38 @@
 			log_message("debug","###########ACOUNT_SETS****:$buf");
 			return $obj;
 		}
-		public function create_account_set($name,$gids)
+		public function create_account_set($name,$gids,$ranks,$levels,$members)
 		{
 			$jwt = $this->session->userdata('jwt');
 			if(!$jwt) return false;
 			$data = array(
 				'name' => $name,
-				'dids' => $gids
+				'dids' => $gids,
+				'ranks' => $ranks,
+				'levels' => $levels,
+				'uids' => $members
 			);
 			$url = $this->get_url('sob');
 			$buf = $this->do_Post($url,$data,$jwt);
 			$obj = json_decode($buf,true);
 			return $obj;
 		}
-		public function update_account_set($id,$name,$gids)
+		public function update_account_set($id,$name,$gids,$ranks,$levels,$members)
 		{
 			$jwt = $this->session->userdata('jwt');
 			if(!$jwt) return false;
 			$data = array(
 				'id' => $id,
 				'name' => $name,
-				'dids' => $gids
+				'dids' => $gids,
+				'ranks' => $ranks,
+				'levels' => $levels,
+				'uids' => $members
 			);
+			log_message('debug', 'data:' . json_encode($data));
 			$url = $this->get_url('sob');
 			$buf = $this->do_Put($url,$data,$jwt);
+			log_message('debug' , 'account_update_back:' . $buf);
 			$obj = json_decode($buf,true);
 			return $obj;	
 		}

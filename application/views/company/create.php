@@ -48,6 +48,8 @@
                                 </div>
                             </div>
                             -->
+                        <div>
+                            <hr>
                             <label style="margin-left: -8px;position: absolute;" class="col-sm-2 control-label no-padding-right">类目</label>
                             <div class="form-group CategoryRow">
                                     <div class="col-xs-2 col-sm-2 col-sm-offset-2 col-xs-offset-2" style="margin-top:2px">
@@ -58,10 +60,42 @@
                                         <select name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
                                         </select>
                                     </div>
-                                    <div class="col-xs-1 col-sm-1">
-                                        <div class="addCategoryRow" onclick="addCategoryRow()">+</div>   
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right">最大频次</label>
+                                <div class="col-xs-2 col-sm-2">
+                                   <input type="text" class="form-controller col-xs-12" id="freq_count" name="freq_count" placeholder="频次">
+                                </div>
+
+                                <div class="col-sm-2 col-sm-2">
+                                    <div class="checkbox" >
+                                        <label>
+                                         <input type="checkbox" class='freq_unlimit' id="freq_unlimit" name="freq_unlimit" >
+                                            无限制
+                                         </label>
                                     </div>
                                 </div>
+                                <div class="col-xs-1 col-sm-1">
+                                        <div class="addCategoryRow" onclick="addCategoryRow()">+</div>   
+                                </div>
+                            </div>
+                            <div class="form-group hidden">
+                                <label class="col-sm-2 control-label no-padding-right">周期</label>
+                                <div class="col-xs-2 col-sm-2">
+                                   <input type="text" class="form-controller col-xs-12" value="1" id="freq_period" name="freq_period" placeholder="周期">
+                                </div>
+
+                                <div class="col-sm-2 col-sm-2">
+                                    <div class="checkbox" >
+                                        <label>
+                                         <input type="checkbox" class="freq_period_unlimit" id="freq_period_unlimit" name="freq_period_unlimit" >
+                                            无限制
+                                         </label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                             <style type="text/css">
                                 .addCategoryRow, .removeCategoryRow {
                                     font-size: 20px;
@@ -70,17 +104,25 @@
                                 }
                             </style>
                             <script type="text/javascript">
+function bind_event() {
+    $('.freq_unlimit').click(function(event) {
+        $(this).parent().parent().parent().parent().find('input[type="text"]').attr('disabled',this.checked);
+    });
+    $('.freq_period_unlimit').click(function(event) {
+        $(this).parent().parent().parent().parent().find('input[type="text"]').attr('disabled',this.checked);
+    });
+}
                             function removeCategoryRow(div) {
-                                $(div).parent().parent().remove();
+                                $(div).parent().parent().parent().remove();
                             }
                             function addCategoryRow() {
-                                var addDom = $('.CategoryRow .addCategoryRow');
-                                var category = "<div class='form-group CategoryRow'><div class='col-xs-2 col-sm-2 col-sm-offset-2' col-xs-offset-2><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-2 col-sm-2'><select name='category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='col-xs-1 col-sm-1'><div class='addCategoryRow' onclick='addCategoryRow()''>+</div>   </div></div>"
+                                var addDom = $('.addCategoryRow');
+                                var category = "<div><hr><label style='margin-left: -8px;position: absolute;' class='col-sm-2 control-label no-padding-right'>类目</label><div class='form-group CategoryRow'><div class='col-xs-2 col-sm-2 col-sm-offset-2' col-xs-offset-2><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-2 col-sm-2'><select name='category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div></div><div class='form-group'><label class='col-sm-2 control-label no-padding-right'>最大频次</label><div class='col-xs-2 col-sm-2'><input type='text' class='form-controller col-xs-12' id='freq_count' name='freq_count' placeholder='频次'></div><div class='col-sm-2 col-sm-2'><div class='checkbox' ><label><input type='checkbox' class='freq_unlimit' id='freq_unlimit' name='freq_unlimit' >无限制</label></div></div><div class='col-xs-1 col-sm-1'><div class='addCategoryRow' onclick='addCategoryRow()'>+</div></div></div><div class='form-group hidden'><label class='col-sm-2 control-label no-padding-right'>周期</label><div class='col-xs-2 col-sm-2'><input type='text' class='form-controller col-xs-12' id='freq_period' name='freq_period' value='1' placeholder='周期'></div><div class='col-sm-2 col-sm-2'><div class='checkbox' ><label><input type='checkbox' class='freq_period_unlimit' id='freq_period_unlimit' name='freq_period_unlimit' >无限制</label></div></div></div></div>"
                                 addDom.removeClass('addCategoryRow');
                                 addDom.attr('onclick', 'removeCategoryRow(this)');
                                 addDom.addClass('removeCategoryRow');
                                 addDom.text('-');
-                                addDom.parent().parent().after(category);
+                                addDom.parent().parent().parent().after(category);
                                 $(".chosen-select-niu").chosen({width:"100%"});
                                 $($(".CategoryRow .sobs")[$(".CategoryRow .sobs").length-1]).append(selectDataSobs);
                                 $(".CategoryRow .sobs").trigger("chosen:updated");
@@ -98,9 +140,11 @@
                                     $(selectDom).empty().append(_h).trigger("chosen:updated");
                                 });
                                 $($(".CategoryRow .sobs")[$(".CategoryRow .sobs").length-1]).trigger('change');
+                                bind_event();
                             }
                                 $(document).ready(function($) {
                                 $(".chosen-select-niu").chosen({width:"100%"});
+                                bind_event();
                             });
                             </script>
                           <!--  <div class="form-group">
@@ -128,8 +172,8 @@
                                 </div>
 
                             </div> -->
-
-                                <div class="form-group">
+                            <!--
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">最大频次/月</label>
                                 <div class="col-xs-2 col-sm-2">
                                    <input type="text" class="form-controller col-xs-12" id="frequency" name="rule_frequency" placeholder="频次">
@@ -141,20 +185,11 @@
                                          <input type="checkbox" id="frequency_unlimit" name="frequency_unlimit" >
                                             无限制
                                          </label>
-                                        </div>
+                                    </div>
                                 </div>
 
-                                 <!-- <div class="col-sm-2 col-sm-2">
-                                   
-                                        <select class="form-control" id="frequency_time" name="frequency_time">
-                                          <option value="2">一年</option>
-                                          <option value="1">一月</option>
-                                          <option value="3">一日</option>
-                                        </select>
-                                </div> -->
-
                             </div>
-
+                                -->
                         <!--   <div class="form-group">
                                     <label class="col-sm-1 control-label no-padding-right">消费时间</label>
                                     <div class="col-xs-3 col-sm-3">
@@ -180,6 +215,31 @@
                             <hr>
                               <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">适用范围</label>
+                                <div class="col-xs-3 col-sm-3">
+                                    <select class="chosen-select tag-input-style" id="ranks" name="ranks[]" multiple="multiple" data-placeholder="请选择职位" placeholder="请选择职位">
+                                    <?php 
+                                    foreach($ranks as $g){
+                                    ?>
+                                        <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                    </select>
+                                </div>
+                                <div class="col-xs-3 col-sm-3">
+                                    <select class="chosen-select tag-input-style" id="levels" name="levels[]" multiple="multiple" data-placeholder="请选择级别">
+                                    <?php 
+                                    foreach($levels as $m){
+                                    ?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                    </select>
+                                </div>
+			     </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right"></label>
                                 <div class="col-xs-3 col-sm-3">
                                     <select class="chosen-select tag-input-style" id="group" name="gids[]" multiple="multiple" data-placeholder="请选择部门" placeholder="请选择部门">
                                     <?php 
@@ -215,6 +275,9 @@
 
                            
                             <input type="hidden" id="categories" name="categories" />
+                            <input type="hidden" id="freq_counts" name="freq_counts" />
+                            <input type="hidden" id="freq_periods" name="freq_periods" />
+                            <input type="hidden" id="freq_unlimits" name="freq_unlimits" />
                             <input type="hidden" id="renew" name="renew" value="0" />
                             <input type="reset" style="display:none;" id="reset">
                             <div class="clearfix form-actions">
@@ -363,7 +426,7 @@ $(document).ready(function(){
         show_notify("请输入规则名");
         return false;
     }
-    if(($('#frequency').val() == '')&&(!$('#frequency_unlimit').is(':checked')))
+    /*if(($('#frequency').val() == '')&&(!$('#frequency_unlimit').is(':checked')))
     {
         $('#frequency').focus();
         show_notify("请输入频次");
@@ -375,7 +438,7 @@ $(document).ready(function(){
         show_notify("请输入数字");
         return false;
 
-    }
+    }*/
 
     if(($('#group').val() == null)&&($('#member').val() == null)&&(!$('#all_members').is(':checked')))
     {
@@ -394,6 +457,18 @@ $(document).ready(function(){
        //  console.log($('#frequency_unlimit').val());
 
     }
+
+    $('.freq_unlimit').each(function(){
+        console.log('ischecked:' + $(this).is(':checked'));
+        if($(this).is(':checked'))
+        {
+            $(this).val(1);
+        }
+        else
+        {
+            $(this).val(0);
+        }
+    });
 
       if($('#all_members').is(':checked'))
     {
@@ -415,6 +490,28 @@ $(document).ready(function(){
     }
     $('#categories').val(JSON.stringify(categories));
    // console.log(JSON.stringify(categories));
+    var freq_periods = []
+    var els =document.getElementsByName("freq_period");
+        for (var i = 0, j = els.length; i < j; i++){
+    //    console.log(els[i].value);
+        freq_periods.push(els[i].value);
+    }
+    $('#freq_periods').val(JSON.stringify(freq_periods));
+    var freq_counts = []
+    var els =document.getElementsByName("freq_count");
+        for (var i = 0, j = els.length; i < j; i++){
+    //    console.log(els[i].value);
+        freq_counts.push(els[i].value);
+    }
+    $('#freq_counts').val(JSON.stringify(freq_counts));
+
+    var freq_unlimits = []
+    var els =document.getElementsByName("freq_unlimit");
+        for (var i = 0, j = els.length; i < j; i++){
+    //    console.log(els[i].value);
+        freq_unlimits.push(els[i].value);
+    }
+    $('#freq_unlimits').val(JSON.stringify(freq_unlimits));
 
      $('#mainform').submit();
 /*	if(name=='')
@@ -468,11 +565,15 @@ $(document).ready(function(){
            // console.log("helleo");
             $('#member').prop('disabled',true).trigger("chosen:updated");
             $('#group').prop('disabled',true).trigger("chosen:updated");
+	    $('#ranks').prop('disabled',true).trigger("chosen:updated");
+	    $('#levels').prop('disabled',true).trigger("chosen:updated");
         }
         else
         {
             $('#member').prop('disabled',false).trigger("chosen:updated");
             $('#group').prop('disabled',false).trigger("chosen:updated");
+	    $('#ranks').prop('disabled',false).trigger("chosen:updated");
+	    $('#levels').prop('disabled',false).trigger("chosen:updated");
         }
     });
 

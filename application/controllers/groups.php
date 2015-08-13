@@ -9,8 +9,9 @@ class Groups extends REIM_Controller {
     }
 
     public function update(){
+        $this->need_group_it();
         $pid = $this->input->post('pgroup');
-	$code = $this->input->post('gcode');
+        $code = $this->input->post('gcode');
         $manager = $this->input->post('manager');
         $name = $this->input->post('gname');
         $uids = $this->input->post('uids');
@@ -18,10 +19,11 @@ class Groups extends REIM_Controller {
         $manager = $this->input->post('manager');
         $uids = implode(",", $uids);
         $info = $this->ug->create_group($manager,$uids, $name,$code,$pid);
-           redirect(base_url('members/groups'));
+        redirect(base_url('members/groups'));
     }
 
     public function index(){
+        $this->need_group_it();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
@@ -33,7 +35,7 @@ class Groups extends REIM_Controller {
                 $ginfo = $group['data']['ginfo'];
             }
             if(array_key_exists('gmember', $group['data'])){
-            $gmember = $group['data']['gmember'];
+                $gmember = $group['data']['gmember'];
             }
             $gmember = $gmember ? $gmember : array();
 
@@ -49,6 +51,7 @@ class Groups extends REIM_Controller {
 
 
     public function save(){
+        $this->need_group_it();
         $nickname = $this->input->post('nickname');
         $email = $this->input->post('email');
         $phone = $this->input->post('phone');
@@ -69,6 +72,7 @@ class Groups extends REIM_Controller {
     }
 
     public function listdata(){
+        $this->need_group_it();
         $page = $this->input->get('page');
         $rows = $this->input->get('rows');
         $sort = $this->input->get('sord');
@@ -87,6 +91,7 @@ class Groups extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
+        $this->need_group_it();
         $name = $this->input->post('username');
         $info = $this->groups->set_invite($name);
         if($info && $info['status']) {
@@ -98,6 +103,7 @@ class Groups extends REIM_Controller {
     }
 
     public function setadmin($uid = 0){
+        $this->need_group_it();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
@@ -112,6 +118,7 @@ class Groups extends REIM_Controller {
     }
 
     public function create(){
+        $this->need_group_it();
         $name = $this->input->post('groupname');
         $info = $this->groups->create_group($name);
         if($info && $info['status']) {
@@ -123,6 +130,7 @@ class Groups extends REIM_Controller {
     }
 
     public function show_exports(){
+        $this->need_group_it();
         $this->load->model('items_model', 'items');
         $obj = $this->items->get_exports(2, 'tianyu.an@rushucloud.com');
         if($obj && $obj['status']){

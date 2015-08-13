@@ -143,7 +143,13 @@ position: absolute;
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var __STATUS = "<?php echo $status; ?>";
-var __CONFIG = '<?php echo $profile["group"]["config"]; ?>';
+<?php
+    $config = '';
+    if(array_key_exists('config', $profile['group'])){
+        $config = $profile["group"]["config"]; 
+    }
+?>
+var __CONFIG = '<?php echo $config; ?>';
 if(__CONFIG!='')
 {
 	var config = JSON.parse(__CONFIG);

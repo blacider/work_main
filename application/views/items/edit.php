@@ -14,6 +14,10 @@
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script>
 
+<?php
+    $_config = $profile['group']['config'];
+    $__config = json_decode($_config,True);
+?>
 
 
 <div class="page-content">
@@ -105,9 +109,19 @@
 <option value="<?php echo $val; ?>" selected><?php echo $key; ?></option>
 <?php
                                                 } else {
+						if($__config['disable_borrow'] == 0 && $val == 1)
+						{
 ?>
 <option value="<?php echo $val; ?>"><?php echo $key; ?></option>
 <?php
+					    }
+					    if($__config['disable_budget'] == 0 && $val == 2)
+					    {
+?>
+<option value="<?php echo $val; ?>"><?php echo $key; ?></option>
+<?php
+					    }
+
                                             }
                                             }
 ?>
@@ -168,11 +182,9 @@
 <script src="/static/ace/js/jquery.colorbox-min.js"></script>
 
 
-<?php
-    $_config = $profile['group']['config'];
-?>
 
 <script language="javascript">
+var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
 var _images = '<?php echo $images; ?> ';
 var config = '<?php echo $_config?>';
@@ -185,7 +197,7 @@ function get_sobs(){
    var selectDataCategory = {};
    var selectDataSobs = '';
         $.ajax({
-            url : __BASE + "category/get_my_sob_category",
+            url : __BASE + "category/get_sob_category",
             dataType : 'json',
             method : 'GET',
             success : function(data){
@@ -216,9 +228,9 @@ function get_sobs(){
                 {
                     if(selectDataCategory[s_id][i].category_id == _item_category) {
                         _sid = s_id;
-                        _h += "<option selected='selected' value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                        _h += "<option selected='selected' value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name  + " </option>";
                     } else {
-                        _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                        _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name  + " </option>";
                     }
                     
                 }
@@ -261,7 +273,7 @@ uploader.on( 'fileQueued', function( file ) {
             '</div>'
             ),
         $img = $li.find('img');
-
+    ifUp = 0;
 
     // $list为容器jQuery实例
     $('#imageList').append( $li );
@@ -292,7 +304,7 @@ uploader.on( 'uploadProgress', function( file, percentage ) {
                 .appendTo( $li )
                 .find('span');
     }
-
+    ifUp = 0;
     $percent.css( 'width', percentage * 100 + '%' );
 });
 
@@ -305,7 +317,7 @@ uploader.on( 'uploadSuccess', function( file ) {
     if ( !$success.length ) {
         $success = $('<div class="success blue center"></div>').appendTo( $li );
     }
-
+    ifUp = 1;
     $success.text('上传成功');
 });
 
@@ -314,7 +326,7 @@ uploader.on( 'uploadSuccess', function( file ) {
 uploader.on( 'uploadError', function( file ) {
     var $li = $( '#'+file.id ),
         $error = $li.find('div.error');
-
+    ifUp = 1;
     // 避免重复创建
     if ( !$error.length ) {
         $error = $('<div class="error red center"></div>').appendTo( $li );
@@ -462,7 +474,10 @@ $(document).ready(function(){
                 return false;
             }
         }
-
+        if (ifUp == 0) {
+            show_notify('正在上传图片，请稍候');
+            return false;
+        }
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
     });

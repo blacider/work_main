@@ -185,7 +185,12 @@ class Reports extends REIM_Controller {
             $trash= $d['status'] === 1 ? 'gray' : 'red';
             $edit = ($d['status'] === 1)   ? 'gray' : 'green';
             $export = ($d['status'] === 1)   ? 'gray' : 'grey';
-            if(in_array($d['status'],[2,4,5]))
+            if($d['status'] == 1) {
+                $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+                    . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
+                    . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
+            } else {
+            if(in_array($d['status'],array(2,4,5)))
             {
                 $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
@@ -196,8 +201,9 @@ class Reports extends REIM_Controller {
             {
                 $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
-                    . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>'
-                    . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
+                    . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>'
+                    . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span></div>';
+            }
             }
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
                 $d['status_str'] = '待提交';
@@ -252,48 +258,50 @@ class Reports extends REIM_Controller {
 
     public function create(){
     	$info = $this->category->get_list();
-	if($info['status'] > 0)
-	{
-		$_categories = $info['data']['categories'];
-	}
-	else
-	{
-		$_categories = array();
-	}
-	$categories = array();
-	
-	foreach($_categories as $cate)
-	{
-	//	array_push($categories,array($cate['id'] => $cate['category_name']));
-		$categories[$cate['id']] = $cate['category_name'];
-	}
-	log_message('debug','categories:' . json_encode($categories));
+        if($info['status'] > 0)
+        {
+            $_categories = $info['data']['categories'];
+        }
+        else
+        {
+            $_categories = array();
+        }
+        $categories = array();
+
+        foreach($_categories as $cate)
+        {
+            //	array_push($categories,array($cate['id'] => $cate['category_name']));
+            $categories[$cate['id']] = $cate['category_name'];
+        }
+        log_message('debug','categories:' . json_encode($categories));
         $items = $this->input->post('item');
         $title = $this->input->post('title');
         $receiver = $this->input->post('receiver');
         $cc = $this->input->post('cc');
         $save = $this->input->post('renew');
         $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save);
-		$ret = json_decode($ret, true);
+        $ret = json_decode($ret, true);
         log_message("debug", "xx:" . json_encode($ret));
-        if($ret['code'] == -64){
-            $this->session->set_userdata('last_error', '本月内你已经不能提交报告了');
+        if($ret['code'] < 0) {
+            if($ret['code'] == -63)
+            {
+                $quota = $ret['data']['quota'];
+                $str = '';
+                foreach($quota as $key => $q)
+                {
+                    if($q < 0)
+                    {
+                        $str = $str . $categories[$key] . ' ';
+                        log_message('debug','value:' . $str);
+                    }
+                }	
+                $this->session->set_userdata('last_error', '本月内你已经不能提交' . $str .'类报告了');
+            } else {
+                log_message("debug", "alvayang:" . json_encode($ret));
+                $this->session->set_userdata('last_error', $ret['data']['msg']);
+            }
         }
-	else if($ret['code'] == -63)
-	{
-	    $quota = $ret['data']['quota'];
-	    $str = '';
-	    foreach($quota as $key => $q)
-	    {
-		if($q < 0)
-		{
-			$str = $str . $categories[$key] . ' ';
-			log_message('debug','value:' . $str);
-		}
-	    }	
-            $this->session->set_userdata('last_error', '本月内你已经不能提交' . $str .'类报告了');
-	}
-	    
+
         return redirect(base_url('reports'));
     }
 
@@ -509,8 +517,13 @@ class Reports extends REIM_Controller {
         $receiver = $this->input->post('receiver');
         $cc = $this->input->post('cc');
         $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items));
-        log_message("debug", json_encode($ret));
-        return redirect(base_url('reports'));
+        log_message("debug", $ret);
+	$_ret = json_decode($ret,True);
+	if($_ret['status'] <= 0)
+	{
+		$this->session->set_userdata('last_error',$_ret['data']['msg']);
+	}
+        return redirect(base_url('reports/index'));
     }
 
     public function check_permission() {
@@ -676,7 +689,7 @@ class Reports extends REIM_Controller {
                 }
                 $r['total'] = 0;
                 $r['paid'] = 0;
-                log_message('debug', json_encode($r));
+                //log_message('debug', json_encode($r));
                 $_items = $r['items'];
                 foreach($_items as $i){
                     log_message('debug', "Itemx :" .json_encode($i));
@@ -684,8 +697,9 @@ class Reports extends REIM_Controller {
                     if(array_key_exists('currency', $i) && strtolower($i['currency']) != 'cny') {
                         $_rate = $i['rate'] / 100;
                     }
-                    log_message("debug", "Items23:"  . json_encode($i));
+                    //log_message("debug", "Items23:"  . json_encode($i));
                     $r['total'] += ($i['amount'] * $_rate);
+                    $i['paid'] = ($i['amount'] * $_rate);
                     if(in_array($r['status'], array(4, 7, 8))){
                         // 已完成状态的，付款额度就是已付额度
                         $i['paid'] = ($i['amount'] * $_rate);

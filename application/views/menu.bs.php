@@ -273,10 +273,29 @@ if($open == 1) {
 <?php 
 if($profile['admin'] == 1 || $profile['admin'] == 3){
 ?>
+        <li class="hsub" id="newrank">
+        <a href="<?php echo base_url('members/rank'); ?>" >
+            <i class="menu-icon fa fa-caret-right"></i>
+           职位设置 
+        </a>
+
+        <b class="arrow"></b>
+
+        </li>
         <li class="hsub" id="newmember">
         <a href="<?php echo base_url('members/newmember'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
             添加员工
+        </a>
+
+        <b class="arrow"></b>
+
+        </li>
+
+         <li class="hsub" id="delmembers">
+        <a href="<?php echo base_url('members/delmembers'); ?>" >
+            <i class="menu-icon fa fa-caret-right"></i>
+            删除员工
         </a>
 
         <b class="arrow"></b>
@@ -336,12 +355,12 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <a href="<?php echo base_url('category/account_set'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 帐套管理 </a>
         <b class="arrow"></b>
         </li>
-
+<!--
         <li class="hsub" id="index">
         <a href="<?php echo base_url('category'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 分类管理 </a>
         <b class="arrow"></b>
         </li>
-
+-->
 
         <li class="hsub" id="tags">
         <a href="<?php echo base_url('category/tags'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 标签管理 </a>

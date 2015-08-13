@@ -61,6 +61,12 @@ foreach($members as $m) {
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">总额</label>
+                                <div class="col-xs-9 col-sm-9">
+                                    <span class="middle" id="tamount">0</span>
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">选择消费</label>
@@ -68,7 +74,8 @@ foreach($members as $m) {
                                     <table class="table table-border">
                                         <tr>
                                             <thead>
-                                                <td><input type="checkbox" class="form-controller"></td>
+                                                <td>
+                                                   <input name="all_item" id="all_item" type="checkbox" class="form-controller all_item"> 全选</td>
                                                 <td>消费时间</td>
                                                 <td>类型</td>
                                                 <td>金额</td>
@@ -81,7 +88,7 @@ foreach($members as $m) {
 foreach($report['items'] as $i){
                                         ?>
                                         <tr>
-                                            <td><input checked='true' name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller"></td>
+                                            <td><input checked='true' name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $i['amount'] ?>"></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['category_name']; ?></td>
                                             <td><?php echo $i['amount']; ?></td>
@@ -110,7 +117,7 @@ foreach($items as $i){
     if($i['rid'] == 0 && $i['prove_ahead'] == 0){
                                         ?>
                                         <tr>
-                                            <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller"></td>
+                                            <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $i['amount'] ?>"></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['category'];  echo $i['status'];?></td>
                                             <td><?php echo $i['amount']; ?></td>
@@ -210,6 +217,28 @@ $(document).ready(function(){
     }
      */
 
+    $('#all_item').click(function(){
+        if($('#all_item').is(":checked"))
+        {
+            //console.log("checked");
+            $('.amount').each(function(){
+                $(this).prop('checked',true);
+                //console.log($(this).is(":checked"));
+               // $(this).trigger('checked');
+            });   
+
+            //$("[name='item[]']").prop('checked',true);
+        }
+        else
+        {
+            $('.amount').each(function(){
+                $(this).prop('checked',false);
+              // $(this).removeAttr("checked"); 
+            });
+           // $("[name='item[]']").prop('checked',false);
+        }
+        update_tamount();
+     });
 
     $('.renew').click(function(){
         $('#renew').val($(this).data('renew'));
@@ -218,5 +247,40 @@ $(document).ready(function(){
     $('.cancel').click(function(){
         $('#reset').click();
     });
+    $('.amount').each(function(idx, item) {
+        $(this).click(function(){
+            update_tamount();
+        });
+    });
+    update_tamount();
 });
+function toDecimal2(x) {  
+    var f = parseFloat(x);  
+    if (isNaN(f)) {  
+        return false;  
+    }  
+    var f = Math.round(x*100)/100;  
+    var s = f.toString();  
+    var rs = s.indexOf('.');  
+    if (rs < 0) {  
+        rs = s.length;  
+        s += '.';  
+    }  
+    while (s.length <= rs + 2) {  
+        s += '0';  
+    }  
+    return s;  
+}  
+function update_tamount(){
+    var sum = 0;
+    $('.amount').each(function(){
+        if($(this).is(':checked')){
+            var amount = $(this).data('amount');
+            amount = parseInt(amount.replace(/[^0-9]/ig,""))/100;
+            sum+=amount;
+        };
+    });
+    //$('#tamount').html(sum);
+    $('#tamount').html('￥' + toDecimal2(sum));
+}
 </script>

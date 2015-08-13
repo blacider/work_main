@@ -54,19 +54,52 @@
                                 </div>
                             </div>
 
+                              <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">职位</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select class="chosen-select tag-input-style" name="rank" data-placeholder="请选择职位">
+                                        <option value='0'>无</option>
+<?php 
+foreach($ranks as $m){
+?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+<?php
+}
+?>
+                                    </select>
+                                </div>
+                         </div>
+
+                              <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">级别</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select class="chosen-select tag-input-style" name="level" data-placeholder="请选择职位">
+                                        <option value='0'>无</option>
+<?php 
+foreach($levels as $m){
+?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+<?php
+}
+?>
+                                    </select>
+                                </div>
+                         </div>
+
+
 
                               <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">上级</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" name="manager" data-placeholder="请选择标签">
                                         <option value='0'>无</option>
-                                    <?php 
-                                    foreach($gmember as $m){
-                                    ?>
+<?php 
+foreach($gmember as $m){
+?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
-                                    <?php
-                                    }
-                                    ?>
+<?php
+}
+?>
                                     </select>
                                 </div>
                          </div>

@@ -46,6 +46,20 @@
 </div>
 </div>
 
+<div class="form-group" id="endTime" hidden>
+<label class="col-sm-1 control-label no-padding-right">至</label>
+<div class="col-xs-6 col-sm-6">
+<div class="input-group">
+<input id="date-timepicker2" name="dt_end" type="text" class="form-control" />
+<input type="hidden" id="config_id" name="config_id" />
+<input type="hidden" id="config_type" name="config_type"/>
+<span class="input-group-addon">
+<i class="fa fa-clock-o bigger-110"></i>
+</span>
+</div>
+</div>
+</div>
+
 
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">商家</label>
@@ -68,6 +82,14 @@
 </div>
 </div>
 <?php  } ?>
+<?php
+    $_config = '';
+    if(array_key_exists('config',$profile['group']))
+    {
+    	$_config = $profile['group']['config'];
+    }
+    $__config = json_decode($_config,True);
+?>
 
 
 <div class="form-group">
@@ -75,8 +97,20 @@
 <div class="col-xs-6 col-sm-6">
 <select class="form-control" name="type" data-placeholder="请选择类型">
 <option value="0">报销</option>
+<?php 
+if($__config['disable_borrow']=='0')
+{
+?>
 <option value="1">预借</option>
+<?php
+}
+if($__config['disable_budget'] == '0')
+{
+?>
 <option value="2">预算</option>
+<?php
+}
+?>
 </select>
 </div>
 </div>
@@ -132,9 +166,7 @@
 </form>
 </div>
 </div>
-<?php
-    $_config = $profile['group']['config'];
-?>
+
 <!--
 <div class="modal" id="select_img_modal">
     <div class="modal-dialog">
@@ -169,7 +201,6 @@
 
 <!--<script src="/static/ace/js/jquery1x.min.js"></script> -->
 
-
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
 
 
@@ -192,8 +223,24 @@
 <script type="text/javascript" src="/static/third-party/webUploader/webuploader.js"></script>
 
 <script language="javascript">
+var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
 var config = '<?php echo $_config?>';
+var __item_config = '<?php echo json_encode($item_config);?>';
+var item_config = '';
+if(__item_config!='')
+{
+    item_config = JSON.parse(__item_config);
+}
+var _item_config = [];
+for(var i = 0 ; i < item_config.length; i++)
+{
+    if(item_config[i].type == 2)
+    {
+        _item_config = item_config[i];
+    }
+}
+console.log(_item_config);
 var __config = '';
 if(config !='')
 {
@@ -235,7 +282,7 @@ uploader.on( 'fileQueued', function( file ) {
         $img = $li.find('img');
     // $list为容器jQuery实例
     $('#imageList').append( $li );
-
+    ifUp = 0;
     // 创建缩略图
     // 如果为非图片文件，可以不用调用此方法。
     // thumbnailWidth x thumbnailHeight 为 100 x 100
@@ -254,7 +301,7 @@ uploader.on( 'fileQueued', function( file ) {
 uploader.on( 'uploadProgress', function( file, percentage ) {
     var $li = $( '#'+file.id ),
         $percent = $li.find('.progress span');
-
+        ifUp = 0;
     // 避免重复创建
     if ( !$percent.length ) {
         $percent = $('<p class="progress"><span></span></p>')
@@ -308,6 +355,7 @@ uploader.on( 'uploadAccept', function( file, response ) {
 // 完成上传完了，成功或者失败，先删除进度条。
 uploader.on( 'uploadComplete', function( file ) {
     $( '#'+file.id ).find('.progress').remove();
+    ifUp = 1;
 });
 }
 function bind_event(){
@@ -339,7 +387,7 @@ function get_sobs(){
    var selectDataCategory = {};
    var selectDataSobs = '';
         $.ajax({
-            url : __BASE + "category/get_my_sob_category",
+            url : __BASE + "category/get_sob_category",
             dataType : 'json',
             method : 'GET',
             success : function(data){
@@ -362,12 +410,18 @@ function get_sobs(){
             {
                 for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
                 {
-                    _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                    var _note = selectDataCategory[s_id][i].note;
+                    if(_note) {
+                        _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + "( " + _note + " ) </option>";
+                    } else{
+                        _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                    }
                     
                 }
             }
             //var selectDom = this.parentNode.nextElementSibling.children[0]
             $(this.nextElementSibling).empty().append(_h).trigger("chosen:updated");
+            $('#sob_category').trigger('change');
         });
 }
 
@@ -384,6 +438,19 @@ $(document).ready(function(){
     }).on(ace.click_event, function(){
         $(this).prev().focus();
     });
+
+    $('#date-timepicker2').datetimepicker({
+        language: 'zh-cn',
+            useCurrent: true,
+            format: 'YYYY-MM-DD HH:mm',
+            linkField: "dt",
+            linkFormat: "YYYY-MM-DD HH:mm",
+            sideBySide: true
+    }).next().on('dp.change', function(ev){
+    }).on(ace.click_event, function(){
+        $(this).prev().focus();
+    });
+
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
         .off('resize.chosen')
@@ -395,6 +462,26 @@ $(document).ready(function(){
         }).trigger('resize.chosen');
 
     $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange'></i>");//let's add a custom loading icon
+    
+    $('#sob_category').change(function(){
+        var category_id = $('#sob_category').val();
+        if(category_id == _item_config['cid'])
+        {
+            $('#config_id').val(_item_config['id']);
+            console.log(_item_config['id']);
+            $('#config_type').val(_item_config['type']);
+            $('#date-timepicker2').val('');
+            $('#endTime').show();
+        }
+        else
+        {
+            $('#config_id').val('');
+            $('#config_type').val('');
+            $('#date-timepicker2').val(-1);
+            $('#endTime').hide();
+        }
+    });
+
     $('.renew').click(function(){
 
 
@@ -412,7 +499,10 @@ $(document).ready(function(){
             return false;
         }
 
-
+        if (ifUp == 0) {
+            show_notify('正在上传图片，请稍候');
+            return false;
+        }
         if(isNaN($('#amount').val())) {
             show_notify('请输入有效金额');
             $('#amount').val('');
@@ -431,6 +521,23 @@ $(document).ready(function(){
             }
         }
 
+         var dateTime2 = $('#date-timepicker2').val()
+        if(__config['not_auto_time'] == 1)
+        {
+            if(dateTime2 == '')
+            {
+                show_notify('请填写结束时间');
+                //$('#date-timepicker1').focus();
+                return false;
+            }
+            console.log((dateTime2>0));
+            if((dateTime2>0) && (dateTime2 < dateTime))
+            {
+                show_notify('结束时间应该大于开始时间');
+                return false;
+            }
+        }
+
         var note = $('#note').val();
         if(__config['note_compulsory'] == 1)
         {
@@ -441,6 +548,12 @@ $(document).ready(function(){
                 $('#note').focus();
                 return false;
             }
+        }
+        //console.log($('#sob_category').val());
+        if($('#sob_category').val() == null)
+        {
+            show_notify('请选择类目');
+            return false;
         }
 
         $('#renew').val($(this).data('renew'));

@@ -31,7 +31,7 @@ jQuery(grid_selector).jqGrid({
     //datatype: "local",
     height: 250,
     loadtext: '',
-    colNames:['消费时间', '类别', '金额', '类型', '商家', '备注','状态', '操作'],
+    colNames:['消费时间', '类型', '金额', '类别', '商家', '备注','状态', '操作'],
     //rownumbers: true, 
     caption: "消费列表",
     editurl: __BASE + 'items/save',
