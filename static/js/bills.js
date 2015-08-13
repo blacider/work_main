@@ -44,6 +44,8 @@ function bind_event(){
     });
 }
 
+var selectRows = [];    
+
 try{
 jQuery(grid_selector).jqGrid({
     url: __BASE + 'bills/listdata/' + __STATUS,
@@ -74,6 +76,9 @@ jQuery(grid_selector).jqGrid({
 
     ], 
     loadComplete : function() {
+        jQuery.each(selectRows,function(index,row){
+            jQuery(grid_selector).jqGrid('setSelection',row);
+        });
         bind_event();
         var table = this;
         setTimeout(function(){
@@ -83,8 +88,29 @@ jQuery(grid_selector).jqGrid({
             enableTooltips(table);
         }, 0);
     },
-
-
+    onSelectAll : function(aRows, status) {
+        if (status) {
+            jQuery.each(aRows,function(index,rowid){
+                if (jQuery.inArray(rowid,selectRows) == -1) {
+                    selectRows.push(rowid);
+                }
+            });
+        } else {
+            jQuery.each(aRows,function(index,rowid){
+                selectRows.splice(jQuery.inArray(rowid,selectRows),1);
+            });
+        }
+    },
+    onSelectRow : function(rowid, status) {
+        if (status) {
+            if (jQuery.inArray(rowid,selectRows) == -1) {
+                selectRows.push(rowid);
+            }
+        } else {
+            selectRows.splice(jQuery.inArray(rowid,selectRows),1);
+        }
+        
+    },
     //page: 1,
     width: 780,
     height: 380,
@@ -111,7 +137,7 @@ try{
         addicon : 'ace-icon fa fa-database',
         addtitle: '导出U8',
         addfunc : function(rowids, p){
-            var rowid = $(grid_selector).jqGrid('getGridParam','selarrrow');
+           var rowid = $(grid_selector).jqGrid('getGridParam','selarrrow');
             var form=$("<form>");//定义一个form表单
             form.attr("style","display:none");
             form.attr("target","");
@@ -121,7 +147,7 @@ try{
             var input1=$("<input>");
             input1.attr("type","hidden");
             input1.attr("name","ids");
-            input1.attr("value", rowid.join(','));
+            input1.attr("value", selectRows.join(','));
             $("body").append(form);//将表单放置在web中
             form.append(input1);
             form.submit();//表单提交
@@ -130,6 +156,7 @@ try{
         delicon : 'ace-icon fa fa-print',
         deltitle: '导出excel',
         delfunc : function(rowids, p){
+            alert(selectRows);
             var form=$("<form>");//定义一个form表单
             form.attr("style","display:none");
             form.attr("target","");
@@ -139,7 +166,7 @@ try{
             var input1=$("<input>");
             input1.attr("type","hidden");
             input1.attr("name","ids");
-            input1.attr("value", rowids.join(','));
+            input1.attr("value", selectRows.join(','));
             $("body").append(form);//将表单放置在web中
             form.append(input1);
             form.submit();//表单提交
@@ -248,7 +275,8 @@ try{
     title:__STATUS == 2 ? "支付选中报告" : "",
     buttonicon:__STATUS == 2 ? "ace-icon fa fa-check green" : "",
     onClickButton:__STATUS == 2 ? function() {
-         chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
+         // chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
+         chosenids = selectRows;
          if (chosenids.length == 0) {
             alert("请选择报告!");
             return;
@@ -268,7 +296,7 @@ try{
             mtype: "GET",
             datatype: "local",
             height: 250,
-            multiselect: false,
+            multiselect: false, 
             loadtext: '',
             colNames:['提交日期','报告名', '条目数', '提交者', '金额', '状态', '操作'],
             loadonce: true,
