@@ -156,7 +156,6 @@ try{
         delicon : 'ace-icon fa fa-print',
         deltitle: '导出excel',
         delfunc : function(rowids, p){
-            alert(selectRows);
             var form=$("<form>");//定义一个form表单
             form.attr("style","display:none");
             form.attr("target","");
