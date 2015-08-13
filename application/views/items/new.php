@@ -511,6 +511,7 @@ $(document).ready(function(){
         }
 
          var dateTime = $('#date-timepicker1').val()
+         var dateTime = dateTime.replace(/(^\s*)|(\s*$)/g,'');
         if(__config['not_auto_time'] == 1)
         {
             if(dateTime == '')
@@ -521,7 +522,9 @@ $(document).ready(function(){
             }
         }
 
-         var dateTime2 = $('#date-timepicker2').val()
+         var dateTime2 = $('#date-timepicker2').val();
+         dateTime2 = dateTime2.replace(/(^\s*)|(\s*$)/g,'');
+         //console.log(dateTime2.replace(/(^\s*)|(\s*$)/g,'')>'-1');
         if(__config['not_auto_time'] == 1)
         {
             if(dateTime2 == '')
@@ -530,7 +533,7 @@ $(document).ready(function(){
                 //$('#date-timepicker1').focus();
                 return false;
             }
-            console.log((dateTime2>0));
+            console.log();
             if((dateTime2>'0') && (dateTime2 < dateTime))
             {
                 show_notify('结束时间应该大于开始时间');

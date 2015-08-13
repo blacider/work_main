@@ -85,37 +85,36 @@ class Resetpwd extends REIM_Controller  {
         //$category = $this->user_model->reim_update_password($code, $pass, $cid);
         $obj = json_decode($category, True);
         log_message("debug", $category);
-	if(0 == $is_newcomer)
-	{
-		if($obj['status'] > 0){
-		    if ($active) {
-			return redirect(base_url('resetpwd/success'));
-		    } else {
-			return redirect(base_url('login'));
-		    }
-		    
-		    //$this->load->view('success');
-		    //
-		    //$this->session->set_userdata('last_error', "操作成功，请登录");
-		} else {
-		    $this->session->set_userdata('last_error', "操作失败: " . $obj['data']['msg']);
-		    redirect(base_url('resetpwd/index/' . $code . "/" . $cid));
-		}
-	}
-	else if(1 == $is_newcomer)
-	{
-		if($obj['status'] > 0){
-			return redirect(base_url('install/newcomer'));
-		    }
-		    
-		    //$this->load->view('success');
-		    //
-		    //$this->session->set_userdata('last_error', "操作成功，请登录");
-		} else {
-		    $this->session->set_userdata('last_error', "操作失败: " . $obj['data']['msg']);
-		    redirect(base_url('resetpwd/newcomer/' . $code . "/" . $cid));
-		}
-	}
+        if(0 == $is_newcomer)
+        {
+            if($obj['status'] > 0){
+                if ($active) {
+                    return redirect(base_url('resetpwd/success'));
+                } else {
+                    return redirect(base_url('login'));
+                }
+
+                //$this->load->view('success');
+                //
+                //$this->session->set_userdata('last_error', "操作成功，请登录");
+            } else {
+                $this->session->set_userdata('last_error', "操作失败: " . $obj['data']['msg']);
+                redirect(base_url('resetpwd/index/' . $code . "/" . $cid));
+            }
+        }
+        else if(1 == $is_newcomer)
+        {
+            if($obj['status'] > 0){
+                return redirect(base_url('install/newcomer'));
+            }
+
+            //$this->load->view('success');
+            //
+            //$this->session->set_userdata('last_error', "操作成功，请登录");
+        } else {
+            $this->session->set_userdata('last_error', "操作失败: " . $obj['data']['msg']);
+            redirect(base_url('resetpwd/newcomer/' . $code . "/" . $cid));
+        }
     }
 
     public function success(){
