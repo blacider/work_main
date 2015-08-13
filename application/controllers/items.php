@@ -705,7 +705,7 @@ class Items extends REIM_Controller {
         $time = $this->input->post('dt1');
         $timestamp = strtotime($this->input->post('dt1'));
         $temestamp = $timestamp*1000;
-	$endtime = strtotime($this->input->post('dt_end'));
+	$endtime = $this->input->post('dt_end');
 	$config_id = $this->input->post('config_id');
 	$config_type = $this->input->post('config_type');
 	log_message('debug','config_id:' . $config_id);

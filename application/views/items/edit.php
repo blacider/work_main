@@ -483,9 +483,9 @@ $('#sob_category').change(function(){
             language: 'zh-cn',
             useCurrent: true,
             defaultDate:_dt_end,
-            format: 'YYYY-MM-DD HH:mm',
+            format: 'YYYY-MM-DD HH:mm:ss',
             linkField: "dt_end",
-            linkFormat: "YYYY-MM-DD HH:mm",
+            linkFormat: "YYYY-MM-DD HH:mm:ss",
             sideBySide: true
              }).next().on('dp.change', function(ev){
             }).on(ace.click_event, function(){
