@@ -202,7 +202,7 @@
 var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
 var _images = '<?php echo $images; ?> ';
-
+var sob_id = <?php echo $sob_id; ?>;
 var __item_config = '<?php echo json_encode($item_config);?>';
 var item_config = '';
 if(__item_config!='')
@@ -234,7 +234,7 @@ function get_sobs(){
             success : function(data){
                 for(var item in data) {
                     var _h = '';
-                    if(item == _item_category) {
+                    if(item == sob_id) {
                         _h = "<option selected='selected' value='" +  item + "'>"+  data[item].sob_name + " </option>";
                     } else {
                         _h = "<option value='" +  item + "'>"+  data[item].sob_name + " </option>";
