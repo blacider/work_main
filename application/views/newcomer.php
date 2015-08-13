@@ -47,7 +47,7 @@
       <div class="login">
           <div class="login-left" style="padding-top:36px;font-size:25px;"><br>为邮箱设置密码<br> <div style="color:#ff575b;  word-wrap: break-word;"><?php echo $name; ?></div><br></div>
         <div class="login-right">
-          <form id="form-phone-step2" style="display:block;" method="POST" action="<?php echo base_url('resetpwd/doupdate'); ?>/<?php echo $active?>/">
+          <form id="form-phone-step2" style="display:block;" method="POST" action="<?php echo base_url('resetpwd/doupdate'); ?>/<?php echo $active?>/1">
             <div class="form-password">
 <?php
 $placeholder = '';
