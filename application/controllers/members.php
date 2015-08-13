@@ -379,7 +379,6 @@ class Members extends REIM_Controller {
                 } 
             }
         }
-        log_message('debug', 'Profile:' . json_encode($groups['config']));
         $group = $this->groups->get_my_list();
         $ginfo = array();
         $gmember = array();
