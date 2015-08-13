@@ -221,7 +221,10 @@ for(var i = 0 ; i < item_config.length; i++)
 }
 
 var config = '<?php echo $_config?>';
+if(config != '')
+{
 var __config = JSON.parse(config);
+}
 
 var _item_category = '<?php echo $item['category']; ?>';
 var flag = 0;
@@ -524,13 +527,33 @@ $('#sob_category').change(function(){
             return false;
         }
 
-        var dateTime = $('#date-timepicker1').val()
+         var dateTime = $('#date-timepicker1').val()
+         var dateTime = dateTime.replace(/(^\s*)|(\s*$)/g,'');
         if(__config['not_auto_time'] == 1)
         {
             if(dateTime == '')
             {
                 show_notify('请填写时间');
                 //$('#date-timepicker1').focus();
+                return false;
+            }
+        }
+
+         var dateTime2 = $('#date-timepicker2').val();
+         dateTime2 = dateTime2.replace(/(^\s*)|(\s*$)/g,'');
+         //console.log(dateTime2.replace(/(^\s*)|(\s*$)/g,'')>'-1');
+        if(__config['not_auto_time'] == 1)
+        {
+            if(dateTime2 == '')
+            {
+                show_notify('请填写结束时间');
+                //$('#date-timepicker1').focus();
+                return false;
+            }
+            console.log();
+            if((dateTime2>'0') && (dateTime2 < dateTime))
+            {
+                show_notify('结束时间应该大于开始时间');
                 return false;
             }
         }

@@ -691,12 +691,16 @@ class Items extends REIM_Controller {
 	$item_sob = 0;
 	foreach($categories as $cate)
 	{
-//		if($cate['id'] == $item['category']);
+	log_message('debug','cate_id:'.$cate['id'] . " sob_id:" . $cate['sob_id']);
+		if($cate['id'] == $item['category'])
 		{
+			
 			$item_sob = $cate['sob_id'];
+			log_message('debug','cate---:' . $cate['sob_id']);
 		}
 	}
-	
+	log_message('debug', 'item:' . $item['category']);
+	log_message('debug' , 'sob:' . $item_sob);
         $this->bsload('items/edit',
             array(
                 'title' => '修改消费',
