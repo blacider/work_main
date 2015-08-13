@@ -207,7 +207,7 @@ class Reports extends REIM_Controller {
             }
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
                 $d['status_str'] = '待提交';
-                $d['amount'] = '￥' . $d['amount'];
+                //$d['amount'] = '￥' . $d['amount'];
                 $prove_ahead = '报销';
                 switch($d['prove_ahead']){
                 case 2: {$prove_ahead = '<font color="red">预借</font>';};break;
