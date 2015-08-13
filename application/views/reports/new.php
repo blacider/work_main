@@ -91,9 +91,29 @@
                                                 <td>操作</td>
                                             </thead>
                                         </tr>
-<?php 
+<?php
+    $_config = '';
+    if(array_key_exists('config',$profile['group']))
+    {
+        $_config = $profile['group']['config'];
+    }
+    $__config = json_decode($_config,True);
+
+$item_type = array();
+array_push($item_type,0);
+if($__config)
+{
+    if($__config['disable_borrow'] == '0')
+    {
+        array_push($item_type,2);
+    }
+    if($__config['disable_budget'] == '0')
+    {
+        array_push($item_type,1);
+    }
+}
 foreach($items as $i){
-    if($i['rid'] == 0 && $i['prove_ahead'] == 0){
+    if($i['rid'] == 0 && in_array($i['prove_ahead'], $item_type)){
                                         ?>
                                         <tr>
                                             <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $i['amount'] ?>" ></td>
@@ -147,6 +167,8 @@ echo $buf;
         </form>
     </div>
 </div>
+
+
 <script language="javascript">
 update_tamount();
 var __BASE = "<?php echo $base_url; ?>";
