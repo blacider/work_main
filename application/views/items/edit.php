@@ -184,6 +184,7 @@
 
 
 <script language="javascript">
+var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
 var _images = '<?php echo $images; ?> ';
 var config = '<?php echo $_config?>';
@@ -272,7 +273,7 @@ uploader.on( 'fileQueued', function( file ) {
             '</div>'
             ),
         $img = $li.find('img');
-
+    ifUp = 0;
 
     // $list为容器jQuery实例
     $('#imageList').append( $li );
@@ -303,7 +304,7 @@ uploader.on( 'uploadProgress', function( file, percentage ) {
                 .appendTo( $li )
                 .find('span');
     }
-
+    ifUp = 0;
     $percent.css( 'width', percentage * 100 + '%' );
 });
 
@@ -316,7 +317,7 @@ uploader.on( 'uploadSuccess', function( file ) {
     if ( !$success.length ) {
         $success = $('<div class="success blue center"></div>').appendTo( $li );
     }
-
+    ifUp = 1;
     $success.text('上传成功');
 });
 
@@ -325,7 +326,7 @@ uploader.on( 'uploadSuccess', function( file ) {
 uploader.on( 'uploadError', function( file ) {
     var $li = $( '#'+file.id ),
         $error = $li.find('div.error');
-
+    ifUp = 1;
     // 避免重复创建
     if ( !$error.length ) {
         $error = $('<div class="error red center"></div>').appendTo( $li );
@@ -473,7 +474,10 @@ $(document).ready(function(){
                 return false;
             }
         }
-
+        if (ifUp == 0) {
+            show_notify('正在上传图片，请稍候');
+            return false;
+        }
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
     });
