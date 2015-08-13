@@ -37,6 +37,7 @@
       <div id="download pc" style="" onclick="download()">
             <div class="pc">
                 <img src="/static/img/download.png" style="width:160px;height:160px;">
+            <div class="">恭喜,密码设置成功</div>
             <div class="">扫描即可下载 iOS、Android 客户端</div>
         </div>
       </div>
