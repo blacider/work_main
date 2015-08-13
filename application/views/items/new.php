@@ -441,7 +441,7 @@ $(document).ready(function(){
         language: 'zh-cn',
             useCurrent: true,
             format: 'YYYY-MM-DD HH:mm',
-            linkField: "dt",
+            linkField: "dt_end",
             linkFormat: "YYYY-MM-DD HH:mm",
             sideBySide: true
     }).next().on('dp.change', function(ev){

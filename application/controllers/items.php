@@ -626,6 +626,19 @@ class Items extends REIM_Controller {
             redirect(base_url('items'));
         }
         $item = $item['data'];
+	$item_value = '';
+	if(array_key_exists('extra',$item))
+	{
+		foreach($item['extra'] as $it)
+		{
+		log_message('debug' , 'it:' . json_encode($it));
+		if(array_key_exists('value',$it))
+		{
+			$item_value = $it['value'];	
+		}
+		}
+	}
+	log_message('debug','item_extra' . json_encode($item_value));
         $category = $this->category->get_list();
         $categories = array();
         $tags = array();
@@ -653,8 +666,6 @@ class Items extends REIM_Controller {
             $ob = array('name' => $i['id'], 'size' => $_size, 'type' => $_type, 'url' => $i['path'], 'id' => $i['id']);
             array_push($_images, $ob);
         }
-        log_message('debug','#######'.$item_update_in);
-	log_message('debug','categories:' . json_encode($categories));
 	$item_sob = 0;
 	foreach($categories as $cate)
 	{
@@ -663,6 +674,7 @@ class Items extends REIM_Controller {
 			$item_sob = $cate['sob_id'];
 		}
 	}
+	
         $this->bsload('items/edit',
             array(
                 'title' => '修改消费',
@@ -673,6 +685,7 @@ class Items extends REIM_Controller {
 		,'item_config'=>$item_config,
                 'images_ids' => implode(",", $_image_ids)
 		,'sob_id' => $item_sob
+		,'item_value' => $item_value
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')

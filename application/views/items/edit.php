@@ -66,6 +66,7 @@
                                 <div class="col-xs-6 col-sm-6">
                                     <div class="input-group">
                                         <input id="date-timepicker2" name="dt_end" type="text" class="form-control" />
+                                       <input type="hidden" name="dt_end1" id="dt_end1" value="<?php echo $item_value; ?>">
                                         <input type="hidden" id="config_id" name="config_id" />
                                         <input type="hidden" id="config_type" name="config_type"/>
                                         <span class="input-group-addon">
@@ -186,7 +187,6 @@
     </div>
 </div>
 
-
 <!--
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
@@ -201,6 +201,7 @@
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var _images = '<?php echo $images; ?> ';
+var item_value = '<?php echo $item_value; ?>';
 
 var __item_config = '<?php echo json_encode($item_config);?>';
 var item_config = '';
@@ -452,17 +453,7 @@ $(document).ready(function(){
         $(this).prev().focus();
     });
 
- $('#date-timepicker2').datetimepicker({
-        language: 'zh-cn',
-            useCurrent: true,
-            format: 'YYYY-MM-DD HH:mm',
-            linkField: "dt",
-            linkFormat: "YYYY-MM-DD HH:mm",
-            sideBySide: true
-    }).next().on('dp.change', function(ev){
-    }).on(ace.click_event, function(){
-        $(this).prev().focus();
-    });
+ 
 
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
@@ -484,7 +475,21 @@ $('#sob_category').change(function(){
             $('#config_id').val(_item_config['id']);
             console.log(_item_config['id']);
             $('#config_type').val(_item_config['type']);
-            $('#date-timepicker2').val('');
+            $('#date-timepicker2').val(item_value);
+            var _dt_end = $('#dt_end1').val();
+            $('#date-timepicker2').datetimepicker({
+            language: 'zh-cn',
+            useCurrent: true,
+            defaultDate:_dt_end,
+            format: 'YYYY-MM-DD HH:mm',
+            linkField: "dt_end",
+            linkFormat: "YYYY-MM-DD HH:mm",
+            sideBySide: true
+             }).next().on('dp.change', function(ev){
+            }).on(ace.click_event, function(){
+                $(this).prev().focus();
+            });
+
             $('#endTime').show();
         }
         else
