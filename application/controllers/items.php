@@ -157,7 +157,7 @@ class Items extends REIM_Controller {
         $amount = $this->input->post('amount');
         $category= $this->input->post('category');
         $timestamp = strtotime($this->input->post('dt'));
-	$endtime = $this->input->post('dt_end');
+	$endtime = strtotime($this->input->post('dt_end'));
 	$config_id = $this->input->post('config_id');
 	$config_type = $this->input->post('config_type');
 	log_message('debug','config_id:' . $config_id);
@@ -327,6 +327,20 @@ class Items extends REIM_Controller {
             $tags = $category['data']['tags'];
         }
         $item = $obj['data'];
+	$item_value = '';
+	if(array_key_exists('extra',$item))
+	{
+		foreach($item['extra'] as $it)
+		{
+		log_message('debug' , 'it:' . json_encode($it));
+		if(array_key_exists('value',$it))
+		{
+			$item_value = $it['value'];	
+		$item_value = date('Y-m-d H:i:s',$item_value);
+		}
+		}
+	}
+	log_message('debug','item_extra' . json_encode($item_value));
         $cid = $item['category'];
         $_tags = $item['tags'];
         $__tags_name = array();
@@ -404,6 +418,7 @@ class Items extends REIM_Controller {
                 'item' => $item,
                 'editable' => $_editable,
                 'flow' => $flow
+		,'item_value' => $item_value
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
@@ -419,14 +434,6 @@ class Items extends REIM_Controller {
             redirect(base_url('items'));
         }
 	
-	$item_value = '';
-	if(array_key_exists('extra',$obj))
-	{
-		if(array_key_exists('value',$obj['extra']))
-		{
-			$item_value = $obj['extra']['value'];	
-		}
-	}
         $category = $this->category->get_list();
         $categories = array();
         $tags = array();
@@ -435,6 +442,19 @@ class Items extends REIM_Controller {
             $tags = $category['data']['tags'];
         }
         $item = $obj['data'];
+	$item_value = '';
+	if(array_key_exists('extra',$item))
+	{
+		foreach($item['extra'] as $it)
+		{
+		log_message('debug' , 'it:' . json_encode($it));
+		if(array_key_exists('value',$it))
+		{
+			$item_value = $it['value'];	
+		$item_value = date('Y-m-d H:i:s',$item_value);
+		}
+		}
+	}
         $cid = $item['category'];
         $_tags = $item['tags'];
         $__tags_name = array();
@@ -535,6 +555,7 @@ class Items extends REIM_Controller {
                 'item' => $item,
                 'editable' => $_editable,
                 'flow' => $flow
+		,'item_value' => $item_value
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
@@ -635,6 +656,7 @@ class Items extends REIM_Controller {
 		if(array_key_exists('value',$it))
 		{
 			$item_value = $it['value'];	
+		$item_value = date('Y-m-d H:i:s',$item_value);
 		}
 		}
 	}
@@ -705,7 +727,7 @@ class Items extends REIM_Controller {
         $time = $this->input->post('dt1');
         $timestamp = strtotime($this->input->post('dt1'));
         $temestamp = $timestamp*1000;
-	$endtime = $this->input->post('dt_end');
+	$endtime = strtotime($this->input->post('dt_end'));
 	$config_id = $this->input->post('config_id');
 	$config_type = $this->input->post('config_type');
 	log_message('debug','config_id:' . $config_id);
