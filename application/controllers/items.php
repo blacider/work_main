@@ -6,6 +6,7 @@ class Items extends REIM_Controller {
         $this->load->model('category_model', 'category');
         $this->load->model('report_model', 'report');
 	$this->load->model('user_model','user');
+    $this->load->model('group_model', 'groups');
     }
 
     public function avatar(){
@@ -109,7 +110,15 @@ class Items extends REIM_Controller {
                 array_push($_categories, $cate);
             }
         }
-
+        $user = $this->session->userdata('profile');
+        $group = $this->groups->get_my_list();
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
         $this->bsload('items/new',
             array(
                 'title' => '新建消费'
@@ -120,6 +129,8 @@ class Items extends REIM_Controller {
                 ),
                 'categories' => $categories,
                 'sobs' => $_sobs,
+                'user' => $user['id'],
+                'member'=>$gmember,
                 'categories' => $_categories,
                 'tags' => $tags,
 		'item_config' => $item_config
