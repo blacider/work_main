@@ -1068,7 +1068,7 @@ class Members extends REIM_Controller {
         if($id == 0) redirect(base_url('members/groups'));
         $this->ug->delete_group($id);
         //        redirect(base_url('members/groups'));
-        redirect(base_url('members/index'));
+        redirect(base_url('members/groups'));
 
     }
 
