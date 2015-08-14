@@ -103,11 +103,11 @@ $item_type = array();
 array_push($item_type,0);
 if($__config)
 {
-    if($__config['disable_borrow'] == '0')
+    if((array_key_exists('disable_borrow', $__config)) && ($__config['disable_borrow'] == '0'))
     {
         array_push($item_type,2);
     }
-    if($__config['disable_budget'] == '0')
+    if((array_key_exists('disable_budget', $__config)) && ($__config['disable_budget'] == '0'))
     {
         array_push($item_type,1);
     }
@@ -271,6 +271,7 @@ $(document).ready(function(){
     $('.renew').click(function(){
 
         var s = $('#receiver').val();
+        console.log(s);
         var title = $('#title').val();
         if(title == "") {
              show_notify('请添加报告名');
@@ -278,11 +279,11 @@ $(document).ready(function(){
              return false;
          }
 	
-	if(isNaN(s)){
+	/*if(isNaN(s)){
 	     show_notify('请选择审批人');
 	     $('#receiver').focus();
 	     return false;
-	}
+	}*/
 	if(s == null){
 	     show_notify('请选择审批人');
 	     $('#receiver').focus();

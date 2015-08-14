@@ -157,6 +157,7 @@ class Reports extends REIM_Controller {
         }
 
         $_items = $this->_getitems();
+	log_message('debug',json_encode($_items));
 
         $this->bsload('reports/new',
             array(
@@ -516,6 +517,7 @@ class Reports extends REIM_Controller {
         $title = $this->input->post('title');
         $receiver = $this->input->post('receiver');
         $cc = $this->input->post('cc');
+	log_message('debug','receiver:' . json_encode($receiver));
         $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items));
         log_message("debug", $ret);
 	$_ret = json_decode($ret,True);
@@ -813,6 +815,7 @@ class Reports extends REIM_Controller {
         if($rid == 0){
             $rid = $this->input->post('rid');
             $status = $this->input->post('status');
+	    log_message('debug','report_status:' . $status);
             $receivers = implode(',', $this->input->post('receiver'));
             $content = $this->input->post('content');
             if($this->input->post('pass') == 1) {
