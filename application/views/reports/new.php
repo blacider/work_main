@@ -105,11 +105,11 @@ if($__config)
 {
     if(array_key_exists('disable_borrow', $__config) && $__config['disable_borrow'] == '0')
     {
-        array_push($item_type,2);
+        array_push($item_type,1);
     }
     if(array_key_exists('disable_budget', $__config) && $__config['disable_budget'] == '0')
     {
-        array_push($item_type,1);
+        array_push($item_type,2);
     }
 }
 foreach($items as $i){
@@ -167,7 +167,6 @@ echo $buf;
         </form>
     </div>
 </div>
-
 
 <script language="javascript">
 update_tamount();
