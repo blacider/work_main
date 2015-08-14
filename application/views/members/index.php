@@ -77,6 +77,7 @@ position: absolute;
         <div class="panel-body">
             <table class="table" id="gtable">
                 <tr>
+                    <th>ID</th>
                     <th>名称</th>
                     <th>邮箱</th>
                     <th>手机</th>
@@ -97,6 +98,10 @@ if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['emai
 }
 ?>
 <tr>
+    <td>
+        <?php /*echo $m['email'];*/ ?>
+        <?php echo $m['client_id']; ?>
+    </td>
     <td>
         <a href="/members/editmember/<?php echo $m['id']; ?>"> <?php echo $m['nickname']; ?> </a>
     </td>
@@ -294,6 +299,7 @@ function load_group(gid){
                     $('#gtable').html("");
 
                 var _th = '<tr>'
+                    + '<th>ID</th>'
                     + '<th>名称</th>'
                     + '<th>邮箱</th>'
                     + '<th>手机</th>'
@@ -331,6 +337,7 @@ function load_group(gid){
             
                     }
                 _th = '<tr>'
+                    + '<td>' + item.client_id + '</a></td>'
                     + '<td><a href="' + __BASE + '/members/editmember/' + item.id + '">' + item.nickname+ '</a></td>'
                     + '<td>' + item.email + '</td>'
                     + '<td>' + item.phone + '</td>'

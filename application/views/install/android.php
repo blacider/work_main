@@ -33,11 +33,13 @@
         <div style="width:100%">
             <img style="width:100%" src="http://www.cloudbaoxiao.com/img/text_title_42@2x.png">
         </div>
+        <a href="<?php echo $url; ?>" style="color:#fff">
       <div id="download" class="android" style="" onclick="download()">
         <div class="content">
           <div class="android android-img">下载安装</div>
         </div>
       </div>
+</a>
       
     </div>
   </div>

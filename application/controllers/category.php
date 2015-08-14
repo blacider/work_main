@@ -199,8 +199,9 @@ class Category extends REIM_Controller {
 		,'range' => $range
                 ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
-                    ,array('url' => base_url('category/index'),'name' => '标签和分类','class' => '')
-                    ,array('url' => '','name' => '帐套管理','class' => '')
+                    ,array('url' => '#','name' => '账套和标签','class' => '')
+                    ,array('url' => base_url('category/account_set'),'name' => '帐套管理','class' => '')
+                    ,array('url' => '','name' => '帐套编辑','class' => '')
                 ),
             )   
         );
@@ -447,7 +448,7 @@ class Category extends REIM_Controller {
                 //,'ugroups' => $ugroups['data']['group']
                 ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
-                    ,array('url' => base_url('category/index'),'name' => '标签和分类','class' => '')
+                    ,array('url' => '#','name' => '账套和标签','class' => '')
                     ,array('url' => '','name' => '帐套管理','class' => '')
                 ),
             )	

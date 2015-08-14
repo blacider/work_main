@@ -340,7 +340,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     <li class="hsub" id="category">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-tags"></i>
-        <span class="menu-text"> 标签和分类 </span>
+        <span class="menu-text"> 账套和标签 </span>
 
         <b class="arrow fa fa-angle-down"></b>
     </a>
