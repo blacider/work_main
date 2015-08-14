@@ -99,13 +99,24 @@ if($profile['gid'] > 0){
 if($profile['admin'] == 1 || $profile['admin'] == 3){
     $open = 1;
 }
-
-if($open == 1) {
 ?>
+
                        <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">上级</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <select class="chosen-select tag-input-style" name="manager" data-placeholder="请选择标签">
+                                    <?php
+                                    if($open == 1) {
+                                    ?>
+                                        <select class="chosen-select tag-input-style" name="manager" data-placeholder="请选择标签">
+                                    <?php 
+                                     } 
+                                     else
+                                     {
+                                        ?>
+                                        <select class="chosen-select tag-input-style" name="manager" data-placeholder="请选择标签" disabled>
+                                        <?php
+                                     }
+                                    ?>
                                     <option value="0" >无</option>
                                     <?php 
                                     foreach($gmember as $m){
@@ -127,7 +138,7 @@ if($open == 1) {
                                 </div>
                         </div>
 
-<?php  } ?>
+
 <!--
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">最大报告数</label>
