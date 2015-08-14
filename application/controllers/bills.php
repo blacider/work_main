@@ -37,7 +37,7 @@ class Bills extends REIM_Controller {
         $config = json_decode($config,True);
         $company = urlencode($group['group_name']);
 	
-        if(($config) && (array_key_exists($config,'export_no_company')) && ($config['export_no_company'] == '0'))
+        if(($config) && (array_key_exists('export_no_company',$config)) && ($config['export_no_company'] == '0'))
         {
             $company = '';
         }
@@ -48,7 +48,7 @@ class Bills extends REIM_Controller {
             array_push($rid,$this->reim_cipher->encode($r));
         }
 	$with_no_note = 0;
-	if(($config) && (array_key_exists($cnofig,'export_no_note')) && ($config['export_no_note']))
+	if(($config) && (array_key_exists('export_no_note',$config)) && ($config['export_no_note']))
 	{
         	$with_no_note = $config['export_no_note'];
 	}
@@ -63,7 +63,7 @@ class Bills extends REIM_Controller {
         }
 
 	$template = 'a4.yaml';
-	if(($config) && (array_key_exists($cnofig,'template')) && ($config['template']))
+	if(($config) && (array_key_exists('template',$config)) && ($config['template']))
 	{
         	$template = $config['template'];
 	}
