@@ -250,7 +250,8 @@ try{
     title:"下载选中报告",
     buttonicon:"ace-icon fa fa-download blue" ,
     onClickButton:function() {
-         chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
+//TODO
+//         chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
          if (chosenids.length == 0) {
             alert("请选择报告!");
             return;
@@ -259,7 +260,8 @@ try{
 		url:__BASE + "/bills/download_report",
 		method:"post",
 		dataType:"json",
-		data:{"chosenids":chosenids},
+		//data:{"chosenids":chosenids},
+		data:{"chosenids":selectRows},
 		success:function(data){
 		location.href = data['url'];
 		},
