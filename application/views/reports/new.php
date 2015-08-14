@@ -271,19 +271,19 @@ $(document).ready(function(){
     $('.renew').click(function(){
 
         var s = $('#receiver').val();
+        console.log(s);
         var title = $('#title').val();
         if(title == "") {
              show_notify('请添加报告名');
              $('#title').focus();
              return false;
          }
-/*	
-	if(isNaN(s)){
+	
+	/*if(isNaN(s)){
 	     show_notify('请选择审批人');
 	     $('#receiver').focus();
 	     return false;
-	}
-*/
+	}*/
 	if(s == null){
 	     show_notify('请选择审批人');
 	     $('#receiver').focus();
