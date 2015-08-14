@@ -718,6 +718,14 @@ class Items extends REIM_Controller {
 	}
 	log_message('debug', 'item:' . $item['category']);
 	log_message('debug' , 'sob:' . $item_sob);
+    $group = $this->groups->get_my_list();
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
         $this->bsload('items/edit',
             array(
                 'title' => '修改消费',
@@ -729,6 +737,7 @@ class Items extends REIM_Controller {
                 'images_ids' => implode(",", $_image_ids)
 		,'sob_id' => $item_sob
 		,'item_value' => $item_value
+        ,'member' => $gmember
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
