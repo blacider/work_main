@@ -252,7 +252,8 @@ try{
     onClickButton:function() {
 //TODO
 //         chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
-         if (chosenids.length == 0) {
+        // if (chosenids.length == 0) {
+         if (selectRows.length == 0) {
             alert("请选择报告!");
             return;
          }
