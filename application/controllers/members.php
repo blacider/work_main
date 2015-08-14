@@ -334,6 +334,31 @@ class Members extends REIM_Controller {
             $error = $this->session->userdata('login_error');
             $this->session->unset_userdata('login_error');
         }
+	$_ranks = $this->reim_show->rank_level(1);
+	$_levels = $this->reim_show->rank_level(0);
+	$ranks = array();
+	$levels = array();
+	$ranks_dic = array();
+	$levels_dic = array();
+
+	if($_ranks['status'] > 0)
+	{
+		$ranks = $_ranks['data'];
+	}
+
+	foreach($ranks as $r)
+	{
+			$ranks_dic[$r['id']] = $r['name'];
+	}
+	if($_levels['status'] > 0)
+	{
+		$levels = $_levels['data'];
+	}
+
+	foreach($levels as $r)
+	{
+			$levels_dic[$r['id']] = $r['name'];
+	}
         $group = $this->groups->get_my_list();
         $ginfo = array();
         $gmember = array();
@@ -353,6 +378,8 @@ class Members extends REIM_Controller {
                 ,'group' => $ginfo
                 ,'members' => $gmember
                 ,'error' => $error
+		,'ranks' => $ranks_dic
+		,'levels' => $levels_dic
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
