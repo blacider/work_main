@@ -15,7 +15,7 @@
                         <table id="sample-table-1" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>级别名称</th>
+                                    <th>职位名称</th>
                                     <th>最后修改时间</th>
                                     <th class="hidden-680">
                                         <a href="#modal-table1" role="button" class="green" data-toggle="modal">
@@ -49,7 +49,7 @@ echo $str;
          <table id="sample-table-2" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>职位名称</th>
+                                    <th>职级名称</th>
                                     <th>最后修改时间</th>
                                     <th class="hidden-680">
                                         <a href="#modal-table2" role="button" class="green" data-toggle="modal">
