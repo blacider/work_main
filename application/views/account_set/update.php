@@ -87,7 +87,7 @@
                                                 text-align: center;
                                     }
                                     .drop-cata .caret {
-                                        margin-left: 50%;
+                                        
                                     }
                                     .addDrop {
                                             border-radius: 10px;
