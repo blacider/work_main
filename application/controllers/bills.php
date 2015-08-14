@@ -34,40 +34,44 @@ class Bills extends REIM_Controller {
                 $config ='';
             }
         }
-        $config = json_decode($config,True);
-        $company = urlencode($group['group_name']);
-	
-        if(($config) && (array_key_exists($config,'export_no_company')) && ($config['export_no_company'] == '0'))
-        if($config && array_key_exists('export_no_company', $config) && $config['export_no_company'] == '0')
-        {
-            $company = '';
-        }
-        $_rid = $this->input->post('chosenids');
-        $rid = array();
-        foreach($_rid as $r)
-        {
-            array_push($rid,$this->reim_cipher->encode($r));
-        }
-	$with_no_note = 0;
-	if(($config) && (array_key_exists($cnofig,'export_no_note')) && ($config['export_no_note'))
-	{
-        	$with_no_note = $config['export_no_note'];
-	}
-        log_message('debug','note:'.$with_no_note);
-        if($with_no_note == '1')
-        {
-            $with_note = 0;
-        }
-        else
-        {
-            $with_note = 1;
+        $with_note = 1;
+        $template = 'a4.yaml';
+        if($config) {
+            $config = json_decode($config,True);
+            $company = urlencode($group['group_name']);
+
+            if(($config) && (array_key_exists('export_no_company', $config)) && ($config['export_no_company'] == '0'))
+                if($config && array_key_exists('export_no_company', $config) && $config['export_no_company'] == '0')
+                {
+                    $company = '';
+                }
+            $_rid = $this->input->post('chosenids');
+            $rid = array();
+            foreach($_rid as $r)
+            {
+                array_push($rid,$this->reim_cipher->encode($r));
+            }
+
+            $with_no_note = 0;
+            if(($config) && (array_key_exists('export_no_note', $config)) && ($config['export_no_note']))
+            {
+                $with_no_note = $config['export_no_note'];
+            }
+            log_message('debug','note:'.$with_no_note);
+            if($with_no_note == '1')
+            {
+                $with_note = 0;
+            }
+            else
+            {
+                $with_note = 1;
+            }
+            if(($config) && (array_key_exists('template', $config)) && ($config['template']))
+            {
+                $template = $config['template'];
+            }
         }
 
-	$template = 'a4.yaml';
-	if(($config) && (array_key_exists($cnofig,'template')) && ($config['template'))
-	{
-        	$template = $config['template'];
-	}
         $archive = 1;
 
         log_message('debug','profile'.json_encode($profile['data']['profile']['group']));
