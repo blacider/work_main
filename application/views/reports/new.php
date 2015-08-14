@@ -277,12 +277,13 @@ $(document).ready(function(){
              $('#title').focus();
              return false;
          }
-	
+/*	
 	if(isNaN(s)){
 	     show_notify('请选择审批人');
 	     $('#receiver').focus();
 	     return false;
 	}
+*/
 	if(s == null){
 	     show_notify('请选择审批人');
 	     $('#receiver').focus();

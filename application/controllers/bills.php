@@ -38,6 +38,7 @@ class Bills extends REIM_Controller {
         $company = urlencode($group['group_name']);
 	
         if(($config) && (array_key_exists($config,'export_no_company')) && ($config['export_no_company'] == '0'))
+        if($config && array_key_exists('export_no_company', $config) && $config['export_no_company'] == '0')
         {
             $company = '';
         }
