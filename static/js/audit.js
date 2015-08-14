@@ -12,13 +12,11 @@ function chose_others_zero(item) {
             $($('.chosen-select')[0]).trigger("chosen:updated");
         }
     }
-    $('#status').val(2);
     $('#modal_next').modal('show');
 }
 function chose_others(_id) {
     $('#modal_next_').modal('hide');
     $('#rid').val(_id);
-    $('#status').val(2);
     $('#modal_next').modal('show');
 }
 var getData = {};
@@ -63,7 +61,6 @@ function bind_event(){
                             chose_others_zero(_id);
                         } else {
                             $('#rid_').val(_id);
-                            $('#status_').val(2);
                             if(close_directly == 0) {
                                 $('#modal_next_').modal('show'); 
                             } else {

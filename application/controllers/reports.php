@@ -208,7 +208,7 @@ class Reports extends REIM_Controller {
             }
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
                 $d['status_str'] = '待提交';
-                $d['amount'] = '￥' . $d['amount'];
+                //$d['amount'] = '￥' . $d['amount'];
                 $prove_ahead = '报销';
                 switch($d['prove_ahead']){
                 case 2: {$prove_ahead = '<font color="red">预借</font>';};break;
@@ -696,11 +696,13 @@ class Reports extends REIM_Controller {
                 foreach($_items as $i){
                     log_message('debug', "Itemx :" .json_encode($i));
                     $_rate = 1.0;
-                    if(array_key_exists('currency', $i) && strtolower($i['currency']) != 'cny') {
+                    if(array_key_exists('currency', $i) && (strtolower($i['currency']) != "" && strtolower($i['currency']) != 'cny')) {
                         $_rate = $i['rate'] / 100;
                     }
-                    //log_message("debug", "Items23:"  . json_encode($i));
+                    log_message("debug", "Items23:"  . json_encode($i));
                     $r['total'] += ($i['amount'] * $_rate);
+                    log_message("debug", "Items13:"  . json_encode($i['amount']));
+                    log_message("debug", "Items33:"  . json_encode($_rate));
                     $i['paid'] = ($i['amount'] * $_rate);
                     if(in_array($r['status'], array(4, 7, 8))){
                         // 已完成状态的，付款额度就是已付额度
@@ -709,7 +711,7 @@ class Reports extends REIM_Controller {
                         $i['paid'] = 0;
                     }
                     $i['nickname'] = $r['nickname'];
-                    //$r['total'] += ($i['amount'] * $i['rate'] / 100);
+                    //$r['total'] += ($i['amount'] * $_rate);
                     //log_message("debug", "Items2:"  . json_encode($i));
                     array_push($_t_items, $i);
                     if($i['reimbursed'] == 0) {
@@ -741,6 +743,7 @@ class Reports extends REIM_Controller {
                 array_push($_excel, $obj);
             }
             log_message("debug", "export --> " . json_encode($_t_items));
+            log_message("debug", "export Mmeber *** --> " . json_encode($_members));
 
 
 

@@ -87,7 +87,7 @@
                                                 text-align: center;
                                     }
                                     .drop-cata .caret {
-                                        margin-left: 50%;
+                                        
                                     }
                                     .addDrop {
                                             border-radius: 10px;
@@ -554,7 +554,7 @@ var range = "<?php echo $range?>";
                 dataType:'json',
                 success:function(data){
                        show_notify('保存成功');
-                    //   window.location.href=__BASE+"category/account_set";
+                       window.location.href=__BASE+"category/account_set";
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(XMLHttpRequest.status);
