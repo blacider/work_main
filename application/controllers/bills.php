@@ -48,7 +48,7 @@ class Bills extends REIM_Controller {
             array_push($rid,$this->reim_cipher->encode($r));
         }
 	$with_no_note = 0;
-	if(($config) && (array_key_exists($cnofig,'export_no_note')) && ($config['export_no_note'))
+	if(($config) && (array_key_exists($cnofig,'export_no_note')) && ($config['export_no_note']))
 	{
         	$with_no_note = $config['export_no_note'];
 	}
