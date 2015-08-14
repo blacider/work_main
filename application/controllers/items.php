@@ -314,6 +314,8 @@ class Items extends REIM_Controller {
 
     public function ishow($id = 0) {
         if(0 === $id) redirect(base_url('items'));
+	$error = $this->session->userdata('last_error');
+	$this->session->unset_userdata('last_error');
         $obj = $this->items->get_by_id($id);
 	$item_update_in = $this->session->userdata('item_update_in');	
         if($obj['status'] < 1){
@@ -419,6 +421,7 @@ class Items extends REIM_Controller {
                 'editable' => $_editable,
                 'flow' => $flow
 		,'item_value' => $item_value
+		,'error' => $error
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
@@ -429,6 +432,8 @@ class Items extends REIM_Controller {
 
     public function show($id = 0){
         if(0 === $id) redirect(base_url('items'));
+	$error = $this->session->userdata('last_error');
+	$this->session->unset_userdata('last_error');
         $obj = $this->items->get_by_id($id);
         if($obj['status'] < 1){
             redirect(base_url('items'));
@@ -556,6 +561,7 @@ class Items extends REIM_Controller {
                 'editable' => $_editable,
                 'flow' => $flow
 		,'item_value' => $item_value
+		,'error' => $error
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
@@ -759,6 +765,8 @@ class Items extends REIM_Controller {
         $note = $this->input->post('note');
         $images = $this->input->post('images');
         log_message("debug", "alvayang: Item Update In:" . $item_update_in);
+        $_item_data = $this->items->get_by_id($id);
+	log_message('debug', 'item_get_by_id:' . json_encode($_item_data));
         if($item_update_in != 0) {
             $item_data = $this->items->get_by_id($id);
             $data = $item_data['data'];

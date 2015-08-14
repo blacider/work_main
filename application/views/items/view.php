@@ -139,6 +139,11 @@
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
+var _error = "<?php echo $error ; ?>";
+if(_error)
+{
+	show_notify(_error);
+}
 $(document).ready(function(){
     var $overflow = '';
     var colorbox_params = {
