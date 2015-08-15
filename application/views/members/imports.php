@@ -339,7 +339,7 @@ function insertMem()
                                 {
                                     set_manager();
                                 }
-                            },60000);
+                            },3000);
                         }
 
                     
