@@ -43,7 +43,7 @@
                                     <td>
                                         <!-- <a alt="<?php echo $d['status'] == 1 ? '已经是同一个公司的同事' : '还不是一个公司的同事'; ?>"><i id="m_<?php echo md5($d['email']); ?>"   -->
                                         <a alt=""><i
-                                            data-value="<?php echo base64_encode(json_encode($d)); ?>" data-manager="<?php echo $d['manager']?>" data-uid="<?php echo $d['id']?>"  data-id="<?php echo $d['id'];?>"  class="<?php echo $d['status'] == 1 ? 'green fa-check' : 'fa-times red' ; ?> menu-icon fa judge"></i><p class="red" id="<?php 'error_'.$d['id']; ?>"></p></a>
+                                            data-value="<?php echo base64_encode(json_encode($d)); ?>" data-manager="<?php echo $d['manager']?>" data-uid="<?php echo $d['id']?>"  data-id="<?php echo $d['id'];?>"  class="<?php echo $d['status'] == 1 ? 'green fa-check' : 'fa-times red' ; ?> menu-icon fa judge"></i></a><div class="red" id="<?php 'error_'.$d['id']; ?>"></div>
 
                                     </td>
                                 </tr>
@@ -59,6 +59,15 @@
                                 </button>
 
                             </div>
+
+                           <!--  <div class="col-md-offset-3 col-md-9">
+                                <button class="btn btn-info" type="button" id="set_manager">
+                                    <i class="ace-icon fa fa-check bigger-110"></i>
+                                    设置上级
+                                </button>
+
+                            </div>
+                            -->
                         </div>
                     </form>
 
@@ -297,11 +306,11 @@ function insertMem()
                            if(back_id == -1)
                            {
                                // $(this).removeClass('fa-times red').addClass('fa-check green');
-                               $('#error_'+uid).val('数据库导入失败');
+                               $('#error_'+uid).html('数据库导入失败');
                            }
                            if(back_id == -2)
                            {
-                                 $('#error_'+uid).val('手机和邮箱同时为空').trigger(':updated');
+                                 $('#error_'+uid).html('手机和邮箱同时为空');
                            }
                             if((back_id)>0 && (manager_name))
                             {
@@ -310,12 +319,27 @@ function insertMem()
                                   members.push(person);
                                   
                                   myself.removeClass('fa-times red').addClass('fa-check green');
+                                  //$('#error_'+uid).html('导入成功');
+                                 // console.log($('#error_'+uid).val());
+                                  
                             }
                         }
                        
                         if(insert_count == members_count)
                         {
                             set_manager(members);
+                        }
+                        else
+                        {
+                            var old_insert = insert_count;
+                            setTimeout(function(){
+                              //  console.log(old_insert);
+                               // console.log(insert_count);
+                                if(old_insert == insert_count)
+                                {
+                                    set_manager();
+                                }
+                            },60000);
                         }
 
                     
@@ -338,6 +362,7 @@ function set_manager(persons)
           ,dataType: 'json'
           ,data : {'persons' : persons}
           ,success : function(data){
+                $('#save').prop('disabled',false);
                 show_notify('导入完成');
           }
           ,error:function(a,b,c)
