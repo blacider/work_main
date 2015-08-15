@@ -137,6 +137,7 @@
     }
 function travel()
 {
+    $('#save').prop("disabled",true);
     var sum = 0;
     if((no_ranks.length == 0)&&(no_levels.length == 0)&&(no_groups.length==0) )
     {
@@ -316,10 +317,7 @@ function insertMem()
                         {
                             set_manager(members);
                         }
-                        else
-                        {
-                            
-                        }
+
                     
                 }
             ,error:function(a,b,c)
