@@ -337,7 +337,7 @@ function insertMem()
                                // console.log(insert_count);
                                 if(old_insert == insert_count)
                                 {
-                                    set_manager();
+                                    set_manager(members);
                                 }
                             },3000);
                         }
