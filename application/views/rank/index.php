@@ -12,72 +12,79 @@
                 <!-- PAGE CONTENT BEGINS -->
                 <div class="row">
                     <div class="col-xs-12">
-                        <table id="sample-table-1" class="table table-striped table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>职位名称</th>
-                                    <th>最后修改时间</th>
-                                    <th class="hidden-680">
-                                        <a href="#modal-table1" role="button" class="green" data-toggle="modal">
-                                            <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
-                                        </a>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-<?php
+
+
+
+
+                     <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                      <thead>
+                        <tr>
+                          <th>职级名称</th>
+                          <th>最后修改时间</th>
+                          <th class="hidden-680">
+                            <a href="#modal-table2" role="button" class="green" data-toggle="modal">
+                              <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
+                            </a>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
 //echo json_encode($acc_sets);
 
-foreach($levels as $item){
-    $img = "";
-    $str = '<tr>';
-$username = '<td class="u_username">' . $item['name'] . '</td>';
-$role_id =  '<td class="u_role_name">' .  $item['lastdt'] . '</td>';
+                        foreach($ranks as $item){
+                          $img = "";
+                          $str = '<tr>';
+                          $username = '<td class="u_username">' . $item['name'] . '</td>';
+                          $role_id =  '<td class="u_role_name">' .  $item['lastdt'] . '</td>';
     //$role_id = '<td class="u_role_name">' . $item->role_name . '</td>';
-$operation_upd = '<td style="width:80px;">   <a href="#modal-table3" data-toggle="modal" class="ledit"  data-name="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del" data-rank="0" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
-    $operation = '<td style="width:80px;"><a class="btn btn-xs btn-danger" href="' .  base_url('category/remove_sob/?id='. $item['id']) .'">
-        <i class="ace-icon fa fa-trash-o bigger-120"></i>
-        </a></td>';
-$str = $str . $username . $role_id . $operation_upd . '</tr>';
-echo $str;
+                          $operation_upd = '<td style="width:80px;">   <a href="#modal-table4" data-toggle="modal" class="redit"  data-name="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del" data-rank="1" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
+                          $operation = '<td style="width:80px;"><a class="btn btn-xs btn-danger" href="' .  base_url('category/remove_sob/?id='. $item['id']) .'">
+                          <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                        </a></td>';
+                        $str = $str . $username . $role_id . $operation_upd . '</tr>';
+                        echo $str;
 
-}?>
-</tbody>
-</table>
+                      }?>
+                    </tbody>
+                  </table>
 
 
-         <table id="sample-table-2" class="table table-striped table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>职级名称</th>
-                                    <th>最后修改时间</th>
-                                    <th class="hidden-680">
-                                        <a href="#modal-table2" role="button" class="green" data-toggle="modal">
-                                            <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
-                                        </a>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-<?php
+                  <table id="sample-table-1" class="table table-striped table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>职位名称</th>
+                        <th>最后修改时间</th>
+                        <th class="hidden-680">
+                          <a href="#modal-table1" role="button" class="green" data-toggle="modal">
+                            <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
+                          </a>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
 //echo json_encode($acc_sets);
 
-foreach($ranks as $item){
-    $img = "";
-    $str = '<tr>';
-$username = '<td class="u_username">' . $item['name'] . '</td>';
-$role_id =  '<td class="u_role_name">' .  $item['lastdt'] . '</td>';
+                      foreach($levels as $item){
+                        $img = "";
+                        $str = '<tr>';
+                        $username = '<td class="u_username">' . $item['name'] . '</td>';
+                        $role_id =  '<td class="u_role_name">' .  $item['lastdt'] . '</td>';
     //$role_id = '<td class="u_role_name">' . $item->role_name . '</td>';
-$operation_upd = '<td style="width:80px;">   <a href="#modal-table4" data-toggle="modal" class="redit"  data-name="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del" data-rank="1" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
-    $operation = '<td style="width:80px;"><a class="btn btn-xs btn-danger" href="' .  base_url('category/remove_sob/?id='. $item['id']) .'">
-        <i class="ace-icon fa fa-trash-o bigger-120"></i>
-        </a></td>';
-$str = $str . $username . $role_id . $operation_upd . '</tr>';
-echo $str;
+                        $operation_upd = '<td style="width:80px;">   <a href="#modal-table3" data-toggle="modal" class="ledit"  data-name="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del" data-rank="0" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
+                        $operation = '<td style="width:80px;"><a class="btn btn-xs btn-danger" href="' .  base_url('category/remove_sob/?id='. $item['id']) .'">
+                        <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                      </a></td>';
+                      $str = $str . $username . $role_id . $operation_upd . '</tr>';
+                      echo $str;
 
-}?>
-</tbody>
-</table>
+                    }?>
+                  </tbody>
+                </table>
+
+
+        
 
 </div><!-- /.span -->
 </div><!-- /.row -->
