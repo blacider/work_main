@@ -37,7 +37,7 @@ position: absolute;
     }
 </script>
 <form action="<?php echo base_url('members/search') ?>" method="get" onsubmit="return searchSubmit(this)">
-    <input name="key" placeholder="名字、手机或者邮箱" value="<?php echo $search ?>" type='text' id="search">
+    <input name="key" placeholder="请输入搜索的内容" value="<?php echo $search ?>" type='text' id="search">
     <button type="submit" id="search-submit">搜索</button>
 </form>
 <div class="page-content">
@@ -94,8 +94,14 @@ if($profile['admin'] == 1 || $profile['admin'] == 3) {
 foreach($members as $m){
 ?>
 <?php
-if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['email'],$search) + substr_count($m['phone'],$search) == 0) {
-    continue;
+if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['d'],$search) + substr_count($m['email'],$search) + substr_count($m['phone'],$search) == 0) {
+    if (array_key_exists($m['level_id'],$levels)) {
+        if (substr_count($levels[$m['level_id']],$search) == 0) {
+            continue;
+        }
+    } else {
+        continue;
+    }
 }
 ?>
 <tr>
