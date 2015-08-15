@@ -11,6 +11,7 @@ class Group_Model extends Reim_Model {
         $url = $this->get_url('load');
     	$data = array();
     	//$data = $persons;
+	log_message('debug','persons:' . json_encode($persons));
 	foreach($persons as $p){
 		array_push($data, $p);
 	}
