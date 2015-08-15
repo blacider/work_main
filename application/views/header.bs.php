@@ -88,6 +88,10 @@ DD_belatedPNG.fix('*');
 </script>
 <![endif]-->
 
-
+<style type="text/css">
+    .jGrowl-close {
+            line-height: 1em;
+    }
+</style>
     </head>
     <body class="skin-0 no-skin" style="font-size: 14px;color: #7F8C8D;">
