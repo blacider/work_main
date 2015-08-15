@@ -55,9 +55,9 @@
                             </div>
 
                               <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">职位</label>
+                                <label class="col-sm-1 control-label no-padding-right">职级</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <select class="chosen-select tag-input-style" name="rank" data-placeholder="请选择职位">
+                                    <select class="chosen-select tag-input-style" name="rank" data-placeholder="请选择职级">
                                         <option value='0'>无</option>
 <?php 
 foreach($ranks as $m){
@@ -71,7 +71,7 @@ foreach($ranks as $m){
                          </div>
 
                               <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">级别</label>
+                                <label class="col-sm-1 control-label no-padding-right">职位</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" name="level" data-placeholder="请选择职位">
                                         <option value='0'>无</option>
