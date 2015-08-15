@@ -59,6 +59,7 @@
                                     </div>
                                 </div>
                             </div>
+<!--
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">参与人</label>
     <div class="col-xs-3 col-sm-3">
@@ -74,7 +75,8 @@
                                     ?>
                                     </select>
     </div>
-</div>
+</div> 
+-->
 
                             <div class="form-group" id="endTime" hidden>
                                 <label class="col-sm-1 control-label no-padding-right">至</label>
