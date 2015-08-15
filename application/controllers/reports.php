@@ -263,6 +263,12 @@ class Reports extends REIM_Controller {
     }
 
     public function create(){
+        $items = $this->input->post('item');
+	if(''==$items)
+	{
+		$this->session->set_userdata('last_error','提交报告不能为空');
+		return redirect(base_url('reports/index')); 
+	}
     	$info = $this->category->get_list();
         if($info['status'] > 0)
         {
@@ -280,7 +286,6 @@ class Reports extends REIM_Controller {
             $categories[$cate['id']] = $cate['category_name'];
         }
         log_message('debug','categories:' . json_encode($categories));
-        $items = $this->input->post('item');
         $title = $this->input->post('title');
         $receiver = $this->input->post('receiver');
         $cc = $this->input->post('cc');
