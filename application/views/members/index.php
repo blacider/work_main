@@ -82,6 +82,7 @@ position: absolute;
                     <th>邮箱</th>
                     <th>手机</th>
                     <th>部门</th>
+                    <th>职位</th>
                     <th>角色</th>
 <?php
 if($profile['admin'] == 1 || $profile['admin'] == 3) {
@@ -113,6 +114,10 @@ if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['emai
     </td>
     <td>
         <?php echo $m['d']; ?>
+    </td>
+    <td>
+        <?php if ($m['rank_id'] > 0) {?>
+        <?php echo $ranks[$m['rank_id']]; }?>
     </td>
     <td>
 <?php 
