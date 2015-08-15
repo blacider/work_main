@@ -54,7 +54,7 @@ position: absolute;
 
 
 
-<div class="col-sm-3">
+<div class="col-sm-2">
         <div class="widget-box widget-color-blue">
                 <div class="widget-header">
                     <h4 class="widget-title lighter smaller">组织结构</h4>
@@ -68,7 +68,7 @@ position: absolute;
                 </div>
             </div>
 
-<div class="col-xs-9">
+<div class="col-xs-10">
     <!--
     <table id="grid-table"></table>
     -->
@@ -116,8 +116,8 @@ if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['emai
         <?php echo $m['d']; ?>
     </td>
     <td>
-        <?php if ($m['rank_id'] > 0) {?>
-        <?php echo $ranks[$m['rank_id']]; }?>
+        <?php if (array_key_exists($m['level_id'],$levels)) {?>
+        <?php echo $levels[$m['level_id']]; }?>
     </td>
     <td>
 <?php 
