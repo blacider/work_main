@@ -1321,7 +1321,7 @@ class Members extends REIM_Controller {
         $m_info = json_decode($this->users->reim_get_info($manager_id),True);
         $pro = $info;
         $ug = $this->reim_show->usergroups();
-        log_message('debug','m_info:' . json_encode($m_info['data']));
+        //log_message('debug','m_info:' . json_encode($m_info['data']));
 
         $group = $this->groups->get_my_list();
 
