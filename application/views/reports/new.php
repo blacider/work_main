@@ -306,6 +306,7 @@ $(document).ready(function(){
 		show_notify("报告总额不能小于等于0");
 		return false;
 	}
+    
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
     });
