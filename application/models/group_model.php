@@ -1,6 +1,29 @@
 <?php
 
-class Group_Model extends Reim_Model {
+class Group_Model extends Reim_Model { 
+   
+
+    public function set_managers($persons)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+
+        $url = $this->get_url('load');
+    	$data = array();
+    	//$data = $persons;
+	foreach($persons as $p){
+		array_push($data, $p);
+	}
+	
+	$data = array('relations' => json_encode($data));
+
+	//log_message('debug','xxx set_managers:' . json_encode($data));
+	$buf = $this->do_Put($url,$data,$jwt);
+
+	log_message('debug','set_managers:' . $buf);
+	return json_decode($buf,True);
+    }
+
     public function reim_imports($data)
     {
         $jwt = $this->session->userdata('jwt');
@@ -162,7 +185,7 @@ class Group_Model extends Reim_Model {
         if(!$jwt) return false;
         $data = array('admin' => $admin, 'uid' => $id, 'credit_card' => $credit_card, 'email' => $email, 'phone' => $phone);
 		$url = $this->get_url('users');
-        log_message("debug", "Admin Data:" . json_encode($data));
+		log_message("debug", "Admin Data:" . json_encode($data));
 		$buf = $this->do_Put($url, $data, $jwt);
         log_message("debug", "model:" . $buf);
         return $buf;

@@ -26,7 +26,7 @@
                                 <tr class="member"  data-id="<?php echo $d['status'];?>" >
                                    
                                     <td>
-                                        <input type="hidden" data-id="m_<?php echo md5($d['email']); ?>" data-exist="<?php echo $d['status']; ?>"  class="data-maintainer " value="<?php echo base64_encode(json_encode($d)); ?>" data-value="<?php echo base64_encode(json_encode($d)); ?>">
+                                        <input type="hidden" data-id="m_<?php echo md5($d['email']); ?>" data-exist="<?php echo $d['status']; ?>"  class="data-maintainer " value="<?php echo base64_encode(json_encode($d)); ?>" data-value="<?php echo base64_encode(json_encode($d)); ?>" data-manager="<?php echo $d['manager']?>" data-uid="<?php echo $d['id']?>">
                                        
                                          <?php echo $d['id'];?></td>
                                     <td><?php echo $d['name']; ?></td>
@@ -41,8 +41,10 @@
                                     <td><?php echo $d['rank'];?></td>
                                     <td><?php echo $d['level'];?></td>
                                     <td>
-                                        <a alt="<?php echo $d['status'] == 1 ? '已经是同一个公司的同事' : '还不是一个公司的同事'; ?>"><i id="m_<?php echo md5($d['email']); ?>"   
-                                              data-id="<?php echo $d['id'];?>"  class="<?php echo $d['status'] == 1 ? 'green fa-check' : 'fa-times red' ; ?> menu-icon fa judge"></i></a>
+                                        <!-- <a alt="<?php echo $d['status'] == 1 ? '已经是同一个公司的同事' : '还不是一个公司的同事'; ?>"><i id="m_<?php echo md5($d['email']); ?>"   -->
+                                        <a alt=""><i
+                                            data-value="<?php echo base64_encode(json_encode($d)); ?>" data-manager="<?php echo $d['manager']?>" data-uid="<?php echo $d['id']?>"  data-id="<?php echo $d['id'];?>"  class="<?php echo $d['status'] == 1 ? 'green fa-check' : 'fa-times red' ; ?> menu-icon fa judge"></i><p class="red" id="<?php 'error_'.$d['id']; ?>"></p></a>
+
                                     </td>
                                 </tr>
                                 <?php } ?>
@@ -73,6 +75,8 @@
     var _no_ranks = '<?php echo json_encode($no_ranks)?>';
     var _no_levels = '<?php echo json_encode($no_levels)?>';
     var _no_groups = '<?php echo json_encode($no_groups)?>';
+    var _members = '<?php echo json_encode($members)?>';
+
     var no_ranks = '';
     if(_no_ranks)
     { no_ranks = JSON.parse(_no_ranks);}
@@ -85,6 +89,17 @@
     if(_no_groups)
     { no_groups = JSON.parse(_no_groups);}
 
+    var members = '';
+    if(_members)
+    { members = JSON.parse(_members);}
+
+    var members_count = 0;
+    if(members)
+    {
+        members_count = members.length;
+    }
+
+    console.log('memebers_count:' + members_count);
   //  console.log(no_ranks);
    // console.log(no_levels);
     //console.log(no_groups);
@@ -241,18 +256,24 @@ function travel()
 function insertMem()
 {
      var members = new Array();
-
-    $('.data-maintainer').each(function(idx, item) {
+     var insert_count = 0;
+    $('.judge').each(function(idx, item) {
+        var load_mem = new Array();
         var v = $(item).data('value');
-        members.push(v);
-    });
+          var manager_name = $(this).data('manager');
+        var uid = $(this).data('uid');
+        var myself = $(this);
+       // members.push(v);
+       load_mem.push(v);
+       
+   
         $.ajax({
             url : __BASE  + "members/batch_load"
                 ,method: 'POST'
                 ,dataType: 'json'
-                ,data : {'member' : members}
+                ,data : {'member' : load_mem}
                 ,success : function(data){
-                    var back_info = data['data'];
+                    /*var back_info = data['data'];
                             $('.judge').each(function(){
                                 //console.log($(this).data('id'));
                                 var _id = $(this).data('id');
@@ -261,7 +282,44 @@ function insertMem()
                                     $(this).removeClass('fa-times red').addClass('fa-check green');
                                 }
                             });
-                        show_notify('员工创建成功');
+                        show_notify('员工创建成功');*/
+                         insert_count++;
+                        var back_info = data['data'];
+
+                       // console.log(data);
+                        if(back_info.status>0)
+                        {
+                          
+                         //   console.log('uid:' + uid);
+                          //  console.log('manager_name:' + manager_name);
+                           var back_id = back_info['data'][uid];
+                           if(back_id == -1)
+                           {
+                               // $(this).removeClass('fa-times red').addClass('fa-check green');
+                               $('#error_'+uid).val('数据库导入失败');
+                           }
+                           if(back_id == -2)
+                           {
+                                 $('#error_'+uid).val('手机和邮箱同时为空').trigger(':updated');
+                           }
+                            if((back_id)>0 && (manager_name))
+                            {
+
+                                  var person = {'id':back_info['data'][uid],'manager':manager_name};
+                                  members.push(person);
+                                  
+                                  myself.removeClass('fa-times red').addClass('fa-check green');
+                            }
+                        }
+                       
+                        if(insert_count == members_count)
+                        {
+                            set_manager(members);
+                        }
+                        else
+                        {
+                            
+                        }
                     
                 }
             ,error:function(a,b,c)
@@ -270,6 +328,26 @@ function insertMem()
                        // console.log(b);
                     }
         });
+    });
+}
+
+
+function set_manager(persons)
+{
+    $.ajax({
+          url : __BASE  + "members/set_managers"
+          ,method: 'POST'
+          ,dataType: 'json'
+          ,data : {'persons' : persons}
+          ,success : function(data){
+                show_notify('导入完成');
+          }
+          ,error:function(a,b,c)
+          {
+                       // console.log(a);
+                       // console.log(b);
+          }
+    });
 }
 
    

@@ -9,6 +9,27 @@ class Members extends REIM_Controller {
         $this->load->model('group_model', 'groups');
         $this->load->model('reim_show_model','reim_show');
     }
+
+    public function set_managers()
+    {
+    	$this->need_group_it();
+	$members = $this->input->post('persons');
+	log_message('debug',json_encode($members));
+
+	$buf = $this->groups->set_managers($members);
+	die(json_encode(array('data'=>$buf)));
+	/*
+	if($buf['status']>0)
+	{
+		die(json_encode(array('msg'=>'设置成功')));
+	}
+	else
+	{
+		die(json_encode(array('msg'=>'设置失败')));
+	}
+	*/
+    }
+
     public function members_del()
     {
         $this->need_group_it();
@@ -1329,14 +1350,16 @@ class Members extends REIM_Controller {
         $member = $this->input->post('member');
         log_message("debug", "Member:" . json_encode($member));
         $info = $this->groups->reim_imports(array('members' => json_encode($member)));
+	/*
 	$data = array();
 	if($info['status'] > 0)
 	{
 		$data = $info['data'];	
 	}
 	log_message('debug','batch_load:' . json_encode($info));
-//        die(json_encode(array('msg'=>"it works")));
-	die(json_encode(array('data' => $data)));
+	*/
+        //die(json_encode(array('msg'=>"it works")));
+	die(json_encode(array('data' => $info)));
     }
 }
 
