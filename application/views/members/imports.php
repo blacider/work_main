@@ -43,7 +43,7 @@
                                     <td>
                                         <!-- <a alt="<?php echo $d['status'] == 1 ? '已经是同一个公司的同事' : '还不是一个公司的同事'; ?>"><i id="m_<?php echo md5($d['email']); ?>"   -->
                                         <a alt=""><i
-                                            data-value="<?php echo base64_encode(json_encode($d)); ?>" data-manager="<?php echo $d['manager']?>" data-uid="<?php echo $d['id']?>"  data-id="<?php echo $d['id'];?>"  class="<?php echo $d['status'] == 1 ? 'green fa-check' : 'fa-times red' ; ?> menu-icon fa judge"></i><p class="red" id="<?php 'error_'.$d['id']; ?>"></p></a>
+                                            data-value="<?php echo base64_encode(json_encode($d)); ?>" data-manager="<?php echo $d['manager']?>" data-uid="<?php echo $d['id']?>"  data-id="<?php echo $d['id'];?>"  class="<?php echo $d['status'] == 1 ? 'green fa-check' : 'fa-times red' ; ?> menu-icon fa judge"></i><span class="red" id="<?php echo 'error_'.$d['id']; ?>"></span></a>
 
                                     </td>
                                 </tr>
@@ -297,11 +297,11 @@ function insertMem()
                            if(back_id == -1)
                            {
                                // $(this).removeClass('fa-times red').addClass('fa-check green');
-                               $('#error_'+uid).val('数据库导入失败');
+                               $('#error_'+uid).text('数据库导入失败');
                            }
                            if(back_id == -2)
                            {
-                                 $('#error_'+uid).val('手机和邮箱同时为空').trigger(':updated');
+                                 $('#error_'+uid).text('手机邮箱都为空');
                            }
                             if((back_id)>0 && (manager_name))
                             {
