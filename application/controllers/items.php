@@ -165,6 +165,7 @@ class Items extends REIM_Controller {
     }
 
     public function create(){
+	$uids = $this->input->post('uids');
         $amount = $this->input->post('amount');
         $category= $this->input->post('category');
         $timestamp = strtotime($this->input->post('dt'));
@@ -748,6 +749,7 @@ class Items extends REIM_Controller {
 
     public function update(){
     	$item_update_in = $this->session->userdata('item_update_in');
+	$uids = $this->input->post('uids');
         $id = $this->input->post('id');
         $rid = $this->input->post('rid');
         $_uid = $this->input->post('uid');
