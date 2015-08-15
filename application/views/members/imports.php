@@ -360,7 +360,7 @@ function set_manager(persons)
           url : __BASE  + "members/set_managers"
           ,method: 'POST'
           ,dataType: 'json'
-          ,data : {'persons' : persons}
+          ,data : {'persons' : JSON.stringify(persons)}
           ,success : function(data){
             cosnole.log("success");
                 $('#save').prop('disabled',false);

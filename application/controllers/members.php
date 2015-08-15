@@ -13,7 +13,8 @@ class Members extends REIM_Controller {
     public function set_managers()
     {
     	$this->need_group_it();
-	$members = $this->input->post('persons');
+	$_members = $this->input->post('persons');
+	$members = json_decode($_members,True);
 	log_message('debug',json_encode($members));
 
 	$buf = $this->groups->set_managers($members);
