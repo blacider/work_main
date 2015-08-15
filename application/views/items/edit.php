@@ -59,7 +59,24 @@
                                     </div>
                                 </div>
                             </div>
-
+<!--
+<div class="form-group">
+<label class="col-sm-1 control-label no-padding-right">参与人</label>
+    <div class="col-xs-3 col-sm-3">
+                                    <select class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
+                                    <?php 
+                                    foreach($member as $m){
+                                    ?>
+                                        
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                        
+                                    <?php
+                                    }
+                                    ?>
+                                    </select>
+    </div>
+</div> 
+-->
 
                             <div class="form-group" id="endTime" hidden>
                                 <label class="col-sm-1 control-label no-padding-right">至</label>

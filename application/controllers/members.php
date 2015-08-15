@@ -281,8 +281,54 @@ class Members extends REIM_Controller {
     public function search() {
         $key = $this->input->get('key');
         $error = $this->session->userdata('last_error');
+        $profile = $this->session->userdata('profile');
+        $groups = $profile['group'];
+        if(array_key_exists('config', $groups) && $groups['config']) {
+            $config = json_decode($groups['config'], True);
+            if(array_key_exists('private_structure', $config)){
+        //TODO 修改是否开放组织结构
+                //$close = $config['close_directly'];
+        $close = $config['private_structure'];
+                log_message("debug", "Profile admin $close :" . $profile['admin']);
+                if($close == 1 && $profile['admin'] < 1) {
+                    return redirect(base_url('items/index'));
+                } 
+            }
+        }
+        //log_message('debug', 'Profile:' . json_encode($groups['config']));
+        //$config = 
+        //log_message('debug', 'Profile:' . json_encode($profile));
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
+        if($error == '') {
+            $error = $this->session->userdata('login_error');
+            $this->session->unset_userdata('login_error');
+        }
+    $_ranks = $this->reim_show->rank_level(1);
+    $_levels = $this->reim_show->rank_level(0);
+    $ranks = array();
+    $levels = array();
+    $ranks_dic = array();
+    $levels_dic = array();
+
+    if($_ranks['status'] > 0)
+    {
+        $ranks = $_ranks['data'];
+    }
+
+    foreach($ranks as $r)
+    {
+            $ranks_dic[$r['id']] = $r['name'];
+    }
+    if($_levels['status'] > 0)
+    {
+        $levels = $_levels['data'];
+    }
+
+    foreach($levels as $r)
+    {
+            $levels_dic[$r['id']] = $r['name'];
+    }
         $group = $this->groups->get_my_list();
         $ginfo = array();
         $gmember = array();
@@ -295,11 +341,15 @@ class Members extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
+        log_message("debug","gmembers:".json_encode($gmember));
         $this->bsload('members/index',
             array(
                 'title' => '组织结构'
                 ,'group' => $ginfo
                 ,'members' => $gmember
+                ,'error' => $error
+        ,'ranks' => $ranks_dic
+        ,'levels' => $levels_dic
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
@@ -334,6 +384,31 @@ class Members extends REIM_Controller {
             $error = $this->session->userdata('login_error');
             $this->session->unset_userdata('login_error');
         }
+	$_ranks = $this->reim_show->rank_level(1);
+	$_levels = $this->reim_show->rank_level(0);
+	$ranks = array();
+	$levels = array();
+	$ranks_dic = array();
+	$levels_dic = array();
+
+	if($_ranks['status'] > 0)
+	{
+		$ranks = $_ranks['data'];
+	}
+
+	foreach($ranks as $r)
+	{
+			$ranks_dic[$r['id']] = $r['name'];
+	}
+	if($_levels['status'] > 0)
+	{
+		$levels = $_levels['data'];
+	}
+
+	foreach($levels as $r)
+	{
+			$levels_dic[$r['id']] = $r['name'];
+	}
         $group = $this->groups->get_my_list();
         $ginfo = array();
         $gmember = array();
@@ -353,6 +428,8 @@ class Members extends REIM_Controller {
                 ,'group' => $ginfo
                 ,'members' => $gmember
                 ,'error' => $error
+		,'ranks' => $ranks_dic
+		,'levels' => $levels_dic
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')

@@ -37,7 +37,7 @@ position: absolute;
     }
 </script>
 <form action="<?php echo base_url('members/search') ?>" method="get" onsubmit="return searchSubmit(this)">
-    <input name="key" placeholder="名字、手机或者邮箱" value="<?php echo $search ?>" type='text' id="search">
+    <input name="key" placeholder="请输入搜索的内容" value="<?php echo $search ?>" type='text' id="search">
     <button type="submit" id="search-submit">搜索</button>
 </form>
 <div class="page-content">
@@ -54,7 +54,7 @@ position: absolute;
 
 
 
-<div class="col-sm-3">
+<div class="col-sm-2">
         <div class="widget-box widget-color-blue">
                 <div class="widget-header">
                     <h4 class="widget-title lighter smaller">组织结构</h4>
@@ -68,7 +68,7 @@ position: absolute;
                 </div>
             </div>
 
-<div class="col-xs-9">
+<div class="col-xs-10">
     <!--
     <table id="grid-table"></table>
     -->
@@ -82,6 +82,7 @@ position: absolute;
                     <th>邮箱</th>
                     <th>手机</th>
                     <th>部门</th>
+                    <th>职位</th>
                     <th>角色</th>
 <?php
 if($profile['admin'] == 1 || $profile['admin'] == 3) {
@@ -93,8 +94,14 @@ if($profile['admin'] == 1 || $profile['admin'] == 3) {
 foreach($members as $m){
 ?>
 <?php
-if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['email'],$search) + substr_count($m['phone'],$search) == 0) {
-    continue;
+if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['d'],$search) + substr_count($m['email'],$search) + substr_count($m['phone'],$search) == 0) {
+    if (array_key_exists($m['level_id'],$levels)) {
+        if (substr_count($levels[$m['level_id']],$search) == 0) {
+            continue;
+        }
+    } else {
+        continue;
+    }
 }
 ?>
 <tr>
@@ -113,6 +120,10 @@ if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['emai
     </td>
     <td>
         <?php echo $m['d']; ?>
+    </td>
+    <td>
+        <?php if (array_key_exists($m['level_id'],$levels)) {?>
+        <?php echo $levels[$m['level_id']]; }?>
     </td>
     <td>
 <?php 

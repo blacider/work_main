@@ -155,7 +155,7 @@ position: absolute;
                   <div class="form-group">
                     <label for="form-field-username">请输入报告发送的Email地址:</label>
                     <div>
-                      <input class=" col-xs-8 col-sm-8" type="text" id="email" name="email" class="form-control"><
+                      <input class=" col-xs-8 col-sm-8" type="text" id="email" name="email" class="form-control">
                       <input type="hidden" id="report_id" name="report_id">
                     </div>
                     
@@ -250,8 +250,16 @@ $("#globalSearch").click(function () {
     $grid.trigger("reloadGrid", [{page: 1, current: true}]);
     return false;
 });
-
+function isEmail( str ){  
+    var myReg = /^[-\._A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/; 
+    if(myReg.test(str)) return true; 
+    return false; 
+}
 $('#send').click(function(){
+    if ($('#email').val() == '' || !isEmail($('#email').val())) {
+      show_notify("输入邮箱错误");
+      return;
+    }
     $.ajax({
       url:__BASE+'reports/sendout'
       ,method:"post"

@@ -6,12 +6,13 @@ function bind_event(){
             location.href = __BASE + "reports/show/" + _id;
         });
     });
-    $('.tdel').each(function() {
+/*    $('.tdel').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
             location.href = __BASE + "reports/del/" + _id;
         });
     });
+*/
     $('.tedit').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
