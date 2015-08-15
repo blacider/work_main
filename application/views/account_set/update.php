@@ -214,7 +214,7 @@
 
                                     ?></select>
                             </div>
-                            <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">职级</label>
+                            <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">级别</label>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
