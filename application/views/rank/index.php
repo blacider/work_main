@@ -95,42 +95,6 @@ echo $str;
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="blue bigger"> 新建级别 </h4>
-          </div>
-         <div class="modal-body">
-           <div class="container">
-
-              <div class="col-xs-12 col-sm-12">
-                <div class="row">
-                  <div class="form-group">
-                      <label for="form-field-username">输入级别名称:</label>
-                      <div>
-                        <input class="col-xs-4 col-sm-4" type="text" id="name" name="name" class="form-control" />
-                      </div>
-                  </div>   
-                </div>    <!-- row -->
-              </div>    <!-- col-xs-12 -->
-           </div> <!--- container -->
-         </div>
-         <div class="modal-footer">
-           <button class="btn btn-sm" data-dismiss="modal">
-             <i class="ace-icon fa fa-times"></i>
-             取消
-           </button>
-           <input type="submit" id='send' class="btn btn-sm btn-primary" value="新建" />
-         </div>
-        </div>
-        </form>
-  </div>
-</div><!-- PAGE CONTENT ENDS -->
-
-
-<div id="modal-table2" class="modal" tabindex="-1">
-  <div class="modal-dialog">
-        <form action="<?php echo base_url('members/create_rank_level/1')?>" method='post'>
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="blue bigger"> 新建职位 </h4>
           </div>
          <div class="modal-body">
@@ -160,13 +124,14 @@ echo $str;
   </div>
 </div><!-- PAGE CONTENT ENDS -->
 
-<div id="modal-table3" class="modal" tabindex="-1">
+
+<div id="modal-table2" class="modal" tabindex="-1">
   <div class="modal-dialog">
-        <form action="<?php echo base_url('members/update_rank_level/0')?>" method='post'>
+        <form action="<?php echo base_url('members/create_rank_level/1')?>" method='post'>
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="blue bigger"> 修改级别 </h4>
+            <h4 class="blue bigger"> 新建职级 </h4>
           </div>
          <div class="modal-body">
            <div class="container">
@@ -174,7 +139,42 @@ echo $str;
               <div class="col-xs-12 col-sm-12">
                 <div class="row">
                   <div class="form-group">
-                      <label for="form-field-username">级别名称:</label>
+                      <label for="form-field-username">输入职级名称:</label>
+                      <div>
+                        <input class="col-xs-4 col-sm-4" type="text" id="name" name="name" class="form-control" />
+                      </div>
+                  </div>   
+                </div>    <!-- row -->
+              </div>    <!-- col-xs-12 -->
+           </div> <!--- container -->
+         </div>
+         <div class="modal-footer">
+           <button class="btn btn-sm" data-dismiss="modal">
+             <i class="ace-icon fa fa-times"></i>
+             取消
+           </button>
+           <input type="submit" id='send' class="btn btn-sm btn-primary" value="新建" />
+         </div>
+        </div>
+        </form>
+  </div>
+</div><!-- PAGE CONTENT ENDS -->
+
+<div id="modal-table3" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+        <form action="<?php echo base_url('members/update_rank_level/0')?>" method='post'>
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="blue bigger"> 修改职位 </h4>
+          </div>
+         <div class="modal-body">
+           <div class="container">
+
+              <div class="col-xs-12 col-sm-12">
+                <div class="row">
+                  <div class="form-group">
+                      <label for="form-field-username">职位名称:</label>
                       <div>
                         <input class="col-xs-4 col-sm-4" type="text" id="level_name" name="name" class="form-control" />
                       </div>
@@ -204,7 +204,7 @@ echo $str;
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="blue bigger"> 修改职位 </h4>
+            <h4 class="blue bigger"> 修改职级 </h4>
           </div>
          <div class="modal-body">
            <div class="container">
@@ -212,7 +212,7 @@ echo $str;
               <div class="col-xs-12 col-sm-12">
                 <div class="row">
                   <div class="form-group">
-                      <label for="form-field-username">职位名称:</label>
+                      <label for="form-field-username">职级名称:</label>
                       <div>
                         <input class="col-xs-4 col-sm-4" type="text" id="rank_name" name="name" class="form-control" />
                       </div>

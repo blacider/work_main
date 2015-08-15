@@ -216,7 +216,7 @@ function bind_event() {
                               <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">适用范围</label>
                                 <div class="col-xs-3 col-sm-3">
-                                    <select class="chosen-select tag-input-style" id="ranks" name="ranks[]" multiple="multiple" data-placeholder="请选择职位" placeholder="请选择职位">
+                                    <select class="chosen-select tag-input-style" id="ranks" name="ranks[]" multiple="multiple" data-placeholder="请选择职级" placeholder="请选择职级">
                                     <?php 
                                     foreach($ranks as $g){
                                     ?>
@@ -227,7 +227,7 @@ function bind_event() {
                                     </select>
                                 </div>
                                 <div class="col-xs-3 col-sm-3">
-                                    <select class="chosen-select tag-input-style" id="levels" name="levels[]" multiple="multiple" data-placeholder="请选择级别">
+                                    <select class="chosen-select tag-input-style" id="levels" name="levels[]" multiple="multiple" data-placeholder="请选择职位">
                                     <?php 
                                     foreach($levels as $m){
                                     ?>
