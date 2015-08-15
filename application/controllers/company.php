@@ -729,7 +729,7 @@ public function common(){
     }
     public function profile()
     {
-        $pids = 0;
+        $pids = 1;
         $remark_id = 0;
         $company_id = 0;
         $need_bank_info = 0;
@@ -770,7 +770,7 @@ public function common(){
         }
         if($ischecked == "true")
         {
-            $pids = 1;
+            $pids = 0;
         }
         if($isremark == "true")
         {
