@@ -362,11 +362,14 @@ function set_manager(persons)
           ,dataType: 'json'
           ,data : {'persons' : persons}
           ,success : function(data){
+            cosnole.log("success");
                 $('#save').prop('disabled',false);
                 show_notify('导入完成');
           }
           ,error:function(a,b,c)
           {
+                console.log(a);
+                console.log(b);
                        // console.log(a);
                        // console.log(b);
           }

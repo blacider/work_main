@@ -17,7 +17,21 @@ class Members extends REIM_Controller {
 	log_message('debug',json_encode($members));
 
 	$buf = $this->groups->set_managers($members);
-	die(json_encode(array('data'=>$buf)));
+	$set_manager_back = array();
+	$set_success = array();
+	if($buf['status']>0)
+	{
+		$set_manager_back = $buf['data'];
+	}
+	foreach($set_manager_back as $back)
+	{
+		if($back['code'] == 0)
+		{
+			array_push($set_success,$back['id']);
+		}
+	}
+	log_message('debug','set_success' . json_encode($set_success));
+	die(json_encode($set_success));
 	/*
 	if($buf['status']>0)
 	{
