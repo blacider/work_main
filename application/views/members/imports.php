@@ -362,7 +362,7 @@ function set_manager(persons)
           ,dataType: 'json'
           ,data : {'persons' : JSON.stringify(persons)}
           ,success : function(data){
-            cosnole.log("success");
+            console.log("success");
                 $('#save').prop('disabled',false);
                 show_notify('导入完成');
           }
