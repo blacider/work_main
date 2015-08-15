@@ -9,6 +9,49 @@ class Members extends REIM_Controller {
         $this->load->model('group_model', 'groups');
         $this->load->model('reim_show_model','reim_show');
     }
+
+    public function set_managers()
+    {
+    	$this->need_group_it();
+	$_members = $this->input->post('persons');
+	$members = json_decode($_members,True);
+	log_message('debug',json_encode($members));
+    $_members = array();
+    foreach($members as $m) {
+        if(array_key_exists('id', $m) && array_key_exists('manager', $m)) {
+            array_push($_members, $m);
+        }
+    }
+    $members = $_members;
+
+	$buf = $this->groups->set_managers($members);
+	$set_manager_back = array();
+	$set_success = array();
+	if($buf['status']>0)
+	{
+		$set_manager_back = $buf['data'];
+	}
+	foreach($set_manager_back as $back)
+	{
+		if($back['code'] == 0)
+		{
+			array_push($set_success,$back['id']);
+		}
+	}
+	log_message('debug','set_success' . json_encode($set_success));
+	die(json_encode(array('data'=>$set_success)));
+	/*
+	if($buf['status']>0)
+	{
+		die(json_encode(array('msg'=>'设置成功')));
+	}
+	else
+	{
+		die(json_encode(array('msg'=>'设置失败')));
+	}
+	*/
+    }
+
     public function members_del()
     {
         $this->need_group_it();
@@ -1282,7 +1325,7 @@ class Members extends REIM_Controller {
         $m_info = json_decode($this->users->reim_get_info($manager_id),True);
         $pro = $info;
         $ug = $this->reim_show->usergroups();
-        log_message('debug','m_info:' . json_encode($m_info['data']));
+        //log_message('debug','m_info:' . json_encode($m_info['data']));
 
         $group = $this->groups->get_my_list();
 
