@@ -15,6 +15,13 @@ class Members extends REIM_Controller {
     	$this->need_group_it();
 	$members = $this->input->post('persons');
 	log_message('debug',json_encode($members));
+    $_members = array();
+    foreach($members as $m) {
+        if(array_key_exists('id', $m) && array_key_exists('manager', $m)) {
+            array_push($_members, $m);
+        }
+    }
+    $members = $_members;
 
 	$buf = $this->groups->set_managers($members);
 	$set_manager_back = array();
