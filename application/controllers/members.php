@@ -38,7 +38,8 @@ class Members extends REIM_Controller {
 		}
 	}
 	log_message('debug','set_success' . json_encode($set_success));
-	die(json_encode(array('data'=>$set_success)));
+//	die(json_encode(array('data'=>$set_success)));
+	die(json_encode(array('msg'=>'导入成功')));
 	/*
 	if($buf['status']>0)
 	{
