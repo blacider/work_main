@@ -265,7 +265,7 @@ function travel()
 
 function insertMem()
 {
-     var members = new Array();
+     var in_members = new Array();
      var insert_count = 0;
     $('.judge').each(function(idx, item) {
         var load_mem = new Array();
@@ -316,7 +316,7 @@ function insertMem()
                             {
 
                                   var person = {'id':back_info['data'][uid],'manager':manager_name};
-                                  members.push(person);
+                                  in_members.push(person);
                                   
                                   myself.removeClass('fa-times red').addClass('fa-check green');
                                   //$('#error_'+uid).html('导入成功');
@@ -327,7 +327,7 @@ function insertMem()
                        
                         if(insert_count == members_count)
                         {
-                            set_manager(members);
+                            set_manager(in_members);
                         }
                         else
                         {
@@ -337,7 +337,7 @@ function insertMem()
                                // console.log(insert_count);
                                 if(old_insert == insert_count)
                                 {
-                                    set_manager(members);
+                                    set_manager(in_members);
                                 }
                             },3000);
                         }
