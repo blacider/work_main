@@ -482,7 +482,6 @@ class Items extends REIM_Controller {
         $_uid = $user['id'];
 
         $_editable = 0;
-        log_message("debug", "***** Rstatus: $_uid ********** " . $item['rstatus'] . ", " . $item['uid']);
         //if($_uid == $item['uid'] ) {
         //    // 如果是自己的，那么检查状态
         //log_message("debug", "***** Rstatus: $_uid ********** " . $item['rstatus'] . ", " . $item['uid']);
