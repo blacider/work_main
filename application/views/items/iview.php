@@ -50,13 +50,13 @@
                             </div>
 
                             <?php
-                                if(array_key_exists(2,$item_value))
+                                if(array_key_exists('2',$item_value))
                                 {
                             ?>
                              <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">至</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="消费时间" value=" <?php echo $item_value; ?> " disabled>
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="消费时间" value=" <?php echo date('Y-m-d H:i:s',$item_value[2]['value']); ?> " disabled>
                                 </div>
                             </div>
 

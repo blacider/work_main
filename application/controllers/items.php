@@ -374,7 +374,7 @@ class Items extends REIM_Controller {
 		$_item_value = $item['extra'];
 		foreach($_item_value as $it)
 		{
-			$item_value[$it['pid']] = array('id'=>$it['pid'],'type'=>$it['extra_type'],'value'=>$it['value']);
+			$item_value[$it['extra_type']] = array('id'=>$it['pid'],'type'=>$it['extra_type'],'value'=>$it['value']);
 		}
 	}
         $cid = $item['category'];
@@ -514,7 +514,8 @@ class Items extends REIM_Controller {
 		$_item_value = $item['extra'];
 		foreach($_item_value as $it)
 		{
-			$item_value[$it['pid']] = array('id'=>$it['pid'],'type'=>$it['extra_type'],'value'=>$it['value']);
+			$item_value[$it['extra_type']] = array('id'=>$it['pid'],'type'=>$it['extra_type'],'value'=>$it['value']);
+            //$item_value = array('id'=>$it['pid'],'type'=>$it['extra_type'],'value'=>$it['value']);
 		}
 	}
         $cid = $item['category'];
@@ -717,8 +718,10 @@ class Items extends REIM_Controller {
 		log_message('debug' , 'it:' . json_encode($it));
 		if(array_key_exists('value',$it))
 		{
-			$item_value = $it['value'];	
-		$item_value = date('Y-m-d H:i:s',$item_value);
+            $item_value[$it['extra_type']] = array('id'=> $it['pid'], 'type' => $it['extra_type'], 'value' => $it['value']);
+            
+			//$item_value = $it['value'];	
+		      //$item_value = date('Y-m-d H:i:s',$item_value);
 		}
 		}
 	}

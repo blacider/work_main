@@ -296,7 +296,7 @@ class Reports extends REIM_Controller {
         $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save);
         $ret = json_decode($ret, true);
         log_message("debug", "xx:" . json_encode($ret));
-        if($ret['code'] < 0) {
+        if($ret['code'] <= 0) {
             if($ret['code'] == -63)
             {
                 $quota = $ret['data']['quota'];
@@ -527,18 +527,56 @@ class Reports extends REIM_Controller {
     public function update(){
         $id = $this->input->post('id');
         $items = $this->input->post('item');
+	if(''==$items)
+	{
+		$this->session->set_userdata('last_error','提交报告不能为空');
+		return redirect(base_url('reports/index')); 
+	}
+    	$info = $this->category->get_list();
+        if($info['status'] > 0)
+        {
+            $_categories = $info['data']['categories'];
+        }
+        else
+        {
+            $_categories = array();
+        }
+        $categories = array();
+
+        foreach($_categories as $cate)
+        {
+            //	array_push($categories,array($cate['id'] => $cate['category_name']));
+            $categories[$cate['id']] = $cate['category_name'];
+        }
+        log_message('debug','categories:' . json_encode($categories));
         $title = $this->input->post('title');
         $receiver = $this->input->post('receiver');
         $cc = $this->input->post('cc');
-	log_message('debug','receiver:' . json_encode($receiver));
-        $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items));
-        log_message("debug", $ret);
-	$_ret = json_decode($ret,True);
-	if($_ret['status'] <= 0)
-	{
-		$this->session->set_userdata('last_error',$_ret['data']['msg']);
-	}
-        return redirect(base_url('reports/index'));
+        $save = $this->input->post('renew');
+        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save);
+        $ret = json_decode($ret, true);
+        log_message("debug", "xx:" . json_encode($ret));
+        if($ret['code'] <= 0) {
+            if($ret['code'] == -63)
+            {
+                $quota = $ret['data']['quota'];
+                $str = '';
+                foreach($quota as $key => $q)
+                {
+                    if($q < 0)
+                    {
+                        $str = $str . $categories[$key] . ' ';
+                        log_message('debug','value:' . $str);
+                    }
+                }	
+                $this->session->set_userdata('last_error', '本月内你已经不能提交' . $str .'类报告了');
+            } else {
+                log_message("debug", "alvayang:" . json_encode($ret));
+                $this->session->set_userdata('last_error', $ret['data']['msg']);
+            }
+        }
+
+        return redirect(base_url('reports'));
     }
 
     public function check_permission() {
