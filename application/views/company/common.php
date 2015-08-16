@@ -277,7 +277,7 @@ var __BASE = "<?php echo $base_url; ?>";
        
         if(data.same_category!=undefined)
         {
-            if(data.same_category==1)
+            if(data.same_category==0)
             {
             $('#isadmin').attr('checked', data.same_category);
             $("#isadmin").trigger("chosen:updated");
@@ -429,8 +429,15 @@ var __BASE = "<?php echo $base_url; ?>";
                     mail_notify:$('#mail_notify').is(':checked'),
                     close_directly :$('#close_directly').is(':checked'),
                     low_amount_only:$('#low_amount_only').is(':checked'),
-                    max_allowed_months:$('#max_allowed_months').val(),private_structure:$('#private_structure').is(':checked'),
-                        need_bank_info:$('#need_bank_info').is(':checked'),ischecked:$('#isadmin').is(':checked'),isremark:$('#isremark').is(':checked'),iscompany:$('#iscompany').is(':checked'),template:$('#temp option:selected').val(),limit:lval,reports_limit:r_limit},
+                    max_allowed_months:$('#max_allowed_months').val(),
+		    private_structure:$('#private_structure').is(':checked'),
+                    need_bank_info:$('#need_bank_info').is(':checked'),
+		    isadmin:$('#isadmin').is(':checked'),
+		    isremark:$('#isremark').is(':checked'),
+		    iscompany:$('#iscompany').is(':checked'),
+		    template:$('#temp option:selected').val(),
+		    limit:lval,reports_limit:r_limit
+		    },
                 dataType:'json',
                 success:function(data){
                       //  console.log(data);
