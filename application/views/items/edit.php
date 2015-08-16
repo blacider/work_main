@@ -60,7 +60,8 @@
                                 </div>
                             </div>
 
-
+                            <input type="hidden" id="config_id" name="config_id" />
+                            <input type="hidden" id="config_type" name="config_type"/>
 
                             <div class="form-group" id="endTime" hidden>
                                 <label class="col-sm-1 control-label no-padding-right">至</label>
@@ -68,14 +69,29 @@
                                     <div class="input-group">
                                         <input id="date-timepicker2" name="dt_end" type="text" class="form-control" />
                                        <input type="hidden" name="dt_end1" id="dt_end1" value="<?php echo $item_value; ?>">
-                                        <input type="hidden" id="config_id" name="config_id" />
-                                        <input type="hidden" id="config_type" name="config_type"/>
+                                      
                                         <span class="input-group-addon">
                                             <i class="fa fa-clock-o bigger-110"></i>
                                         </span>
                                     </div>
                                 </div>
                             </div>
+
+
+
+
+                            <div disabled class="form-group" id="average" hidden>
+                                <label class="col-sm-1 control-label no-padding-right">人均:</label>
+                                <div class="col-xs-3 col-sm-3">
+                                    <div class="input-group">
+                                        <div id="average_id" name="average" type="text" class="form-control"></div>
+
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+
 
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">参与人</label>
@@ -215,6 +231,7 @@
         </form>
     </div>
 </div>
+
 <!--
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
@@ -226,6 +243,32 @@
 
 
 <script language="javascript">
+
+var subs = "<?php echo $profile['subs'];?>";
+var __item_config = '<?php echo json_encode($item_config);?>';
+var item_config = [];
+if(__item_config != '')
+{
+    item_config = JSON.parse(__item_config);
+}
+var _item_config = new Object();
+console.log(item_config);
+for(var i = 0 ; i < item_config.length; i++)
+{
+    /*
+    if(item_config[i].type == 2)
+    {
+        _item_config = item_config[i];
+    }
+    if(item_config[i].type == 5)
+    {
+        _item_config = item_config[i];
+    }*/
+    if(item_config[i]['type']==2 || item_config[i]['type'] == 5)
+    _item_config[item_config[i]['cid']] = item_config[i];
+}
+console.log(_item_config);
+
 var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
 var _images = '<?php echo $images; ?> ';
@@ -236,7 +279,7 @@ console.log('own_id:'+own_id);
 console.log('item_user_id:'+item_user_id);
 
 var sob_id = <?php echo $sob_id; ?>;
-var __item_config = '<?php echo json_encode($item_config);?>';
+/*var __item_config = '<?php echo json_encode($item_config);?>';
 var item_config = '';
 if(__item_config!='')
 {
@@ -249,7 +292,7 @@ for(var i = 0 ; i < item_config.length; i++)
     {
         _item_config = item_config[i];
     }
-}
+} */
 
 var config = '<?php echo $_config?>';
 if(config != '')
@@ -511,27 +554,14 @@ $(document).ready(function(){
 
 
 $('#sob_category').change(function(){
-        var category_id = $('#sob_category').val();
-        if(category_id == _item_config['cid'])
+       var category_id = $('#sob_category').val();
+        console.log(_item_config);
+        if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 2)
         {
             $('#config_id').val(_item_config['id']);
-            console.log(_item_config['id']);
-            $('#config_type').val(_item_config['type']);
-            $('#date-timepicker2').val(item_value);
-            var _dt_end = $('#dt_end1').val();
-            $('#date-timepicker2').datetimepicker({
-            language: 'zh-cn',
-            useCurrent: true,
-            defaultDate:_dt_end,
-            format: 'YYYY-MM-DD HH:mm:ss',
-            linkField: "dt_end",
-            linkFormat: "YYYY-MM-DD HH:mm:ss",
-            sideBySide: true
-             }).next().on('dp.change', function(ev){
-            }).on(ace.click_event, function(){
-                $(this).prev().focus();
-            });
-
+            console.log(_item_config[category_id]['id']);
+            $('#config_type').val(_item_config[category_id]['type']);
+            $('#date-timepicker2').val('');
             $('#endTime').show();
         }
         else
@@ -541,6 +571,28 @@ $('#sob_category').change(function(){
             $('#date-timepicker2').val(-1);
             $('#endTime').hide();
         }
+
+        if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 5)
+        {
+            $('#config_id').val(_item_config[category_id]['id']);
+            console.log(_item_config[category_id]['id']);
+            $('#config_type').val(_item_config[category_id]['type']);
+            $('#amount').change(function(){
+                var all_amount = $('#amount').val();
+            $('#average_id').text(all_amount/subs+'元/人*' + subs);
+            });
+            var all_amount = $('#amount').val();
+            $('#average_id').text(all_amount/subs+'元/人*' + subs);
+            $('#average').show();
+        }
+        else
+        {
+            $('#config_id').val('');
+            $('#config_type').val('');
+            $('#average').val('');
+            $('#average').hide();
+        }
+
     });
 
     $('.renew').click(function(){
