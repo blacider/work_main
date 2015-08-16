@@ -63,12 +63,16 @@
                             <input type="hidden" id="config_id" name="config_id" />
                             <input type="hidden" id="config_type" name="config_type"/>
 
+<?php 
+foreach($item_value as $_type => $_item) {
+if($_type == 2) {
+?>
                             <div class="form-group" id="endTime" hidden>
                                 <label class="col-sm-1 control-label no-padding-right">至</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <div class="input-group">
-                                        <input id="date-timepicker2" name="dt_end" type="text" class="form-control" />
-                                       <input type="hidden" name="dt_end1" id="dt_end1" value="<?php echo $item_value; ?>">
+                                        <input id="date-timepicker2" name="dt_end1" id="dt_end1" type="text" class="form-control"  value="<?php echo date('Y-m-d H:i:s', $_item['value']); ?>" />
+                                       <input type="hidden" name="dt_end" id="dt_end" value="<?php echo date('Y-m-d H:i:s', $_item['value']); ?>">
                                       
                                         <span class="input-group-addon">
                                             <i class="fa fa-clock-o bigger-110"></i>
@@ -77,6 +81,11 @@
                                 </div>
                             </div>
 
+<?php
+}
+if($_type == 5) {
+?>
+                        
 
 
 
@@ -84,12 +93,17 @@
                                 <label class="col-sm-1 control-label no-padding-right">人均:</label>
                                 <div class="col-xs-3 col-sm-3">
                                     <div class="input-group">
-                                        <div id="average_id" name="average" type="text" class="form-control"></div>
+                                        <div id="average_id" name="average" type="text" class="form-control"> <?php echo $_item['value']; ?></div>
 
                                     </span>
                                 </div>
                             </div>
                         </div>
+                        <?php
+                    }
+                    
+                }
+                    ?>
 
 
 
@@ -231,7 +245,8 @@
         </form>
     </div>
 </div>
-
+<p>
+<?php //echo json_encode($item_value);?></p>
 <!--
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
@@ -252,7 +267,7 @@ if(__item_config != '')
     item_config = JSON.parse(__item_config);
 }
 var _item_config = new Object();
-console.log(item_config);
+//console.log(item_config);
 for(var i = 0 ; i < item_config.length; i++)
 {
     /*
@@ -267,16 +282,15 @@ for(var i = 0 ; i < item_config.length; i++)
     if(item_config[i]['type']==2 || item_config[i]['type'] == 5)
     _item_config[item_config[i]['cid']] = item_config[i];
 }
-console.log(_item_config);
+//console.log(_item_config);
 
 var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
-var _images = '<?php echo $images; ?> ';
-var item_value = '<?php echo $item_value; ?>';
+var _images = '<?php echo $images; ?> ';    
 var own_id = '<?php echo $profile['id'] ?>';
 var item_user_id = '<?php echo $item['uid'] ?>';
-console.log('own_id:'+own_id);
-console.log('item_user_id:'+item_user_id);
+// console.log('own_id:'+own_id);
+// console.log('item_user_id:'+item_user_id);
 
 var sob_id = <?php echo $sob_id; ?>;
 /*var __item_config = '<?php echo json_encode($item_config);?>';
@@ -528,7 +542,7 @@ $(document).ready(function(){
     get_sobs();
     var _dt = $('#dt').val();
     var images = eval("(" + _images + ")");
-
+    // console.log(_dt);
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
         defaultDate: _dt,
@@ -537,6 +551,26 @@ $(document).ready(function(){
     }).next().on(ace.click_event, function(){
         $(this).prev().focus();
     });
+    
+
+    try{
+        var _ddt = $('#dt_end').val();
+        console.log(_ddt);
+        $('#date-timepicker2').val(_ddt);
+        if(_ddt) {
+
+            $('#date-timepicker2').datetimepicker({
+                language: 'zh-cn',
+                defaultDate: _ddt,
+                format: 'YYYY-MM-DD HH:mm:ss',
+                linkField: "dt_end1",
+                }).next().on(ace.click_event, function(){
+                    $(this).prev().focus();
+                });
+        }
+    }catch(e) {
+        console.log(e);
+    }
 
  
 
@@ -555,22 +589,40 @@ $(document).ready(function(){
 
 $('#sob_category').change(function(){
        var category_id = $('#sob_category').val();
-        console.log(_item_config);
+        //console.log(_item_config);
+        
         if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 2)
         {
             $('#config_id').val(_item_config['id']);
-            console.log(_item_config[category_id]['id']);
+            //console.log(_item_config[category_id]['id']);
             $('#config_type').val(_item_config[category_id]['type']);
-            $('#date-timepicker2').val('');
+            var _ddt = '';
+            try{
+                var _ddt = $('#dt_end').val();
+                //console.log(_ddt);
+                
+            }catch(e) {
+                //console.log(e);
+            }
+            $('#date-timepicker2').val(_ddt);
             $('#endTime').show();
         }
         else
         {
             $('#config_id').val('');
             $('#config_type').val('');
-            $('#date-timepicker2').val(-1);
+            var _ddt = '';
+            try{
+                var _ddt = $('#dt_end').val();
+                console.log(_ddt);
+                
+            }catch(e) {
+                console.log(e);
+            }
+            $('#date-timepicker2').val(_ddt);
             $('#endTime').hide();
         }
+        
 
         if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 5)
         {
