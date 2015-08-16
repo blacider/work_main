@@ -832,11 +832,15 @@ class Members extends REIM_Controller {
     }
 
     public function export(){
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+
         $this->need_group_it();
         $group = $this->ug->get_my_list();
         $this->bsload('members/exports',
             array(
                 'title' => '导入/导出员工',
+                'error' => $error,
                 'groups' => $group['data']
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -894,11 +898,16 @@ class Members extends REIM_Controller {
         }
         $tmp_file = $_FILES['members']['tmp_name'];
 
-        $reader = IOFactory::createReader('Excel5');
-        $PHPExcel = $reader->load($tmp_file);
-        $sheet = $PHPExcel->getSheet(0); // 读取第一個工作表
-        $highestRow = $sheet->getHighestRow(); // 取得总行数
-        $highestColumm = $sheet->getHighestColumn(); // 取得总列数
+        try {
+            $reader = IOFactory::createReader('Excel5');
+            $PHPExcel = $reader->load($tmp_file);
+            $sheet = $PHPExcel->getSheet(0); // 读取第一個工作表
+            $highestRow = $sheet->getHighestRow(); // 取得总行数
+            $highestColumm = $sheet->getHighestColumn(); // 取得总列数
+        } catch(Exception $e) {
+            $this->session->set_userdata('last_error', '暂不支持当前的文件类型');
+            return redirect(base_url('members/export'));
+        }
         //$highestColumm= PHPExcel_Cell::columnIndexFromString(); //字母列转换为数字列 如:AA变为27
         $group = $this->groups->get_my_list();
         $ginfo = array();
