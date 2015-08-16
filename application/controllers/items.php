@@ -492,8 +492,9 @@ class Items extends REIM_Controller {
             $tags = $category['data']['tags'];
         }
         $item = $obj['data'];
-	$item_value = '';
+	//$item_value = '';
 	$item['dt'] = date('Y-m-d H:i:s',$item['dt']);
+	/*
 	if(array_key_exists('extra',$item))
 	{
 		foreach($item['extra'] as $it)
@@ -504,6 +505,16 @@ class Items extends REIM_Controller {
 			$item_value = $it['value'];	
 		$item_value = date('Y-m-d H:i:s',$item_value);
 		}
+		}
+	}
+	*/
+	$item_value = array();
+	if(array_key_exists('extra',$item))
+	{
+		$_item_value = $item['extra'];
+		foreach($_item_value as $it)
+		{
+			$item_value[$it['pid']] = array('id'=>$it['pid'],'type'=>$it['extra_type'],'value'=>$it['value']);
 		}
 	}
         $cid = $item['category'];
