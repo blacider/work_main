@@ -744,7 +744,8 @@ public function common(){
 	
 	$calendar_month = $this->input->post('calendar_month');
         $need_bank = $this->input->post('need_bank_info');
-        $ischecked = $this->input->post('ischecked');
+        $isadmin = $this->input->post('isadmin');
+	log_message("debug", "FROM FORM IS ADMIN" . $isadmin);
         $isremark = $this->input->post('isremark');
         $iscompany = $this->input->post('iscompany');
         $template = $this->input->post('template');
@@ -768,7 +769,7 @@ public function common(){
         {
             $disable_budget = 1;
         }
-        if($ischecked == "true")
+        if($isadmin == "true")
         {
             $pids = 0;
         }
@@ -817,6 +818,7 @@ public function common(){
         //	{
         //		$confarr['template'] = $template;
         //	}
+	log_message('debug','same_category:' . $pids);
         $in=array();
         $in['export_no_company']=$company_id;
         $in['same_category'] = $pids;
@@ -835,6 +837,7 @@ public function common(){
 	$in['disable_borrow'] = $disable_borrow;
 	$in['disable_budget'] = $disable_budget;
 	$in['calendar_month'] = $calendar_month;
+	log_message('debug','company_in:' .json_encode($in));
         $this->company->profile($in);
         //die(json_encode($re));
 	die(json_encode(array('msg'=>'保存成功')));
