@@ -128,6 +128,7 @@ class Items_Model extends Reim_Model {
 	    'extra' => $extra);
         array_push($items, $s);
         $data = array('items' => json_encode($items));
+	log_message('debug','items_data:' . json_encode($data));
         $jwt = $this->session->userdata('jwt');
         $url = $this->get_url('item');
         $buf = $this->do_Post($url, $data, $jwt, 1);
