@@ -747,9 +747,16 @@ class Category extends REIM_Controller {
 	log_message('debug','sobs:' . json_encode($sobs));
         die(json_encode($data));
     }
-    public function get_my_sob_category()
+    public function get_my_sob_category($uid=0)
     {
-        $profile = $this->session->userdata('profile');
+    	if($uid > 0)
+	{
+    		$profile = $this->users->get_by_id($uid);
+	}
+	else
+	{
+       		 $profile = $this->session->userdata('profile');
+	}
         $sobs = $profile['sob'];
         $_sob_id = array();
         //$_my_sobs = array();

@@ -2,6 +2,15 @@
 
 <!-- page specific plugin styles -->
 <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
+<link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
+<link rel="stylesheet" href="/static/ace/css/chosen.css" />
+
+<link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
+<link rel="stylesheet" href="/static/ace/css/colorbox.css" />
+<script src="/static/ace/js/jquery.colorbox-min.js"></script>
+
+<!-- page specific plugin styles -->
+<link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 
 
 
