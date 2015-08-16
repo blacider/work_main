@@ -50,7 +50,7 @@
                             </div>
 
                             <?php
-                                if($item_value)
+                                if(array_key_exists(2,$item_value))
                                 {
                             ?>
                              <div class="form-group">
@@ -63,6 +63,29 @@
                             <?php
                                 }
                             ?>
+
+
+
+
+                            <?php
+                                if(array_key_exists('5',$item_value))
+                                {
+                            ?>
+                            <div disabled class="form-group" id="average" >
+                                <label class="col-sm-1 control-label no-padding-right">人均:</label>
+                                <div class="col-xs-3 col-sm-3">
+                                    <div class="input-group">
+                                        <div id="average_id" name="average" type="text" class="form-control"><?php echo $item['amount']/$item_value[5]['value'];?>元/人*<?php echo $item_value[5]['value']?></div>
+
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                         <?php
+                                }
+                            ?>
+
+
 
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">参与人</label>
@@ -179,6 +202,7 @@
         </form>
     </div>
 </div>
+
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 $(document).ready(function(){

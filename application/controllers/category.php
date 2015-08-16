@@ -751,7 +751,16 @@ class Category extends REIM_Controller {
     {
     	if($uid > 0)
 	{
-    		$profile = $this->users->get_by_id($uid);
+    		$__profile = $this->users->reim_get_info($uid);
+		$_profile = json_decode($__profile,True);
+		if($_profile['status'] < 0)
+		{
+			die(json_encode(array('msg'=>'返回值错误')));
+		}
+
+		$profile = $_profile['data'];
+		
+		log_message('debug','user_info:'.json_encode($_profile));
 	}
 	else
 	{

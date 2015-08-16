@@ -1089,7 +1089,8 @@ $(document).ready(function(){
                 else if(data.status == 1)
                 {
                     $('#phone_modal').modal('hide');
-                    show_notify("手机绑定成功");
+                    show_notify("手机绑定成功,1秒之后跳转至登陆页面");
+                    setTimeout(function(){window.location.href="/login"}. 1000);
                 }
 
                // $('#phone_modal').modal('hide');
