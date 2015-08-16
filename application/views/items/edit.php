@@ -225,12 +225,15 @@
 <script src="/static/ace/js/jquery.colorbox-min.js"></script>
 
 
-
 <script language="javascript">
 var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
 var _images = '<?php echo $images; ?> ';
 var item_value = '<?php echo $item_value; ?>';
+var own_id = '<?php echo $profile['id'] ?>';
+var item_user_id = '<?php echo $item['uid'] ?>';
+console.log('own_id:'+own_id);
+console.log('item_user_id:'+item_user_id);
 
 var sob_id = <?php echo $sob_id; ?>;
 var __item_config = '<?php echo json_encode($item_config);?>';
@@ -260,8 +263,14 @@ function get_sobs(){
    var selectPostData = {};
    var selectDataCategory = {};
    var selectDataSobs = '';
+   var _url = __BASE + "category/get_my_sob_category";
+   if(own_id != item_user_id)
+   {
+   	_url = _url +  '/' + item_user_id;
+   }
         $.ajax({
-            url : __BASE + "category/get_my_sob_category",
+   //         url : __BASE + "category/get_my_sob_category",
+            url : _url,
             dataType : 'json',
             method : 'GET',
             success : function(data){

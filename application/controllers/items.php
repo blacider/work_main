@@ -348,7 +348,6 @@ class Items extends REIM_Controller {
             $tags = $category['data']['tags'];
         }
         $item = $obj['data'];
-	log_message('debu','item_info:' . json_encode($item));
 	$item_value = '';
 	if(array_key_exists('extra',$item))
 	{
@@ -368,8 +367,8 @@ class Items extends REIM_Controller {
         $__tags_name = array();
 
         $user = $this->session->userdata('profile');
+	log_message('debu','item_info:' . json_encode($item));
         log_message("debug", "USER:" . json_encode($user));
-        log_message("debug", "ITEM:" . json_encode($item));
         $_uid = $user['id'];
 
         $_editable = 0;
@@ -441,6 +440,7 @@ class Items extends REIM_Controller {
             $gmember = $gmember ? $gmember : array();
         }
 	$item['dt'] = date('Y-m-d H:i:s',$item['dt']);
+        log_message("debug", "ITEM:" . json_encode($item));
         $this->bsload('items/iview',
             array(
                 'title' => '查看消费',
