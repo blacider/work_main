@@ -51,7 +51,7 @@
                                 <label class="col-sm-1 control-label no-padding-right">消费时间</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <div class="input-group">
-                                        <input id="date-timepicker1" name = 'dt1' type="text" class="form-control" />
+                                        <input id="date-timepicker1" name = 'dt1' type="text" class="form-control" value="<?php echo $item['dt']; ?>"/>
                                         <input type="hidden" name="dt" id="dt" value="<?php echo $item['dt']; ?>">
                                         <span class="input-group-addon">
                                             <i class="fa fa-clock-o bigger-110"></i>
@@ -59,24 +59,8 @@
                                     </div>
                                 </div>
                             </div>
-<!--
-<div class="form-group">
-<label class="col-sm-1 control-label no-padding-right">参与人</label>
-    <div class="col-xs-3 col-sm-3">
-                                    <select class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
-                                    <?php 
-                                    foreach($member as $m){
-                                    ?>
-                                        
-                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
-                                        
-                                    <?php
-                                    }
-                                    ?>
-                                    </select>
-    </div>
-</div> 
--->
+
+
 
                             <div class="form-group" id="endTime" hidden>
                                 <label class="col-sm-1 control-label no-padding-right">至</label>
@@ -93,6 +77,34 @@
                                 </div>
                             </div>
 
+<div class="form-group">
+<label class="col-sm-1 control-label no-padding-right">参与人</label>
+    <div class="col-xs-3 col-sm-3">
+                                    <select class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
+                                    <?php 
+				    $item_uids = array();
+				    if(array_key_exists('relates',$item))
+				    {
+				    	$item_uids = explode(',',$item['relates']);
+				    }
+
+                                    foreach($member as $m){
+				    	if(in_array($m['id'],$item_uids))
+					{
+                                    ?>
+                                        
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+				    <?php 
+				    	}
+				    ?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                        
+                                    <?php
+                                    }
+                                    ?>
+                                    </select>
+    </div>
+</div> 
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">商家</label>
@@ -203,7 +215,6 @@
         </form>
     </div>
 </div>
-
 <!--
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
