@@ -982,7 +982,7 @@ class Members extends REIM_Controller {
             {
                 $names[$obj['name']]['count'] = 1;
             }
-            else
+            else if($obj['status'] != 1)
             {
                 $names[$obj['name']]['count'] += 1;
             }
