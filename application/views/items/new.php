@@ -53,14 +53,28 @@
 <div class="col-xs-6 col-sm-6">
 <div class="input-group">
 <input id="date-timepicker2" name="dt_end" type="text" class="form-control" />
-<input type="hidden" id="config_id" name="config_id" />
-<input type="hidden" id="config_type" name="config_type"/>
 <span class="input-group-addon">
 <i class="fa fa-clock-o bigger-110"></i>
 </span>
 </div>
 </div>
 </div>
+<input type="hidden" id="config_id" name="config_id" />
+<input type="hidden" id="config_type" name="config_type"/>
+
+
+
+<div disabled class="form-group" id="average" hidden>
+<label class="col-sm-1 control-label no-padding-right">人均:</label>
+<div class="col-xs-3 col-sm-3">
+<div class="input-group">
+<div id="average_id" name="average" type="text" class="form-control"></div>
+
+</span>
+</div>
+</div>
+</div>
+
 
 
 <div class="form-group">
@@ -242,24 +256,36 @@ if($__config['disable_budget'] == '0')
 <!--引入JS-->
 <script type="text/javascript" src="/static/third-party/webUploader/webuploader.js"></script>
 
+
+
 <script language="javascript">
 var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
 var config = '<?php echo $_config?>';
+var subs = "<?php echo $profile['subs'];?>";
 var __item_config = '<?php echo json_encode($item_config);?>';
-var item_config = '';
+var item_config = [];
 if(__item_config != '')
 {
     item_config = JSON.parse(__item_config);
 }
-var _item_config = [];
+var _item_config = new Object();
+console.log(item_config);
 for(var i = 0 ; i < item_config.length; i++)
 {
+    /*
     if(item_config[i].type == 2)
     {
         _item_config = item_config[i];
     }
+    if(item_config[i].type == 5)
+    {
+        _item_config = item_config[i];
+    }*/
+    if(item_config[i]['type']==2 || item_config[i]['type'] == 5)
+    _item_config[item_config[i]['cid']] = item_config[i];
 }
+console.log(_item_config);
 
 var __config = '';
 if(config != '')
@@ -446,6 +472,9 @@ function get_sobs(){
 }
 
 $(document).ready(function(){
+
+
+
     get_sobs();
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
@@ -485,11 +514,12 @@ $(document).ready(function(){
     
     $('#sob_category').change(function(){
         var category_id = $('#sob_category').val();
-        if(category_id == _item_config['cid'])
+        console.log(category_id);
+        if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 2)
         {
             $('#config_id').val(_item_config['id']);
-            console.log(_item_config['id']);
-            $('#config_type').val(_item_config['type']);
+            console.log(_item_config[category_id]['id']);
+            $('#config_type').val(_item_config[category_id]['type']);
             $('#date-timepicker2').val('');
             $('#endTime').show();
         }
@@ -500,6 +530,28 @@ $(document).ready(function(){
             $('#date-timepicker2').val(-1);
             $('#endTime').hide();
         }
+
+        if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 5)
+        {
+            $('#config_id').val(_item_config[category_id]['id']);
+            console.log(_item_config[category_id]['id']);
+            $('#config_type').val(_item_config[category_id]['type']);
+            $('#amount').change(function(){
+                var all_amount = $('#amount').val();
+            $('#average_id').text(all_amount/subs+'元/人*' + subs);
+            });
+            var all_amount = $('#amount').val();
+            $('#average_id').text(all_amount/subs+'元/人*' + subs);
+            $('#average').show();
+        }
+        else
+        {
+            $('#config_id').val('');
+            $('#config_type').val('');
+            $('#average').val('');
+            $('#average').hide();
+        }
+
     });
 
     $('.renew').click(function(){
