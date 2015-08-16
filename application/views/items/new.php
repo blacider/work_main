@@ -45,7 +45,24 @@
 </div>
 </div>
 </div>
-<!--
+
+
+
+<div class="form-group" id="endTime" hidden>
+<label class="col-sm-1 control-label no-padding-right">至</label>
+<div class="col-xs-6 col-sm-6">
+<div class="input-group">
+<input id="date-timepicker2" name="dt_end" type="text" class="form-control" />
+<input type="hidden" id="config_id" name="config_id" />
+<input type="hidden" id="config_type" name="config_type"/>
+<span class="input-group-addon">
+<i class="fa fa-clock-o bigger-110"></i>
+</span>
+</div>
+</div>
+</div>
+
+
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">参与人</label>
     <div class="col-xs-3 col-sm-3">
@@ -64,22 +81,6 @@
                                     </select>
     </div>
 </div>
--->
-
-<div class="form-group" id="endTime" hidden>
-<label class="col-sm-1 control-label no-padding-right">至</label>
-<div class="col-xs-6 col-sm-6">
-<div class="input-group">
-<input id="date-timepicker2" name="dt_end" type="text" class="form-control" />
-<input type="hidden" id="config_id" name="config_id" />
-<input type="hidden" id="config_type" name="config_type"/>
-<span class="input-group-addon">
-<i class="fa fa-clock-o bigger-110"></i>
-</span>
-</div>
-</div>
-</div>
-
 
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">商家</label>
