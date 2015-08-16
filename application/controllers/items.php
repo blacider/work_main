@@ -171,6 +171,7 @@ class Items extends REIM_Controller {
 	{
 		$uids = implode(',',$_uids);
 	}
+	$profile = $this->session->userdata('profile');
         $amount = $this->input->post('amount');
         $category= $this->input->post('category');
         $timestamp = strtotime($this->input->post('dt'));
@@ -181,15 +182,20 @@ class Items extends REIM_Controller {
 	log_message('debug','config_type:' . $config_type);
 	$extra = array();
 	$_extra = array();
-	if($config_type)
+	if($config_type == 2)
 	{
 		$_extra = array('id'=>$config_id ,'type'=>$config_type,'value'=>$endtime);
+	}
+
+	if($config_type == 5)
+	{
+		$_extra = array('id'=>$config_id ,'type'=>$config_type,'value'=>$profile['subs']);
 	}
 	array_push($extra,$_extra);
 	$__extra = json_encode($extra);
         log_message("debug", "TM:" . $timestamp);
+        log_message("debug", "extra:" . $__extra);
         //$timestamp = mktime(0, $dt['tm_min'], $dt['tm_hour'], $dt['tm_mon']+1, $dt['tm_mday'], $dt['tm_year'] + 1900);
-
         $merchant = $this->input->post('merchant');
         $tags = $this->input->post('tags');
         $type = $this->input->post('type');
@@ -348,7 +354,7 @@ class Items extends REIM_Controller {
             $tags = $category['data']['tags'];
         }
         $item = $obj['data'];
-	$item_value = '';
+	/*$item_value = '';
 	if(array_key_exists('extra',$item))
 	{
 		foreach($item['extra'] as $it)
@@ -361,7 +367,16 @@ class Items extends REIM_Controller {
 		}
 		}
 	}
-	log_message('debug','item_extra' . json_encode($item_value));
+	*/
+	$item_value = array();
+	if(array_key_exists('extra',$item))
+	{
+		$_item_value = $item['extra'];
+		foreach($_item_value as $it)
+		{
+			$item_value[$it['pid']] = array('id'=>$it['pid'],'type'=>$it['extra_type'],'value'=>$it['value']);
+		}
+	}
         $cid = $item['category'];
         $_tags = $item['tags'];
         $__tags_name = array();
@@ -768,7 +783,13 @@ class Items extends REIM_Controller {
 
     public function update(){
     	$item_update_in = $this->session->userdata('item_update_in');
-	$uids = $this->input->post('uids');
+	$_uids = $this->input->post('uids');
+	$uids = '';
+	if($_uids)
+	{
+		$uids = implode(',',$_uids);
+	}
+
         $id = $this->input->post('id');
         $rid = $this->input->post('rid');
         $_uid = $this->input->post('uid');
@@ -785,13 +806,19 @@ class Items extends REIM_Controller {
 	log_message('debug','config_type:' . $config_type);
 	$extra = array();
 	$_extra = array();
-	if($config_type)
+        $profile = $this->session->userdata('profile');
+	if($config_type == 2)
 	{
 		$_extra = array('id'=>$config_id ,'type'=>$config_type,'value'=>$endtime);
 	}
+
+	if($config_type == 5)
+	{
+		$_extra = array('id'=>$config_id ,'type'=>$config_type,'value'=>$profile['subs']);
+	}
 	array_push($extra,$_extra);
 	$__extra = json_encode($extra);
-        $profile = $this->session->userdata('profile');
+	log_message('debug','extra:' . $__extra);
         $item_update_in = 0;
         if($profile['id'] != $_uid){
             $item_update_in = 1;
