@@ -177,6 +177,13 @@ if($profile['admin'] == 1 ||  $profile['admin'] == 3) {
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var error = "<?php echo $error;?>";
+var _levels_dic = '<?php echo json_encode($levels); ?>';
+var levels_dic = [];
+if(_levels_dic!='')
+{
+	levels_dic = JSON.parse(_levels_dic);
+}
+
 
 
 $(document).ready(function(){
@@ -277,7 +284,6 @@ function load_group(gid){
             method: 'GET',
             dataType: 'json',
             success: function(data) {
-                console.log(gid);
                 if(!data.status) {
                     show_notify('获取信息失败');
                 } else {
@@ -315,6 +321,7 @@ function load_group(gid){
                     + '<th>邮箱</th>'
                     + '<th>手机</th>'
                     + '<th>部门</th>'
+                    + '<th>职位</th>'
                     + '<th>身份</th>';
                     if(_admin == 1 || _admin == 3){
                         _th += '<th>操作</th>'
@@ -347,12 +354,20 @@ function load_group(gid){
                     }; break;
             
                     }
+
+		var _level_id = item.level_id;
+		var _level = '';
+		if(levels_dic[_level_id]!=undefined)
+		{
+			_level = levels_dic[_level_id];
+		}
                 _th = '<tr>'
                     + '<td>' + item.client_id + '</a></td>'
                     + '<td><a href="' + __BASE + '/members/editmember/' + item.id + '">' + item.nickname+ '</a></td>'
                     + '<td>' + item.email + '</td>'
                     + '<td>' + item.phone + '</td>'
                     + '<td>' + item.d + '</td>'
+                    + '<td>' + _level + '</td>'
                     + '<td><a href="javascript:void(0)">' + _color + '</a>';
                     if(_admin == 1 || _admin == 3){
                     _th += '<td><a href="' + __BASE + '/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a>'
