@@ -51,7 +51,7 @@
                                 <label class="col-sm-1 control-label no-padding-right">消费时间</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <div class="input-group">
-                                        <input id="date-timepicker1" name = 'dt1' type="text" class="form-control" />
+                                        <input id="date-timepicker1" name = 'dt1' type="text" class="form-control" value="<?php echo $item['dt']; ?>"/>
                                         <input type="hidden" name="dt" id="dt" value="<?php echo $item['dt']; ?>">
                                         <span class="input-group-addon">
                                             <i class="fa fa-clock-o bigger-110"></i>
@@ -59,24 +59,8 @@
                                     </div>
                                 </div>
                             </div>
-<!--
-<div class="form-group">
-<label class="col-sm-1 control-label no-padding-right">参与人</label>
-    <div class="col-xs-3 col-sm-3">
-                                    <select class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
-                                    <?php 
-                                    foreach($member as $m){
-                                    ?>
-                                        
-                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
-                                        
-                                    <?php
-                                    }
-                                    ?>
-                                    </select>
-    </div>
-</div> 
--->
+
+
 
                             <div class="form-group" id="endTime" hidden>
                                 <label class="col-sm-1 control-label no-padding-right">至</label>
@@ -93,6 +77,34 @@
                                 </div>
                             </div>
 
+<div class="form-group">
+<label class="col-sm-1 control-label no-padding-right">参与人</label>
+    <div class="col-xs-3 col-sm-3">
+                                    <select class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
+                                    <?php 
+				    $item_uids = array();
+				    if(array_key_exists('relates',$item))
+				    {
+				    	$item_uids = explode(',',$item['relates']);
+				    }
+
+                                    foreach($member as $m){
+				    	if(in_array($m['id'],$item_uids))
+					{
+                                    ?>
+                                        
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+				    <?php 
+				    	}
+				    ?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                        
+                                    <?php
+                                    }
+                                    ?>
+                                    </select>
+    </div>
+</div> 
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">商家</label>
@@ -203,7 +215,6 @@
         </form>
     </div>
 </div>
-
 <!--
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
@@ -214,12 +225,15 @@
 <script src="/static/ace/js/jquery.colorbox-min.js"></script>
 
 
-
 <script language="javascript">
 var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
 var _images = '<?php echo $images; ?> ';
 var item_value = '<?php echo $item_value; ?>';
+var own_id = '<?php echo $profile['id'] ?>';
+var item_user_id = '<?php echo $item['uid'] ?>';
+console.log('own_id:'+own_id);
+console.log('item_user_id:'+item_user_id);
 
 var sob_id = <?php echo $sob_id; ?>;
 var __item_config = '<?php echo json_encode($item_config);?>';
@@ -249,8 +263,14 @@ function get_sobs(){
    var selectPostData = {};
    var selectDataCategory = {};
    var selectDataSobs = '';
+   var _url = __BASE + "category/get_my_sob_category";
+   if(own_id != item_user_id)
+   {
+   	_url = _url +  '/' + item_user_id;
+   }
         $.ajax({
-            url : __BASE + "category/get_my_sob_category",
+   //         url : __BASE + "category/get_my_sob_category",
+            url : _url,
             dataType : 'json',
             method : 'GET',
             success : function(data){

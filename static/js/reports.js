@@ -34,7 +34,7 @@ jQuery(grid_selector).jqGrid({
     mtype: "GET",
     datatype: "local",
     height: 250,
-    colNames:['ID','标题', '类型', '创建日期', '金额','消费条目数', '状态', '操作'],
+    colNames:['ID','标题',  '创建日期', '金额','消费条目数', '状态', '操作'],
     loadonce: true,
     caption: "报告列表",
     editurl: __BASE + 'reports/save',
@@ -45,7 +45,7 @@ jQuery(grid_selector).jqGrid({
     colModel:[
         {name:'id', index:'id', width:20,editable: false,editoptions:{size:"20",maxlength:"30"}},
         {name:'title', index:'title', width:90,editable: false,editoptions:{size:"20",maxlength:"30"},search:true},
-        {name:'prove_ahead', index:'prove_ahead', width:30,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
+       // {name:'prove_ahead', index:'prove_ahead', width:30,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
         {name:'date_str', index:'date_str', width:90,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
         {name:'amount',sorttype: myCustomSort,formatter:'currency', formatoptions:{decimalPlaces: 2,thousandsSeparator:"",prefix:'￥'}, index:'amount', width:50,editable: true,editoptions:{size:"20",maxlength:"30"},search:false},
         {name:'item_count', index:'item_count', width:20,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
