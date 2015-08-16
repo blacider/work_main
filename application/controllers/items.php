@@ -165,7 +165,12 @@ class Items extends REIM_Controller {
     }
 
     public function create(){
-	$uids = $this->input->post('uids');
+	$_uids = $this->input->post('uids');
+	$uids = '';
+	if($_uids)
+	{
+		$uids = implode(',',$_uids);
+	}
         $amount = $this->input->post('amount');
         $category= $this->input->post('category');
         $timestamp = strtotime($this->input->post('dt'));
@@ -191,8 +196,10 @@ class Items extends REIM_Controller {
         $note = $this->input->post('note');
         $images = $this->input->post('images');
         $renew = $this->input->post('renew');
-        $obj = $this->items->create($amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra);
+        $obj = $this->items->create($amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra,$uids);
 	log_message('debug','extra:' . $__extra);
+
+	log_message('debug','create_item_back:' . json_encode($obj));
         // TODO: 提醒的Tips
         if($renew){
             redirect(base_url('items/newitem'));
@@ -341,6 +348,7 @@ class Items extends REIM_Controller {
             $tags = $category['data']['tags'];
         }
         $item = $obj['data'];
+	log_message('debu','item_info:' . json_encode($item));
 	$item_value = '';
 	if(array_key_exists('extra',$item))
 	{
@@ -365,7 +373,7 @@ class Items extends REIM_Controller {
         $_uid = $user['id'];
 
         $_editable = 0;
-        log_message("debug", "***** Rstatus: $_uid ********** " . $item['rstatus'] . ", " . $item['uid']);
+        //log_message("debug", "***** Rstatus: $_uid ********** " . $item['rstatus'] . ", " . $item['uid']);
         // 收到的,检查我是否是被cc，以及状态
         $_rid = $item['rid'];
         if($_rid > 0 ){
@@ -424,6 +432,15 @@ class Items extends REIM_Controller {
                     ));
             }
         }
+        $group = $this->groups->get_my_list();
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
+	$item['dt'] = date('Y-m-d H:i:s',$item['dt']);
         $this->bsload('items/iview',
             array(
                 'title' => '查看消费',
@@ -434,6 +451,7 @@ class Items extends REIM_Controller {
                 'flow' => $flow
 		,'item_value' => $item_value
 		,'error' => $error
+		,'member' => $gmember
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
@@ -460,6 +478,7 @@ class Items extends REIM_Controller {
         }
         $item = $obj['data'];
 	$item_value = '';
+	$item['dt'] = date('Y-m-d H:i:s',$item['dt']);
 	if(array_key_exists('extra',$item))
 	{
 		foreach($item['extra'] as $it)
@@ -482,7 +501,6 @@ class Items extends REIM_Controller {
         $_uid = $user['id'];
 
         $_editable = 0;
-        log_message("debug", "***** Rstatus: $_uid ********** " . $item['rstatus'] . ", " . $item['uid']);
         //if($_uid == $item['uid'] ) {
         //    // 如果是自己的，那么检查状态
         //log_message("debug", "***** Rstatus: $_uid ********** " . $item['rstatus'] . ", " . $item['uid']);
@@ -727,6 +745,7 @@ class Items extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
+	$item['dt'] = date('Y-m-d H:i:s',$item['dt']);
         $this->bsload('items/edit',
             array(
                 'title' => '修改消费',
@@ -829,9 +848,10 @@ class Items extends REIM_Controller {
         }
         else
         {
-            $obj = $this->items->update($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra);
+            $obj = $this->items->update($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra,$uids);
             log_message('debug','zz item_data:'.json_encode($obj));
         }
+	log_message('debug','rid:' . $rid);
         if($rid == 0) {
             return redirect(base_url('items/index'));
         } else {
