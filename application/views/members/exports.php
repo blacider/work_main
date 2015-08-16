@@ -41,7 +41,9 @@
 
 <script language="javascript">
     var __BASE = "<?php echo base_url(); ?>";
+    var _error = "<?php echo $error; ?>";
 $(document).ready(function(){
+    if(_error) show_notify(_error);
 
     $('#memebers').on('change', function(){
         console.log("1");
