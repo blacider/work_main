@@ -32,10 +32,10 @@ font:bold 11px Arial, Helvetica, sans-serif;
 <?php 
 $path = "http://reim-avatar.oss-cn-beijing.aliyuncs.com/" . $user['apath'];
 //if("" == $user['apath']) {
-   if("" == $user['apath']) {
+if("" == $user['apath']) {
     $path = base_url('/static/default.png');
 } else {
-   // $path = $user['apath'];
+    // $path = $user['apath'];
     $path = $avatar_path;
 }
 ?>
@@ -58,7 +58,7 @@ if($self != 1) {
                             <!-- <input type="hidden" name="email" value="<?php echo $user['email']; ?>"> -->
                             <!-- <input type="text" class="col-xs-6 col-sm-6 form-control" value="<?php echo $user['email']; ?>" /> -->
                 <input type="text" name="email" class="col-xs-6 col-sm-6 form-control" value="<?php echo $user['email']; ?>">
-			    <!-- <label class="control-label"><?php echo $user['email']; ?></label> -->
+                <!-- <label class="control-label"><?php echo $user['email']; ?></label> -->
                         </div>
                     </div>
 
@@ -96,152 +96,98 @@ if($profile['gid'] > 0){
     }
 }
 
-if($profile['admin'] == 1 || $profile['admin'] == 3){
+if($profile['admin'] == 1 || $profile['admin'] == 3 ){
     $open = 1;
-}
 ?>
 
                        <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">上级</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <?php
-                                    if($open == 1) {
-                                    ?>
-                                        <select class="chosen-select tag-input-style" name="manager" data-placeholder="请选择标签">
-                                    <?php 
-                                     } 
-                                     else
-                                     {
-                                        ?>
-                                        <select class="chosen-select tag-input-style" name="manager" data-placeholder="请选择标签" disabled>
-                                        <?php
-                                     }
-                                    ?>
+<?php
+    if($open == 1) {
+?>
+                                        <select class="col-xs-6 col-sm-6 form-control chosen-select tag-input-style" name="manager" data-placeholder="请选择标签">
+<?php 
+    } else {
+?>
+                                        <select class="col-xs-6 col-sm-6 form-control chosen-select tag-input-style" name="manager" data-placeholder="请选择标签" disabled>
+<?php
+    }
+?>
                                     <option value="0" >无</option>
-                                    <?php 
-                                    foreach($gmember as $m){
-                                        if($m['id'] == $manager_id)
-                                        {
-                                    ?>
+<?php 
+    foreach($gmember as $m){
+        if($m['id'] == $manager_id)
+        {
+?>
                                         <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
-                                    <?php
-                                        }
-                                        else
-                                        {
-                                    ?>
+<?php } else { ?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
-                                    <?php
-                                        }
-                                    }
-                                    ?>
+<?php
+}
+    }
+?>
                                     </select>
                                 </div>
                         </div>
+<?php
+}
+?>
 
-
-<!--
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">最大报告数</label>
-                                <div class="col-xs-6 col-sm-6">
-                                    <?php 
-                                            $max_report = '';
-                                            if(array_key_exists('max_report', $pro))
-                                            {
-                                                $max_report = $pro['max_report'];
-                                            }
-if($profile['admin'] == 1 || $profile['admin'] == 3){
-                                    ?>
-                                        <input type="text" class="col-xs-6 col-sm-6 form-control" name="max_report" value="<?php echo $max_report; ?>" />
-                                    
-                                    <?php
-                                        }
-                                        else
-                                        {
-                                    ?>
-                                        <input type="text" class="col-xs-6 col-sm-6 form-control" name="max_report" value="<?php echo $max_report; ?>"  disabled />
-                                    <?php
-                                        }
-                                    ?>
-                                
-                                </div>
-                            </div>
--->
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">级别</label>
                                 <div class="col-xs-6 col-sm-6">
-				<?php 
-if($profile['admin'] == 1 || $profile['admin'] == 3){
-				?>
+<?php if($profile['admin'] == 1 || $profile['admin'] == 3){ ?>
                                     <select class="chosen-select tag-input-style" name="rank" data-placeholder="级别" >
-				  <?php 
-				  }
-				  else
-				  {
-				  ?>
+<?php } elseif($self) { ?>
                                     <select class="chosen-select tag-input-style" name="rank" data-placeholder="级别" disabled>
-				  <?php
-				  }
-				  ?>
+<?php } else { ?>
+                                    <select class="chosen-select tag-input-style" name="rank" data-placeholder="级别" disabled>
+<?php } ?>
                                         <option value=0>无</option>
-                                    <?php 
-                                    $rank = $pro['rank_id'];
-                                    foreach($ranks as $m){
-                                   
-				   	if($m['id']==$rank && $rank!=0)
-					{
-                                    ?>
+<?php 
+$rank = $pro['rank_id'];
+foreach($ranks as $m){
+    if($m['id']==$rank && $rank!=0) {
+?>
                                         <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
-                                    <?php
-				    	}
-					else 
-					{
-					?>
+<?php } else { ?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
-					<?php
-					}
-                                        }
-                                 
-                                    ?>
+<?php
+    }
+}
+
+?>
                                     </select>
-                                </div>
-                        </div>
+</div>
+</div>
 
                           <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">职位</label>
                                 <div class="col-xs-6 col-sm-6">
-				<?php 
+<?php 
 if($profile['admin'] == 1 || $profile['admin'] == 3){
-				?>
-                                    <select class="chosen-select tag-input-style" name="level" data-placeholder="职位" >
-				  <?php 
-				  }
-				  else
-				  {
-				  ?>
-                                    <select class="chosen-select tag-input-style" name="level" data-placeholder="职位" disabled>
-				  <?php
-				  }
-				  ?>
+?>
+                                    <select class="col-xs-6 col-sm-6 chosen-select tag-input-style" name="level" data-placeholder="职位" >
+<?php } elseif($self) { ?>
+                                    <select class="col-xs-6 col-sm-6 chosen-select tag-input-style" name="level" data-placeholder="职位" disabled>
+<?php } else { ?>
+                                    <select class="col-xs-6 col-sm-6 chosen-select tag-input-style" name="level" data-placeholder="职位" disabled>
+<?php } ?>
                                     <option value=0>无</option>
-                                    <?php 
-                                    $level = $pro['level_id'];
-                                    foreach($levels as $m){
-                                   
-				   	if($m['id']==$level && $level!=0)
-					{
-                                    ?>
+<?php 
+    $level = $pro['level_id'];
+    foreach($levels as $m){
+        if($m['id']==$level && $level!=0) {
+?>
                                         <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
-                                    <?php
-				    	}
-					else 
-					{
-					?>
+<?php } else { ?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
-					<?php
-					}
-                                        }
-                                 
-                                    ?>
+<?php
+        }
+    }
+
+?>
                                     </select>
                                 </div>
                         </div>
@@ -253,16 +199,16 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                 <label class="col-sm-1 control-label no-padding-right">所属帐套</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" multiple="multiple" name="sobs[]" data-placeholder="帐套信息" disabled>
-                                    <?php 
-                                    $sobs = $pro['sob'];
-                                    foreach($sobs as $m){
-                                   
-                                    ?>
+<?php 
+    $sobs = $pro['sob'];
+    foreach($sobs as $m){
+
+?>
                                         <option selected value="<?php echo $m['sob_id']; ?>"><?php echo $m['sob_name']; ?></option>
-                                    <?php
-                                        }
-                                 
-                                    ?>
+<?php
+    }
+
+?>
                                     </select>
                                 </div>
                         </div>
@@ -270,38 +216,38 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                         <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">所属部门</label>
                                 <div class="col-xs-6 col-sm-6">
-                                <?php
-                                    if($profile['admin'] == 1 || $profile['admin'] == 3){
-                                        ?>
+<?php
+    if($profile['admin'] == 1 || $profile['admin'] == 3){
+?>
                                         <select class="chosen-select tag-input-style" multiple="multiple" name="usergroups[]" data-placeholder="部门信息" >
-                                <?php
-                                   }
-                                   else
-                                   {
-                                ?>
+<?php
+    }
+    else
+    {
+?>
                                     <select class="chosen-select tag-input-style" multiple="multiple" name="usergroups[]" data-placeholder="部门信息" disabled>
-                                    <?php
-                                }
-                                    ?>
-                                    <?php 
-                                    $usergroups = $pro['usergroups'];
-                                    $in_groups = array();
-                                    foreach($usergroups as $m){
-                                        array_push($in_groups,$m['id']);
-                                    ?>
+<?php
+    }
+?>
+<?php 
+    $usergroups = $pro['usergroups'];
+    $in_groups = array();
+    foreach($usergroups as $m){
+        array_push($in_groups,$m['id']);
+?>
                                         <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
-                                    <?php
-                                        }
-                                    foreach($ug as $g)
-                                    {
-                                        if(!in_array($g['id'], $in_groups))
-                                        {
-                                             ?>
+<?php
+    }
+    foreach($ug as $g)
+    {
+        if(!in_array($g['id'], $in_groups))
+        {
+?>
                                         <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
+<?php
+        }
+    }
+?>
                                     </select>
                                 </div>
                         </div>
@@ -310,16 +256,16 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                 <label class="col-sm-1 control-label no-padding-right">提交规则</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" multiple="multiple" name="commits[]" data-placeholder="提交规则" disabled>
-                                    <?php 
-                                    $commits = $pro['commits'];
-                                    foreach($commits as $m){
-                                   
-                                    ?>
+<?php 
+    $commits = $pro['commits'];
+    foreach($commits as $m){
+
+?>
                                         <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
-                                    <?php
-                                        }
-                                 
-                                    ?>
+<?php
+    }
+
+?>
                                     </select>
                                 </div>
                         </div>
@@ -328,21 +274,21 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                 <label class="col-sm-1 control-label no-padding-right">审批规则</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" multiple="multiple" name="audits[]" data-placeholder="审批规则" disabled>
-                                    <?php 
-                                    $audits = $pro['audits'];
-                                    foreach($audits as $m){
-                                   
-                                    ?>
+<?php 
+    $audits = $pro['audits'];
+    foreach($audits as $m){
+
+?>
                                         <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
-                                    <?php
-                                        }
-                                 
-                                    ?>
+<?php
+    }
+
+?>
                                     </select>
                                 </div>
                         </div>
 
-                      
+
 
 
                     <div class="form-group">
@@ -352,7 +298,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                 <div class="btn-toolbar" id="btns">
 
 <?php 
-foreach($member['banks'] as $b) {
+    foreach($member['banks'] as $b) {
 ?>
 <div class="btn-group" id="bank_<?php echo $b['id']; ?>" > 
     <button data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">
@@ -369,7 +315,7 @@ foreach($member['banks'] as $b) {
     </ul> 
 </div><!-- /.btn-group -->
 <?php 
-}
+    }
 ?>
                                     <div class="btn-group">
                                         <a href="javascript:void(0)" class="btn btn-success new_credit">
@@ -384,7 +330,7 @@ foreach($member['banks'] as $b) {
 
 
 <?php 
-if($profile['admin'] == 1 || $profile['admin'] == 3){
+    if($profile['admin'] == 1 || $profile['admin'] == 3){
 ?>
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">角色</label>
@@ -392,28 +338,28 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                             <div class="col-xs-12 col-sm-12 "  style="margin-left:0px !important;padding-left:0px !important;" >
                                 <div class="btn-toolbar" id="btns">
                                     <select name="admin_new" id="admin_new" class="form-control" style="width:120px"> 
-                                        <?php
-                                            $chara = array(0 => "员工", 
-                                                           1 => "管理员",
-                                                           2 => "出纳",
-                                                           3 => "IT人员");
-                                            if($profile['admin'] == 3) {
-                                                $chara = array(0 => "员工", 
-                                                    2 => "出纳",
-                                                    3 => "IT人员");
-                                            }
-                                            foreach($chara as $val => $des) {
-                                            //for ($i=0; $i < 4; $i++) { 
-                                                $str1 = '<option value="' . $val . '"';
-                                                $select = 'selected="true"';
-                                                $str2 = '>' . $chara[$val] . "</option>";
-                                                if ($val == $member['admin']) {
-                                                    echo $str1.$select.$str2;
-                                                } else {
-                                                    echo $str1.$str2;
-                                                }
-                                            }
-                                        ?>
+<?php
+        $chara = array(0 => "员工", 
+            1 => "管理员",
+            2 => "出纳",
+            3 => "IT人员");
+        if($profile['admin'] == 3) {
+            $chara = array(0 => "员工", 
+                2 => "出纳",
+                3 => "IT人员");
+        }
+        foreach($chara as $val => $des) {
+            //for ($i=0; $i < 4; $i++) { 
+            $str1 = '<option value="' . $val . '"';
+            $select = 'selected="true"';
+            $str2 = '>' . $chara[$val] . "</option>";
+            if ($val == $member['admin']) {
+                echo $str1.$select.$str2;
+            } else {
+                echo $str1.$str2;
+            }
+        }
+?>
                                     </select>
                                     <input type="hidden" name="admin_old" value="<?php echo $member['admin']; ?>" type="hidden" />
                                 </div>
@@ -423,7 +369,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 
 
 <?php 
-}
+    }
 ?>
 
 
@@ -715,7 +661,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                         <option value='福建省农村信用社联合社'>福建省农村信用社联合社</option>
                                         <option value='贵阳市商业银行'>贵阳市商业银行</option>
                                         <option value='大庆市商业银行'>大庆市商业银行</option>
-					<option value='青岛商行'>青岛商行</option>
+                    <option value='青岛商行'>青岛商行</option>
                                         <option value='佛山市三水区农村信用合作社'>佛山市三水区农村信用合作社</option>
                                         <option value='南通市商业银行'>南通市商业银行</option>
                                         <option value='南宁市商业银行'>南宁市商业银行</option>
@@ -832,65 +778,65 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
 <script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script> 
-<script language="javascript">
-var __BASE = "<?php echo $base_url; ?>";
-var flag = 0;
-var is_other = "<?php echo $isOther; ?>";
-function show_loading(){
-    $('#loading').show();
-}
-
-function close_loading(){
-    $('#loading').hide();
-    //$.nmTop().close();
-}
-if(is_other == 0) {
-var uploader = WebUploader.create({
-    // 选完文件后，是否自动上传。
-    auto: true,
-    // swf文件路径
-    swf: '/static/third-party/webUploader/Uploader.swf',
-    // 文件接收服务端。
-    server: '<?php echo base_url('items/images'); ?>',
-    // 选择文件的按钮。可选。
-    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-    pick: '.filePicker',
-    // 只允许选择图片文件。
-    accept: {
-        title: 'Images',
-        extensions: 'gif,jpg,jpeg,bmp,png',
-        mimeTypes: 'image/*'
+    <script language="javascript">
+    var __BASE = "<?php echo $base_url; ?>";
+    var flag = 0;
+    var is_other = "<?php echo $isOther; ?>";
+    function show_loading(){
+        $('#loading').show();
     }
 
-});
-
-uploader.on( 'uploadProgress', function( file, percentage ) {
-    show_loading();
-});
-uploader.on( 'uploadSuccess', function( file, resp ) {
-    close_loading();
-    if(resp.status > 0) {
-        var _src = resp['data']['url'];
-        $('#avatar_src').attr( 'src', _src);
+    function close_loading(){
+        $('#loading').hide();
+        //$.nmTop().close();
     }
-});
-}
+    if(is_other == 0) {
+        var uploader = WebUploader.create({
+            // 选完文件后，是否自动上传。
+            auto: true,
+                // swf文件路径
+                swf: '/static/third-party/webUploader/Uploader.swf',
+                // 文件接收服务端。
+                server: '<?php echo base_url('items/images'); ?>',
+                // 选择文件的按钮。可选。
+                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                pick: '.filePicker',
+                // 只允许选择图片文件。
+                accept: {
+                    title: 'Images',
+                        extensions: 'gif,jpg,jpeg,bmp,png',
+                        mimeTypes: 'image/*'
+                }
+
+        });
+
+        uploader.on( 'uploadProgress', function( file, percentage ) {
+            show_loading();
+        });
+        uploader.on( 'uploadSuccess', function( file, resp ) {
+            close_loading();
+            if(resp.status > 0) {
+                var _src = resp['data']['url'];
+                $('#avatar_src').attr( 'src', _src);
+            }
+        });
+    }
 
 
 
     var __PROVINCE = Array();
-function get_province(){
+    function get_province(){
         $.ajax({
             url : __BASE + "static/province.json",
-            dataType : 'json',
-            method : 'GET',
-            success : function(data){
-                __PROVINCE = data;
-                $(data).each(function(idx, item){
-                    var _h = "<option value='" +  item.name + "'>"+  item.name + " </option>";
-                    $('#province').append(_h);
-                });
-            }
+                dataType : 'json',
+                method : 'GET',
+                success : function(data){
+                    __PROVINCE = data;
+                    $(data).each(function(idx, item){
+                        var _h = "<option value='" +  item.name + "'>"+  item.name + " </option>";
+                        $('#province').append(_h);
+                    });
+                }
         });
         $('#province').change(function(){
             var _p = $(this).val();
@@ -898,13 +844,13 @@ function get_province(){
             $(__PROVINCE).each(function(idx, item) {
                 if(item.name == _p){
                     $(item.city).each(function(_idx, _item){
-                    var _h = "<option value='" +  _item + "'>"+  _item + " </option>";
-                    $('#city').append(_h);
+                        var _h = "<option value='" +  _item + "'>"+  _item + " </option>";
+                        $('#city').append(_h);
                     });
                 }
             });
         });
-}
+    }
 
     function reset_bank(disable, title) {
         $('#modal_title').val();
@@ -935,12 +881,12 @@ function get_province(){
         var _id = $(node).data('id');
         $.ajax({
             url : __BASE + "users/del_credit/"  + _id,
-            dataType : 'json',
-            method : 'GET',
-            success : function(data){
-                $('#bank_' + _id).remove();
-                show_notify('银行卡删除成功');
-            }
+                dataType : 'json',
+                method : 'GET',
+                success : function(data){
+                    $('#bank_' + _id).remove();
+                    show_notify('银行卡删除成功');
+                }
         });
     }
 
@@ -954,7 +900,7 @@ function get_province(){
         $('#cardno').val($(node).data('cardno'));
         $('#credit_model').modal('show');
         var i = 1, loc = $(node).data('bankloc');
-        
+
         do {
             i += 1;
             console.log(i);
@@ -966,13 +912,13 @@ function get_province(){
             }
         } while ($('select[name="province"]').val() == null); 
         /*for(var i=1;i<=loc.length+1;i++)
-        {
+            {
             console.log(loc.substr(0,i));
              $('select[name="province"]').val(loc.substr(0,i));
-        }*/
-        var city = loc.substr(i);
-        $('select[name="province"]').change();
-        $('select[name="city"]').val(city);
+                        }*/
+                        var city = loc.substr(i);
+                    $('select[name="province"]').change();
+                    $('select[name="city"]').val(city);
     }
 
     function show_credit(node){
@@ -1009,189 +955,166 @@ function get_province(){
 
     }
 
-$(document).ready(function(){
-    get_province();
-    if(__error) show_notify(__error);
-    /*
-    $('#src').uploadFile(
-                    {
-                        dataType: 'json',
-                        progressall: function (e, data) {
-                                //$('#div_thumbnail').show();
-                                $('#btn_cimg').hide();
-                            var progress = parseInt(data.loaded / data.total * 100, 10);
-                        },
-                            done: function (e, data) {
-                                var _server_data = data.result;
-                                if(_server_data.status == 0) {
-                                    show_notify('保存失败');
-                                } else {
-                                    var _path = _server_data.data.url;
-                                    var _id = _server_data.data.id;
-                                    $('#btn_cimg').html('<img src="' + _path + '" style="height:130px;width:130px;">');
-                                    $('#btn_cimg').show();
-                                }
-                            },
-                                fileuploadfail : function (){
-                                    show_notify('保存失败');
-                                }
-                    }
-    );
-         */
-
-    $('.chosen-select').chosen({allow_single_deselect:true}); 
-    $(window)
-        .off('resize.chosen')
-        .on('resize.chosen', function() {
-            $('.chosen-select').each(function() {
-                var $this = $(this);
-                $this.next().css({'width': $this.parent().width()});
-            })
-        }).trigger('resize.chosen');
+    $(document).ready(function(){
+        get_province();
+        if(__error) show_notify(__error);
+        $('.chosen-select').each(function(){
+            console.log('find me');
+            console.log($(this));
+        });
+        $('.chosen-select').chosen({allow_single_deselect:true}); 
+        $(window)
+            .off('resize.chosen')
+            .on('resize.chosen', function() {
+                $('.chosen-select').each(function() {
+                    var $this = $(this);
+                    $this.next().css({'width': $this.parent().width()});
+                })
+            }).trigger('resize.chosen');
 
 
-    $('.avatar').click(function(){
-        if(0 == __self) return false;
-        $('#btn_cimg').show();
-        $('#select_img_modal').modal({keyborard: false});
-    });
+        $('.avatar').click(function(){
+            if(0 == __self) return false;
+            $('#btn_cimg').show();
+            $('#select_img_modal').modal({keyborard: false});
+        });
 
-    $('.renew').click(function(){
-        $('#profile_form').submit();
-    });
+        $('.renew').click(function(){
+            $('#profile_form').submit();
+        });
 
         /*
     $('#btn_cimg').click(function(){
         $('#src').click();
     });
-         */
-    $('.password').click(function(){
-        $('#password_modal').modal({keyborard: false});
-    });
-    $('.update_password').click(function(){
-        $('#password_form').submit();
-    });
-    $('.update_phone').click(function(){
-        //$('#phone_form').submit();
-        var _phone = $('#phone').val();
-        var _vcode = $('#vcode').val();
-        $.ajax({
-            url:__BASE+"users/update_phone",
-            method:"POST",
-            dataType:"json",
-            data:{'phone':_phone,'vcode':_vcode},
-            success:function(data){
-                //console.log(data);
-                if(data.status==0 || data.status=='false')
-                {
-                    show_notify(data.data.msg);
-                }
-                else if(data.status == 1)
-                {
-                    $('#phone_modal').modal('hide');
-                    show_notify("手机绑定成功,1秒之后跳转至登陆页面");
-                    setTimeout(function(){window.location.href="/login"}. 1000);
-                }
+                         */
+                        $('.password').click(function(){
+                            $('#password_modal').modal({keyborard: false});
+                        });
+                    $('.update_password').click(function(){
+                        $('#password_form').submit();
+                    });
+                    $('.update_phone').click(function(){
+                        //$('#phone_form').submit();
+                        var _phone = $('#phone').val();
+                        var _vcode = $('#vcode').val();
+                        $.ajax({
+                            url:__BASE+"users/update_phone",
+                                method:"POST",
+                                dataType:"json",
+                                data:{'phone':_phone,'vcode':_vcode},
+                                success:function(data){
+                                    //console.log(data);
+                                    if(data.status==0 || data.status=='false')
+                                    {
+                                        show_notify(data.data.msg);
+                                    }
+                                    else if(data.status == 1)
+                                    {
+                                        $('#phone_modal').modal('hide');
+                                        show_notify("手机绑定成功,1秒之后跳转至登陆页面");
+                                        setTimeout(function(){window.location.href="/login"}, 1000);
+                                    }
 
-               // $('#phone_modal').modal('hide');
-            }
-        });
-    });
+                                    // $('#phone_modal').modal('hide');
+                                }
+                        });
+                    });
 
-    $('.change_phone').click(function(){
-        $('#phone_modal').modal({keyborard: false});
-    });
-    $('.getvcode').click(function(){
-        var _phone = $('#phone').val();
-        $.ajax({
-            url : __BASE + "users/getvcode",
-            data : {'phone' : _phone},
-            dataType : 'json',
-            method : 'POST',
-            success : function(data){
-                if(data.status){
-                    //TODO: 设置定时器
-                    $('.gitvcode').hide();
-                    show_notify('验证码已经发送');
-                } else {
-                    show_notify(data.data.msg);
-                }
-            }
-        });
-    });
-    $('.new_credit').click(function(){
-        reset_bank(1, '添加新银行卡');
-        $('#credit_model').modal({keyborard: false});
-    });
-    $('.new_card').click(function(){
-        var _p = $('#province').val();
-        var _c = $('#city').val();
-        var _account = $('#account').val();
-        var _bank = $('#cardbank').val();
-        var _no = $('#cardno').val();
-        var _loc = _p + _c;//$('#cardloc').val();
-        var _id = $('#id').val();
-        $.ajax({
-            url : __BASE + "users/new_credit",
-                data : {
-                    'account' : _account
-                    ,'cardbank' : _bank
-                    ,'cardno' : _no
-                    ,'cardloc' :  _loc
-                    ,'id' :  _id
-                },
-            dataType : 'json',
-            method : 'POST',
-            success : function(data){
-                if(data.status){
-                    var _id = data.data.id;
-                    $('#credit_model').modal('hide');
-                    if(_id > 0){
-                        $('#bank_' + _id).remove();
-                    }
-                    var buf = '<div class="btn-group" id="bank_' + _id + '"> '
-                        + '<button data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">' 
-                        + _account 
-                        + '<i class="ace-icon fa fa-angle-down icon-on-right"></i> </button>'
-                        + '<ul class="dropdown-menu"> '
-                        + '<li> <a href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="edit_bank" >修改</a> </li>'
-                        + '<li> <a  href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '"  class="show_bank">展示</a> </li> '
-                        + '<li class="divider"></li> '
-                        + '<li> <a href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="del_bank">删除</a> </li>'
-                        + ' </ul> </div>';
-                    $('#btns').prepend(buf);
+                    $('.change_phone').click(function(){
+                        $('#phone_modal').modal({keyborard: false});
+                    });
+                    $('.getvcode').click(function(){
+                        var _phone = $('#phone').val();
+                        $.ajax({
+                            url : __BASE + "users/getvcode",
+                                data : {'phone' : _phone},
+                                dataType : 'json',
+                                method : 'POST',
+                                success : function(data){
+                                    if(data.status){
+                                        //TODO: 设置定时器
+                                        $('.gitvcode').hide();
+                                        show_notify('验证码已经发送');
+                                    } else {
+                                        show_notify(data.data.msg);
+                                    }
+                                }
+                        });
+                    });
+                    $('.new_credit').click(function(){
+                        reset_bank(1, '添加新银行卡');
+                        $('#credit_model').modal({keyborard: false});
+                    });
+                    $('.new_card').click(function(){
+                        var _p = $('#province').val();
+                        var _c = $('#city').val();
+                        var _account = $('#account').val();
+                        var _bank = $('#cardbank').val();
+                        var _no = $('#cardno').val();
+                        var _loc = _p + _c;//$('#cardloc').val();
+                        var _id = $('#id').val();
+                        $.ajax({
+                            url : __BASE + "users/new_credit",
+                                data : {
+                                    'account' : _account
+                                        ,'cardbank' : _bank
+                                        ,'cardno' : _no
+                                        ,'cardloc' :  _loc
+                                        ,'id' :  _id
+                                },
+                                dataType : 'json',
+                                method : 'POST',
+                                success : function(data){
+                                    if(data.status){
+                                        var _id = data.data.id;
+                                        $('#credit_model').modal('hide');
+                                        if(_id > 0){
+                                            $('#bank_' + _id).remove();
+                                        }
+                                        var buf = '<div class="btn-group" id="bank_' + _id + '"> '
+                                            + '<button data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">' 
+                                            + _account 
+                                            + '<i class="ace-icon fa fa-angle-down icon-on-right"></i> </button>'
+                                            + '<ul class="dropdown-menu"> '
+                                            + '<li> <a href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="edit_bank" >修改</a> </li>'
+                                            + '<li> <a  href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '"  class="show_bank">展示</a> </li> '
+                                            + '<li class="divider"></li> '
+                                            + '<li> <a href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="del_bank">删除</a> </li>'
+                                            + ' </ul> </div>';
+                                        $('#btns').prepend(buf);
+                                        bind_event();
+                                        show_notify('银行卡添加成功');
+                                    } else {
+                                        show_notify(data.data.msg);
+                                    }
+                                },
+                                    error: function (){
+                                        show_notify('操作失败，请稍后尝试');
+                                    }
+                        });
+                    });
+
                     bind_event();
-                    show_notify('银行卡添加成功');
-                } else {
-                    show_notify(data.data.msg);
-                }
-            },
-                error: function (){
-                    show_notify('操作失败，请稍后尝试');
-                }
-        });
-    });
+                    $('#setadmin').change(function(){
+                        var _admin = $('#setadmin').is(':checked') ? 0 : 1;
+                        var uid = $('#uid').val();
+                        $.ajax({
+                            url: __BASE + "/members/setadmin/" + uid + "/" + _admin,
+                                method: 'GET',
+                                dataType: 'json',
+                                success: function(data) {
+                                    if(!data.status ) {
+                                        show_notify(data.data.msg);
+                                    }
+                                },
+                                    error: function(data) {
+                                        show_notify('设置用户信息失败');
+                                    }
+                        });
+                    });
 
-    bind_event();
-    $('#setadmin').change(function(){
-        var _admin = $('#setadmin').is(':checked') ? 0 : 1;
-        var uid = $('#uid').val();
-    $.ajax({
-        url: __BASE + "/members/setadmin/" + uid + "/" + _admin,
-            method: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                if(!data.status ) {
-                    show_notify(data.data.msg);
-                }
-            },
-                error: function(data) {
-                    show_notify('设置用户信息失败');
-                }
     });
-    });
-
-});
 </script>
 
 

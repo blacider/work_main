@@ -1064,7 +1064,7 @@ class Members extends REIM_Controller {
                 $d['manager_id'] = 0;
             }
 
-            if($names[$d['name']]['count'] > 1)
+            if(array_key_exists($d['name'], $names) && $names[$d['name']]['count'] > 1)
             {
                 log_message('debug','counts:' . $names[$d['name']]['count'] );
                 $d['status'] += 2;

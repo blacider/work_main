@@ -310,6 +310,18 @@ class Reports extends REIM_Controller {
             $this->session->set_userdata('last_error','提交报告不能为空');
             return redirect(base_url('reports/index')); 
         }
+        $title = $this->input->post('title');
+        $receiver = $this->input->post('receiver');
+        $cc = $this->input->post('cc');
+        $save = $this->input->post('renew');
+        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save);
+        $ret = json_decode($ret, true);
+        log_message("debug", "xx:" . json_encode($ret));
+        if($ret['code'] <= 0) {
+            if($ret['code'] == -71)
+            {
+                $quota = $ret['data']['quota'];
+                $str = '';
         $info = $this->category->get_list();
         if($info['status'] > 0)
         {
@@ -326,19 +338,6 @@ class Reports extends REIM_Controller {
             //	array_push($categories,array($cate['id'] => $cate['category_name']));
             $categories[$cate['id']] = $cate['category_name'];
         }
-        log_message('debug','categories:' . json_encode($categories));
-        $title = $this->input->post('title');
-        $receiver = $this->input->post('receiver');
-        $cc = $this->input->post('cc');
-        $save = $this->input->post('renew');
-        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save);
-        $ret = json_decode($ret, true);
-        log_message("debug", "xx:" . json_encode($ret));
-        if($ret['code'] <= 0) {
-            if($ret['code'] == -71)
-            {
-                $quota = $ret['data']['quota'];
-                $str = '';
                 foreach($quota as $key => $q)
                 {
                     if($q < 0)
@@ -347,8 +346,24 @@ class Reports extends REIM_Controller {
                         log_message('debug','value:' . $str);
                     }
                 }	
-                $this->session->set_userdata('last_error', '根据公司规则，你的' . $str .'类消费超过了公司额度');
+                $this->session->set_userdata('last_error', '你的' . $str .'金额已超出公司规定');
             } elseif($ret['code'] == -63) {
+        $info = $this->category->get_list();
+        if($info['status'] > 0)
+        {
+            $_categories = $info['data']['categories'];
+        }
+        else
+        {
+            $_categories = array();
+        }
+        $categories = array();
+
+        foreach($_categories as $cate)
+        {
+            //	array_push($categories,array($cate['id'] => $cate['category_name']));
+            $categories[$cate['id']] = $cate['category_name'];
+        }
                 $quota = $ret['data']['quota'];
                 $str = '';
                 foreach($quota as $key => $q)
@@ -359,7 +374,7 @@ class Reports extends REIM_Controller {
                         log_message('debug','value:' . $str);
                     }
                 }	
-                $this->session->set_userdata('last_error', '本月内你已经不能提交' . $str .'类报告了');
+                $this->session->set_userdata('last_error', '你的 ' . $str .'提交次数已经超出公司规定');
             } else {
                 log_message("debug", "alvayang:" . json_encode($ret));
                 $this->session->set_userdata('last_error', $ret['data']['msg']);
@@ -577,12 +592,23 @@ class Reports extends REIM_Controller {
     public function update(){
         $id = $this->input->post('id');
         $items = $this->input->post('item');
-	if(''==$items)
-	{
-		$this->session->set_userdata('last_error','提交报告不能为空');
-		return redirect(base_url('reports/index')); 
-	}
-    	$info = $this->category->get_list();
+        if(''==$items || !$id)
+        {
+            $this->session->set_userdata('last_error','提交报告不能为空');
+            return redirect(base_url('reports/index')); 
+        }
+        log_message('debug','categories:' . json_encode($categories));
+        $title = $this->input->post('title');
+        $receiver = $this->input->post('receiver');
+        $cc = $this->input->post('cc');
+        $save = $this->input->post('renew');
+        $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save);
+        $ret = json_decode($ret, true);
+        log_message("debug", "xx:" . json_encode($ret));
+        if($ret['code'] <= 0) {
+            if($ret['code'] == -71)
+            {
+        $info = $this->category->get_list();
         if($info['status'] > 0)
         {
             $_categories = $info['data']['categories'];
@@ -598,17 +624,6 @@ class Reports extends REIM_Controller {
             //	array_push($categories,array($cate['id'] => $cate['category_name']));
             $categories[$cate['id']] = $cate['category_name'];
         }
-        log_message('debug','categories:' . json_encode($categories));
-        $title = $this->input->post('title');
-        $receiver = $this->input->post('receiver');
-        $cc = $this->input->post('cc');
-        $save = $this->input->post('renew');
-        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save);
-        $ret = json_decode($ret, true);
-        log_message("debug", "xx:" . json_encode($ret));
-        if($ret['code'] <= 0) {
-            if($ret['code'] == -71)
-            {
                 $quota = $ret['data']['quota'];
                 $str = '';
                 foreach($quota as $key => $q)
@@ -619,10 +634,26 @@ class Reports extends REIM_Controller {
                         log_message('debug','value:' . $str);
                     }
                 }	
-                $this->session->set_userdata('last_error', '根据公司规则，你的' . $str .'类消费超过了公司额度');
+                $this->session->set_userdata('last_error', '你的' . $str .'金额已超出公司规定');
             }
             else if($ret['code'] == -63)
             {
+        $info = $this->category->get_list();
+        if($info['status'] > 0)
+        {
+            $_categories = $info['data']['categories'];
+        }
+        else
+        {
+            $_categories = array();
+        }
+        $categories = array();
+
+        foreach($_categories as $cate)
+        {
+            //	array_push($categories,array($cate['id'] => $cate['category_name']));
+            $categories[$cate['id']] = $cate['category_name'];
+        }
                 $quota = $ret['data']['quota'];
                 $str = '';
                 foreach($quota as $key => $q)
@@ -633,7 +664,7 @@ class Reports extends REIM_Controller {
                         log_message('debug','value:' . $str);
                     }
                 }	
-                $this->session->set_userdata('last_error', '本月内你已经不能提交' . $str .'类报告了');
+                $this->session->set_userdata('last_error', '你的 ' . $str .'提交次数已经超出公司规定');
             } else {
                 log_message("debug", "alvayang:" . json_encode($ret));
                 $this->session->set_userdata('last_error', $ret['data']['msg']);

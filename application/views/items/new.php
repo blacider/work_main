@@ -270,22 +270,12 @@ if(__item_config != '')
     item_config = JSON.parse(__item_config);
 }
 var _item_config = new Object();
-console.log(item_config);
+//console.log(item_config);
 for(var i = 0 ; i < item_config.length; i++)
 {
-    /*
-    if(item_config[i].type == 2)
-    {
-        _item_config = item_config[i];
-    }
-    if(item_config[i].type == 5)
-    {
-        _item_config = item_config[i];
-    }*/
     if(item_config[i]['type']==2 || item_config[i]['type'] == 5)
     _item_config[item_config[i]['cid']] = item_config[i];
 }
-console.log(_item_config);
 
 var __config = '';
 if(config != '')
@@ -406,7 +396,7 @@ uploader.on( 'uploadComplete', function( file ) {
 }
 function bind_event(){
         $('.del-button').click(function(e) {
-            console.log(e);
+            //console.log(e);
             var key = imagesDict[this.parentNode.id].split("WU_FILE_")[1];
             var images = $("input[name='images']").val();
             var arr_img = images.split(',');
@@ -471,6 +461,7 @@ function get_sobs(){
         });
 }
 
+var __multi_time = 0;
 $(document).ready(function(){
 
 
@@ -513,43 +504,38 @@ $(document).ready(function(){
     $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange'></i>");//let's add a custom loading icon
     
     $('#sob_category').change(function(){
+            $('#endTime').hide();
+            $('#average').hide();
+        __multi_time = 0;
         var category_id = $('#sob_category').val();
-        console.log(category_id);
         if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 2)
         {
-            $('#config_id').val(_item_config['id']);
-            console.log(_item_config[category_id]['id']);
+            __multi_time = 1;
+            $('#config_id').val(_item_config[category_id]['id']);
+            //console.log(_item_config[category_id]['id']);
             $('#config_type').val(_item_config[category_id]['type']);
             $('#date-timepicker2').val('');
             $('#endTime').show();
-        }
-        else
-        {
-            $('#config_id').val('');
-            $('#config_type').val('');
-            $('#date-timepicker2').val(-1);
-            $('#endTime').hide();
-        }
-
-        if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 5)
-        {
-            $('#config_id').val(_item_config[category_id]['id']);
-            console.log(_item_config[category_id]['id']);
-            $('#config_type').val(_item_config[category_id]['type']);
-            $('#amount').change(function(){
+        } else  {
+            if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 5)
+            {
+                $('#config_id').val(_item_config[category_id]['id']);
+                $('#config_type').val(_item_config[category_id]['type']);
+                $('#amount').change(function(){
+                    var all_amount = $('#amount').val();
+                    $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人*' + subs);
+                });
                 var all_amount = $('#amount').val();
-            $('#average_id').text(all_amount/subs+'元/人*' + subs);
-            });
-            var all_amount = $('#amount').val();
-            $('#average_id').text(all_amount/subs+'元/人*' + subs);
-            $('#average').show();
-        }
-        else
-        {
-            $('#config_id').val('');
-            $('#config_type').val('');
-            $('#average').val('');
-            $('#average').hide();
+                $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人*' + subs);
+                $('#average').show();
+            }
+            else
+            {
+                $('#config_id').val('');
+                $('#config_type').val('');
+                $('#average').val('');
+                $('#average').hide();
+            }
         }
 
     });
@@ -596,16 +582,16 @@ $(document).ready(function(){
 
          var dateTime2 = $('#date-timepicker2').val();
          dateTime2 = dateTime2.replace(/(^\s*)|(\s*$)/g,'');
-         //console.log(dateTime2.replace(/(^\s*)|(\s*$)/g,'')>'-1');
+         ////console.log(dateTime2.replace(/(^\s*)|(\s*$)/g,'')>'-1');
         if(__config['not_auto_time'] == 1)
         {
-            if(dateTime2 == '')
+            if(dateTime2 == '' && __multi_time)
             {
                 show_notify('请填写结束时间');
                 //$('#date-timepicker1').focus();
                 return false;
             }
-            console.log();
+            //console.log();
             if((dateTime2>'0') && (dateTime2 < dateTime))
             {
                 show_notify('结束时间应该大于开始时间');
@@ -624,7 +610,7 @@ $(document).ready(function(){
                 return false;
             }
         }
-        //console.log($('#sob_category').val());
+        ////console.log($('#sob_category').val());
         if($('#sob_category').val() == null)
         {
             show_notify('请选择类目');
