@@ -65,18 +65,18 @@
 
 
 <div disabled class="form-group" id="average" hidden>
+<label class="col-sm-1 control-label no-padding-right">人数:</label>
+<div class="col-xs-3 col-sm-3">
+<div class="input-group">
+<input type="text" id="people-nums" data-placeholder="人数">
+</div>
+</div>
 <label class="col-sm-1 control-label no-padding-right">人均:</label>
 <div class="col-xs-3 col-sm-3">
 <div class="input-group">
 <div id="average_id" name="average" type="text" class="form-control"></div>
 
 
-</div>
-</div>
-<label class="col-sm-1 control-label no-padding-right">人数:</label>
-<div class="col-xs-3 col-sm-3">
-<div class="input-group">
-<input type="text" id="people-nums" data-placeholder="人数">
 </div>
 </div>
 
