@@ -136,13 +136,13 @@ class Users extends REIM_Controller {
                 ,'error' => $error
                 ,'avatar_path' => $path
                 ,'isOther' => 0
-		,'manager_id' => $manager_id
-		,'gmember' => $gmember
-		,'pid' => $uid
-		,'pro' => $pro
-		,'ug' => $ug
-		,'ranks' => $ranks
-		,'levels' => $levels
+                ,'manager_id' => $manager_id
+                ,'gmember' => $gmember
+                ,'pid' => $uid
+                ,'pro' => $pro
+                ,'ug' => $ug
+                ,'ranks' => $ranks
+                ,'levels' => $levels
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '修改资料', 'class' => '')

@@ -63,16 +63,13 @@
                             <input type="hidden" id="config_id" name="config_id" />
                             <input type="hidden" id="config_type" name="config_type"/>
 
-<?php 
-foreach($item_value as $_type => $_item) {
-if($_type == 2) {
-?>
-                            <div class="form-group" id="endTime" hidden>
+
+                            <div class="form-group" id="endTime" style="display:none;">
                                 <label class="col-sm-1 control-label no-padding-right">至</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <div class="input-group">
-                                        <input id="date-timepicker2" name="dt_end1" id="dt_end1" type="text" class="form-control"  value="<?php echo date('Y-m-d H:i:s', $_item['value']); ?>" />
-                                       <input type="hidden" name="dt_end" id="dt_end" value="<?php echo date('Y-m-d H:i:s', $_item['value']); ?>">
+                                        <input id="date-timepicker2" name="dt_end1" id="dt_end1" type="text" class="form-control"  value="" />
+                                       <input type="hidden" name="dt_end" id="dt_end" value="">
                                       
                                         <span class="input-group-addon">
                                             <i class="fa fa-clock-o bigger-110"></i>
@@ -80,30 +77,36 @@ if($_type == 2) {
                                     </div>
                                 </div>
                             </div>
-
-<?php
-}
-if($_type == 5) {
-?>
-                        
-
-
-
-                            <div disabled class="form-group" id="average" hidden>
+                            <div disabled class="form-group" id="average"  style="display:none;">
                                 <label class="col-sm-1 control-label no-padding-right">人均:</label>
                                 <div class="col-xs-3 col-sm-3">
                                     <div class="input-group">
-                                        <div id="average_id" name="average" type="text" class="form-control"> <?php echo $_item['value']; ?></div>
-
+                                        <div id="average_id" name="average" type="text" class="form-control"> </div>
                                     </span>
                                 </div>
                             </div>
                         </div>
-                        <?php
-                    }
-                    
-                }
-                    ?>
+<?php 
+    $ddt = '';
+    $average = '0';
+    $config_id = 0;
+    $config_type = 0;
+    if(count($item_value)){
+        foreach($item_value as $_type => $_item) {
+            if($_type == 2) {
+                $config_id = $_item['id'];
+                $config_type = $_item['type'];
+                $ddt = date('Y-m-d H:i:s', $_item['value']); 
+            }
+            if($_type == 5) {
+                $config_id = $_item['id'];
+                $config_type = $_item['type'];
+                $average = $_item['value'];
+            }
+
+        }
+    }
+?>
 
 
 
@@ -259,6 +262,8 @@ if($_type == 5) {
 
 <script language="javascript">
 
+var _ddt = "<?php echo $ddt; ?>";
+var _average = "<?php echo $average; ?>";
 var subs = "<?php echo $profile['subs'];?>";
 var __item_config = '<?php echo json_encode($item_config);?>';
 var item_config = [];
@@ -316,13 +321,14 @@ var __config = JSON.parse(config);
 
 var _item_category = '<?php echo $item['category']; ?>';
 var flag = 0;
+var __config_id = "<?php echo $config_id; ?>";
+var __config_type = "<?php echo $config_type; ?>";
 function get_sobs(){
    var selectPostData = {};
    var selectDataCategory = {};
    var selectDataSobs = '';
    var _url = __BASE + "category/get_my_sob_category";
-   if(own_id != item_user_id)
-   {
+   if(own_id != item_user_id) {
    	_url = _url +  '/' + item_user_id;
    }
         $.ajax({
@@ -366,7 +372,6 @@ function get_sobs(){
                 }
             }
             $("#sobs").attr("value", _sid);
-            //var selectDom = this.parentNode.nextElementSibling.children[0]
             $(this.nextElementSibling).empty().append(_h).trigger("chosen:updated");
             $('#sob_category').trigger('change');
         });
@@ -538,11 +543,11 @@ function load_exists(){
     $('input[name="images"]').val(result);
     bind_event();
 }
+var __multi_time = 0;
 $(document).ready(function(){
     get_sobs();
     var _dt = $('#dt').val();
     var images = eval("(" + _images + ")");
-    // console.log(_dt);
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
         defaultDate: _dt,
@@ -552,13 +557,13 @@ $(document).ready(function(){
         $(this).prev().focus();
     });
     
+    $('#config_id').val(__config_id);
+    $('#config_type').val(__config_type);
 
+    console.log("set to ", __config_id);
     try{
-        var _ddt = $('#dt_end').val();
-        console.log(_ddt);
+        //var _ddt = $('#dt_end').val();
         $('#date-timepicker2').val(_ddt);
-        if(_ddt) {
-
             $('#date-timepicker2').datetimepicker({
                 language: 'zh-cn',
                 defaultDate: _ddt,
@@ -567,9 +572,7 @@ $(document).ready(function(){
                 }).next().on(ace.click_event, function(){
                     $(this).prev().focus();
                 });
-        }
     }catch(e) {
-        console.log(e);
     }
 
  
@@ -588,63 +591,38 @@ $(document).ready(function(){
 
 
 $('#sob_category').change(function(){
+    __multi_time = 0;
+            $('#endTime').hide();
+            $('#average').hide();
        var category_id = $('#sob_category').val();
-        //console.log(_item_config);
-        
         if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 2)
         {
-            $('#config_id').val(_item_config['id']);
-            //console.log(_item_config[category_id]['id']);
+            __multi_time = 1;
+            $('#config_id').val(_item_config[category_id]['id']);
             $('#config_type').val(_item_config[category_id]['type']);
-            var _ddt = '';
-            try{
-                var _ddt = $('#dt_end').val();
-                //console.log(_ddt);
-                
-            }catch(e) {
-                //console.log(e);
-            }
             $('#date-timepicker2').val(_ddt);
             $('#endTime').show();
         }
-        else
-        {
-            $('#config_id').val('');
-            $('#config_type').val('');
-            var _ddt = '';
-            try{
-                var _ddt = $('#dt_end').val();
-                console.log(_ddt);
-                
-            }catch(e) {
-                console.log(e);
-            }
-            $('#date-timepicker2').val(_ddt);
-            $('#endTime').hide();
-        }
-        
-
-        if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 5)
+        else if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 5)
         {
             $('#config_id').val(_item_config[category_id]['id']);
-            console.log(_item_config[category_id]['id']);
             $('#config_type').val(_item_config[category_id]['type']);
             $('#amount').change(function(){
                 var all_amount = $('#amount').val();
-            $('#average_id').text(all_amount/subs+'元/人*' + subs);
+            $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人*' + subs);
             });
             var all_amount = $('#amount').val();
-            $('#average_id').text(all_amount/subs+'元/人*' + subs);
+            $('#average_id').text(Number(all_amount/subs).toFixed(2)+'元/人*' + subs);
             $('#average').show();
         }
         else
         {
             $('#config_id').val('');
             $('#config_type').val('');
-            $('#average').val('');
-            $('#average').hide();
+            $('#date-timepicker2').val(_ddt);
+            $('#endTime').hide();
         }
-
+        
     });
 
     $('.renew').click(function(){
@@ -682,10 +660,11 @@ $('#sob_category').change(function(){
 
          var dateTime2 = $('#date-timepicker2').val();
          dateTime2 = dateTime2.replace(/(^\s*)|(\s*$)/g,'');
-         //console.log(dateTime2.replace(/(^\s*)|(\s*$)/g,'')>'-1');
+         console.log(dateTime2);
+         console.log(dateTime);
         if(__config['not_auto_time'] == 1)
         {
-            if(dateTime2 == '')
+            if(dateTime2 == '' && __multi_time)
             {
                 show_notify('请填写结束时间');
                 //$('#date-timepicker1').focus();

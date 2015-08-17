@@ -434,7 +434,7 @@ class Category extends REIM_Controller {
             }
 
         }
-        //$ugroups = $this->ug->get_my_list();
+        $ugroups = $this->ug->get_my_list();
         //        $_ug = json_encode($ugroups['data']['group']);
         $_acc = json_encode($acc_sets);
         log_message("debug","sob#############".json_encode($acc_set));
@@ -445,7 +445,7 @@ class Category extends REIM_Controller {
                 //	,'acc_sets' => $acc_sets
                 ,'acc_sets' => $acc_set
                 ,'error' => $error
-                //,'ugroups' => $ugroups['data']['group']
+                ,'ugroups' => $ugroups['data']['group']
                 ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
                     ,array('url' => '#','name' => '账套和标签','class' => '')
