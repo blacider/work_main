@@ -262,7 +262,7 @@ function bind_event() {
     var selectCache = <?php echo json_encode($rule['cates'])?>;
                             function appendChecked(selectJqDom, data) {
                                 //第一个 selectJqDom.children()[0].children[0]
-                                selectJqDom.find('select[name="sobs"]').find("option[value='"+data['sob_id']+"']").attr("selected",true);
+                                selectJqDom.find('select[name="sobs"]').val(data['sob_id']);
                                 selectJqDom.find('select[name="sobs"]').trigger("chosen:updated");
                                 //第二个
                                 selectJqDom.find('select[name="sobs"]').change();
