@@ -65,14 +65,21 @@
 
 
 <div disabled class="form-group" id="average" hidden>
+<label class="col-sm-1 control-label no-padding-right">人数:</label>
+<div class="col-xs-3 col-sm-3">
+<div class="input-group">
+<input type="text" id="people-nums" data-placeholder="人数">
+</div>
+</div>
 <label class="col-sm-1 control-label no-padding-right">人均:</label>
 <div class="col-xs-3 col-sm-3">
 <div class="input-group">
 <div id="average_id" name="average" type="text" class="form-control"></div>
 
-</span>
+
 </div>
 </div>
+
 </div>
 
 
@@ -523,10 +530,17 @@ $(document).ready(function(){
                 $('#config_type').val(_item_config[category_id]['type']);
                 $('#amount').change(function(){
                     var all_amount = $('#amount').val();
-                    $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人*' + subs);
+                    if (subs != '' && subs != 0)
+                        $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
+                    else
+                        $('#average_id').text("请输入正确人数");
+                });
+                $('#people-nums').change(function() {
+                    subs = $('#people-nums').val();
+                    $('#amount').change();
                 });
                 var all_amount = $('#amount').val();
-                $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人*' + subs);
+                $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
                 $('#average').show();
             }
             else

@@ -14,7 +14,7 @@ class User_Model extends Reim_Model {
 	$url = $this->get_url('common');
 	$buf = $this->do_Get($url,$jwt);
 
-	log_message('debug','common:' . $buf);
+	//log_message('debug','common:' . $buf);
 
 	return json_decode($buf,True);
     }
