@@ -1295,8 +1295,8 @@ class Members extends REIM_Controller {
         $info = $this->ug->update_data($manager,$uids, $name,$code,$pid,$gid);
         log_message("debug","@@@@@@@@@".json_encode($info));
         if($info['status'] > 0){
-            //           redirect(base_url('members/groups'));
-            redirect(base_url('members/index'));
+            redirect(base_url('members/groups'));
+            //redirect(base_url('members/index'));
         }
     }
 
