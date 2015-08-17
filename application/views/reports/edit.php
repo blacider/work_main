@@ -34,13 +34,21 @@
                                 <div class="col-xs-9 col-sm-9">
                                     <select class="chosen-select tag-input-style" name="receiver[]" multiple="multiple" data-placeholder="请选择标签">
 <?php 
+$user = $this->session->userdata('user');
+$_empty = 0;
+    if(!$reports['receivers']['managers']){
+        $_empty = 1;
+    }
 foreach($members as $m) {
-    if(in_array($m['id'], $report['receivers']['managers'])){
+    if($_empty == 0 && in_array($m['id'], $report['receivers']['managers']) || ($_empty == 1 && $user['manager_id'] == $m['id'])){
 ?>
 <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
 <?php } else { ?>
 <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
-<?php }} ?>
+<?php 
+}
+}
+ ?>
                                     </select>
                                 </div>
                             </div>

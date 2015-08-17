@@ -14,27 +14,27 @@
                         <div class="col-xs-12 col-sm-12">
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">名称</label>
-                                <div class="col-xs-9 col-sm-9">
+                                <div class="col-xs-10 col-sm-10">
                                     <input type="text" class="form-controller col-xs-12" name="title" placeholder="名称" value="<?php echo $report['title']; ?>" disabled>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">提交至</label>
-                                <div class="col-xs-9 col-sm-9">
+                                <div class="col-xs-10 col-sm-10">
                                     <input type="text" class="form-controller col-xs-12" name="title" placeholder="名称" value="<?php echo $report['receivers']['managers']; ?>" disabled>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">抄送至</label>
-                                <div class="col-xs-9 col-sm-9">
+                                <div class="col-xs-10 col-sm-10">
                                     <input type="text" class="form-controller col-xs-12" name="title" placeholder="名称" value="<?php echo $report['receivers']['cc']; ?>" disabled>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">总额</label>
-                                <div class="col-xs-9 col-sm-9">
+                                <div class="col-xs-10 col-sm-10">
 <?php
 $amount = 0;
 foreach($report['items'] as $i) {
@@ -52,7 +52,7 @@ foreach($report['items'] as $i) {
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">消费列表</label>
-                                <div class="col-xs-9 col-sm-9">
+                                <div class="col-xs-10 col-sm-10">
                                     <table class="table table-bordered table-striped">
                                         <tr>
                                             <td>消费时间</td>
@@ -66,9 +66,35 @@ foreach($report['items'] as $i) {
                                             <td>操作</td>
                                             -->
                                         </tr>
-                                        <?php foreach($report['items'] as $i){ ?>
+                                        <?php foreach($report['items'] as $i){
+                                            $_date_str = strftime('%Y-%m-%d %H:%M', $i['dt']);
+                                            $_extra_amount = '';
+                                            $_extra_dt = '';
+                                            if(count($i['extra'])) {
+                                                // TODO 目前情况下每个元素都只有一个了
+                                                foreach($i['extra'] as $e) {
+                                                    if($e['extra_type']  == 2) {
+                                                        // 多时间的
+                                                        $sdt = $i['dt'];
+                                                        $edt = $e['value'];
+                                                        $_day_delta = abs(($sdt - $sdt % 86400) - ($edt - $edt % 86400)) / 86400;
+                                                        if(date('H', $sdt) < 12) $_day_delta += 1;
+                                                        if(date('H', $edt) > 12) $_day_delta += 1;
+                                                        // 都切换到12点去
+                                                        $_date_str = strftime('%Y-%m-%d %H:%M', $i['dt']) . '至' . strftime('%Y-%m-%d %H:%M', $edt) . "(共" . $_day_delta . "天)";
+
+                                                        $_extra_amount = '（' . sprintf("%.2f", $i['amount'] / $_day_delta) . "元/天）";
+                                                    }
+                                                    if($e['extra_type'] == 5) {
+                                                        // 多人的
+                                                        $members = $e['value'];
+                                                        $_extra_amount = '（' . sprintf("%.2f", $i['amount'] / $members) . "元/人 共" . $members . "人）";
+                                                    }
+                                                }
+                                            }
+?>
                                         <tr>
-                                            <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
+                                            <td><?php echo $_date_str; ?></td>
                                             <td><?php 
                                                 $buf = '';
                                                 switch($i['prove_ahead']) {
@@ -80,11 +106,13 @@ foreach($report['items'] as $i) {
 
 
                                                 ?></td>
-<?php if($i['src_amount'] > 0) { ?>
-                                                    <td><?php echo $i['currency_logo']; ?> &nbsp;<?php echo $i['amount']; ?> &nbsp;[<?php echo $i['currency_logo']; ?><?php echo $i['src_amount']; ?>, 由  <?php echo $i['lastmodifier']; ?> 修改]</td>
-<?php } else { ?>
-                                                    <td><?php echo $i['currency_logo']; ?> &nbsp;<?php echo $i['amount']; ?> </td>
-<?php } ?>
+<?php 
+                                                $update_amount = '';
+                                                if($i['src_amount'] > 0) { 
+                                                    $update_amount = "[" . $i['currency_logo'] . $i['src_amount'] . " 由  ". $i['lastmodifier'] . "修改]";
+                                                }
+?>
+    <td><?php echo $i['currency_logo']; ?> &nbsp;<?php echo $i['amount']; ?> <?php echo  $update_amount . $_extra_amount; ?> </td>
                                             <td><?php echo $i['category_name']; ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td><?php echo $i['note'];?></td>
@@ -97,7 +125,7 @@ foreach($report['items'] as $i) {
 
                         <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">审批流程</label>
-                                <div class="col-xs-9 col-sm-9">
+                                <div class="col-xs-10 col-sm-10">
                                     <table class="table table-bordered table-striped">
                                         <tr>
                                             <td>审批人</td>
@@ -125,7 +153,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                             </div>
                         <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">留言</label>
-                                <div class="col-xs-9 col-sm-9">
+                                <div class="col-xs-10 col-sm-10">
                                     <table class="table table-bordered table-striped">
                                         <tr>
                                             <td>姓名</td>
@@ -193,7 +221,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
         </div>
 
         <div class="clearfix form-actions col-sm-10 col-xs-10">
-            <div class="col-md-offset-3 col-md-6">
+            <div class="col-md-offset-3 col-md-9">
                 <?php
                 $_ruid = $report['uid'];
                 $_uid = $profile['id'];
@@ -263,7 +291,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <div class="col-xs-9 col-sm-9">
+                    <div class="col-xs-10 col-sm-10">
                         <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="receiver[]" multiple="multiple" id="modal_managers" style="width:300px;">
                             <?php foreach($members as $m) { ?>
                             <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
@@ -299,7 +327,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <div class="col-xs-9 col-sm-9">
+                    <div class="col-xs-10 col-sm-10">
                         <select style="display:none;" class="chosen-select_ tag-input-style form-control col-xs-12 col-sm-12" name="receiver[]" multiple="multiple" id="modal_managers" style="width:300px;">
                         </select>
                         <h4 class="modal-title">是否结束这条报告?</h4>
