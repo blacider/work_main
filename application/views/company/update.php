@@ -137,7 +137,7 @@
                               <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">适用范围</label>
                                 <div class="col-xs-3 col-sm-3">
-                                    <select class="chosen-select tag-input-style" id="ranks" name="ranks[]" multiple="multiple" data-placeholder="请选择职级" placeholder="请选择职级">
+                                    <select class="chosen-select tag-input-style" id="ranks" name="ranks[]" multiple="multiple" data-placeholder="请选择级别" placeholder="请选择级别">
                                     <?php 
                                     foreach($ranks as $g){
                                         if(in_array($g['id'],$rule['ranks']))
@@ -262,7 +262,7 @@ function bind_event() {
     var selectCache = <?php echo json_encode($rule['cates'])?>;
                             function appendChecked(selectJqDom, data) {
                                 //第一个 selectJqDom.children()[0].children[0]
-                                selectJqDom.find('select[name="sobs"]').find("option[value='"+data['sob_id']+"']").attr("selected",true);
+                                selectJqDom.find('select[name="sobs"]').val(data['sob_id']);
                                 selectJqDom.find('select[name="sobs"]').trigger("chosen:updated");
                                 //第二个
                                 selectJqDom.find('select[name="sobs"]').change();

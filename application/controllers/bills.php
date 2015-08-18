@@ -58,7 +58,7 @@ class Bills extends REIM_Controller {
                 $with_no_note = $config['export_no_note'];
             }
             log_message('debug','note:'.$with_no_note);
-            if($with_no_note == '1')
+            if(intval($with_no_note) == 1)
             {
                 $with_note = 0;
             }

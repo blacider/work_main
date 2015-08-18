@@ -19,7 +19,7 @@
                      <table id="sample-table-2" class="table table-striped table-bordered table-hover">
                       <thead>
                         <tr>
-                          <th>职级名称</th>
+                          <th>级别名称</th>
                           <th>最后修改时间</th>
                           <th class="hidden-680">
                             <a href="#modal-table2" role="button" class="green" data-toggle="modal">
@@ -138,7 +138,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="blue bigger"> 新建职级 </h4>
+            <h4 class="blue bigger"> 新建级别 </h4>
           </div>
          <div class="modal-body">
            <div class="container">
@@ -146,7 +146,7 @@
               <div class="col-xs-12 col-sm-12">
                 <div class="row">
                   <div class="form-group">
-                      <label for="form-field-username">输入职级名称:</label>
+                      <label for="form-field-username">输入级别名称:</label>
                       <div>
                         <input class="col-xs-4 col-sm-4" type="text" id="name" name="name" class="form-control" />
                       </div>
@@ -211,7 +211,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="blue bigger"> 修改职级 </h4>
+            <h4 class="blue bigger"> 修改级别 </h4>
           </div>
          <div class="modal-body">
            <div class="container">
@@ -219,7 +219,7 @@
               <div class="col-xs-12 col-sm-12">
                 <div class="row">
                   <div class="form-group">
-                      <label for="form-field-username">职级名称:</label>
+                      <label for="form-field-username">级别名称:</label>
                       <div>
                         <input class="col-xs-4 col-sm-4" type="text" id="rank_name" name="name" class="form-control" />
                       </div>

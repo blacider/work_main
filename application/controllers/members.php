@@ -16,6 +16,13 @@ class Members extends REIM_Controller {
 	$_members = $this->input->post('persons');
 	$members = json_decode($_members,True);
 	log_message('debug',json_encode($members));
+    $_members = array();
+    foreach($members as $m) {
+        if(array_key_exists('id', $m) && array_key_exists('manager', $m)) {
+            array_push($_members, $m);
+        }
+    }
+    $members = $_members;
 
 	$buf = $this->groups->set_managers($members);
 	$set_manager_back = array();
@@ -322,9 +329,9 @@ class Members extends REIM_Controller {
         if(array_key_exists('config', $groups) && $groups['config']) {
             $config = json_decode($groups['config'], True);
             if(array_key_exists('private_structure', $config)){
-        //TODO 修改是否开放组织结构
+                //TODO 修改是否开放组织结构
                 //$close = $config['close_directly'];
-        $close = $config['private_structure'];
+                $close = $config['private_structure'];
                 log_message("debug", "Profile admin $close :" . $profile['admin']);
                 if($close == 1 && $profile['admin'] < 1) {
                     return redirect(base_url('items/index'));
@@ -340,31 +347,31 @@ class Members extends REIM_Controller {
             $error = $this->session->userdata('login_error');
             $this->session->unset_userdata('login_error');
         }
-    $_ranks = $this->reim_show->rank_level(1);
-    $_levels = $this->reim_show->rank_level(0);
-    $ranks = array();
-    $levels = array();
-    $ranks_dic = array();
-    $levels_dic = array();
+        $_ranks = $this->reim_show->rank_level(1);
+        $_levels = $this->reim_show->rank_level(0);
+        $ranks = array();
+        $levels = array();
+        $ranks_dic = array();
+        $levels_dic = array();
 
-    if($_ranks['status'] > 0)
-    {
-        $ranks = $_ranks['data'];
-    }
+        if($_ranks['status'] > 0)
+        {
+            $ranks = $_ranks['data'];
+        }
 
-    foreach($ranks as $r)
-    {
+        foreach($ranks as $r)
+        {
             $ranks_dic[$r['id']] = $r['name'];
-    }
-    if($_levels['status'] > 0)
-    {
-        $levels = $_levels['data'];
-    }
+        }
+        if($_levels['status'] > 0)
+        {
+            $levels = $_levels['data'];
+        }
 
-    foreach($levels as $r)
-    {
+        foreach($levels as $r)
+        {
             $levels_dic[$r['id']] = $r['name'];
-    }
+        }
         $group = $this->groups->get_my_list();
         $ginfo = array();
         $gmember = array();
@@ -384,8 +391,8 @@ class Members extends REIM_Controller {
                 ,'group' => $ginfo
                 ,'members' => $gmember
                 ,'error' => $error
-        ,'ranks' => $ranks_dic
-        ,'levels' => $levels_dic
+                ,'ranks' => $ranks_dic
+                ,'levels' => $levels_dic
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
@@ -402,9 +409,9 @@ class Members extends REIM_Controller {
         if(array_key_exists('config', $groups) && $groups['config']) {
             $config = json_decode($groups['config'], True);
             if(array_key_exists('private_structure', $config)){
-	    //TODO 修改是否开放组织结构
+                //TODO 修改是否开放组织结构
                 //$close = $config['close_directly'];
-		$close = $config['private_structure'];
+                $close = $config['private_structure'];
                 log_message("debug", "Profile admin $close :" . $profile['admin']);
                 if($close == 1 && $profile['admin'] < 1) {
                     return redirect(base_url('items/index'));
@@ -420,31 +427,31 @@ class Members extends REIM_Controller {
             $error = $this->session->userdata('login_error');
             $this->session->unset_userdata('login_error');
         }
-	$_ranks = $this->reim_show->rank_level(1);
-	$_levels = $this->reim_show->rank_level(0);
-	$ranks = array();
-	$levels = array();
-	$ranks_dic = array();
-	$levels_dic = array();
+        $_ranks = $this->reim_show->rank_level(1);
+        $_levels = $this->reim_show->rank_level(0);
+        $ranks = array();
+        $levels = array();
+        $ranks_dic = array();
+        $levels_dic = array();
 
-	if($_ranks['status'] > 0)
-	{
-		$ranks = $_ranks['data'];
-	}
+        if($_ranks['status'] > 0)
+        {
+            $ranks = $_ranks['data'];
+        }
 
-	foreach($ranks as $r)
-	{
-			$ranks_dic[$r['id']] = $r['name'];
-	}
-	if($_levels['status'] > 0)
-	{
-		$levels = $_levels['data'];
-	}
+        foreach($ranks as $r)
+        {
+            $ranks_dic[$r['id']] = $r['name'];
+        }
+        if($_levels['status'] > 0)
+        {
+            $levels = $_levels['data'];
+        }
 
-	foreach($levels as $r)
-	{
-			$levels_dic[$r['id']] = $r['name'];
-	}
+        foreach($levels as $r)
+        {
+            $levels_dic[$r['id']] = $r['name'];
+        }
         $group = $this->groups->get_my_list();
         $ginfo = array();
         $gmember = array();
@@ -464,8 +471,8 @@ class Members extends REIM_Controller {
                 ,'group' => $ginfo
                 ,'members' => $gmember
                 ,'error' => $error
-		,'ranks' => $ranks_dic
-		,'levels' => $levels_dic
+                ,'ranks' => $ranks_dic
+                ,'levels' => $levels_dic
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
@@ -825,11 +832,15 @@ class Members extends REIM_Controller {
     }
 
     public function export(){
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+
         $this->need_group_it();
         $group = $this->ug->get_my_list();
         $this->bsload('members/exports',
             array(
                 'title' => '导入/导出员工',
+                'error' => $error,
                 'groups' => $group['data']
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -887,11 +898,16 @@ class Members extends REIM_Controller {
         }
         $tmp_file = $_FILES['members']['tmp_name'];
 
-        $reader = IOFactory::createReader('Excel5');
-        $PHPExcel = $reader->load($tmp_file);
-        $sheet = $PHPExcel->getSheet(0); // 读取第一個工作表
-        $highestRow = $sheet->getHighestRow(); // 取得总行数
-        $highestColumm = $sheet->getHighestColumn(); // 取得总列数
+        try {
+            $reader = IOFactory::createReader('Excel5');
+            $PHPExcel = $reader->load($tmp_file);
+            $sheet = $PHPExcel->getSheet(0); // 读取第一個工作表
+            $highestRow = $sheet->getHighestRow(); // 取得总行数
+            $highestColumm = $sheet->getHighestColumn(); // 取得总列数
+        } catch(Exception $e) {
+            $this->session->set_userdata('last_error', '暂不支持当前的文件类型');
+            return redirect(base_url('members/export'));
+        }
         //$highestColumm= PHPExcel_Cell::columnIndexFromString(); //字母列转换为数字列 如:AA变为27
         $group = $this->groups->get_my_list();
         $ginfo = array();
@@ -918,7 +934,7 @@ class Members extends REIM_Controller {
             {
                 $names[$__name]['count'] = 1;		
                 $names[$__name]['ids']=array();
-		array_push($names[$__name]['ids'],$g['id']);	
+                array_push($names[$__name]['ids'],$g['id']);	
             }
             else
             {
@@ -943,19 +959,23 @@ class Members extends REIM_Controller {
             $obj['email'] = trim($sheet->getCellByColumnAndRow(2, $row)->getValue());
             $obj['phone'] = trim($sheet->getCellByColumnAndRow(3, $row)->getValue());
             //$obj['accounts'] = trim($sheet->getCellByColumnAndRow(4, $row)->getValue());
-	    $obj['accounts'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue()); ;
-//            $obj['account'] = trim($sheet->getCellByColumnAndRow(4, $row)->getValue());
-	    $obj['account'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue()); ;
+            $obj['accounts'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue()); ;
+            //            $obj['account'] = trim($sheet->getCellByColumnAndRow(4, $row)->getValue());
+            $obj['account'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue()); ;
             $obj['cardno'] = trim($sheet->getCellByColumnAndRow(4, $row)->getValue());
             $obj['cardbank'] = trim($sheet->getCellByColumnAndRow(5, $row)->getValue());
             $obj['bank'] = trim($sheet->getCellByColumnAndRow(5, $row)->getValue());
-//            $obj['cardloc'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
-	    $obj['cardloc'] = '';
+            //            $obj['cardloc'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
+            $obj['cardloc'] = '';
             $obj['group_name'] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue());
             $obj['gids'] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue());
             $obj['manager'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
             $obj['rank'] = trim($sheet->getCellByColumnAndRow(8, $row)->getValue());
             $obj['level'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
+            /*
+            $obj['level'] = trim($sheet->getCellByColumnAndRow(8, $row)->getValue());
+            $obj['rank'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
+             */
             if("" == $obj['email'] && "" == $obj['phone']) continue;
             $obj['status'] = 0;
             if(in_array($obj['email'], $_emails) || in_array($obj['phone'], $_phones)){
@@ -1044,7 +1064,7 @@ class Members extends REIM_Controller {
                 $d['manager_id'] = 0;
             }
 
-            if($names[$d['name']]['count'] > 1)
+            if(array_key_exists($d['name'], $names) && $names[$d['name']]['count'] > 1)
             {
                 log_message('debug','counts:' . $names[$d['name']]['count'] );
                 $d['status'] += 2;
@@ -1275,8 +1295,8 @@ class Members extends REIM_Controller {
         $info = $this->ug->update_data($manager,$uids, $name,$code,$pid,$gid);
         log_message("debug","@@@@@@@@@".json_encode($info));
         if($info['status'] > 0){
-            //           redirect(base_url('members/groups'));
-            redirect(base_url('members/index'));
+            redirect(base_url('members/groups'));
+            //redirect(base_url('members/index'));
         }
     }
 
@@ -1314,7 +1334,7 @@ class Members extends REIM_Controller {
         $m_info = json_decode($this->users->reim_get_info($manager_id),True);
         $pro = $info;
         $ug = $this->reim_show->usergroups();
-        log_message('debug','m_info:' . json_encode($m_info['data']));
+        //log_message('debug','m_info:' . json_encode($m_info['data']));
 
         $group = $this->groups->get_my_list();
 
@@ -1365,16 +1385,16 @@ class Members extends REIM_Controller {
         $member = $this->input->post('member');
         log_message("debug", "Member:" . json_encode($member));
         $info = $this->groups->reim_imports(array('members' => json_encode($member)));
-	/*
-	$data = array();
-	if($info['status'] > 0)
-	{
-		$data = $info['data'];	
-	}
-	log_message('debug','batch_load:' . json_encode($info));
-	*/
-        //die(json_encode(array('msg'=>"it works")));
-	die(json_encode(array('data' => $info)));
+        /*
+        $data = array();
+        if($info['status'] > 0)
+        {
+            $data = $info['data'];	
+        }
+        log_message('debug','batch_load:' . json_encode($info));
+        //        die(json_encode(array('msg'=>"it works")));
+        //        */
+        die(json_encode(array('data' => $info)));
     }
 }
 
