@@ -137,6 +137,8 @@ class Items extends REIM_Controller {
             ));
     }
     public function index(){
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         $this->session->set_userdata('item_update_in','0');
         $items = $this->items->get_list();
         $category = $this->category->get_list();
@@ -154,6 +156,7 @@ class Items extends REIM_Controller {
                     'title' => '我的消费',
                     'category' => $categories,
                     'tags' => $tags,
+                    'error' => $error,
                     'items' => $item_data
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -331,9 +334,13 @@ class Items extends REIM_Controller {
 
 
     public function del($id = 0){
-        if(0 === $id) redirect(base_url('items'));
+        if(0 == $id) redirect(base_url('items'));
         $obj = $this->items->remove($id);
         log_message('debug' , 'del_item:' . json_encode($obj));
+        if(!$obj['status']) {
+            $msg = $obj['data']['msg'];
+            $this->session->set_userdata('last_error', $msg);
+        }
         redirect(base_url('items'));
     }
 
@@ -374,7 +381,7 @@ class Items extends REIM_Controller {
             $_item_value = $item['extra'];
             foreach($_item_value as $it)
             {
-                $item_value[$it['extra_type']] = array('id'=>$it['pid'],'type'=>$it['extra_type'],'value'=>$it['value']);
+                $item_value[$it['type']] = array('id'=>$it['id'],'type'=>$it['type'],'value'=>$it['value']);
             }
         }
         $cid = $item['category'];
@@ -514,8 +521,7 @@ class Items extends REIM_Controller {
             $_item_value = $item['extra'];
             foreach($_item_value as $it)
             {
-                $item_value[$it['extra_type']] = array('id'=>$it['pid'],'type'=>$it['extra_type'],'value'=>$it['value']);
-                //$item_value = array('id'=>$it['pid'],'type'=>$it['extra_type'],'value'=>$it['value']);
+                $item_value[$it['type']] = array('id'=>$it['id'],'type'=>$it['type'],'value'=>$it['value']);
             }
         }
         $cid = $item['category'];
@@ -704,7 +710,7 @@ class Items extends REIM_Controller {
         $item = $this->items->get_by_id($id);
         $item_update_in = $this->session->userdata('item_update_in');
         if($item['status'] < 1){
-            $this->session->set_userdata('last_error',$item['status']['msg']);
+            $this->session->set_userdata('last_error',$item['data']['msg']);
             redirect(base_url('items'));
         }
         $item = $item['data'];
@@ -716,7 +722,7 @@ class Items extends REIM_Controller {
                 log_message('debug' , 'it:' . json_encode($it));
                 if(array_key_exists('value',$it))
                 {
-                    $item_value[$it['extra_type']] = array('id'=> $it['pid'], 'type' => $it['extra_type'], 'value' => $it['value']);
+                    $item_value[$it['type']] = array('id'=> $it['id'], 'type' => $it['type'], 'value' => $it['value']);
 
                     //$item_value = $it['value'];	
                     //$item_value = date('Y-m-d H:i:s',$item_value);
