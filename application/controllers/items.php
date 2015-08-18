@@ -282,13 +282,13 @@ class Items extends REIM_Controller {
                 $edit = $s['status'] === 0 ? 'gray' : 'green';
                 $edit_str = '';
                 if(in_array($s['status'], array(-1, 0, 3))) {
-                    $edit_str =  '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>';
+                    $edit_str =  '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $s['id'] . '"></span>'
+                  	.  '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>';
                 }
 
 
                 $s['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $s['id'] . '"></span>'
-                    . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $s['id'] . '"></span>'
                     . $edit_str
                     . '</div>';
                 switch($s['status']){
