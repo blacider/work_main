@@ -8,6 +8,7 @@ class Company extends REIM_Controller {
         $this->load->model('usergroup_model','ug');
         $this->load->model('account_set_model','account_set');
         $this->load->model('category_model','category');
+	$this->load->model('reim_show_model','reim_show');
     }
 
 
@@ -32,7 +33,12 @@ class Company extends REIM_Controller {
         $this->session->unset_userdata('last_error');
         $buf = $this->company->show_approve();
         $info=json_decode($buf,true);
-        $_info=$info['data'];
+	$_info = array();
+	if($info['status']>0)
+	{
+		$_info = $info['data'];
+	}
+	log_message('debug','approve:' . json_encode($_info));
         $own_rule = $_info[$pid];
 
         $category = $this->category->get_list();
@@ -147,6 +153,28 @@ class Company extends REIM_Controller {
 
         $total_amount_limit = $this->input->post('frequency_unlimit');
         $total_amount = $this->input->post('total_amount');
+	$_ranks = $this->input->post('ranks');
+	$ranks = '';
+	$_levels = $this->input->post('levels');
+	$levels = '';
+	$_groups = $this->input->post('groups');
+	$groups = '';
+
+	if($_ranks)
+	{
+		$ranks = implode(',',$_ranks);
+	}
+
+	if($_levels)
+	{
+		$levels = implode(',',$_levels);
+	}
+
+	if($_groups)
+	{
+		$groups = implode(',',$_groups);
+	}
+
         if($total_amount_limit == 1)
         {
             $total_amount = -1;	
@@ -237,7 +265,7 @@ class Company extends REIM_Controller {
         //	$info = array('category'=>$category_id,'amount'=>$amount);
         // 	$policy =array(array('category'=>$category_id,'amount'=>$amount));
         //	array_push($policy,$info);
-        $buf = $this->company->create_approve($rname,$members,$total_amount,$allow_all_category,json_encode($policies),$pid);
+        $buf = $this->company->create_approve($rname,$members,$total_amount,$allow_all_category,json_encode($policies),$pid,$ranks,$levels,$groups);
         log_message('debug',"#######".json_encode($buf));
         return redirect(base_url('company/show_approve'));
 
@@ -259,12 +287,26 @@ class Company extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
+	$_ranks = $this->reim_show->rank_level(1);
+	$ranks =array();
+	$_levels = $this->reim_show->rank_level(0);
+	$levels = array();
+	if($_ranks['status']>0)
+	{
+		$ranks = $_ranks['data'];
+	}
+	if($_levels['status']>0)
+	{
+		$levels = $_levels['data'];
+	}
         $this->bsload('company/approve',
             array(
                 'title'=>'新建审批'
                 ,'error'=>$error
                 ,'member'=>$gmember
                 ,'group'=>$gnames
+		,'ranks' => $ranks
+		,'levels' => $levels
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>base_url('company'),'name'=>'公司设置','class'=> '')

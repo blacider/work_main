@@ -278,27 +278,94 @@
                                     </select>
                                 </div> -->
 
-                                <div class="col-xs-3 col-sm-3">
-                                    <select class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
-                                    <?php 
-                                    $mem = array();
-                                    foreach ($rule['members'] as $key => $value) {
+
+
+                             
+                            
+
+                                 <div class="col-xs-3 col-sm-3">
+                                    <select class="chosen-select tag-input-style" id="ranks" name="ranks[]" multiple="multiple" data-placeholder="请选择级别">
+                                         <?php 
+                                      /*  $mem = array();
+                                        foreach ($rule['members'] as $key => $value) {
                                         # code...
-                                        array_push($mem,$value['uid']);
-                                    }
-                                    foreach($member as $m){
-                                        if(in_array($m['id'], $mem)){
-                                    ?>
-                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
-                                    <?php } else { ?>
-                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
-                                    <?php
-                                    }
-                                    }
-                                    ?>
-         
+                                            array_push($mem,$value['uid']);
+                                        }*/ 
+                                        foreach($ranks as $r){
+                                        ?>
+                                           
+                                                <option value="<?php echo $r['id']; ?>"><?php echo $r['name']; ?></option>
+                                          <?php
+                                        }
+                                        ?>
+
                                     </select>
                                 </div>
+
+
+
+                                 <div class="col-xs-3 col-sm-3">
+                                    <select class="chosen-select tag-input-style" id="levels" name="levels[]" multiple="multiple" data-placeholder="请选择职位">
+                                         <?php 
+                                      /*  $mem = array();
+                                        foreach ($rule['members'] as $key => $value) {
+                                        # code...
+                                            array_push($mem,$value['uid']);
+                                        }*/ 
+                                        foreach($levels as $l){
+                                        ?>
+                                           
+                                                <option value="<?php echo $l['id']; ?>"><?php echo $l['name']; ?></option>
+                                          <?php
+                                        }
+                                        ?>
+
+                                    </select>
+                                </div>
+
+
+
+                                 <div class="col-xs-3 col-sm-3">
+                                    <select class="chosen-select tag-input-style" id="groups" name="groups[]" multiple="multiple" data-placeholder="请选择部门">
+                                         <?php 
+                                      /*  $mem = array();
+                                        foreach ($rule['members'] as $key => $value) {
+                                        # code...
+                                            array_push($mem,$value['uid']);
+                                        }*/ 
+                                        foreach($group as $g){
+                                        ?>
+                                           
+                                                <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+                                          <?php
+                                        }
+                                        ?>
+
+                                    </select>
+                                </div>
+
+
+
+                                   <div class="col-xs-3 col-sm-3">
+                                    <select class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
+                                         <?php 
+                                      /*  $mem = array();
+                                        foreach ($rule['members'] as $key => $value) {
+                                        # code...
+                                            array_push($mem,$value['uid']);
+                                        }*/ 
+                                        foreach($member as $m){
+                                        ?>
+                                           
+                                                <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                          <?php
+                                        }
+                                        ?>
+
+                                    </select>
+                                </div>
+
+
 
                                <div class="col-xm-2 col-sm-2">
                                     <div class="checkbox" >
@@ -308,7 +375,7 @@
                                          </label>
                                     </div>
                                 </div>
-                            </div>
+                           </div>
 
 
                            <!--
@@ -345,6 +412,10 @@
         </form>
     </div>
 </div>
+<!-- <p><?php echo json_encode($group);?></p>
+<p><?php echo json_encode($ranks);?></p>
+<p><?php echo json_encode($levels);?></p> -->
+
 <!-- <p><?php echo json_encode($rule)?></p> 
  <?php foreach ($rule['members'] as $key => $value) {
                                         # code...

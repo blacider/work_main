@@ -25,7 +25,7 @@ class Company_Model extends Reim_Model {
 		log_message('debug',"@@@@:APPRSHOW:".json_encode($buf));
 		return $buf;
 	}
-    	public function create_approve($name,$members,$amount,$allow_all_category,$policies,$pid=-1)
+    	public function create_approve($name,$members,$amount,$allow_all_category,$policies,$pid=-1,$ranks,$levels,$groups)
 	{
 		$jwt = $this->session->userdata('jwt');
 		if(!$jwt) return false;
