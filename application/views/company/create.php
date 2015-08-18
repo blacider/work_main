@@ -256,7 +256,7 @@ function bind_event() {
                                     <?php 
                                     foreach($member as $m){
                                     ?>
-                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
                                     <?php
                                     }
                                     ?>
