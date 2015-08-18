@@ -96,7 +96,7 @@ foreach($levels as $m){
 <?php 
 foreach($gmember as $m){
 ?>
-                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+    <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . "[" . $m['email'] . "]"; ?></option>
 <?php
 }
 ?>
