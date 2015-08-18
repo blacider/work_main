@@ -981,8 +981,7 @@ class Members extends REIM_Controller {
 			log_message('debug' , 'sc_num:' . $obj['cardno']);
 		}
 	    }
-	    /*
-	    else
+	    else if(!$obj['cardno'])
 	    {
 	    	$obj['cardno'] = '';
 		$obj['accounts'] = '';
@@ -990,7 +989,6 @@ class Members extends REIM_Controller {
 		$obj['cardbank'] = '';
 		$obj['bank'] = '';	
 	    }
-	    */
             //            $obj['cardloc'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
             $obj['cardloc'] = '';
             $obj['group_name'] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue());
