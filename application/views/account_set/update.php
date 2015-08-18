@@ -257,16 +257,13 @@
                                         if(!in_array($ug['id'],$sob_members))
                                         {
                                     ?>
-                                    <option  value="<?php echo $ug['id']; ?>
-                                        ">
-                                        <?php echo $ug['nickname']; ?></option>
+                                    <option value="<?php echo $ug['id']; ?>"><?php echo $ug['nickname'] . " - [" . $ug['email'] . "]"; ?></option>
                                     <?php
                                         }
                                         else
                                         {
                                     ?>
-                                    <option selected value="<?php echo $ug['id']; ?>
-                                        ">
+                                    <option selected value="<?php echo $ug['id']; ?>"><?php echo $ug['nickname'] . " - [" . $ug['email'] . "]"; ?></option>
                                         <?php echo $ug['nickname']; ?></option>
                                     <?php
                                         }
