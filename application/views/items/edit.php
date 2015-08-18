@@ -78,6 +78,12 @@
                                 </div>
                             </div>
                             <div disabled class="form-group" id="average"  style="display:none;">
+<label class="col-sm-1 control-label no-padding-right">人数:</label>
+<div class="col-xs-3 col-sm-3">
+<div class="input-group">
+<input type="text" id="people-nums" >
+</div>
+</div>
                                 <label class="col-sm-1 control-label no-padding-right">人均:</label>
                                 <div class="col-xs-3 col-sm-3">
                                     <div class="input-group">
@@ -287,15 +293,12 @@ for(var i = 0 ; i < item_config.length; i++)
     if(item_config[i]['type']==2 || item_config[i]['type'] == 5)
     _item_config[item_config[i]['cid']] = item_config[i];
 }
-//console.log(_item_config);
 
 var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
 var _images = '<?php echo $images; ?> ';    
 var own_id = '<?php echo $profile['id'] ?>';
 var item_user_id = '<?php echo $item['uid'] ?>';
-// console.log('own_id:'+own_id);
-// console.log('item_user_id:'+item_user_id);
 
 var sob_id = <?php echo $sob_id; ?>;
 /*var __item_config = '<?php echo json_encode($item_config);?>';
@@ -548,6 +551,7 @@ $(document).ready(function(){
     get_sobs();
     var _dt = $('#dt').val();
     var images = eval("(" + _images + ")");
+    $('#people-nums').val(_average);
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
         defaultDate: _dt,
@@ -560,7 +564,6 @@ $(document).ready(function(){
     $('#config_id').val(__config_id);
     $('#config_type').val(__config_type);
 
-    console.log("set to ", __config_id);
     try{
         //var _ddt = $('#dt_end').val();
         $('#date-timepicker2').val(_ddt);
@@ -660,8 +663,6 @@ $('#sob_category').change(function(){
 
          var dateTime2 = $('#date-timepicker2').val();
          dateTime2 = dateTime2.replace(/(^\s*)|(\s*$)/g,'');
-         console.log(dateTime2);
-         console.log(dateTime);
         if(__config['not_auto_time'] == 1)
         {
             if(dateTime2 == '' && __multi_time)
@@ -670,7 +671,6 @@ $('#sob_category').change(function(){
                 //$('#date-timepicker1').focus();
                 return false;
             }
-            console.log();
             if((dateTime2>'0') && (dateTime2 < dateTime))
             {
                 show_notify('结束时间应该大于开始时间');
@@ -691,6 +691,10 @@ $('#sob_category').change(function(){
         }
         if (ifUp == 0) {
             show_notify('正在上传图片，请稍候');
+            return false;
+        }
+        if($('#people-num').val() == null && $('#people-nums').val() == 0) {
+            show_notify('必须填写参与人数');
             return false;
         }
         $('#renew').val($(this).data('renew'));

@@ -33,7 +33,7 @@
         <div style="width:100%">
             <img style="width:100%" src="http://www.cloudbaoxiao.com/img/text_title_42@2x.png">
         </div>
-        <a href="<?php echo $url; ?>" style="color:#fff">
+        <a href="#" style="color:#fff">
       <div id="download" class="android" style="" onclick="download()">
         <div class="content">
           <div class="android android-img">下载安装</div>
@@ -88,7 +88,9 @@ var _url = "<?php echo $url; ?>";
             }
         },50);
     } else{
-        window.location.href = _url; 
+        //window.location.protocol = "http:";
+        window.location.href = _url;
+        //window.open('http://' + _url, '_blank'); 
         }
     }
 
