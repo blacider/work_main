@@ -40,10 +40,10 @@
                                     <td><?php echo $d['manager'];?></td>
                                     <td><?php echo $d['rank'];?></td>
                                     <td><?php echo $d['level'];?></td>
-                                    <td>
+                                    <td style="vertical-align: middle;">
                                         <!-- <a alt="<?php echo $d['status'] == 1 ? '已经是同一个公司的同事' : '还不是一个公司的同事'; ?>"><i id="m_<?php echo md5($d['email']); ?>"   -->
                                         <a alt=""><i
-                                            data-value="<?php echo base64_encode(json_encode($d)); ?>" data-manager="<?php echo $d['manager']?>" data-uid="<?php echo $d['id']?>"  data-id="<?php echo $d['id'];?>"  class="<?php echo $d['status'] == 1 ? 'green fa-check' : 'fa-times red' ; ?> menu-icon fa judge"></i><span class="red" id="<?php echo 'error_'.$d['id']; ?>"></span></a>
+                                            data-value="<?php echo base64_encode(json_encode($d)); ?>" data-manager="<?php echo $d['manager']?>" data-uid="<?php echo $d['id']?>"  data-id="<?php echo $d['id'];?>"  class="<?php echo $d['status'] == 1 ? 'green' : 'red' ; ?> menu-icon fa judge"><?php echo $d['status'] == 1 ? '已导入' : '未导入' ; ?></i><span class="red" id="<?php echo 'error_'.$d['id']; ?>"></span></a>
 
                                     </td>
                                 </tr>
@@ -129,7 +129,7 @@
                     ,success : function(data){
                         if(data.status) {
                             var __id = data.id;
-                            $('#' + __id).removeClass('fa-times red').addClass('fa-check green');
+                            $('#' + __id).removeClass('red').addClass('green').text("已导入");
                         } else {
                             var __id = data.id;
                             $('#' + __id).innerHTML(data.msg);
@@ -318,7 +318,8 @@ function insertMem()
                                   var person = {'id':back_info['data'][uid],'manager':manager_name};
                                   in_members.push(person);
                                   
-                                  myself.removeClass('fa-times red').addClass('fa-check green');
+                                  myself.removeClass('red').addClass('green');
+                                  myself.text("已导入")
                                   //$('#error_'+uid).html('导入成功');
                                  // console.log($('#error_'+uid).val());
                                   
