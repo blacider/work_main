@@ -68,7 +68,7 @@
 <label class="col-sm-1 control-label no-padding-right">人数:</label>
 <div class="col-xs-3 col-sm-3">
 <div class="input-group">
-<input type="text" id="people-nums" data-placeholder="人数">
+<input type="text" id="people-nums" >
 </div>
 </div>
 <label class="col-sm-1 control-label no-padding-right">人均:</label>
@@ -628,6 +628,10 @@ $(document).ready(function(){
         if($('#sob_category').val() == null)
         {
             show_notify('请选择类目');
+            return false;
+        }
+        if($('#people-num').val() == null && $('#people-nums').val() == 0) {
+            show_notify('必须填写参与人数');
             return false;
         }
 
