@@ -282,7 +282,7 @@
 
                              
                             
-
+<!--
                                  <div class="col-xs-3 col-sm-3">
                                     <select class="chosen-select tag-input-style" id="ranks" name="ranks[]" multiple="multiple" data-placeholder="请选择级别">
                                          <?php 
@@ -343,7 +343,7 @@
 
                                     </select>
                                 </div>
-
+                                -->
 
 
                                    <div class="col-xs-3 col-sm-3">

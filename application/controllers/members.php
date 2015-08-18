@@ -963,6 +963,10 @@ class Members extends REIM_Controller {
             //            $obj['account'] = trim($sheet->getCellByColumnAndRow(4, $row)->getValue());
             $obj['account'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue()); ;
             $obj['cardno'] = trim($sheet->getCellByColumnAndRow(4, $row)->getValue());
+	    if(is_numeric($obj['cardno']) && substr($obj['cardno'],0,1)!=0)
+	    {
+	    	$obj['cardno'] = number_format((double)$obj['cardno'],0,'','');
+	    }
             $obj['cardbank'] = trim($sheet->getCellByColumnAndRow(5, $row)->getValue());
             $obj['bank'] = trim($sheet->getCellByColumnAndRow(5, $row)->getValue());
             //            $obj['cardloc'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
