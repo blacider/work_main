@@ -188,6 +188,7 @@ foreach($items as $i){
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
+var __SUM = 0;
 function do_post(force) {
 
     var _rid = $('#hrid').val();
@@ -224,7 +225,7 @@ function do_post(force) {
 	}
 
 
-	if(sum <= 0) {
+	if(__SUM <= 0) {
 		show_notify("报告总额不能小于等于0");
 		return false;
 	}
@@ -397,5 +398,6 @@ function update_tamount(){
     });
     //$('#tamount').html(sum);
     $('#tamount').html('￥' + toDecimal2(sum));
+    __SUM = sum;
 }
 </script>
