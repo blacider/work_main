@@ -332,7 +332,7 @@ $(document).ready(function(){
     $('.txdel').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
-            location.href = __BASE + "items/del/" + _id;
+            location.href = __BASE + "items/del/" + _id + "/1";
         });
     });
     $('.txedit').each(function() {

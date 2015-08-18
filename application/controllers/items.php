@@ -333,7 +333,7 @@ class Items extends REIM_Controller {
     }
 
 
-    public function del($id = 0){
+    public function del($id = 0,$flag = 0){
         if(0 == $id) redirect(base_url('items'));
         $obj = $this->items->remove($id);
         log_message('debug' , 'del_item:' . json_encode($obj));
@@ -341,7 +341,8 @@ class Items extends REIM_Controller {
             $msg = $obj['data']['msg'];
             $this->session->set_userdata('last_error', $msg);
         }
-        redirect(base_url('items'));
+        if ($flag == 1) redirect(base_url('reports/newreport'));
+        else redirect(base_url('items'));
     }
 
     public function ishow($id = 0) {
