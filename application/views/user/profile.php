@@ -529,6 +529,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                 <div class="col-xs-6 col-sm-6">
                                     <input id="account" name="account" type="text" class="form-controller col-xs-12" placeholder="户名" />
                                     <input id="id" name="id" type="hidden" value="" />
+                                    <input id="uid" name="uid" type="hidden" value="<?php echo $pid;?>">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -782,6 +783,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     var __BASE = "<?php echo $base_url; ?>";
     var flag = 0;
     var is_other = "<?php echo $isOther; ?>";
+    var user_id = "<?php echo $pid;?>";
     function show_loading(){
         $('#loading').show();
     }
@@ -856,6 +858,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         $('#modal_title').val();
         $('#account' ).val("");
         $('#id' ).val("");
+        $('#uid').val(user_id);
         $('#cardloc' ).val("");
         $('#cardno'  ).val("");
         $('#cardbank').val("");
@@ -879,11 +882,13 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 
     function del_credit(node){
         var _id = $(node).data('id');
+        //var _uid = $(node).data('uid');
         $.ajax({
-            url : __BASE + "users/del_credit/"  + _id,
+            url : __BASE + "users/del_credit/"  + _id + "/" + user_id,
                 dataType : 'json',
                 method : 'GET',
                 success : function(data){
+                    console.log(data);
                     $('#bank_' + _id).remove();
                     show_notify('银行卡删除成功');
                 }
@@ -1062,6 +1067,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                         ,'cardno' : _no
                                         ,'cardloc' :  _loc
                                         ,'id' :  _id
+                                        ,'uid' : user_id
                                 },
                                 dataType : 'json',
                                 method : 'POST',
@@ -1080,7 +1086,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                             + '<li> <a href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="edit_bank" >修改</a> </li>'
                                             + '<li> <a  href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '"  class="show_bank">展示</a> </li> '
                                             + '<li class="divider"></li> '
-                                            + '<li> <a href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="del_bank">删除</a> </li>'
+                                            + '<li> <a href="javascript:void(0)" data-uid="' + user_id + '" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="del_bank">删除</a> </li>'
                                             + ' </ul> </div>';
                                         $('#btns').prepend(buf);
                                         bind_event();
