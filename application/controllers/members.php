@@ -965,9 +965,21 @@ class Members extends REIM_Controller {
             $obj['cardno'] = trim($sheet->getCellByColumnAndRow(4, $row)->getValue());
             $obj['cardbank'] = trim($sheet->getCellByColumnAndRow(5, $row)->getValue());
             $obj['bank'] = trim($sheet->getCellByColumnAndRow(5, $row)->getValue());
+	    log_message('debug','cardno XXX:' . $sheet->getCellByColumnAndRow(4, $row)->getValue());
+
+
+	    if(strlen($obj['cardno']) >= 128)
+	    {
+	    	$obj['cardno'] = substr($obj['cardno'],0,128);
+		log_message('debug','len:' . strlen($obj['cardno']));
+	    }
 	    if(is_numeric($obj['cardno']) && substr($obj['cardno'],0,1)!=0)
 	    {
-	    	$obj['cardno'] = number_format((double)$obj['cardno'],0,'','');
+	    	if(preg_match("/^([0-9]+(\.[0-9]+)?[e,E]\+[0-9]+)$/",$obj['cardno']))
+		{
+			$obj['cardno'] = number_format((double)$obj['cardno'],0,'','');
+			log_message('debug' , 'sc_num:' . $obj['cardno']);
+		}
 	    }
 	    else
 	    {
@@ -1004,6 +1016,8 @@ class Members extends REIM_Controller {
             }
             array_push($_names,$obj['name']);
             array_push($data, $obj);
+
+	    log_message('debug','objXXXXXXXXXXXXXX:' . json_encode($obj));
         }
         $_ranks = $this->reim_show->rank_level(1);
         $ranks = array();
