@@ -410,19 +410,21 @@ class Users extends REIM_Controller {
         $cardno = $this->input->post('cardno');
         $cardloc = $this->input->post('cardloc');
         $id = $this->input->post('id');
+	$uid = $this->input->post('uid');
 
         if($id) {
-        $buf = $this->user->update_credit($id, $account, $cardno, $cardbank, $cardloc);
+        $buf = $this->user->update_credit($id, $account, $cardno, $cardbank, $cardloc,$uid);
         } else {
-        $buf = $this->user->new_credit($account, $cardno, $cardbank, $cardloc);
+        $buf = $this->user->new_credit($account, $cardno, $cardbank, $cardloc,$uid);
         }
+	log_message('debug','uid:' . $uid);
         //$obj = json_decode($buf, True);
         die($buf);
     }
 
 
-    public function del_credit($id = 0){
-        $buf = $this->user->del_credit($id);
+    public function del_credit($id = 0,$uid){
+        $buf = $this->user->del_credit($id,$uid);
         die($buf);
     }
 }
