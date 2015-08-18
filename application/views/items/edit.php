@@ -64,6 +64,8 @@
                             <input type="hidden" id="config_type" name="config_type"/>
 
 <?php 
+if($item_value)
+{
 foreach($item_value as $_type => $_item) {
 if($_type == 2) {
 ?>
@@ -103,6 +105,7 @@ if($_type == 5) {
                     }
                     
                 }
+            }
                     ?>
 
 

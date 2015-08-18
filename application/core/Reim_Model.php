@@ -60,7 +60,6 @@ class Reim_Model extends CI_Model {
 	}
     
     public function do_Post($url, $fields, $extraheader = array(), $force_bin = 0){
-        log_message("debug", json_encode($fields));
         $ch  = curl_init() ;
         curl_setopt($ch, CURLOPT_URL, $url) ;
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
