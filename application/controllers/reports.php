@@ -250,9 +250,9 @@ class Reports extends REIM_Controller {
             };break;
             }
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
-                $d['status_str'] = '待提交';
-                //$d['amount'] = '￥' . $d['amount'];
-		/*
+            $d['status_str'] = '待提交';
+            //$d['amount'] = '￥' . $d['amount'];
+        /*
                 $prove_ahead = '报销';
                 switch($d['prove_ahead']){
                 case 2: {$prove_ahead = '<font color="red">预借</font>';};break;
@@ -260,36 +260,36 @@ class Reports extends REIM_Controller {
                 }
                 $d['prove_ahead'] = $prove_ahead;
 
-		*/
-                switch($d['status']) {
-                case 0: {
-                    $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
-                };break;
-                case 1: {
-                    $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
-                };break;
-                case 2: {
-                    $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>';
-                };break;
-                case 3: {
-                    $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#B472B1;background:#B472B1 !important;">退回</button>';
-                };break;
-                case 4: {
-                    $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-                };break;
-                case 5: {
-                    $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-                };break;
-                case 6: {
-                    $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#42B698 !important;">待支付</button>';
-                };break;
-                case 7: {
-                    $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成待确认</button>';
-                };break;
-                case 8: {
-                    $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成已确认</button>';
-                };break;
-                }
+         */
+            switch($d['status']) {
+            case 0: {
+                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
+            };break;
+            case 1: {
+                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
+            };break;
+            case 2: {
+                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>';
+            };break;
+            case 3: {
+                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#B472B1;background:#B472B1 !important;">退回</button>';
+            };break;
+            case 4: {
+                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
+            };break;
+            case 5: {
+                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
+            };break;
+            case 6: {
+                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#42B698 !important;">待支付</button>';
+            };break;
+            case 7: {
+                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成待确认</button>';
+            };break;
+            case 8: {
+                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成已确认</button>';
+            };break;
+            }
         }
         die(json_encode($data));
     }
@@ -308,62 +308,61 @@ class Reports extends REIM_Controller {
         if(''==$items)
         {
             $this->session->set_userdata('last_error','提交报告不能为空');
+            die("No Items:");
             return redirect(base_url('reports/index')); 
         }
         $title = $this->input->post('title');
         $receiver = $this->input->post('receiver');
         $cc = $this->input->post('cc');
+        $force = $this->input->post('force');
+        if(!$cc) $cc = array();
+        if(!$force) $force = 0;
         $save = $this->input->post('renew');
-        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save);
+        if(!$save) $save = 1;
+        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save, $force);
         $ret = json_decode($ret, true);
         log_message("debug", "xx:" . json_encode($ret));
+        log_message("debug", "Cates:" . $ret['code']);
         if($ret['code'] <= 0) {
+            log_message("debug", "Cates:" . $ret['code']);
             if($ret['code'] == -71)
             {
+                log_message("debug", "Cates:" . json_encode(-71));
                 $quota = $ret['data']['quota'];
                 $str = '';
-        $info = $this->category->get_list();
-        if($info['status'] > 0)
-        {
-            $_categories = $info['data']['categories'];
-        }
-        else
-        {
-            $_categories = array();
-        }
-        $categories = array();
+                $info = $this->category->get_list();
+                if($info['status'] > 0)
+                {
+                    $_categories = $info['data']['categories'];
+                }
+                else
+                {
+                    $_categories = array();
+                }
+                $categories = array();
 
-        foreach($_categories as $cate)
-        {
-            //	array_push($categories,array($cate['id'] => $cate['category_name']));
-            $categories[$cate['id']] = $cate['category_name'];
-        }
+                foreach($_categories as $cate)
+                {
+                    $categories[$cate['id']] = $cate['category_name'];
+                }
                 foreach($quota as $key => $q)
                 {
-                    if($q < 0)
-                    {
-                        $str = $str . $categories[$key] . ' ';
-                        log_message('debug','value:' . $str);
-                    }
+                    $str = $str . $categories[$key] . ' ';
                 }	
-                $this->session->set_userdata('last_error', '你的' . $str .'金额已超出公司规定');
+                $this->session->set_userdata('last_error', $str . '金额超出公司月度限额，是否仍要提交');
             } elseif($ret['code'] == -63) {
-        $info = $this->category->get_list();
-        if($info['status'] > 0)
-        {
-            $_categories = $info['data']['categories'];
-        }
-        else
-        {
-            $_categories = array();
-        }
-        $categories = array();
+                $info = $this->category->get_list();
+                if($info['status'] > 0) {
+                    $_categories = $info['data']['categories'];
+                } else {
+                    $_categories = array();
+                }
+                $categories = array();
 
-        foreach($_categories as $cate)
-        {
-            //	array_push($categories,array($cate['id'] => $cate['category_name']));
-            $categories[$cate['id']] = $cate['category_name'];
-        }
+                foreach($_categories as $cate)
+                {
+                    $categories[$cate['id']] = $cate['category_name'];
+                }
                 $quota = $ret['data']['quota'];
                 $str = '';
                 foreach($quota as $key => $q)
@@ -381,7 +380,13 @@ class Reports extends REIM_Controller {
             }
         }
 
-        return redirect(base_url('reports'));
+        $_error = '成功';
+        if($this->session->userdata('last_error')) {
+            $_error = $this->session->userdata('last_error');
+            $this->session->unset_userdata('last_error');
+        }
+        die(json_encode(Array('status' => $ret['code'], 'msg' => $_error)));
+        //return redirect(base_url('reports'));
     }
 
     public function del($id = 0){
@@ -597,63 +602,60 @@ class Reports extends REIM_Controller {
             $this->session->set_userdata('last_error','提交报告不能为空');
             return redirect(base_url('reports/index')); 
         }
-        log_message('debug','categories:' . json_encode($categories));
         $title = $this->input->post('title');
         $receiver = $this->input->post('receiver');
         $cc = $this->input->post('cc');
         $save = $this->input->post('renew');
-        $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save);
+        $force = $this->input->post('force');
+        if(!$cc) $cc = array();
+        $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save, $force);
         $ret = json_decode($ret, true);
         log_message("debug", "xx:" . json_encode($ret));
         if($ret['code'] <= 0) {
             if($ret['code'] == -71)
             {
-        $info = $this->category->get_list();
-        if($info['status'] > 0)
-        {
-            $_categories = $info['data']['categories'];
-        }
-        else
-        {
-            $_categories = array();
-        }
-        $categories = array();
-
-        foreach($_categories as $cate)
-        {
-            //	array_push($categories,array($cate['id'] => $cate['category_name']));
-            $categories[$cate['id']] = $cate['category_name'];
-        }
+                $info = $this->category->get_list();
+                if($info['status'] > 0)
+                {
+                    $_categories = $info['data']['categories'];
+                }
+                else
+                {
+                    $_categories = array();
+                }
+                $categories = array();
+                foreach($_categories as $cate)
+                {
+                    $categories[$cate['id']] = $cate['category_name'];
+                }
+                log_message("debug", "Cates:" . json_encode($categories));
                 $quota = $ret['data']['quota'];
                 $str = '';
                 foreach($quota as $key => $q)
                 {
-                    if($q < 0)
-                    {
-                        $str = $str . $categories[$key] . ' ';
-                        log_message('debug','value:' . $str);
-                    }
+                    $str = $str . $categories[$key] . ' ';
                 }	
-                $this->session->set_userdata('last_error', '你的' . $str .'金额已超出公司规定');
+                if($str) 
+                    $this->session->set_userdata('last_error', $str . '金额超出公司月度限额，是否仍要提交');
             }
             else if($ret['code'] == -63)
             {
-        $info = $this->category->get_list();
-        if($info['status'] > 0)
-        {
-            $_categories = $info['data']['categories'];
-        }
-        else
-        {
-            $_categories = array();
-        }
-        $categories = array();
+                $info = $this->category->get_list();
+                if($info['status'] > 0)
+                {
+                    $_categories = $info['data']['categories'];
+                }
+                else
+                {
+                    $_categories = array();
+                }
+                $categories = array();
 
-        foreach($_categories as $cate)
-        {
-            //	array_push($categories,array($cate['id'] => $cate['category_name']));
-            $categories[$cate['id']] = $cate['category_name'];
-        }
+                foreach($_categories as $cate)
+                {
+                    //	array_push($categories,array($cate['id'] => $cate['category_name']));
+                    $categories[$cate['id']] = $cate['category_name'];
+                }
                 $quota = $ret['data']['quota'];
                 $str = '';
                 foreach($quota as $key => $q)
@@ -671,7 +673,12 @@ class Reports extends REIM_Controller {
             }
         }
 
-        return redirect(base_url('reports'));
+        $_error = '成功';
+        if($this->session->userdata('last_error')) {
+            $_error = $this->session->userdata('last_error');
+            $this->session->unset_userdata('last_error');
+        }
+        die(json_encode(Array('status' => $ret['code'], 'msg' => $_error)));
     }
 
     public function check_permission() {
@@ -775,15 +782,15 @@ class Reports extends REIM_Controller {
             }
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
             $d['status_str'] = '待提交';
-	    /*
+        /*
             $prove_ahead = '报销';
             switch($d['prove_ahead']){
             case 1: {$prove_ahead = '<font color="red">预借</font>';};break;
             case 2: {$prove_ahead = '<font color="green">预算</font>';};break;
             }
-	    */
+         */
             $d['amount'] = '￥' . $d['amount'];
-//            $d['prove_ahead'] = $prove_ahead;
+            //            $d['prove_ahead'] = $prove_ahead;
             switch($d['status']) {
             case 0: {
                 $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';

@@ -56,7 +56,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">抄送至</label>
                                 <div class="col-xs-9 col-sm-9">
-                                    <select class="chosen-select tag-input-style" name="cc[]" multiple="multiple" data-placeholder="请选择标签">
+                                    <select class="chosen-select tag-input-style" name="cc[]" id="cc" multiple="multiple" data-placeholder="请选择标签">
                                         <?php foreach($members as $m) {
 					if($user['id'] != $m['id']){?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
@@ -116,7 +116,12 @@ foreach($items as $i){
     if($i['rid'] == 0 && in_array($i['prove_ahead'], $item_type)){
                                         ?>
                                         <tr>
-                                            <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $i['amount'] ?>" ></td>
+                                        <td>
+<input name="item[]" value="<?php echo $i['id']; ?>" 
+type="checkbox" class="form-controller amount" 
+data-amount = "<?php echo $i['amount'] ?>" 
+data-id="<?php echo $i['id']; ?>" 
+></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['cate_str'];?></td>
                                             <td><?php echo $i['amount']; ?></td>
@@ -168,6 +173,28 @@ echo $buf;
     </div>
 </div>
 
+
+<div class="modal fade" id="force_submit">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">警告</h4>
+      </div>
+      <div class="modal-body" id="error">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消提交</button>
+        <button type="button" class="btn btn-primary force_submit_btn" >确定提交</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+
 <script language="javascript">
 update_tamount();
 var __BASE = "<?php echo $base_url; ?>";
@@ -198,6 +225,78 @@ function toDecimal2(x) {
     return s;  
 }  
 
+
+function do_post(force) {
+
+    var s = $('#receiver').val();
+    var title = $('#title').val();
+    if(title == "") {
+        show_notify('请添加报告名');
+        $('#title').focus();
+        return false;
+    }
+
+
+    var sum=0;
+
+    var _ids = Array();
+	$('.amount').each(function(){
+		if($(this).is(':checked')){
+            _ids.push($(this).data('id'));
+			var amount = $(this).data('amount');
+			amount = parseInt(amount.substr(1));
+			sum+=amount;
+		};
+	});
+    if(_ids.length == 0) {
+        show_notify('提交的报告不能为空');
+        return false;
+    }
+
+	if(s == null){
+	     show_notify('请选择审批人');
+	     $('#receiver').focus();
+	     return false;
+	}
+
+
+	if(sum <= 0) {
+		show_notify("报告总额不能小于等于0");
+		return false;
+	}
+    
+    // 转ajax,否则不能正确处理
+
+    // 获取所有的 条目
+    var _cc = $('#cc').val();
+    if(!_cc) _cc = Array();
+    $.ajax({
+        type : 'POST',
+            url : __BASE + "reports/create", 
+                data : {'item' : _ids,
+                    'title' : $('#title').val(),
+                    'receiver' : $('#receiver').val(),
+                    'cc' : _cc,
+                    'renew' : $('#renew').val(),
+                    'force' : force
+                },
+                dataType: 'json',
+                success : function(data){
+                    if(data.status > 0) {
+                        window.location.href = __BASE + 'reports/index';
+                    }
+                    if(data.status == -71) {
+                        $('#error').html(data.msg);
+                        $('#force_submit').modal();
+                        return false;
+                    }
+                    if(data.status < 0 && data.status != -71) {
+                        show_notify(data.msg);
+                    }
+                    return false;
+                }
+            });
+}
 
 $(document).ready(function(){
     //var now = moment();
@@ -249,8 +348,6 @@ $(document).ready(function(){
             //console.log("checked");
             $('.amount').each(function(){
                 $(this).prop('checked',true);
-                //console.log($(this).is(":checked"));
-               // $(this).trigger('checked');
             });   
 
             //$("[name='item[]']").prop('checked',true);
@@ -268,48 +365,17 @@ $(document).ready(function(){
 
 
     $('.renew').click(function(){
-
-        var s = $('#receiver').val();
-        console.log(s);
-        var title = $('#title').val();
-        if(title == "") {
-             show_notify('请添加报告名');
-             $('#title').focus();
-             return false;
-         }
-	
-	/*if(isNaN(s)){
-	     show_notify('请选择审批人');
-	     $('#receiver').focus();
-	     return false;
-	}*/
-	if(s == null){
-	     show_notify('请选择审批人');
-	     $('#receiver').focus();
-	     return false;
-	}
-
-	sum=0;
-
-	$('.amount').each(function(){
-		if($(this).is(':checked')){
-			var amount = $(this).data('amount');
-			amount = parseInt(amount.substr(1));
-			sum+=amount;
-		};
-	});
-
-
-
-	if(sum <= 0)
-	{
-		show_notify("报告总额不能小于等于0");
-		return false;
-	}
-    
         $('#renew').val($(this).data('renew'));
-        $('#mainform').submit();
+        /// 不强制
+        do_post(0);
     });
+    $('.force_submit_btn').click(function() {
+        $('#renew').val(1);
+        do_post(1);
+    });
+
+
+
     $('.amount').each(function(idx, item) {
         $(this).click(function(){
             update_tamount();
