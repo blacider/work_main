@@ -73,7 +73,7 @@ foreach($report['items'] as $i) {
                                             if(count($i['extra'])) {
                                                 // TODO 目前情况下每个元素都只有一个了
                                                 foreach($i['extra'] as $e) {
-                                                    if($e['extra_type']  == 2) {
+                                                    if($e['type']  == 2) {
                                                         // 多时间的
                                                         $sdt = $i['dt'];
                                                         $edt = $e['value'];
@@ -85,7 +85,7 @@ foreach($report['items'] as $i) {
 
                                                         $_extra_amount = '（' . sprintf("%.2f", $i['amount'] / $_day_delta) . "元/天）";
                                                     }
-                                                    if($e['extra_type'] == 5) {
+                                                    if($e['type'] == 5) {
                                                         // 多人的
                                                         $members = $e['value'];
                                                         $_extra_amount = '（' . sprintf("%.2f", $i['amount'] / $members) . "元/人 共" . $members . "人）";

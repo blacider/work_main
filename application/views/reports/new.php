@@ -266,7 +266,8 @@ function do_post(force) {
 	}
     
     // 转ajax,否则不能正确处理
-
+    var _renew = $('#renew').val();
+    if(_renew == 0) force = 1;
     // 获取所有的 条目
     var _cc = $('#cc').val();
     if(!_cc) _cc = Array();
@@ -277,7 +278,7 @@ function do_post(force) {
                     'title' : $('#title').val(),
                     'receiver' : $('#receiver').val(),
                     'cc' : _cc,
-                    'renew' : $('#renew').val(),
+                    'renew' : _renew,
                     'force' : force
                 },
                 dataType: 'json',
@@ -285,7 +286,7 @@ function do_post(force) {
                     if(data.status > 0) {
                         window.location.href = __BASE + 'reports/index';
                     }
-                    if(data.status == -71) {
+                    if(_renew == 1 && data.status == -71) {
                         $('#error').html(data.msg);
                         $('#force_submit').modal();
                         return false;
