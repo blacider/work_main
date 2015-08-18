@@ -26,7 +26,7 @@ class REIM_Controller extends CI_Controller{
         call_user_func_array(array($this,$method),$params);
     }
 
-    private function startsWith($haystack, $needle)
+    public function startsWith($haystack, $needle)
     {
         return $needle === "" || strpos($haystack, $needle) === 0;
     }
