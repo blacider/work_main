@@ -89,6 +89,8 @@ class Resetpwd extends REIM_Controller  {
         {
             if($obj['status'] > 0){
                 if ($active) {
+                    $jwt = $this->get_jwt($cid, $pass);
+                $this->session->set_userdata('jwt',$jwt);
                     return redirect(base_url('resetpwd/success'));
                 } else {
                     return redirect(base_url('login'));
@@ -105,6 +107,8 @@ class Resetpwd extends REIM_Controller  {
         else if(1 == $is_newcomer)
         {
             if($obj['status'] > 0){
+                $jwt = $this->get_jwt($cid, $pass);
+                $this->session->set_userdata('jwt',$jwt);
                 return redirect(base_url('install/newcomer'));
             }
 

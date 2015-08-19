@@ -5,17 +5,25 @@ class Install extends REIM_Controller {
         parent::__construct();
         $this->load->model('app_model');
         $this->load->library('user_agent');
+        $this->load->model('user_model','user');
     }
     public function stage(){
         $this->load->view('stage');
     }
 
     public function newcomer(){
+        $jwt = $this->session->userdata('jwt');
+        $invites = array();
+        $_invites = $this->user->get_invites();
+        if($_invites['status'] > 0)
+        {
+            $invites = $_invites['data'];
+        }
         if ($this->agent->is_mobile('iphone'))
         {
             $info = $this->app_model->find_online(0);
             $url = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/pub/xreim';
-            $this->load->view('install/newcomer/iphone', array('url' => $url));
+            $this->load->view('install/newcomer/iphone', array('url' => $url,'invites' => $invites));
         }
         else if ($this->agent->is_mobile())
         {
@@ -24,11 +32,14 @@ class Install extends REIM_Controller {
             //$url = "http://files.cloudbaoxiao.com/android/" . $info['version'] . "/reim.apk";
             //$url = "http://files-cloudbaoxiao-com.alikunlun.com/android/" . $info['version'] . "/reim.apk";
             //$url = "https://files-cloudbaoxiao-com.alikunlun.com/android/" . $info['version'] . "/reim.apk";
-            $this->load->view('install/newcomer/android', array('url' => $url));
+            $this->load->view('install/newcomer/android', array('url' => $url,'invites' => $invites));
         }
         else
         {
-            $this->load->view('install/newcomer/index');
+            $info = $this->app_model->find_online(1);
+            //$url = "https://admin.cloudbaoxiao.com/release/android/" . $info['version'] . "/reim.apk";
+            //$this->load->view('install/newcomer/index', array('url'=>$url,'invites' => $invites));
+            $this->load->view('install/newcomer/index', array('invites' => $invites));
         }
         //        $this->load->view('install');
     }
@@ -52,7 +63,8 @@ class Install extends REIM_Controller {
         }
         else
         {
-            $this->load->view('install/index');
+            $this->load->view('install/newcomer/index', array('url'=>$url,'invites' => $invites));
+            //$this->load->view('install/index');
         }
     }
 
