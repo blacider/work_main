@@ -68,7 +68,7 @@
 <label class="col-sm-1 control-label no-padding-right">人数:</label>
 <div class="col-xs-3 col-sm-3">
 <div class="input-group">
-<input type="text" id="people-nums" data-placeholder="人数">
+<input type="text" id="people-nums" >
 </div>
 </div>
 <label class="col-sm-1 control-label no-padding-right">人均:</label>
@@ -86,15 +86,15 @@
 
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">参与人</label>
-    <div class="col-xs-3 col-sm-3">
+    <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
                                     <?php 
                                     foreach($member as $m){
                                     ?>
                                         <?php if ($m['id'] != $user) {?>
-                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . "[" . $m['email'] . "]"; ?></option>
                                         <?php } else { ?>
-                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . "[" . $m['email'] . "]"; ?></option>
                                         <?php } ?>
                                     <?php
                                     }
@@ -628,6 +628,10 @@ $(document).ready(function(){
         if($('#sob_category').val() == null)
         {
             show_notify('请选择类目');
+            return false;
+        }
+        if($('#people-num').val() == null && $('#people-nums').val() == 0) {
+            show_notify('必须填写参与人数');
             return false;
         }
 

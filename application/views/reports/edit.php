@@ -188,6 +188,7 @@ foreach($items as $i){
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
+var __SUM = 0;
 function do_post(force) {
 
     var _rid = $('#hrid').val();
@@ -223,8 +224,8 @@ function do_post(force) {
 	     return false;
 	}
 
-    console.log(sum);
-	if(sum <= 0) {
+
+	if(__SUM <= 0) {
 		show_notify("报告总额不能小于等于0");
 		return false;
 	}
@@ -237,7 +238,7 @@ function do_post(force) {
 
     }
 
-    console.log(_ids);
+    var _renew = $('#renew').val();
     $.ajax({
         type : 'POST',
             url : __BASE + "reports/update", 
@@ -247,15 +248,16 @@ function do_post(force) {
                     'receiver' : $('#receiver').val(),
                     'cc' : _cc,
                     'id' : _rid,
-                    'renew' : $('#renew').val(),
+                    'renew' : _renew,
                     'force' : force
                 },
                 dataType: 'json',
                 success : function(data){
                     if(data.status > 0) {
                         window.location.href = __BASE + 'reports/index';
+                        return false;
                     }
-                    if(data.status == -71) {
+                    if(_renew && data.status == -71) {
                         $('#error').html(data.msg);
                         $('#force_submit').modal();
                         return false;
@@ -396,5 +398,6 @@ function update_tamount(){
     });
     //$('#tamount').html(sum);
     $('#tamount').html('￥' + toDecimal2(sum));
+    __SUM = sum;
 }
 </script>

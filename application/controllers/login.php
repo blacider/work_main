@@ -118,8 +118,10 @@ class Login extends REIM_Controller {
         $this->session->set_userdata("groupname", $__g);
         $this->session->set_userdata("server_token", $server_token);
         $goto = $this->session->userdata('last_url');
-        log_message("debug", $goto);
         // 获取一下组信息，然后设置一下
+        if($this->startsWith($goto, 'members/singlegroup')){
+            $goto = 'items';
+        }
         if(!$goto) {
             redirect(base_url('items'));
             die('');

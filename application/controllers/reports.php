@@ -308,7 +308,6 @@ class Reports extends REIM_Controller {
         if(''==$items)
         {
             $this->session->set_userdata('last_error','提交报告不能为空');
-            die("No Items:");
             return redirect(base_url('reports/index')); 
         }
         $title = $this->input->post('title');
@@ -318,7 +317,6 @@ class Reports extends REIM_Controller {
         if(!$cc) $cc = array();
         if(!$force) $force = 0;
         $save = $this->input->post('renew');
-        if(!$save) $save = 1;
         $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save, $force);
         $ret = json_decode($ret, true);
         log_message("debug", "xx:" . json_encode($ret));

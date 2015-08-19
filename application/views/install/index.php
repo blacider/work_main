@@ -71,7 +71,7 @@
 });
 
 function download() {
-    window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/1.1.1/reim.apk'; 
+    window.location.href = '';
 }
 </script>
 </body>

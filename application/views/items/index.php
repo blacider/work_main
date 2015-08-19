@@ -20,6 +20,13 @@
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
+var _error = "<?php echo $error; ?>";
 </script>
 <script src="/static/js/base.js" ></script>
 <script src="/static/js/items.js" ></script>
+<script language="javascript">
+$(document).ready(function(){
+    if(_error) show_notify(_error);
+
+});
+</script>

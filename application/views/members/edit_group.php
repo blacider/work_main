@@ -34,7 +34,7 @@
                                     <?php 
                                     foreach($member as $m){
                                     ?>
-                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . "[" . $m['email'] . "]"; ?></option>
                                     <?php
                                     }
                                     ?>
@@ -83,9 +83,9 @@
                                     foreach($member as $m){
                                         if(in_array($m['id'], $smember)){
                                     ?>
-                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . "[" . $m['email'] . "]"; ?></option>
                                     <?php } else { ?>
-                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . "[" . $m['email'] . "]"; ?></option>
                                     <?php
                                     }
                                     }
