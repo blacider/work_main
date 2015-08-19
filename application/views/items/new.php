@@ -530,7 +530,7 @@ $(document).ready(function(){
                 $('#config_type').val(_item_config[category_id]['type']);
                 $('#amount').change(function(){
                     var all_amount = $('#amount').val();
-                    if (subs != '' && subs != 0)
+                    if (subs != '' && subs >= 0)
                         $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
                     else
                         $('#average_id').text("请输入正确人数");
@@ -630,7 +630,7 @@ $(document).ready(function(){
             show_notify('请选择类目');
             return false;
         }
-        if(item_config[i]['type'] == 5 && $('#people-num').val() == null && $('#people-nums').val() == 0) {
+        if($('#config_type').val() == 5 && $('#people-num').val() == null && $('#people-nums').val() == 0) {
             show_notify('必须填写参与人数');
             return false;
         }
