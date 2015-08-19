@@ -4,11 +4,7 @@ class REIM_Controller extends CI_Controller{
     public function _remap($method,$params)
     {
         $this->load->library('user_agent');
-        //$this->load->helper('user_agent', 'agent');
         $refer = $this->agent->referrer();
-        //log_message('debug', 'alvayang remap refer:' . json_encode($_SERVER));
-        //log_message('debug', 'alvayang remap refer:' . json_encode($method));
-        //log_message('debug', 'alvayang remap refer:' . json_encode($params));
     	$jwt = $this->session->userdata('jwt');
         $controller = $this->uri->rsegment_array();
         $method_set = ['login','install', 'pub','users', 'register' ,'resetpwd'];
@@ -39,11 +35,7 @@ class REIM_Controller extends CI_Controller{
         //log_message("debug", "construct:" . $refer);
         $this->load->library('PHPExcel/IOFactory');
         $uri = $this->uri->uri_string();
-        //log_message("debug", "Request: $uri");
-        //log_message("debug", "JWT: $uri, " . json_encode($this->session->userdata('jwt')));
-        //log_message("debug", "JWT: $uri," . json_encode($this->session->userdata('uid')));
         if($this->session->userdata('jwt') == "" && $this->session->userdata('uid') == ""){
-            //log_message("debug", "Not Not Request: $uri");
             $flag = 1;
             $prefixs = array('login', 'register', 'join', 'install', 'errors', 'resetpwd', 'pub', 'users', 'register');
             foreach($prefixs as $prefix){
@@ -51,7 +43,6 @@ class REIM_Controller extends CI_Controller{
                     $flag = 0;
                 }
             }
-            //log_message("debug", "No Auth Info Logout $flag");
 
             if($flag == 1) {
                 $this->session->set_userdata('last_url', $uri);
@@ -256,7 +247,10 @@ class REIM_Controller extends CI_Controller{
         $cell_one = $data[0];
         $j = 0;
         foreach ($cell_one as $k => $v) {
-            $Excel->getSheet()->setCellValue($this->getCharByNunber($j) . '1', $k);
+            $c_name = $this->getCharByNunber($j);
+            $Excel->getActiveSheet() -> getStyle($c_name) ->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            $Excel->getSheet()->getColumnDimension($c_name)->setAutoSize(true);
+            $Excel->getSheet()->setCellValue($c_name . '1', ' '. strval($k));
             $j++;
         }
 
@@ -264,7 +258,10 @@ class REIM_Controller extends CI_Controller{
         foreach ($data as $value) {
             $y = 0;
             foreach ($value as $k => $v) {
-                $Excel->getSheet()->setCellValue($this->getCharByNunber($y) . $x, $v);
+                $c_name = $this->getCharByNunber($y);
+                $Excel->getActiveSheet() -> getStyle($c_name) ->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+                $Excel->getSheet()->getColumnDimension($c_name)->setAutoSize(true);
+                $Excel->getSheet()->setCellValue($this->getCharByNunber($y) . $x, ' ' . strval($v));
                 $y++;
             }
             $x++;
@@ -281,7 +278,7 @@ class REIM_Controller extends CI_Controller{
             $cell_one = $data_2[0];
             $j = 0;
             foreach ($cell_one as $k => $v) {
-                $Excel->getSheet(1)->setCellValue($this->getCharByNunber($j) . '1', $k);
+                $Excel->getSheet(1)->setCellValue($this->getCharByNunber($j) . '1', ' ' . $k);
                 $j++;
             }
 
@@ -289,7 +286,7 @@ class REIM_Controller extends CI_Controller{
             foreach ($data_2 as $value) {
                 $y = 0;
                 foreach ($value as $k => $v) {
-                    $Excel->getSheet(1)->setCellValue($this->getCharByNunber($y) . $x, $v);
+                    $Excel->getSheet(1)->setCellValue($this->getCharByNunber($y) . $x, ' ' . $v);
                     $y++;
                 }
                 $x++;
@@ -305,7 +302,7 @@ class REIM_Controller extends CI_Controller{
                 $cell_one = $data_3[0];
                 $j = 0;
                 foreach ($cell_one as $k => $v) {
-                    $Excel->getSheet(2)->setCellValue($this->getCharByNunber($j) . '1', $k);
+                    $Excel->getSheet(2)->setCellValue($this->getCharByNunber($j) . '1', ' ' . $k);
                     $j++;
                 }
 
@@ -313,7 +310,7 @@ class REIM_Controller extends CI_Controller{
                 foreach ($data_3 as $value) {
                     $y = 0;
                     foreach ($value as $k => $v) {
-                        $Excel->getSheet(2)->setCellValue($this->getCharByNunber($y) . $x, $v);
+                        $Excel->getSheet(2)->setCellValue($this->getCharByNunber($y) . $x, ' ' . $v);
                         $y++;
                     }
                     $x++;
