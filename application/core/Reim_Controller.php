@@ -4,11 +4,7 @@ class REIM_Controller extends CI_Controller{
     public function _remap($method,$params)
     {
         $this->load->library('user_agent');
-        //$this->load->helper('user_agent', 'agent');
         $refer = $this->agent->referrer();
-        //log_message('debug', 'alvayang remap refer:' . json_encode($_SERVER));
-        //log_message('debug', 'alvayang remap refer:' . json_encode($method));
-        //log_message('debug', 'alvayang remap refer:' . json_encode($params));
     	$jwt = $this->session->userdata('jwt');
         $controller = $this->uri->rsegment_array();
         $method_set = ['login','install', 'pub','users', 'register' ,'resetpwd'];
@@ -18,11 +14,8 @@ class REIM_Controller extends CI_Controller{
             {
                 redirect(base_url('login'));
             }
-            //log_message('debug','no need jwt'.$controller[1]);
         }
         $uri=$this->uri;
-        log_message("debug","controller:".json_encode($controller));
-        log_message("debug","uri:".json_encode($uri));
         call_user_func_array(array($this,$method),$params);
     }
 
@@ -79,11 +72,9 @@ class REIM_Controller extends CI_Controller{
             $custom_data['username'] = $this->session->userdata('username');
             $custom_data['uid'] = $this->session->userdata('uid');
             $custom_data['tip'] = $this->module_tip_model->get_tip($custom_data['uid']);
-            $custom_data['menu'] = $this->user_model->get_menu($custom_data['uid']);
             $custom_data['description'] =  '';
         } else {
             $this->session->set_userdata('user', $profile);
-            $custom_data['menu'] = $this->user_model->get_menu(0, 1);
             $custom_data['profile'] = $profile;
         }
 
