@@ -223,7 +223,7 @@ function do_post(force) {
 	     return false;
 	}
 
-
+    console.log(sum);
 	if(sum <= 0) {
 		show_notify("报告总额不能小于等于0");
 		return false;
