@@ -630,7 +630,7 @@ $(document).ready(function(){
             show_notify('请选择类目');
             return false;
         }
-        if($('#people-num').val() == null && $('#people-nums').val() == 0) {
+        if(item_config[i]['type'] == 5 && $('#people-num').val() == null && $('#people-nums').val() == 0) {
             show_notify('必须填写参与人数');
             return false;
         }
