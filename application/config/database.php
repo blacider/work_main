@@ -45,10 +45,9 @@
 | the active record class
 */
 
-$active_group = '';
+$active_group = 'default';
 $active_record = TRUE;
 
-/*
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'admin';
 $db['default']['password'] = 'xODJhZjY2MzQ4ZfdsaTBjMjMzMjZlZWM2OTFmN';
@@ -64,7 +63,6 @@ $db['default']['dbcollat'] = 'utf8_general_ci';
 $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
- */
 
 
 /* End of file database.php */

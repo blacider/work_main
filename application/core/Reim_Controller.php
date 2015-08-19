@@ -148,11 +148,9 @@ class REIM_Controller extends CI_Controller{
             $custom_data['username'] = $this->session->userdata('username');
             $custom_data['uid'] = $this->session->userdata('uid');
             $custom_data['tip'] = $this->module_tip_model->get_tip($custom_data['uid']);
-            $custom_data['menu'] = $this->user_model->get_menu($custom_data['uid']);
             $custom_data['description'] =  '';
         } else {
             $this->session->set_userdata('user', $profile);
-            $custom_data['menu'] = $this->user_model->get_menu(0, 1);
             $custom_data['profile'] = $profile;
         }
 
