@@ -10,7 +10,13 @@
 <script src="/static/ace/js/jquery.colorbox-min.js"></script>
 
 <!-- page specific plugin styles -->
-<link rel="stylesheet" href="/static/ace/css/colorbox.css" />
+<!--<script src="/static/ace/js/jquery1x.min.js"></script> -->
+<script src="/static/ace/js/date-time/moment.min.js"></script>
+<script src="/static/ace/js/chosen.jquery.min.js"></script>
+
+<script src="/static/ace/js/date-time/moment.js"></script>
+<script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
+<script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script>
 
 
 
@@ -97,6 +103,41 @@
                          <?php
                                 }
                             ?>
+
+
+                            <!--
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">参与人</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select disabled class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
+                
+                                        <?php 
+                                        $item_uids = array();
+                                        if(array_key_exists('relates',$item))
+                                        {
+                                            $item_uids = explode(',',$item['relates']);
+                                        }
+
+                                        foreach($member as $m){
+                                            if(in_array($m['id'],$item_uids))
+                                            {
+                                                ?>
+
+                                                <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . "[" . $m['email'] . "]"; ?></option>
+                                                <?php 
+                                            }
+                                            ?>
+                                            <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . "[" . $m['email'] . "]"; ?></option>
+
+                                            <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div> 
+                            -->
+
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">商家</label>
@@ -194,6 +235,18 @@ if(_error)
 	show_notify(_error);
 }
 $(document).ready(function(){
+
+$('.chosen-select').chosen({allow_single_deselect:true}); 
+    $(window)
+        .off('resize.chosen')
+        .on('resize.chosen', function() {
+            $('.chosen-select').each(function() {
+                var $this = $(this);
+                $this.next().css({'width': $this.parent().width()});
+            })
+        }).trigger('resize.chosen');
+
+
     var $overflow = '';
     var colorbox_params = {
         rel: 'colorbox',
