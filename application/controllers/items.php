@@ -614,6 +614,14 @@ class Items extends REIM_Controller {
                 ));
             }
         }
+        $group = $this->groups->get_my_list();
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
         log_message("debug","item_updta_in".$this->session->userdata("item_update_in"));
         log_message("debug","flow".json_encode($flow));
         log_message("debug","users:".json_encode($user));
@@ -627,6 +635,7 @@ class Items extends REIM_Controller {
                 'flow' => $flow
                 ,'item_value' => $item_value
                 ,'error' => $error
+                ,'member' => $gmember
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
