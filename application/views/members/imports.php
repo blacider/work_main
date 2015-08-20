@@ -326,11 +326,14 @@ function insertMem()
                            {
                                  myself.text('手机邮箱都为空');
                            }
-                            if((back_id)>0 && (manager_name))
+                            if((back_id)>0)
                             {
 
-                                  var person = {'id':back_info['data'][uid],'manager':manager_name};
-                                  in_members.push(person);
+                                  if(manager_name)
+                                  {
+                                        var person = {'id':back_info['data'][uid],'manager':manager_name};
+                                        in_members.push(person);
+                                    }
                                   
                                   myself.removeClass('red').addClass('green');
                                   if(_status&1 == 1)
