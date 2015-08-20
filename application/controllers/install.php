@@ -13,6 +13,7 @@ class Install extends REIM_Controller {
 
     public function newcomer(){
         $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return redirect('install');
         $invites = array();
         $_invites = $this->user->get_invites();
         if($_invites['status'] > 0)
@@ -63,8 +64,11 @@ class Install extends REIM_Controller {
         }
         else
         {
-            $this->load->view('install/newcomer/index', array('url'=>$url,'invites' => $invites));
-            //$this->load->view('install/index');
+           /* 
+            $info = $this->app_model->find_online(1);
+            $url = "http://d.yunbaoxiao.com/android/" . $info['version'] . "/reim.apk";
+            $this->load->view('install/newcomer/index', array('url'=>$url));*/
+            $this->load->view('install/index');
         }
     }
 
