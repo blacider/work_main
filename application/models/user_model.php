@@ -5,7 +5,11 @@ class User_Model extends Reim_Model {
     public function __construct(){
         parent::__construct();
     }
-    
+   public function my_get_jwt($username,$password)
+   {
+            $jwt = $this->get_jwt($username, $password);
+            return $jwt;
+   }
     public function join_company($gid,$version=0)
     {
         $jwt = $this->session->userdata('jwt');
@@ -18,13 +22,13 @@ class User_Model extends Reim_Model {
         );
         $buf = $this->do_Post($url,$data,$jwt);
 
-        return josn_decode($buf,True);
+        return json_decode($buf,True);
     }
 
     public function get_invites()
     {
             $jwt = $this->session->userdata('jwt'); 
-            $url = $this->get_url('invites');
+            $url = $this->get_url('/messages/list');
             $buf = $this->do_Get($url,$jwt);
 
             log_message('debug','get_invites:' . $buf);

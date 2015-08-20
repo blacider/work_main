@@ -12,6 +12,7 @@ class Resetpwd extends REIM_Controller  {
         $this->load->library('user_agent');
     }
 
+
     public function newcomer($code = '', $name = '') {
         /*
         if(!$code || !$cid) redirect(base_url('login'));
@@ -76,6 +77,8 @@ class Resetpwd extends REIM_Controller  {
         $repass = $this->input->post('passc');
         $code = $this->input->post('code');
         $cid = $this->input->post('cid');
+        $username = $this->input->post('username');
+        log_message('debug','cid ' . $cid);
         if(!$code || !$cid)  redirect(base_url('login'));
         if($pass != $repass) {
             $this->session->set_userdata('last_error', "密码不匹配");
@@ -89,7 +92,8 @@ class Resetpwd extends REIM_Controller  {
         {
             if($obj['status'] > 0){
                 if ($active) {
-                    $jwt = $this->get_jwt($cid, $pass);
+                $jwt = $this->users->my_get_jwt($username, $pass);
+//                    $jwt = $this->get_jwt($cid, $pass);
                 $this->session->set_userdata('jwt',$jwt);
                     return redirect(base_url('resetpwd/success'));
                 } else {
@@ -107,9 +111,17 @@ class Resetpwd extends REIM_Controller  {
         else if(1 == $is_newcomer)
         {
             if($obj['status'] > 0){
-                $jwt = $this->get_jwt($cid, $pass);
+                
+                $jwt = $this->users->my_get_jwt($username, $pass);
+//                    $jwt = $this->get_jwt($cid, $pass);
+                log_message('cid:' . $cid . " pass:" .$pass );
                 $this->session->set_userdata('jwt',$jwt);
                 return redirect(base_url('install/newcomer'));
+            }
+            else
+            {
+                $this->session->set_userdata('last_error','验证信息已经被使用');
+                return redirect(base_url());
             }
 
             //$this->load->view('success');

@@ -7,6 +7,26 @@ class Login extends REIM_Controller {
         $this->load->helper('cookie');
         $this->load->library('reim_cipher');
     }
+
+
+    public function join_company()
+    {
+        $company = $this->input->post('invites');
+        $buf = $this->users->join_company($company);
+
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','加入成功');
+            return redirect(base_url());
+        }
+        else
+        {
+        
+            $this->session->set_userdata('last_error','加入成功');
+            return redirect(base_url());
+        }
+    }
+
     public function alogin()
     {
         $error = $this->session->userdata('login_error');
