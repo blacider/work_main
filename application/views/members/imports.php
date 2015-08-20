@@ -316,26 +316,26 @@ function insertMem()
                           
                          //   console.log('uid:' + uid);
                           //  console.log('manager_name:' + manager_name);
-                           var back_id = back_info['data'][uid];
-                           if(back_id == -1)
+                          for(var p in back_info['data'])
+                          {
+                           //var back_id = back_info['data'][uid];
+                           if(back_info['data'][p] < 0)
                            {
                                // $(this).removeClass('fa-times red').addClass('fa-check green');
-                               myself.text('数据库导入失败');
+                               myself.text('导入出错');
                            }
-                           if(back_id == -2)
-                           {
-                                 myself.text('手机邮箱都为空');
-                           }
-                            if((back_id)>0)
+                           
+                            if((back_info['data'][p])>0)
                             {
 
                                   if(manager_name)
                                   {
-                                        var person = {'id':back_info['data'][uid],'manager':manager_name};
+                                        var person = {'id':back_info['data'][p],'manager':manager_name};
                                         in_members.push(person);
                                     }
                                   
                                   myself.removeClass('red').addClass('green');
+                                  console.log("heloo");
                                   if(_status&1 == 1)
                                   {
                                     myself.text('已更新');
@@ -347,6 +347,7 @@ function insertMem()
                                   //$('#error_'+uid).html('导入成功');
                                  // console.log($('#error_'+uid).val());
                                   
+                            }
                             }
                         }
                        
