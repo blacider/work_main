@@ -41,6 +41,13 @@
                                 </div>
                             </div>
 
+                             <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">ID</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input type="text" class="form-controller col-xs-12" name="locid" id="locid"  placeholder="ID">
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">部门</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -48,7 +55,7 @@
                                         <!-- <option value="0">请选择部门</option> -->
                                         <?php foreach($groups['group'] as $g) { ?>
                                         
-                                        <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+                                        <option value="<?php echo $g['name']; ?>"><?php echo $g['name']; ?></option>
                                         <?php } ?>
                                     </select>
                                 </div>
@@ -62,7 +69,7 @@
 <?php 
 foreach($ranks as $m){
 ?>
-                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                        <option value="<?php echo $m['name']; ?>"><?php echo $m['name']; ?></option>
 <?php
 }
 ?>
@@ -78,7 +85,7 @@ foreach($ranks as $m){
 <?php 
 foreach($levels as $m){
 ?>
-                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                        <option value="<?php echo $m['name']; ?>"><?php echo $m['name']; ?></option>
 <?php
 }
 ?>
@@ -96,7 +103,7 @@ foreach($levels as $m){
 <?php 
 foreach($gmember as $m){
 ?>
-    <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . "[" . $m['email'] . "]"; ?></option>
+    <option value="<?php echo $m['id'] . ','. $m['nickname']; ?>"><?php echo $m['nickname'] . "[" . $m['email'] . "]"; ?></option>
 <?php
 }
 ?>
@@ -325,7 +332,7 @@ foreach($gmember as $m){
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                           <!-- <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">管理员</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <label style="margin-top:8px;">
@@ -334,7 +341,7 @@ foreach($gmember as $m){
                                     </label>
 
                                 </div>
-                            </div>
+                            </div> -->
 
                             <input type="hidden" id="renew" name="renew" value="0" />
                             <input type="reset" style="display:none;" id="reset">

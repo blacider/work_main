@@ -40,7 +40,7 @@
             <div class="pc">
                 <img src="/static/img/download.png" style="width:160px;height:160px;">
             <div class="">恭喜,密码设置成功</div>
-            <form id="join_form" method="post" action="<?php echo base_url();?>">
+            <form id="join_form" method="post" action="<?php echo base_url('/login/join_company');?>">
              <label class="col-sm-1 control-label no-padding-right">收到的邀请</label>
                 <select class="chosen-select tag-input-style" name="invites" data-placeholder="邀请人" >
                   <?php 

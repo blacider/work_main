@@ -37,6 +37,23 @@
           <div class="ios ios-img">App Store 下载</div>
         </div>
       </div>
+
+        <form id="join_form" method="post" action="<?php echo base_url('/login/join_company');?>">
+             <label class="col-sm-1 control-label no-padding-right">收到的邀请</label>
+                <select class="chosen-select tag-input-style" name="invites" data-placeholder="邀请人" >
+                  <?php 
+                  foreach($invites as $m){
+
+                    ?>
+                    <option selected value="<?php echo $m['gid']; ?>"><?php echo $m['groupname']; ?></option>
+                    <?php
+                  }
+
+                  ?>
+                </select>
+                <input type="button" id="join_company" style="background-color:red" value="加入公司"/>
+         
+            </form>
          </div>
   </div>
   <div class="footer">

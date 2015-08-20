@@ -67,7 +67,8 @@ if($name){
             </div>
               <input type="hidden" id="phone_hidden" />
               <input type="hidden" name="code" value="<?php echo $code; ?>" />
-                                                <input type="hidden" name="cid" value="<?php echo $cid; ?>" />
+              <input type="hidden" name="cid" value="<?php echo $cid; ?>" />
+              <input type="hidden" name="username" value="<?php echo $name; ?>" />
               <input type="hidden" id="code_hidden" />
             <div id="button-div" class="form-submit ie-button1"><input type="submit" value="设置密码"></div>
     <input type="hidden" name='u' class="form-control" value="<?php echo $placeholder; ?>">
