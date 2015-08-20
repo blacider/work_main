@@ -6,6 +6,46 @@ class User_Model extends Reim_Model {
         parent::__construct();
     }
     
+    public function join_company($gid,$version=0)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return base_url();
+
+        $url = $this->get_url('apply');
+        $data = array(
+            'gid' => $gid,
+            'version' => $version
+        );
+        $buf = $this->do_Post($url,$data,$jwt);
+
+        return josn_decode($buf,True);
+    }
+
+    public function get_invites()
+    {
+            $jwt = $this->session->userdata('jwt'); 
+            $url = $this->get_url('invites');
+            $buf = $this->do_Get($url,$jwt);
+
+            log_message('debug','get_invites:' . $buf);
+            return json_decode($buf,True);
+    }
+
+    public function raise_invites($groupname,$guests)
+    {
+    	$jwt = $this->session->userdata('jwt');
+	if(!$jwt)  return false;
+
+	$url = $this->get_url('invites');
+	$data = array(
+		'name' => $groupname
+		,'invites' => $guests
+	);
+	$buf = $this->do_Post($url,$data,$jwt);	
+	
+	return json_decode($buf,True);
+    }
+
     public function get_common()
     {
     	$jwt = $this->session->userdata('jwt');
@@ -307,14 +347,16 @@ class User_Model extends Reim_Model {
         return $buf;
     }
 
-    public function update_credit($id, $account, $cardno, $cardbank, $cardloc) {
+    public function update_credit($id, $account, $cardno, $cardbank, $cardloc , $uid) {
         $url = $this->get_url('bank/' . $id);
         $data = array(
             'bank_name' => $cardbank
             ,'bank_location' => $cardloc
             ,'cardno' => $cardno
             ,'account' => $account
+	    ,'uid' => $uid
         );
+	log_message('debug','credit_data:' . json_encode($data));
         $jwt = $this->session->userdata('jwt');
         $buf = $this->do_Put($url, $data, $jwt);
         log_message("debug", $buf);
@@ -322,13 +364,14 @@ class User_Model extends Reim_Model {
     }
 
 
-    public function new_credit($account, $cardno, $cardbank, $cardloc) {
+    public function new_credit($account, $cardno, $cardbank, $cardloc , $uid) {
         $url = $this->get_url('bank');
         $data = array(
             'bank_name' => $cardbank
             ,'bank_location' => $cardloc
             ,'cardno' => $cardno
             ,'account' => $account
+	    ,'uid' => $uid
         );
         $jwt = $this->session->userdata('jwt');
         $buf = $this->do_Post($url, $data, $jwt);
@@ -336,8 +379,8 @@ class User_Model extends Reim_Model {
         return $buf;
     }
 
-    public function del_credit($id){
-        $url = $this->get_url('bank/' . $id);
+    public function del_credit($id,$uid){
+        $url = $this->get_url('bank/' . $id . '/' . $uid);
         $jwt = $this->session->userdata('jwt');
         $buf = $this->do_Delete($url, array(), $jwt);
         log_message("debug", $buf);

@@ -21,6 +21,7 @@
                                     <th>级别</th>
                                     <th>职位</th>
                                     <th>状态</th>
+                                    <th>错误信息</th>
                                 </tr>
                                 <?php foreach($members as $d){ ?>
                                 <tr class="member"  data-id="<?php echo $d['status'];?>" >
@@ -40,12 +41,23 @@
                                     <td><?php echo $d['manager'];?></td>
                                     <td><?php echo $d['rank'];?></td>
                                     <td><?php echo $d['level'];?></td>
-                                    <td style="vertical-align: middle;">
+                                    <td>
                                         <!-- <a alt="<?php echo $d['status'] == 1 ? '已经是同一个公司的同事' : '还不是一个公司的同事'; ?>"><i id="m_<?php echo md5($d['email']); ?>"   -->
                                         <a alt=""><i
-                                            data-value="<?php echo base64_encode(json_encode($d)); ?>" data-manager="<?php echo $d['manager']?>" data-uid="<?php echo $d['id']?>"  data-id="<?php echo $d['id'];?>"  class="<?php echo $d['status'] == 1 ? 'green' : 'red' ; ?> menu-icon fa judge"><?php echo $d['status'] == 1 ? '已导入' : '未导入' ; ?></i><span class="red" id="<?php echo 'error_'.$d['id']; ?>"></span></a>
+                                            data-value="<?php echo base64_encode(json_encode($d)); ?>" data-manager="<?php echo $d['manager']?>" data-status="<?php echo $d['status'];?>" data-uid="<?php echo $d['id']?>"  data-id="<?php echo $d['id'];?>"  class="<?php echo $d['status']&1 == 1 ? 'green' : 'red' ; ?> menu-icon fa judge"><?php echo $d['status']&1 == 1?'已导入(更新数据)' : '未导入';?></i><span class="red" id="<?php echo 'error_'.$d['id']; ?>"></span></a>
 
                                     </td>
+                                    <td class="red"><?php 
+                                        if($d['status']&4)
+                                        {
+                                            echo '上级重复或者不存在';
+                                        }
+                                        else if($d['status']&2)
+                                        {
+                                            echo '名字重复';
+                                        }
+
+                                    ?></td>
                                 </tr>
                                 <?php } ?>
                             </table>
@@ -129,7 +141,8 @@
                     ,success : function(data){
                         if(data.status) {
                             var __id = data.id;
-                            $('#' + __id).removeClass('red').addClass('green').text("已导入");
+                          
+                            $('#' + __id).removeClass('fa-times red').addClass('fa-check green');
                         } else {
                             var __id = data.id;
                             $('#' + __id).innerHTML(data.msg);
@@ -272,6 +285,7 @@ function insertMem()
         var v = $(item).data('value');
           var manager_name = $(this).data('manager');
         var uid = $(this).data('uid');
+        var _status = $(this).data('status');
         var myself = $(this);
        // members.push(v);
        load_mem.push(v);
@@ -306,11 +320,11 @@ function insertMem()
                            if(back_id == -1)
                            {
                                // $(this).removeClass('fa-times red').addClass('fa-check green');
-                               $('#error_'+uid).text('数据库导入失败');
+                               myself.text('数据库导入失败');
                            }
                            if(back_id == -2)
                            {
-                                 $('#error_'+uid).text('手机邮箱都为空');
+                                 myself.text('手机邮箱都为空');
                            }
                             if((back_id)>0 && (manager_name))
                             {
@@ -319,7 +333,14 @@ function insertMem()
                                   in_members.push(person);
                                   
                                   myself.removeClass('red').addClass('green');
-                                  myself.text("已导入")
+                                  if(_status&1 == 1)
+                                  {
+                                    myself.text('已更新');
+                                    }
+                                    else
+                                    {
+                                        myself.text('已导入');
+                                    }
                                   //$('#error_'+uid).html('导入成功');
                                  // console.log($('#error_'+uid).val());
                                   
