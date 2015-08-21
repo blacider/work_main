@@ -256,7 +256,10 @@ class REIM_Controller extends CI_Controller{
         $cell_one = $data[0];
         $j = 0;
         foreach ($cell_one as $k => $v) {
-            $Excel->getSheet()->setCellValue($this->getCharByNunber($j) . '1', $k);
+            $c_name = $this->getCharByNunber($j);
+            $Excel->getActiveSheet() -> getStyle($c_name) ->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            $Excel->getSheet()->getColumnDimension($c_name)->setAutoSize(true);
+            $Excel->getSheet()->setCellValue($c_name . '1', ' '. strval($k));
             $j++;
         }
 
@@ -264,7 +267,10 @@ class REIM_Controller extends CI_Controller{
         foreach ($data as $value) {
             $y = 0;
             foreach ($value as $k => $v) {
-                $Excel->getSheet()->setCellValue($this->getCharByNunber($y) . $x, $v);
+                $c_name = $this->getCharByNunber($y);
+                $Excel->getActiveSheet() -> getStyle($c_name) ->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+                $Excel->getSheet()->getColumnDimension($c_name)->setAutoSize(true);
+                $Excel->getSheet()->setCellValue($this->getCharByNunber($y) . $x, ' ' . strval($v));
                 $y++;
             }
             $x++;
@@ -281,7 +287,7 @@ class REIM_Controller extends CI_Controller{
             $cell_one = $data_2[0];
             $j = 0;
             foreach ($cell_one as $k => $v) {
-                $Excel->getSheet(1)->setCellValue($this->getCharByNunber($j) . '1', $k);
+                $Excel->getSheet(1)->setCellValue($this->getCharByNunber($j) . '1', ' ' . $k);
                 $j++;
             }
 
@@ -289,7 +295,7 @@ class REIM_Controller extends CI_Controller{
             foreach ($data_2 as $value) {
                 $y = 0;
                 foreach ($value as $k => $v) {
-                    $Excel->getSheet(1)->setCellValue($this->getCharByNunber($y) . $x, $v);
+                    $Excel->getSheet(1)->setCellValue($this->getCharByNunber($y) . $x, ' ' . $v);
                     $y++;
                 }
                 $x++;
@@ -305,7 +311,7 @@ class REIM_Controller extends CI_Controller{
                 $cell_one = $data_3[0];
                 $j = 0;
                 foreach ($cell_one as $k => $v) {
-                    $Excel->getSheet(2)->setCellValue($this->getCharByNunber($j) . '1', $k);
+                    $Excel->getSheet(2)->setCellValue($this->getCharByNunber($j) . '1', ' ' . $k);
                     $j++;
                 }
 
@@ -313,7 +319,7 @@ class REIM_Controller extends CI_Controller{
                 foreach ($data_3 as $value) {
                     $y = 0;
                     foreach ($value as $k => $v) {
-                        $Excel->getSheet(2)->setCellValue($this->getCharByNunber($y) . $x, $v);
+                        $Excel->getSheet(2)->setCellValue($this->getCharByNunber($y) . $x, ' ' . $v);
                         $y++;
                     }
                     $x++;

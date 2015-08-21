@@ -281,7 +281,7 @@ class Pub extends REIM_Controller {
             if($i['platform'] == 0) {
                 $i['path'] = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/pub/xreim';
             } else {
-                $i['path'] = "https://files-cloudbaoxiao-com.alikunlun.com/release/android/" . $i['version'] . "/reim.apk";
+                $i['path'] = "http://d.yunbaoxiao.com/android/" . $i['version'] . "/reim.apk";
             }
             log_message("debug", json_encode($i));
         }

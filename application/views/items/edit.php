@@ -547,6 +547,8 @@ function load_exists(){
     bind_event();
 }
 var __multi_time = 0;
+
+                var __average_count = 0;
 $(document).ready(function(){
     get_sobs();
     var _dt = $('#dt').val();
@@ -595,6 +597,7 @@ $(document).ready(function(){
 
 $('#sob_category').change(function(){
     __multi_time = 0;
+                __average_count = 0;
             $('#endTime').hide();
             $('#average').hide();
        var category_id = $('#sob_category').val();
@@ -617,6 +620,7 @@ $('#sob_category').change(function(){
             var all_amount = $('#amount').val();
             $('#average_id').text(Number(all_amount/subs).toFixed(2)+'元/人*' + subs);
             $('#average').show();
+                __average_count = 1;
         }
         else
         {
@@ -693,7 +697,7 @@ $('#sob_category').change(function(){
             show_notify('正在上传图片，请稍候');
             return false;
         }
-        if($('#people-num').val() == null && $('#people-nums').val() == 0) {
+        if(__average_count && $('#people-num').val() == null && $('#people-nums').val() == 0) {
             show_notify('必须填写参与人数');
             return false;
         }
