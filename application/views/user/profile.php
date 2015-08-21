@@ -936,8 +936,13 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         $('#credit_model').modal('show');
         var i = 1, loc = $(node).data('bankloc');
         do {
+            //console.log(i);
             i += 1;
             $('select[name="province"]').val(loc.substr(0,i));
+            if(i>loc.length+1)
+            {
+                break;
+            }
         } while ($('select[name="province"]').val() == null);
         var city = loc.substr(i);
         $('select[name="province"]').change();
