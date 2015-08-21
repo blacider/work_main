@@ -144,7 +144,7 @@ class Category extends REIM_Controller {
 		{
 			array_push($sob_keys,$cate['id']);
 		}
-		$all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code'],'note'=>$cate['note'],'force_attach'=>$cate['force_attach']);
+		$all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code'],'note'=>$cate['note'],'force_attach'=>$cate['force_attach'], 'max_limit'=>$cate['max_limit']);
 	}
 			
 		$path = "http://api.cloudbaoxiao.com/online/static/0.png";
@@ -182,6 +182,7 @@ class Category extends REIM_Controller {
 	log_message('debug','sobs:' . json_encode($_sobs));
         $this->bsload('account_set/update',
             array(
+                'last_error' => $error,
                 'title' => '修改帐套'
                 //  ,'acc_sets' => $acc_sets
                 //  ,'acc_sets' => $acc_sets
@@ -605,6 +606,7 @@ class Category extends REIM_Controller {
 	$sob_id = $this->input->post('sob_id');
 	$pid = $this->input->post('pid');
 	$note = $this->input->post('note');
+    $max_limit = $this->input->post('max_limit');
 	$_force_attach = $this->input->post('force_attach');
 	$force_attach = 0;
 	if($_force_attach)
@@ -618,7 +620,8 @@ class Category extends REIM_Controller {
 	log_message('debug','code:' . $code);
 	log_message('debug','note:' . $note);
 	log_message('debug','force_attach:' . $force_attach);
-	$obj = $this->category->create_update($cid,$pid,$sob_id,$name,$avatar,$code,$force_attach,$note);
+    log_message('debug', 'max_limit:' . $max_limit);
+	$obj = $this->category->create_update($cid,$pid,$sob_id,$name,$avatar,$code,$force_attach,$note,$max_limit);
 	if($obj['status'] > 0)
 	{
 		$this->session->set_userdata('last_error','添加成功');

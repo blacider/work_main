@@ -18,3 +18,4 @@ release/*
 admin.sql
 reim.sql
 index.html
+.idea/*
