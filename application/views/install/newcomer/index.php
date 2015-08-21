@@ -12,6 +12,7 @@
     <!-- <script type="text/javascript" src="/static/wx/js/index.js"></script> -->
 <script language="javascript">
     var __BASEURL = "<?php echo base_url(); ?>";
+
 </script>
 </head>
 <body>
@@ -30,14 +31,31 @@
   <div class="contain">
   <div class="block1" style="min-height:500px;">
     <div class="main-block">
-        <div style="width:100%">
-            <img style="width:100%" src="http://www.cloudbaoxiao.com/img/text_title_42@2x.png">
+        <div style="width:100%" onclick="download()">
+            <img style="width:100%" src="http://www.cloudbaoxiao.com/img/text_title_42@2x.png" />
         </div>
       
-      <div id="download pc" style="" onclick="download()">
+     <!-- <div id="download pc" style="" onclick="download()"> -->
+     <div id="download pc" style="">
             <div class="pc">
                 <img src="/static/img/download.png" style="width:160px;height:160px;">
             <div class="">恭喜,密码设置成功</div>
+            <form id="join_form" method="post" action="<?php echo base_url('/login/join_company');?>">
+             <label class="col-sm-1 control-label no-padding-right">收到的邀请</label>
+                <select class="chosen-select tag-input-style" name="invites" data-placeholder="邀请人" >
+                  <?php 
+                  foreach($invites as $m){
+
+                    ?>
+                    <option selected value="<?php echo $m['gid']; ?>"><?php echo $m['groupname']; ?></option>
+                    <?php
+                  }
+
+                  ?>
+                </select>
+                <input type="button" id="join_company" style="background-color:red" value="加入公司"/>
+         
+            </form>
             <div class="">扫描即可下载 iOS、Android 客户端</div>
         </div>
       </div>
@@ -63,16 +81,23 @@
   </div>
 <script language="javascript">
    $(document).ready(function() {
+
   /* Act on the event */
   $('.contain').css('height', String(document.body.scrollHeight));
   /*单页面所做的改变*/
   
   $('body').scrollTop(0);
     $('#block1').css({'height': document.body.scrollHeight + 'px', 'min-height' : document.body.scrollHeight + 'px'});
+
+    $('#join_company').click(function(){
+
+      $('#join_form').submit();
+    });
 });
 
 function download() {
-    window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/1.1.1/reim.apk'; 
+  //  window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/1.1.1/reim.apk'; 
+   /*  window.location.href = "<?php echo $url ;?>"; */
 }
 </script>
 </body>

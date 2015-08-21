@@ -11,6 +11,16 @@
 <script src="/static/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 <script  type="text/javascript" src="/static/ace/js/date-time/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>
+<!-- <script type="text/javascript" src="/static/js/jquery.form.js"></script> -->
+<!-- <?php
+if($last_error) {
+?>
+<script type="text/javascript">
+	alert("<?php echo $last_error; ?>");
+</script>
+<?php
+}
+?> -->
 
 <div class="page-content">
 <div class="page-content-area">
@@ -34,15 +44,17 @@
                             var _subSob = [];
                             var sob_keys = <?php echo json_encode($sob_keys);?>;
                             var all_categories = <?php echo json_encode($all_categories);?>;
+
                             function showSob(sobId) {
                                 if (sobId != -1) {
-                                    var name = all_categories[sobId]['name'], note = all_categories[sobId]['note'],force_attach=all_categories[sobId]['force_attach'],code = all_categories[sobId]['sob_code'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'], name = all_categories[sobId]['name'], pid = all_categories[sobId]['pid'];
+                                    var name = all_categories[sobId]['name'], note = all_categories[sobId]['note'],force_attach=all_categories[sobId]['force_attach'],code = all_categories[sobId]['sob_code'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'], name = all_categories[sobId]['name'], max_limit = all_categories[sobId]['max_limit'], pid = all_categories[sobId]['pid'];
                                     $("#form_moda").find('input[name="name"]').val(name);
                                     $("#menuImg").attr('src', img);
                                     $('#form_moda').find('input[name="avatar"]').val(all_categories[sobId]['avatar_']);
                                     $("#form_moda").find('input[name="cid"]').val(id);
                                     $("#form_moda").find('input[name="code"]').val(code);
                                     $("#form_moda").find('input[name="note"]').val(note);
+                                    $("#form_moda").find('input[name="max_limit"]').val(max_limit);
                                     $("#form_moda").find('input[name="pid"]').val(pid);
                                     console.log('force_attach:' + force_attach);
                                     if(force_attach == 1)
@@ -382,6 +394,10 @@
                     <?php } ?></ul>
             </div>
         </div>
+	<div class="form-group">
+	    <label class="col-sm-2">限额</label>
+	    <input id="max_limit" name="max_limit" type="number" date-placeholder="请输入类目限额" value="0" />
+	</div>
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类目ID</label>
             <input name="code" type="text" data-placeholder="请输入类目ID"></div>
@@ -454,6 +470,10 @@
                     </li>
                     <?php } ?></ul>
             </div>
+        </div>
+	<div class="form-group">
+            <label class="col-sm-2">限额</label>
+            <input id="max_limit" name="max_limit" type="number" data-placeholder="请输入限额" value="0" />
         </div>
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类目代码</label>
@@ -584,4 +604,5 @@ var range = "<?php echo $range?>";
 
         });
     });
+
 </script>
