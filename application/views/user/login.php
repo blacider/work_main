@@ -80,7 +80,7 @@
             </div>
             <div >
               <input id="pw" type="password" name="p" style="width:80%;margin-right:10px;"/> <br id="black_">
-              <label> <input type="checkbox" style="margin-right: 5px;" name="is_r" id="is_r"><a style="vertical-align:middle;">记住我</a></label>
+              <label> <input type="checkbox" style="margin-right: 5px; vertical-align: middle; " name="is_r" id="is_r"><a style="vertical-align:middle;">记住我</a></label>
             </div>
             <div>
               <div class="checkbox">
