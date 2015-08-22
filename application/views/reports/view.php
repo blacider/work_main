@@ -95,6 +95,14 @@ foreach($report['items'] as $i) {
 ?>
                                         <tr>
                                             <td><?php echo $_date_str; ?></td>
+                                            <td><?php echo $i['category_name']; ?></td>
+<?php 
+                                                $update_amount = '';
+                                                if($i['src_amount'] > 0) { 
+                                                    $update_amount = "[" . $i['currency_logo'] . $i['src_amount'] . " 由  ". $i['lastmodifier'] . "修改]";
+                                                }
+?>
+    <td><?php echo $i['currency_logo']; ?> &nbsp;<?php echo $i['amount']; ?> <?php echo  $update_amount . $_extra_amount; ?> </td>
                                             <td><?php 
                                                 $buf = '';
                                                 switch($i['prove_ahead']) {
@@ -106,14 +114,6 @@ foreach($report['items'] as $i) {
 
 
                                                 ?></td>
-<?php 
-                                                $update_amount = '';
-                                                if($i['src_amount'] > 0) { 
-                                                    $update_amount = "[" . $i['currency_logo'] . $i['src_amount'] . " 由  ". $i['lastmodifier'] . "修改]";
-                                                }
-?>
-    <td><?php echo $i['currency_logo']; ?> &nbsp;<?php echo $i['amount']; ?> <?php echo  $update_amount . $_extra_amount; ?> </td>
-                                            <td><?php echo $i['category_name']; ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td><?php echo $i['note'];?></td>
                                             <td><?php $link = base_url('items/show/' . $i['id']); ?><a href="<?php echo $link; ?>">详情</a></td>
