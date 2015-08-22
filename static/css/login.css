@@ -250,7 +250,7 @@ input[type="submit"] {
 	font-weight: bold;
 }
 .block1 {
-	height: 550px;
+	height: 600px;
 }
 .main-block {
 	width:293px; 
@@ -376,6 +376,9 @@ input[type="submit"] {
 }
 @media screen and (min-width: 950px) {
 /*----------block1------------------*/
+#black_ {
+	display: none;
+}
 .login {
 	width: 825px;
 	margin: 165px auto auto auto;
