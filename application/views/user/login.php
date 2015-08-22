@@ -79,7 +79,7 @@
               <span class="error">请输入密码</span>
             </div>
             <div >
-              <input id="pw" type="password" name="p" style="width:80%;margin-right:10px;"/>
+              <input id="pw" type="password" name="p" style="width:80%;margin-right:10px;"/> <br id="black_">
                 <input type="checkbox" style="margin-right: 5px;position: relative; top: -0.5px;" name="is_r" id="is_r">记住我
             </div>
             <div>
