@@ -56,9 +56,9 @@ foreach($report['items'] as $i) {
                                     <table class="table table-bordered table-striped">
                                         <tr>
                                             <td>消费时间</td>
-                                            <td>类别</td>
-                                            <td>金额</td>
                                             <td>类型</td>
+                                            <td>金额</td>
+                                            <td>类别</td>
                                             <td>商家</td>
                                             <td>备注</td>
                                             <td>详情</td>

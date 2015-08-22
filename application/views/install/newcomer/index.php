@@ -40,6 +40,7 @@
             <div class="pc">
                 <img src="/static/img/download.png" style="width:160px;height:160px;">
             <div class="">恭喜,密码设置成功</div>
+<!--
             <form id="join_form" method="post" action="<?php echo base_url('/login/join_company');?>">
              <label class="col-sm-1 control-label no-padding-right">收到的邀请</label>
                 <select class="chosen-select tag-input-style" name="invites" data-placeholder="邀请人" >
@@ -56,6 +57,7 @@
                 <input type="button" id="join_company" style="background-color:red" value="加入公司"/>
          
             </form>
+-->
             <div class="">扫描即可下载 iOS、Android 客户端</div>
         </div>
       </div>

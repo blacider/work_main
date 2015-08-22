@@ -797,8 +797,7 @@ class Members extends REIM_Controller {
         $groups = $this->input->post('groups');
         $_manager = $this->input->post('manager');
         $manager = array();
-        if($_manager)
-        {
+        if($_manager) {
             $manager = explode(',',$_manager);
         }
 
@@ -834,7 +833,7 @@ class Members extends REIM_Controller {
         }
         $data['id'] = $locid;
         $data['nickname'] = $nickname;
-        $data['email'] = $email;
+        $data['email'] = trim($email);
         $data['phone'] = $phone;
         $data['account'] = $account;
         $data['cardno'] = $cardno;
