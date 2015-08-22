@@ -502,6 +502,9 @@ class Reports extends REIM_Controller {
             $report['receivers']['managers'] = implode(',', $_managers);
         } else {
             $report['receivers']['managers'] = $_msg;
+            if($report['status'] == 0) {
+            $report['receivers']['managers'] = '<待提交>';
+            }
         }
         if(count($_ccs) > 0){
             $report['receivers']['cc'] = implode(',', $_ccs);
@@ -531,11 +534,22 @@ class Reports extends REIM_Controller {
             foreach($_flow['data']['data'] as $s){
                 $_s = $s['status'] % 100;
                 $audit = '待审批';
+                if($s['uid'] == $report['uid']) {
+                    $audit = '待提交';
+                }
+                if($s['uid'] == $report['uid']) {
+                    if($_s == 1) {
+                        $audit = '待提交';
+                    }
+                }
                 if($_s == 2)  {
                     $audit = '通过';
                 }
                 if($_s == 3)  {
                     $audit = '拒绝';
+                    if($s['uid'] == $report['uid']) {
+                    $audit = '撤回';
+                    }
                 }
                 $_ts = '';
                 if($s['udt'] != '0') {

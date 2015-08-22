@@ -15,11 +15,13 @@ class Install extends REIM_Controller {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return redirect('install');
         $invites = array();
+        /*
         $_invites = $this->user->get_invites();
         if($_invites['status'] > 0)
         {
             $invites = $_invites['data'];
         }
+         */
         if ($this->agent->is_mobile('iphone'))
         {
             $info = $this->app_model->find_online(0);
@@ -30,19 +32,13 @@ class Install extends REIM_Controller {
         {
             $info = $this->app_model->find_online(1);
             $url = "https://admin.cloudbaoxiao.com/release/android/" . $info['version'] . "/reim.apk";
-            //$url = "http://files.cloudbaoxiao.com/android/" . $info['version'] . "/reim.apk";
-            //$url = "http://files-cloudbaoxiao-com.alikunlun.com/android/" . $info['version'] . "/reim.apk";
-            //$url = "https://files-cloudbaoxiao-com.alikunlun.com/android/" . $info['version'] . "/reim.apk";
             $this->load->view('install/newcomer/android', array('url' => $url,'invites' => $invites));
         }
         else
         {
             $info = $this->app_model->find_online(1);
-            //$url = "https://admin.cloudbaoxiao.com/release/android/" . $info['version'] . "/reim.apk";
-            //$this->load->view('install/newcomer/index', array('url'=>$url,'invites' => $invites));
             $this->load->view('install/newcomer/index', array('invites' => $invites));
         }
-        //        $this->load->view('install');
     }
 
     public function index(){
