@@ -71,7 +71,7 @@
 });
 
 function download() {
-    window.location.href = '';
+    //window.location.href = '';
 }
 </script>
 </body>

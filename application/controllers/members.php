@@ -795,7 +795,12 @@ class Members extends REIM_Controller {
         $nickname = $this->input->post('nickname');
         $phone = $this->input->post('mobile');
         $groups = $this->input->post('groups');
-        $manager = $this->input->post('manager');
+        $_manager = $this->input->post('manager');
+        $manager = array();
+        if($_manager)
+        {
+            $manager = explode(',',$_manager);
+        }
 
         // 银行信息
         $cardloc = $this->input->post('cardloc');
@@ -804,15 +809,51 @@ class Members extends REIM_Controller {
         $account = $this->input->post('account');
 
         $rank = $this->input->post('rank');
+ //       $rank_name = $this->input->post('rank_name');
         $level = $this->input->post('level');
+//        $level_name = $this->input->post('level_name');
 
         $admin = $this->input->post('admin');
         $renew = $this->input->post('renew');
+        $locid = $this->input->post('locid');
         if($phone == $email && $email == ""){
             die(json_encode(array('status' => false, 'id' => $id, 'msg' => '邮箱手机必须有一个')));
         }
-        $info = $this->groups->doimports($email, $nickname, $phone, $admin, $groups, $account, $cardno, $cardbank, $cardloc , $manager, $rank, $level);
-        log_message("debug","manager".$manager);
+        $data = array();
+        $_groups = '';
+        if($groups)
+        {
+            $_groups = $groups;
+        }
+        $gids = array();
+        array_push($gids,$_groups);
+        $data['gids'] = '';
+        if($gids)
+        {
+            $data['gids'] = implode(',',$gids);
+        }
+        $data['id'] = $locid;
+        $data['nickname'] = $nickname;
+        $data['email'] = $email;
+        $data['phone'] = $phone;
+        $data['account'] = $account;
+        $data['cardno'] = $cardno;
+        $data['bank'] = $cardbank;
+        $data['rank'] = $rank;
+        $data['level'] = $level;
+        $data['manager'] = '';
+        $data['manager_id'] = 0;
+        if(count($manager) == 2)
+        {
+            $data['manager_id'] = $manager[0];
+            $data['manager'] = $manager[1]; 
+        }
+        $data['cardloc'] = $cardloc;
+        $input = array();
+        array_push($input,base64_encode(json_encode($data)));
+
+        $info = $this->groups->reim_imports(array('members'=>json_encode($input)));
+        //$info = $this->groups->doimports($email, $nickname, $phone, $admin, $groups, $account, $cardno, $cardbank, $cardloc , $manager, $rank, $level);
         if($info['status']) {
             $this->session->set_userdata('last_error', '添加成功');
         } else {
@@ -828,7 +869,6 @@ class Members extends REIM_Controller {
         //print_r($info);
         //$this->groups->set_invite($email, $nickname, $phone, $credit, $groups);
         //die(json_encode(array('status' => true, 'id' => $id)));
-
     }
 
     public function export(){

@@ -5,7 +5,51 @@ class User_Model extends Reim_Model {
     public function __construct(){
         parent::__construct();
     }
-    
+   public function my_get_jwt($username,$password)
+   {
+            $jwt = $this->get_jwt($username, $password);
+            return $jwt;
+   }
+    public function join_company($gid,$version=0)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return base_url();
+
+        $url = $this->get_url('apply');
+        $data = array(
+            'gid' => $gid,
+            'version' => $version
+        );
+        $buf = $this->do_Post($url,$data,$jwt);
+
+        return json_decode($buf,True);
+    }
+
+    public function get_invites()
+    {
+            $jwt = $this->session->userdata('jwt'); 
+            $url = $this->get_url('/messages/list');
+            $buf = $this->do_Get($url,$jwt);
+
+            log_message('debug','get_invites:' . $buf);
+            return json_decode($buf,True);
+    }
+
+    public function raise_invites($groupname,$guests)
+    {
+    	$jwt = $this->session->userdata('jwt');
+	if(!$jwt)  return false;
+
+	$url = $this->get_url('invites');
+	$data = array(
+		'name' => $groupname
+		,'invites' => $guests
+	);
+	$buf = $this->do_Post($url,$data,$jwt);	
+	
+	return json_decode($buf,True);
+    }
+
     public function get_common()
     {
     	$jwt = $this->session->userdata('jwt');
@@ -32,192 +76,7 @@ class User_Model extends Reim_Model {
 	return json_decode($buf,True);
     }
 
-    public function get(){
-        return $this->db->get(self::USER_TABLE)->result();
-    }
 
-    public function update_avatar($path, $uid){
-        $data = array('pic_url' => $path);
-        $this->db->where('id', $uid);
-        $this->db->update('tbl_user', $data);
-    }
-
-    public function get_user($username, $password){
-        if(empty($username) || empty($password)){
-            return array();
-        }
-        return $this->db->get_where(self::USER_TABLE, array('username' => $username, 'password' => md5($password)))->row();
-    }
-
-
-
-
-    public function get_by_id($id) {
-        return $this->db->get_where(self::USER_TABLE, array('id' => $id))->row();
-    }
-
-    public function get_user_by_role_id($role_id){
-        $query = $this->db->get_where(self::USER_TABLE, array('role_id' => $role_id));
-        return $query->result();
-    }
-
-    public function remove_role_id($role_id){
-        $data = array(
-                'role_id' => 0
-                );
-        $this->db->where('role_id', $role_id);
-        return $this->db->update(self::USER_TABLE, $data);
-    }
-
-    public function update($user_id, $nickname, $email, $role_id, $password = ''){
-        $data = array(
-                'nickname' => $nickname,
-                'email' => $email,
-                'role_id' => $role_id,
-                );
-        if(!empty($password)){
-            $data['password'] = md5($password);
-        }
-        $this->db->where('id', $user_id);
-        return $this->db->update(self::USER_TABLE, $data);
-    }
-
-    public function update_personal_info($user_id, $nickname, $email, $role_id, $password){
-        $data = array();
-        if(!empty($nickname)) {
-            $data['nickname'] = $nickname;
-        }
-        if(!empty($email)) {
-            $data['email'] = $email;
-        }
-        if(!empty($password)) {
-            $data['password']=md5($password);
-        }
-        $this->db->where('id', $user_id);
-        return $this->db->update(self::USER_TABLE, $data);
-    }
-    public function del($id){
-        return $this->db->delete(self::USER_TABLE, array('id' => $id));
-    }
-
-    public function ban($id){
-        $data = array(
-                'status' => '-1',
-                );
-        $this->db->where('id', $id);
-        return $this->db->update(self::USER_TABLE, $data);
-    }
-
-    public function create($username, $password, $nickname, $email, $role_id){
-        if(empty($username) || empty($password) || empty($role_id)){
-            return false;
-        }
-        $create_time = time();
-        $data = array(
-                'username' => $username,
-                'password' => md5($password),
-                'nickname' => $nickname,
-                'email' => $email,
-                'role_id' => $role_id,
-                'create_time' => $create_time,
-                );
-        $insert_res = $this->db->insert(self::USER_TABLE, $data);
-        if($insert_res){
-            $_id = $this->db->insert_id();
-            return $_id;
-        }
-        else{
-            return false;
-        }
-    }
-
-    public function get_by_username($username){
-        if(empty($username)){
-            return false;
-        }
-        return $this->db->get_where(self::USER_TABLE, array('username' => $username))->row();
-    }
-    public function by_username_array($username){
-        if(empty($username)){
-            return false;
-        }
-        return $this->db->get_where(self::USER_TABLE, array('username' => $username))->result_array();
-    }
-
-    public function get_by_email($email){
-        if(empty($email)){
-            return false;
-        }
-        return $this->db->get_where(self::USER_TABLE, array('email' => $email))->row();
-    }
-
-    public function get_by_nickname($username){
-        if(empty($username)){
-            return false;
-        }
-        return $this->db->get_where(self::USER_TABLE, array('username' => $username))->row();
-    }
-
-    public function get_menu($uid, $users = 0){
-        if($users == 0) {
-            $user = $this->session->userdata('user');
-            if($user->role_id == 1){
-                $this->db->select('tbl_module.id module_id, tbl_module.title module_title, tbl_module.path module_path, tbl_module_group.title module_group_title, tbl_module_group.id module_group_id');
-                $this->db->from('tbl_module');
-                $this->db->join('tbl_module_group', 'tbl_module.group_id = tbl_module_group.id', "LEFT");
-            } else {
-                $this->db->select('tbl_user.id, tbl_user.username, tbl_module.id module_id, tbl_module.title module_title, tbl_module.path module_path, tbl_module_group.title module_group_title, tbl_module_group.id module_group_id', false);
-                $this->db->from(self::USER_TABLE);
-                $this->db->join('tbl_role_module_r', self::USER_TABLE . '.role_id = tbl_role_module_r.role_id', "LEFT");
-                $this->db->join('tbl_module', 'tbl_role_module_r.module_id = tbl_module.id', "LEFT");
-                $this->db->join('tbl_module_group', 'tbl_module.group_id = tbl_module_group.id', "LEFT");
-                $this->db->where('tbl_user.id', $uid);
-            }
-        } else {
-                $this->db->select('tbl_module.id module_id, tbl_module.title module_title, tbl_module.path module_path, tbl_module_group.title module_group_title, tbl_module_group.id module_group_id', false);
-                $this->db->from('tbl_role_module_r');
-                $this->db->join('tbl_module', 'tbl_role_module_r.module_id = tbl_module.id', "LEFT");
-                $this->db->join('tbl_module_group', 'tbl_module.group_id = tbl_module_group.id', "LEFT");
-                $this->db->where('tbl_role_module_r.role_id', 2);
-        }
-
-        $this->db->order_by('module_group_id asc, module_id asc');
-        $q_menu = $this->db->get()->result();
-        $group_arr = array();
-        $menu_arr = array();
-        foreach($q_menu as $_m){
-            $group_arr[$_m->module_group_id] = $_m->module_group_title;
-        }
-        foreach($group_arr as $_gid => $_group){
-            $menu_arr[] = (object)array(
-                    'title' => $_group,
-                    'type' => 'group',
-                    'path' => '',
-                    'active' => false,
-                    );
-            foreach($q_menu as $_m){
-                if($_m->module_group_id == $_gid){
-                    $active = false;
-                    if(uri_string() == $_m->module_path){
-                        $active = true;
-                    }
-                    $menu_arr[] = (object)array(
-                            'title' => $_m->module_title,
-                            'type' => 'module',
-                            'path' => $_m->module_path,
-                            'active' => $active,
-                            );
-                }
-            }
-        }
-        return $menu_arr;
-    }
-    public function update_password($id, $password){
-        $this->db->set('password', md5($password));
-        $this->db->where('id', $id);
-        $res = $this->db->update($this->_table_name);
-        return $res;
-    }
 
     private function reim_fetch_avatar($path, $type = 1){
         if($path == '' || $path == 0) return '';
@@ -234,17 +93,6 @@ class User_Model extends Reim_Model {
     }
 
     public function reim_oauth($unionid = '', $openid = '', $token = '', $check = 1){
-        /*
-        if('' !== $username && '' !== $password) {
-            $jwt = $this->get_jwt($username, $password);
-            $this->session->set_userdata('jwt', $jwt);
-        } else {
-            $jwt = $this->session->userdata('jwt');
-        }
-		$url = $this->get_url('common/0');
-		$buf = $this->do_Get($url, $jwt);
-        log_message("debug", $buf);
-         */
         $jwt = $this->get_jwt($unionid, "");
         $this->session->set_userdata('jwt', $jwt);
 		$url = $this->get_url('oauth');
@@ -312,10 +160,6 @@ class User_Model extends Reim_Model {
     }
 
 
-
-
-    public function get_other_member($uid){
-    }
 
 
     public function reim_update_avatar($file) {
@@ -507,14 +351,16 @@ class User_Model extends Reim_Model {
         return $buf;
     }
 
-    public function update_credit($id, $account, $cardno, $cardbank, $cardloc) {
+    public function update_credit($id, $account, $cardno, $cardbank, $cardloc , $uid) {
         $url = $this->get_url('bank/' . $id);
         $data = array(
             'bank_name' => $cardbank
             ,'bank_location' => $cardloc
             ,'cardno' => $cardno
             ,'account' => $account
+	    ,'uid' => $uid
         );
+	log_message('debug','credit_data:' . json_encode($data));
         $jwt = $this->session->userdata('jwt');
         $buf = $this->do_Put($url, $data, $jwt);
         log_message("debug", $buf);
@@ -522,13 +368,14 @@ class User_Model extends Reim_Model {
     }
 
 
-    public function new_credit($account, $cardno, $cardbank, $cardloc) {
+    public function new_credit($account, $cardno, $cardbank, $cardloc , $uid) {
         $url = $this->get_url('bank');
         $data = array(
             'bank_name' => $cardbank
             ,'bank_location' => $cardloc
             ,'cardno' => $cardno
             ,'account' => $account
+	    ,'uid' => $uid
         );
         $jwt = $this->session->userdata('jwt');
         $buf = $this->do_Post($url, $data, $jwt);
@@ -536,8 +383,8 @@ class User_Model extends Reim_Model {
         return $buf;
     }
 
-    public function del_credit($id){
-        $url = $this->get_url('bank/' . $id);
+    public function del_credit($id,$uid){
+        $url = $this->get_url('bank/' . $id . '/' . $uid);
         $jwt = $this->session->userdata('jwt');
         $buf = $this->do_Delete($url, array(), $jwt);
         log_message("debug", $buf);

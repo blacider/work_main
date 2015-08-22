@@ -181,6 +181,7 @@ class Items extends REIM_Controller {
         $endtime = strtotime($this->input->post('dt_end'));
         $config_id = $this->input->post('config_id');
         $config_type = $this->input->post('config_type');
+        $subs = $this->input->post('peoples');
         log_message('debug','config_id:' . $config_id);
         log_message('debug','config_type:' . $config_type);
         $extra = array();
@@ -192,7 +193,7 @@ class Items extends REIM_Controller {
 
         if($config_type == 5)
         {
-            $_extra = array('id'=>$config_id ,'type'=>$config_type,'value'=>$profile['subs']);
+            $_extra = array('id'=>$config_id ,'type'=>$config_type,'value'=>$subs/*$profile['subs']*/);
         }
         array_push($extra,$_extra);
         $__extra = json_encode($extra);
@@ -613,6 +614,14 @@ class Items extends REIM_Controller {
                 ));
             }
         }
+        $group = $this->groups->get_my_list();
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
         log_message("debug","item_updta_in".$this->session->userdata("item_update_in"));
         log_message("debug","flow".json_encode($flow));
         log_message("debug","users:".json_encode($user));
@@ -626,6 +635,7 @@ class Items extends REIM_Controller {
                 'flow' => $flow
                 ,'item_value' => $item_value
                 ,'error' => $error
+                ,'member' => $gmember
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
@@ -814,6 +824,7 @@ class Items extends REIM_Controller {
         $_uid = $this->input->post('uid');
         $amount = $this->input->post('amount');
         $category= $this->input->post('category');
+        $subs = $this->input->post('peoples');
         log_message('debug', "##TM SRC:" . $this->input->post('dt1'));
         $time = $this->input->post('dt1');
         $timestamp = strtotime($this->input->post('dt1'));
@@ -836,7 +847,7 @@ class Items extends REIM_Controller {
 
         if($config_type == 5)
         {
-            $_extra = array('id'=>$config_id ,'type'=>$config_type,'value'=>$profile['subs']);
+            $_extra = array('id'=>$config_id ,'type'=>$config_type,'value'=>$subs/*$profile['subs']*/);
         }
         array_push($extra,$_extra);
         $__extra = json_encode($extra);

@@ -64,21 +64,6 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
-$db['data']['hostname'] = 'localhost';
-$db['default']['username'] = 'admin';
-$db['default']['password'] = 'xODJhZjY2MzQ4ZfdsaTBjMjMzMjZlZWM2OTFmN';
-$db['data']['database'] = 'reim';
-$db['data']['dbdriver'] = 'mysql';
-$db['data']['dbprefix'] = '';
-$db['data']['pconnect'] = FALSE;
-$db['data']['db_debug'] = TRUE;
-$db['data']['cache_on'] = FALSE;
-$db['data']['cachedir'] = '';
-$db['data']['char_set'] = 'utf8';
-$db['data']['dbcollat'] = 'utf8_general_ci';
-$db['data']['swap_pre'] = '';
-$db['data']['autoinit'] = TRUE;
-$db['data']['stricton'] = FALSE;
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */

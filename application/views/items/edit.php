@@ -81,7 +81,7 @@
 <label class="col-sm-1 control-label no-padding-right">人数:</label>
 <div class="col-xs-3 col-sm-3">
 <div class="input-group">
-<input type="text" id="people-nums" >
+<input type="text" id="people-nums" name="peoples">
 </div>
 </div>
                                 <label class="col-sm-1 control-label no-padding-right">人均:</label>
@@ -611,6 +611,7 @@ $('#sob_category').change(function(){
         }
         else if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 5)
         {
+            /*
             $('#config_id').val(_item_config[category_id]['id']);
             $('#config_type').val(_item_config[category_id]['type']);
             $('#amount').change(function(){
@@ -621,6 +622,26 @@ $('#sob_category').change(function(){
             $('#average_id').text(Number(all_amount/subs).toFixed(2)+'元/人*' + subs);
             $('#average').show();
                 __average_count = 1;
+            $('#average').show(); */
+
+
+
+               $('#config_id').val(_item_config[category_id]['id']);
+                $('#config_type').val(_item_config[category_id]['type']);
+                $('#amount').change(function(){
+                    var all_amount = $('#amount').val();
+                    if (subs != '' && subs >= 0)
+                        $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
+                    else
+                        $('#average_id').text("请输入正确人数");
+                });
+                $('#people-nums').change(function() {
+                    subs = $('#people-nums').val();
+                    $('#amount').change();
+                });
+                var all_amount = $('#amount').val();
+                $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
+                $('#average').show();
         }
         else
         {
@@ -697,7 +718,7 @@ $('#sob_category').change(function(){
             show_notify('正在上传图片，请稍候');
             return false;
         }
-        if(__average_count && $('#people-num').val() == null && $('#people-nums').val() == 0) {
+        if(__average_count && $('#config_type').val()==5 && $('#people-num').val() == null && $('#people-nums').val() == 0) {
             show_notify('必须填写参与人数');
             return false;
         }
