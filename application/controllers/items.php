@@ -899,7 +899,7 @@ class Items extends REIM_Controller {
             {
                 $note = -1;
             }
-            $obj = $this->items->update_item($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
+            $obj = $this->items->update_item($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra);
             log_message('debug','xx item_data:'.json_encode($obj));
             if(!$obj['status']) {
                 $this->session->set_userdata('last_error', $obj['data']['msg']);
