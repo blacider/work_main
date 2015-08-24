@@ -50,7 +50,7 @@
                                     <td class="red"><?php 
                                         if($d['status']&4)
                                         {
-                                            echo '上级重复或者不存在';
+                                            echo '上级重复或者不存在,导入后上级缺失';
                                         }
                                         else if($d['status']&2)
                                         {
