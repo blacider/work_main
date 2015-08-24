@@ -140,13 +140,13 @@
 <select class="form-control" name="type" data-placeholder="请选择类型">
 <option value="0">报销</option>
 <?php 
-if($__config['disable_borrow']=='0')
+if($__config && $__config['disable_borrow']=='0')
 {
 ?>
 <option value="1">预借</option>
 <?php
 }
-if($__config['disable_budget'] == '0')
+if($__config && $__config['disable_budget'] == '0')
 {
 ?>
 <option value="2">预算</option>
@@ -587,7 +587,7 @@ $(document).ready(function(){
 
          var dateTime = $('#date-timepicker1').val()
          var dateTime = dateTime.replace(/(^\s*)|(\s*$)/g,'');
-        if(__config['not_auto_time'] == 1)
+        if(__config && __config['not_auto_time'] == 1)
         {
             if(dateTime == '')
             {
@@ -600,7 +600,7 @@ $(document).ready(function(){
          var dateTime2 = $('#date-timepicker2').val();
          dateTime2 = dateTime2.replace(/(^\s*)|(\s*$)/g,'');
          ////console.log(dateTime2.replace(/(^\s*)|(\s*$)/g,'')>'-1');
-        if(__config['not_auto_time'] == 1)
+        if(__config && __config['not_auto_time'] == 1)
         {
             if(dateTime2 == '' && __multi_time)
             {
@@ -617,7 +617,7 @@ $(document).ready(function(){
         }
 
         var note = $('#note').val();
-        if(__config['note_compulsory'] == 1)
+        if(__config && __config['note_compulsory'] == 1)
         {
             if(note.trim()=='')
             {

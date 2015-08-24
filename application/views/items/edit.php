@@ -193,13 +193,13 @@
 <option value="<?php echo $val; ?>" selected><?php echo $key; ?></option>
 <?php
                                                 } else {
-						if($__config['disable_borrow'] == 0 && $val == 1)
+						if($__config && $__config['disable_borrow'] == 0 && $val == 1)
 						{
 ?>
 <option value="<?php echo $val; ?>"><?php echo $key; ?></option>
 <?php
 					    }
-					    if($__config['disable_budget'] == 0 && $val == 2)
+					    if($__config && $__config['disable_budget'] == 0 && $val == 2)
 					    {
 ?>
 <option value="<?php echo $val; ?>"><?php echo $key; ?></option>
@@ -676,7 +676,7 @@ $('#sob_category').change(function(){
 
          var dateTime = $('#date-timepicker1').val()
          var dateTime = dateTime.replace(/(^\s*)|(\s*$)/g,'');
-        if(__config['not_auto_time'] == 1)
+        if(__config && __config['not_auto_time'] == 1)
         {
             if(dateTime == '')
             {
@@ -688,7 +688,7 @@ $('#sob_category').change(function(){
 
          var dateTime2 = $('#date-timepicker2').val();
          dateTime2 = dateTime2.replace(/(^\s*)|(\s*$)/g,'');
-        if(__config['not_auto_time'] == 1)
+        if(__config && __config['not_auto_time'] == 1)
         {
             if(dateTime2 == '' && __multi_time)
             {
@@ -704,7 +704,7 @@ $('#sob_category').change(function(){
         }
 
         var note = $('#note').val();
-        if(__config['note_compulsory'] == 1)
+        if(__config && __config['note_compulsory'] == 1)
         {
             if(note.trim()=='')
             {

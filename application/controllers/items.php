@@ -884,10 +884,9 @@ class Items extends REIM_Controller {
                 $tags = -1;
             }
             log_message("debug",'time:'.strtotime($time));
-            log_message("debug","gettime:".strtotime($data['dt']));
-            log_message("debug","gettime:".strtotime($data['dt']));
+            log_message("debug","gettime:".$data['dt']);
 
-            if(strtotime($time) == strtotime($data['dt']) || $time == '')
+            if(strtotime($time) == $data['dt'] || $time == '')
             {
                 $timestamp = -1;
             }
@@ -899,7 +898,7 @@ class Items extends REIM_Controller {
             {
                 $note = -1;
             }
-            $obj = $this->items->update_item($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images);
+            $obj = $this->items->update_item($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra);
             log_message('debug','xx item_data:'.json_encode($obj));
             if(!$obj['status']) {
                 $this->session->set_userdata('last_error', $obj['data']['msg']);
