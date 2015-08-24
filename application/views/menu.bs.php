@@ -340,7 +340,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     <li class="hsub" id="category">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-tags"></i>
-        <span class="menu-text"> 帐套和标签 </span>
+        <span class="menu-text"> 账套和标签 </span>
 
         <b class="arrow fa fa-angle-down"></b>
     </a>
@@ -352,7 +352,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         </li> -->
 
         <li class="hsub" id="account_set">
-        <a href="<?php echo base_url('category/account_set'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 帐套管理 </a>
+        <a href="<?php echo base_url('category/account_set'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 账套管理 </a>
         <b class="arrow"></b>
         </li>
 <!--
