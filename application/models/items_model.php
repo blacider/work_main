@@ -2,7 +2,7 @@
 
 class Items_Model extends Reim_Model {
 
-    public function update_item($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images, $uids = ''){
+    public function update_item($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = ''){
         $items = array();
         $s = array(
 	    array('type' => 1,'val' => $category)
@@ -11,6 +11,7 @@ class Items_Model extends Reim_Model {
 	    ,array('type' => 4,'val' => $merchant)
 	    ,array('type' => 6,'val' => $amount)
 	    ,array('type' => 8,'val' => $dt)
+	    ,array('type' => 9,'val' => $extra)
 	    );
         $data = array(
 		      "iid" => $id
@@ -20,7 +21,7 @@ class Items_Model extends Reim_Model {
         $url = $this->get_url('update_item');
         $buf = $this->do_Post($url, $data, $jwt);
         $obj = json_decode($buf, true);
-        log_message('debug','####'.$buf);
+        log_message('debug','update_item_back:'.$buf);
         return $obj;
     }
     public function get_list(){
