@@ -392,8 +392,8 @@ function update_tamount(){
     $('.amount').each(function(){
         if($(this).is(':checked')){
             var amount = $(this).data('amount');
-            amount = parseInt(amount.substr(1));
-            sum+=amount;
+            amount = Number(amount.substr(1));
+            sum=Number(sum) + Number(amount);
         };
     });
     $('#tamount').html('￥' + toDecimal2(sum));

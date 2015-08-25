@@ -206,10 +206,9 @@ function do_post(force) {
     var _ids = Array();
 	$('.amount').each(function(){
 		if($(this).is(':checked')){
-            console.log("Check", $(this).data('id'));
             _ids.push($(this).data('id'));
 			var amount = $(this).data('amount');
-			amount = parseInt(amount.substr(1));
+			//amount = parseInt(amount.substr(1));
 			sum+=amount;
 		};
 	});
@@ -225,7 +224,7 @@ function do_post(force) {
 	}
 
 
-	if(__SUM <= 0) {
+	if(sum<= 0) {
 		show_notify("报告总额不能小于等于0");
 		return false;
 	}
@@ -392,12 +391,11 @@ function update_tamount(){
     $('.amount').each(function(){
         if($(this).is(':checked')){
             var amount = $(this).data('amount');
-            amount = parseInt(amount.replace(/[^0-9]/ig,""))/100;
-            sum+=amount;
+            amount = Number(amount);
+            //amount = Number(amount.substr(1));
+            sum=Number(sum) + Number(amount);
         };
     });
-    //$('#tamount').html(sum);
     $('#tamount').html('￥' + toDecimal2(sum));
-    __SUM = sum;
 }
 </script>

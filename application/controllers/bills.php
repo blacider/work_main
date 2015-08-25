@@ -36,21 +36,22 @@ class Bills extends REIM_Controller {
         }
         $with_note = 1;
         $template = 'a4.yaml';
-        if($config) {
-            $config = json_decode($config,True);
-            $company = urlencode($group['group_name']);
-
-            if(($config) && (array_key_exists('export_no_company', $config)) && ($config['export_no_company'] == '0'))
-                if($config && array_key_exists('export_no_company', $config) && $config['export_no_company'] == '0')
-                {
-                    $company = '';
-                }
+        $_rid = $this->input->post('chosenids');
             $_rid = $this->input->post('chosenids');
             $rid = array();
             foreach($_rid as $r)
             {
                 array_push($rid,$this->reim_cipher->encode($r));
             }
+            $company = urlencode($group['group_name']);
+        if($config) {
+            $config = json_decode($config,True);
+
+            if(($config) && (array_key_exists('export_no_company', $config)) && ($config['export_no_company'] == '0'))
+                if($config && array_key_exists('export_no_company', $config) && $config['export_no_company'] == '0')
+                {
+                    $company = '';
+                }
 
             $with_no_note = 0;
             if(($config) && (array_key_exists('export_no_note', $config)) && ($config['export_no_note']))
@@ -75,7 +76,8 @@ class Bills extends REIM_Controller {
         $archive = 1;
 
         log_message('debug','profile'.json_encode($profile['data']['profile']['group']));
-        $url = "http://report.yunbaoxiao.com/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
+        //$url = "https://report.yunbaoxiao.com/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
+        $url = "https://www.yunbaoxiao.com/report/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
         log_message('debug','hhh'. $url);
         die(json_encode(array('url' => $url)));
     }
