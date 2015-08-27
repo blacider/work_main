@@ -54,6 +54,7 @@ class Category extends REIM_Controller {
         $this->session->unset_userdata('last_error');
 	$_ranks = $this->reim_show->rank_level(1);
 	$_levels = $this->reim_show->rank_level(0);
+//    $_extra = $this->category->get_custom_item();
 
 	$ranks = array();
 	$levels = array();
@@ -132,7 +133,7 @@ class Category extends REIM_Controller {
 	{
 		$categories = $_categories['data']['categories'];
 	}
-	log_message('debug','category:' . json_encode($categories));
+	log_message('debug','***category:' . json_encode($_categories));
 	$sob_categories = array();
 	$all_categories = array();
 	$sob_keys =array();
@@ -144,11 +145,11 @@ class Category extends REIM_Controller {
 		{
 			array_push($sob_keys,$cate['id']);
 		}
-		$all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code'],'note'=>$cate['note'],'force_attach'=>$cate['force_attach'], 'max_limit'=>$cate['max_limit']);
+		$all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code'],'note'=>$cate['note'],'force_attach'=>$cate['force_attach'], 'max_limit'=>$cate['max_limit'],'extra_type'=>$cate['extra_type']);
 	}
 			
 		$path = "http://api.cloudbaoxiao.com/online/static/0.png";
-		$all_categories[0]=array('child'=>array(),'avatar_'=>0,'avatar'=>$path,'id'=>0,'pid'=>-1,'name'=>"顶级分类",'sob_code'=>0,'note'=>'','force_attach'=>0);
+		$all_categories[0]=array('child'=>array(),'avatar_'=>0,'avatar'=>$path,'id'=>0,'pid'=>-1,'name'=>"顶级分类",'sob_code'=>0,'note'=>'','force_attach'=>0,'extra_type'=>0);
 	foreach($categories as $cate)
 	{
 		if($cate['pid'] !=-1)
@@ -180,6 +181,7 @@ class Category extends REIM_Controller {
         $ugroups = $this->ug->get_my_list();
 	log_message('debug','all_categories:' . json_encode($all_categories));
 	log_message('debug','sobs:' . json_encode($_sobs));
+	log_message('debug','sobs_keys:' . json_encode($sob_keys));
         $this->bsload('account_set/update',
             array(
                 'last_error' => $error,
@@ -608,6 +610,7 @@ class Category extends REIM_Controller {
 	$note = $this->input->post('note');
     $max_limit = $this->input->post('max_limit');
 	$_force_attach = $this->input->post('force_attach');
+    $extra_type = $this->input->post('extra_type');
 	$force_attach = 0;
 	if($_force_attach)
 	{
@@ -621,7 +624,9 @@ class Category extends REIM_Controller {
 	log_message('debug','note:' . $note);
 	log_message('debug','force_attach:' . $force_attach);
     log_message('debug', 'max_limit:' . $max_limit);
-	$obj = $this->category->create_update($cid,$pid,$sob_id,$name,$avatar,$code,$force_attach,$note,$max_limit);
+    log_message('debug', 'extra_type:' . $extra_type);
+    
+	$obj = $this->category->create_update($cid,$pid,$sob_id,$name,$avatar,$code,$force_attach,$note,$max_limit,$extra_type);
 	if($obj['status'] > 0)
 	{
 		$this->session->set_userdata('last_error','添加成功');
@@ -647,17 +652,19 @@ class Category extends REIM_Controller {
         $force_attach = $this->input->post('force_attach');
         $force_attach = $force_attach == "on" ? 1 : 0;
         $gid = $this->input->post('gid');
+        $extra_type = $this->input->post('extra_type');
         log_message("debug","\n#############GID:$gid");
         $sob_id = $this->input->post('sob_id');
 
         log_message("debug","\n#############GID:$gid");
+        log_message("debug","\n#############extra_type:$extra_type");
         log_message("debug","\n#############attach:$force_attach");
         $msg = '添加分类失败';
         $obj = null;
         if($cid > 0){
-            $obj = $this->category->update($cid, $name, $pid, $sob_id, $prove_ahead, $max_limit, $note, $sob_code, $avatar, $force_attach);
+            $obj = $this->category->update($cid, $name, $pid, $sob_id, $prove_ahead, $max_limit, $note, $sob_code, $avatar, $force_attach,$extra_type);
         } else {
-            $obj = $this->category->create($name, $pid, $sob_id, $prove_ahead, $max_limit, $note, $sob_code, $avatar, $force_attach);
+            $obj = $this->category->create($name, $pid, $sob_id, $prove_ahead, $max_limit, $note, $sob_code, $avatar, $force_attach,$extra_type);
         }
         if($obj && $obj['status']){
             $msg = '添加分类成功' . $note;
