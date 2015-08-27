@@ -1,6 +1,18 @@
 <?php
 class Category_Model extends Reim_Model {
 
+    public function get_custom_item()
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+
+        $url = $this->get_url('custom_item');
+        $buf = $this->do_Get($url,$jwt);
+        log_message('debug','custom_item_back:' . $buf);
+        return json_decode($buf,True);
+    }
+
+
     public function get_list(){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
@@ -11,7 +23,7 @@ class Category_Model extends Reim_Model {
         return $obj;
     }
     
-    public function create_update($cid = 0,$pid,$sob_id, $name, $avatar,$code,$force_attach,$note, $max_limit = 0)
+    public function create_update($cid = 0,$pid,$sob_id, $name, $avatar,$code,$force_attach,$note, $max_limit = 0 , $extra_type)
     {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
@@ -24,6 +36,7 @@ class Category_Model extends Reim_Model {
 		,'force_attachement' => $force_attach
 		,'note' => $note
         ,'limit' => $max_limit
+        ,'extra_type' => $extra_type
 	);
 
 	if(0 == $cid)
@@ -43,7 +56,7 @@ class Category_Model extends Reim_Model {
 
     }
     	
-    public function create($name, $pid, $sob_id, $prove_ahead = 0, $maxlimit = 0, $note = "", $sob_code = 0 , $avatar = 0, $force_attach = 0) {
+    public function create($name, $pid, $sob_id, $prove_ahead = 0, $maxlimit = 0, $note = "", $sob_code = 0 , $avatar = 0, $force_attach = 0 , $extra_type) {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(
@@ -56,6 +69,7 @@ class Category_Model extends Reim_Model {
             ,'sob_code' => $sob_code
             ,'avatar' => $avatar
             ,'force_attachement' => $force_attach
+            ,'extra_type' => $extra_type
         );
 		$url = $this->get_url('category');
 		$buf = $this->do_Post($url, $data, $jwt);
@@ -63,7 +77,7 @@ class Category_Model extends Reim_Model {
 		$obj = json_decode($buf, true);
         return $obj;
     }
-    public function update($cid, $name, $pid, $sob_id, $prove_ahead = 0, $maxlimit = 0, $note = "", $sob_code = 0 , $avatar = 0,$force_attach) {
+    public function update($cid, $name, $pid, $sob_id, $prove_ahead = 0, $maxlimit = 0, $note = "", $sob_code = 0 , $avatar = 0,$force_attach , $extra_type) {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(
@@ -76,6 +90,7 @@ class Category_Model extends Reim_Model {
             ,'pb' => $prove_ahead
 	    ,'avatar' => $avatar
             ,'force_attachement' => $force_attach
+            ,'extra_type' => $extra_type
         );
 		$url = $this->get_url('category/' . $cid);
 		$buf = $this->do_Put($url, $data, $jwt);
