@@ -82,7 +82,11 @@ class Items extends REIM_Controller {
             }
         }
         log_message('debug' , 'item_config:' . json_encode($item_configs));
-        $sobs = $profile['sob'];
+        $sobs = array();
+        if(array_key_exists('sob',$profile))
+        {
+            $sobs = $profile['sob'];
+        }
         $_sob_id = array();
         $_sobs = array();
         foreach($sobs as $i) {
