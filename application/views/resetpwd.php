@@ -15,6 +15,7 @@
       
 
       $(document).ready(function(){
+        $(".block1").css("height","500px");
         $("input[type='submit']").css("visibility","hidden");
         $("#button-div").css("cursor","pointer");
         $("#button-div").click(function(){
