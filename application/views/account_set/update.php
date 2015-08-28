@@ -410,10 +410,10 @@ if($last_error) {
 	    <input id="max_limit" name="max_limit" type="number" date-placeholder="请输入类目限额" value="0" />
 	</div>
 
-     <div class="form-group">
+     <div class="form-group" style="height:30px;">
                     <label class="col-sm-2 control-label no-padding-right">特殊配置 </label>
-                                <div style="width:200px">
-                                    <select class="chosen-select tag-input-style" id="extra_type" name="extra_type" data-placeholder="配置类型" >
+                                <div class="col-sm-4"  style="padding:0;">
+                                    <select class="chosen-select-niu tag-input-style" style="width:95%;" id="extra_type" name="extra_type" data-placeholder="配置类型" >
 
                                         <option value='0'>无</option>
                                         <option value='2'>时间段</option>
@@ -503,10 +503,10 @@ if($last_error) {
             <input id="max_limit" name="max_limit" type="number" data-placeholder="请输入限额" value="0" />
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style="height:30px;">
                     <label class="col-sm-2 control-label no-padding-right">特殊配置</label>
-                                <div style="width:200px">
-                                    <select class="chosen-select tag-input-style" id="extra_type" name="extra_type" data-placeholder="配置类型" >
+                                <div class="col-sm-4" style="padding:0;">
+                                    <select class="chosen-select-niu tag-input-style" style="width:95%" id="extra_type" name="extra_type" data-placeholder="配置类型" >
 
                                         <option value='0'>无</option>
                                         <option value='2'>时间段</option>
@@ -621,8 +621,8 @@ var range = "<?php echo $range?>";
                     },            });
      
            }); 
-
-        $('.chosen-select').chosen({allow_single_deselect:true}); 
+        $(".chosen-select-niu").chosen({width:"95%"});
+        $('.chosen-select').chosen({allow_single_deselect:true});
         $(window)
             .off('resize.chosen')
             .on('resize.chosen', function() {
