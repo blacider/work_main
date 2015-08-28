@@ -8,8 +8,19 @@
     <link rel="stylesheet" type="text/css" href="/static/css/login.css">
     <link rel="stylesheet" type="text/css" href="/static/css/normalize.css">
     <!--[if lt IE 9]>
-      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+      <script src="/static/js/respond.min.js"></script>
       <link rel="stylesheet" type="text/css" href="/static/css/ie.css">
+      <script language="javascript">
+      
+
+      $(document).ready(function(){
+        $("input[type='submit']").css("visibility","hidden");
+        $("#button-div").css("cursor","pointer");
+        $("#button-div").click(function(){
+          $("input[type='submit']").click();
+        });
+      });
+      </script>
     <![endif]-->
     <!--[if gte IE 9]>
       <link rel="stylesheet" type="text/css" href="/static/css/notie.css">
