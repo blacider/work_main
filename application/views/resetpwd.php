@@ -7,6 +7,7 @@
     <link rel="shortcut icon" href="/static/favicon.ico" />
     <link rel="stylesheet" type="text/css" href="/static/css/login.css">
     <link rel="stylesheet" type="text/css" href="/static/css/normalize.css">
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
     <!--[if lt IE 9]>
       <script src="/static/js/respond.min.js"></script>
       <link rel="stylesheet" type="text/css" href="/static/css/ie.css">
@@ -32,7 +33,6 @@
     var __BASE = "<?php echo base_url(); ?>";
     var _error = "<?php echo $error; ?>";
 </script>
-    <script type="text/javascript" src="/static/js/jquery.js"></script>
     <script type="text/javascript" src="/static/js/index.js"></script>
     <script type="text/javascript" src="/static/js/login.js"></script>
 </head>
