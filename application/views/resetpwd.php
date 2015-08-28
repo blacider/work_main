@@ -18,7 +18,7 @@
         $("input[type='submit']").css("visibility","hidden");
         $("#button-div").css("cursor","pointer");
         $("#button-div").click(function(){
-          this.fistChild.click();
+          this.firstChild.click();
         });
       });
       </script>
