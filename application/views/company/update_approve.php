@@ -307,24 +307,7 @@
                             </div> -->
 
 
-                                <!-- <div class="col-sm-2 col-sm-2">
-                                   
-                                        <select class="form-control" id="frequency_time" name="frequency_time">
-                                        <?php
-                                            $period = array(1=>"一月",2=>"一年",3=>"一日");
-                                            foreach ($period as $key => $value) {
-                                                if($key == $rule['freq_period'])
-                                                {
-                                        ?>
-                                            <option selected value="<?php echo $key ?>"><?php echo $value?></option>
-                                            <?php } else {?>
-                                          <option value="<?php echo $key?>"><?php echo $value?></option>
-                                          <?php
-                                            }
-                                            }
-                                          ?>
-                                        </select>
-                                </div> -->
+                            
 
                         
 
@@ -437,14 +420,7 @@
         </form>
     </div>
 </div>
-<!-- <p><?php echo json_encode($rule)?></p> 
- <?php foreach ($rule['members'] as $key => $value) {
-                                        # code...
-                                echo $value['id'];     //   array_push($mem,$rule['members']['id']);
-                                    }?>
-<p><?php echo json_encode($rule['members'])?></p>
-<p><?php echo json_encode($rule);?></p>
-<p><?php echo $c_id.$c_name.$s_id.$s_name?></p>-->
+
 <style type="text/css">
     .form-group {
         margin-bottom: 30px;
