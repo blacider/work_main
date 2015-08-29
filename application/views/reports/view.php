@@ -82,6 +82,7 @@ foreach($report['items'] as $i) {
                                                         if(date('H', $edt) > 12) $_day_delta += 1;
                                                         // 都切换到12点去
                                                         $_date_str = strftime('%Y-%m-%d %H:%M', $i['dt']) . '至' . strftime('%Y-%m-%d %H:%M', $edt) . "(共" . $_day_delta . "天)";
+                                                        if($_day_delta == 0) $_day_delta = 1;
 
                                                         $_extra_amount = '（' . sprintf("%.2f", $i['amount'] / $_day_delta) . "元/天）";
                                                     }
