@@ -1,8 +1,5 @@
 <?php
 
-//define("API_SERVER", "http://api.rushu.local/");
-//define("API_SERVER", "http://api.rushucloud.com/stage/");
-//define("API_SERVER", "https://api.cloudbaoxiao.com/online/");
 define("API_SERVER", "https://api.cloudbaoxiao.com/stage/");
 define("PUBKEY", "1NDgzZGY1OWViOWRmNjI5ZT");
 

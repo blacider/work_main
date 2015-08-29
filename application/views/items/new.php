@@ -469,6 +469,7 @@ function get_sobs(){
 }
 
 var __multi_time = 0;
+var __average_count = 0;
 $(document).ready(function(){
 
 
@@ -514,6 +515,7 @@ $(document).ready(function(){
             $('#endTime').hide();
             $('#average').hide();
         __multi_time = 0;
+                __average_count = 0;
         var category_id = $('#sob_category').val();
         if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 2)
         {
@@ -542,6 +544,7 @@ $(document).ready(function(){
                 var all_amount = $('#amount').val();
                 $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
                 $('#average').show();
+                __average_count = 1;
             }
             else
             {
@@ -630,7 +633,7 @@ $(document).ready(function(){
             show_notify('请选择类目');
             return false;
         }
-        if($('#config_type').val() == 5 && $('#people-num').val() == null && $('#people-nums').val() == 0) {
+        if($('#config_type').val() == 5 && __average_count && $('#people-nums').val() == null && $('#people-nums').val() == 0) {
             show_notify('必须填写参与人数');
             return false;
         }
