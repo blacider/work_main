@@ -464,10 +464,18 @@ class Members extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-
-
-
-        log_message("debug","gmembers:".json_encode($gmember));
+        $member_matrix = array();
+        foreach($gmember as $g){
+            $member_matrix[$g['id']] = $g['nickname'];
+            log_message("debug","alvayang:".json_encode($g));
+        }
+        foreach($gmember as &$g){
+            $_gid = $g['manager_id'];
+            $g['manager'] = '无上级';
+            if(array_key_exists($_gid, $member_matrix)){
+                $g['manager'] = $member_matrix[$_gid];
+            }
+        }
         $this->bsload('members/index',
             array(
                 'title' => '组织结构'

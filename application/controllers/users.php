@@ -485,5 +485,9 @@ class Users extends REIM_Controller {
         $buf = $this->user->del_credit($id,$uid);
         die($buf);
     }
+
+
+    public function dumps(){
+    }
 }
 
