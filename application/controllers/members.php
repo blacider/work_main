@@ -464,6 +464,9 @@ class Members extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
+
+
+
         log_message("debug","gmembers:".json_encode($gmember));
         $this->bsload('members/index',
             array(
