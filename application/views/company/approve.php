@@ -412,18 +412,7 @@
         </form>
     </div>
 </div>
-<!-- <p><?php echo json_encode($group);?></p>
-<p><?php echo json_encode($ranks);?></p>
-<p><?php echo json_encode($levels);?></p> -->
 
-<!-- <p><?php echo json_encode($rule)?></p> 
- <?php foreach ($rule['members'] as $key => $value) {
-                                        # code...
-                                echo $value['id'];     //   array_push($mem,$rule['members']['id']);
-                                    }?>
-<p><?php echo json_encode($rule['members'])?></p>
-<p><?php echo json_encode($rule);?></p>
-<p><?php echo $c_id.$c_name.$s_id.$s_name?></p>-->
 <style type="text/css">
     .form-group {
         margin-bottom: 30px;

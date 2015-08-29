@@ -54,7 +54,7 @@ if($last_error) {
                                     $("#form_moda").find('input[name="cid"]').val(id);
                                     $("#form_moda").find('input[name="code"]').val(code);
                                     $("#form_moda").find('input[name="note"]').val(note);
-                                    //$("#form_moda").find('input[name="max_limit"]').val(max_limit);
+                                    $("#form_moda").find('input[name="max_limit"]').val(max_limit);
                                     $("#form_moda").find('input[name="pid"]').val(pid);
                                     if(force_attach == 1)
                                     {
@@ -393,12 +393,10 @@ if($last_error) {
                     <?php } ?></ul>
             </div>
         </div>
-<!--
 	<div class="form-group">
 	    <label class="col-sm-2">限额</label>
 	    <input id="max_limit" name="max_limit" type="number" date-placeholder="请输入类目限额" value="0" />
 	</div>
--->
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类目ID</label>
             <input name="code" type="text" data-placeholder="请输入类目ID"></div>
@@ -472,12 +470,10 @@ if($last_error) {
                     <?php } ?></ul>
             </div>
         </div>
-<!--
 	<div class="form-group">
             <label class="col-sm-2">限额</label>
             <input id="max_limit" name="max_limit" type="number" data-placeholder="请输入限额" value="0" />
         </div>
--->
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类目代码</label>
             <input name="code" type="text" data-placeholder="请输入名称"></div>
