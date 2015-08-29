@@ -36,7 +36,7 @@
 <?php 
 $user = $this->session->userdata('user');
 $_empty = 0;
-    if(!$reports['receivers']['managers']){
+    if(!$report['receivers']['managers']){
         $_empty = 1;
     }
 foreach($members as $m) {

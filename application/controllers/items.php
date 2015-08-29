@@ -85,7 +85,7 @@ class Items extends REIM_Controller {
         $sobs = array();
         if(array_key_exists('sob',$profile))
         {
-            $sobs = $profile['sob'];
+             $sobs = $profile['sob'];
         }
         $_sob_id = array();
         $_sobs = array();
