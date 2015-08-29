@@ -44,10 +44,11 @@ if($last_error) {
                             var _subSob = [];
                             var sob_keys = <?php echo json_encode($sob_keys);?>;
                             var all_categories = <?php echo json_encode($all_categories);?>;
+                            console.log(all_categories);
 
                             function showSob(sobId) {
                                 if (sobId != -1) {
-                                    var name = all_categories[sobId]['name'], note = all_categories[sobId]['note'],force_attach=all_categories[sobId]['force_attach'],code = all_categories[sobId]['sob_code'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'], name = all_categories[sobId]['name'], max_limit = all_categories[sobId]['max_limit'], pid = all_categories[sobId]['pid'];
+                                    var extra_type = all_categories[sobId]['extra_type'],name = all_categories[sobId]['name'], note = all_categories[sobId]['note'],force_attach=all_categories[sobId]['force_attach'],code = all_categories[sobId]['sob_code'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'], name = all_categories[sobId]['name'], max_limit = all_categories[sobId]['max_limit'], pid = all_categories[sobId]['pid'];
                                     $("#form_moda").find('input[name="name"]').val(name);
                                     $("#menuImg").attr('src', img);
                                     $('#form_moda').find('input[name="avatar"]').val(all_categories[sobId]['avatar_']);
@@ -56,12 +57,19 @@ if($last_error) {
                                     $("#form_moda").find('input[name="note"]').val(note);
                                     $("#form_moda").find('input[name="max_limit"]').val(max_limit);
                                     $("#form_moda").find('input[name="pid"]').val(pid);
-                                    console.log('force_attach:' + force_attach);
+
+                                    console.log('extra_type:' + extra_type);
                                     if(force_attach == 1)
                                     {
                                         $("#form_moda").find('input[name="force_attach"]').attr('checked',force_attach).trigger('chosen:updated');
                                     } else {
                                         $("#form_moda").find('input[name="force_attach"]').removeAttr('checked').trigger('chosen:updated');
+                                    }
+
+
+                                    if(extra_type)
+                                    {
+                                         $("#form_moda").find('select[name="extra_type"]').val(extra_type).attr('selected',true).trigger('chosen:updated');
                                     }
                                 }
                                 $('#modal_sob').modal('show');
@@ -365,6 +373,9 @@ if($last_error) {
                             
             <input id="note" type="text" name="note" placeholder="输入说明">
         </div>
+
+
+
         <div class="form-group" style="height:30px">
             <label class="col-sm-3 control-label no-padding-right">是否需要附件</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -398,6 +409,21 @@ if($last_error) {
 	    <label class="col-sm-2">限额</label>
 	    <input id="max_limit" name="max_limit" type="number" date-placeholder="请输入类目限额" value="0" />
 	</div>
+
+     <div class="form-group" style="height:30px;">
+                    <label class="col-sm-2 control-label no-padding-right">特殊配置 </label>
+                                <div class="col-sm-4"  style="padding:0;">
+                                    <select class="chosen-select-niu tag-input-style" style="width:95%;" id="extra_type" name="extra_type" data-placeholder="配置类型" >
+
+                                        <option value='0'>无</option>
+                                        <option value='2'>时间段</option>
+                                        <option value='5'>人均属性</option>
+
+                                    </select>
+                    </div>
+                   
+        </div>
+
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类目ID</label>
             <input name="code" type="text" data-placeholder="请输入类目ID"></div>
@@ -441,6 +467,7 @@ if($last_error) {
                             
             <input id="note" type="text" name="note" placeholder="输入说明">
         </div>
+            
         <div class="form-group" style="height:30px">
             <label class="col-sm-3 control-label no-padding-right">是否需要附件</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -474,6 +501,20 @@ if($last_error) {
 	<div class="form-group">
             <label class="col-sm-2">限额</label>
             <input id="max_limit" name="max_limit" type="number" data-placeholder="请输入限额" value="0" />
+        </div>
+
+        <div class="form-group" style="height:30px;">
+                    <label class="col-sm-2 control-label no-padding-right">特殊配置</label>
+                                <div class="col-sm-4" style="padding:0;">
+                                    <select class="chosen-select-niu tag-input-style" style="width:95%" id="extra_type" name="extra_type" data-placeholder="配置类型" >
+
+                                        <option value='0'>无</option>
+                                        <option value='2'>时间段</option>
+                                        <option value='5'>人均属性</option>
+
+                                    </select>
+                    </div>
+
         </div>
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类目代码</label>
@@ -580,8 +621,8 @@ var range = "<?php echo $range?>";
                     },            });
      
            }); 
-
-        $('.chosen-select').chosen({allow_single_deselect:true}); 
+        $(".chosen-select-niu").chosen({width:"95%"});
+        $('.chosen-select').chosen({allow_single_deselect:true});
         $(window)
             .off('resize.chosen')
             .on('resize.chosen', function() {
