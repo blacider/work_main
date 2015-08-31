@@ -748,7 +748,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                 <div class="col-md-offset-3 col-md-9">
                                     <a class="btn btn-white btn-primary new_card" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
 
-                                    <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
+                                    <a style="margin-left: 80px;" class="btn btn-white cancel" id="credit_cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
                                 </div>
                             </div>
 
@@ -784,6 +784,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     var flag = 0;
     var is_other = "<?php echo $isOther; ?>";
     var user_id = "<?php echo $pid;?>";
+
     function show_loading(){
         $('#loading').show();
     }
@@ -875,6 +876,9 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
             $('#cardno').attr("disabled",   false);
             $('#cardbank').attr("disabled", false);
         }
+        $('.cancel').click(function(){
+            $('#credit_model').modal('hide');
+        });
     }
     var __self = "<?php echo $self; ?>";
     var __error = "<?php echo $error; ?>";
