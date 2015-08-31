@@ -892,7 +892,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                 dataType : 'json',
                 method : 'GET',
                 success : function(data){
-                    console.log(data);
                     $('#bank_' + _id).remove();
                     show_notify('银行卡删除成功');
                 }
@@ -912,8 +911,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 
         do {
             i += 1;
-            console.log(i);
-            console.log(loc.length);
             $('select[name="province"]').val(loc.substr(0,i));
             if(i>loc.length+1)
             {
@@ -973,8 +970,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         get_province();
         if(__error) show_notify(__error);
         $('.chosen-select').each(function(){
-            console.log('find me');
-            console.log($(this));
         });
         $('.chosen-select').chosen({allow_single_deselect:true}); 
         $(window)

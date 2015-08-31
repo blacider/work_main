@@ -83,6 +83,7 @@ position: absolute;
                     <th>手机</th>
                     <th>部门</th>
                     <th>职位</th>
+                    <th>上级</th>
                     <th>角色</th>
 <?php
 if($profile['admin'] == 1 || $profile['admin'] == 3) {
@@ -124,6 +125,9 @@ if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['d'],
     <td>
         <?php if (array_key_exists($m['level_id'],$levels)) {?>
         <?php echo $levels[$m['level_id']]; }?>
+    </td>
+    <td>
+        <?php echo $m['manager']; ?>
     </td>
     <td>
 <?php 
@@ -322,6 +326,7 @@ function load_group(gid){
                     + '<th>手机</th>'
                     + '<th>部门</th>'
                     + '<th>职位</th>'
+                    + '<th>上级</th>'
                     + '<th>身份</th>';
                     if(_admin == 1 || _admin == 3){
                         _th += '<th>操作</th>'
@@ -368,6 +373,7 @@ function load_group(gid){
                     + '<td>' + item.phone + '</td>'
                     + '<td>' + item.d + '</td>'
                     + '<td>' + _level + '</td>'
+                    + '<td>' + item.manager + '</td>'
                     + '<td><a href="javascript:void(0)">' + _color + '</a>';
                     if(_admin == 1 || _admin == 3){
                     _th += '<td><a href="' + __BASE + '/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a>'

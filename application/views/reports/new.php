@@ -38,7 +38,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">发送至</label>
                                 <div class="col-xs-9 col-sm-9">
-                                    <select class="chosen-select tag-input-style" name="receiver[]" multiple="multiple" data-placeholder="请选择标签" id="receiver">
+                                    <select class="chosen-select tag-input-style" name="receiver[]" multiple="multiple" data-placeholder="请选择审批人" id="receiver">
                                         <?php 
 					$user = $this->session->userdata('user');
 					foreach($members as $m) {
@@ -56,7 +56,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">抄送至</label>
                                 <div class="col-xs-9 col-sm-9">
-                                    <select class="chosen-select tag-input-style" name="cc[]" id="cc" multiple="multiple" data-placeholder="请选择标签">
+                                    <select class="chosen-select tag-input-style" name="cc[]" id="cc" multiple="multiple" data-placeholder="请选择抄送人">
                                         <?php foreach($members as $m) {
 					if($user['id'] != $m['id']){?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
@@ -392,8 +392,8 @@ function update_tamount(){
     $('.amount').each(function(){
         if($(this).is(':checked')){
             var amount = $(this).data('amount');
-            amount = parseInt(amount.substr(1));
-            sum+=amount;
+            amount = Number(amount.substr(1));
+            sum=Number(sum) + Number(amount);
         };
     });
     $('#tamount').html('￥' + toDecimal2(sum));

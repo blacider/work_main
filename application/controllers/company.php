@@ -33,12 +33,15 @@ class Company extends REIM_Controller {
         $this->session->unset_userdata('last_error');
         $buf = $this->company->show_approve();
         $info=json_decode($buf,true);
-	$_info = array();
-	if($info['status']>0)
-	{
-		$_info = $info['data'];
-	}
-	log_message('debug','approve:' . json_encode($_info));
+        $_info = array();
+        if($info['status']>0)
+        {
+            $_info = $info['data'];
+        }
+        if(!$_info) {
+            die("没有数据");
+        }
+        log_message('debug','approve:' . json_encode($_info));
         $own_rule = $_info[$pid];
 
         $category = $this->category->get_list();
@@ -72,9 +75,13 @@ class Company extends REIM_Controller {
                 }
                 foreach($_sobs as $s)
                 {
-                    if($s['sob_id'] == $cate_arr[$item['category']]['sob_id'])
-                    {
-                        $cate_arr[$item['category']]['sob_name'] = $s['sob_name'];
+                    if(!array_key_exists('sob_id', $cate_arr[$item['category']])) {
+                        $cate_arr[$item['category']]['sob_name'] = '默认帐套';
+                    } else {
+                        if($s['sob_id'] == $cate_arr[$item['category']]['sob_id'])
+                        {
+                            $cate_arr[$item['category']]['sob_name'] = $s['sob_name'];
+                        }
                     }
                 }
             }

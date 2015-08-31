@@ -58,7 +58,6 @@ if($last_error) {
                                     $("#form_moda").find('input[name="max_limit"]').val(max_limit);
                                     $("#form_moda").find('input[name="pid"]').val(pid);
 
-                                    console.log('extra_type:' + extra_type);
                                     if(force_attach == 1)
                                     {
                                         $("#form_moda").find('input[name="force_attach"]').attr('checked',force_attach).trigger('chosen:updated');
