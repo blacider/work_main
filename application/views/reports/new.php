@@ -130,8 +130,8 @@ data-id="<?php echo $i['id']; ?>"
                                                 $buf = '';
 switch($i['prove_ahead']) {
 case 0 : $buf = '报销';break;
-case 1 : $buf = '预借';break;
-case 2 : $buf = '预算';break;
+case 1 : $buf = '预算';break;
+case 2 : $buf = '预借';break;
 } 
 echo $buf;
 

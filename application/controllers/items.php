@@ -250,8 +250,8 @@ class Items extends REIM_Controller {
                 $s['dt'] = strftime("%Y-%m-%d %H:%M", intval($s['dt']));
                 $_type = '报销';
                 switch($s['type']){
-                case 1: {$_type = '预借';};break;
-                case 2: {$_type = '预算';};break;
+                case 1: {$_type = '预算';};break;
+                case 2: {$_type = '预借';};break;
                 }
                 $s['type'] = $_type;
 
@@ -442,8 +442,8 @@ class Items extends REIM_Controller {
         $prove_ahead = $item['prove_ahead'];
         switch($prove_ahead) {
         case 0:{$_type = '报销';};break;
-        case 1:{$_type = '预借';};break;
-        case 2:{$_type = '预算';};break;
+        case 1:{$_type = '预算';};break;
+        case 2:{$_type = '预借';};break;
         }
         $item['prove_ahead'] = $_type;
 
@@ -600,8 +600,8 @@ class Items extends REIM_Controller {
         $prove_ahead = $item['prove_ahead'];
         switch($prove_ahead) {
         case 0:{$_type = '报销';};break;
-        case 1:{$_type = '预借';};break;
-        case 2:{$_type = '预算';};break;
+        case 1:{$_type = '预算';};break;
+        case 2:{$_type = '预借';};break;
         }
         $item['prove_ahead'] = $_type;
 
