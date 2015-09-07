@@ -348,7 +348,7 @@
                                     </select>
                                 </div> -->
 
-                                <div class="col-xs-3 col-sm-3">
+                                <div class="col-xs-5 col-sm-5">
                                     <select class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
                                     <?php 
                                     $mem = array();
