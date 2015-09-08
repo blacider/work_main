@@ -115,7 +115,7 @@ if($__config)
 foreach($items as $i){
     if($i['rid'] == 0 && in_array($i['prove_ahead'], $item_type)){
                                         ?>
-                                        <tr>
+                                        <tr id="<?php echo 'item'.$i['id']?>">
                                         <td>
 <input name="item[]" value="<?php echo $i['id']; ?>" 
 type="checkbox" class="form-controller amount" 
@@ -329,10 +329,19 @@ $(document).ready(function(){
             var _id = $(this).data('id');
             location.href = __BASE + "items/show/" + _id;
         });
+    });
     $('.txdel').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
-            location.href = __BASE + "items/del/" + _id + "/1";
+           // location.href = __BASE + "items/del/" + _id + "/1";
+           $.ajax({
+            url:__BASE + "items/del/" + _id + "/1",
+            method:'GET',
+            success:function(data){
+                $('#item'+_id).remove();
+                show_notify('删除成功');
+            }
+           });
         });
     });
     $('.txedit').each(function() {
@@ -341,7 +350,7 @@ $(document).ready(function(){
             location.href = __BASE + "items/edit/" + _id;
         });
     });
-    });
+    
 
     $('#all_item').click(function(){
         if($('#all_item').is(":checked"))
