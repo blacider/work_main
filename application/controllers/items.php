@@ -346,7 +346,11 @@ class Items extends REIM_Controller {
             $msg = $obj['data']['msg'];
             $this->session->set_userdata('last_error', $msg);
         }
-        if ($flag == 1) redirect(base_url('reports/newreport'));
+        if ($flag == 1) 
+        {
+           // redirect(base_url('reports/newreport'));
+           die(josn_encode(array('data'=>'success'))); 
+        }
         else redirect(base_url('items'));
     }
 
