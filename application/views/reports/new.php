@@ -329,6 +329,7 @@ $(document).ready(function(){
             var _id = $(this).data('id');
             location.href = __BASE + "items/show/" + _id;
         });
+    });
     $('.txdel').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
@@ -338,7 +339,7 @@ $(document).ready(function(){
             method:'GET',
             success:function(data){
                 $('#item'+_id).remove();
-                //show_notify('删除成功');
+                show_notify('删除成功');
             }
            });
         });
@@ -349,7 +350,7 @@ $(document).ready(function(){
             location.href = __BASE + "items/edit/" + _id;
         });
     });
-    });
+    
 
     $('#all_item').click(function(){
         if($('#all_item').is(":checked"))
