@@ -22,7 +22,13 @@ class Install extends REIM_Controller {
             $invites = $_invites['data'];
         }
          */
-        if ($this->agent->is_mobile('iphone'))
+        if ($this->agent->is_mobile('ipad'))
+        {
+            $info = $this->app_model->find_online(0);
+            $url = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/pub/xreim';
+            $this->load->view('install/newcomer/iphone', array('url' => $url,'invites' => $invites));
+        }
+        else if ($this->agent->is_mobile('iphone'))
         {
             $info = $this->app_model->find_online(0);
             $url = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/pub/xreim';
@@ -42,7 +48,15 @@ class Install extends REIM_Controller {
     }
 
     public function index(){
-        if ($this->agent->is_mobile('iphone'))
+        if ($this->agent->is_mobile('ipad'))
+        {
+            $info = $this->app_model->find_online(0);
+            //$url = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.plist';
+            //$url = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.plist?t=' . urlencode(base64_encode(microtime()));
+            $url = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/pub/xreim';
+            $this->load->view('install/iphone', array('url' => $url));
+        }
+        else if ($this->agent->is_mobile('iphone'))
         {
             $info = $this->app_model->find_online(0);
             //$url = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.plist';
