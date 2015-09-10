@@ -141,7 +141,16 @@ foreach($report['items'] as $i) {
                                         <?php foreach($flow as $i){ ?>
                                         <tr>
                                    
-                                            <td><?php echo $i['nickname']; ?></td>
+                                            <td><?php 
+                                                if($i['wingman']) 
+                                                    {
+                                                        echo $i['nickname'].'('.$i['wingman'].'代提交)';
+                                                    }
+                                                else
+                                                {
+                                                    echo $i['nickname'];
+                                                }
+                                             ?></td>
                                             <td><?php echo $i['status']; ?></td>
                                             <td><?php 
 if($i['ts'] != '0000-00-00 00:00:00') {
