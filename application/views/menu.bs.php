@@ -413,6 +413,12 @@ if($profile['admin'] == 1 || $profile['admin'] == 2) {
     <b class="arrow"></b>
     <ul class="submenu nav-show" style="display: block;">
 
+        <li class="hsub" id="all_reports">
+        <a href="<?php echo base_url('bills/all_reports'); ?>" >所有报销</a>
+
+        <b class="arrow"></b>
+        </li>
+
         <li class="hsub" id="index">
         <a href="<?php echo base_url('bills/index'); ?>" >待结算</a>
 
