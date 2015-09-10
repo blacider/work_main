@@ -102,7 +102,7 @@ class Bills extends REIM_Controller {
         if($_tags && array_key_exists('tags', $_tags['data'])){
             $_tags = $_tags['data']['tags'];
         }
-        log_message("debug", json_encode($reports));
+        log_message("debug", 'reports:' . json_encode($reports));
         $data = array();
         $_data = array();
         if($reports['status']) {
@@ -115,6 +115,10 @@ class Bills extends REIM_Controller {
                 if($status == 4) {
                     if(in_array($item['status'], array(4, 7, 8)))
                         array_push($_data, $item);
+                }
+                if($status == 0)
+                {
+                    array_push($_data,$item);
                 }
             }
         }
@@ -137,7 +141,7 @@ class Bills extends REIM_Controller {
                 )
             );
         }
-        else
+        else if($status == 4)
         {
             $this->session->set_userdata('item_update_in','3');
             $this->bsload('bills/index',
@@ -157,6 +161,26 @@ class Bills extends REIM_Controller {
                 )
             );
         }
+        else if($status == 0)
+        {
+            $this->session->set_userdata('item_update_in','3');
+            $this->bsload('bills/index',
+                array(
+                    'title' => '所有报销'
+                    ,'error' => $error
+                    , 'breadcrumbs' => array(
+                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                        ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
+                        ,array('url' => '','name' => '所有报销','class' => '')
+                    )
+                    ,'reports' => $data
+                    ,'status' => $status
+                    ,'category' => $_tags
+                    ,'error' => $error
+                    ,'usergroups' => $_usergroups
+                )
+            );
+        }
     }
 
     public function index(){
@@ -165,6 +189,10 @@ class Bills extends REIM_Controller {
 
     public function exports(){
         return $this->_logic(4);
+    }
+    public function all_reports()
+    {
+        return $this->_logic(0);
     }
 
     public function listdata($type = 2){
@@ -190,7 +218,8 @@ class Bills extends REIM_Controller {
                     log_message("debug", "Continue...");
                     continue;
                 }
-            } else {
+            }else if($type != 0) 
+             {
                 log_message("debug", "xContinue...");
                 if($d['status'] != $type) continue;
             }
@@ -220,6 +249,7 @@ class Bills extends REIM_Controller {
                 . '</div>';
             array_push($_data, $d);
         }
+        log_message('debug','_data:' . json_encode($_data));
         die(json_encode($_data));
     }
 
