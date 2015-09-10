@@ -801,7 +801,7 @@ class Reports extends REIM_Controller {
             case 2: {$prove_ahead = '<font color="green">预算</font>';};break;
             }
          */
-            $d['amount'] = '￥' . $d['amount'];
+            //$d['amount'] = '￥' . $d['amount'];
             //            $d['prove_ahead'] = $prove_ahead;
             switch($d['status']) {
             case 0: {

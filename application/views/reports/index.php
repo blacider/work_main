@@ -99,6 +99,7 @@
 
     $(document).ready(function(){
         if(_error) show_notify(_error);
+        //setTimeout(function(){$("#globalSearch").click();}, 1000);
     });
 
   </script>
