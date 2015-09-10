@@ -166,12 +166,12 @@ class Bills extends REIM_Controller {
             $this->session->set_userdata('item_update_in','3');
             $this->bsload('bills/index',
                 array(
-                    'title' => '所有报销'
+                    'title' => '待结算和已结束'
                     ,'error' => $error
                     , 'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
-                        ,array('url' => '','name' => '所有报销','class' => '')
+                        ,array('url' => '','name' => '待结算和已结束','class' => '')
                     )
                     ,'reports' => $data
                     ,'status' => $status
