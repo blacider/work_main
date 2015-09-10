@@ -520,6 +520,7 @@ class Reports extends REIM_Controller {
         if($report['createdt'] > 0) {
             $_ts = date('Y-m-d H:i:s', $report['createdt']);
         }
+        /*
         array_push($flow, array(
             'nickname' => $report['nickname']
             ,'ts' =>  $_ts           
@@ -527,6 +528,7 @@ class Reports extends REIM_Controller {
             ,'step' => 0
             ,'wingman' => '' 
         ));
+        */
 
 
         //获取全体员工
