@@ -414,7 +414,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 2) {
     <ul class="submenu nav-show" style="display: block;">
 
         <li class="hsub" id="all_reports">
-        <a href="<?php echo base_url('bills/all_reports'); ?>" >所有报销</a>
+        <a href="<?php echo base_url('bills/all_reports'); ?>" >待结算和已结束</a>
 
         <b class="arrow"></b>
         </li>
