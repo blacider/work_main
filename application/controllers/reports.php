@@ -6,6 +6,7 @@ class Reports extends REIM_Controller {
         $this->load->model('category_model', 'category');
         $this->load->model('user_model', 'users');
         $this->load->model('report_model', 'reports');
+        $this->load->model('group_model','groups');
     }
 
     public function add_comment()
@@ -524,9 +525,29 @@ class Reports extends REIM_Controller {
             ,'ts' =>  $_ts           
             ,'status' => '提交'
             ,'step' => 0
+            ,'wingman' => '' 
         ));
 
 
+        //获取全体员工
+        $group = $this->groups->get_my_list();
+        $ginfo = array();
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('ginfo', $group['data'])){
+                $ginfo = $group['data']['ginfo'];
+            }
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
+        $members_dic = array();
+        foreach($gmember as $mem)
+        {
+            $members_dic[$mem['id']] = $mem['nickname'];
+        }
+        log_message("debug","all_members:" . json_encode($members_dic));
         // 先找到提交的信息
         // 昵称，审核意见，时间，step
         log_message("debug", 'flow data:' . json_encode($_flow));
@@ -555,11 +576,22 @@ class Reports extends REIM_Controller {
                 if($s['udt'] != '0') {
                     $_ts = date('Y-m-d H:i:s', $s['udt']);
                 }
+
+                $s['wingman_name'] = '';
+                log_message("debug","wingman:" . $s['wingman']);
+                if(array_key_exists('wingman',$s))
+                {
+                    if(array_key_exists($s['wingman'],$members_dic))
+                    {
+                       $s['wingman_name'] = $members_dic[$s['wingman']]; 
+                    }
+                }
                 array_push($flow, array(
                     'status' => $audit
                     ,'nickname' => $s['nickname']
                     ,'ts' => $_ts
                     ,'step' => $s['step']
+                    ,'wingman' => $s['wingman_name'] 
                 ));
             }
         }
