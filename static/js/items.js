@@ -46,7 +46,7 @@ jQuery(grid_selector).jqGrid({
     
     {name:'dt', index:'dt', width:120,editable: true,editoptions:{size:"20",maxlength:"30"}},
     {name:'type', index:'type', width:50,editable: true,editoptions:{size:"20",maxlength:"30"}},
-    {name:'amount', index:'amount', width:50,sorttype: myCustomSort,editable: true,editoptions:{size:"10",maxlength:"20"}},
+    {name:'amount', index:'amount', width:80,sorttype: myCustomSort,editable: true,editoptions:{size:"10",maxlength:"20"},formatter:'currency', formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'}},
     {name:'cate_str', index:'cate_str', width:100,editable: false,editoptions:{size:"20",maxlength:"30"}},
     {name:'merchants', index:'merchants', width:100,editable: false,editoptions:{size:"20",maxlength:"30"}},
     {name:'note', index:'note', width:120,editable: false,editoptions:{size:"20",maxlength:"30"}},

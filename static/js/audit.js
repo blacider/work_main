@@ -103,7 +103,7 @@ jQuery(grid_selector).jqGrid({
         {name:'title', index:'title', width:90,editable: false,editoptions:{size:"20",maxlength:"30"}},
 //        {name:'prove_ahead', index:'prove_ahead', width:30,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
         {name:'date_str', index:'date_str', width:70,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
-        {name:'amount', index:'amount',sorttype: myCustomSort, width:50,editable: true,editoptions:{size:"20",maxlength:"30"},search:false},
+        {name:'amount', index:'amount',sorttype: myCustomSort, width:50, formatter:'currency', formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'}, editable: true,editoptions:{size:"20",maxlength:"30"},search:false},
         {name:'item_count', index:'item_count', width:50,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
         {name:'author', index:'author', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
         {name:'status_str',index:'status_str', width:70, editable: false,editoptions: {size:"20", maxlength : "30",search:false}/*,unformat: aceSwitch*/},
