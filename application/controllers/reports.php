@@ -111,7 +111,8 @@ class Reports extends REIM_Controller {
                         }
                     }
                 }
-                $s['amount'] = '￥' . $s['amount'];
+//                $s['amount'] = '￥' . $s['amount'];
+            $s['amount'] = sprintf("%.2f",$s['amount']);
                 $s['status_str'] = '';
                 $trash= $s['istatus'] === 0 ? 'gray' : 'red';
                 $edit = $s['istatus'] === 0 ? 'gray' : 'green';
@@ -847,7 +848,8 @@ class Reports extends REIM_Controller {
             case 2: {$prove_ahead = '<font color="green">预算</font>';};break;
             }
          */
-            //$d['amount'] = '￥' . $d['amount'];
+            //$d['amount'] = '￥' . (sprintf("%.2f",$d['amount']));
+            $d['amount'] = sprintf("%.2f",$d['amount']);
             //            $d['prove_ahead'] = $prove_ahead;
             switch($d['status']) {
             case 0: {
