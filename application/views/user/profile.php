@@ -73,12 +73,21 @@ if($self != 1) {
                         </div>
                     </div>
 
+                     <div class="form-group">
+                        <label class="col-sm-1 control-label no-padding-right">用户ID</label>
+                        <div class="col-xs-6 col-sm-6">
+                            <input type="text" class="col-xs-6 col-sm-6 form-control" name="client_id" value="<?php echo $user['client_id']; ?>"  />
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">昵称</label>
                         <div class="col-xs-6 col-sm-6">
-                            <input type="text" class="col-xs-6 col-sm-6 form-control" name="nickname" value="<?php echo $user['nickname']; ?>" <?php echo $disabled; ?> />
+                            <input type="text" class="col-xs-6 col-sm-6 form-control" name="nickname" value="<?php echo $user['nickname']; ?>"  />
                         </div>
                     </div>
+
+
 
 
 
