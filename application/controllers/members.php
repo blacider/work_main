@@ -981,16 +981,22 @@ class Members extends REIM_Controller {
             }
             if(array_key_exists('rank_id',$m))
             {
-                if($m['rank_id'] != 0)
+                if($m['rank_id'] >  0)
                 {
-                    $obj['职级'] = $ranks_dic[$m['rank_id']];
+                    if(array_key_exists($m['rank_id'],$ranks_dic))
+                    {
+                        $obj['职级'] = $ranks_dic[$m['rank_id']];
+                    }
                 }
             }
             if(array_key_exists('level_id',$m))
             {
-                if($m['level_id'] != 0)
+                if($m['level_id'] > 0)
                 {
-                    $obj['职位'] = $levels_dic[$m['level_id']];
+                    if(array_key_exists($m['level_id'],$levels_dic))
+                    {
+                        $obj['职位'] = $levels_dic[$m['level_id']];
+                    }
                 }
             }
             array_push($data, $obj);
