@@ -1462,8 +1462,9 @@ class Members extends REIM_Controller {
 
     public function batch_load(){
         $member = $this->input->post('member');
+        $quiet = $this->input->post('quiet');
         log_message("debug", "Member:" . json_encode($member));
-        $info = $this->groups->reim_imports(array('members' => json_encode($member)));
+        $info = $this->groups->reim_imports(array('quiet' => $quiet,'members' => json_encode($member)));
         /*
         $data = array();
         if($info['status'] > 0)
