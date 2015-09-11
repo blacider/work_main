@@ -65,12 +65,18 @@
 
                         <div class="clearfix form-actions">
                             <div class="col-md-offset-3 col-md-9">
-                                <button class="btn btn-info" type="button" id="save">
+                                <button class="btn btn-info" type="button" id="save_with_mail">
                                     <i class="ace-icon fa fa-check bigger-110"></i>
-                                    保存
+                                    导入并发送邮件
+                                </button>
+                                 <button class="btn btn-info" type="button" id="save_without_mail">
+                                    <i class="ace-icon fa fa-check bigger-110"></i>
+                                    导入不发送邮件
                                 </button>
 
                             </div>
+
+                        
 
                            <!--  <div class="col-md-offset-3 col-md-9">
                                 <button class="btn btn-info" type="button" id="set_manager">
@@ -124,6 +130,7 @@
   //  console.log(no_ranks);
    // console.log(no_levels);
     //console.log(no_groups);
+
     function make_invite(){
         $('.data-maintainer').each(function(idx, val){
             var _status = $(this).data('exist');
@@ -157,8 +164,9 @@
         });
  
     }
-function travel()
+function travel(is_mail)
 {
+    is_quiet_mail = is_mail;
     $('#save').prop("disabled",true);
     var sum = 0;
     if((no_ranks.length == 0)&&(no_levels.length == 0)&&(no_groups.length==0) )
@@ -295,7 +303,7 @@ function insertMem()
             url : __BASE  + "members/batch_load"
                 ,method: 'POST'
                 ,dataType: 'json'
-                ,data : {'member' : load_mem}
+                ,data : {'member' : load_mem,'quiet':is_quiet_mail}
                 ,success : function(data){
                     /*var back_info = data['data'];
                             $('.judge').each(function(){
@@ -420,7 +428,13 @@ $(document).ready(function(){
             $(this).addClass('success');
         }
     });
-    $('#save').click(travel);
-    $('#resave').click(make_invite);
+    var is_quiet_mail = 0;
+    $('#save_with_mail').click(function(){
+        travel(0);
+    });
+    $('#save_without_mail').click(function(){
+        travel(1);
+    });
+    //$('#resave').click(make_invite);
 });
 </script>
