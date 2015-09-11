@@ -979,26 +979,23 @@ class Members extends REIM_Controller {
             {
                 $obj['上级姓名'] = $m['manager'];
             }
-            if(array_key_exists('rank_id',$m))
+            if(array_key_exists('rank_id',$m) && $m['rank_id'] > 0 && array_key_exists($m['rank_id'],$ranks_dic))
             {
-                if($m['rank_id'] >  0)
-                {
-                    if(array_key_exists($m['rank_id'],$ranks_dic))
-                    {
                         $obj['职级'] = $ranks_dic[$m['rank_id']];
-                    }
-                }
             }
-            if(array_key_exists('level_id',$m))
-            {
-                if($m['level_id'] > 0)
+                else
                 {
-                    if(array_key_exists($m['level_id'],$levels_dic))
-                    {
-                        $obj['职位'] = $levels_dic[$m['level_id']];
-                    }
+                    $obj['职级'] = '';
                 }
+            
+            if(array_key_exists('level_id',$m) && $m['level_id'] > 0 && array_key_exists($m['level_id'],$levels_dic))
+            {
+                        $obj['职位'] = $levels_dic[$m['level_id']];
             }
+                else
+                {
+                    $obj['职位'] = '';
+                }
             array_push($data, $obj);
         }
         $this->render_to_download('人员', $data, '员工信息.xls');
