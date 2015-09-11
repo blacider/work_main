@@ -574,6 +574,18 @@ class Reports extends REIM_Controller {
                     $audit = '撤回';
                     }
                 }
+                if($_s == 4 || $_s == 5)  {
+                    $audit = '已完成';
+                }
+                if($_s == 6)  {
+                    $audit = '待支付';
+                }
+                if($_s == 7)  {
+                    $audit = '完成待结束';
+                }
+                if($_s == 8)  {
+                    $audit = '完成已结束';
+                }
                 $_ts = '';
                 if($s['udt'] != '0') {
                     $_ts = date('Y-m-d H:i:s', $s['udt']);
