@@ -907,8 +907,32 @@ class Members extends REIM_Controller {
     public function exports(){
         $this->need_group_it();
         $group = $this->groups->get_my_list();
+        $ranks = array();
+        $levels = array();
+        $ranks_dic = array();
+        $levels_dic = array();
+        $_ranks = $this->reim_show->rank_level(1);
+        $_levels = $this->reim_show->rank_level(0);
         $ginfo = array();
         $gmember = array();
+        if($_ranks['status'] > 0)
+        {
+            $ranks = $_ranks['data'];
+        }
+        if($_levels['status'] > 0)
+        {
+            $levels = $_levels['data'];
+        }
+        
+        foreach($ranks as $r)
+        {
+            $ranks_dic[$r['id']] = $r['name'];
+        }
+        foreach($levels as $l)
+        {
+            $levels_dic[$l['id']] = $l['name'];
+        }
+
         if($group) {
             if(array_key_exists('ginfo', $group['data'])){
                 $ginfo = $group['data']['ginfo'];
@@ -923,9 +947,13 @@ class Members extends REIM_Controller {
         log_message("debug","######".json_encode($gmember));
         foreach($gmember as $m){
             $obj = array();
+            if(array_key_exists('client_id',$m))
+            {
+                $obj['ID'] = $m['nickname'];
+            }
             if(array_key_exists('nickname',$m))
             {
-                $obj['昵称'] = $m['nickname'];
+                $obj['姓名'] = $m['nickname'];
             }
             if(array_key_exists('email',$m))
             {
@@ -935,9 +963,35 @@ class Members extends REIM_Controller {
             {
                 $obj['手机号'] = $m['phone'];
             }
-            if(array_key_exists('credit_card',$m))
+            if(array_key_exists('cardno',$m))
             {
-                $obj['银行卡号'] = $m['credit_card'];
+                $obj['银行卡号'] = $m['cardno'];
+            }
+            if(array_key_exists('bankname',$m))
+            {
+                $obj['开户行'] = $m['bankname'];
+            }
+            if(array_key_exists('d',$m))
+            {
+                $obj['部门'] = $m['d'];
+            }
+            if(array_key_exists('manager',$m))
+            {
+                $obj['上级姓名'] = $m['manager'];
+            }
+            if(array_key_exists('rank_id',$m))
+            {
+                if($m['rank_id'] != 0)
+                {
+                    $obj['职级'] = $ranks_dic[$m['rank_id']];
+                }
+            }
+            if(array_key_exists('level_id',$m))
+            {
+                if($m['level_id'] != 0)
+                {
+                    $obj['职位'] = $levels_dic[$m['level_id']];
+                }
             }
             array_push($data, $obj);
         }
