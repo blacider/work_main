@@ -81,7 +81,7 @@ if($self != 1) {
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-1 control-label no-padding-right">昵称</label>
+                        <label class="col-sm-1 control-label no-padding-right">姓名</label>
                         <div class="col-xs-6 col-sm-6">
                             <input type="text" class="col-xs-6 col-sm-6 form-control" name="nickname" value="<?php echo $user['nickname']; ?>"  />
                         </div>
