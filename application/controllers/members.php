@@ -977,7 +977,11 @@ class Members extends REIM_Controller {
             }
             if(array_key_exists('manager',$m))
             {
-                $obj['上级姓名'] = $m['manager'];
+                $obj['上级姓名'] = '';
+                if('没有上级' != $m['manager'])
+                {
+                    $obj['上级姓名'] = $m['manager'];
+                }
             }
             if(array_key_exists('rank_id',$m) && $m['rank_id'] > 0 && array_key_exists($m['rank_id'],$ranks_dic))
             {
