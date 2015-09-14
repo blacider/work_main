@@ -124,7 +124,7 @@ data-id="<?php echo $i['id']; ?>"
 ></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['cate_str'];?></td>
-                                            <td><?php echo $i['amount']; ?></td>
+                                            <td><?php echo '￥'.$i['amount']; ?></td>
                                             <td><?php 
         
                                                 $buf = '';
@@ -208,7 +208,9 @@ function toDecimal(x) {
 }  
 //制保留2位小数，如：2，会在2后面补上00.即2.00  
 function toDecimal2(x) {  
+    
     var f = parseFloat(x);  
+    
     if (isNaN(f)) {  
         return false;  
     }  
@@ -244,7 +246,8 @@ function do_post(force) {
 		if($(this).is(':checked')){
             _ids.push($(this).data('id'));
 			var amount = $(this).data('amount');
-			amount = parseInt(amount.substr(1));
+           
+			amount = parseInt(amount);
 			sum+=amount;
 		};
 	});
@@ -401,7 +404,7 @@ function update_tamount(){
     $('.amount').each(function(){
         if($(this).is(':checked')){
             var amount = $(this).data('amount');
-            amount = Number(amount.substr(1));
+            amount = Number(amount);
             sum=Number(sum) + Number(amount);
         };
     });
