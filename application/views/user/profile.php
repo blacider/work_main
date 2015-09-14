@@ -76,14 +76,40 @@ if($self != 1) {
                      <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">用户ID</label>
                         <div class="col-xs-6 col-sm-6">
+                        <?php
+                            if($profile['admin'] == 1 || $profile['admin'] == 3)
+                            {
+                        ?>
                             <input type="text" class="col-xs-6 col-sm-6 form-control" name="client_id" value="<?php echo $user['client_id']; ?>"  />
+                        <?php
+                            }
+                            else
+                            {
+                        ?>
+                             <input type="text" class="col-xs-6 col-sm-6 form-control" name="client_id" value="<?php echo $user['client_id']; ?>"  disabled/>
+                        <?php
+                            }
+                        ?>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">姓名</label>
                         <div class="col-xs-6 col-sm-6">
+                        <?php
+                            if($profile['admin'] == 1 || $profile['admin'] == 3)
+                            {
+                        ?>
                             <input type="text" class="col-xs-6 col-sm-6 form-control" name="nickname" value="<?php echo $user['nickname']; ?>"  />
+                         <?php
+                            }
+                            else
+                            {
+                        ?>
+                            <input type="text" class="col-xs-6 col-sm-6 form-control" name="nickname" value="<?php echo $user['nickname']; ?>"  disabled/>
+                        <?php
+                            }
+                        ?>
                         </div>
                     </div>
 
