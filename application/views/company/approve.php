@@ -253,11 +253,11 @@
 
 
                             <div class="form-group">
-                                <div class="col-xm-2 col-sm-2">
+                                <div class="col-xm-2 col-sm-2 col-sm-offset-2 col-xm-offset-2">
                                     <input type="button" id='renew' value="保存">
                                 </div>
                                 <div class="col-xm-2 col-sm-2">
-                                    <div><a href="" style="cursor:pointer;color:grey;position: relative;left:150px;top:64px;">取消</a></div>
+                                    <div><a href="" style="cursor:pointer;color:grey;position: relative;top:16px;">取消</a></div>
                                 </div>
                                 
                             </div>
@@ -289,10 +289,10 @@
         color:white;
         border-radius: 25px;
         font-size: 23px;
-        width: 160px;
+        width: 100%;
+        max-width: 200px;
         height: 50px;
         border:0;
-        margin: 50px auto auto 130px;
     }
 </style>
 <script language="javascript">
