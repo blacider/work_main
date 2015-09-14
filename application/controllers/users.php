@@ -225,6 +225,7 @@ class Users extends REIM_Controller {
 
 
     public function update_profile($isOther){
+        $profile = $this->session->userdata('profile');
         $client_id = $this->input->post('client_id');
         $nickname = $this->input->post('nickname');
         $email = $this->input->post('email');
@@ -248,8 +249,16 @@ class Users extends REIM_Controller {
         if(!($uid || $nickname || $email || $phone || $credit_card)){
             redirect(base_url('users/profile'));
         }
-        $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin,$manager_id,$max_report,$rank,$level,$clent_id), true);
+        $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin,$manager_id,$max_report,$rank,$level,$client_id), true);
 	log_message('debug','info:' . json_encode($info));
+    log_message('debug','profile' . json_encode($profile));
+        if(array_key_exists('admin',$profile))
+        {
+            if(!($profile['admin'] == 1 || $profile['admin'] == 3))
+            {
+                $client_id = '';
+            }
+        }
         if($info['status'] > 0){
             $this->session->set_userdata('login_error', '信息修改成功');
         } else {
