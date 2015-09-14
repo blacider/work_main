@@ -8,8 +8,7 @@ class Reports extends REIM_Controller {
         $this->load->model('report_model', 'reports');
     }
 
-    public function add_comment()
-    {
+    public function add_comment() {
         $rid=$this->input->post("rid");
         $comment = $this->input->post("comment");
         $buf = $this->reports->add_comment($rid,$comment);
@@ -81,8 +80,8 @@ class Reports extends REIM_Controller {
                 $s['createdt'] = strftime("%Y-%m-%d %H:%M", intval($s['createdt']));
                 $_type = '报销';
                 switch($s['type']){
-                case 2: {$_type = '预借';};break;
-                case 1: {$_type = '预算';};break;
+                case 1: {$_type = '预借';};break;
+                case 2: {$_type = '预算';};break;
                 }
                 $s['type'] = $_type;
 
@@ -110,7 +109,8 @@ class Reports extends REIM_Controller {
                         }
                     }
                 }
-                $s['amount'] = '￥' . $s['amount'];
+//                $s['amount'] = '￥' . $s['amount'];
+            $s['amount'] = sprintf("%.2f",$s['amount']);
                 $s['status_str'] = '';
                 $trash= $s['istatus'] === 0 ? 'gray' : 'red';
                 $edit = $s['istatus'] === 0 ? 'gray' : 'green';
@@ -149,7 +149,8 @@ class Reports extends REIM_Controller {
         }
         return $_items;
     }
-    public function newreport(){
+
+    public function newreport() {
         $_members = array();
         $members = $this->users->reim_get_user();
         if($members['status'] > 0){
@@ -836,10 +837,8 @@ class Reports extends REIM_Controller {
         die(json_encode($data));
     }
 
-    public function exports(){
-        $ids = $this->input->post('ids');
-        //$_ids = explode(",", $ids);
-        if("" == $ids) die("");
+
+    private function exports_by_rids($ids) {
         $data = $this->reports->get_reports_by_ids($ids);
         $_excel = array();
         $_members = array();
@@ -861,7 +860,7 @@ class Reports extends REIM_Controller {
                 //log_message('debug', json_encode($r));
                 $_items = $r['items'];
                 foreach($_items as $i){
-                    log_message('debug', "Itemx :" .json_encode($i));
+                    $i['amount'] = sprintf("%.2f", $i['amount']);
                     $_rate = 1.0;
                     if(array_key_exists('currency', $i) && (strtolower($i['currency']) != "" && strtolower($i['currency']) != 'cny')) {
                         $_rate = $i['rate'] / 100;
@@ -938,6 +937,8 @@ class Reports extends REIM_Controller {
             }
             $_detail_items = array();
             foreach($_t_items as $i){
+                $i['amount'] = sprintf("%.2f", $i['amount']);
+                log_message('debug', "alvayang Itemx :" .json_encode($i));
                 $_relates = explode(',', $i['relates']);
                 $__relates = array();
                 foreach($_relates as $r){
@@ -977,6 +978,12 @@ class Reports extends REIM_Controller {
             self::render_to_download('报告汇总', $members, 'Finace_' . date('Y-m-d', time()) . ".xls", '报告明细', $_excel, '消费明细', $_detail_items);
 
         }
+    }
+
+    public function exports(){
+        $ids = $this->input->post('ids');
+        if("" == $ids) die("");
+        $this->exports_by_rids($ids);
     }
 
 
@@ -1086,6 +1093,8 @@ class Reports extends REIM_Controller {
                 ,'现金流量借方金额' => ''
                 ,'现金流量贷方金额' => ''
                 ,'金额' => ''
+		,'员工姓名' => ''
+		,'员工号' => ''
             );
             $idx = 0;
             $_total_amount = 0;
@@ -1096,9 +1105,10 @@ class Reports extends REIM_Controller {
                     if($item['currency'] != '' && strtolower($item['currency']) != 'cny') {
                         $rate = $item['rate'] / 100;
                     }
-                    $_amount = $item['amount'];
+                    $_amount = sprintf("%.2f", $item['amount']);
                     if($item['prove_ahead'] == 2){
-                        $_amount = $item['amount'] - $item['pa_amount'];
+                        $_amount = sprintf("%.2f", $item['amount'] - $item['pa_amount']);
+
                     }
                     $_total_amount += $_amount * $rate;
                 }
@@ -1135,13 +1145,15 @@ class Reports extends REIM_Controller {
                     if(trim($i['currency']) != '' && strtolower($i['currency']) != 'cny') {
                         $rate = $i['rate'] / 100;
                     }
-                    $_amount = $i['amount'];
+                    $_amount = sprintf("%.2f", $i['amount']);
                     if($i['prove_ahead'] == 2){
-                        $_amount = $i['amount'] - $i['pa_amount'];
+                        $_amount = sprintf("%.2f", $i['amount'] - $i['pa_amount']);
                     }
-                    $o['借方金额'] = $_amount * $rate; 
+                    $o['借方金额'] = sprintf("%.2f",$_amount * $rate); 
                     $o['贷方金额'] = $_total_amount;
                     $o['部门编码'] = implode(',', $_gids);
+		    $o['员工姓名'] = $r['nickname'];
+		    $o['员工号'] = $r['client_id'];
                     /*
                      */
                     array_push($_excel, $o);
