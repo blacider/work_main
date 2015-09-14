@@ -239,7 +239,6 @@ class Bills extends REIM_Controller {
             }
             array_push($d['ugs'],'0');
             $d['ugs'] = implode(',',$d['ugs']);
-            //$d['amount'] = '￥' . ($d['amount'] );
             $d['amount'] =  sprintf("%.2f",$d['amount'] );
             $d['status_str'] = $d['status'] == 2 ? '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>' : '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
             $edit = $d['status'] != 2 ? 'gray' : 'green';

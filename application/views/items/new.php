@@ -143,13 +143,13 @@
 if($__config && $__config['disable_borrow']=='0')
 {
 ?>
-<option value="1">预借</option>
+<option value="1">预算</option>
 <?php
 }
 if($__config && $__config['disable_budget'] == '0')
 {
 ?>
-<option value="2">预算</option>
+<option value="2">预借</option>
 <?php
 }
 ?>

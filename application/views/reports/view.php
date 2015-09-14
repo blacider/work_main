@@ -81,15 +81,19 @@ foreach($report['items'] as $i) {
                                                         if(date('H', $sdt) < 12) $_day_delta += 1;
                                                         if(date('H', $edt) > 12) $_day_delta += 1;
                                                         // 都切换到12点去
-                                                        $_date_str = strftime('%Y-%m-%d %H:%M', $i['dt']) . '至' . strftime('%Y-%m-%d %H:%M', $edt) . "(共" . $_day_delta . "天)";
-                                                        if($_day_delta == 0) $_day_delta = 1;
-
-                                                        $_extra_amount = '（' . sprintf("%.2f", $i['amount'] / $_day_delta) . "元/天）";
+                                                        $_date_str = strftime('%Y-%m-%d %H:%M', $i['dt']) . '至' . strftime('%Y-%m-%d %H:%M', $edt);
+							
+                                                        if ($_day_delta > 0) {
+                                                            $_date_str = $_date_str . "(共" . $_day_delta . "天)";							
+                                                            $_extra_amount = '（' . sprintf("%.2f", $i['amount'] / $_day_delta) . "元/天）";
+                                                        }
                                                     }
                                                     if($e['type'] == 5) {
                                                         // 多人的
                                                         $members = $e['value'];
-                                                        $_extra_amount = '（' . sprintf("%.2f", $i['amount'] / $members) . "元/人 共" . $members . "人）";
+							if ($members > 0) {
+                                                            $_extra_amount = '（' . sprintf("%.2f", $i['amount'] / $members) . "元/人 共" . $members . "人）";
+							}
                                                     }
                                                 }
                                             }
@@ -101,8 +105,8 @@ foreach($report['items'] as $i) {
                                                 $buf = '';
                                                 switch($i['prove_ahead']) {
                                                 case 0 : $buf = '报销';break;
-                                                case 1 : $buf = '预借';break;
-                                                case 2 : $buf = '预算';break;
+                                                case 1 : $buf = '预算';break;
+                                                case 2 : $buf = '预借';break;
                                                 } 
                                                 echo $buf;
 
