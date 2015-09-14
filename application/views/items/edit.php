@@ -182,7 +182,7 @@
                                 <div class="col-xs-6 col-sm-6">
     <input type="hidden" value="<?php echo $item['prove_ahead']; ?>">
 <?php 
-                                                $_prove_dict = array('0' => '报销', '1' => '预借', '2' => '预算');
+                                                $_prove_dict = array('0' => '报销', '2' => '预借', '1' => '预算');
 ?>
     <input type="hidden" value="<?php echo $item['prove_ahead']; ?>">
                                     <select class="form-control" name="type" data-placeholder="请选择类型">

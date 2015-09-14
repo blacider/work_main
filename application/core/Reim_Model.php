@@ -1,6 +1,6 @@
 <?php
 
-define("API_SERVER", "https://api.cloudbaoxiao.com/stage/");
+define("API_SERVER", "https://api.cloudbaoxiao.com/online/");
 define("PUBKEY", "1NDgzZGY1OWViOWRmNjI5ZT");
 
 class Reim_Model extends CI_Model {
@@ -61,7 +61,7 @@ class Reim_Model extends CI_Model {
         $bname = 'Unknown';
         $platform = 'Unknown';
         $version= "";
-        $ub = 'Unknown';
+        $ub = '';
 
         //First get the platform?
         if (preg_match('/linux/i', $u_agent)) {
@@ -112,6 +112,7 @@ class Reim_Model extends CI_Model {
                  ')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
         if (!preg_match_all($pattern, $u_agent, $matches)) {
             // we have no matching number just continue
+            array();
         }
 
         // see how many we have

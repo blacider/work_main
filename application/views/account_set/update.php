@@ -44,7 +44,6 @@ if($last_error) {
                             var _subSob = [];
                             var sob_keys = <?php echo json_encode($sob_keys);?>;
                             var all_categories = <?php echo json_encode($all_categories);?>;
-                            console.log(all_categories);
 
                             function showSob(sobId) {
                                 if (sobId != -1) {
@@ -118,14 +117,14 @@ if($last_error) {
                         </style>
                         <?php foreach($sob_keys as $item) {?>
                         <div class="form-group">
-                            <div class="col-xs-2 col-sm-2 col-sm-offset-2">
+                            <div class="col-xs-6 col-sm-6 col-sm-offset-2">
 
-                                <div class="dropdown">
+                                <div class="dropdown col-xs-9 col-sm-9 ">
                                     <div class="dropdown-toggle drop-cata" data-toggle="dropdown">
                                         <?php echo $all_categories[$item]['name']; ?>
-                                        <span class="caret"></span>
+                                        <span class="caret" style="float: right; top: 30px; margin-top: 20px; margin-right: 20px;"></span>
                                     </div>
-                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="width:90%;margin-left:15px;">
                                         <li role="presentation">
                                             <a href="#" onclick="showSob(<?php echo $all_categories[$item]['id'] ?>)" role="menuitem" tabindex="-1">修改</a>
                                         </li>
