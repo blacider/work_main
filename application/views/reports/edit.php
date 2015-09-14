@@ -99,7 +99,7 @@ foreach($report['items'] as $i){
                                             <td><input checked='true' name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $i['amount'] ?>" data-id="<?php echo $i['id']; ?>" ></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['category_name']; ?></td>
-                                            <td><?php echo $i['amount']; ?></td>
+                                            <td><?php echo '￥'.$i['amount']; ?></td>
                                             <td><?php 
                                                 $buf = '';
 switch(intval($i['prove_ahead'])) {
@@ -128,7 +128,7 @@ foreach($items as $i){
                                             <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $i['amount'] ?>"  data-id="<?php echo $i['id']; ?>" ></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['category'];  echo $i['status'];?></td>
-                                            <td><?php echo $i['amount']; ?></td>
+                                            <td><?php echo '￥'.$i['amount']; ?></td>
                                             <td><?php echo $i['prove_ahead']; ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td>
