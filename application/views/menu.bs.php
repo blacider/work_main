@@ -313,6 +313,17 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         </li>
 
 
+
+        <li class="hsub" id="batch_del">
+        <a href="<?php echo base_url('members/batch_del'); ?>" >
+            <i class="menu-icon fa fa-caret-right"></i>
+            批量删除员工
+        </a>
+
+        <b class="arrow"></b>
+
+        </li>
+
     
 
         <li class="hsub" id="export">
