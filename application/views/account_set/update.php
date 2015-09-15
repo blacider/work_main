@@ -292,36 +292,7 @@ if($last_error) {
                             </div>
                             <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">员工</label>
                         </div>
-                        <!--
-                            <div class="form-group">trol-label no-padding-rigtht">部门选择</label>
-                    <div class="col-xs-4 col-sm-4">
-                        <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="groups[]"  data-placeholder /option>
-                            <?php
-                                      $exit = array();
-                                    foreach($sob_data as $ug){
-                                    ?>
-                            <option selected value="<?php echo $ug['group_id']; ?>
-                                ">
-                                <?php echo $ug['group_name']; ?></option>
-                            <?php
-                                        array_push($exit, $ug['group_id']);
-                                    }
-
-                                    foreach($ugroups as $ug){
-                                        if(!in_array($ug['id'], $exit))
-                                        {
-                                            ?>
-                            <option select value="<?php echo $ug['id']; ?>
-                                ">
-                                <?php echo $ug['name']; ?></option>
-                            <?php
-                                        }
-                                    }
-
-                                    ?></select>
-                    </div>
-                </div>
-                -->
+                   
                 <input type="hidden" id="sob_id" name="sob_id" value="<?php echo $sob_id?>" />
                 <input type="hidden" id="renew" name="renew" value="0" />
                 <input type="reset" style="display:none;" id="reset">
@@ -562,12 +533,22 @@ var range = "<?php echo $range?>";
             success:function(data){
                 console.log(data);
                 console.log(data[_sob_id]);
-                _sob_data = data[_sob_id];
-                _sob_name = _sob_data['sob_name'];
-                _sob_groups = _sob_data['groups'];
-                console.log(_sob_name);
-                $('#sob_name').val(_sob_name);
-                console.log(_sob_groups);
+                if(_sob_id != 0)
+                {
+                    _sob_data = data[_sob_id];
+                    _sob_name = _sob_data['sob_name'];
+                    _sob_groups = _sob_data['groups'];
+                    console.log(_sob_name);
+                    $('#sob_name').val(_sob_name);
+                }
+                else
+                {
+                    $('#sob_name').val('默认帐套');
+                    $('#group option').eq(0).prop('selected',true).trigger('chosen:updated');
+                    $('#group').prop('disabled','disabled').trigger('chosen:updated');
+                    $('input[name=range]').prop('disabled','disabled').trigger('chosen:updated');
+                }
+                //console.log(_sob_groups);
             },
              error: function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(XMLHttpRequest.status);
