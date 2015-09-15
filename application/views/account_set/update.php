@@ -544,6 +544,7 @@ var range = "<?php echo $range?>";
                 else
                 {
                     $('#sob_name').val('默认帐套');
+                    $('#sob_name').prop('disabled','disabled').trigger('chosen:updated');
                     $('#group option').eq(0).prop('selected',true).trigger('chosen:updated');
                     $('#group').prop('disabled','disabled').trigger('chosen:updated');
                     $('input[name=range]').prop('disabled','disabled').trigger('chosen:updated');
