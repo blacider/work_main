@@ -884,6 +884,25 @@ class Members extends REIM_Controller {
         //die(json_encode(array('status' => true, 'id' => $id)));
     }
 
+    public function batch_del(){
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+
+        $this->need_group_it();
+        $group = $this->ug->get_my_list();
+        $this->bsload('members/batch_del',
+            array(
+                'title' => '批量删除员工',
+                'error' => $error,
+                'groups' => $group['data']
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
+                    ,array('url'  => '', 'name' => '批量删除员工', 'class' => '')
+                ),
+            )
+        );
+    }
     public function export(){
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
@@ -1005,6 +1024,52 @@ class Members extends REIM_Controller {
         $this->render_to_download('人员', $data, '员工信息.xls');
     }
 
+
+    public function batch_delete_members(){
+        if(!array_key_exists('del_members', $_FILES)){
+            redirect(base_url('members'));
+        }
+        $tmp_file = $_FILES['del_members']['tmp_name'];
+
+        try {
+            $reader = IOFactory::createReader('Excel5');
+            $PHPExcel = $reader->load($tmp_file);
+            $sheet = $PHPExcel->getSheet(0); // 读取第一個工作表
+            $highestRow = $sheet->getHighestRow(); // 取得总行数
+            $highestColumm = $sheet->getHighestColumn(); // 取得总列数
+        } catch(Exception $e) {
+            $this->session->set_userdata('last_error', '暂不支持当前的文件类型');
+            return redirect(base_url('members/batch_del'));
+        }
+
+        $data = Array();
+        /** 循环读取每个单元格的数据 */
+        for ($row = 4; $row <= $highestRow; $row++){//行数是以第1行开始
+            $obj = array();
+            $obj['id'] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue());
+            $obj['nickname'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue());
+            $obj['email'] = trim($sheet->getCellByColumnAndRow(2, $row)->getValue());
+            $obj['phone'] = trim($sheet->getCellByColumnAndRow(3, $row)->getValue());
+
+            if($obj['email'] != '' || $obj['phone'] != '')
+            array_push($data,$obj);
+        }
+
+        log_message('debug','data:' . json_encode($data));
+        log_message('debug','highestRow:' . $highestRow);
+        $this->bsload('members/batch_delete_members',
+            array(
+                'title' => '确认导入',
+                'members' => $data
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
+                    ,array('url'  => base_url('members/export'), 'name' => '导入/导出员工', 'class' => '')
+                    ,array('url'  => '', 'name' => '确认导入', 'class' => '')
+                ),
+            )
+        );
+    }
 
     public function imports(){
         if(!array_key_exists('members', $_FILES)){
@@ -1536,6 +1601,20 @@ class Members extends REIM_Controller {
         //        die(json_encode(array('msg'=>"it works")));
         //        */
         die(json_encode(array('data' => $info)));
+    }
+
+    public function excute_batch_del()
+    {
+        $member = $this->input->post('members');
+        $info = $this->groups->batch_del($member);
+
+        $data = array();
+        if($info && $info['status'] > 0)
+        {
+            $data = $info['data'];
+        }
+
+        die(json_encode($data));
     }
 }
 
