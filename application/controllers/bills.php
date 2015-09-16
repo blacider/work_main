@@ -37,13 +37,13 @@ class Bills extends REIM_Controller {
         $with_note = 1;
         $template = 'a4.yaml';
         $_rid = $this->input->post('chosenids');
-            $_rid = $this->input->post('chosenids');
-            $rid = array();
-            foreach($_rid as $r)
-            {
-                array_push($rid,$this->reim_cipher->encode($r));
-            }
-            $company = urlencode($group['group_name']);
+        $_rid = $this->input->post('chosenids');
+        $rid = array();
+        foreach($_rid as $r)
+        {
+            array_push($rid,$this->reim_cipher->encode($r));
+        }
+        $company = urlencode($group['group_name']);
         if($config) {
             $config = json_decode($config,True);
 
@@ -87,7 +87,7 @@ class Bills extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-        $reports = $this->reports->get_bills();
+        $reports = $this->reports->get_bills($status);
         $_tags = $this->tags->get_list();
         $usergroups = $this->ug->get_my_list();
         if($usergroups['status']>0)
@@ -116,7 +116,7 @@ class Bills extends REIM_Controller {
                     if(in_array($item['status'], array(4, 7, 8)))
                         array_push($_data, $item);
                 }
-                if($status == 0)
+                if($status == 1)
                 {
                     array_push($_data,$item);
                 }
@@ -161,17 +161,17 @@ class Bills extends REIM_Controller {
                 )
             );
         }
-        else if($status == 0)
+        else if($status == 1)
         {
             $this->session->set_userdata('item_update_in','3');
-            $this->bsload('bills/index',
+            $this->bsload('bills/index_all',
                 array(
-                    'title' => '待结算和已结束'
+                    'title' => '全部报告'
                     ,'error' => $error
                     , 'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
-                        ,array('url' => '','name' => '待结算和已结束','class' => '')
+                        ,array('url' => '','name' => '全部报告','class' => '')
                     )
                     ,'reports' => $data
                     ,'status' => $status
@@ -192,7 +192,7 @@ class Bills extends REIM_Controller {
     }
     public function all_reports()
     {
-        return $this->_logic(0);
+        return $this->_logic(1);
     }
 
     public function listdata($type = 2){
@@ -209,19 +209,15 @@ class Bills extends REIM_Controller {
         $_data = array();
         foreach($data as $d){
             log_message("debug", "Bill: [ $type] $type: " . json_encode($d));
-            //$_rate = 1.0;
-            //if($d['currency'] && strtolower($d['currency']) != 'cny') {
-            //    $_rate = $d['rate'] / 100;
-            //}
-            if($type == 4 ) {
-                if(!in_array(intval($d['status']), array(4, 7, 8))) {
-                    log_message("debug", "Continue...");
-                    continue;
+            if($type !=  1) {
+                if($type == 4 ) {
+                    if(!in_array(intval($d['status']), array(4, 7, 8))) {
+                        continue;
+                    }
+                } else if($type != 0) {
+                    log_message("debug", "xContinue...");
+                    if($d['status'] != $type) continue;
                 }
-            }else if($type != 0) 
-             {
-                log_message("debug", "xContinue...");
-                if($d['status'] != $type) continue;
             }
             log_message("debug", "xBill: $type: " . json_encode($d));
             log_message("debug", "nICe");
@@ -240,12 +236,28 @@ class Bills extends REIM_Controller {
             array_push($d['ugs'],'0');
             $d['ugs'] = implode(',',$d['ugs']);
             $d['amount'] =  sprintf("%.2f",$d['amount'] );
-            $d['status_str'] = $d['status'] == 2 ? '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>' : '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-            $edit = $d['status'] != 2 ? 'gray' : 'green';
-            $extra = $d['status'] == 2 ? '<span class="ui-icon ui-icon ace-icon fa fa-check tapprove green" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon ui-icon red ace-icon fa fa-times tdeny" data-id="' . $d['id'] . '"></span>' : '';
+            $d['status_str'] = '';
+            $edit = '';
+            $extra = '';
+            if($d['status'] == 2) {
+                $edit = 'green';
+                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>';
+                $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span><span class="ui-icon ui-icon ace-icon fa fa-check tapprove green" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon ui-icon red ace-icon fa fa-times tdeny" data-id="' . $d['id'] . '"></span>';
+            }
+            if($d['status'] == 4) {
+                $edit = 'gray';
+                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
+                $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span>' ;
+            }
+            if($d['status'] == 1) {
+                $edit = 'blue';
+                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
+                $extra = '' ;
+            }
+
 
             $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
-                . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span>'. $extra
+                . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . ''. $extra
                 . '</div>';
             array_push($_data, $d);
         }
@@ -273,8 +285,8 @@ class Bills extends REIM_Controller {
                 log_message("debug", "Bill: $type: " . json_encode($d));
                 if($d['status'] != $type) continue;
                 $d['date_str'] = date('Y-m-d H:i:s', $d['createdt']);
-            //    $d['amount'] = '￥' . $d['amount'];
-            $d['amount'] =  sprintf("%.2f",$d['amount'] );
+                //    $d['amount'] = '￥' . $d['amount'];
+                $d['amount'] =  sprintf("%.2f",$d['amount'] );
                 $d['status_str'] = $d['status'] == 2 ? '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>' : '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
                 $edit = $d['status'] != 2 ? 'gray' : 'green';
                 $extra = $d['status'] = '';
