@@ -1166,10 +1166,10 @@ class Members extends REIM_Controller {
             $obj['group_name'] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue());
             $obj['gids'] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue());
             $obj['manager'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
-            $obj['rank'] = trim($sheet->getCellByColumnAndRow(8, $row)->getValue());
-            $obj['level'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
-            $obj['manager_id'] = trim($sheet->getCellByColumnAndRow(10, $row)->getValue());
-            $obj['manager_email'] = trim($sheet->getCellByColumnAndRow(11, $row)->getValue());
+            $obj['rank'] = trim($sheet->getCellByColumnAndRow(10, $row)->getValue());
+            $obj['level'] = trim($sheet->getCellByColumnAndRow(11, $row)->getValue());
+            $obj['manager_id'] = trim($sheet->getCellByColumnAndRow(8, $row)->getValue());
+            $obj['manager_email'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
             if($obj['email']) {
                 $email_id_matrix[$obj['email']] = $obj['id'];
             }
@@ -1256,7 +1256,7 @@ class Members extends REIM_Controller {
             
             if(array_key_exists($_e, $email_id_matrix)){
                 $d['status'] += 0;	
-                $d['manager_id'] = $email_id_matrix[$_e];
+                //$d['manager_id'] = $email_id_matrix[$_e];
             } else {
                 $d['status'] += 4;	
             }
