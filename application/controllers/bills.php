@@ -164,7 +164,7 @@ class Bills extends REIM_Controller {
         else if($status == 1)
         {
             $this->session->set_userdata('item_update_in','3');
-            $this->bsload('bills/index_all',
+            $this->bsload('bills/index',
                 array(
                     'title' => '全部报告'
                     ,'error' => $error

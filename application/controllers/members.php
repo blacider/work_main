@@ -1106,7 +1106,9 @@ class Members extends REIM_Controller {
         $_phones = array();
         $_names = array();
         $names = array();
+        $email_id_matrix = array();
         foreach($gmember as $g){
+            $email_id_matrix[$g['email']] = $g['id'];
             $__email = $g['email']; 
             $__phone = $g['phone']; 
             $__name = $g['nickname'];
@@ -1130,7 +1132,6 @@ class Members extends REIM_Controller {
         }
 
         $data = array();
-        $email_id_matrix = array();
         /** 循环读取每个单元格的数据 */
         for ($row = 4; $row <= $highestRow; $row++){//行数是以第1行开始
             $obj = Array();
