@@ -13,10 +13,38 @@ class Category extends REIM_Controller {
 	$this->load->model('user_model','users');
     }
 
+    public function batch_create_category()
+    {
+        $sid = $this->input->post('sid');
+        $cate = $this->input->post('cate');
+        log_message('debug','sid: ' . $sid);
+        log_message('debug','cate: ' . json_encode($cate));
+        $info = $this->category->create($cate['name'],0,$sid,0,$cate['limit']);
+    }
 
     public function batch_create_account()
     {
-        $sob = $this->input->post('sob');    
+        $sobname = $this->input->post('sobname');    
+        $uids = '';
+        $_uids = $this->input->post('uids');    
+        log_message('debug','sobname:' . $sobname);
+        log_message('debug','uids:' . json_encode($uids));
+        
+        if($_uids)
+        {
+            $uids = implode(',',$_uids);
+        }
+
+        $info = $this->account_set->create_account_set($sobname,'','','',$uids);
+        if($info['status'] > 0)
+        {
+            die(json_encode(array('sob_id' => $info['code']))); 
+        }
+        else
+        {
+            die(json_encode(array('sob_id' => '-1')));
+        }
+        
     }
     public function imports(){
 

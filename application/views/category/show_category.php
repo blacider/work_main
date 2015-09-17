@@ -24,7 +24,7 @@
 
                                     <td>
                                        
-                                        <i class='red'>未导入</i>
+                                        <i class='red backinfo'>未导入</i>
 
                                     </td>
                                 
@@ -35,7 +35,7 @@
                        
                         <div class="clearfix form-actions">
                             <div class="col-md-offset-3 col-md-9">
-                                <button class="btn btn-info" type="button" id="excute_batch_del">
+                                <button class="btn btn-info" type="button" id="imports_sob">
                                     <i class="ace-icon fa fa-check bigger-110"></i>
                                     导入
                                 </button>
@@ -63,55 +63,76 @@
 </div>
 <script type="text/javascript">
 var __BASE = "<?php echo $base_url;?>";
-var sob_info = "<?php echo josn_encode($sob_info);?>";
-console.log(sob_info);
+var _sob_info = '<?php echo json_encode($sob_info);?>';
+var sob_info = [];
+var sum = 0;
+if(_sob_info)
+{
+    sob_info = JSON.parse(_sob_info);
+}
+for(var i in sob_info)
+{
+    sum += sob_info[i]['cates'].length;
+}
+
     $(document).ready(function(){
-        $('#excute_batch_del').click(function(){
-            $('.data-maintainer').each(function(idx,item){
-                var member = $(this).val();
-                make_del(member);
-            });
-           // make_invite();
+        $('#imports_sob').click(function(){
+            for(var idx in sob_info)
+            {
+                console.log(idx);
+                console.log(sob_info[idx]['uids']);
+             (function(idx)
+             {
+                $.ajax({
+                    url:__BASE + 'category/batch_create_account',
+                    method:"POST",
+                    data:{'sobname':idx,'uids':sob_info[idx]['uids']},
+                    success:function(d){
+                        var data = JSON.parse(d);
+
+                        console.log(data);
+                        for(var c_idx in sob_info[idx]['cates'])
+                        {
+                            create_category(data['sob_id'],sob_info[idx]['cates'][c_idx]);
+                        }
+                    },
+                    error:function(a,b,c){
+                        console.log(a);
+                        console.log(b);
+                        console.log(c);
+                    }
+                });
+            })(idx);
+
+            }
         });
 
     });
 
-    function make_del(members)
-        {
-            $.ajax({
-                url:__BASE + 'members/excute_batch_del',
-                method:"POST",
-                data:{'members':members},
-                success:function(data){
-                    var del_back = [];
-                    if(data)
-                    {
-                        del_back = JSON.parse(data);
-                    }
-                    for(var item in del_back)
-                    {
-                        if(del_back[item]['status'])
-                        {
-                            $('i[id="' + del_back[item]['email'] + '"]').removeClass('red').addClass('green').text('已删除');
-                        }
-			else
-                        {
-			    if (del_back[item]['status_code'] == 1) {
-				$('i[id="' + del_back[item]['email'] + '"]').text('员工不在本公司');
-			    } else if (del_back[item]['status_code'] == 2) {
-				$('i[id="' + del_back[item]['email'] + '"]').text('员工信息错误');
-			    } else {
-				$('i[id="' + del_back[item]['email'] + '"]').text('未知错误');
-			    }
-                        }
-                    }
-
-                },
-                error:function(a,b,c){
-                
-                }
-            });
+function create_category(sid,cate)
+{
+    $.ajax({
+        url:__BASE + 'category/batch_create_category',
+        method:"POST",
+        data:{'sid':sid,'cate':cate},
+        success:function(data){
+            sum--;
+            console.log(sum);
+            if(sum == 0)
+            {
+                $('.backinfo').each(function(idx,item){
+                    $(this).removeClass('red').addClass('green').text('已导入');
+                });
+                show_notify('导入完成');
+            }
+        },
+        error:function(a,b,c){
+            console.log(a);
+            console.log(b);
+            console.log(c);
         }
+    });
+}
 
 
 
