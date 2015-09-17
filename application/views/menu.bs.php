@@ -377,6 +377,10 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <a href="<?php echo base_url('category/tags'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 标签管理 </a>
         <b class="arrow"></b>
         </li>
+        <li class="hsub" id="tags">
+        <a href="<?php echo base_url('category/exports'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 导入帐套 </a>
+        <b class="arrow"></b>
+        </li>
     </ul>
     </li>
 
