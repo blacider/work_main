@@ -14,6 +14,10 @@ class Category extends REIM_Controller {
     }
 
 
+    public function batch_create_account()
+    {
+        $sob = $this->input->post('sob');    
+    }
     public function imports(){
 
         if(!array_key_exists('members', $_FILES)){
@@ -33,16 +37,44 @@ class Category extends REIM_Controller {
         }
         $highestColumm= PHPExcel_Cell::columnIndexFromString($highestColumm); //字母列转换为数字列 如:AA变为27
         log_message("debug", "Max Column:" . $highestColumm);
+        
+        //读取到公司所有人的信息
+        $group = $this->groups->get_my_list();
+        $ginfo = array();
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('ginfo', $group['data'])){
+                $ginfo = $group['data']['ginfo'];
+            }
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
 
+        $members_dic = array();
+        foreach($gmember as $m)
+        {
+            if(array_key_exists('email',$m))
+            {
+                $members_dic[$m['email']] = $m['id'];
+            }
+        }
 
+        log_message('debug','members:' . json_encode($gmember));
         $sobs = array();
-        for ($row = 4; $row <= $highestRow; $row++){//行数是以第4行开始
+        for ($row = 3; $row <= $highestRow; $row++){//行数是以第4行开始
             // 前三列为标准列，后面的为三个一组的类目
             $obj = Array();
             $obj['id'] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue());
             $obj['name'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue());
             $obj['email'] = trim($sheet->getCellByColumnAndRow(2, $row)->getValue());
             if(!$obj['email']) continue;
+            $obj['own_id'] = 0;
+            if(array_key_exists($obj['email'],$members_dic))
+            {
+                $obj['own_id'] = $members_dic[$obj['email']];
+            }
             $desc = array();
             $obj['cates'] = array();
             for($col = 3; $col < $highestColumm; $col+=3){
@@ -58,10 +90,65 @@ class Category extends REIM_Controller {
             array_push($sobs, $obj);
         }
         log_message("debug", "Man:" . json_encode($sobs));
+        //获取不同的类目组合
+        $obj_dic = array(); 
+        foreach($sobs as $s)
+        {
+           if(!in_array($s['str_desc'],$obj_dic)) 
+           {
+                array_push($obj_dic,$s['str_desc']); 
+           }
+        }
+        log_message('debug' , 'obj_dic:' . json_encode($obj_dic));
+        //获取不同类目组合的帐套名字
+        $sob_dic = array();
+        $sob_names = array();
+        $count = 1;
+        foreach($obj_dic as $o)
+        {
+            $sob_dic[$o] = '帐套' . $count;
+            array_push($sob_names,'帐套' . $count);
+            $count++;
+        }
+
+        $_sobs = array();
+        foreach($sobs as &$s)
+        {
+            $s['sob_name'] = $sob_dic[$s['str_desc']];
+            if(!array_key_exists($s['sob_name'],$_sobs))
+            {
+                $_sobs[$s['sob_name']] = array();
+            }
+                if(!array_key_exists('uids',$_sobs[$s['sob_name']]))
+                {
+                    $_sobs[$s['sob_name']]['uids'] = array();
+                }
+                array_push($_sobs[$s['sob_name']]['uids'],$s['own_id']);
+                if(!array_key_exists('cates',$_sobs[$s['sob_name']]))
+                {
+                    $_sobs[$s['sob_name']]['cates'] = $s['cates'];
+                }
+        }
+        
+        log_message("debug", "Man:" . json_encode($sobs));
+        log_message('debug', '_sobs:' . json_encode($_sobs));
         /*
         if($obj){
         }
-         */
+       */ 
+        $this->bsload('category/show_category',
+            array(
+                'title' => '导入帐套'
+                ,'sobs' => $sobs
+                ,'sob_info' => $_sobs
+                ,'sob_names' => $sob_names
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
+                    ,array('url'  => '', 'name' => '导入帐套', 'class' => '')
+                ),
+            )
+        );
 
     }
 
@@ -71,7 +158,7 @@ class Category extends REIM_Controller {
 
         $this->bsload('category/exports',
             array(
-                'title' => '导入/导出员工'
+                'title' => '导入帐套'
                 ,'error' => $error
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
