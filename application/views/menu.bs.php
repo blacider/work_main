@@ -366,6 +366,11 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <a href="<?php echo base_url('category/account_set'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 账套管理 </a>
         <b class="arrow"></b>
         </li>
+
+        <li class="hsub" id="account_set">
+        <a href="<?php echo base_url('category/export'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 账套导入/导出 </a>
+        <b class="arrow"></b>
+        </li>
 <!--
         <li class="hsub" id="index">
         <a href="<?php echo base_url('category'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 分类管理 </a>
