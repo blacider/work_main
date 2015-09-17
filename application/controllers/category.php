@@ -12,6 +12,78 @@ class Category extends REIM_Controller {
 	$this->load->model('group_model','groups');
 	$this->load->model('user_model','users');
     }
+
+
+    public function imports(){
+
+        if(!array_key_exists('members', $_FILES)){
+            redirect(base_url('members'));
+        }
+        $tmp_file = $_FILES['members']['tmp_name'];
+
+        try {
+            $reader = IOFactory::createReader('Excel5');
+            $PHPExcel = $reader->load($tmp_file);
+            $sheet = $PHPExcel->getSheet(0);
+            $highestRow = $sheet->getHighestRow(); 
+            $highestColumm = $sheet->getHighestColumn();
+        } catch(Exception $e) {
+            $this->session->set_userdata('last_error', '暂不支持当前的文件类型');
+            return redirect(base_url('members/export'));
+        }
+        $highestColumm= PHPExcel_Cell::columnIndexFromString($highestColumm); //字母列转换为数字列 如:AA变为27
+        log_message("debug", "Max Column:" . $highestColumm);
+
+
+        $sobs = array();
+        for ($row = 4; $row <= $highestRow; $row++){//行数是以第4行开始
+            // 前三列为标准列，后面的为三个一组的类目
+            $obj = Array();
+            $obj['id'] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue());
+            $obj['name'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue());
+            $obj['email'] = trim($sheet->getCellByColumnAndRow(2, $row)->getValue());
+            if(!$obj['email']) continue;
+            $desc = array();
+            $obj['cates'] = array();
+            for($col = 3; $col < $highestColumm; $col+=3){
+                $s = array();
+                $s['name'] = trim($sheet->getCellByColumnAndRow($col, $row)->getValue());
+                $s['id'] = trim($sheet->getCellByColumnAndRow($col + 1, $row)->getValue());
+                $s['limit'] = trim($sheet->getCellByColumnAndRow($col + 2, $row)->getValue());
+                if(!$s['id']) continue;
+                array_push($desc, $s['name'] . "(ID:" . $s['id'] . ", 限额:" . $s['limit'] . ")");
+                array_push($obj['cates'], $s);
+            }
+            $obj['str_desc'] = implode("/", $desc);
+            array_push($sobs, $obj);
+        }
+        log_message("debug", "Man:" . json_encode($sobs));
+        /*
+        if($obj){
+        }
+         */
+
+    }
+
+    public function export(){
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+
+        $this->need_group_it();
+        $group = $this->ug->get_my_list();
+        $this->bsload('category/exports',
+            array(
+                'title' => '导入/导出帐套',
+                'error' => $error,
+                'groups' => $group['data']
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => base_url('category/account_set'), 'name' => '帐套和标签', 'class' => '')
+                    ,array('url'  => '', 'name' => '导入/导出员工', 'class' => '')
+                ),
+            )
+        );
+    }
     public function copy_sob()
     {
         $this->need_group_it();
