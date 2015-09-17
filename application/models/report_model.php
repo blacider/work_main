@@ -76,7 +76,7 @@ class Report_Model extends Reim_Model {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         log_message("debug", "JWT:" . json_encode($jwt));
-		$url = $this->get_url("bills/2");
+		$url = $this->get_url("bills/-2");
 		$buf = $this->do_Get($url, $jwt);
         log_message("debug", "From Server [ $url ]:" . $buf);
 		$obj = json_decode($buf, true);

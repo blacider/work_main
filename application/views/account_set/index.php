@@ -28,7 +28,7 @@
                                 <tr>
                                     <td class="u_username">默认帐套</td>
                                     <td class="u_role_name"></td>
-                                   <td style="width:80px;">   <a href="#" class="editno"  data-title="" data-id="0"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="copyno" data-id="0"><span class="ace-icon fa fa-copy"></span></a> <a href="javascript:void(0);" class="delno" data-id="0"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                   <td style="width:80px;">   <a href="#" class="edit"  data-title="" data-id="0"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="copyno" data-id="0"><span class="ace-icon fa fa-copy"></span></a> <a href="javascript:void(0);" class="delno" data-id="0"><span class="glyphicon glyphicon-trash"></span></a></td>
                                 </tr>
 
                             </thead>
@@ -171,6 +171,7 @@ $(document).ready(function(){
         });
     });
 
+/*
       $('.editno').each(function(){
         $(this).click(function(){
             if(confirm('默认帐套不允许修改')){
@@ -178,6 +179,7 @@ $(document).ready(function(){
             }
         });
     });
+  */
 
 });
 </script>

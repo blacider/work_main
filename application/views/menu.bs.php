@@ -291,6 +291,16 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <b class="arrow"></b>
 
         </li>
+        <li class="hsub" id="add">
+        <a href="<?php echo base_url('members/add'); ?>" >
+            <i class="menu-icon fa fa-caret-right"></i>
+            添加部门
+        </a>
+
+        <b class="arrow"></b>
+
+        </li>
+
 
          <li class="hsub" id="delmembers">
         <a href="<?php echo base_url('members/delmembers'); ?>" >
@@ -302,16 +312,17 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 
         </li>
 
-        <li class="hsub" id="add">
-        <a href="<?php echo base_url('members/add'); ?>" >
+
+
+        <li class="hsub" id="batch_del">
+        <a href="<?php echo base_url('members/batch_del'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
-            添加部门
+            批量删除员工
         </a>
 
         <b class="arrow"></b>
 
         </li>
-
 
     
 
@@ -414,7 +425,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 2) {
     <ul class="submenu nav-show" style="display: block;">
 
         <li class="hsub" id="all_reports">
-        <a href="<?php echo base_url('bills/all_reports'); ?>" >待结算和已结束</a>
+        <a href="<?php echo base_url('bills/all_reports'); ?>" >所有报销</a>
 
         <b class="arrow"></b>
         </li>

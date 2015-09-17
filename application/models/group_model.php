@@ -2,6 +2,20 @@
 
 class Group_Model extends Reim_Model { 
    
+    public function batch_del($members)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+
+        $url = $this->get_url('load');
+        
+        $data = array('members' => $members);
+
+	    $buf = $this->do_Delete($url,$data,$jwt);
+        log_message('debug','batch_del_back:' . $buf);
+
+        return json_decode($buf,true);
+    }
 
     public function set_managers($persons)
     {

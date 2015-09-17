@@ -17,7 +17,9 @@
                                     <th>开户行</th>
                                  <!--   <th>开户地</th> -->
                                     <th>部门</th>
+                                    <th>上级ID</th>
                                     <th>上级姓名</th>
+                                    <th>上级Email</th>
                                     <th>级别</th>
                                     <th>职位</th>
                                     <th>状态</th>
@@ -27,7 +29,7 @@
                                 <tr class="member"  data-id="<?php echo $d['status'];?>" >
                                    
                                     <td>
-                                        <input type="hidden" data-id="m_<?php echo md5($d['email']); ?>" data-exist="<?php echo $d['status']; ?>"  class="data-maintainer" value="<?php echo base64_encode(json_encode($d)); ?>" data-value="<?php echo base64_encode(json_encode($d)); ?>" data-manager="<?php echo $d['manager']?>" data-uid="<?php echo $d['id']?>">
+                                        <input type="hidden" data-id="m_<?php echo md5($d['email']); ?>" data-exist="<?php echo $d['status']; ?>"  class="data-maintainer " value="<?php echo base64_encode(json_encode($d)); ?>" data-value="<?php echo base64_encode(json_encode($d)); ?>" data-manager="<?php echo $d['manager_email']?>" data-uid="<?php echo $d['id']?>">
                                        
                                          <?php echo $d['id'];?></td>
                                     <td><?php echo $d['name']; ?></td>
@@ -38,19 +40,21 @@
                                     <td><?php echo $d['cardbank']; ?></td>
                                     <!--<td><?php echo $d['cardloc']; ?></td> -->
                                     <td><?php echo $d['group_name'];?></td>
+                                    <td><?php echo $d['manager_id'];?></td>
                                     <td><?php echo $d['manager'];?></td>
+                                    <td><?php echo $d['manager_email'];?></td>
                                     <td><?php echo $d['rank'];?></td>
                                     <td><?php echo $d['level'];?></td>
                                     <td>
                                         <!-- <a alt="<?php echo $d['status'] == 1 ? '已经是同一个公司的同事' : '还不是一个公司的同事'; ?>"><i id="m_<?php echo md5($d['email']); ?>"   -->
                                         <a alt=""><i
-                                            data-value="<?php echo base64_encode(json_encode($d)); ?>" data-manager="<?php echo $d['manager']?>" data-status="<?php echo $d['status'];?>" data-uid="<?php echo $d['id']?>"  data-id="<?php echo $d['id'];?>"  class="<?php echo $d['status']&1 == 1 ? 'green' : 'red' ; ?> menu-icon fa judge"><?php echo $d['status']&1 == 1?'已导入(更新数据)' : '未导入';?></i><span class="red" id="<?php echo 'error_'.$d['id']; ?>"></span></a>
+                                            data-value="<?php echo base64_encode(json_encode($d)); ?>" data-manager="<?php echo $d['manager_email']?>" data-status="<?php echo $d['status'];?>" data-uid="<?php echo $d['id']?>"  data-id="<?php echo $d['id'];?>"  class="<?php echo $d['status']&1 == 1 ? 'green' : 'red' ; ?> menu-icon fa judge"><?php echo $d['status']&1 == 1?'已导入(更新数据)' : '未导入';?></i><span class="red" id="<?php echo 'error_'.$d['id']; ?>"></span></a>
 
                                     </td>
                                     <td class="red"><?php 
                                         if($d['status']&4)
                                         {
-                                            echo '上级重复或者不存在,导入后上级缺失';
+                                            echo '员工上级信息缺失或有误，导入后将无上级信息。';
                                         }
                                         else if($d['status']&2)
                                         {
@@ -340,8 +344,8 @@ function insertMem()
                                   {
                                         var person = {'id':back_info['data'][p],'manager':manager_name};
                                         in_members.push(person);
+                                        console.log(person);
                                     }
-                                  
                                   myself.removeClass('red').addClass('green');
                                   console.log("heloo");
                                   if(_status&1 == 1)
