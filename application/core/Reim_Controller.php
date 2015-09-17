@@ -5,7 +5,7 @@ class REIM_Controller extends CI_Controller{
     {
         $this->load->library('user_agent');
         $refer = $this->agent->referrer();
-    	$jwt = $this->session->userdata('jwt');
+        $jwt = $this->session->userdata('jwt');
         $controller = $this->uri->rsegment_array();
         $method_set = ['login','install', 'pub','users', 'register' ,'resetpwd'];
         if(!in_array($controller[1],$method_set))
@@ -369,4 +369,26 @@ class REIM_Controller extends CI_Controller{
         $this->session->set_userdata("last_error", "权限不足");
         return redirect(base_url('items'), 'refresh');
     }
+
+
+    public function stringFromColumnIndex($pColumnIndex = 0) 
+    { 
+        static $_indexCache = array(); 
+
+        if (!isset($_indexCache[$pColumnIndex])) { 
+            // Determine column string 
+            if ($pColumnIndex < 26) { 
+                $_indexCache[$pColumnIndex] = chr(65 + $pColumnIndex); 
+            } elseif ($pColumnIndex < 702) { 
+                $_indexCache[$pColumnIndex] = chr(64 + ($pColumnIndex / 26)) . 
+                    chr(65 + $pColumnIndex % 26); 
+            } else { 
+                $_indexCache[$pColumnIndex] = chr(64 + (($pColumnIndex - 26) / 676)) . 
+                    chr(65 + ((($pColumnIndex - 26) % 676) / 26)) . 
+                    chr(65 + $pColumnIndex % 26); 
+            } 
+        } 
+        return $_indexCache[$pColumnIndex]; 
+    }
+
 }
