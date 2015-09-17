@@ -27,7 +27,7 @@
                                 <tr class="member"  data-id="<?php echo $d['status'];?>" >
                                    
                                     <td>
-                                        <input type="hidden" data-id="m_<?php echo md5($d['email']); ?>" data-exist="<?php echo $d['status']; ?>"  class="data-maintainer " value="<?php echo base64_encode(json_encode($d)); ?>" data-value="<?php echo base64_encode(json_encode($d)); ?>" data-manager="<?php echo $d['manager']?>" data-uid="<?php echo $d['id']?>">
+                                        <input type="hidden" data-id="m_<?php echo md5($d['email']); ?>" data-exist="<?php echo $d['status']; ?>"  class="data-maintainer" value="<?php echo base64_encode(json_encode($d)); ?>" data-value="<?php echo base64_encode(json_encode($d)); ?>" data-manager="<?php echo $d['manager']?>" data-uid="<?php echo $d['id']?>">
                                        
                                          <?php echo $d['id'];?></td>
                                     <td><?php echo $d['name']; ?></td>
