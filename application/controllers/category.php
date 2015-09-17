@@ -46,6 +46,24 @@ class Category extends REIM_Controller {
         }
         
     }
+
+ public function exports(){
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+
+        $this->bsload('category/exports',
+            array(
+                'title' => '导入帐套'
+                ,'error' => $error
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
+                    ,array('url'  => '', 'name' => '导入帐套', 'class' => '')
+                ),
+            )
+        );
+        //
+    }
     public function imports(){
 
         if(!array_key_exists('members', $_FILES)){
