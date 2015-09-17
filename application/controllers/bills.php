@@ -164,7 +164,7 @@ class Bills extends REIM_Controller {
         else if($status == 1)
         {
             $this->session->set_userdata('item_update_in','3');
-            $this->bsload('bills/index_all',
+            $this->bsload('bills/index',
                 array(
                     'title' => '全部报告'
                     ,'error' => $error
@@ -213,6 +213,8 @@ class Bills extends REIM_Controller {
                 if($type == 4 ) {
                     if(!in_array(intval($d['status']), array(4, 7, 8))) {
                         continue;
+                    } else {
+                        $d['status'] = 4;
                     }
                 } else if($type != 0) {
                     log_message("debug", "xContinue...");
@@ -244,7 +246,7 @@ class Bills extends REIM_Controller {
                 $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>';
                 $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span><span class="ui-icon ui-icon ace-icon fa fa-check tapprove green" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon ui-icon red ace-icon fa fa-times tdeny" data-id="' . $d['id'] . '"></span>';
             }
-            if($d['status'] == 4) {
+            if($d['status'] == 4 || $d['status'] == 7 || $d['status'] == 8) {
                 $edit = 'gray';
                 $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
                 $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span>' ;

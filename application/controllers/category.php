@@ -65,22 +65,24 @@ class Category extends REIM_Controller {
 
     }
 
-    public function exports(){
+    public function export(){
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
 
+        $this->need_group_it();
+        $group = $this->ug->get_my_list();
         $this->bsload('category/exports',
             array(
-                'title' => '导入/导出员工'
-                ,'error' => $error
+                'title' => '导入/导出帐套',
+                'error' => $error,
+                'groups' => $group['data']
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
-                    ,array('url'  => '', 'name' => '导入帐套', 'class' => '')
+                    ,array('url'  => base_url('category/account_set'), 'name' => '帐套和标签', 'class' => '')
+                    ,array('url'  => '', 'name' => '导入/导出员工', 'class' => '')
                 ),
             )
         );
-        // 
     }
     public function copy_sob()
     {
