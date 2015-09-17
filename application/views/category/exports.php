@@ -3,27 +3,27 @@
 
 <div class="page-content">
     <div class="page-content-area">
-        <form action="<?php echo base_url('members/imports'); ?>" method="post" enctype="multipart/form-data" id="imports" >
+        <form action="<?php echo base_url('category/imports'); ?>" method="post" enctype="multipart/form-data" id="imports" >
             <div class="row">
                 <div class="col-xs-12 col-sm-12">
                     <div class="form-group">
                         <div>
                             <label class="col-sm-4 form-controller no-padding-right" style="text-align:left">
-                                1、下载员工导入模板或导出现有员工信息。
+                                1、下载员工导入模板。
                             </label>
                         </div>
                     </div>
                     <div class="space-4"></div>
                     <div class="form-group">
                         <div class=" col-md-9">
-                            <a href="/static/members.xls" class="btn btn-primary renew" data-renew="0"><i class="ace-icon fa fa-download bigger-110"></i>下载模板</a>
-                            <a class="btn btn-primary renew" data-renew="1"><i class="ace-icon glyphicon glyphicon-log-out  bigger-110"></i>导出</a>
+                            <a href="/static/category.xls" class="btn btn-primary renew" data-renew="0"><i class="ace-icon fa fa-download bigger-110"></i>下载模板</a>
+                            <!-- <a class="btn btn-primary renew" data-renew="1"><i class="ace-icon glyphicon glyphicon-log-out  bigger-110"></i>导出</a> -->
                         </div>
                     </div>
                     <div class="space-4"></div>
                     <div class="form-group">
                         <label class="col-sm-4 form-controller no-padding-right" style="text-align:left">
-                            2、上传填写好的员工信息模板。
+                            2、上传填写好的分类信息模板。
                         </label>
                     </div>
                     <div class="space-4"></div>

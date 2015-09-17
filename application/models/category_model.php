@@ -56,7 +56,7 @@ class Category_Model extends Reim_Model {
 
     }
     	
-    public function create($name, $pid, $sob_id, $prove_ahead = 0, $maxlimit = 0, $note = "", $sob_code = 0 , $avatar = 0, $force_attach = 0 , $extra_type) {
+    public function create($name, $pid, $sob_id, $prove_ahead = 0, $maxlimit = 0, $note = "", $sob_code = 0 , $avatar = 0, $force_attach = 0 , $extra_type=0) {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(

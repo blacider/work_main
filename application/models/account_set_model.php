@@ -51,6 +51,7 @@
 			);
 			$url = $this->get_url('sob');
 			$buf = $this->do_Post($url,$data,$jwt);
+            log_message('debug','create_account_back:' . $buf);
 			$obj = json_decode($buf,true);
 			return $obj;
 		}
