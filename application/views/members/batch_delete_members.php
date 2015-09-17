@@ -99,9 +99,15 @@ var __BASE = "<?php echo $base_url;?>";
                         {
                             $('i[id="' + del_back[item]['email'] + '"]').removeClass('red').addClass('green').text('已删除');
                         }
-                       else
+			else
                         {
-                              $('i[id="' + del_back[item]['email'] + '"]').removeClass('red').text('员工不在本公司');
+			    if (del_back[item]['status_code'] == 1) {
+				$('i[id="' + del_back[item]['email'] + '"]').text('员工不在本公司');
+			    } else if (del_back[item]['status_code'] == 2) {
+				$('i[id="' + del_back[item]['email'] + '"]').text('员工信息错误');
+			    } else {
+				$('i[id="' + del_back[item]['email'] + '"]').text('未知错误');
+			    }
                         }
                     }
 
