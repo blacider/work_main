@@ -22,29 +22,30 @@ class Category extends REIM_Controller {
         $info = $this->category->create($cate['name'],0,$sid,0,$cate['limit']);
     }
 
-    public function batch_create_account()
-    {
-        $sobname = $this->input->post('sobname');    
-        $uids = '';
-        $_uids = $this->input->post('uids');    
-        log_message('debug','sobname:' . $sobname);
-        log_message('debug','uids:' . json_encode($uids));
-        
-        if($_uids)
-        {
-            $uids = implode(',',$_uids);
-        }
 
-        $info = $this->account_set->create_account_set($sobname,'','','',$uids);
-        if($info['status'] > 0)
-        {
-            die(json_encode(array('sob_id' => $info['code']))); 
+    public function batch_update_account(){
+        $sid = $this->input->post('id');
+        $sobname = $this->input->post('sob');    
+        $sobs = '';
+        if($sobname) {
+            $sobs = base64_decode($sobname);
         }
-        else
-        {
-            die(json_encode(array('sob_id' => '-1')));
+        if(!$sobs) die(json_encode(array('status' => false)));
+        $data = $this->account_set->update_batch($sid, $sobs);
+        die($data);
+    }
+
+    public function batch_create_account() {
+        $sobname = $this->input->post('sob');    
+        if($sobname) {
+            $sobs = base64_decode($sobname);
+            // 发送出去就行了
         }
-        
+        log_message("debug", "SOB:" . json_encode($sobs));
+        if(!$sobs) die(json_encode(array('status' => false)));
+        $data = $this->account_set->insert_batch($sobs);
+        die($data);
+
     }
 
  public function exports(){
@@ -79,12 +80,12 @@ class Category extends REIM_Controller {
             $highestColumm = $sheet->getHighestColumn();
         } catch(Exception $e) {
             $this->session->set_userdata('last_error', '暂不支持当前的文件类型');
-            return redirect(base_url('members/export'));
+            return redirect(base_url('category/cexport'));
         }
         $highestColumm= PHPExcel_Cell::columnIndexFromString($highestColumm); //字母列转换为数字列 如:AA变为27
         log_message("debug", "Max Column:" . $highestColumm);
         
-        //读取到公司所有人的信息
+        // 读取到公司所有的帐套信息
         $group = $this->groups->get_my_list();
         $ginfo = array();
         $gmember = array();
@@ -107,8 +108,45 @@ class Category extends REIM_Controller {
             }
         }
 
-        log_message('debug','members:' . json_encode($gmember));
+        //好吧，为了一个展示，再来一组hash
+        $_sobs_desc = $this->account_set->get_account_set_list();
+        $_sob_db_hash = array(0 => '默认帐套');
+        // 还要把现有帐套和人员的关系存一下，作为增量.
+        if($_sobs_desc['status'] && $_sobs_desc['data']) {
+            foreach($_sobs_desc['data'] as $s) {
+                $_sob_db_hash[$s['sob_id']] = $s['sob_name'];
+            }
+        }
+
+        $_sobs = $this->category->get_list();
+        $_exist_sob_dict = array();
+        $_sob_name = array();
+        $_sob_hash_mix = array();
+        if($_sobs['status'] && $_sobs['data']['categories']) {
+            foreach($_sobs['data']['categories'] as $s){
+                log_message("debug", "category:" . json_encode($s));
+                if(!array_key_exists($s['sob_id'], $_exist_sob_dict)){
+                    $_exist_sob_dict[$s['sob_id']] = array();
+                } 
+                $_sob_name[$s['sob_id']] = $_sob_db_hash[$s['sob_id']];//$s['name'];
+                array_push($_exist_sob_dict[$s['sob_id']], $s['category_name'] . $s['sob_code'] . $s['max_limit']);
+
+            }
+        }
+        $__sob_hash_dict = array();
+        foreach($_exist_sob_dict as $sid => $cids){
+            sort($cids);
+            $cids = array_unique($cids);
+            $_hash = md5(implode("_", $cids));
+            log_message("debug", "xCIDS:" . json_encode($cids));
+            log_message("debug", "ESOD:" . json_encode($__sob_hash_dict));
+            log_message("debug", "xHash:" . $_hash);
+            $__sob_hash_dict[$_hash] = $sid;
+        }
         $sobs = array();
+        $sob_hash = array();
+        $exitst_sobs = array();
+        $idx = 1;
         for ($row = 3; $row <= $highestRow; $row++){//行数是以第4行开始
             // 前三列为标准列，后面的为三个一组的类目
             $obj = Array();
@@ -117,31 +155,63 @@ class Category extends REIM_Controller {
             $obj['email'] = trim($sheet->getCellByColumnAndRow(2, $row)->getValue());
             if(!$obj['email']) continue;
             $obj['own_id'] = 0;
-            if(array_key_exists($obj['email'],$members_dic))
-            {
-                $obj['own_id'] = $members_dic[$obj['email']];
-            }
             $desc = array();
+            $_ids = array();
             $obj['cates'] = array();
             for($col = 3; $col < $highestColumm; $col+=3){
                 $s = array();
                 $s['name'] = trim($sheet->getCellByColumnAndRow($col, $row)->getValue());
-                $s['id'] = trim($sheet->getCellByColumnAndRow($col + 1, $row)->getValue());
+                $s['code'] = trim($sheet->getCellByColumnAndRow($col + 1, $row)->getValue());
                 $s['limit'] = trim($sheet->getCellByColumnAndRow($col + 2, $row)->getValue());
-                if(!$s['id']) continue;
-                array_push($desc, $s['name'] . "(ID:" . $s['id'] . ", 限额:" . $s['limit'] . ")");
+                if(!$s['code']) continue;
+                array_push($_ids, $s['name'] . $s['code'] . $s['limit']);
+                array_push($desc, $s['name'] . "(ID:" . $s['code'] . ", 限额:" . $s['limit'] . ")");
                 array_push($obj['cates'], $s);
+            }
+            log_message("debug", "IDS:" . json_encode($_ids));
+            sort($_ids);
+            $_hash = md5(implode("_", $_ids));
+            log_message("debug", "Hash Dict:" . json_encode($__sob_hash_dict));
+            log_message("debug", "Hash :" . $_hash);
+            $obj['sob_id'] = -1;
+            $obj['sob_name'] = '';
+            $obj['sob_hash'] = $_hash;
+            if(array_key_exists($_hash, $__sob_hash_dict)){
+                $obj['sob_id'] = $__sob_hash_dict[$_hash];
+                $obj['sob_name'] = $_sob_name[$obj['sob_id']];
+                log_message("debug", "SOB EXISTS:" . json_encode($_sob_name) . ", " . $obj['sob_id']);
+                if(!array_key_exists($obj['sob_id'], $exitst_sobs)) {
+                    $exitst_sobs[$obj['sob_id']] = array('name' => $_sob_name[$obj['sob_id']], 'emails' => array(), 'cids' => array(), 'detail' => $obj['cates']);
+                }
+                array_push($exitst_sobs[$obj['sob_id']]['emails'], $obj['email']);
+            } else {
+                // 数据库中不存在，那么留下来，准备建设新的
+                if(!array_key_exists($_hash, $sob_hash)) {
+                    $sob_hash[$_hash] = array('name' => '自动帐套' . date('Y-m-d'), 'emails' => array(), 'cids' => $_ids, 'detail' => $obj['cates']);
+                    $idx += 1;
+                }
+                array_push($sob_hash[$_hash]['emails'], $obj['email']);
             }
             $obj['str_desc'] = implode("/", $desc);
             array_push($sobs, $obj);
         }
+        $_exists_sob_b64 = array();
+        $_sob_hash_b64 = array();
+        foreach($sob_hash as $k => $v) {
+            $_sob_hash_b64[$k] = base64_encode(json_encode($v));
+        }
+        foreach($exitst_sobs as $k => $v){
+            $_exists_sob_b64[$k] = base64_encode(json_encode($v));
+        }
+
         log_message("debug", "Man:" . json_encode($sobs));
+        // 好了，这下就把那些新创建的给搞出来吧，至于那些旧的，hmm，暂时不支持在excel中修改吧，不然乱七八糟的。
+
+        /*
         //获取不同的类目组合
         $obj_dic = array(); 
-        foreach($sobs as $s)
-        {
-           if(!in_array($s['str_desc'],$obj_dic)) 
-           {
+        foreach($sobs as $s) {
+           if(!in_array($s['str_desc'],$obj_dic)) {
                 array_push($obj_dic,$s['str_desc']); 
            }
         }
@@ -175,19 +245,17 @@ class Category extends REIM_Controller {
                     $_sobs[$s['sob_name']]['cates'] = $s['cates'];
                 }
         }
+         */
         
         log_message("debug", "Man:" . json_encode($sobs));
         log_message('debug', '_sobs:' . json_encode($_sobs));
-        /*
-        if($obj){
-        }
-       */ 
         $this->bsload('category/show_category',
             array(
                 'title' => '导入帐套'
                 ,'sobs' => $sobs
-                ,'sob_info' => $_sobs
-                ,'sob_names' => $sob_names
+                ,'sob_info' => $_sob_hash_b64
+                ,'sob_exists' => $_exists_sob_b64
+                //,'sob_names' => $sob_names
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
@@ -198,7 +266,7 @@ class Category extends REIM_Controller {
 
     }
 
-    public function export(){
+    public function cexport(){
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
 

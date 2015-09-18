@@ -999,7 +999,8 @@ class Reports extends REIM_Controller {
                 $o = array();
                 $o['日期'] = date('Y年m月d日', date($i['createdt']));
                 $o['时间'] = date('H:i:s', date($i['createdt']));
-                $o['创建者'] = $i['nickname'];
+                $o['员工姓名'] = $i['nickname'];
+                $o['员工邮箱'] = $i['nickname'];
                 $o['类别'] = $i['category_name'];
                 $o['商家'] = $i['merchants'];
                 $o['参与人员'] = implode(',', $__relates);
