@@ -217,9 +217,13 @@ class Bills extends REIM_Controller {
                         $d['status'] = 4;
                     }
                 } else if($type != 0) {
+                    if($d['status'] < 1) continue;
                     log_message("debug", "xContinue...");
                     if($d['status'] != $type) continue;
                 }
+            }else {
+                    if($d['status'] < 1) continue;
+                    if($d['status'] == 3) continue;
             }
             log_message("debug", "xBill: $type: " . json_encode($d));
             log_message("debug", "nICe");
