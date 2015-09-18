@@ -21,11 +21,12 @@
                                     <td><?php echo $d['name']; ?></td>
                                     <td><?php echo $d['email']; ?></td>
                                     <td><?php echo $d['str_desc']; ?></td>
-
-                                    <td>
-                                       
+                                    <td class="<?php echo $d['sob_hash']; ?>  <?php echo $d['sob_id']; ?>" data-hash="<?php echo trim($d['email']); ?>">
+<?php if($d['sob_id'] == -1){ ?>
                                         <i class='red backinfo'>未导入</i>
-
+<?php } else { ?>
+<i class='backinfo'><?php echo $d['sob_name']; ?></i>
+<?php } ?>
                                     </td>
                                 
                                 </tr>
@@ -39,20 +40,13 @@
                                     <i class="ace-icon fa fa-check bigger-110"></i>
                                     导入
                                 </button>
+                                <button class="btn btn-info" type="button" id="end_sob" style="display:none;">
+                                    <i class="ace-icon fa fa-check bigger-110"></i>
+                                    导入完成
+                                </button>
                               
 
                             </div>
-
-                        
-
-                           <!--  <div class="col-md-offset-3 col-md-9">
-                                <button class="btn btn-info" type="button" id="set_manager">
-                                    <i class="ace-icon fa fa-check bigger-110"></i>
-                                    设置上级
-                                </button>
-
-                            </div>
-                            -->
                         </div>
                     </form>
 
@@ -61,80 +55,92 @@
         </div>
     </div>
 </div>
+<?php 
+foreach($sob_exists as $h => $s){
+?>
+    <input type="hidden" class="exist_sob" value="<?php echo $s; ?>" data-hash="<?php echo $h; ?>" />
+<?php } ?>
+<?php 
+foreach($sob_info as $h => $s){
+?>
+    <input type="hidden" class="new_sob" value="<?php echo $s; ?>" data-hash="<?php echo $h; ?>" />
+<?php } ?>
 <script type="text/javascript">
 var __BASE = "<?php echo $base_url;?>";
-var _sob_info = '<?php echo json_encode($sob_info);?>';
+//var _sob_info = '<?php echo json_encode($sob_info);?>';
 var sob_info = [];
 var sum = 0;
-if(_sob_info)
-{
-    sob_info = JSON.parse(_sob_info);
-}
-for(var i in sob_info)
-{
-    sum += sob_info[i]['cates'].length;
-}
-
     $(document).ready(function(){
         $('#imports_sob').click(function(){
-            for(var idx in sob_info)
-            {
-                console.log(idx);
-                console.log(sob_info[idx]['uids']);
-             (function(idx)
-             {
+            $('.exist_sob').each(function(idx, item){
+                var info = $(this).val();
+                var _hash = $(this).data('hash');
                 $.ajax({
-                    url:__BASE + 'category/batch_create_account',
+                    url:__BASE + 'category/batch_update_account',
                     method:"POST",
-                    data:{'sobname':idx,'uids':sob_info[idx]['uids']},
+                    dataType: 'json',
+                    data:{'sob':info, 'id' : _hash},
                     success:function(d){
-                        var data = JSON.parse(d);
-
-                        console.log(data);
-                        for(var c_idx in sob_info[idx]['cates'])
-                        {
-                            create_category(data['sob_id'],sob_info[idx]['cates'][c_idx]);
+                        try{
+                            if(d['status'] > 0) {
+                                _emails = d['data']['emails'];
+                                $('.' + _hash).each(function(){
+                                    var _e = $(this).data('hash');
+                                    if($.inArray(_e, _emails) > -1) {
+                                        $(this).removeClass('green').addClass('red').text('导入出错');
+                                    } else{
+                                        $(this).removeClass('red').addClass('green').text('已导入');
+                                    }
+                                });
+                            } else {
+                                show_notify("导入失败");
+                            }
+                        }catch(e){
                         }
                     },
                     error:function(a,b,c){
-                        console.log(a);
-                        console.log(b);
-                        console.log(c);
                     }
                 });
-            })(idx);
+            });
 
-            }
+            $('.new_sob').each(function(idx, item){
+                var info = $(this).val();
+                var _hash = $(this).data('hash');
+                $.ajax({
+                    url:__BASE + 'category/batch_create_account',
+                    dataType: 'json',
+                    method:"POST",
+                    data:{'sob':info},
+                    success:function(d){
+                        try{
+                            if(d['status'] > 0) {
+                                _emails = d['data']['emails'];
+                                $('.' + _hash).each(function(){
+                                    var _e = $(this).data('hash');
+                                    if($.inArray(_e, _emails) > -1) {
+                                        $(this).removeClass('green').addClass('red').text('导入出错');
+                                    } else{
+                                        $(this).removeClass('red').addClass('green').text('已导入');
+                                    }
+                                });
+                            } else {
+                                show_notify("导入失败");
+                            }
+                        }catch(e){
+                        }
+                    },
+                    error:function(a,b,c){
+                    }
+                });
+            });
+            $('#imports_sob').hide();
+            $('#end_sob').click(function(){
+                location.href= __BASE + "category/cexport";
+                //history.go(-1);
+            });
+            $('#end_sob').show();
         });
 
     });
-
-function create_category(sid,cate)
-{
-    $.ajax({
-        url:__BASE + 'category/batch_create_category',
-        method:"POST",
-        data:{'sid':sid,'cate':cate},
-        success:function(data){
-            sum--;
-            console.log(sum);
-            if(sum == 0)
-            {
-                $('.backinfo').each(function(idx,item){
-                    $(this).removeClass('red').addClass('green').text('已导入');
-                });
-                show_notify('导入完成');
-            }
-        },
-        error:function(a,b,c){
-            console.log(a);
-            console.log(b);
-            console.log(c);
-        }
-    });
-}
-
-
-
 
 </script>

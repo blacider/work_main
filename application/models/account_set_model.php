@@ -85,5 +85,28 @@
 			$buf = $this->do_Delete($url,$data,$jwt);
 			return $buf;
 		}
+
+        public function insert_batch($sobs) {
+			$jwt = $this->session->userdata('jwt');
+			if(!$jwt) return false;
+			
+			$data = array('sob' => $sobs);
+			$url = $this->get_url("sob_load");
+			log_message("debug","####$url");
+			$buf = $this->do_Post($url,$data,$jwt);
+			return $buf;
+        }
+
+        public function update_batch($sid, $sobs) {
+			$jwt = $this->session->userdata('jwt');
+			if(!$jwt) return false;
+			
+			$data = array('sob' => $sobs);
+			$url = $this->get_url("sob_load/" . $sid);
+			log_message("debug","####$url");
+			$buf = $this->do_Put($url,$data,$jwt);
+            log_message("debug", $buf);
+			return $buf;
+        }
 	}
 ?>
