@@ -316,7 +316,8 @@ function get_sobs(){
             error:function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(XMLHttpRequest.status);
                         console.log(XMLHttpRequest.readyState);
-                        console.log(textStatus);}
+                        console.log(textStatus);
+                    }
         });
 
 
