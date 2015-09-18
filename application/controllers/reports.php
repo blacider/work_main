@@ -887,6 +887,25 @@ class Reports extends REIM_Controller {
 
     private function exports_by_rids($ids) {
         $data = $this->reports->get_reports_by_ids($ids);
+        log_message('debug','data: ' . json_encode($data));
+        $group = $this->groups->get_my_list();
+        $ginfo = array();
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
+        $member_dic = array();
+        foreach($gmember as $gm)
+        {
+            $member_dic[$gm['id']] = $gm; 
+        }
+        
+
+        log_message('debug','ginfo --> ' . json_encode($ginfo));
+        log_message('debug','gmember --> ' . json_encode($gmember));
         $_excel = array();
         $_members = array();
         if($data['status'] > 0){
@@ -902,6 +921,8 @@ class Reports extends REIM_Controller {
                 if(!array_key_exists($r['uid'], $_members)){
                     $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
                 }
+                
+            log_message('debug','member_info:' . json_encode($member_dic[$b['uid']]));
                 $r['total'] = 0;
                 $r['paid'] = 0;
                 //log_message('debug', json_encode($r));
@@ -924,6 +945,8 @@ class Reports extends REIM_Controller {
                         $i['paid'] = 0;
                     }
                     $i['nickname'] = $r['nickname'];
+                    $i['rid'] = $r['id'];
+                    $i['member_info'] = $member_dic[$r['uid']];
                     //$r['total'] += ($i['amount'] * $_rate);
                     //log_message("debug", "Items2:"  . json_encode($i));
                     array_push($_t_items, $i);
@@ -953,6 +976,7 @@ class Reports extends REIM_Controller {
                 $obj['金额'] = $r['total'];
                 $obj['已付'] = $r['paid'];
                 $obj['应付'] = $r['last'];
+
                 array_push($_excel, $obj);
             }
             log_message("debug", "export --> " . json_encode($_t_items));
@@ -1018,6 +1042,7 @@ class Reports extends REIM_Controller {
                 $o['已付'] = $i['paid'];
                 $o['应付'] = ($i['amount'] * $_rate) - $i['paid'];
                 $o['报告名'] = $i['title'];
+                $o['报告ID'] = $i['rid'];
                 array_push($_detail_items, $o);
             }
 
