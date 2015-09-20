@@ -26,25 +26,11 @@
                      
 
                            <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-rigtht">帐套名</label>
+                                <label class="col-sm-2 control-label no-padding-rigtht">财务审批流名</label>
                                 <div class="col-xs-4 col-sm-4">
-                                <input id="sob_name" type="text" class="form-controller col-xs-12" name="sob_name" placeholder="输入帐套名">
+                                <input id="sob_name" type="text" class="form-controller col-xs-12" name="sob_name" placeholder="输入财务审批流名">
                                 </div>
                             </div>
-
-                         <!--   <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-rigtht">部门选择</label>
-                                <div class="col-xs-4 col-sm-4">
-                                    <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
-                                      <option value="0">公司</option>
-                                    <?php
-                                    foreach($ugroups as $ug){
-                                        echo "<option value='" . $ug['id'] ."'>" . $ug['name'] . "</option>";
-                                    }
-                                    ?>                                
-                                </select>
-                                </div>
-                            </div> -->
 
                       
 
@@ -54,7 +40,7 @@
                                 <div class="col-md-offset-3 col-md-9">
                                     <a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
 
-                                    <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
+                                    <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>重置</a>
                                 </div>
                             </div>
                         </div>
@@ -82,7 +68,7 @@ var __BASE = "<?php echo $base_url; ?>";
             if(sname == '')
             {
                 $('#sob_name').focus();
-                show_notify("请输入帐套名");
+                show_notify("请输入财务审批流");
                 return false;
             }
             /*if(sgroups == null)
@@ -93,8 +79,8 @@ var __BASE = "<?php echo $base_url; ?>";
             }*/
 	       $.ajax({
                 type:"post",
-                url:__BASE+"category/create_sob",
-                data:{sob_name:$('#sob_name').val(),groups:$('#group').val()},
+                url:__BASE+"category/create_flow",
+                data:{sob_name:$('#sob_name').val(),groups:0},
                 dataType:'json',
                 success:function(data){
                         //console.log(data);
@@ -102,12 +88,11 @@ var __BASE = "<?php echo $base_url; ?>";
                         if(d.code > 0)
                         {
                             show_notify('保存成功');
-                            window.location.href=__BASE+"category/sob_update/"+d.code;
+                            window.location.href=__BASE+"company/flow_update/"+d.code;
                         }
                         else
                         {
                             show_notify('保存失败');
-                            window.location.href=__BASE+"category/account_set";
                         }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -116,17 +101,7 @@ var __BASE = "<?php echo $base_url; ?>";
                         console.log(textStatus);
                     },            });
 	 
-	       }); 
-
-        $('.chosen-select').chosen({allow_single_deselect:true}); 
-        $(window)
-            .off('resize.chosen')
-            .on('resize.chosen', function() {
-                $('.chosen-select').each(function() {
-                    var $this = $(this);
-                    $this.next().css({'width': $this.parent().width()});
-                })
-            }).trigger('resize.chosen');
+	       });
        
         $('.cancel').click(function(){
             $('#sob_name').val('');
