@@ -52,61 +52,6 @@
 </div><!-- /.span -->
 </div><!-- /.row -->
 
-
-<div id="modal-table" class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="blue bigger"> 创建规则 </h4>
-            </div>
-            <form method="post" action="<?php echo base_url('company/flow_create'); ?>">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12">
-
-                            <div class="form-group col-sm-5">
-                                <label for="form-field-username">规则名称</label>
-                                <div>
-                                    <input class="input-large" type="text" placeholder="规则名称" id="rule_name" name="rule_name" />
-                                   <!-- <input type="hidden"  id="category_id" name="category_id" value="0" required /> -->
-                                </div>
-                            </div>
-                       
-                              <div class="form-group col-sm-5">
-                                <label for="form-field-username">规则名称</label>
-                                <div>
-                                    <input class="input-large" type="text" placeholder="规则名称" id="rule_name" name="rule_name" />
-                                   <!-- <input type="hidden"  id="category_id" name="category_id" value="0" required /> -->
-                                </div>
-
-                            </div>
-
-                            <div class="form-group col-sm-5">
-                                <label for="form-field-username">规则名称</label>
-                          <div>
-                                    <input class="input-large" type="text" placeholder="规则名称" id="rule_name" name="rule_name" />
-                                   <!-- <input type="hidden"  id="category_id" name="category_id" value="0" required /> -->
-                                </div>
-                            </div>
-                            <div class="space-4"></div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button class="btn btn-sm" data-dismiss="modal">
-                        <i class="ace-icon fa fa-times"></i>
-                        取消
-                    </button>
-                    <input type="submit" class="btn btn-sm btn-primary">
-                </div>
-            </form>
-        </div>
-    </div>
-</div><!-- PAGE CONTENT ENDS -->
-
 </div><!-- /.col -->
 </div><!-- /.row -->
 </div><!-- /.page-content-area -->

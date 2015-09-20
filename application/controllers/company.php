@@ -633,6 +633,21 @@ class Company extends REIM_Controller {
             )
         );
     }
+    public function flow_create() {
+        $error = $this->session->userdata('last_error');
+        $this->bsload('company/flow_create',
+            array(
+                'title'=>'新建审批流'
+                ,'error'=>$error
+                ,'breadcrumbs'=> array(
+                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+                    ,array('url'=>'','name'=>'公司设置','class'=> '')
+                    ,array('url'=>'','name'=>'财务审批流','class'=>'')
+                    ,array('url'=>'','name'=>'新建财务审批流','class'=>'')
+                ),
+            )
+        );
+    }
     public function approval_flow(){
         //$this->need_group_it();
         $error = $this->session->userdata('last_error');
