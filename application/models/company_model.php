@@ -241,4 +241,38 @@ class Company_Model extends Reim_Model {
         return $obj;
     }
 
+
+    public function create_finance_policy($name) {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('finance_policy');
+        $buf = $this->do_Post($url, array('name' => $name), $jwt);
+        log_message("debug", $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
+
+    public function get_finance_policy(){
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('finance_policy');
+        $buf = $this->do_Get($url, $jwt);
+        log_message("debug", $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+    public function drop_finance_policy($id) {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('finance_policy/' . $id);
+        $buf = $this->do_Delete($url, array(), $jwt);
+        log_message("debug", $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
 }

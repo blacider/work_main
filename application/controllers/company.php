@@ -648,23 +648,38 @@ class Company extends REIM_Controller {
             )
         );
     }
+
+
+    public function create_finance_flow(){
+        $name = $this->input->post('sob_name');
+        $obj = $this->company->create_finance_policy($name);
+        if($obj['status']) {
+            die(json_encode(array('code' => $obj['data']['id'])));
+        }
+        die(json_encode(array('code' => 0)));
+    }
+
+    public function delete_finance_flow($id = 0) {
+        if($id == 0) return redirect(base_url('company/approval_flow'));
+        $rules = $this->company->drop_finance_policy($id);
+        return redirect(base_url('company/approval_flow'));
+    }
     public function approval_flow(){
         //$this->need_group_it();
         $error = $this->session->userdata('last_error');
-        //$this->session->unset_userdata('last_error');
-        //$buf = $this->company->show_rules();
-        //$rules = json_decode($buf,true);
-        //$_rules = array();
-        //if($rules['status'] > 0)
-        //{
-            //$_rules = $rules['data'];
-        //}
+        $this->session->unset_userdata('last_error');
+        $rules = $this->company->get_finance_policy();
+        $_rules = array();
+        if($rules['status'] > 0)
+        {
+          $_rules = $rules['data'];
+        }
         //log_message('debug','rules:' . json_encode($_rules));
         $this->bsload('company/approval_flow',
             array(
                 'title'=>'财务审批流'
                 ,'error'=>$error
-                //,'rules'=>$_rules
+                ,'rules'=>$_rules
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')

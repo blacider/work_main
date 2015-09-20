@@ -27,25 +27,24 @@
                             </thead>
                             <tbody>
  <?php
- //$m_dict = array();
- //$top_category = array();
- //if($rules)
- //{
-//foreach($rules as $item){
- //   $img = "";
- //   $str = '<tr>';
-//$username = '<td class="u_username">' . $item['name'] . '</td>';
-//$role_id =  '<td class="u_role_name">' . $item['lastdt'] . '</td>';
-    //$role_id = '<td class="u_role_name">' . $item->role_name . '</td>';
-//$operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class="edit"  data-title="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
- //   $operation = '<td style="width:50px;"><a class="btn btn-xs btn-danger" href="' .  base_url('/company/delet_rule/'. $item['id']) .'">
-  //      <i class="ace-icon fa fa-trash-o bigger-120"></i>
-   //     </a></td>';
-//$str = $str . $username . $role_id . $operation_upd . '</tr>';
-//echo $str;
+ $m_dict = array();
+ $top_category = array();
+ if($rules)
+ {
+foreach($rules as $item){
+    $img = "";
+    $str = '<tr>';
+    $username = '<td class="u_username">' . $item['name'] . '</td>';
+    $role_id =  '<td class="u_role_name">' . $item['lastdt'] . '</td>';
+    $operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class="edit"  data-title="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
+    $operation = '<td style="width:50px;"><a class="btn btn-xs btn-danger" href="' .  base_url('/company/delet_rule/'. $item['id']) .'">
+        <i class="ace-icon fa fa-trash-o bigger-120"></i>
+        </a></td>';
+$str = $str . $username . $role_id . $operation_upd . '</tr>';
+echo $str;
 
-//}
-// }
+}
+ }
 ?> 
 </tbody>
 </table>
@@ -77,7 +76,7 @@ $(document).ready(function(){
         $(this).click(function(){
             if(confirm('确认要删除吗?')){
                 var _id = $(this).data('id');
-                location.href = __BASEURL + "/company/delete_flow/" + _id;
+                location.href = __BASEURL + "/company/delete_finance_flow/" + _id;
             }
         });
     });
