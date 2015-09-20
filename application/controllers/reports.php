@@ -7,6 +7,8 @@ class Reports extends REIM_Controller {
         $this->load->model('user_model', 'users');
         $this->load->model('report_model', 'reports');
         $this->load->model('group_model','groups');
+        $this->load->model('reim_show_model','reim_show');
+        $this->load->model('usergroup_model','ug');
     }
 
     public function add_comment() {
@@ -887,7 +889,17 @@ class Reports extends REIM_Controller {
 
     private function exports_by_rids($ids) {
         $data = $this->reports->get_reports_by_ids($ids);
-        log_message('debug','data: ' . json_encode($data));
+        $_categories = $this->category->get_list();
+        $categories = array();
+        $cate_dic = array();
+        if($_categories['status'] > 0)
+        {
+            $categories = $_categories['data']['categories']; 
+        }
+        foreach($categories as $cate)
+        {
+           $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note']); 
+        }
         $group = $this->groups->get_my_list();
         $ginfo = array();
         $gmember = array();
@@ -897,15 +909,53 @@ class Reports extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
+
+        
+        //ugs部门
+        $ug = array();
+        $_ugs = $this->ug->get_my_list();
+        if($_ugs['status'] > 0) 
+        {
+            $ug = $_ugs['data']['group'];
+        }
+        $ug_dic = array();
+        foreach($ug as $u)
+        {
+            $ug_dic[$u['id']] = array('id' => $u['id'], 'name' => $u['name'] ,'pid' => $u['pid']);
+        }
+        
         $member_dic = array();
         foreach($gmember as $gm)
         {
             $member_dic[$gm['id']] = $gm; 
         }
         
+        log_message('debug','member_dic:' . json_encode($member_dic));
+        $_ranks = $this->reim_show->rank_level(1);
+        $ranks = array();
+        $_levels = $this->reim_show->rank_level(0);
+        $levels = array();
 
-        log_message('debug','ginfo --> ' . json_encode($ginfo));
-        log_message('debug','gmember --> ' . json_encode($gmember));
+        if($_ranks['status'] > 0)
+        {
+            $ranks = $_ranks['data'];
+        }
+
+        if($_levels['status'] > 0)
+        {
+            $levels = $_levels['data'];
+        }
+
+        $rank_dic = array();
+        $level_dic = array();
+        foreach($ranks as $r)
+        {
+            $rank_dic[$r['id']] = $r['name'];
+        }
+        foreach($levels as $l)
+        {
+            $level_dic[$l['id']] = $l['name'];
+        }
         $_excel = array();
         $_members = array();
         if($data['status'] > 0){
@@ -922,7 +972,39 @@ class Reports extends REIM_Controller {
                     $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
                 }
                 
-            log_message('debug','member_info:' . json_encode($member_dic[$b['uid']]));
+                $flow = array();
+                $_flow = $this->reports->report_flow($r['id']);
+                if($_flow['status'] > 0)
+                {
+                   $flow_member = $_flow['data']['data'];
+                   foreach($flow_member as $fm)
+                   {
+                        if($fm['status'] == 2)
+                        {
+                            array_push($flow,array('name' => $fm['nickname'],'step' => $fm['step']));
+                        }
+                   }
+                }
+                $r['flow'] = '';
+                if($flow)
+                {
+                    usort($flow,function($a,$b){
+                        if($a['step'] == $b['step'])
+                        {
+                            return 0;
+                        }
+
+                        return ($a['step'] > $b['step']) ? -1 : 1;
+                    });
+                    $f_m = array();
+                    foreach($flow as $f)
+                    {
+                        array_push($f_m,$f['name']);
+                    }
+                    $r['flow'] = implode(',',$f_m);
+                }
+                
+                log_message('debug','report_flow:' . json_encode($_flow));
                 $r['total'] = 0;
                 $r['paid'] = 0;
                 //log_message('debug', json_encode($r));
@@ -946,6 +1028,7 @@ class Reports extends REIM_Controller {
                     }
                     $i['nickname'] = $r['nickname'];
                     $i['rid'] = $r['id'];
+                    $i['flow'] = $r['flow'];
                     $i['member_info'] = $member_dic[$r['uid']];
                     //$r['total'] += ($i['amount'] * $_rate);
                     //log_message("debug", "Items2:"  . json_encode($i));
@@ -1024,10 +1107,65 @@ class Reports extends REIM_Controller {
                 $o['日期'] = date('Y年m月d日', date($i['createdt']));
                 $o['时间'] = date('H:i:s', date($i['createdt']));
                 $o['创建者'] = $i['nickname'];
-                $o['类别'] = $i['category_name'];
+                $o['邮箱'] = '';
+                $o['员工ID'] = '';
+                $o['员工手机'] = '';
+                $o['上级'] = '';
+                $o['部门'] = '';
+                if(array_key_exists('email',$i['member_info']))
+                {
+                    $o['邮箱'] = $i['member_info']['email'];
+                }
+                if(array_key_exists('client_id',$i['member_info']))
+                {
+                    $o['员工ID'] = $i['member_info']['client_id'];
+                }
+                if(array_key_exists('phone',$i['member_info']))
+                {
+                    $o['员工手机'] = $i['member_info']['phone'];
+                }
+                if(array_key_exists('manager',$i['member_info']))
+                {
+                    $o['上级'] = $i['member_info']['manager'];
+                }
+                if(array_key_exists('d',$i['member_info']))
+                {
+                    $o['部门'] = $i['member_info']['d'];
+                }
+                $o['级别'] = '';
+                $o['职位'] = '';
+
+                if(array_key_exists('rank_id',$i['member_info']))
+                {
+                    if($i['member_info']['rank_id'] > 0)
+                    {
+                        $o['级别'] = $rank_dic[$i['member_info']['rank_id']];
+                    }
+                }
+                if(array_key_exists('level_id',$i['member_info']))
+                {
+                    if($i['member_info']['level_id'] > 0)
+                    {
+                        $o['职位'] = $level_dic[$i['member_info']['level_id']];
+                    }
+                }
+                
+                //$o['类别'] = $i['category_name'];
                 $o['商家'] = $i['merchants'];
                 $o['参与人员'] = implode(',', $__relates);
-                $o['会计科目'] = $s;
+                $o['会计科目'] = $i['category_name'];
+                $o['会计科目代码'] = $cate_dic[$i['category']]['note'];
+                $o['会计科目上级'] = '';
+                $o['会计科目上级代码'] = '';
+                if($cate_dic[$i['category']]['pid'] > 0)
+                {
+                     $o['会计科目上级'] = $cate_dic[$i['category']]['name'];
+                }
+                if($cate_dic[$i['category']]['pid'] > 0)
+                {
+                     $o['会计科目代码'] = $cate_dic[$i['category']]['note'];
+                }
+                $o['报销审核人'] = $i['flow'];
                 $o['备注'] = $i['note'];
                 $_rate = 1.0;
                 if($i['currency'] != '' && strtolower($i['currency']) != 'cny') {
@@ -1043,7 +1181,11 @@ class Reports extends REIM_Controller {
                 $o['应付'] = ($i['amount'] * $_rate) - $i['paid'];
                 $o['报告名'] = $i['title'];
                 $o['报告ID'] = $i['rid'];
+                $o['账号'] = $i['member_info']['account'];
+                $o['卡号'] = $i['member_info']['cardno'];
+                $o['开户行'] = $i['member_info']['bankname'];
                 array_push($_detail_items, $o);
+                log_message('debug','members: ' . json_encode($i['member_info']));
             }
 
             log_message("debug", json_encode($o));
