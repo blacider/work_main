@@ -125,7 +125,7 @@ class Report_Model extends Reim_Model {
 
     }
 
-    public function update($id, $title, $receiver, $cc, $iids, $type = 0, $status = 1, $force = 0){
+    public function update($id, $title, $receiver, $cc, $iids, $type = 0, $status = 1, $force = 0, $extra = array()){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(
@@ -137,6 +137,7 @@ class Report_Model extends Reim_Model {
             ,'iids' => $iids
             ,'createdt' => time()
             ,'force_submit' => $force
+            ,'extras' => json_encode($extra)
         );
         log_message("debug", "Update:" . json_encode($data));
 		$url = $this->get_url("report/$id");

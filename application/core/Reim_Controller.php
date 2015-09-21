@@ -151,8 +151,8 @@ class REIM_Controller extends CI_Controller{
             $custom_data['tip'] = $this->module_tip_model->get_tip($custom_data['uid']);
             $custom_data['description'] =  '';
         } else {
-            if(array_key_exists('templates', $profile['group'])) {
-                $report_template = $profile['group']['templates'];
+            if(array_key_exists('templates', $profile)) {
+                $report_template = $profile['templates'];
             }
             $this->session->set_userdata('user', $profile);
             $custom_data['profile'] = $profile;

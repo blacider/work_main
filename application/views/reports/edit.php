@@ -68,6 +68,144 @@ foreach($members as $m) {
                                     </select>
                                 </div>
                             </div>
+<?php
+                        if(!empty($config)) {
+?>
+                            <input type="hidden" id="template_id" name="template_id" value="<?php echo $config['id']; ?>">
+<?php 
+                        if($config['account'] == 1){ 
+?>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">银行账号</label>
+                                <div class="col-xs-9 col-sm-9">
+                                    <select class="chosen-select tag-input-style" name="account" id="account" data-placeholder="请选择银行账号">
+                                        <?php foreach($members as $m) {
+                                            if($user['id'] != $m['id']){?>
+                                                <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
+                                       
+                                        <?php }} ?>
+                                    </select>
+                                </div>
+                            </div>
+<?php 
+                        }
+                        if($config['payment'] == 1){ 
+?>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">支付方式</label>
+                                <div class="col-xs-9 col-sm-9">
+<?php 
+                            $options = array(
+                                array('desc' => '网银转账', 'value' => 1),
+                                array('desc' => '现金', 'value' => 2),
+                                array('desc' => '支票', 'value' => 3),
+                                array('desc' => '冲账', 'value' => 4)
+                            );
+                            foreach($options as $n) {
+                                $check_str = '';
+                                if($n['value'] == $extra['payment']) $check_str = 'checked';
+?>
+
+                                    <div class="radio col-xs-3 col-sm-3">
+                                         <label>
+                                         <input name="payment" type="radio" class="ace payment" value="<?php echo $n['value']; ?>" <?php echo $check_str; ?>>
+                                             <span class="lbl"><?php echo $n['desc']; ?></span>
+                                         </label>
+                                    </div>
+<?php 
+                            }
+?>
+                                </div>
+                            </div>
+<?php 
+                        }
+                        if($config['borrowing'] == 1){ 
+?>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">借付款</label>
+                                <div class="col-xs-9 col-sm-9">
+                                <input type="text" class="form-controller col-xs-12" id="borrowing" name="borrowing"  placeholder="借付款" value="<?php echo $extra['borrowing']; ?>">
+                                </div>
+                            </div>
+
+<?php 
+                        }
+                        if($config['location'] == 1){ 
+?>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">出差地</label>
+                                <div class="col-xs-9 col-sm-9">
+                                <input type="text" id="location_from" class="form-controller col-xs-5" name="location_from"  placeholder="出发地" value="<?php echo $extra['location']['start']; ?>">
+                                    <label class="col-sm-1 control-label">到</label>
+                                    <input type="text" id="location_to" class="form-controller col-xs-5" name="location_to"  placeholder="到达地" value="<?php echo $extra['location']['dest']; ?>">
+                                </div>
+                            </div>
+<?php 
+                        }
+                        if($config['period'] == 1){ 
+?>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">出差时间</label>
+                                <div class="col-xs-9 col-sm-9">
+                                    <input type="text" id="period_start" class="form-controller col-xs-5 period" name="period_start"  placeholder="起始时间" value="<?php echo $extra['period']['start']; ?>">
+                                    <label class="col-sm-1 control-label">到</label>
+                                    <input type="text" id="period_end" class="form-controller col-xs-5 period" name="period_end"  placeholder="结束时间" value="<?php echo $extra['period']['end']; ?>">
+                                </div>
+                            </div>
+<?php 
+                        }
+                        if($config['contract'] == 1){ 
+                            $_extra_yes = '';
+                            $_extra_no = '';
+                            if($extra['contract']['available'] == 0) {
+                                $_extra_no = 'checked';
+                            } else {
+                                $_extra_yes = 'checked';
+                            }
+?>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">合同</label>
+                                <div class="col-xs-9 col-sm-9">
+                                    <div class="radio col-xs-2 col-sm-2">
+                                         <label>
+                                         <input name="contract" type="radio" id="contract_yes" class="ace contract" value="1" <?php echo $_extra_yes; ?>>
+                                             <span class="lbl">有</span>
+                                         </label>
+                                    </div>
+                                    <div class="radio col-xs-2 col-sm-2">
+                                         <label>
+                                             <input name="contract" type="radio" id="contract_no" class="ace contract" value="2" <?php echo $_extra_no; ?>>
+                                             <span class="lbl">无</span>
+                                         </label>
+                                    </div>
+                                    <div class="radio col-xs-8 col-sm-8">
+                                    <input type="text" id="contract_note" class="form-controller col-xs-12" name="contract_note"  placeholder="合同备注" value="<?php echo $extra['contract']['note']; ?>" >
+                                    </div>
+                                </div>
+                            </div>
+<?php 
+                        }
+                        if($config['note'] == 1){ 
+?>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">备注</label>
+                                <div class="col-xs-9 col-sm-9">
+                                    <div class="radio col-xs-12 col-sm-12">
+                                    <textarea id="note" rows="2" class="form-controller col-xs-12" name="note"><?php echo trim($extra['note']); ?></textarea>
+                                    </div>
+                                </div>
+                            
+                            </div>
+<?php 
+                        }
+        }
+?>
+
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">总额</label>
@@ -237,6 +375,72 @@ function do_post(force) {
 
     }
 
+    var _period_start = 0;
+    var _period_end = 0;
+
+    var _location_from =  '';
+    var _location_to =  '';
+
+    var _contract = 0;
+    var _contract_note = '';
+
+
+    var _account = 0;
+    var _payment = 0;
+
+
+    var _borrowing = 0;
+    var _note = '';
+
+
+    var _template_id = 0;
+
+    try {
+        _template_id = $('#template_id').val();
+    }catch(e){}
+
+    try {
+        _account = $('#account').val();
+    } catch(e) {}
+
+    try {
+        _note = $('#note').val();
+    } catch(e) {}
+
+
+    try {
+        _borrowing = $('#borrowing').val();
+    } catch(e) {}
+
+    try {
+        _payment = $('input[name="payment"]:checked').val(); 
+    }catch(e){console.log(e);}
+    try {
+        $('.contract').each(function(idx, item){
+            if($(item).attr('checked')){
+                _contract = $(item).val();
+            }
+        });
+    }catch(e){ }
+    if(_contract == 2) {
+        try{
+            _contract_note = $('#contract_note').val();
+        }catch(e){}
+    }
+
+
+    try {
+        _period_start = $('#period_start').val();
+        _period_end = $('#period_end').val();
+    }catch(e){}
+
+    try {
+        _location_from = $('#location_from').val();
+        _location_to = $('#location_to').val();
+    }catch(e){}
+
+
+
     var _renew = $('#renew').val();
     $.ajax({
         type : 'POST',
@@ -246,6 +450,21 @@ function do_post(force) {
                     'title' : $('#title').val(),
                     'receiver' : $('#receiver').val(),
                     'cc' : _cc,
+
+                    'template_id' : _template_id,
+                    'account' : _account,
+                    'payment' : _payment,
+                    'borrowing' : _borrowing,
+                    'location_from' : _location_from,
+                    'location_to' : _location_to,
+                    'period_start' : _period_start,
+                    'period_end' : _period_end,
+                    'contract' : _contract,
+                    'contract_note' : _contract_note,
+                    'note' : _note,
+
+
+
                     'id' : _rid,
                     'renew' : _renew,
                     'force' : force

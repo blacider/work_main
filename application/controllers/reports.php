@@ -465,8 +465,26 @@ class Reports extends REIM_Controller {
         if($report['status'] < 1){
             return redirect(base_url('reports/index'));
         }
-
         $report = $report['data'];
+        $extra = array();
+        if(array_key_exists('extras', $report)) {
+            $extra = json_decode($report['extras'], true);
+        }
+        $config = array();
+        if(!empty($extra)){
+            $profile = $this->session->userdata('profile');
+            $config = array();
+            if($profile &&  array_key_exists('templates', $profile)) {
+                $report_template = $profile['templates'];
+                foreach($report_template as $r) {
+                    if($r['id'] == $extra['template_id']) {
+                        $config = $r;
+                        break;
+                    }
+                }
+            }
+        }
+
         $_members = array();
         $members = $this->users->reim_get_user();
         if($members['status'] > 0){
@@ -481,16 +499,18 @@ class Reports extends REIM_Controller {
         foreach($report['receivers']['cc'] as $m){
             array_push($_ccs, $m['id']);
         }
-        $report['receivers']['managers'] = $_managers;/* implode(',', $_managers); */
-        $report['receivers']['cc'] = $_ccs; /*implode(',', $_ccs);*/
+
+        $report['receivers']['managers'] = $_managers;
+        $report['receivers']['cc'] = $_ccs; 
         $_items = $this->_getitems();
-        //print_r($report);
 
         $this->bsload('reports/edit',
             array(
                 'title' => '修改报告',
                 'members' => $_members,
                 'items' => $_items,
+                'config' => $config,
+                'extra' => $extra,
                 'report' => $report
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -691,7 +711,33 @@ class Reports extends REIM_Controller {
         $save = $this->input->post('renew');
         $force = $this->input->post('force');
         if(!$cc) $cc = array();
-        $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save, $force);
+        $template_id = $this->input->post('template_id');
+        $extra = array();
+        if($template_id) {
+            // 获取并构造extra
+            $_account = $this->input->post('account');
+            $_payment = $this->input->post('payment');
+            $_borrowing = $this->input->post('borrowing');
+            $_location_from = $this->input->post('location_from');
+            $_location_to = $this->input->post('location_to');
+            $_period_start = $this->input->post('period_start');
+            $_period_end = $this->input->post('period_end');
+            $_contract = $this->input->post('contract');
+            $_contract_note = $this->input->post('contract_note');
+            $_note = $this->input->post('note');
+            $_contract = $_contract == 2 ? 0 : 1;
+            $extra = array(
+                'template_id' => $template_id
+                ,'borrowing' => $_borrowing
+                ,'account_id' => $_account
+                ,'payment' => $_payment
+                ,'period' => array('start' => $_period_start, 'end' => $_period_end)
+                ,'location' => array('start' => $_location_from, 'dest' => $_location_to)
+                ,'contract' => array('available' => $_contract, 'note' => $_contract_note)
+                ,'note' => $_note
+            );
+        }
+        $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save, $force, $extra);
         $ret = json_decode($ret, true);
         log_message("debug", "xx:" . json_encode($ret));
         if($ret['code'] <= 0) {
@@ -1240,8 +1286,8 @@ class Reports extends REIM_Controller {
         if($id == 0) return redirect(base_url('reports/newreport'));
         $profile = $this->session->userdata('profile');
         $config = array();
-        if($profile &&  $profile['group'] && array_key_exists('templates', $profile['group'])) {
-            $report_template = $profile['group']['templates'];
+        if($profile &&   array_key_exists('templates', $profile)) {
+            $report_template = $profile['templates'];
             foreach($report_template as $r) {
                 if($r['id'] == $id) {
                     $config = $r;

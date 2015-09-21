@@ -65,6 +65,9 @@
                                     </select>
                                 </div>
                             </div>
+<?php
+                        if(!empty($config)) {
+?>
                             <input type="hidden" id="template_id" name="template_id" value="<?php echo $config['id']; ?>">
 <?php 
                         if($config['account'] == 1){ 
@@ -124,7 +127,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">借付款</label>
                                 <div class="col-xs-9 col-sm-9">
-                                    <input type="text" id="title" class="form-controller col-xs-12" id="borrowing" name="borrowing"  placeholder="借付款">
+                                    <input type="text" class="form-controller col-xs-12" id="borrowing" name="borrowing"  placeholder="借付款">
                                 </div>
                             </div>
 
@@ -193,6 +196,7 @@
                             </div>
 <?php 
                         }
+        }
 ?>
 
                             <div class="form-group">
