@@ -39,7 +39,7 @@ if($last_error) {
                         
 
                         
-                        <label style="left:0;position: absolute;" class="col-sm-2 control-label no-padding-rigtht">类目</label>
+                        <label style="left:0;position: absolute;" class="col-sm-2 control-label no-padding-rigtht">审批人员</label>
                         <script type="text/javascript">
 
                             function showSob(sobId) {
@@ -198,42 +198,38 @@ if($last_error) {
     <h4 class="modal-title">添加审批人员</h4>
 </div>
     <div class="modal-body">
+    <div class="container">
+    <div class="row">
+    <div class="col-xs-12 col-sm-12">
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">人员</label>
-            <div class="col-xs-4 col-sm-4">
-                                <select id="member" class="chosen-select range tag-input-style" multiple="multiple" name="member[]"  data-placeholder="请选择员工">
+            <div class="col-xs-6 col-sm-6">
+                                <select id="member" class="chosen-select range tag-input-style" name="member[]"  data-placeholder="请选择员工">
                                     <?php
                                       $exit = array();
                                     foreach($members as $ug){
-                                        if(!in_array($ug['id'],$sob_members))
-                                        {
                                     ?>
                                     <option value="<?php echo $ug['id']; ?>"><?php echo $ug['nickname'] . " - [" . $ug['email'] . "]"; ?></option>
-                                    <?php
-                                        }
-                                        else
-                                        {
-                                    ?>
-                                    <option selected value="<?php echo $ug['id']; ?>"><?php echo $ug['nickname'] . " - [" . $ug['email'] . "]"; ?></option>
-                                    <?php
-                                        }
-                                    }
 
-                                    ?></select>
+                                    <?php } ?></select>
         </div>
         
     </div>
-    <div class="form-group">
+    <br>
+    <div class="form-group" style="height:auto">
         <label class="col-sm-2 col-xl-2">限额</label>
-        <div class="col-xs-2 col-sm-2">
-            <input type="text" placeholder="请输入限额">
+        <div class="col-xs-3 col-sm-3">
+            <input type="text" style="width:100%" placeholder="请输入限额">
         </div>
-        <div class="col-xs-2 col-sm-2">
-            <label><input type="checkbox">无限额</label>
+        <div class="col-xs-2 col-sm-2" style="position: relative;top: 6px;vertical-align: middle;">
+            <label><input type="checkbox" style="margin-top: -3px;margin-right: 5px;">无限额</label>
         </div>
         
     </div>
 
+    </div>
+    </div>
+    </div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-sm" data-dismiss="modal">
@@ -291,16 +287,7 @@ if($last_error) {
                     },            });
      
            }); 
-        $(".chosen-select-niu").chosen({width:"95%"});
-        $('.chosen-select').chosen({allow_single_deselect:true});
-        $(window)
-            .off('resize.chosen')
-            .on('resize.chosen', function() {
-                $('.chosen-select').each(function() {
-                    var $this = $(this);
-                    $this.next().css({'width': $this.parent().width()});
-                })
-            }).trigger('resize.chosen');
+        $('.chosen-select').chosen({allow_single_deselect:true , width:"100%"});
        
         $('.cancel').click(function(){
             $('#sob_name').val(_sob_name);
