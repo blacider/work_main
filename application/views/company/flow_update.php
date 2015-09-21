@@ -7,7 +7,7 @@
 <!-- <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script>
 -->
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
-
+<script src="/static/ace/js/jquery.json.min.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 <script  type="text/javascript" src="/static/ace/js/date-time/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>
@@ -41,56 +41,11 @@ if($last_error) {
                         
                         <label style="left:0;position: absolute;" class="col-sm-2 control-label no-padding-rigtht">审批人员</label>
                         <script type="text/javascript">
-
-                            function showSob(sobId) {
-                                if (sobId != -1) {
-                                    var extra_type = all_categories[sobId]['extra_type'],name = all_categories[sobId]['name'], note = all_categories[sobId]['note'],force_attach=all_categories[sobId]['force_attach'],code = all_categories[sobId]['sob_code'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'], name = all_categories[sobId]['name'], max_limit = all_categories[sobId]['max_limit'], pid = all_categories[sobId]['pid'];
-                                    $("#form_moda").find('input[name="name"]').val(name);
-                                    $("#menuImg").attr('src', img);
-                                    $('#form_moda').find('input[name="avatar"]').val(all_categories[sobId]['avatar_']);
-                                    $("#form_moda").find('input[name="cid"]').val(id);
-                                    $("#form_moda").find('input[name="code"]').val(code);
-                                    $("#form_moda").find('input[name="note"]').val(note);
-                                    $("#form_moda").find('input[name="max_limit"]').val(max_limit);
-                                    $("#form_moda").find('input[name="pid"]').val(pid);
-
-                                    if(force_attach == 1)
-                                    {
-                                        $("#form_moda").find('input[name="force_attach"]').attr('checked',force_attach).trigger('chosen:updated');
-                                    } else {
-                                        $("#form_moda").find('input[name="force_attach"]').removeAttr('checked').trigger('chosen:updated');
-                                    }
-
-
-                                    if(extra_type)
-                                    {
-                                         $("#form_moda").find('select[name="extra_type"]').val(extra_type).attr('selected',true).trigger('chosen:updated');
-                                    }
-                                }
-                                $('#modal_sob').modal('show');
-                            }
-                            function addSub(dom, id_) {
-                                $('#modal-table').find('input[name="pid"]').val(id_);
-                                $('#modal-table').modal('show');
-                            }
-                            function delectSob(id_) {
-                                if(confirm('确认要删除吗?')){
-                                    location.href = __BASE + "/category/drop/" + id_ + "/" + _sob_id;
-                                }
-                            }
                             function addCate(dom) {
-                                $('#modal-table').find('input[name="pid"]').val(0);
+                                $('#modal-table').find('.chosen-select').trigger("chosen:updated");
                                 $('#modal-table').modal('show');
                             }
-                            function choseRange(value) {
-                                var selectDom = $('.range');
-                                for (var i = 0; i <= 3; i++) {
-                                    if (i == value)
-                                        $(selectDom[i]).prop('disabled',false).trigger("chosen:updated");
-                                    else
-                                        $(selectDom[i]).prop('disabled',true).trigger("chosen:updated");
-                                }
-                            }
+        
                         </script>
                         <style type="text/css">
                                     .drop-cata {
@@ -204,7 +159,7 @@ if($last_error) {
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">人员</label>
             <div class="col-xs-6 col-sm-6">
-                                <select id="member" class="chosen-select range tag-input-style" name="member[]"  data-placeholder="请选择员工">
+                                <select id="member" class="chosen-select range tag-input-style" name="member[]" multiple  data-placeholder="请选择员工">
                                     <?php
                                       $exit = array();
                                     foreach($members as $ug){
@@ -216,10 +171,10 @@ if($last_error) {
         
     </div>
     <br>
-    <div class="form-group" style="height:auto">
+    <div class="form-group" style="clear: both;margin-top: 15px;">
         <label class="col-sm-2 col-xl-2">限额</label>
         <div class="col-xs-3 col-sm-3">
-            <input type="text" style="width:100%" placeholder="请输入限额">
+            <input class="quota" type="text" style="width:100%" placeholder="请输入限额">
         </div>
         <div class="col-xs-2 col-sm-2" style="position: relative;top: 6px;vertical-align: middle;">
             <label><input type="checkbox" style="margin-top: -3px;margin-right: 5px;">无限额</label>
@@ -236,7 +191,7 @@ if($last_error) {
             <i class="ace-icon fa fa-times"></i>
                 取消
         </button>
-        <div class="btn btn-sm btn-primary">确定</div>
+        <div class="btn btn-sm btn-primary" onclick="createPeople()">确定</div>
     </div>
     <input type="text" name="pid" class="hidden">
 </div>
@@ -301,6 +256,17 @@ if($last_error) {
             $('#group').trigger("chosen:updated");
 
         });
+        $("#modal-table").find("label input").click(function(event) {
+            var DOM = $("#modal-table").find(".quota");
+            DOM.attr('disabled', !DOM.attr('disabled'));
+        });
     });
-
+    function createPeople() {
+        var selectDom = $("#modal-table");
+        var uids = selectDom.find("#member").val();
+        var quota = 0;
+        if (!selectDom.find("label input").is(":checked")) {
+            quota = selectDom.find(".quota").val();
+        }
+    }
 </script>
