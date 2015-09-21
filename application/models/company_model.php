@@ -6,6 +6,32 @@ class Company_Model extends Reim_Model {
         parent::__construct();
     }
 
+    public function report_property_delete($id)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('report_property/' . $id);
+
+        $buf = $this->do_Delete($url,$data,$jwt);
+        log_message("debug", 'report_property_delete: ' . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+    public function report_property_update($name,$config,$id)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('report_property/' . $id);
+
+        $data = array('name' => $name, 
+              'config' => $config);
+        $buf = $this->do_Put($url,$data,$jwt);
+        log_message("debug", 'report_property_update: ' . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
     public function report_property_create($name,$config)
     {
         $jwt = $this->session->userdata('jwt');
@@ -13,14 +39,26 @@ class Company_Model extends Reim_Model {
         if(!$jwt) return false;
         $url = $this->get_url('report_property');
 
-        $data(array('name' => $name, 
-              'config' => $config)
-            );
+        $data = array('name' => $name, 
+              'config' => $config);
         $buf = $this->do_Post($url,$data,$jwt);
         log_message("debug", 'report_property_create: ' . $buf);
         $obj = json_decode($buf, true);
         return $obj;
     }
+    
+    public function get_single_reports_settings($id)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('report_property/' . $id);
+        $buf = $this->do_Get($url, $jwt);
+        log_message("debug", 'report_property_single: ' . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
     public function get_reports_settings_list()
     {
         $jwt = $this->session->userdata('jwt');

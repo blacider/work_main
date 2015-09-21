@@ -43,8 +43,8 @@ foreach($report_settings as $item){
 $username = '<td class="u_username">' . $item['name'] . '</td>';
 $role_id =  '<td class="u_role_name">' . date('Y-m-d H:i:s', $item['lastdt']) . '</td>';
     //$role_id = '<td class="u_role_name">' . $item->role_name . '</td>';
-$url_edit = base_url('company/report_property_update/'. $item['id']);
-$operation_upd = '<td style="width:80px;">   <a href="' . $url_edit .'" class="edit"  data-title="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="#modal-table1" data-toggle="modal" class= "copy" data-id="'.$item['id'].'"><span class="fa fa-copy "></span></a> <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
+$url_edit = base_url('company/report_settings_update/'. $item['id']);
+$operation_upd = '<td style="width:80px;">   <a href="' . $url_edit .'" class="edit"  data-title="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="#modal-table1" <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
     $operation = '<td style="width:80px;"><a class="btn btn-xs btn-danger" href="' .  base_url('company/report_property_delete/?id='. $item['id']) .'">
         <i class="ace-icon fa fa-trash-o bigger-120"></i>
         </a></td>';
@@ -141,7 +141,7 @@ $(document).ready(function(){
     $('.edit').each(function(idx, item){
         $(item).click(function(){
             var _id = $(this).data('id');
-                location.href = __BASEURL + "company/report_property_update/" + _id;
+                location.href = __BASEURL + "company/report_settings_update/" + _id;
         });
     });
     $('.del').each(function(){
