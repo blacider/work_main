@@ -264,6 +264,19 @@ class Company_Model extends Reim_Model {
         $obj = json_decode($buf, true);
         return $obj;
     }
+
+    public function get_single_finance_policy($id)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('finance_policy/' . $id);
+        log_message('debug' , 'url: ' . $url);
+        $buf = $this->do_Get($url, $jwt);
+        log_message("debug", 'finace_policy_single: ' . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
     public function drop_finance_policy($id) {
         $jwt = $this->session->userdata('jwt');
         log_message("debug", "JWT: " . json_encode($jwt));
@@ -271,6 +284,19 @@ class Company_Model extends Reim_Model {
         $url = $this->get_url('finance_policy/' . $id);
         $buf = $this->do_Delete($url, array(), $jwt);
         log_message("debug", $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
+    public function update_finance_policy($id,$data)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        log_message('debug', 'update_finance_data: ' . $data);
+        if(!$jwt) return false;
+        $url = $this->get_url('finance_policy/' . $id);
+        $buf = $this->do_Put($url,$data,$jwt);
+        log_message("debug", 'finace_policy_update: ' . $buf);
         $obj = json_decode($buf, true);
         return $obj;
     }

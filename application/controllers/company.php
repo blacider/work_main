@@ -12,6 +12,64 @@ class Company extends REIM_Controller {
     }
 
 
+    public function flow_finance_update($fid)
+    {
+        $this->need_group_it();
+        if(!$fid)
+        {
+            return redirect('/company/approval_flow');
+        }
+        $_steps = $this->input->post('steps');
+        $gids = $this->input->post('gids');
+        $policy = array();
+        $policies = array();
+
+        $steps = json_decode($_steps,True);
+        $count = 1;
+        foreach($steps as $s)
+        {
+            $policy = array('uids' => $s['uids'] , 'quota' => $s['quota'] , 'step' => $count);
+            array_push($policies,$policy); 
+            $count++;
+        }
+        
+        $buf = $this->company->update($fid,json_encode($policies));
+        if($buf['status'] > 0)
+        {
+            $this->sesssion->set_userdata('last_error','更新成功');
+        }
+        else
+        {
+            $this->sesssion->set_userdata('last_error','更新成功');
+        }
+
+        return redirect('/company/approval_flow');
+    }
+    public function flow_update($id)
+    {
+        $buf = $this->company->get_single_finance_policy($id);
+        
+        $gnames = array();
+        $_gnames = $this->ug->get_my_list();
+        if($_gnames['status'] > 0)
+        {
+            $gnames = $_gnames['data']['group'];
+        }
+
+        $this->bsload('company/flow_update',
+            array(
+                'title'=>'更新审批流'
+                ,'gnames' => $gnames
+                ,'breadcrumbs'=> array(
+                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+                    ,array('url'=>'','name'=>'公司设置','class'=> '')
+                    ,array('url'=>'','name'=>'财务审批流','class'=>'')
+                    ,array('url'=>'','name'=>'更新财务审批流','class'=>'')
+                ),
+            )
+        );
+    }
+
     public function update_approve()
     {
 
