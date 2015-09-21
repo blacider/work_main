@@ -45,7 +45,7 @@ class Company extends REIM_Controller {
 
         return redirect('/company/approval_flow');
     }
-    public function flow_update($id)
+    public function flow_update($id = 0)
     {
         $buf = $this->company->get_single_finance_policy($id);
         
