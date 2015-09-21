@@ -3,15 +3,14 @@
 <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
+
 <script src="/static/ace/js/date-time/moment.min.js"></script>
-<!-- <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script> -->
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
 <script src="/static/ace/js/dropzone.min.js"></script>
 
-
-<script src="/static/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="/static/ace/js/date-time/moment.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
-<script  type="text/javascript" src="/static/ace/js/date-time/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>
+<script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script>
 
 
 
@@ -80,11 +79,13 @@ foreach($members as $m) {
                                 <label class="col-sm-1 control-label no-padding-right">银行账号</label>
                                 <div class="col-xs-9 col-sm-9">
                                     <select class="chosen-select tag-input-style" name="account" id="account" data-placeholder="请选择银行账号">
-                                        <?php foreach($members as $m) {
-                                            if($user['id'] != $m['id']){?>
-                                                <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
+                                        <?php foreach($user['banks'] as $m) {
+                                            if($extra['account'] == $m['id']){ ?>
+                                                <option value="<?php echo $m['id']; ?>" selected><?php echo $m['account']; ?> - [<?php echo substr($m['cardno'], 0, -5) . "xxxxx"; ?> ]</option>
                                        
-                                        <?php }} ?>
+                                        <?php }  else { ?>
+                                                <option value="<?php echo $m['id']; ?>" ><?php echo $m['account']; ?> - [<?php echo substr($m['cardno'], 0, -5) . "xxxxx"; ?> ]</option>
+<?php } } ?>
                                     </select>
                                 </div>
                             </div>
@@ -151,9 +152,26 @@ foreach($members as $m) {
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">出差时间</label>
                                 <div class="col-xs-9 col-sm-9">
-                                    <input type="text" id="period_start" class="form-controller col-xs-5 period" name="period_start"  placeholder="起始时间" value="<?php echo $extra['period']['start']; ?>">
+<?php
+                            $s = trim($extra['period']['start']);
+                            $e =  trim($extra['period']['end']);
+                            if($s == "0" || $s == "" || $s == "NaN"){
+                                $s = date('Y-m-d H:i:s');
+                            } else {
+                                $s = date('Y-m-d H:i:s', $s);
+                            }
+                            if($e == "0" || $e == "" || $e == "NaN"){
+                                $e = date('Y-m-d H:i:s');
+                            } else {
+                                $e = date('Y-m-d H:i:s', $e);
+                            }
+?>
+
+                                    <input type="text" id="period_start" class="form-controller col-xs-5 period" name="period_start"  placeholder="起始时间" value="<?php echo $s; ?>" />
+<input type="hidden" id="sdt" value="<?php echo strtotime($extra['period']['start']); ?>" >
                                     <label class="col-sm-1 control-label">到</label>
-                                    <input type="text" id="period_end" class="form-controller col-xs-5 period" name="period_end"  placeholder="结束时间" value="<?php echo $extra['period']['end']; ?>">
+                                    <input type="text" id="period_end" class="form-controller col-xs-5 period" name="period_end"  placeholder="结束时间" value="<?php echo $e; ?>" >
+<input type="hidden" id="edt" value="<?php echo strtotime($extra['period']['end']); ?>" >
                                 </div>
                             </div>
 <?php 
@@ -414,7 +432,7 @@ function do_post(force) {
 
     try {
         _payment = $('input[name="payment"]:checked').val(); 
-    }catch(e){console.log(e);}
+    }catch(e){}
     try {
         $('.contract').each(function(idx, item){
             if($(item).attr('checked')){
@@ -430,8 +448,8 @@ function do_post(force) {
 
 
     try {
-        _period_start = $('#period_start').val();
-        _period_end = $('#period_end').val();
+        _period_end = (new Date($("#period_end").val())).getTime() / 1000;
+        _period_start = (new Date($("#period_start").val())).getTime() / 1000;
     }catch(e){}
 
     try {
@@ -487,19 +505,74 @@ function do_post(force) {
                 }
             });
 }
+String.prototype.trim=function() {
+    return this.replace(/(^\s*)(\s*$)/g, '');
+}
+Date.prototype.format = function(format) {  
+        /* 
+            *      * eg:format="yyyy-MM-dd hh:mm:ss"; 
+        *           */  
+        var o = {  
+            "M+" : this.getMonth() + 1, // month  
+                "d+" : this.getDate(), // day  
+        "h+" : this.getHours(), // hour  
+        "m+" : this.getMinutes(), // minute  
+        "s+" : this.getSeconds(), // second  
+        "q+" : Math.floor((this.getMonth() + 3) / 3), // quarter  
+        "S" : this.getMilliseconds()  
+        };  
+
+        if (/(y+)/.test(format)) {  
+            format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4  
+                - RegExp.$1.length));  
+        }  
+
+        for (var k in o) {  
+            if (new RegExp("(" + k + ")").test(format)) {  
+                format = format.replace(RegExp.$1, RegExp.$1.length == 1  
+                    ? o[k]  
+                    : ("00" + o[k]).substr(("" + o[k]).length));  
+            }  
+        }  
+        return format;  
+};
 $(document).ready(function(){
-    //var now = moment();
-    $('#date-timepicker1').datetimepicker({
+    //$('#date-timepicker2').val();
+    $('.contract').each(function(idx, item) {
+        $(this).click(function() {
+            var _val = $(this).val();
+            if(_val == 2) {
+                $('#contract_note').show();
+            } else {
+                $('#contract_note').hide();
+            }
+        });
+    });
+    var _sdt = $('#sdt').val().trim();
+    var _edt = $('#sdt').val().trim();
+    if(!_sdt || _sdt == "") { 
+        _sdt = new Date(); //new Date();
+        _sdt = _sdt.format("yyyy-MM-dd hh:mm:ss");
+    }
+    if(!_edt || _edt == "") {
+        _edt = new Date(); //new Date();
+        _edt = _edt.format("yyyy-MM-dd hh:mm:ss");
+    }
+
+    $('#period_start').datetimepicker({
         language: 'zh-cn',
-            //locale:  moment.locale('zh-cn'),
-            useCurrent: true,
-            format: 'YYYY-MM-DD HH:mm',
-            linkField: "dt",
-            linkFormat: "YYYY-MM-DD HH:mm",
-            sideBySide: true
-    }).next().on('dp.change', function(ev){
-        console.log(ev.date);
-    }).on(ace.click_event, function(){
+        defaultDate: _sdt,
+        format: 'YYYY-MM-DD HH:mm',
+        linkField: "sdt",
+    }).next().on(ace.click_event, function(){
+        $(this).prev().focus();
+    });
+    $('#period_end').datetimepicker({
+        language: 'zh-cn',
+        defaultDate: _edt,
+        format: 'YYYY-MM-DD HH:mm',
+        linkField: "edt",
+    }).next().on(ace.click_event, function(){
         $(this).prev().focus();
     });
     $('.chosen-select').chosen({allow_single_deselect:true}); 
@@ -512,59 +585,19 @@ $(document).ready(function(){
             })
         }).trigger('resize.chosen');
 
-    /*
-    Dropzone.autoDiscover = false;
-    try {
-        var myDropzone = new Dropzone("#dropzone" , {
-            paramName: "file", 
-                url: __BASE + '/items/images',
-                maxFilesize: 1.5,
-                addRemoveLinks : true,
-                dictDefaultMessage : '<i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i><br /><span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i> 把发票照片拖拽至虚线框</span>  <br /><span class="smaller-80 grey">(或者点击上传)</span> <br />',
-                dictResponseError: '照片上传出错!',
-                previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-details\">\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n    <div class=\"dz-size\" data-dz-size></div>\n    <img data-dz-thumbnail />\n  </div>\n  <div class=\"progress progress-small progress-striped active\"><div class=\"progress-bar progress-bar-success\" data-dz-uploadprogress></div></div>\n  <div class=\"dz-success-mark\"><span></span></div>\n  <div class=\"dz-error-mark\"><span></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n</div>"
-        });
-        myDropzone.on('success', function(ev, str_data){
-            data = eval("(" + str_data + ")"); 
-            if(data.status > 0){
-                var _data =  data.data;
-                var _id = _data.id;
-                if(_id > 0){
-                    var _exists = ($('#images').val()).split(",");
-                    if($.inArray(_id, _exists) < 0){
-                        _exists.push(_id);
-                    }
-                    $('#images').val(_exists.join(','));
-                }
-            }
-        });
-        myDropzone.on('removedfile', function(ev, str_data) {
-        });
-    } catch(e) {
-        console.log(e);
-        alert('Dropzone.js does not support older browsers!');
-    }
-     */
 
     $('#all_item').click(function(){
         if($('#all_item').is(":checked"))
         {
-            //console.log("checked");
             $('.amount').each(function(){
                 $(this).prop('checked',true);
-                //console.log($(this).is(":checked"));
-               // $(this).trigger('checked');
             });   
-
-            //$("[name='item[]']").prop('checked',true);
         }
         else
         {
             $('.amount').each(function(){
                 $(this).prop('checked',false);
-              // $(this).removeAttr("checked"); 
             });
-           // $("[name='item[]']").prop('checked',false);
         }
         update_tamount();
      });

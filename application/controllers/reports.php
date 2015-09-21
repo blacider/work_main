@@ -334,10 +334,10 @@ class Reports extends REIM_Controller {
             $extra = array(
                 'template_id' => $template_id
                 ,'borrowing' => $_borrowing
-                ,'account_id' => $_account
+                ,'account' => $_account
                 ,'payment' => $_payment
                 ,'period' => array('start' => $_period_start, 'end' => $_period_end)
-                ,'location' => array('start' => $_location_from, 'dest' => $_period_end)
+                ,'location' => array('start' => $_location_from, 'dest' => $_location_to)
                 ,'contract' => array('available' => $_contract, 'note' => $_contract_note)
                 ,'note' => $_note
             );
@@ -729,7 +729,7 @@ class Reports extends REIM_Controller {
             $extra = array(
                 'template_id' => $template_id
                 ,'borrowing' => $_borrowing
-                ,'account_id' => $_account
+                ,'account' => $_account
                 ,'payment' => $_payment
                 ,'period' => array('start' => $_period_start, 'end' => $_period_end)
                 ,'location' => array('start' => $_location_from, 'dest' => $_location_to)

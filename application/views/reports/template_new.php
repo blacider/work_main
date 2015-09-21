@@ -77,11 +77,10 @@
                                 <label class="col-sm-1 control-label no-padding-right">银行账号</label>
                                 <div class="col-xs-9 col-sm-9">
                                     <select class="chosen-select tag-input-style" name="account" id="account" data-placeholder="请选择银行账号">
-                                        <?php foreach($members as $m) {
-                                            if($user['id'] != $m['id']){?>
-                                                <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
+                                        <?php foreach($user['banks'] as $m) { ?>
+                                                <option value="<?php echo $m['id']; ?>"><?php echo $m['account']; ?> - [<?php echo substr($m['cardno'], 0, -5) . "xxxxx"; ?> ]</option>
                                        
-                                        <?php }} ?>
+                                        <?php } ?>
                                     </select>
                                 </div>
                             </div>
@@ -516,6 +515,32 @@ function do_post(force) {
 }
 
 $(document).ready(function(){
+    $('#period_start').datetimepicker({
+        language: 'zh-cn',
+            //locale:  moment.locale('zh-cn'),
+            useCurrent: true,
+            format: 'YYYY-MM-DD HH:mm',
+            linkField: "dt",
+            linkFormat: "YYYY-MM-DD HH:mm",
+            sideBySide: true
+    }).next().on('dp.change', function(ev){
+        console.log(ev.date);
+    }).on(ace.click_event, function(){
+        $(this).prev().focus();
+    });
+    $('#period_end').datetimepicker({
+        language: 'zh-cn',
+            //locale:  moment.locale('zh-cn'),
+            useCurrent: true,
+            format: 'YYYY-MM-DD HH:mm',
+            linkField: "dt",
+            linkFormat: "YYYY-MM-DD HH:mm",
+            sideBySide: true
+    }).next().on('dp.change', function(ev){
+        console.log(ev.date);
+    }).on(ace.click_event, function(){
+        $(this).prev().focus();
+    });
     $('#contract_note').hide();
     $('.contract').each(function(idx, item) {
         $(this).click(function() {
