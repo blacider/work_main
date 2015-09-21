@@ -142,6 +142,7 @@ class REIM_Controller extends CI_Controller{
             log_message("debug","Nothing ");
             redirect(base_url('login'), 'refresh');
         }
+        $report_template = array();
 
         if(!$profile){
             $custom_data['opt_error'] = $this->session->userdata('last_error');
@@ -150,11 +151,15 @@ class REIM_Controller extends CI_Controller{
             $custom_data['tip'] = $this->module_tip_model->get_tip($custom_data['uid']);
             $custom_data['description'] =  '';
         } else {
+            if(array_key_exists('templates', $profile['group'])) {
+                $report_template = $profile['group']['templates'];
+            }
             $this->session->set_userdata('user', $profile);
             $custom_data['profile'] = $profile;
         }
 
         $custom_data['groupname'] = $this->session->userdata('groupname');
+        $custom_data['report_templates'] = $report_template;
         log_message("debug", "Get From Cache =====================");
         log_message("debug", $custom_data['groupname']);
         log_message("debug", "Get From Cache =====================");

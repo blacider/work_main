@@ -316,13 +316,37 @@ class Reports extends REIM_Controller {
         $receiver = $this->input->post('receiver');
         $cc = $this->input->post('cc');
         $force = $this->input->post('force');
+        $template_id = $this->input->post('template_id');
+        $extra = array();
+        if($template_id) {
+            // 获取并构造extra
+            $_account = $this->input->post('account');
+            $_payment = $this->input->post('payment');
+            $_borrowing = $this->input->post('borrowing');
+            $_location_from = $this->input->post('location_from');
+            $_location_to = $this->input->post('location_to');
+            $_period_start = $this->input->post('period_start');
+            $_period_end = $this->input->post('period_end');
+            $_contract = $this->input->post('contract');
+            $_contract_note = $this->input->post('contract_note');
+            $_note = $this->input->post('note');
+            $_contract = $_contract == 2 ? 0 : 1;
+            $extra = array(
+                'template_id' => $template_id
+                ,'borrowing' => $_borrowing
+                ,'account_id' => $_account
+                ,'payment' => $_payment
+                ,'period' => array('start' => $_period_start, 'end' => $_period_end)
+                ,'location' => array('start' => $_location_from, 'dest' => $_period_end)
+                ,'contract' => array('available' => $_contract, 'note' => $_contract_note)
+                ,'note' => $_note
+            );
+        }
         if(!$cc) $cc = array();
         if(!$force) $force = 0;
         $save = $this->input->post('renew');
-        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save, $force);
+        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save, $force, $extra);
         $ret = json_decode($ret, true);
-        log_message("debug", "xx:" . json_encode($ret));
-        log_message("debug", "Cates:" . $ret['code']);
         if($ret['code'] <= 0) {
             log_message("debug", "Cates:" . $ret['code']);
             if($ret['code'] == -71)
@@ -1210,6 +1234,44 @@ class Reports extends REIM_Controller {
             //print_r($_excel);
             self::render_to_download('工作表1', $_excel, 'u8_' . date('Y-m-d', time()) . ".xls");
         }
+    }
+
+    public function report_template($id = 0){
+        if($id == 0) return redirect(base_url('reports/newreport'));
+        $profile = $this->session->userdata('profile');
+        $config = array();
+        if($profile &&  $profile['group'] && array_key_exists('templates', $profile['group'])) {
+            $report_template = $profile['group']['templates'];
+            foreach($report_template as $r) {
+                if($r['id'] == $id) {
+                    $config = $r;
+                }
+            }
+            if(!empty($config)){
+                $_members = array();
+                $members = $this->users->reim_get_user();
+                if($members['status'] > 0){
+                    $_members = $members['data']['members'];
+                }
+
+                $_items = $this->_getitems();
+                log_message('debug',json_encode($_items));
+
+                return $this->bsload('reports/template_new',
+                    array(
+                        'title' => '新建[' . $config['name'] . '] 报告',
+                        'members' => $_members,
+                        'config' => $config,
+                        'items' => $_items
+                        ,'breadcrumbs' => array(
+                            array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                            ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
+                            ,array('url'  => '', 'name' => '新建[' . $config['name'] . '] 报告', 'class' => '')
+                        ),
+            ));
+            }
+        }
+        return redirect(base_url('reports/newreport'));
     }
 }
 

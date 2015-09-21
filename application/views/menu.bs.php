@@ -188,13 +188,34 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
     <b class="arrow"></b>
     <ul class="submenu nav-show" style="display: block;">
         <li class="hsub" id="newreport">
+
+<?php if(count($report_templates) > 0) { ?>
+        <a href="#"  class="dropdown-toggle">
+            <i class="menu-icon fa fa-caret-right"></i>
+            新建报告 <?php echo count($report_templates); ?>
+        </a>
+<?php } else { ?>
         <a href="<?php echo base_url('reports/newreport'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
             新建报告
         </a>
+<?php } ?>
 
         <b class="arrow"></b>
+<?php if(count($report_templates) > 0) { ?>
+<ul class="submenu rushumenu">
+<?php foreach($report_templates as $r) { ?>
+                                    <li class="">
+                                        <a href="<?php echo base_url('reports/report_template/' . $r['id']); ?>">
+<?php echo $r['name']; ?>
+                                        </a>
 
+                                        <b class="arrow"></b>
+                                    </li>
+<?php } ?>
+</ul>
+
+<?php } ?>
         </li>
         <li class="hsub" id="index">
         <a href="<?php echo base_url('reports'); ?>" >
