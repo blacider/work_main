@@ -11,6 +11,41 @@ class Company extends REIM_Controller {
 	$this->load->model('reim_show_model','reim_show');
     }
 
+    public function report_settings_new()
+    {
+        $this->bsload('company/report_settings_new',
+            array(
+                'title'=>'新建报告模板'
+                ,'breadcrumbs'=> array(
+                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+                    ,array('url'=>'','name'=>'公司设置','class'=> '')
+                    ,array('url'=>'','name'=>'新建报告模板','class'=>'')
+                ),
+            )
+        );
+    }
+
+    public function report_settings_list()
+    {
+        $settings = array();
+        $_settings = $this->company->get_reports_settings_list();
+        if($_settings['status'] > 0)
+        {
+            $settings = $_settings['data'];
+        }
+
+        $this->bsload('company/report_settings',
+            array(
+                'title'=>'报告设置'
+                ,'report_settins'=>$settings
+                ,'breadcrumbs'=> array(
+                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+                    ,array('url'=>'','name'=>'公司设置','class'=> '')
+                    ,array('url'=>'','name'=>'报告设置','class'=>'')
+                ),
+            )
+        );
+    }
 
     public function flow_finance_update($fid)
     {
@@ -48,6 +83,15 @@ class Company extends REIM_Controller {
     public function flow_update($id)
     {
         $buf = $this->company->get_single_finance_policy($id);
+        $_group = $this->groups->get_my_list();
+
+        $gmember = array();
+        if($_group) {
+            if(array_key_exists('gmember', $_group['data'])){
+                $gmember = $_group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
         
         $gnames = array();
         $_gnames = $this->ug->get_my_list();
@@ -60,6 +104,7 @@ class Company extends REIM_Controller {
             array(
                 'title'=>'更新审批流'
                 ,'gnames' => $gnames
+                ,'members' => $gmember
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')

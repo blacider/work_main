@@ -6,6 +6,32 @@ class Company_Model extends Reim_Model {
         parent::__construct();
     }
 
+    public function report_property_create($name,$config)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('report_property');
+
+        $data(array('name' => $name, 
+              'config' => $config)
+            );
+        $buf = $this->do_Post($url,$data,$jwt);
+        log_message("debug", 'report_property_create: ' . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+    public function get_reports_settings_list()
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('report_property/0');
+        $buf = $this->do_Get($url, $jwt);
+        log_message("debug", 'report_property_list: ' . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
 	public function delete_approve($pid)
 	{
 		$jwt = $this->session->userdata('jwt');
