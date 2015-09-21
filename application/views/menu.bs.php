@@ -471,6 +471,12 @@ if($profile['admin'] == 1 || $profile['admin'] == 2) {
         <b class="arrow"></b>
         </li>
 
+        <li class="hsub" id="index">
+        <a href="<?php echo base_url('bills/finance_flow'); ?>" >待审批</a>
+
+        <b class="arrow"></b>
+        </li>
+
         <li class="hsub" id="exports">
         <a href="<?php echo base_url('bills/exports'); ?>" > 已结束</a>
         <b class="arrow"></b>

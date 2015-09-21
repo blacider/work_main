@@ -896,7 +896,7 @@ class Reports extends REIM_Controller {
             {
                 if($d['mdecision'] == 1 && !$d['cc_flag']){
                     $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del"  data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-decision="1" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in texport' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>' .  '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
-                } else {
+                } else { 
                     $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in ' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span></div>';
                 }
 
