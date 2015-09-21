@@ -59,6 +59,7 @@ class Company extends REIM_Controller {
         $payment = $this->input->post('payment');
         $contract = $this->input->post('contract');
         $note = $this->input->post('note');
+        $images = $this->input->post('images');
 
         $config = array();
         $config['borrowing'] = $borrowing;
@@ -68,6 +69,7 @@ class Company extends REIM_Controller {
         $config['payment'] = $payment;
         $config['contract'] = $contract;
         $config['note'] = $note;
+        $config['logo'] = $images;
         log_message('debug', 'config : ' . json_encode($config));
         foreach($config as $key => $value)
         {
