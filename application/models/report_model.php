@@ -83,6 +83,16 @@ class Report_Model extends Reim_Model {
         return $obj;
     }
 
+    public function get_finance(){
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        log_message("debug", "JWT:" . json_encode($jwt));
+		$url = $this->get_url("report_finance_flow/list");
+		$buf = $this->do_Get($url, $jwt);
+        log_message("debug", "report_finance_flow:" . $buf);
+		$obj = json_decode($buf, true);
+        return $obj;
+    }
     public function get_all_bills(){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
