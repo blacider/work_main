@@ -192,7 +192,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 <?php if(count($report_templates) > 0) { ?>
         <a href="#"  class="dropdown-toggle">
             <i class="menu-icon fa fa-caret-right"></i>
-            新建报告 <?php echo count($report_templates); ?>
+            新建报告 
         </a>
 <?php } else { ?>
         <a href="<?php echo base_url('reports/newreport'); ?>" >

@@ -99,10 +99,10 @@ foreach($members as $m) {
                                 <div class="col-xs-9 col-sm-9">
 <?php 
                             $options = array(
-                                array('desc' => '网银转账', 'value' => 1),
-                                array('desc' => '现金', 'value' => 2),
-                                array('desc' => '支票', 'value' => 3),
-                                array('desc' => '冲账', 'value' => 4)
+                                array('desc' => '网银转账', 'value' => 0),
+                                array('desc' => '现金', 'value' => 1),
+                                array('desc' => '支票', 'value' => 2),
+                                array('desc' => '冲账', 'value' => 3)
                             );
                             foreach($options as $n) {
                                 $check_str = '';
@@ -156,14 +156,14 @@ foreach($members as $m) {
                             $s = trim($extra['period']['start']);
                             $e =  trim($extra['period']['end']);
                             if($s == "0" || $s == "" || $s == "NaN"){
-                                $s = date('Y-m-d H:i:s');
+                                $s = @date('Y-m-d H:i:s');
                             } else {
-                                $s = date('Y-m-d H:i:s', $s);
+                                $s = @date('Y-m-d H:i:s', $s);
                             }
                             if($e == "0" || $e == "" || $e == "NaN"){
-                                $e = date('Y-m-d H:i:s');
+                                $e = @date('Y-m-d H:i:s');
                             } else {
-                                $e = date('Y-m-d H:i:s', $e);
+                                $e = @date('Y-m-d H:i:s', $e);
                             }
 ?>
 
@@ -406,7 +406,7 @@ function do_post(force) {
     var _account = 0;
     var _account_name = '';
     var _account_no = '';
-    var _payment = 0;
+    var _payment = -1;
 
 
     var _borrowing = 0;
@@ -438,7 +438,7 @@ function do_post(force) {
 
     try {
         _payment = $('input[name="payment"]:checked').val(); 
-        if(!_payment) _payment = 0;
+        if(!_payment) _payment = -1;
     }catch(e){}
     try {
         $('.contract').each(function(idx, item){
@@ -557,6 +557,7 @@ $(document).ready(function(){
             }
         });
     });
+    try{
     var _sdt = $('#sdt').val().trim();
     var _edt = $('#sdt').val().trim();
     if(!_sdt || _sdt == "") { 
@@ -584,6 +585,7 @@ $(document).ready(function(){
     }).next().on(ace.click_event, function(){
         $(this).prev().focus();
     });
+    }catch(e){}
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
         .off('resize.chosen')
