@@ -47,6 +47,7 @@ function bind_event(){
 var selectRows = [];    
 
 try{
+    var FLAG = 1;
 jQuery(grid_selector).jqGrid({
     url: __BASE + 'bills/listdata/' + __STATUS,
     mtype: "GET",
@@ -86,6 +87,10 @@ jQuery(grid_selector).jqGrid({
             updateActionIcons(table);
             updatePagerIcons(table);
             enableTooltips(table);
+            if (FLAG) {
+                $("#globalSearch").click();
+                FLAG = 0;
+            }
         }, 0);
     },
     onSelectAll : function(aRows, status) {

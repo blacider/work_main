@@ -366,6 +366,11 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <a href="<?php echo base_url('category/account_set'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 账套管理 </a>
         <b class="arrow"></b>
         </li>
+
+        <li class="hsub" id="cexport">
+        <a href="<?php echo base_url('category/cexport'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 账套导入/导出 </a>
+        <b class="arrow"></b>
+        </li>
 <!--
         <li class="hsub" id="index">
         <a href="<?php echo base_url('category'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 分类管理 </a>
@@ -391,6 +396,10 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     <b class="arrow"></b>
     <ul class="submenu nav-show" style="display: block;">
 
+        <li class="hsub" id="approval_flow">
+        <a href="<?php echo base_url('company/approval_flow'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 财务审批流</a>
+        <b class="arrow"></b>
+        </li>
         <li class="hsub" id="submit">
         <a href="<?php echo base_url('company/common'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 通用规则 </a>
         <b class="arrow"></b>
