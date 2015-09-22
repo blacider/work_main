@@ -345,13 +345,13 @@ uploader.on( 'uploadAccept', function( file, response ) {
     if ( response['status'] > 0 ) {
         // 通过return false来告诉组件，此文件上传有错。
         var imageDom = $('#' + file.file.id);
-        imagesDict[file.file.id] = 'WU_FILE_' + String(response['data']['id']);
+        imagesDict[file.file.id] = String(response['data']['url']);
         if ($("input[name='images']").val() == '') {
-            $("input[name='images']").val(response['data']['id']);
+            $("input[name='images']").val(String(response['data']['url']));
         } else {
-            $("input[name='images']").val($("input[name='images']").val() + ',' + response['data']['id']);
+            $("input[name='images']").val($("input[name='images']").val() + ',' + String(response['data']['url']));
         }
-        imageUrl[response['data']['id']] = response['data']['url'];
+        imageUrl[response['data']['url'].split('/')[9]] = response['data']['url'];
         return true;
     } else return false;
 });
