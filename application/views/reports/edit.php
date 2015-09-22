@@ -113,9 +113,9 @@ echo $buf;
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td>
                                                 <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
-                                                    <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="3905"></span>
-                                                    <span class="ui-icon green ui-icon-pencil tedit" data-id="3905"></span>
-                                                    <span class="ui-icon ui-icon-trash red  tdel" data-id="3905"></span>
+                                                    <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="<?php echo $i['id']; ?>"></span>
+                                                    <span class="ui-icon green ui-icon-pencil tedit" data-id="<?php echo $i['id']; ?>"></span>
+                                                    <span class="ui-icon ui-icon-trash red  tdel" data-id="<?php echo $i['id']; ?>"></span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -133,9 +133,9 @@ foreach($items as $i){
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td>
                                                 <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
-                                                    <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="3905"></span>
-                                                    <span class="ui-icon green ui-icon-pencil tedit" data-id="3905"></span>
-                                                    <span class="ui-icon ui-icon-trash red  tdel" data-id="3905"></span>
+                                                    <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="<?php echo $i['id']; ?>"></span>
+                                                    <span class="ui-icon green ui-icon-pencil tedit" data-id="<?php echo $i['id']; ?>"></span>
+                                                    <span class="ui-icon ui-icon-trash red  tdel" data-id="<?php echo $i['id']; ?>"></span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -327,6 +327,33 @@ $(document).ready(function(){
     }
      */
 
+
+$('.txdetail').each(function(){
+        $(this).click(function(){
+            var _id = $(this).data('id');
+            location.href = __BASE + "items/show/" + _id;
+        });
+    });
+    $('.txdel').each(function() {
+        $(this).click(function(){
+            var _id = $(this).data('id');
+           // location.href = __BASE + "items/del/" + _id + "/1";
+           $.ajax({
+            url:__BASE + "items/del/" + _id + "/1",
+            method:'GET',
+            success:function(data){
+                $('#item'+_id).remove();
+                show_notify('删除成功');
+            }
+           });
+        });
+    });
+    $('.txedit').each(function() {
+        $(this).click(function(){
+            var _id = $(this).data('id');
+            location.href = __BASE + "items/edit/" + _id;
+        });
+    });
     $('#all_item').click(function(){
         if($('#all_item').is(":checked"))
         {
