@@ -292,8 +292,8 @@ var uploader = WebUploader.create({
     }
 });
 uploader.on( 'beforeFileQueued', function( file ) {
-    if (imagesDict.length >= 1) {
-        show_notify("数量超过限制，请删除后再次上传！")；
+    if ($('#images').val() != "") {
+        show_notify("数量超过限制，请删除后再次上传");
         return false;
     } else {
         return true;
@@ -376,7 +376,7 @@ uploader.on( 'uploadAccept', function( file, response ) {
         } else {
             $("input[name='images']").val($("input[name='images']").val() + ',' + String(response['data']['url']));
         }
-        imageUrl[response['data']['url'].split('/')[9]] = response['data']['url'];
+        imageUrl[response['data']['url'].split('/')[11]] = response['data']['url'];
         return true;
     } else return false;
 });
