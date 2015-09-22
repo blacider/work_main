@@ -235,18 +235,21 @@
     function createPeople() {
         var selectDom = $("#modal-table");
         var uids = selectDom.find("#member").val();
-        var quota = 0;
+        var nickname = getNickname(uids);
+        var quota = -1;
         if (!selectDom.find("label input").is(":checked")) {
             quota = selectDom.find(".quota").val();
         }
         if (pointer == 0) {
             addPeopleLine(addToDist({
                 "uids":uids,
-                "quota":Number(quota).toFixed(2)
+                "quota":Number(quota).toFixed(2),
+                "nicknames":nickname
             }));
         } else {
             peoples[pointer].quota = quota;
             peoples[pointer].uids = uids;
+            peoples[pointer].nicknames = nickname;
             changePeopleLine();
         }
         
@@ -262,6 +265,8 @@
         if (pointer != 0) {
             var dom = $("#peopleLine_"+pointer);
             dom.find(".quota").text('限额：'+((data["quota"] == -1)?('无限额'):(Number(data["quota"]).toFixed(2))));
+            dom.find(".dropdown-toggle").empty().text(data["nicknames"]).append($(
+                    '<span class="caret" style="float: right; top: 30px; margin-top: 20px; margin-right: 20px;"></span>'));
         }
     }
     function addPeopleLine(index) {
@@ -310,7 +315,7 @@
         if (data['quota'] == -1) {
             dom.find("label input").attr('checked',true);
             dom.find(".quota").attr('disabled', true);
-            dom.find(".quota").val("0");
+            dom.find(".quota").val("");
         } else {
             dom.find("label input").attr('checked',false);
             dom.find(".quota").attr('disabled', false);
@@ -325,4 +330,15 @@
     var peoples = new Array();
     var peopleIndex = 0;
     var pointer = 0;
+    var gmember = <?php echo json_encode($members); ?>;
+    function getNickname(uids) {
+        var nickname = new Array();
+        for (var i = 0; i < uids.length; i++) {
+            for(item in gmember) {
+                if (gmember[item].id == uids[i])
+                    nickname.push(gmember[item].nickname);
+            }
+        }
+        return nickname.join('|');
+    }
 </script>
