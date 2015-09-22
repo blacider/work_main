@@ -15,7 +15,7 @@
 
 <div class="page-content">
 <div class="page-content-area">
-    <form role="form"  class="form-horizontal"  enctype="multipart/form-data" id="mainform">
+    <form class="form-horizontal"> 
         <div class="row">
             <div class="container">
                 <div class="row">
@@ -24,7 +24,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-rigtht">名称</label>
                             <div class="col-xs-3 col-sm-3">
-                                <input type="text" class="form-controller col-xs-12" name="name" value=<?php echo $policies['name']?> placeholder="输入名称"></div>
+                                <input type="text" class="form-controller col-xs-12" id="name" value=<?php echo $policies['name']?> placeholder="输入名称"></div>
                         </div>
 
                         
@@ -110,7 +110,7 @@
         </div>
     </div>
 </div>
-</form>
+    </form>
 </div>
 </div>
 
@@ -179,28 +179,34 @@
             addPeopleLine(addToDist(policies.step[item]));
         }
         $('.renew').click(function(){
-
-            var sname = $('#sob_name').val();
-            var sgroups = $('#group').val();
-            //if(sname)
-         
-            if(sname == '')
+            var id = policies.id;
+            var name = $('#name').val();
+            var group = $('#group').val();
+            var step = new Array();
+            for (item in peoples) {
+                if (item != null || item != undefined) {
+                    step.push(peoples[item]);
+                }
+            }
+            if(name == '')
             {
-                $('#sob_name').focus();
-                show_notify("请输入用户名");
+                $('#name').focus();
+                show_notify("请输入名称");
                 return false;
             }
-            /*if(sgroups == null)
+            if(step.length == 0)
             {
-                $('#group').focus();
-                show_notify("请选择部门");
+                show_notify("请添加人员");
                 return false;
-            }*/
-
+            }
                   $.ajax({
                 type:"post",
-                url:__BASE+"company/flow_finance_update/"+fid,
-                data:{},
+                url:__BASE+"company/flow_finance_update/"+id,
+                data:{
+                    gids:group,
+                    name:name,
+                    steps:$.toJSON(step)
+                },
                 dataType:'json',
                 success:function(data){
                        show_notify('保存成功');
@@ -216,16 +222,7 @@
         $('.chosen-select').chosen({allow_single_deselect:true , width:"100%"});
        
         $('.cancel').click(function(){
-            $('#sob_name').val(_sob_name);
-            $("#group").val('');
-            for (var item in _sob_groups) {
-                if (item != undefined) {
-                    var _id = _sob_groups[item].group_id;
-                    $('select').find('option[value="'+ _id +'"]').attr('selected', 'true');
-                }
-            }
-            $('#group').trigger("chosen:updated");
-
+            
         });
         $("#modal-table").find("label input").click(function(event) {
             var DOM = $("#modal-table").find(".quota");
