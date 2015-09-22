@@ -2,7 +2,7 @@
 function show_modal(){
             $('#modal_next').modal('show');
 }
-function chose_others_zero(item) {
+function chose_others_zero(item,nextId) {
     //console.log(item);
     for (var item in getData) {
         if (item != undefined) {
@@ -12,6 +12,11 @@ function chose_others_zero(item) {
         }
     }
     $('#modal_next').modal('show');
+
+    $('#modal_managers').val(nextId).prop('selected',true);
+    $('#modal_managers').trigger('chosen:updated');
+    $('#modal_managers').attr('disabled',true);
+    
 }
 function chose_others(_id) {
     $('#modal_next_').modal('hide');
@@ -41,10 +46,13 @@ function bind_event(){
                         getData = data['data'].suggestion;
                         if (data['data'].complete == 0) {
                             $('#rid').val(_id);
-                            chose_others_zero(_id);
+                            console.log('还不能直接结束');
+                            chose_others_zero(_id,data['data'].suggestion);
+                             
                         } else {
                             $('#rid_').val(_id);
                             
+                            console.log('还不能直接结束');
                                 $('#modal_next_').modal('show'); 
                         }
                     }

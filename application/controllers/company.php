@@ -155,13 +155,7 @@ class Company extends REIM_Controller {
             return redirect('/company/approval_flow');
         }
         $_steps = $this->input->post('steps');
-        $_steps = array();
-        $__step['uids'] = [93];
-        $__step['quota'] = 3000 ;
-        array_push($_steps,$__step);
-        $_steps = json_encode($_steps);
-        $name = '测试name';
-        $gids = 143;
+        log_message('debug','steps:' . $_steps);
         $policy = array();
         $policies = array();
 
@@ -176,6 +170,17 @@ class Company extends REIM_Controller {
         
         log_message('debug','update_policy:' . json_encode($policies));
         $buf = $this->company->update_finance_policy($fid,$name,json_encode($policies),$gids);
+
+        if($buf['status'] > 0)
+        {
+            die(json_encode(array('status'=>1)));
+        }
+        else
+        {
+            die(json_encode(array('status'=>0)));
+        }
+            
+        /*
         if($buf['status'] > 0)
         {
             $this->session->set_userdata('last_error','更新成功');
@@ -184,7 +189,8 @@ class Company extends REIM_Controller {
         {
             $this->session->set_userdata('last_error','更新成功');
         }
-
+        */
+        
        // return redirect('/company/approval_flow');
     }
     public function flow_update($id = 0)
@@ -249,8 +255,8 @@ class Company extends REIM_Controller {
                 ,'fid' => $id
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-                    ,array('url'=>'','name'=>'公司设置','class'=> '')
-                    ,array('url'=>'','name'=>'财务审批流','class'=>'')
+                    ,array('url'=>base_url('company/common'),'name'=>'公司设置','class'=> '')
+                    ,array('url'=>base_url('company/approval_flow'),'name'=>'财务审批流','class'=>'')
                     ,array('url'=>'','name'=>'更新财务审批流','class'=>'')
                 ),
             )
