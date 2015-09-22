@@ -328,13 +328,14 @@ $(document).ready(function(){
      */
 
 
-$('.txdetail').each(function(){
+$('.tdetail').each(function(){
         $(this).click(function(){
+
             var _id = $(this).data('id');
             location.href = __BASE + "items/show/" + _id;
         });
     });
-    $('.txdel').each(function() {
+    $('.tdel').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
            // location.href = __BASE + "items/del/" + _id + "/1";
@@ -348,8 +349,9 @@ $('.txdetail').each(function(){
            });
         });
     });
-    $('.txedit').each(function() {
+    $('.tedit').each(function() {
         $(this).click(function(){
+            console.log('修改消费');
             var _id = $(this).data('id');
             location.href = __BASE + "items/edit/" + _id;
         });
