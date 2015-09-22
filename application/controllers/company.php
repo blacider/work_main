@@ -19,10 +19,12 @@ class Company extends REIM_Controller {
         {
             $setting = $buf['data'];
         }
-        log_message('debug', 'config: ' . json_encode($setting));
+        $_config = $setting['config'];
+        $config = json_decode($_config,true);
         $this->bsload('company/report_settings_update',
             array(
-                'title'=>'修改报告模板'
+                'images'=>$config['logo']
+                ,'title'=>'修改报告模板'
                 ,'setting'=>$setting
                 ,'id'=>$id
                 ,'breadcrumbs'=> array(
