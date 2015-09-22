@@ -137,7 +137,7 @@ position: absolute;
             </div>
             <div class="modal-footer">
                 <input type="hidden" id="pass" name="pass" value="0" />
-                <input type="submit" class="btn btn-primary" value="确认" />
+                <input type="submit" class="btn btn-primary" id="mypass" value="确认" />
                 <div class="btn btn-primary" onclick="deny_report()">拒绝</div>
                 <div class="btn btn-primary" onclick="cancel_modal_next()">取消</div>
             </div>
