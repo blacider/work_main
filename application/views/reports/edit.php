@@ -428,6 +428,7 @@ function do_post(force) {
 
     try {
         _note = $('#note').val();
+        if(!_note) _note = '';
     } catch(e) {}
 
 
@@ -572,7 +573,7 @@ $(document).ready(function(){
     $('#period_start').datetimepicker({
         language: 'zh-cn',
         defaultDate: _sdt,
-        format: 'YYYY-MM-DD HH:mm',
+        format: 'YYYY-MM-DD HH:mm:ss',
         linkField: "sdt",
     }).next().on(ace.click_event, function(){
         $(this).prev().focus();
@@ -580,7 +581,7 @@ $(document).ready(function(){
     $('#period_end').datetimepicker({
         language: 'zh-cn',
         defaultDate: _edt,
-        format: 'YYYY-MM-DD HH:mm',
+        format: 'YYYY-MM-DD HH:mm:ss',
         linkField: "edt",
     }).next().on(ace.click_event, function(){
         $(this).prev().focus();

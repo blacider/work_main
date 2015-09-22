@@ -1,186 +1,214 @@
 <link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
-<!-- <link rel="stylesheet" href="/static/third-party/jqui/jquery-ui.min.css" id="main-ace-style" /> -->
-
+<!-- <link rel="stylesheet" href="/static/third-party/jqui/jquery-ui.min.css" id="main-ace-style" />
+-->
 <!-- page specific plugin styles -->
 <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 <div class="page-content">
-<div class="page-content-area">
-<form role="form" action="<?php echo base_url('company/report_property_new/'.$id);  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="itemform">
-<div class="row">
-<div class="col-xs-12 col-sm-12">
-<div class="form-group">
-<label class="col-sm-2 control-label no-padding-right">报告模板名称</label>
-<div class="col-xs-6 col-sm-6">
-<input type="text" class="form-controller col-xs-12" name="report_property_name" id="report_property_name" value="<?php echo $setting['name'];?>" placeholder="报告模板名称" required>
-</div>
-</div>
-<hr>
+    <div class="page-content-area">
+        <form role="form" action="<?php echo base_url('company/report_property_new/'.$id);  ?>
+            " method="post" class="form-horizontal"  enctype="multipart/form-data" id="itemform">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">报告模板名称</label>
+                        <div class="col-xs-6 col-sm-6">
+                            <input type="text" class="form-controller col-xs-12" name="report_property_name" id="report_property_name" value="<?php echo $setting['name'];?>" placeholder="报告模板名称" required></div>
+                    </div>
+                    <hr>
 
-<div class="form-group">
-<label class="col-sm-1 control-label no-padding-right">照片</label>
-<div class="col-xs-6 col-sm-6">
-    <div class="col-xs-12 col-sm-12" style="padding-left:0px;">
-        <ul class="ace-thumbnails clearfix" id="timages">
-        </ul>
-    </div>
-    <div class="col-xs-12 col-sm-12">
-        <div id="uploader-demo">
-    <!--用来存放item-->
-            <div id="fileList" class="uploader-list"></div>
-            <div id="imageList" style="width:200%;"></div>
-        </div>
-    </div>
-    
-    <div class="col-xs-12 col-sm-12" style="padding-left: 0px; padding-top: 10px;">
-        <a class="filePicker" id="btn_simg" >添加图片</a>
-    </div>
-</div>
+                    <div class="form-group" style="margin-bottom:30px;">
+                        <label class="col-sm-2 control-label no-padding-right">照片</label>
+                        <div class="col-xs-6 col-sm-6">
+                            <div class="col-xs-12 col-sm-12" style="padding-left:0px;">
+                                <ul class="ace-thumbnails clearfix" id="timages"></ul>
+                            </div>
+                            <div class="col-xs-12 col-sm-12">
+                                <div id="uploader-demo">
+                                    <!--用来存放item-->
+                                    <div id="fileList" class="uploader-list"></div>
+                                    <div id="imageList" style="width:200%;"></div>
+                                </div>
+                            </div>
 
-<!--
+                            <div class="col-xs-12 col-sm-12" style="padding-left: 0px; padding-top: 10px;">
+                                <a class="filePicker" id="btn_simg" >添加图片</a>
+                            </div>
+                        </div>
+
+                        <!--
 <div class="col-xs-6 col-sm-6 dropzone" id="dropzone">
-<div class="fallback">
-<input name="file" type="file" multiple="" />
-</div>
-</div>
--->
-</div>
-<input type="hidden" name="images" id="images" />
-
+                        <div class="fallback">
+                            <input name="file" type="file" multiple="" />
+                        </div>
+                    </div>
+                    -->
+                </div>
+                <label class="col-sm-2 control-label no-padding-right" style="position:absolute;">配置项:</label>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label col-sm-offset-2">借款</label>
+                    <div class="col-xs-6 col-sm-6">
+                        
+                        <label style="margin-top:8px;">
+                            
+                            <input type="checkbox" class="ace ace-switch btn-rotate" name="borrowing" id="borrowing" value="1"><span class="lbl"></span></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label col-sm-offset-2">起始地</label>
+                    <div class="col-xs-6 col-sm-6">
+                        <label style="margin-top:8px;">
+                            
+                            <input type="checkbox" class="ace ace-switch btn-rotate" name="location" id="location" value="1"><span class="lbl"></span></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label col-sm-offset-2">起始时间</label>
+                    <div class="col-xs-6 col-sm-6">
+                        <label style="margin-top:8px;">
+                            
+                            <input type="checkbox" class="ace ace-switch btn-rotate" name="period" id="period" value="1"><span class="lbl"></span></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label col-sm-offset-2">银行账户</label>
+                    <div class="col-xs-6 col-sm-6">
+                        <label  style="margin-top:8px;">
+                            
+                            <input type="checkbox" class="ace ace-switch btn-rotate" name="account" id="account" value="1"><span class="lbl"></span></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label col-sm-offset-2">付款方式</label>
+                    <div class="col-xs-6 col-sm-6">
+                        <label style="margin-top:8px;">
+                            
+                            <input type="checkbox" class="ace ace-switch btn-rotate" name="payment" id="payment" value="1"><span class="lbl"></span></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label col-sm-offset-2">是否有合同</label>
+                    <div class="col-xs-6 col-sm-6">
+                        <label style="margin-top:8px;">
+                            
+                            <input type="checkbox" class="ace ace-switch btn-rotate" name="contract" id="contract" value="1"><span class="lbl"></span></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label col-sm-offset-2">备注</label>
+                    <div class="col-xs-6 col-sm-6">
+                        <label style="margin-top:8px;">
+                            
+                            <input type="checkbox" class="ace ace-switch btn-rotate" name="note" id="note" value="1"><span class="lbl"></span></label>
+                    </div>
+                </div>
+                <!--
 <div class="form-group">
-<label class="col-sm-2 control-label no-padding-right">配置项:</label>
-<div class="col-xs-6 col-sm-6">
-<label>借款<input type="checkbox" class="reportProp form-controller col-xs-12" name="borrowing" id="borrowing" value="1"></label>
-<label>起始地<input type="checkbox" class="reportProp form-controller col-xs-12" name="location" id="location" value="1"></label>
-<label>起始时间<input type="checkbox" class="reportProp form-controller col-xs-12" name="period" id="period" value="1"></label>
-<label>银行账户<input type="checkbox" class="reportProp form-controller col-xs-12" name="account" id="account" value="1"></label>
-<label>付款方式<input type="checkbox" class="reportProp form-controller col-xs-12" name="payment" id="payment" value="1"></label>
-<label>是否有合同<input type="checkbox" class="reportProp form-controller col-xs-12" name="contract" id="contract" value="1"></label>
-<label>备注<input type="checkbox" class="reportProp form-controller col-xs-12" name="note" id="note" value="1"></label>
-</div>
-</div>
-<!--
-<div class="form-group">
-<label class="col-sm-2 control-label no-padding-right">借款￥</label>
-<div class="col-xs-6 col-sm-6">
-<input type="text" class="form-controller col-xs-12" name="borrowing" id="borrowing" placeholder="借款" required>
-</div>
-</div>
+                <label class="col-sm-2 control-label no-padding-right">借款￥</label>
+                <div class="col-xs-6 col-sm-6">
+                    <input type="text" class="form-controller col-xs-12" name="borrowing" id="borrowing" placeholder="借款" required></div>
+            </div>
 
-<div class="form-group">
-<label class="col-sm-2 control-label no-padding-right">账号</label>
-<div class="col-xs-6 col-sm-6">
-<input type="text" class="form-controller col-xs-12" name="account" id="account" placeholder="账号" required>
-</div>
-</div>
-<div class="form-group">
-<label class="col-sm-2 control-label no-padding-right">付款方式</label>
-<div class="col-xs-6 col-sm-6">
-<input type="radio" class="form-controller col-xs-1" name="contract" value="1">
-<label class="col-xs-1 col-sm-1">网银转账</label>
-<div class="col-xs-1 col-sm-1"></div>
-<input type="radio" class="form-controller col-xs-1" name="contract" value="2">
-<label class="col-xs-1 col-sm-1">现金</label>
-<input type="radio" class="form-controller col-xs-1" name="contract" value="3">
-<label class="col-xs-1 col-sm-1">支票</label>
-<div class="col-xs-1 col-sm-1"></div>
-<input type="radio" class="form-controller col-xs-1" name="contract" value="4">
-<label class="col-xs-1 col-sm-1">冲账</label>
-</div>
-</div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label no-padding-right">账号</label>
+                <div class="col-xs-6 col-sm-6">
+                    <input type="text" class="form-controller col-xs-12" name="account" id="account" placeholder="账号" required></div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label no-padding-right">付款方式</label>
+                <div class="col-xs-6 col-sm-6">
+                    <input type="radio" class="form-controller col-xs-1" name="contract" value="1">
+                    <label class="col-xs-1 col-sm-1">网银转账</label>
+                    <div class="col-xs-1 col-sm-1"></div>
+                    <input type="radio" class="form-controller col-xs-1" name="contract" value="2">
+                    <label class="col-xs-1 col-sm-1">现金</label>
+                    <input type="radio" class="form-controller col-xs-1" name="contract" value="3">
+                    <label class="col-xs-1 col-sm-1">支票</label>
+                    <div class="col-xs-1 col-sm-1"></div>
+                    <input type="radio" class="form-controller col-xs-1" name="contract" value="4">
+                    <label class="col-xs-1 col-sm-1">冲账</label>
+                </div>
+            </div>
 
-<div class="form-group">
-<label class="col-sm-2 control-label no-padding-right">是否有合同</label>
-<div class="col-xs-6 col-sm-6">
-<input type="radio" class="form-controller col-xs-1" name="contract">
-<label class="col-xs-1 col-sm-1">是</label>
-<div class="col-xs-1 col-sm-1"></div>
-<input type="radio" class="form-controller col-xs-1" name="contract">
-<label class="col-xs-1 col-sm-1">否</label>
-</div>
-</div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label no-padding-right">是否有合同</label>
+                <div class="col-xs-6 col-sm-6">
+                    <input type="radio" class="form-controller col-xs-1" name="contract">
+                    <label class="col-xs-1 col-sm-1">是</label>
+                    <div class="col-xs-1 col-sm-1"></div>
+                    <input type="radio" class="form-controller col-xs-1" name="contract">
+                    <label class="col-xs-1 col-sm-1">否</label>
+                </div>
+            </div>
 
-<div class="form-group">
-<label class="col-sm-2 control-label no-padding-right">消费时间</label>
-<div class="col-xs-6 col-sm-6">
-<div class="input-group">
-<input id="date-timepicker1" name="dt" type="text" class="form-control" />
-<span class="input-group-addon">
-<i class="fa fa-clock-o bigger-110"></i>
-</span>
-</div>
-</div>
-</div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label no-padding-right">消费时间</label>
+                <div class="col-xs-6 col-sm-6">
+                    <div class="input-group">
+                        <input id="date-timepicker1" name="dt" type="text" class="form-control" />
+                        <span class="input-group-addon"> <i class="fa fa-clock-o bigger-110"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
 
+            <div class="form-group" id="endTime">
+                <label class="col-sm-2 control-label no-padding-right">至</label>
+                <div class="col-xs-6 col-sm-6">
+                    <div class="input-group">
+                        <input id="date-timepicker2" name="dt_end" type="text" class="form-control" />
+                        <span class="input-group-addon"> <i class="fa fa-clock-o bigger-110"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
 
+            <div class="form-group">
+                <label class="col-sm-2 control-label no-padding-right">出差地</label>
+                <div class="col-xs-3 col-sm-3">
+                    <input type="text" name="start_place" class="form-controller col-xs-12" placeholder="起地"></div>
+            </div>
 
-<div class="form-group" id="endTime">
-<label class="col-sm-2 control-label no-padding-right">至</label>
-<div class="col-xs-6 col-sm-6">
-<div class="input-group">
-<input id="date-timepicker2" name="dt_end" type="text" class="form-control" />
-<span class="input-group-addon">
-<i class="fa fa-clock-o bigger-110"></i>
-</span>
-</div>
-</div>
-</div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label no-padding-right">至</label>
+                <div class="col-xs-3 col-sm-3">
+                    <input type="text" name="end_place" class="form-controller col-xs-12" placeholder="终点"></div>
+            </div>
 
-
-<div class="form-group">
-<label class="col-sm-2 control-label no-padding-right">出差地</label>
-<div class="col-xs-3 col-sm-3">
-<input type="text" name="start_place" class="form-controller col-xs-12" placeholder="起地">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label no-padding-right">至</label>
-<div class="col-xs-3 col-sm-3">
-<input type="text" name="end_place" class="form-controller col-xs-12" placeholder="终点">
-</div>
-</div>
-
-
-<div class="form-group">
-<label class="col-sm-2 control-label no-padding-right">备注</label>
-<div class="col-xs-6 col-sm-6">
-<textarea name="note" id="note" class="col-xs-12 col-sm-12  form-controller" ></textarea>
-</div>
-</div>
-
--->
-
-
-
-<input type="hidden" id="renew" value="0" name="renew">
-<div class="clearfix form-actions col-sm-8 col-xs-8">
-<div class="col-md-offset-3 col-md-8">
-<a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
-</div>
-</div>
-<input type="reset" style="display:none;" id="reset">
-
-</div>
-</div>
-<input type="hidden" name="images" id="images" >
-</form>
+            <div class="form-group">
+                <label class="col-sm-2 control-label no-padding-right">备注</label>
+                <div class="col-xs-6 col-sm-6">
+                    <textarea name="note" id="note" class="col-xs-12 col-sm-12  form-controller" ></textarea>
+                </div>
+            </div>
+            -->
+            <input type="hidden" id="renew" value="0" name="renew">
+            <div class="clearfix form-actions col-sm-8 col-xs-8">
+                <div class="col-md-offset-3 col-md-8">
+                    <a class="btn btn-white btn-primary renew" data-renew="0">
+                        <i class="ace-icon fa fa-save "></i>
+                        保存
+                    </a>
+                </div>
+            </div>
+            <input type="reset" style="display:none;" id="reset"></div>
+    </div>
+    <input type="hidden" name="images" id="images" ></form>
 </div>
 </div>
 <!--
 <div class="modal" id="select_img_modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">选择图片</h4>
-            </div>
-            <div class="modal-body">
-
-
-        </div>
-    </div>
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">选择图片</h4>
+</div>
+<div class="modal-body"></div>
+</div>
 </div>
 -->
 <!--
@@ -191,7 +219,6 @@
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
 <script src="/static/ace/js/dropzone.min.js"></script>
 
-
 <script src="/static/ace/js/date-time/moment.js"></script>
 <script src="/static/ace/js/date-time/locale/zh-cn.js"></script>
 
@@ -199,23 +226,19 @@
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script>
 -->
-
-<!--<script src="/static/ace/js/jquery1x.min.js"></script> -->
-
+<!--<script src="/static/ace/js/jquery1x.min.js"></script>
+-->
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
 
-
 <script src="/static/ace/js/date-time/moment.js"></script>
 <!--
 <script src="/static/ace/js/date-time/locale/zh-cn.js"></script>
 -->
-
 <script src="/static/ace/js/jquery.colorbox-min.js"></script>
 <!--
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script>
 -->
-
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="/static/third-party/webUploader/webuploader.css">
@@ -225,8 +248,6 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-
-
    var flag = 0;
 function initUploader() {
     if (flag == 1) {
@@ -251,7 +272,15 @@ var uploader = WebUploader.create({
         mimeTypes: 'image/*'
     }
 });
-// 当有文件添加进来的时候
+uploader.on( 'beforeFileQueued', function( file ) {
+    if ($('#images').val() != "") {
+        show_notify("数量超过限制，请删除后再次上传！");
+        return false;
+    } else {
+        return true;
+    }
+});
+// 当有文件添加进来的时候beforeFileQueued
 uploader.on( 'fileQueued', function( file ) {
     var $li = $(
             '<div id="' + file.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
@@ -322,12 +351,13 @@ uploader.on( 'uploadAccept', function( file, response ) {
     if ( response['status'] > 0 ) {
         // 通过return false来告诉组件，此文件上传有错。
         var imageDom = $('#' + file.file.id);
-        imagesDict[file.file.id] = 'WU_FILE_' + String(response['data']['id']);
+        imagesDict[file.file.id] = String(response['data']['url']);
         if ($("input[name='images']").val() == '') {
-            $("input[name='images']").val(response['data']['id']);
+            $("input[name='images']").val(String(response['data']['url']));
         } else {
-            $("input[name='images']").val($("input[name='images']").val() + ',' + response['data']['id']);
+            $("input[name='images']").val($("input[name='images']").val() + ',' + String(response['data']['url']));
         }
+        imageUrl[response['data']['url'].split('/')[11]] = response['data']['url'];
         return true;
     } else return false;
 });
@@ -338,26 +368,9 @@ uploader.on( 'uploadComplete', function( file ) {
     ifUp = 1;
 });
 }
-function bind_event(){
-        $('.del-button').click(function(e) {
-            //console.log(e);
-            var key = imagesDict[this.parentNode.id].split("WU_FILE_")[1];
-            var images = $("input[name='images']").val();
-            var arr_img = images.split(',');
-            var result = '';
-            for (var item = 0; item < arr_img.length; item++) {
-                if (arr_img[item] != key) {
-                    if (item == 0) result += arr_img[item];
-                    else result += ',' + arr_img[item];
-                }
-            }
-            $("input[name='images']").val(result);
-            $(this.parentNode).remove();
-        });
-}
 
     initUploader();
-
+    load_exists();
      $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
         useCurrent: true,
@@ -422,4 +435,52 @@ function bind_event(){
     });
 });
 var imagesDict = {};
+var imageUrl = new Array();
+var images = "<?php echo $images;?>".split(',');
+function load_exists(){
+    $('#imageList').empty();
+    var result = '', flag_ = 0;
+    for (item in images) {
+        if (flag_ == 0) {
+            result = images[item];
+            flag_ = 1;
+        }   else {
+            result += ',' + images[item];
+        }
+        imagesDict[images[item].split('/')[11]] = images[item];
+        var $li = $(
+            '<div id="' + images[item].split('/')[11] + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
+                '<img style="width:150px;height:150px;">' +
+                '<div class="glyphicon glyphicon-trash red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
+            '</div>'
+            ),$img = $li.find('img');
+    // $list为容器jQuery实例
+    $('#imageList').append( $li );
+
+    // 创建缩略图
+    // 如果为非图片文件，可以不用调用此方法。
+    // thumbnailWidth x thumbnailHeight 为 100 x 100
+
+        $img.attr('src', images[item]);
+    }
+    $('input[name="images"]').val(result);
+    bind_event();
+}
+function bind_event(){
+        $('.del-button').click(function(e) {
+            //console.log(e);
+            var key = imagesDict[this.parentNode.id];
+            var images = $("input[name='images']").val();
+            var arr_img = images.split(',');
+            var result = '';
+            for (var item = 0; item < arr_img.length; item++) {
+                if (arr_img[item] != key) {
+                    if (item == 0) result += arr_img[item];
+                    else result += ',' + arr_img[item];
+                }
+            }
+            $("input[name='images']").val(result);
+            $(this.parentNode).remove();
+        });
+}
 </script>

@@ -184,7 +184,7 @@
                                 <label class="col-sm-1 control-label no-padding-right">备注</label>
                                 <div class="col-xs-9 col-sm-9">
                                     <div class="radio col-xs-12 col-sm-12">
-                                        <textarea rows="2" class="form-controller col-xs-12" name="note"></textarea>
+                                        <textarea rows="2" class="form-controller col-xs-12" id="note" name="note"></textarea>
                                     </div>
                                 </div>
                             
@@ -420,6 +420,7 @@ function do_post(force) {
 
     try {
         _note = $('#note').val();
+        if(!_note) _note = '';
     } catch(e) {}
 
     try {
@@ -527,7 +528,7 @@ $(document).ready(function(){
         language: 'zh-cn',
             //locale:  moment.locale('zh-cn'),
             useCurrent: true,
-            format: 'YYYY-MM-DD HH:mm',
+        format: 'YYYY-MM-DD HH:mm:ss',
             linkField: "dt",
             linkFormat: "YYYY-MM-DD HH:mm",
             sideBySide: true
@@ -540,7 +541,7 @@ $(document).ready(function(){
         language: 'zh-cn',
             //locale:  moment.locale('zh-cn'),
             useCurrent: true,
-            format: 'YYYY-MM-DD HH:mm',
+            format: 'YYYY-MM-DD HH:mm:ss',
             linkField: "dt",
             linkFormat: "YYYY-MM-DD HH:mm",
             sideBySide: true
