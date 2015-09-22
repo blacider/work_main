@@ -351,6 +351,7 @@ uploader.on( 'uploadAccept', function( file, response ) {
         } else {
             $("input[name='images']").val($("input[name='images']").val() + ',' + response['data']['id']);
         }
+        imageUrl[response['data']['id']] = response['data']['url'];
         return true;
     } else return false;
 });
@@ -445,4 +446,5 @@ function bind_event(){
     });
 });
 var imagesDict = {};
+var imageUrl = new Array();
 </script>
