@@ -8,9 +8,21 @@ class Bills extends REIM_Controller {
         $this->load->model('report_model', 'reports');
         $this->load->model('usergroup_model','ug');
         $this->load->model('user_model','user');
+        $this->load->model('company_model','company');
         $this->load->library('reim_cipher');
     }
 
+    public function report_finance_permission($rid)
+    {
+        $buf = $this->company->get_report_finance_permission($rid);
+        $data = array();
+        if($buf['status'] > 0)
+        {
+           $data = $buf['status']; 
+        }
+        log_message('debug','permission:' . json_encode($buf));
+        die(json_encode($buf));
+    }
     public function download_report()
     {
         $this->need_group_casher();
@@ -236,10 +248,20 @@ class Bills extends REIM_Controller {
             }
         }
 
+        $_group = $this->groups->get_my_list();
+
+        $gmember = array();
+        if($_group) {
+            if(array_key_exists('gmember', $_group['data'])){
+                $gmember = $_group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
             $this->bsload('bills/finance_flow',
                 array(
                     'title' => '待审批'
                     ,'error' => $error
+                    ,'members' => $gmember
                     , 'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')

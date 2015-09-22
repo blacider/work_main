@@ -1,4 +1,23 @@
 //niu.splice(niu.indexOf(5),1)
+function show_modal(){
+            $('#modal_next').modal('show');
+}
+function chose_others_zero(item) {
+    //console.log(item);
+    for (var item in getData) {
+        if (item != undefined) {
+            //console.log(getData[item]);
+            $($('.chosen-select')[0]).find("option[value='"+getData[item]+"']").attr("selected",true);
+            $($('.chosen-select')[0]).trigger("chosen:updated");
+        }
+    }
+    $('#modal_next').modal('show');
+}
+function chose_others(_id) {
+    $('#modal_next_').modal('hide');
+    $('#rid').val(_id);
+    $('#modal_next').modal('show');
+}
 function bind_event(){
     $('.tdetail').each(function() {
         $(this).click(function(){
@@ -8,11 +27,38 @@ function bind_event(){
     });
     $('.tapprove').each(function(){
         $(this).click(function(){
-            if(confirm("确认已经付款吗？") == true){
             var _id = $(this).data('id');
-            location.href = __BASE + "bills/marksuccess/" + _id + "/0";
-            }
+	    console.log("ehhhe");
+            $.ajax({
+                type:"GET",
+                url:__BASE + "bills/report_finance_permission/" + _id,
+                data: {
+                    rid:_id
+                },
+                dataType: "json",
+                success: function(data){
+                    if (data['status'] > 0) {
+                        getData = data['data'].suggestion;
+                        if (data['data'].complete == 0) {
+                            $('#rid').val(_id);
+                            chose_others_zero(_id);
+                        } else {
+                            $('#rid_').val(_id);
+                            
+                                $('#modal_next_').modal('show'); 
+                        }
+                    }
+                }
+            });
         });
+
+//        $(this).click(function(){
+ //           $('#modal_next_').show(); 
+//            if(confirm("确认已经付款吗？") == true){
+//            var _id = $(this).data('id');
+//            location.href = __BASE + "bills/marksuccess/" + _id + "/0";
+//            }
+//        });
     });
     $('.tdeny').each(function(){
         $(this).click(function(){

@@ -6,6 +6,44 @@ class Company_Model extends Reim_Model {
         parent::__construct();
     }
 
+    public function pass_report_deny($rid)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('report_finance_flow/deny/' . $rid );
+
+        $buf = $this->do_Get($url,$jwt);
+        log_message("debug", 'report_finance_deny: ' . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+    public function pass_report_finance($rid)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('report_finance_flow/pass/' . $rid );
+
+        $buf = $this->do_Post($url,array(),$jwt);
+        log_message("debug", 'report_finance_pass: ' . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
+    public function get_report_finance_permission($rid)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('report_finance_flow/check_permission/' . $rid);
+
+        $buf = $this->do_Get($url,$jwt);
+        log_message("debug", 'report_finance_permission: ' . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+    
     public function report_property_delete($id)
     {
         $jwt = $this->session->userdata('jwt');
