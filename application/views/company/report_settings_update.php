@@ -19,7 +19,7 @@
 <hr>
 
 <div class="form-group">
-<label class="col-sm-1 control-label no-padding-right">照片</label>
+<label class="col-sm-2 control-label no-padding-right">照片</label>
 <div class="col-xs-6 col-sm-6">
     <div class="col-xs-12 col-sm-12" style="padding-left:0px;">
         <ul class="ace-thumbnails clearfix" id="timages">
@@ -46,7 +46,6 @@
 </div>
 -->
 </div>
-<input type="hidden" name="images" id="images" />
 
 <div class="form-group">
 <label class="col-sm-2 control-label no-padding-right">配置项:</label>
