@@ -32,7 +32,7 @@
                             </div>
 
                             <div class="col-xs-12 col-sm-12" style="padding-left: 0px; padding-top: 10px;">
-                                <a class="filePicker" id="btn_simg" onclick="ifOne()">添加图片</a>
+                                <a class="filePicker" id="btn_simg">添加图片</a>
                             </div>
                         </div>
 
