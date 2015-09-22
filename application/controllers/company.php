@@ -255,8 +255,8 @@ class Company extends REIM_Controller {
                 ,'fid' => $id
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-                    ,array('url'=>'','name'=>'公司设置','class'=> '')
-                    ,array('url'=>'','name'=>'财务审批流','class'=>'')
+                    ,array('url'=>base_url('company/common'),'name'=>'公司设置','class'=> '')
+                    ,array('url'=>base_url('company/approval_flow'),'name'=>'财务审批流','class'=>'')
                     ,array('url'=>'','name'=>'更新财务审批流','class'=>'')
                 ),
             )
