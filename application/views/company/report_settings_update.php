@@ -266,6 +266,7 @@ var uploader = WebUploader.create({
     // 内部根据当前运行是创建，可能是input元素，也可能是flash.
     pick: '.filePicker',
     // 只允许选择图片文件。
+    fileNumLimit:1,
     accept: {
         title: 'Images',
         extensions: 'gif,jpg,jpeg,bmp,png',

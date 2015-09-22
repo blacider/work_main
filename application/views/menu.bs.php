@@ -450,7 +450,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 2) {
         <b class="arrow"></b>
         </li>
 
-        <li class="hsub" id="index">
+        <li class="hsub" id="finance_flow">
         <a href="<?php echo base_url('bills/finance_flow'); ?>" >待审批</a>
 
         <b class="arrow"></b>
