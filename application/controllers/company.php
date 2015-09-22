@@ -155,6 +155,7 @@ class Company extends REIM_Controller {
             return redirect('/company/approval_flow');
         }
         $_steps = $this->input->post('steps');
+        log_message('debug','steps:' . $_steps);
         $policy = array();
         $policies = array();
 
@@ -169,6 +170,17 @@ class Company extends REIM_Controller {
         
         log_message('debug','update_policy:' . json_encode($policies));
         $buf = $this->company->update_finance_policy($fid,$name,json_encode($policies),$gids);
+
+        if($buf['status'] > 0)
+        {
+            die(json_encode(array('status'=>1)));
+        }
+        else
+        {
+            die(json_encode(array('status'=>0)));
+        }
+            
+        /*
         if($buf['status'] > 0)
         {
             $this->session->set_userdata('last_error','更新成功');
@@ -177,7 +189,8 @@ class Company extends REIM_Controller {
         {
             $this->session->set_userdata('last_error','更新成功');
         }
-
+        */
+        
        // return redirect('/company/approval_flow');
     }
     public function flow_update($id = 0)

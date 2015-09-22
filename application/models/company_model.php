@@ -13,8 +13,10 @@ class Company_Model extends Reim_Model {
         if(!$jwt) return false;
         $url = $this->get_url('report_finance_flow/deny/' . $rid );
 
-        $buf = $this->do_Get($url,$jwt);
+        $buf = $this->do_Post($url,array(),$jwt);
         log_message("debug", 'report_finance_deny: ' . $buf);
+        log_message("debug", 'url: ' . $url);
+
         $obj = json_decode($buf, true);
         return $obj;
     }
@@ -394,7 +396,6 @@ class Company_Model extends Reim_Model {
     {
         $jwt = $this->session->userdata('jwt');
         log_message("debug", "JWT: " . json_encode($jwt));
-        log_message('debug', 'update_finance_data: ' . $data);
         if(!$jwt) return false;
         $data = array('name' => $name,
                       'step' => $policies,

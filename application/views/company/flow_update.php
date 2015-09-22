@@ -209,7 +209,10 @@
                 },
                 dataType:'json',
                 success:function(data){
-                       show_notify('保存成功');
+                        if(data.status == 1)
+                            show_notify('保存成功');
+                        else
+                            show_notify('保存失败');
                       // window.location.href=__BASE+"category/account_set";
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
