@@ -16,7 +16,7 @@
 <div class="page-content">
 <div class="page-content-area">
     <form role="form"  class="form-horizontal"  enctype="multipart/form-data" id="mainform">
-        <div class="row" style="overflow:hidden;">
+        <div class="row">
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 col-sm-12">
@@ -24,20 +24,13 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-rigtht">名称</label>
                             <div class="col-xs-3 col-sm-3">
-                                <input id="sob_name" type="text" class="form-controller col-xs-12" name="sob_name" placeholder="输入名称"></div>
+                                <input type="text" class="form-controller col-xs-12" name="name" value=<?php echo $policies['name']?> placeholder="输入名称"></div>
                         </div>
 
                         
 
                         
                         <label style="left:0;position: absolute;" class="col-sm-2 control-label no-padding-rigtht">审批人员</label>
-                        <script type="text/javascript">
-                            function addCate(dom) {
-                                $('#modal-table').find('.chosen-select').trigger("chosen:updated");
-                                $('#modal-table').modal('show');
-                            }
-        
-                        </script>
                         <style type="text/css">
                                     .drop-cata {
                                                 height: 42px;
@@ -65,10 +58,8 @@
                         
                         <label class="col-sm-2 control-label no-padding-rigtht" style="position:absolute;left:0px;">适用范围</label>
                         <div class="form-group">
-                            <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
-                                <input type="radio" name="range" value="0" onclick="choseRange(this.value)" style="position:relative;top:7px"></div>
-                            <div class="col-xs-4 col-sm-4">
-                                <select id="group" class="chosen-select range tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
+                            <div class="col-xs-4 col-sm-4 col-xs-offset-2">
+                                <select id="group" class="chosen-select range tag-input-style" name="groups[]"  data-placeholder="请选择部门">
                                 <?php
                                     $open = 0;
                                     foreach($gnames as $ug)
@@ -90,24 +81,13 @@
                                     }
                                     ?>
                                     <?php
-                                      $exit = array();
-                                    foreach($sob_data as $ug){
+                                    foreach($gnames as $ug){
                                     ?>
                                     <option selected value="<?php echo $ug['id']; ?>">
                                         <?php echo $ug['name']; ?></option>
                                     <?php
-                                        array_push($exit, $ug['id']);
                                     }
 
-                                    foreach($ugroups as $ug){
-                                        if(!in_array($ug['id'], $exit))
-                                        {
-                                            ?>
-                                    <option select value="<?php echo $ug['id']; ?>">
-                                        <?php echo $ug['name']; ?></option>
-                                    <?php
-                                        }
-                                    }
 
                                     ?></select>
                             </div>
@@ -153,7 +133,6 @@
             <div class="col-xs-6 col-sm-6">
                                 <select id="member" class="chosen-select range tag-input-style" name="member[]" multiple  data-placeholder="请选择员工">
                                     <?php
-                                      $exit = array();
                                     foreach($members as $ug){
                                     ?>
                                     <option value="<?php echo $ug['id']; ?>"><?php echo $ug['nickname'] . " - [" . $ug['email'] . "]"; ?></option>
@@ -194,6 +173,11 @@
 <script type="text/javascript">
     var fid = "<?php echo $fid ;?>";
    $(document).ready(function(){
+        $("#group").val(policies.gid);
+        $('#group').trigger("chosen:updated");
+        for (item in policies.step) {
+            addPeopleLine(addToDist(policies.step[item]));
+        }
         $('.renew').click(function(){
 
             var sname = $('#sob_name').val();
@@ -255,10 +239,17 @@
         if (!selectDom.find("label input").is(":checked")) {
             quota = selectDom.find(".quota").val();
         }
-        addPeopleLine(addToDist({
-            "uids":uids,
-            "quota":quota
-        }));
+        if (pointer == 0) {
+            addPeopleLine(addToDist({
+                "uids":uids,
+                "quota":Number(quota).toFixed(2)
+            }));
+        } else {
+            peoples[pointer].quota = quota;
+            peoples[pointer].uids = uids;
+            changePeopleLine();
+        }
+        
         $('#modal-table').modal('hide');
     }
     function addToDist(data) {
@@ -266,14 +257,21 @@
         peoples[String(peopleIndex)] = data;
         return peopleIndex;
     }
+    function changePeopleLine() {
+        var data = peoples[String(pointer)];
+        if (pointer != 0) {
+            var dom = $("#peopleLine_"+pointer);
+            dom.find(".quota").text('限额：'+((data["quota"] == -1)?('无限额'):(Number(data["quota"]).toFixed(2))));
+        }
+    }
     function addPeopleLine(index) {
         var positionLine = $("#addLinePosition");
         var data = peoples[String(index)];
-        var dom = '<div class="form-group"><div class="col-xs-6 col-sm-6 col-sm-offset-2">'+
+        var dom = '<div class="form-group" id="peopleLine_'+ index +'"><div class="col-xs-6 col-sm-6 col-sm-offset-2">'+
 
                                 '<div class="dropdown col-xs-9 col-sm-9 ">'+
                                     '<div class="dropdown-toggle drop-cata" data-toggle="dropdown">'+
-                                        data["uids"].join("|")+
+                                        data["nicknames"]+
                                         '<span class="caret" style="float: right; top: 30px; margin-top: 20px; margin-right: 20px;"></span>'+
                                     '</div>'+
                                     '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="width:90%;margin-left:15px;">'+
@@ -282,7 +280,7 @@
                                         '</li>'+
                                         '<li role="presentation" class="divider"></li>'+
                                         '<li role="presentation">'+
-                                        '    <a href="#" role="menuitem" tabindex="-1">限额：'+data["quota"]+'</a>'+
+                                        '    <a href="#" class="quota" role="menuitem" tabindex="-1">限额：'+((data["quota"] == -1)?('无限额'):(data["quota"]))+'</a>'+
                                         '</li>'+
                                         '<li role="presentation" class="divider"></li>'+
                                         '<li role="presentation">'+
@@ -299,10 +297,17 @@
         delete peoples[index];
         dom.remove();
     }
+    function addCate(dom) {
+        $('#modal-table').find('.chosen-select').val([]).trigger("chosen:updated");
+        $('#modal-table').find('.quota').val('');
+        $('#modal-table').find("label input").attr('checked',false);
+        pointer = 0;
+        $('#modal-table').modal('show');
+    }
     function showPeople(index) {
         var dom = $("#modal-table");
         var data = peoples[index];
-        if (data['quota'] == 0) {
+        if (data['quota'] == -1) {
             dom.find("label input").attr('checked',true);
             dom.find(".quota").attr('disabled', true);
             dom.find(".quota").val("0");
@@ -311,10 +316,13 @@
             dom.find(".quota").attr('disabled', false);
             dom.find(".quota").val(data['quota']);
         }
+        $('#member').val(data.uids).trigger("chosen:updated");;
+
+        pointer = index;
         $('#modal-table').modal('show');
     }
-    console.log(<?php echo json_encode($policies); ?>);
-    console.log(<?php echo $fid; ?>);
+    var policies = <?php echo json_encode($policies); ?>;
     var peoples = new Array();
     var peopleIndex = 0;
+    var pointer = 0;
 </script>
