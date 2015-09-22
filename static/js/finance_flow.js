@@ -2,7 +2,7 @@
 function show_modal(){
             $('#modal_next').modal('show');
 }
-function chose_others_zero(item) {
+function chose_others_zero(item,nextId) {
     //console.log(item);
     for (var item in getData) {
         if (item != undefined) {
@@ -12,6 +12,17 @@ function chose_others_zero(item) {
         }
     }
     $('#modal_next').modal('show');
+    console.log(nextId);
+    if(nextId.length)
+    {
+            $('#modal_managers').val(nextId[0]).prop('selected',true);
+            $('#modal_managers').trigger('chosen:updated');
+    }
+    else
+    {
+            $('#mypass').attr('disabled',true).trigger('chosen:updated');
+    }
+            $('#modal_managers').attr('disabled',true).trigger('chosen:updated');
 }
 function chose_others(_id) {
     $('#modal_next_').modal('hide');
@@ -41,11 +52,10 @@ function bind_event(){
                         getData = data['data'].suggestion;
                         if (data['data'].complete == 0) {
                             $('#rid').val(_id);
-                            chose_others_zero(_id);
+                            chose_others_zero(_id,data['data'].suggestion);
                         } else {
                             $('#rid_').val(_id);
-                            
-                                $('#modal_next_').modal('show'); 
+                            $('#modal_next_').modal('show'); 
                         }
                     }
                 }

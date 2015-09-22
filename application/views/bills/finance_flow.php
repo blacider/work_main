@@ -117,7 +117,7 @@ position: absolute;
 <div class="modal fade" id="modal_next">
     <div class="modal-dialog">
         <div class="modal-content">
-                <form action="<?php echo base_url('reports/permit'); ?>" method="post" class="form-horizontal">
+                <form action="<?php echo base_url('bills/report_finance_end'); ?>" method="post" class="form-horizontal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">报告将发送至以下审批人，请确认</h4>
@@ -137,7 +137,8 @@ position: absolute;
             </div>
             <div class="modal-footer">
                 <input type="hidden" id="pass" name="pass" value="0" />
-                <input type="submit" class="btn btn-primary" value="确认" />
+                <input type="submit" class="btn btn-primary" id="mypass" value="确认" />
+                <div class="btn btn-primary" onclick="deny_report()">拒绝</div>
                 <div class="btn btn-primary" onclick="cancel_modal_next()">取消</div>
             </div>
                 </form>
@@ -146,6 +147,7 @@ position: absolute;
                     $('#modal_next').modal('hide');
                     return;
                   }
+
                 </script>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -153,7 +155,7 @@ position: absolute;
 <div class="modal fade" id="modal_next_">
     <div class="modal-dialog">
         <div class="modal-content">
-                <form action="<?php echo base_url('reports/permit'); ?>" method="post" class="form-horizontal" id="permit_form">
+                <form action="<?php echo base_url('bills/report_finance_end'); ?>" method="post" class="form-horizontal" id="permit_form">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <input type="hidden" name="rid" value="" id="rid_">
@@ -172,7 +174,9 @@ position: absolute;
             <div class="modal-footer">
                 <input type="hidden" id="pass" name="pass" value="0">
                 <input type="submit" class="btn btn-primary pass" value="确认结束">
-                <div class="btn btn-primary repass" onClick="chose_others(this.parentNode.parentNode.rid.value)">继续选择</div>
+                <div class="btn btn-primary" onclick="deny_end_report()">拒绝</div>
+                <div class="btn btn-primary" onclick="cancel_modal_next_()">取消</div>
+                <!--<div class="btn btn-primary repass" onClick="chose_others(this.parentNode.parentNode.rid.value)">取消</div> -->
             </div>
                 </form>
         </div><!-- /.modal-content -->
@@ -349,6 +353,25 @@ $('#send').click(function(){
       }
     });
 });
+
+function deny_report()
+{
+  var report_id = $('#rid').val();
+  console.log(report_id);
+  location.href = __BASE + 'bills/report_finance_deny/' + report_id; 
+}
+
+function deny_end_report()
+{
+  var report_id = $('#rid_').val();
+  console.log(report_id);
+  location.href = __BASE + 'bills/report_finance_deny/' + report_id; 
+}
+
+function cancel_modal_next_()
+{
+  $('#modal_next_').modal('hide');
+}
 
 </script>
 <script language="javascript" src="/static/js/base.js" ></script>

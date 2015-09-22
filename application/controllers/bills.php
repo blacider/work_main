@@ -12,9 +12,8 @@ class Bills extends REIM_Controller {
         $this->load->library('reim_cipher');
     }
 
-    public function report_finance_deny()
+    public function report_finance_deny($rid)
     {
-           $rid = $this->input->post('rid');  
 
            $buf = $this->company->deny_report_finance($rid);
 

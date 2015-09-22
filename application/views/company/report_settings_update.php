@@ -227,7 +227,7 @@
     $(document).ready(function(){
 
 
-        var flag = 0;
+   var flag = 0;
 function initUploader() {
     if (flag == 1) {
         return;
@@ -338,7 +338,23 @@ uploader.on( 'uploadComplete', function( file ) {
     ifUp = 1;
 });
 }
-
+function bind_event(){
+        $('.del-button').click(function(e) {
+            //console.log(e);
+            var key = imagesDict[this.parentNode.id].split("WU_FILE_")[1];
+            var images = $("input[name='images']").val();
+            var arr_img = images.split(',');
+            var result = '';
+            for (var item = 0; item < arr_img.length; item++) {
+                if (arr_img[item] != key) {
+                    if (item == 0) result += arr_img[item];
+                    else result += ',' + arr_img[item];
+                }
+            }
+            $("input[name='images']").val(result);
+            $(this.parentNode).remove();
+        });
+}
 
     initUploader();
 
@@ -405,5 +421,5 @@ uploader.on( 'uploadComplete', function( file ) {
         $('#itemform').submit();
     });
 });
-
+var imagesDict = {};
 </script>
