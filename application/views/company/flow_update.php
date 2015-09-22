@@ -11,16 +11,7 @@
 <script src="/static/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 <script  type="text/javascript" src="/static/ace/js/date-time/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>
-<!-- <script type="text/javascript" src="/static/js/jquery.form.js"></script> -->
-<!-- <?php
-if($last_error) {
-?>
-<script type="text/javascript">
-	alert("<?php echo $last_error; ?>");
-</script>
-<?php
-}
-?> -->
+
 
 <div class="page-content">
 <div class="page-content-area">
@@ -245,6 +236,7 @@ if($last_error) {
 <!-- PAGE CONTENT ENDS -->
 
 <script type="text/javascript">
+    var fid = "<?php echo $fid ;?>";
    $(document).ready(function(){
         $('.renew').click(function(){
 
@@ -267,18 +259,12 @@ if($last_error) {
 
                   $.ajax({
                 type:"post",
-                url:__BASE+"category/update_sob",
-                data:{sob_name:$('#sob_name').val()
-                      ,groups:$('#group').val()
-                      ,sid:$('#sob_id').val()
-                      ,ranks:$('#ranks').val()
-                      ,levels:$('#levels').val()
-                      ,member:$('#member').val()
-                      ,range:$("input[name='range']:checked").val()},
+                url:__BASE+"company/flow_finance_update/"+fid,
+                data:{},
                 dataType:'json',
                 success:function(data){
                        show_notify('保存成功');
-                       window.location.href=__BASE+"category/account_set";
+                      // window.location.href=__BASE+"category/account_set";
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                         console.log(XMLHttpRequest.status);

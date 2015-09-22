@@ -235,6 +235,7 @@ class Bills extends REIM_Controller {
                 }
             }
         }
+
             $this->bsload('bills/finance_flow',
                 array(
                     'title' => '待审批'
@@ -264,7 +265,8 @@ class Bills extends REIM_Controller {
             die(json_encode(array()));
         }
         $data = $bills['data']['data'];
-        $ugs = $bills['data']['ugs'];
+       // $ugs = $bills['data']['ugs'];
+        $ugs = array();
         $_data = array();
         foreach($data as $d){
             log_message("debug", "Bill: [ $type] $type: " . json_encode($d));
@@ -288,7 +290,7 @@ class Bills extends REIM_Controller {
             */
             log_message("debug", "xBill: $type: " . json_encode($d));
             log_message("debug", "nICe");
-            log_message("debug", "ugs:".json_encode($bills['data']['ugs']));
+//            log_message("debug", "ugs:".json_encode($bills['data']['ugs']));
 
             $d['date_str'] = date('Y-m-d H:i:s', $d['createdt']);
             $d['ugs'] = array();
