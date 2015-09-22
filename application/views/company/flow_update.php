@@ -75,7 +75,7 @@
                                     {
                                 ?>
 
-                                    <option value='0'>公司</option>
+                                    <option value='-1'>公司</option>
 
                                     <?php
                                     }
