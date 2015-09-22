@@ -155,13 +155,6 @@ class Company extends REIM_Controller {
             return redirect('/company/approval_flow');
         }
         $_steps = $this->input->post('steps');
-        $_steps = array();
-        $__step['uids'] = [93];
-        $__step['quota'] = 3000 ;
-        array_push($_steps,$__step);
-        $_steps = json_encode($_steps);
-        $name = '测试name';
-        $gids = 143;
         $policy = array();
         $policies = array();
 

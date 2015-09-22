@@ -87,7 +87,9 @@ position: absolute;
                 <div class="form-group">
                     <div class="col-xs-9 col-sm-9">
                         <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="receiver[]" multiple="multiple" id="modal_managers" style="width:300px;">
-                            <?php foreach($members as $m) { ?>
+                            <?php foreach($members as $m) { 
+                                
+                              ?>
                             <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
                             <?php } ?>
                         </select>
