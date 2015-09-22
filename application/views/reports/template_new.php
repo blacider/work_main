@@ -78,7 +78,7 @@
                                 <div class="col-xs-9 col-sm-9">
                                     <select class="chosen-select tag-input-style" name="account" id="account" data-placeholder="请选择银行账号">
                                         <?php foreach($user['banks'] as $m) { ?>
-                                                <option value="<?php echo $m['id']; ?>"><?php echo $m['account']; ?> - [<?php echo substr($m['cardno'], 0, -5) . "xxxxx"; ?> ]</option>
+                                                <option value="<?php echo $m['id']; ?>" data-name="<?php echo $m['account']; ?>" data-no="<?php echo $m['cardno']; ?>"><?php echo $m['account']; ?> - [<?php echo substr($m['cardno'], 0, -5) . "xxxxx"; ?> ]</option>
                                        
                                         <?php } ?>
                                     </select>
@@ -92,30 +92,26 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">支付方式</label>
                                 <div class="col-xs-9 col-sm-9">
+<?php 
+                            $options = array(
+                                array('desc' => '网银转账', 'value' => 1),
+                                array('desc' => '现金', 'value' => 2),
+                                array('desc' => '支票', 'value' => 3),
+                                array('desc' => '冲账', 'value' => 4)
+                            );
+                            foreach($options as $n) {
+                                $check_str = '';
+?>
+
                                     <div class="radio col-xs-3 col-sm-3">
                                          <label>
-                                             <input name="payment" type="radio" class="ace" value="1" checked>
-                                             <span class="lbl">网银转账</span>
+                                         <input name="payment" type="radio" class="ace payment" value="<?php echo $n['value']; ?>" <?php echo $check_str; ?>>
+                                             <span class="lbl"><?php echo $n['desc']; ?></span>
                                          </label>
                                     </div>
-                                    <div class="radio col-xs-3 col-sm-3">
-                                         <label>
-                                             <input name="payment" type="radio" class="ace" value="2">
-                                             <span class="lbl">现金</span>
-                                         </label>
-                                    </div>
-                                    <div class="radio col-xs-3 col-sm-3">
-                                         <label>
-                                             <input name="payment" type="radio" class="ace" value="3">
-                                             <span class="lbl">支票</span>
-                                         </label>
-                                    </div>
-                                    <div class="radio col-xs-3 col-sm-3">
-                                         <label>
-                                             <input name="payment" type="radio" class="ace" value="4">
-                                             <span class="lbl">冲账</span>
-                                         </label>
-                                    </div>
+<?php 
+                            }
+?>
                                 </div>
                             </div>
 <?php 
@@ -400,6 +396,8 @@ function do_post(force) {
 
 
     var _account = 0;
+    var _account_name = '';
+    var _account_no = '';
     var _payment = 0;
 
 
@@ -415,15 +413,23 @@ function do_post(force) {
 
     try {
         _account = $('#account').val();
+        var s = $("#account option:selected");
+        _account_name = $(s).data('name');
+        _account_no = $(s).data('no');
     } catch(e) {}
 
     try {
         _note = $('#note').val();
     } catch(e) {}
 
+    try {
+        _payment = $('input[name="payment"]:checked').val(); 
+        if(!_payment) _payment = 0;
+    }catch(e){}
 
     try {
         _borrowing = $('#borrowing').val();
+        if(!_borrowing) _borrowing = 0;
     } catch(e) {}
 
     try {
@@ -483,6 +489,8 @@ function do_post(force) {
 
                     'template_id' : _template_id,
                     'account' : _account,
+                    'account_name' : _account_name,
+                    'account_no' : _account_no,
                     'payment' : _payment,
                     'borrowing' : _borrowing,
                     'location_from' : _location_from,
@@ -524,7 +532,7 @@ $(document).ready(function(){
             linkFormat: "YYYY-MM-DD HH:mm",
             sideBySide: true
     }).next().on('dp.change', function(ev){
-        console.log(ev.date);
+        //console.log(ev.date);
     }).on(ace.click_event, function(){
         $(this).prev().focus();
     });
@@ -537,7 +545,7 @@ $(document).ready(function(){
             linkFormat: "YYYY-MM-DD HH:mm",
             sideBySide: true
     }).next().on('dp.change', function(ev){
-        console.log(ev.date);
+        //console.log(ev.date);
     }).on(ace.click_event, function(){
         $(this).prev().focus();
     });

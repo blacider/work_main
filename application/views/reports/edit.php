@@ -80,11 +80,11 @@ foreach($members as $m) {
                                 <div class="col-xs-9 col-sm-9">
                                     <select class="chosen-select tag-input-style" name="account" id="account" data-placeholder="请选择银行账号">
                                         <?php foreach($user['banks'] as $m) {
-                                            if($extra['account'] == $m['id']){ ?>
-                                                <option value="<?php echo $m['id']; ?>" selected><?php echo $m['account']; ?> - [<?php echo substr($m['cardno'], 0, -5) . "xxxxx"; ?> ]</option>
+                                            if(array_key_exists('account', $extra) && $extra['account']['id'] == $m['id']){ ?>
+                                                <option value="<?php echo $m['id']; ?>"  data-name="<?php echo $m['account']; ?>" data-no="<?php echo $m['cardno']; ?>" selected><?php echo $m['account']; ?> - [<?php echo substr($m['cardno'], 0, -5) . "xxxxx"; ?> ]</option>
                                        
                                         <?php }  else { ?>
-                                                <option value="<?php echo $m['id']; ?>" ><?php echo $m['account']; ?> - [<?php echo substr($m['cardno'], 0, -5) . "xxxxx"; ?> ]</option>
+                                                <option value="<?php echo $m['id']; ?>"  data-name="<?php echo $m['account']; ?>" data-no="<?php echo $m['cardno']; ?>"><?php echo $m['account']; ?> - [<?php echo substr($m['cardno'], 0, -5) . "xxxxx"; ?> ]</option>
 <?php } } ?>
                                     </select>
                                 </div>
@@ -404,6 +404,8 @@ function do_post(force) {
 
 
     var _account = 0;
+    var _account_name = '';
+    var _account_no = '';
     var _payment = 0;
 
 
@@ -419,6 +421,9 @@ function do_post(force) {
 
     try {
         _account = $('#account').val();
+        var s = $("#account option:selected");
+        _account_name = $(s).data('name');
+        _account_no = $(s).data('no');
     } catch(e) {}
 
     try {
@@ -428,10 +433,12 @@ function do_post(force) {
 
     try {
         _borrowing = $('#borrowing').val();
+        if(!_borrowing) _borrowing = 0;
     } catch(e) {}
 
     try {
         _payment = $('input[name="payment"]:checked').val(); 
+        if(!_payment) _payment = 0;
     }catch(e){}
     try {
         $('.contract').each(function(idx, item){
@@ -471,6 +478,8 @@ function do_post(force) {
 
                     'template_id' : _template_id,
                     'account' : _account,
+                    'account_name' : _account_name,
+                    'account_no' : _account_no,
                     'payment' : _payment,
                     'borrowing' : _borrowing,
                     'location_from' : _location_from,

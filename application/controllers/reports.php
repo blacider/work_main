@@ -321,6 +321,8 @@ class Reports extends REIM_Controller {
         if($template_id) {
             // 获取并构造extra
             $_account = $this->input->post('account');
+            $_account_name = $this->input->post('account_name');
+            $_account_no = $this->input->post('account_no');
             $_payment = $this->input->post('payment');
             $_borrowing = $this->input->post('borrowing');
             $_location_from = $this->input->post('location_from');
@@ -334,7 +336,11 @@ class Reports extends REIM_Controller {
             $extra = array(
                 'template_id' => $template_id
                 ,'borrowing' => $_borrowing
-                ,'account' => $_account
+                ,'account' => array(
+                    'id' => $_account
+                    ,'name' => $_account_name
+                    ,'no' => $_account_no
+                )
                 ,'payment' => $_payment
                 ,'period' => array('start' => $_period_start, 'end' => $_period_end)
                 ,'location' => array('start' => $_location_from, 'dest' => $_location_to)
@@ -716,6 +722,8 @@ class Reports extends REIM_Controller {
         if($template_id) {
             // 获取并构造extra
             $_account = $this->input->post('account');
+            $_account_name = $this->input->post('account_name');
+            $_account_no = $this->input->post('account_no');
             $_payment = $this->input->post('payment');
             $_borrowing = $this->input->post('borrowing');
             $_location_from = $this->input->post('location_from');
@@ -729,7 +737,11 @@ class Reports extends REIM_Controller {
             $extra = array(
                 'template_id' => $template_id
                 ,'borrowing' => $_borrowing
-                ,'account' => $_account
+                ,'account' => array(
+                    'id' => $_account
+                    ,'name' => $_account_name
+                    ,'no' => $_account_no
+                )
                 ,'payment' => $_payment
                 ,'period' => array('start' => $_period_start, 'end' => $_period_end)
                 ,'location' => array('start' => $_location_from, 'dest' => $_location_to)
