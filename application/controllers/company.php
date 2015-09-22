@@ -59,6 +59,7 @@ class Company extends REIM_Controller {
         $payment = $this->input->post('payment');
         $contract = $this->input->post('contract');
         $note = $this->input->post('note');
+        $images = $this->input->post('images');
 
         $config = array();
         $config['borrowing'] = $borrowing;
@@ -68,6 +69,7 @@ class Company extends REIM_Controller {
         $config['payment'] = $payment;
         $config['contract'] = $contract;
         $config['note'] = $note;
+        $config['logo'] = $images;
         log_message('debug', 'config : ' . json_encode($config));
         foreach($config as $key => $value)
         {
@@ -164,21 +166,20 @@ class Company extends REIM_Controller {
             $count++;
         }
         
-        $buf = $this->company->update($fid,json_encode($policies));
+        $buf = $this->company->update($fid,json_encode($policies),$fid);
         if($buf['status'] > 0)
         {
-            $this->sesssion->set_userdata('last_error','更新成功');
+            $this->session->set_userdata('last_error','更新成功');
         }
         else
         {
-            $this->sesssion->set_userdata('last_error','更新成功');
+            $this->session->set_userdata('last_error','更新成功');
         }
 
         return redirect('/company/approval_flow');
     }
     public function flow_update($id = 0)
     {
-        $buf = $this->company->get_single_finance_policy($id);
         $_group = $this->groups->get_my_list();
 
         $gmember = array();
@@ -196,11 +197,20 @@ class Company extends REIM_Controller {
             $gnames = $_gnames['data']['group'];
         }
 
+        $buf = $this->company->get_single_finance_policy($id);
+        $policies = array();
+        if($buf['status'] > 0)
+        {
+           $policies = $buf['data']; 
+        }
+        log_message('debug','policies:' . json_encode($policies));
         $this->bsload('company/flow_update',
             array(
                 'title'=>'更新审批流'
                 ,'gnames' => $gnames
+                ,'policies' => $policies
                 ,'members' => $gmember
+                ,'fid' => $id
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
