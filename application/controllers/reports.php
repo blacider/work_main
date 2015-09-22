@@ -896,9 +896,10 @@ class Reports extends REIM_Controller {
         {
             $categories = $_categories['data']['categories']; 
         }
+        log_message('debug','cates:'.json_encode($categories));
         foreach($categories as $cate)
         {
-           $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note']); 
+           $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code']); 
         }
         $group = $this->groups->get_my_list();
         $ginfo = array();
@@ -1112,6 +1113,7 @@ class Reports extends REIM_Controller {
                 $o['员工手机'] = '';
                 $o['上级'] = '';
                 $o['部门'] = '';
+                $o['上级部门'] = '';
                 if(array_key_exists('email',$i['member_info']))
                 {
                     $o['邮箱'] = $i['member_info']['email'];
@@ -1130,7 +1132,16 @@ class Reports extends REIM_Controller {
                 }
                 if(array_key_exists('d',$i['member_info']))
                 {
-                    $o['部门'] = $i['member_info']['d'];
+                    $unames = explode(',',$i['member_info']['d']);
+                    if(count($unames) >= 2) 
+                    {
+                        $o['部门'] = $unames[0];
+                        $o['上级部门'] = $unames[1];
+                    }
+                    if(count($unames) == 1)
+                    {
+                        $o['部门'] = $unames[0];
+                    }
                 }
                 $o['级别'] = '';
                 $o['职位'] = '';
@@ -1154,7 +1165,7 @@ class Reports extends REIM_Controller {
                 $o['商家'] = $i['merchants'];
                 $o['参与人员'] = implode(',', $__relates);
                 $o['会计科目'] = $i['category_name'];
-                $o['会计科目代码'] = $cate_dic[$i['category']]['note'];
+                $o['会计科目代码'] = $cate_dic[$i['category']]['sob_code'];
                 $o['会计科目上级'] = '';
                 $o['会计科目上级代码'] = '';
                 if($cate_dic[$i['category']]['pid'] > 0)
@@ -1163,7 +1174,7 @@ class Reports extends REIM_Controller {
                 }
                 if($cate_dic[$i['category']]['pid'] > 0)
                 {
-                     $o['会计科目代码'] = $cate_dic[$i['category']]['note'];
+                     $o['会计科目代码'] = $cate_dic[$i['category']]['sob_code'];
                 }
                 $o['报销审核人'] = $i['flow'];
                 $o['备注'] = $i['note'];
