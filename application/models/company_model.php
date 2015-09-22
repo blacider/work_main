@@ -390,15 +390,20 @@ class Company_Model extends Reim_Model {
         return $obj;
     }
 
-    public function update_finance_policy($id,$data)
+    public function update_finance_policy($fid,$name,$policies,$gids)
     {
         $jwt = $this->session->userdata('jwt');
         log_message("debug", "JWT: " . json_encode($jwt));
         log_message('debug', 'update_finance_data: ' . $data);
         if(!$jwt) return false;
-        $url = $this->get_url('finance_policy/' . $id);
+        $data = array('name' => $name,
+                      'step' => $policies,
+                      'gid' => $gids
+                );
+        $url = $this->get_url('finance_policy/' . $fid);
         $buf = $this->do_Put($url,$data,$jwt);
         log_message("debug", 'finace_policy_update: ' . $buf);
+        log_message("debug", 'data: ' . json_encode($data));
         $obj = json_decode($buf, true);
         return $obj;
     }
