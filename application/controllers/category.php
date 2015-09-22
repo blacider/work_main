@@ -114,6 +114,7 @@ class Category extends REIM_Controller {
         // 还要把现有帐套和人员的关系存一下，作为增量.
         if($_sobs_desc['status'] && $_sobs_desc['data']) {
             foreach($_sobs_desc['data'] as $s) {
+                log_message("debug", "IN DB:" . json_encode($s));
                 $_sob_db_hash[$s['sob_id']] = $s['sob_name'];
             }
         }
@@ -128,11 +129,14 @@ class Category extends REIM_Controller {
                 if(!array_key_exists($s['sob_id'], $_exist_sob_dict)){
                     $_exist_sob_dict[$s['sob_id']] = array();
                 } 
-                $_sob_name[$s['sob_id']] = $_sob_db_hash[$s['sob_id']];//$s['name'];
-                array_push($_exist_sob_dict[$s['sob_id']], $s['category_name'] . $s['sob_code'] . $s['max_limit']);
+                if(array_key_exists($s['sob_id'], $_sob_db_hash)){
+                    $_sob_name[$s['sob_id']] = $_sob_db_hash[$s['sob_id']];//$s['name'];
+                    array_push($_exist_sob_dict[$s['sob_id']], trim($s['category_name']) . trim($s['sob_code']) . $s['max_limit']);
+                }
 
             }
         }
+        log_message("debug", "XExistd SOB DICT:" . json_encode($_exist_sob_dict));
         $__sob_hash_dict = array();
         foreach($_exist_sob_dict as $sid => $cids){
             sort($cids);
@@ -164,7 +168,7 @@ class Category extends REIM_Controller {
                 $s['code'] = trim($sheet->getCellByColumnAndRow($col + 1, $row)->getValue());
                 $s['limit'] = trim($sheet->getCellByColumnAndRow($col + 2, $row)->getValue());
                 if(!$s['code']) continue;
-                array_push($_ids, $s['name'] . $s['code'] . $s['limit']);
+                array_push($_ids, trim($s['name']) . trim($s['code']) . $s['limit']);
                 array_push($desc, $s['name'] . "(ID:" . $s['code'] . ", 限额:" . $s['limit'] . ")");
                 array_push($obj['cates'], $s);
             }

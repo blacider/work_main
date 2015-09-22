@@ -118,7 +118,7 @@ var sum = 0;
                                 $('.' + _hash).each(function(){
                                     var _e = $(this).data('hash');
                                     if($.inArray(_e, _emails) > -1) {
-                                        $(this).removeClass('green').addClass('red').text('导入出错');
+                                        $(this).removeClass('green').addClass('red').text('用户不存在');
                                     } else{
                                         $(this).removeClass('red').addClass('green').text('已导入');
                                     }

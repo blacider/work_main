@@ -1,6 +1,6 @@
 <?php
 
-define("API_SERVER", "https://api.cloudbaoxiao.com/dev/");
+define("API_SERVER", "https://api.cloudbaoxiao.com/stage/");
 define("PUBKEY", "1NDgzZGY1OWViOWRmNjI5ZT");
 
 class Reim_Model extends CI_Model {

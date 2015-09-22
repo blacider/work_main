@@ -41,15 +41,7 @@ if(!empty($config)) {
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">银行账号</label>
                                 <div class="col-xs-9 col-sm-9">
-                                    <select class="chosen-select tag-input-style" name="account" id="account" data-placeholder="请选择银行账号" disabled>
-                                        <?php foreach($user['banks'] as $m) {
-                                            if(array_key_exists('account', $extra) && $extra['account']['id'] == $m['id']){ ?>
-                                                <option value="<?php echo $m['id']; ?>"  data-name="<?php echo $m['account']; ?>" data-no="<?php echo $m['cardno']; ?>" selected><?php echo $m['account']; ?> - [<?php echo substr($m['cardno'], 0, -5) . "xxxxx"; ?> ]</option>
-                                       
-                                        <?php }  else { ?>
-                                                <option value="<?php echo $m['id']; ?>"  data-name="<?php echo $m['account']; ?>" data-no="<?php echo $m['cardno']; ?>"><?php echo $m['account']; ?> - [<?php echo substr($m['cardno'], 0, -5) . "xxxxx"; ?> ]</option>
-<?php } } ?>
-                                    </select>
+                                    <input type="text" class="form-controller col-xs-12" name="title" placeholder="名称" value="<?php echo $extra['account']['name'] . " [" . substr($extra['account']['no'], 0, -5) . "xxxxx]"; ?>" disabled>
                                 </div>
                             </div>
 <?php 
@@ -62,23 +54,27 @@ if(!empty($config)) {
                                 <div class="col-xs-9 col-sm-9">
 <?php 
                             $options = array(
-                                array('desc' => '网银转账', 'value' => 1),
-                                array('desc' => '现金', 'value' => 2),
-                                array('desc' => '支票', 'value' => 3),
-                                array('desc' => '冲账', 'value' => 4)
+                                array('desc' => '网银转账', 'value' => 0),
+                                array('desc' => '现金', 'value' => 1),
+                                array('desc' => '支票', 'value' => 2),
+                                array('desc' => '冲账', 'value' => 3)
                             );
+                            $find = 0;
                             foreach($options as $n) {
                                 $check_str = '';
-                                if($n['value'] == $extra['payment']) $check_str = 'checked';
+                                if($n['value'] == $extra['payment']) {
+                                    $find = 1;
+?>
+                                    <input type="text" class="form-controller col-xs-12" name="title" placeholder="支付方式" value="<?php echo $n['desc']; ?>" disabled>
+
+<?php 
+                                }
+                            }
+                            if($find == 0){
 ?>
 
-                                    <div class="radio col-xs-3 col-sm-3">
-                                         <label>
-                                         <input disabled name="payment" type="radio" class="ace payment" value="<?php echo $n['value']; ?>" <?php echo $check_str; ?>>
-                                             <span class="lbl"><?php echo $n['desc']; ?></span>
-                                         </label>
-                                    </div>
-<?php 
+                                    <input type="text" class="form-controller col-xs-12" name="title" placeholder="支付方式" value="无" disabled>
+<?php
                             }
 ?>
                                 </div>
@@ -118,17 +114,23 @@ if(!empty($config)) {
 <?php
                             $s = trim($extra['period']['start']);
                             $e =  trim($extra['period']['end']);
+                            try {
                             if($s == "0" || $s == "" || $s == "NaN"){
-                                $s = date('Y-m-d H:i:s');
+                                $s = @date('Y-m-d H:i:s');
                             } else {
-                                $s = date('Y-m-d H:i:s', $s);
+                                $s = @date('Y-m-d H:i:s', $s);
                             }
                             if($e == "0" || $e == "" || $e == "NaN"){
-                                $e = date('Y-m-d H:i:s');
+                                $e = @date('Y-m-d H:i:s');
                             } else {
-                                $e = date('Y-m-d H:i:s', $e);
+                                $e = @date('Y-m-d H:i:s', $e);
+                            }
+                            } catch(Exception $e) {
+                                $s = date('Y-m-d H:i:s');
+                                $e = date('Y-m-d H:i:s');
                             }
 ?>
+
 
                                     <input type="text" id="period_start" class="form-controller col-xs-5 period" name="period_start"  placeholder="起始时间" value="<?php echo $s; ?>" disabled />
 <input type="hidden" id="sdt" value="<?php echo strtotime($extra['period']['start']); ?>" >

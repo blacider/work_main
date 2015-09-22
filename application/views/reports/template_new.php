@@ -447,8 +447,8 @@ function do_post(force) {
 
 
     try {
-        _period_start = $('#period_start').val();
-        _period_end = $('#period_end').val();
+        _period_end = (new Date($("#period_end").val())).getTime() / 1000;
+        _period_start = (new Date($("#period_start").val())).getTime() / 1000;
     }catch(e){}
 
     try {
