@@ -12,6 +12,23 @@ class Bills extends REIM_Controller {
         $this->load->library('reim_cipher');
     }
 
+    public function report_finance_end()
+    {
+           $rid = $this->input->post('rid');  
+
+           $buf = $this->company->pass_report_finance($rid);
+
+           if($buf['status'] > 0)
+           {
+                $this->session->set_userdata('last_error','已通过');
+           }
+           else
+           {
+                $this->session->set_userdata('last_error','已通过');
+           }
+
+           return redirect('bills/finance_flow');
+    }
     public function report_finance_permission($rid)
     {
         $buf = $this->company->get_report_finance_permission($rid);
