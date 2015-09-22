@@ -58,7 +58,8 @@
                                             cursor:pointer;
                                     }
                         </style>
-                        <div class="form-group">
+
+                        <div class="form-group" id="addLinePosition">
                             <div style="border-radius:10px;" onclick="addCate(this.parentNode)" class="col-sm-1 col-xs-1 col-sm-offset-2 col-xs-offset-2 btn-primary addDrop">添加+</div>    
                         </div>
                         
@@ -254,5 +255,66 @@
         if (!selectDom.find("label input").is(":checked")) {
             quota = selectDom.find(".quota").val();
         }
+        addPeopleLine(addToDist({
+            "uids":uids,
+            "quota":quota
+        }));
+        $('#modal-table').modal('hide');
     }
+    function addToDist(data) {
+        peopleIndex += 1;
+        peoples[String(peopleIndex)] = data;
+        return peopleIndex;
+    }
+    function addPeopleLine(index) {
+        var positionLine = $("#addLinePosition");
+        var data = peoples[String(index)];
+        var dom = '<div class="form-group"><div class="col-xs-6 col-sm-6 col-sm-offset-2">'+
+
+                                '<div class="dropdown col-xs-9 col-sm-9 ">'+
+                                    '<div class="dropdown-toggle drop-cata" data-toggle="dropdown">'+
+                                        data["uids"].join("|")+
+                                        '<span class="caret" style="float: right; top: 30px; margin-top: 20px; margin-right: 20px;"></span>'+
+                                    '</div>'+
+                                    '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="width:90%;margin-left:15px;">'+
+                                        '<li role="presentation">'+
+                                            '<a href="#" onclick="showPeople('+index+')" role="menuitem" tabindex="-1">修改</a>'+
+                                        '</li>'+
+                                        '<li role="presentation" class="divider"></li>'+
+                                        '<li role="presentation">'+
+                                        '    <a href="#" role="menuitem" tabindex="-1">限额：'+data["quota"]+'</a>'+
+                                        '</li>'+
+                                        '<li role="presentation" class="divider"></li>'+
+                                        '<li role="presentation">'+
+                                            '<a href="#" onclick="deletePeople('+index+',$(this).parent().parent().parent().parent().parent())" role="menuitem" tabindex="-1">删除</a>'+
+                                        '</li>'+
+                                    '</ul>'+
+                                '</div>'+
+                            '</div>'+
+                            
+        '</div>';
+        positionLine.before(dom);
+    }
+    function deletePeople(index, dom) {
+        delete peoples[index];
+        dom.remove();
+    }
+    function showPeople(index) {
+        var dom = $("#modal-table");
+        var data = peoples[index];
+        if (data['quota'] == 0) {
+            dom.find("label input").attr('checked',true);
+            dom.find(".quota").attr('disabled', true);
+            dom.find(".quota").val("0");
+        } else {
+            dom.find("label input").attr('checked',false);
+            dom.find(".quota").attr('disabled', false);
+            dom.find(".quota").val(data['quota']);
+        }
+        $('#modal-table').modal('show');
+    }
+    console.log(<?php echo json_encode($policies); ?>);
+    console.log(<?php echo $fid; ?>);
+    var peoples = new Array();
+    var peopleIndex = 0;
 </script>
