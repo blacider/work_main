@@ -360,55 +360,9 @@ uploader.on( 'uploadComplete', function( file ) {
     ifUp = 1;
 });
 }
-function bind_event(){
-        $('.del-button').click(function(e) {
-            //console.log(e);
-            var key = imagesDict[this.parentNode.id];
-            var images = $("input[name='images']").val();
-            var arr_img = images.split(',');
-            var result = '';
-            for (var item = 0; item < arr_img.length; item++) {
-                if (arr_img[item] != key) {
-                    if (item == 0) result += arr_img[item];
-                    else result += ',' + arr_img[item];
-                }
-            }
-            $("input[name='images']").val(result);
-            $(this.parentNode).remove();
-        });
-}
 
     initUploader();
-function load_exists(){
-    var images = "<?php echo $images;?>".split(',');
-    $('#imageList').empty();
-    var result = '', flag_ = 0;
-    for (item in images) {
-        if (flag_ == 0) {
-            result = item;
-            flag_ = 1;
-        }   else {
-            result += ',' + item;
-        }
-        imagesDict[item.split('/')[9]] = item;
-        var $li = $(
-            '<div id="' + item.split('/')[9] + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
-                '<img style="width:150px;height:150px;">' +
-                '<div class="glyphicon glyphicon-trash red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
-            '</div>'
-            ),$img = $li.find('img');
-    // $list为容器jQuery实例
-    $('#imageList').append( $li );
-
-    // 创建缩略图
-    // 如果为非图片文件，可以不用调用此方法。
-    // thumbnailWidth x thumbnailHeight 为 100 x 100
-
-        $img.attr('src', item);
-    });
-    $('input[name="images"]').val(result);
-    bind_event();
-}
+    load_exists();
      $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
         useCurrent: true,
@@ -474,4 +428,51 @@ function load_exists(){
 });
 var imagesDict = {};
 var imageUrl = new Array();
+var images = "<?php echo $images;?>".split(',');
+function load_exists(){
+    $('#imageList').empty();
+    var result = '', flag_ = 0;
+    for (item in images) {
+        if (flag_ == 0) {
+            result = item;
+            flag_ = 1;
+        }   else {
+            result += ',' + item;
+        }
+        imagesDict[item.split('/')[9]] = item;
+        var $li = $(
+            '<div id="' + item.split('/')[9] + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
+                '<img style="width:150px;height:150px;">' +
+                '<div class="glyphicon glyphicon-trash red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
+            '</div>'
+            ),$img = $li.find('img');
+    // $list为容器jQuery实例
+    $('#imageList').append( $li );
+
+    // 创建缩略图
+    // 如果为非图片文件，可以不用调用此方法。
+    // thumbnailWidth x thumbnailHeight 为 100 x 100
+
+        $img.attr('src', item);
+    }
+    $('input[name="images"]').val(result);
+    bind_event();
+}
+function bind_event(){
+        $('.del-button').click(function(e) {
+            //console.log(e);
+            var key = imagesDict[this.parentNode.id];
+            var images = $("input[name='images']").val();
+            var arr_img = images.split(',');
+            var result = '';
+            for (var item = 0; item < arr_img.length; item++) {
+                if (arr_img[item] != key) {
+                    if (item == 0) result += arr_img[item];
+                    else result += ',' + arr_img[item];
+                }
+            }
+            $("input[name='images']").val(result);
+            $(this.parentNode).remove();
+        });
+}
 </script>
