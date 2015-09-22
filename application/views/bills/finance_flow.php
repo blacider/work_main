@@ -93,7 +93,7 @@ position: absolute;
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">退回理由</h4>
             </div>
-            <form action="<?php echo base_url('/reports/permit'); ?>" method="post" id="form_discard">
+            <form action="<?php echo base_url('/bills/report_finance_deny'); ?>" method="post" id="form_discard">
                 <div class="modal-body">
                     <input type="hidden" id="div_id" class="thumbnail" name="rid" style="display:none;" value=""/>
                     <input type="hidden" id="status"  name="status" style="display:none;" value="3" />
@@ -138,7 +138,7 @@ position: absolute;
             <div class="modal-footer">
                 <input type="hidden" id="pass" name="pass" value="0" />
                 <input type="submit" class="btn btn-primary" id="mypass" value="确认" />
-                <div class="btn btn-primary" onclick="deny_report()">拒绝</div>
+               <!-- <div class="btn btn-primary" onclick="deny_report()">拒绝</div> -->
                 <div class="btn btn-primary" onclick="cancel_modal_next()">取消</div>
             </div>
                 </form>
@@ -174,7 +174,7 @@ position: absolute;
             <div class="modal-footer">
                 <input type="hidden" id="pass" name="pass" value="0">
                 <input type="submit" class="btn btn-primary pass" value="确认结束">
-                <div class="btn btn-primary" onclick="deny_end_report()">拒绝</div>
+              <!--  <div class="btn btn-primary" onclick="deny_end_report()">拒绝</div> -->
                 <div class="btn btn-primary" onclick="cancel_modal_next_()">取消</div>
                 <!--<div class="btn btn-primary repass" onClick="chose_others(this.parentNode.parentNode.rid.value)">取消</div> -->
             </div>
