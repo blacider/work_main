@@ -167,7 +167,7 @@
                                     </div>
                                     <div class="radio col-xs-2 col-sm-2">
                                          <label>
-                                             <input name="contract" type="radio" id="contract_no" class="ace contract" value="2">
+                                             <input name="contract" type="radio" id="contract_no" class="ace contract" value="0">
                                              <span class="lbl">无</span>
                                          </label>
                                     </div>
@@ -529,8 +529,6 @@ $(document).ready(function(){
             //locale:  moment.locale('zh-cn'),
             useCurrent: true,
         format: 'YYYY-MM-DD HH:mm:ss',
-            linkField: "dt",
-            linkFormat: "YYYY-MM-DD HH:mm",
             sideBySide: true
     }).next().on('dp.change', function(ev){
         //console.log(ev.date);
@@ -542,8 +540,6 @@ $(document).ready(function(){
             //locale:  moment.locale('zh-cn'),
             useCurrent: true,
             format: 'YYYY-MM-DD HH:mm:ss',
-            linkField: "dt",
-            linkFormat: "YYYY-MM-DD HH:mm",
             sideBySide: true
     }).next().on('dp.change', function(ev){
         //console.log(ev.date);

@@ -334,7 +334,7 @@ class Reports extends REIM_Controller {
             $_contract = $this->input->post('contract');
             $_contract_note = $this->input->post('contract_note');
             $_note = $this->input->post('note');
-            $_contract = $_contract == 2 ? 0 : 1;
+            //$_contract = $_contract == 2 ? 0 : 1;
             $extra = array(
                 'template_id' => $template_id
                 ,'borrowing' => $_borrowing
@@ -755,7 +755,7 @@ class Reports extends REIM_Controller {
             $_contract = $this->input->post('contract');
             $_contract_note = $this->input->post('contract_note');
             $_note = $this->input->post('note');
-            $_contract = $_contract == 2 ? 0 : 1;
+            //$_contract = $_contract == 2 ? 0 : 1;
             $extra = array(
                 'template_id' => $template_id
                 ,'borrowing' => $_borrowing

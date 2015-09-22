@@ -197,7 +197,7 @@ foreach($members as $m) {
                                     </div>
                                     <div class="radio col-xs-2 col-sm-2">
                                          <label>
-                                             <input name="contract" type="radio" id="contract_no" class="ace contract" value="2" <?php echo $_extra_no; ?>>
+                                             <input name="contract" type="radio" id="contract_no" class="ace contract" value="0" <?php echo $_extra_no; ?>>
                                              <span class="lbl">无</span>
                                          </label>
                                     </div>
@@ -442,13 +442,10 @@ function do_post(force) {
         if(!_payment) _payment = -1;
     }catch(e){}
     try {
-        $('.contract').each(function(idx, item){
-            if($(item).attr('checked')){
-                _contract = $(item).val();
-            }
-        });
+        _contract = $('input[name="contract"]:checked').val(); 
+        if(!_contract) _contract = -1;
     }catch(e){ }
-    if(_contract == 2) {
+    if(_contract == 0) {
         try{
             _contract_note = $('#contract_note').val();
         }catch(e){}
@@ -548,10 +545,16 @@ Date.prototype.format = function(format) {
 };
 $(document).ready(function(){
     //$('#date-timepicker2').val();
+    _contract = $('input[name="contract"]:checked').val(); 
+    if(_contract == 0) {
+                $('#contract_note').show();
+    } else {
+                $('#contract_note').hide();
+    }
     $('.contract').each(function(idx, item) {
         $(this).click(function() {
             var _val = $(this).val();
-            if(_val == 2) {
+            if(_val == 0) {
                 $('#contract_note').show();
             } else {
                 $('#contract_note').hide();
