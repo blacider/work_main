@@ -685,6 +685,24 @@ class Reports extends REIM_Controller {
         if($members['status'] > 0){
             $_members = $members['data']['members'];
         }
+        $extra = array();
+        if(array_key_exists('extras', $report)) {
+            $extra = json_decode($report['extras'], true);
+        }
+        $config = array();
+        if(!empty($extra)){
+            $profile = $this->session->userdata('profile');
+            $config = array();
+            if($profile &&  array_key_exists('templates', $profile)) {
+                $report_template = $profile['templates'];
+                foreach($report_template as $r) {
+                    if($r['id'] == $extra['template_id']) {
+                        $config = $r;
+                        break;
+                    }
+                }
+            }
+        }
         $this->bsload('reports/view',
             array(
                 'title' => '查看报告',
@@ -692,6 +710,8 @@ class Reports extends REIM_Controller {
                 'error' => $error,
                 'flow' => $flow
                 ,'rid' => $id
+                ,'config' => $config
+                ,'extra' => $extra
                 ,'comments' => $comments
                 ,'members' => $_members
                 ,'decision' => $decision
