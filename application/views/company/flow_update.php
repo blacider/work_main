@@ -225,7 +225,7 @@
         $('.chosen-select').chosen({allow_single_deselect:true , width:"100%"});
        
         $('.cancel').click(function(){
-            
+            history.go(-1);
         });
         $("#modal-table").find("label input").click(function(event) {
             var DOM = $("#modal-table").find(".quota");
