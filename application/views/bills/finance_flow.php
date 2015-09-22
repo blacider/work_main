@@ -354,6 +354,10 @@ $('#send').click(function(){
     });
 });
 
+$('.new_card').click(function(){
+    $('#form_discard').submit();
+});
+
 function deny_report()
 {
   var report_id = $('#rid').val();

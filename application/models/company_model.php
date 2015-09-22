@@ -6,14 +6,14 @@ class Company_Model extends Reim_Model {
         parent::__construct();
     }
 
-    public function deny_report_finance($rid)
+    public function deny_report_finance($rid,$comment)
     {
         $jwt = $this->session->userdata('jwt');
         log_message("debug", "JWT: " . json_encode($jwt));
         if(!$jwt) return false;
         $url = $this->get_url('report_finance_flow/deny/' . $rid );
 
-        $buf = $this->do_Post($url,array(),$jwt);
+        $buf = $this->do_Post($url,array('comment'=>$comment),$jwt);
         log_message("debug", 'report_finance_deny: ' . $buf);
         log_message("debug", 'url: ' . $url);
 

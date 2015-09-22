@@ -19,6 +19,7 @@ class Bills extends REIM_Controller {
            $comment = $this->input->post('content');
            $buf = $this->company->deny_report_finance($rid,$comment);
 
+            log_message('debug','comment:' . $comment);
            if($buf['status'] > 0)
            {
                 $this->session->set_userdata('last_error','已拒绝');
