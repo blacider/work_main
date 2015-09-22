@@ -272,7 +272,15 @@ var uploader = WebUploader.create({
         mimeTypes: 'image/*'
     }
 });
-// 当有文件添加进来的时候
+uploader.on( 'beforeFileQueued', function( file ) {
+    if ($('#images').val() != "") {
+        show_notify("数量超过限制，请删除后再次上传！");
+        return false;
+    } else {
+        return true;
+    }
+});
+// 当有文件添加进来的时候beforeFileQueued
 uploader.on( 'fileQueued', function( file ) {
     var $li = $(
             '<div id="' + file.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
@@ -349,7 +357,7 @@ uploader.on( 'uploadAccept', function( file, response ) {
         } else {
             $("input[name='images']").val($("input[name='images']").val() + ',' + String(response['data']['url']));
         }
-        imageUrl[response['data']['url'].split('/')[9]] = response['data']['url'];
+        imageUrl[response['data']['url'].split('/')[11]] = response['data']['url'];
         return true;
     } else return false;
 });
@@ -439,9 +447,9 @@ function load_exists(){
         }   else {
             result += ',' + images[item];
         }
-        imagesDict[images[item].split('/')[9]] = images[item];
+        imagesDict[images[item].split('/')[11]] = images[item];
         var $li = $(
-            '<div id="' + images[item].split('/')[9] + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
+            '<div id="' + images[item].split('/')[11] + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
                 '<img style="width:150px;height:150px;">' +
                 '<div class="glyphicon glyphicon-trash red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
             '</div>'

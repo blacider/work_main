@@ -70,12 +70,26 @@ function bind_event(){
 //            }
 //        });
     });
+    /*
     $('.tdeny').each(function(){
         $(this).click(function(){
             if(confirm("确认取消付款吗？") == true){
             var _id = $(this).data('id');
             location.href = __BASE + "bills/marksuccess/" + _id + "/1";
+        $(this).click(function(){
+            var _id = $(this).data('id');
+            $('#div_id').val(_id);
+            $('#comment_dialog').modal('show');
+        });
             }
+        });
+    });
+    */
+    $('.tdeny').each(function() {
+        $(this).click(function(){
+            var _id = $(this).data('id');
+            $('#div_id').val(_id);
+            $('#comment_dialog').modal('show');
         });
     });
     /*
