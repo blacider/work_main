@@ -21,6 +21,7 @@ class Company extends REIM_Controller {
         }
         $_config = $setting['config'];
         $config = json_decode($_config,true);
+        log_message('debug','logo:' . $config['logo']);
         $this->bsload('company/report_settings_update',
             array(
                 'images'=>$config['logo']
