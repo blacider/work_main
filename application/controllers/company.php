@@ -19,10 +19,13 @@ class Company extends REIM_Controller {
         {
             $setting = $buf['data'];
         }
-        log_message('debug', 'config: ' . json_encode($setting));
+        $_config = $setting['config'];
+        $config = json_decode($_config,true);
+        log_message('debug','logo:' . $config['logo']);
         $this->bsload('company/report_settings_update',
             array(
-                'title'=>'修改报告模板'
+                'images'=>$config['logo']
+                ,'title'=>'修改报告模板'
                 ,'setting'=>$setting
                 ,'id'=>$id
                 ,'breadcrumbs'=> array(
@@ -148,12 +151,14 @@ class Company extends REIM_Controller {
     public function flow_finance_update($fid)
     {
         $this->need_group_it();
+        $gids = $this->input->post('gids');
+        $name = $this->input->post('name');
         if(!$fid)
         {
             return redirect('/company/approval_flow');
         }
         $_steps = $this->input->post('steps');
-        $gids = $this->input->post('gids');
+        log_message('debug','steps:' . $_steps);
         $policy = array();
         $policies = array();
 
@@ -166,7 +171,19 @@ class Company extends REIM_Controller {
             $count++;
         }
         
-        $buf = $this->company->update($fid,json_encode($policies),$fid);
+        log_message('debug','update_policy:' . json_encode($policies));
+        $buf = $this->company->update_finance_policy($fid,$name,json_encode($policies),$gids);
+
+        if($buf['status'] > 0)
+        {
+            die(json_encode(array('status'=>1)));
+        }
+        else
+        {
+            die(json_encode(array('status'=>0)));
+        }
+            
+        /*
         if($buf['status'] > 0)
         {
             $this->session->set_userdata('last_error','更新成功');
@@ -175,8 +192,9 @@ class Company extends REIM_Controller {
         {
             $this->session->set_userdata('last_error','更新成功');
         }
-
-        return redirect('/company/approval_flow');
+        */
+        
+       // return redirect('/company/approval_flow');
     }
     public function flow_update($id = 0)
     {
@@ -188,6 +206,17 @@ class Company extends REIM_Controller {
                 $gmember = $_group['data']['gmember'];
             }
             $gmember = $gmember ? $gmember : array();
+        }
+
+        $members = array();
+        $mem_dic = array();
+        foreach($gmember as $gm)
+        {
+            $mem_dic[$gm['id']] = $gm['nickname'];
+            if($gm['admin']==1 || $gm['admin']==2)
+            {
+                array_push($members,$gm); 
+            }
         }
         
         $gnames = array();
@@ -203,18 +232,34 @@ class Company extends REIM_Controller {
         {
            $policies = $buf['data']; 
         }
+        if(array_key_exists('step',$policies))
+        {
+            foreach($policies['step'] as &$st)
+            {
+                $_uids = $st['uids']; 
+                $_names = array();
+                foreach($_uids as $u)
+                {
+                    array_push($_names,$mem_dic[$u]);
+                }
+
+                $st['nicknames'] = implode('|',$_names);
+            }
+        }
+
+            
         log_message('debug','policies:' . json_encode($policies));
         $this->bsload('company/flow_update',
             array(
                 'title'=>'更新审批流'
                 ,'gnames' => $gnames
                 ,'policies' => $policies
-                ,'members' => $gmember
+                ,'members' => $members
                 ,'fid' => $id
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-                    ,array('url'=>'','name'=>'公司设置','class'=> '')
-                    ,array('url'=>'','name'=>'财务审批流','class'=>'')
+                    ,array('url'=>base_url('company/common'),'name'=>'公司设置','class'=> '')
+                    ,array('url'=>base_url('company/approval_flow'),'name'=>'财务审批流','class'=>'')
                     ,array('url'=>'','name'=>'更新财务审批流','class'=>'')
                 ),
             )
