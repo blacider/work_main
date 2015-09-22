@@ -396,7 +396,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     <b class="arrow"></b>
     <ul class="submenu nav-show" style="display: block;">
 
-        <li class="hsub" id="approval_report_settings_list">
+        <li class="hsub" id="report_settings_list">
         <a href="<?php echo base_url('company/report_settings_list'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 报告设置</a>
         <b class="arrow"></b>
         </li>
@@ -450,7 +450,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 2) {
         <b class="arrow"></b>
         </li>
 
-        <li class="hsub" id="index">
+        <li class="hsub" id="finance_flow">
         <a href="<?php echo base_url('bills/finance_flow'); ?>" >待审批</a>
 
         <b class="arrow"></b>
