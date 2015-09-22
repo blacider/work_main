@@ -12,6 +12,23 @@ class Bills extends REIM_Controller {
         $this->load->library('reim_cipher');
     }
 
+    public function report_finance_deny()
+    {
+           $rid = $this->input->post('rid');  
+
+           $buf = $this->company->deny_report_finance($rid);
+
+           if($buf['status'] > 0)
+           {
+                $this->session->set_userdata('last_error','已拒绝');
+           }
+           else
+           {
+                $this->session->set_userdata('last_error','拒绝失败');
+           }
+
+           return redirect('bills/finance_flow');
+    }
     public function report_finance_end()
     {
            $rid = $this->input->post('rid');  

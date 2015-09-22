@@ -6,7 +6,7 @@ class Company_Model extends Reim_Model {
         parent::__construct();
     }
 
-    public function pass_report_deny($rid)
+    public function deny_report_finance($rid)
     {
         $jwt = $this->session->userdata('jwt');
         log_message("debug", "JWT: " . json_encode($jwt));
