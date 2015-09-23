@@ -131,7 +131,11 @@ class Bills extends REIM_Controller {
         die(json_encode(array('url' => $url)));
     }
 
+<<<<<<< HEAD
     public function _logic($status = 2, $search = ''){
+=======
+    public function _logic($status = 2,$search=''){
+>>>>>>> 39b2e2040a3331156ee9747c5b0c9a0bb3c5d06e
         $this->need_group_casher();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
@@ -187,6 +191,7 @@ class Bills extends REIM_Controller {
                     ,'category' => $_tags
                     ,'error' => $error
                     ,'usergroups' => $_usergroups
+                    ,'search' => $search
                 )
             );
         }
@@ -207,6 +212,7 @@ class Bills extends REIM_Controller {
                     ,'category' => $_tags
                     ,'error' => $error
                     ,'usergroups' => $_usergroups
+                    ,'search' => $search
                 )
             );
         }
@@ -227,20 +233,28 @@ class Bills extends REIM_Controller {
                     ,'category' => $_tags
                     ,'error' => $error
                     ,'usergroups' => $_usergroups
+<<<<<<< HEAD
                     ,'search'=>$search
+=======
+                    ,'search' => $search
+>>>>>>> 39b2e2040a3331156ee9747c5b0c9a0bb3c5d06e
                 )
             );
         }
     }
 
-    public function index(){
-        return $this->_logic(2);
+    public function index($search=''){
+        return $this->_logic(2,$search);
     }
 
-    public function exports(){
-        return $this->_logic(4);
+    public function exports($search=''){
+        return $this->_logic(4,$search);
     }
+<<<<<<< HEAD
     public function all_reports($search = '')
+=======
+    public function all_reports($search='')
+>>>>>>> 39b2e2040a3331156ee9747c5b0c9a0bb3c5d06e
     {
         return $this->_logic(1,$search);
     }
