@@ -126,6 +126,7 @@ class Bills extends REIM_Controller {
         log_message('debug','profile'.json_encode($profile['data']['profile']['group']));
         //$url = "https://report.yunbaoxiao.com/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
         $url = "https://www.yunbaoxiao.com/report/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
+        $url = "http://admin.cloudbaoxiao.com:7780/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
         log_message('debug','hhh'. $url);
         die(json_encode(array('url' => $url)));
     }
