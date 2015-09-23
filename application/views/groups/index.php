@@ -29,7 +29,7 @@ position: absolute;
     background-color: #ff7075;
    }
 </style>
-    <input name="key" placeholder="部门" value="" type='text' id="globalSearchText">
+    <input name="key" placeholder="部门" value="<?php echo $search;?>" type='text' id="globalSearchText">
     <button type="button" id="globalSearch">搜索</button>
 <script language='javascript'>
     var _admin = "<?php echo $profile['admin']; ?>";
@@ -59,10 +59,16 @@ var __BASE = "<?php echo $base_url; ?>";
 <script type="text/javascript">
 	$grid = $('#grid-table');
 $("#globalSearch").click(function () {
+      if ("<?php echo $search;?>" != $("#globalSearchText").val()) {
+        window.location.href = "/"+window.location.href.split('/')[3]+"/"+window.location.href.split('/')[4]+"/"+$("#globalSearchText").val();
+      }
+});
+function doSearch() {
     var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
         colModel = $grid.jqGrid("getGridParam", "colModel"),
         searchText = $("#globalSearchText").val(),
         l = colModel.length;
+    var groupId = $('select[name="gids"]').val();
     for (i = 0; i < l; i++) {
         cm = colModel[i];
         if (cm.search !== false && (cm.stype === undefined || cm.stype === "text")) {
@@ -73,12 +79,23 @@ $("#globalSearch").click(function () {
             });
         }
     }
-    postData.filters = JSON.stringify({
+    var groups_ = [{
+      groupOp:"AND",
+      rules:[{field:"ugs",op:"cn",data:groupId}],
+      groups:[{
         groupOp: "OR",
-        rules: rules
-    });
+        rules: rules ,
+        groups:[]
+      }]
+    }];
+    //postData.filters = JSON.stringify({
+    //    groupOp: "OR",
+    //    rules: rules ,
+    //    groups:groups_
+    //});
+    postData.filters = JSON.stringify(groups_[0]);
     $grid.jqGrid("setGridParam", { search: true });
-    $grid.trigger("reloadGrid", [{page: 1, current: true}]);
+    $grid.trigger("reloadGrid", [{page: 1}]);
     return false;
-});
+}
 </script>
