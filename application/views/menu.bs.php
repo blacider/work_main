@@ -396,6 +396,11 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     <b class="arrow"></b>
     <ul class="submenu nav-show" style="display: block;">
 
+        <li class="hsub" id="report_settings_list">
+        <a href="<?php echo base_url('company/report_settings_list'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 报告设置</a>
+        <b class="arrow"></b>
+        </li>
+
         <li class="hsub" id="approval_flow">
         <a href="<?php echo base_url('company/approval_flow'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 财务审批流</a>
         <b class="arrow"></b>
@@ -441,6 +446,12 @@ if($profile['admin'] == 1 || $profile['admin'] == 2) {
 
         <li class="hsub" id="index">
         <a href="<?php echo base_url('bills/index'); ?>" >待结算</a>
+
+        <b class="arrow"></b>
+        </li>
+
+        <li class="hsub" id="finance_flow">
+        <a href="<?php echo base_url('bills/finance_flow'); ?>" >待审批</a>
 
         <b class="arrow"></b>
         </li>
