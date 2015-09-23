@@ -68,7 +68,6 @@ function doSearch() {
         colModel = $grid.jqGrid("getGridParam", "colModel"),
         searchText = $("#globalSearchText").val(),
         l = colModel.length;
-    var groupId = $('select[name="gids"]').val();
     for (i = 0; i < l; i++) {
         cm = colModel[i];
         if (cm.search !== false && (cm.stype === undefined || cm.stype === "text")) {
@@ -79,23 +78,12 @@ function doSearch() {
             });
         }
     }
-    var groups_ = [{
-      groupOp:"AND",
-      rules:[{field:"ugs",op:"cn",data:groupId}],
-      groups:[{
+    postData.filters = JSON.stringify({
         groupOp: "OR",
-        rules: rules ,
-        groups:[]
-      }]
-    }];
-    //postData.filters = JSON.stringify({
-    //    groupOp: "OR",
-    //    rules: rules ,
-    //    groups:groups_
-    //});
-    postData.filters = JSON.stringify(groups_[0]);
+        rules: rules
+    });
     $grid.jqGrid("setGridParam", { search: true });
-    $grid.trigger("reloadGrid", [{page: 1}]);
+    $grid.trigger("reloadGrid", [{page: 1, current: true}]);
     return false;
 }
 </script>
