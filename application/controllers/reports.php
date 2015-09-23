@@ -7,6 +7,8 @@ class Reports extends REIM_Controller {
         $this->load->model('user_model', 'users');
         $this->load->model('report_model', 'reports');
         $this->load->model('group_model','groups');
+        $this->load->model('reim_show_model','reim_show');
+        $this->load->model('usergroup_model','ug');
     }
 
     public function add_comment() {
@@ -316,13 +318,43 @@ class Reports extends REIM_Controller {
         $receiver = $this->input->post('receiver');
         $cc = $this->input->post('cc');
         $force = $this->input->post('force');
+        $template_id = $this->input->post('template_id');
+        $extra = array();
+        if($template_id) {
+            // 获取并构造extra
+            $_account = $this->input->post('account');
+            $_account_name = $this->input->post('account_name');
+            $_account_no = $this->input->post('account_no');
+            $_payment = $this->input->post('payment');
+            $_borrowing = $this->input->post('borrowing');
+            $_location_from = $this->input->post('location_from');
+            $_location_to = $this->input->post('location_to');
+            $_period_start = $this->input->post('period_start');
+            $_period_end = $this->input->post('period_end');
+            $_contract = $this->input->post('contract');
+            $_contract_note = $this->input->post('contract_note');
+            $_note = $this->input->post('note');
+            //$_contract = $_contract == 2 ? 0 : 1;
+            $extra = array(
+                'template_id' => $template_id
+                ,'borrowing' => $_borrowing
+                ,'account' => array(
+                    'id' => $_account
+                    ,'name' => $_account_name
+                    ,'no' => $_account_no
+                )
+                ,'payment' => $_payment
+                ,'period' => array('start' => $_period_start, 'end' => $_period_end)
+                ,'location' => array('start' => $_location_from, 'dest' => $_location_to)
+                ,'contract' => array('available' => $_contract, 'note' => $_contract_note)
+                ,'note' => $_note
+            );
+        }
         if(!$cc) $cc = array();
         if(!$force) $force = 0;
         $save = $this->input->post('renew');
-        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save, $force);
+        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save, $force, $extra);
         $ret = json_decode($ret, true);
-        log_message("debug", "xx:" . json_encode($ret));
-        log_message("debug", "Cates:" . $ret['code']);
         if($ret['code'] <= 0) {
             log_message("debug", "Cates:" . $ret['code']);
             if($ret['code'] == -71)
@@ -441,8 +473,26 @@ class Reports extends REIM_Controller {
         if($report['status'] < 1){
             return redirect(base_url('reports/index'));
         }
-
         $report = $report['data'];
+        $extra = array();
+        if(array_key_exists('extras', $report)) {
+            $extra = json_decode($report['extras'], true);
+        }
+        $config = array();
+        if(!empty($extra)){
+            $profile = $this->session->userdata('profile');
+            $config = array();
+            if($profile &&  array_key_exists('templates', $profile)) {
+                $report_template = $profile['templates'];
+                foreach($report_template as $r) {
+                    if($r['id'] == $extra['template_id']) {
+                        $config = $r;
+                        break;
+                    }
+                }
+            }
+        }
+
         $_members = array();
         $members = $this->users->reim_get_user();
         if($members['status'] > 0){
@@ -457,16 +507,18 @@ class Reports extends REIM_Controller {
         foreach($report['receivers']['cc'] as $m){
             array_push($_ccs, $m['id']);
         }
-        $report['receivers']['managers'] = $_managers;/* implode(',', $_managers); */
-        $report['receivers']['cc'] = $_ccs; /*implode(',', $_ccs);*/
+
+        $report['receivers']['managers'] = $_managers;
+        $report['receivers']['cc'] = $_ccs; 
         $_items = $this->_getitems();
-        //print_r($report);
 
         $this->bsload('reports/edit',
             array(
                 'title' => '修改报告',
                 'members' => $_members,
                 'items' => $_items,
+                'config' => $config,
+                'extra' => $extra,
                 'report' => $report
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -635,6 +687,24 @@ class Reports extends REIM_Controller {
         if($members['status'] > 0){
             $_members = $members['data']['members'];
         }
+        $extra = array();
+        if(array_key_exists('extras', $report)) {
+            $extra = json_decode($report['extras'], true);
+        }
+        $config = array();
+        if(!empty($extra)){
+            $profile = $this->session->userdata('profile');
+            $config = array();
+            if($profile &&  array_key_exists('templates', $profile)) {
+                $report_template = $profile['templates'];
+                foreach($report_template as $r) {
+                    if($r['id'] == $extra['template_id']) {
+                        $config = $r;
+                        break;
+                    }
+                }
+            }
+        }
         $this->bsload('reports/view',
             array(
                 'title' => '查看报告',
@@ -642,6 +712,8 @@ class Reports extends REIM_Controller {
                 'error' => $error,
                 'flow' => $flow
                 ,'rid' => $id
+                ,'config' => $config
+                ,'extra' => $extra
                 ,'comments' => $comments
                 ,'members' => $_members
                 ,'decision' => $decision
@@ -667,7 +739,39 @@ class Reports extends REIM_Controller {
         $save = $this->input->post('renew');
         $force = $this->input->post('force');
         if(!$cc) $cc = array();
-        $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save, $force);
+        $template_id = $this->input->post('template_id');
+        $extra = array();
+        if($template_id) {
+            // 获取并构造extra
+            $_account = $this->input->post('account');
+            $_account_name = $this->input->post('account_name');
+            $_account_no = $this->input->post('account_no');
+            $_payment = $this->input->post('payment');
+            $_borrowing = $this->input->post('borrowing');
+            $_location_from = $this->input->post('location_from');
+            $_location_to = $this->input->post('location_to');
+            $_period_start = $this->input->post('period_start');
+            $_period_end = $this->input->post('period_end');
+            $_contract = $this->input->post('contract');
+            $_contract_note = $this->input->post('contract_note');
+            $_note = $this->input->post('note');
+            //$_contract = $_contract == 2 ? 0 : 1;
+            $extra = array(
+                'template_id' => $template_id
+                ,'borrowing' => $_borrowing
+                ,'account' => array(
+                    'id' => $_account
+                    ,'name' => $_account_name
+                    ,'no' => $_account_no
+                )
+                ,'payment' => $_payment
+                ,'period' => array('start' => $_period_start, 'end' => $_period_end)
+                ,'location' => array('start' => $_location_from, 'dest' => $_location_to)
+                ,'contract' => array('available' => $_contract, 'note' => $_contract_note)
+                ,'note' => $_note
+            );
+        }
+        $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save, $force, $extra);
         $ret = json_decode($ret, true);
         log_message("debug", "xx:" . json_encode($ret));
         if($ret['code'] <= 0) {
@@ -826,7 +930,7 @@ class Reports extends REIM_Controller {
             {
                 if($d['mdecision'] == 1 && !$d['cc_flag']){
                     $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del"  data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-decision="1" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in texport' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>' .  '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
-                } else {
+                } else { 
                     $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in ' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span></div>';
                 }
 
@@ -887,6 +991,74 @@ class Reports extends REIM_Controller {
 
     private function exports_by_rids($ids) {
         $data = $this->reports->get_reports_by_ids($ids);
+        $_categories = $this->category->get_list();
+        $categories = array();
+        $cate_dic = array();
+        if($_categories['status'] > 0)
+        {
+            $categories = $_categories['data']['categories']; 
+        }
+        log_message('debug','cates:'.json_encode($categories));
+        foreach($categories as $cate)
+        {
+           $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code']); 
+        }
+        $group = $this->groups->get_my_list();
+        $ginfo = array();
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
+
+        
+        //ugs部门
+        $ug = array();
+        $_ugs = $this->ug->get_my_list();
+        if($_ugs['status'] > 0) 
+        {
+            $ug = $_ugs['data']['group'];
+        }
+        $ug_dic = array();
+        foreach($ug as $u)
+        {
+            $ug_dic[$u['id']] = array('id' => $u['id'], 'name' => $u['name'] ,'pid' => $u['pid']);
+        }
+        
+        $member_dic = array();
+        foreach($gmember as $gm)
+        {
+            $member_dic[$gm['id']] = $gm; 
+        }
+        
+        log_message('debug','member_dic:' . json_encode($member_dic));
+        $_ranks = $this->reim_show->rank_level(1);
+        $ranks = array();
+        $_levels = $this->reim_show->rank_level(0);
+        $levels = array();
+
+        if($_ranks['status'] > 0)
+        {
+            $ranks = $_ranks['data'];
+        }
+
+        if($_levels['status'] > 0)
+        {
+            $levels = $_levels['data'];
+        }
+
+        $rank_dic = array();
+        $level_dic = array();
+        foreach($ranks as $r)
+        {
+            $rank_dic[$r['id']] = $r['name'];
+        }
+        foreach($levels as $l)
+        {
+            $level_dic[$l['id']] = $l['name'];
+        }
         $_excel = array();
         $_members = array();
         if($data['status'] > 0){
@@ -902,6 +1074,40 @@ class Reports extends REIM_Controller {
                 if(!array_key_exists($r['uid'], $_members)){
                     $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
                 }
+                
+                $flow = array();
+                $_flow = $this->reports->report_flow($r['id']);
+                if($_flow['status'] > 0)
+                {
+                   $flow_member = $_flow['data']['data'];
+                   foreach($flow_member as $fm)
+                   {
+                        if($fm['status'] == 2)
+                        {
+                            array_push($flow,array('name' => $fm['nickname'],'step' => $fm['step']));
+                        }
+                   }
+                }
+                $r['flow'] = '';
+                if($flow)
+                {
+                    usort($flow,function($a,$b){
+                        if($a['step'] == $b['step'])
+                        {
+                            return 0;
+                        }
+
+                        return ($a['step'] > $b['step']) ? -1 : 1;
+                    });
+                    $f_m = array();
+                    foreach($flow as $f)
+                    {
+                        array_push($f_m,$f['name']);
+                    }
+                    $r['flow'] = implode(',',$f_m);
+                }
+                
+                log_message('debug','report_flow:' . json_encode($_flow));
                 $r['total'] = 0;
                 $r['paid'] = 0;
                 //log_message('debug', json_encode($r));
@@ -924,6 +1130,9 @@ class Reports extends REIM_Controller {
                         $i['paid'] = 0;
                     }
                     $i['nickname'] = $r['nickname'];
+                    $i['rid'] = $r['id'];
+                    $i['flow'] = $r['flow'];
+                    $i['member_info'] = $member_dic[$r['uid']];
                     //$r['total'] += ($i['amount'] * $_rate);
                     //log_message("debug", "Items2:"  . json_encode($i));
                     array_push($_t_items, $i);
@@ -953,6 +1162,7 @@ class Reports extends REIM_Controller {
                 $obj['金额'] = $r['total'];
                 $obj['已付'] = $r['paid'];
                 $obj['应付'] = $r['last'];
+
                 array_push($_excel, $obj);
             }
             log_message("debug", "export --> " . json_encode($_t_items));
@@ -999,12 +1209,77 @@ class Reports extends REIM_Controller {
                 $o = array();
                 $o['日期'] = date('Y年m月d日', date($i['createdt']));
                 $o['时间'] = date('H:i:s', date($i['createdt']));
-                $o['员工姓名'] = $i['nickname'];
-                $o['员工邮箱'] = $i['nickname'];
                 $o['类别'] = $i['category_name'];
+                $o['创建者'] = $i['nickname'];
+                $o['邮箱'] = '';
+                $o['员工ID'] = '';
+                $o['员工手机'] = '';
+                $o['上级'] = '';
+                $o['部门'] = '';
+                $o['上级部门'] = '';
+                if(array_key_exists('email',$i['member_info']))
+                {
+                    $o['邮箱'] = $i['member_info']['email'];
+                }
+                if(array_key_exists('client_id',$i['member_info']))
+                {
+                    $o['员工ID'] = $i['member_info']['client_id'];
+                }
+                if(array_key_exists('phone',$i['member_info']))
+                {
+                    $o['员工手机'] = $i['member_info']['phone'];
+                }
+                if(array_key_exists('manager',$i['member_info']))
+                {
+                    $o['上级'] = $i['member_info']['manager'];
+                }
+                if(array_key_exists('d',$i['member_info']))
+                {
+                    $unames = explode(',',$i['member_info']['d']);
+                    if(count($unames) >= 2) 
+                    {
+                        $o['部门'] = $unames[0];
+                        $o['上级部门'] = $unames[1];
+                    }
+                    if(count($unames) == 1)
+                    {
+                        $o['部门'] = $unames[0];
+                    }
+                }
+                $o['级别'] = '';
+                $o['职位'] = '';
+
+                if(array_key_exists('rank_id',$i['member_info']))
+                {
+                    if($i['member_info']['rank_id'] > 0)
+                    {
+                        $o['级别'] = $rank_dic[$i['member_info']['rank_id']];
+                    }
+                }
+                if(array_key_exists('level_id',$i['member_info']))
+                {
+                    if($i['member_info']['level_id'] > 0)
+                    {
+                        $o['职位'] = $level_dic[$i['member_info']['level_id']];
+                    }
+                }
+                
+                //$o['类别'] = $i['category_name'];
                 $o['商家'] = $i['merchants'];
                 $o['参与人员'] = implode(',', $__relates);
-                $o['会计科目'] = $s;
+                $o['会计科目'] = $i['category_name'];
+                $o['会计科目代码'] = $cate_dic[$i['category']]['sob_code'];
+                $o['会计科目上级'] = '';
+                $o['会计科目上级代码'] = '';
+                if($cate_dic[$i['category']]['pid'] > 0)
+                {
+                     $o['会计科目上级'] = $cate_dic[$i['category']]['name'];
+                }
+                if($cate_dic[$i['category']]['pid'] > 0)
+                {
+                     $o['会计科目代码'] = $cate_dic[$i['category']]['sob_code'];
+                }
+                $o['报销审核人'] = $i['flow'];
                 $o['备注'] = $i['note'];
                 $_rate = 1.0;
                 if($i['currency'] != '' && strtolower($i['currency']) != 'cny') {
@@ -1019,7 +1294,12 @@ class Reports extends REIM_Controller {
                 $o['已付'] = $i['paid'];
                 $o['应付'] = ($i['amount'] * $_rate) - $i['paid'];
                 $o['报告名'] = $i['title'];
+                $o['报告ID'] = $i['rid'];
+                $o['账号'] = $i['member_info']['account'];
+                $o['卡号'] = $i['member_info']['cardno'];
+                $o['开户行'] = $i['member_info']['bankname'];
                 array_push($_detail_items, $o);
+                log_message('debug','members: ' . json_encode($i['member_info']));
             }
 
             log_message("debug", json_encode($o));
@@ -1210,6 +1490,44 @@ class Reports extends REIM_Controller {
             //print_r($_excel);
             self::render_to_download('工作表1', $_excel, 'u8_' . date('Y-m-d', time()) . ".xls");
         }
+    }
+
+    public function report_template($id = 0){
+        if($id == 0) return redirect(base_url('reports/newreport'));
+        $profile = $this->session->userdata('profile');
+        $config = array();
+        if($profile &&   array_key_exists('templates', $profile)) {
+            $report_template = $profile['templates'];
+            foreach($report_template as $r) {
+                if($r['id'] == $id) {
+                    $config = $r;
+                }
+            }
+            if(!empty($config)){
+                $_members = array();
+                $members = $this->users->reim_get_user();
+                if($members['status'] > 0){
+                    $_members = $members['data']['members'];
+                }
+
+                $_items = $this->_getitems();
+                log_message('debug',json_encode($_items));
+
+                return $this->bsload('reports/template_new',
+                    array(
+                        'title' => '新建[' . $config['name'] . '] 报告',
+                        'members' => $_members,
+                        'config' => $config,
+                        'items' => $_items
+                        ,'breadcrumbs' => array(
+                            array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                            ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
+                            ,array('url'  => '', 'name' => '新建[' . $config['name'] . '] 报告', 'class' => '')
+                        ),
+            ));
+            }
+        }
+        return redirect(base_url('reports/newreport'));
     }
 }
 
