@@ -13,6 +13,96 @@ class Category extends REIM_Controller {
 	$this->load->model('user_model','users');
     }
 
+    public function create_expense()
+    {
+        $name = $this->input->post('name');
+        $buf = $this->category->expense_create($name);
+
+        if($buf['status'] > 0)
+        {
+            return redirect(base_url('category/update_expense/' . $buf['code']));
+        }
+        else
+        {
+            $this->session->set_userdata('last_error','对象添加失败');
+            return redirect(base_url('category/show_expense'));
+        }
+    }
+
+    public function update_expense($eid = -1)
+    {
+        if(-1 == $eid) return redirect(base_url('category/show_expense'));
+
+        $group = $this->groups->get_my_list();
+        $ginfo = array();
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('ginfo', $group['data'])){
+                $ginfo = $group['data']['ginfo'];
+            }
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
+
+        $gnames = array();
+        $_gnames = $this->ug->get_my_list();
+        if($_gnames['status'] > 0)
+        {
+            $gnames = $_gnames['data']['group'];
+        }
+
+        $ranks = array();
+        $levels = array();
+        $_ranks = $this->reim_show->rank_level(1);
+        if($_ranks['status'] > 0)
+        {
+            $ranks = $_ranks['data'];
+        }
+        $_levels = $this->reim_show->rank_level(0);
+        if($_levels['status'] > 0)
+        {
+            $levels = $_levels['data'];
+        }
+
+        log_message('debug','members: ' . json_encode($gmember));
+        log_message('debug','groups: ' . json_encode($gnames));
+        log_message('debug','ranks: ' . json_encode($ranks));
+        log_message('debug','levels: ' . json_encode($levels));
+        $this->bsload('category/update_expense',
+            array(
+                'title' => '修改对象'
+                ,'members' => $gmember
+                ,'groups' => $gnames
+                ,'ranks' => $ranks
+                ,'levels' => $levels
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
+                    ,array('url'  => '', 'name' => '修改对象', 'class' => '')
+                ),
+            )
+        );
+    }
+
+    public function show_expense()
+    {
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+        $this->bsload('category/expense',
+            array(
+                'title' => '费用承担对象管理'
+                ,'error' => $error
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
+                    ,array('url'  => '', 'name' => '费用承担对象管理', 'class' => '')
+                ),
+            )
+        );
+    }
+
     public function batch_create_category()
     {
         $sid = $this->input->post('sid');

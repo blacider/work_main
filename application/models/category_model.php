@@ -1,6 +1,18 @@
 <?php
 class Category_Model extends Reim_Model {
 
+    public function expense_create($name)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+
+        $url = $this->get_url('');
+        $data = array('name' => $name);
+        $buf = $this->do_Post($url,$data,$jwt);
+        log_message('debug','expense_create:' . $buf);
+        return json_decode($buf,True);
+    }
+
     public function get_custom_item()
     {
         $jwt = $this->session->userdata('jwt');
