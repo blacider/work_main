@@ -82,7 +82,7 @@ class Bills extends REIM_Controller {
         die(json_encode(array('url' => $url)));
     }
 
-    public function _logic($status = 2){
+    public function _logic($status = 2, $search = ''){
         $this->need_group_casher();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
@@ -178,6 +178,7 @@ class Bills extends REIM_Controller {
                     ,'category' => $_tags
                     ,'error' => $error
                     ,'usergroups' => $_usergroups
+                    ,'search'=>$search
                 )
             );
         }
@@ -190,9 +191,9 @@ class Bills extends REIM_Controller {
     public function exports(){
         return $this->_logic(4);
     }
-    public function all_reports()
+    public function all_reports($search = '')
     {
-        return $this->_logic(1);
+        return $this->_logic(1,$search);
     }
 
     public function listdata($type = 2){
