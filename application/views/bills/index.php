@@ -197,7 +197,7 @@ $grid = $('#grid-table');
 
 $("#globalSearch").click(function () {
       if ("<?php echo $search;?>" != $("#globalSearchText").val()) {
-        window.location.href = "/bills/all_reports/"+$("#globalSearchText").val();
+        window.location.href = "/bills/"+window.location.href.split('/')[4]+"/"+$("#globalSearchText").val();
       }
 });
 function doSearch() {
