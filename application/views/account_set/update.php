@@ -48,7 +48,6 @@ if($last_error) {
                             function showSob(sobId) {
                                 if (sobId != -1) {
                                     var extra_type = all_categories[sobId]['extra_type'],name = all_categories[sobId]['name'], note = all_categories[sobId]['note'],force_attach=all_categories[sobId]['force_attach'],code = all_categories[sobId]['sob_code'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'], name = all_categories[sobId]['name'], max_limit = all_categories[sobId]['max_limit'], pid = all_categories[sobId]['pid'],alias_type=all_categories[sobId]['alias_type'];
-                                    console.log(all_categories[sobId]);
                                     $("#form_moda").find('input[name="name"]').val(name);
                                     $("#menuImg").attr('src', img);
                                     $('#form_moda').find('input[name="avatar"]').val(all_categories[sobId]['avatar_']);
@@ -57,7 +56,6 @@ if($last_error) {
                                     $("#form_moda").find('input[name="note"]').val(note);
                                     $("#form_moda").find('input[name="max_limit"]').val(max_limit);
                                     $("#form_moda").find('input[name="pid"]').val(pid);
-                                    console.log(alias_type);
                                     $("#form_moda").find('select[name="alias_type"]').val(alias_type).attr('selected',true).trigger('chosen:updated');
 
                                     if(force_attach == 1)
@@ -628,9 +626,6 @@ var range = "<?php echo $range?>";
                        window.location.href=__BASE+"category/account_set";
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.log(XMLHttpRequest.status);
-                        console.log(XMLHttpRequest.readyState);
-                        console.log(textStatus);
                     },            });
      
            }); 
