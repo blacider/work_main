@@ -969,7 +969,7 @@ class Members extends REIM_Controller {
             $obj = array();
             if(array_key_exists('client_id',$m))
             {
-                $obj['ID'] = $m['nickname'];
+                $obj['ID'] = $m['client_id'];
             }
             if(array_key_exists('nickname',$m))
             {
@@ -1022,7 +1022,7 @@ class Members extends REIM_Controller {
             }
             array_push($data, $obj);
         }
-        $this->render_to_download('人员', $data, '员工信息.xls');
+        $this->render_to_download('人员', $data, 'members.xls');
     }
 
 
