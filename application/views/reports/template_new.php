@@ -78,7 +78,7 @@
                                 <div class="col-xs-9 col-sm-9">
                                     <select class="chosen-select tag-input-style" name="account" id="account" data-placeholder="请选择银行账号">
                                         <?php foreach($user['banks'] as $m) { ?>
-                                                <option value="<?php echo $m['id']; ?>" data-name="<?php echo $m['account']; ?>" data-no="<?php echo $m['cardno']; ?>"><?php echo $m['account']; ?> - [<?php echo substr($m['cardno'], 0, -5) . "xxxxx"; ?> ]</option>
+                                                <option value="<?php echo $m['id']; ?>" data-name="<?php echo $m['account']; ?>" data-no="<?php echo $m['cardno']; ?>"><?php echo $m['account']; ?> - [<?php echo $m['cardno']; ?> ]</option>
                                        
                                         <?php } ?>
                                     </select>
@@ -120,9 +120,9 @@
 ?>
 
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">借付款</label>
+                                <label class="col-sm-1 control-label no-padding-right">已付金额</label>
                                 <div class="col-xs-9 col-sm-9">
-                                    <input type="text" class="form-controller col-xs-12" id="borrowing" name="borrowing"  placeholder="借付款">
+                                    <input type="text" class="form-controller col-xs-12" id="borrowing" name="borrowing"  placeholder="已付金额">
                                 </div>
                             </div>
 
@@ -416,6 +416,9 @@ function do_post(force) {
         var s = $("#account option:selected");
         _account_name = $(s).data('name');
         _account_no = $(s).data('no');
+        if(!_account_name) _account_name = '';
+        if(!_account_no) _account_no = '';
+        if(!_account) _account = 0;
     } catch(e) {}
 
     try {
@@ -434,15 +437,13 @@ function do_post(force) {
     } catch(e) {}
 
     try {
-        $('#contract').each(function(idx, item){
-            if($(this).attr('checked')){
-                _contract = $(this).val();
-            }
-        });
+        _contract = $('input[name="contract"]:checked').val(); 
+        if(!_contract) _contract = -1;
     }catch(e){}
     if(_contract == 2) {
         try{
             _contract_note = $('#contract_note').val();
+            if(!_contract_note) _contract_note = '';
         }catch(e){}
     }
 
@@ -450,17 +451,19 @@ function do_post(force) {
     try {
         _period_end = (new Date($("#period_end").val())).getTime() / 1000;
         _period_start = (new Date($("#period_start").val())).getTime() / 1000;
+        if(!_period_start || _period_start == NaN) _period_start = new Date().getTime() / 1000;
+        if(!_period_end || _period_end== NaN) _period_end= new Date().getTime() / 1000;
+        _period_start = parseInt(_period_start);
+        _period_end = parseInt(_period_end);
     }catch(e){}
 
     try {
         _location_from = $('#location_from').val();
+        if(!_location_from) _location_from = '';
         _location_to = $('#location_to').val();
+        if(!_location_to) _location_to= '';
     }catch(e){}
 
-    try {
-        _location_from = $('#location_from').val();
-        _location_to = $('#location_to').val();
-    }catch(e){}
 
 	if(s == null){
 	     show_notify('请选择审批人');
@@ -550,7 +553,7 @@ $(document).ready(function(){
     $('.contract').each(function(idx, item) {
         $(this).click(function() {
             var _val = $(this).val();
-            if(_val == 2) {
+            if(_val == 0) {
                 $('#contract_note').show();
             } else {
                 $('#contract_note').hide();

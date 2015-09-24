@@ -81,10 +81,10 @@ foreach($members as $m) {
                                     <select class="chosen-select tag-input-style" name="account" id="account" data-placeholder="请选择银行账号">
                                         <?php foreach($user['banks'] as $m) {
                                             if(array_key_exists('account', $extra) && $extra['account']['id'] == $m['id']){ ?>
-                                                <option value="<?php echo $m['id']; ?>"  data-name="<?php echo $m['account']; ?>" data-no="<?php echo $m['cardno']; ?>" selected><?php echo $m['account']; ?> - [<?php echo substr($m['cardno'], 0, -5) . "xxxxx"; ?> ]</option>
+                                                <option value="<?php echo $m['id']; ?>"  data-name="<?php echo $m['account']; ?>" data-no="<?php echo $m['cardno']; ?>" selected><?php echo $m['account']; ?> - [<?php echo $m['cardno']; ?> ]</option>
                                        
                                         <?php }  else { ?>
-                                                <option value="<?php echo $m['id']; ?>"  data-name="<?php echo $m['account']; ?>" data-no="<?php echo $m['cardno']; ?>"><?php echo $m['account']; ?> - [<?php echo substr($m['cardno'], 0, -5) . "xxxxx"; ?> ]</option>
+                                                <option value="<?php echo $m['id']; ?>"  data-name="<?php echo $m['account']; ?>" data-no="<?php echo $m['cardno']; ?>"><?php echo $m['account']; ?> - [<?php echo $m['cardno']; ?> ]</option>
 <?php } } ?>
                                     </select>
                                 </div>
@@ -126,9 +126,9 @@ foreach($members as $m) {
 ?>
 
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">借付款</label>
+                                <label class="col-sm-1 control-label no-padding-right">已付金额</label>
                                 <div class="col-xs-9 col-sm-9">
-                                <input type="text" class="form-controller col-xs-12" id="borrowing" name="borrowing"  placeholder="借付款" value="<?php echo $extra['borrowing']; ?>">
+                                <input type="text" class="form-controller col-xs-12" id="borrowing" name="borrowing"  placeholder="已付金额" value="<?php echo $extra['borrowing']; ?>">
                                 </div>
                             </div>
 
@@ -455,11 +455,15 @@ function do_post(force) {
     try {
         _period_end = (new Date($("#period_end").val())).getTime() / 1000;
         _period_start = (new Date($("#period_start").val())).getTime() / 1000;
+        if(!_period_start) _period_start = new Date().getTime() / 1000;
+        if(!_period_end) _period_end= new Date().getTime() / 1000;
     }catch(e){}
 
     try {
         _location_from = $('#location_from').val();
         _location_to = $('#location_to').val();
+        if(!_location_from) _location_from = '';
+        if(!_location_to) _location_to= '';
     }catch(e){}
 
 
