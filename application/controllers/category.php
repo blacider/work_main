@@ -322,8 +322,9 @@ class Category extends REIM_Controller {
         return redirect(base_url('category/account_set'));
     }
 
-    public function sob_update($gid)
+    public function sob_update($gid = -1)
     {
+        if(-1 == $gid) return redirect(base_url('category/account_set'));
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
