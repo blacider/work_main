@@ -240,7 +240,10 @@ class Company extends REIM_Controller {
                 $_names = array();
                 foreach($_uids as $u)
                 {
-                    array_push($_names,$mem_dic[$u]);
+                    if(array_key_exists($u,$mem_dic))
+                    {
+                         array_push($_names,$mem_dic[$u]);
+                    }
                 }
 
                 $st['nicknames'] = implode('|',$_names);
