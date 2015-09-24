@@ -3,21 +3,28 @@
 <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
-
 <script src="/static/ace/js/date-time/moment.min.js"></script>
+<!-- <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script> -->
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
 <script src="/static/ace/js/dropzone.min.js"></script>
+
 
 <script src="/static/ace/js/date-time/moment.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script>
+    
+     
+	 
+	   <script src="/static/ace/js/jquery.colorbox-min.js"></script>
+	   
+	     <!-- page specific plugin styles -->
+	     <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 
 
 
 <div class="page-content">
     <div class="page-content-area">
-        <form role="form" action="<?php echo base_url('reports/update');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform" >
-            <input type="hidden" name="id" value="<?php echo $report['id']; ?>" id="hrid">
+        <form role="form" action="<?php echo base_url('reports/create');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
             <div class="row">
                 <div class="container">
                     <div class="row">
@@ -25,29 +32,23 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">名称</label>
                                 <div class="col-xs-9 col-sm-9">
-                                    <input type="text" class="form-controller col-xs-12" name="title" placeholder="名称" value="<?php echo $report['title']; ?>">
+                                    <input type="text" id="title" class="form-controller col-xs-12" name="title"  placeholder="名称">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">发送至</label>
                                 <div class="col-xs-9 col-sm-9">
                                     <select class="chosen-select tag-input-style" name="receiver[]" multiple="multiple" data-placeholder="请选择审批人" id="receiver">
-<?php 
-$user = $this->session->userdata('user');
-$_empty = 0;
-    if(!$report['receivers']['managers']){
-        $_empty = 1;
-    }
-foreach($members as $m) {
-    if($_empty == 0 && in_array($m['id'], $report['receivers']['managers']) || ($_empty == 1 && $user['manager_id'] == $m['id'])){
-?>
-<option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
-<?php } else { ?>
-<option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
-<?php 
-}
-}
- ?>
+                                        <?php 
+					$user = $this->session->userdata('user');
+					foreach($members as $m) {
+					if($user['id'] != $m['id']){
+                        if ($user['manager_id'] != $m['id']){?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
+                                        <?php } else {?>
+                                        <option selected="true" value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
+                                        <?php } ?>
+                                        <?php }} ?>
                                     </select>
                                 </div>
                             </div>
@@ -55,15 +56,12 @@ foreach($members as $m) {
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">抄送至</label>
                                 <div class="col-xs-9 col-sm-9">
-                                    <select class="chosen-select tag-input-style" name="cc[]" id="cc"  multiple="multiple" data-placeholder="请选择抄送人">
-<?php 
-foreach($members as $m) {
-    if(in_array($m['id'], $report['receivers']['cc'])){
-?>
-<option selected="selected" value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
-<?php } else { ?>
-<option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
-<?php }} ?>
+                                    <select class="chosen-select tag-input-style" name="cc[]" id="cc" multiple="multiple" data-placeholder="请选择抄送人">
+                                        <?php foreach($members as $m) {
+					if($user['id'] != $m['id']){?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
+                                       
+                                        <?php }} ?>
                                     </select>
                                 </div>
                             </div>
@@ -79,13 +77,10 @@ foreach($members as $m) {
                                 <label class="col-sm-1 control-label no-padding-right">银行账号</label>
                                 <div class="col-xs-9 col-sm-9">
                                     <select class="chosen-select tag-input-style" name="account" id="account" data-placeholder="请选择银行账号">
-                                        <?php foreach($user['banks'] as $m) {
-                                            if(array_key_exists('account', $extra) && $extra['account']['id'] == $m['id']){ ?>
-                                                <option value="<?php echo $m['id']; ?>"  data-name="<?php echo $m['account']; ?>" data-no="<?php echo $m['cardno']; ?>" selected><?php echo $m['account']; ?> - [<?php echo substr($m['cardno'], 0, -5) . "xxxxx"; ?> ]</option>
+                                        <?php foreach($user['banks'] as $m) { ?>
+                                                <option value="<?php echo $m['id']; ?>" data-name="<?php echo $m['account']; ?>" data-no="<?php echo $m['cardno']; ?>"><?php echo $m['account']; ?> - [<?php echo substr($m['cardno'], 0, -5) . "xxxxx"; ?> ]</option>
                                        
-                                        <?php }  else { ?>
-                                                <option value="<?php echo $m['id']; ?>"  data-name="<?php echo $m['account']; ?>" data-no="<?php echo $m['cardno']; ?>"><?php echo $m['account']; ?> - [<?php echo substr($m['cardno'], 0, -5) . "xxxxx"; ?> ]</option>
-<?php } } ?>
+                                        <?php } ?>
                                     </select>
                                 </div>
                             </div>
@@ -99,14 +94,13 @@ foreach($members as $m) {
                                 <div class="col-xs-9 col-sm-9">
 <?php 
                             $options = array(
-                                array('desc' => '网银转账', 'value' => 0),
-                                array('desc' => '现金', 'value' => 1),
-                                array('desc' => '支票', 'value' => 2),
-                                array('desc' => '冲账', 'value' => 3)
+                                array('desc' => '网银转账', 'value' => 1),
+                                array('desc' => '现金', 'value' => 2),
+                                array('desc' => '支票', 'value' => 3),
+                                array('desc' => '冲账', 'value' => 4)
                             );
                             foreach($options as $n) {
                                 $check_str = '';
-                                if($n['value'] == $extra['payment']) $check_str = 'checked';
 ?>
 
                                     <div class="radio col-xs-3 col-sm-3">
@@ -128,7 +122,7 @@ foreach($members as $m) {
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">借付款</label>
                                 <div class="col-xs-9 col-sm-9">
-                                <input type="text" class="form-controller col-xs-12" id="borrowing" name="borrowing"  placeholder="借付款" value="<?php echo $extra['borrowing']; ?>">
+                                    <input type="text" class="form-controller col-xs-12" id="borrowing" name="borrowing"  placeholder="借付款">
                                 </div>
                             </div>
 
@@ -139,9 +133,9 @@ foreach($members as $m) {
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">出差地</label>
                                 <div class="col-xs-9 col-sm-9">
-                                <input type="text" id="location_from" class="form-controller col-xs-5" name="location_from"  placeholder="出发地" value="<?php echo $extra['location']['start']; ?>">
+                                    <input type="text" id="location_from" class="form-controller col-xs-5" name="location_from"  placeholder="出发地">
                                     <label class="col-sm-1 control-label">到</label>
-                                    <input type="text" id="location_to" class="form-controller col-xs-5" name="location_to"  placeholder="到达地" value="<?php echo $extra['location']['dest']; ?>">
+                                    <input type="text" id="location_to" class="form-controller col-xs-5" name="location_to"  placeholder="到达地">
                                 </div>
                             </div>
 <?php 
@@ -152,38 +146,14 @@ foreach($members as $m) {
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">出差时间</label>
                                 <div class="col-xs-9 col-sm-9">
-<?php
-                            $s = trim($extra['period']['start']);
-                            $e =  trim($extra['period']['end']);
-                            if($s == "0" || $s == "" || $s == "NaN"){
-                                $s = @date('Y-m-d H:i:s');
-                            } else {
-                                $s = @date('Y-m-d H:i:s', $s);
-                            }
-                            if($e == "0" || $e == "" || $e == "NaN"){
-                                $e = @date('Y-m-d H:i:s');
-                            } else {
-                                $e = @date('Y-m-d H:i:s', $e);
-                            }
-?>
-
-                                    <input type="text" id="period_start" class="form-controller col-xs-5 period" name="period_start"  placeholder="起始时间" value="<?php echo $s; ?>" />
-<input type="hidden" id="sdt" value="<?php echo strtotime($extra['period']['start']); ?>" >
+                                    <input type="text" id="period_start" class="form-controller col-xs-5 period" name="period_start"  placeholder="起始时间">
                                     <label class="col-sm-1 control-label">到</label>
-                                    <input type="text" id="period_end" class="form-controller col-xs-5 period" name="period_end"  placeholder="结束时间" value="<?php echo $e; ?>" >
-<input type="hidden" id="edt" value="<?php echo strtotime($extra['period']['end']); ?>" >
+                                    <input type="text" id="period_end" class="form-controller col-xs-5 period" name="period_end"  placeholder="结束时间">
                                 </div>
                             </div>
 <?php 
                         }
                         if($config['contract'] == 1){ 
-                            $_extra_yes = '';
-                            $_extra_no = '';
-                            if($extra['contract']['available'] == 0) {
-                                $_extra_no = 'checked';
-                            } else {
-                                $_extra_yes = 'checked';
-                            }
 ?>
 
                             <div class="form-group">
@@ -191,18 +161,18 @@ foreach($members as $m) {
                                 <div class="col-xs-9 col-sm-9">
                                     <div class="radio col-xs-2 col-sm-2">
                                          <label>
-                                         <input name="contract" type="radio" id="contract_yes" class="ace contract" value="1" <?php echo $_extra_yes; ?>>
+                                             <input name="contract" type="radio" id="contract_yes" class="ace contract" value="1">
                                              <span class="lbl">有</span>
                                          </label>
                                     </div>
                                     <div class="radio col-xs-2 col-sm-2">
                                          <label>
-                                             <input name="contract" type="radio" id="contract_no" class="ace contract" value="0" <?php echo $_extra_no; ?>>
+                                             <input name="contract" type="radio" id="contract_no" class="ace contract" value="0">
                                              <span class="lbl">无</span>
                                          </label>
                                     </div>
                                     <div class="radio col-xs-8 col-sm-8">
-                                    <input type="text" id="contract_note" class="form-controller col-xs-12" name="contract_note"  placeholder="合同备注" value="<?php echo $extra['contract']['note']; ?>" >
+                                        <input type="text" id="contract_note" class="form-controller col-xs-12" name="contract_note"  placeholder="合同备注">
                                     </div>
                                 </div>
                             </div>
@@ -214,7 +184,7 @@ foreach($members as $m) {
                                 <label class="col-sm-1 control-label no-padding-right">备注</label>
                                 <div class="col-xs-9 col-sm-9">
                                     <div class="radio col-xs-12 col-sm-12">
-                                    <textarea id="note" rows="2" class="form-controller col-xs-12" name="note"><?php echo trim($extra['note']); ?></textarea>
+                                        <textarea rows="2" class="form-controller col-xs-12" id="note" name="note"></textarea>
                                     </div>
                                 </div>
                             
@@ -224,14 +194,12 @@ foreach($members as $m) {
         }
 ?>
 
-
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">总额</label>
                                 <div class="col-xs-9 col-sm-9">
                                     <span class="middle" id="tamount">0</span>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">选择消费</label>
                                 <div class="col-xs-9 col-sm-9">
@@ -240,58 +208,69 @@ foreach($members as $m) {
                                             <thead>
                                                 <td>
                                                    <input name="all_item" id="all_item" type="checkbox" class="form-controller all_item"> 全选</td>
+                                                </td>
                                                 <td>消费时间</td>
                                                 <td>类型</td>
                                                 <td>金额</td>
                                                 <td>类别</td>
                                                 <td>商家</td>
+                                                <td>备注</td>
                                                 <td>操作</td>
                                             </thead>
                                         </tr>
-<?php 
-foreach($report['items'] as $i){
+<?php
+    $_config = '';
+    if(array_key_exists('config',$profile['group']))
+    {
+        $_config = $profile['group']['config'];
+    }
+    $__config = json_decode($_config,True);
+
+$item_type = array();
+array_push($item_type,0);
+if($__config)
+{
+    if(array_key_exists('disable_borrow', $__config) && $__config['disable_borrow'] == '0')
+    {
+        array_push($item_type,1);
+    }
+    if(array_key_exists('disable_budget', $__config) && $__config['disable_budget'] == '0')
+    {
+        array_push($item_type,2);
+    }
+}
+foreach($items as $i){
+    if($i['rid'] == 0 && in_array($i['prove_ahead'], $item_type)){
                                         ?>
-                                        <tr>
-                                            <td><input checked='true' name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $i['amount'] ?>" data-id="<?php echo $i['id']; ?>" ></td>
+                                        <tr id="<?php echo 'item'.$i['id']?>">
+                                        <td>
+<input name="item[]" value="<?php echo $i['id']; ?>" 
+type="checkbox" class="form-controller amount" 
+data-amount = "<?php echo $i['amount'] ?>" 
+data-id="<?php echo $i['id']; ?>" 
+></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
-                                            <td><?php echo $i['category_name']; ?></td>
+                                            <td><?php echo $i['cate_str'];?></td>
                                             <td><?php echo '￥'.$i['amount']; ?></td>
                                             <td><?php 
+        
                                                 $buf = '';
-switch(intval($i['prove_ahead'])) {
+switch($i['prove_ahead']) {
 case 0 : $buf = '报销';break;
 case 1 : $buf = '预算';break;
 case 2 : $buf = '预借';break;
 } 
 echo $buf;
 
-?></td>
+
+                                                ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
+                                            <td><?php echo $i['note']; ?></td>
                                             <td>
                                                 <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
-                                                    <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="<?php echo $i['id']; ?>"></span>
-                                                    <span class="ui-icon green ui-icon-pencil tedit" data-id="<?php echo $i['id']; ?>"></span>
-                                                    <span class="ui-icon ui-icon-trash red  tdel" data-id="<?php echo $i['id']; ?>"></span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <?php  } ?>
-<?php 
-foreach($items as $i){
-    if($i['rid'] == 0 && $i['prove_ahead'] == 0){
-                                        ?>
-                                        <tr>
-                                            <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $i['amount'] ?>"  data-id="<?php echo $i['id']; ?>" ></td>
-                                            <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
-                                            <td><?php echo $i['category'];  echo $i['status'];?></td>
-                                            <td><?php echo '￥'.$i['amount']; ?></td>
-                                            <td><?php echo $i['prove_ahead']; ?></td>
-                                            <td><?php echo $i['merchants']; ?></td>
-                                            <td>
-                                                <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
-                                                    <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="<?php echo $i['id']; ?>"></span>
-                                                    <span class="ui-icon green ui-icon-pencil tedit" data-id="<?php echo $i['id']; ?>"></span>
-                                                    <span class="ui-icon ui-icon-trash red  tdel" data-id="<?php echo $i['id']; ?>"></span>
+                                                    <span class="ui-icon ui-icon ace-icon fa fa-search-plus txdetail" data-id="<?php echo $i['id']; ?>"></span>
+                                                    <span class="ui-icon green ui-icon-pencil txedit" data-id="<?php echo $i['id']; ?>"></span>
+                                                    <span class="ui-icon ui-icon-trash red  txdel" data-id="<?php echo $i['id']; ?>"></span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -322,8 +301,6 @@ foreach($items as $i){
 </div>
 
 
-
-
 <div class="modal fade" id="force_submit">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -342,12 +319,46 @@ foreach($items as $i){
 </div><!-- /.modal -->
 
 
-<script language="javascript">
-var __BASE = "<?php echo $base_url; ?>";
-var __SUM = 0;
-function do_post(force) {
 
-    var _rid = $('#hrid').val();
+
+
+<script language="javascript">
+update_tamount();
+var __BASE = "<?php echo $base_url; ?>";
+function toDecimal(x) {  
+    var f = parseFloat(x);  
+    if (isNaN(f)) {  
+        return;  
+    }  
+    f = Math.round(x*100)/100;  
+    return f;  
+}  
+//制保留2位小数，如：2，会在2后面补上00.即2.00  
+function toDecimal2(x) {  
+    
+    var f = parseFloat(x);  
+    
+    if (isNaN(f)) {  
+        return false;  
+    }  
+    var f = Math.round(x*100)/100;  
+    var s = f.toString();  
+    var rs = s.indexOf('.');  
+    if (rs < 0) {  
+        rs = s.length;  
+        s += '.';  
+    }  
+    while (s.length <= rs + 2) {  
+        s += '0';  
+    }  
+    return s;  
+}  
+
+
+
+function do_post(force) {
+    // 囧
+
     var s = $('#receiver').val();
     var title = $('#title').val();
     if(title == "") {
@@ -364,33 +375,14 @@ function do_post(force) {
 		if($(this).is(':checked')){
             _ids.push($(this).data('id'));
 			var amount = $(this).data('amount');
-			//amount = parseInt(amount.substr(1));
+           
+			amount = parseInt(amount);
 			sum+=amount;
 		};
 	});
     if(_ids.length == 0) {
         show_notify('提交的报告不能为空');
         return false;
-    }
-
-	if(s == null){
-	     show_notify('请选择审批人');
-	     $('#receiver').focus();
-	     return false;
-	}
-
-
-	if(sum<= 0) {
-		show_notify("报告总额不能小于等于0");
-		return false;
-	}
-    
-
-    // 获取所有的 条目
-    var _cc = $('#cc').val();
-    if(!_cc) _cc = Array();
-    if(force == 1) {
-
     }
 
     var _period_start = 0;
@@ -406,7 +398,7 @@ function do_post(force) {
     var _account = 0;
     var _account_name = '';
     var _account_no = '';
-    var _payment = -1;
+    var _payment = 0;
 
 
     var _borrowing = 0;
@@ -431,6 +423,10 @@ function do_post(force) {
         if(!_note) _note = '';
     } catch(e) {}
 
+    try {
+        _payment = $('input[name="payment"]:checked').val(); 
+        if(!_payment) _payment = 0;
+    }catch(e){}
 
     try {
         _borrowing = $('#borrowing').val();
@@ -438,14 +434,13 @@ function do_post(force) {
     } catch(e) {}
 
     try {
-        _payment = $('input[name="payment"]:checked').val(); 
-        if(!_payment) _payment = -1;
+        $('#contract').each(function(idx, item){
+            if($(this).attr('checked')){
+                _contract = $(this).val();
+            }
+        });
     }catch(e){}
-    try {
-        _contract = $('input[name="contract"]:checked').val(); 
-        if(!_contract) _contract = -1;
-    }catch(e){ }
-    if(_contract == 0) {
+    if(_contract == 2) {
         try{
             _contract_note = $('#contract_note').val();
         }catch(e){}
@@ -462,14 +457,33 @@ function do_post(force) {
         _location_to = $('#location_to').val();
     }catch(e){}
 
+    try {
+        _location_from = $('#location_from').val();
+        _location_to = $('#location_to').val();
+    }catch(e){}
+
+	if(s == null){
+	     show_notify('请选择审批人');
+	     $('#receiver').focus();
+	     return false;
+	}
 
 
+	if(sum <= 0) {
+		show_notify("报告总额不能小于等于0");
+		return false;
+	}
+    
+    // 转ajax,否则不能正确处理
     var _renew = $('#renew').val();
+    if(_renew == 0) force = 1;
+    // 获取所有的 条目
+    var _cc = $('#cc').val();
+    if(!_cc) _cc = Array();
     $.ajax({
         type : 'POST',
-            url : __BASE + "reports/update", 
-            data : {
-                'item' : _ids,
+            url : __BASE + "reports/create", 
+                data : {'item' : _ids,
                     'title' : $('#title').val(),
                     'receiver' : $('#receiver').val(),
                     'cc' : _cc,
@@ -488,9 +502,6 @@ function do_post(force) {
                     'contract_note' : _contract_note,
                     'note' : _note,
 
-
-
-                    'id' : _rid,
                     'renew' : _renew,
                     'force' : force
                 },
@@ -498,9 +509,8 @@ function do_post(force) {
                 success : function(data){
                     if(data.status > 0) {
                         window.location.href = __BASE + 'reports/index';
-                        return false;
                     }
-                    if(_renew && data.status == -71) {
+                    if(_renew == 1 && data.status == -71) {
                         $('#error').html(data.msg);
                         $('#force_submit').modal();
                         return false;
@@ -512,84 +522,54 @@ function do_post(force) {
                 }
             });
 }
-String.prototype.trim=function() {
-    return this.replace(/(^\s*)(\s*$)/g, '');
-}
-Date.prototype.format = function(format) {  
-        /* 
-            *      * eg:format="yyyy-MM-dd hh:mm:ss"; 
-        *           */  
-        var o = {  
-            "M+" : this.getMonth() + 1, // month  
-                "d+" : this.getDate(), // day  
-        "h+" : this.getHours(), // hour  
-        "m+" : this.getMinutes(), // minute  
-        "s+" : this.getSeconds(), // second  
-        "q+" : Math.floor((this.getMonth() + 3) / 3), // quarter  
-        "S" : this.getMilliseconds()  
-        };  
 
-        if (/(y+)/.test(format)) {  
-            format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4  
-                - RegExp.$1.length));  
-        }  
-
-        for (var k in o) {  
-            if (new RegExp("(" + k + ")").test(format)) {  
-                format = format.replace(RegExp.$1, RegExp.$1.length == 1  
-                    ? o[k]  
-                    : ("00" + o[k]).substr(("" + o[k]).length));  
-            }  
-        }  
-        return format;  
-};
 $(document).ready(function(){
-    //$('#date-timepicker2').val();
-    _contract = $('input[name="contract"]:checked').val(); 
-    if(_contract == 0) {
-                $('#contract_note').show();
-    } else {
-                $('#contract_note').hide();
-    }
+    $('#period_start').datetimepicker({
+        language: 'zh-cn',
+            //locale:  moment.locale('zh-cn'),
+            useCurrent: true,
+        format: 'YYYY-MM-DD HH:mm:ss',
+            sideBySide: true
+    }).next().on('dp.change', function(ev){
+        //console.log(ev.date);
+    }).on(ace.click_event, function(){
+        $(this).prev().focus();
+    });
+    $('#period_end').datetimepicker({
+        language: 'zh-cn',
+            //locale:  moment.locale('zh-cn'),
+            useCurrent: true,
+            format: 'YYYY-MM-DD HH:mm:ss',
+            sideBySide: true
+    }).next().on('dp.change', function(ev){
+        //console.log(ev.date);
+    }).on(ace.click_event, function(){
+        $(this).prev().focus();
+    });
+    $('#contract_note').hide();
     $('.contract').each(function(idx, item) {
         $(this).click(function() {
             var _val = $(this).val();
-            if(_val == 0) {
+            if(_val == 2) {
                 $('#contract_note').show();
             } else {
                 $('#contract_note').hide();
             }
         });
     });
-    try{
-    var _sdt = $('#sdt').val().trim();
-    var _edt = $('#sdt').val().trim();
-    if(!_sdt || _sdt == "") { 
-        _sdt = new Date(); //new Date();
-        _sdt = _sdt.format("yyyy-MM-dd hh:mm:ss");
-    }
-    if(!_edt || _edt == "") {
-        _edt = new Date(); //new Date();
-        _edt = _edt.format("yyyy-MM-dd hh:mm:ss");
-    }
-
-    $('#period_start').datetimepicker({
+    $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
-        defaultDate: _sdt,
-        format: 'YYYY-MM-DD HH:mm:ss',
-        linkField: "sdt",
-    }).next().on(ace.click_event, function(){
+            //locale:  moment.locale('zh-cn'),
+            useCurrent: true,
+            format: 'YYYY-MM-DD HH:mm',
+            linkField: "dt",
+            linkFormat: "YYYY-MM-DD HH:mm",
+            sideBySide: true
+    }).next().on('dp.change', function(ev){
+        //console.log(ev.date);
+    }).on(ace.click_event, function(){
         $(this).prev().focus();
     });
-    $('#period_end').datetimepicker({
-        language: 'zh-cn',
-        defaultDate: _edt,
-        format: 'YYYY-MM-DD HH:mm:ss',
-        linkField: "edt",
-    }).next().on(ace.click_event, function(){
-        $(this).prev().focus();
-    });
-    }catch(e){}
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
         .off('resize.chosen')
@@ -600,16 +580,13 @@ $(document).ready(function(){
             })
         }).trigger('resize.chosen');
 
-
-
-$('.tdetail').each(function(){
+    $('.txdetail').each(function(){
         $(this).click(function(){
-
             var _id = $(this).data('id');
             location.href = __BASE + "items/show/" + _id;
         });
     });
-    $('.tdel').each(function() {
+    $('.txdel').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
            // location.href = __BASE + "items/del/" + _id + "/1";
@@ -623,72 +600,64 @@ $('.tdetail').each(function(){
            });
         });
     });
-    $('.tedit').each(function() {
+    $('.txedit').each(function() {
         $(this).click(function(){
-            console.log('修改消费');
             var _id = $(this).data('id');
             location.href = __BASE + "items/edit/" + _id;
         });
     });
+    
+
     $('#all_item').click(function(){
         if($('#all_item').is(":checked"))
         {
+            //console.log("checked");
             $('.amount').each(function(){
                 $(this).prop('checked',true);
             });   
+
+            //$("[name='item[]']").prop('checked',true);
         }
         else
         {
             $('.amount').each(function(){
                 $(this).prop('checked',false);
+              // $(this).removeAttr("checked"); 
             });
+           // $("[name='item[]']").prop('checked',false);
         }
         update_tamount();
      });
 
+
     $('.renew').click(function(){
         $('#renew').val($(this).data('renew'));
+        /// 不强制
         do_post(0);
-        //$('#mainform').submit();
     });
     $('.force_submit_btn').click(function() {
         $('#renew').val(1);
         do_post(1);
     });
-    $('.cancel').click(function(){
-        $('#reset').click();
-    });
+
+
+
     $('.amount').each(function(idx, item) {
         $(this).click(function(){
             update_tamount();
         });
     });
-    update_tamount();
+    $('.cancel').click(function(){
+        $('#reset').click();
+    });
+
 });
-function toDecimal2(x) {  
-    var f = parseFloat(x);  
-    if (isNaN(f)) {  
-        return false;  
-    }  
-    var f = Math.round(x*100)/100;  
-    var s = f.toString();  
-    var rs = s.indexOf('.');  
-    if (rs < 0) {  
-        rs = s.length;  
-        s += '.';  
-    }  
-    while (s.length <= rs + 2) {  
-        s += '0';  
-    }  
-    return s;  
-}  
 function update_tamount(){
     var sum = 0;
     $('.amount').each(function(){
         if($(this).is(':checked')){
             var amount = $(this).data('amount');
             amount = Number(amount);
-            //amount = Number(amount.substr(1));
             sum=Number(sum) + Number(amount);
         };
     });

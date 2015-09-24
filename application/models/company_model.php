@@ -6,6 +6,110 @@ class Company_Model extends Reim_Model {
         parent::__construct();
     }
 
+    public function deny_report_finance($rid,$comment)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('report_finance_flow/deny/' . $rid );
+
+        $buf = $this->do_Post($url,array('comment'=>$comment),$jwt);
+        log_message("debug", 'report_finance_deny: ' . $buf);
+        log_message("debug", 'url: ' . $url);
+
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+    public function pass_report_finance($rid)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('report_finance_flow/pass/' . $rid );
+
+        $buf = $this->do_Post($url,array(),$jwt);
+        log_message("debug", 'report_finance_pass: ' . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
+    public function get_report_finance_permission($rid)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('report_finance_flow/check_permission/' . $rid);
+
+        $buf = $this->do_Get($url,$jwt);
+        log_message("debug", 'report_finance_permission: ' . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+    
+    public function report_property_delete($id)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('report_property/' . $id);
+
+        $buf = $this->do_Delete($url,$data,$jwt);
+        log_message("debug", 'report_property_delete: ' . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+    public function report_property_update($name,$config,$id)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('report_property/' . $id);
+
+        $data = array('name' => $name, 
+              'config' => $config);
+        $buf = $this->do_Put($url,$data,$jwt);
+        log_message("debug", 'report_property_update: ' . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+    public function report_property_create($name,$config)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('report_property');
+
+        $data = array('name' => $name, 
+              'config' => $config);
+        $buf = $this->do_Post($url,$data,$jwt);
+        log_message("debug", 'report_property_create: ' . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+    
+    public function get_single_reports_settings($id)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('report_property/' . $id);
+        $buf = $this->do_Get($url, $jwt);
+        log_message("debug", 'report_property_single: ' . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
+    public function get_reports_settings_list()
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('report_property/0');
+        $buf = $this->do_Get($url, $jwt);
+        log_message("debug", 'report_property_list: ' . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
 	public function delete_approve($pid)
 	{
 		$jwt = $this->session->userdata('jwt');
@@ -237,6 +341,70 @@ class Company_Model extends Reim_Model {
         $url = $this->get_url('category/' . $cid);
         $buf = $this->do_Delete($url, array(), $jwt);
         log_message("debug", $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
+
+    public function create_finance_policy($name) {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('finance_policy');
+        $buf = $this->do_Post($url, array('name' => $name), $jwt);
+        log_message("debug", $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
+
+    public function get_finance_policy(){
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('finance_policy');
+        $buf = $this->do_Get($url, $jwt);
+        log_message("debug", $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
+    public function get_single_finance_policy($id)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('finance_policy/' . $id);
+        log_message('debug' , 'url: ' . $url);
+        $buf = $this->do_Get($url, $jwt);
+        log_message("debug", 'finace_policy_single: ' . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+    public function drop_finance_policy($id) {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('finance_policy/' . $id);
+        $buf = $this->do_Delete($url, array(), $jwt);
+        log_message("debug", $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
+    public function update_finance_policy($fid,$name,$policies,$gids)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $data = array('name' => $name,
+                      'step' => $policies,
+                      'gid' => $gids
+                );
+        $url = $this->get_url('finance_policy/' . $fid);
+        $buf = $this->do_Put($url,$data,$jwt);
+        log_message("debug", 'finace_policy_update: ' . $buf);
+        log_message("debug", 'data: ' . json_encode($data));
         $obj = json_decode($buf, true);
         return $obj;
     }
