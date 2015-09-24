@@ -52,7 +52,7 @@ class Reports extends REIM_Controller {
                 ,'items' => $item_data
                 ,'error' => $error
                 ,'type' => $type
-                ,'search' => $search
+                ,'search' => urldecode($search)
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa home-icon')
                     ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
@@ -879,7 +879,7 @@ class Reports extends REIM_Controller {
                 ,'items' => $item_data
                 ,'members' => $_members
                 ,'error' => $_error
-                ,'search' => $search
+                ,'search' => urldecode($search)
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
