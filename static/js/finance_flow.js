@@ -119,7 +119,7 @@ var selectRows = [];
 try{
     var FLAG = 1;
 jQuery(grid_selector).jqGrid({
-    url: __BASE + 'bills/listfinance/2',
+    url: __BASE + 'bills/listfinance/' + __STATUS,
     mtype: "GET",
     datatype: "local",
     height: 250,
