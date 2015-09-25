@@ -1138,7 +1138,10 @@ class Reports extends REIM_Controller {
                     $i['nickname'] = $r['nickname'];
                     $i['rid'] = $r['id'];
                     $i['flow'] = $r['flow'];
-                    $i['member_info'] = $member_dic[$r['uid']];
+                    $i['member_info'] = array('account' => '', 'cardno' => '', 'bankname' => '');
+                    if(array_key_exists($r['uid'], $member_dic)) {
+                        $i['member_info'] = $member_dic[$r['uid']];
+                    }
                     //$r['total'] += ($i['amount'] * $_rate);
                     //log_message("debug", "Items2:"  . json_encode($i));
                     array_push($_t_items, $i);
@@ -1301,6 +1304,7 @@ class Reports extends REIM_Controller {
                 $o['应付'] = ($i['amount'] * $_rate) - $i['paid'];
                 $o['报告名'] = $i['title'];
                 $o['报告ID'] = $i['rid'];
+
                 $o['账号'] = $i['member_info']['account'];
                 $o['卡号'] = $i['member_info']['cardno'];
                 $o['开户行'] = $i['member_info']['bankname'];

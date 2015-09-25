@@ -199,12 +199,12 @@ class Bills extends REIM_Controller {
             $this->session->set_userdata('item_update_in','3');
             $this->bsload('bills/index',
                 array(
-                    'title' => '已结束'
+                    'title' => '已完成'
                     ,'error' => $error
                     , 'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
-                        ,array('url' => '','name' => '已结束','class' => '')
+                        ,array('url' => '','name' => '已完成','class' => '')
                     )
                     ,'reports' => $data
                     ,'status' => $status
@@ -215,7 +215,7 @@ class Bills extends REIM_Controller {
                 )
             );
         }
-        else if($status == 1)
+        else if($status == 0)
         {
             $this->session->set_userdata('item_update_in','3');
             $this->bsload('bills/index',
@@ -236,7 +236,7 @@ class Bills extends REIM_Controller {
                 )
             );
         }
-        else if($status == -3)
+        else if($status == 1)
         {
             $this->session->set_userdata('item_update_in','3');
             $this->bsload('bills/index',
@@ -253,6 +253,7 @@ class Bills extends REIM_Controller {
                     ,'category' => $_tags
                     ,'error' => $error
                     ,'usergroups' => $_usergroups
+                    ,'search' => $search
                 )
             );
         }
@@ -272,7 +273,7 @@ class Bills extends REIM_Controller {
     public function all_reports($search = '')
 
     {
-        return $this->_logic(1,$search);
+        return $this->_logic(0,$search);
     }
     public function finance_flow($status = 1)
     {
@@ -302,6 +303,9 @@ class Bills extends REIM_Controller {
             $data = $reports['data']['data'];
 
             foreach($data as $item) {
+                log_message("debug", "alvayang:" . json_encode($item));
+                    array_push($_data, $item);
+                    /*
                 if($item['status'] == 2){
                     array_push($_data, $item);
                 } 
@@ -313,6 +317,7 @@ class Bills extends REIM_Controller {
                 {
                     array_push($_data,$item);
                 }
+                     */
             }
         }
 
@@ -333,10 +338,10 @@ class Bills extends REIM_Controller {
                     , 'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
-                        ,array('url' => '','name' => '全部报告','class' => '')
+                        ,array('url' => '','name' => '待审批','class' => '')
                     )
                     ,'reports' => $data
-                    ,'status' => $status
+                    ,'status' => 1/*$status*/
                     ,'category' => $_tags
                     ,'error' => $error
                     ,'usergroups' => $_usergroups
@@ -402,7 +407,7 @@ class Bills extends REIM_Controller {
                     , 'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
-                        ,array('url' => '','name' => '全部报告','class' => '')
+                        ,array('url' => '','name' => '已审批','class' => '')
                     )
                     ,'reports' => $data
                     ,'status' => $status
@@ -418,8 +423,8 @@ class Bills extends REIM_Controller {
         $page = $this->input->get('page');
         $rows = $this->input->get('rows');
         $sort = $this->input->get('sord');
-        $bills = $this->reports->get_finance();
-        log_message('debug','finance_reports: ' . json_encode($bills));
+        $bills = $this->reports->get_finance($type);
+        log_message('debug','alvayang finance_reports: ' . json_encode($bills));
         if($bills['status'] < 1){
             die(json_encode(array()));
         }
@@ -428,28 +433,9 @@ class Bills extends REIM_Controller {
         $ugs = array();
         $_data = array();
         foreach($data as $d){
-            log_message("debug", "Bill: [ $type] $type: " . json_encode($d));
-            /*
-            if($type !=  1) {
-                if($type == 4 ) {
-                    if(!in_array(intval($d['status']), array(4, 7, 8))) {
-                        continue;
-                    } else {
-                        $d['status'] = 4;
-                    }
-                } else if($type != 0) {
-                    if($d['status'] < 1) continue;
-                    log_message("debug", "xContinue...");
-                    if($d['status'] != $type) continue;
-                }
-            }else {
-                    if($d['status'] < 1) continue;
-                    if($d['status'] == 3) continue;
-            }
-            */
+            log_message("debug", "alvayang Bill: [ $type] $type: " . json_encode($d));
             log_message("debug", "xBill: $type: " . json_encode($d));
             log_message("debug", "nICe");
-//            log_message("debug", "ugs:".json_encode($bills['data']['ugs']));
 
             $d['date_str'] = date('Y-m-d H:i:s', $d['createdt']);
             $d['ugs'] = array();
@@ -467,20 +453,15 @@ class Bills extends REIM_Controller {
             $d['status_str'] = '';
             $edit = '';
             $extra = '';
-            if($d['status'] == 2) {
+            if($d['finance_status'] == 2) {
                 $edit = 'green';
                 $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>';
-                $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span><span class="ui-icon ui-icon ace-icon fa fa-check tapprove green" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon ui-icon red ace-icon fa fa-times tdeny" data-id="' . $d['id'] . '"></span>';
+$extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span>';
             }
-            if($d['status'] == 4 || $d['status'] == 7 || $d['status'] == 8) {
-                $edit = 'gray';
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-                $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span>' ;
-            }
-            if($d['status'] == 1) {
+            if($d['finance_status'] == 1) {
                 $edit = 'blue';
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
-                $extra = '' ;
+                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#46A3D3;background:#46A3D3 !important;">待结算</button>';
+                $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span><span class="ui-icon ui-icon ace-icon fa fa-check tapprove green" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon ui-icon red ace-icon fa fa-times tdeny" data-id="' . $d['id'] . '"></span>';
             }
 
 
@@ -489,7 +470,7 @@ class Bills extends REIM_Controller {
                 . '</div>';
             array_push($_data, $d);
         }
-        log_message('debug','_data:' . json_encode($_data));
+        log_message('debug','alvayang _data:' . json_encode($_data));
         die(json_encode($_data));
     }
 
