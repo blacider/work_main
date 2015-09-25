@@ -422,12 +422,12 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <a href="<?php echo base_url('company/report_settings_list'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 报告设置</a>
         <b class="arrow"></b>
         </li>
+-->
 
         <li class="hsub" id="approval_flow">
         <a href="<?php echo base_url('company/approval_flow'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 财务审批流</a>
         <b class="arrow"></b>
         </li>
--->
         <li class="hsub" id="submit">
         <a href="<?php echo base_url('company/common'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 通用规则 </a>
         <b class="arrow"></b>
@@ -481,7 +481,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 2) {
 
 
         <li class="hsub" id="exports">
-        <a href="<?php echo base_url('bills/exports'); ?>" > 已结束</a>
+        <a href="<?php echo base_url('bills/exports'); ?>" > 已完成</a>
         <b class="arrow"></b>
         </li>
 
