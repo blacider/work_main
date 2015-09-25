@@ -41,7 +41,7 @@ if(!empty($config)) {
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">银行账号</label>
                                 <div class="col-xs-9 col-sm-9">
-                                    <input type="text" class="form-controller col-xs-12" name="title" placeholder="名称" value="<?php echo $extra['account']['name'] . " [" . substr($extra['account']['no'], 0, -5) . "xxxxx]"; ?>" disabled>
+                                    <input type="text" class="form-controller col-xs-12" name="title" placeholder="名称" value="<?php echo $extra['account']['name'] . " [" . $extra['account']['no']; ?>" disabled>
                                 </div>
                             </div>
 <?php 
@@ -85,9 +85,9 @@ if(!empty($config)) {
 ?>
 
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">借付款</label>
+                                <label class="col-sm-1 control-label no-padding-right">已付金额</label>
                                 <div class="col-xs-9 col-sm-9">
-                                <input type="text" class="form-controller col-xs-12" id="borrowing" name="borrowing"  placeholder="借付款" value="<?php echo $extra['borrowing']; ?>" disabled>
+                                <input type="text" class="form-controller col-xs-12" id="borrowing" name="borrowing"  placeholder="已付金额" value="<?php echo $extra['borrowing']; ?>" disabled>
                                 </div>
                             </div>
 

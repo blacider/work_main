@@ -203,17 +203,21 @@ class Reports extends REIM_Controller {
                         . '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span></div>';
                     //. '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
                 } else if (in_array($d['status'],array(0,3))) {
+                    /*
                     $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                         . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
                         . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>'
                         . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span></div>';
+                     */
                 }
                 else
                 {
+                    /*
                     $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                         . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
                         //. '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>'
                         . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span></div>';
+                     */
                 }
             }
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
@@ -1524,7 +1528,7 @@ class Reports extends REIM_Controller {
                         ,'breadcrumbs' => array(
                             array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                             ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
-                            ,array('url'  => '', 'name' => '新建[' . $config['name'] . '] 报告', 'class' => '')
+                            ,array('url'  => '', 'name' => '新建' . $config['name'] . '', 'class' => '')
                         ),
             ));
             }

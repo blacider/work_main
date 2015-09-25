@@ -46,7 +46,7 @@
                 </div>
                 <label class="col-sm-2 control-label no-padding-right" style="position:absolute;">配置项:</label>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label col-sm-offset-2">借款</label>
+                    <label class="col-sm-2 control-label col-sm-offset-2">已付金额</label>
                     <div class="col-xs-6 col-sm-6">
                         
                         <label style="margin-top:8px;">
