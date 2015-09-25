@@ -10,7 +10,264 @@ class Company extends REIM_Controller {
         $this->load->model('category_model','category');
 	$this->load->model('reim_show_model','reim_show');
     }
+    
+    public function report_settings_update($id)
+    {
+        $buf = $this->company->get_single_reports_settings($id); 
+        $setting = array();
+        if($buf['status'] > 0)
+        {
+            $setting = $buf['data'];
+        }
+        $_config = $setting['config'];
+        $config = json_decode($_config,true);
+        log_message('debug','logo:' . $config['logo']);
+        $this->bsload('company/report_settings_update',
+            array(
+                'images'=>$config['logo']
+                ,'title'=>'修改报告模板'
+                ,'setting'=>$setting
+                ,'id'=>$id
+                ,'breadcrumbs'=> array(
+                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+                    ,array('url'=>'','name'=>'公司设置','class'=> '')
+                    ,array('url'=>'','name'=>'修改报告模板','class'=>'')
+                ),
+            )
+        );
+    }
 
+    public function report_property_delete($id)
+    {
+        $buf = $this->company->report_property_delete($id); 
+
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','删除成功');
+        }
+        else
+        {
+            $this->session->set_userdata('last_error','删除失败');
+        }
+
+        return redirect('company/report_settings_list');
+    }
+    public function report_property_new($id=0)
+    {
+        $name = $this->input->post('report_property_name');
+        $borrowing = $this->input->post('borrowing');
+        $location = $this->input->post('location');
+        $period = $this->input->post('period');
+        $account = $this->input->post('account');
+        $payment = $this->input->post('payment');
+        $contract = $this->input->post('contract');
+        $note = $this->input->post('note');
+        $images = $this->input->post('images');
+
+        $config = array();
+        $config['borrowing'] = $borrowing;
+        $config['location'] = $location;
+        $config['period'] = $period;
+        $config['account'] = $account;
+        $config['payment'] = $payment;
+        $config['contract'] = $contract;
+        $config['note'] = $note;
+        $config['logo'] = $images;
+        log_message('debug', 'config : ' . json_encode($config));
+        foreach($config as $key => $value)
+        {
+            if($value == '')
+            {
+                $config[$key] = "0";
+            }
+        }
+        log_message('debug', 'config : ' . json_encode($config));
+        if($id == 0)
+        {
+            $buf = $this->company->report_property_create($name,json_encode($config));
+                if($buf['status'] > 0)
+                {
+                    $this->session->set_userdata('last_error','添加成功');
+                }
+                else
+                {
+                    $this->session->set_userdata('last_error','添加失败');
+                }
+        }
+        else
+        {
+            $buf = $this->company->report_property_update($name,json_encode($config),$id);
+                if($buf['status'] > 0)
+                {
+                    $this->session->set_userdata('last_error','修改成功');
+                }
+                else
+                {
+                    $this->session->set_userdata('last_error','修改失败');
+                }
+        }
+
+        return redirect('company/report_settings_list');
+    }
+    public function report_settings_new()
+    {
+        $this->bsload('company/report_settings_new',
+            array(
+                'title'=>'新建报告模板'
+                ,'breadcrumbs'=> array(
+                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+                    ,array('url'=>'','name'=>'公司设置','class'=> '')
+                    ,array('url'=>'','name'=>'新建报告模板','class'=>'')
+                ),
+            )
+        );
+    }
+
+    public function report_settings_list()
+    {
+        $settings = array();
+        $_settings = $this->company->get_reports_settings_list();
+        if($_settings['status'] > 0)
+        {
+            $settings = $_settings['data'];
+        }
+
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+        $this->bsload('company/report_settings',
+            array(
+                'title'=>'报告设置'
+                ,'report_settings'=>$settings
+                ,'error'=>$error
+                ,'breadcrumbs'=> array(
+                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+                    ,array('url'=>'','name'=>'公司设置','class'=> '')
+                    ,array('url'=>'','name'=>'报告设置','class'=>'')
+                ),
+            )
+        );
+    }
+
+    public function flow_finance_update($fid)
+    {
+        $this->need_group_it();
+        $gids = $this->input->post('gids');
+        $name = $this->input->post('name');
+        if(!$fid)
+        {
+            return redirect('/company/approval_flow');
+        }
+        $_steps = $this->input->post('steps');
+        log_message('debug','steps:' . $_steps);
+        $policy = array();
+        $policies = array();
+
+        $steps = json_decode($_steps,True);
+        $count = 1;
+        foreach($steps as $s)
+        {
+            $policy = array('uids' => $s['uids'] , 'quota' => $s['quota'] , 'step' => $count);
+            array_push($policies,$policy); 
+            $count++;
+        }
+        
+        log_message('debug','update_policy:' . json_encode($policies));
+        $buf = $this->company->update_finance_policy($fid,$name,json_encode($policies),$gids);
+
+        if($buf['status'] > 0)
+        {
+            die(json_encode(array('status'=>1)));
+        }
+        else
+        {
+            die(json_encode(array('status'=>0)));
+        }
+            
+        /*
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','更新成功');
+        }
+        else
+        {
+            $this->session->set_userdata('last_error','更新成功');
+        }
+        */
+        
+       // return redirect('/company/approval_flow');
+    }
+    public function flow_update($id = 0)
+    {
+        $_group = $this->groups->get_my_list();
+
+        $gmember = array();
+        if($_group) {
+            if(array_key_exists('gmember', $_group['data'])){
+                $gmember = $_group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
+
+        $members = array();
+        $mem_dic = array();
+        foreach($gmember as $gm)
+        {
+            $mem_dic[$gm['id']] = $gm['nickname'];
+            if($gm['admin']==1 || $gm['admin']==2)
+            {
+                array_push($members,$gm); 
+            }
+        }
+        
+        $gnames = array();
+        $_gnames = $this->ug->get_my_list();
+        if($_gnames['status'] > 0)
+        {
+            $gnames = $_gnames['data']['group'];
+        }
+
+        $buf = $this->company->get_single_finance_policy($id);
+        $policies = array();
+        if($buf['status'] > 0)
+        {
+           $policies = $buf['data']; 
+        }
+        if(array_key_exists('step',$policies))
+        {
+            foreach($policies['step'] as &$st)
+            {
+                $_uids = $st['uids']; 
+                $_names = array();
+                foreach($_uids as $u)
+                {
+                    if(array_key_exists($u,$mem_dic))
+                    {
+                         array_push($_names,$mem_dic[$u]);
+                    }
+                }
+
+                $st['nicknames'] = implode('|',$_names);
+            }
+        }
+
+            
+        log_message('debug','policies:' . json_encode($policies));
+        $this->bsload('company/flow_update',
+            array(
+                'title'=>'更新审批流'
+                ,'gnames' => $gnames
+                ,'policies' => $policies
+                ,'members' => $members
+                ,'fid' => $id
+                ,'breadcrumbs'=> array(
+                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+                    ,array('url'=>base_url('company/common'),'name'=>'公司设置','class'=> '')
+                    ,array('url'=>base_url('company/approval_flow'),'name'=>'财务审批流','class'=>'')
+                    ,array('url'=>'','name'=>'更新财务审批流','class'=>'')
+                ),
+            )
+        );
+    }
 
     public function update_approve()
     {
@@ -648,23 +905,38 @@ class Company extends REIM_Controller {
             )
         );
     }
+
+
+    public function create_finance_flow(){
+        $name = $this->input->post('sob_name');
+        $obj = $this->company->create_finance_policy($name);
+        if($obj['status']) {
+            die(json_encode(array('code' => $obj['data']['id'])));
+        }
+        die(json_encode(array('code' => 0)));
+    }
+
+    public function delete_finance_flow($id = 0) {
+        if($id == 0) return redirect(base_url('company/approval_flow'));
+        $rules = $this->company->drop_finance_policy($id);
+        return redirect(base_url('company/approval_flow'));
+    }
     public function approval_flow(){
         //$this->need_group_it();
         $error = $this->session->userdata('last_error');
-        //$this->session->unset_userdata('last_error');
-        //$buf = $this->company->show_rules();
-        //$rules = json_decode($buf,true);
-        //$_rules = array();
-        //if($rules['status'] > 0)
-        //{
-            //$_rules = $rules['data'];
-        //}
+        $this->session->unset_userdata('last_error');
+        $rules = $this->company->get_finance_policy();
+        $_rules = array();
+        if($rules['status'] > 0)
+        {
+          $_rules = $rules['data'];
+        }
         //log_message('debug','rules:' . json_encode($_rules));
         $this->bsload('company/approval_flow',
             array(
                 'title'=>'财务审批流'
                 ,'error'=>$error
-                //,'rules'=>$_rules
+                ,'rules'=>$_rules
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')

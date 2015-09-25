@@ -69,8 +69,8 @@ position: absolute;
   </select>
 </div>
 
-<input name="key" placeholder="ID、报告名或提交者" value="<?php echo $search;?>" type='text' id="globalSearchText" />
-<button type="button" id="globalSearch" >搜索</button>
+<input name="key" placeholder="ID、报告名或提交者" value="" type='text' id="globalSearchText" />
+<button type="button" id="globalSearch">搜索</button>
 
 
 <div class="page-content">
@@ -84,6 +84,104 @@ position: absolute;
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="comment_dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">退回理由</h4>
+            </div>
+            <form action="<?php echo base_url('/bills/report_finance_deny'); ?>" method="post" id="form_discard">
+                <div class="modal-body">
+                    <input type="hidden" id="div_id" class="thumbnail" name="rid" style="display:none;" value=""/>
+                    <input type="hidden" id="status"  name="status" style="display:none;" value="3" />
+                    <div class="form-group">
+                        <textarea class="form-control" name="content"></textarea>
+                    </div>
+                    <div class="clearfix form-actions">
+                        <div class="col-md-offset-3 col-md-9">
+                            <a class="btn btn-white btn-primary new_card" data-renew="0"><i class="ace-icon fa fa-save "></i>退回</a>
+                            <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<div class="modal fade" id="modal_next">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <form action="<?php echo base_url('bills/report_finance_end'); ?>" method="post" class="form-horizontal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">报告将发送至以下审批人，请确认</h4>
+                <input type="hidden" name="rid" value="" id="rid">
+                <input type="hidden" name="status" value="2" id="status">
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="col-xs-9 col-sm-9">
+                        <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="receiver[]" multiple="multiple" id="modal_managers" style="width:300px;">
+                            <?php foreach($members as $m) { ?>
+                            <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="pass" name="pass" value="0" />
+                <input type="submit" class="btn btn-primary" id="mypass" value="确认" />
+               <!-- <div class="btn btn-primary" onclick="deny_report()">拒绝</div> -->
+                <div class="btn btn-primary" onclick="cancel_modal_next()">取消</div>
+            </div>
+                </form>
+                <script type="text/javascript">
+                  function cancel_modal_next() {
+                    $('#modal_next').modal('hide');
+                    return;
+                  }
+
+                </script>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="modal_next_">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <form action="<?php echo base_url('bills/report_finance_end'); ?>" method="post" class="form-horizontal" id="permit_form">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <input type="hidden" name="rid" value="" id="rid_">
+                <input type="hidden" name="status" value="2" id_="status">
+                <h4 class="modal-title">是否结束</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="col-xs-9 col-sm-9">
+                        <select style="display:none;" class="chosen-select_ tag-input-style form-control col-xs-12 col-sm-12" name="receiver[]" multiple="multiple" id="modal_managers" style="width:300px;">
+                        </select>
+                        <h4 class="modal-title">是否结束这条报告?</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="pass" name="pass" value="0">
+                <input type="submit" class="btn btn-primary pass" value="确认结束">
+              <!--  <div class="btn btn-primary" onclick="deny_end_report()">拒绝</div> -->
+                <div class="btn btn-primary" onclick="cancel_modal_next_()">取消</div>
+                <!--<div class="btn btn-primary repass" onClick="chose_others(this.parentNode.parentNode.rid.value)">取消</div> -->
+            </div>
+                </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 <div class="modal fade" id="modal-table">
@@ -196,11 +294,6 @@ function exportExel() {
 $grid = $('#grid-table');
 
 $("#globalSearch").click(function () {
-      if ("<?php echo $search;?>" != $("#globalSearchText").val()) {
-        window.location.href = "/bills/"+window.location.href.split('/')[4]+"/"+$("#globalSearchText").val();
-      }
-});
-function doSearch() {
     var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
         colModel = $grid.jqGrid("getGridParam", "colModel"),
         searchText = $("#globalSearchText").val(),
@@ -232,9 +325,10 @@ function doSearch() {
     //});
     postData.filters = JSON.stringify(groups_[0]);
     $grid.jqGrid("setGridParam", { search: true });
-    $grid.trigger("reloadGrid", [{page: 1}]);
+    $grid.trigger("reloadGrid", [{page: 1, current: true}]);
     return false;
-}
+});
+
 
 $('#send').click(function(){
     $.ajax({
@@ -260,6 +354,29 @@ $('#send').click(function(){
     });
 });
 
+$('.new_card').click(function(){
+    $('#form_discard').submit();
+});
+
+function deny_report()
+{
+  var report_id = $('#rid').val();
+  console.log(report_id);
+  location.href = __BASE + 'bills/report_finance_deny/' + report_id; 
+}
+
+function deny_end_report()
+{
+  var report_id = $('#rid_').val();
+  console.log(report_id);
+  location.href = __BASE + 'bills/report_finance_deny/' + report_id; 
+}
+
+function cancel_modal_next_()
+{
+  $('#modal_next_').modal('hide');
+}
+
 </script>
 <script language="javascript" src="/static/js/base.js" ></script>
-<script language="javascript" src="/static/js/bills.js" ></script>
+<script language="javascript" src="/static/js/finance_flow.js" ></script>

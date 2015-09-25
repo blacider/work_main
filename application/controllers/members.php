@@ -495,7 +495,7 @@ class Members extends REIM_Controller {
     }
 
 
-    public function groups(){
+    public function groups($search = ''){
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
@@ -533,6 +533,7 @@ class Members extends REIM_Controller {
                 'title' => '公司部门'
                 ,'group' => $ginfo
                 ,'members' => $gmember
+                ,'search' => $search
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/groups'), 'name' => '员工&部门', 'class' => '')
