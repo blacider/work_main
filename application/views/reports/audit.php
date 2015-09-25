@@ -31,7 +31,7 @@ position: absolute;
     background-color: #ff7075;
    }
 </style>
-    <input name="key" placeholder="ID、标题或发起人" value="" type='text' id="globalSearchText">
+    <input name="key" placeholder="ID、标题或发起人" value="<?php echo $search;?>" type='text' id="globalSearchText">
     <button type="button" id="globalSearch">搜索</button>
 <div class="page-content">
     <div class="page-content-area">
@@ -230,6 +230,11 @@ $(document).ready(function(){
 <script type="text/javascript">
 $grid = $('#grid-table');
 $("#globalSearch").click(function () {
+      if ("<?php echo $search;?>" != $("#globalSearchText").val()) {
+        window.location.href = "/"+window.location.href.split('/')[3]+"/"+"audit"+"/"+$("#globalSearchText").val();
+      }
+});
+function doSearch() {
     var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
         colModel = $grid.jqGrid("getGridParam", "colModel"),
         searchText = $("#globalSearchText").val(),
@@ -251,7 +256,8 @@ $("#globalSearch").click(function () {
     $grid.jqGrid("setGridParam", { search: true });
     $grid.trigger("reloadGrid", [{page: 1, current: true}]);
     return false;
-});
+}
+
 function isEmail( str ){  
     var myReg = /^[-\._A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/; 
     if(myReg.test(str)) return true; 

@@ -31,7 +31,7 @@ class Reports extends REIM_Controller {
         die($buf);
     }
 
-    public function index($type = 1) {
+    public function index($search='',$type = 1) {
         $items = $this->items->get_suborinate($type);
         if(!$items['status']){
             return redirect(base_url('items'));
@@ -52,6 +52,7 @@ class Reports extends REIM_Controller {
                 ,'items' => $item_data
                 ,'error' => $error
                 ,'type' => $type
+                ,'search' => urldecode($search)
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa home-icon')
                     ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
@@ -855,7 +856,7 @@ class Reports extends REIM_Controller {
         die($rep);
         //niu
     }
-    public function audit(){
+    public function audit($search=''){
         $this->session->set_userdata('item_update_in',4);
         $items = $this->items->get_suborinate();
         if(!$items['status']){
@@ -882,6 +883,7 @@ class Reports extends REIM_Controller {
                 ,'items' => $item_data
                 ,'members' => $_members
                 ,'error' => $_error
+                ,'search' => urldecode($search)
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
