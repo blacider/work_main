@@ -43,6 +43,25 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">承担者</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="分类" value=" <?php 
+$afford = $item['fee_afford'];
+$_parts = explode("|", $afford);
+$final = array();
+foreach($_parts as $x) {
+    $__parts = explode(",", $x);
+    if(count($__parts) == 3)
+        array_push($final, implode("-", array($__parts[1], $__parts[2])));
+}
+echo implode(",", $final);
+?> " disabled>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">消费时间</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <input type="text" class="form-controller col-xs-12" name="amount" placeholder="消费时间" value=" <?php echo $item['dt']; ?> " disabled>

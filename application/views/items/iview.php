@@ -43,6 +43,22 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">承担者</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="分类" value=" <?php 
+$afford = $item['fee_afford'];
+$_parts = explode("|", $afford);
+$final = array();
+foreach($_parts as $x) {
+    $__parts = explode(",", $x);
+    if(count($__parts) == 3)
+        array_push($final, implode("-", array($__parts[1], $__parts[2])));
+}
+echo implode(",", $final);
+?> " disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">消费时间</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <input type="text" class="form-controller col-xs-12" name="amount" placeholder="消费时间" value=" <?php echo $item['dt']; ?> " disabled>
@@ -134,6 +150,7 @@
                                     </select>
     </div>
 </div> 
+
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">商家</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -234,6 +251,24 @@ $(document).ready(function(){
                 $this.next().css({'width': $this.parent().width()});
             })
         }).trigger('resize.chosen');
+    $('.afford_detail').each(function(idx, item) {
+        $(this).next().hide();
+    });
+
+    $('.afford_detail').hide();
+    $('#afford_type').change(function(){
+        var _id = $(this).val();
+        $('.afford_detail').each(function(idx, item) {
+            $(item).hide();
+            $(item).next().hide();
+            $(item).removeClass('afford_chose');
+            if($(item).data('pid') == _id) {
+                $(item).show();
+                $(item).next().show();
+                $(item).addClass('afford_chose');
+            }
+        });
+    });
     var $overflow = '';
     var colorbox_params = {
         rel: 'colorbox',
@@ -262,5 +297,9 @@ $(document).ready(function(){
     $('.cancel').click(function(){
         history.go(-1);
     });
+	var afford_type = "<?php echo $fee_afford_type;?>";
+	console.log('afford_type:' + afford_type);
+	$('#afford_type').val(afford_type).trigger('chosen:updated').trigger('change');
+
 });
 </script>
