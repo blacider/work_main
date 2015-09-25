@@ -1211,7 +1211,7 @@ class Reports extends REIM_Controller {
                 }
                 $s = $i['category_code'];
                 if($s == 0) $s = '';
-                log_message("debug", "export item:" . json_encode($i));
+                log_message("debug", "alvayang export item:" . json_encode($i));
                 $o = array();
                 $o['日期'] = date('Y年m月d日', date($i['createdt']));
                 $o['时间'] = date('H:i:s', date($i['createdt']));
@@ -1270,9 +1270,23 @@ class Reports extends REIM_Controller {
                     }
                 }
                 
+                $afford = $i['fee_afford'];
+                $_parts = explode("|", $afford);
+                $final = array();
+                $_affort_member = array();
+                $_affort_dept = array();
+                foreach($_parts as $x) {
+                    $__parts = explode(",", $x);
+                    if(count($__parts) == 3) {
+                        array_push($_affort_member,$__parts[2]);
+                        array_push($_affort_dept, $__parts[1]);
+                    }
+                }
                 //$o['类别'] = $i['category_name'];
                 $o['商家'] = $i['merchants'];
                 $o['参与人员'] = implode(',', $__relates);
+                $o['承担部门'] = implode(",", $_affort_dept);
+                $o['承担对象'] = implode(",", $_affort_member);
                 $o['会计科目'] = $i['category_name'];
                 $o['会计科目代码'] = $cate_dic[$i['category']]['sob_code'];
                 $o['会计科目上级'] = '';

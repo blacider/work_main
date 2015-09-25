@@ -970,7 +970,7 @@ class Members extends REIM_Controller {
             $obj = array();
             if(array_key_exists('client_id',$m))
             {
-                $obj['ID'] = $m['nickname'];
+                $obj['ID'] = $m['client_id'];
             }
             if(array_key_exists('nickname',$m))
             {
@@ -1023,7 +1023,7 @@ class Members extends REIM_Controller {
             }
             array_push($data, $obj);
         }
-        $this->render_to_download('人员', $data, '员工信息.xls');
+        $this->render_to_download('人员', $data, 'members.xls');
     }
 
 
@@ -1170,32 +1170,18 @@ class Members extends REIM_Controller {
             $obj['manager'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
             $obj['rank'] = trim($sheet->getCellByColumnAndRow(10, $row)->getValue());
             $obj['level'] = trim($sheet->getCellByColumnAndRow(11, $row)->getValue());
-            $obj['manager_id'] = trim($sheet->getCellByColumnAndRow(8, $row)->getValue());
-            $obj['manager_email'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
-            if($obj['email']) {
-                $email_id_matrix[$obj['email']] = $obj['id'];
-            }
-            /*
-            $obj['level'] = trim($sheet->getCellByColumnAndRow(8, $row)->getValue());
-            $obj['rank'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
-             */
+            $obj['manager_id'] = 0;/*trim($sheet->getCellByColumnAndRow(8, $row)->getValue());*/
+            $obj['manager_email'] = trim($sheet->getCellByColumnAndRow(12, $row)->getValue());
+            $obj['display_manager_email'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
+            $obj['display_manager_id'] = 0;/*trim($sheet->getCellByColumnAndRow(8, $row)->getValue());*/
+            $obj['status'] = 0;
             if("" == $obj['email'] && "" == $obj['phone']) continue;
             $obj['status'] = 0;
-            if(in_array($obj['email'], $_emails) || in_array($obj['phone'], $_phones)){
+            if(in_array($obj['email'], $_emails)){
                 $obj['status'] = 1;
             }
             log_message('debug','obj_name' . $obj['name']);
-            if(!in_array($obj['name'],$_names))
-            {
-                $names[$obj['name']]['count'] = 1;
-            }
-            else if($obj['status'] != 1)
-            {
-                $names[$obj['name']]['count'] += 1;
-            }
-            array_push($_names,$obj['name']);
             array_push($data, $obj);
-
             log_message('debug','objXXXXXXXXXXXXXX:' . json_encode($obj));
         }
         $_ranks = $this->reim_show->rank_level(1);
@@ -1252,56 +1238,18 @@ class Members extends REIM_Controller {
         foreach($data as &$d)
         {
             $_e = $d['manager_email'];
-            $_i = $d['manager_id'];
-            log_message("debug", "Check Exists:" . json_encode($_e));
-            log_message("debug", "Check Exists:" . json_encode($d));
-            
+            $_de = $d['display_manager_email'];
+            log_message("debug", "Check Email:" . $_de);
+            if(array_key_exists($_de, $email_id_matrix)){
+                $d['display_manager_id'] = $email_id_matrix[$_de];
+            }
+
             if(array_key_exists($_e, $email_id_matrix)){
                 $d['status'] += 0;	
-                //$d['manager_id'] = $email_id_matrix[$_e];
+                $d['manager_id'] = $email_id_matrix[$_e];
             } else {
                 $d['status'] += 4;	
             }
-            //log_message('debug','isEq:' . in_array($d['name'],$_names));
-            /*
-            if(in_array($d['manager'],$_names))
-            {
-                if($names[$d['manager']]['count'] > 1)
-                {
-                    $d['status'] += 4;	
-                    $d['manager_id'] = 0;
-                }
-            }
-            else
-            {
-                if($d['manager'])
-                {
-                    $d['status'] += 4;
-                }
-                $d['manager_id'] = 0;
-            }
-
-            if(array_key_exists($d['name'], $names) && $names[$d['name']]['count'] > 1)
-            {
-                log_message('debug','counts:' . $names[$d['name']]['count'] );
-                $d['status'] += 2;
-            }
-            if($d['status']<4)
-            {
-                foreach($gmember as $m)
-                {
-                    if($m['nickname'] == $d['manager'])
-                    {
-                        $d['manager_id'] = $m['id'];
-                    }
-                    else
-                    {
-                        $d['manager_id'] = 0;
-                    }
-                }
-            }
-             */
-
             $d['rank_id'] = 0;
             if($d['rank'])
             {
@@ -1378,6 +1326,7 @@ class Members extends REIM_Controller {
 
         $data = array();
         $data['email'] = $obj['email'];
+        $data['display_manager_id'] = $obj['display_manager_id'];
         $data['nickname'] = $obj['name'];
         $data['phone'] = $obj['phone'];
         $data['account'] = $obj['accounts'];

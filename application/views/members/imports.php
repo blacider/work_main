@@ -139,7 +139,6 @@
         $('.data-maintainer').each(function(idx, val){
             var _status = $(this).data('exist');
             if(1 == _status) {
-             //   console.log('skip');
                 return;
             }
             var _member = $(this).val();
