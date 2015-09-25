@@ -190,7 +190,7 @@ class Bills extends REIM_Controller {
                     ,'category' => $_tags
                     ,'error' => $error
                     ,'usergroups' => $_usergroups
-                    ,'search' => $search
+                    ,'search' => urldecode($search)
                 )
             );
         }
@@ -211,7 +211,7 @@ class Bills extends REIM_Controller {
                     ,'category' => $_tags
                     ,'error' => $error
                     ,'usergroups' => $_usergroups
-                    ,'search' => $search
+                    ,'search' => urldecode($search)
                 )
             );
         }
@@ -232,7 +232,7 @@ class Bills extends REIM_Controller {
                     ,'category' => $_tags
                     ,'error' => $error
                     ,'usergroups' => $_usergroups
-                    ,'search' => $search
+                    ,'search' => urldecode($search)
                 )
             );
         }
