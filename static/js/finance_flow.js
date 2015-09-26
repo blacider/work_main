@@ -347,28 +347,29 @@ try{
 	}); 	
     } 
 	 })
+
 .navButtonAdd(pager_selector,{
     caption:"",
-    title:__STATUS == 2 ? "支付选中报告" : "",
-    buttonicon:__STATUS == 2 ? "ace-icon fa fa-check green" : "",
-    onClickButton:__STATUS == 2 ? function() {
+    title:"结束选中报告",
+    buttonicon:"ace-icon fa fa-check green",
+    onClickButton:function() {
          // chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
          chosenids = selectRows;
          if (chosenids.length == 0) {
             alert("请选择报告!");
             return;
          }
-         $('#modal-table').modal().css({
+         $('#modal-table-finish').modal().css({
              width:'auto',
              'margin-left':function () {
-                 return -(($(this).width() - $('#modal-table').width) / 2);
+                 return -(($(this).width() - $('#modal-table-flow').width) / 2);
              }
          });
         _part = chosenids.join('/');
-        var _part_url = __BASE + 'bills/listdata_new/' + __STATUS + '/' + _part;
+        var _part_url = __BASE + 'bills/listdata_new/' + '2' + '/' + _part;
   
-        $(grid_selector_new).jqGrid('GridUnload');
-        jQuery(grid_selector_new).jqGrid({  
+        $(grid_selector_finish).jqGrid('GridUnload');
+        jQuery(grid_selector_finish).jqGrid({  
             url: _part_url,
             mtype: "GET",
             datatype: "local",
@@ -412,10 +413,11 @@ try{
             emptyrecords: '没有账单', // the message will be displayed at the bottom 
         });
 
-    $(grid_selector_new).jqGrid();  
-    } : null,
+    $(grid_selector_finish).jqGrid();  
+    },
     position:"last"
 });
+
 } catch(e) {
     alert(e);
 }
