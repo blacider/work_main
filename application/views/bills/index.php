@@ -175,12 +175,12 @@ position: absolute;
         case "一个月内":
           endTime = endTime.Format('yyyy-MM-dd');
           startTime.setMonth(startTime.getMonth()-1);
-          startTime.Format('yyyy-MM-dd');
+          startTime = startTime.Format('yyyy-MM-dd');
           break;
         case "一年内":
           endTime = endTime.Format('yyyy-MM-dd');
           startTime.setYear(startTime.getYear()-1);
-          startTime.Format('yyyy-MM-dd');
+          startTime = startTime.Format('yyyy-MM-dd');
           break;
         default:
           endTime = search_time.split('至')[1];
