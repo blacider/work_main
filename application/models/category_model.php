@@ -23,7 +23,7 @@ class Category_Model extends Reim_Model {
         return $obj;
     }
     
-    public function create_update($cid = 0,$pid,$sob_id, $name, $avatar,$code,$force_attach,$note, $max_limit = 0 , $extra_type)
+    public function create_update($cid = 0,$pid,$sob_id, $name, $avatar,$code,$force_attach,$note, $max_limit = 0 , $extra_type, $alias_type)
     {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
@@ -37,6 +37,7 @@ class Category_Model extends Reim_Model {
 		,'note' => $note
         ,'limit' => $max_limit
         ,'extra_type' => $extra_type
+        ,'alias_type' => $alias_type
 	);
 
 	if(0 == $cid)
