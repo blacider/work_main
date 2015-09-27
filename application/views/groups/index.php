@@ -29,7 +29,7 @@ position: absolute;
     background-color: #ff7075;
    }
 </style>
-    <input name="key" placeholder="部门" value="" type='text' id="globalSearchText">
+    <input name="key" placeholder="部门" value="<?php echo $search;?>" type='text' id="globalSearchText">
     <button type="button" id="globalSearch">搜索</button>
 <script language='javascript'>
     var _admin = "<?php echo $profile['admin']; ?>";
@@ -59,6 +59,11 @@ var __BASE = "<?php echo $base_url; ?>";
 <script type="text/javascript">
 	$grid = $('#grid-table');
 $("#globalSearch").click(function () {
+      if ("<?php echo $search;?>" != $("#globalSearchText").val()) {
+        window.location.href = "/"+window.location.href.split('/')[3]+"/"+window.location.href.split('/')[4]+"/"+$("#globalSearchText").val();
+      }
+});
+function doSearch() {
     var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
         colModel = $grid.jqGrid("getGridParam", "colModel"),
         searchText = $("#globalSearchText").val(),
@@ -80,5 +85,5 @@ $("#globalSearch").click(function () {
     $grid.jqGrid("setGridParam", { search: true });
     $grid.trigger("reloadGrid", [{page: 1, current: true}]);
     return false;
-});
+}
 </script>

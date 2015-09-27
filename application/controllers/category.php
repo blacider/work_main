@@ -322,8 +322,9 @@ class Category extends REIM_Controller {
         return redirect(base_url('category/account_set'));
     }
 
-    public function sob_update($gid)
+    public function sob_update($gid = -1)
     {
+        if(-1 == $gid) return redirect(base_url('category/account_set'));
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
@@ -423,11 +424,11 @@ class Category extends REIM_Controller {
 		}
         if(array_key_exists('extra_type',$cate))
         {
-		    $all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code'],'note'=>$cate['note'],'force_attach'=>$cate['force_attach'], 'max_limit'=>$cate['max_limit'],'extra_type'=>$cate['extra_type']);
+            $all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code'],'note'=>$cate['note'],'force_attach'=>$cate['force_attach'], 'max_limit'=>$cate['max_limit'],'extra_type'=>$cate['extra_type'], 'alias_type' => $cate['dest']);
         }
         else
         {
-		    $all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code'],'note'=>$cate['note'],'force_attach'=>$cate['force_attach'], 'max_limit'=>$cate['max_limit'],'extra_type'=>0);
+            $all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code'],'note'=>$cate['note'],'force_attach'=>$cate['force_attach'], 'max_limit'=>$cate['max_limit'],'extra_type'=>0, 'alias_type' => $cate['dest']);
         }
 	}
 			
@@ -894,6 +895,7 @@ class Category extends REIM_Controller {
     $max_limit = $this->input->post('max_limit');
 	$_force_attach = $this->input->post('force_attach');
     $extra_type = $this->input->post('extra_type');
+    $alias_type = $this->input->post('alias_type');
 	$force_attach = 0;
 	if($_force_attach)
 	{
@@ -909,7 +911,7 @@ class Category extends REIM_Controller {
     log_message('debug', 'max_limit:' . $max_limit);
     log_message('debug', 'extra_type:' . $extra_type);
     
-	$obj = $this->category->create_update($cid,$pid,$sob_id,$name,$avatar,$code,$force_attach,$note,$max_limit,$extra_type);
+	$obj = $this->category->create_update($cid,$pid,$sob_id,$name,$avatar,$code,$force_attach,$note,$max_limit,$extra_type, $alias_type);
 	if($obj['status'] > 0)
 	{
 		$this->session->set_userdata('last_error','添加成功');

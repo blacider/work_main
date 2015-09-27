@@ -69,8 +69,8 @@ position: absolute;
   </select>
 </div>
 
-<input name="key" placeholder="ID、报告名或提交者" value="" type='text' id="globalSearchText" />
-<button type="button" id="globalSearch">搜索</button>
+<input name="key" placeholder="ID、报告名或提交者" value="<?php echo $search;?>" type='text' id="globalSearchText" />
+<button type="button" id="globalSearch" >搜索</button>
 
 
 <div class="page-content">
@@ -196,6 +196,11 @@ function exportExel() {
 $grid = $('#grid-table');
 
 $("#globalSearch").click(function () {
+      if ("<?php echo $search;?>" != $("#globalSearchText").val()) {
+        window.location.href = "/bills/"+window.location.href.split('/')[4]+"/"+$("#globalSearchText").val();
+      }
+});
+function doSearch() {
     var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
         colModel = $grid.jqGrid("getGridParam", "colModel"),
         searchText = $("#globalSearchText").val(),
@@ -227,10 +232,9 @@ $("#globalSearch").click(function () {
     //});
     postData.filters = JSON.stringify(groups_[0]);
     $grid.jqGrid("setGridParam", { search: true });
-    $grid.trigger("reloadGrid", [{page: 1, current: true}]);
+    $grid.trigger("reloadGrid", [{page: 1}]);
     return false;
-});
-
+}
 
 $('#send').click(function(){
     $.ajax({

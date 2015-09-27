@@ -32,20 +32,6 @@
                                 </div>
                             </div>
 
-                         <!--   <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-rigtht">部门选择</label>
-                                <div class="col-xs-4 col-sm-4">
-                                    <select id="group" class="chosen-select tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
-                                      <option value="0">公司</option>
-                                    <?php
-                                    foreach($ugroups as $ug){
-                                        echo "<option value='" . $ug['id'] ."'>" . $ug['name'] . "</option>";
-                                    }
-                                    ?>                                
-                                </select>
-                                </div>
-                            </div> -->
-
                       
 
                             <input type="hidden" id="renew" name="renew" value="0" />
