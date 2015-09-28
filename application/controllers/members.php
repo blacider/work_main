@@ -1166,11 +1166,17 @@ class Members extends REIM_Controller {
             $obj['cardloc'] = '';
             $obj['group_name'] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue());
             $obj['gids'] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue());
-            $obj['manager'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
+            $obj['display_manager'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
             $obj['rank'] = trim($sheet->getCellByColumnAndRow(10, $row)->getValue());
             $obj['level'] = trim($sheet->getCellByColumnAndRow(11, $row)->getValue());
-            $obj['manager_id'] = trim($sheet->getCellByColumnAndRow(8, $row)->getValue());
-            $obj['manager_email'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
+            $obj['manager_id'] = 0;/*trim($sheet->getCellByColumnAndRow(8, $row)->getValue());*/
+            $obj['manager_email'] = trim($sheet->getCellByColumnAndRow(12, $row)->getValue());
+            $obj['display_manager_email'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
+            $obj['second'] = trim($sheet->getCellByColumnAndRow(13, $row)->getValue());
+            $obj['third'] = trim($sheet->getCellByColumnAndRow(14, $row)->getValue());
+            $obj['fourth'] = trim($sheet->getCellByColumnAndRow(15, $row)->getValue());
+            $obj['fifth'] = trim($sheet->getCellByColumnAndRow(16, $row)->getValue());
+            $obj['display_manager_id'] = 0;
             if($obj['email']) {
                 $email_id_matrix[$obj['email']] = $obj['id'];
             }
@@ -1251,55 +1257,28 @@ class Members extends REIM_Controller {
         foreach($data as &$d)
         {
             $_e = $d['manager_email'];
+            $_de = $d['display_manager_email'];
             $_i = $d['manager_id'];
             log_message("debug", "Check Exists:" . json_encode($_e));
+            log_message("debug", "Check Exists:" . json_encode($_de));
             log_message("debug", "Check Exists:" . json_encode($d));
             
+            if(array_key_exists($_de,$email_id_matrix))
+            {
+                $d['display_manager_id'] = $email_id_matrix[$_de];
+            }
+            else
+            {
+                $d['status'] += 4;
+            }
+
             if(array_key_exists($_e, $email_id_matrix)){
                 $d['status'] += 0;	
-                //$d['manager_id'] = $email_id_matrix[$_e];
+                $d['manager_id'] = $email_id_matrix[$_e];
             } else {
                 $d['status'] += 4;	
             }
             //log_message('debug','isEq:' . in_array($d['name'],$_names));
-            /*
-            if(in_array($d['manager'],$_names))
-            {
-                if($names[$d['manager']]['count'] > 1)
-                {
-                    $d['status'] += 4;	
-                    $d['manager_id'] = 0;
-                }
-            }
-            else
-            {
-                if($d['manager'])
-                {
-                    $d['status'] += 4;
-                }
-                $d['manager_id'] = 0;
-            }
-
-            if(array_key_exists($d['name'], $names) && $names[$d['name']]['count'] > 1)
-            {
-                log_message('debug','counts:' . $names[$d['name']]['count'] );
-                $d['status'] += 2;
-            }
-            if($d['status']<4)
-            {
-                foreach($gmember as $m)
-                {
-                    if($m['nickname'] == $d['manager'])
-                    {
-                        $d['manager_id'] = $m['id'];
-                    }
-                    else
-                    {
-                        $d['manager_id'] = 0;
-                    }
-                }
-            }
-             */
 
             $d['rank_id'] = 0;
             if($d['rank'])
