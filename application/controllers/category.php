@@ -131,7 +131,7 @@ class Category extends REIM_Controller {
                 } 
                 if(array_key_exists($s['sob_id'], $_sob_db_hash)){
                     $_sob_name[$s['sob_id']] = $_sob_db_hash[$s['sob_id']];//$s['name'];
-                    array_push($_exist_sob_dict[$s['sob_id']], trim($s['category_name']) . trim($s['sob_code']) . $s['max_limit']);
+                    array_push($_exist_sob_dict[$s['sob_id']], trim($s['category_name']) . trim($s['sob_code']) . $s['max_limit'] . trim($s['note']));
                 }
 
             }
@@ -170,8 +170,9 @@ class Category extends REIM_Controller {
                 $s['limit'] = trim($sheet->getCellByColumnAndRow($col + 2, $row)->getValue());
                 $s['note'] = trim($sheet->getCellByColumnAndRow($col + 3, $row)->getValue());
                 if(!$s['code']) continue;
-                array_push($_ids, trim($s['name']) . trim($s['code']) . $s['limit'] . $s['note']);
-                array_push($desc, $s['name'] . "(ID:" . $s['code'] . ", 限额:" . $s['limit'] . $s['note'] . ")");
+                //array_push($_ids, trim($s['name']) . trim($s['code']) . $s['limit'] . $s['note']);
+                array_push($_ids, trim($s['name']) . trim($s['code']) . $s['limit'] . trim($s['note']));
+                array_push($desc, $s['name'] . "(ID:" . $s['code'] . ", 限额:" . $s['limit'] . "说明:" .$s['note'] . ")");
                 array_push($obj['cates'], $s);
             }
             log_message("debug", "IDS:" . json_encode($_ids));
@@ -187,7 +188,7 @@ class Category extends REIM_Controller {
                 $obj['sob_name'] = $_sob_name[$obj['sob_id']];
                 log_message("debug", "SOB EXISTS:" . json_encode($_sob_name) . ", " . $obj['sob_id']);
                 if(!array_key_exists($obj['sob_id'], $exitst_sobs)) {
-                    $exitst_sobs[$obj['sob_id']] = array('name' => $_sob_name[$obj['sob_id']], 'phone'=> $obj['phone'],'emails' => array(), 'cids' => array(), 'detail' => $obj['cates']);
+                    $exitst_sobs[$obj['sob_id']] = array('name' => $_sob_name[$obj['sob_id']],'emails' => array(), 'cids' => array(), 'detail' => $obj['cates']);
                 }
                 if($obj['email'])
                 {
@@ -200,17 +201,19 @@ class Category extends REIM_Controller {
             } else {
                 // 数据库中不存在，那么留下来，准备建设新的
                 if(!array_key_exists($_hash, $sob_hash)) {
-                    $sob_hash[$_hash] = array('name' => '自动帐套' . date('Y-m-d'), 'emails' => array(),'phone' => $obj['phone'], 'cids' => $_ids, 'detail' => $obj['cates']);
+                    $sob_hash[$_hash] = array('name' => '自动帐套' . date('Y-m-d'), 'emails' => array(), 'cids' => $_ids, 'detail' => $obj['cates']);
                     $idx += 1;
                 }
                 //array_push($sob_hash[$_hash]['emails'], $obj['email']);
                 if($obj['email'])
                 {
-                    array_push($exitst_sobs[$obj['sob_id']]['emails'], $obj['email']);
+                    array_push($sob_hash[$_hash]['emails'], $obj['email']);
+                    //array_push($exitst_sobs[$obj['sob_id']]['emails'], $obj['email']);
                 }
                 else
                 {
-                    array_push($exitst_sobs[$obj['sob_id']]['emails'], $obj['phone']);
+                    array_push($sob_hash[$_hash]['emails'], $obj['phone']);
+                    //array_push($exitst_sobs[$obj['sob_id']]['emails'], $obj['email']);
                 }
             }
             $obj['str_desc'] = implode("/", $desc);
