@@ -253,7 +253,7 @@ class Bills extends REIM_Controller {
                     ,'category' => $_tags
                     ,'error' => $error
                     ,'usergroups' => $_usergroups
-                    ,'search' => $search
+                    ,'search' => urldecode($search)
                 )
             );
         }
@@ -275,8 +275,10 @@ class Bills extends REIM_Controller {
     {
         return $this->_logic(0,$search);
     }
-    public function finance_flow($status = 1)
+    public function finance_flow($search = '')
     {
+
+        $status = 1;
         $this->need_group_casher();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
@@ -343,13 +345,15 @@ class Bills extends REIM_Controller {
                     ,'reports' => $data
                     ,'status' => 1/*$status*/
                     ,'category' => $_tags
+                    ,'search' => urldecode($search)
                     ,'error' => $error
                     ,'usergroups' => $_usergroups
                 )
             );
     }
 
-    public function finance_done($status = 2){
+    public function finance_done($search = ''){
+$status = 2; 
         $this->need_group_casher();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
@@ -413,6 +417,7 @@ class Bills extends REIM_Controller {
                     ,'status' => $status
                     ,'category' => $_tags
                     ,'error' => $error
+                    ,'search' => urldecode($search)
                     ,'usergroups' => $_usergroups
                 )
             );
