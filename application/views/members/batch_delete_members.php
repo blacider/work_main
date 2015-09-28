@@ -31,7 +31,17 @@
 
                                     <td>
                                        
-                                        <i id="<?php echo $d['email']?>" class='red'>未删除</i>
+                                        <i id="<?php 
+                                        if($d['email'])
+                                        {
+                                            echo $d['email'];
+                                        }
+                                        else{
+                                            echo $d['phone'];
+                                        }
+
+                                            ?>" class='red'>未删除</i>
+                                      
 
                                     </td>
                                 
@@ -99,15 +109,47 @@ var __BASE = "<?php echo $base_url;?>";
                         {
                             $('i[id="' + del_back[item]['email'] + '"]').removeClass('red').addClass('green').text('已删除');
                         }
-			else
+			             else
                         {
-			    if (del_back[item]['status_code'] == 1) {
-				$('i[id="' + del_back[item]['email'] + '"]').text('员工不在本公司');
-			    } else if (del_back[item]['status_code'] == 2) {
-				$('i[id="' + del_back[item]['email'] + '"]').text('员工信息错误');
-			    } else {
-				$('i[id="' + del_back[item]['email'] + '"]').text('未知错误');
-			    }
+                            if(del_back[item]['code'] == 0)
+                            {
+                                if(del_back[item]['email'])
+                                {
+                                     $('i[id="' + del_back[item]['email'] + '"]').text('员工账号不存在'); 
+                                }
+                                else
+                                {
+                                    $('i[id="' + del_back[item]['phone'] + '"]').text('员工账号不存在'); 
+                                }
+                            }
+            			    else if (del_back[item]['code'] == 1) {
+            				     if(del_back[item]['email'])
+                                {
+                                     $('i[id="' + del_back[item]['email'] + '"]').text('员工不在本公司'); 
+                                }
+                                else
+                                {
+                                    $('i[id="' + del_back[item]['phone'] + '"]').text('员工不在本公司'); 
+                                }
+            			    } else if (del_back[item]['code'] == 2) {
+            				      if(del_back[item]['email'])
+                                {
+                                     $('i[id="' + del_back[item]['email'] + '"]').text('员工信息有错误'); 
+                                }
+                                else
+                                {
+                                    $('i[id="' + del_back[item]['phone'] + '"]').text('员工信息有错误'); 
+                                }
+            			    } else {
+            				      if(del_back[item]['email'])
+                                {
+                                     $('i[id="' + del_back[item]['email'] + '"]').text('未知错误'); 
+                                }
+                                else
+                                {
+                                    $('i[id="' + del_back[item]['phone'] + '"]').text('未知错误'); 
+                                }
+            			    }
                         }
                     }
 

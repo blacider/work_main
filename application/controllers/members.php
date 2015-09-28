@@ -1167,14 +1167,24 @@ class Members extends REIM_Controller {
             $obj['cardloc'] = '';
             $obj['group_name'] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue());
             $obj['gids'] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue());
-            $obj['manager'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
+            $obj['display_manager'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
             $obj['rank'] = trim($sheet->getCellByColumnAndRow(10, $row)->getValue());
             $obj['level'] = trim($sheet->getCellByColumnAndRow(11, $row)->getValue());
             $obj['manager_id'] = 0;/*trim($sheet->getCellByColumnAndRow(8, $row)->getValue());*/
             $obj['manager_email'] = trim($sheet->getCellByColumnAndRow(12, $row)->getValue());
             $obj['display_manager_email'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
-            $obj['display_manager_id'] = 0;/*trim($sheet->getCellByColumnAndRow(8, $row)->getValue());*/
-            $obj['status'] = 0;
+            $obj['second'] = trim($sheet->getCellByColumnAndRow(13, $row)->getValue());
+            $obj['third'] = trim($sheet->getCellByColumnAndRow(14, $row)->getValue());
+            $obj['fourth'] = trim($sheet->getCellByColumnAndRow(15, $row)->getValue());
+            $obj['fifth'] = trim($sheet->getCellByColumnAndRow(16, $row)->getValue());
+            $obj['display_manager_id'] = 0;
+            if($obj['email']) {
+                $email_id_matrix[$obj['email']] = $obj['id'];
+            }
+            /*
+            $obj['level'] = trim($sheet->getCellByColumnAndRow(8, $row)->getValue());
+            $obj['rank'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
+             */
             if("" == $obj['email'] && "" == $obj['phone']) continue;
             $obj['status'] = 0;
             if(in_array($obj['email'], $_emails)){
@@ -1239,9 +1249,18 @@ class Members extends REIM_Controller {
         {
             $_e = $d['manager_email'];
             $_de = $d['display_manager_email'];
-            log_message("debug", "Check Email:" . $_de);
-            if(array_key_exists($_de, $email_id_matrix)){
+            $_i = $d['manager_id'];
+            log_message("debug", "Check Exists:" . json_encode($_e));
+            log_message("debug", "Check Exists:" . json_encode($_de));
+            log_message("debug", "Check Exists:" . json_encode($d));
+            
+            if(array_key_exists($_de,$email_id_matrix))
+            {
                 $d['display_manager_id'] = $email_id_matrix[$_de];
+            }
+            else
+            {
+                $d['status'] += 4;
             }
 
             if(array_key_exists($_e, $email_id_matrix)){
@@ -1250,6 +1269,8 @@ class Members extends REIM_Controller {
             } else {
                 $d['status'] += 4;	
             }
+            //log_message('debug','isEq:' . in_array($d['name'],$_names));
+
             $d['rank_id'] = 0;
             if($d['rank'])
             {
