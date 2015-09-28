@@ -88,12 +88,19 @@ class Category extends REIM_Controller {
 
     public function show_expense()
     {
+        $buf = $this->category->get_afford_project();
+        $projects = array();
+        if($buf['status'] > 0)
+        {
+            $projects = $buf['data']; 
+        }
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
         $this->bsload('category/expense',
             array(
                 'title' => '费用承担对象管理'
                 ,'error' => $error
+                ,'projects' => $projects
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')

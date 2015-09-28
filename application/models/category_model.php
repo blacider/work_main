@@ -1,6 +1,16 @@
 <?php
 class Category_Model extends Reim_Model {
 
+    public function get_afford_project()
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+
+        $url = $this->get_url('fee_afford_project/0');
+        $buf = $this->do_Get($url,$jwt);
+        log_message('debug','afford_list:' . $buf);
+        return json_decode($buf,True);
+    }
     public function expense_create($name)
     {
         $jwt = $this->session->userdata('jwt');
@@ -63,6 +73,7 @@ class Category_Model extends Reim_Model {
 		$buf = $this->do_Put($url,$data,$jwt);
 		log_message('debug','update_category:' . $buf);
 	}
+		log_message('debug','update_category_data:' . json_encode($data));
 	
 	return json_decode($buf,True);
 
