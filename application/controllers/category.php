@@ -182,7 +182,10 @@ class Category extends REIM_Controller {
             $obj['sob_hash'] = $_hash;
             if(array_key_exists($_hash, $__sob_hash_dict)){
                 $obj['sob_id'] = $__sob_hash_dict[$_hash];
-                $obj['sob_name'] = $_sob_name[$obj['sob_id']];
+                $obj['sob_name'] = '';
+                if(array_key_exists($obj['sob_id'], $_sob_name)){
+                    $obj['sob_name'] = $_sob_name[$obj['sob_id']];
+                }
                 log_message("debug", "SOB EXISTS:" . json_encode($_sob_name) . ", " . $obj['sob_id']);
                 if(!array_key_exists($obj['sob_id'], $exitst_sobs)) {
                     $exitst_sobs[$obj['sob_id']] = array('name' => $_sob_name[$obj['sob_id']], 'emails' => array(), 'cids' => array(), 'detail' => $obj['cates']);
