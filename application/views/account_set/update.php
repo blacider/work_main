@@ -47,7 +47,7 @@ if($last_error) {
 
                             function showSob(sobId) {
                                 if (sobId != -1) {
-                                    var extra_type = all_categories[sobId]['extra_type'],name = all_categories[sobId]['name'], note = all_categories[sobId]['note'],force_attach=all_categories[sobId]['force_attach'],code = all_categories[sobId]['sob_code'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'], name = all_categories[sobId]['name'], max_limit = all_categories[sobId]['max_limit'], pid = all_categories[sobId]['pid'];
+                                    var extra_type = all_categories[sobId]['extra_type'],name = all_categories[sobId]['name'], note = all_categories[sobId]['note'],force_attach=all_categories[sobId]['force_attach'],code = all_categories[sobId]['sob_code'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'], name = all_categories[sobId]['name'], max_limit = all_categories[sobId]['max_limit'], pid = all_categories[sobId]['pid'],alias_type=all_categories[sobId]['alias_type'];
                                     $("#form_moda").find('input[name="name"]').val(name);
                                     $("#menuImg").attr('src', img);
                                     $('#form_moda').find('input[name="avatar"]').val(all_categories[sobId]['avatar_']);
@@ -56,6 +56,7 @@ if($last_error) {
                                     $("#form_moda").find('input[name="note"]').val(note);
                                     $("#form_moda").find('input[name="max_limit"]').val(max_limit);
                                     $("#form_moda").find('input[name="pid"]').val(pid);
+                                    $("#form_moda").find('select[name="alias_type"]').val(alias_type).attr('selected',true).trigger('chosen:updated');
 
                                     if(force_attach == 1)
                                     {
@@ -395,7 +396,23 @@ if($last_error) {
 
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类目ID</label>
-            <input name="code" type="text" data-placeholder="请输入类目ID"></div>
+            <input name="code" type="text" data-placeholder="请输入类目ID">
+        </div>
+        <div class="form-group" style="height:30px;">
+           <label class="col-sm-2 control-label no-padding-right">关联到:</label>
+                    <div class="col-sm-4"  style="padding:0;">
+                        <select class="chosen-select-niu tag-input-style" style="width:95%;" id="alias_type" name="alias_type" data-placeholder="关联属性" >
+<?php 
+                                    foreach($all_categories as $a) { 
+                                        if($a['id'] <= 0) continue;
+?>
+                            <option value="<?php echo $a['id']; ?>"><?php echo $a['name']; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                   
+        </div>
+
         <div class="clearfix form-actions">
             <div class="col-md-offset-3 col-md-9">
                 <button class="btn btn-sm" data-dismiss="modal">
@@ -489,6 +506,20 @@ if($last_error) {
             <label class="col-sm-2 col-xl-2">类目代码</label>
             <input name="code" type="text" data-placeholder="请输入名称"></div>
     </div>
+        <div class="form-group" style="height:30px;">
+           <label class="col-sm-2 control-label no-padding-right">关联到:</label>
+                    <div class="col-sm-4"  style="padding:0;">
+                        <select class="chosen-select-niu tag-input-style" style="width:95%;" id="alias_type" name="alias_type" data-placeholder="关联属性" >
+<?php 
+                                    foreach($all_categories as $a) { 
+                                        if($a['id'] <= 0) continue;
+?>
+                            <option value="<?php echo $a['id']; ?>"><?php echo $a['name']; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                   
+        </div>
     <div class="modal-footer">
         <button class="btn btn-sm" data-dismiss="modal">
             <i class="ace-icon fa fa-times"></i>
@@ -595,9 +626,6 @@ var range = "<?php echo $range?>";
                        window.location.href=__BASE+"category/account_set";
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.log(XMLHttpRequest.status);
-                        console.log(XMLHttpRequest.readyState);
-                        console.log(textStatus);
                     },            });
      
            }); 
