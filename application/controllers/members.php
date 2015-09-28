@@ -1146,7 +1146,7 @@ class Members extends REIM_Controller {
             $obj['cardno'] = trim($sheet->getCellByColumnAndRow(4, $row)->getValue());
             $obj['cardbank'] = trim($sheet->getCellByColumnAndRow(5, $row)->getValue());
             $obj['bank'] = trim($sheet->getCellByColumnAndRow(5, $row)->getValue());
-            log_message('debug','cardno XXX:' . $sheet->getCellByColumnAndRow(4, $row)->getValue());
+            log_message('debug','alvayang cardno XXX:' . $sheet->getCellByColumnAndRow(4, $row)->getValue());
             if(strlen($obj['cardno']) >= 128) {
                 $obj['cardno'] = substr($obj['cardno'],0,128);
                 log_message('debug','len:' . strlen($obj['cardno']));
@@ -1175,7 +1175,10 @@ class Members extends REIM_Controller {
             $obj['display_manager_email'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
             $obj['display_manager_id'] = 0;/*trim($sheet->getCellByColumnAndRow(8, $row)->getValue());*/
             $obj['status'] = 0;
-            if("" == $obj['email'] && "" == $obj['phone']) continue;
+            if("" == $obj['email'] && "" == $obj['phone']) {
+                log_message("debug", "alvayang Ignore with empty identifier");
+                continue;
+            }
             $obj['status'] = 0;
             if(in_array($obj['email'], $_emails)){
                 $obj['status'] = 1;
@@ -1292,7 +1295,7 @@ class Members extends REIM_Controller {
             }
         }
 
-        log_message('debug','data:' . json_encode($data));
+        log_message('debug','alvayang data:' . json_encode($data));
         log_message('debug','rank_dic:' . json_encode($ranks_dic));
         log_message('debug','level_dic:' . json_encode($levels_dic));
         log_message('debug','ug_dic:' . json_encode($ug_dic));
