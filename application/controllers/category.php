@@ -12,6 +12,23 @@ class Category extends REIM_Controller {
 	$this->load->model('group_model','groups');
 	$this->load->model('user_model','users');
     }
+    
+    public function del_expense($id = -1)
+    {
+        if($id == -1)  return redirect(base_url('category/show_expense'));
+        $buf = $this->category->del_fee_afford_project($id);
+        
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','删除成功');  
+        }
+        else
+        {
+            $this->session->set_userdata('last_error','删除失败');
+        }
+
+        return redirect(base_url('category/show_expense'));
+    }
 
     public function create_expense()
     {
@@ -20,7 +37,7 @@ class Category extends REIM_Controller {
 
         if($buf['status'] > 0)
         {
-            return redirect(base_url('category/update_expense/' . $buf['code']));
+            return redirect(base_url('category/update_expense/' . $buf['data']['id']));
         }
         else
         {
@@ -94,6 +111,7 @@ class Category extends REIM_Controller {
         {
             $projects = $buf['data']; 
         }
+        log_message('debug','projects: ' . json_encode($projects));
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
         $this->bsload('category/expense',

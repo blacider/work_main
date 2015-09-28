@@ -11,15 +11,29 @@ class Category_Model extends Reim_Model {
         log_message('debug','afford_list:' . $buf);
         return json_decode($buf,True);
     }
+    
+    public function del_fee_afford_project($id)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+
+        $url = $this->get_url('fee_afford_project/' . $id);
+        $buf = $this->do_Delete($url,array(),$jwt);
+        log_message('debug','afford_delete_url:' . $url);
+        log_message('debug','afford_delete:' . $buf);
+        return json_decode($buf,True);
+    }
+
     public function expense_create($name)
     {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
 
-        $url = $this->get_url('');
+        $url = $this->get_url('fee_afford_project');
         $data = array('name' => $name);
         $buf = $this->do_Post($url,$data,$jwt);
         log_message('debug','expense_create:' . $buf);
+        log_message('debug','expense_create_data:' . $name);
         return json_decode($buf,True);
     }
 

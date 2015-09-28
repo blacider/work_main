@@ -40,6 +40,19 @@
                         <td>部门</td>
                         <td style="width:80px;">   <a href="#" data-toggle="modal" class="edit"  data-name="" data-id="2"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del" data-rank="1" data-id="2"><span class="glyphicon glyphicon-trash"></span></a></td>
                       </tr>
+
+                      <?php
+                        foreach($projects as $pro)
+                        {
+                      ?>
+                      <tr>
+                        <td><?php echo $pro['id'];?></td>
+                        <td><?php echo $pro['name'];?></td>
+                        <td style="width:80px;">   <a href="#" data-toggle="modal" class="edit"  data-name="" data-id="<?php echo $pro['id'];?>"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del" data-rank="1" data-id="<?php echo $pro['id'];?>"><span class="glyphicon glyphicon-trash"></span></a></td>
+                      </tr>
+                      <?php
+                        }
+                      ?>
                       
 
                     </tbody>
