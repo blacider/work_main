@@ -137,6 +137,7 @@ class Category extends REIM_Controller {
             }
         }
         log_message("debug", "XExistd SOB DICT:" . json_encode($_exist_sob_dict));
+        log_message("debug", "XExistd SOB name:" . json_encode($_sob_name));
         $__sob_hash_dict = array();
         foreach($_exist_sob_dict as $sid => $cids){
             sort($cids);
@@ -146,6 +147,7 @@ class Category extends REIM_Controller {
             log_message("debug", "ESOD:" . json_encode($__sob_hash_dict));
             log_message("debug", "xHash:" . $_hash);
             $__sob_hash_dict[$_hash] = $sid;
+            log_message("debug", "xHashSid:" . $sid);
         }
         $sobs = array();
         $sob_hash = array();
@@ -169,8 +171,12 @@ class Category extends REIM_Controller {
                 $s['code'] = trim($sheet->getCellByColumnAndRow($col + 1, $row)->getValue());
                 $s['limit'] = trim($sheet->getCellByColumnAndRow($col + 2, $row)->getValue());
                 $s['note'] = trim($sheet->getCellByColumnAndRow($col + 3, $row)->getValue());
-                if(!$s['code']) continue;
                 //array_push($_ids, trim($s['name']) . trim($s['code']) . $s['limit'] . $s['note']);
+                if(!$s['code']) continue;
+                if(!$s['limit'])
+                {
+                    $s['limit'] = 0;
+                }
                 array_push($_ids, trim($s['name']) . trim($s['code']) . $s['limit'] . trim($s['note']));
                 array_push($desc, $s['name'] . "(ID:" . $s['code'] . ", 限额:" . $s['limit'] . "说明:" .$s['note'] . ")");
                 array_push($obj['cates'], $s);
@@ -206,7 +212,7 @@ class Category extends REIM_Controller {
             } else {
                 // 数据库中不存在，那么留下来，准备建设新的
                 if(!array_key_exists($_hash, $sob_hash)) {
-                    $sob_hash[$_hash] = array('name' => '自动帐套' . date('Y-m-d'), 'emails' => array(), 'cids' => $_ids, 'detail' => $obj['cates']);
+                    $sob_hash[$_hash] = array('name' => '自动帐套' . date('Y-m-d h:i:sa'), 'emails' => array(), 'cids' => $_ids, 'detail' => $obj['cates']);
                     $idx += 1;
                 }
                 //array_push($sob_hash[$_hash]['emails'], $obj['email']);
