@@ -1167,6 +1167,7 @@ class Members extends REIM_Controller {
             $obj['group_name'] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue());
             $obj['gids'] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue());
             $obj['display_manager'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
+            $obj['manager'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
             $obj['rank'] = trim($sheet->getCellByColumnAndRow(10, $row)->getValue());
             $obj['level'] = trim($sheet->getCellByColumnAndRow(11, $row)->getValue());
             $obj['manager_id'] = 0;/*trim($sheet->getCellByColumnAndRow(8, $row)->getValue());*/
