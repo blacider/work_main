@@ -39,7 +39,6 @@ function bind_event(){
     $('.tapprove').each(function(){
         $(this).click(function(){
             var _id = $(this).data('id');
-	    console.log("ehhhe");
             $.ajax({
                 type:"GET",
                 url:__BASE + "bills/report_finance_permission/" + _id,
@@ -119,7 +118,7 @@ var selectRows = [];
 try{
     var FLAG = 1;
 jQuery(grid_selector).jqGrid({
-    url: __BASE + 'bills/listfinance/2',
+    url: __BASE + 'bills/listfinance/' + __STATUS,
     mtype: "GET",
     datatype: "local",
     height: 250,
@@ -158,7 +157,8 @@ jQuery(grid_selector).jqGrid({
             updatePagerIcons(table);
             enableTooltips(table);
             if (FLAG) {
-                $("#globalSearch").click();
+                doSearch();
+                //$("#globalSearch").click();
                 FLAG = 0;
             }
         }, 0);

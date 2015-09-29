@@ -93,7 +93,16 @@
                             <label class="col-sm-1 control-label no-padding-right">人均:</label>
                             <div class="col-xs-3 col-sm-3">
                                 <div class="input-group">
-                                    <div id="average_id" name="average" type="text" class="form-control"><?php $_ava = $item['amount']/$item_value[5]['value'];  echo sprintf("%.2f", $_ava);   ?>元/人*<?php echo $item_value[5]['value']?></div>
+                                <div id="average_id" name="average" type="text" class="form-control"><?php
+                                   if($item_value[5]['value']) 
+                                   {
+                                       $_ava = $item['amount']/$item_value[5]['value']; 
+                                   }
+                                   else
+                                   {
+                                      $_ava = $item['amount']; 
+                                   }
+                                     echo sprintf("%.2f", $_ava);   ?>元/人*<?php echo $item_value[5]['value']?></div>
 
 
                                 </div>
