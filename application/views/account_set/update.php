@@ -402,6 +402,7 @@ if($last_error) {
            <label class="col-sm-2 control-label no-padding-right">关联到:</label>
                     <div class="col-sm-4"  style="padding:0;">
                         <select class="chosen-select-niu tag-input-style" style="width:95%;" id="alias_type" name="alias_type" data-placeholder="关联属性" >
+                            <option value="0">无</option>
 <?php 
                                     foreach($all_categories as $a) { 
                                         if($a['id'] <= 0) continue;
@@ -510,6 +511,7 @@ if($last_error) {
            <label class="col-sm-2 control-label no-padding-right">关联到:</label>
                     <div class="col-sm-4"  style="padding:0;">
                         <select class="chosen-select-niu tag-input-style" style="width:95%;" id="alias_type" name="alias_type" data-placeholder="关联属性" >
+                            <option value="0">无</option>
 <?php 
                                     foreach($all_categories as $a) { 
                                         if($a['id'] <= 0) continue;
