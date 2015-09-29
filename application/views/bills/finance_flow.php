@@ -4,12 +4,24 @@
  <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 
+
+<link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
+<link rel="stylesheet" href="/static/ace/css/colorbox.css" />
+
+<script src="/static/ace/js/date-time/moment.js"></script>
+<!--
+<script src="/static/ace/js/date-time/locale/zh-cn.js"></script>
+-->
+
+<script src="/static/ace/js/jquery.colorbox-min.js"></script>
+<script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
+
  <style type="text/css">
     #globalSearchText{
 position: absolute;
   left: 75%;
   top: 60px;
-  z-index: 2;
+  z-index: 3;
   height: 30px;
   width: 12%;
   border-style: ridge;
@@ -33,7 +45,7 @@ position: absolute;
 
   #userGroup{
   position: absolute;
-  left: 58%;
+  left: 45%;
   top: 60px;
   z-index: 2;
   height: 15px;
@@ -42,7 +54,7 @@ position: absolute;
     #userGroupLab {
   background-color: #fe575f;
   position: absolute;
-  left: 65%;
+  left: 58%;
   top: 60px;
   border: 0;
   color: white;
@@ -53,24 +65,177 @@ position: absolute;
    #userGroupLab:hover {
     background-color: #ff7075;
    }
+   #dataSelect {
+    position: absolute;
+    left: 60%;
+    z-index: 2;
+    top: 55px;
+   }
+   #dropdown{
+    background-color: transparent;
+    color: black;
+   }
 </style>
+<script type="text/javascript">
+  function changeDropText(str) {
+    $('#dropText').text(str);
+    return false;
+  }
+  function getDropText() {
+    return $('#dropText').text();
+  }
+  <?php 
+    $search_gid = "";
+    $search_text = "";
+    $search_time = "所有时间";
 
+    echo ' var s = "' . $search . '";' ;
+    if ($search != "") {
+      $search_gid = explode('_',$search)[0];
+      $search_time = explode('_',$search)[1];
+      $search_text = explode('_',$search)[2];
+    }
+  ?>
+  jQuery(document).ready(function($) {
+    $('#time-submit').click(function(event) {
+        var dateTime1 = $('#date-timepicker1').val();
+        var dateTime2 = $('#date-timepicker2').val();
+        if(dateTime1 == '' || dateTime2 == '')
+        {
+                show_notify('请填写时间');
+                return false;
+        }
+        if (dateTime2 < dateTime1) {
+          show_notify('请填写正确时间');
+          return false;
+        }
+        $("#dropText").text(dateTime1+ "至" +dateTime2);
+        $('#modal-table-time').modal('hide');
+    });
+    $('#date-timepicker1').datetimepicker({
+        language: 'zh-cn',
+            useCurrent: true,
+            format: 'YYYY-MM-DD',
+            linkField: "dt",
+            linkFormat: "YYYY-MM-DD",
+            sideBySide: true
+    }).next().on('dp.change', function(ev){
+    }).on(ace.click_event, function(){
+        $(this).prev().focus();
+    });
+
+        $('#date-timepicker2').datetimepicker({
+        language: 'zh-cn',
+            useCurrent: true,
+            format: 'YYYY-MM-DD',
+            linkField: "dt_end",
+            linkFormat: "YYYY-MM-DD",
+            sideBySide: true
+    }).next().on('dp.change', function(ev){
+    }).on(ace.click_event, function(){
+        $(this).prev().focus();
+    });
+     $("#globalSearch").click(function () {
+      if ("<?php echo $search_text;?>" != $("#globalSearchText").val() || "<?php echo $search_time;?>" != $("#dropText").text()|| "<?php echo $search_gid;?>" != $('select[name="gids"]').val()) {
+        var text = $("#globalSearchText").val();
+        var groupsId = $('select[name="gids"]').val();
+        var time = $('#dropText').text().replace(" ","");
+        window.location.href = "/bills/"+window.location.href.split('/')[4]+"/"+groupsId+"_"+time+"_"+text;
+      }
+  });
+     var _dt = new Date().Format('yyyy-MM-dd hh:mm:ss');
+  });
+ 
+Date.prototype.Format = function (fmt) { //author: meizz 
+    var o = {
+        "M+": this.getMonth() + 1, //月份 
+        "d+": this.getDate(), //日 
+        "h+": this.getHours(), //小时 
+        "m+": this.getMinutes(), //分 
+        "s+": this.getSeconds(), //秒 
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+        "S": this.getMilliseconds() //毫秒 
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
+</script>
+<div id="modal-table-time" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="blue bigger"> 选择时间段 </h4>
+          </div>
+         <div class="modal-body">
+           <div class="container">
+              <div class="col-xs-12 col-sm-12">
+                <div class="row">
+                  <div class="form-group">
+                    <div class="col-sm-4">
+                      <input id="date-timepicker1" name = 'dt' type="text" class="form-control"/>
+                    </div>
+                    <label class="col-sm-1">至</label>
+                    <div class="col-sm-4">
+                      <input id="date-timepicker2" type="text" name = 'dt_end' class="form-control"/>
+                    </div>
+                  </div>   
+                </div>    <!-- row -->
+              </div>    <!-- col-xs-12 -->
+           </div> <!--- container -->
+         </div>
+         <div class="modal-footer">
+           <button class="btn btn-sm" data-dismiss="modal">
+             <i class="ace-icon fa fa-times"></i>
+             取消
+           </button>
+           <div type="button" id='time-submit' class="btn btn-sm btn-primary">确定</div>
+         </div>
+        </div>
+  </div>
+</div><!-- PAGE CONTENT ENDS -->
 <!-- <label class="col-sm-2 control-label no-padding-right" id='userGroupLab'>适用范围</label> -->
 <div class="col-xs-2 col-sm-2" id="userGroup">
   <select class="chosen-select tag-input-style "  name="gids"  data-placeholder="请选择部门" placeholder="请选择部门">
     <option value='0'>公司</option>
     <?php 
     foreach($usergroups as $g){
+      if ($g['id'] != $search_gid){
       ?>
       <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
       <?php
+      } else {
+        ?>
+        <option selected value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+        <?php
+      }
     }
     ?> 
   </select>
 </div>
+<input name="key" placeholder="ID、报告名或提交者" value="<?php echo $search_text;?>" type='text' id="globalSearchText" />
+<div class="col-sm-3 col-xs-3" id="dataSelect">
+  <ul class="nav nav-pills">
+    <li class="dropdown all-camera-dropdown active">
+           <a class="dropdown-toggle" id="dropdown" data-toggle="dropdown" href="javascript:void(0);">
+           <span id='dropText'><?php echo $search_time;?></span>
+              <b class="caret"></b>
+           </a>
+    <ul class="dropdown-menu">
+            <li data-filter-camera-type="all"><a data-toggle="tab" onclick="changeDropText('所有时间')" href="#">所有时间</a></li>
+            <li data-filter-camera-type="Alpha"><a data-toggle="tab" href="#" onclick="changeDropText('一个月内')">一个月内</a></li>
+            <li data-filter-camera-type="Zed"><a data-toggle="tab" href="#" onclick="changeDropText('一年内')">一年内</a></li>
+            <li class="divider"></li>
+            <li data-filter-camera-type="Bravo"><a data-toggle="tab" onclick="$('#modal-table-time').modal('show');return false;" href="#">自定义时间</a></li>
 
-<input name="key" placeholder="ID、报告名或提交者" value="" type='text' id="globalSearchText" />
-<button type="button" id="globalSearch">搜索</button>
+     </ul>
+    </li>
+  </ul>
+</div>
+
+<button type="button" id="globalSearch" >搜索</button>
 
 
 <div class="page-content">
@@ -158,7 +323,7 @@ position: absolute;
                 <form action="<?php echo base_url('bills/report_finance_end'); ?>" method="post" class="form-horizontal" id="permit_form">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <input type="hidden" name="rid" value="" id="rid_">
+                <input name="rid" value="" id="rid_">
                 <input type="hidden" name="status" value="2" id_="status">
                 <h4 class="modal-title">是否结束</h4>
             </div>
@@ -184,20 +349,20 @@ position: absolute;
 </div><!-- /.modal -->
 
 
-<div class="modal fade" id="modal-table">
+<div class="modal fade" id="modal-table-finish">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">支付以下报告</h4>
+        <h4 class="modal-title">结束以下报告</h4>
       </div>
       <div class="modal-body">
-        <table id="grid-table-new"></table> 
+        <table id="grid-table-finish"></table> 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         <button type="button" class="btn btn-primary" onclick="exportExel()">下载汇总报表</button>
-        <button type="button" class="btn btn-primary" onclick="pay()">确认已支付</button>
+        <button type="button" class="btn btn-primary" onclick="finish()">确认结束</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -271,9 +436,9 @@ $(document).ready(function(){
         }).trigger('resize.chosen');
     });
 
-function pay() {
+function finish() {
     var _id = chosenids.join('%23');
-    location.href = __BASE + "bills/marksuccess/" + _id + "/0";
+    location.href = __BASE + "bills/report_finance_multiEnd/" + _id;
 }
 
 function exportExel() {
@@ -292,42 +457,6 @@ function exportExel() {
 }
 
 $grid = $('#grid-table');
-
-$("#globalSearch").click(function () {
-    var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
-        colModel = $grid.jqGrid("getGridParam", "colModel"),
-        searchText = $("#globalSearchText").val(),
-        l = colModel.length;
-    var groupId = $('select[name="gids"]').val();
-    for (i = 0; i < l; i++) {
-        cm = colModel[i];
-        if (cm.search !== false && (cm.stype === undefined || cm.stype === "text")) {
-            rules.push({
-                field: cm.name,
-                op: "cn",
-                data: searchText
-            });
-        }
-    }
-    var groups_ = [{
-      groupOp:"AND",
-      rules:[{field:"ugs",op:"cn",data:groupId}],
-      groups:[{
-        groupOp: "OR",
-        rules: rules ,
-        groups:[]
-      }]
-    }];
-    //postData.filters = JSON.stringify({
-    //    groupOp: "OR",
-    //    rules: rules ,
-    //    groups:groups_
-    //});
-    postData.filters = JSON.stringify(groups_[0]);
-    $grid.jqGrid("setGridParam", { search: true });
-    $grid.trigger("reloadGrid", [{page: 1, current: true}]);
-    return false;
-});
 
 
 $('#send').click(function(){
@@ -368,6 +497,7 @@ function deny_report()
 function deny_end_report()
 {
   var report_id = $('#rid_').val();
+  alert(report_id);
   console.log(report_id);
   location.href = __BASE + 'bills/report_finance_deny/' + report_id; 
 }
@@ -377,6 +507,77 @@ function cancel_modal_next_()
   $('#modal_next_').modal('hide');
 }
 
+  function doSearch() {
+    var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
+        colModel = $grid.jqGrid("getGridParam", "colModel"),
+        searchText = $("#globalSearchText").val(),
+        l = colModel.length;
+    var groupId = $('select[name="gids"]').val();
+    for (i = 0; i < l; i++) {
+        cm = colModel[i];
+        if (cm.search !== false && (cm.stype === undefined || cm.stype === "text")) {
+            rules.push({
+                field: cm.name,
+                op: "cn",
+                data: searchText
+            });
+        }
+    }
+    var search_time = "<?php echo $search_time?>";
+    var time_groups = time_groups = [{
+        groupOp:"AND",
+        rules:[],
+        groups:[{
+          groupOp: "OR",
+          rules: rules ,
+          groups:[]
+        }]
+      }];
+      var startTime = new Date();
+      var endTime = new Date();
+    if (search_time != "所有时间") {
+      switch(search_time) {
+        case "一个月内":
+          endTime = endTime.Format('yyyy-MM-dd');
+          startTime.setMonth(startTime.getMonth()-1);
+          startTime = startTime.Format('yyyy-MM-dd');
+          break;
+        case "一年内":
+          endTime = endTime.Format('yyyy-MM-dd');
+          startTime.setYear(startTime.getYear()-1);
+          startTime = startTime.Format('yyyy-MM-dd');
+          break;
+        default:
+          endTime = search_time.split('至')[1];
+          startTime = search_time.split('至')[0];
+      }
+      startTime += " 00:00:00";
+      endTime += " 24:60:60";
+      time_groups = [{
+        groupOp:"AND",
+        rules:[{field:"date_str",op:"ge",data:startTime},{field:"date_str",op:"le",data:endTime}],
+        groups:[{
+          groupOp: "OR",
+          rules: rules ,
+          groups:[]
+        }]
+      }]
+    }
+    var groups_ = [{
+      groupOp:"AND",
+      rules:[{field:"ugs",op:"cn",data:groupId}],
+      groups:time_groups
+    }];
+    //postData.filters = JSON.stringify({
+    //    groupOp: "OR",
+    //    rules: rules ,
+    //    groups:groups_
+    //});
+    postData.filters = JSON.stringify(groups_[0]);
+    $grid.jqGrid("setGridParam", { search: true });
+    $grid.trigger("reloadGrid", [{page: 1}]);
+    return false;
+}
 </script>
 <script language="javascript" src="/static/js/base.js" ></script>
 <script language="javascript" src="/static/js/finance_flow.js" ></script>
