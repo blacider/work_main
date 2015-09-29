@@ -173,7 +173,7 @@ class Category extends REIM_Controller {
                 $s['note'] = trim($sheet->getCellByColumnAndRow($col + 3, $row)->getValue());
                 //array_push($_ids, trim($s['name']) . trim($s['code']) . $s['limit'] . $s['note']);
                 if(!$s['code']) continue;
-                if(!$s['limit'])
+                if(!trim($s['limit']))
                 {
                     $s['limit'] = 0;
                 }
