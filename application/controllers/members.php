@@ -533,7 +533,7 @@ class Members extends REIM_Controller {
                 'title' => '公司部门'
                 ,'group' => $ginfo
                 ,'members' => $gmember
-                ,'search' => $search
+                ,'search' => urldecode($search)
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/groups'), 'name' => '员工&部门', 'class' => '')
