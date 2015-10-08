@@ -1,4 +1,9 @@
-<div class="main-content">
+ <script src="/static/ace/js/chosen.jquery.min.js"></script>
+ <link rel="stylesheet" href="/static/ace/css/chosen.css" />
+ <script src="/static/ace/js/dropzone.min.js"></script>
+ <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
+ <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
+ <div class="main-content">
 
 <!-- /section:basics/content.breadcrumbs -->
 <div class="page-content">
@@ -8,7 +13,7 @@
     <div class="page-content-area">
 
         <div class="row">
-            <div class="col-xs-6">
+            <div class="col-xs-12">
                 <!-- PAGE CONTENT BEGINS -->
                 <div class="row">
                     <div class="col-xs-12">
@@ -19,8 +24,8 @@
                      <table id="sample-table-2" class="table table-striped table-bordered table-hover">
                       <thead>
                         <tr>
-                          <th>ID</th>
-                          <th>组名</th>
+                          <th>部门名称</th>
+                          <th><input type='checkbox' id='mul_edit'> 对象名称</th>
                           <th class="hidden-680">
                             <a href="#modal-table2" role="button" class="green" data-toggle="modal">
                               <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
@@ -29,17 +34,49 @@
                         </tr>
                       </thead>
                       <tbody>
+                      <?php 
+                        foreach($fee_afford['gdetail'] as $key=>$gd)
+                        {
+                      ?>
                       <tr>
-                        <td>1</td>
-                        <td>人员</td>
-                        <td style="width:80px;">   <a href="#modal-table2" data-toggle="modal" class="edit"  data-name="" data-id="1"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del" data-rank="1" data-id="1"><span class="glyphicon glyphicon-trash"></span></a></td>
-                      </tr>
+                        <td><?php 
+                            if(array_key_exists($key, $group_dic)) 
+                            {
+                                 echo $group_dic[$key]; 
+                            }
+                            else
+                            {
+                                 echo '';
+                            }
+                            ?>
+                        </td>
+                        <td>
+                        <table class="table table-striped table-bordered table-hover">
+                          <?php 
+                            foreach($gd as $_gd)
+                            {
+                          ?>
+                            <tr>
+                              <td>
+                                <?php echo $_gd['oname']; ?>
+                              </td>
+                               <td style="width:80px;">   <a href="#modal-table2" data-toggle="modal" class="edit"  data-pid="<?php echo $_gd['pid'];?>" data-id="<?php echo $_gd['id'];?>"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del" data-id="<?php echo $_gd['id']?>" data-pid="<?php echo $_gd['pid'];?>"><span class="glyphicon glyphicon-trash"></span></a></td>
+                            </tr>
 
-                       <tr>
-                        <td>2</td>
-                        <td>部门</td>
-                        <td style="width:80px;">   <a href="#modal-table2" data-toggle="modal" class="edit"  data-name="" data-id="2"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del" data-rank="1" data-id="2"><span class="glyphicon glyphicon-trash"></span></a></td>
-                      </tr>
+                          <?php 
+                            }
+                          ?>
+                         
+                          </table>
+                        </td>
+                       
+                      </tr> 
+
+                      <?php
+                       }
+                      ?>
+
+                  
                       
 
                     </tbody>
@@ -56,52 +93,7 @@
 
 
 
- <div class="col-xs-6">
-                <!-- PAGE CONTENT BEGINS -->
-                <div class="row">
-                    <div class="col-xs-12">
-
-
-
-
-                     <table id="sample-table-2" class="table table-striped table-bordered table-hover">
-                      <thead>
-                        <tr>
-                          <th>ID</th>
-                          <th>组名</th>
-                          <th class="hidden-680">
-                            <a href="#modal-table2" role="button" class="green" data-toggle="modal">
-                              <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
-                            </a>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>人员</td>
-                        <td style="width:80px;">   <a href="#" data-toggle="modal" class="edit"  data-name="" data-id="1"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del" data-rank="1" data-id="1"><span class="glyphicon glyphicon-trash"></span></a></td>
-                      </tr>
-
-                       <tr>
-                        <td>2</td>
-                        <td>部门</td>
-                        <td style="width:80px;">   <a href="#" data-toggle="modal" class="edit"  data-name="" data-id="2"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del" data-rank="1" data-id="2"><span class="glyphicon glyphicon-trash"></span></a></td>
-                      </tr>
-                      
-
-                    </tbody>
-                  </table>
-
-
-        
-
-</div><!-- /.span -->
-</div><!-- /.row -->
-
-
-</div><!-- /.col -->
-
+ 
 
 
 </div><!-- /.row -->
@@ -114,26 +106,88 @@
 
 <div id="modal-table2" class="modal" tabindex="-1">
   <div class="modal-dialog">
-        <form action="<?php echo base_url('category/create_expense')?>" method='post'>
+        <form action="<?php echo base_url('category/create_fee_afford')?>" method='post'>
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="blue bigger"> 新建对象 </h4>
           </div>
          <div class="modal-body">
-           <div class="container">
-
+          
+            <label for="form-field-username">导入对应部门和员工:</label>
+            <div class="form-group">
+            
               <div class="col-xs-12 col-sm-12">
-                <div class="row">
-                  <div class="form-group">
-                      <label for="form-field-username">输入对象名称:</label>
-                      <div>
-                        <input class="col-xs-4 col-sm-4" type="text" id="name" name="name" class="form-control" />
-                      </div>
-                  </div>   
-                </div>    <!-- row -->
-              </div>    <!-- col-xs-12 -->
-           </div> <!--- container -->
+                <select id="gid" class="chosen-select tag-input-style" name="gid"  data-placeholder="请选择部门" style="width:400px;">
+                 <?php foreach($groups as $m) { ?>
+                 <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                 <?php } ?>
+               </select>
+              </div>
+            </div>
+            <div class="form-group">
+                    <div class="col-xs-9 col-sm-9">
+                    
+                        <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="oid[]" multiple="multiple" id="oid" style="width:400px;" data-placeholder="选择对象">>
+                         
+                        </select>
+
+                    </div>
+            </div>
+            <label for="form-field-username">导入对应部门和员工:</label>
+            <div class="form-group">
+                    <div class="col-xs-9 col-sm-9">
+                    
+                        <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="gids[]" multiple="multiple" id="gids" style="width:400px;" data-placeholder="选择部门">
+                            <?php foreach($groups as $m) { ?>
+                            <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                            <?php } ?>
+                        </select>
+
+                    </div>
+            </div>
+
+             <div class="form-group">
+                    <div class="col-xs-9 col-sm-9">
+                    
+                        <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="uids[]" multiple="multiple" id="uids" style="width:400px;" data-placeholder="选择员工">
+                            <?php foreach($members as $m) { ?>
+                            <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?></option>
+                            <?php } ?>
+                        </select>
+
+                    </div>
+            </div>
+           
+            <div class="form-group">
+                    <div class="col-xs-9 col-sm-9">
+                    
+                        <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="ranks[]" multiple="multiple" id="ranks" style="width:400px;" data-placeholder="选择级别">
+                            <?php foreach($ranks as $m) { ?>
+                            <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                            <?php } ?>
+                        </select>
+
+                    </div>
+            </div>
+
+            <div class="form-group">
+                    <div class="col-xs-9 col-sm-9">
+                    
+                        <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="levels[]" multiple="multiple" id="levels" style="width:400px;" data-placeholder="选择职位">
+                            <?php foreach($ranks as $m) { ?>
+                            <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                            <?php } ?>
+                        </select>
+
+                    </div>
+            </div>
+
+            <div>
+              <input type="checkbox"> 全体员工
+            </div>
+            <input type="hidden" name='pid' value="<?php echo $pid;?>">
+           
          </div>
          <div class="modal-footer">
            <button class="btn btn-sm" data-dismiss="modal">
@@ -222,3 +276,79 @@
         </form>
   </div>
 </div><!-- PAGE CONTENT ENDS -->
+<p><?php echo json_encode($fee_afford);?></p>
+<script type="text/javascript">
+var __BASE = "<?php echo base_url();?>";
+var error = "<?php echo $error;?>";
+if(error)
+{
+  show_notify(error);
+}
+  $(document).ready(function(){
+    $('.chosen-select').chosen({allow_single_deselect:true}); 
+    $(window)
+        .off('resize.chosen')
+        .on('resize.chosen', function() {
+            $('.chosen-select').each(function() {
+                var $this = $(this);
+                $this.next().css({'width': $this.parent().width()});
+            })
+        }).trigger('resize.chosen');
+
+        $('#gid').change(function(){
+          var _gid = $('#gid').val();
+          $.ajax({
+              url:__BASE + '/category/get_ug_members/'+ _gid,
+              method:'get',
+              dataType:'json',
+              success:function(data){
+                
+                var _h = '';
+                for(var i = 0 ; i < data.length; i++)
+                {
+                  _h += "<option value=" + "'"+data[i].id + ","+data[i].nickname+"'"+">" + data[i].nickname + "</option>";
+                }
+             
+                $('#oid').empty().append(_h).trigger("chosen:updated");
+              },
+              error:function(a,b,c){
+                console.log(a);
+                console.log(b);
+                console.log(c);
+              }
+          });
+        });
+       $('#gid').trigger('change');
+       $('#gid').trigger('chosen:updated');
+
+
+       $('.del').each(function(){
+          $(this).click(function(){
+            var _pid = $(this).data('pid');
+            var _id = $(this).data('id');
+            console.log('pid:' + _pid);
+            console.log('oid:' + _id);
+            location.href = __BASE + "category/delete_fee_afford/" + _id + '/' + _pid;
+          });
+       });
+
+         $('.edit').each(function(){
+          $(this).click(function(){
+            var _pid = $(this).data('pid');
+            var _id = $(this).data('id');
+            console.log('pid:' + _pid);
+            console.log('oid:' + _id);
+            $.ajax({
+              url:__BASE + 'category/get_fee_afford/' + _id,
+              method:'get',
+              dataType:'json',
+              success:function(data){
+                  console.log(data);
+              },
+              error:function(){}
+            });
+          });
+       });
+
+  });
+</script>

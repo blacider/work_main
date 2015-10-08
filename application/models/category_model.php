@@ -1,12 +1,81 @@
 <?php
 class Category_Model extends Reim_Model {
 
-    public function get_afford_project()
+    public function delete_fee_afford($fid)
     {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
 
-        $url = $this->get_url('fee_afford_project/0');
+        $url = $this->get_url('fee_afford/' . $fid);
+        $buf = $this->do_Delete($url,array(),$jwt);
+        log_message('debug','delete_fee_afford:' . $buf);
+        return json_decode($buf,True);
+    }
+
+    public function get_fee_afford($fid)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+
+        $url = $this->get_url('fee_afford/' . $fid);
+        $buf = $this->do_Get($url,$jwt);
+        log_message('debug','fee_afford:' . $buf);
+        return json_decode($buf,True);
+    }
+
+    public function update_fee_afford($eid,$pid,$gid,$oid,$oname,$standalone,$uids,$gids,$ranks,$levels) {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+
+        $url = $this->get_url('fee_afford/' . $eid);
+        $data = array(
+            "pid" => $pid,
+            "gid" => $gid,
+            "oid" => $oid,
+            "oname" => $oname,
+            "standalone" => $standalone,
+            "privilege" => array(
+                "users" => $uids,
+                "groups" => $gids,
+                "ranks" => $ranks,
+                "levels" => $levels
+            )
+        );
+        $buf = $this->do_Put($url,$data,$jwt);
+        log_message('debug','update_fee_afford:' . $buf);
+        return json_decode($buf,True);
+    }
+
+    public function create_fee_afford($pid,$gid,$oid,$standalone,$uids,$gids,$ranks,$levels)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+
+        $url = $this->get_url('fee_afford');
+        $data = array(
+            "pid" => $pid,
+            "gid" => $gid,
+            "objects" => json_encode($oid),
+            "standalone" => $standalone,
+            "privilege" => json_encode(array(
+                "users" => $uids,
+                "groups" => $gids,
+                "ranks" => $ranks,
+                "levels" => $levels
+            ))
+        );
+        log_message('debug','create_fee_data:' . json_encode($data));
+        $buf = $this->do_Post($url,$data,$jwt);
+        log_message('debug','create_fee_afford:' . $buf);
+        return json_decode($buf,True);
+    }
+
+    public function get_afford_project($eid = 0)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+
+        $url = $this->get_url('fee_afford_project/' . $eid);
         $buf = $this->do_Get($url,$jwt);
         log_message('debug','afford_list:' . $buf);
         return json_decode($buf,True);

@@ -13,6 +13,84 @@ class Category extends REIM_Controller {
 	$this->load->model('user_model','users');
     }
     
+    public function get_ug_members($gid)
+    {
+        $info = json_decode($this->ug->get_single_group($gid), True);
+        if($info['status'] > 0){
+            $info = $info['data'];
+            $group = $info['group'];
+            $member = $info['member'];
+            }
+         log_message('debug','members:' . json_encode($member));
+         die(json_encode($member));
+    }
+
+    public function get_fee_afford($oid)
+    {
+        $fee_afford = array();
+        $buf = $this->category->get_fee_afford($oid);
+        if($buf['status'] > 0)
+        {
+            $fee_afford = $buf['data'];
+        }
+        log_message('debug','fee_afford:' . json_encode($fee_afford));    
+        
+        die(json_encode($fee_afford));
+    }
+
+    public function delete_fee_afford($oid,$pid)
+    {
+        $buf = $this->category->delete_fee_afford($oid); 
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','删除对象成功');
+        }
+        else
+        {
+            $this->session->set_userdata('last_error','删除对象失败');
+        }
+
+            return redirect(base_url('category/update_expense/' . $pid));
+    }
+    
+    public function create_fee_afford()
+    {
+        $pid = $this->input->post('pid');
+        $gid = $this->input->post('gid');
+        $_oid = $this->input->post('oid');
+        $oname = $this->input->post('oname');
+        $standalone = 0;
+        $uids = $this->input->post('uids');
+        $gids = $this->input->post('gids');
+        $ranks = $this->input->post('ranks');
+        $levels = $this->input->post('levels');
+        $oid = array();
+        foreach($_oid as $o)
+        {
+            $temp = explode(',',$o);
+            array_push($oid,array('id' => $temp[0],'name'=>$temp[1])); 
+        }
+        
+        log_message('debug','oname:' . json_encode($oname));
+        log_message('debug','pid:' . $pid);
+        log_message('debug','gid:' . json_encode($gid));
+        log_message('debug','oid:' . json_encode($oid));
+        log_message('debug','uids:' . json_encode($uids));
+        log_message('debug','gids:' . json_encode($gids));
+        log_message('debug','ranks:' . json_encode($ranks));
+        log_message('debug','levels:' . json_encode($levels));
+        $buf = $this->category->create_fee_afford($pid,$gid,$oid,$standalone,$uids,$gids,$ranks,$levels);
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','对象添加成功');
+        }
+        else
+        {
+            $this->session->set_userdata('last_error','对象添加失败');
+        }
+            return redirect(base_url('category/update_expense/' . $pid));
+    }
+    
     public function del_expense($id = -1)
     {
         if($id == -1)  return redirect(base_url('category/show_expense'));
@@ -50,6 +128,8 @@ class Category extends REIM_Controller {
     {
         if(-1 == $eid) return redirect(base_url('category/show_expense'));
 
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         $group = $this->groups->get_my_list();
         $ginfo = array();
         $gmember = array();
@@ -83,10 +163,46 @@ class Category extends REIM_Controller {
             $levels = $_levels['data'];
         }
 
+        $_fee_afford = $this->category->get_afford_project($eid);
+        $fee_afford = array();
+        if($_fee_afford['status'] > 0) 
+        {
+            $fee_afford = $_fee_afford['data'];
+        }
+        $group_dic = array();
+        foreach($gnames as $g)
+        {
+            $group_dic[$g['id']] = $g['name']; 
+        }
+        $fee_afford['gdetail'] = array();
+        if(array_key_exists('detail',$fee_afford))
+        {
+                foreach($fee_afford['detail'] as &$f)
+                {
+                    if(!array_key_exists($f['gid'],$fee_afford['gdetail']))
+                    {
+                        $fee_afford['gdetail'][$f['gid']] = array();
+                    }
+
+                    if(array_key_exists($f['gid'],$group_dic))
+                    {
+                        $f['gname'] = $group_dic[$f['gid']]; 
+                        log_message('debug','gname:' . $f['gname']);
+                    }
+                    else
+                    {
+                        $f['gname'] = '';
+                    }
+
+                    array_push($fee_afford['gdetail'][$f['gid']],$f);
+                }
+        }
         log_message('debug','members: ' . json_encode($gmember));
         log_message('debug','groups: ' . json_encode($gnames));
         log_message('debug','ranks: ' . json_encode($ranks));
         log_message('debug','levels: ' . json_encode($levels));
+        log_message('debug','fee_afford: ' . json_encode($fee_afford));
+        log_message('debug','group_dic: ' . json_encode($group_dic));
         $this->bsload('category/update_expense',
             array(
                 'title' => '修改对象'
@@ -94,6 +210,10 @@ class Category extends REIM_Controller {
                 ,'groups' => $gnames
                 ,'ranks' => $ranks
                 ,'levels' => $levels
+                ,'pid' => $eid
+                ,'error' => $error
+                ,'fee_afford' => $fee_afford
+                ,'group_dic' => $group_dic
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
