@@ -49,13 +49,23 @@
 $afford = $item['fee_afford'];
 $_parts = explode("|", $afford);
 $final = array();
+$is_hidden = false;
 foreach($_parts as $x) {
     $__parts = explode(",", $x);
     if(count($__parts) == 3)
-        array_push($final, implode("-", array($__parts[1], $__parts[2])));
+    {
+        if($__parts[1] != '' && $__parts[2] != '')
+        {
+             array_push($final, implode("-", array($__parts[1], $__parts[2])));
+        }
+        else
+        {
+            $is_hidden = true;
+        }
+    }
 }
 echo implode(",", $final);
-?> " disabled>
+?> " disabled >
                                 </div>
                             </div>
                             <div class="form-group">
@@ -238,7 +248,6 @@ echo implode(",", $final);
         </form>
     </div>
 </div>
-
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 $(document).ready(function(){
