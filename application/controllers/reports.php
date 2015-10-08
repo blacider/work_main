@@ -1214,7 +1214,7 @@ class Reports extends REIM_Controller {
                 }
                 $s = $i['category_code'];
                 if($s == 0) $s = '';
-                log_message("debug", "export item:" . json_encode($i));
+                log_message("debug", "alvayang export item:" . json_encode($i));
                 $o = array();
                 $o['日期'] = date('Y年m月d日', date($i['createdt']));
                 $o['时间'] = date('H:i:s', date($i['createdt']));
@@ -1273,9 +1273,37 @@ class Reports extends REIM_Controller {
                     }
                 }
                 
+                $afford = $i['fee_afford'];
+                log_message("debug", "alvayang fee afford : " . $afford);
+                $_parts = explode("|", $afford);
+                $final = array();
+                $_afford_member = array();
+                $_afford_dept = array();
+                foreach($_parts as $x) {
+                log_message("debug", "alvayang fee afford parts: " . $x);
+                    $__parts = explode(",", $x);
+                log_message("debug", "alvayang fee afford parts: " . count($__parts));
+                    if(count($__parts) == 3) {
+                        if(trim($__parts[1]) != "") 
+                            array_push($_afford_dept, $__parts[1]);
+                        if(trim($__parts[2]) != "") 
+                            array_push($_afford_member,$__parts[2]);
+                    }
+                }
+                $_str_afford_dept = $o['部门'];
+                $_str_afford_member = $i['nickname'];
+
+                if(count($_afford_dept)) {
+                    $_str_afford_dept = implode(",", $_afford_dept);
+                }
+                if(count($_afford_member)){
+                    $_str_afford_member = implode(",", $_afford_member);
+                }
                 //$o['类别'] = $i['category_name'];
                 $o['商家'] = $i['merchants'];
                 $o['参与人员'] = implode(',', $__relates);
+                $o['承担部门'] = $_str_afford_dept;
+                $o['承担对象'] = $_str_afford_member;
                 $o['会计科目'] = $i['category_name'];
                 $o['会计科目代码'] = $cate_dic[$i['category']]['sob_code'];
                 $o['会计科目上级'] = '';
