@@ -23,7 +23,7 @@ class Category_Model extends Reim_Model {
         return json_decode($buf,True);
     }
 
-    public function update_fee_afford($eid,$pid,$gid,$oid,$oname,$standalone,$uids,$gids,$ranks,$levels) {
+    public function update_fee_afford($eid,$pid,$gid,$oid,$standalone,$uids,$gids,$ranks,$levels) {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
 
@@ -31,16 +31,16 @@ class Category_Model extends Reim_Model {
         $data = array(
             "pid" => $pid,
             "gid" => $gid,
-            "oid" => $oid,
-            "oname" => $oname,
+            "objects" => json_encode($oid),
             "standalone" => $standalone,
-            "privilege" => array(
+            "privilege" => json_encode(array(
                 "users" => $uids,
                 "groups" => $gids,
                 "ranks" => $ranks,
                 "levels" => $levels
-            )
+            ))
         );
+        log_message('debug','update_fee_data:' . json_encode($data) );
         $buf = $this->do_Put($url,$data,$jwt);
         log_message('debug','update_fee_afford:' . $buf);
         return json_decode($buf,True);

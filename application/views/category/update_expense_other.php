@@ -103,9 +103,9 @@
             <div class="col-xs-12 col-sm-12">
               <div class="row">
                 <label for="form-field-username" class="col-sm-12 col-xl-12">导入对应部门和员工:</label>
-                <div class="form-group">
+                <div class="form-group" >
 
-                  <div class="col-xs-9 col-sm-9">
+                  <div class="col-xs-9 col-sm-9" >
                     <select id="gid" class="chosen-select" name="gid"  data-placeholder="请选择部门">
                       <?php foreach($groups as $m) { ?>
                       <option value="<?php echo $m['id']; ?>">
@@ -113,6 +113,13 @@
                       <?php } ?></select>
                   </div>
                 </div>
+                 <div class="form-group" id='labs'>
+                  <div class="col-xs-9 col-sm-9">
+                    <input type='text' id='lab'> <input type='button' id='lab_bt' value='创建'>
+                  </div>
+                </div>
+
+
                 <div class="form-group">
                   <div class="col-xs-9 col-sm-9">
 
@@ -201,12 +208,17 @@
 <!-- PAGE CONTENT ENDS -->
 
 
-
 <p>
   <?php echo json_encode($fee_afford);?></p>
 <script type="text/javascript">
 var __BASE = "<?php echo base_url();?>";
 var error = "<?php echo $error;?>";
+var _group_dic = '<?php echo json_encode($group_dic);?>';
+var group_dic = '';
+if(_group_dic)
+{
+  group_dic = JSON.parse(_group_dic);
+}
 if(error)
 {
   show_notify(error);
@@ -229,6 +241,7 @@ if(error)
             $('#gid').val('').trigger('chosen:updated');
             $('#oid').val('').trigger('chosen:updated');
             $('#gids').val('').trigger('chosen:updated');
+            $('#labs').prop('hidden',false).trigger('chosen:updated');
                       
             $('#uids').val('').trigger('chosen:updated');
             $('#ranks').val('').trigger('chosen:updated');
@@ -237,33 +250,32 @@ if(error)
 
         });
 
+        var _gid;
+        var _gname;
+        var oArray = [];
         $('#gid').change(function(){
-          var _gid = $('#gid').val();
-          $.ajax({
-              url:__BASE + '/category/get_ug_members/'+ _gid,
-              method:'get',
-              dataType:'json',
-              success:function(data){
-                console.log(data);
-                var _h = '';
-                for(var i = 0 ; i < data.length; i++)
-                {
-                  _h += "<option value=" + "'"+data[i].id + ","+data[i].nickname+"'"+">" + data[i].d + '-' + data[i].nickname + "</option>";
-                }
+           _gid = $('#gid').val();
+           _gname = group_dic[_gid];
+         
+       
+          //$('#oid').empty().append(_h).trigger("chosen:updated");
+          $('#oid').trigger('change');
+          $('#oid').trigger('chosen:updated');
              
-                $('#oid').empty().append(_h).trigger("chosen:updated");
-                $('#oid').trigger('change');
-                $('#oid').trigger('chosen:updated');
-              },
-              error:function(a,b,c){
-                console.log(a);
-                console.log(b);
-                console.log(c);
-              }
-          });
         });
        $('#gid').trigger('change');
        $('#gid').trigger('chosen:updated');
+
+       $('#lab_bt').click(function(){
+          var _text = $('#lab').val();
+          $('#lab').val('');
+          if(_text)
+          {
+            var _h = "";
+            _h += "<option value=" + "'"+ 0 + ","+ _text +"'"+" selected >" + group_dic[_gid] + '-' + _text + "</option>";
+            $('#oid').append(_h).trigger('chosen:updated');
+          }
+       });
 
 
        $('.del').each(function(){
@@ -296,18 +308,21 @@ if(error)
                  
                       var privilege = data.privilege;
                       console.log(privilege);
+                      $('#labs').prop('hidden',true).trigger('chosen:updated');
                       $('#gid').val(_gid).attr('selected',true).trigger('chosen:updated');
                       $('#gid').trigger('change');
                       $('#gid').trigger('chosen:updated');
                       $('#gid').prop('disabled',true).trigger('chosen:updated');
+                       var _h = "";
+                      _h += "<option value=" + "'"+ data.id + ","+ data.oname +"'"+" selected >" + group_dic[data.gid] + '-' + data.oname + "</option>";
+                      $('#oid').append(_h).trigger('chosen:updated');
                       $('#oid').prop('disabled',true).trigger('chosen:updated');
 
                       $('#gid').prop('disabled',true).trigger('chosen:updated');
                      
-                      $('#oid').bind('change',function(){
-                        $('#oid').val(_oid).attr('selected',true).trigger('chosen:updated');
-                        $('#_oid').val($('#oid').val());
-                      });
+                      
+                      $('#_oid').val($('#oid').val());
+                     
                       
                       $('#gids').val(privilege.groups).attr('selected',true).trigger('chosen:updated');
                       

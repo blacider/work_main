@@ -202,11 +202,19 @@
 
 
 
+
 <p>
   <?php echo json_encode($fee_afford);?></p>
 <script type="text/javascript">
 var __BASE = "<?php echo base_url();?>";
 var error = "<?php echo $error;?>";
+var _group_dic = '<?php echo json_encode($group_dic);?>';
+var group_dic = '';
+if(_group_dic)
+{
+  group_dic = JSON.parse(_group_dic);
+}
+console.log(group_dic);
 if(error)
 {
   show_notify(error);
@@ -239,28 +247,17 @@ if(error)
 
         $('#gid').change(function(){
           var _gid = $('#gid').val();
-          $.ajax({
-              url:__BASE + '/category/get_ug_members/'+ _gid,
-              method:'get',
-              dataType:'json',
-              success:function(data){
-                console.log(data);
-                var _h = '';
-                for(var i = 0 ; i < data.length; i++)
-                {
-                  _h += "<option value=" + "'"+data[i].id + ","+data[i].nickname+"'"+">" + data[i].d + '-' + data[i].nickname + "</option>";
-                }
-             
-                $('#oid').empty().append(_h).trigger("chosen:updated");
-                $('#oid').trigger('change');
-                $('#oid').trigger('chosen:updated');
-              },
-              error:function(a,b,c){
-                console.log(a);
-                console.log(b);
-                console.log(c);
-              }
-          });
+         
+          var _h = '';
+        
+            _h += "<option value=" + "'"+ _gid + ","+group_dic[_gid]+"'"+">" + '部门' + '-' + group_dic[_gid] + "</option>";
+         
+       
+          $('#oid').empty().append(_h).trigger("chosen:updated");
+          $('#oid').trigger('change');
+          $('#oid').trigger('chosen:updated');
+          $('#oid').val(_gid+','+group_dic[_gid]).attr('selected',true).trigger('chosen:updated');
+          $('#_oid').val($('#oid').val());
         });
        $('#gid').trigger('change');
        $('#gid').trigger('chosen:updated');
@@ -315,7 +312,6 @@ if(error)
                       $('#ranks').val(privilege.ranks).attr('selected',true).trigger('chosen:updated');
                       $('#levels').val(privilege.levels).attr('selected',true).trigger('chosen:updated');
                       $('#_gid').val($('#gid').val());
-                      
                   
               },
               error:function(){}

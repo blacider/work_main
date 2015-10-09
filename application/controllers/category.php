@@ -56,6 +56,8 @@ class Category extends REIM_Controller {
     
     public function create_fee_afford()
     {
+        $__gid = $this->input->post('_gid');
+        $__oid = $this->input->post('_oid');
         $fid = $this->input->post('fid');
         $pid = $this->input->post('pid');
         $gid = $this->input->post('gid');
@@ -66,6 +68,13 @@ class Category extends REIM_Controller {
         $gids = $this->input->post('gids');
         $ranks = $this->input->post('ranks');
         $levels = $this->input->post('levels');
+
+        if($fid != -1)
+        {
+            $_oid = $__oid;
+            $gid = $__gid;
+        }
+
         $oid = array();
         foreach($_oid as $o)
         {
@@ -75,6 +84,8 @@ class Category extends REIM_Controller {
         
         log_message('debug','oname:' . json_encode($oname));
         log_message('debug','pid:' . $pid);
+        log_message('debug','_gid:' . $__gid);
+        log_message('debug','_oid:' . $_oid);
         log_message('debug','fid:' . $fid);
         log_message('debug','gid:' . json_encode($gid));
         log_message('debug','oid:' . json_encode($oid));
@@ -215,30 +226,80 @@ class Category extends REIM_Controller {
                     array_push($fee_afford['gdetail'][$f['gid']],$f);
                 }
         }
+        $project_type = 0;
+        if(array_key_exists('project_type',$fee_afford))
+        {
+            $project_type = $fee_afford['project_type'];
+        }
         log_message('debug','members: ' . json_encode($gmember));
         log_message('debug','groups: ' . json_encode($gnames));
         log_message('debug','ranks: ' . json_encode($ranks));
         log_message('debug','levels: ' . json_encode($levels));
-        log_message('debug','fee_afford: ' . json_encode($fee_afford));
+        log_message('debug','fee_afford: ' . json_encode($_fee_afford));
         log_message('debug','group_dic: ' . json_encode($group_dic));
-        $this->bsload('category/update_expense',
-            array(
-                'title' => '修改对象'
-                ,'members' => $gmember
-                ,'groups' => $gnames
-                ,'ranks' => $ranks
-                ,'levels' => $levels
-                ,'pid' => $eid
-                ,'error' => $error
-                ,'fee_afford' => $fee_afford
-                ,'group_dic' => $group_dic
-                ,'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
-                    ,array('url'  => '', 'name' => '修改对象', 'class' => '')
-                ),
-            )
-        );
+        if($project_type == 0)
+        {
+                $this->bsload('category/update_expense',
+                    array(
+                        'title' => '修改对象'
+                        ,'members' => $gmember
+                        ,'groups' => $gnames
+                        ,'ranks' => $ranks
+                        ,'levels' => $levels
+                        ,'pid' => $eid
+                        ,'error' => $error
+                        ,'fee_afford' => $fee_afford
+                        ,'group_dic' => $group_dic
+                        ,'breadcrumbs' => array(
+                            array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                            ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
+                            ,array('url'  => '', 'name' => '修改对象', 'class' => '')
+                        ),
+                    )
+                );
+        }
+        else if($project_type == 1)
+        {
+                $this->bsload('category/update_expense_group',
+                    array(
+                        'title' => '修改对象'
+                        ,'members' => $gmember
+                        ,'groups' => $gnames
+                        ,'ranks' => $ranks
+                        ,'levels' => $levels
+                        ,'pid' => $eid
+                        ,'error' => $error
+                        ,'fee_afford' => $fee_afford
+                        ,'group_dic' => $group_dic
+                        ,'breadcrumbs' => array(
+                            array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                            ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
+                            ,array('url'  => '', 'name' => '修改对象', 'class' => '')
+                        ),
+                    )
+                );
+        }
+        else
+        {
+                $this->bsload('category/update_expense_other',
+                    array(
+                        'title' => '修改对象'
+                        ,'members' => $gmember
+                        ,'groups' => $gnames
+                        ,'ranks' => $ranks
+                        ,'levels' => $levels
+                        ,'pid' => $eid
+                        ,'error' => $error
+                        ,'fee_afford' => $fee_afford
+                        ,'group_dic' => $group_dic
+                        ,'breadcrumbs' => array(
+                            array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                            ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
+                            ,array('url'  => '', 'name' => '修改对象', 'class' => '')
+                        ),
+                    )
+                );
+        }
     }
 
     public function show_expense()
