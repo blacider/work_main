@@ -1270,6 +1270,8 @@ class Members extends REIM_Controller {
             } else {
                 $d['status'] += 4;	
             }
+            //log_message('debug','isEq:' . in_array($d['name'],$_names));
+
             $d['rank_id'] = 0;
             if($d['rank'])
             {

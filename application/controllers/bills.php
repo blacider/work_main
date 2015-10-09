@@ -48,6 +48,26 @@ class Bills extends REIM_Controller {
 
            return redirect('bills/finance_flow');
     }
+
+    public function report_finance_multiEnd($ids = 0)
+    {
+        $ids = explode('%23', $ids);
+        foreach ($ids as $rid) {
+            $buf = $this->company->pass_report_finance($rid);
+
+            if($buf['status'] > 0)
+            {
+                $this->session->set_userdata('last_error','已通过');
+            }
+            else
+            {
+                $this->session->set_userdata('last_error','已通过');
+            }
+
+        }
+
+        return redirect('bills/finance_flow');
+    }
     public function report_finance_permission($rid)
     {
         $buf = $this->company->get_report_finance_permission($rid);

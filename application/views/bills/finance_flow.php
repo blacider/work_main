@@ -323,7 +323,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
                 <form action="<?php echo base_url('bills/report_finance_end'); ?>" method="post" class="form-horizontal" id="permit_form">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <input type="hidden" name="rid" value="" id="rid_">
+                <input name="rid" value="" id="rid_">
                 <input type="hidden" name="status" value="2" id_="status">
                 <h4 class="modal-title">是否结束</h4>
             </div>
@@ -349,20 +349,20 @@ Date.prototype.Format = function (fmt) { //author: meizz
 </div><!-- /.modal -->
 
 
-<div class="modal fade" id="modal-table">
+<div class="modal fade" id="modal-table-finish">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">支付以下报告</h4>
+        <h4 class="modal-title">结束以下报告</h4>
       </div>
       <div class="modal-body">
-        <table id="grid-table-new"></table> 
+        <table id="grid-table-finish"></table> 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         <button type="button" class="btn btn-primary" onclick="exportExel()">下载汇总报表</button>
-        <button type="button" class="btn btn-primary" onclick="pay()">确认已支付</button>
+        <button type="button" class="btn btn-primary" onclick="finish()">确认结束</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -436,9 +436,9 @@ $(document).ready(function(){
         }).trigger('resize.chosen');
     });
 
-function pay() {
+function finish() {
     var _id = chosenids.join('%23');
-    location.href = __BASE + "bills/marksuccess/" + _id + "/0";
+    location.href = __BASE + "bills/report_finance_multiEnd/" + _id;
 }
 
 function exportExel() {
@@ -497,6 +497,7 @@ function deny_report()
 function deny_end_report()
 {
   var report_id = $('#rid_').val();
+  alert(report_id);
   console.log(report_id);
   location.href = __BASE + 'bills/report_finance_deny/' + report_id; 
 }
