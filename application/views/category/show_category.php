@@ -11,6 +11,7 @@
                                     <th>ID</th>
                                     <th>姓名</th>
                                     <th>邮箱</th>
+                                    <th>手机</th>
                                     <th>类目</th>
                                     <th>导入提示语</th>
                                 </tr>
@@ -20,6 +21,7 @@
                                     <td><?php echo $d['id'];?></td>
                                     <td><?php echo $d['name']; ?></td>
                                     <td><?php echo $d['email']; ?></td>
+                                    <td><?php echo $d['phone'];?></td>
                                     <td><?php echo $d['str_desc']; ?></td>
                                     <td class="<?php echo $d['sob_hash']; ?>  <?php echo $d['sob_id']; ?>" data-hash="<?php echo trim($d['email']); ?>">
 <?php if($d['sob_id'] == -1){ ?>
