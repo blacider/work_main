@@ -727,6 +727,7 @@ $('#sob_category').change(function(){
             _affid = $('.afford_chose').val().join(',');
         }catch(e) {}
         $('#afford_ids').val(_affid);
+        /*
         if($('#amount').val() == 0) {
             show_notify('请输入金额');
             $('#amount').focus();
@@ -738,6 +739,7 @@ $('#sob_category').change(function(){
             $('#amount').focus();
             return false;
         }
+         */
 
         //return false;
         if(isNaN($('#amount').val())) {

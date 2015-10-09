@@ -621,18 +621,20 @@ $(document).ready(function(){
             _affid = $('.afford_chose').val().join(',');
         }catch(e) {}
         $('#afford_ids').val(_affid);
+        /*
         if($('#amount').val() == 0) {
             show_notify('请输入金额');
             $('#amount').focus();
             return false;
         }
-	var amount = parseInt($('#amount').val());
+    var amount = parseInt($('#amount').val());
         if(amount <= 0) {
             show_notify('请输入有效金额');
             $('#amount').val('');
             $('#amount').focus();
             return false;
         }
+         */
 
         if (ifUp == 0) {
             show_notify('正在上传图片，请稍候');
