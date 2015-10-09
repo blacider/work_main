@@ -175,17 +175,17 @@
    $(document).ready(function(){
         $("#group").val(policies.gid);
         $('#group').trigger("chosen:updated");
-        for (item in policies.step) {
-            addPeopleLine(addToDist(policies.step[item]));
+        for (item1 in policies.step) {
+            addPeopleLine(addToDist(policies.step[item1]));
         }
         $('.renew').click(function(){
             var id = policies.id;
             var name = $('#name').val();
             var group = $('#group').val();
             var step = new Array();
-            for (item in peoples) {
-                if (item != null || item != undefined) {
-                    step.push(peoples[item]);
+            for (item1 in peoples) {
+                if (item1 != null || item1 != undefined) {
+                    step.push(peoples[item1]);
                 }
             }
             if(name == '')
@@ -334,9 +334,9 @@
     function getNickname(uids) {
         var nickname = new Array();
         for (var i = 0; i < uids.length; i++) {
-            for(item in gmember) {
-                if (gmember[item].id == uids[i])
-                    nickname.push(gmember[item].nickname);
+            for(item1 in gmember) {
+                if (gmember[item1].id == uids[i])
+                    nickname.push(gmember[item1].nickname);
             }
         }
         return nickname.join('|');

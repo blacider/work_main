@@ -107,7 +107,7 @@ class Items_Model extends Reim_Model {
     }
 
 
-    public function create($amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = ''){
+    public function create($amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '', $afford_ids = -1){
         $items = array();
         $s = array(
             'local_id' => 1,
@@ -116,6 +116,7 @@ class Items_Model extends Reim_Model {
             'category' => $category,
             'uids' => $uids,
             'prove_ahead' => $type,
+            'afford_ids' => $afford_ids,
             'image_id' => $images,
             'dt' => $dt, 
             'note' => $note,
@@ -152,16 +153,13 @@ class Items_Model extends Reim_Model {
         $jwt = $this->session->userdata('jwt');
         $url = $this->get_url('item/'. $id);
         $data = array();
-        log_message("debug", "-------------------");
-        log_message("debug", $url);
         $buf = $this->do_Get($url, $jwt);
         $obj = json_decode($buf, true);
-        log_message("debug", "-------------------");
         return $obj;
 
     }
 
-    public function update($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = ''){
+    public function update($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '',$fee_afford_ids=-1){
         $items = array();
         $s = array(
             'local_id' => 1,
@@ -181,6 +179,7 @@ class Items_Model extends Reim_Model {
             'longitude' => 0,
             'merchants' => $merchant,
             'type' => 1,
+            'afford_ids' => $fee_afford_ids,
 	    'extra' => $extra);
         array_push($items, $s);
         $data = array('items' => json_encode($items));
