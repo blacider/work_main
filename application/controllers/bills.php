@@ -262,7 +262,7 @@ class Bills extends REIM_Controller {
             }
 
 
-            $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+            $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                 . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . ''. $extra
                 . '</div>';
             array_push($_data, $d);
@@ -297,7 +297,7 @@ class Bills extends REIM_Controller {
                 $edit = $d['status'] != 2 ? 'gray' : 'green';
                 $extra = $d['status'] = '';
 
-                $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+                $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . $extra
                     . '</div>';
                 array_push($_data, $d);
