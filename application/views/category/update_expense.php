@@ -187,6 +187,7 @@
               <input type="checkbox"> 全体员工
             </div>
             <input type="hidden" name='pid' value="<?php echo $pid;?>">
+            <input type="hidden" name="fid" id='fid' value='-1'>
            
          </div>
          <div class="modal-footer">
@@ -200,6 +201,9 @@
         </form>
   </div>
 </div><!-- PAGE CONTENT ENDS -->
+
+
+
 
 <div id="modal-table3" class="modal" tabindex="-1">
   <div class="modal-dialog">
@@ -336,6 +340,7 @@ if(error)
           $(this).click(function(){
             var _pid = $(this).data('pid');
             var _id = $(this).data('id');
+            $('#fid').val(_id);
             console.log('pid:' + _pid);
             console.log('oid:' + _id);
             $.ajax({
@@ -344,6 +349,10 @@ if(error)
               dataType:'json',
               success:function(data){
                   console.log(data);
+                  if(data.pid == 1)
+                  {
+                      
+                  }
               },
               error:function(){}
             });
