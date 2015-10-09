@@ -13,6 +13,7 @@ class Category extends REIM_Controller {
 	$this->load->model('user_model','users');
     }
     
+
     public function get_ug_members($gid)
     {
         $info = json_decode($this->ug->get_single_group($gid), True);
@@ -55,6 +56,7 @@ class Category extends REIM_Controller {
     
     public function create_fee_afford()
     {
+        $fid = $this->input->post('fid');
         $pid = $this->input->post('pid');
         $gid = $this->input->post('gid');
         $_oid = $this->input->post('oid');
@@ -73,20 +75,36 @@ class Category extends REIM_Controller {
         
         log_message('debug','oname:' . json_encode($oname));
         log_message('debug','pid:' . $pid);
+        log_message('debug','fid:' . $fid);
         log_message('debug','gid:' . json_encode($gid));
         log_message('debug','oid:' . json_encode($oid));
         log_message('debug','uids:' . json_encode($uids));
         log_message('debug','gids:' . json_encode($gids));
         log_message('debug','ranks:' . json_encode($ranks));
         log_message('debug','levels:' . json_encode($levels));
-        $buf = $this->category->create_fee_afford($pid,$gid,$oid,$standalone,$uids,$gids,$ranks,$levels);
-        if($buf['status'] > 0)
+        if($fid == -1)
         {
-            $this->session->set_userdata('last_error','对象添加成功');
+            $buf = $this->category->create_fee_afford($pid,$gid,$oid,$standalone,$uids,$gids,$ranks,$levels);
+                if($buf['status'] > 0)
+                {
+                    $this->session->set_userdata('last_error','对象添加成功');
+                }
+                else
+                {
+                    $this->session->set_userdata('last_error','对象添加失败');
+                }
         }
         else
         {
-            $this->session->set_userdata('last_error','对象添加失败');
+            $buf = $this->category->update_fee_afford($fid,$pid,$gid,$oid,$standalone,$uids,$gids,$ranks,$levels); 
+                if($buf['status'] > 0)
+                {
+                    $this->session->set_userdata('last_error','对象更新成功');
+                }
+                else
+                {
+                    $this->session->set_userdata('last_error','对象更新失败');
+                }
         }
             return redirect(base_url('category/update_expense/' . $pid));
     }
