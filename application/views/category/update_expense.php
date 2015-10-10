@@ -21,14 +21,22 @@
                   <tr>
                     <th>部门名称</th>
                     <th>
-                      <input type='checkbox' id='mul_edit'>对象名称</th>
-                    <th class="hidden-680">
-                      <a href="#modal-table2" data-toggle="modal" class="mul_update">
-                              <span class="glyphicon glyphicon-pencil"></span>
-                      </a>
-                      <a href="#modal-table2" role="button" class="green" data-toggle="modal"> <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
-                      </a>
+                    <table class="table table-striped" style="background-color:inherit">
+                        <tr>
+                          <td style="border:none;background-color:inherit">
+                            <input type='checkbox' id='mul_edit' style="vertical-align: baseline;"><a style="vertical-align: middle;">对象名称</a>
+                          </td>
+                          <td style="border:none;background-color:inherit; width:80px;">
+                          <a href="#modal-table2" data-toggle="modal" class="mul_update">
+                              <span class="blue glyphicon glyphicon-pencil"></span>
+                          </a>
+                          <a href="#modal-table2" role="button" class="green" data-toggle="modal"> <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
+                          </a> 
+                          </td>
+                        </tr>
+                      </table>
                     </th>
+                      
                   </tr>
                 </thead>
                 <tbody>
@@ -50,21 +58,21 @@
                             }
                             ?></td>
                     <td>
-                      <table class="table table-striped table-bordered table-hover">
+                      <table class="table table-striped">
                         <?php 
                             foreach($gd as $_gd)
                             {
                           ?>
                         <tr>
                           <td>
-                            <input type='checkbox' class='single_edit' data-pid="<?php echo $_gd['pid'];?>" data-id="<?php echo $_gd['id'];?>" data-gid="<?php echo $_gd['gid'];?>"  data-oid="<?php echo $_gd['gid'] . ',' .$_gd['oid'] . ',' . $_gd['oname'];?>" data-gname="<?php echo $_gd['gname'];?>" data-oname="<?php echo $_gd['oname'];?>"> <?php echo $_gd['oname']; ?></td>
+                          <input type='checkbox' class='single_edit' data-pid="<?php echo $_gd['pid'];?>" data-id="<?php echo $_gd['id'];?>" data-gid="<?php echo $_gd['gid'];?>"  data-oid="<?php echo $_gd['gid'] . ',' .$_gd['oid'] . ',' . $_gd['oname'];?>" data-gname="<?php echo $_gd['gname'];?>" data-oname="<?php echo $_gd['oname'];?>"> <a style="vertical-align: middle;"><?php echo $_gd['oname']; ?></a></td>
                           <td style="width:80px;">
                             <a href="#modal-table2" data-toggle="modal" class="edit"  data-pid="<?php echo $_gd['pid'];?>" data-id="<?php echo $_gd['id'];?>" data-gid="<?php echo $_gd['gid'];?>"  data-oid="<?php echo $_gd['gid'] . ',' .$_gd['oid'] . ',' . $_gd['oname'];?>">
-                              <span class="glyphicon glyphicon-pencil"></span>
+                              <span class="blue glyphicon glyphicon-pencil"></span>
                             </a>
                             <a href="javascript:void(0);" class="del" data-id="<?php echo $_gd['id']?>
                               " data-pid="<?php echo $_gd['pid'];?>">
-                              <span class="glyphicon glyphicon-trash"></span>
+                              <span class="red glyphicon glyphicon-trash"></span>
                             </a>
                           </td>
                         </tr>
@@ -90,7 +98,19 @@
   <!-- /.page-content -->
 </div>
 <!-- /.main-content -->
-
+<style type="text/css">
+  input[type="checkbox"] {
+    vertical-align: baseline;
+    margin-right: 20px;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  td table tr:first-child td{
+    border: none;
+  }
+</style>
 <div id="modal-table2" class="modal" tabindex="-1">
   <div class="modal-dialog">
     <form action="<?php echo base_url('category/create_fee_afford')?>
@@ -118,7 +138,7 @@
                 <div class="form-group">
                   <div class="col-xs-9 col-sm-9">
 
-                    <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="oid[]" multiple="multiple" id="oid" data-placeholder="选择对象">></select>
+                    <select class="chosen-select form-control col-xs-12 col-sm-12" name="oid[]" multiple="multiple" id="oid" data-placeholder="选择对象">></select>
 
                   </div>
                 </div>
@@ -225,15 +245,8 @@ function arr_contains(item,arr)
     return false;
 }
   $(document).ready(function(){
-    $('.chosen-select').chosen({allow_single_deselect:true,width:"95%"}); 
-    $(window)
-        .off('resize.chosen')
-        .on('resize.chosen', function() {
-            $('.chosen-select').each(function() {
-                var $this = $(this);
-                $this.next().css({'width': $this.parent().width()});
-            })
-        }).trigger('resize.chosen');
+    $('.chosen-select').chosen({width:"100%"}); 
+  
 
         $('#add_new_btn').click(function(){
             $('#fid').val(-1);
