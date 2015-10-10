@@ -8,9 +8,9 @@ class Category extends REIM_Controller {
         $this->load->model('group_model', 'groups');
         $this->load->model('usergroup_model','ug');
         $this->load->model('account_set_model','account_set');
-	$this->load->model('reim_show_model','reim_show');
-	$this->load->model('group_model','groups');
-	$this->load->model('user_model','users');
+        $this->load->model('reim_show_model','reim_show');
+        $this->load->model('group_model','groups');
+        $this->load->model('user_model','users');
     }
     
 
@@ -23,7 +23,7 @@ class Category extends REIM_Controller {
             $member = $info['member'];
             }
          log_message('debug','members:' . json_encode($member));
-         die(json_encode($member));
+         die(json_encode(array('member' => $member,'gid' => $gid)));
     }
 
     public function get_fee_afford($oid)
@@ -58,11 +58,12 @@ class Category extends REIM_Controller {
     {
         $__gid = $this->input->post('_gid');
         $__oid = $this->input->post('_oid');
+        $__oid = json_decode($__oid,True);
         $fid = $this->input->post('fid');
         $pid = $this->input->post('pid');
-        $gid = $this->input->post('gid');
+       // $gid = $this->input->post('gid');
         $_oid = $this->input->post('oid');
-        $oname = $this->input->post('oname');
+ //       $oname = $this->input->post('oname');
         $standalone = 0;
         $uids = $this->input->post('uids');
         $gids = $this->input->post('gids');
@@ -79,15 +80,20 @@ class Category extends REIM_Controller {
         foreach($_oid as $o)
         {
             $temp = explode(',',$o);
-            array_push($oid,array('id' => $temp[0],'name'=>$temp[1])); 
+            if(!array_key_exists($temp[0],$oid))
+            {
+                $oid[$temp[0]] = array(); 
+            }
+            array_push($oid[$temp[0]],array('id' => $temp[1],'name'=>$temp[2])); 
         }
         
-        log_message('debug','oname:' . json_encode($oname));
+  //      log_message('debug','oname:' . json_encode($oname));
         log_message('debug','pid:' . $pid);
         log_message('debug','_gid:' . $__gid);
-        log_message('debug','_oid:' . $_oid);
+        log_message('debug','_oid:' .json_encode($_oid));
+        log_message('debug','_oid:' .json_encode($__oid));
         log_message('debug','fid:' . $fid);
-        log_message('debug','gid:' . json_encode($gid));
+//        log_message('debug','gid:' . json_encode($gid));
         log_message('debug','oid:' . json_encode($oid));
         log_message('debug','uids:' . json_encode($uids));
         log_message('debug','gids:' . json_encode($gids));
@@ -95,7 +101,7 @@ class Category extends REIM_Controller {
         log_message('debug','levels:' . json_encode($levels));
         if($fid == -1)
         {
-            $buf = $this->category->create_fee_afford($pid,$gid,$oid,$standalone,$uids,$gids,$ranks,$levels);
+            $buf = $this->category->create_fee_afford($pid,$oid,$standalone,$uids,$gids,$ranks,$levels);
                 if($buf['status'] > 0)
                 {
                     $this->session->set_userdata('last_error','对象添加成功');
@@ -107,7 +113,7 @@ class Category extends REIM_Controller {
         }
         else
         {
-            $buf = $this->category->update_fee_afford($fid,$pid,$gid,$oid,$standalone,$uids,$gids,$ranks,$levels); 
+            $buf = $this->category->update_fee_afford($pid,$oid,$standalone,$uids,$gids,$ranks,$levels); 
                 if($buf['status'] > 0)
                 {
                     $this->session->set_userdata('last_error','对象更新成功');

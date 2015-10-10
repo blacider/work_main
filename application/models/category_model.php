@@ -23,14 +23,13 @@ class Category_Model extends Reim_Model {
         return json_decode($buf,True);
     }
 
-    public function update_fee_afford($eid,$pid,$gid,$oid,$standalone,$uids,$gids,$ranks,$levels) {
+    public function update_fee_afford($pid,$oid,$standalone,$uids,$gids,$ranks,$levels) {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
 
-        $url = $this->get_url('fee_afford/' . $eid);
+        $url = $this->get_url('fee_afford');
         $data = array(
             "pid" => $pid,
-            "gid" => $gid,
             "objects" => json_encode($oid),
             "standalone" => $standalone,
             "privilege" => json_encode(array(
@@ -46,7 +45,7 @@ class Category_Model extends Reim_Model {
         return json_decode($buf,True);
     }
 
-    public function create_fee_afford($pid,$gid,$oid,$standalone,$uids,$gids,$ranks,$levels)
+    public function create_fee_afford($pid,$oid,$standalone,$uids,$gids,$ranks,$levels)
     {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
@@ -54,7 +53,6 @@ class Category_Model extends Reim_Model {
         $url = $this->get_url('fee_afford');
         $data = array(
             "pid" => $pid,
-            "gid" => $gid,
             "objects" => json_encode($oid),
             "standalone" => $standalone,
             "privilege" => json_encode(array(

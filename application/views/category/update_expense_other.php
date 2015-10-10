@@ -23,6 +23,9 @@
                     <th>
                       <input type='checkbox' id='mul_edit'>对象名称</th>
                     <th class="hidden-680">
+                      <a href="#modal-table2" data-toggle="modal" class="mul_update">
+                              <span class="glyphicon glyphicon-pencil"></span>
+                      </a>
                       <a href="#modal-table2" role="button" class="green" data-toggle="modal"> <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
                       </a>
                     </th>
@@ -54,10 +57,9 @@
                           ?>
                         <tr>
                           <td>
-                            <input type='checkbox' id='mul_edit'> <?php echo $_gd['oname']; ?></td>
+                            <input type='checkbox' class='single_edit' data-pid="<?php echo $_gd['pid'];?>" data-id="<?php echo $_gd['id'];?>" data-gid="<?php echo $_gd['gid'];?>"  data-oid="<?php echo $_gd['gid'] . ',' .$_gd['id'] . ',' . $_gd['oname'];?>" data-gname="<?php echo $_gd['gname'];?>" data-oname="<?php echo $_gd['oname'];?>"> <?php echo $_gd['oname']; ?></td>
                           <td style="width:80px;">
-                            <a href="#modal-table2" data-toggle="modal" class="edit"  data-pid="<?php echo $_gd['pid'];?>
-                              " data-id="<?php echo $_gd['id'];?>" data-gid="<?php echo $_gd['gid'];?>"  data-oid="<?php echo $_gd['oid'] . ',' . $_gd['oname'];?>">
+                            <a href="#modal-table2" data-toggle="modal" class="edit"  data-pid="<?php echo $_gd['pid'];?>" data-id="<?php echo $_gd['id'];?>" data-gid="<?php echo $_gd['gid'];?>"  data-oid="<?php echo $_gd['gid'] . ',' .$_gd['oid'] . ',' . $_gd['oname'];?>">
                               <span class="glyphicon glyphicon-pencil"></span>
                             </a>
                             <a href="javascript:void(0);" class="del" data-id="<?php echo $_gd['id']?>
@@ -103,22 +105,22 @@
             <div class="col-xs-12 col-sm-12">
               <div class="row">
                 <label for="form-field-username" class="col-sm-12 col-xl-12">导入对应部门和员工:</label>
-                <div class="form-group" >
+                <div class="form-group">
 
-                  <div class="col-xs-9 col-sm-9" >
-                    <select id="gid" class="chosen-select" name="gid"  data-placeholder="请选择部门">
+                  <div class="col-xs-9 col-sm-9" id='gidinfo'>
+                    <select id="gid" class="chosen-select" name="gid" data-placeholder="请选择部门">
                       <?php foreach($groups as $m) { ?>
                       <option value="<?php echo $m['id']; ?>">
                         <?php echo $m['name']; ?></option>
                       <?php } ?></select>
                   </div>
                 </div>
-                 <div class="form-group" id='labs'>
+
+                  <div class="form-group" id='labs'>
                   <div class="col-xs-9 col-sm-9">
                     <input type='text' id='lab'> <input type='button' id='lab_bt' value='创建'>
                   </div>
                 </div>
-
 
                 <div class="form-group">
                   <div class="col-xs-9 col-sm-9">
@@ -190,7 +192,7 @@
             <input type="hidden" name='pid' value="<?php echo $pid;?>">
             <input type="hidden" name="fid" id='fid' value='-1'>
             <input type="hidden" name='_gid' id='_gid'>
-            <input type='hidden' name='_oid[]' id='_oid'> 
+            <input type='hidden' name='_oid' id='_oid'> 
            
          </div>
          <div class="modal-footer">
@@ -208,9 +210,8 @@
 <!-- PAGE CONTENT ENDS -->
 
 
-<p>
-  <?php echo json_encode($fee_afford);?></p>
 <script type="text/javascript">
+
 var __BASE = "<?php echo base_url();?>";
 var error = "<?php echo $error;?>";
 var _group_dic = '<?php echo json_encode($group_dic);?>';
@@ -219,9 +220,22 @@ if(_group_dic)
 {
   group_dic = JSON.parse(_group_dic);
 }
+console.log(group_dic);
+var exists = [];
 if(error)
 {
   show_notify(error);
+}
+
+function arr_contains(item,arr)
+{
+    for(var i = 0 ; i < arr.length ; i++)
+    {
+      if(item == arr[i])
+        return true;
+    }
+
+    return false;
 }
   $(document).ready(function(){
     $('.chosen-select').chosen({allow_single_deselect:true,width:"95%"}); 
@@ -241,7 +255,6 @@ if(error)
             $('#gid').val('').trigger('chosen:updated');
             $('#oid').val('').trigger('chosen:updated');
             $('#gids').val('').trigger('chosen:updated');
-            $('#labs').prop('hidden',false).trigger('chosen:updated');
                       
             $('#uids').val('').trigger('chosen:updated');
             $('#ranks').val('').trigger('chosen:updated');
@@ -250,6 +263,7 @@ if(error)
 
         });
 
+   
         var _gid;
         var _gname;
         var oArray = [];
@@ -266,13 +280,14 @@ if(error)
        $('#gid').trigger('change');
        $('#gid').trigger('chosen:updated');
 
-       $('#lab_bt').click(function(){
+
+        $('#lab_bt').click(function(){
           var _text = $('#lab').val();
           $('#lab').val('');
           if(_text)
           {
             var _h = "";
-            _h += "<option value=" + "'"+ 0 + ","+ _text +"'"+" selected >" + group_dic[_gid] + '-' + _text + "</option>";
+            _h += "<option value=" + "'"+ _gid + ","+ 0 + ","+ _text +"'"+" selected >" + group_dic[_gid] + '-' + _text + "</option>";
             $('#oid').append(_h).trigger('chosen:updated');
           }
        });
@@ -282,8 +297,8 @@ if(error)
           $(this).click(function(){
             var _pid = $(this).data('pid');
             var _id = $(this).data('id');
-            console.log('pid:' + _pid);
-            console.log('oid:' + _id);
+       //     console.log('pid:' + _pid);
+         //   console.log('oid:' + _id);
             location.href = __BASE + "category/delete_fee_afford/" + _id + '/' + _pid;
           });
        });
@@ -295,34 +310,38 @@ if(error)
             var _gid = $(this).data('gid');
             var _oid = $(this).data('oid');
             $('#fid').val(_id);
-            console.log('pid:' + _pid);
-            console.log('id:' + _id);
-            console.log('gid:' + _gid);
-            console.log('oid:' + _oid);
+            $('#labs').prop('hidden',true).trigger('chosen:updated');
+            $('#gidinfo').prop('hidden',false).trigger('chosen:updated');
+ //           console.log('pid:' + _pid);
+   //         console.log('id:' + _id);
+     //       console.log('gid:' + _gid);
+       //     console.log('oid:' + _oid);
             $.ajax({
               url:__BASE + 'category/get_fee_afford/' + _id,
               method:'get',
               dataType:'json',
               success:function(data){
-                  console.log(data);
+ //                 console.log(data);
                  
                       var privilege = data.privilege;
-                      console.log(privilege);
-                      $('#labs').prop('hidden',true).trigger('chosen:updated');
+ //                     console.log(privilege);
+
                       $('#gid').val(_gid).attr('selected',true).trigger('chosen:updated');
                       $('#gid').trigger('change');
                       $('#gid').trigger('chosen:updated');
                       $('#gid').prop('disabled',true).trigger('chosen:updated');
-                       var _h = "";
-                      _h += "<option value=" + "'"+ data.id + ","+ data.oname +"'"+" selected >" + group_dic[data.gid] + '-' + data.oname + "</option>";
-                      $('#oid').append(_h).trigger('chosen:updated');
                       $('#oid').prop('disabled',true).trigger('chosen:updated');
 
                       $('#gid').prop('disabled',true).trigger('chosen:updated');
                      
-                      
-                      $('#_oid').val($('#oid').val());
-                     
+                      var _h = "";
+                      _h += "<option value=" + "'"+data.gid+","+ data.id + ","+ data.oname +"'"+" selected >" + group_dic[data.gid] + '-' + data.oname + "</option>";
+                      $('#oid').append(_h).trigger('chosen:updated');
+                      $('#oid').prop('disabled',true).trigger('chosen:updated');
+
+                      $('#gid').prop('disabled',true).trigger('chosen:updated');
+                      $('#_oid').val(JSON.stringify($('#oid').val()));
+                    
                       
                       $('#gids').val(privilege.groups).attr('selected',true).trigger('chosen:updated');
                       
@@ -337,6 +356,65 @@ if(error)
             });
           });
        });
+
+      $('#mul_edit').click(function(){
+        if($('#mul_edit').is(':checked'))
+        {
+            $('.single_edit').each(function(){
+                $(this).prop('checked',true);
+            });
+        }
+        else
+        {
+            $('.single_edit').each(function(){
+                $(this).prop('checked',false);
+            });
+ 
+        }
+      });
+
+
+      $('.mul_update').click(function(){
+            $('#fid').val(-2);
+            $('#labs').prop('hidden',true).trigger('chosen:updated');
+            $('#gidinfo').prop('hidden',true).trigger('chosen:updated');
+            $('#gid').prop('disabled',false).trigger('chosen:updated');
+            $('#oid').prop('disabled',false).trigger('chosen:updated');
+            $('#gid').val('').trigger('chosen:updated');
+            $('#oid').val('').trigger('chosen:updated');
+            $('#gids').val('').trigger('chosen:updated');
+                      
+            $('#uids').val('').trigger('chosen:updated');
+            $('#ranks').val('').trigger('chosen:updated');
+            $('#levels').val('').trigger('chosen:updated');
+            $('#oid').unbind('change');
+
+            var item_arr = [];
+            var gid_arr = [];
+            $('.single_edit').each(function(){
+                if($(this).is(':checked'))
+                {
+                    var __oid = $(this).data('oid');
+                    var __gid = $(this).data('gid');
+                    var __oname = $(this).data('oname');
+                    var __gname = $(this).data('gname');
+                    var _h = '';
+                    _h += "<option selected>"+ group_dic[__gid] + "-" + __oname +"</option>";
+                    $('#oid').append(_h);
+                    
+                    gid_arr.push(__gid);
+                    item_arr.push(__oid+"");
+
+                }
+            });
+            console.log(item_arr);
+            $('#_oid').val(JSON.stringify(item_arr));
+            console.log($('#_oid').val());
+            $('#gid').val(gid_arr).trigger('chosen:updated');
+            $('#gid').prop('disabled',true).trigger('chosen:updated');
+        
+            $('#oid').prop('disabled',true).trigger('chosen:updated');
+      });
 
   });
 </script>
