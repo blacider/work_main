@@ -627,6 +627,10 @@ $(document).ready(function(){
     {
         _method = "account_set";
     }
+     if(_controller == "category" && _method == "update_expense")
+    {
+        _method = "show_expense";
+    }
     $('.hsub').each(function(){
         $(this).removeClass('active open');
     });

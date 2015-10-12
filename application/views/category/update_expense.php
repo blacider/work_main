@@ -15,7 +15,12 @@
           <!-- PAGE CONTENT BEGINS -->
           <div class="row">
             <div class="col-xs-12">
-
+             <h4 class="blue bigger" id="pro_title"><?php 
+             if(array_key_exists('name', $fee_afford))
+             {
+                echo $fee_afford['name'];
+             }
+             ?></h4> 
               <table id="sample-table-2" class="table table-striped table-bordered table-hover">
                 <thead>
                   <tr>
@@ -125,10 +130,10 @@
           <div class="container">
             <div class="col-xs-12 col-sm-12">
               <div class="row">
-                <label for="form-field-username" class="col-sm-12 col-xl-12">导入对应部门和员工:</label>
+                <label for="form-field-username" class="col-sm-12 col-xl-12" id="obj_lab">导入对应部门和员工:</label>
                 <div class="form-group">
-
-                  <div class="col-xs-9 col-sm-9">
+                  <div id='g_lab' class="col-xs-9 col-sm-9">部门:</div>
+                  <div class="col-xs-9 col-sm-9" id="gForm">
                     <select id="gid" class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="gid[]" multiple="multiple" data-placeholder="请选择部门">
                       <?php foreach($groups as $m) { ?>
                       <option value="<?php echo $m['id']; ?>">
@@ -137,8 +142,8 @@
                   </div>
                 </div>
                 <div class="form-group">
+                  <div id='o_lab' class='col-xs-9 col-sm-9'>人员:</div>
                   <div class="col-xs-9 col-sm-9">
-
                     <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="oid[]" multiple="multiple" id="oid" data-placeholder="选择对象">></select>
 
                   </div>
@@ -247,6 +252,7 @@ function arr_contains(item,arr)
 }
   $(document).ready(function(){
     $('.chosen-select').chosen({width:"100%"}); 
+    //$('#pro_title').empty().append('');
   
       $('.close_modal').click(function(){
         $('#oid').empty().trigger('chosen:updated');
@@ -254,7 +260,12 @@ function arr_contains(item,arr)
         $('#oid').unbind('change');
       });
         $('#add_new_btn').click(function(){
+          $('#g_lab').prop('hidden',false).trigger('chosen:updated');
+            $('#o_lab').prop('hidden',false).trigger('chosen:updated');
+             $('#gForm').prop('hidden',false).trigger('chosen:updated');
+            $('#obj_lab').empty().append('导入部门及所属员工:');
             $('#modal_title').empty().append('新建对象');
+            $('#gForm').prop('hidden',false).trigger('chosen:updated');
             $('#send').val('新建');
             $('#fid').val(-1);
             $('#gid').prop('disabled',false).trigger('chosen:updated');
@@ -331,8 +342,13 @@ function arr_contains(item,arr)
         var _oid;
          $('.edit').each(function(){
           $(this).click(function(){
+            $('#obj_lab').empty().append('所选对象:');
+            $('#gForm').prop('hidden',true).trigger('chosen:updated');
                $('#modal_title').empty().append('更新对象');
               $('#send').val('更新');
+              $('#g_lab').prop('hidden',true).trigger('chosen:updated');
+            $('#o_lab').prop('hidden',true).trigger('chosen:updated');
+             $('#gForm').prop('hidden',true).trigger('chosen:updated');
                $('#oid').bind('change',function(){
                         $('#oid').val(_oid).attr('selected',true).trigger('chosen:updated');
                         console.log('change');
@@ -404,8 +420,13 @@ function arr_contains(item,arr)
 
 
       $('.mul_update').click(function(){
+            $('#obj_lab').empty().append('所选对象:');
             $('#modal_title').empty().append('批量更新');
             $('#send').val('更新');
+            $('#g_lab').prop('hidden',true).trigger('chosen:updated');
+            $('#o_lab').prop('hidden',true).trigger('chosen:updated');
+             $('#gForm').prop('hidden',true).trigger('chosen:updated');
+
                $('#oid').bind('change',function(){
                         $('#oid').val(_oid).attr('selected',true).trigger('chosen:updated');
                         console.log('change');

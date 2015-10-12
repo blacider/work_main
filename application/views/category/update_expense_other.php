@@ -15,7 +15,12 @@
           <!-- PAGE CONTENT BEGINS -->
           <div class="row">
             <div class="col-xs-12">
-
+               <h4 class="blue bigger" id="pro_title"><?php 
+             if(array_key_exists('name', $fee_afford))
+             {
+                echo $fee_afford['name'];
+             }
+             ?></h4>
               <table id="sample-table-2" class="table table-striped table-bordered table-hover">
                 <thead>
                   <tr>
@@ -118,13 +123,13 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close close_modal" data-dismiss="modal">&times;</button>
-          <h4 class="blue bigger">新建对象</h4>
+          <h4 class="blue bigger" id="modal_title">新建对象</h4>
         </div>
         <div class="modal-body">
           <div class="container">
             <div class="col-xs-12 col-sm-12">
               <div class="row">
-                <label for="form-field-username" class="col-sm-12 col-xl-12">导入对应部门和员工:</label>
+                <label for="form-field-username" class="col-sm-12 col-xl-12" id="obj_lab">导入对应部门和员工:</label>
                 <div class="form-group">
 
                   <div class="col-xs-9 col-sm-9" id='gidinfo'>
@@ -138,7 +143,7 @@
 
                   <div class="form-group" id='labs'>
                   <div class="col-xs-9 col-sm-9">
-                    <input type='text' id='lab'> <input type='button' id='lab_bt' value='创建'>
+                    输入对象名:<input type='text' class="form_control" id='lab'> <input type='button' id='lab_bt' value='创建'>
                   </div>
                 </div>
 
@@ -149,7 +154,7 @@
 
                   </div>
                 </div>
-                <label for="form-field-username" class="col-sm-12 col-xl-12">对象展示范围:</label>
+                <label for="form-field-username" class="col-sm-12 col-xl-12" >对象展示范围:</label>
                 <div class="form-group">
                   <div class="col-xs-9 col-sm-9">
 
@@ -262,6 +267,7 @@ function arr_contains(item,arr)
 
         $('#add_new_btn').click(function(){
           $('#modal_title').empty().append('新建对象');
+          $('#obj_lab').empty().append('导入部门并创建对象:');
             $('#send').val('新建');
             $('#fid').val(-1);
              $('#labs').prop('hidden',false).trigger('chosen:updated');
@@ -322,6 +328,7 @@ function arr_contains(item,arr)
          $('.edit').each(function(){
           $(this).click(function(){
              $('#modal_title').empty().append('更新对象');
+             $('#obj_lab').empty().append('所选对象');
               $('#send').val('更新');
             var _pid = $(this).data('pid');
             var _id = $(this).data('id');
@@ -329,7 +336,7 @@ function arr_contains(item,arr)
             var _oid = $(this).data('oid');
             $('#fid').val(_id);
             $('#labs').prop('hidden',true).trigger('chosen:updated');
-            $('#gidinfo').prop('hidden',false).trigger('chosen:updated');
+            $('#gidinfo').prop('hidden',true).trigger('chosen:updated');
  //           console.log('pid:' + _pid);
    //         console.log('id:' + _id);
      //       console.log('gid:' + _gid);
@@ -393,6 +400,7 @@ function arr_contains(item,arr)
 
 
       $('.mul_update').click(function(){
+            $('#obj_lab').empty().append('所选对象:');
             $('#modal_title').empty().append('批量更新');
             $('#send').val('更新');
             $('#fid').val(-2);
