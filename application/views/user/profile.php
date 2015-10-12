@@ -487,63 +487,41 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     </div>
 </div>
 
-
-<div class="modal fade" id="password_modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<div class="modal fade" id="security_reset">
+  <div class="modal-dialog" style="width: 450px;font-size: 13px;">
+    <div class="modal-content" style="border-radius: 5px;padding-top: 13px;">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">修改密码</h4>
             </div>
-            <div class="modal-body">
-
-                <form id="password_form" class="form-horizontal" role="form" method="post" action="<?php echo base_url('users/update_password'); ?>">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12">
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-right">旧密码</label>
-                                <div class="col-xs-6 col-sm-6">
-                                    <input name="old_password" type="password" class="form-controller col-xs-12" placeholder="旧密码" />
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-right">新密码</label>
-                                <div class="col-xs-6 col-sm-6">
-                                    <input name="password" type="password" class="form-controller col-xs-12 br3 inp" placeholder="新密码" />
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-right">重复新密码</label>
-                                <div class="col-xs-6 col-sm-6">
-                                    <input name="repassword" type="password" class="form-controller col-xs-12 br3 inp" placeholder="重复新密码" />
-                                </div>
-                            </div>
-                            <div>
-                                <input name="pid" id="pid" type="hidden" value="<?php echo $pid;?>"/>
-                            </div>
-
-
-                            <div class="clearfix form-actions">
-                                <div class="col-md-offset-3 col-md-9">
-                                    <a class="btn btn-white btn-primary update_password" data-renew="0"><i class="ace-icon fa fa-save "></i>修改并登出</a>
-
-                                    <!--
-                                    <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
-                                    -->
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-                </form>
+        <form role="form" method="post" action="<?php echo base_url('users/update_password'); ?>">
+        <div class="modal-body-item">
+            <div class="form-line-">
+                <label>原密码</label><input onkeyup="checkNewPassword()" id="old_password" name="old_password" type="password">
+            </div>
+            <div class="form-line-">
+                <label>新密码</label><input type="password" name="password" id="newPassword" onkeyup="checkNewPassword()" name="new" placeholder="请输入6-16位数字、字母、或常用符号">
+            </div>
+            <div class="form-line-">
+                <label style="position: relative;left: -12px;">重复密码</label><input style="margin-left: 6px;" onkeyup="checkNewPassword()" name="repassword" id="reNewPassword" type="password" placeholder="重复新密码">
+            </div>
+            <div class="form-line-2">
+                <label>弱</label>
+                <label>中</label>
+                <label>强</label>
+                <span id="wrong-error" style="color:red;visibility:hidden;width: auto;border: none;position: relative;top: -10px;left: 16px;">密码格式有误</span>
             </div>
         </div>
-    </div>
-</div>
+            <input type="hidden" name="pid" value="<?php echo $pid;?>">
+        <hr style="margin: 0;">
+        <div class="modal-body-item">
+            <input type="submit" class="hidden">
+            <p onclick="resetPasswardSubmit()" style="cursor: pointer;text-align: center;color:red;margin:0;">确定</p>
+        </div>
+        </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 
@@ -1033,12 +1011,9 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     });
                          */
                         $('.password').click(function(){
-                            $('#password_modal').modal({keyborard: false});
+                            $('#security_reset').modal({keyborard: false});
                         });
-                    $('.update_password').click(function(){
-                        $('#password_form').submit();
-                    });
-                    $('.update_phone').click(function(){
+                        $('.update_phone').click(function(){
                         //$('#phone_form').submit();
                         var _phone = $('#phone').val();
                         var _vcode = $('#vcode').val();
