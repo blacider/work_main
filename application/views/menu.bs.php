@@ -37,6 +37,7 @@
 
 <?php
 $user = $this->session->userdata('user');
+$pid = $this->session->userdata('uid');
 if(!$user) redirect(base_url('login'));
 $_security = 0;
 if(array_key_exists('risk', $user) && $user['risk'] == 1) {
@@ -669,6 +670,7 @@ foreach($breadcrumbs as $b){
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <script type="text/javascript">
+var __BASE = "<?php echo base_url();?>";
 var EMAIL = "<?php echo $user['email']?>";
 var PHONE = "<?php echo $user['phone']?>";
 function checkNewPassword() {
@@ -689,6 +691,10 @@ function checkNewPassword() {
     changePwdLevel(result-1);
     if (result == 3) {
         $('#wrong-error').css('visibility', 'hidden');
+        if ($("#old_password").val() == pwd) {
+            $('#wrong-error').css('visibility', 'visible').text("新密码不能与旧密码相同");
+            return false;
+        } 
         if ($("#reNewPassword").val() != pwd) {
             $('#wrong-error').css('visibility', 'visible').text("两次输入不一致");
             return false;
@@ -714,7 +720,29 @@ function changePwdLevel(level) {
 }
 function resetPasswardSubmit() {
     if (checkNewPassword())
-        $('#security_reset').find("input[type='submit']").click();
+//        $('#security_reset').find("input[type='submit']").click();
+    $.ajax({
+        url:__BASE + '/users/force_update_password',
+        method:'post',
+        dataType:'json',
+        data:{'old_password':$('#old_password').val(),'password':$('#newPassword').val(),'repassword':$('#reNewPassword').val(),'pid':$('#pid').val()},
+        success:function(data){
+            console.log(data);
+            if(data.status == 0)
+            {
+                $('#wrong-error').css('visibility', 'visible').text("密码错误");
+            }
+            else
+            {
+                window.location.href = __BASE + '/login/dologout';
+            }
+        },
+        error:function(a,b,c){
+            console.log(a);
+            console.log(b);
+            console.log(c);
+        }
+    });
 }
 </script>
 <div class="modal fade" id="security_reset">
@@ -738,6 +766,7 @@ function resetPasswardSubmit() {
                 <span id="wrong-error" style="color:red;visibility:hidden;width: auto;border: none;position: relative;top: -10px;left: 16px;">密码格式有误</span>
             </div>
         </div>
+            <input type="hidden" name="pid" value="<?php echo $pid;?>">
         <hr style="margin: 0;">
         <div class="modal-body-item">
             <input type="submit" class="hidden">

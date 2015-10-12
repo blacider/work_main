@@ -146,10 +146,17 @@ class Login extends REIM_Controller {
         }
         $server_token = $user['server_token'];
         $data = $user['data']['profile'];
+
+        log_message('debug', "profile:" . json_encode($data));
         $__g = '';
         if(array_key_exists('group_name', $data)){
             $__g = $data['group_name'];
         }
+        $__uid = '';
+        if(array_key_exists('id', $data)){
+            $__uid = $data['id'];
+        }
+        $this->session->set_userdata("uid", $__uid);
         $this->session->set_userdata("groupname", $__g);
         $this->session->set_userdata("server_token", $server_token);
         $goto = $this->session->userdata('last_url');
