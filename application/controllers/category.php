@@ -70,6 +70,22 @@ class Category extends REIM_Controller {
         $ranks = $this->input->post('ranks');
         $levels = $this->input->post('levels');
 
+        if(!$uids)
+        {
+            $uids = array();
+        }
+        if(!$gids)
+        {
+            $gids = array();
+        }
+        if(!$ranks)
+        {
+            $ranks = array();
+        }
+        if(!$levels)
+        {
+            $levels = array();
+        }
         if($fid != -1)
         {
             $_oid = $__oid;

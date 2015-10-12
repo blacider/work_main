@@ -117,7 +117,7 @@
       " method='post'>
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <button type="button" class="close close_modal" data-dismiss="modal">&times;</button>
           <h4 class="blue bigger">新建对象</h4>
         </div>
         <div class="modal-body">
@@ -216,7 +216,7 @@
            
          </div>
          <div class="modal-footer">
-           <button class="btn btn-sm" data-dismiss="modal">
+           <button class="btn btn-sm close_modal" data-dismiss="modal">
              <i class="ace-icon fa fa-times"></i>
              取消
            </button>
@@ -261,7 +261,11 @@ function arr_contains(item,arr)
     $('.chosen-select').chosen({width:"100%"}); 
 
         $('#add_new_btn').click(function(){
+          $('#modal_title').empty().append('新建对象');
+            $('#send').val('新建');
             $('#fid').val(-1);
+             $('#labs').prop('hidden',false).trigger('chosen:updated');
+            $('#gidinfo').prop('hidden',false).trigger('chosen:updated');
             $('#gid').prop('disabled',false).trigger('chosen:updated');
             $('#oid').prop('disabled',false).trigger('chosen:updated');
             $('#gid').val('').trigger('chosen:updated');
@@ -317,6 +321,8 @@ function arr_contains(item,arr)
 
          $('.edit').each(function(){
           $(this).click(function(){
+             $('#modal_title').empty().append('更新对象');
+              $('#send').val('更新');
             var _pid = $(this).data('pid');
             var _id = $(this).data('id');
             var _gid = $(this).data('gid');
@@ -348,7 +354,7 @@ function arr_contains(item,arr)
                      
                       var _h = "";
                       _h += "<option value=" + "'"+data.gid+","+ data.id + ","+ data.oname +"'"+" selected >" + group_dic[data.gid] + '-' + data.oname + "</option>";
-                      $('#oid').append(_h).trigger('chosen:updated');
+                      $('#oid').empty().append(_h).trigger('chosen:updated');
                       $('#oid').prop('disabled',true).trigger('chosen:updated');
 
                       $('#gid').prop('disabled',true).trigger('chosen:updated');
@@ -387,6 +393,8 @@ function arr_contains(item,arr)
 
 
       $('.mul_update').click(function(){
+            $('#modal_title').empty().append('批量更新');
+            $('#send').val('更新');
             $('#fid').val(-2);
             $('#labs').prop('hidden',true).trigger('chosen:updated');
             $('#gidinfo').prop('hidden',true).trigger('chosen:updated');

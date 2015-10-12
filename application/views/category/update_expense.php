@@ -117,8 +117,9 @@
       " method='post'>
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="blue bigger">新建对象</h4>
+
+          <button type="button" class="close close_modal" data-dismiss="modal">&times;</button>
+          <h4 class="blue bigger" id="modal_title">新建对象</h4>
         </div>
         <div class="modal-body">
           <div class="container">
@@ -128,7 +129,7 @@
                 <div class="form-group">
 
                   <div class="col-xs-9 col-sm-9">
-                    <select id="gid" class="chosen-select" name="gid[]" multiple="multiple" data-placeholder="请选择部门">
+                    <select id="gid" class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="gid[]" multiple="multiple" data-placeholder="请选择部门">
                       <?php foreach($groups as $m) { ?>
                       <option value="<?php echo $m['id']; ?>">
                         <?php echo $m['name']; ?></option>
@@ -138,7 +139,7 @@
                 <div class="form-group">
                   <div class="col-xs-9 col-sm-9">
 
-                    <select class="chosen-select form-control col-xs-12 col-sm-12" name="oid[]" multiple="multiple" id="oid" data-placeholder="选择对象">></select>
+                    <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="oid[]" multiple="multiple" id="oid" data-placeholder="选择对象">></select>
 
                   </div>
                 </div>
@@ -210,7 +211,7 @@
          </div>
          <div class="modal-footer">
            <button class="btn btn-sm" data-dismiss="modal">
-             <i class="ace-icon fa fa-times"></i>
+             <i class="ace-icon fa fa-times close_modal"></i>
              取消
            </button>
            <input type="submit" id='send' class="btn btn-sm btn-primary" value="新建" />
@@ -247,8 +248,14 @@ function arr_contains(item,arr)
   $(document).ready(function(){
     $('.chosen-select').chosen({width:"100%"}); 
   
-
+      $('.close_modal').click(function(){
+        $('#oid').empty().trigger('chosen:updated');
+        exists=[];
+        $('#oid').unbind('change');
+      });
         $('#add_new_btn').click(function(){
+            $('#modal_title').empty().append('新建对象');
+            $('#send').val('新建');
             $('#fid').val(-1);
             $('#gid').prop('disabled',false).trigger('chosen:updated');
             $('#oid').prop('disabled',false).trigger('chosen:updated');
@@ -259,13 +266,12 @@ function arr_contains(item,arr)
             $('#uids').val('').trigger('chosen:updated');
             $('#ranks').val('').trigger('chosen:updated');
             $('#levels').val('').trigger('chosen:updated');
-            $('#oid').unbind('change');
-
+            
         });
 
         $('#gid').change(function(){
           var _gid = $('#gid').val();
-         // console.log("#gid:" + _gid);
+          console.log("#gid:" + _gid);
           if(_gid)
           {
             for(var j=0 ; j < _gid.length ; j++)
@@ -298,8 +304,16 @@ function arr_contains(item,arr)
 
                   exists.push(_gid[j]);
               }
+              else
+              {
+                console.log('already');
+                $('#oid').val('').trigger('change');
+                $('#oid').trigger('chosen:updated');
+              }
             }
           }
+
+               
         });
        $('#gid').trigger('change');
        $('#gid').trigger('chosen:updated');
@@ -314,27 +328,38 @@ function arr_contains(item,arr)
             location.href = __BASE + "category/delete_fee_afford/" + _id + '/' + _pid;
           });
        });
-
+        var _oid;
          $('.edit').each(function(){
           $(this).click(function(){
+               $('#modal_title').empty().append('更新对象');
+              $('#send').val('更新');
+               $('#oid').bind('change',function(){
+                        $('#oid').val(_oid).attr('selected',true).trigger('chosen:updated');
+                        console.log('change');
+                        //var arr = [];
+                        //arr.push($('#oid').val());
+                        $('#_oid').val(JSON.stringify($('#oid').val()));
+              });
             var _pid = $(this).data('pid');
             var _id = $(this).data('id');
             var _gid = $(this).data('gid');
-            var _oid = $(this).data('oid');
+             _oid = $(this).data('oid');
+            //$('#oid').val('').trigger('chosen:updated');
             $('#fid').val(_id);
  //           console.log('pid:' + _pid);
    //         console.log('id:' + _id);
      //       console.log('gid:' + _gid);
-       //     console.log('oid:' + _oid);
+            console.log('oid:' + _oid);
             $.ajax({
               url:__BASE + 'category/get_fee_afford/' + _id,
               method:'get',
               dataType:'json',
               success:function(data){
- //                 console.log(data);
+                  console.log(data);
                  
                       var privilege = data.privilege;
  //                     console.log(privilege);
+ //                     $('#gid').val('');
                       $('#gid').val(_gid).attr('selected',true).trigger('chosen:updated');
                       $('#gid').trigger('change');
                       $('#gid').trigger('chosen:updated');
@@ -343,12 +368,7 @@ function arr_contains(item,arr)
 
                       $('#gid').prop('disabled',true).trigger('chosen:updated');
                      
-                      $('#oid').bind('change',function(){
-                        $('#oid').val(_oid).attr('selected',true).trigger('chosen:updated');
-                        //var arr = [];
-                        //arr.push($('#oid').val());
-                        $('#_oid').val(JSON.stringify($('#oid').val()));
-                      });
+
                       
                       $('#gids').val(privilege.groups).attr('selected',true).trigger('chosen:updated');
                       
@@ -364,7 +384,9 @@ function arr_contains(item,arr)
           });
        });
 
+
       $('#mul_edit').click(function(){
+
         if($('#mul_edit').is(':checked'))
         {
             $('.single_edit').each(function(){
@@ -382,6 +404,15 @@ function arr_contains(item,arr)
 
 
       $('.mul_update').click(function(){
+            $('#modal_title').empty().append('批量更新');
+            $('#send').val('更新');
+               $('#oid').bind('change',function(){
+                        $('#oid').val(_oid).attr('selected',true).trigger('chosen:updated');
+                        console.log('change');
+                        //var arr = [];
+                        //arr.push($('#oid').val());
+                        $('#_oid').val(JSON.stringify($('#oid').val()));
+              });
             $('#fid').val(-2);
             $('#gid').prop('disabled',false).trigger('chosen:updated');
             $('#oid').prop('disabled',false).trigger('chosen:updated');
@@ -392,7 +423,7 @@ function arr_contains(item,arr)
             $('#uids').val('').trigger('chosen:updated');
             $('#ranks').val('').trigger('chosen:updated');
             $('#levels').val('').trigger('chosen:updated');
-            $('#oid').unbind('change');
+           // $('#oid').unbind('change');
 
             var item_arr = [];
             var gid_arr = [];

@@ -117,8 +117,8 @@
       " method='post'>
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="blue bigger">新建对象</h4>
+          <button type="button" class="close close_modal" data-dismiss="modal">&times;</button>
+          <h4 class="blue bigger" id="modal_title">新建对象</h4>
         </div>
         <div class="modal-body">
           <div class="container">
@@ -128,7 +128,7 @@
                 <div class="form-group">
 
                   <div class="col-xs-9 col-sm-9">
-                    <select id="gid" class="chosen-select" name="gid[]" multiple="multiple" data-placeholder="请选择部门">
+                    <select id="gid" class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="gid[]" multiple="multiple" data-placeholder="请选择部门">
                       <?php foreach($groups as $m) { ?>
                       <option value="<?php echo $m['id']; ?>">
                         <?php echo $m['name']; ?></option>
@@ -209,7 +209,7 @@
            
          </div>
          <div class="modal-footer">
-           <button class="btn btn-sm" data-dismiss="modal">
+           <button class="btn btn-sm close_modal" data-dismiss="modal">
              <i class="ace-icon fa fa-times"></i>
              取消
            </button>
@@ -255,7 +255,16 @@ function arr_contains(item,arr)
   $(document).ready(function(){
     $('.chosen-select').chosen({width:"100%"}); 
 
+
+      $('.close_modal').click(function(){
+        $('#oid').empty().trigger('chosen:updated');
+        exists=[];
+        $('#oid').unbind('change');
+      });
+
         $('#add_new_btn').click(function(){
+          $('#modal_title').empty().append('新建对象');
+            $('#send').val('新建');
             $('#fid').val(-1);
             $('#gid').prop('disabled',false).trigger('chosen:updated');
             $('#oid').prop('disabled',false).trigger('chosen:updated');
@@ -288,6 +297,18 @@ function arr_contains(item,arr)
                         $('#oid').trigger('chosen:updated');
                         exists.push(_gid[j]);
                     }
+                    else 
+                    {
+                     
+                      var temp = $('#oid').val();
+                      console.log(typeof temp);
+                     // temp.push(_gid[j]+","+_gid[j]+","+group_dic[_gid[j]]);
+                      //$('#oid').val(temp).trigger('chosen:updated');
+                       console.log('already');
+                      //$('#oid').val('').trigger('change');
+                      $('#oid').trigger('chosen:updated');
+
+                    }
                 }
              //   $('#oid').val(_gid+','+group_dic[_gid]).attr('selected',true).trigger('chosen:updated');
                 $('#_oid').val(JSON.stringify($('#oid').val()));
@@ -307,12 +328,23 @@ function arr_contains(item,arr)
           });
        });
 
+          var _oid;
          $('.edit').each(function(){
           $(this).click(function(){
+             $('#modal_title').empty().append('更新对象');
+              $('#send').val('更新');
+             $('#oid').bind('change',function(){
+                        console.log("_oid:" + _oid);
+                        $('#oid').val(_oid).attr('selected',true).trigger('chosen:updated');
+                        //var arr = [];
+                        //arr.push($('#oid').val());
+                        $('#_oid').val(JSON.stringify($('#oid').val()));
+                      });
             var _pid = $(this).data('pid');
             var _id = $(this).data('id');
             var _gid = $(this).data('gid');
-            var _oid = $(this).data('oid');
+            _oid = $(this).data('oid');
+            //$('#oid').empty().trigger('chosen:updated');
             $('#fid').val(_id);
  //           console.log('pid:' + _pid);
    //         console.log('id:' + _id);
@@ -335,12 +367,7 @@ function arr_contains(item,arr)
 
                       $('#gid').prop('disabled',true).trigger('chosen:updated');
                      
-                      $('#oid').bind('change',function(){
-                        $('#oid').val(_oid).attr('selected',true).trigger('chosen:updated');
-                        //var arr = [];
-                        //arr.push($('#oid').val());
-                        $('#_oid').val(JSON.stringify($('#oid').val()));
-                      });
+                     
                       
                       $('#gids').val(privilege.groups).attr('selected',true).trigger('chosen:updated');
                       
@@ -374,6 +401,16 @@ function arr_contains(item,arr)
 
 
       $('.mul_update').click(function(){
+        $('#modal_title').empty().append('批量更新');
+            $('#send').val('更新');
+
+             $('#oid').bind('change',function(){
+                        $('#oid').val(_oid).attr('selected',true).trigger('chosen:updated');
+                        console.log('oid called');
+                        //var arr = [];
+                        //arr.push($('#oid').val());
+                        $('#_oid').val(JSON.stringify($('#oid').val()));
+                      });
             $('#fid').val(-2);
             $('#gid').prop('disabled',false).trigger('chosen:updated');
             $('#oid').prop('disabled',false).trigger('chosen:updated');
