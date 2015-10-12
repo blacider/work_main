@@ -712,13 +712,16 @@ function resetPasswardSubmit() {
 <div class="modal fade" id="security_reset">
   <div class="modal-dialog" style="width: 450px;font-size: 13px;">
     <div class="modal-content" style="border-radius: 5px;padding-top: 13px;">
-        <form action='<?php echo base_url("company/create_approve/");  ?>' method="post" enctype="multipart/form-data">
+        <form role="form" method="post" action="<?php echo base_url('users/update_password'); ?>">
         <div class="modal-body-item">
             <div class="form-line-">
-                <label>原密码</label><input name="old" type="text">
+                <label>原密码</label><input name="old_password" type="password">
             </div>
             <div class="form-line-">
-                <label>新密码</label><input id="newPassword" onkeyup="checkNewPassword()" name="new" placeholder="请输入6-16位数字、字母、或常用符号" type="text">
+                <label>新密码</label><input type="password" name="password" id="newPassword" onkeyup="checkNewPassword()" name="new" placeholder="请输入6-16位数字、字母、或常用符号">
+            </div>
+            <div class="form-line-">
+                <label style="position: relative;left: -12px;">重复密码</label><input style="margin-left: 6px;" name="repassword" type="password" placeholder="重复新密码">
             </div>
             <div class="form-line-2">
                 <label>弱</label>
