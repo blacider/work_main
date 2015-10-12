@@ -267,7 +267,7 @@ function arr_contains(item,arr)
 
         $('#add_new_btn').click(function(){
           $('#modal_title').empty().append('新建对象');
-          $('#obj_lab').empty().append('导入部门并创建对象:');
+          $('#obj_lab').empty().append('选择部门并创建对象:');
             $('#send').val('新建');
             $('#fid').val(-1);
              $('#labs').prop('hidden',false).trigger('chosen:updated');

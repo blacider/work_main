@@ -40,7 +40,7 @@
                       <tr>
                         <td><?php echo $pro['id'];?></td>
                         <td><?php echo $pro['name'];?></td>
-                        <td style="width:80px;">   <a href="#" data-toggle="modal" class="edit green"  data-name="" data-id="<?php echo $pro['id'];?>"><span class="ace glyphicon glyphicon-plus-sign"></span></a> <a href="#modal-table3" data-toggle="modal" class="edit_pro"  data-name="<?php echo $pro['name']?>" data-id="<?php echo $pro['id'];?>"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del red" data-rank="1" data-id="<?php echo $pro['id'];?>"><span class="glyphicon glyphicon-trash"></span></a></td>
+                        <td style="width:80px;">   <a href="#" data-toggle="modal" class="edit"  data-name="" data-id="<?php echo $pro['id'];?>"><span class="ace fa fa-search-plus"></span></a> <a href="#modal-table3" data-toggle="modal" class="edit_pro"  data-name="<?php echo $pro['name']?>" data-id="<?php echo $pro['id'];?>"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del red" data-rank="1" data-id="<?php echo $pro['id'];?>"><span class="glyphicon glyphicon-trash"></span></a></td>
                       </tr>
                       <?php
                           }
@@ -51,7 +51,7 @@
                        <tr>
                         <td><?php echo $pro['id'];?></td>
                         <td><?php echo $pro['name'];?></td>
-                        <td style="width:80px;">   <a href="#" data-toggle="modal" class="edit green"  data-name="" data-id="<?php echo $pro['id'];?>"><span class="ace glyphicon glyphicon-plus-sign"></span></a> </td>
+                        <td style="width:80px;">   <a href="#" data-toggle="modal" class="edit"  data-name="" data-id="<?php echo $pro['id'];?>"><span class="ace fa fa-search-plus"></span></a> </td>
                       </tr>
                       <?php
                           }

@@ -273,7 +273,7 @@ function arr_contains(item,arr)
           $('#g_lab').prop('hidden',false).trigger('chosen:updated');
             $('#o_lab').prop('hidden',false).trigger('chosen:updated');
              $('#gForm').prop('hidden',false).trigger('chosen:updated');
-            $('#obj_lab').empty().append('导入部门:');
+            $('#obj_lab').empty().append('选择部门:');
           $('#modal_title').empty().append('新建对象');
             $('#send').val('新建');
             $('#fid').val(-1);

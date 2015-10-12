@@ -130,7 +130,7 @@
           <div class="container">
             <div class="col-xs-12 col-sm-12">
               <div class="row">
-                <label for="form-field-username" class="col-sm-12 col-xl-12" id="obj_lab">导入对应部门和员工:</label>
+                <label for="form-field-username" class="col-sm-12 col-xl-12" id="obj_lab">选择对应部门和员工:</label>
                 <div class="form-group">
                   <div id='g_lab' class="col-xs-9 col-sm-9">部门:</div>
                   <div class="col-xs-9 col-sm-9" id="gForm">
@@ -263,7 +263,7 @@ function arr_contains(item,arr)
           $('#g_lab').prop('hidden',false).trigger('chosen:updated');
             $('#o_lab').prop('hidden',false).trigger('chosen:updated');
              $('#gForm').prop('hidden',false).trigger('chosen:updated');
-            $('#obj_lab').empty().append('导入部门及所属员工:');
+            $('#obj_lab').empty().append('选择部门及所属员工:');
             $('#modal_title').empty().append('新建对象');
             $('#gForm').prop('hidden',false).trigger('chosen:updated');
             $('#send').val('新建');
