@@ -159,6 +159,24 @@ class Category extends REIM_Controller {
         return redirect(base_url('category/show_expense'));
     }
 
+    public function update_fee_afford_project()
+    {
+        $id = $this->input->post('pro_id');
+        if($id == -1) 
+            return redirect(base_url('category/show_expense'));
+        $name = $this->input->post('pro_name');
+        $buf = $this->category->update_fee_afford_project($id,$name);
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','项目更新成功');
+        }
+        else
+        {
+            $this->session->set_userdata('last_error','项目更新失败');
+        }
+
+        return redirect(base_url('category/show_expense'));
+    }
     public function create_expense()
     {
         $name = $this->input->post('name');

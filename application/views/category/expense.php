@@ -29,28 +29,32 @@
                         </tr>
                       </thead>
                       <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>人员</td>
-                        <td style="width:80px;">   <a href="#" data-toggle="modal" class="edit"  data-name="" data-id="1"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del" data-rank="1" data-id="1"><span class="glyphicon glyphicon-trash"></span></a></td>
-                      </tr>
-
-                       <tr>
-                        <td>2</td>
-                        <td>部门</td>
-                        <td style="width:80px;">   <a href="#" data-toggle="modal" class="edit"  data-name="" data-id="2"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del" data-rank="1" data-id="2"><span class="glyphicon glyphicon-trash"></span></a></td>
-                      </tr>
+                    
 
                       <?php
                         foreach($projects as $pro)
                         {
+                          if(array_key_exists('project_type', $pro) && $pro['project_type']!=0 && $pro['project_type']!=1)
+                          {
                       ?>
                       <tr>
                         <td><?php echo $pro['id'];?></td>
                         <td><?php echo $pro['name'];?></td>
-                        <td style="width:80px;">   <a href="#" data-toggle="modal" class="edit"  data-name="" data-id="<?php echo $pro['id'];?>"><span class="glyphicon glyphicon-pencil"></span></a>  <a href="javascript:void(0);" class="del" data-rank="1" data-id="<?php echo $pro['id'];?>"><span class="glyphicon glyphicon-trash"></span></a></td>
+                        <td style="width:80px;">   <a href="#" data-toggle="modal" class="edit"  data-name="" data-id="<?php echo $pro['id'];?>"><span class="ace glyphicon glyphicon-pencil"></span></a> <a href="#modal-table3" data-toggle="modal" class="edit_pro green"  data-name="<?php echo $pro['name']?>" data-id="<?php echo $pro['id'];?>"><span class="glyphicon glyphicon-plus-sign"></span></a>  <a href="javascript:void(0);" class="del red" data-rank="1" data-id="<?php echo $pro['id'];?>"><span class="glyphicon glyphicon-trash"></span></a></td>
                       </tr>
                       <?php
+                          }
+                          else
+                          {
+                      ?>
+
+                       <tr>
+                        <td><?php echo $pro['id'];?></td>
+                        <td><?php echo $pro['name'];?></td>
+                        <td style="width:80px;">   <a href="#" data-toggle="modal" class="edit"  data-name="" data-id="<?php echo $pro['id'];?>"><span class="ace glyphicon glyphicon-pencil"></span></a> </td>
+                      </tr>
+                      <?php
+                          }
                         }
                       ?>
                       
@@ -111,11 +115,11 @@
 
 <div id="modal-table3" class="modal" tabindex="-1">
   <div class="modal-dialog">
-        <form action="<?php echo base_url('members/update_rank_level/0')?>" method='post'>
+        <form action="<?php echo base_url('category/update_fee_afford_project')?>" method='post'>
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="blue bigger"> 修改职位 </h4>
+            <h4 class="blue bigger"> 修改组名 </h4>
           </div>
          <div class="modal-body">
            <div class="container">
@@ -123,12 +127,12 @@
               <div class="col-xs-12 col-sm-12">
                 <div class="row">
                   <div class="form-group">
-                      <label for="form-field-username">职位名称:</label>
+                      <label for="form-field-username">组名称:</label>
                       <div>
-                        <input class="col-xs-4 col-sm-4" type="text" id="level_name" name="name" class="form-control" />
+                        <input class="col-xs-4 col-sm-4" type="text" id="pro_name" name="pro_name" class="form-control" />
                       </div>
                       <div>
-                        <input class="col-xs-4 col-sm-4" type="hidden" id="level_id" name="rank_level_id" class="form-control" />
+                        <input class="col-xs-4 col-sm-4" type="hidden" id="pro_id" name="pro_id" class="form-control" value="-1" />
                       </div>
                   </div>   
                 </div>    <!-- row -->
@@ -216,6 +220,15 @@
         $(this).click(function(){
             var _id = $(this).data('id');
             location.href = __BASE + "category/update_expense/" + _id;
+        });
+      });
+
+     $('.edit_pro').each(function(){
+        $(this).click(function(){
+            var _id = $(this).data('id');
+            var _name = $(this).data('name');
+            $('#pro_name').val(_name);
+            $('#pro_id').val(_id);
         });
       });
 

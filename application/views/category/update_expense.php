@@ -307,7 +307,7 @@ function arr_contains(item,arr)
               else
               {
                 console.log('already');
-                $('#oid').val('').trigger('change');
+                //$('#oid').val('').trigger('change');
                 $('#oid').trigger('chosen:updated');
               }
             }

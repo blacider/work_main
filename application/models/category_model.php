@@ -91,6 +91,19 @@ class Category_Model extends Reim_Model {
         return json_decode($buf,True);
     }
 
+    public function update_fee_afford_project($id,$name)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+
+        $url = $this->get_url('fee_afford_project/' . $id);
+        $data = array('name' => $name);
+        $buf = $this->do_Put($url,$data,$jwt);
+        log_message('debug','update_fee_afford_project:' . $buf);
+        log_message('debug','update_fee_afford_project_data:' . json_encode($data));
+        log_message('debug','update_fee_afford_project_url:' . $url);
+        return json_decode($buf,True);
+    }
     public function expense_create($name)
     {
         $jwt = $this->session->userdata('jwt');
