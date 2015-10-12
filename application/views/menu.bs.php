@@ -789,12 +789,10 @@ $(document).ready(function(){
     if(_security == 1) {
         $('#security_dialog').modal({
             'keyboard' : false
-                ,'backdrop' : false
         });
-        $('#security_reset').modal({
-            'keyboard' : false
-                ,'backdrop' : false
-        });
+        //$('#security_reset').modal({
+        //    'keyboard' : false
+        //});
     }
     try{
     var _path = window.location.pathname;
