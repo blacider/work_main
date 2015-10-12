@@ -39,7 +39,7 @@
 $user = $this->session->userdata('user');
 if(!$user) redirect(base_url('login'));
 $_security = 0;
-if(array_key_exists('badpassword', $user) && $user['bad_password'] == '') {
+if(array_key_exists('risk', $user) && $user['risk'] == 1) {
     $_security = 1;
 }
 if(is_array($user)){
@@ -648,7 +648,7 @@ function show_notify(msg, life){
 }
 var _security = <?php echo $_security; ?>;
 $(document).ready(function(){
-    if(_security == 0) {
+    if(_security == 1) {
         $('#security_dialog').modal({
             'keyboard' : false
                 ,'backdrop' : false
