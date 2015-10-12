@@ -621,23 +621,121 @@ foreach($breadcrumbs as $b){
 <!-- /.nav-search -->
 
 <!-- /section:basics/content.searchbox -->
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
+<style type="text/css">
+    .modal-body-item {
+        text-align: center;
+        width: 100%;
+        padding: 10px 50px;
+    }
+    .form-line- ,.form-line-2{
+        height: 45px;
+    }
+    .form-line- input{
+        margin-left: 19px;
+    width: 250px;
+    height: 30px;
+    border-radius: 6px !important;
+    }
+    .form-line-2 {
+         padding-top: 12px;
+          padding-left: 55px;
+    }
+    .form-line-2 label {
+        width: 41px;
+        border-top: 5px solid grey;
+            margin-right: 5px;
+    }
+</style>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
 <div class="modal fade" id="security_dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">请修改口令</h4>
-      </div>
-      <div class="modal-body">
-        <p>检测到你的账号登录密码很弱，请立刻修改登录密码。</p>
-      </div>
-      <div class="modal-footer">
-      <a href="<?php echo base_url('login/#reset'); ?>"  class="btn btn-primary">去修改</a>
-      </div>
+  <div class="modal-dialog" style="width: 376px;font-size: 13px;">
+    <div class="modal-content" style="border-radius: 5px;padding-top: 13px;">
+    
+
+        <div class="modal-body-item">
+            <img style="margin: 15px;width: 46px;" src="/static/images/Bitmap@2x.png" alt="png">
+            <p style="text-align: left;">您现在的登录密码安全性较差，请修改登录密码后再进行报销。</p>    
+        
+
+        </div>
+      
+        <hr style="margin: 0;">
+        <div class="modal-body-item">
+            <p onclick="$('#security_dialog').modal('hide');$('#security_reset').modal('show');" style="cursor: pointer;text-align: center;color:red;margin:0;">好，去修改</p>
+        </div>
+    
+
+
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<script type="text/javascript">
+var EMAIL = "<?php echo $user['email']?>";
+var PHONE = "<?php echo $user['phone']?>";
+function checkNewPassword() {
+    var pwd = $("#newPassword").val();
+    if (pwd == "") {
+        $(".form-line-2 label").css('border-top', '5px solid grey');
+        return false;
+    }
+    result = 0;
+    if (pwd.length >= 8) result++;
+    var reg = /^([a-zA-Z]+|[0-9]+)$/;
+    if(!reg.test(pwd)) result++;
+    var x;
+    if (EMAIL != "") x = EMAIL.split('@')[0];
+    else x = PHONE;
+    if (x != pwd) result++;
 
+    changePwdLevel(result-1);
+    if (result == 3) {
+        $('#wrong-error').css('visibility', 'hidden');
+        return true;
+    }
+    else {
+        $('#wrong-error').css('visibility', 'visible');
+        return false;
+    }
+}
+function changePwdLevel(level) {
+    $(".form-line-2 label").css('border-top', '5px solid grey');
+    while (level >= 0) {
+        $($(".form-line-2 label")[level]).css('border-top', '5px solid green');
+        level--;
+    }
+    
+}
+function resetPasswardSubmit() {
+    if (checkNewPassword())
+        $('#security_reset').find("input[type='submit']").click();
+}
+</script>
+<div class="modal fade" id="security_reset">
+  <div class="modal-dialog" style="width: 450px;font-size: 13px;">
+    <div class="modal-content" style="border-radius: 5px;padding-top: 13px;">
+        <form action='<?php echo base_url("company/create_approve/");  ?>' method="post" enctype="multipart/form-data">
+        <div class="modal-body-item">
+            <div class="form-line-">
+                <label>原密码</label><input name="old" type="text">
+            </div>
+            <div class="form-line-">
+                <label>新密码</label><input id="newPassword" onkeyup="checkNewPassword()" name="new" placeholder="请输入6-16位数字、字母、或常用符号" type="text">
+            </div>
+            <div class="form-line-2">
+                <label>弱</label>
+                <label>中</label>
+                <label>强</label>
+                <span id="wrong-error" style="color:red;visibility:hidden;width: auto;border: none;position: relative;top: -10px;left: 16px;">密码格式有误</span>
+            </div>
+        </div>
+        <hr style="margin: 0;">
+        <div class="modal-body-item">
+            <input type="submit" class="hidden">
+            <p onclick="resetPasswardSubmit()" style="cursor: pointer;text-align: center;color:red;margin:0;">确定</p>
+        </div>
+        </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 <script>
@@ -650,6 +748,10 @@ var _security = <?php echo $_security; ?>;
 $(document).ready(function(){
     if(_security == 1) {
         $('#security_dialog').modal({
+            'keyboard' : false
+                ,'backdrop' : false
+        });
+        $('#security_reset').modal({
             'keyboard' : false
                 ,'backdrop' : false
         });
