@@ -689,10 +689,13 @@ function checkNewPassword() {
     changePwdLevel(result-1);
     if (result == 3) {
         $('#wrong-error').css('visibility', 'hidden');
+        if ($("#reNewPassword").val() != pwd) {
+            $('#wrong-error').css('visibility', 'visible').text("两次输入不一致");
+        }
         return true;
     }
     else {
-        $('#wrong-error').css('visibility', 'visible');
+        $('#wrong-error').css('visibility', 'visible').text("密码格式有误");
         return false;
     }
 }
@@ -721,7 +724,7 @@ function resetPasswardSubmit() {
                 <label>新密码</label><input type="password" name="password" id="newPassword" onkeyup="checkNewPassword()" name="new" placeholder="请输入6-16位数字、字母、或常用符号">
             </div>
             <div class="form-line-">
-                <label style="position: relative;left: -12px;">重复密码</label><input style="margin-left: 6px;" name="repassword" type="password" placeholder="重复新密码">
+                <label style="position: relative;left: -12px;">重复密码</label><input style="margin-left: 6px;" onkeyup="checkNewPassword()" name="repassword" id="reNewPassword" type="password" placeholder="重复新密码">
             </div>
             <div class="form-line-2">
                 <label>弱</label>
