@@ -487,42 +487,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     </div>
 </div>
 
-<div class="modal fade" id="security_reset">
-  <div class="modal-dialog" style="width: 450px;font-size: 13px;">
-    <div class="modal-content" style="border-radius: 5px;padding-top: 13px;">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">修改密码</h4>
-            </div>
-        <form role="form" method="post" action="<?php echo base_url('users/update_password'); ?>">
-        <div class="modal-body-item">
-            <div class="form-line-">
-                <label>原密码</label><input onkeyup="checkNewPassword()" id="old_password" name="old_password" type="password">
-            </div>
-            <div class="form-line-">
-                <label>新密码</label><input type="password" name="password" id="newPassword" onkeyup="checkNewPassword()" name="new" placeholder="请输入6-16位数字、字母、或常用符号">
-            </div>
-            <div class="form-line-">
-                <label style="position: relative;left: -12px;">重复密码</label><input style="margin-left: 6px;" onkeyup="checkNewPassword()" name="repassword" id="reNewPassword" type="password" placeholder="重复新密码">
-            </div>
-            <div class="form-line-2">
-                <label>弱</label>
-                <label>中</label>
-                <label>强</label>
-                <span id="wrong-error" style="color:red;visibility:hidden;width: auto;border: none;position: relative;top: -10px;left: 16px;">密码格式有误</span>
-            </div>
-        </div>
-            <input type="hidden" name="pid" value="<?php echo $pid;?>">
-        <hr style="margin: 0;">
-        <div class="modal-body-item">
-            <input type="submit" class="hidden">
-            <p onclick="resetPasswardSubmit()" style="cursor: pointer;text-align: center;color:red;margin:0;">确定</p>
-        </div>
-        </form>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
 
 
 <div class="modal fade" id="credit_model">
