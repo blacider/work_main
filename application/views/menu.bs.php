@@ -38,6 +38,10 @@
 <?php
 $user = $this->session->userdata('user');
 if(!$user) redirect(base_url('login'));
+$_security = 0;
+if(array_key_exists('badpassword', $user) && $user['bad_password'] == '') {
+    $_security = 1;
+}
 if(is_array($user)){
     $username = $user['email'];
     if($user['nickname']){
@@ -428,8 +432,12 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <b class="arrow"></b>
         </li>
 -->
-        <li class="hsub" id="submit">
-        <a href="<?php echo base_url('company/common'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 通用规则 </a>
+        <li class="hsub" id="broadcast_index">
+        <a href="<?php echo base_url('broadcast/index'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 系统消息管理 </a>
+        <b class="arrow"></b>
+        </li>
+        <li class="hsub" id="broadcast_create">
+        <a href="<?php echo base_url('broadcast/create'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 创建系统消息</a>
         <b class="arrow"></b>
         </li>
 
@@ -614,6 +622,21 @@ foreach($breadcrumbs as $b){
 
 <!-- /section:basics/content.searchbox -->
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             </div>
+<div class="modal fade" id="security_dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">请修改口令</h4>
+      </div>
+      <div class="modal-body">
+        <p>检测到你的账号登录密码很弱，请立刻修改登录密码。</p>
+      </div>
+      <div class="modal-footer">
+      <a href="<?php echo base_url('login/#reset'); ?>"  class="btn btn-primary">去修改</a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 
@@ -623,7 +646,14 @@ function show_notify(msg, life){
         life = 3000;
     $.jGrowl(msg, {'life' : life});
 }
+var _security = <?php echo $_security; ?>;
 $(document).ready(function(){
+    if(_security == 0) {
+        $('#security_dialog').modal({
+            'keyboard' : false
+                ,'backdrop' : false
+        });
+    }
     try{
     var _path = window.location.pathname;
     var buf = _path.split("/");
@@ -638,6 +668,10 @@ $(document).ready(function(){
     }
     
     // 导入导出有步骤，合并在一起
+    if(_controller == 'broadcast') {
+        _controller = 'company';
+        _method = 'broadcast_' + _method;
+    }
     if(_controller == "members" && _method == "imports"){
         _method = "export";
     }
