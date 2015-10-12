@@ -691,6 +691,11 @@ function checkNewPassword() {
         $('#wrong-error').css('visibility', 'hidden');
         if ($("#reNewPassword").val() != pwd) {
             $('#wrong-error').css('visibility', 'visible').text("两次输入不一致");
+            return false;
+        } 
+        if ($("#old-password").val() == "") {
+            $('#wrong-error').css('visibility', 'visible').text("请输入您现在的密码");
+            return false;
         }
         return true;
     }
@@ -718,7 +723,7 @@ function resetPasswardSubmit() {
         <form role="form" method="post" action="<?php echo base_url('users/update_password'); ?>">
         <div class="modal-body-item">
             <div class="form-line-">
-                <label>原密码</label><input name="old_password" type="password">
+                <label>原密码</label><input id="old_password" name="old_password" type="password">
             </div>
             <div class="form-line-">
                 <label>新密码</label><input type="password" name="password" id="newPassword" onkeyup="checkNewPassword()" name="new" placeholder="请输入6-16位数字、字母、或常用符号">
