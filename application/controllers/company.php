@@ -228,30 +228,44 @@ class Company extends REIM_Controller {
 
         $buf = $this->company->get_single_finance_policy($id);
         $policies = array();
+        $step_dic = array(); //做一个步骤的字典
         if($buf['status'] > 0)
         {
            $policies = $buf['data']; 
         }
+        log_message('debug','policies:' . json_encode($policies));
         if(array_key_exists('step',$policies))
         {
             foreach($policies['step'] as &$st)
             {
+                if(!array_key_exists($st['step'],$step_dic)) 
+                {
+                    $step_dic[$st['step']] = array('step' => $st['step'] , 'quota' => $st['quota'] , 'uids' => array() , 'nicknames' => array());
+                }
+
                 $_uids = $st['uids']; 
                 $_names = array();
                 foreach($_uids as $u)
                 {
                     if(array_key_exists($u,$mem_dic))
                     {
-                         array_push($_names,$mem_dic[$u]);
+                         array_push($step_dic[$st['step']]['uids'],$u);
+                         array_push($step_dic[$st['step']]['nicknames'],$mem_dic[$u]);
                     }
                 }
+            }
 
-                $st['nicknames'] = implode('|',$_names);
+            $policies['step'] = array();
+            foreach($step_dic as $k => &$v)
+            {
+                $v['nicknames'] = implode('|',$v['nicknames']); 
+                array_push($policies['step'],$v);
             }
         }
 
             
         log_message('debug','policies:' . json_encode($policies));
+        log_message('debug','step_dic:' . json_encode($step_dic));
         $this->bsload('company/flow_update',
             array(
                 'title'=>'更新审批流'

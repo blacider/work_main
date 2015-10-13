@@ -48,6 +48,26 @@ class Bills extends REIM_Controller {
 
            return redirect('bills/finance_flow');
     }
+
+    public function report_finance_multiEnd($ids = 0)
+    {
+        $ids = explode('%23', $ids);
+        foreach ($ids as $rid) {
+            $buf = $this->company->pass_report_finance($rid);
+
+            if($buf['status'] > 0)
+            {
+                $this->session->set_userdata('last_error','已通过');
+            }
+            else
+            {
+                $this->session->set_userdata('last_error','已通过');
+            }
+
+        }
+
+        return redirect('bills/finance_flow');
+    }
     public function report_finance_permission($rid)
     {
         $buf = $this->company->get_report_finance_permission($rid);
@@ -175,6 +195,7 @@ class Bills extends REIM_Controller {
             }
         }
         if($status == 2){
+            $this->session->set_userdata("report_list_url", "bills/index");
             $this->session->set_userdata('item_update_in','2');
             $this->bsload('bills/index',
                 array(
@@ -196,6 +217,7 @@ class Bills extends REIM_Controller {
         }
         else if($status == 4)
         {
+            $this->session->set_userdata("report_list_url", "bills/exports");
             $this->session->set_userdata('item_update_in','3');
             $this->bsload('bills/index',
                 array(
@@ -217,6 +239,7 @@ class Bills extends REIM_Controller {
         }
         else if($status == 0)
         {
+            $this->session->set_userdata("report_list_url", "bills/all_reports");
             $this->session->set_userdata('item_update_in','3');
             $this->bsload('bills/index',
                 array(
@@ -238,6 +261,7 @@ class Bills extends REIM_Controller {
         }
         else if($status == 1)
         {
+            $this->session->set_userdata("report_list_url", "bills/in_progress");
             $this->session->set_userdata('item_update_in','3');
             $this->bsload('bills/index',
                 array(
@@ -332,6 +356,7 @@ class Bills extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
+        $this->session->set_userdata("report_list_url", "bills/fincance_flow");
             $this->bsload('bills/finance_flow',
                 array(
                     'title' => '待审批'
@@ -352,8 +377,8 @@ class Bills extends REIM_Controller {
             );
     }
 
-    public function finance_done($search = ''){
-$status = 2; 
+    public function finance_done($search = '') {
+        $status = 2; 
         $this->need_group_casher();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
@@ -403,6 +428,7 @@ $status = 2;
             }
             $gmember = $gmember ? $gmember : array();
         }
+        $this->session->set_userdata("report_list_url", "bills/fincance_done");
             $this->bsload('bills/finance_flow',
                 array(
                     'title' => '待审批'
@@ -443,6 +469,10 @@ $status = 2;
             log_message("debug", "nICe");
 
             $d['date_str'] = date('Y-m-d H:i:s', $d['createdt']);
+            $d["approvaldt_str"] = "0000-00-00 00:00:00";
+            if (array_key_exists("approvaldt", $d)) {
+                $d["approvaldt_str"] = date('Y-m-d H:i:s', $d["approvaldt"]);
+            }
             $d['ugs'] = array();
             if($ugs)
             {
@@ -551,7 +581,7 @@ $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data
             }
 
 
-            $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+            $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                 . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . ''. $extra
                 . '</div>';
             array_push($_data, $d);
@@ -586,7 +616,7 @@ $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data
                 $edit = $d['status'] != 2 ? 'gray' : 'green';
                 $extra = $d['status'] = '';
 
-                $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+                $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . $extra
                     . '</div>';
                 array_push($_data, $d);

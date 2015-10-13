@@ -46,6 +46,7 @@ class Reports extends REIM_Controller {
             $data = $items['data'];
             $item_data = $data['data'];
         }
+        $this->session->set_userdata("report_list_url", "reports");
         $this->bsload('reports/index',
             array(
                 'title' => '我的报告'
@@ -118,7 +119,7 @@ class Reports extends REIM_Controller {
                 $s['status_str'] = '';
                 $trash= $s['istatus'] === 0 ? 'gray' : 'red';
                 $edit = $s['istatus'] === 0 ? 'gray' : 'green';
-                $s['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
+                $s['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $s['id'] . '"></span>'
                     . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>'
                     . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $s['id'] . '"></span></div>';
@@ -193,31 +194,27 @@ class Reports extends REIM_Controller {
             $export = ($d['status'] === 1)   ? 'gray' : 'grey';
             if($d['status'] == 1) {
                 $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
-                    . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span></div>';
-                //. '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
+                    . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
+                . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
             } else {
                 if(in_array($d['status'],array(2,4,5)))
                 {
-                    $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+                    $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                         . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
                         . '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span></div>';
                     //. '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
                 } else if (in_array($d['status'],array(0,3))) {
-                    /*
-                    $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+                    $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                         . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
                         . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>'
                         . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span></div>';
-                     */
                 }
                 else
                 {
-                    /*
-                    $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+                    $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                         . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
                         //. '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>'
                         . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span></div>';
-                     */
                 }
             }
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
@@ -710,6 +707,13 @@ class Reports extends REIM_Controller {
                 }
             }
         }
+
+        $url = $this->session->userdata("report_list_url");
+        if ($url) {
+            $url = base_url($url);
+        }
+        log_message("debug", "found report list page => " . $url);
+        
         $this->bsload('reports/view',
             array(
                 'title' => '查看报告',
@@ -722,6 +726,7 @@ class Reports extends REIM_Controller {
                 ,'comments' => $comments
                 ,'members' => $_members
                 ,'decision' => $decision
+                ,"report_list_url" => $url
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
@@ -858,6 +863,7 @@ class Reports extends REIM_Controller {
     }
     public function audit($search=''){
         $this->session->set_userdata('item_update_in',4);
+
         $items = $this->items->get_suborinate();
         if(!$items['status']){
             die(json_encode(array()));
@@ -877,6 +883,7 @@ class Reports extends REIM_Controller {
         $_error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
         log_message("debug", "Last Error:" . $_error);
+        $this->session->set_userdata("report_list_url", "reports/audit");
         $this->bsload('reports/audit',
             array(
                 'title' => '收到的报告'
@@ -944,9 +951,9 @@ class Reports extends REIM_Controller {
             else
             {
                 if($d['mdecision'] == 1 && !$d['cc_flag']){
-                    $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-decision="1"  data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-decision="1" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
+                    $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-decision="1"  data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-decision="1" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
                 } else {
-                    $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span></div>';
+                    $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span></div>';
                 }
             }
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
@@ -1214,7 +1221,7 @@ class Reports extends REIM_Controller {
                 }
                 $s = $i['category_code'];
                 if($s == 0) $s = '';
-                log_message("debug", "export item:" . json_encode($i));
+                log_message("debug", "alvayang export item:" . json_encode($i));
                 $o = array();
                 $o['日期'] = date('Y年m月d日', date($i['createdt']));
                 $o['时间'] = date('H:i:s', date($i['createdt']));
@@ -1273,9 +1280,37 @@ class Reports extends REIM_Controller {
                     }
                 }
                 
+                $afford = $i['fee_afford'];
+                log_message("debug", "alvayang fee afford : " . $afford);
+                $_parts = explode("|", $afford);
+                $final = array();
+                $_afford_member = array();
+                $_afford_dept = array();
+                foreach($_parts as $x) {
+                log_message("debug", "alvayang fee afford parts: " . $x);
+                    $__parts = explode(",", $x);
+                log_message("debug", "alvayang fee afford parts: " . count($__parts));
+                    if(count($__parts) == 3) {
+                        if(trim($__parts[1]) != "") 
+                            array_push($_afford_dept, $__parts[1]);
+                        if(trim($__parts[2]) != "") 
+                            array_push($_afford_member,$__parts[2]);
+                    }
+                }
+                $_str_afford_dept = $o['部门'];
+                $_str_afford_member = $i['nickname'];
+
+                if(count($_afford_dept)) {
+                    $_str_afford_dept = implode(",", $_afford_dept);
+                }
+                if(count($_afford_member)){
+                    $_str_afford_member = implode(",", $_afford_member);
+                }
                 //$o['类别'] = $i['category_name'];
                 $o['商家'] = $i['merchants'];
                 $o['参与人员'] = implode(',', $__relates);
+                $o['承担部门'] = $_str_afford_dept;
+                $o['承担对象'] = $_str_afford_member;
                 $o['会计科目'] = $i['category_name'];
                 $o['会计科目代码'] = $cate_dic[$i['category']]['sob_code'];
                 $o['会计科目上级'] = '';

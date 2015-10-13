@@ -43,6 +43,25 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">承担者</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="分类" value=" <?php 
+$afford = $item['fee_afford'];
+$_parts = explode("|", $afford);
+$final = array();
+foreach($_parts as $x) {
+    $__parts = explode(",", $x);
+    if(count($__parts) == 3)
+        array_push($final, implode("-", array($__parts[1], $__parts[2])));
+}
+echo implode(",", $final);
+?> " disabled>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">消费时间</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <input type="text" class="form-controller col-xs-12" name="amount" placeholder="消费时间" value=" <?php echo $item['dt']; ?> " disabled>
@@ -217,11 +236,15 @@
 
                             <div class="clearfix form-actions col-sm-8 col-xs-8">
                                 <div class="col-md-offset-3 col-md-6">
-                                    <?php 
-                                        if($editable == 1)
-                                        {
+                                    <?php
+                                    if($editable == 1)
+                                    {
+					$_from_report = 0;
+					if (isset($from_report))
+					    $_from_report = $from_report;
+					
                                         ?>
-                                            <a class="btn btn-white btn-primary renew" href="<?php echo base_url('items/edit/' . $item['id']); ?>" data-renew="1"><i class="ace-icon fa fa-check"></i>修改</a>
+                                            <a class="btn btn-white btn-primary renew" href="<?php echo base_url('items/edit/' . $item['id'] . "/" . $_from_report); ?>" data-renew="1"><i class="ace-icon fa fa-check"></i>修改</a>
                                         <?php
                                         }
                                         ?>
@@ -281,8 +304,13 @@ $('.chosen-select').chosen({allow_single_deselect:true});
     };
 
     $('.fallback [data-rel="colorbox"]').colorbox(colorbox_params);
-    $('.cancel').click(function(){
+    $('.cancel').click(function() {
+<?php if (!isset($previous_url)) { $previous_url = FALSE; } ?>
+<?php if ($previous_url) { ?>
+        location.href = "<?php echo $previous_url; ?>";
+<?php } else { ?>
         history.go(-1);
+<?php } ?>
     });
 });
 </script>

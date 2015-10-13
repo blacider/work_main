@@ -124,7 +124,7 @@ jQuery(grid_selector).jqGrid({
     height: 250,
     multiselect: true,
     loadtext: '',
-    colNames:['报告ID', '提交日期','报告名', '条目数', '提交者', '金额', '状态', '操作','部门'],
+    colNames:['报告ID', '提交日期','报告名', '条目数', '提交者', '金额', '状态', '审批日期', '操作','部门'], 
     loadonce: true,
     caption: "费用审计",
     editurl: __BASE + 'bills/save',
@@ -140,6 +140,7 @@ jQuery(grid_selector).jqGrid({
     {name:'nickname', index:'nickname', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
     {name:'amount',index:'amount', sorttype: myCustomSort,width:70, editable: false,editoptions: {size:"20",maxlength:"30"},formatter:'currency', formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'},unformat: aceSwitch,search:false},
     {name:'status_str',index:'status_str', width:70, editable: true,edittype:"select",editoptions: {value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},
+    {name:"approvaldt_str", index:"approvaldt_str", width:100, editable: false, editoptions:{size:"20",maxlength:"30"}, search:false, hidden:(__STATUS != 2)},	
     {name:'options',index:'options', width:70, editable: true,edittype:"select",editoptions: {value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},
     {name:'ugs', index:'ugs', width:50,editable: false,editoptions:{size:"20",maxlength:"30"},hidden:true},
 
@@ -347,28 +348,29 @@ try{
 	}); 	
     } 
 	 })
+
 .navButtonAdd(pager_selector,{
     caption:"",
-    title:__STATUS == 2 ? "支付选中报告" : "",
-    buttonicon:__STATUS == 2 ? "ace-icon fa fa-check green" : "",
-    onClickButton:__STATUS == 2 ? function() {
+    title:"结束选中报告",
+    buttonicon:"ace-icon fa fa-check green",
+    onClickButton:function() {
          // chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
          chosenids = selectRows;
          if (chosenids.length == 0) {
             alert("请选择报告!");
             return;
          }
-         $('#modal-table').modal().css({
+         $('#modal-table-finish').modal().css({
              width:'auto',
              'margin-left':function () {
-                 return -(($(this).width() - $('#modal-table').width) / 2);
+                 return -(($(this).width() - $('#modal-table-flow').width) / 2);
              }
          });
         _part = chosenids.join('/');
-        var _part_url = __BASE + 'bills/listdata_new/' + __STATUS + '/' + _part;
+        var _part_url = __BASE + 'bills/listdata_new/' + '2' + '/' + _part;
   
-        $(grid_selector_new).jqGrid('GridUnload');
-        jQuery(grid_selector_new).jqGrid({  
+        $(grid_selector_finish).jqGrid('GridUnload');
+        jQuery(grid_selector_finish).jqGrid({  
             url: _part_url,
             mtype: "GET",
             datatype: "local",
@@ -412,10 +414,11 @@ try{
             emptyrecords: '没有账单', // the message will be displayed at the bottom 
         });
 
-    $(grid_selector_new).jqGrid();  
-    } : null,
+    $(grid_selector_finish).jqGrid();  
+    },
     position:"last"
 });
+
 } catch(e) {
     alert(e);
 }
