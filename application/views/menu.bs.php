@@ -742,7 +742,7 @@ function resetPasswardSubmit() {
         dataType:'json',
         data:{'old_password':$('#old_password').val(),'password':$('#newPassword').val(),'repassword':$('#reNewPassword').val(),'pid':$('#pid').val()},
         success:function(data){
-            console.log(data);
+           // console.log(data);
             if(data.status == 0)
             {
                 $('#wrong-error').css('visibility', 'visible').text("密码错误");
