@@ -195,6 +195,7 @@ class Bills extends REIM_Controller {
             }
         }
         if($status == 2){
+            $this->session->set_userdata("report_list_url", "bills/index");
             $this->session->set_userdata('item_update_in','2');
             $this->bsload('bills/index',
                 array(
@@ -216,6 +217,7 @@ class Bills extends REIM_Controller {
         }
         else if($status == 4)
         {
+            $this->session->set_userdata("report_list_url", "bills/exports");
             $this->session->set_userdata('item_update_in','3');
             $this->bsload('bills/index',
                 array(
@@ -237,6 +239,7 @@ class Bills extends REIM_Controller {
         }
         else if($status == 0)
         {
+            $this->session->set_userdata("report_list_url", "bills/all_reports");
             $this->session->set_userdata('item_update_in','3');
             $this->bsload('bills/index',
                 array(
@@ -258,6 +261,7 @@ class Bills extends REIM_Controller {
         }
         else if($status == 1)
         {
+            $this->session->set_userdata("report_list_url", "bills/in_progress");
             $this->session->set_userdata('item_update_in','3');
             $this->bsload('bills/index',
                 array(
@@ -352,6 +356,7 @@ class Bills extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
+        $this->session->set_userdata("report_list_url", "bills/fincance_flow");
             $this->bsload('bills/finance_flow',
                 array(
                     'title' => '待审批'
@@ -372,7 +377,7 @@ class Bills extends REIM_Controller {
             );
     }
 
-    public function finance_done($search = ''){
+    public function finance_done($search = '') {
 $status = 2; 
         $this->need_group_casher();
         $error = $this->session->userdata('last_error');
@@ -423,6 +428,7 @@ $status = 2;
             }
             $gmember = $gmember ? $gmember : array();
         }
+        $this->session->set_userdata("report_list_url", "bills/fincance_done");
             $this->bsload('bills/finance_flow',
                 array(
                     'title' => '待审批'

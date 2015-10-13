@@ -536,6 +536,7 @@ class Items extends REIM_Controller {
                 'categories' => $categories,
                 'tags' => $tags,
                 'item' => $item,
+                'previous_url' => base_url("items"),
                 'editable' => $_editable,
                 'flow' => $flow
                 ,'item_value' => $item_value
@@ -552,7 +553,7 @@ class Items extends REIM_Controller {
             ));
     }
 
-    public function show($id = 0){
+    public function show($id = 0, $from_report = 0){
         if(0 === $id) redirect(base_url('items'));
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
@@ -690,15 +691,23 @@ class Items extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
+
+        $previous_url = base_url("items");
+        if ($from_report)
+            if ($item["rid"])
+                $previous_url = base_url("reports/show/" . $item["rid"]);
+        
         log_message("debug","item_updta_in".$this->session->userdata("item_update_in"));
         log_message("debug","flow".json_encode($flow));
         log_message("debug","users:".json_encode($user));
+        
         $this->bsload('items/view',
             array(
                 'title' => '查看消费',
                 'categories' => $categories,
                 'tags' => $tags,
                 'item' => $item,
+                'previous_url' => $previous_url,
                 'editable' => $_editable,
                 'flow' => $flow
                 ,'item_value' => $item_value

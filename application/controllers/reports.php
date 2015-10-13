@@ -46,6 +46,7 @@ class Reports extends REIM_Controller {
             $data = $items['data'];
             $item_data = $data['data'];
         }
+        $this->session->set_userdata("report_list_url", "reports");
         $this->bsload('reports/index',
             array(
                 'title' => '我的报告'
@@ -706,6 +707,13 @@ class Reports extends REIM_Controller {
                 }
             }
         }
+
+        $url = $this->session->userdata("report_list_url");
+        if ($url) {
+            $url = base_url($url);
+        }
+        log_message("debug", "found report list page => " . $url);
+        
         $this->bsload('reports/view',
             array(
                 'title' => '查看报告',
@@ -718,6 +726,7 @@ class Reports extends REIM_Controller {
                 ,'comments' => $comments
                 ,'members' => $_members
                 ,'decision' => $decision
+                ,"report_list_url" => $url
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
@@ -854,6 +863,7 @@ class Reports extends REIM_Controller {
     }
     public function audit($search=''){
         $this->session->set_userdata('item_update_in',4);
+
         $items = $this->items->get_suborinate();
         if(!$items['status']){
             die(json_encode(array()));
@@ -873,6 +883,7 @@ class Reports extends REIM_Controller {
         $_error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
         log_message("debug", "Last Error:" . $_error);
+        $this->session->set_userdata("report_list_url", "reports/audit");
         $this->bsload('reports/audit',
             array(
                 'title' => '收到的报告'
