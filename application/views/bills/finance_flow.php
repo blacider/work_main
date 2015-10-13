@@ -105,8 +105,8 @@ position: absolute;
   <?php 
     $search_gid = "";
     $search_text = "";
-    $search_time1 = "所有时间";
-    $search_time2 = "所有时间";
+    $search_time1 = "提交时间";
+    $search_time2 = "审批时间";
 
     echo ' var s = "' . $search . '";' ;
     if ($search != "") {
@@ -329,7 +329,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
               <b class="caret"></b>
            </a>
     <ul class="dropdown-menu">
-            <li data-filter-camera-type="all"><a data-toggle="tab" onclick="changeDropText('所有时间')" href="#">所有时间</a></li>
+            <li data-filter-camera-type="all"><a data-toggle="tab" onclick="changeDropText('提交时间')" href="#">所有时间</a></li>
             <li data-filter-camera-type="Alpha"><a data-toggle="tab" href="#" onclick="changeDropText('一个月内')">一个月内</a></li>
             <li data-filter-camera-type="Zed"><a data-toggle="tab" href="#" onclick="changeDropText('一年内')">一年内</a></li>
             <li class="divider"></li>
@@ -354,7 +354,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
               <b class="caret"></b>
            </a>
     <ul class="dropdown-menu">
-            <li data-filter-camera-type="all"><a data-toggle="tab" onclick="changeDropText2('所有时间')" href="#">所有时间</a></li>
+            <li data-filter-camera-type="all"><a data-toggle="tab" onclick="changeDropText2('审批时间')" href="#">所有时间</a></li>
             <li data-filter-camera-type="Alpha"><a data-toggle="tab" href="#" onclick="changeDropText2('一个月内')">一个月内</a></li>
             <li data-filter-camera-type="Zed"><a data-toggle="tab" href="#" onclick="changeDropText2('一年内')">一年内</a></li>
             <li class="divider"></li>
@@ -672,7 +672,7 @@ function cancel_modal_next_()
       var endTime = new Date();
       var startTime2 = new Date();
       var endTime2 = new Date();
-    if (search_time != "所有时间") {
+    if (search_time != "提交时间") {
       switch(search_time) {
         case "一个月内":
           endTime = endTime.Format('yyyy-MM-dd');
@@ -706,7 +706,7 @@ function cancel_modal_next_()
         groups:time_groups
       }];
     }
-    if (search_time2 != "所有时间") {
+    if (search_time2 != "审批时间") {
       switch(search_time2) {
         case "一个月内":
           endTime2 = endTime2.Format('yyyy-MM-dd');
