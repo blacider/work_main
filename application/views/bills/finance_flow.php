@@ -43,7 +43,7 @@ position: absolute;
 
   #userGroup{
   position: absolute;
-  left: 37%;
+  left: 34%;
   top: 60px;
   z-index: 2;
   height: 15px;
@@ -65,13 +65,13 @@ position: absolute;
    }
    #dataSelect {
     position: absolute;
-    left: 55.6%;
+    left: 52.6%;
     z-index: 2;
     top: 55px;
    }
   #dataSelect_ {
     position: absolute;
-    left: 66.3%;
+    left: 63.3%;
     z-index: 3;
     top: 55px;
    }
