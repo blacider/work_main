@@ -300,8 +300,13 @@ $('.chosen-select').chosen({allow_single_deselect:true});
     };
 
     $('.fallback [data-rel="colorbox"]').colorbox(colorbox_params);
-    $('.cancel').click(function(){
+    $('.cancel').click(function() {
+<?php if (!isset($previous_url)) { $previous_url = FALSE; } ?>
+<?php if ($previous_url) { ?>
+        location.href = "<?php echo $previous_url; ?>";
+<?php } else { ?>
         history.go(-1);
+<?php } ?>
     });
 });
 </script>
