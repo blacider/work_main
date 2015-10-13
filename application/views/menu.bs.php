@@ -630,12 +630,11 @@ foreach($breadcrumbs as $b){
     }
     .form-line- input{
         margin-left: 19px;
-    width: 250px;
+    width: 260px;
     height: 30px;
     border-radius: 6px !important;
     }
     .form-line-2 {
-         padding-top: 12px;
           padding-left: 55px;
     }
     .form-line-2 label {
@@ -678,15 +677,31 @@ function checkNewPassword() {
         return false;
     }
     result = 0;
+    streth = -1;
+    types = 0 ;
     if (pwd.length >= 8) result++;
     var reg = /^([a-zA-Z]+|[0-9]+)$/;
+    var reg1 = /^(.*[a-z]+.*)$/;
+    var reg2 = /^(.*[A-Z]+.*)$/;
+    var reg3 = /^(.*[0-9]+.*)$/;
+    var reg4 = /^(.*[^\w\s]+.*)$/;
     if(!reg.test(pwd)) result++;
     var x;
     if (EMAIL != "") x = EMAIL.split('@')[0];
     else x = PHONE;
     if (x != pwd) result++;
 
-    changePwdLevel(result-1);
+    if(pwd.length >= 8 && !reg.test(pwd)) streth = 0;
+    if(pwd.length >= 10 && !reg.test(pwd)) streth = 1;
+
+    if(reg1.test(pwd)) types++;
+    if(reg2.test(pwd)) types++;
+    if(reg3.test(pwd)) types++;
+    if(reg4.test(pwd)) types++;
+
+    if(streth >=0 && types >= 3) streth = 2;
+
+    changePwdLevel(streth);
     if (result == 3) {
         $('#wrong-error').css('visibility', 'hidden');
         if ($("#old_password").val() == pwd) {
@@ -769,7 +784,7 @@ function resetPasswardSubmit() {
                 <label>原密码</label><input onkeyup="checkNewPassword()" id="old_password" name="old_password" type="password">
             </div>
             <div class="form-line-">
-                <label>新密码</label><input type="password" name="password" id="newPassword" onkeyup="checkNewPassword()" name="new" placeholder="至少8个字符，不可以是纯数字或字母">
+                <label>新密码</label><input type="password" name="password" id="newPassword" onkeyup="checkNewPassword()" name="new" placeholder="至少8个字符，不可以是纯数字或纯字母">
             </div>
             <div class="form-line-">
                 <label style="position: relative;left: -12px;">重复密码</label><input style="margin-left: 6px;" onkeyup="checkNewPassword()" name="repassword" id="reNewPassword" type="password" placeholder="重复新密码">
