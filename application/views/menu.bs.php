@@ -644,7 +644,7 @@ foreach($breadcrumbs as $b){
             margin-right: 5px;
     }
 </style>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
-<div class="modal fade" id="security_dialog">
+<div class="modal fade" id="security_dialog" style="top:150px">
   <div class="modal-dialog" style="width: 376px;font-size: 13px;">
     <div class="modal-content" style="border-radius: 5px;padding-top: 13px;">
     
@@ -670,6 +670,7 @@ foreach($breadcrumbs as $b){
 var __BASE = "<?php echo base_url();?>";
 var EMAIL = "<?php echo $user['email']?>";
 var PHONE = "<?php echo $user['phone']?>";
+var is_click_submit = 0;
 function checkNewPassword() {
     var pwd = $("#newPassword").val();
     if (pwd == "") {
@@ -689,21 +690,37 @@ function checkNewPassword() {
     if (result == 3) {
         $('#wrong-error').css('visibility', 'hidden');
         if ($("#old_password").val() == pwd) {
-            $('#wrong-error').css('visibility', 'visible').text("新密码不能与旧密码相同");
+            if(is_click_submit)
+            {
+                $('#wrong-error').css('visibility', 'visible').text("新密码不能与旧密码相同");
+            }
+            is_click_submit = 0;
             return false;
         } 
         if ($("#reNewPassword").val() != pwd) {
-            $('#wrong-error').css('visibility', 'visible').text("两次输入不一致");
+            if(is_click_submit)
+            {
+                $('#wrong-error').css('visibility', 'visible').text("两次输入不一致");
+            }
+            is_click_submit = 0;
             return false;
         } 
         if ($("#old_password").val() == "") {
-            $('#wrong-error').css('visibility', 'visible').text("请输入原密码");
+            if(is_click_submit)
+            {
+                $('#wrong-error').css('visibility', 'visible').text("请输入原密码");
+            }
+            is_click_submit = 0;
             return false;
         }
         return true;
     }
     else {
-        $('#wrong-error').css('visibility', 'visible').text("密码格式有误");
+        if(is_click_submit)
+        {
+            $('#wrong-error').css('visibility', 'visible').text("密码格式有误");
+        }
+        is_click_submit = 0;
         return false;
     }
 }
@@ -716,6 +733,7 @@ function changePwdLevel(level) {
     
 }
 function resetPasswardSubmit() {
+    is_click_submit = 1;
     if (checkNewPassword())
 //        $('#security_reset').find("input[type='submit']").click();
     $.ajax({
@@ -742,7 +760,7 @@ function resetPasswardSubmit() {
     });
 }
 </script>
-<div class="modal fade" id="security_reset">
+<div class="modal fade" id="security_reset" style="top:150px">
   <div class="modal-dialog" style="width: 450px;font-size: 13px;">
     <div class="modal-content" style="border-radius: 5px;padding-top: 13px;">
         <form role="form" method="post" action="<?php echo base_url('users/update_password'); ?>">
@@ -751,7 +769,7 @@ function resetPasswardSubmit() {
                 <label>原密码</label><input onkeyup="checkNewPassword()" id="old_password" name="old_password" type="password">
             </div>
             <div class="form-line-">
-                <label>新密码</label><input type="password" name="password" id="newPassword" onkeyup="checkNewPassword()" name="new" placeholder="请输入6-16位数字、字母、或常用符号">
+                <label>新密码</label><input type="password" name="password" id="newPassword" onkeyup="checkNewPassword()" name="new" placeholder="至少8个字符，不可以是纯数字或字母">
             </div>
             <div class="form-line-">
                 <label style="position: relative;left: -12px;">重复密码</label><input style="margin-left: 6px;" onkeyup="checkNewPassword()" name="repassword" id="reNewPassword" type="password" placeholder="重复新密码">
