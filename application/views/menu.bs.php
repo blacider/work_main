@@ -38,6 +38,7 @@
 <?php
 $user = $this->session->userdata('user');
 $pid = $this->session->userdata('uid');
+#print_r($user);
 if(!$user) redirect(base_url('login'));
 $_security = 0;
 if(array_key_exists('risk', $user) && $user['risk'] == 1) {
@@ -657,7 +658,7 @@ foreach($breadcrumbs as $b){
       
         <hr style="margin: 0;">
         <div class="modal-body-item">
-            <p onclick="$('#security_dialog').modal('hide');$('#security_reset').modal('show');" style="cursor: pointer;text-align: center;color:red;margin:0;">好，去修改</p>
+            <p onclick="$('#security_dialog').modal('hide');$('#security_reset').modal({'keyboard': false , 'backdrop':'static'});" style="cursor: pointer;text-align: center;color:red;margin:0;">好，去修改</p>
         </div>
     
 
@@ -785,10 +786,14 @@ $(document).ready(function(){
     if(_security == 1) {
         $('#security_dialog').modal({
             'keyboard' : false
+                ,'backdrop' : 'static' 
         });
-        //$('#security_reset').modal({
-        //    'keyboard' : false
-        //});
+        /*
+        $('#security_reset').modal({
+            'keyboard' : false
+                ,'backdrop' : false
+        });
+        */
     }
     try{
     var _path = window.location.pathname;
