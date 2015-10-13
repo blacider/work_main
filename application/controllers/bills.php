@@ -378,7 +378,7 @@ class Bills extends REIM_Controller {
     }
 
     public function finance_done($search = '') {
-$status = 2; 
+        $status = 2; 
         $this->need_group_casher();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
@@ -469,6 +469,10 @@ $status = 2;
             log_message("debug", "nICe");
 
             $d['date_str'] = date('Y-m-d H:i:s', $d['createdt']);
+            $d["approvaldt_str"] = "0000-00-00 00:00:00";
+            if (array_key_exists("approvaldt", $d)) {
+                $d["approvaldt_str"] = date('Y-m-d H:i:s', $d["approvaldt"]);
+            }
             $d['ugs'] = array();
             if($ugs)
             {
