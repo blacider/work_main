@@ -294,6 +294,7 @@ function arr_contains(item,arr)
 
    
         var _gid;
+        var globle_oid;
         var _gname;
         var oArray = [];
         $('#gid').change(function(){
@@ -320,8 +321,9 @@ function arr_contains(item,arr)
             if(_text)
             {
               var _h = "";
-              _h += "<option value=" + "'"+ _gid + ","+ 0 + ","+ _text +"'"+" selected >" + group_dic[_gid] + '-' + _text + "</option>";
+              _h += "<option value=" + "'"+ _gid + ","+ globle_oid + ","+ _text +"'"+" selected >" + group_dic[_gid] + '-' + _text + "</option>";
               $('#oid').empty().append(_h).trigger('chosen:updated');
+              console.log(globle_oid);
               $('#_oid').val(JSON.stringify($('#oid').val()));
             }
           }
@@ -357,6 +359,7 @@ function arr_contains(item,arr)
             var _id = $(this).data('id');
             var _gid = $(this).data('gid');
             var _oid = $(this).data('oid');
+            globle_oid = _id;
             $('#fid').val(_id);
          //   $('#labs').prop('hidden',true).trigger('chosen:updated');
          //   $('#gidinfo').prop('hidden',true).trigger('chosen:updated');
@@ -465,6 +468,12 @@ function arr_contains(item,arr)
             $('#gid').prop('disabled',true).trigger('chosen:updated');
         
             $('#oid').prop('disabled',true).trigger('chosen:updated');
+
+            if(gid_arr.length <= 0)
+            {
+              confirm('请选择更新的对象');
+              return false;
+            }
       });
 
   });

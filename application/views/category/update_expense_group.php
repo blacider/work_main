@@ -469,6 +469,12 @@ function arr_contains(item,arr)
             $('#gid').prop('disabled',true).trigger('chosen:updated');
         
             $('#oid').prop('disabled',true).trigger('chosen:updated');
+
+            if(gid_arr.length <= 0)
+            {
+              confirm('请选择更新的对象');
+              return false;
+            }
       });
 
   });

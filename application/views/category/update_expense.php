@@ -118,7 +118,7 @@
 </style>
 <div id="modal-table2" class="modal" tabindex="-1">
   <div class="modal-dialog">
-    <form action="<?php echo base_url('category/create_fee_afford')?>
+    <form id="obj_form" action="<?php echo base_url('category/create_fee_afford')?>
       " method='post'>
       <div class="modal-content">
         <div class="modal-header">
@@ -423,6 +423,7 @@ function arr_contains(item,arr)
 
 
       $('.mul_update').click(function(){
+
             $('#obj_lab').empty().append('所选对象:');
             $('#modal_title').empty().append('批量更新');
             $('#send').val('更新');
@@ -473,7 +474,23 @@ function arr_contains(item,arr)
             $('#gid').prop('disabled',true).trigger('chosen:updated');
         
             $('#oid').prop('disabled',true).trigger('chosen:updated');
+            if(gid_arr.length <= 0)
+            {
+              confirm('请选择更新的对象');
+              return false;
+            }
+            
+            //return false;
       });
-
+      
+      $('#send').click(function(){
+        var __gids = $('#gids').val();
+        var __uids = $('#uids').val();
+        var __ranks = $('#ranks').val();
+        var __levels = $('#levels').val();
+        console.log(__gids);
+        //return false;
+        $('#obj_form').submit();
+      });
   });
 </script>
