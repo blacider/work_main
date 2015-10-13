@@ -635,7 +635,8 @@ foreach($breadcrumbs as $b){
     border-radius: 6px !important;
     }
     .form-line-2 {
-          padding-left: 55px;
+          text-align: left;
+    margin-left: 76px;
     }
     .form-line-2 label {
         width: 41px;
@@ -703,11 +704,11 @@ function checkNewPassword() {
 
     changePwdLevel(streth);
     if (result == 3) {
-        $('#wrong-error').css('visibility', 'hidden');
+        $('#wrong-error').css('display', 'none');
         if ($("#old_password").val() == pwd) {
             if(is_click_submit)
             {
-                $('#wrong-error').css('visibility', 'visible').text("新密码不能与旧密码相同");
+                $('#wrong-error').css('display', 'block').text("新密码不能与旧密码相同");
             }
             is_click_submit = 0;
             return false;
@@ -715,7 +716,7 @@ function checkNewPassword() {
         if ($("#reNewPassword").val() != pwd) {
             if(is_click_submit)
             {
-                $('#wrong-error').css('visibility', 'visible').text("两次输入不一致");
+                $('#wrong-error').css('display', 'block').text("两次输入不一致");
             }
             is_click_submit = 0;
             return false;
@@ -723,7 +724,7 @@ function checkNewPassword() {
         if ($("#old_password").val() == "") {
             if(is_click_submit)
             {
-                $('#wrong-error').css('visibility', 'visible').text("请输入原密码");
+                $('#wrong-error').css('display', 'block').text("请输入原密码");
             }
             is_click_submit = 0;
             return false;
@@ -733,7 +734,7 @@ function checkNewPassword() {
     else {
         if(is_click_submit)
         {
-            $('#wrong-error').css('visibility', 'visible').text("密码格式有误");
+            $('#wrong-error').css('display', 'block').text("至少8个字符，不可以是纯数字或纯字母");
         }
         is_click_submit = 0;
         return false;
@@ -760,7 +761,7 @@ function resetPasswardSubmit() {
            // console.log(data);
             if(data.status == 0)
             {
-                $('#wrong-error').css('visibility', 'visible').text("密码错误");
+                $('#wrong-error').css('display', 'block').text(data.msg);
             }
             else
             {
@@ -793,7 +794,9 @@ function resetPasswardSubmit() {
                 <label>弱</label>
                 <label>中</label>
                 <label>强</label>
-                <span id="wrong-error" style="color:red;visibility:hidden;width: auto;border: none;position: relative;top: -10px;left: 16px;">密码格式有误</span>
+	    </div>
+	    <div style="text-align: left;margin-left: 76px;">
+                <p id="wrong-error" style="display:none;color:red">密码格式有误</p>
             </div>
         </div>
             <input type="hidden" name="pid" value="<?php echo $pid;?>">
