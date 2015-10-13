@@ -78,7 +78,14 @@ position: absolute;
    .dropdown_{
     background-color: transparent !important;
     color: black !important;
-   }
+   } <?php if ($status == 1) {?>
+   #userGroup {
+    left: 51%;
+    }
+    #dataSelect {
+    left: 66%;
+    }
+    <?php }?>
 </style>
 <script type="text/javascript">
   function changeDropText(str) {
@@ -105,8 +112,13 @@ position: absolute;
     if ($search != "") {
       $search_gid = explode('_',$search)[0];
       $search_time1 = explode('_',$search)[1];
+      if ($status == 2) {
       $search_time2 = explode('_',$search)[2];
       $search_text = explode('_',$search)[3];
+      } else {
+        $search_time2 = explode('_',$search)[2];
+        $search_text = explode('_',$search)[2];
+      }
     }
   ?>
   jQuery(document).ready(function($) {
@@ -192,7 +204,11 @@ position: absolute;
         var groupsId = $('select[name="gids"]').val();
         var time = $('#dropText').text().replace(" ","");
         var time2 = $('#dropText2').text().replace(" ","");
-        window.location.href = "/bills/"+window.location.href.split('/')[4]+"/"+groupsId+"_"+time+"_"+time2+"_"+text;
+        if (__STATUS == 2) {
+          window.location.href = "/bills/"+window.location.href.split('/')[4]+"/"+groupsId+"_"+time+"_"+time2+"_"+text;
+        } else {
+          window.location.href = "/bills/"+window.location.href.split('/')[4]+"/"+groupsId+"_"+time+"_"+text;
+        }
       }
   });
      var _dt = new Date().Format('yyyy-MM-dd hh:mm:ss');
@@ -324,7 +340,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
   </ul>
 </div>
 
-<div class="col-sm-2 col-xs-2" id="dataSelect_">
+<div class="col-sm-2 col-xs-2" id="dataSelect_" <?php if($status == 1) echo "style='display:none'";?>>
   <ul class="nav nav-pills">
     <li class="dropdown all-camera-dropdown active">
            <a class="dropdown-toggle dropdown_" data-toggle="dropdown" href="javascript:void(0);">
@@ -711,7 +727,7 @@ function cancel_modal_next_()
       
       time_groups2 = [{
         groupOp:"AND",
-        rules:[{field:"date_str",op:"ge",data:startTime2},{field:"date_str",op:"le",data:endTime2}],
+        rules:[{field:"approvaldt_str",op:"ge",data:startTime2},{field:"date_str",op:"le",data:endTime2}],
         groups:time_groups
       }];
     }
