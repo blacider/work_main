@@ -188,13 +188,34 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
     <b class="arrow"></b>
     <ul class="submenu nav-show" style="display: block;">
         <li class="hsub" id="newreport">
+
+<?php if(count($report_templates) > 0) { ?>
+        <a href="#"  class="dropdown-toggle">
+            <i class="menu-icon fa fa-caret-right"></i>
+            新建报告 
+        </a>
+<?php } else { ?>
         <a href="<?php echo base_url('reports/newreport'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
             新建报告
         </a>
+<?php } ?>
 
         <b class="arrow"></b>
+<?php if(count($report_templates) > 0) { ?>
+<ul class="submenu rushumenu">
+<?php foreach($report_templates as $r) { ?>
+                                    <li class="">
+                                        <a href="<?php echo base_url('reports/report_template/' . $r['id']); ?>">
+<?php echo $r['name']; ?>
+                                        </a>
 
+                                        <b class="arrow"></b>
+                                    </li>
+<?php } ?>
+</ul>
+
+<?php } ?>
         </li>
         <li class="hsub" id="index">
         <a href="<?php echo base_url('reports'); ?>" >
@@ -395,6 +416,14 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     </a>
     <b class="arrow"></b>
     <ul class="submenu nav-show" style="display: block;">
+<!--
+-->
+
+        <li class="hsub" id="report_settings_list">
+        <a href="<?php echo base_url('company/report_settings_list'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 报告设置</a>
+        <b class="arrow"></b>
+        </li>
+-->
 
         <li class="hsub" id="approval_flow">
         <a href="<?php echo base_url('company/approval_flow'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 财务审批流</a>
@@ -425,8 +454,8 @@ if($profile['admin'] == 1 || $profile['admin'] == 2) {
 
     <li class="hsub" id="bills">
     <a href="#" class="dropdown-toggle">
-        <i class="menu-icon fa fa-money"></i>
-        <span class="menu-text"> 财务核算</span>
+        <i class="menu-icon fa fa-copy"></i>
+        <span class="menu-text"> 公司报销详情 </span>
 
         <b class="arrow fa fa-angle-down"></b>
     </a>
@@ -439,14 +468,21 @@ if($profile['admin'] == 1 || $profile['admin'] == 2) {
         <b class="arrow"></b>
         </li>
 
+        <li class="hsub" id="in_progress">
+        <a href="<?php echo base_url('bills/in_progress'); ?>" >审核中</a>
+
+        <b class="arrow"></b>
+        </li>
+
         <li class="hsub" id="index">
         <a href="<?php echo base_url('bills/index'); ?>" >待结算</a>
 
         <b class="arrow"></b>
         </li>
 
+
         <li class="hsub" id="exports">
-        <a href="<?php echo base_url('bills/exports'); ?>" > 已结束</a>
+        <a href="<?php echo base_url('bills/exports'); ?>" > 已完成</a>
         <b class="arrow"></b>
         </li>
 
@@ -455,6 +491,34 @@ if($profile['admin'] == 1 || $profile['admin'] == 2) {
 
 <?php  } 
 
+if($profile['admin'] == 1 || $profile['admin'] == 2) {
+?>
+
+    <li class="hsub" id="finance">
+    <a href="#" class="dropdown-toggle">
+        <i class="menu-icon fa fa-money"></i>
+        <span class="menu-text"> 财务审批 </span>
+
+        <b class="arrow fa fa-angle-down"></b>
+    </a>
+    <b class="arrow"></b>
+    <ul class="submenu nav-show" style="display: block;">
+
+        <li class="hsub" id="finance_flow">
+        <a href="<?php echo base_url('bills/finance_flow'); ?>" >待审批</a>
+
+        <b class="arrow"></b>
+        </li>
+
+        <li class="hsub" id="finance_done">
+        <a href="<?php echo base_url('bills/finance_done'); ?>" >已审批</a>
+
+        <b class="arrow"></b>
+        </li>
+    </ul>
+    </li>
+
+<?php  } 
 }
 ?>
 
@@ -583,6 +647,12 @@ $(document).ready(function(){
 	}
     if(_controller == "members" && _method == "editgroup"){
     	_method = "groups";
+	}
+    if(_controller == "bills" && _method == "finance_done"){
+    	_controller = "finance";
+	}
+    if(_controller == "bills" && _method == "finance_flow"){
+    	_controller = "finance";
 	}
     if(_controller == "category" && _method == "sob_update")
     {

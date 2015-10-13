@@ -98,21 +98,19 @@ class Users extends REIM_Controller {
     public function profile(){
     	$error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
-	$ug = $this->reim_show->usergroups();
-	$_ranks = $this->groups->get_rank_level(1);
-	$_levels = $this->groups->get_rank_level(0);
-	$ranks = array();
-	$levels = array();
+        $ug = $this->reim_show->usergroups();
+        $_ranks = $this->groups->get_rank_level(1);
+        $_levels = $this->groups->get_rank_level(0);
+        $ranks = array();
+        $levels = array();
 
-	if($_ranks['status'] > 0)
-	{
-		$ranks = $_ranks['data'];
-	}
+        if($_ranks['status'] > 0) {
+            $ranks = $_ranks['data'];
+        }
 
-	if($_levels['status'])
-	{
-		$levels = $_levels['data'];
-	}
+        if($_levels['status']) {
+            $levels = $_levels['data'];
+        }
         // 重新获取
         $profile = $this->user->reim_get_user();
         //print_r($profile);

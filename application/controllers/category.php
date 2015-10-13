@@ -131,12 +131,13 @@ class Category extends REIM_Controller {
                 } 
                 if(array_key_exists($s['sob_id'], $_sob_db_hash)){
                     $_sob_name[$s['sob_id']] = $_sob_db_hash[$s['sob_id']];//$s['name'];
-                    array_push($_exist_sob_dict[$s['sob_id']], trim($s['category_name']) . trim($s['sob_code']) . $s['max_limit']);
+                    array_push($_exist_sob_dict[$s['sob_id']], trim($s['category_name']) . trim($s['sob_code']) . $s['max_limit'] . trim($s['note']));
                 }
 
             }
         }
         log_message("debug", "XExistd SOB DICT:" . json_encode($_exist_sob_dict));
+        log_message("debug", "XExistd SOB name:" . json_encode($_sob_name));
         $__sob_hash_dict = array();
         foreach($_exist_sob_dict as $sid => $cids){
             sort($cids);
@@ -146,6 +147,7 @@ class Category extends REIM_Controller {
             log_message("debug", "ESOD:" . json_encode($__sob_hash_dict));
             log_message("debug", "xHash:" . $_hash);
             $__sob_hash_dict[$_hash] = $sid;
+            log_message("debug", "xHashSid:" . $sid);
         }
         $sobs = array();
         $sob_hash = array();
@@ -157,19 +159,26 @@ class Category extends REIM_Controller {
             $obj['id'] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue());
             $obj['name'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue());
             $obj['email'] = trim($sheet->getCellByColumnAndRow(2, $row)->getValue());
-            if(!$obj['email']) continue;
+            $obj['phone'] = trim($sheet->getCellByColumnAndRow(3, $row)->getValue());
+            if((!$obj['email']) && (!$obj['phone'])) continue;
             $obj['own_id'] = 0;
             $desc = array();
             $_ids = array();
             $obj['cates'] = array();
-            for($col = 3; $col < $highestColumm; $col+=3){
+            for($col = 4; $col < $highestColumm; $col+=4){
                 $s = array();
                 $s['name'] = trim($sheet->getCellByColumnAndRow($col, $row)->getValue());
                 $s['code'] = trim($sheet->getCellByColumnAndRow($col + 1, $row)->getValue());
                 $s['limit'] = trim($sheet->getCellByColumnAndRow($col + 2, $row)->getValue());
+                $s['note'] = trim($sheet->getCellByColumnAndRow($col + 3, $row)->getValue());
+                //array_push($_ids, trim($s['name']) . trim($s['code']) . $s['limit'] . $s['note']);
                 if(!$s['code']) continue;
-                array_push($_ids, trim($s['name']) . trim($s['code']) . $s['limit']);
-                array_push($desc, $s['name'] . "(ID:" . $s['code'] . ", 限额:" . $s['limit'] . ")");
+                if(!trim($s['limit']))
+                {
+                    $s['limit'] = 0;
+                }
+                array_push($_ids, trim($s['name']) . trim($s['code']) . $s['limit'] . trim($s['note']));
+                array_push($desc, $s['name'] . "(ID:" . $s['code'] . ", 限额:" . $s['limit'] . "说明:" .$s['note'] . ")");
                 array_push($obj['cates'], $s);
             }
             log_message("debug", "IDS:" . json_encode($_ids));
@@ -182,19 +191,41 @@ class Category extends REIM_Controller {
             $obj['sob_hash'] = $_hash;
             if(array_key_exists($_hash, $__sob_hash_dict)){
                 $obj['sob_id'] = $__sob_hash_dict[$_hash];
-                $obj['sob_name'] = $_sob_name[$obj['sob_id']];
+                $__sob_name = '';
+                $obj['sob_name'] = '';
+                if(array_key_exists($obj['sob_id'], $_sob_name)){
+                    $obj['sob_name'] = $_sob_name[$obj['sob_id']];
+                    $__sob_name = $_sob_name[$obj['sob_id']];
+                }
                 log_message("debug", "SOB EXISTS:" . json_encode($_sob_name) . ", " . $obj['sob_id']);
                 if(!array_key_exists($obj['sob_id'], $exitst_sobs)) {
-                    $exitst_sobs[$obj['sob_id']] = array('name' => $_sob_name[$obj['sob_id']], 'emails' => array(), 'cids' => array(), 'detail' => $obj['cates']);
+                    $exitst_sobs[$obj['sob_id']] = array('name' => $__sob_name,'emails' => array(), 'cids' => array(), 'detail' => $obj['cates']);
                 }
-                array_push($exitst_sobs[$obj['sob_id']]['emails'], $obj['email']);
+                if($obj['email'])
+                {
+                    array_push($exitst_sobs[$obj['sob_id']]['emails'], $obj['email']);
+                }
+                else
+                {
+                    array_push($exitst_sobs[$obj['sob_id']]['emails'], $obj['phone']);
+                }
             } else {
                 // 数据库中不存在，那么留下来，准备建设新的
                 if(!array_key_exists($_hash, $sob_hash)) {
-                    $sob_hash[$_hash] = array('name' => '自动帐套' . date('Y-m-d'), 'emails' => array(), 'cids' => $_ids, 'detail' => $obj['cates']);
+                    $sob_hash[$_hash] = array('name' => '自动帐套' . date('Y-m-d h:i:sa'), 'emails' => array(), 'cids' => $_ids, 'detail' => $obj['cates']);
                     $idx += 1;
                 }
-                array_push($sob_hash[$_hash]['emails'], $obj['email']);
+                //array_push($sob_hash[$_hash]['emails'], $obj['email']);
+                if($obj['email'])
+                {
+                    array_push($sob_hash[$_hash]['emails'], $obj['email']);
+                    //array_push($exitst_sobs[$obj['sob_id']]['emails'], $obj['email']);
+                }
+                else
+                {
+                    array_push($sob_hash[$_hash]['emails'], $obj['phone']);
+                    //array_push($exitst_sobs[$obj['sob_id']]['emails'], $obj['email']);
+                }
             }
             $obj['str_desc'] = implode("/", $desc);
             array_push($sobs, $obj);
@@ -322,8 +353,9 @@ class Category extends REIM_Controller {
         return redirect(base_url('category/account_set'));
     }
 
-    public function sob_update($gid)
+    public function sob_update($gid = -1)
     {
+        if(-1 == $gid) return redirect(base_url('category/account_set'));
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
@@ -423,11 +455,11 @@ class Category extends REIM_Controller {
 		}
         if(array_key_exists('extra_type',$cate))
         {
-		    $all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code'],'note'=>$cate['note'],'force_attach'=>$cate['force_attach'], 'max_limit'=>$cate['max_limit'],'extra_type'=>$cate['extra_type']);
+            $all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code'],'note'=>$cate['note'],'force_attach'=>$cate['force_attach'], 'max_limit'=>$cate['max_limit'],'extra_type'=>$cate['extra_type'], 'alias_type' => $cate['dest']);
         }
         else
         {
-		    $all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code'],'note'=>$cate['note'],'force_attach'=>$cate['force_attach'], 'max_limit'=>$cate['max_limit'],'extra_type'=>0);
+            $all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code'],'note'=>$cate['note'],'force_attach'=>$cate['force_attach'], 'max_limit'=>$cate['max_limit'],'extra_type'=>0, 'alias_type' => $cate['dest']);
         }
 	}
 			
@@ -894,6 +926,7 @@ class Category extends REIM_Controller {
     $max_limit = $this->input->post('max_limit');
 	$_force_attach = $this->input->post('force_attach');
     $extra_type = $this->input->post('extra_type');
+    $alias_type = $this->input->post('alias_type');
 	$force_attach = 0;
 	if($_force_attach)
 	{
@@ -909,7 +942,7 @@ class Category extends REIM_Controller {
     log_message('debug', 'max_limit:' . $max_limit);
     log_message('debug', 'extra_type:' . $extra_type);
     
-	$obj = $this->category->create_update($cid,$pid,$sob_id,$name,$avatar,$code,$force_attach,$note,$max_limit,$extra_type);
+	$obj = $this->category->create_update($cid,$pid,$sob_id,$name,$avatar,$code,$force_attach,$note,$max_limit,$extra_type, $alias_type);
 	if($obj['status'] > 0)
 	{
 		$this->session->set_userdata('last_error','添加成功');

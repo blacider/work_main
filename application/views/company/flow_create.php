@@ -18,7 +18,7 @@
 
 <div class="page-content">
     <div class="page-content-area">
-        <form role="form"  class="form-horizontal"  enctype="multipart/form-data" id="mainform">
+    <form role="form"  class="form-horizontal"  enctype="multipart/form-data" id="mainform" action="<?php echo base_url('company/create_finance_policy'); ?>" >
             <div class="row">
                 <div class="container">
                     <div class="row">
@@ -40,7 +40,6 @@
                                 <div class="col-md-offset-3 col-md-9">
                                     <a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
 
-                                    <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>重置</a>
                                 </div>
                             </div>
                         </div>
@@ -54,12 +53,6 @@
 <script type="text/javascript">
 var __BASE = "<?php echo $base_url; ?>";
    $(document).ready(function(){
-   /*	$('.renew').click(function(){
-    var _checked = $('#isadmin').is('checked');
-    console.log("checked" + _checked);
-    $('#profile').submit();
-	});*/
-
 
         $('.renew').click(function(){
             var sname = $('#sob_name').val();
@@ -71,20 +64,13 @@ var __BASE = "<?php echo $base_url; ?>";
                 show_notify("请输入财务审批流");
                 return false;
             }
-            /*if(sgroups == null)
-            {
-                $('#group').focus();
-                show_notify("请选择部门");
-                return false;
-            }*/
 	       $.ajax({
                 type:"post",
-                url:__BASE+"category/create_flow",
+                url:__BASE+"company/create_finance_flow",
                 data:{sob_name:$('#sob_name').val(),groups:0},
                 dataType:'json',
                 success:function(data){
-                        //console.log(data);
-                        var d = JSON.parse(data);
+                    var d = data;
                         if(d.code > 0)
                         {
                             show_notify('保存成功');
@@ -96,18 +82,8 @@ var __BASE = "<?php echo $base_url; ?>";
                         }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.log(XMLHttpRequest.status);
-                        console.log(XMLHttpRequest.readyState);
-                        console.log(textStatus);
-                    },            });
-	 
+                },            });
 	       });
-       
-        $('.cancel').click(function(){
-            $('#sob_name').val('');
-            $("#group").val('');
-            $('#group').trigger("chosen:updated");
-        });
     });
 </script>
 

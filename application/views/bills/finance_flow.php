@@ -1,5 +1,7 @@
  <script src="/static/ace/js/chosen.jquery.min.js"></script>
  <link rel="stylesheet" href="/static/ace/css/chosen.css" />
+ <script src="/static/ace/js/dropzone.min.js"></script>
+ <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 
 
@@ -86,6 +88,8 @@ position: absolute;
     $search_gid = "";
     $search_text = "";
     $search_time = "所有时间";
+
+    echo ' var s = "' . $search . '";' ;
     if ($search != "") {
       $search_gid = explode('_',$search)[0];
       $search_time = explode('_',$search)[1];
@@ -142,77 +146,6 @@ position: absolute;
      var _dt = new Date().Format('yyyy-MM-dd hh:mm:ss');
   });
  
-  function doSearch() {
-    var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
-        colModel = $grid.jqGrid("getGridParam", "colModel"),
-        searchText = $("#globalSearchText").val(),
-        l = colModel.length;
-    var groupId = $('select[name="gids"]').val();
-    for (i = 0; i < l; i++) {
-        cm = colModel[i];
-        if (cm.search !== false && (cm.stype === undefined || cm.stype === "text")) {
-            rules.push({
-                field: cm.name,
-                op: "cn",
-                data: searchText
-            });
-        }
-    }
-    var search_time = "<?php echo $search_time?>";
-    var time_groups = time_groups = [{
-        groupOp:"AND",
-        rules:[],
-        groups:[{
-          groupOp: "OR",
-          rules: rules ,
-          groups:[]
-        }]
-      }];
-      var startTime = new Date();
-      var endTime = new Date();
-    if (search_time != "所有时间") {
-      switch(search_time) {
-        case "一个月内":
-          endTime = endTime.Format('yyyy-MM-dd');
-          startTime.setMonth(startTime.getMonth()-1);
-          startTime = startTime.Format('yyyy-MM-dd');
-          break;
-        case "一年内":
-          endTime = endTime.Format('yyyy-MM-dd');
-          startTime.setYear(startTime.getYear()-1);
-          startTime = startTime.Format('yyyy-MM-dd');
-          break;
-        default:
-          endTime = search_time.split('至')[1];
-          startTime = search_time.split('至')[0];
-      }
-      startTime += " 00:00:00";
-      endTime += " 24:60:60";
-      time_groups = [{
-        groupOp:"AND",
-        rules:[{field:"date_str",op:"ge",data:startTime},{field:"date_str",op:"le",data:endTime}],
-        groups:[{
-          groupOp: "OR",
-          rules: rules ,
-          groups:[]
-        }]
-      }]
-    }
-    var groups_ = [{
-      groupOp:"AND",
-      rules:[{field:"ugs",op:"cn",data:groupId}],
-      groups:time_groups
-    }];
-    //postData.filters = JSON.stringify({
-    //    groupOp: "OR",
-    //    rules: rules ,
-    //    groups:groups_
-    //});
-    postData.filters = JSON.stringify(groups_[0]);
-    $grid.jqGrid("setGridParam", { search: true });
-    $grid.trigger("reloadGrid", [{page: 1}]);
-    return false;
-}
 Date.prototype.Format = function (fmt) { //author: meizz 
     var o = {
         "M+": this.getMonth() + 1, //月份 
@@ -318,20 +251,118 @@ Date.prototype.Format = function (fmt) { //author: meizz
 </div>
 
 
-<div class="modal fade" id="modal-table">
+<div class="modal fade" id="comment_dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">退回理由</h4>
+            </div>
+            <form action="<?php echo base_url('/bills/report_finance_deny'); ?>" method="post" id="form_discard">
+                <div class="modal-body">
+                    <input type="hidden" id="div_id" class="thumbnail" name="rid" style="display:none;" value=""/>
+                    <input type="hidden" id="status"  name="status" style="display:none;" value="3" />
+                    <div class="form-group">
+                        <textarea class="form-control" name="content"></textarea>
+                    </div>
+                    <div class="clearfix form-actions">
+                        <div class="col-md-offset-3 col-md-9">
+                            <a class="btn btn-white btn-primary new_card" data-renew="0"><i class="ace-icon fa fa-save "></i>退回</a>
+                            <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<div class="modal fade" id="modal_next">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <form action="<?php echo base_url('bills/report_finance_end'); ?>" method="post" class="form-horizontal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">报告将发送至以下审批人，请确认</h4>
+                <input type="hidden" name="rid" value="" id="rid">
+                <input type="hidden" name="status" value="2" id="status">
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="col-xs-9 col-sm-9">
+                        <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="receiver[]" multiple="multiple" id="modal_managers" style="width:300px;">
+                            <?php foreach($members as $m) { ?>
+                            <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="pass" name="pass" value="0" />
+                <input type="submit" class="btn btn-primary" id="mypass" value="确认" />
+               <!-- <div class="btn btn-primary" onclick="deny_report()">拒绝</div> -->
+                <div class="btn btn-primary" onclick="cancel_modal_next()">取消</div>
+            </div>
+                </form>
+                <script type="text/javascript">
+                  function cancel_modal_next() {
+                    $('#modal_next').modal('hide');
+                    return;
+                  }
+
+                </script>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="modal_next_">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <form action="<?php echo base_url('bills/report_finance_end'); ?>" method="post" class="form-horizontal" id="permit_form">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <input name="rid" value="" id="rid_">
+                <input type="hidden" name="status" value="2" id_="status">
+                <h4 class="modal-title">是否结束</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="col-xs-9 col-sm-9">
+                        <select style="display:none;" class="chosen-select_ tag-input-style form-control col-xs-12 col-sm-12" name="receiver[]" multiple="multiple" id="modal_managers" style="width:300px;">
+                        </select>
+                        <h4 class="modal-title">是否结束这条报告?</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="pass" name="pass" value="0">
+                <input type="submit" class="btn btn-primary pass" value="确认结束">
+              <!--  <div class="btn btn-primary" onclick="deny_end_report()">拒绝</div> -->
+                <div class="btn btn-primary" onclick="cancel_modal_next_()">取消</div>
+                <!--<div class="btn btn-primary repass" onClick="chose_others(this.parentNode.parentNode.rid.value)">取消</div> -->
+            </div>
+                </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="modal fade" id="modal-table-finish">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">支付以下报告</h4>
+        <h4 class="modal-title">结束以下报告</h4>
       </div>
       <div class="modal-body">
-        <table id="grid-table-new"></table> 
+        <table id="grid-table-finish"></table> 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         <button type="button" class="btn btn-primary" onclick="exportExel()">下载汇总报表</button>
-        <button type="button" class="btn btn-primary" onclick="pay()">确认已支付</button>
+        <button type="button" class="btn btn-primary" onclick="finish()">确认结束</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -405,9 +436,9 @@ $(document).ready(function(){
         }).trigger('resize.chosen');
     });
 
-function pay() {
+function finish() {
     var _id = chosenids.join('%23');
-    location.href = __BASE + "bills/marksuccess/" + _id + "/0";
+    location.href = __BASE + "bills/report_finance_multiEnd/" + _id;
 }
 
 function exportExel() {
@@ -426,6 +457,8 @@ function exportExel() {
 }
 
 $grid = $('#grid-table');
+
+
 $('#send').click(function(){
     $.ajax({
       url:__BASE+'reports/sendout'
@@ -450,6 +483,101 @@ $('#send').click(function(){
     });
 });
 
+$('.new_card').click(function(){
+    $('#form_discard').submit();
+});
+
+function deny_report()
+{
+  var report_id = $('#rid').val();
+  console.log(report_id);
+  location.href = __BASE + 'bills/report_finance_deny/' + report_id; 
+}
+
+function deny_end_report()
+{
+  var report_id = $('#rid_').val();
+  alert(report_id);
+  console.log(report_id);
+  location.href = __BASE + 'bills/report_finance_deny/' + report_id; 
+}
+
+function cancel_modal_next_()
+{
+  $('#modal_next_').modal('hide');
+}
+
+  function doSearch() {
+    var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
+        colModel = $grid.jqGrid("getGridParam", "colModel"),
+        searchText = $("#globalSearchText").val(),
+        l = colModel.length;
+    var groupId = $('select[name="gids"]').val();
+    for (i = 0; i < l; i++) {
+        cm = colModel[i];
+        if (cm.search !== false && (cm.stype === undefined || cm.stype === "text")) {
+            rules.push({
+                field: cm.name,
+                op: "cn",
+                data: searchText
+            });
+        }
+    }
+    var search_time = "<?php echo $search_time?>";
+    var time_groups = time_groups = [{
+        groupOp:"AND",
+        rules:[],
+        groups:[{
+          groupOp: "OR",
+          rules: rules ,
+          groups:[]
+        }]
+      }];
+      var startTime = new Date();
+      var endTime = new Date();
+    if (search_time != "所有时间") {
+      switch(search_time) {
+        case "一个月内":
+          endTime = endTime.Format('yyyy-MM-dd');
+          startTime.setMonth(startTime.getMonth()-1);
+          startTime = startTime.Format('yyyy-MM-dd');
+          break;
+        case "一年内":
+          endTime = endTime.Format('yyyy-MM-dd');
+          startTime.setYear(startTime.getYear()-1);
+          startTime = startTime.Format('yyyy-MM-dd');
+          break;
+        default:
+          endTime = search_time.split('至')[1];
+          startTime = search_time.split('至')[0];
+      }
+      startTime += " 00:00:00";
+      endTime += " 24:60:60";
+      time_groups = [{
+        groupOp:"AND",
+        rules:[{field:"date_str",op:"ge",data:startTime},{field:"date_str",op:"le",data:endTime}],
+        groups:[{
+          groupOp: "OR",
+          rules: rules ,
+          groups:[]
+        }]
+      }]
+    }
+    var groups_ = [{
+      groupOp:"AND",
+      rules:[{field:"ugs",op:"cn",data:groupId}],
+      groups:time_groups
+    }];
+    //postData.filters = JSON.stringify({
+    //    groupOp: "OR",
+    //    rules: rules ,
+    //    groups:groups_
+    //});
+    postData.filters = JSON.stringify(groups_[0]);
+    $grid.jqGrid("setGridParam", { search: true });
+    $grid.trigger("reloadGrid", [{page: 1}]);
+    return false;
+}
 </script>
 <script language="javascript" src="/static/js/base.js" ></script>
-<script language="javascript" src="/static/js/bills.js" ></script>
+<script language="javascript" src="/static/js/finance_flow.js" ></script>

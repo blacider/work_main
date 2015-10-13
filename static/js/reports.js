@@ -61,7 +61,7 @@ jQuery(grid_selector).jqGrid({
             updatePagerIcons(table);
             enableTooltips(table);
             if (FLAG) {
-                $("#globalSearch").click();
+                doSearch();
                 FLAG = 0;
             }
             

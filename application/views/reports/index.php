@@ -23,7 +23,7 @@
     background-color: #ff7075;
   }
 </style>
-<input name="key" placeholder="ID或标题" value="" type='text' id="globalSearchText">
+<input name="key" placeholder="ID或标题" value="<?php echo $search;?>" type='text' id="globalSearchText">
 <button type="button" id="globalSearch">搜索</button>
 <div id="mysearch"></div>
 <div class="page-content">
@@ -125,6 +125,11 @@ $(function() {
 <script type="text/javascript">
   $grid = $('#grid-table');
   $("#globalSearch").click(function () {
+      if ("<?php echo $search;?>" != $("#globalSearchText").val()) {
+        window.location.href = "/"+window.location.href.split('/')[3]+"/"+"index"+"/"+$("#globalSearchText").val();
+      }
+});
+function doSearch() {
     var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
     colModel = $grid.jqGrid("getGridParam", "colModel"),
     searchText = $("#globalSearchText").val(),
@@ -146,7 +151,8 @@ $(function() {
     $grid.jqGrid("setGridParam", { search: true });
     $grid.trigger("reloadGrid", [{page: 1, current: true}]);
     return false;
-  });
+}
+
 
 $('#send').click(function(){
     $.ajax({

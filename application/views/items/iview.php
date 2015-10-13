@@ -43,6 +43,32 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">承担者</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="分类" value=" <?php 
+$afford = $item['fee_afford'];
+$_parts = explode("|", $afford);
+$final = array();
+$is_hidden = false;
+foreach($_parts as $x) {
+    $__parts = explode(",", $x);
+    if(count($__parts) == 3)
+    {
+        if($__parts[1] != '' && $__parts[2] != '')
+        {
+             array_push($final, implode("-", array($__parts[1], $__parts[2])));
+        }
+        else
+        {
+            $is_hidden = true;
+        }
+    }
+}
+echo implode(",", $final);
+?> " disabled >
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">消费时间</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <input type="text" class="form-controller col-xs-12" name="amount" placeholder="消费时间" value=" <?php echo $item['dt']; ?> " disabled>
@@ -93,7 +119,13 @@
                             <label class="col-sm-1 control-label no-padding-right">人均:</label>
                             <div class="col-xs-3 col-sm-3">
                                 <div class="input-group">
-                                    <div id="average_id" name="average" type="text" class="form-control"><?php $_ava = $item['amount']/$item_value[5]['value'];  echo sprintf("%.2f", $_ava);   ?>元/人*<?php echo $item_value[5]['value']?></div>
+                                    <div id="average_id" name="average" type="text" class="form-control"><?php 
+                                        $_ava = $item['amount'];
+                                        if($item_value[5]['value'] != 0)
+                                        {
+                                            $_ava = $item['amount']/$item_value[5]['value'];  
+                                        }
+                                        echo sprintf("%.2f", $_ava);   ?>元/人*<?php echo $item_value[5]['value']?></div>
 
 
                                 </div>
@@ -134,6 +166,7 @@
                                     </select>
     </div>
 </div> 
+
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">商家</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -221,7 +254,6 @@
         </form>
     </div>
 </div>
-
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 $(document).ready(function(){
@@ -234,6 +266,24 @@ $(document).ready(function(){
                 $this.next().css({'width': $this.parent().width()});
             })
         }).trigger('resize.chosen');
+    $('.afford_detail').each(function(idx, item) {
+        $(this).next().hide();
+    });
+
+    $('.afford_detail').hide();
+    $('#afford_type').change(function(){
+        var _id = $(this).val();
+        $('.afford_detail').each(function(idx, item) {
+            $(item).hide();
+            $(item).next().hide();
+            $(item).removeClass('afford_chose');
+            if($(item).data('pid') == _id) {
+                $(item).show();
+                $(item).next().show();
+                $(item).addClass('afford_chose');
+            }
+        });
+    });
     var $overflow = '';
     var colorbox_params = {
         rel: 'colorbox',
@@ -262,5 +312,9 @@ $(document).ready(function(){
     $('.cancel').click(function(){
         history.go(-1);
     });
+	var afford_type = "<?php echo $fee_afford_type;?>";
+	console.log('afford_type:' + afford_type);
+	$('#afford_type').val(afford_type).trigger('chosen:updated').trigger('change');
+
 });
 </script>

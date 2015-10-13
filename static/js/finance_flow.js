@@ -1,4 +1,34 @@
 //niu.splice(niu.indexOf(5),1)
+function show_modal(){
+            $('#modal_next').modal('show');
+}
+function chose_others_zero(item,nextId) {
+    //console.log(item);
+    for (var item in getData) {
+        if (item != undefined) {
+            //console.log(getData[item]);
+            $($('.chosen-select')[0]).find("option[value='"+getData[item]+"']").attr("selected",true);
+            $($('.chosen-select')[0]).trigger("chosen:updated");
+        }
+    }
+    $('#modal_next').modal('show');
+    console.log(nextId);
+    if(nextId.length)
+    {
+            $('#modal_managers').val(nextId[0]).prop('selected',true);
+            $('#modal_managers').trigger('chosen:updated');
+    }
+    else
+    {
+            $('#mypass').attr('disabled',true).trigger('chosen:updated');
+    }
+            $('#modal_managers').attr('disabled',true).trigger('chosen:updated');
+}
+function chose_others(_id) {
+    $('#modal_next_').modal('hide');
+    $('#rid').val(_id);
+    $('#modal_next').modal('show');
+}
 function bind_event(){
     $('.tdetail').each(function() {
         $(this).click(function(){
@@ -8,18 +38,57 @@ function bind_event(){
     });
     $('.tapprove').each(function(){
         $(this).click(function(){
-            if(confirm("确认已经付款吗？") == true){
             var _id = $(this).data('id');
-            location.href = __BASE + "bills/marksuccess/" + _id + "/0";
-            }
+            $.ajax({
+                type:"GET",
+                url:__BASE + "bills/report_finance_permission/" + _id,
+                data: {
+                    rid:_id
+                },
+                dataType: "json",
+                success: function(data){
+                    if (data['status'] > 0) {
+                        getData = data['data'].suggestion;
+                        if (data['data'].complete == 0) {
+                            $('#rid').val(_id);
+                            chose_others_zero(_id,data['data'].suggestion);
+                        } else {
+                            $('#rid_').val(_id);
+                            $('#modal_next_').modal('show'); 
+                        }
+                    }
+                }
+            });
         });
+
+//        $(this).click(function(){
+ //           $('#modal_next_').show(); 
+//            if(confirm("确认已经付款吗？") == true){
+//            var _id = $(this).data('id');
+//            location.href = __BASE + "bills/marksuccess/" + _id + "/0";
+//            }
+//        });
     });
+    /*
     $('.tdeny').each(function(){
         $(this).click(function(){
             if(confirm("确认取消付款吗？") == true){
             var _id = $(this).data('id');
             location.href = __BASE + "bills/marksuccess/" + _id + "/1";
+        $(this).click(function(){
+            var _id = $(this).data('id');
+            $('#div_id').val(_id);
+            $('#comment_dialog').modal('show');
+        });
             }
+        });
+    });
+    */
+    $('.tdeny').each(function() {
+        $(this).click(function(){
+            var _id = $(this).data('id');
+            $('#div_id').val(_id);
+            $('#comment_dialog').modal('show');
         });
     });
     /*
@@ -49,7 +118,7 @@ var selectRows = [];
 try{
     var FLAG = 1;
 jQuery(grid_selector).jqGrid({
-    url: __BASE + 'bills/listdata/' + __STATUS,
+    url: __BASE + 'bills/listfinance/' + __STATUS,
     mtype: "GET",
     datatype: "local",
     height: 250,
@@ -89,6 +158,7 @@ jQuery(grid_selector).jqGrid({
             enableTooltips(table);
             if (FLAG) {
                 doSearch();
+                //$("#globalSearch").click();
                 FLAG = 0;
             }
         }, 0);
@@ -277,28 +347,29 @@ try{
 	}); 	
     } 
 	 })
+
 .navButtonAdd(pager_selector,{
     caption:"",
-    title:__STATUS == 2 ? "支付选中报告" : "",
-    buttonicon:__STATUS == 2 ? "ace-icon fa fa-check green" : "",
-    onClickButton:__STATUS == 2 ? function() {
+    title:"结束选中报告",
+    buttonicon:"ace-icon fa fa-check green",
+    onClickButton:function() {
          // chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
          chosenids = selectRows;
          if (chosenids.length == 0) {
             alert("请选择报告!");
             return;
          }
-         $('#modal-table').modal().css({
+         $('#modal-table-finish').modal().css({
              width:'auto',
              'margin-left':function () {
-                 return -(($(this).width() - $('#modal-table').width) / 2);
+                 return -(($(this).width() - $('#modal-table-flow').width) / 2);
              }
          });
         _part = chosenids.join('/');
-        var _part_url = __BASE + 'bills/listdata_new/' + __STATUS + '/' + _part;
+        var _part_url = __BASE + 'bills/listdata_new/' + '2' + '/' + _part;
   
-        $(grid_selector_new).jqGrid('GridUnload');
-        jQuery(grid_selector_new).jqGrid({  
+        $(grid_selector_finish).jqGrid('GridUnload');
+        jQuery(grid_selector_finish).jqGrid({  
             url: _part_url,
             mtype: "GET",
             datatype: "local",
@@ -342,10 +413,11 @@ try{
             emptyrecords: '没有账单', // the message will be displayed at the bottom 
         });
 
-    $(grid_selector_new).jqGrid();  
-    } : null,
+    $(grid_selector_finish).jqGrid();  
+    },
     position:"last"
 });
+
 } catch(e) {
     alert(e);
 }

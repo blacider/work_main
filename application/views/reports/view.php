@@ -32,6 +32,170 @@
                                 </div>
                             </div>
 
+<?php 
+if(!empty($config)) {
+
+                        if($config['account'] == 1){ 
+?>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">银行账号</label>
+                                <div class="col-xs-9 col-sm-9">
+                                    <input type="text" class="form-controller col-xs-12" name="title" placeholder="名称" value="<?php echo $extra['account']['name'] . " [" . $extra['account']['no']; ?>" disabled>
+                                </div>
+                            </div>
+<?php 
+                        }
+                        if($config['payment'] == 1){ 
+?>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">支付方式</label>
+                                <div class="col-xs-9 col-sm-9">
+<?php 
+                            $options = array(
+                                array('desc' => '网银转账', 'value' => 0),
+                                array('desc' => '现金', 'value' => 1),
+                                array('desc' => '支票', 'value' => 2),
+                                array('desc' => '冲账', 'value' => 3)
+                            );
+                            $find = 0;
+                            foreach($options as $n) {
+                                $check_str = '';
+                                if($n['value'] == $extra['payment']) {
+                                    $find = 1;
+?>
+                                    <input type="text" class="form-controller col-xs-12" name="title" placeholder="支付方式" value="<?php echo $n['desc']; ?>" disabled>
+
+<?php 
+                                }
+                            }
+                            if($find == 0){
+?>
+
+                                    <input type="text" class="form-controller col-xs-12" name="title" placeholder="支付方式" value="无" disabled>
+<?php
+                            }
+?>
+                                </div>
+                            </div>
+<?php 
+                        }
+                        if($config['borrowing'] == 1){ 
+?>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">已付金额</label>
+                                <div class="col-xs-9 col-sm-9">
+                                <input type="text" class="form-controller col-xs-12" id="borrowing" name="borrowing"  placeholder="已付金额" value="<?php echo $extra['borrowing']; ?>" disabled>
+                                </div>
+                            </div>
+
+<?php 
+                        }
+                        if($config['location'] == 1){ 
+?>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">出差地</label>
+                                <div class="col-xs-9 col-sm-9">
+                                <input type="text" id="location_from" class="form-controller col-xs-5" name="location_from"  placeholder="出发地" value="<?php echo $extra['location']['start']; ?>" disabled>
+                                    <label class="col-sm-1 control-label">到</label>
+                                    <input type="text" id="location_to" class="form-controller col-xs-5" name="location_to"  placeholder="到达地" value="<?php echo $extra['location']['dest']; ?>" disabled>
+                                </div>
+                            </div>
+<?php 
+                        }
+                        if($config['period'] == 1){ 
+?>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">出差时间</label>
+                                <div class="col-xs-9 col-sm-9">
+<?php
+                            $s = trim($extra['period']['start']);
+                            $e =  trim($extra['period']['end']);
+                            try {
+                            if($s == "0" || $s == "" || $s == "NaN"){
+                                $s = @date('Y-m-d H:i:s');
+                            } else {
+                                $s = @date('Y-m-d H:i:s', $s);
+                            }
+                            if($e == "0" || $e == "" || $e == "NaN"){
+                                $e = @date('Y-m-d H:i:s');
+                            } else {
+                                $e = @date('Y-m-d H:i:s', $e);
+                            }
+                            } catch(Exception $e) {
+                                $s = date('Y-m-d H:i:s');
+                                $e = date('Y-m-d H:i:s');
+                            }
+?>
+
+
+                                    <input type="text" id="period_start" class="form-controller col-xs-5 period" name="period_start"  placeholder="起始时间" value="<?php echo $s; ?>" disabled />
+<input type="hidden" id="sdt" value="<?php echo strtotime($extra['period']['start']); ?>" >
+                                    <label class="col-sm-1 control-label">到</label>
+                                    <input type="text" id="period_end" class="form-controller col-xs-5 period" name="period_end"  placeholder="结束时间" value="<?php echo $e; ?>"  disabled>
+<input type="hidden" id="edt" value="<?php echo strtotime($extra['period']['end']); ?>" >
+                                </div>
+                            </div>
+<?php 
+                        }
+                        if($config['contract'] == 1){ 
+                            $_extra_yes = '';
+                            $_extra_no = '';
+                            if($extra['contract']['available'] == 0) {
+                                $_extra_no = 'checked';
+                            } else {
+                                $_extra_yes = 'checked';
+                            }
+?>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">合同</label>
+                                <div class="col-xs-9 col-sm-9">
+                                    <div class="radio col-xs-2 col-sm-2">
+                                         <label>
+                                         <input name="contract" type="radio" id="contract_yes" class="ace contract" value="1" <?php echo $_extra_yes; ?> disabled>
+                                             <span class="lbl">有</span>
+                                         </label>
+                                    </div>
+                                    <div class="radio col-xs-2 col-sm-2">
+                                         <label>
+                                             <input name="contract" type="radio" id="contract_no" class="ace contract" value="2" <?php echo $_extra_no; ?> disabled>
+                                             <span class="lbl">无</span>
+                                         </label>
+                                    </div>
+                                    <div class="radio col-xs-8 col-sm-8">
+                                    <input type="text" id="contract_note" class="form-controller col-xs-12" name="contract_note"  placeholder="合同备注" value="<?php echo $extra['contract']['note']; ?>"  disabled>
+                                    </div>
+                                </div>
+                            </div>
+<?php 
+                        }
+                        if($config['note'] == 1){ 
+?>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">备注</label>
+                                <div class="col-xs-9 col-sm-9">
+                                    <div class="radio col-xs-12 col-sm-12">
+                                    <textarea disabled id="note" rows="2" class="form-controller col-xs-12" name="note"><?php echo trim($extra['note']); ?></textarea>
+                                    </div>
+                                </div>
+                            
+                            </div>
+<?php 
+                        }
+        }
+?>
+
+
+
+
+
+
+
+
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">总额</label>
                                 <div class="col-xs-10 col-sm-10">

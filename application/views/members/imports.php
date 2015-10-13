@@ -22,6 +22,11 @@
                                     <th>上级Email</th>
                                     <th>级别</th>
                                     <th>职位</th>
+                                    <th>一级审批</th>
+                                    <th>二级审批</th>
+                                    <th>三级审批</th>
+                                    <th>四级审批</th>
+                                    <th>五级审批</th>
                                     <th>状态</th>
                                     <th>错误信息</th>
                                 </tr>
@@ -40,11 +45,16 @@
                                     <td><?php echo $d['cardbank']; ?></td>
                                     <!--<td><?php echo $d['cardloc']; ?></td> -->
                                     <td><?php echo $d['group_name'];?></td>
-                                    <td><?php echo $d['manager_id'];?></td>
-                                    <td><?php echo $d['manager'];?></td>
-                                    <td><?php echo $d['manager_email'];?></td>
+                                    <td><?php echo $d['display_manager_id'];?></td>
+                                    <td><?php echo $d['display_manager'];?></td>
+                                    <td><?php echo $d['display_manager_email'];?></td>
                                     <td><?php echo $d['rank'];?></td>
                                     <td><?php echo $d['level'];?></td>
+                                    <td><?php echo $d['manager_email'];?></td>
+                                    <td><?php echo $d['second'];?></td>
+                                    <td><?php echo $d['third'];?></td>
+                                    <td><?php echo $d['fourth'];?></td>
+                                    <td><?php echo $d['fifth'];?></td>
                                     <td>
                                         <!-- <a alt="<?php echo $d['status'] == 1 ? '已经是同一个公司的同事' : '还不是一个公司的同事'; ?>"><i id="m_<?php echo md5($d['email']); ?>"   -->
                                         <a alt=""><i
@@ -139,7 +149,6 @@
         $('.data-maintainer').each(function(idx, val){
             var _status = $(this).data('exist');
             if(1 == _status) {
-             //   console.log('skip');
                 return;
             }
             var _member = $(this).val();

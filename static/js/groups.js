@@ -41,7 +41,7 @@ _models = [
     //console.log(e);
 }
 console.log(_cols);
-
+var FLAG = 1;
 jQuery(grid_selector).jqGrid({
 
     url: __BASE + 'members/listgroup',
@@ -69,6 +69,10 @@ jQuery(grid_selector).jqGrid({
             updateActionIcons(table);
             updatePagerIcons(table);
             enableTooltips(table);
+            if (FLAG) {
+                doSearch();
+                FLAG = 0;
+            }
         }, 0);
     },
 
