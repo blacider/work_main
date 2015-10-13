@@ -236,11 +236,15 @@ echo implode(",", $final);
 
                             <div class="clearfix form-actions col-sm-8 col-xs-8">
                                 <div class="col-md-offset-3 col-md-6">
-                                    <?php 
-                                        if($editable == 1)
-                                        {
+                                    <?php
+                                    if($editable == 1)
+                                    {
+					$_from_report = 0;
+					if (isset($from_report))
+					    $_from_report = $from_report;
+					
                                         ?>
-                                            <a class="btn btn-white btn-primary renew" href="<?php echo base_url('items/edit/' . $item['id']); ?>" data-renew="1"><i class="ace-icon fa fa-check"></i>修改</a>
+                                            <a class="btn btn-white btn-primary renew" href="<?php echo base_url('items/edit/' . $item['id'] . "/" . $_from_report); ?>" data-renew="1"><i class="ace-icon fa fa-check"></i>修改</a>
                                         <?php
                                         }
                                         ?>

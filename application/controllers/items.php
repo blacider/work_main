@@ -707,6 +707,7 @@ class Items extends REIM_Controller {
                 'categories' => $categories,
                 'tags' => $tags,
                 'item' => $item,
+                "from_report" => $from_report,
                 'previous_url' => $previous_url,
                 'editable' => $_editable,
                 'flow' => $flow
@@ -770,7 +771,7 @@ class Items extends REIM_Controller {
         }
     }
 
-    public function edit($id = 0){
+    public function edit($id = 0, $from_report = 0) {
         log_message('debug','item_id' . $id);
         if(0 === $id) redirect(base_url('items'));
         $_profile = $this->user->reim_get_user();	
@@ -919,6 +920,7 @@ class Items extends REIM_Controller {
                 'categories' => $categories,
                 'images' => json_encode($_images),
                 'item' => $item
+                ,"from_report" => $from_report
                 ,'tags' => $tags
                 ,'item_config'=>$item_config,
                 'images_ids' => implode(",", $_image_ids)
@@ -948,6 +950,7 @@ class Items extends REIM_Controller {
 		$afford_ids = $this->input->post('afford_ids');
         $id = $this->input->post('id');
         $rid = $this->input->post('rid');
+        $from_report = $this->input->post("from_report");
         $_uid = $this->input->post('uid');
         $amount = $this->input->post('amount');
         $category= $this->input->post('category');
@@ -1038,34 +1041,15 @@ class Items extends REIM_Controller {
             log_message('debug','zz item_data:'.json_encode($obj));
         }
         log_message('debug','rid:' . $rid);
-        if($rid == 0) {
+        if(!$id) {
             return redirect(base_url('items/index'));
         } else {
-            //            return redirect(base_url('reports/show/'. $rid));
+            log_message("debug", "from report flag => " . $from_report);
+            if ($from_report)
+                return redirect(base_url("items/show/" . $id . "/1"));
+                                
             return redirect(base_url('items/show/'. $id));
         }
-
-        /*
-
-            switch($item_update_in)
-            {
-            case 0:
-                return redirect(base_url('items/index'));
-                break;
-            case 1:
-                return redirect(base_url('reports'));
-                break;
-            case 2:
-                return redirect(base_url('bills/index'));
-                break;
-            case 3:
-                return redirect(base_url('bills/exports'));
-                break;
-            default:
-                return redirect(base_url('items/index'));
-                break;
-            }
-         */
     }
 
 }
