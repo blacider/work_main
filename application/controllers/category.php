@@ -142,7 +142,7 @@ class Category extends REIM_Controller {
                     $this->session->set_userdata('last_error','对象更新失败');
                 }
         }
-//            return redirect(base_url('category/update_expense/' . $pid));
+            return redirect(base_url('category/update_expense/' . $pid));
     }
     
     public function del_expense($id = -1)
