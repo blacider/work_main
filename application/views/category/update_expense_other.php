@@ -155,6 +155,9 @@
                   </div>
                 </div>
                 <label for="form-field-username" class="col-sm-12 col-xl-12" >对象展示范围:</label>
+               
+
+
                 <div class="form-group">
                   <div class="col-xs-9 col-sm-9">
 
@@ -167,17 +170,7 @@
                   </div>
                 </div>
 
-                <div class="form-group">
-                  <div class="col-xs-9 col-sm-9">
-
-                    <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="uids[]" multiple="multiple" id="uids"data-placeholder="选择员工">
-                      <?php foreach($members as $m) { ?>
-                      <option value="<?php echo $m['id']; ?>">
-                        <?php echo $m['nickname']; ?></option>
-                      <?php } ?></select>
-
-                  </div>
-                </div>
+             
 
                 <div class="form-group">
                   <div class="col-xs-9 col-sm-9">
@@ -195,13 +188,27 @@
                   <div class="col-xs-9 col-sm-9">
 
                     <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="levels[]" multiple="multiple" id="levels" data-placeholder="选择职位">
-                      <?php foreach($ranks as $m) { ?>
+                      <?php foreach($levels as $m) { ?>
                       <option value="<?php echo $m['id']; ?>">
                         <?php echo $m['name']; ?></option>
                       <?php } ?></select>
 
                   </div>
                 </div>
+
+
+                <div class="form-group">
+                  <div class="col-xs-9 col-sm-9">
+
+                    <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="uids[]" multiple="multiple" id="uids"data-placeholder="选择员工">
+                      <?php foreach($members as $m) { ?>
+                      <option value="<?php echo $m['id']; ?>">
+                        <?php echo $m['nickname']; ?></option>
+                      <?php } ?></select>
+
+                  </div>
+                </div>              
+
                 <div class="form-group">
                   <div class="col-xs-9 col-sm-9">
                     <input type="checkbox" class="col-sm-2">
@@ -306,11 +313,27 @@ function arr_contains(item,arr)
         $('#lab_bt').click(function(){
           var _text = $('#lab').val();
           $('#lab').val('');
-          if(_text)
+          var _fid = $('#fid').val();
+          //console.log(_fid);
+          if(_fid != -1)
           {
-            var _h = "";
-            _h += "<option value=" + "'"+ _gid + ","+ 0 + ","+ _text +"'"+" selected >" + group_dic[_gid] + '-' + _text + "</option>";
-            $('#oid').append(_h).trigger('chosen:updated');
+            if(_text)
+            {
+              var _h = "";
+              _h += "<option value=" + "'"+ _gid + ","+ 0 + ","+ _text +"'"+" selected >" + group_dic[_gid] + '-' + _text + "</option>";
+              $('#oid').empty().append(_h).trigger('chosen:updated');
+              $('#_oid').val(JSON.stringify($('#oid').val()));
+            }
+          }
+          else
+          {
+            if(_text)
+            {
+              var _h = "";
+              _h += "<option value=" + "'"+ _gid + ","+ 0 + ","+ _text +"'"+" selected >" + group_dic[_gid] + '-' + _text + "</option>";
+              $('#oid').append(_h).trigger('chosen:updated');
+
+            }
           }
        });
 
@@ -335,8 +358,8 @@ function arr_contains(item,arr)
             var _gid = $(this).data('gid');
             var _oid = $(this).data('oid');
             $('#fid').val(_id);
-            $('#labs').prop('hidden',true).trigger('chosen:updated');
-            $('#gidinfo').prop('hidden',true).trigger('chosen:updated');
+         //   $('#labs').prop('hidden',true).trigger('chosen:updated');
+         //   $('#gidinfo').prop('hidden',true).trigger('chosen:updated');
  //           console.log('pid:' + _pid);
    //         console.log('id:' + _id);
      //       console.log('gid:' + _gid);

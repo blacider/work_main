@@ -28,6 +28,7 @@ class Category extends REIM_Controller {
 
     public function get_fee_afford($oid)
     {
+        $this->need_group_it();
         $fee_afford = array();
         $buf = $this->category->get_fee_afford($oid);
         if($buf['status'] > 0)
@@ -41,6 +42,7 @@ class Category extends REIM_Controller {
 
     public function delete_fee_afford($oid,$pid)
     {
+        $this->need_group_it();
         $buf = $this->category->delete_fee_afford($oid); 
         if($buf['status'] > 0)
         {
@@ -56,6 +58,7 @@ class Category extends REIM_Controller {
     
     public function create_fee_afford()
     {
+        $this->need_group_it();
         $__gid = $this->input->post('_gid');
         $__oid = $this->input->post('_oid');
         $__oid = json_decode($__oid,True);
@@ -139,11 +142,12 @@ class Category extends REIM_Controller {
                     $this->session->set_userdata('last_error','对象更新失败');
                 }
         }
-            return redirect(base_url('category/update_expense/' . $pid));
+//            return redirect(base_url('category/update_expense/' . $pid));
     }
     
     public function del_expense($id = -1)
     {
+        $this->need_group_it();
         if($id == -1)  return redirect(base_url('category/show_expense'));
         $buf = $this->category->del_fee_afford_project($id);
         
@@ -161,6 +165,7 @@ class Category extends REIM_Controller {
 
     public function update_fee_afford_project()
     {
+        $this->need_group_it();
         $id = $this->input->post('pro_id');
         if($id == -1) 
             return redirect(base_url('category/show_expense'));
@@ -179,6 +184,7 @@ class Category extends REIM_Controller {
     }
     public function create_expense()
     {
+        $this->need_group_it();
         $name = $this->input->post('name');
         $buf = $this->category->expense_create($name);
 
@@ -195,6 +201,7 @@ class Category extends REIM_Controller {
 
     public function update_expense($eid = -1)
     {
+        $this->need_group_it();
         if(-1 == $eid) return redirect(base_url('category/show_expense'));
 
         $error = $this->session->userdata('last_error');
@@ -347,6 +354,7 @@ class Category extends REIM_Controller {
 
     public function show_expense()
     {
+        $this->need_group_it();
         $buf = $this->category->get_afford_project();
         $projects = array();
         if($buf['status'] > 0)
@@ -372,6 +380,7 @@ class Category extends REIM_Controller {
 
     public function batch_create_category()
     {
+        $this->need_group_it();
         $sid = $this->input->post('sid');
         $cate = $this->input->post('cate');
         log_message('debug','sid: ' . $sid);

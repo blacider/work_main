@@ -161,17 +161,7 @@
                   </div>
                 </div>
 
-                <div class="form-group">
-                  <div class="col-xs-9 col-sm-9">
-
-                    <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="uids[]" multiple="multiple" id="uids"data-placeholder="选择员工">
-                      <?php foreach($members as $m) { ?>
-                      <option value="<?php echo $m['id']; ?>">
-                        <?php echo $m['nickname']; ?></option>
-                      <?php } ?></select>
-
-                  </div>
-                </div>
+               
 
                 <div class="form-group">
                   <div class="col-xs-9 col-sm-9">
@@ -189,13 +179,26 @@
                   <div class="col-xs-9 col-sm-9">
 
                     <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="levels[]" multiple="multiple" id="levels" data-placeholder="选择职位">
-                      <?php foreach($ranks as $m) { ?>
+                      <?php foreach($levels as $m) { ?>
                       <option value="<?php echo $m['id']; ?>">
                         <?php echo $m['name']; ?></option>
                       <?php } ?></select>
 
                   </div>
                 </div>
+
+                <div class="form-group">
+                  <div class="col-xs-9 col-sm-9">
+
+                    <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="uids[]" multiple="multiple" id="uids"data-placeholder="选择员工">
+                      <?php foreach($members as $m) { ?>
+                      <option value="<?php echo $m['id']; ?>">
+                        <?php echo $m['nickname']; ?></option>
+                      <?php } ?></select>
+
+                  </div>
+                </div>
+
                 <div class="form-group">
                   <div class="col-xs-9 col-sm-9">
                     <input type="checkbox" class="col-sm-2">
