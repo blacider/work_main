@@ -1,7 +1,5 @@
  <script src="/static/ace/js/chosen.jquery.min.js"></script>
  <link rel="stylesheet" href="/static/ace/css/chosen.css" />
- <script src="/static/ace/js/dropzone.min.js"></script>
- <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 
 
@@ -19,7 +17,7 @@
  <style type="text/css">
     #globalSearchText{
 position: absolute;
-  left: 75%;
+  left: 80%;
   top: 60px;
   z-index: 3;
   height: 30px;
@@ -29,7 +27,7 @@ position: absolute;
     #globalSearch {
   background-color: #fe575f;
   position: absolute;
-  left: 88%;
+  left: 93%;
   top: 60px;
   border: 0;
   color: white;
@@ -45,7 +43,7 @@ position: absolute;
 
   #userGroup{
   position: absolute;
-  left: 45%;
+  left: 34%;
   top: 60px;
   z-index: 2;
   height: 15px;
@@ -67,14 +65,27 @@ position: absolute;
    }
    #dataSelect {
     position: absolute;
-    left: 60%;
+    left: 52.6%;
     z-index: 2;
     top: 55px;
    }
-   #dropdown{
-    background-color: transparent;
-    color: black;
+  #dataSelect_ {
+    position: absolute;
+    left: 63.3%;
+    z-index: 3;
+    top: 55px;
    }
+   .dropdown_{
+    background-color: transparent !important;
+    color: black !important;
+   } <?php if ($status == 1) {?>
+   #userGroup {
+    left: 51%;
+    }
+    #dataSelect {
+    left: 66%;
+    }
+    <?php }?>
 </style>
 <script type="text/javascript">
   function changeDropText(str) {
@@ -84,16 +95,30 @@ position: absolute;
   function getDropText() {
     return $('#dropText').text();
   }
+  function changeDropText2(str) {
+    $('#dropText2').text(str);
+    return false;
+  }
+  function getDropText2() {
+    return $('#dropText2').text();
+  }
   <?php 
     $search_gid = "";
     $search_text = "";
-    $search_time = "所有时间";
+    $search_time1 = "提交时间";
+    $search_time2 = "审批时间";
 
     echo ' var s = "' . $search . '";' ;
     if ($search != "") {
       $search_gid = explode('_',$search)[0];
-      $search_time = explode('_',$search)[1];
-      $search_text = explode('_',$search)[2];
+      $search_time1 = explode('_',$search)[1];
+      if ($status == 2) {
+      $search_time2 = explode('_',$search)[2];
+      $search_text = explode('_',$search)[3];
+      } else {
+        $search_time2 = explode('_',$search)[2];
+        $search_text = explode('_',$search)[2];
+      }
     }
   ?>
   jQuery(document).ready(function($) {
@@ -111,6 +136,21 @@ position: absolute;
         }
         $("#dropText").text(dateTime1+ "至" +dateTime2);
         $('#modal-table-time').modal('hide');
+    });
+    $('#time-submit2').click(function(event) {
+        var dateTime1 = $('#date-timepicker3').val();
+        var dateTime2 = $('#date-timepicker4').val();
+        if(dateTime1 == '' || dateTime2 == '')
+        {
+                show_notify('请填写时间');
+                return false;
+        }
+        if (dateTime2 < dateTime1) {
+          show_notify('请填写正确时间');
+          return false;
+        }
+        $("#dropText2").text(dateTime1+ "至" +dateTime2);
+        $('#modal-table-time2').modal('hide');
     });
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
@@ -135,12 +175,40 @@ position: absolute;
     }).on(ace.click_event, function(){
         $(this).prev().focus();
     });
+    $('#date-timepicker3').datetimepicker({
+        language: 'zh-cn',
+            useCurrent: true,
+            format: 'YYYY-MM-DD',
+            linkField: "dt",
+            linkFormat: "YYYY-MM-DD",
+            sideBySide: true
+    }).next().on('dp.change', function(ev){
+    }).on(ace.click_event, function(){
+        $(this).prev().focus();
+    });
+
+        $('#date-timepicker4').datetimepicker({
+        language: 'zh-cn',
+            useCurrent: true,
+            format: 'YYYY-MM-DD',
+            linkField: "dt_end",
+            linkFormat: "YYYY-MM-DD",
+            sideBySide: true
+    }).next().on('dp.change', function(ev){
+    }).on(ace.click_event, function(){
+        $(this).prev().focus();
+    });
      $("#globalSearch").click(function () {
-      if ("<?php echo $search_text;?>" != $("#globalSearchText").val() || "<?php echo $search_time;?>" != $("#dropText").text()|| "<?php echo $search_gid;?>" != $('select[name="gids"]').val()) {
+      if ("<?php echo $search_text;?>" != $("#globalSearchText").val() || "<?php echo $search_time1;?>" != $("#dropText").text()||"<?php echo $search_time2;?>" != $("#dropText2").text()|| "<?php echo $search_gid;?>" != $('select[name="gids"]').val()) {
         var text = $("#globalSearchText").val();
         var groupsId = $('select[name="gids"]').val();
         var time = $('#dropText').text().replace(" ","");
-        window.location.href = "/bills/"+window.location.href.split('/')[4]+"/"+groupsId+"_"+time+"_"+text;
+        var time2 = $('#dropText2').text().replace(" ","");
+        if (__STATUS == 2) {
+          window.location.href = "/bills/"+window.location.href.split('/')[4]+"/"+groupsId+"_"+time+"_"+time2+"_"+text;
+        } else {
+          window.location.href = "/bills/"+window.location.href.split('/')[4]+"/"+groupsId+"_"+time+"_"+text;
+        }
       }
   });
      var _dt = new Date().Format('yyyy-MM-dd hh:mm:ss');
@@ -196,6 +264,43 @@ Date.prototype.Format = function (fmt) { //author: meizz
         </div>
   </div>
 </div><!-- PAGE CONTENT ENDS -->
+
+<div id="modal-table-time2" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="blue bigger"> 选择时间段 </h4>
+          </div>
+         <div class="modal-body">
+           <div class="container">
+              <div class="col-xs-12 col-sm-12">
+                <div class="row">
+                  <div class="form-group">
+                    <div class="col-sm-4">
+                      <input id="date-timepicker3" name = 'dt' type="text" class="form-control"/>
+                    </div>
+                    <label class="col-sm-1">至</label>
+                    <div class="col-sm-4">
+                      <input id="date-timepicker4" type="text" name = 'dt_end' class="form-control"/>
+                    </div>
+                  </div>   
+                </div>    <!-- row -->
+              </div>    <!-- col-xs-12 -->
+           </div> <!--- container -->
+         </div>
+         <div class="modal-footer">
+           <button class="btn btn-sm" data-dismiss="modal">
+             <i class="ace-icon fa fa-times"></i>
+             取消
+           </button>
+           <div type="button" id='time-submit2' class="btn btn-sm btn-primary">确定</div>
+         </div>
+        </div>
+  </div>
+</div><!-- PAGE CONTENT ENDS -->
+
+
 <!-- <label class="col-sm-2 control-label no-padding-right" id='userGroupLab'>适用范围</label> -->
 <div class="col-xs-2 col-sm-2" id="userGroup">
   <select class="chosen-select tag-input-style "  name="gids"  data-placeholder="请选择部门" placeholder="请选择部门">
@@ -216,15 +321,15 @@ Date.prototype.Format = function (fmt) { //author: meizz
   </select>
 </div>
 <input name="key" placeholder="ID、报告名或提交者" value="<?php echo $search_text;?>" type='text' id="globalSearchText" />
-<div class="col-sm-3 col-xs-3" id="dataSelect">
+<div class="col-sm-2 col-xs-2" id="dataSelect">
   <ul class="nav nav-pills">
     <li class="dropdown all-camera-dropdown active">
-           <a class="dropdown-toggle" id="dropdown" data-toggle="dropdown" href="javascript:void(0);">
-           <span id='dropText'><?php echo $search_time;?></span>
+           <a class="dropdown-toggle dropdown_" data-toggle="dropdown" href="javascript:void(0);">
+           <span id='dropText'><?php echo $search_time1;?></span>
               <b class="caret"></b>
            </a>
     <ul class="dropdown-menu">
-            <li data-filter-camera-type="all"><a data-toggle="tab" onclick="changeDropText('所有时间')" href="#">所有时间</a></li>
+            <li data-filter-camera-type="all"><a data-toggle="tab" onclick="changeDropText('提交时间')" href="#">所有时间</a></li>
             <li data-filter-camera-type="Alpha"><a data-toggle="tab" href="#" onclick="changeDropText('一个月内')">一个月内</a></li>
             <li data-filter-camera-type="Zed"><a data-toggle="tab" href="#" onclick="changeDropText('一年内')">一年内</a></li>
             <li class="divider"></li>
@@ -235,6 +340,30 @@ Date.prototype.Format = function (fmt) { //author: meizz
   </ul>
 </div>
 
+<div class="col-sm-2 col-xs-2" id="dataSelect_" <?php if($status == 1) echo "style='display:none'";?>>
+  <ul class="nav nav-pills">
+    <li class="dropdown all-camera-dropdown active">
+           <a class="dropdown-toggle dropdown_" data-toggle="dropdown" href="javascript:void(0);">
+           <span id='dropText2'><?php 
+           if ($search_time2 == "所有时间") {
+            echo "审批时间";
+           } else {
+            echo $search_time2;
+           }
+           ?></span>
+              <b class="caret"></b>
+           </a>
+    <ul class="dropdown-menu">
+            <li data-filter-camera-type="all"><a data-toggle="tab" onclick="changeDropText2('审批时间')" href="#">所有时间</a></li>
+            <li data-filter-camera-type="Alpha"><a data-toggle="tab" href="#" onclick="changeDropText2('一个月内')">一个月内</a></li>
+            <li data-filter-camera-type="Zed"><a data-toggle="tab" href="#" onclick="changeDropText2('一年内')">一年内</a></li>
+            <li class="divider"></li>
+            <li data-filter-camera-type="Bravo"><a data-toggle="tab" onclick="$('#modal-table-time2').modal('show');return false;" href="#">自定义时间</a></li>
+
+     </ul>
+    </li>
+  </ul>
+</div>
 <button type="button" id="globalSearch" >搜索</button>
 
 
@@ -521,8 +650,9 @@ function cancel_modal_next_()
             });
         }
     }
-    var search_time = "<?php echo $search_time?>";
-    var time_groups = time_groups = [{
+    var search_time = "<?php echo $search_time1?>";
+    var search_time2 = "<?php echo $search_time2?>";
+    var time_groups = [{
         groupOp:"AND",
         rules:[],
         groups:[{
@@ -531,9 +661,16 @@ function cancel_modal_next_()
           groups:[]
         }]
       }];
+      var time_groups2 = [{
+        groupOp:"AND",
+        rules:[],
+        groups:time_groups
+      }];
       var startTime = new Date();
       var endTime = new Date();
-    if (search_time != "所有时间") {
+      var startTime2 = new Date();
+      var endTime2 = new Date();
+    if (search_time != "提交时间") {
       switch(search_time) {
         case "一个月内":
           endTime = endTime.Format('yyyy-MM-dd');
@@ -551,6 +688,7 @@ function cancel_modal_next_()
       }
       startTime += " 00:00:00";
       endTime += " 24:60:60";
+      
       time_groups = [{
         groupOp:"AND",
         rules:[{field:"date_str",op:"ge",data:startTime},{field:"date_str",op:"le",data:endTime}],
@@ -559,12 +697,42 @@ function cancel_modal_next_()
           rules: rules ,
           groups:[]
         }]
-      }]
+      }];
+      time_groups2 = [{
+        groupOp:"AND",
+        rules:[],
+        groups:time_groups
+      }];
+    }
+    if (search_time2 != "审批时间") {
+      switch(search_time2) {
+        case "一个月内":
+          endTime2 = endTime2.Format('yyyy-MM-dd');
+          startTime2.setMonth(startTime2.getMonth()-1);
+          startTime2 = startTime2.Format('yyyy-MM-dd');
+          break;
+        case "一年内":
+          endTime2 = endTime2.Format('yyyy-MM-dd');
+          startTime2.setYear(startTime2.getYear()-1);
+          startTime2 = startTime2.Format('yyyy-MM-dd');
+          break;
+        default:
+          endTime2 = search_time2.split('至')[1];
+          startTime2 = search_time2.split('至')[0];
+      }
+      startTime2 += " 00:00:00";
+      endTime2 += " 24:60:60";
+      
+      time_groups2 = [{
+        groupOp:"AND",
+        rules:[{field:"approvaldt_str",op:"ge",data:startTime2},{field:"date_str",op:"le",data:endTime2}],
+        groups:time_groups
+      }];
     }
     var groups_ = [{
       groupOp:"AND",
       rules:[{field:"ugs",op:"cn",data:groupId}],
-      groups:time_groups
+      groups:time_groups2
     }];
     //postData.filters = JSON.stringify({
     //    groupOp: "OR",

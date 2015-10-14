@@ -302,7 +302,7 @@ class Items extends REIM_Controller {
                 }
 
 
-                $s['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
+                $s['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
                     . $edit_str
                     . '</div>';
                 switch($s['status']){
