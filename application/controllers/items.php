@@ -893,12 +893,13 @@ class Items extends REIM_Controller {
             array_push($_images, $ob);
         }
         $item_sob = 0;
+        $_want_key = '';
         foreach($categories as $cate)
         {
             log_message('debug','cate_id:'.$cate['id'] . " sob_id:" . $cate['sob_id']);
             if($cate['id'] == $item['category'])
             {
-
+                $_want_key = $cate['category_name'];
                 $item_sob = $cate['sob_id'];
                 log_message('debug','cate---:' . $cate['sob_id']);
             }
@@ -925,6 +926,7 @@ class Items extends REIM_Controller {
                 ,'item_config'=>$item_config,
                 'images_ids' => implode(",", $_image_ids)
                 ,'sob_id' => $item_sob
+                ,'category_name' => $_want_key
                 ,'item_value' => $item_value
                 ,'member' => $gmember
 				,'afford' => $afford
@@ -954,6 +956,10 @@ class Items extends REIM_Controller {
         $_uid = $this->input->post('uid');
         $amount = $this->input->post('amount');
         $category= $this->input->post('category');
+        $_hidden_category = $this->input->post('hidden_category');
+        if(0 < $_hidden_category) {
+            $category = $_hidden_category;
+        }
         $subs = $this->input->post('peoples');
         log_message('debug', "##TM SRC:" . $this->input->post('dt1'));
         $time = $this->input->post('dt1');

@@ -44,6 +44,7 @@
 </select>
 <select name="category" id="sob_category" class="col-xs-6 col-sm-6 sob_category chosen-select-niu" data-placeholder="类目">
 </select>
+<input type="hidden" name="hidden_category" id="hidden_category" value="<?php echo $item['category']; ?>">
 
                                 </div>
                             </div>
@@ -336,6 +337,7 @@ for(var i = 0 ; i < item_config.length; i++)
     _item_config[item_config[i]['cid']] = item_config[i];
 }
 
+var category_name = '<?php echo $category_name; ?>';
 var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
 var _images = '<?php echo $images; ?> ';    
@@ -382,9 +384,11 @@ function get_sobs(){
             dataType : 'json',
             method : 'GET',
             success : function(data){
+                var _lost_sob = 0;
                 for(var item in data) {
                     var _h = '';
                     if(item == sob_id) {
+                        _lost_sob = 1;
                         _h = "<option selected='selected' value='" +  item + "'>"+  data[item].sob_name + " </option>";
                     } else {
                         _h = "<option value='" +  item + "'>"+  data[item].sob_name + " </option>";
@@ -392,6 +396,11 @@ function get_sobs(){
                     selectDataCategory[item] = data[item]['category'];
                     selectDataSobs += _h;
                 }
+                if(_lost_sob == 0) {
+                    _h = "<option selected='selected' value='" + sob_id + "'> - [原帐套] </option>";
+                }
+                selectDataCategory[sob_id] = [{'id' : sob_id, 'category_name' : category_name}];
+                selectDataSobs += _h;
                 selectPostData = data;
                 updateSelectSob(selectDataSobs);
             },
@@ -419,6 +428,7 @@ function get_sobs(){
             $("#sobs").attr("value", _sid);
             $(this.nextElementSibling).empty().append(_h).trigger("chosen:updated");
             $('#sob_category').trigger('change');
+            $('#hidden_category').val(_item_category);
         });
 }
 
@@ -661,6 +671,8 @@ $('#sob_category').change(function(){
             $('#endTime').hide();
             $('#average').hide();
        var category_id = $('#sob_category').val();
+
+    $('#hidden_category').val(category_id);
         if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 2)
         {
             __multi_time = 1;
