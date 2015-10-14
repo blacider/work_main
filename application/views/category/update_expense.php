@@ -307,9 +307,16 @@ function arr_contains(item,arr)
                         for(var i = 0 ; i < data['member'].length; i++)
                         {
                           console.log(exist_oids.length);
-                          if(!arr_contains(data['member'][i].id,exist_oids))
+                          if($('#fid').val() == -1)
                           {
-                            _h += "<option value=" + "'" + data['gid'] +","+ data['member'][i].id + ","+data['member'][i].nickname+"'"+">" + data['member'][i].d + '-' + data['member'][i].nickname + "</option>";
+                            if(!arr_contains(data['member'][i].id,exist_oids))
+                            {
+                              _h += "<option value=" + "'" + data['gid'] +","+ data['member'][i].id + ","+data['member'][i].nickname+"'"+">" + data['member'][i].d + '-' + data['member'][i].nickname + "</option>";
+                            }
+                          }
+                          else
+                          {
+                              _h += "<option value=" + "'" + data['gid'] +","+ data['member'][i].id + ","+data['member'][i].nickname+"'"+">" + data['member'][i].d + '-' + data['member'][i].nickname + "</option>";
                           }
                         }
                      

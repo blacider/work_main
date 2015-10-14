@@ -308,9 +308,21 @@ function arr_contains(item,arr)
                     {          
                         
                         var _h = '';
-                      
-                          _h += "<option selected value=" + "'"+ _gid[j] + "," + _gid[j] + ","+ group_dic[_gid[j]]+"'"+">" + '部门' + '-' + group_dic[_gid[j]] + "</option>";
-                       
+                          if($('#fid').val() == -1)
+                          {
+                              if(!arr_contains(_gid[j],exist_oids))
+                              {
+                                _h += "<option selected value=" + "'"+ _gid[j] + "," + _gid[j] + ","+ group_dic[_gid[j]]+"'"+">" + '部门' + '-' + group_dic[_gid[j]] + "</option>";
+                              }
+                              else
+                              {
+                                show_notify('对象已经存在');
+                              }
+                          }
+                          else
+                          {
+                              _h += "<option selected value=" + "'"+ _gid[j] + "," + _gid[j] + ","+ group_dic[_gid[j]]+"'"+">" + '部门' + '-' + group_dic[_gid[j]] + "</option>";
+                          }
                      
                         $('#oid').append(_h).trigger("chosen:updated");
                         $('#oid').trigger('change');
