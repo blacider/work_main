@@ -434,6 +434,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <a href="<?php echo base_url('company/approval_flow'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 财务审批流</a>
         <b class="arrow"></b>
         </li>
+
         <li class="hsub" id="submit">
         <a href="<?php echo base_url('company/common'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 通用规则 </a>
         <b class="arrow"></b>
@@ -443,7 +444,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <a href="<?php echo base_url('company/show'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 提交规则 </a>
         <b class="arrow"></b>
         </li>
-
 
         <li class="hsub" id="show_approve">
         <a href="<?php echo base_url('company/show_approve'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 审批规则 </a>
@@ -845,10 +845,6 @@ $(document).ready(function(){
     }
     
     // 导入导出有步骤，合并在一起
-    if(_controller == 'broadcast') {
-        _controller = 'company';
-        _method = 'broadcast_' + _method;
-    }
     if(_controller == "members" && _method == "imports"){
         _method = "export";
     }
