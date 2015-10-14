@@ -1287,6 +1287,8 @@ class Reports extends REIM_Controller {
                 //$o['类别'] = $i['category_name'];
                 $o['商家'] = $i['merchants'];
                 $o['参与人员'] = implode(',', $__relates);
+                //$o['承担部门'] = $_str_afford_dept;
+                //$o['承担对象'] = $_str_afford_member;
                 $o['会计科目'] = $i['category_name'];
                 $o['会计科目代码'] = $cate_dic[$i['category']]['sob_code'];
                 $o['会计科目上级'] = '';
