@@ -583,14 +583,12 @@ $(document).ready(function(){
     });
 
     $('#submit1').click(function(){
-        console.log('cjcj');
         $('#comment').submit();
     });
 
         $('.tpass').each(function() {
         $(this).click(function(){
             var _id = rid;
-        console.log(_id);
             $.ajax({
                 type:"GET",
                 url:__BASE + "reports/check_permission",

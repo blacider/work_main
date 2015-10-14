@@ -335,7 +335,6 @@ function load_group(gid){
                     $(_th).appendTo($('#gtable'));
 
                     $(_member).each(function(idx, item){
-                     //   console.log("admin:"+item.admin);
                         var _c = 'gray';
                         var _p = '员工';
                     var _color = '<span class="label label-success arrowed">管理员</span>';
@@ -348,7 +347,6 @@ function load_group(gid){
                         _p = '点击设置为员工'; 
                     }; break;
                     case '1' : {
-               //         console.log(item.admin);
                         _p = '点击设置为管理员'; 
                             var _color = '<span class="label label-success arrowed">管理员</span>';
                     }; break;
@@ -442,9 +440,7 @@ function bind_remove_from_group() {
                     _data.push({name : val.name, type : 'item', additionalParameters : {id : val.id}});
 
                 });
-                console.log(_data);
                 //_root = {'root' : {name : '全体员工', 'type' : 'folder', 'additionalParameters' : {id : -2, children : _data}}};
-                //console.log(_root);
                 //var treeDataSource = new DataSource({data : _root});
                 var treeDataSource = new DataSource({data : _data});
                 $('#grouptree').ace_tree({

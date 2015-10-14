@@ -318,7 +318,6 @@ if(__item_config != '')
     item_config = JSON.parse(__item_config);
 }
 var _item_config = new Object();
-//console.log(item_config);
 for(var i = 0 ; i < item_config.length; i++)
 {
     if(item_config[i]['type']==2 || item_config[i]['type'] == 5)
@@ -444,7 +443,6 @@ uploader.on( 'uploadComplete', function( file ) {
 }
 function bind_event(){
         $('.del-button').click(function(e) {
-            //console.log(e);
             var key = imagesDict[this.parentNode.id].split("WU_FILE_")[1];
             var images = $("input[name='images']").val();
             var arr_img = images.split(',');
@@ -578,7 +576,6 @@ $(document).ready(function(){
         {
             __multi_time = 1;
             $('#config_id').val(_item_config[category_id]['id']);
-            //console.log(_item_config[category_id]['id']);
             $('#config_type').val(_item_config[category_id]['type']);
             $('#date-timepicker2').val('');
             $('#endTime').show();
@@ -661,7 +658,6 @@ $(document).ready(function(){
 
          var dateTime2 = $('#date-timepicker2').val();
          dateTime2 = dateTime2.replace(/(^\s*)|(\s*$)/g,'');
-         ////console.log(dateTime2.replace(/(^\s*)|(\s*$)/g,'')>'-1');
         if(__config && __config['not_auto_time'] == 1)
         {
             if(dateTime2 == '' && __multi_time)
@@ -670,7 +666,6 @@ $(document).ready(function(){
                 //$('#date-timepicker1').focus();
                 return false;
             }
-            //console.log();
             if((dateTime2>'0') && (dateTime2 < dateTime))
             {
                 show_notify('结束时间应该大于开始时间');
@@ -689,7 +684,6 @@ $(document).ready(function(){
                 return false;
             }
         }
-        ////console.log($('#sob_category').val());
         if($('#sob_category').val() == null)
         {
             show_notify('请选择类目');

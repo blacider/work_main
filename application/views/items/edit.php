@@ -321,7 +321,6 @@ if(__item_config != '')
     item_config = JSON.parse(__item_config);
 }
 var _item_config = new Object();
-//console.log(item_config);
 for(var i = 0 ; i < item_config.length; i++)
 {
     /*
@@ -727,10 +726,7 @@ $('#sob_category').change(function(){
 
 	var afford_type = "<?php echo $fee_afford_type;?>";
 	var af_ids = "<?php echo $fee_afford_ids;?>";
-	console.log('af_ids:' + af_ids);
 	var _af_ids = af_ids.split(',');
-	console.log(_af_ids);
-	console.log('afford_type:' + afford_type);
 	$('#afford_type').val(afford_type).trigger('chosen:updated').trigger('change');
 	$('.afford_chose').val(_af_ids).trigger('chosen:updated').trigger('change');
 

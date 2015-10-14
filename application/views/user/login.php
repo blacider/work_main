@@ -159,8 +159,6 @@
   var password = "<?php echo $password ;?>";
 	$(document).ready(function(){	
 		$('#user').focus();
-//	        console.log($.cookie('user'));
-  //console.log(username + 'hehe'+ password);
     $('#is_r').prop('checked',true);
 		if(username!="" && password!="") {
             $('#user').val(username);

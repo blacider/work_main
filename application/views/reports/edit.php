@@ -629,7 +629,6 @@ $('.tdetail').each(function(){
     });
     $('.tedit').each(function() {
         $(this).click(function(){
-            console.log('修改消费');
             var _id = $(this).data('id');
             location.href = __BASE + "items/edit/" + _id;
         });

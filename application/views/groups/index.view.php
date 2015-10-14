@@ -137,13 +137,12 @@ $(document).ready(function(){
             } else {
                 $($(this).find('input').get(0)).attr('checked', true);
             }
-        }catch(e){console.log(e); }
+        }catch(e){}
         var id = $(this).data('id');
         $('#report_detail').modal();
 
 
         $.getJSON(_BASE + "users/detail/" + id).success(function(data){
-            console.log(data);
             if(data.status > 0){
                 $('#itemlists').html('');
                 $('#back').hide();

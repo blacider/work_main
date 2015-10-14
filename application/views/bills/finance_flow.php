@@ -490,7 +490,6 @@ $('.new_card').click(function(){
 function deny_report()
 {
   var report_id = $('#rid').val();
-  console.log(report_id);
   location.href = __BASE + 'bills/report_finance_deny/' + report_id; 
 }
 
@@ -498,7 +497,6 @@ function deny_end_report()
 {
   var report_id = $('#rid_').val();
   alert(report_id);
-  console.log(report_id);
   location.href = __BASE + 'bills/report_finance_deny/' + report_id; 
 }
 

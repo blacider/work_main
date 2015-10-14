@@ -261,7 +261,7 @@ $(document).ready(function(){
             } else {
                 $($(this).find('input').get(0)).attr('checked', true);
             }
-        }catch(e){console.log(e); }
+        }catch(e){}
         var _item = $(this);
         _LAST = null;
         var id = $(this).data('id');
@@ -452,7 +452,7 @@ $(document).ready(function(){
                         alert("提醒失败");
                     }
         });
-        }catch(e){ console.log(e); }
+        }catch(e){}
     });
 });
 </script>

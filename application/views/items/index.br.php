@@ -189,7 +189,6 @@ $(document).ready(function(){
     $('.pa').each(function(){
         $(this).click(function(){
             var _pa = $(this).data('pa');
-            console.log(_pa);
             if(_pa > -1){
                 $('#data').DataTable().column(8).search(_pa).draw();
             } else {

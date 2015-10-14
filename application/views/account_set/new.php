@@ -56,7 +56,6 @@ var __BASE = "<?php echo $base_url; ?>";
    $(document).ready(function(){
    /*	$('.renew').click(function(){
     var _checked = $('#isadmin').is('checked');
-    console.log("checked" + _checked);
     $('#profile').submit();
 	});*/
 
@@ -83,7 +82,6 @@ var __BASE = "<?php echo $base_url; ?>";
                 data:{sob_name:$('#sob_name').val(),groups:$('#group').val()},
                 dataType:'json',
                 success:function(data){
-                        //console.log(data);
                         var d = JSON.parse(data);
                         if(d.code > 0)
                         {
@@ -97,9 +95,6 @@ var __BASE = "<?php echo $base_url; ?>";
                         }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.log(XMLHttpRequest.status);
-                        console.log(XMLHttpRequest.readyState);
-                        console.log(textStatus);
                     },            });
 	 
 	       }); 

@@ -551,7 +551,6 @@ var range = "<?php echo $range?>";
    $(document).ready(function(){
    /*   $('.renew').click(function(){
     var _checked = $('#isadmin').is('checked');
-    console.log("checked" + _checked);
     $('#profile').submit();
     });*/
  
@@ -563,14 +562,11 @@ var range = "<?php echo $range?>";
             url:__BASE+"category/getsobs",
             dataType:"json",
             success:function(data){
-                console.log(data);
-                console.log(data[_sob_id]);
                 if(_sob_id != 0)
                 {
                     _sob_data = data[_sob_id];
                     _sob_name = _sob_data['sob_name'];
                     _sob_groups = _sob_data['groups'];
-                    console.log(_sob_name);
                     $('#sob_name').val(_sob_name);
                 }
                 else
@@ -581,12 +577,8 @@ var range = "<?php echo $range?>";
                     $('#group').prop('disabled','disabled').trigger('chosen:updated');
                     $('input[name=range]').prop('disabled','disabled').trigger('chosen:updated');
                 }
-                //console.log(_sob_groups);
             },
              error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.log(XMLHttpRequest.status);
-                        console.log(XMLHttpRequest.readyState);
-                        console.log(textStatus);
                     },
         });
 

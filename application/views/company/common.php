@@ -242,7 +242,6 @@ var __BASE = "<?php echo $base_url; ?>";
    $(document).ready(function(){
    /*	$('.renew').click(function(){
     var _checked = $('#isadmin').is('checked');
-    console.log("checked" + _checked);
     $('#profile').submit();
 	});*/
    $.ajax({
@@ -251,7 +250,6 @@ var __BASE = "<?php echo $base_url; ?>";
     dataType:'json',
     success:function(data){
 
-    //    console.log(data);
 
          if(data.disable_budget!=undefined)
         {
@@ -398,8 +396,6 @@ var __BASE = "<?php echo $base_url; ?>";
         $('.renew').click(function(){
 	   var lval = parseInt($('#limit').val());
        var r_limit = $('#reports_limit').val();
-    //   console.log(lval);
-      // console.log($('#isadmin').is(':checked'));
       var calendar_month = $('#calendar_month').val();
       if(isNaN(calendar_month))
       {
@@ -440,13 +436,9 @@ var __BASE = "<?php echo $base_url; ?>";
 		    },
                 dataType:'json',
                 success:function(data){
-                      //  console.log(data);
                        show_notify('保存成功');
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.log(XMLHttpRequest.status);
-                        console.log(XMLHttpRequest.readyState);
-                        console.log(textStatus);
                     },            });
 	 }
 	 else

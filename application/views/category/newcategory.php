@@ -8,7 +8,6 @@
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 
-//console.log(__BASE);
 </script>
 <script src="/static/js/base.js" ></script>
 <script type="text/javascript">
@@ -46,7 +45,6 @@ DataSource.prototype = {
                 var _data = Array();
                 var _root = Array();
                  var ace_icon = ace.vars['icon'];
-                console.log(datas);
 
                 treeDataSource2 = new DataSource({data:datas});
                 $('#tree2').ace_tree({

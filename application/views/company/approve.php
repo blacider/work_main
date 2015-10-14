@@ -147,8 +147,6 @@
                                 $(".CategoryRow .sobs").trigger("chosen:updated");
                                 $('.CategoryRow .sobs').change(function(){
                                     var s_id = $(this).val();
-                                  //  //console.log(s_id);
-                                   // //console.log(selectDataCategory);
                                     if(selectDataCategory[s_id] != undefined){
                                         var _h = '';
                                         for(var i = 0 ; i < selectDataCategory[s_id].length; i++) {
@@ -327,7 +325,6 @@ function get_sobs(){
                 {
                     _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
                     
-                   // //console.log(_h);
                 }
             }
             var selectDom = this.parentNode.nextElementSibling.children[0]
@@ -343,13 +340,10 @@ $(document).ready(function(){
         dataType:'json',
         method:'GET',
         success:function(data){
-            //console.log(data);
             for(var key=0; key<data.length;key++)
             {
-                //console.log(data[key]);
                for(var i in data[key])
                {
-                   //console.log("##"+i+data[key][i]);
                     var _h = "<option value='" +  i + "'>"+  data[key][i] + " </option>";
                     $('#sob_category').append(_h);
                 }
@@ -357,9 +351,6 @@ $(document).ready(function(){
             }
         },
         error:function(XMLHttpRequest, textStatus, errorThrown) {
-                        //console.log(XMLHttpRequest.status);
-                        //console.log(XMLHttpRequest.readyState);
-                        //console.log(textStatus);}
         });*/
            
     
@@ -420,24 +411,20 @@ $(document).ready(function(){
     if($('#frequency_unlimit').is(':checked'))
     {
         $('#frequency_unlimit').val(1);
-      //  //console.log($('#frequency_unlimit').val());
     }
     else
     {
         $('#frequency_unlimit').val(0);
-     //    //console.log($('#frequency_unlimit').val());
 
     }
 
       if($('#all_members').is(':checked'))
     {
         $('#all_members').val(1);
-   //     //console.log($('#all_members').val());
     }
     else
     {
         $('#all_members').val(0);
-   //      //console.log($('#all_members').val());
 
     }
 
@@ -445,12 +432,10 @@ $(document).ready(function(){
         if($(this).is(':checked'))
         {
             $(this).val(1);
-            //console.log("hhhh"+$(this).val());
         }
         else
         {
             $(this).val(0);
-            //console.log("xxx"+$(this).val());
         }
     }); */
 
@@ -458,12 +443,10 @@ $(document).ready(function(){
         if($(this).is(':checked'))
         {
             $(this).val(1);
-       //     //console.log("hhhh"+$(this).val());
         }
         else
         {
             $(this).val(0);
-      //      //console.log("xxx"+$(this).val());
         }
     });
 /*  if(name=='')
@@ -491,30 +474,25 @@ $(document).ready(function(){
         var defaults = [] ;
         var els =document.getElementsByName("allow_category");
         for (var i = 0, j = els.length; i < j; i++){
-    //    //console.log(els[i].value);
         allow_categories.push(els[i].value);
         }
 
         var els =document.getElementsByName("deny_category");
         for (var i = 0, j = els.length; i < j; i++){
-    //    //console.log(els[i].value);
         deny_categories.push(els[i].value);
         }
 
         var els =document.getElementsByName("all_able");
         for (var i = 0, j = els.length; i < j; i++){
-  //      //console.log(els[i].value);
         fourParts.push(els[i].value);
         }
 
         var els =document.getElementsByName("default");
         for (var i = 0, j = els.length; i < j; i++){
-    //    //console.log(els[i].value);
         defaults.push(els[i].value);
         }
         var els =document.getElementsByName("category_amount");
         for (var i = 0, j = els.length; i < j; i++){
-    //    //console.log(els[i].value);
         amounts.push(els[i].value);
         }
 
@@ -525,7 +503,6 @@ $(document).ready(function(){
         $('#deny_category_ids').val(JSON.stringify(deny_categories));
 
         $('#defaults').val(JSON.stringify(defaults));
-       // //console.log('jjjj'+JSON.stringify(defaults));
 
         $('#four').val(JSON.stringify(fourParts));
 
@@ -589,7 +566,6 @@ $(document).ready(function(){
     $('#all_members').click(function(){
         if($(this).is(':checked'))
         {
-           // //console.log("helleo");
             $('#member').prop('disabled',true).trigger("chosen:updated");
             $('#group').prop('disabled',true).trigger("chosen:updated");
         }
@@ -603,10 +579,8 @@ $(document).ready(function(){
     /*var update_users = function () {
     if ($("#all_members").is(":checked")) {
         $('#member').prop('disabled', false);
-        //console.log("hello");
     }
     else {
-        //console.log("world");
         $('#member').prop('disabled', 'disabled');
     }
   };

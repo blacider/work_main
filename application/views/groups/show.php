@@ -65,7 +65,6 @@ var __BASE = "<?php echo $base_url; ?>";
 					//class="'+ace_icon+' fa fa-file-text grey"
 					//becomes
 					//class="ace-icon fa fa-file-text grey"
-					console.log(data);
 					var js_data = {};
 					var obj = new Array();
 					var unroot = new Array();
@@ -136,10 +135,6 @@ var __BASE = "<?php echo $base_url; ?>";
 									  unroot.remove(unum);
 								}
 							}
-							console.log("#tempobj:");
-							console.log(tempobj);
-							console.log("#obj");
-							console.log(obj);
 						}
 
 						obj = tempobj;
@@ -165,20 +160,17 @@ var __BASE = "<?php echo $base_url; ?>";
 						//result.eventType >> (selected or unselected)
 					})
 					.on('selected', function(e) {
-						console.log("group selected");
 					})
 					.on('unselected', function(e) {
 					})
 					.on('opened', function(e,result) {
 						//var _gid = _data;
-						console.log(result);
 					})
 					.on('closed', function(e) {
 					});
 
 			},
 			error:function(){
-				console.log("error");
 			}
 
 	});

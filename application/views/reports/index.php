@@ -161,8 +161,6 @@ $('#send').click(function(){
       ,dataType:"json"
       ,data:{report_id:$('#report_id').val(),email:$('#email').val()}
       ,success:function(data){
-          //console.log(data);
-          //console.log(data.status);
           if(data.status== 1)
           {
             $('#modal-table').modal('hide')

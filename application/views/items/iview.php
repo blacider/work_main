@@ -313,7 +313,6 @@ $(document).ready(function(){
         history.go(-1);
     });
 	var afford_type = "<?php echo $fee_afford_type;?>";
-	console.log('afford_type:' + afford_type);
 	$('#afford_type').val(afford_type).trigger('chosen:updated').trigger('change');
 
 });

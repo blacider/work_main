@@ -140,10 +140,6 @@
         members_count = members.length;
     }
 
-    console.log('memebers_count:' + members_count);
-  //  console.log(no_ranks);
-   // console.log(no_levels);
-    //console.log(no_groups);
 
     function make_invite(){
         $('.data-maintainer').each(function(idx, val){
@@ -201,7 +197,6 @@ function travel(is_mail)
     for(var i=0;i<no_ranks.length;i++)
     {
         var count_ranks = no_ranks.length;
-      //  console.log('count_ranks:' + count_ranks);
         $.ajax({
             url : __BASE  + "members/imports_create_rank_level/1"
                     ,method: 'POST'
@@ -213,7 +208,6 @@ function travel(is_mail)
                        {
                         show_notify('职位创建成功');
                         sum-=1;
-                    //    console.log('sum:'+sum);
                         if(sum == 0)
                         {
                             insertMem();
@@ -230,7 +224,6 @@ function travel(is_mail)
     for(var i=0;i<no_levels.length;i++)
     {
         var count_level = no_levels.length;
-       // console.log('count_level:' + count_level);
         $.ajax({
             url : __BASE  + "members/imports_create_rank_level/0"
                     ,method: 'POST'
@@ -243,7 +236,6 @@ function travel(is_mail)
                      
                         show_notify('级别创建成功');
                         sum-=1;
-                  //      console.log('sum:'+sum);
                    
                           if(sum == 0)
                         {
@@ -262,14 +254,12 @@ function travel(is_mail)
     for(var i=0;i<no_groups.length;i++)
     {
         var count_groups = no_groups.length;
-      //  console.log(count_groups);
         $.ajax({
             url : __BASE  + "members/imports_create_group"
                     ,method: 'POST'
                     ,dataType: 'json'
                     ,data : {'name' : no_groups[i]}
                     ,success : function(data){
-                        console.log(data.msg);
                        count_groups--;
                        if(count_groups == 0)
                        {
@@ -277,7 +267,6 @@ function travel(is_mail)
                        
                         show_notify('部门创建成功');
                         sum-=1;
-                    //     console.log('sum:'+sum);
                           if(sum == 0)
                         {
                             insertMem();
@@ -286,8 +275,6 @@ function travel(is_mail)
                     }
                     ,error:function(a,b,c)
                     {
-              //          console.log(a);
-              //          console.log(b);
                     }
         });
     }
@@ -320,7 +307,6 @@ function insertMem()
                 ,success : function(data){
                     /*var back_info = data['data'];
                             $('.judge').each(function(){
-                                //console.log($(this).data('id'));
                                 var _id = $(this).data('id');
                                 if(back_info[_id] != undefined)
                                 {
@@ -331,12 +317,9 @@ function insertMem()
                          insert_count++;
                         var back_info = data['data'];
 
-                       // console.log(data);
                         if(back_info.status>0)
                         {
                           
-                         //   console.log('uid:' + uid);
-                          //  console.log('manager_name:' + manager_name);
                           for(var p in back_info['data'])
                           {
                            //var back_id = back_info['data'][uid];
@@ -353,10 +336,8 @@ function insertMem()
                                   {
                                         var person = {'id':back_info['data'][p],'manager':manager_name};
                                         in_members.push(person);
-                                        console.log(person);
                                     }
                                   myself.removeClass('red').addClass('green');
-                                  console.log("heloo");
                                   if(_status&1 == 1)
                                   {
                                     myself.text('已更新');
@@ -366,7 +347,6 @@ function insertMem()
                                         myself.text('已导入');
                                     }
                                   //$('#error_'+uid).html('导入成功');
-                                 // console.log($('#error_'+uid).val());
                                   
                             }
                             }
@@ -380,8 +360,6 @@ function insertMem()
                         {
                             var old_insert = insert_count;
                             setTimeout(function(){
-                              //  console.log(old_insert);
-                               // console.log(insert_count);
                                 if(old_insert == insert_count)
                                 {
                                     set_manager(in_members);
@@ -393,8 +371,6 @@ function insertMem()
                 }
             ,error:function(a,b,c)
                     {
-                       // console.log(a);
-                       // console.log(b);
                     }
         });
     });
@@ -409,16 +385,11 @@ function set_manager(persons)
           ,dataType: 'json'
           ,data : {'persons' : JSON.stringify(persons)}
           ,success : function(data){
-            console.log("success");
                 $('#save').prop('disabled',false);
                 show_notify('导入完成');
           }
           ,error:function(a,b,c)
           {
-                console.log(a);
-                console.log(b);
-                       // console.log(a);
-                       // console.log(b);
           }
     });
 }

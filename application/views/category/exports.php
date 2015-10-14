@@ -46,9 +46,7 @@ $(document).ready(function(){
     if(_error) show_notify(_error);
 
     $('#memebers').on('change', function(){
-        console.log("1");
         $('#imports').submit();
-        console.log("1");
     });
     $('.renew').click(function(){
         location.href = __BASE + "members/exports";

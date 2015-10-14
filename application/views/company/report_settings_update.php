@@ -468,7 +468,6 @@ function load_exists(){
 }
 function bind_event(){
         $('.del-button').click(function(e) {
-            //console.log(e);
             var key = imagesDict[this.parentNode.id];
             var images = $("input[name='images']").val();
             var arr_img = images.split(',');

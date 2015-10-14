@@ -111,8 +111,6 @@
                                 $(".CategoryRow .sobs").trigger("chosen:updated");
                                 $('.CategoryRow .sobs').change(function(){
                                     var s_id = $(this).val();
-                                  //  console.log(s_id);
-                                   // console.log(selectDataCategory);
                                     if(selectDataCategory[s_id] != undefined){
                                         var _h = '';
                                         for(var i = 0 ; i < selectDataCategory[s_id].length; i++) {
@@ -275,7 +273,6 @@ function bind_event() {
                                 if (data['freq_period'] == 0) {
                                     selectJqDom.find('.freq_period_unlimit').click();
                                 }else selectJqDom.find('input[name="freq_period"]').val(data['freq_period']);
-                                //console.log(1);
                             }
                             function initSelectCache() {
                                 for (item in selectCache) {
@@ -343,13 +340,10 @@ bind_event();
         dataType:'json',
         method:'GET',
         success:function(data){
-            console.log(data);
             for(var key=0; key<data.length;key++)
             {
-                console.log(data[key]);
                for(var i in data[key])
                {
-                   console.log("##"+i+data[key][i]);
                     var _h = "<option value='" +  i + "'>"+  data[key][i] + " </option>";
                     $('#sob_category').append(_h);
                 }
@@ -357,9 +351,6 @@ bind_event();
             }
         },
         error:function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.log(XMLHttpRequest.status);
-                        console.log(XMLHttpRequest.readyState);
-                        console.log(textStatus);}
         });*/
            
 
@@ -454,12 +445,10 @@ bind_event();
     if($('#frequency_unlimit').is(':checked'))
     {
         $('#frequency_unlimit').val(1);
-        console.log($('#frequency_unlimit').val());
     }
     else
     {
         $('#frequency_unlimit').val(0);
-         console.log($('#frequency_unlimit').val());
 
     }
     */
@@ -532,17 +521,14 @@ $('.renew').click(function(){
     if($('#frequency_unlimit').is(':checked'))
     {
         $('#frequency_unlimit').val(1);
-        //console.log($('#frequency_unlimit').val());
     }
     else
     {
         $('#frequency_unlimit').val(0);
-       //  console.log($('#frequency_unlimit').val());
 
     }
 
     $('.freq_unlimit').each(function(){
-        console.log('ischecked:' + $(this).is(':checked'));
         if($(this).is(':checked'))
         {
             $(this).val(1);
@@ -556,34 +542,28 @@ $('.renew').click(function(){
       if($('#all_members').is(':checked'))
     {
         $('#all_members').val(1);
-      //  console.log($('#all_members').val());
     }
     else
     {
         $('#all_members').val(0);
-        // console.log($('#all_members').val());
 
     }
 
     var categories = []
     var els =document.getElementsByName("category");
         for (var i = 0, j = els.length; i < j; i++){
-    //    console.log(els[i].value);
         categories.push(els[i].value);
     }
     $('#categories').val(JSON.stringify(categories));
-   // console.log(JSON.stringify(categories));
     var freq_periods = []
     var els =document.getElementsByName("freq_period");
         for (var i = 0, j = els.length; i < j; i++){
-    //    console.log(els[i].value);
         freq_periods.push(els[i].value);
     }
     $('#freq_periods').val(JSON.stringify(freq_periods));
     var freq_counts = []
     var els =document.getElementsByName("freq_count");
         for (var i = 0, j = els.length; i < j; i++){
-    //    console.log(els[i].value);
         freq_counts.push(els[i].value);
     }
     $('#freq_counts').val(JSON.stringify(freq_counts));
@@ -591,7 +571,6 @@ $('.renew').click(function(){
     var freq_unlimits = []
     var els =document.getElementsByName("freq_unlimit");
         for (var i = 0, j = els.length; i < j; i++){
-    //    console.log(els[i].value);
         freq_unlimits.push(els[i].value);
     }
     $('#freq_unlimits').val(JSON.stringify(freq_unlimits));
@@ -630,7 +609,6 @@ $('.renew').click(function(){
     $('#all_members').click(function(){
         if($(this).is(':checked'))
         {
-           // console.log("helleo");
            $('#ranks').prop('disabled',true).trigger("chosen:updated");
             $('#levels').prop('disabled',true).trigger("chosen:updated");
             $('#member').prop('disabled',true).trigger("chosen:updated");
@@ -648,10 +626,8 @@ $('.renew').click(function(){
     /*var update_users = function () {
     if ($("#all_members").is(":checked")) {
         $('#member').prop('disabled', false);
-        console.log("hello");
     }
     else {
-        console.log("world");
         $('#member').prop('disabled', 'disabled');
     }
   };

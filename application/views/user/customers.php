@@ -111,7 +111,6 @@ foreach($alist as $item){
     $('.edit').each(function() {
     $(this).click(function(){
     var _id = $(this).data('id');
-    console.log(_id);
     var _name = $(this).data('name');
     $('#mid').val(_id);
     $('#mname').val(_name);

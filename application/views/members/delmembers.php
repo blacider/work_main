@@ -53,7 +53,6 @@
 			var log = $('#result').val() + "正在删除用户:" + email + '\n';
 			$('#result').val(log);
 			$('.chosen-select').val(emails).trigger("chosen:updated");
-			console.log(email);
 			ajaxDelect(email);
 		} else if (errorList.length) {
 			errorList.join();
@@ -81,8 +80,6 @@
 			 	}
 			 },
 			 error:function(a,b,c){
-			 	console.log(a);
-			 	console.log(b);
 			 }
 
 		});

@@ -313,7 +313,6 @@ $(document).ready(function(){
             linkFormat: "YYYY-MM-DD HH:mm",
             sideBySide: true
     }).next().on('dp.change', function(ev){
-        //console.log(ev.date);
     }).on(ace.click_event, function(){
         $(this).prev().focus();
     });
@@ -358,7 +357,6 @@ $(document).ready(function(){
     $('#all_item').click(function(){
         if($('#all_item').is(":checked"))
         {
-            //console.log("checked");
             $('.amount').each(function(){
                 $(this).prop('checked',true);
             });   

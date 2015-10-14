@@ -954,7 +954,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         } while ($('select[name="province"]').val() == null); 
         /*for(var i=1;i<=loc.length+1;i++)
             {
-            console.log(loc.substr(0,i));
              $('select[name="province"]').val(loc.substr(0,i));
                         }*/
                         var city = loc.substr(i);
@@ -972,7 +971,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         $('#credit_model').modal('show');
         var i = 1, loc = $(node).data('bankloc');
         do {
-            //console.log(i);
             i += 1;
             $('select[name="province"]').val(loc.substr(0,i));
             if(i>loc.length+1)
@@ -1048,7 +1046,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                 dataType:"json",
                                 data:{'phone':_phone,'vcode':_vcode},
                                 success:function(data){
-                                    //console.log(data);
                                     if(data.status==0 || data.status=='false')
                                     {
                                         show_notify(data.data.msg);

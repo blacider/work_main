@@ -79,7 +79,6 @@ var __BASE = "<?php echo $base_url; ?>";
    $(document).ready(function(){
    /*	$('.renew').click(function(){
     var _checked = $('#isadmin').is('checked');
-    console.log("checked" + _checked);
     $('#profile').submit();
 	});*/
    $.ajax({
@@ -105,7 +104,6 @@ var __BASE = "<?php echo $base_url; ?>";
 
         $('.renew').click(function(){
 	   var lval = parseInt($('#limit').val());
-       console.log(lval);
        if(isNaN(lval))
        {
             lval = 0;
@@ -118,13 +116,9 @@ var __BASE = "<?php echo $base_url; ?>";
                 data:{ischecked:$('#isadmin').is(':checked'),template:$('#temp option:selected').val(),limit:lval},
                 dataType:'json',
                 success:function(data){
-                        console.log(data);
                        show_notify('保存成功');
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.log(XMLHttpRequest.status);
-                        console.log(XMLHttpRequest.readyState);
-                        console.log(textStatus);
                     },            });
 	 }
 	 else
