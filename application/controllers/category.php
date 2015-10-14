@@ -68,11 +68,13 @@ class Category extends REIM_Controller {
         $_oid = $this->input->post('oid');
  //       $oname = $this->input->post('oname');
         $standalone = 0;
+        
         $uids = $this->input->post('uids');
         $gids = $this->input->post('gids');
         $ranks = $this->input->post('ranks');
         $levels = $this->input->post('levels');
 
+        $all_member = $this->input->post('all_member');
         if(!$uids)
         {
             $uids = array();
@@ -95,6 +97,10 @@ class Category extends REIM_Controller {
             $gid = $__gid;
         }
 
+        if($all_member == 1)
+        {
+            $gids = [-1];
+        }
         $oid = array();
         foreach($_oid as $o)
         {
@@ -251,10 +257,12 @@ class Category extends REIM_Controller {
             $group_dic[$g['id']] = $g['name']; 
         }
         $fee_afford['gdetail'] = array();
+        $oid_dic = array();
         if(array_key_exists('detail',$fee_afford))
         {
                 foreach($fee_afford['detail'] as &$f)
                 {
+                    array_push($oid_dic,$f['oid']);
                     if(!array_key_exists($f['gid'],$fee_afford['gdetail']))
                     {
                         $fee_afford['gdetail'][$f['gid']] = array();
@@ -297,6 +305,7 @@ class Category extends REIM_Controller {
                         ,'error' => $error
                         ,'fee_afford' => $fee_afford
                         ,'group_dic' => $group_dic
+                        ,'oid_dic' => $oid_dic
                         ,'breadcrumbs' => array(
                             array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                             ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
@@ -319,6 +328,7 @@ class Category extends REIM_Controller {
                         ,'error' => $error
                         ,'fee_afford' => $fee_afford
                         ,'group_dic' => $group_dic
+                        ,'oid_dic' => $oid_dic
                         ,'breadcrumbs' => array(
                             array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                             ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
@@ -341,6 +351,7 @@ class Category extends REIM_Controller {
                         ,'error' => $error
                         ,'fee_afford' => $fee_afford
                         ,'group_dic' => $group_dic
+                        ,'oid_dic' => $oid_dic
                         ,'breadcrumbs' => array(
                             array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                             ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')

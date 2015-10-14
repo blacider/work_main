@@ -15,7 +15,7 @@
           <!-- PAGE CONTENT BEGINS -->
           <div class="row">
             <div class="col-xs-12">
-             <h4 class="blue bigger" id="pro_title"><?php 
+             <h4 class="blue bigger" id="pro_title" data-oids='<?php echo json_encode($oid_dic);?>'><?php 
              if(array_key_exists('name', $fee_afford))
              {
                 echo $fee_afford['name'];
@@ -135,7 +135,9 @@
                   <div id='g_lab' class="col-xs-9 col-sm-9">部门:</div>
                   <div class="col-xs-9 col-sm-9">
                     <select id="gid" class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="gid[]" multiple="multiple" data-placeholder="请选择部门">
-                      <?php foreach($groups as $m) { ?>
+                      <?php foreach($groups as $m) { 
+                        
+                          ?>
                       <option value="<?php echo $m['id']; ?>">
                         <?php echo $m['name']; ?></option>
                       <?php } ?></select>
@@ -202,7 +204,7 @@
 
                 <div class="form-group">
                   <div class="col-xs-9 col-sm-9">
-                    <input type="checkbox" class="col-sm-2">
+                    <input type="checkbox" class="col-sm-2" id="is_all_member">
                     全体员工
                     <input class="col-sm-2" type="hidden" name='pid' value="<?php echo $pid;?>">
                   </div>
@@ -216,6 +218,7 @@
             <input type="hidden" name="fid" id='fid' value='-1'>
             <input type="hidden" name='_gid' id='_gid'>
             <input type='hidden' name='_oid' id='_oid'> 
+            <input type='hidden' name='all_member' id='all_member' value='0'> 
            
          </div>
          <div class="modal-footer">
@@ -240,12 +243,13 @@
 var __BASE = "<?php echo base_url();?>";
 var error = "<?php echo $error;?>";
 var _group_dic = '<?php echo json_encode($group_dic);?>';
+var exist_oids = $('#pro_title').data('oids');
 var group_dic = '';
 if(_group_dic)
 {
   group_dic = JSON.parse(_group_dic);
 }
-console.log(group_dic);
+
 var exists = [];
 if(error)
 {
@@ -289,6 +293,7 @@ function arr_contains(item,arr)
             $('#uids').val('').trigger('chosen:updated');
             $('#ranks').val('').trigger('chosen:updated');
             $('#levels').val('').trigger('chosen:updated');
+            $('#is_all_member').prop('checked',false);
             $('#oid').unbind('change');
 
         });
@@ -299,8 +304,9 @@ function arr_contains(item,arr)
             {
                 for(var j = 0 ; j < _gid.length ; j++)
                 {
-                    if(!arr_contains(_gid[j],exists))
-                    {            
+                    if(!arr_contains(_gid[j],exists) )
+                    {          
+                        
                         var _h = '';
                       
                           _h += "<option selected value=" + "'"+ _gid[j] + "," + _gid[j] + ","+ group_dic[_gid[j]]+"'"+">" + '部门' + '-' + group_dic[_gid[j]] + "</option>";
@@ -310,15 +316,16 @@ function arr_contains(item,arr)
                         $('#oid').trigger('change');
                         $('#oid').trigger('chosen:updated');
                         exists.push(_gid[j]);
+                       
                     }
                     else 
                     {
                      
                       var temp = $('#oid').val();
-                      console.log(typeof temp);
+                    //  console.log(typeof temp);
                      // temp.push(_gid[j]+","+_gid[j]+","+group_dic[_gid[j]]);
                       //$('#oid').val(temp).trigger('chosen:updated');
-                       console.log('already');
+                      // console.log('already');
                       //$('#oid').val('').trigger('change');
                       $('#oid').trigger('chosen:updated');
 
@@ -345,6 +352,11 @@ function arr_contains(item,arr)
           var _oid;
          $('.edit').each(function(){
           $(this).click(function(){
+              var _pid = $(this).data('pid');
+            var _id = $(this).data('id');
+            var _gid = $(this).data('gid');
+            _oid = $(this).data('oid');
+             $('#fid').val(_id);
              $('#modal_title').empty().append('更新对象');
               $('#send').val('更新');
               $('#g_lab').prop('hidden',true).trigger('chosen:updated');
@@ -358,12 +370,9 @@ function arr_contains(item,arr)
                         //arr.push($('#oid').val());
                         $('#_oid').val(JSON.stringify($('#oid').val()));
                       });
-            var _pid = $(this).data('pid');
-            var _id = $(this).data('id');
-            var _gid = $(this).data('gid');
-            _oid = $(this).data('oid');
+          
             //$('#oid').empty().trigger('chosen:updated');
-            $('#fid').val(_id);
+           
  //           console.log('pid:' + _pid);
    //         console.log('id:' + _id);
      //       console.log('gid:' + _gid);
@@ -392,6 +401,15 @@ function arr_contains(item,arr)
                       $('#uids').val(privilege.users).attr('selected',true).trigger('chosen:updated');
                       $('#ranks').val(privilege.ranks).attr('selected',true).trigger('chosen:updated');
                       $('#levels').val(privilege.levels).attr('selected',true).trigger('chosen:updated');
+
+                      if(privilege.groups.length > 0 && privilege.groups[0] == -1)
+                      {
+                        $('#is_all_member').prop('checked',true);
+                      }
+                      else
+                      {
+                        $('#is_all_member').prop('checked',false);
+                      }
                       $('#_gid').val($('#gid').val());
                       
                   
@@ -443,6 +461,7 @@ function arr_contains(item,arr)
             $('#uids').val('').trigger('chosen:updated');
             $('#ranks').val('').trigger('chosen:updated');
             $('#levels').val('').trigger('chosen:updated');
+            $('#is_all_member').prop('checked',false);
             $('#oid').unbind('change');
 
             var item_arr = [];
@@ -484,13 +503,19 @@ function arr_contains(item,arr)
         var __levels = $('#levels').val();
         var __oids = $('#oid').val();
         var __fid = $('#fid').val();
+
+        if($('#is_all_member').is(':checked'))
+        {
+          console.log('checked');
+          $('#all_member').val(1);
+        }
         
         if(__oids == null && __fid == -1)
         {
           show_notify("请选择对象");
           return false;
         }
-        if(__gids == null && __uids == null && __ranks == null && __levels == null)
+        if(__gids == null && __uids == null && __ranks == null && __levels == null && !$('#is_all_member').is(':checked'))
         {
             show_notify("请选择对象展示范围");
             return false;

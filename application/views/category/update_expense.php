@@ -15,7 +15,7 @@
           <!-- PAGE CONTENT BEGINS -->
           <div class="row">
             <div class="col-xs-12">
-             <h4 class="blue bigger" id="pro_title"><?php 
+             <h4 class="blue bigger" id="pro_title" data-oids='<?php echo json_encode($oid_dic);?>'><?php 
              if(array_key_exists('name', $fee_afford))
              {
                 echo $fee_afford['name'];
@@ -201,7 +201,7 @@
 
                 <div class="form-group">
                   <div class="col-xs-9 col-sm-9">
-                    <input type="checkbox" class="col-sm-2">
+                    <input type="checkbox" class="col-sm-2" id='is_all_member'>
                     全体员工
                     <input class="col-sm-2" type="hidden" name='pid' value="<?php echo $pid;?>">
                   </div>
@@ -215,6 +215,7 @@
             <input type="hidden" name="fid" id='fid' value='-1'>
             <input type="hidden" name='_gid' id='_gid'>
             <input type='hidden' name='_oid' id='_oid'> 
+            <input type="hidden" name='all_member' id='all_member' value='0'>
            
          </div>
          <div class="modal-footer">
@@ -238,6 +239,8 @@
 var __BASE = "<?php echo base_url();?>";
 var error = "<?php echo $error;?>";
 var exists = [];
+var exist_oids = $('#pro_title').data('oids');
+
 if(error)
 {
   show_notify(error);
@@ -280,6 +283,7 @@ function arr_contains(item,arr)
             $('#uids').val('').trigger('chosen:updated');
             $('#ranks').val('').trigger('chosen:updated');
             $('#levels').val('').trigger('chosen:updated');
+            $('#is_all_member').prop('checked',false);
             
         });
 
@@ -302,7 +306,11 @@ function arr_contains(item,arr)
                         var _h = '';
                         for(var i = 0 ; i < data['member'].length; i++)
                         {
-                          _h += "<option value=" + "'" + data['gid'] +","+ data['member'][i].id + ","+data['member'][i].nickname+"'"+">" + data['member'][i].d + '-' + data['member'][i].nickname + "</option>";
+                          console.log(exist_oids.length);
+                          if(!arr_contains(data['member'][i].id,exist_oids))
+                          {
+                            _h += "<option value=" + "'" + data['gid'] +","+ data['member'][i].id + ","+data['member'][i].nickname+"'"+">" + data['member'][i].d + '-' + data['member'][i].nickname + "</option>";
+                          }
                         }
                      
                         $('#oid').append(_h).trigger("chosen:updated");
@@ -394,6 +402,14 @@ function arr_contains(item,arr)
                       $('#uids').val(privilege.users).attr('selected',true).trigger('chosen:updated');
                       $('#ranks').val(privilege.ranks).attr('selected',true).trigger('chosen:updated');
                       $('#levels').val(privilege.levels).attr('selected',true).trigger('chosen:updated');
+                      if(privilege.groups.length > 0 && privilege.groups[0] == -1)
+                      {
+                        $('#is_all_member').prop('checked',true);
+                      }
+                      else
+                      {
+                        $('#is_all_member').prop('checked',false);
+                      }
                       $('#_gid').val($('#gid').val());
                       
                   
@@ -490,13 +506,17 @@ function arr_contains(item,arr)
         var __levels = $('#levels').val();
         var __oids = $('#oid').val();
         var __fid = $('#fid').val();
+        if($('#is_all_member').is(':checked'))
+        {
+          $('#all_member').val(1);
+        }
         
         if(__oids == null && __fid == -1)
         {
           show_notify("请选择对象");
           return false;
         }
-        if(__gids == null && __uids == null && __ranks == null && __levels == null)
+        if(__gids == null && __uids == null && __ranks == null && __levels == null && !$('#is_all_member').is(':checked'))
         {
             show_notify("请选择对象展示范围");
             return false;
