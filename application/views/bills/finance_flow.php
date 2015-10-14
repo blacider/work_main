@@ -323,7 +323,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
                 <form action="<?php echo base_url('bills/report_finance_end'); ?>" method="post" class="form-horizontal" id="permit_form">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <input name="rid" value="" id="rid_">
+                <input type="hidden" name="rid" value="" id="rid_">
                 <input type="hidden" name="status" value="2" id_="status">
                 <h4 class="modal-title">是否结束</h4>
             </div>
