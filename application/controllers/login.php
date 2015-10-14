@@ -80,6 +80,17 @@ class Login extends REIM_Controller {
         }
     }
 
+
+    public function force_reset(){
+        $user = $this->input->get('phone');
+        $username = $this->reim_cipher->decode($this->input->cookie('username'));
+        $this->load->view('user/forcelogin', array(
+            'errors' => '您的口令存在风险，请修改密码'
+            ,'name' => $username
+            , 'title' => '重置密码'
+        ));
+    }
+
     public function dologin(){
         $username = $this->input->post('u', TRUE);
         $password = $this->input->post('p', TRUE);
@@ -92,8 +103,8 @@ class Login extends REIM_Controller {
         {
             $_username = $this->reim_cipher->encode($username);
             $_password = $this->reim_cipher->encode($password);
-	    log_message('debug','_username:'.$_username);
-	    log_message('debug','_password:'.$_password);
+            log_message('debug','_username:'.$_username);
+            log_message('debug','_password:'.$_password);
             $cookie = array(
                 'name'   => 'username',
                 'value'  => $_username,
@@ -124,17 +135,28 @@ class Login extends REIM_Controller {
         $user = $this->users->reim_get_user($username, $password);
         $this->session->set_userdata('email', $username);
         $this->session->set_userdata('password', $password);
+        log_message('debug', "Login:" . json_encode($user));
         if(!$user['status']) {
+            //if($user['code'] == -75) {
+            //    return redirect(base_url('login/force_reset'));
+            //}
             $this->session->set_userdata('login_error', '用户名或者密码错误');
             redirect(base_url('login'));
             die();
         }
         $server_token = $user['server_token'];
         $data = $user['data']['profile'];
+
+        log_message('debug', "profile:" . json_encode($data));
         $__g = '';
         if(array_key_exists('group_name', $data)){
             $__g = $data['group_name'];
         }
+        $__uid = '';
+        if(array_key_exists('id', $data)){
+            $__uid = $data['id'];
+        }
+        $this->session->set_userdata("uid", $__uid);
         $this->session->set_userdata("groupname", $__g);
         $this->session->set_userdata("server_token", $server_token);
         $goto = $this->session->userdata('last_url');

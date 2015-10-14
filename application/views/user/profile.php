@@ -488,64 +488,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 </div>
 
 
-<div class="modal fade" id="password_modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">修改密码</h4>
-            </div>
-            <div class="modal-body">
-
-                <form id="password_form" class="form-horizontal" role="form" method="post" action="<?php echo base_url('users/update_password'); ?>">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12">
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-right">旧密码</label>
-                                <div class="col-xs-6 col-sm-6">
-                                    <input name="old_password" type="password" class="form-controller col-xs-12" placeholder="旧密码" />
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-right">新密码</label>
-                                <div class="col-xs-6 col-sm-6">
-                                    <input name="password" type="password" class="form-controller col-xs-12 br3 inp" placeholder="新密码" />
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-right">重复新密码</label>
-                                <div class="col-xs-6 col-sm-6">
-                                    <input name="repassword" type="password" class="form-controller col-xs-12 br3 inp" placeholder="重复新密码" />
-                                </div>
-                            </div>
-                            <div>
-                                <input name="pid" id="pid" type="hidden" value="<?php echo $pid;?>"/>
-                            </div>
-
-
-                            <div class="clearfix form-actions">
-                                <div class="col-md-offset-3 col-md-9">
-                                    <a class="btn btn-white btn-primary update_password" data-renew="0"><i class="ace-icon fa fa-save "></i>修改并登出</a>
-
-                                    <!--
-                                    <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
-                                    -->
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 
 <div class="modal fade" id="credit_model">
     <div class="modal-dialog">
@@ -1031,12 +973,9 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     });
                          */
                         $('.password').click(function(){
-                            $('#password_modal').modal({keyborard: false});
+                            $('#security_reset').modal({keyborard: false});
                         });
-                    $('.update_password').click(function(){
-                        $('#password_form').submit();
-                    });
-                    $('.update_phone').click(function(){
+                        $('.update_phone').click(function(){
                         //$('#phone_form').submit();
                         var _phone = $('#phone').val();
                         var _vcode = $('#vcode').val();

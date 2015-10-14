@@ -278,6 +278,27 @@ class Users extends REIM_Controller {
             ));
     }
 
+    public function force_update_password(){
+        $profile = $this->user->reim_get_user();
+	$profile_id = $profile['data']['profile']['id'];
+        $old_password = $this->input->post('old_password');
+        $new_password = $this->input->post('password');
+        $re_password = $this->input->post('repassword');
+        $pid = $this->input->post('pid');
+
+        if($re_password != $new_password) {
+            $this->session->set_userdata('login_error', '新密码不相同');
+        }
+        $info = json_decode($this->user->reim_update_password($old_password, $new_password,$pid), true);
+        log_message('debug','info:' . json_encode($info));
+        if($info['status'] > 0){
+                die(json_encode(array('status'=> 1 ,'msg' => '密码修改成功')));
+        } else {
+            // if()
+            // redirect(base_url(''));
+            die(json_encode(array('status'=> 0 ,'msg' => '原始密码错误')));
+        }
+    }
     public function update_password(){
         $profile = $this->user->reim_get_user();
 	$profile_id = $profile['data']['profile']['id'];
