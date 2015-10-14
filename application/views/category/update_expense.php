@@ -488,8 +488,19 @@ function arr_contains(item,arr)
         var __uids = $('#uids').val();
         var __ranks = $('#ranks').val();
         var __levels = $('#levels').val();
-        console.log(__gids);
-        //return false;
+        var __oids = $('#oid').val();
+        var __fid = $('#fid').val();
+        
+        if(__oids == null && __fid == -1)
+        {
+          show_notify("请选择对象");
+          return false;
+        }
+        if(__gids == null && __uids == null && __ranks == null && __levels == null)
+        {
+            show_notify("请选择对象展示范围");
+            return false;
+        }
         $('#obj_form').submit();
       });
   });
