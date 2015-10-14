@@ -158,11 +158,6 @@
   var username = "<?php echo $username ;?>";
   var password = "<?php echo $password ;?>";
 	$(document).ready(function(){	
-        var _hash = window.location.hash;
-        console.log(_hash);
-        if(_hash == '#reset') {
-            findPassword();
-        }
 		$('#user').focus();
     $('#is_r').prop('checked',true);
 		if(username!="" && password!="") {

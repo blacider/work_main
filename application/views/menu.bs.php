@@ -421,7 +421,13 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <b class="arrow fa fa-angle-down"></b>
     </a>
     <b class="arrow"></b>
+
     <ul class="submenu nav-show" style="display: block;">
+        <li class="hsub" id="submit">
+            <a href="<?php echo base_url('company/common'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 通用规则 </a>
+            <b class="arrow"></b>
+        </li>
+
 <!--
 
         <li class="hsub" id="report_settings_list">
