@@ -683,11 +683,6 @@ $('#sob_category').change(function(){
         
     });
 
-	var afford_type = "<?php echo $fee_afford_type;?>";
-	var af_ids = "<?php echo $fee_afford_ids;?>";
-	var _af_ids = af_ids.split(',');
-	$('#afford_type').val(afford_type).trigger('chosen:updated').trigger('change');
-	$('.afford_chose').val(_af_ids).trigger('chosen:updated').trigger('change');
 
     $('.renew').click(function(){
         var _affid = '';
