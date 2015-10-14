@@ -378,7 +378,7 @@ class Bills extends REIM_Controller {
     }
 
     public function finance_done($search = '') {
-$status = 2; 
+        $status = 2; 
         $this->need_group_casher();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
@@ -469,6 +469,10 @@ $status = 2;
             log_message("debug", "nICe");
 
             $d['date_str'] = date('Y-m-d H:i:s', $d['createdt']);
+            $d["approvaldt_str"] = "0000-00-00 00:00:00";
+            if (array_key_exists("approvaldt", $d)) {
+                $d["approvaldt_str"] = date('Y-m-d H:i:s', $d["approvaldt"]);
+            }
             $d['ugs'] = array();
             if($ugs)
             {
@@ -577,7 +581,7 @@ $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data
             }
 
 
-            $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+            $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                 . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . ''. $extra
                 . '</div>';
             array_push($_data, $d);
@@ -612,7 +616,7 @@ $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data
                 $edit = $d['status'] != 2 ? 'gray' : 'green';
                 $extra = $d['status'] = '';
 
-                $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+                $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . $extra
                     . '</div>';
                 array_push($_data, $d);
