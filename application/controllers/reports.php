@@ -1320,9 +1320,12 @@ class Reports extends REIM_Controller {
                 $o['报告名'] = $i['title'];
                 $o['报告ID'] = $i['rid'];
 
-                $o['账号'] = $i['member_info']['account'];
-                $o['卡号'] = $i['member_info']['cardno'];
-                $o['开户行'] = $i['member_info']['bankname'];
+                $_bank = array('cardno' => '', 'account' => '', 'bankloc' => '', 'bankname' => '');
+                if(array_key_exists($i['uid'], $_banks)) $_bank = $_banks[$i['uid']];
+
+                $o['账号'] = $_bank['account'];
+                $o['卡号'] = $_bank['cardno'];
+                $o['开户行'] = $_bank['bankname'];
                 array_push($_detail_items, $o);
                 log_message('debug','members: ' . json_encode($i['member_info']));
             }
