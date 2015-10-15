@@ -240,6 +240,24 @@ $(document).ready(function(){
                 $this.next().css({'width': $this.parent().width()});
             })
         }).trigger('resize.chosen');
+    $('.afford_detail').each(function(idx, item) {
+        $(this).next().hide();
+    });
+
+    $('.afford_detail').hide();
+    $('#afford_type').change(function(){
+        var _id = $(this).val();
+        $('.afford_detail').each(function(idx, item) {
+            $(item).hide();
+            $(item).next().hide();
+            $(item).removeClass('afford_chose');
+            if($(item).data('pid') == _id) {
+                $(item).show();
+                $(item).next().show();
+                $(item).addClass('afford_chose');
+            }
+        });
+    });
     var $overflow = '';
     var colorbox_params = {
         rel: 'colorbox',
@@ -268,6 +286,8 @@ $(document).ready(function(){
     $('.cancel').click(function(){
         history.go(-1);
     });
+	var afford_type = "<?php echo $fee_afford_type;?>";
+	$('#afford_type').val(afford_type).trigger('chosen:updated').trigger('change');
 
 });
 </script>
