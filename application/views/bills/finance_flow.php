@@ -732,7 +732,7 @@ function cancel_modal_next_()
     var groups_ = [{
       groupOp:"AND",
       rules:[{field:"ugs",op:"cn",data:groupId}],
-      groups:time_groups2
+      groups:((__STATUS == 2)?(time_groups2):(time_groups))
     }];
     //postData.filters = JSON.stringify({
     //    groupOp: "OR",
