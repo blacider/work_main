@@ -114,7 +114,7 @@ function bind_event(){
 }
 
 var selectRows = [];    
-
+var IF_SELECT_ALL = 0;
 try{
     var FLAG = 1;
 jQuery(grid_selector).jqGrid({
@@ -150,6 +150,7 @@ jQuery(grid_selector).jqGrid({
         jQuery.each(selectRows,function(index,row){
             jQuery(grid_selector).jqGrid('setSelection',row);
         });
+        if (IF_SELECT_ALL) $("#cb_grid-table")[0].checked = true;
         bind_event();
         var table = this;
         setTimeout(function(){
@@ -166,15 +167,20 @@ jQuery(grid_selector).jqGrid({
     },
     onSelectAll : function(aRows, status) {
         if (status) {
-            jQuery.each(aRows,function(index,rowid){
+            var array_selectRows = new Array();
+            var all_data = $(grid_selector).jqGrid("getGridParam","data");
+            for (var i = 0; i < all_data.length; i++) array_selectRows.push(all_data[i].id);
+            jQuery.each(array_selectRows,function(index,rowid){
                 if (jQuery.inArray(rowid,selectRows) == -1) {
                     selectRows.push(rowid);
                 }
             });
+            IF_SELECT_ALL = 1;
         } else {
             jQuery.each(aRows,function(index,rowid){
                 selectRows.splice(jQuery.inArray(rowid,selectRows),1);
             });
+            IF_SELECT_ALL = 0;
         }
     },
     onSelectRow : function(rowid, status) {
