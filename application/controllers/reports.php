@@ -1016,7 +1016,7 @@ class Reports extends REIM_Controller {
         {
            $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code']); 
         }
-        $group = $this->groups->get_my_list();
+        $group = $this->groups->get_my_full_list();
         $ginfo = array();
         $gmember = array();
         if($group) {
