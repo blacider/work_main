@@ -38,7 +38,8 @@
                         <label class="col-sm-1 control-label no-padding-rigtht" style="position:absolute;left:0px;">适用范围</label>
                         <div class="form-group">
                             <div class="col-xs-1 col-sm-1 col-sm-offset-1 col-xs-offset-1">
-                                <input type="radio" name="range" value="0" onclick="choseRange(this.value)" style="position:relative;top:7px"></div>
+                                <input type="radio" name="range" value="0" onclick="choseRange(this.value)" style="position:relative;top:7px">
+                            </div>
                             <div class="col-xs-4 col-sm-4">
                                 <select id="group" class="chosen-select range tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
                                 <?php
@@ -170,10 +171,13 @@
                             </div>
                             <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">员工</label>
                         </div>
+                        </div>
                    
             <div class="clearfix form-actions col-sm-8 col-xs-8">
                 <div class="col-md-offset-3 col-md-8">
+                    <a class="btn btn-white btn-primary renew" data-renew="-1"><i class="ace-icon fa fa-save "></i>取消</a>
                     <a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
+                    <a class="btn btn-white btn-primary renew" data-renew="1"><i class="ace-icon fa fa-save "></i>发送</a>
                 </div>
             </div>
         </div>
