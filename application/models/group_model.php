@@ -110,12 +110,21 @@ class Group_Model extends Reim_Model {
 	return json_decode($buf,True);
     }
 
+
+    public function get_my_full_list() {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+		$url = $this->get_url('groups/0/full');
+		$buf = $this->do_Get($url, $jwt);
+		$obj = json_decode($buf, true);
+        return $obj;
+    }
+
     public function get_my_list(){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
 		$url = $this->get_url('groups/0');
 		$buf = $this->do_Get($url, $jwt);
-        log_message("debug", "model:" . $buf);
 		$obj = json_decode($buf, true);
         return $obj;
     }
