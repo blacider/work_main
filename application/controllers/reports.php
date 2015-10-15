@@ -1289,18 +1289,20 @@ class Reports extends REIM_Controller {
                 $o['参与人员'] = implode(',', $__relates);
                 //$o['承担部门'] = $_str_afford_dept;
                 //$o['承担对象'] = $_str_afford_member;
+                $_sob_code = 0;
+                if(array_key_exists($i['category'], $cate_dic) && array_key_exists('sob_code', $cate_dic[$i['category']])){
+                    $_sob_code = $cate_dic[$i['category']]['sob_code'];
+                }
+                $_sob_name = '';
+                if(array_key_exists($i['category'], $cate_dic) && array_key_exists('name', $cate_dic[$i['category']])){
+                    $_sob_name = $cate_dic[$i['category']]['name'];
+                }
                 $o['会计科目'] = $i['category_name'];
-                $o['会计科目代码'] = $cate_dic[$i['category']]['sob_code'];
+                $o['会计科目代码'] = $_sob_code;
                 $o['会计科目上级'] = '';
                 $o['会计科目上级代码'] = '';
-                if($cate_dic[$i['category']]['pid'] > 0)
-                {
-                     $o['会计科目上级'] = $cate_dic[$i['category']]['name'];
-                }
-                if($cate_dic[$i['category']]['pid'] > 0)
-                {
-                     $o['会计科目代码'] = $cate_dic[$i['category']]['sob_code'];
-                }
+                $o['会计科目上级'] = $_sob_name;
+                $o['会计科目代码'] = $_sob_code;
                 $o['报销审核人'] = $i['flow'];
                 $o['备注'] = $i['note'];
                 $_rate = 1.0;
