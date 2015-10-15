@@ -682,7 +682,6 @@ function checkNewPassword() {
     result = 0;
     streth = -1;
     types = 0 ;
-    FLAG_IF_EMAIL = 0;
     if (pwd.length >= 8) result++;
     var reg = /^([a-zA-Z]+|[0-9]+)$/;
     var reg1 = /^(.*[a-z]+.*)$/;
@@ -695,7 +694,6 @@ function checkNewPassword() {
     else x = PHONE;
     if (x != pwd) {
         result++;
-        FLAG_IF_EMAIL = 1;
     }
 
     if(pwd.length >= 8 && !reg.test(pwd)) streth = 0;
