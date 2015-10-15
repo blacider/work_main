@@ -297,9 +297,9 @@ class Users extends REIM_Controller {
             // if()
             // redirect(base_url(''));
             if ($info['code'] == -75) {
-                die(json_encode(array('status'=> $info['status'] ,'msg' => '新密码不能包含用户名或手机号')));
+                die(json_encode(array('status'=> 0 ,'msg' => '新密码不能包含用户名或手机号')));
             } else {
-                die(json_encode(array('status'=> $info['status'] ,'msg' => $info['data']['msg'])));
+                die(json_encode(array('status'=> 0,'msg' => $info['data']['msg'])));
             }
         }
     }
