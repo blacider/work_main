@@ -102,7 +102,7 @@
                                     </select>
     </div>
 </div>
-<div class="form-group">
+<div class="form-group" id="burden" <?php if(!$is_burden) echo 'hidden'?>>
 <label class="col-sm-1 control-label no-padding-right">费用承担</label>
 <div class="col-xs-6 col-sm-6">
 
