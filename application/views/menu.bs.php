@@ -682,6 +682,7 @@ function checkNewPassword() {
     result = 0;
     streth = -1;
     types = 0 ;
+    FLAG_IF_EMAIL = 0;
     if (pwd.length >= 8) result++;
     var reg = /^([a-zA-Z]+|[0-9]+)$/;
     var reg1 = /^(.*[a-z]+.*)$/;
@@ -692,7 +693,10 @@ function checkNewPassword() {
     var x;
     if (EMAIL != "") x = EMAIL.split('@')[0];
     else x = PHONE;
-    if (x != pwd) result++;
+    if (x != pwd) {
+        result++;
+        FLAG_IF_EMAIL = 1;
+    }
 
     if(pwd.length >= 8 && !reg.test(pwd)) streth = 0;
     if(pwd.length >= 10 && !reg.test(pwd)) streth = 1;
@@ -761,7 +765,7 @@ function resetPasswardSubmit() {
         data:{'old_password':$('#old_password').val(),'password':$('#newPassword').val(),'repassword':$('#reNewPassword').val(),'pid':$('#pid').val()},
         success:function(data){
            // console.log(data);
-            if(data.status == 0)
+            if(data.status <= 0)
             {
                 $('#wrong-error').css('display', 'block').text(data.msg);
             }
