@@ -471,6 +471,7 @@ function arr_contains(item,arr)
             $('#uids').val('').trigger('chosen:updated');
             $('#ranks').val('').trigger('chosen:updated');
             $('#levels').val('').trigger('chosen:updated');
+            $('#is_all_member').prop('checked',false);
            // $('#oid').unbind('change');
 
             var item_arr = [];
