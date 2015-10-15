@@ -296,7 +296,7 @@ class Users extends REIM_Controller {
         } else {
             // if()
             // redirect(base_url(''));
-            die(json_encode(array('status'=> 0 ,'msg' => '原始密码错误')));
+            die(json_encode(array('status'=> 0 ,'msg' => $info['data']['msg'])));
         }
     }
     public function update_password(){
