@@ -259,12 +259,18 @@ function arr_contains(item,arr)
   $(document).ready(function(){
     $('.chosen-select').chosen({width:"100%"}); 
     //$('#pro_title').empty().append('');
-  
+  /*
       $('.close_modal').click(function(){
         $('#oid').empty().trigger('chosen:updated');
         exists=[];
         $('#oid').unbind('change');
       });
+*/
+    $('#modal-table2').on('hide.bs.modal',function(){
+        $('#oid').empty().trigger('chosen:updated');
+        exists=[];
+        $('#oid').unbind('change');
+    });
         $('#add_new_btn').click(function(){
           $('#g_lab').prop('hidden',false).trigger('chosen:updated');
             $('#o_lab').prop('hidden',false).trigger('chosen:updated');
