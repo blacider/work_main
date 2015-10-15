@@ -692,7 +692,9 @@ function checkNewPassword() {
     var x;
     if (EMAIL != "") x = EMAIL.split('@')[0];
     else x = PHONE;
-    if (x != pwd) result++;
+    if (x != pwd) {
+        result++;
+    }
 
     if(pwd.length >= 8 && !reg.test(pwd)) streth = 0;
     if(pwd.length >= 10 && !reg.test(pwd)) streth = 1;
@@ -761,7 +763,7 @@ function resetPasswardSubmit() {
         data:{'old_password':$('#old_password').val(),'password':$('#newPassword').val(),'repassword':$('#reNewPassword').val(),'pid':$('#pid').val()},
         success:function(data){
            // console.log(data);
-            if(data.status == 0)
+            if(data.status <= 0)
             {
                 $('#wrong-error').css('display', 'block').text(data.msg);
             }

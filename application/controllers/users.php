@@ -296,7 +296,11 @@ class Users extends REIM_Controller {
         } else {
             // if()
             // redirect(base_url(''));
-            die(json_encode(array('status'=> 0 ,'msg' => '原始密码错误')));
+            if ($info['code'] == -75) {
+                die(json_encode(array('status'=> 0 ,'msg' => '新密码不能包含用户名或手机号')));
+            } else {
+                die(json_encode(array('status'=> 0,'msg' => $info['data']['msg'])));
+            }
         }
     }
     public function update_password(){
