@@ -356,7 +356,7 @@ class Bills extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-        $this->session->set_userdata("report_list_url", "bills/fincance_flow");
+        $this->session->set_userdata("report_list_url", "bills/finance_flow");
             $this->bsload('bills/finance_flow',
                 array(
                     'title' => '待审批'
@@ -428,7 +428,7 @@ class Bills extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-        $this->session->set_userdata("report_list_url", "bills/fincance_done");
+        $this->session->set_userdata("report_list_url", "bills/finance_done");
             $this->bsload('bills/finance_flow',
                 array(
                     'title' => '待审批'
