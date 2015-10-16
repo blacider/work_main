@@ -205,7 +205,6 @@ class Reports extends REIM_Controller {
                     //. '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
                 } else if (in_array($d['status'],array(0,3))) {
                     $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
-                        . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
                         . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>'
                         . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span></div>';
                 }
@@ -1016,7 +1015,7 @@ class Reports extends REIM_Controller {
         {
            $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code']); 
         }
-        $group = $this->groups->get_my_list();
+        $group = $this->groups->get_my_full_list();
         $ginfo = array();
         $gmember = array();
         if($group) {
@@ -1320,18 +1319,22 @@ class Reports extends REIM_Controller {
                 $o['参与人员'] = implode(',', $__relates);
                 $o['承担部门'] = $_str_afford_dept;
                 $o['承担对象'] = $_str_afford_member;
+                //$o['承担部门'] = $_str_afford_dept;
+                //$o['承担对象'] = $_str_afford_member;
+                $_sob_code = 0;
+                if(array_key_exists($i['category'], $cate_dic) && array_key_exists('sob_code', $cate_dic[$i['category']])){
+                    $_sob_code = $cate_dic[$i['category']]['sob_code'];
+                }
+                $_sob_name = '';
+                if(array_key_exists($i['category'], $cate_dic) && array_key_exists('name', $cate_dic[$i['category']])){
+                    $_sob_name = $cate_dic[$i['category']]['name'];
+                }
                 $o['会计科目'] = $i['category_name'];
-                $o['会计科目代码'] = $cate_dic[$i['category']]['sob_code'];
+                $o['会计科目代码'] = $_sob_code;
                 $o['会计科目上级'] = '';
                 $o['会计科目上级代码'] = '';
-                if($cate_dic[$i['category']]['pid'] > 0)
-                {
-                     $o['会计科目上级'] = $cate_dic[$i['category']]['name'];
-                }
-                if($cate_dic[$i['category']]['pid'] > 0)
-                {
-                     $o['会计科目代码'] = $cate_dic[$i['category']]['sob_code'];
-                }
+                $o['会计科目上级'] = $_sob_name;
+                $o['会计科目代码'] = $_sob_code;
                 $o['报销审核人'] = $i['flow'];
                 $o['备注'] = $i['note'];
                 $_rate = 1.0;
@@ -1349,9 +1352,12 @@ class Reports extends REIM_Controller {
                 $o['报告名'] = $i['title'];
                 $o['报告ID'] = $i['rid'];
 
-                $o['账号'] = $i['member_info']['account'];
-                $o['卡号'] = $i['member_info']['cardno'];
-                $o['开户行'] = $i['member_info']['bankname'];
+                $_bank = array('cardno' => '', 'account' => '', 'bankloc' => '', 'bankname' => '');
+                if(array_key_exists($i['uid'], $_banks)) $_bank = $_banks[$i['uid']];
+
+                $o['账号'] = $_bank['account'];
+                $o['卡号'] = $_bank['cardno'];
+                $o['开户行'] = $_bank['bankname'];
                 array_push($_detail_items, $o);
                 log_message('debug','members: ' . json_encode($i['member_info']));
             }

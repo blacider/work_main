@@ -208,7 +208,7 @@ if($last_error) {
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
                                 <input type="radio" name="range" value="1" onclick="choseRange(this.value)" style="position:relative;top:7px"></div>
                             <div class="col-xs-4 col-sm-4">
-                                <select id="ranks" class="chosen-select range tag-input-style" multiple="multiple" name="ranks[]"  data-placeholder="请选择职位">
+                                <select id="ranks" class="chosen-select range tag-input-style" multiple="multiple" name="ranks[]"  data-placeholder="请选择级别">
                                 
                                     <?php
                                       
@@ -239,7 +239,7 @@ if($last_error) {
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
                                 <input type="radio" name="range" value="2" onclick="choseRange(this.value)" style="position:relative;top:7px"></div>
                             <div class="col-xs-4 col-sm-4">
-                                <select id="levels" class="chosen-select range tag-input-style" multiple="multiple" name="levels[]"  data-placeholder="请选择级别">
+                                <select id="levels" class="chosen-select range tag-input-style" multiple="multiple" name="levels[]"  data-placeholder="请选择职位">
                                  
                                     <?php
                                     
