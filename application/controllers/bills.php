@@ -460,6 +460,7 @@ class Bills extends REIM_Controller {
             die(json_encode(array()));
         }
         $data = $bills['data']['data'];
+        //log_message("debug", "alvayang bills:" . json_encode($bill['data']));
        // $ugs = $bills['data']['ugs'];
         $ugs = array();
         $_data = array();
@@ -473,17 +474,6 @@ class Bills extends REIM_Controller {
             if (array_key_exists("approvaldt", $d)) {
                 $d["approvaldt_str"] = date('Y-m-d H:i:s', $d["approvaldt"]);
             }
-            $d['ugs'] = array();
-            if($ugs)
-            {
-                if(array_key_exists($d['uid'],$ugs))
-                {
-                    $d['ugs'] = $ugs[$d['uid']];		
-                }
-
-            }
-            array_push($d['ugs'],'0');
-            $d['ugs'] = implode(',',$d['ugs']);
             $d['amount'] =  sprintf("%.2f",$d['amount'] );
             $d['status_str'] = '';
             $edit = '';
