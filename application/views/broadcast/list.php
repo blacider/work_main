@@ -19,7 +19,9 @@
                                     <th class='blue'>消息列表</th>
                                     <th class='blue'>发布时间</th>
                                     <th class='blue'>最后修改时间</th>
-                                    <th class='blue'>操作</th>
+                                    <th class='blue'><a href="<?php echo base_url('broadcast/create')?>" role="button" class="green" data-toggle="modal">
+                                            <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
+                                        </a> </th>
                                     <!--
                                     <th class="hidden-680">
                                          <a href="<?php echo base_url('company/flow_create')?>" role="button" class="green" data-toggle="modal">
