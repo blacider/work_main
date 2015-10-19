@@ -338,6 +338,7 @@ uploader_file.on( 'fileQueued', function( file ) {
     var $li = $(
             '<div id="' + file.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
                 '<img style="width:128px">' +
+                '<p style="text-align: center;margin: 0;max-width: 128px;">'+file.name+'</p>'+
                 '<div class="glyphicon glyphicon-trash red del-button_" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
             '</div>'
             ),$img = $li.find('img');
