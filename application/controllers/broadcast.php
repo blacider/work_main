@@ -12,12 +12,94 @@ class Broadcast extends Reim_Controller {
         $this->load->model('broadcast_model','broadcast');
     }
 
-    public function index() {
-        $broadcast = $this->broadcast->get_info();
+    public function delete_info($id)
+    {
+        $this->need_group_it();
+        $info = $this->broadcast->delete($id);
+        if($info['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','删除成功');
+        }
+        else
+        {
+            $this->session->set_userdata('last_error',$info['msg']);
+        }
+        return redirect(base_url('broadcast/index'));
+    }
 
+    public function update_info($id)
+    {
+        $this->need_group_it();
+        $info = $this->broadcast->get_info($id);
+        $_ranks = $this->reim_show->rank_level(1);
+        $_levels = $this->reim_show->rank_level(0);
+        $ranks = array();
+        $levels = array();
+        $members = array();
+        $_ugroups = array();
+
+        if($_ranks['status'] > 0)
+            $ranks = $_ranks['data'];
+        if($_levels['status'] > 0)
+            $levels = $_levels['data'];
+
+        $gmember = array();
+        $group = $this->groups->get_my_list();
+        if($group) {
+            if(array_key_exists('ginfo', $group['data'])){
+                $ginfo = $group['data']['ginfo'];
+            }
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
+
+        $ugroups = $this->ug->get_my_list();
+        if($ugroups['status'] > 0)
+        {
+            $_ugroups = $ugroups['data']['group'];
+        }
+
+        if($info['status'] <= 0)
+        {
+            $this->session->set_userdata('last_error','权限不足');
+            return redirect(base_url('broadcast/index'));
+        }
+
+        $broadcast = $info['data'];
+
+        return $this->bsload('broadcast/update_info',
+            array(
+                'title' => '消息编辑'
+                ,'broadcast' => $broadcast
+                ,'ranks' => $ranks
+                ,'levels' => $levels
+                ,'members' => $gmember
+                ,'ugroups' => $_ugroups
+                ,'id' => $id
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => base_url('company/index'), 'name' => '公司设置', 'class' => '')
+                    ,array('url'  => '', 'name' => '消息编辑', 'class' => '')
+                )
+            ));
+    }
+
+    public function index() {
+        $info = $this->broadcast->get_info();
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+        $broadcast = array();
+        if($info['status'] > 0) 
+            $broadcast = $info['data'];
+            
+        
         return $this->bsload('broadcast/list',
             array(
                 'title' => '系统消息列表'
+                ,'broadcast' => $broadcast
+                ,'error' => $error
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('company/index'), 'name' => '公司设置', 'class' => '')
@@ -156,16 +238,60 @@ class Broadcast extends Reim_Controller {
                     ,array('url'  => '', 'name' => '创建系统消息', 'class' => '')
                 )));
     }
-    public function docreate() {
+    public function docreate($id = 0) {
         $_title = $this->input->post('title');
         $_content = $this->input->post('content');
         $_type = $this->input->post('range');
-        $_groups = implode(',', $this->input->post('groups'));
+        $_groups = $this->input->post('groups');
+        $_ranks= $this->input->post('ranks');
+        $_levels = $this->input->post('levels');
+        $_member = $this->input->post('members');
+        $all = $this->input->post('all');
+        $_sent = $this->input->post('sent');
+        $profile= $this->session->userdata('profile');
+        $uid = $profile['id'];
+
+        $groups = '';
+        $ranks = '';
+        $levels = '';
+        $member = '';
+        $sent = 0 ;
+
+        if($_groups) $groups = implode(',',$_groups); 
+        if($_ranks) $ranks = implode(',',$_ranks); 
+        if($_levels) $levels = implode(',',$_levels); 
+        if($_member) $member = implode(',',$_member); 
+
+        log_message('debug','profile:' . json_encode($profile));
         log_message('debug','title:' . $_title);
         log_message('debug','content:' . $_content);
+        log_message('debug','groups:' . $groups . 'ranks:' . $ranks . 'levels:' . $levels . 'member:' . $member);
         if($_title || $_content) {
-            $this->broadcast->create($_title, $_content, $_type, $_groups);
+            if($id == 0)
+            {
+                $info = $this->broadcast->create($uid, $_title, $_content, $member, $groups, $ranks, $levels, $all);
+                if($info['status'] > 0)
+                    $this->session->set_userdata('last_error','创建消息成功');
+                else
+                    $this->session->set_userdata('last_error','创建消息失败');
+            }
+            else
+            {
+                $info = $this->broadcast->update($id, $uid, $_title, $_content, $member, $groups, $ranks, $levels ,$all);
+                if($info['status'] > 0)
+                    $this->session->set_userdata('last_error','创建消息成功');
+                else
+                    $this->session->set_userdata('last_error','创建消息失败');
+            }
+        }
+        else
+        {
+            return redirect(base_url('broadcast/create'));
         }
         return redirect(base_url('broadcast/index'));
+    }
+    public function doupdate($id) 
+    {
+        $this->docreate($id);
     }
 }

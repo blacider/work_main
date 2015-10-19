@@ -18,19 +18,19 @@
 
 <div class="page-content">
 <div class="page-content-area">
-<form role="form" action="<?php echo base_url('broadcast/docreate');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="itemform">
+<form role="form" action="<?php echo base_url('broadcast/doupdate/') . '/' . $id;  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="itemform">
     <div class="row">
         <div class="col-xs-12 col-sm-12">
             <div class="form-group">
                 <label class="col-sm-1 control-label no-padding-right">标题</label>
                 <div class="col-xs-6 col-sm-6">
-                    <input type="text" class="form-controller col-xs-12" name="title" id="title" placeholder="标题" required>
+                    <input type="text" class="form-controller col-xs-12" name="title" id="title" placeholder="标题" value="<?php echo $broadcast['title'];?>" required>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-1 control-label no-padding-right">正文</label>
                 <div class="col-xs-6 col-sm-6">
-                    <textarea class="col-xs-12 col-sm-12" row="30" name="content"></textarea>
+                    <textarea class="col-xs-12 col-sm-12" row="30" name="content"><?php echo $broadcast['content'];?></textarea>
                 </div>
             </div>
 
@@ -41,10 +41,19 @@
                                     <?php
                                         foreach($ugroups as $item)
                                         {
+                                            if(in_array($item['id'], $broadcast['groups']))
+                                            {
+                                    ?>
+                                        <option selected value="<?php echo $item['id'];?>"><?php echo $item['name'];?></option>
+                                    <?php
+                                            }
+                                            else
+                                            {
                                     ?>
                                         <option value="<?php echo $item['id']?>"><?php echo $item['name']?></option>
                                     <?php
                                         }
+                                    }
                                     ?></select>
                                 </div>
                                 <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">部门</label>
@@ -57,10 +66,19 @@
                                     <?php
                                         foreach($ranks as $item)
                                         {
+                                            if(in_array($item['id'], $broadcast['ranks']))
+                                        {
+                                    ?>
+                                         <option selected value="<?php echo $item['id']?>"><?php echo $item['name']?></option>
+                                    <?php
+                                        }
+                                        else
+                                        {
                                     ?>
                                         <option value="<?php echo $item['id']?>"><?php echo $item['name']?></option>
                                     <?php
                                         }
+                                    }
                                     ?></select>
                                 </div>
                                 <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">级别</label>
@@ -73,10 +91,19 @@
                                     <?php
                                         foreach($levels as $item)
                                         {
+                                            if(in_array($item['id'], $broadcast['levels']))
+                                            {
+                                    ?>
+                                        <option selected value="<?php echo $item['id']?>"><?php echo $item['name']?></option>
+                                    <?php
+                                            }
+                                        else
+                                        {
                                     ?>
                                         <option value="<?php echo $item['id']?>"><?php echo $item['name']?></option>
                                     <?php
                                         }
+                                    }
                                     ?></select>
                                 </div>
                                 <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">职位</label>
@@ -89,20 +116,43 @@
                                     <?php
                                         foreach($members as $item)
                                         {
+                                            if(in_array($item['id'], $broadcast['users']))
+                                            {
+                                    ?>
+                                        <option selected value="<?php echo $item['id']?>"><?php echo $item['nickname']?></option>
+                                    <?php
+                                            }
+                                        else
+                                        {
                                     ?>
                                         <option value="<?php echo $item['id']?>"><?php echo $item['nickname']?></option>
                                     <?php
                                         }
+                                    }
                                     ?></select>
                                 </div>
                                 <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">员工</label>
                 </div>
                   <div class="from-group">
-                    <label class="col-sm-1 control-label no-padding-right"></label>
-                 <div class="col-xs-4 col-sm-4">
-                    <input type="checkbox" id="is_all" name="all" value='0'/>全体员工
-                </div>
-                </div>
+                      <label class="col-sm-1 control-label no-padding-right"></label>
+                         <div class="col-xs-4 col-sm-4">
+                            <?php
+                                if($broadcast['all'] == 1)
+                                {
+                            ?>
+
+                                    <input type="checkbox" id="is_all" name="all" value='1' checked />全体员工
+                            <?php
+                                } 
+                                else
+                                {
+                            ?>
+                                    <input type="checkbox" id="is_all" name="all" value='0' />全体员工
+                            <?php
+                                }
+                            ?>
+                        </div>
+                  </div>
 
            
                        

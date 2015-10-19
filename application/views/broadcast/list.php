@@ -16,7 +16,7 @@
                         <table id="sample-table-1" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th class='blue'>消费列表</th>
+                                    <th class='blue'>消息列表</th>
                                     <th class='blue'>发布时间</th>
                                     <th class='blue'>最后修改时间</th>
                                     <th class='blue'>操作</th>
@@ -31,24 +31,23 @@
                             </thead>
                             <tbody>
  <?php
- $m_dict = array();
- $top_category = array();
- if($rules)
- {
-foreach($rules as $item){
+ 
+
+foreach($broadcast as $item){
     $img = "";
     $str = '<tr>';
-    $username = '<td class="u_username">' . $item['name'] . '</td>';
-    $role_id =  '<td class="u_role_name">' . $item['lastdt'] . '</td>';
-    $operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class="edit"  data-title="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
+    $title = '<td class="u_username">' . $item['title'] . '</td>';
+    $createdt =  '<td class="u_role_name">' . $item['createdt'] . '</td>';
+    $lastdt =  '<td class="u_role_name">' . $item['lastdt'] . '</td>';
+    $operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class="edit"  data-title="' . $item['title'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
     $operation = '<td style="width:50px;"><a class="btn btn-xs btn-danger" href="' .  base_url('/company/delet_rule/'. $item['id']) .'">
         <i class="ace-icon fa fa-trash-o bigger-120"></i>
         </a></td>';
-$str = $str . $username . $role_id . $operation_upd . '</tr>';
+$str = $str . $title . $createdt . $lastdt . $operation_upd . '</tr>';
 echo $str;
 
 }
- }
+
 ?> 
 </tbody>
 </table>
@@ -64,6 +63,11 @@ echo $str;
     var __BASEURL = "<?php echo $base_url; ?>";
 </script>
 <script language="javascript">
+var error = "<?php echo $error;?>";
+if(error)
+{
+	show_notify(error);
+}
 
 $(document).ready(function(){
 
@@ -73,14 +77,14 @@ $(document).ready(function(){
             var _title = $(this).data('title');
             var _id = $(this).data('id');
 
-           location.href=__BASEURL+"/company/flow_update/"+ _id;
+           location.href=__BASEURL+"/broadcast/update_info/"+ _id;
         });
     });
     $('.del').each(function(){
         $(this).click(function(){
             if(confirm('确认要删除吗?')){
                 var _id = $(this).data('id');
-                location.href = __BASEURL + "/company/delete_finance_flow/" + _id;
+                location.href = __BASEURL + "/broadcast/delete_info/" + _id;
             }
         });
     });
