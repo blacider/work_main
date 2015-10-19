@@ -8,13 +8,390 @@ class Category extends REIM_Controller {
         $this->load->model('group_model', 'groups');
         $this->load->model('usergroup_model','ug');
         $this->load->model('account_set_model','account_set');
-	$this->load->model('reim_show_model','reim_show');
-	$this->load->model('group_model','groups');
-	$this->load->model('user_model','users');
+        $this->load->model('reim_show_model','reim_show');
+        $this->load->model('group_model','groups');
+        $this->load->model('user_model','users');
+    }
+    
+
+    public function get_ug_members($gid)
+    {
+        $info = json_decode($this->ug->get_single_group($gid), True);
+        if($info['status'] > 0){
+            $info = $info['data'];
+            $group = $info['group'];
+            $member = $info['member'];
+            }
+         log_message('debug','members:' . json_encode($member));
+         die(json_encode(array('member' => $member,'gid' => $gid)));
+    }
+
+    public function get_fee_afford($oid)
+    {
+        $this->need_group_it();
+        $fee_afford = array();
+        $buf = $this->category->get_fee_afford($oid);
+        if($buf['status'] > 0)
+        {
+            $fee_afford = $buf['data'];
+        }
+        log_message('debug','fee_afford:' . json_encode($fee_afford));    
+        
+        die(json_encode($fee_afford));
+    }
+
+    public function delete_fee_afford($oid,$pid)
+    {
+        $this->need_group_it();
+        $buf = $this->category->delete_fee_afford($oid); 
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','删除对象成功');
+        }
+        else
+        {
+            $this->session->set_userdata('last_error','删除对象失败');
+        }
+
+            return redirect(base_url('category/update_expense/' . $pid));
+    }
+    
+    public function create_fee_afford()
+    {
+        $this->need_group_it();
+        $__gid = $this->input->post('_gid');
+        $__oid = $this->input->post('_oid');
+        $__oid = json_decode($__oid,True);
+        $fid = $this->input->post('fid');
+        $pid = $this->input->post('pid');
+       // $gid = $this->input->post('gid');
+        $_oid = $this->input->post('oid');
+ //       $oname = $this->input->post('oname');
+        $standalone = 0;
+        
+        $uids = $this->input->post('uids');
+        $gids = $this->input->post('gids');
+        $ranks = $this->input->post('ranks');
+        $levels = $this->input->post('levels');
+
+        $all_member = $this->input->post('all_member');
+        if(!$uids)
+        {
+            $uids = array();
+        }
+        if(!$gids)
+        {
+            $gids = array();
+        }
+        if(!$ranks)
+        {
+            $ranks = array();
+        }
+        if(!$levels)
+        {
+            $levels = array();
+        }
+        if($fid != -1)
+        {
+            $_oid = $__oid;
+            $gid = $__gid;
+        }
+
+        if($all_member == 1)
+        {
+            $gids = [-1];
+        }
+        $oid = array();
+        foreach($_oid as $o)
+        {
+            $temp = explode(',',$o);
+            if(!array_key_exists($temp[0],$oid))
+            {
+                $oid[$temp[0]] = array(); 
+            }
+            array_push($oid[$temp[0]],array('id' => $temp[1],'name'=>$temp[2])); 
+        }
+        
+  //      log_message('debug','oname:' . json_encode($oname));
+        log_message('debug','pid:' . $pid);
+        log_message('debug','_gid:' . $__gid);
+        log_message('debug','_oid:' .json_encode($_oid));
+        log_message('debug','_oid:' .json_encode($__oid));
+        log_message('debug','fid:' . $fid);
+//        log_message('debug','gid:' . json_encode($gid));
+        log_message('debug','oid:' . json_encode($oid));
+        log_message('debug','uids:' . json_encode($uids));
+        log_message('debug','gids:' . json_encode($gids));
+        log_message('debug','ranks:' . json_encode($ranks));
+        log_message('debug','levels:' . json_encode($levels));
+        if($fid == -1)
+        {
+            $buf = $this->category->create_fee_afford($pid,$oid,$standalone,$uids,$gids,$ranks,$levels);
+                if($buf['status'] > 0)
+                {
+                    $this->session->set_userdata('last_error','对象添加成功');
+                }
+                else
+                {
+                    $this->session->set_userdata('last_error','对象添加失败');
+                }
+        }
+        else
+        {
+            $buf = $this->category->update_fee_afford($pid,$oid,$standalone,$uids,$gids,$ranks,$levels); 
+                if($buf['status'] > 0)
+                {
+                    $this->session->set_userdata('last_error','对象更新成功');
+                }
+                else
+                {
+                    $this->session->set_userdata('last_error','对象更新失败');
+                }
+        }
+            return redirect(base_url('category/update_expense/' . $pid));
+    }
+    
+    public function del_expense($id = -1)
+    {
+        $this->need_group_it();
+        if($id == -1)  return redirect(base_url('category/show_expense'));
+        $buf = $this->category->del_fee_afford_project($id);
+        
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','删除成功');  
+        }
+        else
+        {
+            $this->session->set_userdata('last_error','删除失败');
+        }
+
+        return redirect(base_url('category/show_expense'));
+    }
+
+    public function update_fee_afford_project()
+    {
+        $this->need_group_it();
+        $id = $this->input->post('pro_id');
+        if($id == -1) 
+            return redirect(base_url('category/show_expense'));
+        $name = $this->input->post('pro_name');
+        $buf = $this->category->update_fee_afford_project($id,$name);
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','项目更新成功');
+        }
+        else
+        {
+            $this->session->set_userdata('last_error','项目更新失败');
+        }
+
+        return redirect(base_url('category/show_expense'));
+    }
+    public function create_expense()
+    {
+        $this->need_group_it();
+        $name = $this->input->post('name');
+        $buf = $this->category->expense_create($name);
+
+        if($buf['status'] > 0)
+        {
+            return redirect(base_url('category/update_expense/' . $buf['data']['id']));
+        }
+        else
+        {
+            $this->session->set_userdata('last_error','对象添加失败');
+            return redirect(base_url('category/show_expense'));
+        }
+    }
+
+    public function update_expense($eid = -1)
+    {
+        $this->need_group_it();
+        if(-1 == $eid) return redirect(base_url('category/show_expense'));
+
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+        $group = $this->groups->get_my_list();
+        $ginfo = array();
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('ginfo', $group['data'])){
+                $ginfo = $group['data']['ginfo'];
+            }
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
+
+        $gnames = array();
+        $_gnames = $this->ug->get_my_list();
+        if($_gnames['status'] > 0)
+        {
+            $gnames = $_gnames['data']['group'];
+        }
+
+        $ranks = array();
+        $levels = array();
+        $_ranks = $this->reim_show->rank_level(1);
+        if($_ranks['status'] > 0)
+        {
+            $ranks = $_ranks['data'];
+        }
+        $_levels = $this->reim_show->rank_level(0);
+        if($_levels['status'] > 0)
+        {
+            $levels = $_levels['data'];
+        }
+
+        $_fee_afford = $this->category->get_afford_project($eid);
+        $fee_afford = array();
+        if($_fee_afford['status'] > 0) 
+        {
+            $fee_afford = $_fee_afford['data'];
+        }
+        $group_dic = array();
+        foreach($gnames as $g)
+        {
+            $group_dic[$g['id']] = $g['name']; 
+        }
+        $fee_afford['gdetail'] = array();
+        $oid_dic = array();
+        if(array_key_exists('detail',$fee_afford))
+        {
+                foreach($fee_afford['detail'] as &$f)
+                {
+                    array_push($oid_dic,$f['oid']);
+                    if(!array_key_exists($f['gid'],$fee_afford['gdetail']))
+                    {
+                        $fee_afford['gdetail'][$f['gid']] = array();
+                    }
+
+                    if(array_key_exists($f['gid'],$group_dic))
+                    {
+                        $f['gname'] = $group_dic[$f['gid']]; 
+                        log_message('debug','gname:' . $f['gname']);
+                    }
+                    else
+                    {
+                        $f['gname'] = '';
+                    }
+
+                    array_push($fee_afford['gdetail'][$f['gid']],$f);
+                }
+        }
+        $project_type = 0;
+        if(array_key_exists('project_type',$fee_afford))
+        {
+            $project_type = $fee_afford['project_type'];
+        }
+        log_message('debug','members: ' . json_encode($gmember));
+        log_message('debug','groups: ' . json_encode($gnames));
+        log_message('debug','ranks: ' . json_encode($ranks));
+        log_message('debug','levels: ' . json_encode($levels));
+        log_message('debug','fee_afford: ' . json_encode($_fee_afford));
+        log_message('debug','group_dic: ' . json_encode($group_dic));
+        if($project_type == 0)
+        {
+                $this->bsload('category/update_expense',
+                    array(
+                        'title' => '修改对象'
+                        ,'members' => $gmember
+                        ,'groups' => $gnames
+                        ,'ranks' => $ranks
+                        ,'levels' => $levels
+                        ,'pid' => $eid
+                        ,'error' => $error
+                        ,'fee_afford' => $fee_afford
+                        ,'group_dic' => $group_dic
+                        ,'oid_dic' => $oid_dic
+                        ,'breadcrumbs' => array(
+                            array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                            ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
+                            ,array('url'  => base_url('category/show_expense'), 'name' => '费用承担对象管理', 'class' => '')
+                            ,array('url'  => '', 'name' => '修改对象', 'class' => '')
+                        ),
+                    )
+                );
+        }
+        else if($project_type == 1)
+        {
+                $this->bsload('category/update_expense_group',
+                    array(
+                        'title' => '修改对象'
+                        ,'members' => $gmember
+                        ,'groups' => $gnames
+                        ,'ranks' => $ranks
+                        ,'levels' => $levels
+                        ,'pid' => $eid
+                        ,'error' => $error
+                        ,'fee_afford' => $fee_afford
+                        ,'group_dic' => $group_dic
+                        ,'oid_dic' => $oid_dic
+                        ,'breadcrumbs' => array(
+                            array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                            ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
+                            ,array('url'  => base_url('category/show_expense'), 'name' => '费用承担对象管理', 'class' => '')
+                            ,array('url'  => '', 'name' => '修改对象', 'class' => '')
+                        ),
+                    )
+                );
+        }
+        else
+        {
+                $this->bsload('category/update_expense_other',
+                    array(
+                        'title' => '修改对象'
+                        ,'members' => $gmember
+                        ,'groups' => $gnames
+                        ,'ranks' => $ranks
+                        ,'levels' => $levels
+                        ,'pid' => $eid
+                        ,'error' => $error
+                        ,'fee_afford' => $fee_afford
+                        ,'group_dic' => $group_dic
+                        ,'oid_dic' => $oid_dic
+                        ,'breadcrumbs' => array(
+                            array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                            ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
+                            ,array('url'  => base_url('category/show_expense'), 'name' => '费用承担对象管理', 'class' => '')
+                            ,array('url'  => '', 'name' => '修改对象', 'class' => '')
+                        ),
+                    )
+                );
+        }
+    }
+
+    public function show_expense()
+    {
+        $this->need_group_it();
+        $buf = $this->category->get_afford_project();
+        $projects = array();
+        if($buf['status'] > 0)
+        {
+            $projects = $buf['data']; 
+        }
+        log_message('debug','projects: ' . json_encode($projects));
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+        $this->bsload('category/expense',
+            array(
+                'title' => '费用承担对象管理'
+                ,'error' => $error
+                ,'projects' => $projects
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
+                    ,array('url'  => '', 'name' => '费用承担对象管理', 'class' => '')
+                ),
+            )
+        );
     }
 
     public function batch_create_category()
     {
+        $this->need_group_it();
         $sid = $this->input->post('sid');
         $cate = $this->input->post('cate');
         log_message('debug','sid: ' . $sid);

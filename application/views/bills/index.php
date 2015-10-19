@@ -203,6 +203,9 @@ position: absolute;
       rules:[{field:"ugs",op:"cn",data:groupId}],
       groups:time_groups
     }];
+    if (groupId == 0) {
+      groups_ = groups_[0].groups;
+    }
     //postData.filters = JSON.stringify({
     //    groupOp: "OR",
     //    rules: rules ,

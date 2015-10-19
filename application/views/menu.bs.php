@@ -409,6 +409,13 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <a href="<?php echo base_url('category/tags'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 标签管理 </a>
         <b class="arrow"></b>
         </li>
+
+
+        <li class="hsub" id="show_expense">
+        <a href="<?php echo base_url('category/show_expense'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 费用承担对象管理</a>
+        <b class="arrow"></b>
+        </li>
+
     </ul>
     </li>
 
@@ -702,7 +709,9 @@ function checkNewPassword() {
     var x;
     if (EMAIL != "") x = EMAIL.split('@')[0];
     else x = PHONE;
-    if (x != pwd) result++;
+    if (x != pwd) {
+        result++;
+    }
 
     if(pwd.length >= 8 && !reg.test(pwd)) streth = 0;
     if(pwd.length >= 10 && !reg.test(pwd)) streth = 1;
@@ -771,7 +780,7 @@ function resetPasswardSubmit() {
         data:{'old_password':$('#old_password').val(),'password':$('#newPassword').val(),'repassword':$('#reNewPassword').val(),'pid':$('#pid').val()},
         success:function(data){
            // console.log(data);
-            if(data.status == 0)
+            if(data.status <= 0)
             {
                 $('#wrong-error').css('display', 'block').text(data.msg);
             }
@@ -883,6 +892,10 @@ $(document).ready(function(){
     if(_controller == "category" && _method == "sob_update")
     {
         _method = "account_set";
+    }
+     if(_controller == "category" && _method == "update_expense")
+    {
+        _method = "show_expense";
     }
     $('.hsub').each(function(){
         $(this).removeClass('active open');
