@@ -35,7 +35,14 @@
 
 foreach($broadcast as $item){
     $img = "";
-    $str = '<tr>';
+    if($item['sent'] == 0)
+    {
+    	$str = "<tr class='blue'>";
+    }
+    else
+    {
+    	$str = '<tr>';
+	}
     $title = '<td class="u_username">' . $item['title'] . '</td>';
     $createdt =  '<td class="u_role_name">' . $item['createdt'] . '</td>';
     $lastdt =  '<td class="u_role_name">' . $item['lastdt'] . '</td>';
