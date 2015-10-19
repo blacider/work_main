@@ -106,7 +106,7 @@
 
            
                        
-                   
+                   <input type="hidden" name="send" id="is_send" value="0">
             <div class="clearfix form-actions col-sm-8 col-xs-8">
                 <div class="col-md-offset-3 col-md-8">
                     <a class="btn btn-white btn-primary renew" data-renew="-1"><i class="ace-icon fa fa-save "></i>取消</a>
@@ -121,11 +121,26 @@
 </div>
 
 <script language="javascript">
-
+var __BASE = "<?php echo base_url();?>";
 $(document).ready(function() {
  
-    $('.renew').click(function() {
-        $('#itemform').submit();
+     $('.renew').each(function(){
+        $(this).click(function(){
+             var renew = $(this).data('renew');
+             if(renew == -1)
+             {
+                location.href = __BASE + 'broadcast/index'; 
+             }
+             if(renew == 0)
+             {
+                $('#itemform').submit();
+             }
+             if(renew == 1)
+             {
+                $('#is_send').val(1);
+                $('#itemform').submit();
+             }
+        });
     });
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)

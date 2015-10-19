@@ -247,7 +247,7 @@ class Broadcast extends Reim_Controller {
         $_levels = $this->input->post('levels');
         $_member = $this->input->post('members');
         $all = $this->input->post('all');
-        $_sent = $this->input->post('sent');
+        $send = $this->input->post('send');
         $profile= $this->session->userdata('profile');
         $uid = $profile['id'];
 
@@ -255,7 +255,6 @@ class Broadcast extends Reim_Controller {
         $ranks = '';
         $levels = '';
         $member = '';
-        $sent = 0 ;
 
         if($_groups) $groups = implode(',',$_groups); 
         if($_ranks) $ranks = implode(',',$_ranks); 
@@ -264,6 +263,7 @@ class Broadcast extends Reim_Controller {
 
         log_message('debug','profile:' . json_encode($profile));
         log_message('debug','title:' . $_title);
+        log_message('debug','send:' . $send);
         log_message('debug','content:' . $_content);
         log_message('debug','groups:' . $groups . 'ranks:' . $ranks . 'levels:' . $levels . 'member:' . $member);
         if($_title || $_content) {
@@ -274,14 +274,31 @@ class Broadcast extends Reim_Controller {
                     $this->session->set_userdata('last_error','创建消息成功');
                 else
                     $this->session->set_userdata('last_error','创建消息失败');
+
+                if($send == 1 && $info['status'] > 0)
+                {
+                    $is_send = $this->broadcast->send($info['data']['id']); 
+                    if($info['status'] > 0)
+                        $this->session->set_userdata('last_error','创建消息成功,并且发送成功');
+                    else
+                        $this->session->set_userdata('last_error','创建消息成功,但是发送失败');
+                }
             }
             else
             {
                 $info = $this->broadcast->update($id, $uid, $_title, $_content, $member, $groups, $ranks, $levels ,$all);
                 if($info['status'] > 0)
-                    $this->session->set_userdata('last_error','创建消息成功');
+                    $this->session->set_userdata('last_error','修改消息成功');
                 else
-                    $this->session->set_userdata('last_error','创建消息失败');
+                    $this->session->set_userdata('last_error','修改消息失败');
+                if($send == 1 && $info['status'] > 0)
+                {
+                    $is_send = $this->broadcast->send($info['data']['id']); 
+                    if($info['status'] > 0)
+                        $this->session->set_userdata('last_error','发送成功');
+                    else
+                        $this->session->set_userdata('last_error','发送失败');
+                }
             }
         }
         else

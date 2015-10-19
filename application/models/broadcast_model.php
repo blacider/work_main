@@ -3,6 +3,21 @@
 
 class Broadcast_Model extends Reim_Model {
 
+    public function send($id)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $data = array();
+
+		$url = $this->get_url('notice/' . $id . '/send');
+        $buf = $this->do_Put($url, $data, $jwt);
+        log_message("debug", "broadcast_send_url:" . $url);
+        log_message("debug", "broadcast_send_data:" . json_encode($data));
+        log_message("debug", "broadcast_send_back:" . $buf);
+        $_buf = json_decode($buf,True);
+        return $_buf;
+    }
+
     public function create($uid, $title, $content,  $users, $groups, $ranks, $levels , $all) {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
