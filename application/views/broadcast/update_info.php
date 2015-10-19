@@ -30,7 +30,7 @@
             <div class="form-group">
                 <label class="col-sm-1 control-label no-padding-right">正文</label>
                 <div class="col-xs-6 col-sm-6">
-                    <textarea class="col-xs-12 col-sm-12" row="30" name="content"><?php echo $broadcast['content'];?></textarea>
+                    <textarea class="col-xs-12 col-sm-12" row="30" id="content" name="content"><?php echo $broadcast['content'];?></textarea>
                 </div>
             </div>
 
@@ -193,6 +193,32 @@ $(document).ready(function() {
              }
              if(renew == 1)
              {
+                var title = $('#title').val();
+                var content = $('#content').val();
+                var some = 0;
+                $('.range').each(function(){
+                    if($(this).val())
+                    {
+                        some = 1;
+                    }
+                   
+                });
+                if(!title)
+                {
+                    show_notify('请输入标题');
+                    return false;
+                }
+                if(!content)
+                {
+                    show_notify('请输入内容');
+                    return false;
+                }
+                if(some == 0 && $('#is_all').val() == 0)
+                {
+                    show_notify('请选择适用范围');
+                    return false;
+                }
+                
                 $('#is_send').val(1);
                 $('#itemform').submit();
              }
