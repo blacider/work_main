@@ -870,6 +870,10 @@ $(document).ready(function(){
         _method = "broadcast_index";
         _controller = "company";
     }
+    if(_controller == "broadcast" && _method == "update_info"){
+        _method = "broadcast_create";
+        _controller = "company";
+    }
     if(_controller == "broadcast" && _method == "create"){
         _method = "broadcast_create";
         _controller = "company";

@@ -77,14 +77,14 @@ $(document).ready(function(){
             var _title = $(this).data('title');
             var _id = $(this).data('id');
 
-           location.href=__BASEURL+"/broadcast/update_info/"+ _id;
+           location.href=__BASEURL+"broadcast/update_info/"+ _id;
         });
     });
     $('.del').each(function(){
         $(this).click(function(){
             if(confirm('确认要删除吗?')){
                 var _id = $(this).data('id');
-                location.href = __BASEURL + "/broadcast/delete_info/" + _id;
+                location.href = __BASEURL + "broadcast/delete_info/" + _id;
             }
         });
     });
