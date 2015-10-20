@@ -195,7 +195,7 @@ $(document).ready(function() {
              }
              if(renew == 1)
              {
-                if(confirm("确认发送消息?"))
+                if(confirm("发送后将不能撤回，确认发送消息?"))
                 {
                     var title = $('#title').val();
                     var content = $('#content').val();
