@@ -2,26 +2,6 @@
 
 class Items_Model extends Reim_Model {
 
-    public function attachment($content,$filename,$mime)
-    {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-		$url = $this->get_url('attachment');
-        $data = array(
-            "content" => $content
-            ,"filename" => $filename
-            ,"mime" => $mime
-        );
-		$buf = $this->do_Post($url,$data,$jwt);
-
-        log_message('debug','attachment_data:' . json_encode($data));
-        log_message('debug','attachment_url:' . json_encode($url));
-        log_message('debug','attachment_back:' . $buf);
-        log_message("debug", $buf);
-		$obj = json_decode($buf, true);
-        return $obj;
-    }
-
     public function update_item($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = ''){
         $items = array();
         $s = array(
