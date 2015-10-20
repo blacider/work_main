@@ -1253,7 +1253,7 @@ class Reports extends REIM_Controller {
                     $unames = explode(',',$i['member_info']['d']);
                     if(count($unames) >= 2) 
                     {
-                        $o['部门'] = $str_replace('/',',',$unames[0]); 
+                        $o['部门'] = str_replace('/',',',$unames[0]); 
                         $o['上级部门'] = $unames[1];
                     }
                     if(count($unames) == 1)
