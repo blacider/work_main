@@ -192,6 +192,32 @@ class Reports extends REIM_Controller {
             $trash= $d['status'] === 1 ? 'gray' : 'red';
             $edit = ($d['status'] === 1)   ? 'gray' : 'green';
             $export = ($d['status'] === 1)   ? 'gray' : 'grey';
+
+            $base_icon = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">';
+            $show_icon = '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>';
+            $edit_icon = '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>';
+            $export_icon = '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>';
+            $trash_icon = '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>';
+            $end_icon = '</div>';
+            
+            if(in_array($d['status'],[0,3]))
+            {
+                $d['options'] = $base_icon . $edit_icon . $trash_icon . $end_icon;
+            }
+            else if(in_array($d['status'],[1]))
+            {
+                $d['options'] = $base_icon . $show_icon . $trash_icon . $end_icon;
+            }
+            else if(in_array($d['status'],[2]))
+            {
+                $d['options'] = $base_icon . $show_icon . $trash_icon . $export_icon  . $end_icon;
+            }
+            else
+            {
+                $d['options'] = $base_icon . $show_icon . $export_icon . $end_icon;
+            }
+            
+            /*
             if($d['status'] == 1) {
                 $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
@@ -216,6 +242,7 @@ class Reports extends REIM_Controller {
                         . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span></div>';
                 }
             }
+            */
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
             $d['status_str'] = '待提交';
             //$d['amount'] = '￥' . $d['amount'];
