@@ -174,6 +174,8 @@ class Reim_Model extends CI_Model {
             log_message("debug", json_encode($extraheader));
             curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
         }
+        # see http://comments.gmane.org/gmane.comp.php.devel/87521
+        curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
         curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
         ob_start();
         curl_exec($ch );
@@ -205,7 +207,7 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch , CURLOPT_URL, $url );
         curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
         curl_setopt($ch , CURLOPT_POST, count ( $fields )) ;
-        curl_setopt ($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
         curl_setopt($ch , CURLOPT_POSTFIELDS, $fields );
         curl_setopt($ch,CURLOPT_HTTPHEADER, $extraheader);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
@@ -223,7 +225,7 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch , CURLOPT_URL, $url ) ;
         curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
         //curl_setopt($ch , CURLOPT_POST, count ($fields)) ;
-        curl_setopt ($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
         curl_setopt($ch , CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
