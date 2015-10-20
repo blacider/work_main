@@ -127,6 +127,11 @@ class Items extends REIM_Controller {
             $gmember = $gmember ? $gmember : array();
         }
 		log_message('debug','afford:'. json_encode($afford));
+        $is_burden = true;
+        if(!$afford)
+        {
+           $is_burden = false; 
+        }
         $this->bsload('items/new',
             array(
                 'title' => '新建消费'
@@ -142,7 +147,8 @@ class Items extends REIM_Controller {
                 'member'=>$gmember,
                 'categories' => $_categories,
                 'tags' => $tags,
-                'item_config' => $item_config
+                'item_config' => $item_config,
+                'is_burden' => $is_burden
             ));
     }
     public function index(){
@@ -915,6 +921,11 @@ class Items extends REIM_Controller {
             $gmember = $gmember ? $gmember : array();
         }
         $item['dt'] = date('Y-m-d H:i:s',$item['dt']);
+        $is_burden = true;
+        if(!$afford)
+        {
+           $is_burden = false; 
+        }
         $this->bsload('items/edit',
             array(
                 'title' => '修改消费',
@@ -932,6 +943,7 @@ class Items extends REIM_Controller {
 				,'afford' => $afford
 				,'fee_afford_ids' => implode(',',$fee_afford_ids)
 				,'fee_afford_type' => $afford_type
+				,'is_burden' => $is_burden
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')

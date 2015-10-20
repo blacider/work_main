@@ -1278,14 +1278,47 @@ class Reports extends REIM_Controller {
                         $o['职位'] = $level_dic[$i['member_info']['level_id']];
                     }
                 }
-                
+               /* 
                 $afford = $i['fee_afford'];
                 log_message("debug", "alvayang fee afford : " . $afford);
                 $_parts = explode("|", $afford);
                 $final = array();
+                $_afford_member = array();
+                $_afford_dept = array();
+                
+                foreach($_parts as $x) {
+                log_message("debug", "alvayang fee afford parts: " . $x);
+                    $__parts = explode("-", $x);
+                log_message("debug", "alvayang fee afford parts: " . count($__parts));
+                    if(count($__parts) == 3) {
+                        if(trim($__parts[1]) != "") 
+                            array_push($_afford_dept, $__parts[1]);
+                        if(trim($__parts[2]) != "") 
+                            array_push($_afford_member,$__parts[2]);
+                    }
+                }
+                $_str_afford_dept = $o['部门'];
+                $_str_afford_member = $i['nickname'];
+
+                if(count($_afford_dept)) {
+                    $_str_afford_dept = implode(",", $_afford_dept);
+                }
+                if(count($_afford_member)){
+                    $_str_afford_member = implode(",", $_afford_member);
+                }
+                */
                 //$o['类别'] = $i['category_name'];
+                $_str_afford_dept = $o['部门'];
+                $_str_afford_member = $i['nickname'];
+                if($i['afford_ids'] != "-1" && $i['afford_ids'] != "")
+                {
+                    $_str_afford_dept = $i['fee_afford_group_name'];
+                    $_str_afford_member = $i['fee_afford_object_name'];
+                }
                 $o['商家'] = $i['merchants'];
                 $o['参与人员'] = implode(',', $__relates);
+                $o['承担部门'] = $_str_afford_dept;
+                $o['承担对象'] = $_str_afford_member;
                 //$o['承担部门'] = $_str_afford_dept;
                 //$o['承担对象'] = $_str_afford_member;
                 $_sob_code = 0;

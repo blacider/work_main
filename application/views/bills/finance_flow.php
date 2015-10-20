@@ -734,6 +734,9 @@ function cancel_modal_next_()
       rules:[{field:"ugs",op:"cn",data:groupId}],
       groups:((__STATUS == 2)?(time_groups2):(time_groups))
     }];
+    if (groupId == 0) {
+      groups_ = groups_[0].groups;
+    }
     //postData.filters = JSON.stringify({
     //    groupOp: "OR",
     //    rules: rules ,
