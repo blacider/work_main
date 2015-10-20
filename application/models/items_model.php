@@ -4,11 +4,12 @@ class Items_Model extends Reim_Model {
 
     public function attachment($content,$filename,$mime)
     {
+        log_message('debug','qqy content: ' . $content);
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
                $url = $this->get_url('attachment');
         $data = array(
-            "content" => $content
+            "content" => '@' . $content
             ,"filename" => $filename
             ,"mime" => $mime
         );
