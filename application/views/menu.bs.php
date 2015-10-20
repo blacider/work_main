@@ -453,11 +453,12 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <a href="<?php echo base_url('broadcast/index'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 系统消息列表 </a>
         <b class="arrow"></b>
         </li>
-
+    <!--
         <li class="hsub" id="broadcast_create">
         <a href="<?php echo base_url('broadcast/create'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 创建系统消息  </a>
         <b class="arrow"></b>
         </li>
+     -->
 
   <li class="hsub" id="show">
         <a href="<?php echo base_url('company/show'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 提交规则 </a>
@@ -871,11 +872,11 @@ $(document).ready(function(){
         _controller = "company";
     }
     if(_controller == "broadcast" && _method == "update_info"){
-        _method = "broadcast_create";
+        _method = "broadcast_index";
         _controller = "company";
     }
     if(_controller == "broadcast" && _method == "create"){
-        _method = "broadcast_create";
+        _method = "broadcast_index";
         _controller = "company";
     }
     if(_controller == "members" && _method == "imports"){

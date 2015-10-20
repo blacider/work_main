@@ -102,7 +102,7 @@ class Broadcast extends Reim_Controller {
                 ,'error' => $error
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('company/index'), 'name' => '公司设置', 'class' => '')
+                    ,array('url'  => '', 'name' => '公司设置', 'class' => '')
                     ,array('url'  => '', 'name' => '系统消息列表', 'class' => '')
                 )
             ));
@@ -234,7 +234,7 @@ class Broadcast extends Reim_Controller {
                 ,'levels' => $levels
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('company/index'), 'name' => '公司设置', 'class' => '')
+                    ,array('url'  => '', 'name' => '公司设置', 'class' => '')
                     ,array('url'  => '', 'name' => '创建系统消息', 'class' => '')
                 )));
     }
@@ -354,14 +354,14 @@ class Broadcast extends Reim_Controller {
                                         $this->session->set_userdata('last_error',$info['data']['msg'] . '修改消息失败,发送失败');
                                     else
                                         $this->session->set_userdata('last_error',$info['data']['msg'] . '修改消息失败');
-                                    return redirect(base_url('broadcast/list'));
+                                    return redirect(base_url('broadcast/index'));
                                 }
                         }       
 
                         if($send == 1)
                         {
                             $is_send = $this->broadcast->send($id); 
-                            if($in_send['status'] > 0)
+                            if($is_send['status'] > 0)
                                 $this->session->set_userdata('last_error','发送成功');
                             else
                                 $this->session->set_userdata('last_error',$is_send['data']['msg'] . ',发送失败');

@@ -37,9 +37,11 @@
 
 foreach($broadcast as $item){
     $img = "";
+    $senddt = $item['senddt'];
     if($item['sent'] == 0)
     {
     	$str = "<tr class='blue'>";
+    	$senddt = '';
     }
     else
     {
@@ -48,7 +50,7 @@ foreach($broadcast as $item){
     $title = '<td class="u_username">' . $item['title'] . '</td>';
     $createdt =  '<td class="u_role_name">' . $item['createdt'] . '</td>';
     $lastdt =  '<td class="u_role_name">' . $item['lastdt'] . '</td>';
-    $senddt = '<td class="u_role_name">' . $item['senddt'] . '</td>';
+    $senddt = '<td class="u_role_name">' . $senddt . '</td>';
     $operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class="edit"  data-title="' . $item['title'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
     $operation = '<td style="width:50px;"><a class="btn btn-xs btn-danger" href="' .  base_url('/company/delet_rule/'. $item['id']) .'">
         <i class="ace-icon fa fa-trash-o bigger-120"></i>
