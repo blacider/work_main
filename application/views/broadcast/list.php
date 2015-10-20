@@ -17,8 +17,8 @@
                             <thead>
                                 <tr>
                                     <th class='blue'>消息列表</th>
-                                    <th class='blue'>发布时间</th>
                                     <th class='blue'>最后修改时间</th>
+                                    <th class='blue'>发送时间</th>
                                     <th class='blue'><a href="<?php echo base_url('broadcast/create')?>" role="button" class="green" data-toggle="modal">
                                             <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
                                         </a> </th>
@@ -48,11 +48,12 @@ foreach($broadcast as $item){
     $title = '<td class="u_username">' . $item['title'] . '</td>';
     $createdt =  '<td class="u_role_name">' . $item['createdt'] . '</td>';
     $lastdt =  '<td class="u_role_name">' . $item['lastdt'] . '</td>';
+    $senddt = '<td class="u_role_name">' . $item['senddt'] . '</td>';
     $operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class="edit"  data-title="' . $item['title'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
     $operation = '<td style="width:50px;"><a class="btn btn-xs btn-danger" href="' .  base_url('/company/delet_rule/'. $item['id']) .'">
         <i class="ace-icon fa fa-trash-o bigger-120"></i>
         </a></td>';
-$str = $str . $title . $createdt . $lastdt . $operation_upd . '</tr>';
+$str = $str . $title . $lastdt . $senddt . $operation_upd . '</tr>';
 echo $str;
 
 }
