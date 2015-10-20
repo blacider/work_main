@@ -127,7 +127,7 @@ class Items_Model extends Reim_Model {
     }
 
 
-    public function create($amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '', $afford_ids = -1){
+    public function create($amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '', $afford_ids = -1,$attachments){
         $items = array();
         $s = array(
             'local_id' => 1,
@@ -146,6 +146,7 @@ class Items_Model extends Reim_Model {
             'latitude' => 0,
             'longitude' => 0,
             'merchants' => $merchant,
+            'attachment_ids' => $attachments,
             'type' => 1,
 	    'extra' => $extra);
         array_push($items, $s);
@@ -179,7 +180,7 @@ class Items_Model extends Reim_Model {
 
     }
 
-    public function update($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '',$fee_afford_ids=-1){
+    public function update($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '',$fee_afford_ids=-1,$attachments){
         $items = array();
         $s = array(
             'local_id' => 1,
@@ -198,6 +199,7 @@ class Items_Model extends Reim_Model {
             'latitude' => 0,
             'longitude' => 0,
             'merchants' => $merchant,
+            'attachment_ids' => $attachments,
             'type' => 1,
             'afford_ids' => $fee_afford_ids,
 	    'extra' => $extra);

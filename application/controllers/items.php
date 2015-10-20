@@ -265,7 +265,9 @@ class Items extends REIM_Controller {
         $note = $this->input->post('note');
         $images = $this->input->post('images');
         $renew = $this->input->post('renew');
-        $obj = $this->items->create($amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra,$uids, $afford_ids);
+        $attachments = $this->input->post('attachments');
+        log_message('debug','attachments:' . $attachments);
+        $obj = $this->items->create($amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra,$uids, $afford_ids,$attachments);
         log_message('debug','extra:' . $__extra);
 
         log_message('debug','create_item_back:' . json_encode($obj));
@@ -1054,6 +1056,8 @@ class Items extends REIM_Controller {
         $type = $this->input->post('type');
         $note = $this->input->post('note');
         $images = $this->input->post('images');
+        $attachments = $this->input->post('attachments');
+        log_message('debug','attachments:' . $attachments);
         log_message("debug", "alvayang: Item Update In:" . $item_update_in);
         $_item_data = $this->items->get_by_id($id);
         log_message('debug', 'item_get_by_id:' . json_encode($_item_data));
