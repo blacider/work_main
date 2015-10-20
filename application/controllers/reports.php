@@ -1253,12 +1253,14 @@ class Reports extends REIM_Controller {
                     $unames = explode(',',$i['member_info']['d']);
                     if(count($unames) >= 2) 
                     {
-                        $o['部门'] = $unames[0];
+                        $temp = str_replace('/',',',$unames[0]);
+                        $o['部门'] = $temp;
                         $o['上级部门'] = $unames[1];
                     }
                     if(count($unames) == 1)
                     {
-                        $o['部门'] = $unames[0];
+                        $temp = str_replace('/',',',$unames[0]);
+                        $o['部门'] = $temp;
                     }
                 }
                 $o['级别'] = '';
@@ -1312,8 +1314,8 @@ class Reports extends REIM_Controller {
                 $_str_afford_member = $i['nickname'];
                 if($i['afford_ids'] != "-1" && $i['afford_ids'] != "")
                 {
-                    $_str_afford_dept = $i['fee_afford_group_name'];
-                    $_str_afford_member = $i['fee_afford_object_name'];
+                    $_str_afford_dept = trim($i['fee_afford_group_name'],',');
+                    $_str_afford_member = trim($i['fee_afford_object_name'],',');
                 }
                 $o['商家'] = $i['merchants'];
                 $o['参与人员'] = implode(',', $__relates);
