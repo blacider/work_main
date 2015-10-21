@@ -272,14 +272,12 @@ class Items extends REIM_Controller {
 
         log_message('debug','create_item_back:' . json_encode($obj));
         // TODO: 提醒的Tips
-        /*
         if($renew){
             redirect(base_url('items/newitem'));
         } else {
             redirect(base_url('items/index'));
         }
 
-        */
     }
 
 
