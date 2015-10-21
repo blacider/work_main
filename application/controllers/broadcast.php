@@ -388,14 +388,18 @@ class Broadcast extends Reim_Controller {
                         }
                         else
                         {
-                            $this->session->set_userdata('last_error','已经发送过一条相同信息,请修改后重新发送');
+                            if($send == 1)
+                                $this->session->set_userdata('last_error','已经发送过一条相同信息,请修改后重新发送');
+                            else
+                                $this->session->set_userdata('last_error','消息未修改，请修改后重新保存');
+                                
                         }
                 }
             }
         }
         else
         {
-            return redirect(base_url('broadcast/create'));
+             $this->session->set_userdata('last_error','标题和正文不能为空');    
         }
         return redirect(base_url('broadcast/index'));
     }
