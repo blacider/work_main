@@ -1081,6 +1081,58 @@ public function common(){
         );
     }
 
+    public function docreate_custom_item() {
+        $name = $this->input->post('name');
+        $gids = $this->input->post('gids');
+        $type = $this->input->post('type');
+        $this->load->model('custom_item_model');
+        $ret = $this->custom_item_model->create_custom_item($name, $type, $gids);
+        if($ret['status'] > 0) {
+            die(json_encode(array('status' => true)));
+        } else {
+            die(json_encode($ret));
+        }
+    }
+
+
+    public function custom_item_create() {
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+        $this->bsload('company/create_custom_item',
+            array(
+                'title' => '添加自定义消费'
+                ,'error' => $error
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => '', 'name' => '公司设置', 'class' => '')
+                    ,array('url'  => '', 'name' => '添加自定义消费', 'class' => '')
+                ),
+            )
+        );
+    }
+
+    public function custom_item() {
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+        $this->load->model('custom_item_model');
+        $lists = $this->custom_item_model->list_all();
+        $_list = array();
+        if($lists['status'] > 0 ){
+            $_list = $lists['data'];
+        }
+        $this->bsload('company/custom_item',
+            array(
+                'title' => '自定义消费'
+                ,'error' => $error
+                ,'rules' => $_list
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => '', 'name' => '公司设置', 'class' => '')
+                    ,array('url'  => '', 'name' => '自定义消费', 'class' => '')
+                ),
+            )
+        );
+    }
 
     public function setting(){
         $error = $this->session->userdata('last_error');
