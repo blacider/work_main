@@ -27,7 +27,7 @@ class Broadcast extends Reim_Controller {
         return redirect(base_url('broadcast/index'));
     }
 
-    public function update_info($id)
+    public function update_info($id , $show = 0)
     {
         $this->need_group_it();
         $info = $this->broadcast->get_info($id);
@@ -78,6 +78,7 @@ class Broadcast extends Reim_Controller {
                 ,'members' => $gmember
                 ,'ugroups' => $_ugroups
                 ,'id' => $id
+                ,'show' => $show
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('company/index'), 'name' => '公司设置', 'class' => '')

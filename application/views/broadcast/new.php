@@ -109,9 +109,9 @@
                    <input type="hidden" name="send" id="is_send" value="0">
             <div class="clearfix form-actions col-sm-8 col-xs-8">
                 <div class="col-md-offset-3 col-md-8">
-                    <a class="btn btn-white btn-primary renew" data-renew="-1"><i class="ace-icon fa fa-save "></i>取消</a>
+                    <a class="btn btn-white btn-primary renew" data-renew="-1"><i class="ace-icon fa fa-rotate-left "></i>取消</a>
                     <a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
-                    <a class="btn btn-white btn-primary renew" data-renew="1"><i class="ace-icon fa fa-save "></i>发送</a>
+                    <a class="btn btn-white btn-primary renew" data-renew="1"><i class="ace-icon fa fa-send-o "></i>发送</a>
                 </div>
             </div>
         </div>

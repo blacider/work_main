@@ -24,19 +24,19 @@
             <div class="form-group">
                 <label class="col-sm-1 control-label no-padding-right">标题</label>
                 <div class="col-xs-6 col-sm-6">
-                    <input type="text" class="form-controller col-xs-12" name="title" id="title" placeholder="标题" value="<?php echo $broadcast['title'];?>" required>
+                    <input type="text" class="form-controller col-xs-12 ishow" name="title" id="title" placeholder="标题" value="<?php echo $broadcast['title'];?>" required>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-1 control-label no-padding-right">正文</label>
                 <div class="col-xs-6 col-sm-6">
-                    <textarea class="col-xs-12 col-sm-12" row="30" id="content" name="content"><?php echo $broadcast['content'];?></textarea>
+                    <textarea class="col-xs-12 col-sm-12 ishow" row="30" id="content" name="content"><?php echo $broadcast['content'];?></textarea>
                 </div>
             </div>
 
                  <div class="form-group">
                     <label class="col-sm-1 control-label no-padding-right">适用范围</label>
-                 <div class="col-xs-5 col-sm-5">
+                 <div class="col-xs-5 col-sm-5 ">
                                     <select id="group" class="chosen-select range tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
                                     <?php
                                         foreach($ugroups as $item)
@@ -61,7 +61,7 @@
 
                   <div class="form-group">
                     <label class="col-sm-1 control-label no-padding-right"></label>
-                 <div class="col-xs-5 col-sm-5">
+                 <div class="col-xs-5 col-sm-5 ishow">
                                     <select id="group" class="chosen-select range tag-input-style" multiple="multiple" name="ranks[]"  data-placeholder="请选择级别">
                                     <?php
                                         foreach($ranks as $item)
@@ -86,7 +86,7 @@
 
                   <div class="form-group">
                     <label class="col-sm-1 control-label no-padding-right"></label>
-                 <div class="col-xs-5 col-sm-5">
+                 <div class="col-xs-5 col-sm-5 ">
                                     <select id="group" class="chosen-select range tag-input-style" multiple="multiple" name="levels[]"  data-placeholder="请选择职位">
                                     <?php
                                         foreach($levels as $item)
@@ -111,7 +111,7 @@
 
                   <div class="form-group">
                     <label class="col-sm-1 control-label no-padding-right"></label>
-                 <div class="col-xs-5 col-sm-5">
+                 <div class="col-xs-5 col-sm-5 ishow">
                                     <select id="group" class="chosen-select range tag-input-style" multiple="multiple" name="members[]"  data-placeholder="请选择员工">
                                     <?php
                                         foreach($members as $item)
@@ -142,13 +142,13 @@
                                 {
                             ?>
 
-                                    <input type="checkbox" id="is_all" name="all" value='1' checked />全体员工
+                                    <input type="checkbox" class="ishow" id="is_all" name="all" value='1' checked />全体员工
                             <?php
                                 } 
                                 else
                                 {
                             ?>
-                                    <input type="checkbox" id="is_all" name="all" value='0' />全体员工
+                                    <input type="checkbox" class="ishow" id="is_all" name="all" value='0' />全体员工
                             <?php
                                 }
                             ?>
@@ -161,10 +161,17 @@
                        <input type="hidden" name="bd_info" value='<?php echo json_encode($broadcast);?>'>
                    
             <div class="clearfix form-actions col-sm-8 col-xs-8">
-                <div class="col-md-offset-3 col-md-8">
-                    <a class="btn btn-white btn-primary renew" data-renew="-1"><i class="ace-icon fa fa-save "></i>取消</a>
-                    <a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
-                    <a class="btn btn-white btn-primary renew" data-renew="1"><i class="ace-icon fa fa-save "></i>发送</a>
+                <div class="col-md-offset-3 col-md-8" >
+                    <a class="btn btn-white btn-primary renew" data-renew="-1"><i class="ace-icon fa fa-rotate-left "></i>取消</a>
+                    <?php
+                        if($show == 0)
+                        {
+                    ?>
+                    <a class="btn btn-white btn-primary renew isend" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
+                    <a class="btn btn-white btn-primary renew isend" data-renew="1"><i class="ace-icon fa fa-send-o "></i>发送</a>
+                    <?php
+                        }
+                    ?>
                 </div>
             </div>
         </div>
@@ -175,6 +182,7 @@
 
 <script language="javascript">
 var __BASE = "<?php echo base_url();?>";
+var _show = "<?php echo $show;?>";
 
 $(document).ready(function() {
     /*
@@ -183,6 +191,18 @@ $(document).ready(function() {
         $('#itemform').submit();
     }); 
     */
+    if(_show == 1)
+    {
+        $('.isend').each(function(){
+            $(this).prop('hidden',true);
+        });
+        $('.ishow').each(function(){
+            $(this).prop('disabled',true);
+        });
+        $('.range').each(function(){
+            $(this).prop('disabled',true).trigger('chosen:updated');
+        });
+    }
     function check_legal()
     {
         var title = $('#title').val();
