@@ -1,6 +1,6 @@
 <?php
 
-define("API_SERVER", "https://api.cloudbaoxiao.com/yuqi/");
+define("API_SERVER", "https://api.cloudbaoxiao.com/yangsong/");
 define("PUBKEY", "1NDgzZGY1OWViOWRmNjI5ZT");
 
 class Reim_Model extends CI_Model {
@@ -195,7 +195,7 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_VERBOSE, false) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
         log_message("debug", "Start Request");
         $output = curl_exec($ch) ;
-        //log_message("debug", "Get Success:" . $output);
+        log_message("debug", "Get Success:" . $output);
         curl_close($ch);
         return $output;
     }

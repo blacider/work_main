@@ -1094,6 +1094,32 @@ public function common(){
         }
     }
 
+    public function deactive_custom_item($id = 0){
+        if(0 == $id) return redirect(base_url('company/custom_item'));
+        $this->load->model('custom_item_model');
+        $ret = $this->custom_item_model->set_active($id, 0);
+        die(json_encode($ret));
+    }
+
+    public function active_custom_item($id = 0){
+        if(0 == $id) return redirect(base_url('company/custom_item'));
+        $this->load->model('custom_item_model');
+        $ret = $this->custom_item_model->set_active($id, 1);
+        die(json_encode($ret));
+    }
+
+    public function delete_custom_item($id = 0) {
+        if(0 == $id) return redirect(base_url('company/custom_item'));
+        $this->load->model('custom_item_model');
+        $ret = $this->custom_item_model->drop_custom_item($id);
+        if($ret['status']) {
+            $this->session->set_userdata('last_error', '删除成功');
+        } else {
+            $this->session->set_userdata('last_error', '删除失败');
+        }
+        return redirect(base_url('company/custom_item'));
+    }
+
 
     public function custom_item_create() {
         $error = $this->session->userdata('last_error');
@@ -1153,6 +1179,9 @@ public function common(){
             )
         );
     }
+
+
+    
     public function profile()
     {
         $pids = 1;

@@ -273,7 +273,7 @@ foreach($item_config as $s) {
     if(array_key_exists($s['id'], $extra)){
         $val = $extra[$s['id']];
     }
-    if($s['cid'] == -1  && $s['type'] == 1) {
+    if($s['cid'] == -1  && $s['type'] == 1 && $s['active'] == 1) {
 ?>
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right"><?php echo $s['name']; ?></label>

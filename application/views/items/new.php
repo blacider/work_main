@@ -201,7 +201,7 @@ if($__config && $__config['disable_budget'] == '0')
 
 <?php
 foreach($item_config as $s) {
-    if($s['cid'] == -1  && $s['type'] == 1) {
+    if($s['cid'] == -1  && $s['type'] == 1 && $s['active'] == 1) {
 ?>
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right"><?php echo $s['name']; ?></label>

@@ -43,12 +43,12 @@ foreach($rules as $item){
     case 4: $_name = '多选'; break;
     case 5: $_name = '多人员均值'; break;
     }
-    $_disabled = $item['disabled'];
+    $_disabled = $item['active'];
         $_checked = 'checked';
-    if($_disabled == 1) {
+    if($_disabled == 0) {
     $_checked = '';
     }
-        $_disable_str = '<div class="checkbox"> <label> <input name="form-field-checkbox" data-id="' . $item['id'] . '" class="diabled_label ace ace-switch" ' . $_checked . ' type="checkbox" /> <span class="lbl"> </span> </label> </div>';
+        $_disable_str = '<div class="checkbox"> <label> <input name="form-field-checkbox" data-id="' . $item['id'] . '" class="disabled_label ace ace-switch" ' . $_checked . ' type="checkbox" /> <span class="lbl"> </span> </label> </div>';
 
     $img = "";
     $str = '<tr>';
@@ -58,11 +58,8 @@ foreach($rules as $item){
     $username .= '<td class="u_username">' . $_disable_str . '</td>';
     $role_id =  '<td class="u_role_name">' . $item['lastdt'] . '</td>';
     $operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class="edit"  data-title="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
-    $operation = '<td style="width:50px;"><a class="btn btn-xs btn-danger" href="' .  base_url('/company/delet_rule/'. $item['id']) .'">
-        <i class="ace-icon fa fa-trash-o bigger-120"></i>
-        </a></td>';
-$str = $str . $username . $role_id . $operation_upd . '</tr>';
-echo $str;
+    $str = $str . $username . $role_id . $operation_upd . '</tr>';
+    echo $str;
 
 }
  }
@@ -97,9 +94,24 @@ $(document).ready(function(){
         $(this).click(function(){
             if(confirm('确认要删除吗?')){
                 var _id = $(this).data('id');
-                location.href = __BASEURL + "/company/delete_finance_flow/" + _id;
+                location.href = __BASEURL + "/company/delete_custom_item/" + _id;
             }
         });
+    });
+    $('.disabled_label').change(function() {
+        var _id = $(this).data('id');
+        var _url = __BASEURL + "/company/deactive_custom_item/" + _id
+        if($(this).prop('checked')) {
+            _url = __BASEURL + "/company/active_custom_item/" + _id
+        }
+        $.getJSON(_url, function (data){ 
+            if(data.status) {
+                show_notify('操作成功');
+            } else {
+                show_notify('操作失败');
+            }
+        });
+
     });
 });
 </script>

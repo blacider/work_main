@@ -5,6 +5,16 @@ class Custom_Item_Model extends Reim_Model{
         parent::__construct();
     }
 
+
+    public function drop_custom_item($id) {
+        $jwt = $this->session->userdata('jwt');
+        $url = $this->get_url('custom_item/' . $id);
+        log_message("debug", "Drop Custom Item:" . $url);
+        $buf = $this->do_Delete($url, array(), $jwt);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
     public function create_custom_item($name, $type, $category = -1) {
         $data = array (
             'name' => $name
@@ -30,6 +40,13 @@ class Custom_Item_Model extends Reim_Model{
         return $obj;
     }
 
+    public function set_active($id, $active = 0) {
+        $jwt = $this->session->userdata('jwt');
+        $url = $this->get_url('custom_item');
+        $buf = $this->do_Put($url, array('id' => $id, 'active' => $active), $jwt);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
 
 }
 
