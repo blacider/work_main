@@ -165,7 +165,7 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
         curl_setopt($ch, CURLOPT_POST, count($fields)) ;
         curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
-        if (PHP_VERSION_ID > 050500){
+        if (version_compare(PHP_VERSION, '5.5.0', '>=')){
             # Added in PHP 5.5.0
             # see also http://comments.gmane.org/gmane.comp.php.devel/87521
             curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
