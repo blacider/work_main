@@ -9,6 +9,20 @@ class Items extends REIM_Controller {
         $this->load->model('group_model', 'groups');
     }
 
+    public function get_currency()
+    {
+        $info = $this->items->get_currency();
+        if($info['status'] > 0)
+        {
+            die(json_encode($info['data']));
+        }
+        else
+        {
+            die(json_encode($info));
+        }
+            
+    }
+
     public function avatar(){
         if(!empty($_FILES)) {
             // 默认是item

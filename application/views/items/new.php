@@ -32,11 +32,12 @@
 <div class="col-xs-6 col-sm-6">
 
 
-<select class="col-xs-2 col-sm-2" class="form-control" name="coin_type" id="coin_type">
-    <option value='美金'>$</option>
+<select class="col-xs-3 col-sm-3" class="form-control" name="coin_type" id="coin_type">
+    <option value='1'>人民币￥</option>>
+    <option value='美金'>美金$</option>
 </select>
 
-<input type="text" class="form-controller col-xs-10" name="amount" id="amount" placeholder="金额" required>
+<input type="text" class="form-controller col-xs-9" name="amount" id="amount" placeholder="金额" required>
 
 
 </div>
@@ -526,6 +527,21 @@ function get_sobs(){
             $(this.nextElementSibling).empty().append(_h).trigger("chosen:updated");
             $('#sob_category').trigger('change');
         });
+}
+
+function get_currency()
+{
+    $.ajax({
+        url:__BASE + 'items/get_currency',
+        dataType:'json',
+        method:'GET',
+        success:function(){
+
+        },
+        error:function(a,b,c){
+            
+        }
+    });
 }
 
 var __multi_time = 0;

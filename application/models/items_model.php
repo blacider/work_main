@@ -2,6 +2,17 @@
 
 class Items_Model extends Reim_Model {
 
+    public function get_currency()
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+		$url = $this->get_url('currency');
+		$buf = $this->do_Get($url, $jwt);
+        log_message("debug", $buf);
+		$obj = json_decode($buf, true);
+        return $obj;
+    }
+
     public function update_item($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = ''){
         $items = array();
         $s = array(
