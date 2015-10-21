@@ -34,9 +34,9 @@
                 </div>
             </div>
 
-                 <div class="from-group">
+                 <div class="form-group">
                     <label class="col-sm-1 control-label no-padding-right">适用范围</label>
-                 <div class="col-xs-4 col-sm-4">
+                 <div class="col-xs-5 col-sm-5">
                                     <select id="group" class="chosen-select range tag-input-style" multiple="multiple" name="groups[]"  data-placeholder="请选择部门">
                                     <?php
                                         foreach($ugroups as $item)
@@ -50,9 +50,9 @@
                                 <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">部门</label>
                 </div>
 
-                  <div class="from-group">
+                  <div class="form-group">
                     <label class="col-sm-1 control-label no-padding-right"></label>
-                 <div class="col-xs-4 col-sm-4">
+                 <div class="col-xs-5 col-sm-5">
                                     <select id="group" class="chosen-select range tag-input-style" multiple="multiple" name="ranks[]"  data-placeholder="请选择级别">
                                     <?php
                                         foreach($ranks as $item)
@@ -66,9 +66,9 @@
                                 <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">级别</label>
                 </div>
 
-                  <div class="from-group">
+                  <div class="form-group">
                     <label class="col-sm-1 control-label no-padding-right"></label>
-                 <div class="col-xs-4 col-sm-4">
+                 <div class="col-xs-5 col-sm-5">
                                     <select id="group" class="chosen-select range tag-input-style" multiple="multiple" name="levels[]"  data-placeholder="请选择职位">
                                     <?php
                                         foreach($levels as $item)
@@ -82,9 +82,9 @@
                                 <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">职位</label>
                 </div>
 
-                  <div class="from-group">
+                  <div class="form-group">
                     <label class="col-sm-1 control-label no-padding-right"></label>
-                 <div class="col-xs-4 col-sm-4">
+                 <div class="col-xs-5 col-sm-5">
                                     <select id="group" class="chosen-select range tag-input-style" multiple="multiple" name="members[]"  data-placeholder="请选择员工">
                                     <?php
                                         foreach($members as $item)
@@ -97,10 +97,10 @@
                                 </div>
                                 <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">员工</label>
                 </div>
-                  <div class="from-group">
+                  <div class="form-group">
                     <label class="col-sm-1 control-label no-padding-right"></label>
-                 <div class="col-xs-4 col-sm-4">
-                    <input type="checkbox" id="is_all" name="all" value='0'/>全体员工
+                 <div class="col-xs-5 col-sm-5">
+                    <label><input type="checkbox" id="is_all" name="all" value='0'/>全体员工</label>
                 </div>
                 </div>
 
