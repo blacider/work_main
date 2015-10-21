@@ -535,11 +535,20 @@ function get_currency()
         url:__BASE + 'items/get_currency',
         dataType:'json',
         method:'GET',
-        success:function(){
-
+        success:function(data){
+            var simble_dic = {'cny':'￥','usd':'$','eur':'€','hkd':'$','mop':'$','twd':'$','jpy':'￥','ker':'₩',
+                              'gbp':'£','rbs':'Rbs','sgd':'$','php':'₱','idr':'Rps',
+                             };
+            var _h = '';
+            for(var item in data)
+            {
+                _h += '<option value="currency_' + item +'">' + data[item] + '';
+            }
         },
         error:function(a,b,c){
-            
+            console.log(a);
+            console.log(b);
+            console.log(c);
         }
     });
 }
@@ -549,7 +558,7 @@ var __average_count = 0;
 $(document).ready(function(){
 
     //$('#mul_amount').empty();
-
+    get_currency();
     get_sobs();
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
