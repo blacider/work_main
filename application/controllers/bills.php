@@ -79,6 +79,76 @@ class Bills extends REIM_Controller {
         log_message('debug','permission:' . json_encode($buf));
         die(json_encode($buf));
     }
+    public function download_single_report()
+    {
+        $error = $this->session->userdata('login_error');
+        $this->session->unset_userdata('login_error');
+        // 重新获取
+        $profile = $this->user->reim_get_user();
+        log_message('debug','#####'.json_encode($profile));
+        $group = $profile['data']['profile']['group'];
+        if($profile){
+            $config = $profile['data']['profile'];
+            if(array_key_exists('group',$config))
+            {
+                if(array_key_exists('config',$profile['data']['profile']['group']))
+                {
+                    $config = $profile['data']['profile']['group']['config'];
+                }
+            }
+            else
+            {
+                $config ='';
+            }
+        }
+        $with_note = 1;
+        $template = 'a4.yaml';
+        $_rid = $this->input->post('chosenids');
+        $_rid = $this->input->post('chosenids');
+        $rid = array();
+        foreach($_rid as $r)
+        {
+            array_push($rid,$this->reim_cipher->encode($r));
+        }
+        $company = urlencode($group['group_name']);
+        if($config) {
+            $config = json_decode($config,True);
+
+            if(($config) && (array_key_exists('export_no_company', $config)) && ($config['export_no_company'] == '0'))
+                if($config && array_key_exists('export_no_company', $config) && $config['export_no_company'] == '0')
+                {
+                    $company = '';
+                }
+
+            $with_no_note = 0;
+            if(($config) && (array_key_exists('export_no_note', $config)) && ($config['export_no_note']))
+            {
+                $with_no_note = $config['export_no_note'];
+            }
+            log_message('debug','note:'.$with_no_note);
+            if(intval($with_no_note) == 1)
+            {
+                $with_note = 0;
+            }
+            else
+            {
+                $with_note = 1;
+            }
+            if(($config) && (array_key_exists('template', $config)) && ($config['template']))
+            {
+                $template = $config['template'];
+            }
+        }
+
+        $archive = 1;
+
+        log_message('debug','profile'.json_encode($profile['data']['profile']['group']));
+        //$url = "https://report.yunbaoxiao.com/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
+        $url = "https://www.yunbaoxiao.com/report/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
+        //$url = "http://admin.cloudbaoxiao.com:7780/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
+        log_message('debug','hhh'. $url);
+        die(json_encode(array('url' => $url)));
+    }
     public function download_report()
     {
         $this->need_group_casher();
