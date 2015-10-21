@@ -171,7 +171,7 @@ class Reim_Model extends CI_Model {
             curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
         }
         //curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+        @curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         //if($force_bin == 1){
         //curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
         //}
