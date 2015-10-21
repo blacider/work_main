@@ -272,12 +272,14 @@ class Items extends REIM_Controller {
 
         log_message('debug','create_item_back:' . json_encode($obj));
         // TODO: 提醒的Tips
+        /*
         if($renew){
             redirect(base_url('items/newitem'));
         } else {
             redirect(base_url('items/index'));
         }
 
+        */
     }
 
 
@@ -1100,7 +1102,7 @@ class Items extends REIM_Controller {
         }
         else
         {
-			$obj = $this->items->update($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra,$uids,$afford_ids);
+			$obj = $this->items->update($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra,$uids,$afford_ids,$attachments);
             log_message('debug','zz item_data:'.json_encode($obj));
         }
         log_message('debug','rid:' . $rid);

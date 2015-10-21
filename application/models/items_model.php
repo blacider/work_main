@@ -175,6 +175,8 @@ class Items_Model extends Reim_Model {
         $url = $this->get_url('item/'. $id);
         $data = array();
         $buf = $this->do_Get($url, $jwt);
+        log_message('debug', 'get_item_url:' . $url);
+        log_message('debug', 'get_item_back:' . $buf);
         $obj = json_decode($buf, true);
         return $obj;
 
