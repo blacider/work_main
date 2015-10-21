@@ -165,8 +165,13 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
         curl_setopt($ch, CURLOPT_POST, count($fields)) ;
         curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
+        if (version_compare(PHP_VERSION, '5.5.0', '>=')){
+            # Added in PHP 5.5.0
+            # see also http://comments.gmane.org/gmane.comp.php.devel/87521
+            curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
+        }
         //curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+        @curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         //if($force_bin == 1){
         //curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
         //}
@@ -174,11 +179,13 @@ class Reim_Model extends CI_Model {
             log_message("debug", json_encode($extraheader));
             curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
         }
+        /*
         if (PHP_VERSION_ID > 050500){
             # Added in PHP 5.5.0
             # see also http://comments.gmane.org/gmane.comp.php.devel/87521
             curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
         }
+        */
         curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
         ob_start();
         curl_exec($ch );
