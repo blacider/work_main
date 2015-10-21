@@ -251,7 +251,7 @@ if($__config && $__config['disable_budget'] == '0')
 </div>
 </div>
 <input type="hidden" name="images" id="images" >
-<input type="hidden" name="files" id="files" >
+<input type="hidden" name="attachments" id="files" >
 </form>
 </div>
 </div>
@@ -340,6 +340,7 @@ uploader_file.on( 'fileQueued', function( file ) {
                 '<img style="width:128px">' +
                 '<p style="text-align: center;margin: 0;max-width: 128px;">'+file.name+'</p>'+
                 '<div class="glyphicon glyphicon-trash red del-button_" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
+                '<div class="ui-icon ace-icon fa fa-download blue download-button_" style="  position: absolute;right: 10px;bottom: 10px;cursor: pointer;"></div>' +
             '</div>'
             ),$img = $li.find('img');
     // $list为容器jQuery实例
@@ -368,17 +369,23 @@ uploader_file.on( 'fileQueued', function( file ) {
 function bind_event_file(){
         $('#theList .del-button_').click(function(e) {
             var key = filesDict[this.parentNode.id];
-            var images = $("input[name='files']").val();
+            var images = $("input[name='attachments']").val();
             var arr_img = images.split(',');
             var result = '';
             for (var item = 0; item < arr_img.length; item++) {
                 if (arr_img[item] != key) {
-                    if (item == 0) result += arr_img[item];
+                    if (result == '') result += arr_img[item];
                     else result += ',' + arr_img[item];
                 }
             }
-            $("input[name='files']").val(result);
+            $("input[name='attachments']").val(result);
             $(this.parentNode).remove();
+        });
+        $('#theList .download-button_').click(function(e) {
+            var url = filesUrlDict[this.parentNode.id];
+            var aLink = document.createElement('a');
+            aLink.href = url;
+            aLink.click();
         });
 }
 // 文件上传过程中创建进度条实时显示。
@@ -425,11 +432,12 @@ uploader_file.on( 'uploadAccept', function( file, response ) {
     if ( response['status'] > 0 ) {
         // 通过return false来告诉组件，此文件上传有错。
         var imageDom = $('#' + file.file.id);
-        filesDict[file.file.id] = String(response['data']['url']);
-        if ($("input[name='files']").val() == '') {
-            $("input[name='files']").val(response['data']['url']);
+        filesDict[file.file.id] = String(response['data']['id']);
+        filesUrlDict[file.file.id] = String(response['data']['url']);
+        if ($("input[name='attachments']").val() == '') {
+            $("input[name='attachments']").val(response['data']['id']);
         } else {
-            $("input[name='files']").val($("input[name='files']").val() + ',' + response['data']['url']);
+            $("input[name='attachments']").val($("input[name='attachments']").val() + ',' + response['data']['id']);
         }
         return true;
     } else return false;
@@ -441,6 +449,7 @@ uploader_file.on( 'uploadComplete', function( file ) {
 });
 });
 var filesDict = {};
+var filesUrlDict = {};
 </script>
 
 <script language="javascript">
@@ -586,7 +595,7 @@ function bind_event(){
             var result = '';
             for (var item = 0; item < arr_img.length; item++) {
                 if (arr_img[item] != key) {
-                    if (item == 0) result += arr_img[item];
+                    if (result == '') result += arr_img[item];
                     else result += ',' + arr_img[item];
                 }
             }
