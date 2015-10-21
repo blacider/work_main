@@ -30,7 +30,7 @@
             <div class="form-group">
                 <label class="col-sm-1 control-label no-padding-right">正文</label>
                 <div class="col-xs-6 col-sm-6">
-                    <textarea class="col-xs-12 col-sm-12" row="30" id="content" name="content"></textarea>
+                    <textarea class="col-xs-12 col-sm-12" row="60" id="content" name="content" style="margin: 0px; height: 180px; width: 475px;"></textarea>
                 </div>
             </div>
 
@@ -169,10 +169,11 @@ $(document).ready(function() {
              }
              if(renew == 1)
              {
-                if(confirm("即将发送一条新消息，已发送消息不能更改和撤回，确定发送么？"))
-                {     
-                    if(check_legal())
-                    {
+                  
+                if(check_legal())
+                {
+                    if(confirm("即将发送一条新消息，已发送消息不能更改和撤回，确定发送么？"))
+                    {   
                         $('#is_send').val(1);
                         
                         $('#itemform').submit();

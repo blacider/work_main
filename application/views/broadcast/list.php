@@ -53,7 +53,7 @@ foreach($broadcast as $item){
     $senddt = '<td class="u_role_name">' . $senddt . '</td>';
     $start_icon = '<td style="width:100px;">';
     $show_icon =  '<a href="javascript:void(0);" class="tshow"  data-title="' . $item['title'] . '" data-id="'.$item['id'].'"><span class="ace-icon fa fa-search-plus"></span></a> ';
-    $edit_icon =  '<a href="javascript:void(0);" class="tcopy"  data-title="' . $item['title'] . '" data-id="'.$item['id'].'"><span class="green glyphicon glyphicon-pencil"></span></a> ';
+    $edit_icon =  '<a href="javascript:void(0);" class="edit"  data-title="' . $item['title'] . '" data-id="'.$item['id'].'"><span class="green glyphicon glyphicon-pencil"></span></a> ';
     $copy_icon =  '<a href="javascript:void(0);" class="edit"  data-title="' . $item['title'] . '" data-id="'.$item['id'].'"><span class="gray ace-icon fa fa-copy"></span></a> ';
     $del_icon = '<a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="red glyphicon glyphicon-trash"></span></a></td>';
     $operation = '<td style="width:50px;"><a class="btn btn-xs btn-danger" href="' .  base_url('/company/delet_rule/'. $item['id']) .'">
