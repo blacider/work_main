@@ -1293,15 +1293,22 @@ class Reports extends REIM_Controller {
                 }
                 if(array_key_exists('d',$i['member_info']))
                 {
-                    $unames = explode(',',$i['member_info']['d']);
-                    if(count($unames) >= 2) 
+                    log_message("debug", "XX:" . $i['member_info']['d']);
+                    $unames = explode('/',$i['member_info']['d']);
+                    if(count($unames) >= 1) 
                     {
-                        $o['部门'] = str_replace('/',',',$unames[0]); 
-                        $o['上级部门'] = $unames[1];
+                        //虽然可能是多个部门，但是我们只取最前面的那个
+                        $_name = explode("-", $unames[0]); 
+                        if(count($_name) >1) {
+                            $o['上级部门'] = $_name[1];
+                            $o['部门'] = $_name[0]; 
+                        } else {
+                            $o['部门'] = $unames[0]; 
+                        }
                     }
                     if(count($unames) == 1)
                     {
-                        $o['部门'] = str_replace('/',',',$unames[0]);
+                        $o['部门'] = $unames[0];
                     }
                 }
                 $o['级别'] = '';
@@ -1406,7 +1413,7 @@ class Reports extends REIM_Controller {
             }
 
             log_message("debug", json_encode($o));
-            self::render_to_download('报告汇总', $members, 'Finace_' . date('Y-m-d', time()) . ".xls", '报告明细', $_excel, '消费明细', $_detail_items);
+            self::render_to_download('报告汇总', $members, 'Finance_' . date('Y-m-d', time()) . ".xls", '报告明细', $_excel, '消费明细', $_detail_items);
 
         }
     }
