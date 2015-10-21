@@ -7,15 +7,44 @@
 <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 <div class="page-content">
 <div class="page-content-area">
+<?php
+    $_config = '';
+    if(array_key_exists('config',$profile['group']))
+    {
+        $_config = $profile['group']['config'];
+    }
+    $__config = json_decode($_config,True);
+?>
 <form role="form" action="<?php echo base_url('items/create');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="itemform">
 <div class="row">
 <div class="col-xs-12 col-sm-12">
-<div class="form-group">
+
+<div class="form-group" id="mul_amount">
 <label class="col-sm-1 control-label no-padding-right">金额</label>
 <div class="col-xs-6 col-sm-6">
 <input type="text" class="form-controller col-xs-12" name="amount" id="amount" placeholder="金额" required>
 </div>
+
 </div>
+
+<div class="form-group">
+<label class="col-sm-1 control-label no-padding-right">金额</label>
+<div class="col-xs-6 col-sm-6">
+
+
+<select class="col-xs-2 col-sm-2" class="form-control" name="coin_type" id="coin_type">
+    <option value='美金'>$</option>
+</select>
+
+<input type="text" class="form-controller col-xs-10" name="amount" id="amount" placeholder="金额" required>
+
+
+</div>
+
+
+</div>
+
+
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">类别</label>
 <div class="col-xs-6 col-sm-6">
@@ -165,14 +194,7 @@
 </div>
 </div>
 <?php  } ?>
-<?php
-    $_config = '';
-    if(array_key_exists('config',$profile['group']))
-    {
-    	$_config = $profile['group']['config'];
-    }
-    $__config = json_decode($_config,True);
-?>
+
 
 
 <div class="form-group">
@@ -509,6 +531,8 @@ function get_sobs(){
 var __multi_time = 0;
 var __average_count = 0;
 $(document).ready(function(){
+
+    //$('#mul_amount').empty();
 
     get_sobs();
     $('#date-timepicker1').datetimepicker({

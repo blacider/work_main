@@ -1115,6 +1115,7 @@ public function common(){
         $not_auto_time = 0;
 	$disable_borrow = 0;
 	$disable_budget = 0;
+    $open_exchange = 0;
 	
 	$calendar_month = $this->input->post('calendar_month');
         $need_bank = $this->input->post('need_bank_info');
@@ -1134,7 +1135,12 @@ public function common(){
         $_not_auto_time = $this->input->post('not_auto_time');
 	$_disable_borrow = $this->input->post('allow_borrow');
 	$_disable_budget = $this->input->post('allow_budget');
+        $_open_exchange = $this->input->post('open_exchange');
 
+        if($_open_exchange == "true")
+        {
+            $open_exchange = 1;
+        }
         if($_disable_borrow == "true")
         {
             $disable_borrow = 1;
@@ -1211,6 +1217,7 @@ public function common(){
 	$in['disable_borrow'] = $disable_borrow;
 	$in['disable_budget'] = $disable_budget;
 	$in['calendar_month'] = $calendar_month;
+    $in['open_exchange'] = $open_exchange;
 	log_message('debug','company_in:' .json_encode($in));
         $this->company->profile($in);
         //die(json_encode($re));
