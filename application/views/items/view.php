@@ -210,7 +210,16 @@
                                     </div>
                                 </div>
                             </div>
-
+<div class="form-group">
+<label class="col-sm-1 control-label no-padding-right">附件</label>
+<div class="col-xs-6 col-sm-6">
+<div id="uploader-file">
+    <!--用来存放文件信息-->
+    <div id="theList" class="uploader-list">
+    </div>
+</div>
+</div>
+</div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">修改记录</label>
@@ -259,6 +268,55 @@
 </div>
 
 <script language="javascript">
+var filesUrlDict = {};
+var __files = <?php echo json_encode($item["attachments"]);?>;
+function loadFiles() {
+        for (var i = 0; i < __files.length; i++) {
+            var file = __files[i];
+            var $li = $(
+            '<div id="FILE_' + file.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
+                '<img style="width:128px">' +
+                '<p style="text-align: center;margin: 0;max-width: 128px;">'+file.filename+'</p>'+
+                '<div class="ui-icon ace-icon fa fa-download blue download-button_" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
+            '</div>'
+            ),$img = $li.find('img');
+            // $list为容器jQuery实例
+            $('#theList').append( $li );
+            var path = "/static/images/", name_ = getPngByType(file.mime);
+            $img.attr( 'src', path+name_);
+            filesUrlDict["FILE_"+String(file.id)] = String(file.url);
+        }
+        bind_event_file();
+    }
+    function getPngByType(type) {
+    var name_ = "";
+    switch(type) {
+        case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+        case "application/vnd.ms-excel":
+            name_ = "excel.png";
+            break;
+        case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+        case "application/vnd.ms-powerpoint":
+            name_ = "powerpoint.png";
+            break;
+        case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        case "application/msword":
+            name_ = "word.png"
+            break;
+        case "application/pdf":
+            name_ = "pdf.png"
+            break;
+    }
+    return name_;
+}
+function bind_event_file(){
+        $('#theList .download-button_').click(function(e) {
+            var url = filesUrlDict[this.parentNode.id];
+            var aLink = document.createElement('a');
+            aLink.href = url;
+            aLink.click();
+        });
+}
 var __BASE = "<?php echo $base_url; ?>";
 var _error = "<?php echo $error ; ?>";
 
@@ -268,7 +326,7 @@ if(_error)
 }
 $(document).ready(function(){
 
-
+loadFiles();
 
 $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
