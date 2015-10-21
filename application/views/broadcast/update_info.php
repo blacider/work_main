@@ -181,6 +181,36 @@ $(document).ready(function() {
         $('#itemform').submit();
     }); 
     */
+    function check_legal()
+    {
+        var title = $('#title').val();
+        var content = $('#content').val();
+        var some = 0;
+        $('.range').each(function(){
+            if($(this).val())
+            {
+                some = 1;
+            }
+           
+        });
+        if(!title)
+        {
+            show_notify('请输入标题');
+            return false;
+        }
+        if(!content)
+        {
+            show_notify('请输入内容');
+            return false;
+        }
+         if(some == 0 && $('#is_all').val() == 0)
+        {
+            show_notify('请选择适用范围');
+            return false;
+        }
+
+        return true;
+    }
     $('.renew').each(function(){
         $(this).click(function(){
              var renew = $(this).data('renew');
@@ -190,41 +220,20 @@ $(document).ready(function() {
              }
              if(renew == 0)
              {
-                if(confirm("确认保存消息?"))
-                $('#itemform').submit();
+                if(check_legal())
+                {
+                    $('#itemform').submit();
+                }
              }
              if(renew == 1)
              {
-                if(confirm("发送后将不能撤回，确认发送消息?"))
+                if(confirm("即将发送一条新消息，已发送消息不能更改和撤回，确定发送么？"))
                 {
-                    var title = $('#title').val();
-                    var content = $('#content').val();
-                    var some = 0;
-                    $('.range').each(function(){
-                        if($(this).val())
-                        {
-                            some = 1;
-                        }
-                       
-                    });
-                    if(!title)
+                    if(check_legal())
                     {
-                        show_notify('请输入标题');
-                        return false;
+                        $('#is_send').val(1);
+                        $('#itemform').submit();
                     }
-                    if(!content)
-                    {
-                        show_notify('请输入内容');
-                        return false;
-                    }
-                    if(some == 0 && $('#is_all').val() == 0)
-                    {
-                        show_notify('请选择适用范围');
-                        return false;
-                    }
-                    
-                    $('#is_send').val(1);
-                    $('#itemform').submit();
                 }
              }
         });
