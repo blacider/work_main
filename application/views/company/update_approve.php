@@ -40,7 +40,7 @@
                             </div>
 
                              <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-right">总金额</label>
+                                <label class="col-sm-2 control-label no-padding-right">可审批金额限制</label>
                                 <?php if ($rule['amount'] == -1) { ?>
                                 <div class="col-xs-1 col-sm-1">
                                    <input type="text" disabled="disable" style="height: 30px;width:160%;margin-top: 2px" class="form-controller col-xs-12" id="total" name="total_amount" placeholder="总金额">
@@ -70,21 +70,21 @@
                                 <?php } ?>
                             </div>
                         
-                            <label style="margin-left: -19px; position:relative;left:12px" class="col-sm-2 control-label no-padding-right">审查类目</label>
+                            <label style="margin-left: -19px; position:relative;left:12px" class="col-sm-2 control-label no-padding-right">可审批类别</label>
                             <div id="category-content" class="col-sm-offset-2 col-xs-offset-2" style="position:relative;left:7px;">
                                 <div class="form-group">
                                 <?php if ($rule['allow_all_cates'] == 1) {?>
                                     <div class="radio col-xs-3 col-sm-3">
                                         <label>
                                          <input type="radio" checked class="fourParts" id="frequency_unlimit" name="all_able" value="1">
-                                            全部均允许审核
+                                            全部允许
                                          </label>
                                     </div>
                                 <?php } else { ?>
                                     <div class="radio col-xs-3 col-sm-3">
                                         <label>
                                          <input type="radio" class="fourParts" id="frequency_unlimit" name="all_able" value="1">
-                                            全部均允许审核
+                                            全部允许
                                          </label>
                                     </div>
                                 <?php } ?>
@@ -92,14 +92,14 @@
                                     <div class="radio col-xs-3 col-sm-3" style="margin-left:-35px;">
                                         <label>
                                          <input type="radio" checked class="fourParts" id="frequency_unlimit" name="all_able" value='-1'>
-                                            全部均禁止审核
+                                            全部禁止
                                          </label>
                                     </div>
                                 <?php } else { ?>
                                     <div class="radio col-xs-3 col-sm-3" style="margin-left:-35px;">
                                         <label>
                                          <input type="radio" class="fourParts" id="frequency_unlimit" name="all_able" value='-1'>
-                                            全部均禁止审核
+                                            全部禁止
                                          </label>
                                     </div>
                                 <?php } ?>
@@ -111,14 +111,14 @@
                                         <div class="radio col-xs-6 col-sm-6">
                                             <label>
                                              <input type="radio" checked checkedclass="fourParts" id="frequency_unlimit" name="all_able" value="2">
-                                                仅部分类目可以审核
+                                                仅部分允许
                                             </label>
                                         </div>
                                     <?php } else { ?>
                                         <div class="radio col-xs-6 col-sm-6">
                                             <label>
                                              <input type="radio" class="fourParts" id="frequency_unlimit" name="all_able" value="2">
-                                                仅部分类目可以审核
+                                                仅部分允许
                                             </label>
                                         </div>
                                     <?php } ?>
@@ -136,7 +136,7 @@
                                         <div class="checkbox col-xs-2 col-sm-2">
                                             <label>
                                                 <input type="checkbox" class="def" id="frequency_unlimit" name="default" >
-                                                默认审批
+                                                第一默认审批人
                                             </label>
                                         </div>
                                     
@@ -153,7 +153,7 @@
                                             <input type="radio" class="fourParts" id="frequency_unlimit" name="all_able" value='-2'>
                                         <?php } ?>
                                          
-                                            仅部分类目禁止审核
+                                            仅部分禁止
                                          </label>
                                     </div>
                                 </div>
@@ -227,7 +227,7 @@
                             }
                             function addCategoryRow() {
                                 var addDom = $('.CategoryRow .addCategoryRow');
-                                var category = "<div class='form-group CategoryRow'><div class='col-xs-3 col-sm-3'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-3 col-sm-3'><select name='allow_category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='checkbox col-xs-2 col-sm-2'><label><input type='checkbox' class='def' id='frequency_unlimit' name='default' >默认审批</label></div><div class='col-xs-1 col-sm-1'><div class='addCategoryRow' onclick='addCategoryRow()''>+</div>   </div></div>"
+                                var category = "<div class='form-group CategoryRow'><div class='col-xs-3 col-sm-3'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-3 col-sm-3'><select name='allow_category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='checkbox col-xs-2 col-sm-2'><label><input type='checkbox' class='def' id='frequency_unlimit' name='default' >第一默认审批人</label></div><div class='col-xs-1 col-sm-1'><div class='addCategoryRow' onclick='addCategoryRow()''>+</div>   </div></div>"
                                 addDom.removeClass('addCategoryRow');
                                 addDom.attr('onclick', 'removeCategoryRow(this)');
                                 addDom.addClass('removeCategoryRow');
