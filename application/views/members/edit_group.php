@@ -148,7 +148,7 @@ $(document).ready(function(){
         $('#mainform').submit();
     });
     $('.cancel').click(function(){
-        $('#reset').click();
+        history.go(-1);
     });
 });
 </script>
