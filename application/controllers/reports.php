@@ -1291,25 +1291,28 @@ class Reports extends REIM_Controller {
                 {
                     $o['上级'] = $i['member_info']['manager'];
                 }
+                $_department = array();
+                $_higher_department = array();
                 if(array_key_exists('d',$i['member_info']))
                 {
-                    log_message("debug", "XX:" . $i['member_info']['d']);
+                    // 20151022 menglin.qin
+                    // 来了新玩法了，希望所有的直接部门和上级部门都能列出来，因此，不用再取第一个了
                     $unames = explode('/',$i['member_info']['d']);
-                    if(count($unames) >= 1) 
-                    {
-                        //虽然可能是多个部门，但是我们只取最前面的那个
-                        $_name = explode("-", $unames[0]); 
-                        if(count($_name) >1) {
-                            $o['上级部门'] = $_name[1];
-                            $o['部门'] = $_name[0]; 
+                    foreach($unames as $name) {
+                        $_name = explode("-", $name); 
+                        if(count($_name) > 1) {
+                            array_push($_higher_department, $_name[0]);
+                            array_push($_department, $_name[1]);
                         } else {
-                            $o['部门'] = $unames[0]; 
+                            array_push($_department, $_name[0]);
+                            array_push($_higher_department, '无');
                         }
                     }
-                    if(count($unames) == 1)
-                    {
-                        $o['部门'] = $unames[0];
-                    }
+                    log_message("debug", $i['member_info']['d']);
+                    log_message("debug", json_encode($_department));
+                    log_message("debug", json_encode($_higher_department));
+                    $o['上级部门'] = implode(',', $_higher_department);
+                    $o['部门'] = implode(',', $_department);
                 }
                 $o['级别'] = '';
                 $o['职位'] = '';
@@ -1412,8 +1415,13 @@ class Reports extends REIM_Controller {
                 log_message('debug','members: ' . json_encode($i['member_info']));
             }
 
-            log_message("debug", json_encode($o));
-            self::render_to_download('报告汇总', $members, 'Finance_' . date('Y-m-d', time()) . ".xls", '报告明细', $_excel, '消费明细', $_detail_items);
+            $this->load->library('user_agent');
+            $filename = '财务报告.' . date('Y-m-d', time()) . '.xls';
+            if($this->agent->is_browser('Internet Explorer')) {
+                $filename = urlencode($filename);
+            }
+
+            self::render_to_download('报告汇总', $members, $filename, '报告明细', $_excel, '消费明细', $_detail_items);
 
         }
     }
