@@ -341,7 +341,7 @@ if($__config && $__config['disable_budget'] == '0')
 <!--引入JS-->
 <script type="text/javascript" src="/static/third-party/webUploader/webuploader.js"></script>
 
-<p><?php echo json_encode($__config);?></p>
+
 
 <script language="javascript">
 
@@ -360,6 +360,7 @@ var __BASE = "<?php echo $base_url; ?>";
 var config = '<?php echo $_config?>';
 var subs = "<?php echo $profile['subs'];?>";
 var __item_config = '<?php echo json_encode($item_config);?>';
+
 var item_config = [];
 if(__item_config != '')
 {
@@ -602,7 +603,9 @@ var __average_count = 0;
 $(document).ready(function(){
 
     //$('#mul_amount').empty();
-    get_currency();
+    if(__config['open_exchange']){
+        get_currency();
+    }
     get_sobs();
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',

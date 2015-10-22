@@ -26,25 +26,69 @@
             <div class="row">
                 <div class="container">
                     <div class="row">
+                                
+
+
                         <div class="col-xs-12 col-sm-12">
+
+                            <input type="hidden" name="id" value="<?php echo $item['id']; ?>" />
+                            <input type="hidden" name="uid" value="<?php echo $item['uid']; ?>" />
+                            <input type="hidden" name="rid" value="<?php echo $item['rid']; ?>" />
+                            <input type="hidden" name="from_report" value="<?php echo $from_report; ?>" />
+                            <?php 
+                                if(array_key_exists('open_exchange', $__config) && $__config['open_exchange'] == '1'){
+                            ?>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right">金额</label>
+                                        <div class="col-xs-6 col-sm-6">
+
+
+                                            <select class="col-xs-4 col-sm-4" class="form-control  chosen-select tag-input-style" name="coin_type" id="coin_type">
+                                                <option value='cny,100'>人民币</option>
+                                            </select>
+                                            <div class="input-group input-group">
+                                                <span class="input-group-addon" id='coin_simbol'>￥</span>
+                                                <input type="text" class="form-controller col-xs-12 col-sm-12" name="amount" id="amount" value="<?php echo $item['amount'];?>" placeholder="金额" required>
+                                                <span class="input-group-addon" id='rate_simbol'>0￥</span>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
                             <div class="form-group">
-                                <input type="hidden" name="id" value="<?php echo $item['id']; ?>" />
-                                <input type="hidden" name="uid" value="<?php echo $item['uid']; ?>" />
-                                <input type="hidden" name="rid" value="<?php echo $item['rid']; ?>" />
-                                <input type="hidden" name="from_report" value="<?php echo $from_report; ?>" />
+                              
                                 <label class="col-sm-1 control-label no-padding-right">金额</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input type="text" value="<?php echo $item['amount']; ?>" class="form-controller col-xs-12" name="amount" placeholder="金额" id="amount">
+                                    <input type="text" value="<?php 
+                                    if($item['currency'] == 'cny')
+                                    {
+                                        echo $item['amount'];
+                                    }
+                                    else
+                                    {
+                                        echo round($item['amount']*$item['rate']/100,2);
+                                    } 
+                                    ?>" class="form-controller col-xs-12" name="amount" placeholder="金额" id="amount">
                                 </div>
                             </div>
+                            <?php
+                                }
+                            ?>
+
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">分类</label>
                                 <div class="col-xs-6 col-sm-6">
-<select class="col-xs-6 col-sm-6" name="sob" id="sobs">
-</select>
-<select name="category" id="sob_category" class="col-xs-6 col-sm-6 sob_category chosen-select-niu" data-placeholder="类目">
-</select>
-<input type="hidden" name="hidden_category" id="hidden_category" value="<?php echo $item['category']; ?>">
+                                    <select class="col-xs-6 col-sm-6" name="sob" id="sobs">
+                                    </select>
+                                    <select name="category" id="sob_category" class="col-xs-6 col-sm-6 sob_category chosen-select-niu" data-placeholder="类目">
+                                    </select>
+                                    <input type="hidden" name="hidden_category" id="hidden_category" value="<?php echo $item['category']; ?>">
 
                                 </div>
                             </div>
@@ -310,6 +354,16 @@
 
 
 <script language="javascript">
+
+var simbol_dic = {'cny':'人民币','usd':'美元','eur':'欧元','hkd':'港币','mop':'澳门币','twd':'新台币','jpy':'日元','ker':'韩国元',
+                              'gbp':'英镑','rub':'卢布','sgd':'新加坡元','php':'菲律宾比索','idr':'印尼卢比','myr':'马来西亚元','thb':'泰铢','cad':'加拿大元',
+                              'aud':'澳大利亚元','nzd':'新西兰元','chf':'瑞士法郎','dkk':'丹麦克朗','nok':'挪威克朗','sek':'瑞典克朗','brl':'巴西里亚尔'
+                             }; 
+var icon_dic = {'cny':'￥','usd':'$','eur':'€','hkd':'$','mop':'$','twd':'$','jpy':'￥','ker':'₩',
+                              'gbp':'£','rub':'Rbs','sgd':'$','php':'₱','idr':'Rps','myr':'$','thb':'฿','cad':'$',
+                              'aud':'$','nzd':'$','chf':'₣','dkk':'Kr','nok':'Kr','sek':'Kr','brl':'$'
+                             }; 
+var _currency = "<?php echo $item['currency'];?>";
 
 var _ddt = "<?php echo $ddt; ?>";
 var _average = "<?php echo $average; ?>";
@@ -597,10 +651,68 @@ function load_exists(){
     $('input[name="images"]').val(result);
     bind_event();
 }
+
+$('#coin_type').change(function(){
+    var temp = $('#coin_type').val();
+    var coin_list = temp.split(',');
+    $('#coin_simbol').text(icon_dic[coin_list[0]]);
+    var _amount = $('#amount').val();
+    $('#rate_simbol').text(Math.round(_amount*coin_list[1])/100 +  '￥');
+    console.log(temp);
+    console.log(coin_list[1]);
+});
+
+$('#amount').change(function(){
+    var temp = $('#coin_type').val();
+    var coin_list = temp.split(',');
+    $('#coin_simbol').text(icon_dic[coin_list[0]]);
+    var _amount = $('#amount').val();
+    $('#rate_simbol').text(Math.round(_amount*coin_list[1])/100 + '￥');
+});
+
+function get_currency()
+{
+    $.ajax({
+        url:__BASE + 'items/get_currency',
+        dataType:'json',
+        method:'GET',
+        success:function(data){
+            console.log(data);
+            
+            
+            var _h = '';
+            for(var item in data)
+            {
+                _h += '<option value="' + item + ',' + data[item] +'">' + simbol_dic[item] + '</option>';
+            }
+            $('#coin_type').append(_h);
+
+            if(_currency != 'cny')
+            {
+                $('#coin_type').val(_currency+','+data[_currency]).prop('selected',true).trigger('chosen:updated');
+            }
+            else
+            {
+                $('#coin_type').val(_currency+','+'100').prop('selected',true).trigger('chosen:updated');
+            }
+            $('#coin_type').trigger('change');
+            $('#coin_type').trigger('chosen:updated');
+        },
+        error:function(a,b,c){
+            console.log(a);
+            console.log(b);
+            console.log(c);
+        }
+    });
+}
+
+
 var __multi_time = 0;
 
-                var __average_count = 0;
+var __average_count = 0;
 $(document).ready(function(){
+    get_currency();
+
     get_sobs();
     var _dt = $('#dt').val();
     var images = eval("(" + _images + ")");

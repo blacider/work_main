@@ -238,10 +238,20 @@ class Items extends REIM_Controller {
         $note = $this->input->post('note');
         $images = $this->input->post('images');
         $renew = $this->input->post('renew');
-        $obj = $this->items->create($amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra,$uids, $afford_ids);
-        log_message('debug','extra:' . $__extra);
+        //汇率
+        $currency = 'cny';
+        $_currency = $this->input->post('coin_type');
+        log_message('debug', 'qqy currency:' . $_currency);
+        if($_currency)
+        {
+            $temp = explode(',',$_currency);
+            $currency = $temp[0];
+        }
+        log_message('debug', 'qqy currency:' . $currency);
 
-        log_message('debug','create_item_back:' . json_encode($obj));
+
+        $obj = $this->items->create($amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra,$uids, $afford_ids, $currency);
+
         // TODO: 提醒的Tips
         if($renew){
             redirect(base_url('items/newitem'));
@@ -1030,6 +1040,15 @@ class Items extends REIM_Controller {
         log_message("debug", "alvayang: Item Update In:" . $item_update_in);
         $_item_data = $this->items->get_by_id($id);
         log_message('debug', 'item_get_by_id:' . json_encode($_item_data));
+        $currency = 'cny';
+        $_currency = $this->input->post('coin_type');
+        if($_currency)
+        {
+            $temp = explode(',',$_currency);
+            $currency = $temp[0];
+        }
+        
+        //添加汇率字段
         if($item_update_in != 0) {
             $item_data = $this->items->get_by_id($id);
             $data = $item_data['data'];
@@ -1069,7 +1088,7 @@ class Items extends REIM_Controller {
         }
         else
         {
-			$obj = $this->items->update($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra,$uids,$afford_ids);
+			$obj = $this->items->update($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra,$uids,$afford_ids,$currency);
             log_message('debug','zz item_data:'.json_encode($obj));
         }
         log_message('debug','rid:' . $rid);
