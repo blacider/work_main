@@ -118,7 +118,7 @@ class Items_Model extends Reim_Model {
     }
 
 
-    public function create($amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '', $afford_ids = -1){
+    public function create($amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '', $afford_ids = -1 , $currency){
         $items = array();
         $s = array(
             'local_id' => 1,
@@ -138,13 +138,16 @@ class Items_Model extends Reim_Model {
             'longitude' => 0,
             'merchants' => $merchant,
             'type' => 1,
+            'currency' => $currency,
 	    'extra' => $extra);
         array_push($items, $s);
         $data = array('items' => json_encode($items));
-	log_message('debug','items_data:' . json_encode($data));
         $jwt = $this->session->userdata('jwt');
         $url = $this->get_url('item');
         $buf = $this->do_Post($url, $data, $jwt, 1);
+        log_message('debug','item_create_data:' . json_encode($data));
+        log_message('debug','item_create_url:' . json_encode($url));
+        log_message('debug','item_create_back:' . json_encode($buf));
         $obj = json_decode($buf, true);
         return $obj;
     }
@@ -170,7 +173,7 @@ class Items_Model extends Reim_Model {
 
     }
 
-    public function update($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '',$fee_afford_ids=-1){
+    public function update($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '',$fee_afford_ids=-1, $currency){
         $items = array();
         $s = array(
             'local_id' => 1,
@@ -191,14 +194,16 @@ class Items_Model extends Reim_Model {
             'merchants' => $merchant,
             'type' => 1,
             'afford_ids' => $fee_afford_ids,
+            'currency' => $currency,
 	    'extra' => $extra);
         array_push($items, $s);
         $data = array('items' => json_encode($items));
-	log_message('debug','ITEIM_DATA:'.json_encode($data));
         $jwt = $this->session->userdata('jwt');
         $url = $this->get_url('item');
         $buf = $this->do_Put($url, $data, $jwt, 1);
-	log_message('debug','ITEIM_UPDATE:'.$buf);
+        log_message('debug','update_item_data:' . json_encode($data));
+        log_message('debug','update_item_url:' . json_encode($url));
+        log_message('debug','update_item_back:' . json_encode($buf));
         $obj = json_decode($buf, true);
         return $obj;
     }
