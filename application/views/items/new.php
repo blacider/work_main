@@ -1,6 +1,8 @@
 <link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
+<link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
+
 <!-- <link rel="stylesheet" href="/static/third-party/jqui/jquery-ui.min.css" id="main-ace-style" /> -->
 
 <!-- page specific plugin styles -->
@@ -18,7 +20,33 @@
 <form role="form" action="<?php echo base_url('items/create');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="itemform">
 <div class="row">
 <div class="col-xs-12 col-sm-12">
+<?php
+    if(array_key_exists('open_exchange', $__config) && $__config['open_exchange'] == '1')
+    {
+?>
+<div class="form-group">
+    <label class="col-sm-1 control-label no-padding-right">金额</label>
+    <div class="col-xs-6 col-sm-6">
 
+
+        <select class="col-xs-4 col-sm-4" class="form-control  chosen-select tag-input-style" name="coin_type" id="coin_type">
+            <option value='cny,100'>人民币</option>
+        </select>
+        <div class="input-group input-group">
+            <span class="input-group-addon" id='coin_simbol'>￥</span>
+            <input type="text" class="form-controller col-xs-12 col-sm-12" name="amount" id="amount" placeholder="金额" required>
+            <span class="input-group-addon" id='rate_simbol'>0￥</span>
+        </div>
+
+    </div>
+
+
+</div>
+<?php
+    }
+    else
+    {
+?>
 <div class="form-group" id="mul_amount">
 <label class="col-sm-1 control-label no-padding-right">金额</label>
 <div class="col-xs-6 col-sm-6">
@@ -27,23 +55,9 @@
 
 </div>
 
-<div class="form-group">
-<label class="col-sm-1 control-label no-padding-right">金额</label>
-<div class="col-xs-6 col-sm-6">
-
-
-<select class="col-xs-3 col-sm-3" class="form-control" name="coin_type" id="coin_type">
-    <option value='1'>人民币￥</option>>
-    <option value='美金'>美金$</option>
-</select>
-
-<input type="text" class="form-controller col-xs-9" name="amount" id="amount" placeholder="金额" required>
-
-
-</div>
-
-
-</div>
+<?php
+    }
+?>
 
 
 <div class="form-group">
@@ -327,9 +341,20 @@ if($__config && $__config['disable_budget'] == '0')
 <!--引入JS-->
 <script type="text/javascript" src="/static/third-party/webUploader/webuploader.js"></script>
 
-
+<p><?php echo json_encode($__config);?></p>
 
 <script language="javascript">
+
+var simbol_dic = {'cny':'人民币','usd':'美元','eur':'欧元','hkd':'港币','mop':'澳门币','twd':'新台币','jpy':'日元','ker':'韩国元',
+                              'gbp':'英镑','rub':'卢布','sgd':'新加坡元','php':'菲律宾比索','idr':'印尼卢比','myr':'马来西亚元','thb':'泰铢','cad':'加拿大元',
+                              'aud':'澳大利亚元','nzd':'新西兰元','chf':'瑞士法郎','dkk':'丹麦克朗','nok':'挪威克朗','sek':'瑞典克朗','brl':'巴西里亚尔'
+                             }; 
+var icon_dic = {'cny':'￥','usd':'$','eur':'€','hkd':'$','mop':'$','twd':'$','jpy':'￥','ker':'₩',
+                              'gbp':'£','rub':'Rbs','sgd':'$','php':'₱','idr':'Rps','myr':'$','thb':'฿','cad':'$',
+                              'aud':'$','nzd':'$','chf':'₣','dkk':'Kr','nok':'Kr','sek':'Kr','brl':'$'
+                             }; 
+
+
 var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
 var config = '<?php echo $_config?>';
@@ -529,6 +554,24 @@ function get_sobs(){
         });
 }
 
+$('#coin_type').change(function(){
+    var temp = $('#coin_type').val();
+    var coin_list = temp.split(',');
+    $('#coin_simbol').text(icon_dic[coin_list[0]]);
+    var _amount = $('#amount').val();
+    $('#rate_simbol').text(Math.round(_amount*coin_list[1])/100 +  '￥');
+    console.log(temp);
+    console.log(coin_list[1]);
+});
+
+$('#amount').change(function(){
+    var temp = $('#coin_type').val();
+    var coin_list = temp.split(',');
+    $('#coin_simbol').text(icon_dic[coin_list[0]]);
+    var _amount = $('#amount').val();
+    $('#rate_simbol').text(Math.round(_amount*coin_list[1])/100 + '￥');
+});
+
 function get_currency()
 {
     $.ajax({
@@ -536,14 +579,15 @@ function get_currency()
         dataType:'json',
         method:'GET',
         success:function(data){
-            var simble_dic = {'cny':'￥','usd':'$','eur':'€','hkd':'$','mop':'$','twd':'$','jpy':'￥','ker':'₩',
-                              'gbp':'£','rbs':'Rbs','sgd':'$','php':'₱','idr':'Rps',
-                             };
+            console.log(data);
+            
+            
             var _h = '';
             for(var item in data)
             {
-                _h += '<option value="currency_' + item +'">' + data[item] + '';
+                _h += '<option value="' + item + ',' + data[item] +'">' + simbol_dic[item] + '</option>';
             }
+            $('#coin_type').append(_h);
         },
         error:function(a,b,c){
             console.log(a);
