@@ -226,7 +226,7 @@ class Reim_Model extends CI_Model {
         return $result;
     }
 
-    public function get_file($file_path  = '') {
+    public function get_curl_upload_field($file_path  = '') {
         if('' == $file_path) return '';
         if (class_exists('CURLFile')) {
             $finfo = finfo_open(FILEINFO_MIME_TYPE);

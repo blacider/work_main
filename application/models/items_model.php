@@ -87,7 +87,7 @@ class Items_Model extends Reim_Model {
         $file = realpath($image_path);
         if(!$jwt) return false;
         $data = array();
-        $file = $this->get_file($image_path);
+        $file = $this->get_curl_upload_field($image_path);
         $data = array('file' => $file, 'type' => $type);
         $url = $this->get_url('images');
         $buf = $this->do_Post($url, $data, $jwt, 1);
