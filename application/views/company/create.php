@@ -342,6 +342,9 @@ $(window).load(function() {
     $('input')[4].style.width = '100px';
 })
 $(document).ready(function(){
+setTimeout(function(){
+        $('.chosen-select').trigger("chosen:updated");
+   },100);
 	    /*$.ajax({
         url:__BASE + "category/get_sob_category/"+s_id,
         dataType:'json',
