@@ -244,7 +244,7 @@
 </div>
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
-//var is_burden = "<?php echo $is_hidden;?>";
+
 $(document).ready(function(){
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
@@ -258,12 +258,7 @@ $(document).ready(function(){
     $('.afford_detail').each(function(idx, item) {
         $(this).next().hide();
     });
-/*
-    if(is_burden)
-    {
-        $('#burden').prop('hidden',true).trigger('chosen:updated');
-    }
-*/
+
     $('.afford_detail').hide();
     $('#afford_type').change(function(){
         var _id = $(this).val();
@@ -304,6 +299,7 @@ $(document).ready(function(){
 
     $('.fallback [data-rel="colorbox"]').colorbox(colorbox_params);
     $('.cancel').click(function(){
+       
         history.go(-1);
     });
 	var afford_type = "<?php echo $fee_afford_type;?>";

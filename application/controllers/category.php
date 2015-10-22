@@ -1057,7 +1057,7 @@ class Category extends REIM_Controller {
         $re = json_encode($ret);
         log_message("debug", "***&&*&*&*:$re");
 	log_message('debug','range:' . $range);
-        $arr = array('helo' => 'jack');
+        $arr = array('data' => 'success');
         die(json_encode($arr));
         //return redirect(base_url('category/account_set'));
     }
