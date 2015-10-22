@@ -19,6 +19,27 @@ function bind_event(){
             location.href = __BASE + "reports/edit/" + _id;
         });
     });
+    $('.tdown').each(function() {
+        $(this).click(function(){
+            var _id = $(this).data('id');
+            var chosen_id = [];
+            chosen_id.push(_id);
+            console.log(chosen_id);
+                $.ajax({
+                url:__BASE + "/bills/download_single_report",
+                method:"post",
+                dataType:"json",
+                //data:{"chosenids":chosenids},
+                data:{"chosenids":chosen_id},
+                success:function(data){
+                location.href = data['url'];
+                },
+                error:function(a,b)
+                {
+                }
+	}); 	
+        });
+    });
     $('.texport').each(function(){
     	$(this).click(function(){
 	    var _id = $(this).data('id');
