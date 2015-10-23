@@ -192,6 +192,33 @@ class Reports extends REIM_Controller {
             $trash= $d['status'] === 1 ? 'gray' : 'red';
             $edit = ($d['status'] === 1)   ? 'gray' : 'green';
             $export = ($d['status'] === 1)   ? 'gray' : 'grey';
+
+            $base_icon = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">';
+            $show_icon = '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>';
+            $edit_icon = '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>';
+            $export_icon = '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>';
+            $trash_icon = '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>';
+            $download_icon = '<span class="ui-icon ace-icon fa fa-download ' . 'blue' . '  tdown" data-id="' . $d['id'] . '"></span>';
+            $end_icon = '</div>';
+            
+            if(in_array($d['status'],[0,3]))
+            {
+                $d['options'] = $base_icon . $edit_icon . $trash_icon . $end_icon;
+            }
+            else if(in_array($d['status'],[1]))
+            {
+                $d['options'] = $base_icon . $show_icon . $end_icon;
+            }
+            else if(in_array($d['status'],[2]))
+            {
+                $d['options'] = $base_icon . $show_icon .  $export_icon . $download_icon . $end_icon;
+            }
+            else
+            {
+                $d['options'] = $base_icon . $show_icon . $export_icon .$download_icon . $end_icon;
+            }
+            
+            /*
             if($d['status'] == 1) {
                 $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
@@ -216,6 +243,7 @@ class Reports extends REIM_Controller {
                         . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span></div>';
                 }
             }
+            */
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
             $d['status_str'] = '待提交';
             //$d['amount'] = '￥' . $d['amount'];
@@ -938,14 +966,29 @@ class Reports extends REIM_Controller {
                 $d['author'] = $__members[$d['uid']]['nickname'];
             }
             log_message("debug", "Rstatus: **** " . json_encode($d));
+
+/*
+            $base_icon = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">';
+//            $show_icon = '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>';
+            $show_icon='<span class="ui-icon fa fa-search-plus tdetail" data-decision="1" data-id="' . $d['id'] . '"></span>';
+            $edit_icon = '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>';
+            $pass_icon = '<span class="ui-icon ' . 'green' . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>'; 
+            $deny_icon = '<span class="ui-icon  ui-icon-closethick ' . 'red'  . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span>';
+            $export_icon = '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>';
+            $trash_icon = '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>';
+            $end_icon = '</div>';
+            */
+            $download_icon = '<span class="ui-icon ace-icon fa fa-download ' . 'blue' . '  tdown" data-id="' . $d['id'] . '"></span>';
+            
+           
+
             if(in_array($d['status'],[2,4,5,7,8]))
             {
                 if($d['mdecision'] == 1 && !$d['cc_flag']){
-                    $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del"  data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-decision="1" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in texport' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>' .  '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
+                    $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del"  data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-decision="1" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in texport' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>' .   $download_icon . '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
                 } else { 
-                    $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in ' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span></div>';
+                    $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in ' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>' . $download_icon  . '</div>';
                 }
-
             }
             else
             {
@@ -1253,12 +1296,12 @@ class Reports extends REIM_Controller {
                     $unames = explode(',',$i['member_info']['d']);
                     if(count($unames) >= 2) 
                     {
-                        $o['部门'] = $unames[0];
+                        $o['部门'] = str_replace('/',',',$unames[0]); 
                         $o['上级部门'] = $unames[1];
                     }
                     if(count($unames) == 1)
                     {
-                        $o['部门'] = $unames[0];
+                        $o['部门'] = str_replace('/',',',$unames[0]);
                     }
                 }
                 $o['级别'] = '';
@@ -1312,8 +1355,8 @@ class Reports extends REIM_Controller {
                 $_str_afford_member = $i['nickname'];
                 if($i['afford_ids'] != "-1" && $i['afford_ids'] != "")
                 {
-                    $_str_afford_dept = $i['fee_afford_group_name'];
-                    $_str_afford_member = $i['fee_afford_object_name'];
+                    $_str_afford_dept = trim($i['fee_afford_group_name'],',');
+                    $_str_afford_member = trim($i['fee_afford_object_name'],',');
                 }
                 $o['商家'] = $i['merchants'];
                 $o['参与人员'] = implode(',', $__relates);

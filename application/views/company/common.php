@@ -53,7 +53,7 @@
                             </div>
 
                               <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">是否有银行信息</label>
+                                <label class="col-sm-3 control-label no-padding-right">必须填写银行信息</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
@@ -67,7 +67,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">同一报告中允许包含不同类目消费</label>
+                                <label class="col-sm-3 control-label no-padding-right">同一报告中允许包含不同类别的消费</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
@@ -81,7 +81,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">修改金额不能大于原始金额</label>
+                                <label class="col-sm-3 control-label no-padding-right">审批时修改后金额不能⼤于提交⾦额</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
@@ -94,7 +94,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">报销单是否省略备注</label>
+                                <label class="col-sm-3 control-label no-padding-right">报销单打印时隐藏备注</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
@@ -107,7 +107,7 @@
                             </div>
 
                               <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">审批按照规则运行</label>
+                                <label class="col-sm-3 control-label no-padding-rigtht">不允许自主选择下一审批人</label>
                                 <div class="col-xs-4 col-sm-4">
                                         <label style="margin-top:8px;">
                                             <input name="close_directly" class="ace ace-switch btn-rotate" type="checkbox" id="close_directly" style="margin-top:4px;" />
@@ -117,7 +117,7 @@
                             </div>
 
                               <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">邮件通知报告状态变化</label>
+                                <label class="col-sm-3 control-label no-padding-rigtht">报告状态变化时邮件通知</label>
                                 <div class="col-xs-4 col-sm-4">
                                         <label style="margin-top:8px;">
                                             <input name="mail_notify" class="ace ace-switch btn-rotate" type="checkbox" id="mail_notify" style="margin-top:4px;" />
@@ -127,7 +127,7 @@
                             </div>
 
                               <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">不开放组织结构</label>
+                                <label class="col-sm-3 control-label no-padding-rigtht">普通员工不可见组织结构</label>
                                 <div class="col-xs-4 col-sm-4">
                                         <label style="margin-top:8px;">
                                             <input name="private_structure" class="ace ace-switch btn-rotate" type="checkbox" id="private_structure" style="margin-top:4px;" />
@@ -137,7 +137,7 @@
                             </div>
 
                               <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">必须填写备注</label>
+                                <label class="col-sm-3 control-label no-padding-rigtht">不填写「备注」无法提交报销</label>
                                 <div class="col-xs-4 col-sm-4">
                                         <label style="margin-top:8px;">
                                             <input name="note_compulsory" class="ace ace-switch btn-rotate" type="checkbox" id="note_compulsory" style="margin-top:4px;" />
@@ -147,7 +147,7 @@
                             </div>
 
                               <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">不默认填写消费时间</label>
+                                <label class="col-sm-3 control-label no-padding-rigtht">消费时间不⾃动生成</label>
                                 <div class="col-xs-4 col-sm-4">
                                         <label style="margin-top:8px;">
                                             <input name="not_auto_time" class="ace ace-switch btn-rotate" type="checkbox" id="not_auto_time" style="margin-top:4px;" />
@@ -186,7 +186,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">报告结算后需员工确认的额度</label>
+                                <label class="col-sm-3 control-label no-padding-rigtht">员工在此金额下无需确认收款</label>
                                 <div class="col-xs-4 col-sm-4">
 					               <input id="limit" type="text" class="form-controller col-xs-12" name="limit" placeholder="输入额度">
                                 </div>
@@ -202,14 +202,14 @@
                             </div>
 
                               <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">只可以提交最近几个月的报销限制</label>
+                                <label class="col-sm-3 control-label no-padding-rigtht">最多可提交最近几个月之前的报销</label>
                                 <div class="col-xs-4 col-sm-4">
                                 <input id="max_allowed_months" type="text" class="form-controller col-xs-12" name="max_allowed_months" placeholder="月数">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">自然月设置</label>
+                                <label class="col-sm-3 control-label no-padding-rigtht">自然月起始</label>
                                 <div class="col-xs-4 col-sm-4">
                                 <input id="calendar_month" type="text" class="form-controller col-xs-12" name="calendar_month" placeholder="自然月">
                                 </div>

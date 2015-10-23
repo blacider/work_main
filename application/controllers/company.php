@@ -579,7 +579,7 @@ class Company extends REIM_Controller {
 	}
         $this->bsload('company/approve',
             array(
-                'title'=>'新建审批'
+                'title'=>'新建审批规则'
                 ,'error'=>$error
                 ,'member'=>$gmember
                 ,'group'=>$gnames
@@ -588,7 +588,7 @@ class Company extends REIM_Controller {
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>base_url('company'),'name'=>'公司设置','class'=> '')
-                    ,array('url'=>'','name'=>'新建审批','class'=>'')
+                    ,array('url'=>'','name'=>'新建审批规则','class'=>'')
                 ),
             )
         );
@@ -899,7 +899,7 @@ class Company extends REIM_Controller {
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
-                    ,array('url'=>'','name'=>'新建规则','class'=>'')
+                    ,array('url'=>'','name'=>'提交规则','class'=>'')
                 ),
             )
         );
