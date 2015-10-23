@@ -251,7 +251,16 @@ data-id="<?php echo $i['id']; ?>"
 ></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['cate_str'];?></td>
-                                            <td><?php echo '￥'.$i['amount']; ?></td>
+                                            <td><?php 
+                                                    if($i['currency'] != 'cny')
+                                                    {
+                                                        echo '￥' . round($i['amount']*$i['rate']/100,2);
+                                                    }
+                                                    else
+                                                    {
+                                                        echo '￥'.$i['amount']; 
+                                                    }
+                                                ?></td>
                                             <td><?php 
         
                                                 $buf = '';

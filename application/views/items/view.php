@@ -335,6 +335,7 @@ var icon_dic = {'cny':'￥','usd':'$','eur':'€','hkd':'$','mop':'$','twd':'$',
                              }; 
 
 $('#coin_type').append("<option selected>" + simbol_dic[_coin_type] + "</option>");
+$('#coin_simbol').text(icon_dic[_coin_type]);
 
 if(_error)
 {

@@ -319,6 +319,10 @@ class Items extends REIM_Controller {
                 }
                 //$s['amount'] = '￥' . $s['amount'];
                 //$s['amount'] = '￥' . $s['amount'];
+                if($s['currency'] != 'cny')
+                {
+                    $s['amount'] = round($s['amount'] * $s['rate'] / 100,2); 
+                }
                 $s['status_str'] = '';
                 log_message("debug", "Item:" . json_encode($s));
                 $trash= $s['status'] === 0 ? 'gray' : 'red';
