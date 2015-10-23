@@ -248,6 +248,12 @@
 <option value="<?php echo $val; ?>"><?php echo $key; ?></option>
 <?php
 					    }
+                        if($val == 0)
+                        {
+                            ?>
+                            <option value="<?php echo $val; ?>"><?php echo $key; ?></option>
+                            <?php
+                        }
 
                                             }
                                             }
@@ -297,8 +303,7 @@
         </form>
     </div>
 </div>
-<p>
-<?php //echo json_encode($item_value);?></p>
+
 <!--
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
@@ -323,15 +328,7 @@ if(__item_config != '')
 var _item_config = new Object();
 for(var i = 0 ; i < item_config.length; i++)
 {
-    /*
-    if(item_config[i].type == 2)
-    {
-        _item_config = item_config[i];
-    }
-    if(item_config[i].type == 5)
-    {
-        _item_config = item_config[i];
-    }*/
+   
     if(item_config[i]['type']==2 || item_config[i]['type'] == 5)
     _item_config[item_config[i]['cid']] = item_config[i];
 }
@@ -344,20 +341,7 @@ var own_id = '<?php echo $profile['id'] ?>';
 var item_user_id = '<?php echo $item['uid'] ?>';
 
 var sob_id = <?php echo $sob_id; ?>;
-/*var __item_config = '<?php echo json_encode($item_config);?>';
-var item_config = '';
-if(__item_config!='')
-{
-    item_config = JSON.parse(__item_config);
-}
-var _item_config = [];
-for(var i = 0 ; i < item_config.length; i++)
-{
-    if(item_config[i].type == 2)
-    {
-        _item_config = item_config[i];
-    }
-} */
+
 
 var config = '<?php echo $_config?>';
 if(config != '')
@@ -682,18 +666,7 @@ $('#sob_category').change(function(){
         }
         else if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 5)
         {
-            /*
-            $('#config_id').val(_item_config[category_id]['id']);
-            $('#config_type').val(_item_config[category_id]['type']);
-            $('#amount').change(function(){
-                var all_amount = $('#amount').val();
-            $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人*' + subs);
-            });
-            var all_amount = $('#amount').val();
-            $('#average_id').text(Number(all_amount/subs).toFixed(2)+'元/人*' + subs);
-            $('#average').show();
-                __average_count = 1;
-            $('#average').show(); */
+      
 
 
 

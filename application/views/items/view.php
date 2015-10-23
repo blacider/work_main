@@ -278,8 +278,7 @@
         </form>
     </div>
 </div>
-<p><?php echo json_encode($tags_item);?></p>
-<p<?php echo $item['tags']?></p>
+
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var _error = "<?php echo $error ; ?>";
