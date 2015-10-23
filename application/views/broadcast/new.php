@@ -172,7 +172,7 @@ $(document).ready(function() {
                   
                 if(check_legal())
                 {
-                    if(confirm("即将发送一条新消息，已发送消息不能更改和撤回，确定发送么？"))
+                    if(confirm("即将发送一条新消息，已发送消息不能更改，确定发送么？"))
                     {   
                         $('#is_send').val(1);
                         
