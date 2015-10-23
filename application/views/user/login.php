@@ -35,6 +35,9 @@
         if(document.body.scrollWidth > 900) {
       $('.block1').css('height', String(document.documentElement.clientHeight-240));
       }
+      if ("<?php echo $errors; ?>" != '') {
+        $("#error_bad_pass").css('display', 'block');
+      }
      });
 </script>
    <script type="text/javascript" src="/static/js/index.js"></script>
