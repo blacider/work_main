@@ -107,7 +107,7 @@ $(document).ready(function(){
     });
     $('.del').each(function(){
         $(this).click(function(){
-            if(confirm('确认要删除吗?')){
+            if(confirm('删除本条消息时，客户端上的消息也将删除，是否确认?')){
                 var _id = $(this).data('id');
                 location.href = __BASEURL + "broadcast/delete_info/" + _id;
             }
