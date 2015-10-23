@@ -95,6 +95,10 @@ class Broadcast extends Reim_Controller {
         if($info['status'] > 0) 
             $broadcast = $info['data'];
             
+        usort($broadcast,function($a,$b){
+            if($a['lastdt'] == $b['lastdt']) return 0;
+            return ($a['lastdt'] > $b['lastdt']) ? -1 : 1;
+        });
         
         return $this->bsload('broadcast/list',
             array(
