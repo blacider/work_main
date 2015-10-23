@@ -1372,8 +1372,6 @@ class Reports extends REIM_Controller {
                 $o['参与人员'] = implode(',', $__relates);
                 $o['承担部门'] = $_str_afford_dept;
                 $o['承担对象'] = $_str_afford_member;
-                //$o['承担部门'] = $_str_afford_dept;
-                //$o['承担对象'] = $_str_afford_member;
                 $_sob_code = 0;
                 if(array_key_exists($i['category'], $cate_dic) && array_key_exists('sob_code', $cate_dic[$i['category']])){
                     $_sob_code = $cate_dic[$i['category']]['sob_code'];
@@ -1381,6 +1379,9 @@ class Reports extends REIM_Controller {
                 $_sob_name = '';
                 if(array_key_exists($i['category'], $cate_dic) && array_key_exists('name', $cate_dic[$i['category']])){
                     $_sob_name = $cate_dic[$i['category']]['name'];
+                }
+                if (array_key_exists("tag_names", $i)) {
+                    $o['标签'] = $i['tag_names'];
                 }
                 $o['会计科目'] = $i['category_name'];
                 $o['会计科目代码'] = $_sob_code;
@@ -1416,7 +1417,7 @@ class Reports extends REIM_Controller {
             }
 
             $this->load->library('user_agent');
-            $filename = '财务报告.' . date('Y-m-d', time()) . '.xls';
+            $filename = '报销报告列表' . date('Y-m-d', time()) . '.xls';
             if($this->agent->is_browser('Internet Explorer')) {
                 $filename = urlencode($filename);
             }
