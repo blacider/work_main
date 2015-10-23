@@ -274,7 +274,6 @@ foreach($item_config as $s) {
         $_val = $extra[$s['id']];
     }
     if(!array_key_exists($s['id'], $extra)) continue;
-    if(trim($_val) != "" || ($s['disabled'] ==0 && $s['active'] == 1)) {
     if($s['cid'] == -1  && $s['type'] == 1 && $s['active'] == 1) {
 ?>
 <div class="form-group">
@@ -284,7 +283,6 @@ foreach($item_config as $s) {
 </div>
 </div>
 <?php
-    }
     }
 }
 ?>
