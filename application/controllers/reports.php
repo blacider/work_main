@@ -1308,9 +1308,6 @@ class Reports extends REIM_Controller {
                             array_push($_higher_department, '无');
                         }
                     }
-                    log_message("debug", $i['member_info']['d']);
-                    log_message("debug", json_encode($_department));
-                    log_message("debug", json_encode($_higher_department));
                     $o['上级部门'] = implode(',', $_higher_department);
                     $o['部门'] = implode(',', $_department);
                 }
