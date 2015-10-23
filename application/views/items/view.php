@@ -173,11 +173,32 @@
                                 </div>
                             </div>
 
+                          
+
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">标签</label>
                                 <div class="col-xs-6 col-sm-6">
+                                <select class="chosen-select tag-input-style" name="tags[]" multiple="multiple" data-placeholder="请选择标签" disabled>
+                                <?php
+                                    $tags_item = explode(',',$item['tag_ids']);
 
-                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $item['tags']; ?> " disabled>
+                                 foreach($tags as $category) {
+                                        if(in_array($category['id'], $tags_item))
+                                        {
+                                    ?>
+                                     <option selected value="<?php echo $category['id']; ?>"><?php echo $category['name']; ?></option>
+                                    <?php
+                                     }else
+                                     {
+                                    ?>
+
+                                    <option value="<?php echo $category['id']; ?>"><?php echo $category['name']; ?></option>
+                                <?php
+                                     } 
+                                 }
+                                ?>
+                                </select>
+
                                 </div>
                             </div>
 
@@ -257,7 +278,8 @@
         </form>
     </div>
 </div>
-
+<p><?php echo json_encode($tags_item);?></p>
+<p<?php echo $item['tags']?></p>
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var _error = "<?php echo $error ; ?>";
@@ -315,4 +337,5 @@ $('.chosen-select').chosen({allow_single_deselect:true});
 <?php } ?>
     });
 });
+
 </script>
