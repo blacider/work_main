@@ -30,7 +30,7 @@
                         
 
                         
-                        <label style="left:0;position: absolute;" class="col-sm-2 control-label no-padding-rigtht">审批人员</label>
+                        <label style="left:0;position: absolute;" class="col-sm-2 control-label no-padding-rigtht">可审批人员</label>
                         <style type="text/css">
                                     .drop-cata {
                                                 height: 42px;
