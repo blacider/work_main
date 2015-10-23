@@ -269,19 +269,22 @@ foreach($item['extra'] as $i) {
     $extra[$i['id']] = $i['value'];
 }
 foreach($item_config as $s) {
-    $val = '';
+    $_val = '';
     if(array_key_exists($s['id'], $extra)){
-        $val = $extra[$s['id']];
+        $_val = $extra[$s['id']];
     }
+    if(!array_key_exists($s['id'], $extra)) continue;
+    if(trim($_val) != "" || ($s['disabled'] ==0 && $s['active'] == 1)) {
     if($s['cid'] == -1  && $s['type'] == 1 && $s['active'] == 1) {
 ?>
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right"><?php echo $s['name']; ?></label>
 <div class="col-xs-6 col-sm-6">
-<textarea data-type="<?php echo $s['id']; ?>" name="extra_<?php echo $s['id']; ?>" id="note_2_c" class="col-xs-12 col-sm-12  extra_textarea form-controller" ><?php echo $val; ?></textarea>
+<textarea data-type="<?php echo $s['id']; ?>" name="extra_<?php echo $s['id']; ?>" class="col-xs-12 col-sm-12  extra_textarea form-controller" ><?php echo $_val; ?></textarea>
 </div>
 </div>
 <?php
+    }
     }
 }
 ?>
@@ -345,7 +348,6 @@ foreach($item_config as $s) {
 
 var _ddt = "<?php echo $ddt; ?>";
 var _average = "<?php echo $average; ?>";
-var _note2 = "<?php echo $note_2; ?>";
 var subs = "<?php echo $profile['subs'];?>";
 var __item_config = '<?php echo json_encode($item_config);?>';
 var item_config = [];
@@ -624,7 +626,6 @@ $(document).ready(function(){
     var _dt = $('#dt').val();
     var images = eval("(" + _images + ")");
     $('#people-nums').val(_average);
-    $('#note_2_c').val(_note2);
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
         defaultDate: _dt,

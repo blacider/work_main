@@ -35,6 +35,7 @@
  if($rules)
  {
 foreach($rules as $item){
+    if($item['disabled'] == 1) continue;
     $_name = '';
     switch($item['type']) {
     case 1: $_name = '备注'; break;
@@ -58,6 +59,8 @@ foreach($rules as $item){
     $username .= '<td class="u_username">' . $_disable_str . '</td>';
     $role_id =  '<td class="u_role_name">' . $item['lastdt'] . '</td>';
     $operation_upd = '<td style="width:50px;">   <a href="javascript:void(0);" class="edit"  data-title="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   <a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-trash"></span></a></td>';
+    // <a href="javascript:void(0);" class="edit"  data-title="' . $item['name'] . '" data-id="'.$item['id'].'"><span class="glyphicon glyphicon-pencil"></span></a>   
+    // 诶呦，实在是懒得写修改了
     $str = $str . $username . $role_id . $operation_upd . '</tr>';
     echo $str;
 
@@ -87,7 +90,7 @@ $(document).ready(function(){
             var _title = $(this).data('title');
             var _id = $(this).data('id');
 
-           location.href=__BASEURL+"/company/flow_update/"+ _id;
+           location.href=__BASEURL+"/company/custom_item_create/"+ _id;
         });
     });
     $('.del').each(function(){

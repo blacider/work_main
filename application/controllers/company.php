@@ -1082,11 +1082,18 @@ public function common(){
     }
 
     public function docreate_custom_item() {
+        $this->need_group_it();
         $name = $this->input->post('name');
+        $custom_item_id = $this->input->post('item_id');
         $gids = $this->input->post('gids');
         $type = $this->input->post('type');
         $this->load->model('custom_item_model');
-        $ret = $this->custom_item_model->create_custom_item($name, $type, $gids);
+        log_message("debug", "Custom Item ID:" . $custom_item_id);
+        if($custom_item_id > 0) {
+            $ret = $this->custom_item_model->update_item($custom_item_id, $name, $type, $gids);
+        } else {
+            $ret = $this->custom_item_model->create_custom_item($name, $type, $gids);
+        }
         if($ret['status'] > 0) {
             die(json_encode(array('status' => true)));
         } else {
@@ -1095,6 +1102,7 @@ public function common(){
     }
 
     public function deactive_custom_item($id = 0){
+        $this->need_group_it();
         if(0 == $id) return redirect(base_url('company/custom_item'));
         $this->load->model('custom_item_model');
         $ret = $this->custom_item_model->set_active($id, 0);
@@ -1102,6 +1110,7 @@ public function common(){
     }
 
     public function active_custom_item($id = 0){
+        $this->need_group_it();
         if(0 == $id) return redirect(base_url('company/custom_item'));
         $this->load->model('custom_item_model');
         $ret = $this->custom_item_model->set_active($id, 1);
@@ -1109,6 +1118,7 @@ public function common(){
     }
 
     public function delete_custom_item($id = 0) {
+        $this->need_group_it();
         if(0 == $id) return redirect(base_url('company/custom_item'));
         $this->load->model('custom_item_model');
         $ret = $this->custom_item_model->drop_custom_item($id);
@@ -1121,12 +1131,23 @@ public function common(){
     }
 
 
-    public function custom_item_create() {
+    // 我要复用这个函数，啊，要懒死了
+    public function custom_item_create($id = 0) {
+        $this->need_group_it();
+        $this->load->model('custom_item_model');
+        $custom_item = array('name' => '', 'id' => 0);
+        if(0 != $id) {
+            $custom_item = $this->custom_item_model->get_by_id($id);
+            if($custom_item['status']) {
+                $custom_item = $custom_item['data'];
+            }
+        }
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
         $this->bsload('company/create_custom_item',
             array(
                 'title' => '添加自定义消费'
+                ,'item' => $custom_item
                 ,'error' => $error
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -1138,6 +1159,7 @@ public function common(){
     }
 
     public function custom_item() {
+        $this->need_group_it();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
         $this->load->model('custom_item_model');

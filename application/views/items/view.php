@@ -152,15 +152,18 @@ foreach($item_config as $s) {
     if(array_key_exists($s['id'], $extra)){
         $val = $extra[$s['id']];
     }
+    if(!array_key_exists($s['id'], $extra)) continue;
+    if(trim($val) != '' || ($s['disabled'] ==0 && $s['active'] == 1)) {
     if($s['cid'] == -1  && $s['type'] == 1) {
 ?>
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right"><?php echo $s['name']; ?></label>
 <div class="col-xs-6 col-sm-6">
-                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $val; ?> " disabled>
+<input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $val; ?> " disabled>
 </div>
 </div>
 <?php
+    }
     }
 }
 ?>

@@ -77,7 +77,8 @@ class Items extends REIM_Controller {
                 $item_configs = $group_config['item_config'];
                 foreach($item_configs as $conf)
                 {
-                    array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name']));	
+                    if($conf['disabled'] == 1) continue;
+                    array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => 'disabled'));	
                 }
             }
         }
@@ -398,7 +399,7 @@ class Items extends REIM_Controller {
                 $item_configs = $group_config['item_config'];
                 foreach($item_configs as $conf)
                 {
-                    array_push($item_config,array('id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name']));	
+                    array_push($item_config,array('id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled'], 'active' => $conf['active']));	
                 }
             }
         }
@@ -610,7 +611,7 @@ class Items extends REIM_Controller {
                 $item_configs = $group_config['item_config'];
                 foreach($item_configs as $conf)
                 {
-                    array_push($item_config,array('id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name']));	
+                    array_push($item_config,array('id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled'], 'active' => $conf['active']));	
                 }
             }
         }
@@ -829,7 +830,7 @@ class Items extends REIM_Controller {
                 $item_configs = $group_config['item_config'];
                 foreach($item_configs as $conf)
                 {
-                    array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name']));	
+                    array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled']));	
                 }
             }
         }

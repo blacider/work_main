@@ -47,6 +47,31 @@ class Custom_Item_Model extends Reim_Model{
         $obj = json_decode($buf, true);
         return $obj;
     }
+    public function update_item($id, $name, $type, $category = -1) {
+        $data = array (
+            'name' => $name
+            ,'id' => $id
+            ,'type' => $type
+            ,'printable' => 0
+            ,'options' => ''
+            ,'force' => 0
+            ,'category' => $category
+        );
+        $jwt = $this->session->userdata('jwt');
+        $url = $this->get_url('custom_item');
+        $buf = $this->do_Put($url, $data, $jwt);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
+    public function get_by_id($id = 0){
+        if(0 == $id) return array();
+        $jwt = $this->session->userdata('jwt');
+        $url = $this->get_url('custom_item/' . $id);
+        $buf = $this->do_Get($url, $jwt);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
 
 }
 

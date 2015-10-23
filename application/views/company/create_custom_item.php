@@ -25,7 +25,8 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-rigtht">项目名称</label>
                             <div class="col-xs-3 col-sm-3">
-                                <input type="text" class="form-controller col-xs-12" id="name" placeholder="项目名称"></div>
+                            <input type="text" class="form-controller col-xs-12" id="name" placeholder="项目名称" value="<?php echo $item['name']; ?>"></div>
+                            <input type="hidden" id="item_id" name="item_id" value="<?php echo $item['id']; ?>">
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-rigtht">项目类型</label>
@@ -70,6 +71,7 @@
 <!-- PAGE CONTENT ENDS -->
 
 <script type="text/javascript">
+    var __BASEURL = "<?php echo base_url(); ?>";
    $(document).ready(function(){
         $('.chosen-select').chosen({allow_single_deselect:true , width:"100%"});
        
@@ -85,10 +87,15 @@
             var name = $('#name').val();
             var group = $('#group').val();
             var type = $('#type').val();
+            var _item_id = $('#item_id').val();
             if(name == '')
             {
                 $('#name').focus();
                 show_notify("请输入名称");
+                return false;
+            }
+            if(getRealLen(name) > 14){
+                show_notify("项目名称最多只能有8个字符");
                 return false;
             }
                   $.ajax({
@@ -97,14 +104,17 @@
                 data:{
                     gids:group,
                     name:name,
+                    item_id:_item_id,
                     type:type,
                 },
                 dataType:'json',
                 success:function(data){
-                        if(data.status == 1)
+                        if(data.status == 1) {
                             show_notify('保存成功');
-                        else
+                            location.href = __BASEURL + 'company/custom_item';
+                        } else {
                             show_notify('保存失败');
+                        }
                 },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {}
                });
@@ -112,4 +122,7 @@
         });
 
     });
+    function getRealLen(str) {  
+            return str.replace(/[^\x00-\xff]/g, '__').length; 
+    } 
 </script>
