@@ -288,7 +288,16 @@ foreach($items as $i){
                                             <td><?php echo $i['cate_str']; ?></td>
                                            
                                             <td><?php echo '￥'.$i['amount']; ?></td>
-                                            <td><?php echo $i['prove_ahead']; ?></td>
+                                            <td><?php 
+                                                $buf = '';
+                                                switch(intval($i['prove_ahead'])) {
+                                                case 0 : $buf = '报销';break;
+                                                case 1 : $buf = '预算';break;
+                                                case 2 : $buf = '预借';break;
+                                                } 
+                                                echo $buf;
+
+                                                ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td><?php echo $i['note']?></td>
                                             <td>

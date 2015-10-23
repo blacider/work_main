@@ -167,7 +167,7 @@ class Items_Model extends Reim_Model {
             'latitude' => 0,
             'longitude' => 0,
             'merchants' => $merchant,
-            'type' => 1,
+            'type' => $type,
             'afford_ids' => $fee_afford_ids,
 	    'extra' => $extra);
         array_push($items, $s);
