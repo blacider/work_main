@@ -63,7 +63,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">部门名称</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input type="text" placeholder="部门名称" class="col-xs-12" required="required" name="gname" value="<?php echo $group['name']; ?>">
+                                    <input type="text" placeholder="部门名称" class="col-xs-12" required="required" id="gname" name="gname" value="<?php echo $group['name']; ?>">
                                 </div>
                             </div>
 
@@ -145,6 +145,19 @@ $(document).ready(function(){
     $('.renew').click(function(){
 
         $('#renew').val($(this).data('renew'));
+        var gname = $('#gname').val();
+        if(gname.replace(/(^\s*)|(\s*$)/g,"") == "")
+        {
+            show_notify("请输入部门名称");
+            $('#gname').focus();
+            return false;
+        }
+        if(gname.indexOf('-') >= 0)
+        {
+            show_notify("部门名称中不能包含'-'");
+            $('#gname').focus();
+            return false;
+        }
         $('#mainform').submit();
     });
     $('.cancel').click(function(){
