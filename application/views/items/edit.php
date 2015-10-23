@@ -199,7 +199,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">标签</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <select class="chosen-select tag-input-style" name="tags" multiple="multiple" data-placeholder="请选择标签">
+                                    <select class="chosen-select tag-input-style" name="tags[]" multiple="multiple" data-placeholder="请选择标签">
 <?php 
                                                 $_tags = explode(",", $item['tags']);
                                                 foreach($tags as $category) { 
