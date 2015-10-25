@@ -1414,12 +1414,9 @@ class Reports extends REIM_Controller {
             }
 
             $this->load->library('user_agent');
-            $filename = '报销报告列表' . date('Y-m-d', time()) . '.xls';
-            if($this->agent->is_browser('Internet Explorer')) {
-                $filename = urlencode($filename);
-            }
+            $excle_name = '报销报告列表' . date('Y-m-d', time()) . '.xls';
 
-            self::render_to_download('报告汇总', $members, $filename, '报告明细', $_excel, '消费明细', $_detail_items);
+            self::render_to_download('报告汇总', $members, $excle_name, '报告明细', $_excel, '消费明细', $_detail_items);
 
         }
     }
