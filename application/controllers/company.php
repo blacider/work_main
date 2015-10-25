@@ -1166,7 +1166,11 @@ public function common(){
         $lists = $this->custom_item_model->list_all();
         $_list = array();
         if($lists['status'] > 0 ){
-            $_list = $lists['data'];
+            foreach($lists['data'] as $l) {
+                if($l['disabled'] == 0) {
+                    array_push($_list, $l);
+                }
+            }
         }
         $this->bsload('company/custom_item',
             array(
