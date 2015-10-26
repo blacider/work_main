@@ -258,10 +258,7 @@ class Items extends REIM_Controller {
         $images = $this->input->post('images');
         $renew = $this->input->post('renew');
         $attachments = $this->input->post('attachments');
-        log_message('debug','attachments:' . $attachments);
-        $obj = $this->items->create($amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra,$uids, $afford_ids,$attachments);
-        log_message('debug','extra:' . $__extra);
-
+        $obj = $this->items->create($amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images, $__extra, $uids, $afford_ids, $attachments);
         log_message('debug','create_item_back:' . json_encode($obj));
         // TODO: 提醒的Tips
         if($renew){
@@ -1118,7 +1115,7 @@ class Items extends REIM_Controller {
         }
         else
         {
-			$obj = $this->items->update($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra,$uids,$afford_ids,$attachments);
+			$obj = $this->items->update($id, $amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$__extra,$uids,$afford_ids,$attachments);
             log_message('debug','zz item_data:'.json_encode($obj));
         }
         log_message('debug','rid:' . $rid);
