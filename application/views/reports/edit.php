@@ -258,14 +258,14 @@ foreach($report['items'] as $i){
                                             <td><?php echo '￥'.$i['amount']; ?></td>
                                             <td><?php 
                                                 $buf = '';
-switch(intval($i['prove_ahead'])) {
-case 0 : $buf = '报销';break;
-case 1 : $buf = '预算';break;
-case 2 : $buf = '预借';break;
-} 
-echo $buf;
+                                                switch(intval($i['prove_ahead'])) {
+                                                case 0 : $buf = '报销';break;
+                                                case 1 : $buf = '预算';break;
+                                                case 2 : $buf = '预借';break;
+                                                } 
+                                                echo $buf;
 
-?></td>
+                                                ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td>
                                                 <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
@@ -279,21 +279,21 @@ echo $buf;
 <?php 
 foreach($items as $i){
     if($i['rid'] == 0 && $i['prove_ahead'] == 0){
+                                            $item_amount = '';
+                                            if($i['currency'] != 'cny')
+                                            {
+                                                $item_amount = round($i['amount']*$i['rate']/100,2);
+                                            }
+                                            else
+                                            {
+                                                $item_amount = $i['amount']; 
+                                            }
                                         ?>
                                         <tr>
-                                            <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $i['amount'] ?>"  data-id="<?php echo $i['id']; ?>" ></td>
+                                            <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>"  data-id="<?php echo $i['id']; ?>" ></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['category'];  echo $i['status'];?></td>
-                                            <td><?php 
-                                                    if($i['currency'] != 'cny')
-                                                    {
-                                                        echo '￥' . round($i['amount']*$i['rate']/100,2);
-                                                    }
-                                                    else
-                                                    {
-                                                        echo '￥'.$i['amount']; 
-                                                    }
-                                                ?></td>
+                                            <td><?php echo $item_amount;?></td>
                                             <td><?php echo $i['prove_ahead']; ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td>
