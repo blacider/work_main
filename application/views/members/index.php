@@ -95,7 +95,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3) {
 foreach($members as $m){
 ?>
 <?php
-if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['d'],$search) + substr_count($m['email'],$search) + substr_count($m['phone'],$search) == 0) {
+if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['d'],$search) + substr_count($m['email'],$search) + substr_count($m['phone'],$search) + substr_count($m['client_id'], $search)== 0) {
     if (array_key_exists($m['level_id'],$levels)) {
         if (substr_count($levels[$m['level_id']],$search) == 0) {
             continue;

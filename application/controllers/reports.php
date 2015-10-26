@@ -207,7 +207,7 @@ class Reports extends REIM_Controller {
             }
             else if(in_array($d['status'],[1]))
             {
-                $d['options'] = $base_icon . $show_icon . $trash_icon . $end_icon;
+                $d['options'] = $base_icon . $show_icon . $end_icon;
             }
             else if(in_array($d['status'],[2]))
             {
@@ -1291,18 +1291,25 @@ class Reports extends REIM_Controller {
                 {
                     $o['上级'] = $i['member_info']['manager'];
                 }
+                $_department = array();
+                $_higher_department = array();
                 if(array_key_exists('d',$i['member_info']))
                 {
-                    $unames = explode(',',$i['member_info']['d']);
-                    if(count($unames) >= 2) 
-                    {
-                        $o['部门'] = str_replace('/',',',$unames[0]); 
-                        $o['上级部门'] = $unames[1];
+                    // 20151022 menglin.qin
+                    // 来了新玩法了，希望所有的直接部门和上级部门都能列出来，因此，不用再取第一个了
+                    $unames = explode('/',$i['member_info']['d']);
+                    foreach($unames as $name) {
+                        $_name = explode("-", $name); 
+                        if(count($_name) > 1) {
+                            array_push($_higher_department, $_name[0]);
+                            array_push($_department, $_name[1]);
+                        } else {
+                            array_push($_department, $_name[0]);
+                            array_push($_higher_department, '无');
+                        }
                     }
-                    if(count($unames) == 1)
-                    {
-                        $o['部门'] = str_replace('/',',',$unames[0]);
-                    }
+                    $o['上级部门'] = implode(',', $_higher_department);
+                    $o['部门'] = implode(',', $_department);
                 }
                 $o['级别'] = '';
                 $o['职位'] = '';
@@ -1362,8 +1369,6 @@ class Reports extends REIM_Controller {
                 $o['参与人员'] = implode(',', $__relates);
                 $o['承担部门'] = $_str_afford_dept;
                 $o['承担对象'] = $_str_afford_member;
-                //$o['承担部门'] = $_str_afford_dept;
-                //$o['承担对象'] = $_str_afford_member;
                 $_sob_code = 0;
                 if(array_key_exists($i['category'], $cate_dic) && array_key_exists('sob_code', $cate_dic[$i['category']])){
                     $_sob_code = $cate_dic[$i['category']]['sob_code'];
@@ -1371,6 +1376,9 @@ class Reports extends REIM_Controller {
                 $_sob_name = '';
                 if(array_key_exists($i['category'], $cate_dic) && array_key_exists('name', $cate_dic[$i['category']])){
                     $_sob_name = $cate_dic[$i['category']]['name'];
+                }
+                if (array_key_exists("tag_names", $i)) {
+                    $o['标签'] = $i['tag_names'];
                 }
                 $o['会计科目'] = $i['category_name'];
                 $o['会计科目代码'] = $_sob_code;
@@ -1405,8 +1413,10 @@ class Reports extends REIM_Controller {
                 log_message('debug','members: ' . json_encode($i['member_info']));
             }
 
-            log_message("debug", json_encode($o));
-            self::render_to_download('报告汇总', $members, 'Finace_' . date('Y-m-d', time()) . ".xls", '报告明细', $_excel, '消费明细', $_detail_items);
+            $this->load->library('user_agent');
+            $excle_name = '报销报告列表' . date('Y-m-d', time()) . '.xls';
+
+            self::render_to_download('报告汇总', $members, $excle_name, '报告明细', $_excel, '消费明细', $_detail_items);
 
         }
     }

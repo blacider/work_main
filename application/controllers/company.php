@@ -579,7 +579,7 @@ class Company extends REIM_Controller {
 	}
         $this->bsload('company/approve',
             array(
-                'title'=>'新建审批'
+                'title'=>'新建审批规则'
                 ,'error'=>$error
                 ,'member'=>$gmember
                 ,'group'=>$gnames
@@ -588,7 +588,7 @@ class Company extends REIM_Controller {
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>base_url('company'),'name'=>'公司设置','class'=> '')
-                    ,array('url'=>'','name'=>'新建审批','class'=>'')
+                    ,array('url'=>'','name'=>'新建审批规则','class'=>'')
                 ),
             )
         );
@@ -1081,6 +1081,110 @@ public function common(){
         );
     }
 
+    public function docreate_custom_item() {
+        $this->need_group_it();
+        $name = $this->input->post('name');
+        $custom_item_id = $this->input->post('item_id');
+        $gids = $this->input->post('gids');
+        $type = $this->input->post('type');
+        $this->load->model('custom_item_model');
+        log_message("debug", "Custom Item ID:" . $custom_item_id);
+        if($custom_item_id > 0) {
+            $ret = $this->custom_item_model->update_item($custom_item_id, $name, $type, $gids);
+        } else {
+            $ret = $this->custom_item_model->create_custom_item($name, $type, $gids);
+        }
+        if($ret['status'] > 0) {
+            die(json_encode(array('status' => true)));
+        } else {
+            die(json_encode($ret));
+        }
+    }
+
+    public function deactive_custom_item($id = 0){
+        $this->need_group_it();
+        if(0 == $id) return redirect(base_url('company/custom_item'));
+        $this->load->model('custom_item_model');
+        $ret = $this->custom_item_model->set_active($id, 0);
+        die(json_encode($ret));
+    }
+
+    public function active_custom_item($id = 0){
+        $this->need_group_it();
+        if(0 == $id) return redirect(base_url('company/custom_item'));
+        $this->load->model('custom_item_model');
+        $ret = $this->custom_item_model->set_active($id, 1);
+        die(json_encode($ret));
+    }
+
+    public function delete_custom_item($id = 0) {
+        $this->need_group_it();
+        if(0 == $id) return redirect(base_url('company/custom_item'));
+        $this->load->model('custom_item_model');
+        $ret = $this->custom_item_model->drop_custom_item($id);
+        if($ret['status']) {
+            $this->session->set_userdata('last_error', '删除成功');
+        } else {
+            $this->session->set_userdata('last_error', '删除失败');
+        }
+        return redirect(base_url('company/custom_item'));
+    }
+
+
+    // 我要复用这个函数，啊，要懒死了
+    public function custom_item_create($id = 0) {
+        $this->need_group_it();
+        $this->load->model('custom_item_model');
+        $custom_item = array('name' => '', 'id' => 0);
+        if(0 != $id) {
+            $custom_item = $this->custom_item_model->get_by_id($id);
+            if($custom_item['status']) {
+                $custom_item = $custom_item['data'];
+            }
+        }
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+        $this->bsload('company/create_custom_item',
+            array(
+                'title' => '添加自定义消费'
+                ,'item' => $custom_item
+                ,'error' => $error
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => '', 'name' => '公司设置', 'class' => '')
+                    ,array('url'  => '', 'name' => '添加自定义消费', 'class' => '')
+                ),
+            )
+        );
+    }
+
+    public function custom_item() {
+        $this->need_group_it();
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+        $this->load->model('custom_item_model');
+        $lists = $this->custom_item_model->list_all();
+        $_list = array();
+        if($lists['status'] > 0 ){
+            foreach($lists['data'] as $l) {
+                if($l['disabled'] == 0) {
+                    array_push($_list, $l);
+                }
+            }
+        }
+        $this->bsload('company/custom_item',
+            array(
+                'title' => '自定义消费'
+                ,'error' => $error
+                ,'rules' => $_list
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => '', 'name' => '公司设置', 'class' => '')
+                    ,array('url'  => '', 'name' => '自定义消费', 'class' => '')
+                ),
+            )
+        );
+    }
 
     public function setting(){
         $error = $this->session->userdata('last_error');
@@ -1101,6 +1205,9 @@ public function common(){
             )
         );
     }
+
+
+    
     public function profile()
     {
         $pids = 1;
