@@ -422,7 +422,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
           <b class="arrow"></b>
         </li> 
 
-        <li class="hsub" id="show_approve">
+        <li class="hsub" id="custom_item">
         <a href="<?php echo base_url('company/custom_item'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 自定义消费 </a>
           <b class="arrow"></b>
         </li> 
