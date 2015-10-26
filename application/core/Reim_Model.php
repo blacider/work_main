@@ -165,21 +165,14 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
         curl_setopt($ch, CURLOPT_POST, count($fields)) ;
         curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
-        //curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-        //if($force_bin == 1){
-        //curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
-        //}
         if($extraheader) {
-            log_message("debug", json_encode($extraheader));
             curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
         }
         curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
         ob_start();
         curl_exec($ch );
-        log_message("debug", "Start Request");
         $result  = ob_get_contents() ;
-        log_message("debug", "Get Success" . $result);
         ob_end_clean();
         curl_close($ch ) ;
         return $result;
@@ -192,10 +185,8 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch,CURLOPT_HTTPHEADER, $extraheader);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
-        curl_setopt($ch, CURLOPT_VERBOSE, false) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
-        log_message("debug", "Start Request");
+        curl_setopt($ch, CURLOPT_VERBOSE, false) ;
         $output = curl_exec($ch) ;
-        //log_message("debug", "Get Success:" . $output);
         curl_close($ch);
         return $output;
     }
@@ -209,7 +200,7 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch , CURLOPT_POSTFIELDS, $fields );
         curl_setopt($ch,CURLOPT_HTTPHEADER, $extraheader);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
-        curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
+        curl_setopt($ch, CURLOPT_VERBOSE, true) ;
         ob_start();
         curl_exec($ch );
         $result  = ob_get_contents() ;
@@ -222,12 +213,11 @@ class Reim_Model extends CI_Model {
         $ch  = curl_init() ;
         curl_setopt($ch , CURLOPT_URL, $url ) ;
         curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
-        //curl_setopt($ch , CURLOPT_POST, count ($fields)) ;
         curl_setopt ($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
         curl_setopt($ch , CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
-        curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
+        curl_setopt($ch, CURLOPT_VERBOSE, true) ;
         ob_start();
         curl_exec($ch );
         $result  = ob_get_contents() ;
@@ -235,5 +225,19 @@ class Reim_Model extends CI_Model {
         curl_close($ch ) ;
         return $result;
     }
+
+    public function get_curl_upload_field($file_path  = '') {
+        if('' == $file_path) return '';
+        if (class_exists('CURLFile')) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $finfo = finfo_file($finfo, $file_path);
+            $cFile = new CURLFile($file_path, $finfo, basename($file_path));
+            return $cFile;
+        } else {
+            return '@' . realpath($file_path);
+        }
+        return '';
+    }
+
 }
 
