@@ -197,12 +197,37 @@
                                 </div>
                             </div>
 
+<?php
+$extra = array();
+foreach($item['extra'] as $i) {
+    $extra[$i['id']] = $i['value'];
+}
+foreach($item_config as $s) {
+    $val = '';
+    if(array_key_exists($s['id'], $extra)){
+        $val = $extra[$s['id']];
+    }
+    if(!array_key_exists($s['id'], $extra)) continue;
+    if($s['cid'] == -1  && $s['type'] == 1) {
+?>
+<div class="form-group">
+<label class="col-sm-1 control-label no-padding-right"><?php echo $s['name']; ?></label>
+<div class="col-xs-6 col-sm-6">
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $val; ?> " disabled>
+</div>
+</div>
+<?php
+    }
+}
+?>
+
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">备注</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $item['note']; ?> " disabled>
                                 </div>
                             </div>
+
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">照片</label>

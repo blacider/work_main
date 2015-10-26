@@ -216,12 +216,11 @@ class REIM_Controller extends CI_Controller{
     }
 
     public function render_to_download($title, $data, $excle_name, $title_2 = '', $data_2 = array(), $title_3 = '', $data_3 = array()){
+        if($this->agent->is_browser('Internet Explorer')) {
+            $excle_name = urlencode($excle_name);
+        }
         $objwriter = $this->return_buf($title, $data, $title_2, $data_2, $title_3, $data_3);
         header("Pragma: public");
-        header("Content-Type: application/force-download");
-        header("Content-Type: application/octet-stream");
-        header("Content-Type: application/download");
-        header("Content-Type: text/html;charset=utf-8");
         header("Content-Type: application/vnd.ms-execl");
         header('Content-Disposition: attachment;filename=' . $excle_name);
         header("Content-Transfer-Encoding: binary");

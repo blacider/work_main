@@ -9,6 +9,7 @@
 <!--<script src="/static/ace/js/jquery1x.min.js"></script> -->
 <script src="/static/ace/js/date-time/moment.min.js"></script>
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
+<script src="/static/ace/js/jquery.json.min.js"></script>
 
 <script src="/static/ace/js/date-time/moment.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
@@ -97,6 +98,7 @@
 <?php 
     $ddt = '';
     $average = '0';
+    $note_2 = '';
     $config_id = 0;
     $config_type = 0;
     if(count($item_value)){
@@ -110,6 +112,11 @@
                 $config_id = $_item['id'];
                 $config_type = $_item['type'];
                 $average = $_item['value'];
+            }
+            if($_type == 1) {
+                $config_id = $_item['id'];
+                $config_type = $_item['type'];
+                $note_2 = $_item['value'];
             }
 
         }
@@ -262,6 +269,32 @@
                                 </div>
                             </div>
 
+<?php
+$extra = array();
+foreach($item['extra'] as $i) {
+    $extra[$i['id']] = $i['value'];
+}
+foreach($item_config as $s) {
+    $_val = '';
+    if(array_key_exists($s['id'], $extra)){
+        $_val = $extra[$s['id']];
+    }
+    if(!array_key_exists($s['id'], $extra)) continue;
+    if($s['cid'] == -1  && $s['type'] == 1) {
+?>
+<div class="form-group">
+<label class="col-sm-1 control-label no-padding-right"><?php echo $s['name']; ?></label>
+<div class="col-xs-6 col-sm-6">
+<textarea data-type="<?php echo $s['id']; ?>" name="extra_<?php echo $s['id']; ?>" class="col-xs-12 col-sm-12  extra_textarea form-controller" ><?php echo $_val; ?></textarea>
+</div>
+</div>
+<?php
+    }
+}
+?>
+<input type="hidden" name="hidden_extra" id="hidden_extra" value="">
+
+
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">备注</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -323,7 +356,9 @@ var __item_config = '<?php echo json_encode($item_config);?>';
 var item_config = [];
 if(__item_config != '')
 {
+    try{
     item_config = JSON.parse(__item_config);
+    }catch(e) {}
 }
 var _item_config = new Object();
 for(var i = 0 ; i < item_config.length; i++)
@@ -341,8 +376,6 @@ var own_id = '<?php echo $profile['id'] ?>';
 var item_user_id = '<?php echo $item['uid'] ?>';
 
 var sob_id = <?php echo $sob_id; ?>;
-
-
 var config = '<?php echo $_config?>';
 if(config != '')
 {
@@ -362,7 +395,6 @@ function get_sobs(){
    	_url = _url +  '/' + item_user_id;
    }
         $.ajax({
-   //         url : __BASE + "category/get_my_sob_category",
             url : _url,
             dataType : 'json',
             method : 'GET',
@@ -615,8 +647,6 @@ $(document).ready(function(){
     }catch(e) {
     }
 
- 
-
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
         .off('resize.chosen')
@@ -666,10 +696,13 @@ $('#sob_category').change(function(){
         }
         else if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 5)
         {
+<<<<<<< HEAD
       
 
 
 
+=======
+>>>>>>> origin/master
                $('#config_id').val(_item_config[category_id]['id']);
                 $('#config_type').val(_item_config[category_id]['type']);
                 $('#amount').change(function(){
@@ -686,9 +719,11 @@ $('#sob_category').change(function(){
                 var all_amount = $('#amount').val();
                 $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
                 $('#average').show();
-        }
-        else
-        {
+        } else if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 1) {
+            $('#config_id').val(_item_config[category_id]['id']);
+            $('#config_type').val(_item_config[category_id]['type']);
+            $('#note_2').show();
+        } else {
             $('#config_id').val('');
             $('#config_type').val('');
             $('#date-timepicker2').val(_ddt);
@@ -709,21 +744,7 @@ $('#sob_category').change(function(){
             _affid = $('.afford_chose').val().join(',');
         }catch(e) {}
         $('#afford_ids').val(_affid);
-        /*
-        if($('#amount').val() == 0) {
-            show_notify('请输入金额');
-            $('#amount').focus();
-            return false;
-        }
-        if($('#amount').val() == "0") {
-            show_notify('请输入有效金额');
-            $('#amount').val('');
-            $('#amount').focus();
-            return false;
-        }
-         */
 
-        //return false;
         if(isNaN($('#amount').val())) {
             show_notify('请输入有效金额');
             $('#amount').val('');
@@ -779,6 +800,14 @@ $('#sob_category').change(function(){
             show_notify('必须填写参与人数');
             return false;
         }
+        var _extra = [];
+        $('.extra_textarea').each(function(idx, item) {
+            var _type_id = $(item).data('type');
+            var _value = $(item).val();
+            _extra.push({'id' : _type_id, 'type' : 1, 'value' : _value});
+        });
+
+        $('#hidden_extra').val($.toJSON(_extra));
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
     });

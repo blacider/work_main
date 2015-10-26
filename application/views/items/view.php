@@ -89,18 +89,6 @@
                                 if(array_key_exists('5',$item_value))
                                 {
                             ?>
-                         <!--   <div disabled class="form-group" id="average" >
-                                <label class="col-sm-1 control-label no-padding-right">人均:</label>
-                                <div class="col-xs-3 col-sm-3">
-                                    <div class="input-group">
-                                        <div id="average_id" name="average" type="text" class="form-control"><?php $_eva = $item['amount']/$item_value[5]['value']; echo sprintf("%.2f", $_eva);   ?>元/人*<?php echo $item_value[5]['value']?></div>
-
-                                    </span>
-                                </div>
-                            </div>
-                        </div> 
-                        -->
-
                         <div disabled class="form-group" id="average" >
                             <label class="col-sm-1 control-label no-padding-right">人数:</label>
                             <div class="col-xs-3 col-sm-3" disabled>
@@ -130,42 +118,6 @@
                          <?php
                                 }
                             ?>
-
-
-                            <!--
-
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">参与人</label>
-                                <div class="col-xs-6 col-sm-6">
-                                    <select disabled class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
-                
-                                        <?php 
-                                        $item_uids = array();
-                                        if(array_key_exists('relates',$item))
-                                        {
-                                            $item_uids = explode(',',$item['relates']);
-                                        }
-
-                                        foreach($member as $m){
-                                            if(in_array($m['id'],$item_uids))
-                                            {
-                                                ?>
-
-                                                <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . "[" . $m['email'] . "]"; ?></option>
-                                                <?php 
-                                            }
-                                            ?>
-                                            <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . "[" . $m['email'] . "]"; ?></option>
-
-                                            <?php
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div> 
-                            -->
-
-
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">商家</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -210,12 +162,37 @@
                                 </div>
                             </div>
 
+
+<?php
+$extra = array();
+foreach($item['extra'] as $i) {
+    $extra[$i['id']] = $i['value'];
+}
+foreach($item_config as $s) {
+    $val = '';
+    if(array_key_exists($s['id'], $extra)){
+        $val = $extra[$s['id']];
+    }
+    if(!array_key_exists($s['id'], $extra)) continue;
+    if($s['cid'] == -1  && $s['type'] == 1) {
+?>
+<div class="form-group">
+<label class="col-sm-1 control-label no-padding-right"><?php echo $s['name']; ?></label>
+<div class="col-xs-6 col-sm-6">
+<input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $val; ?> " disabled>
+</div>
+</div>
+<?php
+    }
+}
+?>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">备注</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $item['note']; ?> " disabled>
                                 </div>
                             </div>
+
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">照片</label>
