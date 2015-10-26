@@ -39,7 +39,7 @@ if($last_error) {
                         
 
                         
-                        <label style="left:0;position: absolute;" class="col-sm-2 control-label no-padding-rigtht">类目</label>
+                        <label style="left:0;position: absolute;" class="col-sm-2 control-label no-padding-rigtht">类别</label>
                         <script type="text/javascript">
                             var _subSob = [];
                             var sob_keys = <?php echo json_encode($sob_keys);?>;
@@ -138,7 +138,7 @@ if($last_error) {
                                         </li>
                                         <?php } ?>
                                         <li role="presentation">
-                                            <a href="#" onclick="addSub(this, <?php echo $all_categories[$item]['id']; ?>)" role="menuitem" tabindex="-1">添加下级类目</a>
+                                            <a href="#" onclick="addSub(this, <?php echo $all_categories[$item]['id']; ?>)" role="menuitem" tabindex="-1">添加下级类别</a>
                                         </li>
                                         <li role="presentation" class="divider"></li>
                                         <li role="presentation">
@@ -322,7 +322,7 @@ if($last_error) {
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
-    <h4 class="modal-title">类目信息</h4>
+    <h4 class="modal-title">类别信息</h4>
 </div>
 <style>
     .img-select {
@@ -377,7 +377,7 @@ if($last_error) {
         </div>
 	<div class="form-group">
 	    <label class="col-sm-2">限额</label>
-	    <input id="max_limit" name="max_limit" type="number" date-placeholder="请输入类目限额" value="0" />
+	    <input id="max_limit" name="max_limit" type="number" date-placeholder="请输入类别限额" value="0" />
 	</div>
 
      <div class="form-group" style="height:30px;">
@@ -395,8 +395,8 @@ if($last_error) {
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 col-xl-2">类目ID</label>
-            <input name="code" type="text" data-placeholder="请输入类目ID">
+            <label class="col-sm-2 col-xl-2">类别ID</label>
+            <input name="code" type="text" data-placeholder="请输入类别ID">
         </div>
         <div class="form-group" style="height:30px;">
            <label class="col-sm-2 control-label no-padding-right">关联到:</label>
@@ -442,7 +442,7 @@ if($last_error) {
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
-    <h4 class="modal-title">类目信息</h4>
+    <h4 class="modal-title">类别信息</h4>
 </div>
 <form id="create_form" method="post" action="<?php echo base_url('category/create_category'); ?>">
     <div class="modal-body">
@@ -504,7 +504,7 @@ if($last_error) {
 
         </div>
         <div class="form-group">
-            <label class="col-sm-2 col-xl-2">类目代码</label>
+            <label class="col-sm-2 col-xl-2">类别代码</label>
             <input name="code" type="text" data-placeholder="请输入名称"></div>
     </div>
         <div class="form-group" style="height:30px;">

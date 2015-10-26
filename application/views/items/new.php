@@ -26,7 +26,7 @@
 </select>
 
 
-<select class="col-xs-6 col-sm-6" name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
+<select class="col-xs-6 col-sm-6" name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类别">
 </select>
 
 
@@ -649,7 +649,7 @@ $(document).ready(function(){
         }
         if($('#sob_category').val() == null)
         {
-            show_notify('请选择类目');
+            show_notify('请选择类别');
             return false;
         }
         if($('#config_type').val() == 5 && __average_count && $('#people-nums').val() == null && $('#people-nums').val() == 0) {
