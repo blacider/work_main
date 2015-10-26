@@ -362,6 +362,9 @@ uploader_file.on( 'fileQueued', function( file ) {
         case "application/pdf":
             name_ = "pdf.png"
             break;
+        default:
+            name_ = "excel.png";
+            break;
     }
     $img.attr( 'src', path+name_);
     bind_event_file();
