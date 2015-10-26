@@ -34,7 +34,9 @@
  $top_category = array();
  if($rules)
  {
+     $idx = 0;
 foreach($rules as $item){
+    $idx += 1;
     if($item['disabled'] == 1) continue;
     $_name = '';
     switch($item['type']) {
@@ -53,7 +55,7 @@ foreach($rules as $item){
 
     $img = "";
     $str = '<tr>';
-    $username = '<td class="u_username">' . $item['id'] . '</td>';
+    $username = '<td class="u_username">' . $idx . '</td>';
     $username .= '<td class="u_username">' . $item['name'] . '</td>';
     $username .= '<td class="u_username">' . $_name . '</td>';
     $username .= '<td class="u_username">' . $_disable_str . '</td>';
