@@ -43,7 +43,7 @@
                                 <div class="col-xs-6 col-sm-6">
 <select class="col-xs-6 col-sm-6" name="sob" id="sobs">
 </select>
-<select name="category" id="sob_category" class="col-xs-6 col-sm-6 sob_category chosen-select-niu" data-placeholder="类目">
+<select name="category" id="sob_category" class="col-xs-6 col-sm-6 sob_category chosen-select-niu" data-placeholder="类别">
 </select>
 <input type="hidden" name="hidden_category" id="hidden_category" value="<?php echo $item['category']; ?>">
 

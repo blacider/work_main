@@ -24,7 +24,7 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-right">允许不同类目消费记录</label>
+                                <label class="col-sm-2 control-label no-padding-right">允许不同类别消费记录</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->

@@ -405,6 +405,13 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <b class="arrow"></b>
         </li>
 
+    <!--
+        <li class="hsub" id="broadcast_create">
+        <a href="<?php echo base_url('broadcast/create'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 创建系统消息  </a>
+        <b class="arrow"></b>
+        </li>
+     -->
+
   <li class="hsub" id="show">
         <a href="<?php echo base_url('company/show'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 提交规则 </a>
         <b class="arrow"></b>
@@ -415,13 +422,15 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
           <b class="arrow"></b>
         </li> 
 
-        <li class="hsub" id="show_approve">
+        <li class="hsub" id="custom_item">
         <a href="<?php echo base_url('company/custom_item'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 自定义消费 </a>
           <b class="arrow"></b>
         </li> 
 
-
-
+        <li class="hsub" id="broadcast_index">
+        <a href="<?php echo base_url('broadcast/index'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 公司消息 </a>
+        <b class="arrow"></b>
+        </li>
     </ul>
     </li>
 
@@ -819,6 +828,18 @@ $(document).ready(function(){
     }
     
     // 导入导出有步骤，合并在一起
+    if(_controller == "broadcast" && _method == "index"){
+        _method = "broadcast_index";
+        _controller = "company";
+    }
+    if(_controller == "broadcast" && _method == "update_info"){
+        _method = "broadcast_index";
+        _controller = "company";
+    }
+    if(_controller == "broadcast" && _method == "create"){
+        _method = "broadcast_index";
+        _controller = "company";
+    }
     if(_controller == "members" && _method == "imports"){
         _method = "export";
     }

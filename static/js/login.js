@@ -6,10 +6,10 @@ function checkLogin() {
     var ifFalse = false;
   	for (var i = 0; i <= 1; i++)
   		if (isNull(inputDOMS[i].value)) {
-  			formDOM.getElementsByTagName('span')[i == 0?1:4].style.display = 'block';
+  			formDOM.getElementsByTagName('span')[i == 0?1:5].style.display = 'block';
   			ifFalse = true;
   		}
-      if(ifFalse) return false;
+      if(ifFalse && inputDOMS[0].value == '') return false;
   	if (isEmail(inputDOMS[0].value) || checkMobile(inputDOMS[0].value)) {
         return true;
   		/*----------------success--------------*/
