@@ -7,14 +7,13 @@ class Items_Model extends Reim_Model {
         log_message('debug','qqy content: ' . $content);
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-               $url = $this->get_url('attachment');
+        $url = $this->get_url('attachment');
         $data = array(
-            "content" => '@' . $content
-            ,"filename" => $filename
-            ,"mime" => $mime
+            "content" => $this->get_curl_upload_field($content),
+            "filename" => $filename,
+            "mime" => $mime,
         );
-               $buf = $this->do_Post($url,$data,$jwt);
-
+        $buf = $this->do_Post($url,$data,$jwt);
         log_message('debug','attachment_data:' . json_encode($data));
         log_message('debug','attachment_url:' . json_encode($url));
         log_message('debug','attachment_back:' . $buf);
