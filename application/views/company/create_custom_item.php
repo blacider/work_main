@@ -94,8 +94,12 @@
                 show_notify("请输入名称");
                 return false;
             }
-            if(getRealLen(name) > 14){
-                show_notify("项目名称最多只能有8个字符");
+            if(isAllChinese(name) && getRealLen(name) > 16) {
+                show_notify("项目名称最多只能有8个汉字");
+                return false;
+            }
+            else if(getRealLen(name) > 14){
+                show_notify("项目名称最多只能有14个字符");
                 return false;
             }
                   $.ajax({
@@ -122,6 +126,15 @@
         });
 
     });
+
+    // 如果全部汉字，就得给8个汉字，如果不是全部汉字，就14个字符
+    function isAllChinese(str) {
+        if(!str || (str && 0 == str.length)) return false;
+        var obj = str.match(/[^\x00-\xff]/g);
+        if(!obj) return false;
+        return obj.length == str.length;
+    }
+
     function getRealLen(str) {  
             return str.replace(/[^\x00-\xff]/g, '__').length; 
     } 
