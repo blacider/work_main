@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
+<script src="/static/ace/js/jquery.json.min.js"></script>
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 <!-- <link rel="stylesheet" href="/static/third-party/jqui/jquery-ui.min.css" id="main-ace-style" /> -->
 
@@ -198,12 +199,32 @@ if($__config && $__config['disable_budget'] == '0')
 </div>
 </div>
 
+<?php
+foreach($item_config as $s) {
+    if($s['cid'] == -1  && $s['type'] == 1 && $s['active'] == 1) {
+?>
+<div class="form-group">
+<label class="col-sm-1 control-label no-padding-right"><?php echo $s['name']; ?></label>
+<div class="col-xs-6 col-sm-6">
+<textarea data-type="<?php echo $s['id']; ?>" name="extra_<?php echo $s['id']; ?>" id="note_2_c" class="col-xs-12 col-sm-12  extra_textarea form-controller" ></textarea>
+</div>
+</div>
+<?php
+    }
+}
+?>
+
+<input type="hidden" name="hidden_extra" id="hidden_extra" value="">
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">备注</label>
 <div class="col-xs-6 col-sm-6">
 <textarea name="note" id="note" class="col-xs-12 col-sm-12  form-controller" ></textarea>
 </div>
 </div>
+
+</div>
+
+
 
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">照片</label>
@@ -249,58 +270,12 @@ if($__config && $__config['disable_budget'] == '0')
 </form>
 </div>
 </div>
-<!--
-<div class="modal" id="select_img_modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">选择图片</h4>
-            </div>
-            <div class="modal-body">
-
-
-        </div>
-    </div>
-</div>
--->
-<!--
-<script src="/static/third-party/jquery.ajaxfileupload.js"></script>
-<script src="/static/third-party/jquery-image-upload.min.js"></script>
--->
-<!--
-<script src="/static/ace/js/chosen.jquery.min.js"></script>
-<script src="/static/ace/js/dropzone.min.js"></script>
-
-
-<script src="/static/ace/js/date-time/moment.js"></script>
-<script src="/static/ace/js/date-time/locale/zh-cn.js"></script>
-
-<script src="/static/ace/js/jquery.colorbox-min.js"></script>
-<script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
-<script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script>
--->
-
-<!--<script src="/static/ace/js/jquery1x.min.js"></script> -->
 
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
-
-
 <script src="/static/ace/js/date-time/moment.js"></script>
-<!--
-<script src="/static/ace/js/date-time/locale/zh-cn.js"></script>
--->
-
 <script src="/static/ace/js/jquery.colorbox-min.js"></script>
-<!--
-<script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
-<script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script>
--->
-
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
-
 <link rel="stylesheet" type="text/css" href="/static/third-party/webUploader/webuploader.css">
-
 <!--引入JS-->
 <script type="text/javascript" src="/static/third-party/webUploader/webuploader.js"></script>
 
@@ -315,13 +290,16 @@ var __item_config = '<?php echo json_encode($item_config);?>';
 var item_config = [];
 if(__item_config != '')
 {
-    item_config = JSON.parse(__item_config);
+    try{
+        item_config = JSON.parse(__item_config);
+    }catch(e){}
 }
 var _item_config = new Object();
 for(var i = 0 ; i < item_config.length; i++)
 {
-    if(item_config[i]['type']==2 || item_config[i]['type'] == 5)
-    _item_config[item_config[i]['cid']] = item_config[i];
+    if(item_config[i]['type']==2 || item_config[i]['type'] == 5 || item_config[i]['type'] == 1) {
+        _item_config[item_config[i]['cid']] = item_config[i];
+    }
 }
 
 var __config = '';
@@ -563,14 +541,12 @@ $(document).ready(function(){
             }
         });
     });
-
-    $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange'></i>");//let's add a custom loading icon
-    
+    $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange'></i>");
     $('#sob_category').change(function(){
             $('#endTime').hide();
             $('#average').hide();
-        __multi_time = 0;
-                __average_count = 0;
+            __multi_time = 0;
+            __average_count = 0;
         var category_id = $('#sob_category').val();
         if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 2)
         {
@@ -580,8 +556,7 @@ $(document).ready(function(){
             $('#date-timepicker2').val('');
             $('#endTime').show();
         } else  {
-            if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 5)
-            {
+            if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 5) {
                 $('#config_id').val(_item_config[category_id]['id']);
                 $('#config_type').val(_item_config[category_id]['type']);
                 $('#amount').change(function(){
@@ -599,9 +574,13 @@ $(document).ready(function(){
                 $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
                 $('#average').show();
                 __average_count = 1;
-            }
-            else
+            } else if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 1) {
+                $('#config_id').val(_item_config[category_id]['id']);
+                $('#config_type').val(_item_config[category_id]['type']);
+                $('#note_2').show();
+            } else
             {
+                $('#note_2').hide();
                 $('#config_id').val('');
                 $('#config_type').val('');
                 $('#average').val('');
@@ -618,21 +597,6 @@ $(document).ready(function(){
             _affid = $('.afford_chose').val().join(',');
         }catch(e) {}
         $('#afford_ids').val(_affid);
-        /*
-        if($('#amount').val() == 0) {
-            show_notify('请输入金额');
-            $('#amount').focus();
-            return false;
-        }
-    var amount = parseInt($('#amount').val());
-        if(amount <= 0) {
-            show_notify('请输入有效金额');
-            $('#amount').val('');
-            $('#amount').focus();
-            return false;
-        }
-         */
-
         if (ifUp == 0) {
             show_notify('正在上传图片，请稍候');
             return false;
@@ -663,7 +627,6 @@ $(document).ready(function(){
             if(dateTime2 == '' && __multi_time)
             {
                 show_notify('请填写结束时间');
-                //$('#date-timepicker1').focus();
                 return false;
             }
             if((dateTime2>'0') && (dateTime2 < dateTime))
@@ -694,6 +657,13 @@ $(document).ready(function(){
             return false;
         }
 
+        var _extra = [];
+        $('.extra_textarea').each(function(idx, item) {
+            var _type_id = $(item).data('type');
+            var _value = $(item).val();
+            _extra.push({'id' : _type_id, 'type' : 1, 'value' : _value});
+        });
+        $('#hidden_extra').val($.toJSON(_extra));
         $('#renew').val($(this).data('renew'));
         $('#itemform').submit();
     });
