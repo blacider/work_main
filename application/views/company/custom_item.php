@@ -37,12 +37,13 @@
      $idx = 0;
 foreach($rules as $item){
     $idx += 1;
+    if($item['type'] != 1) continue;
     if($item['disabled'] == 1) continue;
     $_name = '';
     switch($item['type']) {
     case 1: $_name = '备注'; break;
-    case 2: $_name = '多选'; break;
-    case 3: $_name = '多时间段'; break;
+    case 2: $_name = '多时间段'; break;
+    case 3: $_name = '多选'; break;
     case 4: $_name = '多选'; break;
     case 5: $_name = '多人员均值'; break;
     }
