@@ -19,7 +19,7 @@ class Items_Model extends Reim_Model {
         log_message('debug','attachment_url:' . json_encode($url));
         log_message('debug','attachment_back:' . $buf);
         log_message("debug", $buf);
-               $obj = json_decode($buf, true);
+        $obj = json_decode($buf, true);
         return $obj;
     }
     public function update_item($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = ''){

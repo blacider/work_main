@@ -9,45 +9,28 @@ class Items extends REIM_Controller {
         $this->load->model('group_model', 'groups');
     }
     public function attachment() {
-        if(!empty($_FILES)) {
-            // 默认是item
-            //$type = $this->input->post('type');
-            //if(!$type) $type = 0;
-            log_message("debug", json_encode($_FILES));
-            $mime = $_FILES['file']['type'];
-            $filename = $_FILES['file']['name'];
-            if(is_uploaded_file($_FILES['file']['tmp_name']))
-            {
-                    $buf = $this->items->attachment($_FILES['file']['tmp_name'],$filename,$mime);
+        if(empty($_FILES)) 
+            die(''); 
+        
+        // 默认是item
+        //$type = $this->input->post('type');
+        //if(!$type) $type = 0;
+        log_message("debug", json_encode($_FILES));
+        $mime = $_FILES['file']['type'];
+        $filename = $_FILES['file']['name'];
 
-                    if($buf['status'] > 0)
-                    {
-                        die(json_encode($buf));
-                    }
-                    else
-                    {
-                        die(json_encode($buf));
-                    }
-            }
-            else
-            {
-                die('');
-            }
-            /*
-            $uploaddir = '/data/uploads/';
-            $uploadfile = $uploaddir . md5(time()) . "_" . basename($_FILES['file']['name']);
-            if(move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
-                $img = $this->items->upload_image($uploadfile, $type);
-                if($img['status'] > 0) unlink($uploadfile);
-                die(json_encode($img));
-            }
-        } else {
-            die("");
-        */
+        if(!is_uploaded_file($_FILES['file']['tmp_name'])) 
+            die('');
+
+        $buf = $this->items->attachment($_FILES['file']['tmp_name'],$filename,$mime);
+
+        if($buf['status'] > 0)
+        {
+            die(json_encode($buf));
         }
         else
         {
-            die("");
+            die(json_encode($buf));
         }
     }
     public function avatar(){

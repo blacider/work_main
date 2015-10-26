@@ -257,7 +257,7 @@ foreach($item_config as $s) {
         <span style="position: relative;top: -31px;left: 100px;">支持word,PDF,excel,PPT格式文件</span>
     </div>
 </div>
-</div>
+
 </div>
 
 <input type="hidden" id="renew" value="0" name="renew">
