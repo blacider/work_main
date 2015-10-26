@@ -206,7 +206,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">标签</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <select class="chosen-select tag-input-style" name="tags" multiple="multiple" data-placeholder="请选择标签">
+                                    <select class="chosen-select tag-input-style" name="tags[]" multiple="multiple" data-placeholder="请选择标签">
 <?php 
                                                 $_tags = explode(",", $item['tags']);
                                                 foreach($tags as $category) { 
@@ -255,6 +255,12 @@
 <option value="<?php echo $val; ?>"><?php echo $key; ?></option>
 <?php
 					    }
+                        if($val == 0)
+                        {
+                            ?>
+                            <option value="<?php echo $val; ?>"><?php echo $key; ?></option>
+                            <?php
+                        }
 
                                             }
                                             }
@@ -330,8 +336,7 @@ foreach($item_config as $s) {
         </form>
     </div>
 </div>
-<p>
-<?php //echo json_encode($item_value);?></p>
+
 <!--
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
@@ -358,15 +363,7 @@ if(__item_config != '')
 var _item_config = new Object();
 for(var i = 0 ; i < item_config.length; i++)
 {
-    /*
-    if(item_config[i].type == 2)
-    {
-        _item_config = item_config[i];
-    }
-    if(item_config[i].type == 5)
-    {
-        _item_config = item_config[i];
-    }*/
+   
     if(item_config[i]['type']==2 || item_config[i]['type'] == 5)
     _item_config[item_config[i]['cid']] = item_config[i];
 }

@@ -162,14 +162,33 @@
                                 </div>
                             </div>
 
+                          
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">标签</label>
                                 <div class="col-xs-6 col-sm-6">
+                                <select class="chosen-select tag-input-style" name="tags[]" multiple="multiple" data-placeholder="请选择标签" disabled>
+                                <?php
+                                    $tags_item = explode(',',$item['tag_ids']);
 
-                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $item['tags']; ?> " disabled>
+                                 foreach($tags as $tag) {
+                                        if(in_array($tag['id'], $tags_item))
+                                        {
+                                    ?>
+                                     <option selected value="<?php echo $tag['id']; ?>"><?php echo $tag['name']; ?></option>
+                                    <?php
+                                     }else
+                                     {
+                                    ?>
+
+                                    <option value="<?php echo $tag['id']; ?>"><?php echo $tag['name']; ?></option>
+                                <?php
+                                     } 
+                                 }
+                                ?>
+                                </select>
+
                                 </div>
                             </div>
-
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">类型</label>
@@ -269,7 +288,7 @@ foreach($item_config as $s) {
 </div>
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
-//var is_burden = "<?php echo $is_hidden;?>";
+
 $(document).ready(function(){
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
@@ -283,12 +302,7 @@ $(document).ready(function(){
     $('.afford_detail').each(function(idx, item) {
         $(this).next().hide();
     });
-/*
-    if(is_burden)
-    {
-        $('#burden').prop('hidden',true).trigger('chosen:updated');
-    }
-*/
+
     $('.afford_detail').hide();
     $('#afford_type').change(function(){
         var _id = $(this).val();
@@ -329,6 +343,7 @@ $(document).ready(function(){
 
     $('.fallback [data-rel="colorbox"]').colorbox(colorbox_params);
     $('.cancel').click(function(){
+       
         history.go(-1);
     });
 	var afford_type = "<?php echo $fee_afford_type;?>";
