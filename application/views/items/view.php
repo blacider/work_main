@@ -134,17 +134,17 @@
                                 <?php
                                     $tags_item = explode(',',$item['tag_ids']);
 
-                                 foreach($tags as $category) {
-                                        if(in_array($category['id'], $tags_item))
+                                 foreach($tags as $tag) {
+                                        if(in_array($tag['id'], $tags_item))
                                         {
                                     ?>
-                                     <option selected value="<?php echo $category['id']; ?>"><?php echo $category['name']; ?></option>
+                                     <option selected value="<?php echo $tag['id']; ?>"><?php echo $tag['name']; ?></option>
                                     <?php
                                      }else
                                      {
                                     ?>
 
-                                    <option value="<?php echo $category['id']; ?>"><?php echo $category['name']; ?></option>
+                                    <option value="<?php echo $tag['id']; ?>"><?php echo $tag['name']; ?></option>
                                 <?php
                                      } 
                                  }

@@ -696,13 +696,6 @@ $('#sob_category').change(function(){
         }
         else if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 5)
         {
-<<<<<<< HEAD
-      
-
-
-
-=======
->>>>>>> origin/master
                $('#config_id').val(_item_config[category_id]['id']);
                 $('#config_type').val(_item_config[category_id]['type']);
                 $('#amount').change(function(){
