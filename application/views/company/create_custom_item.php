@@ -94,15 +94,18 @@
                 show_notify("请输入名称");
                 return false;
             }
-            if(isAllChinese(name) && getRealLen(name) > 16) {
-                show_notify("项目名称最多只能有8个汉字");
-                return false;
+            if(isAllChinese(name)) {
+                if(getRealLen(name) > 16) {
+                    show_notify("项目名称最多只能有8个汉字");
+                    return false;
+                }
+            } else {
+                if(getRealLen(name) > 14) {
+                    show_notify("项目名称最多只能有14个字符");
+                    return false;
+                }
             }
-            else if(getRealLen(name) > 14){
-                show_notify("项目名称最多只能有14个字符");
-                return false;
-            }
-                  $.ajax({
+            $.ajax({
                 type:"post",
                 url:__BASE+"company/docreate_custom_item",
                 data:{
@@ -122,7 +125,6 @@
                 },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {}
                });
-     
         });
 
     });
