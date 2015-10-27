@@ -45,7 +45,7 @@
 <div class="form-group" id="rate_note">
 <label class="col-sm-1 control-label no-padding-right"></label>
 <div class="col-xs-6 col-sm-6">
-<small>中行实时汇率为：<small id='rate_amount'>1.0</small>
+<small>中行实时汇率为：<small id='rate_amount'>1.0</small></small>
 </div>
 
 </div>
