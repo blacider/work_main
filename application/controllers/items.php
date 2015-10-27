@@ -395,7 +395,7 @@ class Items extends REIM_Controller {
         if ($flag == 1) 
         {
            // redirect(base_url('reports/newreport'));
-           die(josn_encode(array('data'=>'success'))); 
+           die(json_encode(array('data'=>'success'))); 
         }
         else redirect(base_url('items'));
     }
