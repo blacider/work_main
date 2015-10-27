@@ -35,11 +35,18 @@
         <div class="input-group input-group">
             <span class="input-group-addon" id='coin_simbol'>￥</span>
             <input type="text" class="form-controller col-xs-12 col-sm-12" name="amount" id="amount" placeholder="金额" required>
-            <span class="input-group-addon" id='rate_simbol'>0￥</span>
+            <span class="input-group-addon" id='rate_simbol'>￥0</span>
         </div>
 
     </div>
 
+
+</div>
+<div class="form-group" id="rate_note">
+<label class="col-sm-1 control-label no-padding-right"></label>
+<div class="col-xs-6 col-sm-6">
+<small>中行实时汇率为：<small id='rate_amount'>1.0</small>
+</div>
 
 </div>
 <?php
@@ -539,7 +546,8 @@ $('#coin_type').change(function(){
     var coin_list = temp.split(',');
     $('#coin_simbol').text(icon_dic[coin_list[0]]);
     var _amount = $('#amount').val();
-    $('#rate_simbol').text(Math.round(_amount*coin_list[1])/100 +  '￥');
+    $('#rate_simbol').text('￥' + Math.round(_amount*coin_list[1])/100);
+    $('#rate_amount').text(Math.round(coin_list[1]*10000)/1000000);
     $('#amount').trigger('change');
     $('#amount').trigger('change:updated');
   
@@ -550,7 +558,7 @@ $('#amount').change(function(){
     var coin_list = temp.split(',');
     $('#coin_simbol').text(icon_dic[coin_list[0]]);
     var _amount = $('#amount').val();
-    $('#rate_simbol').text(Math.round(_amount*coin_list[1])/100 + '￥');
+    $('#rate_simbol').text( '￥' + Math.round(_amount*coin_list[1])/100 );
 });
 
 function get_currency()
