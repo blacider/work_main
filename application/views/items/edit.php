@@ -125,12 +125,12 @@
                                 </div>
                             </div>
                             <div disabled class="form-group" id="average"  style="display:none;">
-<label class="col-sm-1 control-label no-padding-right">人数:</label>
-<div class="col-xs-3 col-sm-3">
-<div class="input-group">
-<input type="text" id="people-nums" name="peoples">
-</div>
-</div>
+                                <label class="col-sm-1 control-label no-padding-right">人数:</label>
+                                <div class="col-xs-3 col-sm-3">
+                                <div class="input-group">
+                                <input type="text" id="people-nums" name="peoples">
+                                </div>
+                                </div>
                                 <label class="col-sm-1 control-label no-padding-right">人均:</label>
                                 <div class="col-xs-3 col-sm-3">
                                     <div class="input-group">
@@ -408,19 +408,23 @@ var _average = "<?php echo $average; ?>";
 var subs = "<?php echo $profile['subs'];?>";
 var __item_config = '<?php echo json_encode($item_config);?>';
 var item_config = [];
+
 if(__item_config != '')
 {
     try{
-    item_config = JSON.parse(__item_config);
-    }catch(e) {}
+        item_config = JSON.parse(__item_config);
+    }catch(e){
+       
+    }
 }
 var _item_config = new Object();
 for(var i = 0 ; i < item_config.length; i++)
 {
-   
-    if(item_config[i]['type']==2 || item_config[i]['type'] == 5)
-    _item_config[item_config[i]['cid']] = item_config[i];
+    if(item_config[i]['type']==2 || item_config[i]['type'] == 5 || item_config[i]['type'] == 1) {
+        _item_config[item_config[i]['cid']] = item_config[i];
+    }
 }
+
 
 var category_name = '<?php echo $category_name; ?>';
 var ifUp = 1;
@@ -453,8 +457,10 @@ function get_sobs(){
             dataType : 'json',
             method : 'GET',
             success : function(data){
+  
                 var _lost_sob = 0;
                 for(var item in data) {
+                  
                     var _h = '';
                     if(item == sob_id) {
                         _lost_sob = 1;
@@ -463,15 +469,20 @@ function get_sobs(){
                         _h = "<option value='" +  item + "'>"+  data[item].sob_name + " </option>";
                     }
                     selectDataCategory[item] = data[item]['category'];
+
                     selectDataSobs += _h;
+      
                 }
                 if(_lost_sob == 0) {
                     _h = "<option selected='selected' value='" + sob_id + "'> - [原帐套] </option>";
+                    selectDataSobs += _h;
                 }
-                selectDataCategory[sob_id] = [{'id' : sob_id, 'category_name' : category_name}];
-                selectDataSobs += _h;
+                //selectDataCategory[sob_id] = data[sob_id]['category'];
+                //selectDataCategory[sob_id] = [{'id' : sob_id, 'category_name' : category_name}];
+                //selectDataSobs = _h;
                 selectPostData = data;
                 updateSelectSob(selectDataSobs);
+         
             },
             error:function(XMLHttpRequest, textStatus, errorThrown) {}
         });
@@ -480,6 +491,7 @@ function get_sobs(){
         var _sid = 0;
         $('#sobs').change(function(){
             var s_id = $(this).val();
+           
             var _h = '';
             if(selectDataCategory[s_id] != undefined)
             {
@@ -497,7 +509,9 @@ function get_sobs(){
             $("#sobs").attr("value", _sid);
             $(this.nextElementSibling).empty().append(_h).trigger("chosen:updated");
             $('#sob_category').trigger('change');
+            $('#sob_category').trigger('change:updated');
             $('#hidden_category').val(_item_category);
+           
         });
 }
 
@@ -674,8 +688,9 @@ $('#coin_type').change(function(){
     $('#coin_simbol').text(icon_dic[coin_list[0]]);
     var _amount = $('#amount').val();
     $('#rate_simbol').text(Math.round(_amount*coin_list[1])/100 +  '￥');
-    console.log(temp);
-    console.log(coin_list[1]);
+    $('#amount').trigger('change');
+    $('#amount').trigger('change:updated');
+    
 });
 
 $('#amount').change(function(){
@@ -692,10 +707,7 @@ function get_currency()
         url:__BASE + 'items/get_currency',
         dataType:'json',
         method:'GET',
-        success:function(data){
-            console.log(data);
-            
-            
+        success:function(data){         
             var _h = '';
             for(var item in data)
             {
@@ -715,9 +727,7 @@ function get_currency()
             $('#coin_type').trigger('chosen:updated');
         },
         error:function(a,b,c){
-            console.log(a);
-            console.log(b);
-            console.log(c);
+        
         }
     });
 }
@@ -733,6 +743,7 @@ $(document).ready(function(){
     var _dt = $('#dt').val();
     var images = eval("(" + _images + ")");
     $('#people-nums').val(_average);
+   
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
         defaultDate: _dt,
@@ -791,12 +802,13 @@ $(document).ready(function(){
 
 
 $('#sob_category').change(function(){
-    __multi_time = 0;
-                __average_count = 0;
+            __multi_time = 0;
+            __average_count = 0;
             $('#endTime').hide();
             $('#average').hide();
+      
        var category_id = $('#sob_category').val();
-
+    
     $('#hidden_category').val(category_id);
         if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 2)
         {
@@ -812,6 +824,8 @@ $('#sob_category').change(function(){
                 $('#config_type').val(_item_config[category_id]['type']);
                 $('#amount').change(function(){
                     var all_amount = $('#amount').val();
+                    var rates = $('#coin_type').val().split(',')[1];
+                    all_amount *= rates/100;
                     if (subs != '' && subs >= 0)
                         $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
                     else
@@ -821,6 +835,8 @@ $('#sob_category').change(function(){
                     subs = $('#people-nums').val();
                     $('#amount').change();
                 });
+                $('#people-nums').trigger('change');
+                $('#people-nums').trigger('change:updated');
                 var all_amount = $('#amount').val();
                 $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
                 $('#average').show();

@@ -858,7 +858,9 @@ class Items extends REIM_Controller {
                 $item_configs = $group_config['item_config'];
                 foreach($item_configs as $conf)
                 {
+                    if($conf['disabled'] == 1) continue;
                     array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled']));	
+                    log_message('debug','qqy_name:' .  $conf['name']);
                 }
             }
         }

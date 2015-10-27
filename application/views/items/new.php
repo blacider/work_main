@@ -339,8 +339,11 @@ if(__item_config != '')
 {
     try{
         item_config = JSON.parse(__item_config);
-    }catch(e){}
+    }catch(e){
+       
+    }
 }
+
 var _item_config = new Object();
 for(var i = 0 ; i < item_config.length; i++)
 {
@@ -557,8 +560,7 @@ function get_currency()
         dataType:'json',
         method:'GET',
         success:function(data){
-            console.log(data);
-            
+          
             
             var _h = '';
             for(var item in data)
@@ -568,9 +570,7 @@ function get_currency()
             $('#coin_type').append(_h);
         },
         error:function(a,b,c){
-            console.log(a);
-            console.log(b);
-            console.log(c);
+          
         }
     });
 }
