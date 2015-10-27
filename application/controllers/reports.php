@@ -1427,19 +1427,23 @@ class Reports extends REIM_Controller {
                 if($open_exchange == 1)
                 {
                         $o['币种名称'] = $i['icon_type_name'] . '(' .$i['icon_simbol'] . ')';
-                        $o['外币金额'] = (string)$i['amount'] . $i['icon_simbol'];
+//                        $o['外币金额'] = (string)$i['amount'] . $i['icon_simbol'];
+                        $o['外币金额'] = $i['amount'];
                         $o['汇率'] = '1.0';
                         if($i['currency'] != 'cny')
                             $o['汇率'] = round($i['rate']/100,6);
                 }
-                $o['人民币金额'] = (string)($i['amount'] * $_rate) . '￥';
+//                $o['人民币金额'] = (string)($i['amount'] * $_rate) . '￥';
+                $o['人民币金额'] = round($i['amount'] * $_rate,2);
                 $_paid = 0;
                 if($i['prove_ahead'] > 0){
                     $_paid = $i['pa_amount'];
                 }
                 $_last = $i['amount'] - $_paid;
-                $o['已付'] = (string)($i['paid']) . '￥';
-                $o['应付'] = (string)(($i['amount'] * $_rate) - $i['paid']) . '￥';
+//                $o['已付'] = (string)($i['paid']) . '￥';
+                $o['已付'] = $i['paid'];
+//                $o['应付'] = (string)(($i['amount'] * $_rate) - $i['paid']) . '￥';
+                $o['应付'] = $i['amount'] * $_rate - $i['paid'];
                 $o['报告名'] = $i['title'];
                 $o['报告ID'] = $i['rid'];
 

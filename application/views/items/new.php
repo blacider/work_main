@@ -256,7 +256,6 @@ foreach($item_config as $s) {
 <div class="col-xs-6 col-sm-6">
 <textarea name="note" id="note" class="col-xs-12 col-sm-12  form-controller" ></textarea>
 </div>
-</div>
 
 </div>
 
@@ -538,8 +537,9 @@ $('#coin_type').change(function(){
     $('#coin_simbol').text(icon_dic[coin_list[0]]);
     var _amount = $('#amount').val();
     $('#rate_simbol').text(Math.round(_amount*coin_list[1])/100 +  '￥');
-    console.log(temp);
-    console.log(coin_list[1]);
+    $('#amount').trigger('change');
+    $('#amount').trigger('change:updated');
+  
 });
 
 $('#amount').change(function(){
@@ -656,6 +656,8 @@ $(document).ready(function(){
                 $('#config_type').val(_item_config[category_id]['type']);
                 $('#amount').change(function(){
                     var all_amount = $('#amount').val();
+                    var rates = $('#coin_type').val().split(',')[1];
+                    all_amount *= rates/100;
                     if (subs != '' && subs >= 0)
                         $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
                     else
