@@ -223,14 +223,33 @@
                                 </div>
                             </div>
 
+                          
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">标签</label>
                                 <div class="col-xs-6 col-sm-6">
+                                <select class="chosen-select tag-input-style" name="tags[]" multiple="multiple" data-placeholder="请选择标签" disabled>
+                                <?php
+                                    $tags_item = explode(',',$item['tag_ids']);
 
-                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $item['tags']; ?> " disabled>
+                                 foreach($tags as $tag) {
+                                        if(in_array($tag['id'], $tags_item))
+                                        {
+                                    ?>
+                                     <option selected value="<?php echo $tag['id']; ?>"><?php echo $tag['name']; ?></option>
+                                    <?php
+                                     }else
+                                     {
+                                    ?>
+
+                                    <option value="<?php echo $tag['id']; ?>"><?php echo $tag['name']; ?></option>
+                                <?php
+                                     } 
+                                 }
+                                ?>
+                                </select>
+
                                 </div>
                             </div>
-
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">类型</label>
@@ -239,12 +258,37 @@
                                 </div>
                             </div>
 
+<?php
+$extra = array();
+foreach($item['extra'] as $i) {
+    $extra[$i['id']] = $i['value'];
+}
+foreach($item_config as $s) {
+    $val = '';
+    if(array_key_exists($s['id'], $extra)){
+        $val = $extra[$s['id']];
+    }
+    if(!array_key_exists($s['id'], $extra)) continue;
+    if($s['cid'] == -1  && $s['type'] == 1) {
+?>
+<div class="form-group">
+<label class="col-sm-1 control-label no-padding-right"><?php echo $s['name']; ?></label>
+<div class="col-xs-6 col-sm-6">
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $val; ?> " disabled>
+</div>
+</div>
+<?php
+    }
+}
+?>
+
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">备注</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $item['note']; ?> " disabled>
                                 </div>
                             </div>
+
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">照片</label>
@@ -333,12 +377,7 @@ $(document).ready(function(){
     $('.afford_detail').each(function(idx, item) {
         $(this).next().hide();
     });
-/*
-    if(is_burden)
-    {
-        $('#burden').prop('hidden',true).trigger('chosen:updated');
-    }
-*/
+
     $('.afford_detail').hide();
     $('#afford_type').change(function(){
         var _id = $(this).val();
@@ -379,6 +418,7 @@ $(document).ready(function(){
 
     $('.fallback [data-rel="colorbox"]').colorbox(colorbox_params);
     $('.cancel').click(function(){
+       
         history.go(-1);
     });
 	var afford_type = "<?php echo $fee_afford_type;?>";

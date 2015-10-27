@@ -245,6 +245,7 @@ foreach($members as $m) {
                                                 <td>金额</td>
                                                 <td>类别</td>
                                                 <td>商家</td>
+                                                <td>备注</td>
                                                 <td>操作</td>
                                             </thead>
                                         </tr>
@@ -267,6 +268,7 @@ foreach($report['items'] as $i){
 
                                                 ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
+                                            <td><?php echo $i['note']?></td>
                                             <td>
                                                 <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
                                                     <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="<?php echo $i['id']; ?>"></span>
@@ -292,10 +294,21 @@ foreach($items as $i){
                                         <tr>
                                             <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>"  data-id="<?php echo $i['id']; ?>" ></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
-                                            <td><?php echo $i['category'];  echo $i['status'];?></td>
-                                            <td><?php echo $item_amount;?></td>
-                                            <td><?php echo $i['prove_ahead']; ?></td>
+                                            <td><?php echo $i['cate_str']; ?></td>
+                                           
+                                            <td><?php echo '￥' . $item_amount;?></td>
+                                            <td><?php 
+                                                $buf = '';
+                                                switch(intval($i['prove_ahead'])) {
+                                                case 0 : $buf = '报销';break;
+                                                case 1 : $buf = '预算';break;
+                                                case 2 : $buf = '预借';break;
+                                                } 
+                                                echo $buf;
+
+                                                ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
+                                            <td><?php echo $i['note']?></td>
                                             <td>
                                                 <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
                                                     <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="<?php echo $i['id']; ?>"></span>

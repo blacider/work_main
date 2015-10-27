@@ -194,7 +194,7 @@
                                     <option value="a4.yaml">A4模板</option>
                                     <option value="a5.yaml">A5模板</option>
                                     <option value="b5.yaml">B5模板</option>
-                                    <option value="disanshi.yaml">210*114 分类目模板</option>
+                                    <option value="disanshi.yaml">210*114 分类别模板</option>
                                 
                                 </select>
                                 </div>

@@ -12,7 +12,7 @@
                                     <th>姓名</th>
                                     <th>邮箱</th>
                                     <th>手机</th>
-                                    <th>类目</th>
+                                    <th>类别</th>
                                     <th>导入提示语</th>
                                 </tr>
                                 <?php foreach($sobs as $d){ ?>
