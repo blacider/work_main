@@ -169,7 +169,7 @@ jQuery(grid_selector).jqGrid({
         if (status) {
             var array_selectRows = new Array();
             var all_data = jqgrid_choseall_plus(grid_selector);
-            for (var i = 0; i < all_data.length; i++) array_selectRows.push(all_data[i].id);
+            for (var i = 0; i < all_data.length; i++) array_selectRows.push(all_data[i]);
             jQuery.each(array_selectRows,function(index,rowid){
                 if (jQuery.inArray(rowid,selectRows) == -1) {
                     selectRows.push(rowid);
