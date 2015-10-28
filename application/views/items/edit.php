@@ -715,7 +715,7 @@ $('#coin_type').change(function(){
     {
          $('#rate_type').text('现钞卖出价');
          $('#rate_amount').text('1.0');
-         $('#rate_amount').val('1.0');
+         $('#rate').val('1.0');
     }
     
     $('#amount').trigger('change');
