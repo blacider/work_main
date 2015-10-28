@@ -250,24 +250,33 @@ foreach($members as $m) {
                                             </thead>
                                         </tr>
 <?php 
+
 foreach($report['items'] as $i){
+        $item_amount = '';
+        if($i['currency'] != 'cny')
+        {
+            $item_amount = round($i['amount']*$i['rate']/100,2);
+        }
+        else
+        {
+            $item_amount = $i['amount']; 
+        }
                                         ?>
                                         <tr>
-                                            <td><input checked='true' name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $i['amount'] ?>" data-id="<?php echo $i['id']; ?>" ></td>
+                                            <td><input checked='true' name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>" data-id="<?php echo $i['id']; ?>" ></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
+                                            <td><?php echo $i['category_name']; ?></td>
+                                            <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
                                             <td><?php 
                                                 $buf = '';
-switch(intval($i['prove_ahead'])) {
-case 0 : $buf = '报销';break;
-case 1 : $buf = '预算';break;
-case 2 : $buf = '预借';break;
-} 
-echo $buf;
+                                                switch(intval($i['prove_ahead'])) {
+                                                case 0 : $buf = '报销';break;
+                                                case 1 : $buf = '预算';break;
+                                                case 2 : $buf = '预借';break;
+                                                } 
+                                                echo $buf;
 
-?></td>
-                                            <td><?php echo $i['category_name']; ?></td>
-                                            <td><?php echo '￥'.$i['amount']; ?></td>
-                                            <td><?php echo $i['category_name']; ?></td>
+                                                ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td><?php echo $i['note']?></td>
                                             <td>
@@ -282,13 +291,23 @@ echo $buf;
 <?php 
 foreach($items as $i){
     if($i['rid'] == 0 && $i['prove_ahead'] == 0){
+        $item_amount = '';
+        if($i['currency'] != 'cny')
+        {
+            $item_amount = round($i['amount']*$i['rate']/100,2);
+        }
+        else
+        {
+            $item_amount = $i['amount']; 
+        }
+                                       
                                         ?>
                                         <tr>
-                                            <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $i['amount'] ?>"  data-id="<?php echo $i['id']; ?>" ></td>
+                                            <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>"  data-id="<?php echo $i['id']; ?>" ></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['cate_str']; ?></td>
                                            
-                                            <td><?php echo '￥'.$i['amount']; ?></td>
+                                            <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
                                             <td><?php 
                                                 $buf = '';
                                                 switch(intval($i['prove_ahead'])) {

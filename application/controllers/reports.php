@@ -9,6 +9,23 @@ class Reports extends REIM_Controller {
         $this->load->model('group_model','groups');
         $this->load->model('reim_show_model','reim_show');
         $this->load->model('usergroup_model','ug');
+        $this->load->model('account_set_model','account_set');
+    }
+
+    public function get_coin_symbol($key = 'cny')
+    {
+        $symbol = '?';
+        $coin_symbol_dic = array( 
+                            'cny'=>'￥','usd'=>'$','eur'=>'€','hkd'=>'$','mop'=>'$','twd'=>'$','jpy'=>'￥','ker'=>'₩',
+                            'gbp'=>'£','rub'=>'Rbs','sgd'=>'$','php'=>'₱','idr'=>'Rps','myr'=>'$','thb'=>'฿','cad'=>'$',
+                            'aud'=>'$','nzd'=>'$','chf'=>'₣','dkk'=>'Kr','nok'=>'Kr','sek'=>'Kr','brl'=>'$'
+                            );                           
+        if(array_key_exists($key,$coin_symbol_dic))
+        {
+            $symbol = $coin_symbol_dic[$key]; 
+        }
+
+        return $symbol;
     }
 
     public function add_comment() {
@@ -71,6 +88,7 @@ class Reports extends REIM_Controller {
             $categories = $category['data']['categories'];
             $tags = $category['data']['tags'];
         }
+
         $_items =  array();
         if($items && $items['status']) {
             $_cates = array();
@@ -115,7 +133,9 @@ class Reports extends REIM_Controller {
                     }
                 }
 //                $s['amount'] = '￥' . $s['amount'];
-            $s['amount'] = sprintf("%.2f",$s['amount']);
+
+                $s['coin_symbol'] = $this->get_coin_symbol($s['currency']);
+                $s['amount'] = sprintf("%.2f",$s['amount']);
                 $s['status_str'] = '';
                 $trash= $s['istatus'] === 0 ? 'gray' : 'red';
                 $edit = $s['istatus'] === 0 ? 'gray' : 'green';
@@ -540,6 +560,11 @@ class Reports extends REIM_Controller {
         $report['receivers']['managers'] = $_managers;
         $report['receivers']['cc'] = $_ccs; 
         $_items = $this->_getitems();
+
+        foreach($report['items'] as &$rt)
+        {
+            $rt['coin_symbol'] = $this->get_coin_symbol($rt['currency']);
+        }
 
         $this->bsload('reports/edit',
             array(
@@ -1045,8 +1070,39 @@ class Reports extends REIM_Controller {
 
 
     private function exports_by_rids($ids) {
+
+        $simbol_dic = array('cny'=>'人民币','usd'=>'美元','eur'=>'欧元','hkd'=>'港币','mop'=>'澳门币','twd'=>'新台币','jpy'=>'日元','ker'=>'韩国元','gbp'=>'英镑','rub'=>'卢布','sgd'=>'新加坡元','php'=>'菲律宾比索','idr'=>'印尼卢比','myr'=>'马来西亚元','thb'=>'泰铢','cad'=>'加拿大元','aud'=>'澳大利亚元','nzd'=>'新西兰元','chf'=>'瑞士法郎','dkk'=>'丹麦克朗','nok'=>'挪威克朗','sek'=>'瑞典克朗','brl'=>'巴西里亚尔'
+                 ); 
+        $icon_dic = array('cny'=>'￥','usd'=>'$','eur'=>'€','hkd'=>'$','mop'=>'$','twd'=>'$','jpy'=>'￥','ker'=>'₩','gbp'=>'£','rub'=>'Rbs','sgd'=>'$','php'=>'₱','idr'=>'Rps','myr'=>'$','thb'=>'฿','cad'=>'$','aud'=>'$','nzd'=>'$','chf'=>'₣','dkk'=>'Kr','nok'=>'Kr','sek'=>'Kr','brl'=>'$'
+                   ); 
+
         $data = $this->reports->get_reports_by_ids($ids);
         $_categories = $this->category->get_list();
+
+        //添加汇率
+        $profile = $_categories['data']['profile'];
+        $open_exchange = 0 ;
+        $company_config = array();
+        if(array_key_exists('config',$profile['group']))
+            $company_config = json_decode($profile['group']['config'],True);
+        if(array_key_exists('open_exchange',$company_config))
+        {
+            $open_exchange = $company_config['open_exchange'];
+        }
+        log_message('debug','open_exchange:' . $open_exchange);
+
+        $sobs = array();
+        $_sobs = $this->account_set->get_account_set_list();
+        if($_sobs['status'])
+            $sobs = $_sobs['data'];
+        $sob_dic = array();
+        $sob_dic[0] = '默认帐套';
+        foreach($sobs as $sob)
+        {
+            $sob_dic[$sob['sob_id']] = $sob['sob_name'];
+        }
+        log_message('debug','sob_dic: ' . json_encode($sob_dic));
+
         $categories = array();
         $cate_dic = array();
         if($_categories['status'] > 0)
@@ -1056,7 +1112,11 @@ class Reports extends REIM_Controller {
         log_message('debug','cates:'.json_encode($categories));
         foreach($categories as $cate)
         {
-           $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code']); 
+           if(array_key_exists($cate['sob_id'],$sob_dic))
+                 $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code'],'sob_name' => $sob_dic[$cate['sob_id']]); 
+           else
+                 $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code'],'sob_name' => ''); 
+                    
         }
         $group = $this->groups->get_my_full_list();
         $ginfo = array();
@@ -1173,6 +1233,19 @@ class Reports extends REIM_Controller {
                     if(array_key_exists('currency', $i) && (strtolower($i['currency']) != "" && strtolower($i['currency']) != 'cny')) {
                         $_rate = $i['rate'] / 100;
                     }
+                    if($open_exchange == 1)
+                    {
+                        if(array_key_exists('currency', $i) && (strtolower($i['currency']) != "" )){
+                            $i['icon_type_name'] = $simbol_dic[$i['currency']]; 
+                            $i['icon_simbol'] = $icon_dic[$i['currency']];
+                            }
+                        else
+                        {
+                            $i['icon_type_name'] = '';
+                            $i['icon_simbol'] = '';
+                        }
+
+                    }
                     log_message("debug", "Items23:"  . json_encode($i));
                     $r['total'] += ($i['amount'] * $_rate);
                     log_message("debug", "Items13:"  . json_encode($i['amount']));
@@ -1268,6 +1341,7 @@ class Reports extends REIM_Controller {
                 $o['日期'] = date('Y年m月d日', date($i['createdt']));
                 $o['时间'] = date('H:i:s', date($i['createdt']));
                 $o['类别'] = $i['category_name'];
+                $o['帐套'] = $cate_dic[$i['category']]['sob_name'];
                 $o['创建者'] = $i['nickname'];
                 $o['邮箱'] = '';
                 $o['员工ID'] = '';
@@ -1392,14 +1466,26 @@ class Reports extends REIM_Controller {
                 if($i['currency'] != '' && strtolower($i['currency']) != 'cny') {
                     $_rate = $i['rate'] / 100;
                 }
-                $o['金额'] = $i['amount'] * $_rate;
+                if($open_exchange == 1)
+                {
+                        $o['币种名称'] = $i['icon_type_name'] . '(' .$i['icon_simbol'] . ')';
+//                        $o['外币金额'] = (string)$i['amount'] . $i['icon_simbol'];
+                        $o['外币金额'] = $i['amount'];
+                        $o['汇率'] = '1.0';
+                        if($i['currency'] != 'cny')
+                            $o['汇率'] = round($i['rate']/100,6);
+                }
+//                $o['人民币金额'] = (string)($i['amount'] * $_rate) . '￥';
+                $o['人民币金额'] = round($i['amount'] * $_rate,2);
                 $_paid = 0;
                 if($i['prove_ahead'] > 0){
                     $_paid = $i['pa_amount'];
                 }
                 $_last = $i['amount'] - $_paid;
+//                $o['已付'] = (string)($i['paid']) . '￥';
                 $o['已付'] = $i['paid'];
-                $o['应付'] = ($i['amount'] * $_rate) - $i['paid'];
+//                $o['应付'] = (string)(($i['amount'] * $_rate) - $i['paid']) . '￥';
+                $o['应付'] = $i['amount'] * $_rate - $i['paid'];
                 $o['报告名'] = $i['title'];
                 $o['报告ID'] = $i['rid'];
 
@@ -1425,6 +1511,21 @@ class Reports extends REIM_Controller {
         $ids = $this->input->post('ids');
         if("" == $ids) die("");
         $this->exports_by_rids($ids);
+    }
+
+    public function exports_test($id)
+    {
+        $profile = $this->session->userdata('profile');
+        $open_exchange = 0 ;
+        $company_config = array();
+        if(array_key_exists('config',$profile['group']))
+            $company_config = json_decode($profile['group']['config'],True);
+        if(array_key_exists('open_exchange',$company_config))
+        {
+            $open_exchange = $company_config['open_exchange'];
+        }
+        log_message('debug','open_exchange:' . $open_exchange);
+
     }
 
 

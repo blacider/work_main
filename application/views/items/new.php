@@ -2,21 +2,71 @@
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <script src="/static/ace/js/jquery.json.min.js"></script>
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
+
 <!-- <link rel="stylesheet" href="/static/third-party/jqui/jquery-ui.min.css" id="main-ace-style" /> -->
 
 <!-- page specific plugin styles -->
 <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 <div class="page-content">
 <div class="page-content-area">
+<?php
+    $_config = '';
+    if(array_key_exists('config',$profile['group']))
+    {
+        $_config = $profile['group']['config'];
+    }
+    $__config = json_decode($_config,True);
+?>
 <form role="form" action="<?php echo base_url('items/create');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="itemform">
 <div class="row">
 <div class="col-xs-12 col-sm-12">
+<?php
+    if(array_key_exists('open_exchange', $__config) && $__config['open_exchange'] == '1')
+    {
+?>
 <div class="form-group">
+    <label class="col-sm-1 control-label no-padding-right">金额</label>
+    <div class="col-xs-6 col-sm-6">
+
+
+        <select class="col-xs-4 col-sm-4" class="form-control  chosen-select tag-input-style" name="coin_type" id="coin_type">
+            <option value='cny,100'>人民币</option>
+        </select>
+        <div class="input-group input-group">
+            <span class="input-group-addon" id='coin_simbol'>￥</span>
+            <input type="text" class="form-controller col-xs-12 col-sm-12" name="amount" id="amount" placeholder="金额" required>
+            <span class="input-group-addon" id='rate_simbol'>￥0</span>
+        </div>
+
+    </div>
+
+
+</div>
+<div class="form-group" id="rate_note">
+<label class="col-sm-1 control-label no-padding-right"></label>
+<div class="col-xs-6 col-sm-6">
+<small>中行实时<small id='rate_type'>现钞卖出价</small>为：<small id='rate_amount'>1.0</small></small>
+</div>
+
+</div>
+<?php
+    }
+    else
+    {
+?>
+<div class="form-group" id="mul_amount">
 <label class="col-sm-1 control-label no-padding-right">金额</label>
 <div class="col-xs-6 col-sm-6">
 <input type="text" class="form-controller col-xs-12" name="amount" id="amount" placeholder="金额" required>
 </div>
+
 </div>
+
+<?php
+    }
+?>
+
+
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">类别</label>
 <div class="col-xs-6 col-sm-6">
@@ -166,14 +216,7 @@
 </div>
 </div>
 <?php  } ?>
-<?php
-    $_config = '';
-    if(array_key_exists('config',$profile['group']))
-    {
-    	$_config = $profile['group']['config'];
-    }
-    $__config = json_decode($_config,True);
-?>
+
 
 
 <div class="form-group">
@@ -219,7 +262,6 @@ foreach($item_config as $s) {
 <label class="col-sm-1 control-label no-padding-right">备注</label>
 <div class="col-xs-6 col-sm-6">
 <textarea name="note" id="note" class="col-xs-12 col-sm-12  form-controller" ></textarea>
-</div>
 </div>
 
 </div>
@@ -431,18 +473,33 @@ var filesUrlDict = {};
 </script>
 
 <script language="javascript">
+
+var simbol_dic = {'cny':'人民币','usd':'美元','eur':'欧元','hkd':'港币','mop':'澳门币','twd':'新台币','jpy':'日元','ker':'韩国元',
+                              'gbp':'英镑','rub':'卢布','sgd':'新加坡元','php':'菲律宾比索','idr':'印尼卢比','myr':'马来西亚元','thb':'泰铢','cad':'加拿大元',
+                              'aud':'澳大利亚元','nzd':'新西兰元','chf':'瑞士法郎','dkk':'丹麦克朗','nok':'挪威克朗','sek':'瑞典克朗','brl':'巴西里亚尔'
+                             }; 
+var icon_dic = {'cny':'￥','usd':'$','eur':'€','hkd':'$','mop':'$','twd':'$','jpy':'￥','ker':'₩',
+                              'gbp':'£','rub':'Rbs','sgd':'$','php':'₱','idr':'Rps','myr':'$','thb':'฿','cad':'$',
+                              'aud':'$','nzd':'$','chf':'₣','dkk':'Kr','nok':'Kr','sek':'Kr','brl':'$'
+                             }; 
+var typed_currency = [];
+
 var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
 var config = '<?php echo $_config?>';
 var subs = "<?php echo $profile['subs'];?>";
 var __item_config = '<?php echo json_encode($item_config);?>';
+
 var item_config = [];
 if(__item_config != '')
 {
     try{
         item_config = JSON.parse(__item_config);
-    }catch(e){}
+    }catch(e){
+       
+    }
 }
+
 var _item_config = new Object();
 for(var i = 0 ; i < item_config.length; i++)
 {
@@ -633,10 +690,97 @@ function get_sobs(){
         });
 }
 
+$('#coin_type').change(function(){
+    var temp = $('#coin_type').val();
+    var coin_list = temp.split(',');
+    $('#coin_simbol').text(icon_dic[coin_list[0]]);
+    var _amount = $('#amount').val();
+    $('#rate_simbol').text('￥' + Math.round(_amount*coin_list[1])/100);
+    if(coin_list[0] != 'cny')
+    {
+        if(typed_currency[coin_list[0]]['type'] == 0)
+        {
+            $('#rate_type').text('现钞卖出价');
+        }
+        if(typed_currency[coin_list[0]]['type'] == 2)
+        {
+            $('#rate_type').text('现汇卖出价');
+        }
+        $('#rate_amount').text(Math.round(coin_list[1]*10000)/1000000);
+    }
+    else
+    {
+         $('#rate_type').text('现钞卖出价');
+         $('#rate_amount').text('1.0');
+    }
+   
+    $('#amount').trigger('change');
+    $('#amount').trigger('change:updated');
+  
+});
+
+$('#amount').change(function(){
+    var temp = $('#coin_type').val();
+    var coin_list = temp.split(',');
+    $('#coin_simbol').text(icon_dic[coin_list[0]]);
+    var _amount = $('#amount').val();
+    $('#rate_simbol').text( '￥' + Math.round(_amount*coin_list[1])/100 );
+});
+
+/* 不包含汇率种类的实现
+function get_currency()
+{
+    $.ajax({
+        url:__BASE + 'items/get_currency',
+        dataType:'json',
+        method:'GET',
+        success:function(data){
+          
+            
+            var _h = '';
+            for(var item in data)
+            {
+                _h += '<option value="' + item + ',' + data[item] +'">' + simbol_dic[item] + '</option>';
+            }
+            $('#coin_type').append(_h);
+        },
+        error:function(a,b,c){
+          
+        }
+    });
+}
+*/
+
+function get_typed_currency()
+{
+     $.ajax({
+        url:__BASE + 'items/get_typed_currency',
+        dataType:'json',
+        method:'GET',
+        success:function(data){
+            var _h = '';
+            for(var item in data)
+            {
+                typed_currency[item] = JSON.parse(data[item]);
+                _h += '<option value="' + item + ',' + typed_currency[item]['value'] +'">' + simbol_dic[item] + '</option>';
+            }
+            $('#coin_type').append(_h);
+        },
+        error:function(a,b,c){
+          
+        }
+    });
+}
+
 var __multi_time = 0;
 var __average_count = 0;
 $(document).ready(function(){
 
+    //$('#mul_amount').empty();
+    if(__config['open_exchange']){
+       // get_currency();
+       get_typed_currency();
+    }
     get_sobs();
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
@@ -710,6 +854,8 @@ $(document).ready(function(){
                 $('#config_type').val(_item_config[category_id]['type']);
                 $('#amount').change(function(){
                     var all_amount = $('#amount').val();
+                    var rates = $('#coin_type').val().split(',')[1];
+                    all_amount *= rates/100;
                     if (subs != '' && subs >= 0)
                         $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
                     else

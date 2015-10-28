@@ -114,26 +114,34 @@ if($__config)
 }
 foreach($items as $i){
     if($i['rid'] == 0 && in_array($i['prove_ahead'], $item_type)){
+                                     $item_amount = '';
+                                     if($i['currency'] != 'cny')
+                                                {
+                                                    $item_amount = round($i['amount']*$i['rate']/100,2);
+                                                }else
+                                                { 
+                                                    $item_amount =  $i['amount'];
+                                                } 
                                         ?>
                                         <tr id="<?php echo 'item'.$i['id']?>">
                                         <td>
-<input name="item[]" value="<?php echo $i['id']; ?>" 
-type="checkbox" class="form-controller amount" 
-data-amount = "<?php echo $i['amount'] ?>" 
-data-id="<?php echo $i['id']; ?>" 
-></td>
+                                            <input name="item[]" value="<?php echo $i['id']; ?>" 
+                                            type="checkbox" class="form-controller amount" 
+                                            data-amount = "<?php echo $item_amount; ?>" 
+                                            data-id="<?php echo $i['id']; ?>" 
+                                            ></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['cate_str'];?></td>
-                                            <td><?php echo '￥'.$i['amount']; ?></td>
+                                            <td><?php echo '￥' . $item_amount;?></td>
                                             <td><?php 
         
                                                 $buf = '';
-switch($i['prove_ahead']) {
-case 0 : $buf = '报销';break;
-case 1 : $buf = '预算';break;
-case 2 : $buf = '预借';break;
-} 
-echo $buf;
+                                                switch($i['prove_ahead']) {
+                                                case 0 : $buf = '报销';break;
+                                                case 1 : $buf = '预算';break;
+                                                case 2 : $buf = '预借';break;
+                                                } 
+                                                echo $buf;
 
 
                                                 ?></td>

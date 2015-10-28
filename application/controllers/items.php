@@ -21,7 +21,6 @@ class Items extends REIM_Controller {
 
         if(!is_uploaded_file($_FILES['file']['tmp_name'])) 
             die('');
-
         $buf = $this->items->attachment($_FILES['file']['tmp_name'],$filename,$mime);
 
         if($buf['status'] > 0)
@@ -33,6 +32,50 @@ class Items extends REIM_Controller {
             die(json_encode($buf));
         }
     }
+
+    public function get_coin_symbol($key = 'cny')
+    {
+        $symbol = '?';
+        $coin_symbol_dic = array( 
+                            'cny'=>'￥','usd'=>'$','eur'=>'€','hkd'=>'$','mop'=>'$','twd'=>'$','jpy'=>'￥','ker'=>'₩',
+                            'gbp'=>'£','rub'=>'Rbs','sgd'=>'$','php'=>'₱','idr'=>'Rps','myr'=>'$','thb'=>'฿','cad'=>'$',
+                            'aud'=>'$','nzd'=>'$','chf'=>'₣','dkk'=>'Kr','nok'=>'Kr','sek'=>'Kr','brl'=>'$'
+                            );                           
+        if(array_key_exists($key,$coin_symbol_dic))
+        {
+            $symbol = $coin_symbol_dic[$key]; 
+        }
+
+        return $symbol;
+    }
+
+    public function get_currency()
+    {
+        $info = $this->items->get_currency();
+        if($info['status'] > 0)
+        {
+            die(json_encode($info['data']));
+        }
+        else
+        {
+            die(json_encode($info));
+        }
+            
+    }
+
+    public function get_typed_currency()
+    {
+        $info = $this->items->get_typed_currency();
+        if($info['status'] > 0)
+        {
+            die(json_encode($info['data']));
+        }
+        else
+        {
+            die(json_encode($info));
+        }
+    }
+
     public function avatar(){
         if(!empty($_FILES)) {
             // 默认是item
@@ -257,8 +300,19 @@ class Items extends REIM_Controller {
         $note = $this->input->post('note');
         $images = $this->input->post('images');
         $renew = $this->input->post('renew');
+        //汇率
+        $currency = 'cny';
+        $_currency = $this->input->post('coin_type');
+        log_message('debug', 'qqy currency:' . $_currency);
+        if($_currency)
+        {
+            $temp = explode(',',$_currency);
+            $currency = $temp[0];
+        }
+        log_message('debug', 'qqy currency:' . $currency);
+
         $attachments = $this->input->post('attachments');
-        $obj = $this->items->create($amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images, $__extra, $uids, $afford_ids, $attachments);
+        $obj = $this->items->create($amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$__extra,$uids, $afford_ids,$attachments, $currency);
         log_message('debug','create_item_back:' . json_encode($obj));
         // TODO: 提醒的Tips
         if($renew){
@@ -324,8 +378,15 @@ class Items extends REIM_Controller {
                         }
                     }
                 }
-                //$s['amount'] = '￥' . $s['amount'];
-                //$s['amount'] = '￥' . $s['amount'];
+                $symbol = $this->get_coin_symbol($s['currency']);
+                log_message('debug', 'symbol' . $symbol);
+                $s['amount'] = $symbol . $s['amount'];
+                /*
+                if($s['currency'] != 'cny')
+                {
+                    $s['amount'] = round($s['amount'] * $s['rate'] / 100,2); 
+                }
+                */
                 $s['status_str'] = '';
                 log_message("debug", "Item:" . json_encode($s));
                 $trash= $s['status'] === 0 ? 'gray' : 'red';
@@ -853,7 +914,9 @@ class Items extends REIM_Controller {
                 $item_configs = $group_config['item_config'];
                 foreach($item_configs as $conf)
                 {
+                    if($conf['disabled'] == 1) continue;
                     array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled']));	
+                    log_message('debug','qqy_name:' .  $conf['name']);
                 }
             }
         }
@@ -1076,10 +1139,27 @@ class Items extends REIM_Controller {
         log_message("debug", "alvayang: Item Update In:" . $item_update_in);
         $_item_data = $this->items->get_by_id($id);
         log_message('debug', 'item_get_by_id:' . json_encode($_item_data));
+        $currency = 'cny';
+        $_currency = $this->input->post('coin_type');
+        if($_currency)
+        {
+            $temp = explode(',',$_currency);
+            $currency = $temp[0];
+        }
+        
+        //添加汇率字段
         if($item_update_in != 0) {
             $item_data = $this->items->get_by_id($id);
+            $rate = 1.0;
+            $_rate = $this->input->post('rate');
+
+            if($_rate)
+            {
+                $rate = $_rate*100;
+            }
+
             $data = $item_data['data'];
-            if($amount == $data['amount'])
+            if($currency == $data['currency'] && $amount == $data['amount'])
             {
                 $amount=-1;
             }
@@ -1106,7 +1186,7 @@ class Items extends REIM_Controller {
             {
                 $note = -1;
             }
-            $obj = $this->items->update_item($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra);
+            $obj = $this->items->update_item($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra,'',$currency,$rate);
             log_message('debug','xx item_data:'.json_encode($obj));
             if(!$obj['status']) {
                 $this->session->set_userdata('last_error', $obj['data']['msg']);
@@ -1115,7 +1195,7 @@ class Items extends REIM_Controller {
         }
         else
         {
-			$obj = $this->items->update($id, $amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$__extra,$uids,$afford_ids,$attachments);
+			$obj = $this->items->update($id, $amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$__extra,$uids,$afford_ids,$attachments,$currency);
             log_message('debug','zz item_data:'.json_encode($obj));
         }
         log_message('debug','rid:' . $rid);
