@@ -1450,7 +1450,7 @@ class Category extends REIM_Controller {
                 }
                 if($level == 2)
                 {
-                    $item['category_name'] = '|------' . $item['category_name'];
+                    $item['category_name'] = '--' . $item['category_name'];
                 }
                 array_push($data[$item['sob_id']]['category'],array('category_id'=>$item['id'],
                                                                     'category_name'=>$item['category_name'],
@@ -1555,7 +1555,7 @@ class Category extends REIM_Controller {
                 }
                 if($level == 2)
                 {
-                    $item['category_name'] = '|------' . $item['category_name'];
+                    $item['category_name'] = '--' . $item['category_name'];
                 }
                 array_push($data[$item['sob_id']]['category'],array('note' => $item['note'], 
                                                                     'category_id'=>$item['id'],
