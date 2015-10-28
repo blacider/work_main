@@ -60,7 +60,7 @@
                                     <div class="form-group" id="rate_note">
                                         <label class="col-sm-1 control-label no-padding-right"></label>
                                         <div class="col-xs-6 col-sm-6">
-                                        <small>中行实时汇率为：<small id='rate_amount'>1.0</small></small>
+                                        <small>中行实时<small id='rate_type'>汇率</small>为：<small id='rate_amount'>1.0</small></small>
                                         </div>
 
                                     </div>
@@ -409,6 +409,7 @@ var icon_dic = {'cny':'￥','usd':'$','eur':'€','hkd':'$','mop':'$','twd':'$',
                               'aud':'$','nzd':'$','chf':'₣','dkk':'Kr','nok':'Kr','sek':'Kr','brl':'$'
                              }; 
 var _currency = "<?php echo $item['currency'];?>";
+var typed_currency = [];
 
 var _ddt = "<?php echo $ddt; ?>";
 var _average = "<?php echo $average; ?>";
@@ -695,6 +696,14 @@ $('#coin_type').change(function(){
     $('#coin_simbol').text(icon_dic[coin_list[0]]);
     var _amount = $('#amount').val();
     $('#rate_simbol').text('￥' + Math.round(_amount*coin_list[1])/100);
+    if(typed_currency[coin_list[0]]['type'] == 0)
+    {
+        $('#rate_type').text('现钞卖出价');
+    }
+    if(typed_currency[coin_list[0]]['type'] == 2)
+    {
+        $('#rate_type').text('现汇卖出价');
+    }
     $('#rate_amount').text(Math.round(coin_list[1]*10000)/1000000);
     $('#amount').trigger('change');
     $('#amount').trigger('change:updated');
@@ -709,6 +718,7 @@ $('#amount').change(function(){
     $('#rate_simbol').text('￥' + Math.round(_amount*coin_list[1])/100);
 });
 
+/* 不包含汇率种类的实现
 function get_currency()
 {
     $.ajax({
@@ -739,13 +749,62 @@ function get_currency()
         }
     });
 }
+*/
+
+
+function get_typed_currency()
+{
+     $.ajax({
+        url:__BASE + 'items/get_typed_currency',
+        dataType:'json',
+        method:'GET',
+        success:function(data){
+          
+            console.log(data);
+            var _h = '';
+            for(var item in data)
+            {
+                typed_currency[item] = JSON.parse(data[item]);
+                _h += '<option value="' + item + ',' + typed_currency[item]['value'] +'">' + simbol_dic[item] + '</option>';
+            }
+            $('#coin_type').append(_h);
+
+
+
+            var _h = '';
+            for(var item in data)
+            {
+                typed_currency[item] = JSON.parse(data[item]);
+                _h += '<option value="' + item + ',' + typed_currency[item]['value'] +'">' + simbol_dic[item] + '</option>';
+            }
+            $('#coin_type').append(_h);
+
+            if(_currency != 'cny')
+            {
+                $('#coin_type').val(_currency+','+typed_currency[_currency]['value']).prop('selected',true).trigger('chosen:updated');
+            }
+            else
+            {
+                $('#coin_type').val(_currency+','+'100').prop('selected',true).trigger('chosen:updated');
+            }
+            $('#coin_type').trigger('change');
+            $('#coin_type').trigger('chosen:updated');
+        },
+        error:function(a,b,c){
+          
+        }
+    });
+}
 
 
 var __multi_time = 0;
 
 var __average_count = 0;
 $(document).ready(function(){
-    get_currency();
+    if(__config['open_exchange']){
+       // get_currency();
+       get_typed_currency();
+    }
 
     get_sobs();
     var _dt = $('#dt').val();

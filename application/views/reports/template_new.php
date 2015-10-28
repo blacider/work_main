@@ -250,6 +250,7 @@ foreach($items as $i){
                                         {
                                             $item_amount = $i['amount']; 
                                         }
+
                                         ?>
                                         <tr id="<?php echo 'item'.$i['id']?>">
                                         <td>
@@ -260,7 +261,7 @@ foreach($items as $i){
                                             ></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['cate_str'];?></td>
-                                            <td><?php echo '￥' . $item_amount;?></td>
+                                            <td><?php echo  $i['coin_symbol'] . $i['amount'];?></td>
                                             <td><?php 
         
                                                 $buf = '';
@@ -672,3 +673,4 @@ function update_tamount(){
     $('#tamount').html('￥' + toDecimal2(sum));
 }
 </script>
+

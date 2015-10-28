@@ -11,6 +11,22 @@ class Reports extends REIM_Controller {
         $this->load->model('usergroup_model','ug');
     }
 
+    public function get_coin_symbol($key = 'cny')
+    {
+        $symbol = '?';
+        $coin_symbol_dic = array( 
+                            'cny'=>'￥','usd'=>'$','eur'=>'€','hkd'=>'$','mop'=>'$','twd'=>'$','jpy'=>'￥','ker'=>'₩',
+                            'gbp'=>'£','rub'=>'Rbs','sgd'=>'$','php'=>'₱','idr'=>'Rps','myr'=>'$','thb'=>'฿','cad'=>'$',
+                            'aud'=>'$','nzd'=>'$','chf'=>'₣','dkk'=>'Kr','nok'=>'Kr','sek'=>'Kr','brl'=>'$'
+                            );                           
+        if(array_key_exists($key,$coin_symbol_dic))
+        {
+            $symbol = $coin_symbol_dic[$key]; 
+        }
+
+        return $symbol;
+    }
+
     public function add_comment() {
         $rid=$this->input->post("rid");
         $comment = $this->input->post("comment");
@@ -71,6 +87,7 @@ class Reports extends REIM_Controller {
             $categories = $category['data']['categories'];
             $tags = $category['data']['tags'];
         }
+
         $_items =  array();
         if($items && $items['status']) {
             $_cates = array();
@@ -115,7 +132,9 @@ class Reports extends REIM_Controller {
                     }
                 }
 //                $s['amount'] = '￥' . $s['amount'];
-            $s['amount'] = sprintf("%.2f",$s['amount']);
+
+                $s['coin_symbol'] = $this->get_coin_symbol($s['currency']);
+                $s['amount'] = sprintf("%.2f",$s['amount']);
                 $s['status_str'] = '';
                 $trash= $s['istatus'] === 0 ? 'gray' : 'red';
                 $edit = $s['istatus'] === 0 ? 'gray' : 'green';
@@ -540,6 +559,11 @@ class Reports extends REIM_Controller {
         $report['receivers']['managers'] = $_managers;
         $report['receivers']['cc'] = $_ccs; 
         $_items = $this->_getitems();
+
+        foreach($report['items'] as &$rt)
+        {
+            $rt['coin_symbol'] = $this->get_coin_symbol($rt['currency']);
+        }
 
         $this->bsload('reports/edit',
             array(

@@ -2,6 +2,18 @@
 
 class Items_Model extends Reim_Model {
 
+    public function get_typed_currency()
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+		$url = $this->get_url('typed_currency');
+		$buf = $this->do_Get($url, $jwt);
+        log_message('debug','typed_currency_url:' . $url);
+        log_message('debug','typed_currency_back:' . $buf);
+		$obj = json_decode($buf, True);
+        return $obj;
+    }
+
     public function get_currency()
     {
         $jwt = $this->session->userdata('jwt');
@@ -9,7 +21,7 @@ class Items_Model extends Reim_Model {
 		$url = $this->get_url('currency');
 		$buf = $this->do_Get($url, $jwt);
         log_message("debug", $buf);
-		$obj = json_decode($buf, true);
+		$obj = json_decode($buf, True);
         return $obj;
     }
 

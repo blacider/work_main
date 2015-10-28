@@ -266,7 +266,7 @@ foreach($report['items'] as $i){
                                             <td><input checked='true' name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>" data-id="<?php echo $i['id']; ?>" ></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['category_name']; ?></td>
-                                            <td><?php echo '￥' . $item_amount;?></td>
+                                            <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
                                             <td><?php 
                                                 $buf = '';
                                                 switch(intval($i['prove_ahead'])) {
@@ -307,7 +307,7 @@ foreach($items as $i){
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['cate_str']; ?></td>
                                            
-                                            <td><?php echo '￥' . $item_amount;?></td>
+                                            <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
                                             <td><?php 
                                                 $buf = '';
                                                 switch(intval($i['prove_ahead'])) {

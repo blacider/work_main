@@ -9,6 +9,22 @@ class Items extends REIM_Controller {
         $this->load->model('group_model', 'groups');
     }
 
+    public function get_coin_symbol($key = 'cny')
+    {
+        $symbol = '?';
+        $coin_symbol_dic = array( 
+                            'cny'=>'￥','usd'=>'$','eur'=>'€','hkd'=>'$','mop'=>'$','twd'=>'$','jpy'=>'￥','ker'=>'₩',
+                            'gbp'=>'£','rub'=>'Rbs','sgd'=>'$','php'=>'₱','idr'=>'Rps','myr'=>'$','thb'=>'฿','cad'=>'$',
+                            'aud'=>'$','nzd'=>'$','chf'=>'₣','dkk'=>'Kr','nok'=>'Kr','sek'=>'Kr','brl'=>'$'
+                            );                           
+        if(array_key_exists($key,$coin_symbol_dic))
+        {
+            $symbol = $coin_symbol_dic[$key]; 
+        }
+
+        return $symbol;
+    }
+
     public function get_currency()
     {
         $info = $this->items->get_currency();
@@ -21,6 +37,19 @@ class Items extends REIM_Controller {
             die(json_encode($info));
         }
             
+    }
+
+    public function get_typed_currency()
+    {
+        $info = $this->items->get_typed_currency();
+        if($info['status'] > 0)
+        {
+            die(json_encode($info['data']));
+        }
+        else
+        {
+            die(json_encode($info));
+        }
     }
 
     public function avatar(){
@@ -325,12 +354,15 @@ class Items extends REIM_Controller {
                         }
                     }
                 }
-                //$s['amount'] = '￥' . $s['amount'];
-                //$s['amount'] = '￥' . $s['amount'];
+                $symbol = $this->get_coin_symbol($s['currency']);
+                log_message('debug', 'symbol' . $symbol);
+                $s['amount'] = $symbol . $s['amount'];
+                /*
                 if($s['currency'] != 'cny')
                 {
                     $s['amount'] = round($s['amount'] * $s['rate'] / 100,2); 
                 }
+                */
                 $s['status_str'] = '';
                 log_message("debug", "Item:" . json_encode($s));
                 $trash= $s['status'] === 0 ? 'gray' : 'red';
