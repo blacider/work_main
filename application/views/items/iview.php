@@ -55,8 +55,8 @@
                                             <div class="input-group input-group">
                                                 <span class="input-group-addon" id='coin_simbol'>￥</span>
                                                 <input type="text" class="form-controller col-xs-12 col-sm-12" name="amount" id="amount" value="<?php echo $item['amount'];?>" placeholder="金额" required disabled>
-                                                <span class="input-group-addon" id='rate_simbol'><?php 
-                                                if($item['currency'] == 1)
+                                                <span class="input-group-addon" id='rate_simbol'>￥<?php 
+                                                if($item['currency'] == 'cny')
                                                 { 
                                                     echo round($item['amount'],2);
                                                 }
@@ -65,7 +65,7 @@
                                                     echo round($item['amount'] * $item['rate']/100,2);
                                                 }
 
-                                                ?>￥</span>
+                                                ?></span>
                                             </div>
 
                                         </div>
