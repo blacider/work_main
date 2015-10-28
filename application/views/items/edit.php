@@ -759,8 +759,6 @@ function get_typed_currency()
         dataType:'json',
         method:'GET',
         success:function(data){
-          
-            console.log(data);
             var _h = '';
             for(var item in data)
             {
