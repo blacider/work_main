@@ -1441,13 +1441,44 @@ class Category extends REIM_Controller {
 
             if(array_key_exists($item['sob_id'],$data))
             {
-                array_push($data[$item['sob_id']]['category'],array('category_id'=>$item['id'],'category_name'=>$item['category_name']));
+                $p_flag = $item['pid'];
+                $level = 2;
+                if($item['pid'] <= 0 )
+                {
+                    $p_flag = $item['id'];
+                    $level = 1;
+                }
+                if($level == 2)
+                {
+                    $item['category_name'] = '|------' . $item['category_name'];
+                }
+                array_push($data[$item['sob_id']]['category'],array('category_id'=>$item['id'],
+                                                                    'category_name'=>$item['category_name'],
+                                                                    'p_flag' => $p_flag,
+                                                                    'level' => $level
+                                                                    )
+                                                                    );
             }
             log_message("debug","@@@@@@@@@@@@".$item['sob_id']."+++".$item['category_name']);
         }
+        //将对应的类目排序
+        foreach($data as $key => &$val)
+        {
+            usort($val['category'],function($a,$b){
+                if($a['p_flag'] == $b['p_flag'])
+                {
+                    if($a['level'] == $b['level'])
+                        return 0;
+                    else
+                        return ($a['level'] > $b['level']) ? 1 : -1;
+                }
+                else
+                    return ($a['p_flag'] > $b['p_flag']) ? 1 : -1;
+            });
+        }
 
         log_message('debug','data:' . json_encode($data));
-	log_message('debug','sobs:' . json_encode($sobs));
+	    log_message('debug','sobs:' . json_encode($sobs));
         die(json_encode($data));
     }
     public function get_my_sob_category($uid=0)
@@ -1507,16 +1538,52 @@ class Category extends REIM_Controller {
         }
         $category = $this->category->get_list();
         $categories = $category['data']['categories'];
+        
+        //目前支持二级类目的情况
         foreach($categories as $item)
         {
             log_message("debug", "alvayang Item:" . json_encode($_sob_id) . ", " . count($_sob_id));
             if(array_key_exists('sob_id', $item) && array_key_exists($item['sob_id'],$data))
             {
                 log_message("debug", "view:" . json_encode($item));
-                array_push($data[$item['sob_id']]['category'],array('note' => $item['note'], 'category_id'=>$item['id'],'category_name'=>$item['category_name']));
+                $p_flag = $item['pid'];
+                $level = 2;
+                if($item['pid'] <= 0 )
+                {
+                    $p_flag = $item['id'];
+                    $level = 1;
+                }
+                if($level == 2)
+                {
+                    $item['category_name'] = '|------' . $item['category_name'];
+                }
+                array_push($data[$item['sob_id']]['category'],array('note' => $item['note'], 
+                                                                    'category_id'=>$item['id'],
+                                                                    'category_name'=>$item['category_name'],
+                                                                    'p_flag' => $p_flag,
+                                                                    'level' => $level
+                                                                    )
+                                                                    );
             }
         }
-	log_message('debug','mysobs:' . json_encode($_sob_id));
+
+        //将对应的类目排序
+        foreach($data as $key => &$val)
+        {
+            usort($val['category'],function($a,$b){
+                if($a['p_flag'] == $b['p_flag'])
+                {
+                    if($a['level'] == $b['level'])
+                        return 0;
+                    else
+                        return ($a['level'] > $b['level']) ? 1 : -1;
+                }
+                else
+                    return ($a['p_flag'] > $b['p_flag']) ? 1 : -1;
+            });
+        }
+	    log_message('debug','mysobs:' . json_encode($_sob_id));
+        log_message('debug','data' . json_encode($data));
 
         die(json_encode($data));
     }
