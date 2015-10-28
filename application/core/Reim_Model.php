@@ -165,6 +165,7 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_POST, count($fields)) ;
         curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($ch, CURLOPT_ENCODING, '');
         if($extraheader) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
         }
@@ -185,6 +186,7 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_VERBOSE, false) ;
+        curl_setopt($ch, CURLOPT_ENCODING, '');
         $output = curl_exec($ch) ;
         curl_close($ch);
         return $output;
@@ -200,6 +202,7 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_VERBOSE, true) ;
+        curl_setopt($ch, CURLOPT_ENCODING, '');
         ob_start();
         curl_exec($ch );
         $result  = ob_get_contents() ;
