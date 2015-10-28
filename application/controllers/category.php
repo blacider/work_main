@@ -1436,6 +1436,7 @@ class Category extends REIM_Controller {
         $data[0]['category'] = array();
         $category = $this->category->get_list();
         $categories = $category['data']['categories'];
+        $pid_dic = array();
         foreach($categories as $item)
         {
 
@@ -1447,10 +1448,11 @@ class Category extends REIM_Controller {
                 {
                     $p_flag = $item['id'];
                     $level = 1;
+                    $pid_dic[$item['id']] = $item['category_name'];
                 }
                 if($level == 2)
                 {
-                    $item['category_name'] = '--' . $item['category_name'];
+                    $item['category_name'] = $pid_dic[$item['pid']] . '-' . $item['category_name'];
                 }
                 array_push($data[$item['sob_id']]['category'],array('category_id'=>$item['id'],
                                                                     'category_name'=>$item['category_name'],
@@ -1538,8 +1540,10 @@ class Category extends REIM_Controller {
         }
         $category = $this->category->get_list();
         $categories = $category['data']['categories'];
+        $pid_dic = array();
         
         //目前支持二级类目的情况
+       //一级的类目建立一定在它二级类目建立之前 
         foreach($categories as $item)
         {
             log_message("debug", "alvayang Item:" . json_encode($_sob_id) . ", " . count($_sob_id));
@@ -1552,10 +1556,11 @@ class Category extends REIM_Controller {
                 {
                     $p_flag = $item['id'];
                     $level = 1;
+                    $pid_dic[$item['id']] = $item['category_name'];
                 }
                 if($level == 2)
                 {
-                    $item['category_name'] = '--' . $item['category_name'];
+                    $item['category_name'] = $pid_dic[$item['pid']] . '-' . $item['category_name'];
                 }
                 array_push($data[$item['sob_id']]['category'],array('note' => $item['note'], 
                                                                     'category_id'=>$item['id'],
