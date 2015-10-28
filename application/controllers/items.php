@@ -8,6 +8,30 @@ class Items extends REIM_Controller {
         $this->load->model('user_model','user');
         $this->load->model('group_model', 'groups');
     }
+    public function attachment() {
+        if(empty($_FILES)) 
+            die(''); 
+        
+        // 默认是item
+        //$type = $this->input->post('type');
+        //if(!$type) $type = 0;
+        log_message("debug", json_encode($_FILES));
+        $mime = $_FILES['file']['type'];
+        $filename = $_FILES['file']['name'];
+
+        if(!is_uploaded_file($_FILES['file']['tmp_name'])) 
+            die('');
+        $buf = $this->items->attachment($_FILES['file']['tmp_name'],$filename,$mime);
+
+        if($buf['status'] > 0)
+        {
+            die(json_encode($buf));
+        }
+        else
+        {
+            die(json_encode($buf));
+        }
+    }
 
     public function get_coin_symbol($key = 'cny')
     {
@@ -287,9 +311,9 @@ class Items extends REIM_Controller {
         }
         log_message('debug', 'qqy currency:' . $currency);
 
-
-        $obj = $this->items->create($amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$__extra,$uids, $afford_ids, $currency);
-
+        $attachments = $this->input->post('attachments');
+        $obj = $this->items->create($amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$__extra,$uids, $afford_ids,$attachments, $currency);
+        log_message('debug','create_item_back:' . json_encode($obj));
         // TODO: 提醒的Tips
         if($renew){
             redirect(base_url('items/newitem'));
@@ -432,7 +456,7 @@ class Items extends REIM_Controller {
         if ($flag == 1) 
         {
            // redirect(base_url('reports/newreport'));
-           die(josn_encode(array('data'=>'success'))); 
+           die(json_encode(array('data'=>'success'))); 
         }
         else redirect(base_url('items'));
     }
@@ -1110,6 +1134,8 @@ class Items extends REIM_Controller {
         $type = $this->input->post('type');
         $note = $this->input->post('note');
         $images = $this->input->post('images');
+        $attachments = $this->input->post('attachments');
+        log_message('debug','attachments:' . $attachments);
         log_message("debug", "alvayang: Item Update In:" . $item_update_in);
         $_item_data = $this->items->get_by_id($id);
         log_message('debug', 'item_get_by_id:' . json_encode($_item_data));
@@ -1169,7 +1195,7 @@ class Items extends REIM_Controller {
         }
         else
         {
-			$obj = $this->items->update($id, $amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$__extra,$uids,$afford_ids,$currency);
+			$obj = $this->items->update($id, $amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$__extra,$uids,$afford_ids,$attachments,$currency);
             log_message('debug','zz item_data:'.json_encode($obj));
         }
         log_message('debug','rid:' . $rid);

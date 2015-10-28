@@ -17,7 +17,7 @@ class Reim_Model extends CI_Model {
         return API_SERVER . $part;
     }
 
-	public function get_jwt($username, $password, $server_token = '',$device_type = 'admin'){
+    public function get_jwt($username, $password, $server_token = '',$device_type = 'admin'){
         if(!$username){
             $username = $this->session->userdata('email');
             $password = $this->session->userdata('password');
@@ -28,32 +28,31 @@ class Reim_Model extends CI_Model {
         if("" === $server_token){
             $server_token = $this->session->userdata('server_token');
         }
-		$users  = array(
-			'email' => $username
-			,'password' => $password
-			,'device_type' => $device_type
-			,'device_token' => ''
+        $users  = array(
+            'email' => $username
+            ,'password' => $password
+            ,'device_type' => $device_type
+            ,'device_token' => ''
             ,'server_token' => $server_token
-		);
+        );
         log_message("debug", "Header:" . json_encode($users));
-		return $this->get_header($users, $device_type != "admin");
-	}
+        return $this->get_header($users, $device_type != "admin");
+    }
 
     public function get_admin_jwt(){
-		$config = array(
-			'device_type' => 'invoice'
-		);
-		return array('X-REIM-JWT: ' . JWT::encode($config, PUBKEY), 'X-ADMINUI-API: 1');
-    } 
+        $config = array(
+            'device_type' => 'invoice'
+        );
+        return array('X-REIM-JWT: ' . JWT::encode($config, PUBKEY), 'X-ADMINUI-API: 1');
+    }
 
-
-	private function get_header($config, $without_admin = 0){
+    private function get_header($config, $without_admin = 0){
         if($without_admin) {
             return array('X-REIM-JWT: ' . JWT::encode($config, PUBKEY));
         } else {
             return array('X-REIM-JWT: ' . JWT::encode($config, PUBKEY), 'X-ADMIN-API: 1');
         }
-	}
+    }
 
     private function getBrowser()
     {
@@ -142,14 +141,14 @@ class Reim_Model extends CI_Model {
             'pattern'    => $pattern
         );
     }
-    
+
     private function get_user_agent() {
         $browser = $this->getBrowser();
-        
+
         $mail = $this->session->userdata("email");
         if (!$mail)
             $mail = "none";
-        
+
         $name = $browser["name"];
         $version = $browser["version"];
 
@@ -158,14 +157,15 @@ class Reim_Model extends CI_Model {
 
         return $result;
     }
-    
+
     public function do_Post($url, $fields, $extraheader = array(), $force_bin = 0){
         $ch  = curl_init() ;
         curl_setopt($ch, CURLOPT_URL, $url) ;
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_POST, count($fields)) ;
         curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($ch, CURLOPT_ENCODING, '');
         if($extraheader) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
         }
@@ -180,12 +180,13 @@ class Reim_Model extends CI_Model {
 
     public function do_Get($url, $extraheader = array()){
         $ch = curl_init();
-        curl_setopt($ch , CURLOPT_URL, $url ) ;
+        curl_setopt($ch, CURLOPT_URL, $url ) ;
         curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
-        curl_setopt($ch,CURLOPT_HTTPHEADER, $extraheader);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_VERBOSE, false) ;
+        curl_setopt($ch, CURLOPT_ENCODING, '');
         $output = curl_exec($ch) ;
         curl_close($ch);
         return $output;
@@ -193,14 +194,15 @@ class Reim_Model extends CI_Model {
 
     public function do_Put($url, $fields, $extraheader = array()){
         $ch  = curl_init() ;
-        curl_setopt($ch , CURLOPT_URL, $url );
+        curl_setopt($ch, CURLOPT_URL, $url );
         curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
-        curl_setopt($ch , CURLOPT_POST, count ( $fields )) ;
-        curl_setopt ($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-        curl_setopt($ch , CURLOPT_POSTFIELDS, $fields );
-        curl_setopt($ch,CURLOPT_HTTPHEADER, $extraheader);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+        curl_setopt($ch, CURLOPT_POST, count ( $fields )) ;
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields );
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_VERBOSE, true) ;
+        curl_setopt($ch, CURLOPT_ENCODING, '');
         ob_start();
         curl_exec($ch );
         $result  = ob_get_contents() ;
@@ -211,11 +213,11 @@ class Reim_Model extends CI_Model {
 
     public function do_Delete($url, $fields, $extraheader = array()){
         $ch  = curl_init() ;
-        curl_setopt($ch , CURLOPT_URL, $url ) ;
+        curl_setopt($ch, CURLOPT_URL, $url ) ;
         curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
-        curl_setopt ($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
-        curl_setopt($ch , CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
         curl_setopt($ch, CURLOPT_VERBOSE, true) ;
         ob_start();

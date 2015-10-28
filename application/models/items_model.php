@@ -25,6 +25,25 @@ class Items_Model extends Reim_Model {
         return $obj;
     }
 
+    public function attachment($content,$filename,$mime)
+    {
+        log_message('debug','qqy content: ' . $content);
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $url = $this->get_url('attachment');
+        $data = array(
+            "content" => $this->get_curl_upload_field($content),
+            "filename" => $filename,
+            "mime" => $mime,
+        );
+        $buf = $this->do_Post($url,$data,$jwt);
+        log_message('debug','attachment_data:' . json_encode($data));
+        log_message('debug','attachment_url:' . json_encode($url));
+        log_message('debug','attachment_back:' . $buf);
+        log_message("debug", $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
     public function update_item($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '',$currency,$rate){
         $items = array();
         $s = array(
@@ -120,7 +139,7 @@ class Items_Model extends Reim_Model {
     }
 
 
-    public function create($amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '', $afford_ids = -1 , $currency){
+    public function create($amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '', $afford_ids = -1,$attachments,$currency){
         $items = array();
         $s = array(
             'local_id' => 1,
@@ -139,6 +158,7 @@ class Items_Model extends Reim_Model {
             'latitude' => 0,
             'longitude' => 0,
             'merchants' => $merchant,
+            'attachment_ids' => $attachments,
             'type' => 1,
             'currency' => $currency,
 	    'extra' => $extra);
@@ -170,12 +190,14 @@ class Items_Model extends Reim_Model {
         $url = $this->get_url('item/'. $id);
         $data = array();
         $buf = $this->do_Get($url, $jwt);
+        log_message('debug', 'get_item_url:' . $url);
+        log_message('debug', 'get_item_back:' . $buf);
         $obj = json_decode($buf, true);
         return $obj;
 
     }
 
-    public function update($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '',$fee_afford_ids=-1, $currency){
+    public function update($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '',$fee_afford_ids=-1,$attachments,$currency){
         $items = array();
         $s = array(
             'local_id' => 1,
@@ -194,6 +216,7 @@ class Items_Model extends Reim_Model {
             'latitude' => 0,
             'longitude' => 0,
             'merchants' => $merchant,
+            'attachment_ids' => $attachments,
             'type' => 1,
             'afford_ids' => $fee_afford_ids,
             'currency' => $currency,
