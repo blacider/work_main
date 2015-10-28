@@ -10,7 +10,7 @@
 <!--
 <script src="/static/ace/js/date-time/locale/zh-cn.js"></script>
 -->
-
+<script type="text/javascript" src="/static/js/jqgrid_choseall.js"></script>
 <script src="/static/ace/js/jquery.colorbox-min.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 

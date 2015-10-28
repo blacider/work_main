@@ -3,7 +3,7 @@
  <script src="/static/ace/js/dropzone.min.js"></script>
  <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
-
+<script type="text/javascript" src="/static/js/jqgrid_choseall.js"></script>
  <style type="text/css">
     #globalSearchText{
 position: absolute;
