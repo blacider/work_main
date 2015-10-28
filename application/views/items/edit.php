@@ -64,6 +64,7 @@
                                         </div>
 
                                     </div>
+                                    <input type='hidden' id='rate' name='rate' value='1.0'/>
                             <?php
                                 }
                                 else
@@ -708,11 +709,13 @@ $('#coin_type').change(function(){
             $('#rate_type').text('现汇卖出价');
         }
         $('#rate_amount').text(Math.round(coin_list[1]*10000)/1000000);
+        $('#rate').val(Math.round(coin_list[1]*10000)/1000000);
     }
     else
     {
          $('#rate_type').text('现钞卖出价');
          $('#rate_amount').text('1.0');
+         $('#rate_amount').val('1.0');
     }
     
     $('#amount').trigger('change');

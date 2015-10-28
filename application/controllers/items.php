@@ -1124,8 +1124,16 @@ class Items extends REIM_Controller {
         //添加汇率字段
         if($item_update_in != 0) {
             $item_data = $this->items->get_by_id($id);
+            $rate = 1.0;
+            $_rate = $this->input->post('rate');
+
+            if($_rate)
+            {
+                $rate = $_rate*100;
+            }
+
             $data = $item_data['data'];
-            if($amount == $data['amount'])
+            if($currency == $data['currency'] && $amount == $data['amount'])
             {
                 $amount=-1;
             }
@@ -1152,7 +1160,7 @@ class Items extends REIM_Controller {
             {
                 $note = -1;
             }
-            $obj = $this->items->update_item($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra);
+            $obj = $this->items->update_item($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra,'',$currency,$rate);
             log_message('debug','xx item_data:'.json_encode($obj));
             if(!$obj['status']) {
                 $this->session->set_userdata('last_error', $obj['data']['msg']);

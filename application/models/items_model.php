@@ -25,14 +25,14 @@ class Items_Model extends Reim_Model {
         return $obj;
     }
 
-    public function update_item($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = ''){
+    public function update_item($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '',$currency,$rate){
         $items = array();
         $s = array(
 	    array('type' => 1,'val' => $category)
 	    ,array('type' => 2,'val' => $note)
 	    ,array('type' => 3,'val' => $tags)
 	    ,array('type' => 4,'val' => $merchant)
-	    ,array('type' => 6,'val' => $amount)
+	    ,array('type' => 6,'val' => $amount,'currency' => $currency , 'rate' => $rate)
 	    ,array('type' => 8,'val' => $dt)
 	    ,array('type' => 9,'val' => $extra)
 	    );
@@ -44,6 +44,7 @@ class Items_Model extends Reim_Model {
         $url = $this->get_url('update_item');
         $buf = $this->do_Post($url, $data, $jwt);
         $obj = json_decode($buf, true);
+        log_message('debug','update_item_data:'. json_encode($data));
         log_message('debug','update_item_back:'.$buf);
         return $obj;
     }
