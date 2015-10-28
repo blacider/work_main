@@ -167,9 +167,7 @@ jQuery(grid_selector).jqGrid({
     },
     onSelectAll : function(aRows, status) {
         if (status) {
-            var array_selectRows = new Array();
-            var all_data = $(grid_selector).jqGrid("getGridParam","data");
-            for (var i = 0; i < all_data.length; i++) array_selectRows.push(all_data[i].id);
+            var array_selectRows = jqgrid_choseall_plus(grid_selector);
             jQuery.each(array_selectRows,function(index,rowid){
                 if (jQuery.inArray(rowid,selectRows) == -1) {
                     selectRows.push(rowid);
