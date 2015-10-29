@@ -3,6 +3,7 @@
     <div class="page-content-area">
         <div class="row">
             <div class="col-xs-12">
+            <div><h4 class='blue' >已导入帐套数:<em id='insert_count'>0</em></h4></div>
                 <div class="panel panel-primary">
                     <form role="form" method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
                         <div class="form-contorller">
@@ -92,6 +93,8 @@ var sum = 0;
                                         $(this).removeClass('green').addClass('red').text('导入出错');
                                     } else{
                                         $(this).removeClass('red').addClass('green').text('已导入');
+                                        sum++;
+                                        $('#insert_count').text(sum);
                                     }
                                 });
                             } else {

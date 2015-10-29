@@ -2,7 +2,9 @@
 <div class="page-content">
     <div class="page-content-area">
         <div class="row">
+
             <div class="col-xs-12">
+            <div><h4 class='blue' >已导入人数:<em id='insert_count'>0</em></h4></div>
                 <div class="panel panel-primary">
                     <form role="form" method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
                         <div class="form-contorller">
@@ -117,6 +119,7 @@
     var _no_levels = '<?php echo json_encode($no_levels)?>';
     var _no_groups = '<?php echo json_encode($no_groups)?>';
     var _members = '<?php echo json_encode($members)?>';
+    var import_sum = 0;
 
     var no_ranks = '';
     if(_no_ranks)
@@ -315,6 +318,7 @@ function insertMem()
                             });
                         show_notify('员工创建成功');*/
                          insert_count++;
+                         
                         var back_info = data['data'];
 
                         if(back_info.status>0)
@@ -338,6 +342,8 @@ function insertMem()
                                         in_members.push(person);
                                     }
                                   myself.removeClass('red').addClass('green');
+                                  import_sum++;
+                                  $('#insert_count').text(import_sum);
                                   if(_status&1 == 1)
                                   {
                                     myself.text('已更新');
