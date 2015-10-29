@@ -132,7 +132,7 @@ foreach($items as $i){
                                             ></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['cate_str'];?></td>
-                                            <td><?php echo '￥' . $item_amount;?></td>
+                                            <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
                                             <td><?php 
         
                                                 $buf = '';
