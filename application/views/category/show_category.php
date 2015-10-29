@@ -3,7 +3,7 @@
     <div class="page-content-area">
         <div class="row">
             <div class="col-xs-12">
-            <div><h4 class='blue' >已导入帐套数:<em id='insert_count'>0</em></h4></div>
+             <div><h4 class='blue' >待导入帐套总数:<em data-nums = "<?php echo count($sobs);?>" id="all_count"><?php echo count($sobs);?></em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已导入帐套数:<em id='insert_count'>0</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;未导入帐套数:<em id='uninsert_count'><?php echo count($sobs);?></em> </h4></div> 
                 <div class="panel panel-primary">
                     <form role="form" method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
                         <div class="form-contorller">
@@ -72,7 +72,8 @@ foreach($sob_info as $h => $s){
 var __BASE = "<?php echo $base_url;?>";
 //var _sob_info = '<?php echo json_encode($sob_info);?>';
 var sob_info = [];
-var sum = 0;
+var insert_count = 0;
+var all_count = $('#all_count').data('nums');
     $(document).ready(function(){
         $('#imports_sob').click(function(){
             $('.exist_sob').each(function(idx, item){
@@ -93,8 +94,9 @@ var sum = 0;
                                         $(this).removeClass('green').addClass('red').text('导入出错');
                                     } else{
                                         $(this).removeClass('red').addClass('green').text('已导入');
-                                        sum++;
-                                        $('#insert_count').text(sum);
+                                        insert_count++;
+                                        $('#insert_count').text(insert_count);
+                                        $('#uninsert_count').text(all_count - insert_count);
                                     }
                                 });
                             } else {
