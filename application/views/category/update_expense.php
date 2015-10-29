@@ -302,7 +302,7 @@ function arr_contains(item,arr)
 
         $('#gid').change(function(){
           var _gid = $('#gid').val();
-          console.log("#gid:" + _gid);
+         // console.log("#gid:" + _gid);
           if(_gid)
           {
             for(var j=0 ; j < _gid.length ; j++)
@@ -317,11 +317,11 @@ function arr_contains(item,arr)
                           dataType:'json',
                           success:function(data){
                     //        console.log(data);
-                            console.log('gid:' + my_gid);
+                     //       console.log('gid:' + my_gid);
                             var _h = '';
                             for(var i = 0 ; i < data['member'].length; i++)
                             {
-                              console.log(exist_oids);
+                    //          console.log(exist_oids);
                               if($('#fid').val() == -1)
                               {
                                 if(!(arr_contains(data['member'][i].id,exist_oids) && exist_oids_dic[data['member'][i].id] == my_gid))
@@ -386,7 +386,7 @@ function arr_contains(item,arr)
              $('#gForm').prop('hidden',true).trigger('chosen:updated');
                $('#oid').bind('change',function(){
                         $('#oid').val(_oid).attr('selected',true).trigger('chosen:updated');
-                        console.log('change');
+                  //      console.log('change');
                         //var arr = [];
                         //arr.push($('#oid').val());
                         $('#_oid').val(JSON.stringify($('#oid').val()));
@@ -473,7 +473,7 @@ function arr_contains(item,arr)
 
                $('#oid').bind('change',function(){
                         $('#oid').val(_oid).attr('selected',true).trigger('chosen:updated');
-                        console.log('change');
+                    //    console.log('change');
                         //var arr = [];
                         //arr.push($('#oid').val());
                         $('#_oid').val(JSON.stringify($('#oid').val()));
