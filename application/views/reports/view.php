@@ -567,13 +567,7 @@ var error = "<?php echo $error; ?>";
 $(document).ready(function(){
     if(error) show_notify(error);
     $('.cancel').click(function() {
-<?php if (!isset($report_list_url)) { $report_list_url = FALSE; } ?>
-<?php if ($report_list_url) { ?>
-            location.href = "<?php echo $report_list_url; ?>";            
-<?php } else { ?>
             history.go(-1);
-<?php } ?>
-
     });
 
     $('.callback').click(function(){
