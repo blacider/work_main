@@ -248,8 +248,13 @@ var exist_oids = [];
 var exist_oids_dic = [];
 for(var key in _exist_oids)
 {
-  exist_oids.push(_exist_oids[key]['oid']);
-  exist_oids_dic[_exist_oids[key]['oid']] = _exist_oids[key]['gid'];
+   exist_oids.push(_exist_oids[key]['oid']);
+  if(exist_oids_dic[_exist_oids[key]['oid']] == undefined)
+  {
+      exist_oids_dic[_exist_oids[key]['oid']] = [];
+      
+  }
+  exist_oids_dic[_exist_oids[key]['oid']].push(_exist_oids[key]['gid']);
 }
 var group_dic = '';
 if(_group_dic)

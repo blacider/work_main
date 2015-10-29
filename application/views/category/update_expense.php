@@ -245,7 +245,12 @@ var exist_oids_dic = [];
 for(var key in _exist_oids)
 {
   exist_oids.push(_exist_oids[key]['oid']);
-  exist_oids_dic[_exist_oids[key]['oid']] = _exist_oids[key]['gid'];
+  if(exist_oids_dic[_exist_oids[key]['oid']] == undefined)
+  {
+      exist_oids_dic[_exist_oids[key]['oid']] = [];
+      
+  }
+  exist_oids_dic[_exist_oids[key]['oid']].push(_exist_oids[key]['gid']);
 }
 
 if(error)
@@ -316,7 +321,7 @@ function arr_contains(item,arr)
                           method:'get',
                           dataType:'json',
                           success:function(data){
-                    //        console.log(data);
+               //             console.log(data);
                      //       console.log('gid:' + my_gid);
                             var _h = '';
                             for(var i = 0 ; i < data['member'].length; i++)
@@ -324,7 +329,7 @@ function arr_contains(item,arr)
                     //          console.log(exist_oids);
                               if($('#fid').val() == -1)
                               {
-                                if(!(arr_contains(data['member'][i].id,exist_oids) && exist_oids_dic[data['member'][i].id] == my_gid))
+                                if(!(arr_contains(data['member'][i].id,exist_oids) && arr_contains(my_gid,exist_oids_dic[data['member'][i].id]) ))
                                 {
                                   _h += "<option value=" + "'" + data['gid'] +","+ data['member'][i].id + ","+data['member'][i].nickname+"'"+">" + data['member'][i].d + '-' + data['member'][i].nickname + "</option>";
                                 }
@@ -350,7 +355,7 @@ function arr_contains(item,arr)
                   }
                   else
                   {
-                    console.log('already');
+      
                     //$('#oid').val('').trigger('change');
                     $('#oid').trigger('chosen:updated');
                   }
@@ -400,13 +405,13 @@ function arr_contains(item,arr)
  //           console.log('pid:' + _pid);
    //         console.log('id:' + _id);
      //       console.log('gid:' + _gid);
-            console.log('oid:' + _oid);
+       //     console.log('oid:' + _oid);
             $.ajax({
               url:__BASE + 'category/get_fee_afford/' + _id,
               method:'get',
               dataType:'json',
               success:function(data){
-                  console.log(data);
+     //             console.log(data);
                  
                       var privilege = data.privilege;
  //                     console.log(privilege);
