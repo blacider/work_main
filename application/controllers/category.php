@@ -262,7 +262,7 @@ class Category extends REIM_Controller {
         {
                 foreach($fee_afford['detail'] as &$f)
                 {
-                    array_push($oid_dic,$f['oid']);
+                    array_push($oid_dic,array('oid' => $f['oid'],'gid' => $f['gid']));
                     if(!array_key_exists($f['gid'],$fee_afford['gdetail']))
                     {
                         $fee_afford['gdetail'][$f['gid']] = array();

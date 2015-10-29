@@ -239,7 +239,14 @@
 var __BASE = "<?php echo base_url();?>";
 var error = "<?php echo $error;?>";
 var exists = [];
-var exist_oids = $('#pro_title').data('oids');
+var _exist_oids = $('#pro_title').data('oids');
+var exist_oids = [];
+var exist_oids_dic = [];
+for(var key in _exist_oids)
+{
+  exist_oids.push(_exist_oids[key]['oid']);
+  exist_oids_dic[_exist_oids[key]['oid']] = _exist_oids[key]['gid'];
+}
 
 if(error)
 {
@@ -300,51 +307,55 @@ function arr_contains(item,arr)
           {
             for(var j=0 ; j < _gid.length ; j++)
             {
-              if(!arr_contains(_gid[j],exists))
+              (function(my_gid)
               {
-                  $.ajax({
-                      url:__BASE + '/category/get_ug_members/'+ _gid[j],
-                      method:'get',
-                      dataType:'json',
-                      success:function(data){
-                //        console.log(data);
-               //         console.log(_gid[j]);
-                        var _h = '';
-                        for(var i = 0 ; i < data['member'].length; i++)
-                        {
-                          console.log(exist_oids.length);
-                          if($('#fid').val() == -1)
-                          {
-                            if(!arr_contains(data['member'][i].id,exist_oids))
+                  if(!arr_contains(my_gid,exists))
+                  {
+                      $.ajax({
+                          url:__BASE + '/category/get_ug_members/'+ my_gid,
+                          method:'get',
+                          dataType:'json',
+                          success:function(data){
+                    //        console.log(data);
+                            console.log('gid:' + my_gid);
+                            var _h = '';
+                            for(var i = 0 ; i < data['member'].length; i++)
                             {
-                              _h += "<option value=" + "'" + data['gid'] +","+ data['member'][i].id + ","+data['member'][i].nickname+"'"+">" + data['member'][i].d + '-' + data['member'][i].nickname + "</option>";
+                              console.log(exist_oids);
+                              if($('#fid').val() == -1)
+                              {
+                                if(!(arr_contains(data['member'][i].id,exist_oids) && exist_oids_dic[data['member'][i].id] == my_gid))
+                                {
+                                  _h += "<option value=" + "'" + data['gid'] +","+ data['member'][i].id + ","+data['member'][i].nickname+"'"+">" + data['member'][i].d + '-' + data['member'][i].nickname + "</option>";
+                                }
+                              }
+                              else
+                              {
+                                  _h += "<option value=" + "'" + data['gid'] +","+ data['member'][i].id + ","+data['member'][i].nickname+"'"+">" + data['member'][i].d + '-' + data['member'][i].nickname + "</option>";
+                              }
                             }
+                         
+                            $('#oid').append(_h).trigger("chosen:updated");
+                            $('#oid').trigger('change');
+                            $('#oid').trigger('chosen:updated');
+                          },
+                          error:function(a,b,c){
+                    //        console.log(a);
+                      //      console.log(b);
+                        //    console.log(c);
                           }
-                          else
-                          {
-                              _h += "<option value=" + "'" + data['gid'] +","+ data['member'][i].id + ","+data['member'][i].nickname+"'"+">" + data['member'][i].d + '-' + data['member'][i].nickname + "</option>";
-                          }
-                        }
-                     
-                        $('#oid').append(_h).trigger("chosen:updated");
-                        $('#oid').trigger('change');
-                        $('#oid').trigger('chosen:updated');
-                      },
-                      error:function(a,b,c){
-                //        console.log(a);
-                  //      console.log(b);
-                    //    console.log(c);
-                      }
-                  });
+                      });
 
-                  exists.push(_gid[j]);
-              }
-              else
-              {
-                console.log('already');
-                //$('#oid').val('').trigger('change');
-                $('#oid').trigger('chosen:updated');
-              }
+                      exists.push(my_gid);
+                  }
+                  else
+                  {
+                    console.log('already');
+                    //$('#oid').val('').trigger('change');
+                    $('#oid').trigger('chosen:updated');
+                  }
+
+              })(_gid[j]);
             }
           }
 

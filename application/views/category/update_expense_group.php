@@ -243,7 +243,14 @@
 var __BASE = "<?php echo base_url();?>";
 var error = "<?php echo $error;?>";
 var _group_dic = '<?php echo json_encode($group_dic);?>';
-var exist_oids = $('#pro_title').data('oids');
+var _exist_oids = $('#pro_title').data('oids');
+var exist_oids = [];
+var exist_oids_dic = [];
+for(var key in _exist_oids)
+{
+  exist_oids.push(_exist_oids[key]['oid']);
+  exist_oids_dic[_exist_oids[key]['oid']] = _exist_oids[key]['gid'];
+}
 var group_dic = '';
 if(_group_dic)
 {
