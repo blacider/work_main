@@ -17,8 +17,9 @@
                             <thead>
                                 <tr>
                                     <th class='blue'>消息列表</th>
+                                    <th class='blue'>最后修改人</th>
                                     <th class='blue'>最后修改时间</th>
-                                    <th class='blue'>发送时间</th>
+                                    <th class='blue'>发送时间/发送人</th>
                                     <th class='blue'><a href="<?php echo base_url('broadcast/create')?>" role="button" class="green" data-toggle="modal">
                                             <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
                                         </a> </th>
@@ -48,9 +49,17 @@ foreach($broadcast as $item){
     	$str = "<tr>";
 	}
     $title = '<td class="u_username">' . $item['title'] . '</td>';
+    $last_nickname = '<td class="u_username">' . $item['last_nickname'] . '</td>';
+
+    $send_nickname = '';
+    if($item['sent'] != 0)
+    {
+        $send_nickname = '/' . $item['send_nickname'];
+    }
+    
     $createdt =  '<td class="u_role_name">' . $item['createdt'] . '</td>';
     $lastdt =  '<td class="u_role_name">' . $item['lastdt'] . '</td>';
-    $senddt = '<td class="u_role_name">' . $senddt . '</td>';
+    $senddt = '<td class="u_role_name">' . $senddt . $send_nickname . '</td>';
     $start_icon = '<td style="width:100px;">';
     $show_icon =  '<a href="javascript:void(0);" class="tshow"  data-title="' . $item['title'] . '" data-id="'.$item['id'].'"><span class="ace-icon fa fa-search-plus"></span></a> ';
     $edit_icon =  '<a href="javascript:void(0);" class="edit"  data-title="' . $item['title'] . '" data-id="'.$item['id'].'"><span class="green glyphicon glyphicon-pencil"></span></a> ';
@@ -62,11 +71,11 @@ foreach($broadcast as $item){
     $end_icon = '</tr>';
     if($item['sent'] == 0)
     {
-    	$str = $str . $title . $lastdt . $senddt . $start_icon . $edit_icon . $del_icon . $end_icon;
+    	$str = $str . $title . $last_nickname . $lastdt . $senddt . $start_icon . $edit_icon . $del_icon . $end_icon;
     }
 	else
 	{
-		$str = $str . $title . $lastdt . $senddt . $start_icon . $show_icon . $copy_icon . $del_icon . $end_icon;
+		$str = $str . $title . $last_nickname . $lastdt . $senddt . $start_icon . $show_icon . $copy_icon . $del_icon . $end_icon;
 	}
 	//$str = $str . $title . $lastdt . $senddt . $operation_upd . '</tr>';
 echo $str;
