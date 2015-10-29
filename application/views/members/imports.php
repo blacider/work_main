@@ -119,8 +119,8 @@
     var _no_levels = '<?php echo json_encode($no_levels)?>';
     var _no_groups = '<?php echo json_encode($no_groups)?>';
     var _members = '<?php echo json_encode($members)?>';
-    var import_sum = 0;
-    var import_all = $('#all_count').data('nums');
+    var insert_count_globle = 0;
+    var all_count = $('#all_count').data('nums');
 
     var no_ranks = '';
     if(_no_ranks)
@@ -343,10 +343,10 @@ function insertMem()
                                         in_members.push(person);
                                     }
                                   myself.removeClass('red').addClass('green');
-                                  import_sum++;
+                                  insert_count_globle++;
                                   
-                                  $('#insert_count').text(import_sum);
-                                  $('#uninsert_count').text((import_all - import_sum));
+                                  $('#insert_count').text(insert_count_globle);
+                                  $('#uninsert_count').text((all_count - insert_count_globle));
                                   if(_status&1 == 1)
                                   {
                                     myself.text('已更新');
