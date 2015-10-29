@@ -31,6 +31,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">发送至</label>
                                 <div class="col-xs-9 col-sm-9">
+                                    <input type="hidden" name="hidden_receiver" id="hidden_receiver" />
                                     <select class="chosen-select tag-input-style" name="receiver[]" multiple="multiple" data-placeholder="请选择审批人" id="receiver">
 <?php 
 $user = $this->session->userdata('user');
@@ -375,9 +376,81 @@ foreach($items as $i){
 </div><!-- /.modal -->
 
 
+<div class="modal fade" id="modal_next">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">根据公司规定，你的报告需要提交给</h4>
+                <input type="hidden" name="rid" value="" id="rid">
+                <input type="hidden" name="status" value="2" id="status">
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="col-xs-9 col-sm-9" id="label_receiver">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-success submit_by_rule" value="按照公司规定发送报告" />
+                <input type="submit" class="btn btn-primary my_submit" value="按照我的选择发送报告" />
+                <div class="btn btn-primary" onclick="cancel_modal_next()">取消</div>
+            </div>
+                <script type="text/javascript">
+                  function cancel_modal_next() {
+                    $('#modal_next').modal('hide');
+                    return;
+                  }
+                </script>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var __SUM = 0;
+function submit_check() {
+    var _ids = Array();
+	$('.amount').each(function(){
+		if($(this).is(':checked')){
+            _ids.push($(this).data('id'));
+		};
+	});
+    if(_ids.length == 0) {
+        show_notify('提交的报告不能为空');
+        return false;
+    }
+
+    $.ajax({
+        type : 'POST',
+            url : __BASE + "reports/check_submit", 
+                data : {'item' : _ids,
+                    'receiver' : $('#receiver').val(),
+                },
+                dataType: 'json',
+                success : function(data){
+                    if(data.status > 0 && data.data.complete > 0) {
+                        do_post();
+                    } else {
+                        var suggest = data.data.suggestion;
+                        var _names = [];
+                        $(suggest).each(function(idx, value) {
+                            $('#cc option').each(function(_idx, _val) {
+                                var _value = $(_val).attr('value');
+                                var desc = $(_val).html();
+                                if(_value == value) {
+                                    _names.push(desc);
+                                }
+                            });
+                        });
+                        $('#hidden_receiver').val(suggest.join(','));
+                        $('#label_receiver').html(_names.join(','));
+                        $('#modal_next').modal('show');
+                    }
+                    return false;
+                }
+            });
+}
 function do_post(force) {
 
     var _rid = $('#hrid').val();
@@ -581,6 +654,22 @@ Date.prototype.format = function(format) {
         return format;  
 };
 $(document).ready(function(){
+    $('.submit_by_rule').click(function(){
+        var _receivers = ($('#hidden_receiver').val());
+        if(!_receivers) do_post();
+        _receivers = _receivers.split(",");
+        $('#receiver option').each(function(idx, val){
+            $(val).removeAttr('selected');
+            var __val = "" + $(val).val();
+            if($.inArray("" + __val, _receivers) > -1){
+                $(val).attr('selected', true);
+            }
+        });
+        do_post();
+    });
+    $('.my_submit').click(function(){
+        do_post();
+    });
     //$('#date-timepicker2').val();
     _contract = $('input[name="contract"]:checked').val(); 
     if(_contract == 0) {
@@ -684,8 +773,7 @@ $('.tdetail').each(function(){
 
     $('.renew').click(function(){
         $('#renew').val($(this).data('renew'));
-        do_post(0);
-        //$('#mainform').submit();
+        submit_check();
     });
     $('.force_submit_btn').click(function() {
         $('#renew').val(1);
