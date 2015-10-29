@@ -22,6 +22,10 @@ class Category extends REIM_Controller {
             $group = $info['group'];
             $member = $info['member'];
             }
+          foreach($member as &$m)
+          {
+               $m['d'] = $group['name'];
+          }
          log_message('debug','members:' . json_encode($member));
          die(json_encode(array('member' => $member,'gid' => $gid)));
     }
