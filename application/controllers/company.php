@@ -8,9 +8,68 @@ class Company extends REIM_Controller {
         $this->load->model('usergroup_model','ug');
         $this->load->model('account_set_model','account_set');
         $this->load->model('category_model','category');
-	$this->load->model('reim_show_model','reim_show');
+    	$this->load->model('reim_show_model','reim_show');
+    	$this->load->model('report_model','reports');
     }
     
+    public function update_report_template($id)
+    {
+        $report_template = array();
+        $_report_template = $this->reports->get_report_template($id);
+        if($_report_template['status'] > 0) 
+        {
+            $report_template = $_report_template['data'];
+        }
+        $this->bsload('reports/update_report_template',
+            array(
+                    'report_template' => $report_template
+                    ,'breadcrumbs'=> array(
+                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+                    ,array('url'=>'','name'=>'公司设置','class'=> '')
+                    ,array('url'=>'','name'=>'修改报告模板','class'=>'')
+                ),
+            )
+        );
+    }
+
+    public function create_report_template()
+    {
+        $this->bsload('reports/create_report_template',
+            array(
+                    'breadcrumbs'=> array(
+                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+                    ,array('url'=>'','name'=>'公司设置','class'=> '')
+                    ,array('url'=>'','name'=>'修改报告模板','class'=>'')
+                ),
+            )
+        );
+    }
+
+    public function report_template_list()
+    {
+        $report_template_list = array();
+        $_report_template_list = $this->reports->get_report_template();
+        if($_report_template_list['status'] > 0)
+        {
+            $report_template_list = $_report_template_list['data'];
+        }
+
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+
+        $this->bsload('reports/report_template_list',
+            array(
+                'template_list' => $report_template_list
+                ,'error' => $error
+                ,'breadcrumbs'=> array(
+                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+                    ,array('url'=>'','name'=>'公司设置','class'=> '')
+                    ,array('url'=>'','name'=>'报告模板列表','class'=>'')
+                ),
+            )
+        );
+    }
+
     public function report_settings_update($id)
     {
         $buf = $this->company->get_single_reports_settings($id); 
