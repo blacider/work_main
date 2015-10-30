@@ -428,7 +428,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         </li> 
 
         <li class="hsub" id="get_item_type_name">
-        <a href="<?php echo base_url('company/get_item_type_name'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 自定义消费类型 </a>
+        <a href="<?php echo base_url('company/get_item_type_name'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 消费设置 </a>
           <b class="arrow"></b>
         </li> 
 
