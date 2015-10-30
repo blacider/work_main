@@ -267,16 +267,7 @@ foreach($report['items'] as $i){
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['category_name']; ?></td>
                                             <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
-                                            <td><?php 
-                                                $buf = '';
-                                                switch(intval($i['prove_ahead'])) {
-                                                case 0 : $buf = '报销';break;
-                                                case 1 : $buf = '预算';break;
-                                                case 2 : $buf = '预借';break;
-                                                } 
-                                                echo $buf;
-
-                                                ?></td>
+                                            <td><?php echo $i['prove_ahead_name'];?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td><?php echo $i['note']?></td>
                                             <td>
@@ -308,16 +299,7 @@ foreach($items as $i){
                                             <td><?php echo $i['cate_str']; ?></td>
                                            
                                             <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
-                                            <td><?php 
-                                                $buf = '';
-                                                switch(intval($i['prove_ahead'])) {
-                                                case 0 : $buf = '报销';break;
-                                                case 1 : $buf = '预算';break;
-                                                case 2 : $buf = '预借';break;
-                                                } 
-                                                echo $buf;
-
-                                                ?></td>
+                                            <td><?php echo $i['prove_ahead_name'];?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td><?php echo $i['note']?></td>
                                             <td>

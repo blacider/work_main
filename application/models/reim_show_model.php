@@ -11,6 +11,9 @@ class Reim_Show_Model extends Reim_Model {
         log_message('debug','item_type_name_back:' . $buf);
 		$obj = json_decode($buf, True);
         $item_type_dic = array();
+        $item_type_dic[0] = '报销';
+        $item_type_dic[1] = '预算';
+        $item_type_dic[2] = '预借';
         $item_types = array();
 
         if($obj['status'] > 0)
@@ -18,7 +21,7 @@ class Reim_Show_Model extends Reim_Model {
             $item_types = $obj['data'];
         }
 
-        foreach($item_typs as $item)
+        foreach($item_types as $item)
         {
             $item_type_dic[$item['type']] = $item['name'];    
         }

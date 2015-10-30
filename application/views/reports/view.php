@@ -272,7 +272,7 @@ foreach($report['items'] as $i) {
                                                 case 1 : $buf = '预算';break;
                                                 case 2 : $buf = '预借';break;
                                                 } 
-                                                echo $buf;
+                                                echo $i['prove_ahead_name'];
 
 
                                                 ?></td>
