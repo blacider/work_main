@@ -279,28 +279,19 @@ function arr_contains(item,arr)
     return false;
 }
   $(document).ready(function(){
-    $('.chosen-select').chosen({width:"100%"}); 
-
-    /*
-      $('.close_modal').click(function(){
-        $('#oid').empty().trigger('chosen:updated');
-        exists=[];
-        $('#oid').unbind('change');
-      }); 
-    */
-
-      $('#modal-table2').on('hide.bs.modal',function(){
+        $('.chosen-select').chosen({width:"100%"}); 
+        $('#modal-table2').on('hide.bs.modal',function(){
         $('#oid').empty().trigger('chosen:updated');
         exists=[];
         $('#oid').unbind('change');
     });
 
         $('#add_new_btn').click(function(){
-          $('#g_lab').prop('hidden',false).trigger('chosen:updated');
+            $('#g_lab').prop('hidden',false).trigger('chosen:updated');
             $('#o_lab').prop('hidden',false).trigger('chosen:updated');
-             $('#gForm').prop('hidden',false).trigger('chosen:updated');
+            $('#gForm').prop('hidden',false).trigger('chosen:updated');
             $('#obj_lab').empty().append('选择部门:');
-          $('#modal_title').empty().append('新建对象');
+            $('#modal_title').empty().append('新建对象');
             $('#send').val('新建');
             $('#fid').val(-1);
             $('#gid').prop('disabled',false).trigger('chosen:updated');
@@ -351,18 +342,11 @@ function arr_contains(item,arr)
                     }
                     else 
                     {
-                     
                       var temp = $('#oid').val();
-                    //  console.log(typeof temp);
-                     // temp.push(_gid[j]+","+_gid[j]+","+group_dic[_gid[j]]);
-                      //$('#oid').val(temp).trigger('chosen:updated');
-                      // console.log('already');
-                      //$('#oid').val('').trigger('change');
                       $('#oid').trigger('chosen:updated');
-
                     }
                 }
-             //   $('#oid').val(_gid+','+group_dic[_gid]).attr('selected',true).trigger('chosen:updated');
+            
                 $('#_oid').val(JSON.stringify($('#oid').val()));
             }
         });
@@ -374,8 +358,6 @@ function arr_contains(item,arr)
           $(this).click(function(){
             var _pid = $(this).data('pid');
             var _id = $(this).data('id');
-       //     console.log('pid:' + _pid);
-         //   console.log('oid:' + _id);
             location.href = __BASE + "category/delete_fee_afford/" + _id + '/' + _pid;
           });
        });
@@ -383,40 +365,31 @@ function arr_contains(item,arr)
           var _oid;
          $('.edit').each(function(){
           $(this).click(function(){
-              var _pid = $(this).data('pid');
+            var _pid = $(this).data('pid');
             var _id = $(this).data('id');
             var _gid = $(this).data('gid');
             _oid = $(this).data('oid');
-             $('#fid').val(_id);
-             $('#modal_title').empty().append('更新对象');
-              $('#send').val('更新');
-              $('#g_lab').prop('hidden',true).trigger('chosen:updated');
+            $('#fid').val(_id);
+            $('#modal_title').empty().append('更新对象');
+            $('#send').val('更新');
+            $('#g_lab').prop('hidden',true).trigger('chosen:updated');
             $('#o_lab').prop('hidden',true).trigger('chosen:updated');
-             $('#gForm').prop('hidden',true).trigger('chosen:updated');
-             $('#obj_lab').empty().append('所选对象:');
-             $('#oid').bind('change',function(){
-                        console.log("_oid:" + _oid);
-                        $('#oid').val(_oid).attr('selected',true).trigger('chosen:updated');
+            $('#gForm').prop('hidden',true).trigger('chosen:updated');
+            $('#obj_lab').empty().append('所选对象:');
+            $('#oid').bind('change',function(){
+            $('#oid').val(_oid).attr('selected',true).trigger('chosen:updated');
                         //var arr = [];
                         //arr.push($('#oid').val());
-                        $('#_oid').val(JSON.stringify($('#oid').val()));
-                      });
+            $('#_oid').val(JSON.stringify($('#oid').val()));
+            });
           
             //$('#oid').empty().trigger('chosen:updated');
-           
- //           console.log('pid:' + _pid);
-   //         console.log('id:' + _id);
-     //       console.log('gid:' + _gid);
-       //     console.log('oid:' + _oid);
             $.ajax({
               url:__BASE + 'category/get_fee_afford/' + _id,
               method:'get',
               dataType:'json',
               success:function(data){
- //                 console.log(data);
-                 
                       var privilege = data.privilege;
- //                     console.log(privilege);
                       $('#gid').val(_gid).attr('selected',true).trigger('chosen:updated');
                       $('#gid').trigger('change');
                       $('#gid').trigger('chosen:updated');
@@ -512,9 +485,9 @@ function arr_contains(item,arr)
                     item_arr.push(__oid+"");
                 }
             });
-            //console.log(item_arr);
+
             $('#_oid').val(JSON.stringify(item_arr));
-           // console.log($('#_oid').val());
+
             $('#gid').val(gid_arr).trigger('chosen:updated');
             $('#gid').prop('disabled',true).trigger('chosen:updated');
         
@@ -537,7 +510,6 @@ function arr_contains(item,arr)
 
         if($('#is_all_member').is(':checked'))
         {
-          console.log('checked');
           $('#all_member').val(1);
         }
         
