@@ -2,6 +2,36 @@
 
 class Items_Model extends Reim_Model {
 
+    public function get_item_type_name() 
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+		$url = $this->get_url('item_type_name/list');
+		$buf = $this->do_Get($url, $jwt);
+        log_message('debug','item_type_name_url:' . $url);
+        log_message('debug','item_type_name_back:' . $buf);
+		$obj = json_decode($buf, True);
+        return $obj;
+    }
+    
+    public function update_item_type_name($type,$name,$description)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+		$url = $this->get_url('item_type_name/' . $type);
+        $data = array(
+            'type' => $type,
+            'name' => $name,
+            'description' => $description
+        );
+		$buf = $this->do_Put($url,$data,$jwt);
+        log_message('debug','update_item_type_name_url:' . $url);
+        log_message('debug','update_item_type_name_data:' . json_encode($data));
+        log_message('debug','update_item_type_name_back:' . $buf);
+		$obj = json_decode($buf, True);
+        return $obj;
+    }
+
     public function get_typed_currency()
     {
         $jwt = $this->session->userdata('jwt');

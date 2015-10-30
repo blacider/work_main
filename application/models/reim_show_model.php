@@ -1,6 +1,30 @@
 <?php
 
 class Reim_Show_Model extends Reim_Model {
+    public function get_item_type_name()
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+		$url = $this->get_url('item_type_name/list');
+		$buf = $this->do_Get($url, $jwt);
+        log_message('debug','item_type_name_url:' . $url);
+        log_message('debug','item_type_name_back:' . $buf);
+		$obj = json_decode($buf, True);
+        $item_type_dic = array();
+        $item_types = array();
+
+        if($obj['status'] > 0)
+        {
+            $item_types = $obj['data'];
+        }
+
+        foreach($item_typs as $item)
+        {
+            $item_type_dic[$item['type']] = $item['name'];    
+        }
+        return $item_type_dic;
+    }
+
 	public function usergroups()
 	{
 		$jwt = $this->session->userdata('jwt');

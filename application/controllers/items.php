@@ -7,36 +7,7 @@ class Items extends REIM_Controller {
         $this->load->model('report_model', 'report');
         $this->load->model('user_model','user');
         $this->load->model('group_model', 'groups');
-    }
-    
-    public function get_item_type_name()
-    {
-        $item_list = array();
-        $_item_list = $this->items->get_item_type_name();
-        $($_item_list['status'] > 0)
-        {
-            $item_list = $_item_list['data'];
-        }
-
-        $this->bsload('items/new',
-            array(
-                'title' => '自定义消费类型'
-                ,'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
-                    ,array('url'  => '', 'name' => '新建消费', 'class' => '')
-                ),
-                'categories' => $categories,
-                'afford' => $afford,
-                'sobs' => $_sobs,
-                'user' => $user['id'],
-                'member'=>$gmember,
-                'categories' => $_categories,
-                'tags' => $tags,
-                'item_config' => $item_config,
-                'is_burden' => $is_burden
-            ));
-
+        $this->load->model('reim_show_model', 'reim_show');
     }
     
     public function attachment() {
@@ -157,6 +128,9 @@ class Items extends REIM_Controller {
 
     public function newitem(){
         //        $profile = $this->session->userdata('profile');
+        //获取消费类型字典
+        $item_type_dic = $this->reim_show->get_item_type_name();
+
         $_profile = $this->user->reim_get_user();	
         $profile = array();
         $group_config = array();
