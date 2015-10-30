@@ -1,109 +1,44 @@
 <?php
 
 class Report_Model extends Reim_Model {
-
-    public function update_report_template($id,$name,$config)
-    {
-    	$jwt = $this->session->userdata('jwt');
-	    if(!$jwt) return false;
-        $url = $this->get_url('report_template');
-        $data = array(
-            'id' => $id,
-            'name' => $name,
-            'config' => $config
-        );
-	    $buf = $this->do_Put($url,$data,$jwt);
-	    log_message('debug','report_template_url:'.$url);
-	    log_message('debug','report_template_data:'.json_encode($data));
-	    log_message('debug','report_template_back:'.$buf);
-
-	    return json_decode($buf,True);
-    }
-
-    public function create_report_template($name,$config)
-    {
-    	$jwt = $this->session->userdata('jwt');
-	    if(!$jwt) return false;
-        $url = $this->get_url('report_template');
-        $data = array(
-            'name' => $name,
-            'config' => $config
-        );
-	    $buf = $this->do_Post($url,$data,$jwt);
-	    log_message('debug','report_template_url:'.$url);
-	    log_message('debug','report_template_data:'.json_encode($data));
-	    log_message('debug','report_template_back:'.$buf);
-
-	    return json_decode($buf,True);
-    }
-
-    public function get_report_template($id = 0)
-    {
-    	$jwt = $this->session->userdata('jwt');
-	    if(!$jwt) return false;
-        if(0 == $id)
-        	$url = $this->get_url('report_template');
-        else
-            $url = $this->get_url('report_template/' . $id);
-	    $buf = $this->do_Get($url,$jwt);
-	    log_message('debug','report_template_url:'.json_encode($url));
-	    log_message('debug','report_template_back:'.$buf);
-
-	    return json_decode($buf,True);
-    }
-
-    public function delete_report_template($id)
-    {
-    	$jwt = $this->session->userdata('jwt');
-	    if(!$jwt) return false;
-        $url = $this->get_url('report_template/' . $id);
-	    $buf = $this->do_Delete($url,array(),$jwt);
-	    log_message('debug','delete_report_template_url:'.json_encode($url));
-	    log_message('debug','delete_report_template_back:'.$buf);
-
-	    return json_decode($buf,True);
-    }
-
     public function add_comment($rid,$comment)
     {
     	$jwt = $this->session->userdata('jwt');
-	    if(!$jwt) return false;
+	if(!$jwt) return false;
 
-	    $url = $this->get_url('report/'.$rid);
-    	$data=array(
+	$url = $this->get_url('report/'.$rid);
+	$data=array(
 			'comment'=>$comment
 		);
-	    $buf = $this->do_Put($url,$data,$jwt);
-	    log_message("debug","add_comment:".json_encode($buf));
-    	return $buf;
+	$buf = $this->do_Put($url,$data,$jwt);
+	log_message("debug","add_comment:".json_encode($buf));
+	return $buf;
     }
 
     public function revoke($rid)
     {
     	$jwt = $this->session->userdata('jwt');
-    	if(!$jwt) return false;
+	if(!$jwt) return false;
 
     	$url = $this->get_url('revoke/'.$rid);
-    	$buf = $this->do_Get($url,$jwt);
-    	log_message('debug','######'.json_encode($buf));
+	$buf = $this->do_Get($url,$jwt);
+	log_message('debug','######'.json_encode($buf));
 
-    	return $buf;
+	return $buf;
     }
-
     public function sendout($rid,$email)
     {
     	$jwt = $this->session->userdata('jwt');
-    	if(!$jwt) return false;
-    	$url = $this->get_url('exports');
-    	$data = array(
-    		'rid' => $rid
-    		,'email' => $email
-    	);
-    	$buf = $this->do_Post($url,$data,$jwt);
-    	log_message("debug","send_report".json_encode($buf));
-    	return $buf;
+	if(!$jwt) return false;
+	$url = $this->get_url('exports');
+	$data = array(
+		'rid' => $rid
+		,'email' => $email
+	);
+	$buf = $this->do_Post($url,$data,$jwt);
+	log_message("debug","send_report".json_encode($buf));
+	return $buf;
     }
-
     public function get_permission($rid) {
         $jwt = $this->session->userdata('jwt');
         log_message("debug", $rid);
