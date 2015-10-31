@@ -14,6 +14,35 @@ class Company extends REIM_Controller {
     
     public function update_report_template($id)
     {
+            $this->need_group_it();
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+    $_ranks = $this->groups->get_rank_level(1);
+    $_levels = $this->groups->get_rank_level(0);
+    
+    $ranks = array();
+    if($_ranks['status'] > 0)
+    {
+        $ranks = $_ranks['data'];
+    }
+
+    $levels = array();
+    if($_levels['status'] > 0)
+    {
+        $levels = $_levels['data'];
+    }
+    
+        $group = $this->groups->get_my_list();
+        $_gnames = $this->ug->get_my_list();
+        $gnames = $_gnames['data']['group'];
+
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
         $report_template = array();
         $_report_template = $this->reports->get_report_template($id);
         if($_report_template['status'] > 0) 
@@ -22,6 +51,10 @@ class Company extends REIM_Controller {
         }
         $this->bsload('reports/update_report_template',
             array(
+                    ,'member'=>$gmember
+                    ,'group'=>$gnames
+                    ,'ranks' => $ranks
+                    ,'levels' => $levels
                     'report_template' => $report_template
                     ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
