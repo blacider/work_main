@@ -22,6 +22,7 @@ class Company extends REIM_Controller {
         }
         $this->bsload('reports/update_report_template',
             array(
+                    'title'=>'修改报告模板',
                     'report_template' => $report_template
                     ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
@@ -36,6 +37,7 @@ class Company extends REIM_Controller {
     {
         $this->bsload('reports/create_report_template',
             array(
+                    'title'=>'新建报告模板',
                     'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
@@ -61,6 +63,7 @@ class Company extends REIM_Controller {
             array(
                 'template_list' => $report_template_list
                 ,'error' => $error
+                ,'title'=>'报告模板列表'
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
