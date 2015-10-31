@@ -391,13 +391,7 @@ $(document).ready(function(){
                             var _receivers = ($('#hidden_receiver').val());
                             if(!_receivers) do_post();
                             _receivers = _receivers.split(",");
-                            $('#receiver option').each(function(idx, val){
-                                $(val).removeAttr('selected');
-                                var __val = "" + $(val).val();
-                                if($.inArray("" + __val, _receivers) > -1){
-                                    $(val).attr('selected', true);
-                                }
-                            });
+			    $('#receiver').val(_receivers).trigger("chosen:updated");
                             do_post();
                         });
                         $('.my_submit').click(function(){
