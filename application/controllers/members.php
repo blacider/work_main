@@ -1173,14 +1173,14 @@ class Members extends REIM_Controller {
             $obj['manager'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
             $obj['rank'] = trim($sheet->getCellByColumnAndRow(10, $row)->getValue());
             $obj['level'] = trim($sheet->getCellByColumnAndRow(11, $row)->getValue());
-            $obj['manager_id'] = 0;/*trim($sheet->getCellByColumnAndRow(8, $row)->getValue());*/
+            $obj['manager_id'] = "";/*trim($sheet->getCellByColumnAndRow(8, $row)->getValue());*/
             $obj['manager_email'] = trim($sheet->getCellByColumnAndRow(12, $row)->getValue());
             $obj['display_manager_email'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
             $obj['second'] = trim($sheet->getCellByColumnAndRow(13, $row)->getValue());
             $obj['third'] = trim($sheet->getCellByColumnAndRow(14, $row)->getValue());
             $obj['fourth'] = trim($sheet->getCellByColumnAndRow(15, $row)->getValue());
             $obj['fifth'] = trim($sheet->getCellByColumnAndRow(16, $row)->getValue());
-            $obj['display_manager_id'] = 0;
+            $obj['display_manager_id'] = "";
             if($obj['email']) {
                 $email_id_matrix[$obj['email']] = $obj['id'];
             }
