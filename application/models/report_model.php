@@ -180,7 +180,7 @@ class Report_Model extends Reim_Model {
         return $buf;
     }
 
-    public function create($title, $receiver, $cc, $iids, $type = 0, $status = 1, $force = 0, $extra = array()){
+    public function create($title, $receiver, $cc, $iids, $type = 0, $status = 1, $force = 0, $extra = array(),$template_id){
         $data = array(
             'manager_id' => $receiver
             ,'cc' => $cc
@@ -191,16 +191,20 @@ class Report_Model extends Reim_Model {
             ,'createdt' => time()
             ,'force_submit' => $force
             ,'extras' => json_encode($extra)
+            ,'template_id' => $template_id
         );
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
 		$url = $this->get_url("report");
         $buf = $this->do_Post($url, $data, $jwt);
+        log_message('debug','create_report_data:' . json_encode($data));
+        log_message('debug','create_report_url:' . $url);
+        log_message('debug','create_report_back:' . $buf);
         return $buf;
 
     }
 
-    public function update($id, $title, $receiver, $cc, $iids, $type = 0, $status = 1, $force = 0, $extra = array()){
+    public function update($id, $title, $receiver, $cc, $iids, $type = 0, $status = 1, $force = 0, $extra = array(),$template_id){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(
@@ -213,12 +217,15 @@ class Report_Model extends Reim_Model {
             ,'createdt' => time()
             ,'force_submit' => $force
             ,'extras' => json_encode($extra)
+            ,'template_id' => $template_id
         );
         log_message("debug", "Update:" . json_encode($data));
 		$url = $this->get_url("report/$id");
-        log_message("debug", "URL:" . $url);
         $buf = $this->do_Put($url, $data, $jwt);
 		$obj = json_decode($buf, true);
+        log_message("debug", "URL:" . $url);
+        log_message("debug", "update_report_data:" . json_encode($data));
+        log_message("debug", "update_report_back:" . $buf);
         return $buf;
 
     }

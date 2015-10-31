@@ -65,134 +65,150 @@
                                     </select>
                                 </div>
                             </div>
+
 <?php
                         if(!empty($config)) {
 ?>
                             <input type="hidden" id="template_id" name="template_id" value="<?php echo $config['id']; ?>">
-<?php 
-                        if($config['account'] == 1){ 
-?>
+                            <?php
+                            foreach($config['config'] as $field_group){
+                            ?>
+                            <hr>
+                                <?php
+                                    foreach($field_group['children'] as $field)
+                                    {
+                                ?>
 
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">银行账号</label>
-                                <div class="col-xs-9 col-sm-9">
-                                    <select class="chosen-select tag-input-style" name="account" id="account" data-placeholder="请选择银行账号">
-                                        <?php foreach($user['banks'] as $m) { ?>
-                                                <option value="<?php echo $m['id']; ?>" data-name="<?php echo $m['account']; ?>" data-no="<?php echo $m['cardno']; ?>"><?php echo $m['account']; ?> - [<?php echo $m['cardno']; ?> ]</option>
-                                       
-                                        <?php } ?>
-                                    </select>
-                                </div>
-                            </div>
-<?php 
-                        }
-                        if($config['payment'] == 1){ 
-?>
-
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">支付方式</label>
-                                <div class="col-xs-9 col-sm-9">
-<?php 
-                            $options = array(
-                                array('desc' => '网银转账', 'value' => 1),
-                                array('desc' => '现金', 'value' => 2),
-                                array('desc' => '支票', 'value' => 3),
-                                array('desc' => '冲账', 'value' => 4)
-                            );
-                            foreach($options as $n) {
-                                $check_str = '';
-?>
-
-                                    <div class="radio col-xs-3 col-sm-3">
-                                         <label>
-                                         <input name="payment" type="radio" class="ace payment" value="<?php echo $n['value']; ?>" <?php echo $check_str; ?>>
-                                             <span class="lbl"><?php echo $n['desc']; ?></span>
-                                         </label>
-                                    </div>
-<?php 
-                            }
-?>
-                                </div>
-                            </div>
-<?php 
-                        }
-                        if($config['borrowing'] == 1){ 
-?>
-
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">已付金额</label>
-                                <div class="col-xs-9 col-sm-9">
-                                    <input type="text" class="form-controller col-xs-12" id="borrowing" name="borrowing"  placeholder="已付金额">
-                                </div>
-                            </div>
-
-<?php 
-                        }
-                        if($config['location'] == 1){ 
-?>
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">出差地</label>
-                                <div class="col-xs-9 col-sm-9">
-                                    <input type="text" id="location_from" class="form-controller col-xs-5" name="location_from"  placeholder="出发地">
-                                    <label class="col-sm-1 control-label">到</label>
-                                    <input type="text" id="location_to" class="form-controller col-xs-5" name="location_to"  placeholder="到达地">
-                                </div>
-                            </div>
-<?php 
-                        }
-                        if($config['period'] == 1){ 
-?>
-
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">出差时间</label>
-                                <div class="col-xs-9 col-sm-9">
-                                    <input type="text" id="period_start" class="form-controller col-xs-5 period" name="period_start"  placeholder="起始时间">
-                                    <label class="col-sm-1 control-label">到</label>
-                                    <input type="text" id="period_end" class="form-controller col-xs-5 period" name="period_end"  placeholder="结束时间">
-                                </div>
-                            </div>
-<?php 
-                        }
-                        if($config['contract'] == 1){ 
-?>
-
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">合同</label>
-                                <div class="col-xs-9 col-sm-9">
-                                    <div class="radio col-xs-2 col-sm-2">
-                                         <label>
-                                             <input name="contract" type="radio" id="contract_yes" class="ace contract" value="1">
-                                             <span class="lbl">有</span>
-                                         </label>
-                                    </div>
-                                    <div class="radio col-xs-2 col-sm-2">
-                                         <label>
-                                             <input name="contract" type="radio" id="contract_no" class="ace contract" value="0">
-                                             <span class="lbl">无</span>
-                                         </label>
-                                    </div>
-                                    <div class="radio col-xs-8 col-sm-8">
-                                        <input type="text" id="contract_note" class="form-controller col-xs-12" name="contract_note"  placeholder="合同备注">
-                                    </div>
-                                </div>
-                            </div>
-<?php 
-                        }
-                        if($config['note'] == 1){ 
-?>
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">备注</label>
-                                <div class="col-xs-9 col-sm-9">
-                                    <div class="radio col-xs-12 col-sm-12">
-                                        <textarea rows="2" class="form-controller col-xs-12" id="note" name="note"></textarea>
-                                    </div>
-                                </div>
+                                <?php
+                                    switch(intval($field['type']))
+                                    {
                             
-                            </div>
-<?php 
+                                        case 1:
+                                ?>
+                                        <div class="form-group">
+                                            <label class="col-sm-1 control-label no-padding-right"><?php echo $field['name'];?></label>
+                                            <div class="col-xs-9 col-sm-9">
+                                                <div class="radio col-xs-12 col-sm-12">
+                                                    <input type="text" class="form-controller col-xs-8 field_value" data-type="1" data-id="<?php echo $field['id'];?>" <?php if($field['required'] == 1){echo 'required';}?>/>
+                                                </div>
+                                            </div>
+                                        
+                                        </div>
+
+                                <?php
+                                        break;
+                                ?>
+
+                                <?php
+                                        case 2:
+                                ?>
+                                        <div class="form-group">
+                                            <label class="col-sm-1 control-label no-padding-right"><?php echo $field['name'];?></label>
+                                            <div class="col-xs-3 col-sm-3">
+                                                <div class="radio col-xs-12 col-sm-12">
+                                                    <select class="chosen-select tag-input-style col-xs-6 field_value" data-type="2" data-id="<?php echo $field['id'];?>" data-placeholder="请选择" <?php if($field['required'] == 1){echo 'required';}?>>
+                                                        <?php foreach($field['property']['options'] as $m) { ?>
+                                                                <option value="<?php echo $m; ?>"><?php echo $m; ?></option>
+                                                       
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                <?php
+                                        break;
+                                ?>
+
+                                <?php
+                                        case 3:
+                                ?>
+                                        <div class="form-group">
+                                            <label class="col-sm-1 control-label no-padding-right"><?php echo $field['name'];?></label>
+                                            <div class="col-xs-9 col-sm-9">
+                                                <div class="radio col-xs-12 col-sm-12">
+                                                    <input type="text" class="form-controller col-xs-8 period field_value date-timepicker1" data-type="3" data-id="<?php echo $field['id'];?>" name="dt" placeholder="时间" <?php if($field['required'] == 1){echo 'required';}?>>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                <?php
+                                        break;
+                                ?>
+
+                                <?php
+                                        case 4:
+                                ?>
+                                        <div class="field_value" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>">
+                                        <div class="form-group">
+                                            <label class="col-sm-1 control-label no-padding-right"><?php echo $field['name'];?></label>
+                                            <div class="col-xs-9 col-sm-9">
+                                                <div class="radio col-xs-12 col-sm-12">
+                                                    <input type="text" class="form-controller col-xs-8 account" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" placeholder="银行户名" <?php if($field['required'] == 1){echo 'required';}?>/>
+                                                </div>
+                                            </div>
+                                        
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-1 control-label no-padding-right"></label>
+                                            <div class="col-xs-9 col-sm-9">
+                                                <div class="radio col-xs-12 col-sm-12">
+                                                    <input type="text" class="form-controller col-xs-8 cardno" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" placeholder="银行账号" <?php if($field['required'] == 1){echo 'required';}?>/>
+                                                </div>
+                                            </div>
+                                        
+                                        </div>
+
+                                          <div class="form-group">
+                                            <label class="col-sm-1 control-label no-padding-right"></label>
+                                            <div class="col-xs-9 col-sm-9">
+                                                <div class="radio col-xs-12 col-sm-12">
+                                                    <input type="text" class="form-controller col-xs-8 bankname" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" placeholder="开户行名" <?php if($field['required'] == 1){echo 'required';}?>/>
+                                                </div>
+                                            </div>
+                                        
+                                        </div>
+
+                                          <div class="form-group">
+                                            <label class="col-sm-1 control-label no-padding-right"></label>
+                                            <div class="col-xs-9 col-sm-9">
+                                                <div class="radio col-xs-12 col-sm-12">
+                                                    <input type="text" class="form-controller col-xs-8 bankloc" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" placeholder="开户地" <?php if($field['required'] == 1){echo 'required';}?>/>
+                                                </div>
+                                            </div>
+                                        
+                                        </div>
+
+                                          <div class="form-group">
+                                            <label class="col-sm-1 control-label no-padding-right"></label>
+                                            <div class="col-xs-9 col-sm-9">
+                                                <div class="radio col-xs-12 col-sm-12">
+                                                    <input type="text" class="form-controller col-xs-8 subbranch" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" placeholder="支行" <?php if($field['required'] == 1){echo 'required';}?>/>
+                                                </div>
+                                            </div>
+                                        
+                                        </div>
+                                        </div>
+
+                                <?php
+                                        break;
+                                ?>
+
+                                <?php 
+                                    }
+                                ?>
+
+                                <?php
+                                    }
+                                ?>
+                            <hr>
+<?php
+                            }
                         }
-        }
 ?>
+
+
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">总额</label>
@@ -431,6 +447,39 @@ function do_post(force) {
         if(!_account) _account = 0;
     } catch(e) {}
 
+    var extra = [];
+ 
+    $('.field_value').each(function(){
+        var field_value = $(this).val();
+        var field_id = $(this).data('id');
+        var field_type = $(this).data('type');
+        if(field_type == 4)
+        {
+            var field_bank = $(this).data('bank');
+            var field_account = $('.account',this).val();
+            var field_cardno = $('.cardno',this).val();
+            var field_bankname = $('.bankname',this).val();
+            var field_bankloc = $('.bankloc',this).val();
+            var field_subbranch = $('.subbranch',this).val();
+            extra.push({'id':field_id,'value':{
+                                               'account':field_account,
+                                               'cardno':field_cardno,
+                                               'bankname':field_bankname,
+                                               'bankloc':field_bankloc,
+                                               'subbranch':field_subbranch,
+                                               'account_type':field_bank
+                                               }
+                                               ,'type':field_type});
+        }
+        else
+        {
+            extra.push({'id':field_id,'value':field_value,'type':field_type});
+        }
+        
+    });
+
+    console.log(extra);
+/*
     try {
         _note = $('#note').val();
         if(!_note) _note = '';
@@ -472,7 +521,7 @@ function do_post(force) {
         if(!_location_from) _location_from = '';
         _location_to = $('#location_to').val();
         if(!_location_to) _location_to= '';
-    }catch(e){}
+    }catch(e){} */
 
 
 	if(s == null){
@@ -493,6 +542,7 @@ function do_post(force) {
     // 获取所有的 条目
     var _cc = $('#cc').val();
     if(!_cc) _cc = Array();
+
     $.ajax({
         type : 'POST',
             url : __BASE + "reports/create", 
@@ -502,18 +552,7 @@ function do_post(force) {
                     'cc' : _cc,
 
                     'template_id' : _template_id,
-                    'account' : _account,
-                    'account_name' : _account_name,
-                    'account_no' : _account_no,
-                    'payment' : _payment,
-                    'borrowing' : _borrowing,
-                    'location_from' : _location_from,
-                    'location_to' : _location_to,
-                    'period_start' : _period_start,
-                    'period_end' : _period_end,
-                    'contract' : _contract,
-                    'contract_note' : _contract_note,
-                    'note' : _note,
+                    'extra':extra,
 
                     'renew' : _renew,
                     'force' : force
@@ -534,6 +573,7 @@ function do_post(force) {
                     return false;
                 }
             });
+
 }
 
 $(document).ready(function(){
@@ -568,17 +608,19 @@ $(document).ready(function(){
             }
         });
     });
-    $('#date-timepicker1').datetimepicker({
+    $('.date-timepicker1').each(function(){
+        $(this).datetimepicker({
         language: 'zh-cn',
             //locale:  moment.locale('zh-cn'),
             useCurrent: true,
-            format: 'YYYY-MM-DD HH:mm',
+            format: 'YYYY-MM-DD HH:mm:ss',
             linkField: "dt",
-            linkFormat: "YYYY-MM-DD HH:mm",
+            linkFormat: "YYYY-MM-DD HH:mm:ss",
             sideBySide: true
     }).next().on('dp.change', function(ev){
     }).on(ace.click_event, function(){
         $(this).prev().focus();
+    });
     });
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
