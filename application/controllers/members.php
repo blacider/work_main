@@ -1109,7 +1109,7 @@ class Members extends REIM_Controller {
         $names = array();
         $email_id_matrix = array();
         foreach($gmember as $g){
-            $email_id_matrix[$g['email']] = $g['id'];
+
             $__email = $g['email']; 
             $__phone = $g['phone']; 
             $__name = $g['nickname'];
@@ -1124,8 +1124,10 @@ class Members extends REIM_Controller {
                 $names[$__name]['count'] += 1;
                 array_push($names[$__name]['ids'],$g['id']);
             }
-            if($__email)
+            if($__email) {
                 array_push($_emails, $__email);
+                $email_id_matrix[$g['email']] = $g['id'];
+            }
             if($__phone)
                 array_push($_phones, $__phone);
             if($__name)
