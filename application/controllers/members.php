@@ -1191,6 +1191,9 @@ class Members extends REIM_Controller {
             if(in_array($obj['email'], $_emails)){
                 $obj['status'] = 1;
             }
+            if (in_array($obj['phone'], $_phones)) {
+                $obj['status'] = 1;
+            }
             log_message('debug','obj_name' . $obj['name']);
             array_push($data, $obj);
             log_message('debug','objXXXXXXXXXXXXXX:' . json_encode($obj));
