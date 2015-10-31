@@ -1109,7 +1109,7 @@ class Members extends REIM_Controller {
         $names = array();
         $email_id_matrix = array();
         foreach($gmember as $g){
-            $email_id_matrix[$g['email']] = $g['id'];
+
             $__email = $g['email']; 
             $__phone = $g['phone']; 
             $__name = $g['nickname'];
@@ -1124,8 +1124,10 @@ class Members extends REIM_Controller {
                 $names[$__name]['count'] += 1;
                 array_push($names[$__name]['ids'],$g['id']);
             }
-            if($__email)
+            if($__email) {
                 array_push($_emails, $__email);
+                $email_id_matrix[$g['email']] = $g['id'];
+            }
             if($__phone)
                 array_push($_phones, $__phone);
             if($__name)
@@ -1171,14 +1173,14 @@ class Members extends REIM_Controller {
             $obj['manager'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
             $obj['rank'] = trim($sheet->getCellByColumnAndRow(10, $row)->getValue());
             $obj['level'] = trim($sheet->getCellByColumnAndRow(11, $row)->getValue());
-            $obj['manager_id'] = 0;/*trim($sheet->getCellByColumnAndRow(8, $row)->getValue());*/
+            $obj['manager_id'] = "";/*trim($sheet->getCellByColumnAndRow(8, $row)->getValue());*/
             $obj['manager_email'] = trim($sheet->getCellByColumnAndRow(12, $row)->getValue());
             $obj['display_manager_email'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
             $obj['second'] = trim($sheet->getCellByColumnAndRow(13, $row)->getValue());
             $obj['third'] = trim($sheet->getCellByColumnAndRow(14, $row)->getValue());
             $obj['fourth'] = trim($sheet->getCellByColumnAndRow(15, $row)->getValue());
             $obj['fifth'] = trim($sheet->getCellByColumnAndRow(16, $row)->getValue());
-            $obj['display_manager_id'] = 0;
+            $obj['display_manager_id'] = "";
             if($obj['email']) {
                 $email_id_matrix[$obj['email']] = $obj['id'];
             }
