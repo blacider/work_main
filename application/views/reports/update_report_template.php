@@ -46,9 +46,8 @@
                                     }
                         </style>
                         <?php 
-                        $index = 0;
                         foreach ($report_template["config"] as $data) {?>
-                        <div class="form-group">
+                        <div class="form-group" id="_<?php echo $data['id'];?>">
                             <div class="col-xs-6 col-sm-6 col-sm-offset-2">
                                 <div class="dropdown col-xs-9 col-sm-9 ">
                                     <div class="dropdown-toggle drop-cata" data-toggle="dropdown">
@@ -57,33 +56,29 @@
                                     </div>
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="width:90%;margin-left:15px;">
                                         <?php 
-                                        $index2 = 0;
                                         foreach ($data["children"] as $child){ ?>
-                                        <li role="presentation">
-                                            <a href="#" onclick="showSob(<?php echo $index; ?>,<?php echo $index2; ?>)" role="menuitem" tabindex="">
+                                        <li role="presentation" data-subId="_<?php echo $child['id']; ?>">
+                                            <a href="#" onclick="showSob(<?php echo $data['id'];?>,<?php echo $child['id']; ?>)" role="menuitem" tabindex="">
                                                 <?php echo $child["name"]; ?>
                                             </a>
                                         </li>
                                         <?php 
-                                        $index2++;
                                         } ?>
-                                        
                                         <li role="presentation" class="divider"></li>
                                         <li role="presentation">
-                                            <a href="#" onclick="addSub(this, <?php echo $data["id"]?>)" role="menuitem" tabindex="-1">添加字段</a>
+                                            <a href="#" onclick="addSub(<?php echo $data['id'];?>)" role="menuitem" tabindex="-1">添加字段</a>
                                         </li>
                                         <li role="presentation">
-                                            <a href="#" onclick="showGroup(<?php echo $index; ?>)" role="menuitem" tabindex="-1">修改</a>
+                                            <a href="#" onclick="showGroup(<?php echo $data['id']; ?>)" role="menuitem" tabindex="-1">修改</a>
                                         </li>
                                         <li role="presentation">
-                                            <a href="#" onclick="delectGroup()" role="menuitem" tabindex="-1">删除字段组</a>
+                                            <a href="#" onclick="delectGroup(<?php echo $data['id']; ?>)" role="menuitem" tabindex="-1">删除字段组</a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         <?php 
-                            $index++;
                         } ?>
                         <div class="form-group">
                             <div style="border-radius:10px;" onclick="addCate(this.parentNode)" class="col-sm-1 col-xs-1 col-sm-offset-2 col-xs-offset-2 btn-primary addDrop">添加+</div>    
@@ -167,23 +162,32 @@
                                     </select>
                     </div>
                    
-        </div><label class="col-sm-2 control-label no-padding-right">选项：</label>
+        </div><label id="options_label" class="col-sm-2 control-label no-padding-right">选项：</label>
         <div id="options">
         </div>
-
+        <div id="bank">
+            <div class="form-group" style="height:30px">
+            <label class="col-sm-3 control-label no-padding-right">是否为付款银行账户</label>
+                                <div class="col-xs-6 col-sm-6">
+                                        <label style="margin-top:8px;">
+                                            <input name="bank" class="ace ace-switch btn-rotate" type="checkbox" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+                                </div>
+            </div>
+        </div>
         <div class="clearfix form-actions">
             <div class="col-md-offset-3 col-md-9">
                 <button class="btn btn-sm" data-dismiss="modal">
             <i class="ace-icon fa fa-times"></i>
                 取消
         </button>
-        <input type="submit" class="btn btn-sm btn-primary">
+        <input type="submit" id="createSub" class="btn btn-sm btn-primary">
             </div>
         </div>
     </div>
-    <input type="text" name="sob_id" class="hidden" value="">
-    <input type="text" name="pid" class="hidden">
-    <input type="text" name="cid" class="hidden">
+    <input type="text" name="groupId" class="hidden">
+    <input type="text" name="subId" class="hidden">
 </form>
 </div>
 <!-- /.modal-content -->
@@ -201,7 +205,7 @@
     </button>
     <h4 class="modal-title">字段组</h4>
 </div>
-<form id="create_form" method="post" action="<?php echo base_url('category/create_category'); ?>">
+<form id="create_form" method="post" action="">
     <div class="modal-body">
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">名称</label>
@@ -223,7 +227,7 @@
             <i class="ace-icon fa fa-times"></i>
                 取消
         </button>
-        <input type="submit" class="btn btn-sm btn-primary">
+        <input type="submit" id="createGroup" class="btn btn-sm btn-primary">
     </div>
     <input type="text" name="pid" class="hidden"></form>
 </div>
@@ -232,9 +236,118 @@
 <!-- PAGE CONTENT ENDS -->
 
 <script type="text/javascript">
-    var __data = <?php echo json_encode($report_template['config']);?>;
+    var __dataUpload = <?php echo json_encode($report_template);?>;
+    var __nid = -1;
+    function getSubIndexById(groupId, id) {
+        var index = getGroupIndexById(groupId);
+        var data = __dataUpload["config"][index]["children"];
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].id == id || data[i].nid == id) return i;
+        }
+        return -1;
+    }
+    function getGroupIndexById(id) {
+        var data = __dataUpload["config"];
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].id == id || data[i].nid == id) return i;
+        }
+        return -1;
+    }
    $(document).ready(function(){
-
+        $("#createSub").click(function(event) {
+            var groupId = $('#modal_1').find('input[name="groupId"]').val();
+            var subId = $('#modal_1').find('input[name="subId"]').val();
+            var name = $('#modal_1').find('input[name="name"]').val();
+            var explanation = $('#modal_1').find('input[name="explanation"]').val();
+            var required = $('#modal_1').find('input[name="required"]').val();
+            var type = $('#modal_1').find('select').val();
+            var option = [];
+            var data = {
+                explanation: explanation,
+                name: name,
+                required: required,
+                type: type,
+                nid:__nid
+            };
+            if (type == 2) {
+                $("#options").find("input").each(function(index, el) {
+                    option.push(el.value);
+                });
+                data.property = {};
+                data.property.options = option;
+            } else if (type == 4) {
+                data.property = {};
+                data.property.bank_account_type = $('#modal_1').find('input[name="bank"]').val();
+            }
+            var index = getGroupIndexById(groupId);
+            if (ifCreate) {
+                __dataUpload['config'][index]['children'].push(data);
+            } else {
+                var subIndex = getSubIndexById(subId);
+                var _data = __dataUpload['config'][index]['children'][subIndex];
+                data.id = subId;
+                __dataUpload['config'][index]['children'][subIndex] = data;
+            }
+            //下面是添加到页面上
+            if (!ifCreate) {
+                $("li[data-subId='_"+subId+"']").find('a').text(name);
+            } else {
+                if (subId == "") subId = __nid;
+                $("#_"+groupId).find(".divider").before(
+                    '<li role="presentation" data-subId="_'+subId+'">'+
+                                            '<a href="#" onclick="showSob('+groupId+','+subId+')" role="menuitem" tabindex="">'+
+                                                name+
+                                            '</a>'+
+                    '</li>'
+                );
+            }
+            __nid--;
+            $('#modal_1').modal('hide');
+            return false;
+        });
+        $("#createGroup").click(function(event) {
+            var name = $("#create_form").find("input[name='name']").val();
+            if (name == "") {
+                $("#create_form").find("input[name='name']").focus();
+                show_notify("请输入字段组名称");
+                return false;
+            };
+            var data = {
+                children:[],
+                name:name,
+                type:0,
+                nid:__nid
+            };
+            var index = __nid;
+            __nid--;
+            $(".addDrop").parent().before(
+                    '<div class="form-group" id="_'+ index +'">'+
+                            '<div class="col-xs-6 col-sm-6 col-sm-offset-2">'+
+                                '<div class="dropdown col-xs-9 col-sm-9 ">'+
+                                    '<div class="dropdown-toggle drop-cata" data-toggle="dropdown">'+
+                                        name+
+                                        '<span class="caret" style="float: right; top: 30px; margin-top: 20px; margin-right: 20px;"></span>'+
+                                    '</div>'+
+                                    '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="width:90%;margin-left:15px;">'+
+                                        '<li role="presentation" class="divider"></li>'+
+                                        '<li role="presentation">'+    
+                                            '<a href="#" onclick="addSub('+index+')" role="menuitem" tabindex="-1">添加字段</a>'+
+                                        '</li>'+
+                                        '<li role="presentation">'+
+                                            '<a href="#" onclick="showGroup('+index+')" role="menuitem" tabindex="-1">修改</a>'+
+                                        '</li>'+
+                                        '<li role="presentation">'+
+                                            '<a href="#" onclick="delectGroup('+index+')" role="menuitem" tabindex="-1">删除字段组</a>'+
+                                        '</li>'+
+                                    '</ul>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'
+                );
+            __dataUpload['config'].push(data);
+            $('#modal_0').modal('hide');
+            return false;
+        });
         $('.renew').click(function(){
 
             var sname = $('#sob_name').val();
@@ -297,11 +410,13 @@
 
         });
     });
-
-                            function showSob(groupId, sobId) {
-                                var data = __data[groupId].children[sobId];
-                                if (sobId != -1) {
-                                    $('#modal_1').find('input[name="pid"]').val(data.id);
+                            var ifCreate = false;
+                            function showSob(groupId, subId) {
+                                var index = getSubIndexById(groupId, subId);
+                                var data = __dataUpload['config'][getGroupIndexById(groupId)].children[index];
+                                if (index != -1) {
+                                    $('#modal_1').find('input[name="subId"]').val(subId);
+                                    $('#modal_1').find('input[name="groupId"]').val(groupId);
                                     $('#modal_1').find('input[name="name"]').val(data.name);
                                     $('#modal_1').find('input[name="explanation"]').val(data.explanation);
                                     $('#modal_1').find('input[name="required"]').val(data.required);
@@ -320,17 +435,22 @@
                                                     '<input name="code" value="'+ options[i] +'" type="text" data-placeholder="请输入选项">'+
                                                     '<a onclick="addOption(this.parentNode)" class="addOption">+</a>'+
                                                     '</div>');
+                                    } else if (data.type == 4) {
+                                        $('#modal_1').find('input[name="bank"]').val(data.property.bank_account_type);
                                     }
                                 }
+                                ifCreate = false;
                                 $('#modal_1').modal('show');
                             }
                             function showGroup(groupId) {
-                                var data = __data[groupId];
+                                var index = getGroupIndexById(groupId);
+                                var data = __dataUpload['config'][index];
                                 $('#modal_0').find('input[name="name"]').val(data['name']);
                                 $('#modal_0').modal('show');
                             }
-                            function addSub(dom, id_) {
-                                $('#modal_1').find('input[name="pid"]').val(id_);
+                            function addSub(groupId) {
+                                ifCreate = true;
+                                $('#modal_1').find('input[name="groupId"]').val(groupId);
                                 $('#modal_1').find('input[name="name"]').val("");
                                 $('#modal_1').find('input[name="explanation"]').val("");
                                 $('#modal_1').find('input[name="required"]').val(0);
@@ -355,9 +475,10 @@
                                 $(dom).remove();
                             }
                             function delectGroup(id_) {
-                                if(confirm('确认要删除吗?')){
-                                    location.href = __BASE + "/category/drop/" + id_ + "/" + _sob_id;
-                                }
+                                var index = getGroupIndexById(id_);
+                                __dataUpload['config'].splice(index,1);
+                                //下面是删除页面元素
+                                $("#_"+id_).remove();
                             }
                             function addCate(dom) {
                                 $('#modal_0').find('input[name="pid"]').val(0);
@@ -365,9 +486,17 @@
                             }
                             $("#extra_type").change(function(event) {
                                 if (this.value == 2) {
+                                    $("#options_label").css('display', 'block');
                                     $("#options").css('display', 'block');
-                                } else {
+                                    $("#bank").css('display', 'none');
+                                } else if (this.value == 4) {
                                     $("#options").css('display', 'none');
+                                    $("#options_label").css('display', 'none');
+                                    $("#bank").css('display', 'block');
+                                } else {
+                                    $("#options_label").css('display', 'none');
+                                    $("#options").css('display', 'none');
+                                    $("#bank").css('display', 'none');
                                 }
                             });
 </script>
