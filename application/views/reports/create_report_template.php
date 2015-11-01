@@ -28,7 +28,7 @@
                            <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-rigtht">报告模板名</label>
                                 <div class="col-xs-4 col-sm-4">
-                                <input id="sob_name" type="text" class="form-controller col-xs-12" name="sob_name" placeholder="输入报告模板名">
+                                <input id="template_name" type="text" class="form-controller col-xs-12" name="template_name" placeholder="输入报告模板名">
                                 </div>
                             </div>
 
@@ -61,12 +61,10 @@ var __BASE = "<?php echo $base_url; ?>";
 
 
         $('.renew').click(function(){
-            var sname = $('#sob_name').val();
-            var sgroups = $('#group').val();
-            //if(sname)
-            if(sname == '')
+            var _name = $('#sob_name').val();
+            if(_name == '')
             {
-                $('#sob_name').focus();
+                $('#template_name').focus();
                 show_notify("请输入报告模板名");
                 return false;
             }
@@ -78,21 +76,21 @@ var __BASE = "<?php echo $base_url; ?>";
             }*/
 	       $.ajax({
                 type:"post",
-                url:__BASE+"category/create_sob",
-                data:{sob_name:$('#sob_name').val(),groups:$('#group').val()},
+                url:__BASE+"company/docreate_report_template",
+                data:{template_name:$('#template_name').val()},
                 dataType:'json',
                 success:function(data){
-                        var d = JSON.parse(data);
-                        if(d.code > 0)
+                        if(data['id'] > 0)
                         {
                             show_notify('保存成功');
-                            window.location.href=__BASE+"category/sob_update/"+d.code;
+                            window.location.href=__BASE+"company/update_report_template/"+data['id'];
                         }
                         else
                         {
                             show_notify('保存失败');
-                            window.location.href=__BASE+"category/account_set";
+                            window.location.href=__BASE+"company/report_template_list";
                         }
+
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     },            });
@@ -110,9 +108,8 @@ var __BASE = "<?php echo $base_url; ?>";
             }).trigger('resize.chosen');
        
         $('.cancel').click(function(){
-            $('#sob_name').val('');
-            $("#group").val('');
-            $('#group').trigger("chosen:updated");
+            $('#template_name').val('');
+           	
         });
     });
 </script>

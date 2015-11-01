@@ -12,8 +12,70 @@ class Company extends REIM_Controller {
     	$this->load->model('report_model','reports');
     }
     
+    public function dodelete_report_template($id)
+    {
+        $buf = $this->reports->delete_report_template($id); 
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','删除成功');
+        }
+        else if($buf['status'] <= 0)
+        {
+            $this->session->set_userdata('last_error',$buf['data']['msg']);
+        }
+        else
+        {
+            $this->session->set_userdata('last_error','删除失败');
+        }
+
+        return redirect('company/report_template_list');
+    }
+
+    public function doupdate_report_template($id)
+    {
+        $template_name = $this->input->post('template_name');
+        $config = $this->input->post('config');
+        
+        $buf = $this->reports->update_report_template($id,$template_name,$config);
+        if($buf['status'] > 0)
+        {
+            $this->session->userdata('last_error','创建成功');
+        }
+        else
+        {
+            $this->session->userdata('last_error',$buf['data']['msg']);
+        }
+
+        return redirect(base_url('company/report_template_list'));
+    }
+
+    public function docreate_report_template()
+    {
+        $template_name = $this->input->post('template_name');
+//        $config = $this->input->post('config');
+        $config = json_encode(array());
+        $buf = $this->reports->create_report_template($template_name,$config);
+        $msg = '';
+        $id = -1 ;
+        if($buf['status'] > 0)
+        {
+            $id = $buf['data']['id'];
+            $this->session->userdata('last_error','创建成功');
+        }
+        else
+        {
+            $this->session->userdata('last_error',$buf['data']['msg']);
+        }
+
+//        return redirect(base_url('company/report_template_list'));
+        die(json_encode(array('id'=>$id)));
+    }
+
     public function update_report_template($id)
     {
+        $this->need_group_it();
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         $report_template = array();
         $_report_template = $this->reports->get_report_template($id);
         if($_report_template['status'] > 0) 
@@ -22,8 +84,8 @@ class Company extends REIM_Controller {
         }
         $this->bsload('reports/update_report_template',
             array(
-                    'title'=>'修改报告模板'
-                    ,'report_template' => $report_template
+                    'title'=>'修改报告模板',
+                    'report_template' => $report_template
                     ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
@@ -37,6 +99,7 @@ class Company extends REIM_Controller {
     {
         $this->bsload('reports/create_report_template',
             array(
+                    'title'=>'新建报告模板',
                     'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
@@ -62,6 +125,7 @@ class Company extends REIM_Controller {
             array(
                 'template_list' => $report_template_list
                 ,'error' => $error
+                ,'title'=>'报告模板列表'
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')

@@ -75,7 +75,7 @@ $(document).ready(function(){
         $(this).click(function(){
             if(confirm('删除模板后将不能恢复，是否确认?')){
                 var _id = $(this).data('id');
-                location.href = __BASEURL + "company/do_delete_report_template/" + _id;
+                location.href = __BASEURL + "company/dodelete_report_template/" + _id;
             }
         });
     });
