@@ -80,7 +80,7 @@ var __BASE = "<?php echo $base_url; ?>";
                 data:{template_name:$('#template_name').val()},
                 dataType:'json',
                 success:function(data){
-                        if(data['id'] != undefined)
+                        if(data['id'] > 0)
                         {
                             show_notify('保存成功');
                             window.location.href=__BASE+"company/update_report_template/"+data['id'];

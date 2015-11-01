@@ -10,7 +10,7 @@ class Report_Model extends Reim_Model {
         $data = array(
             'id' => $id,
             'name' => $name,
-            'config' => $config
+            'config' => json_encode($config)
         );
 	    $buf = $this->do_Put($url,$data,$jwt);
 	    log_message('debug','report_template_url:'.$url);

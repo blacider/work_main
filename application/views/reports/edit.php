@@ -152,13 +152,20 @@ foreach($members as $m) {
                                 <?php
                                         case 4:
                                 ?>
+                                        <?php 
+                                            $value = array();
+                                            if(array_key_exists($field['id'], $extra_dic))
+                                            {
+                                                $value = $extra_dic[$field['id']]['value'];
+                                            }
+                                        ?>
                                         <div class="field_value" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>">
                                         <div class="form-group">
                                             <label class="col-sm-1 control-label no-padding-right"><?php echo $field['name'];?></label>
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
                                                     <input type="text" class="form-controller col-xs-8 account" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" 
-                                                        placeholder="银行户名" value="<?php if(array_key_exists($field['id'], $extra_dic) && array_key_exists('account', $extra_dic[$field['id']]['value'])){ echo $extra_dic[$field['id']]['value']['account'];}?>" <?php if($field['required'] == 1){echo 'required';}?> />
+                                                        placeholder="银行户名" value="<?php if($value && array_key_exists('account', $value)){ echo $value['account'];}?>" <?php if($field['required'] == 1){echo 'required';}?> />
                                                 </div>
                                             </div>
                                         
@@ -169,18 +176,19 @@ foreach($members as $m) {
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
                                                     <input type="text" class="form-controller col-xs-8 cardno" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" 
-                                                        placeholder="银行账号" value="<?php if(array_key_exists($field['id'], $extra_dic) && array_key_exists('cardno', $extra_dic[$field['id']]['value'])){echo $extra_dic[$field['id']]['value']['cardno'];}?>"  <?php if($field['required'] == 1){echo 'required';}?>/>
+                                                        placeholder="银行账号" value="<?php if($value && array_key_exists('cardno', $value)){ echo $value['cardno'];}?>"  <?php if($field['required'] == 1){echo 'required';}?>/>
                                                 </div>
                                             </div>
                                         
                                         </div>
+
 
                                           <div class="form-group">
                                             <label class="col-sm-1 control-label no-padding-right"></label>
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
                                                     <input type="text" class="form-controller col-xs-8 bankname" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" 
-                                                        placeholder="开户行名" value="<?php if(array_key_exists($field['id'], $extra_dic) && array_key_exists('bankname', $extra_dic[$field['id']]['value'])){echo $extra_dic[$field['id']]['value']['bankname'];}?>"  <?php if($field['required'] == 1){echo 'required';}?>/>
+                                                        placeholder="开户行名" value="<?php if($value && array_key_exists('bankname', $value)){ echo $value['bankname'];}?>"  <?php if($field['required'] == 1){echo 'required';}?>/>
                                                 </div>
                                             </div>
                                         
@@ -191,7 +199,7 @@ foreach($members as $m) {
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
                                                     <input type="text" class="form-controller col-xs-8 bankloc" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" 
-                                                        placeholder="开户地" value="<?php if(array_key_exists($field['id'], $extra_dic) && array_key_exists('bankloc', $extra_dic[$field['id']]['value'])){echo $extra_dic[$field['id']]['value']['bankloc'];}?>"  <?php if($field['required'] == 1){echo 'required';}?>/>
+                                                        placeholder="开户地" value="<?php if($value && array_key_exists('bankloc', $value)){ echo $value['bankloc'];}?>"  <?php if($field['required'] == 1){echo 'required';}?>/>
                                                 </div>
                                             </div>
                                         
@@ -202,7 +210,7 @@ foreach($members as $m) {
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
                                                     <input type="text" class="form-controller col-xs-8 subbranch" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" 
-                                                        placeholder="支行" value="<?php if(array_key_exists($field['id'], $extra_dic) && array_key_exists('subbranch', $extra_dic[$field['id']]['value'])){echo $extra_dic[$field['id']]['value']['subbranch'];}?>"  <?php if($field['required'] == 1){echo 'required';}?>/>
+                                                        placeholder="支行" value="<?php if($value && array_key_exists('subbranch', $value)){ echo $value['subbranch'];}?>"  <?php if($field['required'] == 1){echo 'required';}?>/>
                                                 </div>
                                             </div>
                                         
