@@ -6,7 +6,7 @@ class Report_Model extends Reim_Model {
     {
     	$jwt = $this->session->userdata('jwt');
 	    if(!$jwt) return false;
-        $url = $this->get_url('report_template');
+        $url = $this->get_url('report_template/' . $id);
         $data = array(
             'id' => $id,
             'name' => $name,

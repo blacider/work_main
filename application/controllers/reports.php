@@ -540,7 +540,12 @@ class Reports extends REIM_Controller {
         }
         $config = array();
         if(!empty($extra)){
-            $profile = $this->session->userdata('profile');
+            $profile = array();
+            $_common = $this->users->get_common();
+            if($_common['status'] > 0 && array_key_exists('profile',$_common['data']))
+            {
+                $profile = $_common['data']['profile']; 
+            }
             $config = array();
             if($profile && array_key_exists('report_setting',$profile)  && array_key_exists('templates', $profile['report_setting'])) {
                 $report_template = $profile['report_setting']['templates'];
@@ -767,7 +772,12 @@ class Reports extends REIM_Controller {
         }
         $config = array();
         if(!empty($extra)){
-            $profile = $this->session->userdata('profile');
+            $profile = array();
+            $_common = $this->users->get_common();
+            if($_common['status'] > 0 && array_key_exists('profile',$_common['data']))
+            {
+                $profile = $_common['data']['profile']; 
+            }
             $config = array();
             if($profile && array_key_exists('report_setting', $profile) && array_key_exists('templates', $profile['report_setting'])) {
                 $report_template = $profile['report_setting']['templates'];
@@ -1745,7 +1755,12 @@ class Reports extends REIM_Controller {
 
     public function report_template($id = 0){
         if($id == 0) return redirect(base_url('reports/newreport'));
-        $profile = $this->session->userdata('profile');
+        $profile = array();
+        $_common = $this->users->get_common();
+        if($_common['status'] > 0 && array_key_exists('profile',$_common['data']))
+        {
+            $profile = $_common['data']['profile']; 
+        }
         $config = array();
         if($profile && array_key_exists('report_setting',$profile) && array_key_exists('templates', $profile['report_setting'])) {
             $report_template = $profile['report_setting']['templates'];

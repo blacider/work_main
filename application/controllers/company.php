@@ -41,6 +41,7 @@ class Company extends REIM_Controller {
         if(!array_key_exists('id',$temp_info))
         {
             $msg = '没有模板信息,更新失败';
+            $this->session->set_userdata('debug','没有模板信息,更新失败');
         }
         $id = $temp_info['id'];
         $template_name = $temp_info['name'];
@@ -50,6 +51,7 @@ class Company extends REIM_Controller {
         {
             $status = 1;
             $msg = '更新成功';
+            $this->session->set_userdata('debug','更新成功');
         }
         else
         {
