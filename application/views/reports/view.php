@@ -123,7 +123,7 @@
                                             $value = array();
                                             if(array_key_exists($field['id'], $extra_dic))
                                             {
-                                                $value = $extra_dic[$field['id']]['value'];
+                                                $value = json_decode($extra_dic[$field['id']]['value'],True);
                                             }
                                         ?>
                                         <div class="field_value" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>">

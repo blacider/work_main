@@ -461,15 +461,15 @@ function do_post(force) {
             var field_bankname = $('.bankname',this).val();
             var field_bankloc = $('.bankloc',this).val();
             var field_subbranch = $('.subbranch',this).val();
-            extra.push({'id':field_id,'value':{
+            extra.push({'id':field_id,'value':JSON.stringify({
                                                'account':field_account,
                                                'cardno':field_cardno,
                                                'bankname':field_bankname,
                                                'bankloc':field_bankloc,
                                                'subbranch':field_subbranch,
                                                'account_type':field_bank
-                                               }
-                                               ,'type':field_type});
+                                               })
+                                               ,'type':field_type} );
         }
         else
         {
