@@ -31,23 +31,32 @@ class Company extends REIM_Controller {
         return redirect('company/report_template_list');
     }
 
-    public function doupdate_report_template($id)
+    public function doupdate_report_template()
     {
-        $template_name = $this->input->post('template_name');
-        $config = $this->input->post('config');
+        $temp_info = $this->input->post('temp_info');
         
-        log_message('debug','config:' . json_encode($config));
+        log_message('debug','temp_info:' . json_encode($temp_info));
+        $status = 0;
+        $msg = '更新失败';
+        if(!array_key_exists('id',$temp_info))
+        {
+            $msg = '没有模板信息,更新失败';
+        }
+        $id = $temp_info['id'];
+        $template_name = $temp_info['name'];
+        $config = $temp_info['config'];
         $buf = $this->reports->update_report_template($id,$template_name,$config);
         if($buf['status'] > 0)
         {
-            $this->session->userdata('last_error','创建成功');
+            $status = 1;
+            $msg = '更新成功';
         }
         else
         {
-            $this->session->userdata('last_error',$buf['data']['msg']);
+            $msg = $buf['data']['msg'];
         }
 
-        return redirect(base_url('company/report_template_list'));
+        die(json_encode(array('status' => $status,'msg' => $msg)));
     }
 
     public function docreate_report_template()

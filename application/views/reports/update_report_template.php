@@ -360,6 +360,8 @@
                 show_notify("请输入用户名");
                 return false;
             }
+
+            console.log(__dataUpload);
             /*if(sgroups == null)
             {
                 $('#group').focus();
@@ -367,23 +369,26 @@
                 return false;
             }*/
 
+        
                   $.ajax({
                 type:"post",
-                url:__BASE+"category/update_sob",
-                data:{sob_name:$('#sob_name').val()
-                      ,groups:$('#group').val()
-                      ,sid:$('#sob_id').val()
-                      ,ranks:$('#ranks').val()
-                      ,levels:$('#levels').val()
-                      ,member:$('#member').val()
-                      ,range:$("input[name='range']:checked").val()},
+                url:__BASE+"company/doupdate_report_template",
+                data:{temp_info:__dataUpload},
                 dataType:'json',
                 success:function(data){
-                       show_notify('保存成功');
-                       window.location.href=__BASE+"category/account_set";
+                       if(data['status'] == 1)
+                       {
+                            show_notify(data['msg']);
+                            window.location.href=__BASE+"company/report_template_list";
+                       }
+                       else
+                       {
+                            show_notify(data['msg']);
+                       }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     },            });
+           
      
            }); 
         $(".chosen-select-niu").chosen({width:"95%"});
