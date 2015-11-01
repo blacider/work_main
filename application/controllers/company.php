@@ -36,6 +36,7 @@ class Company extends REIM_Controller {
         $template_name = $this->input->post('template_name');
         $config = $this->input->post('config');
         
+        log_message('debug','config:' . json_encode($config));
         $buf = $this->reports->update_report_template($id,$template_name,$config);
         if($buf['status'] > 0)
         {
