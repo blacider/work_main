@@ -833,6 +833,9 @@ $(document).ready(function(){
     }
     
     // 导入导出有步骤，合并在一起
+    if(_method == "create_report_template" || _method == "update_report_template"){
+        _method = "report_template_list";
+    }
     if(_controller == "broadcast" && _method == "index"){
         _method = "broadcast_index";
         _controller = "company";
