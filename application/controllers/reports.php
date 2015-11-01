@@ -535,7 +535,7 @@ class Reports extends REIM_Controller {
         }
         $report = $report['data'];
         $extra = array();
-        if(array_key_exists('extras', $report)) {
+        if(array_key_exists('extras', $report) && $report['extras']) {
             $extra = json_decode($report['extras'], true);
         }
         $config = array();
@@ -582,7 +582,7 @@ class Reports extends REIM_Controller {
         {
             $extra_dic[$ex['id']] = $ex;
         }
-
+        log_message('debug','report:' . json_encode($report));
         log_message('debug','extra:' . json_encode($extra));
         log_message('debug','config:' . json_encode($config));
         $this->bsload('reports/edit',
@@ -762,17 +762,17 @@ class Reports extends REIM_Controller {
             $_members = $members['data']['members'];
         }
         $extra = array();
-        if(array_key_exists('extras', $report)) {
+        if(array_key_exists('extras', $report) && $report['extras']) {
             $extra = json_decode($report['extras'], true);
         }
         $config = array();
         if(!empty($extra)){
             $profile = $this->session->userdata('profile');
             $config = array();
-            if($profile &&  array_key_exists('templates', $profile)) {
-                $report_template = $profile['templates'];
+            if($profile && array_key_exists('report_setting', $profile) && array_key_exists('templates', $profile['report_setting'])) {
+                $report_template = $profile['report_setting']['templates'];
                 foreach($report_template as $r) {
-                    if($r['id'] == $extra['template_id']) {
+                    if($r['id'] == $report['template_id']) {
                         $config = $r;
                         break;
                     }
@@ -785,6 +785,11 @@ class Reports extends REIM_Controller {
             $url = base_url($url);
         }
         log_message("debug", "found report list page => " . $url);
+        $extra_dic = array();
+        foreach($extra as $ex)
+        {
+            $extra_dic[$ex['id']] = $ex;
+        }
         
         $this->bsload('reports/view',
             array(
@@ -795,6 +800,7 @@ class Reports extends REIM_Controller {
                 ,'rid' => $id
                 ,'config' => $config
                 ,'extra' => $extra
+                ,'extra_dic' => $extra_dic
                 ,'comments' => $comments
                 ,'members' => $_members
                 ,'decision' => $decision
