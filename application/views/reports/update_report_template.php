@@ -475,10 +475,10 @@
                                 $(dom).remove();
                             }
                             function delectGroup(id_) {
-                                var index = getGroupIndexById(_id);
+                                var index = getGroupIndexById(id_);
                                 __dataUpload['config'].splice(index,1);
                                 //下面是删除页面元素
-                                $("_"+id_).remove();
+                                $("#_"+id_).remove();
                             }
                             function addCate(dom) {
                                 $('#modal_0').find('input[name="pid"]').val(0);
