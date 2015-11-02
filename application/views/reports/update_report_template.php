@@ -225,7 +225,7 @@
             <label class="col-sm-3 control-label no-padding-right">是否打印</label>
                                 <div class="col-xs-6 col-sm-6">
                                         <label style="margin-top:8px;">
-                                            <input name="force_attach" class="ace ace-switch btn-rotate" type="checkbox" id="force_attach" style="margin-top:4px;" />
+                                            <input name="printable" class="ace ace-switch btn-rotate" type="checkbox" id="force_attach" style="margin-top:4px;" />
                                             <span class="lbl"></span>
                                         </label>
                                 </div>
@@ -322,6 +322,7 @@
         });
         $("#createGroup").click(function(event) {
             var name = $("#create_form").find("input[name='name']").val();
+            var printable = $('#modal_0').find('input[name="printable"]').val();
             if (name == "") {
                 $("#create_form").find("input[name='name']").focus();
                 show_notify("请输入字段组名称");
@@ -331,6 +332,7 @@
                 children:[],
                 name:name,
                 type:0,
+                printable:printable
             };
             var groupId = $('#modal_0').find('input[name="groupId"]').val();
         if (groupId == "") {
@@ -477,6 +479,7 @@
                                 var data = __dataUpload['config'][index];
                                 $('#modal_0').find('input[name="name"]').val(data['name']);
                                 $('#modal_0').find('input[name="groupId"]').val(groupId);
+                                $('#modal_0').find('input[name="printable"]').val(data.printable);
                                 ifCreateGroup = false;
                                 $('#modal_0').modal('show');
                             }
@@ -516,6 +519,7 @@
                                 $('#modal_0').find('input[name="groupId"]').val("");
                                 $('#modal_0').find('input[name="pid"]').val(0);
                                 $('#modal_0').find('input[name="name"]').val("");
+                                $('#modal_0').find('input[name="printable"]').val(0);
                                 ifCreateGroup = true;
                                 $('#modal_0').modal('show');
                             }
