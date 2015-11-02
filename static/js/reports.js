@@ -24,7 +24,6 @@ function bind_event(){
             var _id = $(this).data('id');
             var chosen_id = [];
             chosen_id.push(_id);
-            console.log(chosen_id);
             $.ajax({
                 url:__BASE + "/bills/download_single_report",
                 method:"post",
@@ -43,7 +42,6 @@ function bind_event(){
     $('.texport').each(function(){
         $(this).click(function(){
             var _id = $(this).data('id');
-            console.log(_id);
             $('#report_id').val(_id);
         });
     });
