@@ -39,9 +39,14 @@
 ?>
                             <input type="hidden" id="template_id" name="template_id" value="<?php echo $config['id']; ?>">
                             <?php
+                            if($config['config'])
+                            {
+                                ?>
+                            <hr>
+                                <?php 
+                            }
                             foreach($config['config'] as $field_group){
                             ?>
-                            <hr>
                                 <?php
                                     if(array_key_exists('children', $field_group))
                                     {
