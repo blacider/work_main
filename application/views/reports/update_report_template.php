@@ -273,13 +273,13 @@
             var subId = $('#modal_1').find('input[name="subId"]').val();
             var name = $('#modal_1').find('input[name="name"]').val();
             var explanation = $('#modal_1').find('input[name="explanation"]').val();
-            var required = $('#modal_1').find('input[name="required"]').val();
+            var required = $('#modal_1').find('input[name="required"]')[0].checked;
             var type = $('#modal_1').find('select').val();
             var option = [];
             var data = {
                 explanation: explanation,
                 name: name,
-                required: required,
+                required: (required?1:0),
                 type: type
             };
             if (type == 2) {
@@ -322,7 +322,7 @@
         });
         $("#createGroup").click(function(event) {
             var name = $("#create_form").find("input[name='name']").val();
-            var printable = $('#modal_0').find('input[name="printable"]').val();
+            var printable = $('#modal_0').find('input[name="printable"]')[0].checked;
             if (name == "") {
                 $("#create_form").find("input[name='name']").focus();
                 show_notify("请输入字段组名称");
@@ -332,7 +332,7 @@
                 children:[],
                 name:name,
                 type:0,
-                printable:printable
+                printable:(printable?1:0)
             };
             var groupId = $('#modal_0').find('input[name="groupId"]').val();
         if (groupId == "") {
@@ -366,6 +366,7 @@
             __dataUpload['config'].push(data);
         } else {
             __dataUpload['config'][getGroupIndexById(groupId)].name = data.name;
+            __dataUpload['config'][getGroupIndexById(groupId)].printable = data.printable;
             $("#_"+groupId).find(".dropdown-toggle").empty().append(data.name).append('<span class="caret" style="float: right; top: 30px; margin-top: 20px; margin-right: 20px;"></span>');
         }
             $('#modal_0').modal('hide');
@@ -451,7 +452,7 @@
                                     $('#modal_1').find('input[name="groupId"]').val(groupId);
                                     $('#modal_1').find('input[name="name"]').val(data.name);
                                     $('#modal_1').find('input[name="explanation"]').val(data.explanation);
-                                    $('#modal_1').find('input[name="required"]').val(data.required);
+                                    $('#modal_1').find('input[name="required"]')[0].checked = (data.required == "1");
                                     $('#modal_1').find('select').val(data.type).trigger("chosen:updated");
                                     $('#modal_1').find('select').change();
                                     if (data.type == 2) {
@@ -468,7 +469,9 @@
                                                     '<a onclick="addOption(this.parentNode)" class="addOption">+</a>'+
                                                     '</div>');
                                     } else if (data.type == 4) {
-                                        $('#modal_1').find('input[name="bank"]').val(data.property.bank_account_type);
+
+                                        $('#modal_0').find('input[name="bank"]').attr('checked', data.property.bank_account_type);
+                                        $('#modal_0').find('input[name="bank"]').trigger("chosen:updated");
                                     }
                                 }
                                 ifCreate = false;
@@ -479,7 +482,8 @@
                                 var data = __dataUpload['config'][index];
                                 $('#modal_0').find('input[name="name"]').val(data['name']);
                                 $('#modal_0').find('input[name="groupId"]').val(groupId);
-                                $('#modal_0').find('input[name="printable"]').val(data.printable);
+
+                                $('#modal_0').find('input[name="printable"]')[0].checked = (data.printable == "1");
                                 ifCreateGroup = false;
                                 $('#modal_0').modal('show');
                             }
@@ -488,7 +492,7 @@
                                 $('#modal_1').find('input[name="groupId"]').val(groupId);
                                 $('#modal_1').find('input[name="name"]').val("");
                                 $('#modal_1').find('input[name="explanation"]').val("");
-                                $('#modal_1').find('input[name="required"]').val(0);
+                                $('#modal_1').find('input[name="required"]')[0].checked = 0;
                                 $('#modal_1').find('select').val(1).trigger("chosen:updated");
                                 $('#modal_1').find('select').change();
                                 $("#options").empty();
@@ -519,7 +523,7 @@
                                 $('#modal_0').find('input[name="groupId"]').val("");
                                 $('#modal_0').find('input[name="pid"]').val(0);
                                 $('#modal_0').find('input[name="name"]').val("");
-                                $('#modal_0').find('input[name="printable"]').val(0);
+                                $('#modal_0').find('input[name="printable"]')[0].checked = 0;
                                 ifCreateGroup = true;
                                 $('#modal_0').modal('show');
                             }
