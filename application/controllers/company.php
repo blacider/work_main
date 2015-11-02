@@ -8,9 +8,183 @@ class Company extends REIM_Controller {
         $this->load->model('usergroup_model','ug');
         $this->load->model('account_set_model','account_set');
         $this->load->model('category_model','category');
-	$this->load->model('reim_show_model','reim_show');
+    	$this->load->model('reim_show_model','reim_show');
+    	$this->load->model('report_model','reports');
     }
     
+    public function dodelete_report_template($id)
+    {
+        $buf = $this->reports->delete_report_template($id); 
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','删除成功');
+        }
+        else if($buf['status'] <= 0)
+        {
+            $this->session->set_userdata('last_error',$buf['data']['msg']);
+        }
+        else
+        {
+            $this->session->set_userdata('last_error','删除失败');
+        }
+
+        return redirect('company/report_template_list');
+    }
+
+    public function doupdate_report_template()
+    {
+        $temp_info = $this->input->post('temp_info');
+        
+        log_message('debug','temp_info:' . json_encode($temp_info));
+        $status = 0;
+        $msg = '更新失败';
+        if(!array_key_exists('id',$temp_info))
+        {
+            log_message('debug','has no id');
+            $msg = '没有模板信息,更新失败';
+            $this->session->set_userdata('debug','没有模板信息,更新失败');
+        }
+        $id = $temp_info['id'];
+        $template_name = $temp_info['name'];
+        $_config = $temp_info['config'];
+
+        $config = array();
+        log_message('debug','_config:' . json_encode($_config));
+        if($_config)
+        {
+            foreach($_config as $conf)
+            {
+                /* 设置每个字段组的默认值*/
+                $temp_group = array('name' => '','type' => 0, 'children' => array());
+                if(array_key_exists('name',$conf))
+                {
+                    $temp_group['name'] = $conf['name'];
+                }
+                if(array_key_exists('type',$conf))
+                {
+                    $temp_group['type'] = $conf['type'];
+                }
+                if(array_key_exists('children',$conf))
+                {
+                    /*取出每个字段的数据*/
+                    foreach($conf['children'] as $child)
+                    {
+                        $temp_child = array();
+                        foreach($child as $key => $value) 
+                        {
+                            if($key == 'nid') continue; 
+                            $temp_child[$key] = $value;
+                        }
+                        array_push($temp_group['children'],$temp_child);
+                    }
+                }
+
+                array_push($config,$temp_group);
+            }
+        }
+        
+        log_message('debug','config:' . json_encode($config));
+        $buf = $this->reports->update_report_template($id,$template_name,$config);
+        if($buf['status'] > 0)
+        {
+            $status = 1;
+            $msg = '更新成功';
+            $this->session->set_userdata('debug','更新成功');
+        }
+        else
+        {
+            $msg = $buf['data']['msg'];
+        }
+
+        die(json_encode(array('status' => $status,'msg' => $msg)));
+    }
+
+    public function docreate_report_template()
+    {
+        $template_name = $this->input->post('template_name');
+//        $config = $this->input->post('config');
+        $config = json_encode(array());
+        $buf = $this->reports->create_report_template($template_name,$config);
+        $msg = '';
+        $id = -1 ;
+        if($buf['status'] > 0)
+        {
+            $id = $buf['data']['id'];
+            $this->session->userdata('last_error','创建成功');
+        }
+        else
+        {
+            $this->session->userdata('last_error',$buf['data']['msg']);
+        }
+
+//        return redirect(base_url('company/report_template_list'));
+        die(json_encode(array('id'=>$id)));
+    }
+
+    public function update_report_template($id)
+    {
+        $this->need_group_it();
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+        $report_template = array();
+        $_report_template = $this->reports->get_report_template($id);
+        if($_report_template['status'] > 0) 
+        {
+            $report_template = $_report_template['data'];
+        }
+        $this->bsload('reports/update_report_template',
+            array(
+                    'title'=>'修改报告模板',
+                    'report_template' => $report_template
+                    ,'breadcrumbs'=> array(
+                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+                    ,array('url'=>'','name'=>'公司设置','class'=> '')
+                    ,array('url'=>'','name'=>'修改报告模板','class'=>'')
+                ),
+            )
+        );
+    }
+
+    public function create_report_template()
+    {
+        $this->bsload('reports/create_report_template',
+            array(
+                    'title'=>'新建报告模板',
+                    'breadcrumbs'=> array(
+                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+                    ,array('url'=>'','name'=>'公司设置','class'=> '')
+                    ,array('url'=>'','name'=>'修改报告模板','class'=>'')
+                ),
+            )
+        );
+    }
+
+    public function report_template_list()
+    {
+        $report_template_list = array();
+        $_report_template_list = $this->reports->get_report_template();
+        if($_report_template_list['status'] > 0)
+        {
+            $report_template_list = $_report_template_list['data'];
+        }
+
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+
+        $this->bsload('reports/report_template_list',
+            array(
+                'template_list' => $report_template_list
+                ,'error' => $error
+                ,'title'=>'报告模板列表'
+                ,'breadcrumbs'=> array(
+                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+                    ,array('url'=>'','name'=>'公司设置','class'=> '')
+                    ,array('url'=>'','name'=>'报告模板列表','class'=>'')
+                ),
+            )
+        );
+    }
+
     public function report_settings_update($id)
     {
         $buf = $this->company->get_single_reports_settings($id); 
