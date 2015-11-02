@@ -45,7 +45,16 @@ class Company extends REIM_Controller {
             $this->session->set_userdata('debug','没有模板信息,更新失败');
         }
         $id = $temp_info['id'];
-        $template_name = $temp_info['name'];
+        $template_name = '';
+        if(array_key_exists('name',$temp_info))
+        {
+            $template_name = $temp_info['name'];
+        }
+        $type = '';
+        if(array_key_exists('type',$temp_info))
+        {
+            $type = $temp_info['type'];
+        }
         $_config = array();
         if(array_key_exists('config',$temp_info))
         {
@@ -59,7 +68,7 @@ class Company extends REIM_Controller {
             foreach($_config as $conf)
             {
                 /* 设置每个字段组的默认值*/
-                $temp_group = array('name' => '','type' => 0, 'children' => array());
+                $temp_group = array('name' => '','type' => 0,'printable' => 0, 'children' => array());
                 if(array_key_exists('name',$conf))
                 {
                     $temp_group['name'] = $conf['name'];
@@ -67,6 +76,10 @@ class Company extends REIM_Controller {
                 if(array_key_exists('type',$conf))
                 {
                     $temp_group['type'] = $conf['type'];
+                }
+                if(array_key_exists('printable',$conf))
+                {
+                    $temp_group['printable'] = $conf['printable'];
                 }
                 if(array_key_exists('children',$conf))
                 {
@@ -88,7 +101,7 @@ class Company extends REIM_Controller {
         }
         
         log_message('debug','config:' . json_encode($config));
-        $buf = $this->reports->update_report_template($id,$template_name,$config);
+        $buf = $this->reports->update_report_template($id,$template_name,$config,$type);
         if($buf['status'] > 0)
         {
             $status = 1;
@@ -136,6 +149,7 @@ class Company extends REIM_Controller {
         {
             $report_template = $_report_template['data'];
         }
+//        $item_type_dic = $this->reim_show->
         $this->bsload('reports/update_report_template',
             array(
                     'title'=>'修改报告模板',

@@ -2,13 +2,14 @@
 
 class Report_Model extends Reim_Model {
 
-    public function update_report_template($id,$name,$config)
+    public function update_report_template($id,$name,$config,$type)
     {
     	$jwt = $this->session->userdata('jwt');
 	    if(!$jwt) return false;
         $url = $this->get_url('report_template/' . $id);
         $data = array(
             'id' => $id,
+            'type' => $type,
             'name' => $name,
             'config' => json_encode($config)
         );
