@@ -220,9 +220,9 @@ foreach($report['items'] as $i) {
                                     <table class="table table-bordered table-striped">
                                         <tr>
                                             <td>消费时间</td>
-                                            <td>类型</td>
-                                            <td>金额</td>
                                             <td>类别</td>
+                                            <td>金额</td>
+                                            <td>类型</td>
                                             <td>商家</td>
                                             <td>备注</td>
                                             <td>详情</td>
@@ -265,7 +265,15 @@ foreach($report['items'] as $i) {
                                         <tr>
                                             <td><?php echo $_date_str; ?></td>
                                             <td>
-                                            <?php 
+                                            <?php echo $i['category_name']; ?></td>
+<?php 
+                                                $update_amount = '';
+                                                if($i['src_amount'] > 0) { 
+                                                    $update_amount = "[" . $i['currency_logo'] . $i['src_amount'] . " 由  ". $i['lastmodifier'] . "修改]";
+                                                }
+?>
+    <td><?php echo $i['currency_logo']; ?> &nbsp;<?php echo $i['amount']; ?> <?php echo  $update_amount . $_extra_amount; ?> </td>
+                                            <td><?php 
                                                 $buf = '';
                                                 switch($i['prove_ahead']) {
                                                 case 0 : $buf = '报销';break;
@@ -276,14 +284,6 @@ foreach($report['items'] as $i) {
 
 
                                                 ?></td>
-<?php 
-                                                $update_amount = '';
-                                                if($i['src_amount'] > 0) { 
-                                                    $update_amount = "[" . $i['currency_logo'] . $i['src_amount'] . " 由  ". $i['lastmodifier'] . "修改]";
-                                                }
-?>
-    <td><?php echo $i['currency_logo']; ?> &nbsp;<?php echo $i['amount']; ?> <?php echo  $update_amount . $_extra_amount; ?> </td>
-                                            <td><?php echo $i['category_name']; ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td><?php echo $i['note'];?></td>
                                             <td><?php $link = base_url('items/show/' . $i['id'] . "/1"); ?><a href="<?php echo $link; ?>">详情</a></td>

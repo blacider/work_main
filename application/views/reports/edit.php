@@ -241,9 +241,9 @@ foreach($members as $m) {
                                                 <td>
                                                    <input name="all_item" id="all_item" type="checkbox" class="form-controller all_item"> 全选</td>
                                                 <td>消费时间</td>
-                                                <td>类型</td>
-                                                <td>金额</td>
                                                 <td>类别</td>
+                                                <td>金额</td>
+                                                <td>类型</td>
                                                 <td>商家</td>
                                                 <td>备注</td>
                                                 <td>操作</td>
