@@ -499,6 +499,7 @@
                             function addCate(dom) {
                                 $('#modal_0').find('input[name="groupId"]').val("");
                                 $('#modal_0').find('input[name="pid"]').val(0);
+                                $('#modal_0').find('input[name="name"]').val("");
                                 ifCreateGroup = true;
                                 $('#modal_0').modal('show');
                             }
