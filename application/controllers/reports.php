@@ -1796,5 +1796,18 @@ class Reports extends REIM_Controller {
         }
         return redirect(base_url('reports/newreport'));
     }
+
+
+    public function check_submit(){
+        $items = $this->input->post('item');
+        if(''==$items)
+        {
+            $this->session->set_userdata('last_error','提交报告不能为空');
+            return redirect(base_url('reports/index')); 
+        }
+        $receiver = $this->input->post('receiver');
+        $buf = $this->reports->submit_check(implode(',', $receiver), implode(',', $items));
+        die($buf);
+    }
 }
 

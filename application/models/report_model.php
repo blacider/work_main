@@ -117,10 +117,10 @@ class Report_Model extends Reim_Model {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         log_message("debug", "JWT:" . json_encode($jwt));
-		$url = $this->get_url("report/$rid");
-		$buf = $this->do_Get($url, $jwt);
+        $url = $this->get_url("report/$rid");
+        $buf = $this->do_Get($url, $jwt);
         log_message("debug", "From Server [ $url ]:" . $buf);
-		$obj = json_decode($buf, true);
+        $obj = json_decode($buf, true);
         return $obj;
     }
 
@@ -129,11 +129,11 @@ class Report_Model extends Reim_Model {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         log_message("debug", "JWT:" . json_encode($jwt));
-		$url = $this->get_url("report/$rid");
-		$buf = $this->do_Delete($url, array(), $jwt);
+        $url = $this->get_url("report/$rid");
+        $buf = $this->do_Delete($url, array(), $jwt);
         log_message("debug", "DETELE )))))))) :" . json_encode($jwt));
         log_message("debug", "From Server [ $url ]:" . $buf);
-		$obj = json_decode($buf, true);
+        $obj = json_decode($buf, true);
         return $obj;
     }
 
@@ -141,10 +141,10 @@ class Report_Model extends Reim_Model {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         log_message("debug", "JWT:" . json_encode($jwt));
-		$url = $this->get_url("bills/" . $status);
-		$buf = $this->do_Get($url, $jwt);
+        $url = $this->get_url("bills/" . $status);
+        $buf = $this->do_Get($url, $jwt);
         log_message("debug", "From Server [ $url ]:" . $buf);
-		$obj = json_decode($buf, true);
+        $obj = json_decode($buf, true);
         return $obj;
     }
 
@@ -152,20 +152,20 @@ class Report_Model extends Reim_Model {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         //log_message("debug", "JWT:" . json_encode($jwt));
-		$url = $this->get_url("report_finance_flow/list/" . $status);
-		$buf = $this->do_Get($url, $jwt);
+        $url = $this->get_url("report_finance_flow/list/" . $status);
+        $buf = $this->do_Get($url, $jwt);
         //log_message("debug", "report_finance_flow:" . $buf);
-		$obj = json_decode($buf, true);
+        $obj = json_decode($buf, true);
         return $obj;
     }
     public function get_all_bills(){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         log_message("debug", "JWT:" . json_encode($jwt));
-		$url = $this->get_url("bills/2");
-		$buf = $this->do_Get($url, $jwt);
+        $url = $this->get_url("bills/2");
+        $buf = $this->do_Get($url, $jwt);
         log_message("debug", "From Server [ $url ]:" . $buf);
-		$obj = json_decode($buf, true);
+        $obj = json_decode($buf, true);
         return $obj;
     }
 
@@ -173,10 +173,10 @@ class Report_Model extends Reim_Model {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         log_message("debug", "JWT:" . json_encode($jwt));
-		$url = $this->get_url("success");
+        $url = $this->get_url("success");
         $buf = $this->do_Put($url, array('rids' => $data, 'status' => $status), $jwt);
         log_message("debug", "From Server [ $url ]:" . $buf);
-		//$obj = json_decode($buf, true);
+        //$obj = json_decode($buf, true);
         return $buf;
     }
 
@@ -195,7 +195,7 @@ class Report_Model extends Reim_Model {
         );
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-		$url = $this->get_url("report");
+        $url = $this->get_url("report");
         $buf = $this->do_Post($url, $data, $jwt);
         log_message('debug','create_report_data:' . json_encode($data));
         log_message('debug','create_report_url:' . $url);
@@ -234,9 +234,9 @@ class Report_Model extends Reim_Model {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         //log_message("debug", "Update:" . json_encode($data));
-		$url = $this->get_url("report/$id");
+        $url = $this->get_url("report/$id");
         $buf = $this->do_Get($url, $jwt);
-		$obj = json_decode($buf, true);
+        $obj = json_decode($buf, true);
         return $obj;
     }
 
@@ -247,9 +247,9 @@ class Report_Model extends Reim_Model {
             'ids' => $ids
         );
         log_message("debug", "Update:" . json_encode($data));
-		$url = $this->get_url("reports");
+        $url = $this->get_url("reports");
         $buf = $this->do_Post($url, $data, $jwt);
-		$obj = json_decode($buf, true);
+        $obj = json_decode($buf, true);
         return $obj;
     }
 
@@ -263,19 +263,27 @@ class Report_Model extends Reim_Model {
             ,'comment' => $content
         );
         log_message("debug", "Update:" . json_encode($data));
-		$url = $this->get_url("report/$rid");
+        $url = $this->get_url("report/$rid");
         $buf = $this->do_Put($url, $data, $jwt);
-		$obj = json_decode($buf, true);
+        $obj = json_decode($buf, true);
         return $obj;
     }
 
     public function report_flow($rid){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-		$url = $this->get_url("report_flow/$rid/1");
+        $url = $this->get_url("report_flow/$rid/1");
         $buf = $this->do_Get($url, $jwt);
         log_message("debug","report_flow:" . $buf);
-		$obj = json_decode($buf, true);
+        $obj = json_decode($buf, true);
         return $obj;
+    }
+    public function submit_check($manager_ids, $iids){
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $url = $this->get_url("check_submit_flow");
+        $data = array('iids' => $iids, 'manager_ids' => $manager_ids);
+        $buf = $this->do_Post($url, $data, $jwt);
+        return $buf;
     }
 }

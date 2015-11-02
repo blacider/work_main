@@ -337,7 +337,7 @@ if($last_error) {
     <div class="modal-body">
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">名称</label>
-            <input type="text" name='name' data-placeholder="请输入名称"></div>
+            <input type="text" maxlength="10" name='name' data-placeholder="请输入名称"></div>
         <div class="form-group">
             <label class="col-sm-2 control-label no-padding-rigtht">说明</label>
                             
@@ -448,7 +448,7 @@ if($last_error) {
     <div class="modal-body">
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">名称</label>
-            <input type="text" name='name' data-placeholder="请输入名称"></div>
+            <input type="text" maxlength="10" name='name' data-placeholder="请输入名称"></div>
         <div class="form-group">
             <label class="col-sm-2 control-label no-padding-rigtht">说明</label>
                             

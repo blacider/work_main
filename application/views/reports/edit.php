@@ -11,6 +11,7 @@
 <script src="/static/ace/js/date-time/moment.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script>
+<script src="/static/js/reports.js"></script>
 
 
 
@@ -31,6 +32,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">发送至</label>
                                 <div class="col-xs-9 col-sm-9">
+                                    <input type="hidden" name="hidden_receiver" id="hidden_receiver" />
                                     <select class="chosen-select tag-input-style" name="receiver[]" multiple="multiple" data-placeholder="请选择审批人" id="receiver">
 <?php 
 $user = $this->session->userdata('user');
@@ -260,9 +262,9 @@ foreach($members as $m) {
                                                 <td>
                                                    <input name="all_item" id="all_item" type="checkbox" class="form-controller all_item"> 全选</td>
                                                 <td>消费时间</td>
-                                                <td>类型</td>
-                                                <td>金额</td>
                                                 <td>类别</td>
+                                                <td>金额</td>
+                                                <td>类型</td>
                                                 <td>商家</td>
                                                 <td>备注</td>
                                                 <td>操作</td>
@@ -393,6 +395,36 @@ foreach($items as $i){
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+
+<div class="modal fade" id="modal_next">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">根据公司规定，你的报告需要提交给</h4>
+                <input type="hidden" name="rid" value="" id="rid">
+                <input type="hidden" name="status" value="2" id="status">
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="col-xs-9 col-sm-9" id="label_receiver">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-success submit_by_rule" value="按照公司规定发送报告" />
+                <input type="submit" class="btn btn-primary my_submit" value="按照我的选择发送报告" />
+                <div class="btn btn-primary" onclick="cancel_modal_next()">取消</div>
+            </div>
+                <script type="text/javascript">
+                  function cancel_modal_next() {
+                    $('#modal_next').modal('hide');
+                    return;
+                  }
+                </script>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
@@ -676,7 +708,16 @@ Date.prototype.format = function(format) {
         return format;  
 };
 $(document).ready(function(){
-    //$('#date-timepicker2').val();
+    $('.submit_by_rule').click(function(){
+        var _receivers = ($('#hidden_receiver').val());
+        if(!_receivers) do_post();
+        _receivers = _receivers.split(",");
+        $('#receiver').val(_receivers).trigger("chosen:updated");
+        do_post();
+    });
+    $('.my_submit').click(function(){
+        do_post();
+    });
     _contract = $('input[name="contract"]:checked').val(); 
     if(_contract == 0) {
                 $('#contract_note').show();
@@ -796,8 +837,7 @@ $('.tdetail').each(function(){
 
     $('.renew').click(function(){
         $('#renew').val($(this).data('renew'));
-        do_post(0);
-        //$('#mainform').submit();
+        submit_check();
     });
     $('.force_submit_btn').click(function() {
         $('#renew').val(1);
