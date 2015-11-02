@@ -84,6 +84,16 @@
                         <div class="form-group">
                             <div style="border-radius:10px;" onclick="addCate(this.parentNode)" class="col-sm-1 col-xs-1 col-sm-offset-2 col-xs-offset-2 btn-primary addDrop">添加+</div>    
                         </div>
+                        <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">使用范围</label>
+                        <div class="col-xs-5 col-sm-5">
+                                    <select class="chosen-select tag-input-style" id="type" multiple="multiple" data-placeholder="请选择类型" placeholder="请选择类型">
+                                        <option value="0">报销</option>
+                                        <option value="1">预借</option>
+                                        <option value="2">预算</option>
+                                    </select>
+                                </div>
+                            </div>
                 <input type="reset" style="display:none;" id="reset">
                 <div class="clearfix form-actions">
                     <div class="col-md-offset-3 col-md-9">
@@ -255,6 +265,9 @@
         return -1;
     }
    $(document).ready(function(){
+        $("#type").val(__dataUpload['type']).trigger("chosen:updated").change(function(event) {
+            __dataUpload['type'] = $("#type").val();
+        });
         $("#createSub").click(function(event) {
             var groupId = $('#modal_1').find('input[name="groupId"]').val();
             var subId = $('#modal_1').find('input[name="subId"]').val();
@@ -285,7 +298,7 @@
                 __nid--;
                 __dataUpload['config'][index]['children'].push(data);
             } else {
-                var subIndex = getSubIndexById(subId);
+                var subIndex = getSubIndexById(groupId, subId);
                 var _data = __dataUpload['config'][index]['children'][subIndex];
                 if (_data.id != undefined) data.id = _data.id;
                 else data.nid = _data.nid;
