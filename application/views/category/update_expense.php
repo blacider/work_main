@@ -239,7 +239,19 @@
 var __BASE = "<?php echo base_url();?>";
 var error = "<?php echo $error;?>";
 var exists = [];
-var exist_oids = $('#pro_title').data('oids');
+var _exist_oids = $('#pro_title').data('oids');
+var exist_oids = [];
+var exist_oids_dic = [];
+for(var key in _exist_oids)
+{
+  exist_oids.push(_exist_oids[key]['oid']);
+  if(exist_oids_dic[_exist_oids[key]['oid']] == undefined)
+  {
+      exist_oids_dic[_exist_oids[key]['oid']] = [];
+      
+  }
+  exist_oids_dic[_exist_oids[key]['oid']].push(_exist_oids[key]['gid']);
+}
 
 if(error)
 {
@@ -258,14 +270,6 @@ function arr_contains(item,arr)
 }
   $(document).ready(function(){
     $('.chosen-select').chosen({width:"100%"}); 
-    //$('#pro_title').empty().append('');
-  /*
-      $('.close_modal').click(function(){
-        $('#oid').empty().trigger('chosen:updated');
-        exists=[];
-        $('#oid').unbind('change');
-      });
-*/
     $('#modal-table2').on('hide.bs.modal',function(){
         $('#oid').empty().trigger('chosen:updated');
         exists=[];
@@ -295,56 +299,51 @@ function arr_contains(item,arr)
 
         $('#gid').change(function(){
           var _gid = $('#gid').val();
-          console.log("#gid:" + _gid);
           if(_gid)
           {
             for(var j=0 ; j < _gid.length ; j++)
             {
-              if(!arr_contains(_gid[j],exists))
+              (function(my_gid)
               {
-                  $.ajax({
-                      url:__BASE + '/category/get_ug_members/'+ _gid[j],
-                      method:'get',
-                      dataType:'json',
-                      success:function(data){
-                //        console.log(data);
-               //         console.log(_gid[j]);
-                        var _h = '';
-                        for(var i = 0 ; i < data['member'].length; i++)
-                        {
-                          console.log(exist_oids.length);
-                          if($('#fid').val() == -1)
-                          {
-                            if(!arr_contains(data['member'][i].id,exist_oids))
+                  if(!arr_contains(my_gid,exists))
+                  {
+                      $.ajax({
+                          url:__BASE + '/category/get_ug_members/'+ my_gid,
+                          method:'get',
+                          dataType:'json',
+                          success:function(data){
+                            var _h = '';
+                            for(var i = 0 ; i < data['member'].length; i++)
                             {
-                              _h += "<option value=" + "'" + data['gid'] +","+ data['member'][i].id + ","+data['member'][i].nickname+"'"+">" + data['member'][i].d + '-' + data['member'][i].nickname + "</option>";
+                              if($('#fid').val() == -1)
+                              {
+                                if(!(arr_contains(data['member'][i].id,exist_oids) && arr_contains(my_gid,exist_oids_dic[data['member'][i].id]) ))
+                                {
+                                  _h += "<option value=" + "'" + data['gid'] +","+ data['member'][i].id + ","+data['member'][i].nickname+"'"+">" + data['member'][i].d + '-' + data['member'][i].nickname + "</option>";
+                                }
+                              }
+                              else
+                              {
+                                  _h += "<option value=" + "'" + data['gid'] +","+ data['member'][i].id + ","+data['member'][i].nickname+"'"+">" + data['member'][i].d + '-' + data['member'][i].nickname + "</option>";
+                              }
                             }
+                         
+                            $('#oid').append(_h).trigger("chosen:updated");
+                            $('#oid').trigger('change');
+                            $('#oid').trigger('chosen:updated');
+                          },
+                          error:function(a,b,c){
                           }
-                          else
-                          {
-                              _h += "<option value=" + "'" + data['gid'] +","+ data['member'][i].id + ","+data['member'][i].nickname+"'"+">" + data['member'][i].d + '-' + data['member'][i].nickname + "</option>";
-                          }
-                        }
-                     
-                        $('#oid').append(_h).trigger("chosen:updated");
-                        $('#oid').trigger('change');
-                        $('#oid').trigger('chosen:updated');
-                      },
-                      error:function(a,b,c){
-                //        console.log(a);
-                  //      console.log(b);
-                    //    console.log(c);
-                      }
-                  });
+                      });
 
-                  exists.push(_gid[j]);
-              }
-              else
-              {
-                console.log('already');
-                //$('#oid').val('').trigger('change');
-                $('#oid').trigger('chosen:updated');
-              }
+                      exists.push(my_gid);
+                  }
+                  else
+                  {
+                    $('#oid').trigger('chosen:updated');
+                  }
+
+              })(_gid[j]);
             }
           }
 
@@ -358,8 +357,6 @@ function arr_contains(item,arr)
           $(this).click(function(){
             var _pid = $(this).data('pid');
             var _id = $(this).data('id');
-       //     console.log('pid:' + _pid);
-         //   console.log('oid:' + _id);
             location.href = __BASE + "category/delete_fee_afford/" + _id + '/' + _pid;
           });
        });
@@ -375,31 +372,22 @@ function arr_contains(item,arr)
              $('#gForm').prop('hidden',true).trigger('chosen:updated');
                $('#oid').bind('change',function(){
                         $('#oid').val(_oid).attr('selected',true).trigger('chosen:updated');
-                        console.log('change');
-                        //var arr = [];
-                        //arr.push($('#oid').val());
                         $('#_oid').val(JSON.stringify($('#oid').val()));
               });
             var _pid = $(this).data('pid');
             var _id = $(this).data('id');
             var _gid = $(this).data('gid');
              _oid = $(this).data('oid');
-            //$('#oid').val('').trigger('chosen:updated');
+
             $('#fid').val(_id);
- //           console.log('pid:' + _pid);
-   //         console.log('id:' + _id);
-     //       console.log('gid:' + _gid);
-            console.log('oid:' + _oid);
+
             $.ajax({
               url:__BASE + 'category/get_fee_afford/' + _id,
               method:'get',
               dataType:'json',
               success:function(data){
-                  console.log(data);
-                 
                       var privilege = data.privilege;
- //                     console.log(privilege);
- //                     $('#gid').val('');
+
                       $('#gid').val(_gid).attr('selected',true).trigger('chosen:updated');
                       $('#gid').trigger('change');
                       $('#gid').trigger('chosen:updated');
@@ -462,9 +450,6 @@ function arr_contains(item,arr)
 
                $('#oid').bind('change',function(){
                         $('#oid').val(_oid).attr('selected',true).trigger('chosen:updated');
-                        console.log('change');
-                        //var arr = [];
-                        //arr.push($('#oid').val());
                         $('#_oid').val(JSON.stringify($('#oid').val()));
               });
             $('#fid').val(-2);
@@ -478,7 +463,7 @@ function arr_contains(item,arr)
             $('#ranks').val('').trigger('chosen:updated');
             $('#levels').val('').trigger('chosen:updated');
             $('#is_all_member').prop('checked',false);
-           // $('#oid').unbind('change');
+
 
             var item_arr = [];
             var gid_arr = [];
@@ -497,9 +482,9 @@ function arr_contains(item,arr)
                     item_arr.push(__oid+"");
                 }
             });
-            //console.log(item_arr);
+
             $('#_oid').val(JSON.stringify(item_arr));
-           // console.log($('#_oid').val());
+
             $('#gid').val(gid_arr).trigger('chosen:updated');
             $('#gid').prop('disabled',true).trigger('chosen:updated');
         
@@ -510,7 +495,6 @@ function arr_contains(item,arr)
               return false;
             }
             
-            //return false;
       });
       
       $('#send').click(function(){
