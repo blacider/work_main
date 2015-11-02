@@ -56,6 +56,7 @@
                                     </div>
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="width:90%;margin-left:15px;">
                                         <?php 
+                                        if(array_key_exists('children', $data)){
                                         foreach ($data["children"] as $child){ ?>
                                         <li role="presentation" data-subId="_<?php echo $child['id']; ?>">
                                             <a href="#" onclick="showSob(<?php echo $data['id'];?>,<?php echo $child['id']; ?>)" role="menuitem" tabindex="">
@@ -63,7 +64,7 @@
                                             </a>
                                         </li>
                                         <?php 
-                                        } ?>
+                                        } }?>
                                         <li role="presentation" class="divider"></li>
                                         <li role="presentation">
                                             <a href="#" onclick="addSub(<?php echo $data['id'];?>)" role="menuitem" tabindex="-1">添加字段</a>
@@ -127,7 +128,7 @@
         font-weight: bolder;
     }
 </style>
-<form action="<?php echo base_url('category/create_category')?>" method="post" id="form_moda">
+<form action="#" method="post" id="form_moda">
     <div class="modal-body">
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">名称</label>
