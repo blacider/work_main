@@ -40,12 +40,50 @@ class Company extends REIM_Controller {
         $msg = '更新失败';
         if(!array_key_exists('id',$temp_info))
         {
+            log_message('debug','has no id');
             $msg = '没有模板信息,更新失败';
             $this->session->set_userdata('debug','没有模板信息,更新失败');
         }
         $id = $temp_info['id'];
         $template_name = $temp_info['name'];
-        $config = $temp_info['config'];
+        $_config = $temp_info['config'];
+
+        $config = array();
+        log_message('debug','_config:' . json_encode($_config));
+        if($_config)
+        {
+            foreach($_config as $conf)
+            {
+                /* 设置每个字段组的默认值*/
+                $temp_group = array('name' => '','type' => 0, 'children' => array());
+                if(array_key_exists('name',$conf))
+                {
+                    $temp_group['name'] = $conf['name'];
+                }
+                if(array_key_exists('type',$conf))
+                {
+                    $temp_group['type'] = $conf['type'];
+                }
+                if(array_key_exists('children',$conf))
+                {
+                    /*取出每个字段的数据*/
+                    foreach($conf['children'] as $child)
+                    {
+                        $temp_child = array();
+                        foreach($child as $key => $value) 
+                        {
+                            if($key == 'nid') continue; 
+                            $temp_child[$key] = $value;
+                        }
+                        array_push($temp_group['children'],$temp_child);
+                    }
+                }
+
+                array_push($config,$temp_group);
+            }
+        }
+        
+        log_message('debug','config:' . json_encode($config));
         $buf = $this->reports->update_report_template($id,$template_name,$config);
         if($buf['status'] > 0)
         {
