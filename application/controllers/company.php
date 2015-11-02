@@ -137,11 +137,11 @@ class Company extends REIM_Controller {
             array(
                 'template_list' => $report_template_list
                 ,'error' => $error
-                ,'title'=>'报告模板列表'
+                ,'title'=>'报告模板'
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
-                    ,array('url'=>'','name'=>'报告模板列表','class'=>'')
+                    ,array('url'=>'','name'=>'报告模板','class'=>'')
                 ),
             )
         );
@@ -1282,13 +1282,13 @@ public function common(){
         $this->session->unset_userdata('last_error');
         $this->bsload('company/create_custom_item',
             array(
-                'title' => '添加自定义消费'
+                'title' => '添加消费模板'
                 ,'item' => $custom_item
                 ,'error' => $error
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '公司设置', 'class' => '')
-                    ,array('url'  => '', 'name' => '添加自定义消费', 'class' => '')
+                    ,array('url'  => '', 'name' => '添加消费模板', 'class' => '')
                 ),
             )
         );
@@ -1310,13 +1310,13 @@ public function common(){
         }
         $this->bsload('company/custom_item',
             array(
-                'title' => '自定义消费'
+                'title' => '消费模板'
                 ,'error' => $error
                 ,'rules' => $_list
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '公司设置', 'class' => '')
-                    ,array('url'  => '', 'name' => '自定义消费', 'class' => '')
+                    ,array('url'  => '', 'name' => '消费模板', 'class' => '')
                 ),
             )
         );

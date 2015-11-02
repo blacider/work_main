@@ -423,12 +423,12 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         </li> 
 
         <li class="hsub" id="custom_item">
-        <a href="<?php echo base_url('company/custom_item'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 自定义消费 </a>
+        <a href="<?php echo base_url('company/custom_item'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 消费模板 </a>
           <b class="arrow"></b>
         </li> 
 
         <li class="hsub" id="report_template_list">
-        <a href="<?php echo base_url('company/report_template_list'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 报告模板列表 </a>
+        <a href="<?php echo base_url('company/report_template_list'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 报告模板 </a>
           <b class="arrow"></b>
         </li> 
 
