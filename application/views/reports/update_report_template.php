@@ -221,7 +221,7 @@
                                 </div>
         </div>
         
-	
+    
     </div>
     <div class="modal-footer">
         <button class="btn btn-sm" data-dismiss="modal">
@@ -230,7 +230,7 @@
         </button>
         <input type="submit" id="createGroup" class="btn btn-sm btn-primary">
     </div>
-    <input type="text" name="pid" class="hidden"></form>
+    <input type="text" name="groupId" class="hidden"></form>
 </div>
 </div>
 </div>
@@ -267,8 +267,7 @@
                 explanation: explanation,
                 name: name,
                 required: required,
-                type: type,
-                nid:__nid
+                type: type
             };
             if (type == 2) {
                 $("#options").find("input").each(function(index, el) {
@@ -282,11 +281,14 @@
             }
             var index = getGroupIndexById(groupId);
             if (ifCreate) {
+                data.nid = __nid;
+                __nid--;
                 __dataUpload['config'][index]['children'].push(data);
             } else {
                 var subIndex = getSubIndexById(subId);
                 var _data = __dataUpload['config'][index]['children'][subIndex];
-                data.id = subId;
+                if (_data.id != undefined) data.id = _data.id;
+                else data.nid = _data.nid;
                 __dataUpload['config'][index]['children'][subIndex] = data;
             }
             //下面是添加到页面上
@@ -302,7 +304,6 @@
                     '</li>'
                 );
             }
-            __nid--;
             $('#modal_1').modal('hide');
             return false;
         });
@@ -317,8 +318,10 @@
                 children:[],
                 name:name,
                 type:0,
-                nid:__nid
             };
+            var groupId = $('#modal_0').find('input[name="groupId"]').val();
+        if (groupId == "") {
+            data.nid = __nid;
             var index = __nid;
             __nid--;
             $(".addDrop").parent().before(
@@ -346,6 +349,10 @@
                         '</div>'
                 );
             __dataUpload['config'].push(data);
+        } else {
+            __dataUpload['config'][getGroupIndexById(groupId)].name = data.name;
+            $("#_"+groupId).find(".dropdown-toggle").empty().append(data.name).append('<span class="caret" style="float: right; top: 30px; margin-top: 20px; margin-right: 20px;"></span>');
+        }
             $('#modal_0').modal('hide');
             return false;
         });
@@ -453,6 +460,8 @@
                                 var index = getGroupIndexById(groupId);
                                 var data = __dataUpload['config'][index];
                                 $('#modal_0').find('input[name="name"]').val(data['name']);
+                                $('#modal_0').find('input[name="groupId"]').val(groupId);
+                                ifCreateGroup = false;
                                 $('#modal_0').modal('show');
                             }
                             function addSub(groupId) {
@@ -488,7 +497,9 @@
                                 $("#_"+id_).remove();
                             }
                             function addCate(dom) {
+                                $('#modal_0').find('input[name="groupId"]').val("");
                                 $('#modal_0').find('input[name="pid"]').val(0);
+                                ifCreateGroup = true;
                                 $('#modal_0').modal('show');
                             }
                             $("#extra_type").change(function(event) {
