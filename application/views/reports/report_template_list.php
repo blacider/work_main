@@ -16,7 +16,6 @@
                         <table id="sample-table-1" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>报销模板ID</th>
                                     <th>报销模板名</th>
                                     <th><a href="<?php echo base_url('company/create_report_template')?>" role="button" class="green" data-toggle="modal">
                                             <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
@@ -29,14 +28,13 @@
 
 foreach($template_list as $item){
     $str = "<tr>";
-    $id = '<td class="u_username">' . $item['id'] . '</td>';
     $name =  '<td class="u_role_name">' . $item['name'] . '</td>';
     $start_icon = '<td style="width:100px;">';
     $show_icon =  '<a href="javascript:void(0);" class="tshow"  data-title="" data-id=""><span class="ace-icon fa fa-search-plus"></span></a> ';
     $edit_icon =  '<a href="javascript:void(0);" class="edit" data-config="" data-id="' . $item['id'] . '" data-name="' . $item['name'] . '"><span class="green glyphicon glyphicon-pencil"></span></a> ';
     $del_icon = '<a href="javascript:void(0);" class="del" data-id="'.$item['id'].'"><span class="red glyphicon glyphicon-trash"></span></a></td>';
     $end_icon = '</tr>';
-    $str = $str . $id . $name . $start_icon . $edit_icon . $del_icon . $end_icon;
+    $str = $str . $name . $start_icon . $edit_icon . $del_icon . $end_icon;
 	
     echo $str;
 
