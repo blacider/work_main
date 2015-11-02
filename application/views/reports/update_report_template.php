@@ -183,7 +183,7 @@
             <i class="ace-icon fa fa-times"></i>
                 取消
         </button>
-        <input type="submit" id="createSub" class="btn btn-sm btn-primary">
+        <input type="button" id="createSub" value="提交" class="btn btn-sm btn-primary">
             </div>
         </div>
     </div>

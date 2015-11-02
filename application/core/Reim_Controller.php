@@ -136,7 +136,17 @@ class REIM_Controller extends CI_Controller{
         $this->load->model('user_model');
         $this->load->model('module_tip_model');
         $uid = $this->session->userdata('uid');
-        $profile = $this->session->userdata('profile');
+        $profile = array();
+        $common = array();
+        $_common = $this->user_model->get_common();
+        if($_common['status'] > 0)
+        {
+            $common = $_common['data'];
+        }
+        if(array_key_exists('profile',$common))
+        {
+            $profile = $common['profile'];
+        }
         if(!($profile || $uid)){
             // 重定向到登陆
             log_message("debug","Nothing ");
