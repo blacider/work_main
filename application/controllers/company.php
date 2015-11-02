@@ -53,7 +53,7 @@ class Company extends REIM_Controller {
         $type = '';
         if(array_key_exists('type',$temp_info))
         {
-            $type = $temp_info['type'];
+            $type = implode(',',$temp_info['type']);
         }
         $_config = array();
         if(array_key_exists('config',$temp_info))
