@@ -409,48 +409,6 @@ foreach($items as $i){
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var __SUM = 0;
-function submit_check() {
-    var _ids = Array();
-	$('.amount').each(function(){
-		if($(this).is(':checked')){
-            _ids.push($(this).data('id'));
-		};
-	});
-    if(_ids.length == 0) {
-        show_notify('提交的报告不能为空');
-        return false;
-    }
-
-    $.ajax({
-        type : 'POST',
-            url : __BASE + "reports/check_submit", 
-                data : {'item' : _ids,
-                    'receiver' : $('#receiver').val(),
-                },
-                dataType: 'json',
-                success : function(data){
-                    if(data.status > 0 && data.data.complete > 0) {
-                        do_post();
-                    } else {
-                        var suggest = data.data.suggestion;
-                        var _names = [];
-                        $(suggest).each(function(idx, value) {
-                            $('#cc option').each(function(_idx, _val) {
-                                var _value = $(_val).attr('value');
-                                var desc = $(_val).html();
-                                if(_value == value) {
-                                    _names.push(desc);
-                                }
-                            });
-                        });
-                        $('#hidden_receiver').val(suggest.join(','));
-                        $('#label_receiver').html(_names.join(','));
-                        $('#modal_next').modal('show');
-                    }
-                    return false;
-                }
-            });
-}
 function do_post(force) {
 
     var _rid = $('#hrid').val();
@@ -658,19 +616,12 @@ $(document).ready(function(){
         var _receivers = ($('#hidden_receiver').val());
         if(!_receivers) do_post();
         _receivers = _receivers.split(",");
-        $('#receiver option').each(function(idx, val){
-            $(val).removeAttr('selected');
-            var __val = "" + $(val).val();
-            if($.inArray("" + __val, _receivers) > -1){
-                $(val).attr('selected', true);
-            }
-        });
+        $('#receiver').val(_receivers).trigger("chosen:updated");
         do_post();
     });
     $('.my_submit').click(function(){
         do_post();
     });
-    //$('#date-timepicker2').val();
     _contract = $('input[name="contract"]:checked').val(); 
     if(_contract == 0) {
                 $('#contract_note').show();

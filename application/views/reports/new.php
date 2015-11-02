@@ -2,6 +2,8 @@
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 
+<!-- page specific plugin styles -->
+<link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 <script src="/static/ace/js/date-time/moment.min.js"></script>
 <!-- <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script> -->
@@ -12,13 +14,8 @@
 <script src="/static/ace/js/date-time/moment.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script>
-    
-     
-	 
-	   <script src="/static/ace/js/jquery.colorbox-min.js"></script>
-	   
-	     <!-- page specific plugin styles -->
-	     <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
+<script src="/static/ace/js/jquery.colorbox-min.js"></script>
+<script src="/static/js/reports.js"></script>
 
 
 
@@ -38,7 +35,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">发送至</label>
                                 <div class="col-xs-9 col-sm-9">
-<input type="hidden" name="hidden_receiver" id="hidden_receiver" />
+                                    <input type="hidden" name="hidden_receiver" id="hidden_receiver" />
                                     <select class="chosen-select tag-input-style" name="receiver[]" multiple="multiple" data-placeholder="请选择审批人" id="receiver">
                                         <?php 
 					$user = $this->session->userdata('user');
@@ -342,61 +339,17 @@ function do_post(force) {
             });
 }
 
-function submit_check() {
-    var _ids = Array();
-	$('.amount').each(function(){
-		if($(this).is(':checked')){
-            _ids.push($(this).data('id'));
-		};
-	});
-    if(_ids.length == 0) {
-        show_notify('提交的报告不能为空');
-        return false;
-    }
-
-    $.ajax({
-        type : 'POST',
-            url : __BASE + "reports/check_submit", 
-                data : {'item' : _ids,
-                    'receiver' : $('#receiver').val(),
-                },
-                dataType: 'json',
-                success : function(data){
-                    if(data.status > 0 && data.data.complete > 0) {
-                        do_post();
-                    } else {
-                        var suggest = data.data.suggestion;
-                        var _names = [];
-                        $(suggest).each(function(idx, value) {
-                            $('#cc option').each(function(_idx, _val) {
-                                var _value = $(_val).attr('value');
-                                var desc = $(_val).html();
-                                if(_value == value) {
-                                    _names.push(desc);
-                                }
-                            });
-                        });
-                        $('#hidden_receiver').val(suggest.join(','));
-                        $('#label_receiver').html(_names.join(','));
-                        $('#modal_next').modal('show');
-                    }
-                    return false;
-                }
-            });
-}
-
 $(document).ready(function(){
-    //var now = moment();
-                        $('.submit_by_rule').click(function(){
-                            var _receivers = ($('#hidden_receiver').val());
-                            if(!_receivers) do_post();
-                            _receivers = _receivers.split(",");
-			    $('#receiver').val(_receivers).trigger("chosen:updated");
-                            do_post();
-                        });
-                        $('.my_submit').click(function(){
-                            do_post();
-                        });
+    $('.submit_by_rule').click(function(){
+        var _receivers = ($('#hidden_receiver').val());
+        if(!_receivers) do_post();
+        _receivers = _receivers.split(",");
+        $('#receiver').val(_receivers).trigger("chosen:updated");
+        do_post();
+    });
+    $('.my_submit').click(function(){
+        do_post();
+    });
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
             //locale:  moment.locale('zh-cn'),
@@ -453,16 +406,12 @@ $(document).ready(function(){
             $('.amount').each(function(){
                 $(this).prop('checked',true);
             });   
-
-            //$("[name='item[]']").prop('checked',true);
         }
         else
         {
             $('.amount').each(function(){
                 $(this).prop('checked',false);
-              // $(this).removeAttr("checked"); 
             });
-           // $("[name='item[]']").prop('checked',false);
         }
         update_tamount();
      });
