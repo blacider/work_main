@@ -76,6 +76,8 @@ foreach($members as $m) {
                             ?>
                             <hr>
                                 <?php
+                                    if(array_key_exists('children', $field_group))
+                                    {
                                     foreach($field_group['children'] as $field)
                                     {
                                 ?>
@@ -232,6 +234,7 @@ foreach($members as $m) {
 <?php
                             }
                         }
+                    }
 ?>
 
 

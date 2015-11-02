@@ -43,6 +43,8 @@
                             ?>
                             <hr>
                                 <?php
+                                    if(array_key_exists('children', $field_group))
+                                    {
                                     foreach($field_group['children'] as $field)
                                     {
                                 ?>
@@ -199,6 +201,7 @@
 <?php
                             }
                         }
+                    }
 ?>
 
 

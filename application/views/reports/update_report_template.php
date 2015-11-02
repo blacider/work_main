@@ -370,7 +370,7 @@
             }*/
 
         
-                  $.ajax({
+                $.ajax({
                 type:"post",
                 url:__BASE+"company/doupdate_report_template",
                 data:{temp_info:__dataUpload},
@@ -391,6 +391,7 @@
            
      
            }); 
+
         $(".chosen-select-niu").chosen({width:"95%"});
         $('.chosen-select').chosen({allow_single_deselect:true});
         $(window)
