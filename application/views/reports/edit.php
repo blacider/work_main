@@ -11,6 +11,7 @@
 <script src="/static/ace/js/date-time/moment.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script>
+<script src="/static/js/reports.js"></script>
 
 
 
