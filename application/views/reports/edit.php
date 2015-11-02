@@ -97,7 +97,7 @@ foreach($members as $m) {
                                             <label class="col-sm-1 control-label no-padding-right"><?php echo $field['name'];?></label>
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
-                                                    <input type="text" class="form-controller col-xs-8 field_value" data-type="1" data-id="<?php echo $field['id'];?>" <?php if($field['required'] == 1){echo 'required';}?> value="<?php if(array_key_exists($field['id'], $extra_dic)){echo $extra_dic[$field['id']]['value'];}?>"/>
+                                                    <input type="text" class="form-controller col-xs-8 field_value" data-type="1" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" <?php if($field['required'] == 1){echo 'required';}?> value="<?php if(array_key_exists($field['id'], $extra_dic)){echo $extra_dic[$field['id']]['value'];}?>"/>
                                                 </div>
                                             </div>
                                         
@@ -114,7 +114,7 @@ foreach($members as $m) {
                                             <label class="col-sm-1 control-label no-padding-right"><?php echo $field['name'];?></label>
                                             <div class="col-xs-3 col-sm-3">
                                                 <div class="radio col-xs-12 col-sm-12">
-                                                    <select class="chosen-select tag-input-style col-xs-6 field_value" data-type="2" data-id="<?php echo $field['id'];?>" data-placeholder="请选择" <?php if($field['required'] == 1){echo 'required';}?>>
+                                                    <select class="chosen-select tag-input-style col-xs-6 field_value" data-type="2" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" data-placeholder="请选择" <?php if($field['required'] == 1){echo 'required';}?>>
                                                         <?php foreach($field['property']['options'] as $m) { 
                                                                 if(array_key_exists($field['id'], $extra_dic) && $m == $extra_dic[$field['id']]['value'])
                                                                 {
@@ -146,7 +146,7 @@ foreach($members as $m) {
                                             <label class="col-sm-1 control-label no-padding-right"><?php echo $field['name'];?></label>
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
-                                                    <input type="text" class="form-controller col-xs-8 period field_value date-timepicker1" data-type="3" data-id="<?php echo $field['id'];?>" name="dt" 
+                                                    <input type="text" class="form-controller col-xs-8 period field_value date-timepicker1" data-type="3" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" name="dt" 
                                                             placeholder="时间" <?php if($field['required'] == 1){echo 'required';}?> value="<?php if(array_key_exists($field['id'], $extra_dic)){echo date('Y-m-d H:i:s',$extra_dic[$field['id']]['value']);}?>">
                                                 </div>
                                             </div>
@@ -166,7 +166,7 @@ foreach($members as $m) {
                                                 $value = json_decode($extra_dic[$field['id']]['value'],True);
                                             }
                                         ?>
-                                        <div class="field_value" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>">
+                                        <div class="field_value" data-type="4" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>">
                                         <div class="form-group">
                                             <label class="col-sm-1 control-label no-padding-right"><?php echo $field['name'];?></label>
                                             <div class="col-xs-9 col-sm-9">
@@ -397,6 +397,9 @@ foreach($items as $i){
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 var __SUM = 0;
+function trim(str){ //删除左右两端的空格
+　　 return str.replace(/(^\s*)|(\s*$)/g, "");
+}
 function do_post(force) {
 
     var _rid = $('#hrid').val();
@@ -481,13 +484,54 @@ function do_post(force) {
 
 
     var extra = [];
+    var is_submit = 1;
  
     $('.field_value').each(function(){
         var field_value = $(this).val();
         var field_id = $(this).data('id');
         var field_type = $(this).data('type');
+        var field_required = $(this).data('required');
+
         if(field_type == 4)
         {
+            if(field_required == 1)
+            {
+                if(trim(field_account) == '')
+                {
+                    $('.account',this).focus();
+                    show_notify('必填项目不能为空');
+                    is_submit = 0;
+                    return false;
+                }
+                if(trim(field_cardno) == '')
+                {
+                    $('.cardno',this).focus();
+                    show_notify('必填项目不能为空');
+                    is_submit = 0;
+                    return false;
+                }
+                if(trim(field_bankname) == '')
+                {
+                    $('.bankname',this).focus();
+                    show_notify('必填项目不能为空');
+                    is_submit = 0;
+                    return false;
+                }
+                if(trim(field_bankloc) == '')
+                {
+                    $('.bankloc',this).focus();
+                    show_notify('必填项目不能为空');
+                    is_submit = 0;
+                    return false;
+                }
+                if(trim(field_subbranch) == '')
+                {
+                    $('.subbranch',this).focus();
+                    show_notify('必填项目不能为空');
+                    is_submit = 0;
+                    return false;
+                }
+            }
             var field_bank = $(this).data('bank');
             var field_account = $('.account',this).val();
             var field_cardno = $('.cardno',this).val();
@@ -506,12 +550,18 @@ function do_post(force) {
         }
         else
         {
+            if(field_required == 1 && trim(field_value)=='')
+            {
+                $(this).focus();
+                show_notify('必填项目不能为空');
+                is_submit = 0;
+                return false;
+            }
+
             extra.push({'id':field_id,'value':field_value,'type':field_type});
         }
         
     });
-
-    console.log(extra);
 
 /*
     try {
@@ -557,39 +607,42 @@ function do_post(force) {
 
 
     var _renew = $('#renew').val();
-    $.ajax({
-        type : 'POST',
-            url : __BASE + "reports/update", 
-            data : {
-                'item' : _ids,
-                    'title' : $('#title').val(),
-                    'receiver' : $('#receiver').val(),
-                    'cc' : _cc,
+    if(is_submit)
+    {
+        $.ajax({
+            type : 'POST',
+                url : __BASE + "reports/update", 
+                data : {
+                    'item' : _ids,
+                        'title' : $('#title').val(),
+                        'receiver' : $('#receiver').val(),
+                        'cc' : _cc,
 
-                    'template_id' : _template_id,
-                    'extra':extra,
+                        'template_id' : _template_id,
+                        'extra':extra,
 
-                    'id' : _rid,
-                    'renew' : _renew,
-                    'force' : force
-                },
-                dataType: 'json',
-                success : function(data){
-                    if(data.status > 0) {
-                        window.location.href = __BASE + 'reports/index';
+                        'id' : _rid,
+                        'renew' : _renew,
+                        'force' : force
+                    },
+                    dataType: 'json',
+                    success : function(data){
+                        if(data.status > 0) {
+                            window.location.href = __BASE + 'reports/index';
+                            return false;
+                        }
+                        if(_renew && data.status == -71) {
+                            $('#error').html(data.msg);
+                            $('#force_submit').modal();
+                            return false;
+                        }
+                        if(data.status < 0 && data.status != -71) {
+                            show_notify(data.msg);
+                        }
                         return false;
                     }
-                    if(_renew && data.status == -71) {
-                        $('#error').html(data.msg);
-                        $('#force_submit').modal();
-                        return false;
-                    }
-                    if(data.status < 0 && data.status != -71) {
-                        show_notify(data.msg);
-                    }
-                    return false;
-                }
-            });
+                });
+    }
 }
 String.prototype.trim=function() {
     return this.replace(/(^\s*)(\s*$)/g, '');
