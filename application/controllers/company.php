@@ -46,7 +46,11 @@ class Company extends REIM_Controller {
         }
         $id = $temp_info['id'];
         $template_name = $temp_info['name'];
-        $_config = $temp_info['config'];
+        $_config = array();
+        if(array_key_exists('config',$temp_info))
+        {
+            $_config = $temp_info['config'];
+        }
 
         $config = array();
         log_message('debug','_config:' . json_encode($_config));
