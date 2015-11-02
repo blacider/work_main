@@ -1477,6 +1477,12 @@ class Members extends REIM_Controller {
         $uids = $this->input->post('uids');
         $pid = $this->input->post('pgroup');
         $gid = $this->input->post('gid');
+        $images = '';
+        $_images = $this->input->post('images');
+        if($_images)
+        {
+            $images = $_images;
+        }
         if($uids)
         {
             $uids = implode(",", $uids);
@@ -1485,7 +1491,7 @@ class Members extends REIM_Controller {
         {
             $uids='';
         }
-        $info = $this->ug->update_data($manager,$uids, $name,$code,$pid,$gid);
+        $info = $this->ug->update_data($manager,$uids, $name,$code,$pid,$gid,$images);
         log_message("debug","@@@@@@@@@".json_encode($info));
         if($info['status'] > 0){
             redirect(base_url('members/groups'));

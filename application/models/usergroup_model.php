@@ -10,17 +10,17 @@ class UserGroup_Model extends Reim_Model {
         return $obj;
     }
 
-    public function create_group($manager,$uids,$name,$code,$pid)
+    public function create_group($manager,$uids,$name,$code,$pid,$images)
     {
            $jwt = $this->session->userdata('jwt');
            if(!$jwt) return false;
                 $data = array(
                     'name' => $name
-		    ,'code' => $code
                     ,'uids' => $uids
                     ,'pid' => $pid
 		            ,'manager' => $manager
                     ,'code' => $code
+                    ,'images' => $images
             );
             $url = $this->get_url('user_group');
             $buf = $this->do_Post($url,$data,$jwt);
@@ -28,16 +28,17 @@ class UserGroup_Model extends Reim_Model {
             return $obj;
     }
 
-    public function update_data($manager,$uids, $name,$code,$pid,$gid = 0){
+    public function update_data($manager,$uids, $name,$code,$pid,$gid = 0,$images){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(
             'manager' => $manager
             ,'name' => $name
-	    ,'code' => $code
+	        ,'code' => $code
             ,'uids' => $uids
-	       ,'pid' => $pid
+	        ,'pid' => $pid
             ,'id' => $gid
+            ,'images' => $images
         );
         log_message("debug", json_encode($data));
 		$url = $this->get_url('user_group');
