@@ -373,9 +373,7 @@ function loadFiles() {
 function bind_event_file(){
         $('#theList .download-button_').click(function(e) {
             var url = filesUrlDict[this.parentNode.id];
-            var aLink = document.createElement('a');
-            aLink.href = url;
-            aLink.click();
+            window.open(url);
         });
 }
 var __BASE = "<?php echo $base_url; ?>";

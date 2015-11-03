@@ -519,9 +519,6 @@ function bind_event_file(){
         $('#theList .download-button_').click(function(e) {
             var url = filesUrlDict[this.parentNode.id];
             window.open(url);
-            /*var aLink = document.createElement('a');
-            aLink.href = url;
-            aLink.click();*/
         });
 }
 // 文件上传过程中创建进度条实时显示。
