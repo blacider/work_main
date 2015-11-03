@@ -178,7 +178,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 <?php if(count($report_templates) > 0) { ?>
 <ul class="submenu rushumenu">
 <?php foreach($report_templates as $r) { ?>
-                                    <li class="">
+                                    <li class="" id="<?php echo 'report'.$r['id'];?>">
                                         <a href="<?php echo base_url('reports/report_template/' . $r['id']); ?>">
 <?php echo $r['name']; ?>
                                         </a>
@@ -831,8 +831,20 @@ $(document).ready(function(){
     if(buf.length > 1) {
         _method = buf[1];
     }
+    if(buf.length > 2)
+    {
+        _report_id = buf[2];
+    }
     
     // 导入导出有步骤，合并在一起
+    if(_method == "report_template")
+    {
+        console.log('report_template');
+        _controller = '';
+        $('#report').addClass('open');
+        $('#report'+_report_id).addClass('active');
+    }
+
     if(_method == "create_report_template" || _method == "update_report_template"){
         _method = "report_template_list";
     }
