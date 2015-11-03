@@ -6,7 +6,7 @@ class Items_Model extends Reim_Model {
     {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-        $url = $this->get_url('item_type_name/list');
+        $url = $this->get_url('item_type_name');
         $buf = $this->do_Get($url, $jwt);
         log_message('debug','item_type_name_url:' . $url);
         log_message('debug','item_type_name_back:' . $buf);
