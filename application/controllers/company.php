@@ -1189,11 +1189,13 @@ public function common(){
         $this->need_group_it();
         $this->load->model('custom_item_model');
         $custom_item = array('name' => '', 'id' => 0);
+        $text = '创建消费字段';
         if(0 != $id) {
             $custom_item = $this->custom_item_model->get_by_id($id);
             if($custom_item['status']) {
                 $custom_item = $custom_item['data'];
             }
+            $text = '修改消费字段';
         }
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
@@ -1205,7 +1207,9 @@ public function common(){
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '公司设置', 'class' => '')
-                    ,array('url'  => '', 'name' => '添加自定义消费', 'class' => '')
+                    ,array('url'  => '', 'name' => '消费类型', 'class' => '')
+                    ,array('url'  => '', 'name' => '消费字段设置', 'class' => '')
+                    ,array('url'  => '', 'name' => $text, 'class' => '')
                 ),
             )
         );

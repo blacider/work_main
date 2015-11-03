@@ -888,10 +888,11 @@ $(document).ready(function(){
         $('#company').addClass('open');
         $('#company').find('.submenu_custom').show();
     }
-    if(_method == "custom_item")
+    if(_method == "custom_item" || "custom_item_create" == _method)
     {
         $('#company').addClass('open');
         $('#company').find('.submenu_custom').show();
+        $("#custom_item").addClass('active');
     }
     if(_controller != '') {
         $('#' + _controller).addClass('active open');
