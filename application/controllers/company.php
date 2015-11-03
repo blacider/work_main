@@ -20,14 +20,6 @@ class Company extends REIM_Controller {
         {
             $item_type_list = $_item_type_list['data'];
         }
-        /*
-        usort($item_type_list,function($a,$b){
-            if($a['type'] == $b['type'])
-                return 0;
-            else
-                return ($a['type'] > $b['type']) ? 1 : -1;
-        });
-        */
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
 
