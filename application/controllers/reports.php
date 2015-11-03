@@ -1082,7 +1082,7 @@ class Reports extends REIM_Controller {
 
         for ($i = 1; $i < func_num_args(); $i++) {
             $field = func_get_arg($i);
-            if ($data && array_key_exists($field, $data))
+            if ($data && is_array($data) && array_key_exists($field, $data))
                 $data = $data[$field];
             else
                 return NULL;
@@ -1116,8 +1116,13 @@ class Reports extends REIM_Controller {
             $extra = array();
 
         foreach ($extra as $e) {
-            $extra_dict[$e["id"]] = $e;
+	    if (is_array($e) && array_key_exists("id", $e)) {
+	        $extra_dict[$e["id"]] = $e;
+	    }
         }
+
+	if (empty($template) || !array_key_exists("config", $template))
+	    return $obj;
 
         foreach ($template["config"] as $conf) {
             // 字段组
@@ -1315,7 +1320,7 @@ class Reports extends REIM_Controller {
 
                 // 取设置的收款银行账号
                 $cardno = "";
-                if (array_key_exists("cardno", $cardinfo)) {
+                if (is_array($cardinfo) && array_key_exists("cardno", $cardinfo)) {
                     $cardno = $cardinfo["cardno"];
                 }
                 // 如果没有设置取用户的默认设置
@@ -1338,10 +1343,10 @@ class Reports extends REIM_Controller {
                 if (!array_key_exists($key, $stat_cells)) {
                     $stat_cells[$key] = array(
                         "提交人" => $r["nickname"],
-                        "收款银行 - 户名" => $cardinfo["account"],
-                        "收款银行 - 账号" => $cardinfo["cardno"],
-                        "收款银行 - 开户行" => $cardinfo["bankname"],
-                        "收款银行 - 开户地" => $cardinfo["bankloc"],
+                        "收款银行 - 户名" => $this->try_get_element($cardinfo, "account"),
+                        "收款银行 - 账号" => $this->try_get_element($cardinfo, "cardno"),
+                        "收款银行 - 开户行" => $this->try_get_element($cardinfo, "bankname"),
+                        "收款银行 - 开户地" => $this->try_get_element($cardinfo, "bankloc"),
                         "付款银行" => "",
                         "金额" => 0,
                         "注释" => ""
@@ -1666,8 +1671,12 @@ class Reports extends REIM_Controller {
         $data = array();
         foreach ($excel as $template_name => $template_excel) {
             foreach ($template_excel as $name => $excel) {
+	        $title = $name;
+		if (!empty($template_name))
+		    $title = $template_name . " - " . $name;
+
                 array_push($data, array(
-                    "title" => $template_name . " - " . $name,
+                    "title" => $title,
                     "data" => $excel
                 ));
             }
