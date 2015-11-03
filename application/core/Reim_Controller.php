@@ -215,19 +215,84 @@ class REIM_Controller extends CI_Controller{
 
     }
 
-    public function render_to_download($title, $data, $excle_name, $title_2 = '', $data_2 = array(), $title_3 = '', $data_3 = array()){
+    public function render_to_download_2($filename, $data) {
+        if($this->agent->is_browser('Internet Explorer')) {
+            $excle_name = urlencode($filename);
+        }
+
+        $writer = $this->build_excel($data);
+
+        header("Pragma: public");
+        header("Content-Type: application/vnd.ms-execl");
+        header('Content-Disposition: attachment;filename=' . $filename);
+        header("Content-Transfer-Encoding: binary");
+        header("Expires: Mon, 26 Jul 1970 05:00:00 GMT");
+        header("Pragma: no-cache");
+        $writer->save("php://output");
+
+        exit();
+    }
+
+    public function render_to_download($title, $data, $excel_name, $title_2 = '', $data_2 = array(), $title_3 = '', $data_3 = array()){
         if($this->agent->is_browser('Internet Explorer')) {
             $excle_name = urlencode($excle_name);
         }
         $objwriter = $this->return_buf($title, $data, $title_2, $data_2, $title_3, $data_3);
         header("Pragma: public");
         header("Content-Type: application/vnd.ms-execl");
-        header('Content-Disposition: attachment;filename=' . $excle_name);
+        header('Content-Disposition: attachment;filename=' . $excel_name);
         header("Content-Transfer-Encoding: binary");
         header("Expires: Mon, 26 Jul 1970 05:00:00 GMT");
         header("Pragma: no-cache");
         $objwriter->save("php://output");
         exit();
+    }
+
+    public function build_excel($data)
+    {
+        $__excel = new PHPExcel();
+        $__excel->getProperties()
+            ->setCreator("RushuCloud Ltd.co")
+            ->setLastModifiedBy("RushuCloud.Ltd.co");
+
+        while ($__excel->getSheetCount() < count($data)) {
+            $__excel->createSheet();
+        }
+
+        foreach ($data as $index => $sheet_data) {
+            $sheet = $__excel->setActiveSheetIndex($index);
+
+            log_message("debug", "create sheet with " . json_encode($sheet_data));
+
+            $title = $sheet_data["title"];
+            $rows = $sheet_data["data"];
+
+            $sheet->setTitle($title);
+            $first_row = $rows[0];
+            $j = 0;
+            foreach ($first_row as $k => $v) {
+                $c_name = $this->getCharByNunber($j);
+                $sheet->getStyle($c_name)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+                $sheet->getColumnDimension($c_name)->setAutoSize(true);
+                $sheet->setCellValue($c_name . '1', ' ' . strval($k));
+                $j++;
+            }
+
+            $x = 2;
+            foreach ($rows as $row) {
+                $y = 0;
+                foreach ($row as $k => $v) {
+                    $c_name = $this->getCharByNunber($y);
+                    $sheet->getStyle($c_name)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+                    $sheet->getColumnDimension($c_name)->setAutoSize(true);
+                    $sheet->setCellValue($this->getCharByNunber($y) . $x, ' ' . strval($v));
+                    $y++;
+                }
+                $x++;
+            }
+        }
+        $objwriter = IOFactory::createWriter($__excel, 'Excel5');
+        return  $objwriter;
     }
 
     public function return_buf($title, $data, $title_2 = '', $data_2 = array(), $title_3 = '', $data_3 = array()) {
