@@ -341,28 +341,30 @@ function loadFiles() {
             ),$img = $li.find('img');
             // $list为容器jQuery实例
             $('#theList').append( $li );
-            var path = "/static/images/", name_ = getPngByType(file.mime);
+            var path = "/static/images/", name_ = getPngByType(file.filename);
             $img.attr( 'src', path+name_);
             filesUrlDict["FILE_"+String(file.id)] = String(file.url);
         }
         bind_event_file();
     }
-    function getPngByType(type) {
+    function getPngByType(filename) {
+    var types = filename.split('.');
+    var type = types[types.length-1];
     var name_ = "";
     switch(type) {
-        case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-        case "application/vnd.ms-excel":
+        case "xls":
+        case "xlsx":
             name_ = "excel.png";
             break;
-        case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
-        case "application/vnd.ms-powerpoint":
+        case "ppt":
+        case "pptx":
             name_ = "powerpoint.png";
             break;
-        case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-        case "application/msword":
+        case "docx":
+        case "doc":
             name_ = "word.png"
             break;
-        case "application/pdf":
+        case "pdf":
             name_ = "pdf.png"
             break;
     }
@@ -371,9 +373,7 @@ function loadFiles() {
 function bind_event_file(){
         $('#theList .download-button_').click(function(e) {
             var url = filesUrlDict[this.parentNode.id];
-            var aLink = document.createElement('a');
-            aLink.href = url;
-            aLink.click();
+            window.open(url);
         });
 }
 var __BASE = "<?php echo $base_url; ?>";
