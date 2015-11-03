@@ -219,7 +219,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">类型</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $item['prove_ahead']; ?> " disabled>
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $item['prove_ahead_name']; ?> " disabled>
                                 </div>
                             </div>
 
@@ -373,9 +373,7 @@ function loadFiles() {
 function bind_event_file(){
         $('#theList .download-button_').click(function(e) {
             var url = filesUrlDict[this.parentNode.id];
-            var aLink = document.createElement('a');
-            aLink.href = url;
-            aLink.click();
+            window.open(url);
         });
 }
 var __BASE = "<?php echo $base_url; ?>";

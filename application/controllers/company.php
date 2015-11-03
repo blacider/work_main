@@ -8,9 +8,61 @@ class Company extends REIM_Controller {
         $this->load->model('usergroup_model','ug');
         $this->load->model('account_set_model','account_set');
         $this->load->model('category_model','category');
-	$this->load->model('reim_show_model','reim_show');
+        $this->load->model('reim_show_model','reim_show');
+        $this->load->model('items_model','items');
     }
-    
+
+    public function get_item_type_name()
+    {
+        $item_type_list = array();
+        $_item_type_list = $this->items->get_item_type_name();
+        if($_item_type_list['status'] > 0)
+        {
+            $item_type_list = $_item_type_list['data'];
+        }
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+
+        $this->bsload('items/type_list',
+            array(
+                'title' => '自定义消费类型'
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => '', 'name' => '公司设置', 'class' => '')
+                    ,array('url'  => '', 'name' => '自定义消费类型', 'class' => '')
+                ),
+                'item_type_list' => $item_type_list,
+                'error' => $error
+            ));
+    }
+
+    public function update_item_type_name()
+    {
+        $type = $this->input->post('item_type');
+        $name = $this->input->post('type_name');
+        $description = $this->input->post('description');
+
+        log_message('debug','type:' . $type);
+        log_message('debug','name:' . $name);
+        log_message('debug','description:' . $description);
+
+        $buf = $this->items->update_item_type_name($type,$name,$description);
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','修改成功');
+        }
+        else if($buf['status'] <= 0)
+        {
+            $this->session->set_userdata('last_error',$buf['data']['msg']);
+        }
+        else
+        {
+            $this->session->set_userdata('last_error','修改失败');
+        }
+
+        return redirect('company/get_item_type_name');
+    }
+
     public function report_settings_update($id)
     {
         $buf = $this->company->get_single_reports_settings($id); 

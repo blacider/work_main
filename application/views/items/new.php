@@ -223,18 +223,18 @@
 <label class="col-sm-1 control-label no-padding-right">类型</label>
 <div class="col-xs-6 col-sm-6">
 <select class="form-control" name="type" data-placeholder="请选择类型">
-<option value="0">报销</option>
+<option value="0"><?php echo $item_type_dic[0];?></option>
 <?php 
 if($__config && $__config['disable_borrow']=='0')
 {
 ?>
-<option value="1">预算</option>
+<option value="1"><?php echo $item_type_dic[1]; ?></option>
 <?php
 }
 if($__config && $__config['disable_budget'] == '0')
 {
 ?>
-<option value="2">预借</option>
+<option value="2"><?php echo $item_type_dic[2]; ?></option>
 <?php
 }
 ?>
