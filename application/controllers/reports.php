@@ -176,6 +176,7 @@ class Reports extends REIM_Controller {
     }
 
     public function newreport() {
+        $item_type_dic = $this->reim_show->get_item_type_name();
         $_members = array();
         $members = $this->users->reim_get_user();
         if($members['status'] > 0){
@@ -189,6 +190,7 @@ class Reports extends REIM_Controller {
             array(
                 'title' => '新建报告',
                 'members' => $_members,
+                'item_type_dic' => $item_type_dic,
                 'items' => $_items
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -517,6 +519,7 @@ class Reports extends REIM_Controller {
 
 
     public function edit($id = 0){
+        $item_type_dic = $this->reim_show->get_item_type_name();
         if($id == 0) return redirect(base_url('reports/index'));
         $report = $this->reports->get_detail($id);
         if($report['status'] < 1){
@@ -573,6 +576,7 @@ class Reports extends REIM_Controller {
                 'items' => $_items,
                 'config' => $config,
                 'extra' => $extra,
+                'item_type_dic' => $item_type_dic,
                 'report' => $report
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -582,6 +586,7 @@ class Reports extends REIM_Controller {
             ));
     }
     public function show($id = 0, $decision = 0){
+        $item_type_dic = $this->reim_show->get_item_type_name();
         if($id == 0) return redirect(base_url('reports/index'));
         $report = $this->reports->get_detail($id);
         $error = $this->session->userdata('last_error');
@@ -775,6 +780,7 @@ class Reports extends REIM_Controller {
                 ,'rid' => $id
                 ,'config' => $config
                 ,'extra' => $extra
+                ,'item_type_dic' => $item_type_dic
                 ,'comments' => $comments
                 ,'members' => $_members
                 ,'decision' => $decision
@@ -1708,6 +1714,7 @@ class Reports extends REIM_Controller {
 
     public function report_template($id = 0){
         if($id == 0) return redirect(base_url('reports/newreport'));
+        $item_type_dic = $this->reim_show->get_item_type_name();
         $profile = $this->session->userdata('profile');
         $config = array();
         if($profile &&   array_key_exists('templates', $profile)) {
@@ -1732,6 +1739,7 @@ class Reports extends REIM_Controller {
                         'title' => '新建[' . $config['name'] . '] 报告',
                         'members' => $_members,
                         'config' => $config,
+                        'item_type_dic' => $item_type_dic,
                         'items' => $_items
                         ,'breadcrumbs' => array(
                             array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
