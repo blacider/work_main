@@ -341,8 +341,10 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <i class="ace-icon fa fa-angle-down icon-on-right"></i> 
     </button> 
     <ul class="dropdown-menu"> 
-        <li> <a href="javascript:void(0)" data-id="<?php echo $b['id']; ?>" data-bankname="<?php echo $b['bankname'];?>"  data-cardno="<?php echo $b['cardno'];?>" data-bankloc="<?php echo $b['bankloc'];?>"  data-account="<?php echo $b['account'];?>" class="edit_bank">修改</a> </li>
-        <li> <a href="javascript:void(0)" data-id="<?php echo $b['id']; ?>" data-bankname="<?php echo $b['bankname'];?>"  data-cardno="<?php echo $b['cardno'];?>" data-bankloc="<?php echo $b['bankloc'];?>"  data-account="<?php echo $b['account'];?>" class="show_bank">展示</a> </li> 
+        <li> <a href="javascript:void(0)" data-id="<?php echo $b['id']; ?>" data-bankname="<?php echo $b['bankname'];?>"  data-cardno="<?php echo $b['cardno'];?>" data-bankloc="<?php echo $b['bankloc'];?>" 
+                data-account="<?php echo $b['account'];?>" data-subbranch="<?php echo $b['subbranch'];?>" data-default="<?php echo $member['credit_card'];?>" class="edit_bank">修改</a> </li>
+        <li> <a href="javascript:void(0)" data-id="<?php echo $b['id']; ?>" data-bankname="<?php echo $b['bankname'];?>"  data-cardno="<?php echo $b['cardno'];?>" data-bankloc="<?php echo $b['bankloc'];?>" 
+                data-account="<?php echo $b['account'];?>" data-subbranch="<?php echo $b['subbranch'];?>" data-default="<?php echo $member['credit_card'];?>" class="show_bank">展示</a> </li> 
         <li class="divider"></li> 
         <li> 
         <a href="javascript:void(0)" data-id="<?php echo $b['id']; ?>" data-bankname="<?php echo $b['bankname'];?>"  data-cardno="<?php echo $b['cardno'];?>" data-bankloc="<?php echo $b['bankloc'];?>"  data-account="<?php echo $b['account'];?>" class="del_bank"> 删除</a> 
@@ -719,6 +721,26 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                     <input id="cardloc" name="cardloc" type="hidden" class="form-controller col-xs-12 br3 inp" placeholder="开户地" />
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right">支行</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input id="subbranch" name="subbranch" type="text" class="form-controller col-xs-12" placeholder="支行" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right">默认账户</label>
+                                <div class="col-xs-6 col-sm-6">
+                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
+                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
+                                        <label style="margin-top:8px;">
+                                            <input name="is_default" class="ace ace-switch btn-rotate" type="checkbox" id="is_default" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+
+                                   <!-- </div> -->
+                                </div>
+                            </div>
 
 
                             <div class="clearfix form-actions">
@@ -846,12 +868,16 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
             $('#cardloc').attr("disabled",  true);
             $('#cardno').attr("disabled",   true);
             $('#cardbank').attr("disabled", true);
+            $('#subbranch').attr("disabled",true);
+            $('#is_default').attr("disabled",true);
         } else {
             $('.new_card').show();
             $('#account').attr("disabled",  false);
             $('#cardloc').attr("disabled",  false);
             $('#cardno').attr("disabled",   false);
             $('#cardbank').attr("disabled", false);
+            $('#subbranch').attr("disabled",false);
+            $('#is_default').attr("disabled",false);
         }
         $('.cancel').click(function(){
             $('#credit_model').modal('hide');
@@ -883,6 +909,18 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         $('#cardbank').val($(node).data('bankname'));
         $('#cardloc').val($(node).data('bankloc'));
         $('#cardno').val($(node).data('cardno'));
+        $('#subbranch').val($(node).data('subbranch'));
+        var _is_default = $(node).data('default');
+        if(_is_default == $(node).data('id'))
+        {
+            $('#is_default').prop('checked',true);
+            $('#is_default').trigger('chosen:updated');
+        }
+        else
+        {
+            $('#is_default').prop('checked',false);
+            $('#is_default').trigger('chosen:updated');
+        }
         $('#credit_model').modal('show');
         var i = 1, loc = $(node).data('bankloc');
 
@@ -910,6 +948,18 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         $('#cardbank').val($(node).data('bankname'));
         $('#cardloc').val($(node).data('bankloc'));
         $('#cardno').val($(node).data('cardno'));
+        $('#subbranch').val($(node).data('subbranch'));
+        var _is_default = $(node).data('default');
+        if(_is_default == $(node).data('id'))
+        {
+            $('#is_default').attr('checked',true);
+            $('#is_default').trigger('chosen:updated');
+        }
+        else
+        {
+            $('#is_default').attr('checked',false);
+            $('#is_default').trigger('chosen:updated');
+        }
         $('#credit_model').modal('show');
         var i = 1, loc = $(node).data('bankloc');
         do {
@@ -1034,6 +1084,9 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                         var _no = $('#cardno').val();
                         var _loc = _p + _c;//$('#cardloc').val();
                         var _id = $('#id').val();
+                        var _subbranch = $('#subbranch').val();
+                        var _default = ($('#is_default').is(':checked') ? 1:0);
+
                         $.ajax({
                             url : __BASE + "users/new_credit",
                                 data : {
@@ -1043,6 +1096,8 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                         ,'cardloc' :  _loc
                                         ,'id' :  _id
                                         ,'uid' : user_id
+                                        ,'subbranch':_subbranch
+                                        ,'default':_default
                                 },
                                 dataType : 'json',
                                 method : 'POST',
@@ -1058,8 +1113,8 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                             + _account 
                                             + '<i class="ace-icon fa fa-angle-down icon-on-right"></i> </button>'
                                             + '<ul class="dropdown-menu"> '
-                                            + '<li> <a href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="edit_bank" >修改</a> </li>'
-                                            + '<li> <a  href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '"  class="show_bank">展示</a> </li> '
+                                            + '<li> <a href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" "data-subbranch=' + _subbranch + '"' + '"data-default=' + _default + '"' +' class="edit_bank" >修改</a> </li>'
+                                            + '<li> <a  href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" "data-subbranch=' + _subbranch + '"' + '"data-default=' + _default + '"' +'  class="show_bank">展示</a> </li> '
                                             + '<li class="divider"></li> '
                                             + '<li> <a href="javascript:void(0)" data-uid="' + user_id + '" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="del_bank">删除</a> </li>'
                                             + ' </ul> </div>';

@@ -6,7 +6,7 @@ class Users extends REIM_Controller {
         parent::__construct();
         $this->load->model('user_model', 'user');
         $this->load->model('group_model', 'groups');
-	$this->load->model('reim_show_model','reim_show');
+    $this->load->model('reim_show_model','reim_show');
         //$this->load->model('users/customer_model', 'cmodel');  
     }
 
@@ -44,28 +44,28 @@ class Users extends REIM_Controller {
 
     public function raise_invites()
     {
-    	$this->need_group_it();	
-	$groupname = $this->session->userdata('groupname');
-	$_guests = $this->input->post('guests');
-	$guests = '';
-	if($_guests)
-	{
-		$guests = implode(',',$_guests);
-	}
+        $this->need_group_it(); 
+    $groupname = $this->session->userdata('groupname');
+    $_guests = $this->input->post('guests');
+    $guests = '';
+    if($_guests)
+    {
+        $guests = implode(',',$_guests);
+    }
 
 
-	$buf = $this->user->raise_invites($groupname,$guests);
+    $buf = $this->user->raise_invites($groupname,$guests);
 
-	if($buf['status'] > 0)
-	{
-		$data = $buf['data'];
-	}
-	else
-	{
-		$data = array('msg',$buf['data']['msg']);
-	}
+    if($buf['status'] > 0)
+    {
+        $data = $buf['data'];
+    }
+    else
+    {
+        $data = array('msg',$buf['data']['msg']);
+    }
 
-	die(json_encode($data));
+    die(json_encode($data));
     }
 
     public function update_nickname(){
@@ -96,7 +96,7 @@ class Users extends REIM_Controller {
     }
 
     public function profile(){
-    	$error = $this->session->userdata('login_error');
+        $error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
         $ug = $this->reim_show->usergroups();
         $_ranks = $this->groups->get_rank_level(1);
@@ -117,50 +117,50 @@ class Users extends REIM_Controller {
         //$profile = $this->session->userdata('prOfile');
         if($profile){
            $pro = $profile['data']['profile'];
-	   $config = $profile['data']['profile'];
-	   if(array_key_exists('group',$config))
-	   {
-		if(array_key_exists('config',$profile['data']['profile']['group']))
-		{
-			$config = $profile['data']['profile']['group']['config'];
-		}
-	   }
-	   else
-	   {
-	   	$config =array();
-	   }
+       $config = $profile['data']['profile'];
+       if(array_key_exists('group',$config))
+       {
+        if(array_key_exists('config',$profile['data']['profile']['group']))
+        {
+            $config = $profile['data']['profile']['group']['config'];
+        }
+       }
+       else
+       {
+        $config =array();
+       }
             //print_r($profile);
             $profile = $profile['data']['profile'];
-	    $sobs = array();
-	    $usergroups = array();
-	    $audits = array();
-	    $commits = array();
+        $sobs = array();
+        $usergroups = array();
+        $audits = array();
+        $commits = array();
 
 
-	    if(array_key_exists('commits',$profile))
-	    {
-	    	$sobs = $profile['commits'];
-	    }
-	    
+        if(array_key_exists('commits',$profile))
+        {
+            $sobs = $profile['commits'];
+        }
+        
 
-	    if(array_key_exists('sob',$profile))
-	    {
-	    	$sobs = $profile['sob'];
-	    }
-	    if(array_key_exists('usergroups',$profile))
-	    {
-	    	$usergroups = $profile['usergroups'];
-	    }
+        if(array_key_exists('sob',$profile))
+        {
+            $sobs = $profile['sob'];
+        }
+        if(array_key_exists('usergroups',$profile))
+        {
+            $usergroups = $profile['usergroups'];
+        }
 
             $uid = $profile['id'];
             $profile = json_decode($this->user->reim_get_info($uid), True);
             $profile =  $profile['data'];
-	    $manager_id = $profile['manager_id'];
-	    log_message("debug","####".json_encode($profile));
+        $manager_id = $profile['manager_id'];
+        log_message("debug","####".json_encode($profile));
             $path = base_url($this->user->reim_get_hg_avatar());
             //print_r($profile);
         } else  {
-	    $config = array();
+        $config = array();
             $user = $this->session->userdata('user');
             //log_message("debug", json_encode($user));
             $profile['nickname'] = $user->nickname;
@@ -230,25 +230,25 @@ class Users extends REIM_Controller {
         $phone = $this->input->post('phone');
         $uid = $this->input->post('uid');
         $credit_card = $this->input->post('credit_card');
-	$manager_id = $this->input->post('manager');
+    $manager_id = $this->input->post('manager');
         $admin = $this->input->post('admin_new');
-	$_usergroups = $this->input->post('usergroups');
-	$max_report = $this->input->post('max_report');
-	$rank = $this->input->post('rank');
-	$level = $this->input->post('level');
-	$usergroups = array();
-	if($_usergroups)
-	{
-		$usergroups = implode(',',$_usergroups);
-	}
-	log_message('debug','rank:' . $rank);
-	log_message('debug','level:' . $level);
-	log_message('debug','max_report' . $max_report);
+    $_usergroups = $this->input->post('usergroups');
+    $max_report = $this->input->post('max_report');
+    $rank = $this->input->post('rank');
+    $level = $this->input->post('level');
+    $usergroups = array();
+    if($_usergroups)
+    {
+        $usergroups = implode(',',$_usergroups);
+    }
+    log_message('debug','rank:' . $rank);
+    log_message('debug','level:' . $level);
+    log_message('debug','max_report' . $max_report);
         if(!($uid || $nickname || $email || $phone || $credit_card)){
             redirect(base_url('users/profile'));
         }
         $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin,$manager_id,$max_report,$rank,$level,$client_id), true);
-	log_message('debug','info:' . json_encode($info));
+    log_message('debug','info:' . json_encode($info));
     log_message('debug','profile' . json_encode($profile));
         if(array_key_exists('admin',$profile))
         {
@@ -280,7 +280,7 @@ class Users extends REIM_Controller {
 
     public function force_update_password(){
         $profile = $this->user->reim_get_user();
-	$profile_id = $profile['data']['profile']['id'];
+    $profile_id = $profile['data']['profile']['id'];
         $old_password = $this->input->post('old_password');
         $new_password = $this->input->post('password');
         $re_password = $this->input->post('repassword');
@@ -305,33 +305,33 @@ class Users extends REIM_Controller {
     }
     public function update_password(){
         $profile = $this->user->reim_get_user();
-	$profile_id = $profile['data']['profile']['id'];
+    $profile_id = $profile['data']['profile']['id'];
         $old_password = $this->input->post('old_password');
         $new_password = $this->input->post('password');
         $re_password = $this->input->post('repassword');
-	$pid = $this->input->post('pid');
-	log_message("debug","######".$pid." ".$profile_id);
+    $pid = $this->input->post('pid');
+    log_message("debug","######".$pid." ".$profile_id);
         if(!($old_password && $new_password && $re_password)){
             $this->session->set_userdata('login_error', '参数错误');
-	    if($pid == $profile_id)
-	    {
-            	return redirect('users/profile');
-	    }
-	    else
-	    {
-	    	redirect(base_url('members/editmember/'.$pid));
-	    }
+        if($pid == $profile_id)
+        {
+                return redirect('users/profile');
+        }
+        else
+        {
+            redirect(base_url('members/editmember/'.$pid));
+        }
         }
         if($re_password != $new_password) {
             $this->session->set_userdata('login_error', '新密码不相同');
-	    if($pid == $profile_id)
-	    {
-            	return redirect('users/profile');
-	    }
-	    else
-	    {
-	    	redirect(base_url('members/editmember/'.$pid));
-	    }
+        if($pid == $profile_id)
+        {
+                return redirect('users/profile');
+        }
+        else
+        {
+            redirect(base_url('members/editmember/'.$pid));
+        }
         }
         $info = json_decode($this->user->reim_update_password($old_password, $new_password,$pid), true);
         if($info['status'] > 0){
@@ -482,7 +482,7 @@ class Users extends REIM_Controller {
             die(json_encode(array('status' => false, 'data' => array('msg' => '参数错误'))));
         } else {
             $buf = $this->user->bind_phone($phone, $vcode);
-	    log_message("debug","$$$$$$$$$".$buf);
+        log_message("debug","$$$$$$$$$".$buf);
            /* $obj = json_decode($buf, True);
             if($obj['status']) {
               //  redirect(base_url('users/logout'));
@@ -490,7 +490,7 @@ class Users extends REIM_Controller {
                 $this->session->set_userdata('last_error', $obj['data']['msg']);
                // redirect(base_url('users/profile'));
             }*/
-	    die($buf);
+        die($buf);
         }
     }
 
@@ -501,14 +501,16 @@ class Users extends REIM_Controller {
         $cardno = $this->input->post('cardno');
         $cardloc = $this->input->post('cardloc');
         $id = $this->input->post('id');
-	$uid = $this->input->post('uid');
+        $uid = $this->input->post('uid');
+        $subbranch = $this->input->post('subbranch');
+        $default = $this->input->post('default');
 
         if($id) {
-        $buf = $this->user->update_credit($id, $account, $cardno, $cardbank, $cardloc,$uid);
+        $buf = $this->user->update_credit($id, $account, $cardno, $cardbank, $cardloc, $uid, $subbranch, $default);
         } else {
-        $buf = $this->user->new_credit($account, $cardno, $cardbank, $cardloc,$uid);
+        $buf = $this->user->new_credit($account, $cardno, $cardbank, $cardloc, $uid, $subbranch, $default);
         }
-	log_message('debug','uid:' . $uid);
+        log_message('debug','uid:' . $uid);
         //$obj = json_decode($buf, True);
         die($buf);
     }
