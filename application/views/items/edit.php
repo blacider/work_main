@@ -428,7 +428,7 @@ $(document).ready(function() {
             ),$img = $li.find('img');
             // $list为容器jQuery实例
             $('#theList').append( $li );
-            var path = "/static/images/", name_ = getPngByType(file.mime);
+            var path = "/static/images/", name_ = getPngByType(file.filename);
             $img.attr( 'src', path+name_);
             bind_event_file();
             var imageDom = $('#' + file.id);
@@ -474,26 +474,28 @@ uploader_file.on( 'fileQueued', function( file ) {
             ),$img = $li.find('img');
     // $list为容器jQuery实例
     $('#theList').append( $li );
-    var path = "/static/images/", name_ = getPngByType(file.type);
+    var path = "/static/images/", name_ = getPngByType(file.name);
     $img.attr( 'src', path+name_);
     bind_event_file();
 });
-function getPngByType(type) {
+function getPngByType(filename) {
+    var types = filename.split('.');
+    var type = types[types.length-1];
     var name_ = "";
     switch(type) {
-        case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-        case "application/vnd.ms-excel":
+        case "xls":
+        case "xlsx":
             name_ = "excel.png";
             break;
-        case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
-        case "application/vnd.ms-powerpoint":
+        case "ppt":
+        case "pptx":
             name_ = "powerpoint.png";
             break;
-        case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-        case "application/msword":
+        case "docx":
+        case "doc":
             name_ = "word.png"
             break;
-        case "application/pdf":
+        case "pdf":
             name_ = "pdf.png"
             break;
     }
