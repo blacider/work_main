@@ -130,6 +130,11 @@
 <script type="text/javascript">var _pid="<?php echo $pid ?>" ;</script>
 <script type="text/javascript">var _manager="<?php echo $manager ?>" ;</script>
 <script language="javascript">
+$(document).ready(function() {
+    load_exists();
+});
+var _images = '<?php echo $images; ?> ';
+$(document).ready(function() {
 var uploader = WebUploader.create({
 
     // 选完文件后，是否自动上传。
@@ -243,7 +248,7 @@ uploader.on( 'uploadAccept', function( file, response ) {
 uploader.on( 'uploadComplete', function( file ) {
     $( '#'+file.id ).find('.progress').remove();
 });
-
+}
 function updateSelectSob(data) {
     $("#sobs").empty();
     $("#sobs").append(data);
