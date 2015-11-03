@@ -837,13 +837,6 @@ $(document).ready(function(){
     }
     
     // 导入导出有步骤，合并在一起
-    if(_method == "report_template")
-    {
-        console.log('report_template');
-        _controller = '';
-        $('#report').addClass('open');
-        $('#report'+_report_id).addClass('active');
-    }
 
     if(_method == "create_report_template" || _method == "update_report_template"){
         _method = "report_template_list";
@@ -889,6 +882,15 @@ $(document).ready(function(){
     $('.submenu').each(function(){
         $(this).hide();
     });
+    if(_method == "report_template")
+    {
+        console.log('report_template');
+        _controller = '';
+        $('#reports').addClass('open');
+        $($('#reports').find('.submenu').get(0)).show();
+        $($('.rushumenu')[0]).show();
+        $('#report' + _report_id).addClass('active');
+    }
     if(_controller != '') {
         $('#' + _controller).addClass('active open');
         $('#' + _controller).children().each(function(){
