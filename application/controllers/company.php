@@ -29,7 +29,8 @@ class Company extends REIM_Controller {
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '公司设置', 'class' => '')
-                    ,array('url'  => '', 'name' => '自定义消费类型', 'class' => '')
+                    ,array('url'  => '', 'name' => '消费设置', 'class' => '')
+                    ,array('url'  => '', 'name' => '消费类型设置', 'class' => '')
                 ),
                 'item_type_list' => $item_type_list,
                 'error' => $error
@@ -1232,7 +1233,8 @@ public function common(){
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '公司设置', 'class' => '')
-                    ,array('url'  => '', 'name' => '自定义消费', 'class' => '')
+                    ,array('url'  => '', 'name' => '消费类型', 'class' => '')
+                    ,array('url'  => '', 'name' => '消费字段设置', 'class' => '')
                 ),
             )
         );
