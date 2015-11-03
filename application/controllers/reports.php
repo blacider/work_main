@@ -1295,7 +1295,9 @@ class Reports extends REIM_Controller {
                 $extra = json_decode($extra_json, TRUE);
 
                 // 用户收款银行
-                $cardinfo = array();
+                $userbankinfo = array();
+                // 付款账户
+                $publicbankinfo = array();
 
                 if (array_key_exists("config", $template)) {
                     if (is_array($extra)) {
@@ -1308,11 +1310,25 @@ class Reports extends REIM_Controller {
                         if (!empty($field)) {
                             if (array_key_exists($field["id"], $dict_extra)) {
                                 $value = $dict_extra[$field["id"]]["value"];
+                                // 兼容混乱的输入
                                 if (is_array($value))
-                                    $cardinfo = $value;
+                                    $userbankinfo = $value;
                                 else
-                                    $cardinfo = json_decode($value, TRUE);
-                                log_message("debug", "found bank info => " . json_encode($cardinfo));
+                                    $userbankinfo = json_decode($value, TRUE);
+                                log_message("debug", "found bank info => " . json_encode($userbankinfo));
+                            }
+                        }
+                        
+                        $filed = $this->get_bank_field_from_template($template, 1);
+                        if (!empty($field)) {
+                            if (array_key_exists($field["id"], $dict_extra)) {
+                                $value = $dict_extra[$field["id"]]["value"];
+                                // 兼容混乱的输入
+                                if (is_array($value))
+                                    $publicbankinfo = $value;
+                                else
+                                    $publicbankinfo = json_decode($value, TRUE);
+                                log_message("debug", "found bank info => " . json_encode($publicbankinfo));
                             }
                         }
                     }
@@ -1320,13 +1336,13 @@ class Reports extends REIM_Controller {
 
                 // 取设置的收款银行账号
                 $cardno = "";
-                if (is_array($cardinfo) && array_key_exists("cardno", $cardinfo)) {
-                    $cardno = $cardinfo["cardno"];
+                if (is_array($userbankinfo) && array_key_exists("cardno", $userbankinfo)) {
+                    $cardno = $userbankinfo["cardno"];
                 }
                 // 如果没有设置取用户的默认设置
                 if (!$cardno) {
                     if (array_key_exists($r["uid"], $_banks)) {
-                        $cardinfo = $_banks[$r["uid"]];
+                        $userbankinfo = $_banks[$r["uid"]];
                         $cardno = $_banks[$r["uid"]]["cardno"];
                     }
                 }
@@ -1334,8 +1350,8 @@ class Reports extends REIM_Controller {
                 // 汇总key
                 $key_array = array(
                     "name" => $r["nickname"],
-                    "targetcardno" => $cardno,
-                    "sroucecardno" => ""
+                    "usercardno" => $cardno,
+                    "publiccardno" => $this->try_get_element($publicbankinfo, "cardno")
                 );
                 $key = sha1(json_encode($key_array));
 
@@ -1343,11 +1359,16 @@ class Reports extends REIM_Controller {
                 if (!array_key_exists($key, $stat_cells)) {
                     $stat_cells[$key] = array(
                         "提交人" => $r["nickname"],
-                        "收款银行 - 户名" => $this->try_get_element($cardinfo, "account"),
-                        "收款银行 - 账号" => $this->try_get_element($cardinfo, "cardno"),
-                        "收款银行 - 开户行" => $this->try_get_element($cardinfo, "bankname"),
-                        "收款银行 - 开户地" => $this->try_get_element($cardinfo, "bankloc"),
-                        "付款银行" => "",
+                        "收款银行 - 户名" => $this->try_get_element($userbankinfo, "account"),
+                        "收款银行 - 账号" => $this->try_get_element($userbankinfo, "cardno"),
+                        "收款银行 - 开户行" => $this->try_get_element($userbankinfo, "bankname"),
+                        "收款银行 - 开户地" => $this->try_get_element($userbankinfo, "bankloc"),
+                        "收款银行 - 开户支行" => $this->try_get_element($userbankinfo, "subbranch"),
+                        "付款银行 - 户名" => $this->try_get_element($publicbankinfo, "account"),
+                        "付款银行 - 账号" => $this->try_get_element($publicbankinfo, "cardno"),
+                        "付款银行 - 开户行" => $this->try_get_element($publicbankinfo, "bankname"),
+                        "付款银行 - 开户地" => $this->try_get_element($publicbankinfo, "bankloc"),
+                        "付款银行 - 开户支行" => $this->try_get_element($publicbankinfo, "subbranch"),
                         "金额" => 0,
                         "注释" => ""
                     );
