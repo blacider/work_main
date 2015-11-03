@@ -471,8 +471,7 @@
                                                     '</div>');
                                     } else if (data.type == 4) {
 
-                                        $('#modal_0').find('input[name="bank"]').attr('checked', data.property.bank_account_type);
-                                        $('#modal_0').find('input[name="bank"]').trigger("chosen:updated");
+                                        $('#modal_0').find('input[name="bank"]')[0].checked = (data.property.bank_account_type == "1");
                                     }
                                 }
                                 ifCreate = false;
