@@ -118,39 +118,39 @@ class Users extends REIM_Controller {
         if($profile){
             $pro = $profile['data']['profile'];
             $config = $profile['data']['profile'];
-        if(array_key_exists('group',$config))
-        {
-             if(array_key_exists('config',$profile['data']['profile']['group']))
-             {
-                 $config = $profile['data']['profile']['group']['config'];
-             }
-        }
-        else
-        {
-             $config =array();
-        }
-            //print_r($profile);
-        $profile = $profile['data']['profile'];
-        $sobs = array();
-        $usergroups = array();
-        $audits = array();
-        $commits = array();
-
-
-        if(array_key_exists('commits',$profile))
-        {
-            $sobs = $profile['commits'];
-        }
-        
-
-        if(array_key_exists('sob',$profile))
-        {
-            $sobs = $profile['sob'];
-        }
-        if(array_key_exists('usergroups',$profile))
-        {
-            $usergroups = $profile['usergroups'];
-        }
+	        if(array_key_exists('group',$config))
+	        {
+	             if(array_key_exists('config',$profile['data']['profile']['group']))
+	             {
+	                 $config = $profile['data']['profile']['group']['config'];
+	             }
+	        }
+	        else
+	        {
+	             $config =array();
+	        }
+	            //print_r($profile);
+	        $profile = $profile['data']['profile'];
+	        $sobs = array();
+	        $usergroups = array();
+	        $audits = array();
+	        $commits = array();
+	
+	
+	        if(array_key_exists('commits',$profile))
+	        {
+	            $sobs = $profile['commits'];
+	        }
+	        
+	
+	        if(array_key_exists('sob',$profile))
+	        {
+	            $sobs = $profile['sob'];
+	        }
+	        if(array_key_exists('usergroups',$profile))
+	        {
+	            $usergroups = $profile['usergroups'];
+	        }
 
             $uid = $profile['id'];
             $profile = json_decode($this->user->reim_get_info($uid), True);
