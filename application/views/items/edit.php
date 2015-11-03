@@ -284,7 +284,7 @@
                                 <div class="col-xs-6 col-sm-6">
     <input type="hidden" value="<?php echo $item['prove_ahead']; ?>">
 <?php 
-                                                $_prove_dict = array('0' => '报销', '2' => '预借', '1' => '预算');
+                                                $_prove_dict = $item_type_dic;
 ?>
     <input type="hidden" value="<?php echo $item['prove_ahead']; ?>">
                                     <select class="form-control" name="type" data-placeholder="请选择类型">
@@ -518,9 +518,7 @@ function bind_event_file(){
         });
         $('#theList .download-button_').click(function(e) {
             var url = filesUrlDict[this.parentNode.id];
-            var aLink = document.createElement('a');
-            aLink.href = url;
-            aLink.click();
+            window.open(url);
         });
 }
 // 文件上传过程中创建进度条实时显示。
