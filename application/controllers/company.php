@@ -1155,20 +1155,20 @@ class Company extends REIM_Controller {
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-	$_ranks = $this->groups->get_rank_level(1);
-	$_levels = $this->groups->get_rank_level(0);
-	
-	$ranks = array();
-	if($_ranks['status'] > 0)
-	{
-		$ranks = $_ranks['data'];
-	}
-
-	$levels = array();
-	if($_levels['status'] > 0)
-	{
-		$levels = $_levels['data'];
-	}
+    	$_ranks = $this->groups->get_rank_level(1);
+    	$_levels = $this->groups->get_rank_level(0);
+    	
+    	$ranks = array();
+    	if($_ranks['status'] > 0)
+    	{
+    		$ranks = $_ranks['data'];
+    	}
+    
+    	$levels = array();
+    	if($_levels['status'] > 0)
+    	{
+    		$levels = $_levels['data'];
+    	}
 	
         $group = $this->groups->get_my_list();
         $_gnames = $this->ug->get_my_list();
@@ -1187,8 +1187,8 @@ class Company extends REIM_Controller {
                 ,'error'=>$error
                 ,'member'=>$gmember
                 ,'group'=>$gnames
-		,'ranks' => $ranks
-		,'levels' => $levels
+		        ,'ranks' => $ranks
+		        ,'levels' => $levels
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')

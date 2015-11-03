@@ -368,6 +368,7 @@ class Reports extends REIM_Controller {
         $cc = $this->input->post('cc');
         $force = $this->input->post('force');
         $template_id = $this->input->post('template_id');
+        $type = $this->input->post('type');
         log_message('debug','template_id:' . $template_id);
         $extra = array();
         if($template_id) {
@@ -413,7 +414,7 @@ class Reports extends REIM_Controller {
         if(!$cc) $cc = array();
         if(!$force) $force = 0;
         $save = $this->input->post('renew');
-        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save, $force, $extra , $template_id);
+        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), $type, $save, $force, $extra , $template_id);
         $ret = json_decode($ret, true);
         if($ret['code'] <= 0) {
             log_message("debug", "Cates:" . $ret['code']);
@@ -838,6 +839,7 @@ class Reports extends REIM_Controller {
         $force = $this->input->post('force');
         if(!$cc) $cc = array();
         $template_id = $this->input->post('template_id');
+        $type = $this->input->post('type');
         $extra = array();
         if($template_id) {
             $extra = $this->input->post('extra');
@@ -880,7 +882,7 @@ class Reports extends REIM_Controller {
             );
             */
         }
-        $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save, $force, $extra , $template_id);
+        $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items), $type, $save, $force, $extra , $template_id);
         $ret = json_decode($ret, true);
         log_message("debug", "xx:" . json_encode($ret));
         if($ret['code'] <= 0) {

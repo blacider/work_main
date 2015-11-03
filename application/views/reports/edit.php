@@ -271,6 +271,32 @@ foreach($members as $m) {
                                             </thead>
                                         </tr>
 <?php 
+    $_config = '';
+    if(array_key_exists('config',$profile['group']))
+    {
+        $_config = $profile['group']['config'];
+    }
+    $__config = json_decode($_config,True);
+
+    $item_type = array();
+    $extra_item_type = [0,1,2];
+    $extra_item_type = array();
+    if(array_key_exists('type', $config))
+    {
+        $extra_item_type = $config['type'];
+    }
+    array_push($item_type,0);
+    if($__config)
+    {
+        if(array_key_exists('disable_borrow', $__config) && $__config['disable_borrow'] == '0')
+        {
+            array_push($item_type,1);
+        }
+        if(array_key_exists('disable_budget', $__config) && $__config['disable_budget'] == '0')
+        {
+            array_push($item_type,2);
+        }
+    }
 
 foreach($report['items'] as $i){
         $item_amount = '';
@@ -284,7 +310,8 @@ foreach($report['items'] as $i){
         }
                                         ?>
                                         <tr>
-                                            <td><input checked='true' name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>" data-id="<?php echo $i['id']; ?>" ></td>
+                                            <td><input checked='true' name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>" 
+                                                data-id="<?php echo $i['id']; ?>" data-type="<?php echo $i['prove_ahead'];?>"></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['category_name']; ?></td>
                                             <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
@@ -311,7 +338,7 @@ foreach($report['items'] as $i){
                                         <?php  } ?>
 <?php 
 foreach($items as $i){
-    if($i['rid'] == 0 && $i['prove_ahead'] == 0){
+    if($i['rid'] == 0 && in_array($i['prove_ahead'], $item_type) && in_array($i['prove_ahead'], $extra_item_type)){
         $item_amount = '';
         if($i['currency'] != 'cny')
         {
@@ -324,7 +351,8 @@ foreach($items as $i){
                                        
                                         ?>
                                         <tr>
-                                            <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>"  data-id="<?php echo $i['id']; ?>" ></td>
+                                            <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>"  
+                                                    data-id="<?php echo $i['id']; ?>" data-type="<?php echo $i['prove_ahead'];?>"></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['cate_str']; ?></td>
                                            
@@ -447,11 +475,26 @@ function do_post(force) {
     var sum=0;
 
     var _ids = Array();
+    var report_type = 0;
+    var flag = 0;
+    var is_submit = 1;
 	$('.amount').each(function(){
 		if($(this).is(':checked')){
             _ids.push($(this).data('id'));
 			var amount = $(this).data('amount');
-			//amount = parseInt(amount.substr(1));
+			var item_type = $(this).data('type');
+            if(flag == 0)
+            {
+                report_type = item_type;
+                flag = 1;
+            }
+            if(report_type != item_type)
+            {
+                show_notify('同一报告中不能包含不同的消费类型');
+                is_submit = 0;
+                return false;
+            }
+
 			sum+=amount;
 		};
 	});
@@ -516,7 +559,6 @@ function do_post(force) {
 
 
     var extra = [];
-    var is_submit = 1;
  
     $('.field_value').each(function(){
         var field_value = $(this).val();
@@ -652,6 +694,7 @@ function do_post(force) {
 
                         'template_id' : _template_id,
                         'extra':extra,
+                        'type':report_type,
 
                         'id' : _rid,
                         'renew' : _renew,

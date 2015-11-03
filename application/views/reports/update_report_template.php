@@ -290,7 +290,7 @@
                 data.property.options = option;
             } else if (type == 4) {
                 data.property = {};
-                data.property.bank_account_type = $('#modal_1').find('input[name="bank"]').val();
+                data.property.bank_account_type = $('#modal_1').find('input[name="bank"]')[0].checked;
             }
             var index = getGroupIndexById(groupId);
             if (ifCreate) {
