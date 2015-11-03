@@ -8,7 +8,7 @@ class Company extends REIM_Controller {
         $this->load->model('usergroup_model','ug');
         $this->load->model('account_set_model','account_set');
         $this->load->model('category_model','category');
-	    $this->load->model('reim_show_model','reim_show');
+        $this->load->model('reim_show_model','reim_show');
         $this->load->model('items_model','items');
     }
 

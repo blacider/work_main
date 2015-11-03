@@ -131,7 +131,7 @@ foreach($items as $i){
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['cate_str'];?></td>
                                             <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
-                                            <td><?php echo $i['prove_ahead_name'];?></td>
+                                            <td><?php echo $item_type_dic[$i['prove_ahead']];?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td><?php echo $i['note']; ?></td>
                                             <td>
