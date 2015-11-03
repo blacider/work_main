@@ -6,11 +6,11 @@ class Items_Model extends Reim_Model {
     {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-		$url = $this->get_url('item_type_name/list');
-		$buf = $this->do_Get($url, $jwt);
+        $url = $this->get_url('item_type_name/list');
+        $buf = $this->do_Get($url, $jwt);
         log_message('debug','item_type_name_url:' . $url);
         log_message('debug','item_type_name_back:' . $buf);
-		$obj = json_decode($buf, True);
+        $obj = json_decode($buf, True);
         return $obj;
     }
     
@@ -18,17 +18,17 @@ class Items_Model extends Reim_Model {
     {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-		$url = $this->get_url('item_type_name/' . $type);
+        $url = $this->get_url('item_type_name/' . $type);
         $data = array(
             'type' => $type,
             'name' => $name,
             'description' => $description
         );
-		$buf = $this->do_Put($url,$data,$jwt);
+        $buf = $this->do_Put($url,$data,$jwt);
         log_message('debug','update_item_type_name_url:' . $url);
         log_message('debug','update_item_type_name_data:' . json_encode($data));
         log_message('debug','update_item_type_name_back:' . $buf);
-		$obj = json_decode($buf, True);
+        $obj = json_decode($buf, True);
         return $obj;
     }
 
@@ -36,11 +36,11 @@ class Items_Model extends Reim_Model {
     {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-		$url = $this->get_url('typed_currency');
-		$buf = $this->do_Get($url, $jwt);
+        $url = $this->get_url('typed_currency');
+        $buf = $this->do_Get($url, $jwt);
         log_message('debug','typed_currency_url:' . $url);
         log_message('debug','typed_currency_back:' . $buf);
-		$obj = json_decode($buf, True);
+        $obj = json_decode($buf, True);
         return $obj;
     }
 
@@ -48,10 +48,10 @@ class Items_Model extends Reim_Model {
     {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-		$url = $this->get_url('currency');
-		$buf = $this->do_Get($url, $jwt);
+        $url = $this->get_url('currency');
+        $buf = $this->do_Get($url, $jwt);
         log_message("debug", $buf);
-		$obj = json_decode($buf, True);
+        $obj = json_decode($buf, True);
         return $obj;
     }
 
@@ -77,18 +77,18 @@ class Items_Model extends Reim_Model {
     public function update_item($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '',$currency,$rate){
         $items = array();
         $s = array(
-	    array('type' => 1,'val' => $category)
-	    ,array('type' => 2,'val' => $note)
-	    ,array('type' => 3,'val' => $tags)
-	    ,array('type' => 4,'val' => $merchant)
-	    ,array('type' => 6,'val' => $amount,'currency' => $currency , 'rate' => $rate)
-	    ,array('type' => 8,'val' => $dt)
-	    ,array('type' => 9,'val' => $extra)
-	    );
+        array('type' => 1,'val' => $category)
+        ,array('type' => 2,'val' => $note)
+        ,array('type' => 3,'val' => $tags)
+        ,array('type' => 4,'val' => $merchant)
+        ,array('type' => 6,'val' => $amount,'currency' => $currency , 'rate' => $rate)
+        ,array('type' => 8,'val' => $dt)
+        ,array('type' => 9,'val' => $extra)
+        );
         $data = array(
-		      "iid" => $id
-		      ,"opts" => json_encode($s)
-		     );
+              "iid" => $id
+              ,"opts" => json_encode($s)
+             );
         $jwt = $this->session->userdata('jwt');
         $url = $this->get_url('update_item');
         $buf = $this->do_Post($url, $data, $jwt);
@@ -100,10 +100,10 @@ class Items_Model extends Reim_Model {
     public function get_list(){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-		$url = $this->get_url('sync/0');
-		$buf = $this->do_Get($url, $jwt);
+        $url = $this->get_url('sync/0');
+        $buf = $this->do_Get($url, $jwt);
         log_message("debug", $buf);
-		$obj = json_decode($buf, true);
+        $obj = json_decode($buf, true);
         return $obj;
     }
 
@@ -115,10 +115,10 @@ class Items_Model extends Reim_Model {
             'rid' => $id
             ,'email' => $mail
         );
-		$url = $this->get_url('exports/' . $id);
-		$buf = $this->do_Post($url, $data, $jwt);
+        $url = $this->get_url('exports/' . $id);
+        $buf = $this->do_Post($url, $data, $jwt);
         log_message("debug", $buf);
-		$obj = json_decode($buf, true);
+        $obj = json_decode($buf, true);
         return $obj;
     }
 
@@ -126,11 +126,11 @@ class Items_Model extends Reim_Model {
         if($email == "") return array();
         $jwt = $this->get_admin_jwt();
         if(!$jwt) return false;
-		$url = $this->get_url('admin/invoice');
+        $url = $this->get_url('admin/invoice');
         $buf = $this->do_Post($url, array('name' => $email), $jwt);
         log_message("debug", $buf);
         return $buf;
-		//$obj = json_decode($buf, true);
+        //$obj = json_decode($buf, true);
         //return $obj;
     }
 
@@ -138,7 +138,7 @@ class Items_Model extends Reim_Model {
         if($id == 0) return array();
         $jwt = $this->get_admin_jwt();
         if(!$jwt) return false;
-		$url = $this->get_url('admin/invoice/' . $id);
+        $url = $this->get_url('admin/invoice/' . $id);
         $buf = $this->do_Get($url, $jwt);
         log_message("debug", $buf);
         return $buf;
@@ -148,10 +148,10 @@ class Items_Model extends Reim_Model {
     public function get_suborinate($me = 0){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-		$url = $this->get_url('subordinate_reports/'. $me . "/0/9999999");
-		$buf = $this->do_Get($url, $jwt);
+        $url = $this->get_url('subordinate_reports/'. $me . "/0/9999999");
+        $buf = $this->do_Get($url, $jwt);
         log_message("debug", $buf);
-		$obj = json_decode($buf, true);
+        $obj = json_decode($buf, true);
         return $obj;
     }
 
@@ -191,7 +191,7 @@ class Items_Model extends Reim_Model {
             'attachment_ids' => $attachments,
             'type' => 1,
             'currency' => $currency,
-	    'extra' => $extra);
+        'extra' => $extra);
         array_push($items, $s);
         $data = array('items' => json_encode($items));
         $jwt = $this->session->userdata('jwt');
@@ -250,7 +250,7 @@ class Items_Model extends Reim_Model {
             'type' => 1,
             'afford_ids' => $fee_afford_ids,
             'currency' => $currency,
-	    'extra' => $extra);
+        'extra' => $extra);
         array_push($items, $s);
         $data = array('items' => json_encode($items));
         $jwt = $this->session->userdata('jwt');
