@@ -952,12 +952,12 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         var _is_default = $(node).data('default');
         if(_is_default == $(node).data('id'))
         {
-            $('#is_default').attr('checked',true);
+            $('#is_default').prop('checked',true);
             $('#is_default').trigger('chosen:updated');
         }
         else
         {
-            $('#is_default').attr('checked',false);
+            $('#is_default').prop('checked',false);
             $('#is_default').trigger('chosen:updated');
         }
         $('#credit_model').modal('show');

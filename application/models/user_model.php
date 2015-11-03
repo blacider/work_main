@@ -38,42 +38,42 @@ class User_Model extends Reim_Model {
     public function raise_invites($groupname,$guests)
     {
         $jwt = $this->session->userdata('jwt');
-    if(!$jwt)  return false;
-
-    $url = $this->get_url('invites');
-    $data = array(
-        'name' => $groupname
-        ,'invites' => $guests
-    );
-    $buf = $this->do_Post($url,$data,$jwt); 
-    
-    return json_decode($buf,True);
+	    if(!$jwt)  return false;
+	
+	    $url = $this->get_url('invites');
+	    $data = array(
+	        'name' => $groupname
+	        ,'invites' => $guests
+	    );
+	    $buf = $this->do_Post($url,$data,$jwt); 
+	    
+	    return json_decode($buf,True);
     }
 
     public function get_common()
     {
         $jwt = $this->session->userdata('jwt');
-    if(!$jwt)  return false;
-
-    $url = $this->get_url('common');
-    $buf = $this->do_Get($url,$jwt);
-
-    //log_message('debug','common:' . $buf);
-
-    return json_decode($buf,True);
+	    if(!$jwt)  return false;
+	
+	    $url = $this->get_url('common');
+	    $buf = $this->do_Get($url,$jwt);
+	
+	    //log_message('debug','common:' . $buf);
+	
+	    return json_decode($buf,True);
     }
 
     public function del_email($email)
     {
         $jwt = $this->session->userdata('jwt');
-    if(!$jwt)  return false;
-
-    $url = $this->get_url('staff');
-    $data = array('emails' => $email);
-
-    $buf = $this->do_Post($url,$data,$jwt);
-    log_message('debug','del_email:' . $buf);
-    return json_decode($buf,True);
+	    if(!$jwt)  return false;
+	
+	    $url = $this->get_url('staff');
+	    $data = array('emails' => $email);
+	
+	    $buf = $this->do_Post($url,$data,$jwt);
+	    log_message('debug','del_email:' . $buf);
+	    return json_decode($buf,True);
     }
 
 
