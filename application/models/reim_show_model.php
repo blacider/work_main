@@ -1,15 +1,13 @@
 <?php
 
 class Reim_Show_Model extends Reim_Model {
+    public function __construct() {
+        parent::__construct();
+        $this->load->model('items_model', 'items');
+    }
     public function get_item_type_name()
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $url = $this->get_url('item_type_name');
-        $buf = $this->do_Get($url, $jwt);
-        log_message('debug','item_type_name_url:' . $url);
-        log_message('debug','item_type_name_back:' . $buf);
-        $obj = json_decode($buf, True);
+        $obj = $this->items->get_item_type_name();
         $item_type_dic = array();
         $item_type_dic[0] = '报销';
         $item_type_dic[1] = '预算';
@@ -59,25 +57,4 @@ class Reim_Show_Model extends Reim_Model {
         log_message('debug','rank:' . json_encode($buf));
         return json_decode($buf,True);
     }
-
-    /*
-    public function company_members()
-    {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-
-        $url = $this->get_url('groups/0');
-        $buf = $this->do_Get($url, $jwt);
-            log_message("debug", "model:" . $buf);
-
-        $obj = json_decode($buf,True);
-        $members = array();
-        if($obj['status']>0)
-        {
-            $members = $obj['data']['gmember']; 
-        }
-        return $members;
-    }
-    */
-
 }
