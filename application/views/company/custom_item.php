@@ -93,7 +93,7 @@ $(document).ready(function(){
             var _title = $(this).data('title');
             var _id = $(this).data('id');
 
-           location.href=__BASEURL+"/company/custom_item_create/"+ _id;
+           location.href=__BASEURL+"company/custom_item_create/"+ _id;
         });
     });
     $('.del').each(function(){
