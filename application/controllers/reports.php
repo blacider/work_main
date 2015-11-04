@@ -1116,13 +1116,13 @@ class Reports extends REIM_Controller {
             $extra = array();
 
         foreach ($extra as $e) {
-	    if (is_array($e) && array_key_exists("id", $e)) {
-	        $extra_dict[$e["id"]] = $e;
-	    }
+            if (is_array($e) && array_key_exists("id", $e)) {
+                $extra_dict[$e["id"]] = $e;
+            }
         }
 
-	if (empty($template) || !array_key_exists("config", $template))
-	    return $obj;
+        if (empty($template) || !array_key_exists("config", $template))
+            return $obj;
 
         foreach ($template["config"] as $conf) {
             // 字段组
@@ -1373,7 +1373,7 @@ class Reports extends REIM_Controller {
                     }
                     // 加载自定义字段名称
                     $public_bank_field_prefix = "付款银行";
-                    if (!empty($pulic_bank_field)) {
+                    if (!empty($public_bank_field)) {
                         $public_bank_field_prefix = $public_bank_field["name"];
                     }
 
@@ -1586,35 +1586,6 @@ class Reports extends REIM_Controller {
                         $o['职位'] = $level_dic[$i['member_info']['level_id']];
                     }
                 }
-                /*
-                   $afford = $i['fee_afford'];
-                   log_message("debug", "alvayang fee afford : " . $afford);
-                   $_parts = explode("|", $afford);
-                   $final = array();
-                   $_afford_member = array();
-                   $_afford_dept = array();
-
-                   foreach($_parts as $x) {
-                   log_message("debug", "alvayang fee afford parts: " . $x);
-                   $__parts = explode("-", $x);
-                   log_message("debug", "alvayang fee afford parts: " . count($__parts));
-                   if(count($__parts) == 3) {
-                   if(trim($__parts[1]) != "")
-                   array_push($_afford_dept, $__parts[1]);
-                   if(trim($__parts[2]) != "")
-                   array_push($_afford_member,$__parts[2]);
-                   }
-                   }
-                   $_str_afford_dept = $o['部门'];
-                   $_str_afford_member = $i['nickname'];
-
-                   if(count($_afford_dept)) {
-                   $_str_afford_dept = implode(",", $_afford_dept);
-                   }
-                   if(count($_afford_member)){
-                   $_str_afford_member = implode(",", $_afford_member);
-                   }
-                */
                 //$o['类别'] = $i['category_name'];
                 $_str_afford_dept = $o['部门'];
                 $_str_afford_member = $i['nickname'];
@@ -1705,6 +1676,7 @@ class Reports extends REIM_Controller {
                 for ($i = 2; $i < 255; $i++) {
                     if (!array_key_exists($template_name . $i, $excel)) {
                         $excel[$template_name . $i] = $template_excel;
+                        break;
                     }
                 }
             } else {
@@ -1717,9 +1689,9 @@ class Reports extends REIM_Controller {
         $data = array();
         foreach ($excel as $template_name => $template_excel) {
             foreach ($template_excel as $name => $excel) {
-	        $title = $name;
-		if (!empty($template_name))
-		    $title = $template_name . " - " . $name;
+                $title = $name;
+                if (!empty($template_name))
+                    $title = $template_name . " - " . $name;
 
                 array_push($data, array(
                     "title" => $title,
