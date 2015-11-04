@@ -566,6 +566,7 @@ class Reports extends REIM_Controller {
             $extra = json_decode($report['extras'], true);
         }
         $config = array();
+        $banks = array();
         if(!empty($extra)){
             $profile = array();
             $_common = $this->users->get_common();
@@ -583,7 +584,14 @@ class Reports extends REIM_Controller {
                     }
                 }
             }
+	        $banks = array();
+	        if(array_key_exists('banks',$profile))
+	        {
+	            $banks = $profile['banks'];
+	        }
         }
+
+        
 
         $_members = array();
         $members = $this->users->reim_get_user();
@@ -624,6 +632,7 @@ class Reports extends REIM_Controller {
                 'items' => $_items,
                 'config' => $config,
                 'extra' => $extra,
+                'banks' => $banks,
                 'extra_dic' => $extra_dic,
                 'item_type_dic' => $item_type_dic,
                 'report' => $report
@@ -1821,12 +1830,19 @@ class Reports extends REIM_Controller {
                 $_items = $this->_getitems();
                 log_message('debug',json_encode($_items));
                 log_message('debug','config:' . json_encode($config));
+                log_message('debug','profile:' . json_encode($profile));
 
+                $banks = array();
+                if(array_key_exists('banks',$profile))
+                {
+                    $banks = $profile['banks'];
+                }
                 return $this->bsload('reports/template_new',
                     array(
                         'title' => '新建[' . $config['name'] . '] 报告',
                         'members' => $_members,
                         'config' => $config,
+                        'banks' => $banks,
                         'item_type_dic' => $item_type_dic,
                         'items' => $_items
                         ,'breadcrumbs' => array(

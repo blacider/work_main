@@ -191,7 +191,16 @@ foreach($members as $m) {
                                                 </li> 
                                             </ul> 
                                         </div><!-- /.btn-group -->
-                              
+                                                        <div class="col-xs-3 col-sm-3">
+                                              
+                                                                <select class="chosen-select tag-input-style col-xs-6 field_value bank_select" id="<?php echo 'bank_select_' . $field['id'];?>" data-type="4" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" data-placeholder="请选择" <?php if($field['required'] == 1){echo 'required';}?>>
+                                                                    <?php foreach($banks as $b) { ?>
+                                                                            <option value='<?php echo json_encode($b); ?>'><?php echo $b['account']; ?></option>
+                                                                   
+                                                                    <?php } ?>
+                                                                </select>
+                                                        
+                                                        </div>
                                                         <div class="btn-group">
                                                             <a href="javascript:void(0)" class="btn btn-success new_credit" data-id="<?php echo $field['id'];?>">
                                                                 <i class="ace-icon fa fa-credit-card icon-only"></i>
@@ -1085,12 +1094,57 @@ $(document).ready(function(){
     get_province();
 
     $('.new_credit').each(function(){
-        var _id = $(this).data('id');
+         var _id = $(this).data('id');
+
+
         $(this).click(function(){
-                        reset_bank(1, '添加新银行卡',_id);
-                        $('#credit_model').modal({keyborard: false});
-                    });
-    })
+                       // reset_bank(1, '添加新银行卡',_id);
+                       // $('#credit_model').modal({keyborard: false});
+                       var _bank_select_value = $('#bank_select_'+_id).val();
+                        var bank_select_value = '';
+                        if(_bank_select_value)
+                        {
+                            bank_select_value = JSON.parse(_bank_select_value);
+                        }
+                        var _subbranch = '';
+                        var _bank = '';
+                        var _no ='';
+                        var _loc = '';
+                        var _account = '';
+                        if(bank_select_value['bankname'])
+                        {
+                            _bank = bank_select_value['bankname'];
+                        }
+                        if(bank_select_value['cardno'])
+                        {
+                            _no = bank_select_value['cardno'];
+                        }
+                        if(bank_select_value['subbranch'])
+                        {
+                            _subbranch = bank_select_value['subbranch'];
+                        }
+                        if(bank_select_value['account'])
+                        {
+                            _account = bank_select_value['account'];
+                        }
+       
+            
+                        $('#bank_' + _id).remove();
+                        var buf = '<div class="btn-group bank_info" id="bank_' + _id + '" data-subbranch="'+ _subbranch +'" data-id="'+ _id +'" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '"> '
+                            + '<button data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">' 
+                            + _account 
+                            + '<i class="ace-icon fa fa-angle-down icon-on-right"></i> </button>'
+                            + '<ul class="dropdown-menu"> '
+                            //+ '<li> <a href="javascript:void(0)" data-subbranch="'+ _subbranch +'" data-id="'+ _id +'" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="edit_bank" >修改</a> </li>'
+                            + '<li> <a  href="javascript:void(0)" data-subbranch="'+ _subbranch +'" data-id="'+ _id +'" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '"  class="show_bank">展示</a> </li> '
+                            + '<li class="divider"></li> '
+                            + '<li> <a href="javascript:void(0)" data-subbranch="'+ _subbranch +'" data-id="'+ _id +'" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="del_bank">删除</a> </li>'
+                            + ' </ul> </div>';
+                        $('#btns'+_id).prepend(buf);
+                        bind_event();
+                        
+                        }); 
+    });
     $('.new_card').click(function(){
         var _id = $('#bank_field_id').val();
         var _p = $('#province').val();
