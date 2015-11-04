@@ -136,7 +136,7 @@ class Items extends REIM_Controller {
         $group_config = array();
         $item_configs = array();
         $item_config = array();
-        if($_profile)
+        if($_profile && array_key_exists('profile',$_profile['data']))
         {
             $profile = $_profile['data']['profile'];
         }
