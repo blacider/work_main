@@ -176,24 +176,10 @@ foreach($members as $m) {
                                             <div class="col-xs-6 col-sm-6">
                                                 <div class="col-xs-12 col-sm-12 "  style="margin-left:0px !important;padding-left:0px !important;" >
                                                     <div class="btn-toolbar" id="<?php echo 'btns' . $field['id'];?>">
-                  
-                                        <div class="btn-group" id="bank_<?php echo $field['id']; ?>" data-subbranch="<?php echo $value['subbranch']; ?>" data-id="<?php echo $field['id']; ?>" data-bankname="<?php echo $value['bankname'];?>"  data-cardno="<?php echo $value['cardno'];?>" data-bankloc="<?php echo $value['bankloc'];?>"  data-account="<?php echo $value['account'];?>"> 
-                                            <button data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">
-                                                <?php echo $value['account']; ?>
-                                                <i class="ace-icon fa fa-angle-down icon-on-right"></i> 
-                                            </button> 
-                                            <ul class="dropdown-menu"> 
-                                                <li> <a href="javascript:void(0)" data-id="<?php echo $field['id']; ?>" data-subbranch="<?php echo $value['subbranch']; ?>" data-bankname="<?php echo $value['bankname'];?>"  data-cardno="<?php echo $value['cardno'];?>" data-bankloc="<?php echo $value['bankloc'];?>"  data-account="<?php echo $value['account'];?>" class="edit_bank">修改</a> </li>
-                                                <li> <a href="javascript:void(0)" data-id="<?php echo $field['id']; ?>" data-subbranch="<?php echo $value['subbranch']; ?>" data-bankname="<?php echo $value['bankname'];?>"  data-cardno="<?php echo $value['cardno'];?>" data-bankloc="<?php echo $value['bankloc'];?>"  data-account="<?php echo $value['account'];?>" class="show_bank">展示</a> </li> 
-                                                <li class="divider"></li> 
-                                                <li> 
-                                                <a href="javascript:void(0)" data-id="<?php echo $field['id']; ?>" data-bankname="<?php echo $value['bankname'];?>"  data-cardno="<?php echo $value['cardno'];?>" data-bankloc="<?php echo $value['bankloc'];?>"  data-account="<?php echo $value['account'];?>" class="del_bank"> 删除</a> 
-                                                </li> 
-                                            </ul> 
-                                        </div><!-- /.btn-group -->
                                                         <div class="col-xs-3 col-sm-3">
                                               
                                                                 <select class="chosen-select tag-input-style col-xs-6 field_value bank_select" id="<?php echo 'bank_select_' . $field['id'];?>" data-type="4" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" data-placeholder="请选择" <?php if($field['required'] == 1){echo 'required';}?>>
+                                                                            <option value='<?php echo json_encode($value);?>'><?php echo $value['account'];?></option>>
                                                                     <?php foreach($banks as $b) { ?>
                                                                             <option value='<?php echo json_encode($b); ?>'><?php echo $b['account']; ?></option>
                                                                    
@@ -712,6 +698,15 @@ function get_province(){
 }
 
 
+function escapeHtml(unsafe) {
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+ }
+
 
 function reset_bank(disable, title,bank_field_id) {
         $('#modal_title').val();
@@ -930,7 +925,7 @@ function do_post(force) {
         if(field_type == 4)
         {
             var field_bank = $(this).data('bank');
-            var bank_info = $('#bank_' + field_id);
+            var bank_info = $('#bank_select_' + field_id).val();
        
             var field_account = '';
             var field_cardno = '';
@@ -938,19 +933,21 @@ function do_post(force) {
             var field_bankloc = '';
             var field_subbranch = '';
           
-            if(field_required == 1 && bank_info == undefined)
+            if(field_required == 1 && !bank_info)
             {
                 show_notify('必填银行卡项目不能为空');
                 is_submit = 0;
                 return false;
             }
-            if(bank_info != undefined)
+            if(bank_info)
             {
-                var field_account = bank_info.data('account');
-                var field_cardno = bank_info.data('cardno');
-                var field_bankname = bank_info.data('bankname');
-                var field_bankloc = bank_info.data('bankloc');
-                var field_subbranch = bank_info.data('subbranch');
+                var _bank_info = JSON.parse(bank_info);
+
+                var field_account = _bank_info['account'];
+                var field_cardno = _bank_info['cardno'];
+                var field_bankname = _bank_info['bankname'];
+                var field_bankloc = _bank_info['bankloc'];
+                var field_subbranch = _bank_info['subbranch'];
             }
             extra.push({'id':field_id,'value':JSON.stringify({
                                                'account':field_account,
@@ -1093,57 +1090,12 @@ Date.prototype.format = function(format) {
 $(document).ready(function(){
     get_province();
 
-    $('.new_credit').each(function(){
-         var _id = $(this).data('id');
-
-
+     $('.new_credit').each(function(){
+        var _id = $(this).data('id');
         $(this).click(function(){
-                       // reset_bank(1, '添加新银行卡',_id);
-                       // $('#credit_model').modal({keyborard: false});
-                       var _bank_select_value = $('#bank_select_'+_id).val();
-                        var bank_select_value = '';
-                        if(_bank_select_value)
-                        {
-                            bank_select_value = JSON.parse(_bank_select_value);
-                        }
-                        var _subbranch = '';
-                        var _bank = '';
-                        var _no ='';
-                        var _loc = '';
-                        var _account = '';
-                        if(bank_select_value['bankname'])
-                        {
-                            _bank = bank_select_value['bankname'];
-                        }
-                        if(bank_select_value['cardno'])
-                        {
-                            _no = bank_select_value['cardno'];
-                        }
-                        if(bank_select_value['subbranch'])
-                        {
-                            _subbranch = bank_select_value['subbranch'];
-                        }
-                        if(bank_select_value['account'])
-                        {
-                            _account = bank_select_value['account'];
-                        }
-       
-            
-                        $('#bank_' + _id).remove();
-                        var buf = '<div class="btn-group bank_info" id="bank_' + _id + '" data-subbranch="'+ _subbranch +'" data-id="'+ _id +'" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '"> '
-                            + '<button data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">' 
-                            + _account 
-                            + '<i class="ace-icon fa fa-angle-down icon-on-right"></i> </button>'
-                            + '<ul class="dropdown-menu"> '
-                            //+ '<li> <a href="javascript:void(0)" data-subbranch="'+ _subbranch +'" data-id="'+ _id +'" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="edit_bank" >修改</a> </li>'
-                            + '<li> <a  href="javascript:void(0)" data-subbranch="'+ _subbranch +'" data-id="'+ _id +'" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '"  class="show_bank">展示</a> </li> '
-                            + '<li class="divider"></li> '
-                            + '<li> <a href="javascript:void(0)" data-subbranch="'+ _subbranch +'" data-id="'+ _id +'" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="del_bank">删除</a> </li>'
-                            + ' </ul> </div>';
-                        $('#btns'+_id).prepend(buf);
-                        bind_event();
-                        
-                        }); 
+            reset_bank(1,'添加新银行卡',_id);
+            $('#credit_model').modal({keyborard:false});
+        });
     });
     $('.new_card').click(function(){
         var _id = $('#bank_field_id').val();
@@ -1154,21 +1106,15 @@ $(document).ready(function(){
         var _subbranch = $('#subbranch').val();
         var _no = $('#cardno').val();
         var _loc = _p + _c;//$('#cardloc').val();
+        var value = {"account":_account,"bankname":_bank,"subbranch":_subbranch,"bankloc":_loc,"cardno":_no};
+        var _value = JSON.stringify(value);
+
        
+        var buf = '<option selected value="'+ escapeHtml(_value) +'">'+ _account +'</option>';
         $('#credit_model').modal('hide');
-        $('#bank_' + _id).remove();
-        var buf = '<div class="btn-group bank_info" id="bank_' + _id + '" data-subbranch="'+ _subbranch +'" data-id="'+ _id +'" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '"> '
-            + '<button data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">' 
-            + _account 
-            + '<i class="ace-icon fa fa-angle-down icon-on-right"></i> </button>'
-            + '<ul class="dropdown-menu"> '
-            + '<li> <a href="javascript:void(0)" data-subbranch="'+ _subbranch +'" data-id="'+ _id +'" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="edit_bank" >修改</a> </li>'
-            + '<li> <a  href="javascript:void(0)" data-subbranch="'+ _subbranch +'" data-id="'+ _id +'" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '"  class="show_bank">展示</a> </li> '
-            + '<li class="divider"></li> '
-            + '<li> <a href="javascript:void(0)" data-subbranch="'+ _subbranch +'" data-id="'+ _id +'" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="del_bank">删除</a> </li>'
-            + ' </ul> </div>';
-        $('#btns'+_id).prepend(buf);
-        bind_event();
+        $('#bank_select_' + _id).append(buf);
+        $('#bank_select_' + _id).trigger('chosen:updated');
+        console.log($('#bank_select_' + _id));
         show_notify('银行卡添加成功');
     });
 
