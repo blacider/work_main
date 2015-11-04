@@ -142,6 +142,7 @@ class Company extends REIM_Controller {
     public function update_report_template($id)
     {
         $this->need_group_it();
+        $item_type_dic = $this->reim_show->get_item_type_name();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
         $report_template = array();
@@ -155,6 +156,7 @@ class Company extends REIM_Controller {
             array(
                     'title'=>'修改报告模板',
                     'report_template' => $report_template
+                    ,'item_type_dic' => $item_type_dic
                     ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')

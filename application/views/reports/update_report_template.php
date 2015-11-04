@@ -88,9 +88,9 @@
                         <label class="col-sm-2 control-label no-padding-right">使用范围</label>
                         <div class="col-xs-5 col-sm-5">
                                     <select class="chosen-select tag-input-style" id="type" multiple="multiple" data-placeholder="请选择类型" placeholder="请选择类型">
-                                        <option value="0">报销</option>
-                                        <option value="1">预借</option>
-                                        <option value="2">预算</option>
+                                        <option value="0"><?php echo $item_type_dic[0];?></option>
+                                        <option value="1"><?php echo $item_type_dic[1];?></option>
+                                        <option value="2"><?php echo $item_type_dic[2];?></option>
                                     </select>
                                 </div>
                             </div>
