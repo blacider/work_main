@@ -371,7 +371,7 @@ foreach($items as $i){
                 <h4 class="modal-title" id="modal_title">添加银行卡</h4>
             </div>
             <div class="modal-body">
-                <form id="password_form" class="form-horizontal" role="form" method="post" action="<?php echo base_url('users/new_credit'); ?>">
+                <form id="password_form" class="form-horizontal" role="form" method="post" action="#">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
 
@@ -379,8 +379,6 @@ foreach($items as $i){
                                 <label class="col-sm-2 control-label no-padding-right">户名</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <input id="account" name="account" type="text" class="form-controller col-xs-12" placeholder="户名" />
-                                    <input id="id" name="id" type="hidden" value="" />
-                                    <input id="uid" name="uid" type="hidden" value="<?php echo $pid;?>">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -513,7 +511,7 @@ foreach($items as $i){
                                         <option value='福建省农村信用社联合社'>福建省农村信用社联合社</option>
                                         <option value='贵阳市商业银行'>贵阳市商业银行</option>
                                         <option value='大庆市商业银行'>大庆市商业银行</option>
-                    <option value='青岛商行'>青岛商行</option>
+                                        <option value='青岛商行'>青岛商行</option>
                                         <option value='佛山市三水区农村信用合作社'>佛山市三水区农村信用合作社</option>
                                         <option value='南通市商业银行'>南通市商业银行</option>
                                         <option value='南宁市商业银行'>南宁市商业银行</option>
@@ -644,6 +642,113 @@ function get_province(){
         });
     });
 }
+
+
+function reset_bank(disable, title) {
+        $('#modal_title').val();
+        $('#account' ).val("");
+        $('#cardloc' ).val("");
+        $('#cardno'  ).val("");
+        $('#cardbank').val("");
+        if(!disable) {
+            $('.new_card').hide();
+            $('#account').attr("disabled",  true);
+            $('#cardloc').attr("disabled",  true);
+            $('#cardno').attr("disabled",   true);
+            $('#cardbank').attr("disabled", true);
+        } else {
+            $('.new_card').show();
+            $('#account').attr("disabled",  false);
+            $('#cardloc').attr("disabled",  false);
+            $('#cardno').attr("disabled",   false);
+            $('#cardbank').attr("disabled", false);
+        }
+        $('.cancel').click(function(){
+            $('#credit_model').modal('hide');
+        });
+    }
+
+
+
+    function del_credit(node){
+        var _id = $(node).data('id');
+        //var _uid = $(node).data('uid');
+        $.ajax({
+            url : __BASE + "users/del_credit/"  + _id + "/" + user_id,
+                dataType : 'json',
+                method : 'GET',
+                success : function(data){
+                    $('#bank_' + _id).remove();
+                    show_notify('银行卡删除成功');
+                }
+        });
+    }
+
+
+    function update_credit(node){
+        reset_bank(1, '修改银行卡');
+        $('#id').val($(node).data('id'));
+        $('#account').val($(node).data('account'));
+        $('#cardbank').val($(node).data('bankname'));
+        $('#cardloc').val($(node).data('bankloc'));
+        $('#cardno').val($(node).data('cardno'));
+        $('#credit_model').modal('show');
+        var i = 1, loc = $(node).data('bankloc');
+
+        do {
+            i += 1;
+            $('select[name="province"]').val(loc.substr(0,i));
+            if(i>loc.length+1)
+            {
+                break;
+            }
+        } while ($('select[name="province"]').val() == null); 
+        /*for(var i=1;i<=loc.length+1;i++)
+            {
+             $('select[name="province"]').val(loc.substr(0,i));
+                        }*/
+                        var city = loc.substr(i);
+                    $('select[name="province"]').change();
+                    $('select[name="city"]').val(city);
+    }
+
+    function show_credit(node){
+        reset_bank(0, '银行卡详情');
+        $('#id').val($(node).data('id'));
+        $('#account').val($(node).data('account'));
+        $('#cardbank').val($(node).data('bankname'));
+        $('#cardloc').val($(node).data('bankloc'));
+        $('#cardno').val($(node).data('cardno'));
+        $('#credit_model').modal('show');
+        var i = 1, loc = $(node).data('bankloc');
+        do {
+            i += 1;
+            $('select[name="province"]').val(loc.substr(0,i));
+            if(i>loc.length+1)
+            {
+                break;
+            }
+        } while ($('select[name="province"]').val() == null);
+        var city = loc.substr(i);
+        $('select[name="province"]').change();
+        $('select[name="city"]').val(city);
+    }
+
+    function bind_event(){
+        $('.del_bank').click(function(){
+            del_credit(this);
+        });
+
+        $('.show_bank').click(function(){
+            show_credit(this);
+        });
+
+        $('.edit_bank').click(function(){
+            update_credit(this);
+        });
+
+
+    }
 
 function trim(str){ //删除左右两端的空格
 　　 return str.replace(/(^\s*)|(\s*$)/g, "");
@@ -941,6 +1046,62 @@ function do_post(force) {
 
 $(document).ready(function(){
     get_province();
+
+    $('.new_credit').click(function(){
+                        reset_bank(1, '添加新银行卡');
+                        $('#credit_model').modal({keyborard: false});
+                    });
+    $('.new_card').click(function(){
+        var _p = $('#province').val();
+        var _c = $('#city').val();
+        var _account = $('#account').val();
+        var _bank = $('#cardbank').val();
+        var _no = $('#cardno').val();
+        var _loc = _p + _c;//$('#cardloc').val();
+        var _id = $('#id').val();
+        $.ajax({
+            url : __BASE + "users/new_credit",
+                data : {
+                    'account' : _account
+                        ,'cardbank' : _bank
+                        ,'cardno' : _no
+                        ,'cardloc' :  _loc
+                        ,'id' :  _id
+                        ,'uid' : user_id
+                },
+                dataType : 'json',
+                method : 'POST',
+                success : function(data){
+                    if(data.status){
+                        var _id = data.data.id;
+                        $('#credit_model').modal('hide');
+                        if(_id > 0){
+                            $('#bank_' + _id).remove();
+                        }
+                        var buf = '<div class="btn-group" id="bank_' + _id + '"> '
+                            + '<button data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">' 
+                            + _account 
+                            + '<i class="ace-icon fa fa-angle-down icon-on-right"></i> </button>'
+                            + '<ul class="dropdown-menu"> '
+                            + '<li> <a href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="edit_bank" >修改</a> </li>'
+                            + '<li> <a  href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '"  class="show_bank">展示</a> </li> '
+                            + '<li class="divider"></li> '
+                            + '<li> <a href="javascript:void(0)" data-uid="' + user_id + '" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="del_bank">删除</a> </li>'
+                            + ' </ul> </div>';
+                        $('#btns').prepend(buf);
+                        bind_event();
+                        show_notify('银行卡添加成功');
+                    } else {
+                        show_notify(data.data.msg);
+                    }
+                },
+                    error: function (){
+                        show_notify('操作失败，请稍后尝试');
+                    }
+        });
+    });
+
+    bind_event();
 
     $('#period_start').datetimepicker({
         language: 'zh-cn',
