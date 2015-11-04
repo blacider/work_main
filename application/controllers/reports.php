@@ -1045,6 +1045,10 @@ class Reports extends REIM_Controller {
         $rows = $this->input->get('rows');
         $sort = $this->input->get('sord');
         $items = $this->items->get_suborinate(1);
+
+        $item_type_dic = $this->reim_show->get_item_type_name();
+        $report_template_dic = $this->reim_show->get_report_template();
+
         if(!$items['status']){
             die(json_encode(array()));
         }
@@ -1103,16 +1107,22 @@ class Reports extends REIM_Controller {
             }
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
             $d['status_str'] = '待提交';
-        /*
+
             $prove_ahead = '报销';
             switch($d['prove_ahead']){
-            case 1: {$prove_ahead = '<font color="red">预算</font>';};break;
-            case 2: {$prove_ahead = '<font color="green">预借</font>';};break;
+            case 0: {$prove_ahead = '<font color="black">' . $item_type_dic[0]  . '</font>';};break;
+            case 1: {$prove_ahead = '<font color="green">' . $item_type_dic[1]  . '</font>';};break;
+            case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2]  . '</font>';};break;
             }
-         */
+            $d['prove_ahead'] = $prove_ahead;
+
+            if(array_key_exists('template_id',$d) && array_key_exists($d['template_id'],$report_template_dic))
+            {
+                $d['report_template'] = $report_template_dic[$d['template_id']];
+            }
+
             //$d['amount'] = '￥' . (sprintf("%.2f",$d['amount']));
             $d['amount'] = sprintf("%.2f",$d['amount']);
-            //            $d['prove_ahead'] = $prove_ahead;
             switch($d['status']) {
             case 0: {
                 $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
