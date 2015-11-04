@@ -106,7 +106,7 @@
                                     </div>
                                     </div>
                             </div>
-                            <input type="hidden" name="images" id="images"  value="<?php echo $images_ids; ?>">
+                            <input type="hidden" name="images" id="images"  value="<?php echo $group["image"]; ?>">
                             <input type="hidden" id="renew" name="renew" value="0" />
                             <input type="reset" style="display:none;" id="reset">
                             <div class="clearfix form-actions">
@@ -133,7 +133,8 @@
 $(document).ready(function() {
     load_exists();
 });
-var _images = '<?php echo $images; ?> ';
+var _image = '<?php echo $group["image"]; ?> ';
+var _image_url = '<?php echo $group["image_url"]; ?>';
 $(document).ready(function() {
 var uploader = WebUploader.create({
 
@@ -272,19 +273,9 @@ function bind_event(){
         });
 }
 function load_exists(){
-    var images = eval("(" + _images + ")");
     $('#imageList').empty();
-    var result = '', flag_ = 0;
-    $(images).each(function(idx, item) {
-        if (flag_ == 0) {
-            result = String(item.id);
-            flag_ = 1;
-        }   else {
-            result += ',' + String(item.id);
-        }
-        imagesDict['WU_FILE_'+String(item.id)] = 'WU_FILE_'+String(item.id);
-        var $li = $(
-            '<div id="WU_FILE_' + item.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
+    var $li = $(
+            '<div id="WU_FILE_' + _image + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
                 '<img style="width:150px;height:150px;">' +
                 '<div class="glyphicon glyphicon-trash red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
             '</div>'
@@ -296,7 +287,7 @@ function load_exists(){
     // 如果为非图片文件，可以不用调用此方法。
     // thumbnailWidth x thumbnailHeight 为 100 x 100
 
-        $img.attr('src', item['url']);
+    $img.attr('src', _image_url);
     });
     $('input[name="images"]').val(result);
     bind_event();
