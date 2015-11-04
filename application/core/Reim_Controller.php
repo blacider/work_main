@@ -293,8 +293,9 @@ class REIM_Controller extends CI_Controller{
 
             $j = 0;
             foreach ($first_row as $k => $v) {
-                $c_name = $this->getCharByNunber($y);
+                $c_name = $this->getCharByNunber($j);
                 $sheet->getColumnDimension($c_name)->setAutoSize(true);
+                $j++;
             }
         }
 
