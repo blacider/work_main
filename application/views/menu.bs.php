@@ -421,11 +421,24 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <a href="<?php echo base_url('company/show_approve'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 审批规则 </a>
           <b class="arrow"></b>
         </li> 
+        <li class="hsub">
+        <a href="#" class="dropdown-toggle">
+            <i class="menu-icon fa fa-caret-right"></i> 消费设置
+            <b class="arrow fa fa-angle-down"></b>
+        </a>
+        <b class="arrow"></b>
+            <ul class="submenu rushumenu submenu_custom">
+                <li id="custom_item">
+                    <a href="<?php echo base_url('company/custom_item'); ?>" >  消费字段设置 </a>
+                    <b class="arrow"></b>
+                </li> 
 
-        <li class="hsub" id="custom_item">
-        <a href="<?php echo base_url('company/custom_item'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 消费模板 </a>
-          <b class="arrow"></b>
-        </li> 
+                <li id="get_item_type_name">
+                    <a href="<?php echo base_url('company/get_item_type_name'); ?>" > 消费类型设置 </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+        </li>
 
         <li class="hsub" id="report_template_list">
         <a href="<?php echo base_url('company/report_template_list'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 报告模板 </a>
@@ -433,7 +446,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         </li> 
 
         <li class="hsub" id="broadcast_index">
-        <a href="<?php echo base_url('broadcast/index'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 公司消息 </a>
+        <a href="<?php echo base_url('broadcast/index'); ?>" ><i class="menu-icon fa fa-caret-right"></i> 公司消息 </a>
         <b class="arrow"></b>
         </li>
     </ul>
@@ -884,12 +897,22 @@ $(document).ready(function(){
     });
     if(_method == "report_template")
     {
-        console.log('report_template');
         _controller = '';
         $('#reports').addClass('open');
         $($('#reports').find('.submenu').get(0)).show();
         $($('.rushumenu')[0]).show();
         $('#report' + _report_id).addClass('active');
+    }
+    if(_method == "get_item_type_name")
+    {
+        $('#company').addClass('open');
+        $('#company').find('.submenu_custom').show();
+    }
+    if(_method == "custom_item" || "custom_item_create" == _method)
+    {
+        $('#company').addClass('open');
+        $('#company').find('.submenu_custom').show();
+        $("#custom_item").addClass('active');
     }
     if(_controller != '') {
         $('#' + _controller).addClass('active open');

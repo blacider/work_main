@@ -289,15 +289,7 @@ foreach($report['items'] as $i) {
 ?>
     <td><?php echo $i['currency_logo']; ?> &nbsp;<?php echo $i['amount']; ?> <?php echo  $update_amount . $_extra_amount; ?> </td>
                                             <td><?php 
-                                                $buf = '';
-                                                switch($i['prove_ahead']) {
-                                                case 0 : $buf = '报销';break;
-                                                case 1 : $buf = '预算';break;
-                                                case 2 : $buf = '预借';break;
-                                                } 
-                                                echo $buf;
-
-
+                                                echo $item_type_dic[$i['prove_ahead']];
                                                 ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td><?php echo $i['note'];?></td>

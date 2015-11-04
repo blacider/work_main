@@ -254,7 +254,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">类型</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $item['prove_ahead']; ?> " disabled>
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $item['prove_ahead_name']; ?> " disabled>
                                 </div>
                             </div>
 
@@ -356,7 +356,7 @@ var simbol_dic = {'cny':'人民币','usd':'美元','eur':'欧元','hkd':'港币'
                               'aud':'澳大利亚元','nzd':'新西兰元','chf':'瑞士法郎','dkk':'丹麦克朗','nok':'挪威克朗','sek':'瑞典克朗','brl':'巴西里亚尔'
                              }; 
 var icon_dic = {'cny':'￥','usd':'$','eur':'€','hkd':'$','mop':'$','twd':'$','jpy':'￥','ker':'₩',
-                              'gbp':'£','rub':'Rbs','sgd':'$','php':'₱','idr':'Rps','myr':'$','thb':'฿','cad':'$',
+                              'gbp':'£','rub':'₽','sgd':'$','php':'₱','idr':'Rps','myr':'$','thb':'฿','cad':'$',
                               'aud':'$','nzd':'$','chf':'₣','dkk':'Kr','nok':'Kr','sek':'Kr','brl':'$'
                              }; 
 
