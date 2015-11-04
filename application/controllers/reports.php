@@ -209,6 +209,9 @@ class Reports extends REIM_Controller {
             die(json_encode(array()));
         }
 
+        $item_type_dic = $this->reim_show->get_item_type_name();
+        $report_template_dic = $this->reim_show->get_report_template();
+
         $data = $items['data']['data'];
         foreach($data as &$d){
             $trash= $d['status'] === 1 ? 'gray' : 'red';
@@ -269,12 +272,32 @@ class Reports extends REIM_Controller {
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
             $d['status_str'] = '待提交';
             //$d['amount'] = '￥' . $d['amount'];
+
             $prove_ahead = '报销';
             switch($d['prove_ahead']){
-            case 2: {$prove_ahead = '<font color="red">预借</font>';};break;
-            case 1: {$prove_ahead = '<font color="green">预算</font>';};break;
+            case 0: {$prove_ahead = '<font color="black">' . $item_type_dic[0]  . '</font>';};break;
+            case 1: {$prove_ahead = '<font color="green">' . $item_type_dic[1] . '</font>';};break;
+            case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2]  . '</font>';};break;
             }
             $d['prove_ahead'] = $prove_ahead;
+
+            if(!array_key_exists('template_id',$d))            
+            {
+                $d['report_template'] = '';
+            }
+
+            if(array_key_exists('template_id',$d))
+            {
+                if(array_key_exists($d['template_id'],$report_template_dic))
+                {
+                    $d['report_template'] = $report_template_dic[$d['template_id']];
+                }
+                else
+                {
+                    $d['report_template'] = '';
+                }
+            }
+            
             switch($d['status']) {
             case 0: {
                 $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
@@ -370,9 +393,20 @@ class Reports extends REIM_Controller {
         $cc = $this->input->post('cc');
         $force = $this->input->post('force');
         $template_id = $this->input->post('template_id');
+        $type = $this->input->post('type');
+        log_message('debug','template_id:' . $template_id);
         $extra = array();
         if($template_id) {
-            // 获取并构造extra
+            $extra = $this->input->post('extra');
+            log_message('debug','extra:' . json_encode($extra));
+            foreach($extra as &$ex)
+            {
+                if($ex['type'] != 3) continue;
+                
+                $ex['value'] = strtotime($ex['value']); 
+                log_message('debug','time:' . $ex['value']);
+            }
+            /*
             $_account = $this->input->post('account');
             $_account_name = $this->input->post('account_name');
             $_account_no = $this->input->post('account_no');
@@ -400,11 +434,12 @@ class Reports extends REIM_Controller {
                 ,'contract' => array('available' => $_contract, 'note' => $_contract_note)
                 ,'note' => $_note
             );
+            */
         }
         if(!$cc) $cc = array();
         if(!$force) $force = 0;
         $save = $this->input->post('renew');
-        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save, $force, $extra);
+        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), $type, $save, $force, $extra , $template_id);
         $ret = json_decode($ret, true);
         if($ret['code'] <= 0) {
             log_message("debug", "Cates:" . $ret['code']);
@@ -527,23 +562,36 @@ class Reports extends REIM_Controller {
         }
         $report = $report['data'];
         $extra = array();
-        if(array_key_exists('extras', $report)) {
+        if(array_key_exists('extras', $report) && $report['extras']) {
             $extra = json_decode($report['extras'], true);
         }
         $config = array();
+        $banks = array();
         if(!empty($extra)){
-            $profile = $this->session->userdata('profile');
+            $profile = array();
+            $_common = $this->users->get_common();
+            if($_common['status'] > 0 && array_key_exists('profile',$_common['data']))
+            {
+                $profile = $_common['data']['profile']; 
+            }
             $config = array();
-            if($profile &&  array_key_exists('templates', $profile)) {
-                $report_template = $profile['templates'];
+            if($profile && array_key_exists('report_setting',$profile)  && array_key_exists('templates', $profile['report_setting'])) {
+                $report_template = $profile['report_setting']['templates'];
                 foreach($report_template as $r) {
-                    if($r['id'] == $extra['template_id']) {
+                    if($r['id'] == $report['template_id']) {
                         $config = $r;
                         break;
                     }
                 }
             }
+	        $banks = array();
+	        if(array_key_exists('banks',$profile))
+	        {
+	            $banks = $profile['banks'];
+	        }
         }
+
+        
 
         $_members = array();
         $members = $this->users->reim_get_user();
@@ -569,6 +617,14 @@ class Reports extends REIM_Controller {
             $rt['coin_symbol'] = $this->get_coin_symbol($rt['currency']);
         }
 
+        $extra_dic = array();
+        foreach($extra as $ex)
+        {
+            $extra_dic[$ex['id']] = $ex;
+        }
+        log_message('debug','report:' . json_encode($report));
+        log_message('debug','extra:' . json_encode($extra));
+        log_message('debug','config:' . json_encode($config));
         $this->bsload('reports/edit',
             array(
                 'title' => '修改报告',
@@ -576,6 +632,8 @@ class Reports extends REIM_Controller {
                 'items' => $_items,
                 'config' => $config,
                 'extra' => $extra,
+                'banks' => $banks,
+                'extra_dic' => $extra_dic,
                 'item_type_dic' => $item_type_dic,
                 'report' => $report
                 ,'breadcrumbs' => array(
@@ -747,17 +805,22 @@ class Reports extends REIM_Controller {
             $_members = $members['data']['members'];
         }
         $extra = array();
-        if(array_key_exists('extras', $report)) {
+        if(array_key_exists('extras', $report) && $report['extras']) {
             $extra = json_decode($report['extras'], true);
         }
         $config = array();
         if(!empty($extra)){
-            $profile = $this->session->userdata('profile');
+            $profile = array();
+            $_common = $this->users->get_common();
+            if($_common['status'] > 0 && array_key_exists('profile',$_common['data']))
+            {
+                $profile = $_common['data']['profile']; 
+            }
             $config = array();
-            if($profile &&  array_key_exists('templates', $profile)) {
-                $report_template = $profile['templates'];
+            if($profile && array_key_exists('report_setting', $profile) && array_key_exists('templates', $profile['report_setting'])) {
+                $report_template = $profile['report_setting']['templates'];
                 foreach($report_template as $r) {
-                    if($r['id'] == $extra['template_id']) {
+                    if($r['id'] == $report['template_id']) {
                         $config = $r;
                         break;
                     }
@@ -770,6 +833,11 @@ class Reports extends REIM_Controller {
             $url = base_url($url);
         }
         log_message("debug", "found report list page => " . $url);
+        $extra_dic = array();
+        foreach($extra as $ex)
+        {
+            $extra_dic[$ex['id']] = $ex;
+        }
         
         $this->bsload('reports/view',
             array(
@@ -780,6 +848,7 @@ class Reports extends REIM_Controller {
                 ,'rid' => $id
                 ,'config' => $config
                 ,'extra' => $extra
+                ,'extra_dic' => $extra_dic
                 ,'item_type_dic' => $item_type_dic
                 ,'comments' => $comments
                 ,'members' => $_members
@@ -808,9 +877,20 @@ class Reports extends REIM_Controller {
         $force = $this->input->post('force');
         if(!$cc) $cc = array();
         $template_id = $this->input->post('template_id');
+        $type = $this->input->post('type');
         $extra = array();
         if($template_id) {
-            // 获取并构造extra
+            $extra = $this->input->post('extra');
+            log_message('debug','extra:' . json_encode($extra));
+            foreach($extra as &$ex)
+            {
+                if($ex['type'] != 3) continue;
+                
+                $ex['value'] = strtotime($ex['value']); 
+                log_message('debug','time:' . $ex['value']);
+            }
+            
+        /*
             $_account = $this->input->post('account');
             $_account_name = $this->input->post('account_name');
             $_account_no = $this->input->post('account_no');
@@ -838,8 +918,9 @@ class Reports extends REIM_Controller {
                 ,'contract' => array('available' => $_contract, 'note' => $_contract_note)
                 ,'note' => $_note
             );
+            */
         }
-        $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items), 0, $save, $force, $extra);
+        $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items), $type, $save, $force, $extra , $template_id);
         $ret = json_decode($ret, true);
         log_message("debug", "xx:" . json_encode($ret));
         if($ret['code'] <= 0) {
@@ -973,6 +1054,10 @@ class Reports extends REIM_Controller {
         $rows = $this->input->get('rows');
         $sort = $this->input->get('sord');
         $items = $this->items->get_suborinate(1);
+
+        $item_type_dic = $this->reim_show->get_item_type_name();
+        $report_template_dic = $this->reim_show->get_report_template();
+
         if(!$items['status']){
             die(json_encode(array()));
         }
@@ -1031,16 +1116,22 @@ class Reports extends REIM_Controller {
             }
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
             $d['status_str'] = '待提交';
-        /*
+
             $prove_ahead = '报销';
             switch($d['prove_ahead']){
-            case 1: {$prove_ahead = '<font color="red">预算</font>';};break;
-            case 2: {$prove_ahead = '<font color="green">预借</font>';};break;
+            case 0: {$prove_ahead = '<font color="black">' . $item_type_dic[0]  . '</font>';};break;
+            case 1: {$prove_ahead = '<font color="green">' . $item_type_dic[1]  . '</font>';};break;
+            case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2]  . '</font>';};break;
             }
-         */
+            $d['prove_ahead'] = $prove_ahead;
+
+            if(array_key_exists('template_id',$d) && array_key_exists($d['template_id'],$report_template_dic))
+            {
+                $d['report_template'] = $report_template_dic[$d['template_id']];
+            }
+
             //$d['amount'] = '￥' . (sprintf("%.2f",$d['amount']));
             $d['amount'] = sprintf("%.2f",$d['amount']);
-            //            $d['prove_ahead'] = $prove_ahead;
             switch($d['status']) {
             case 0: {
                 $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
@@ -1714,11 +1805,16 @@ class Reports extends REIM_Controller {
 
     public function report_template($id = 0){
         if($id == 0) return redirect(base_url('reports/newreport'));
+        $profile = array();
+        $_common = $this->users->get_common();
+        if($_common['status'] > 0 && array_key_exists('profile',$_common['data']))
+        {
+            $profile = $_common['data']['profile']; 
+        }
         $item_type_dic = $this->reim_show->get_item_type_name();
-        $profile = $this->session->userdata('profile');
         $config = array();
-        if($profile &&   array_key_exists('templates', $profile)) {
-            $report_template = $profile['templates'];
+        if($profile && array_key_exists('report_setting',$profile) && array_key_exists('templates', $profile['report_setting'])) {
+            $report_template = $profile['report_setting']['templates'];
             foreach($report_template as $r) {
                 if($r['id'] == $id) {
                     $config = $r;
@@ -1733,12 +1829,20 @@ class Reports extends REIM_Controller {
 
                 $_items = $this->_getitems();
                 log_message('debug',json_encode($_items));
+                log_message('debug','config:' . json_encode($config));
+                log_message('debug','profile:' . json_encode($profile));
 
+                $banks = array();
+                if(array_key_exists('banks',$profile))
+                {
+                    $banks = $profile['banks'];
+                }
                 return $this->bsload('reports/template_new',
                     array(
                         'title' => '新建[' . $config['name'] . '] 报告',
                         'members' => $_members,
                         'config' => $config,
+                        'banks' => $banks,
                         'item_type_dic' => $item_type_dic,
                         'items' => $_items
                         ,'breadcrumbs' => array(

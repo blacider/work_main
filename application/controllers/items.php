@@ -468,6 +468,7 @@ class Items extends REIM_Controller {
 
     public function ishow($id = 0) {
         if(0 === $id) redirect(base_url('items'));
+        $item_type_dic = $this->reim_show->get_item_type_name();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
         $_profile = $this->user->reim_get_user();	
@@ -621,9 +622,9 @@ class Items extends REIM_Controller {
         $_type = '报销';
         $prove_ahead = $item['prove_ahead'];
         switch($prove_ahead) {
-        case 0:{$_type = '报销';};break;
-        case 1:{$_type = '预算';};break;
-        case 2:{$_type = '预借';};break;
+        case 0:{$_type = $item_type_dic[0];};break;
+        case 1:{$_type = $item_type_dic[1];};break;
+        case 2:{$_type = $item_type_dic[2];};break;
         }
         $item['prove_ahead'] = $_type;
 
@@ -681,6 +682,8 @@ class Items extends REIM_Controller {
         if($obj['status'] < 1){
             redirect(base_url('items'));
         }
+
+        $item_type_dic = $this->reim_show->get_item_type_name();
 
         $_profile = $this->user->reim_get_user();	
         $profile = array();
@@ -790,9 +793,9 @@ class Items extends REIM_Controller {
         $_type = '报销';
         $prove_ahead = $item['prove_ahead'];
         switch($prove_ahead) {
-        case 0:{$_type = '报销';};break;
-        case 1:{$_type = '预算';};break;
-        case 2:{$_type = '预借';};break;
+        case 0:{$_type = $item_type_dic[0];};break;
+        case 1:{$_type = $item_type_dic[1];};break;
+        case 2:{$_type = $item_type_dic[2];};break;
         }
         $item['prove_ahead'] = $_type;
 

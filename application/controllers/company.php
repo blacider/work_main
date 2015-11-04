@@ -10,6 +10,200 @@ class Company extends REIM_Controller {
         $this->load->model('category_model','category');
         $this->load->model('reim_show_model','reim_show');
         $this->load->model('items_model','items');
+        $this->load->model('report_model','reports');
+    }
+    
+    public function dodelete_report_template($id)
+    {
+        $buf = $this->reports->delete_report_template($id); 
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','删除成功');
+        }
+        else if($buf['status'] <= 0)
+        {
+            $this->session->set_userdata('last_error',$buf['data']['msg']);
+        }
+        else
+        {
+            $this->session->set_userdata('last_error','删除失败');
+        }
+
+        return redirect('company/report_template_list');
+    }
+
+    public function doupdate_report_template()
+    {
+        $temp_info = $this->input->post('temp_info');
+        
+        log_message('debug','temp_info:' . json_encode($temp_info));
+        $status = 0;
+        $msg = '更新失败';
+        if(!array_key_exists('id',$temp_info))
+        {
+            log_message('debug','has no id');
+            $msg = '没有模板信息,更新失败';
+            $this->session->set_userdata('debug','没有模板信息,更新失败');
+        }
+        $id = $temp_info['id'];
+        $template_name = '';
+        if(array_key_exists('name',$temp_info))
+        {
+            $template_name = $temp_info['name'];
+        }
+        $type = '';
+        if(array_key_exists('type',$temp_info))
+        {
+            $type = implode(',',$temp_info['type']);
+        }
+        $_config = array();
+        if(array_key_exists('config',$temp_info))
+        {
+            $_config = $temp_info['config'];
+        }
+
+        $config = array();
+        log_message('debug','_config:' . json_encode($_config));
+        if($_config)
+        {
+            foreach($_config as $conf)
+            {
+                /* 设置每个字段组的默认值*/
+                $temp_group = array('name' => '','type' => 0,'printable' => 0, 'children' => array());
+                if(array_key_exists('name',$conf))
+                {
+                    $temp_group['name'] = $conf['name'];
+                }
+                if(array_key_exists('type',$conf))
+                {
+                    $temp_group['type'] = $conf['type'];
+                }
+                if(array_key_exists('printable',$conf))
+                {
+                    $temp_group['printable'] = $conf['printable'];
+                }
+                if(array_key_exists('children',$conf))
+                {
+                    /*取出每个字段的数据*/
+                    foreach($conf['children'] as $child)
+                    {
+                        $temp_child = array();
+                        foreach($child as $key => $value) 
+                        {
+                            if($key == 'nid') continue; 
+                            $temp_child[$key] = $value;
+                        }
+                        array_push($temp_group['children'],$temp_child);
+                    }
+                }
+
+                array_push($config,$temp_group);
+            }
+        }
+        
+        log_message('debug','config:' . json_encode($config));
+        $buf = $this->reports->update_report_template($id,$template_name,$config,$type);
+        if($buf['status'] > 0)
+        {
+            $status = 1;
+            $msg = '更新成功';
+            $this->session->set_userdata('debug','更新成功');
+        }
+        else
+        {
+            $msg = $buf['data']['msg'];
+        }
+
+        die(json_encode(array('status' => $status,'msg' => $msg)));
+    }
+
+    public function docreate_report_template()
+    {
+        $template_name = $this->input->post('template_name');
+//        $config = $this->input->post('config');
+        $config = json_encode(array());
+        $buf = $this->reports->create_report_template($template_name,$config);
+        $msg = '';
+        $id = -1 ;
+        if($buf['status'] > 0)
+        {
+            $id = $buf['data']['id'];
+            $this->session->userdata('last_error','创建成功');
+        }
+        else
+        {
+            $this->session->userdata('last_error',$buf['data']['msg']);
+        }
+
+//        return redirect(base_url('company/report_template_list'));
+        die(json_encode(array('id'=>$id)));
+    }
+
+    public function update_report_template($id)
+    {
+        $this->need_group_it();
+        $item_type_dic = $this->reim_show->get_item_type_name();
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+        $report_template = array();
+        $_report_template = $this->reports->get_report_template($id);
+        if($_report_template['status'] > 0) 
+        {
+            $report_template = $_report_template['data'];
+        }
+//        $item_type_dic = $this->reim_show->
+        $this->bsload('reports/update_report_template',
+            array(
+                    'title'=>'修改报告模板',
+                    'report_template' => $report_template
+                    ,'item_type_dic' => $item_type_dic
+                    ,'breadcrumbs'=> array(
+                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+                    ,array('url'=>'','name'=>'公司设置','class'=> '')
+                    ,array('url'=>'','name'=>'修改报告模板','class'=>'')
+                ),
+            )
+        );
+    }
+
+    public function create_report_template()
+    {
+        $this->bsload('reports/create_report_template',
+            array(
+                    'title'=>'新建报告模板',
+                    'breadcrumbs'=> array(
+                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+                    ,array('url'=>'','name'=>'公司设置','class'=> '')
+                    ,array('url'=>'','name'=>'修改报告模板','class'=>'')
+                ),
+            )
+        );
+    }
+
+    public function report_template_list()
+    {
+        $report_template_list = array();
+        $_report_template_list = $this->reports->get_report_template();
+        if($_report_template_list['status'] > 0)
+        {
+            $report_template_list = $_report_template_list['data'];
+        }
+
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+
+        $this->bsload('reports/report_template_list',
+            array(
+                'template_list' => $report_template_list
+                ,'error' => $error
+                ,'title'=>'报告模板'
+                ,'breadcrumbs'=> array(
+                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
+                    ,array('url'=>'','name'=>'公司设置','class'=> '')
+                    ,array('url'=>'','name'=>'报告模板','class'=>'')
+                ),
+            )
+        );
     }
 
     public function get_item_type_name()
@@ -484,31 +678,31 @@ class Company extends REIM_Controller {
 
         $total_amount_limit = $this->input->post('frequency_unlimit');
         $total_amount = $this->input->post('total_amount');
-	$_ranks = $this->input->post('ranks');
-	$ranks = '';
-	$_levels = $this->input->post('levels');
-	$levels = '';
-	$_groups = $this->input->post('groups');
-	$groups = '';
+    $_ranks = $this->input->post('ranks');
+    $ranks = '';
+    $_levels = $this->input->post('levels');
+    $levels = '';
+    $_groups = $this->input->post('groups');
+    $groups = '';
 
-	if($_ranks)
-	{
-		$ranks = implode(',',$_ranks);
-	}
+    if($_ranks)
+    {
+        $ranks = implode(',',$_ranks);
+    }
 
-	if($_levels)
-	{
-		$levels = implode(',',$_levels);
-	}
+    if($_levels)
+    {
+        $levels = implode(',',$_levels);
+    }
 
-	if($_groups)
-	{
-		$groups = implode(',',$_groups);
-	}
+    if($_groups)
+    {
+        $groups = implode(',',$_groups);
+    }
 
         if($total_amount_limit == 1)
         {
-            $total_amount = -1;	
+            $total_amount = -1; 
         }
 
         $members = $this->input->post('uids');
@@ -522,14 +716,14 @@ class Company extends REIM_Controller {
             $members = -1;
         }
 
-        //	$all_able = $this->input->post('allow_all_category');
+        //  $all_able = $this->input->post('allow_all_category');
         $allow_all_category = $this->input->post('all_able');
-        //	$all_able = json_decode($all_able);
-        //	log_message("debug","@@@@@:all_able:".$choose);
+        //  $all_able = json_decode($all_able);
+        //  log_message("debug","@@@@@:all_able:".$choose);
 
 
-        //	log_message("debug","######:".json_encode($all_able));
-        //	$allow_all_category = $this->input->post('all_all_category');
+        //  log_message("debug","######:".json_encode($all_able));
+        //  $allow_all_category = $this->input->post('all_all_category');
         $allow_category_ids = $this->input->post('allow_category_ids');
         $allow_category_ids = json_decode($allow_category_ids);
         $allow_category_amounts = $this->input->post('allow_category_amounts');
@@ -592,10 +786,10 @@ class Company extends REIM_Controller {
 
 
         log_message("debug","accepted:".json_encode($policies));
-        //	log_message("debug","accepted:".$category_amounts[0]);
-        //	$info = array('category'=>$category_id,'amount'=>$amount);
-        // 	$policy =array(array('category'=>$category_id,'amount'=>$amount));
-        //	array_push($policy,$info);
+        //  log_message("debug","accepted:".$category_amounts[0]);
+        //  $info = array('category'=>$category_id,'amount'=>$amount);
+        //  $policy =array(array('category'=>$category_id,'amount'=>$amount));
+        //  array_push($policy,$info);
         $buf = $this->company->create_approve($rname,$members,$total_amount,$allow_all_category,json_encode($policies),$pid,$ranks,$levels,$groups);
         log_message('debug',"#######".json_encode($buf));
         return redirect(base_url('company/show_approve'));
@@ -618,26 +812,26 @@ class Company extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-	$_ranks = $this->reim_show->rank_level(1);
-	$ranks =array();
-	$_levels = $this->reim_show->rank_level(0);
-	$levels = array();
-	if($_ranks['status']>0)
-	{
-		$ranks = $_ranks['data'];
-	}
-	if($_levels['status']>0)
-	{
-		$levels = $_levels['data'];
-	}
+    $_ranks = $this->reim_show->rank_level(1);
+    $ranks =array();
+    $_levels = $this->reim_show->rank_level(0);
+    $levels = array();
+    if($_ranks['status']>0)
+    {
+        $ranks = $_ranks['data'];
+    }
+    if($_levels['status']>0)
+    {
+        $levels = $_levels['data'];
+    }
         $this->bsload('company/approve',
             array(
                 'title'=>'新建审批规则'
                 ,'error'=>$error
                 ,'member'=>$gmember
                 ,'group'=>$gnames
-		,'ranks' => $ranks
-		,'levels' => $levels
+        ,'ranks' => $ranks
+        ,'levels' => $levels
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>base_url('company'),'name'=>'公司设置','class'=> '')
@@ -653,21 +847,21 @@ class Company extends REIM_Controller {
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-	$_ranks = $this->groups->get_rank_level(1);
-	$_levels = $this->groups->get_rank_level(0);
-	
-	$ranks = array();
-	if($_ranks['status'] > 0)
-	{
-		$ranks = $_ranks['data'];
-	}
+    $_ranks = $this->groups->get_rank_level(1);
+    $_levels = $this->groups->get_rank_level(0);
+    
+    $ranks = array();
+    if($_ranks['status'] > 0)
+    {
+        $ranks = $_ranks['data'];
+    }
 
-	$levels = array();
-	if($_levels['status'] > 0)
-	{
-		$levels = $_levels['data'];
-	}
-	
+    $levels = array();
+    if($_levels['status'] > 0)
+    {
+        $levels = $_levels['data'];
+    }
+    
         $group = $this->groups->get_my_list();
         $_gnames = $this->ug->get_my_list();
         $gnames = $_gnames['data']['group'];
@@ -695,20 +889,20 @@ class Company extends REIM_Controller {
                 $own_rule = $item;
             }
         }
-	foreach($categories as $cate)
-	{
-		foreach($own_rule['cates'] as &$p)
-		{
-			if($p['category'] == $cate['id'])
-			{
-				$p['sob_id'] = $cate['sob_id'];
-			}
-		}
-	}
-	log_message('debug','own_rule:' . json_encode($own_rule));
-	log_message('debug','_sobs:' . json_encode($_sobs));
-	log_message('debug','categories:' . json_encode($categories));
-	/*
+    foreach($categories as $cate)
+    {
+        foreach($own_rule['cates'] as &$p)
+        {
+            if($p['category'] == $cate['id'])
+            {
+                $p['sob_id'] = $cate['sob_id'];
+            }
+        }
+    }
+    log_message('debug','own_rule:' . json_encode($own_rule));
+    log_message('debug','_sobs:' . json_encode($_sobs));
+    log_message('debug','categories:' . json_encode($categories));
+    /*
         $cate_arr = array();
         $s_id = '';
         foreach($categories as $c)
@@ -740,7 +934,7 @@ class Company extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-	*/
+    */
 
         $this->bsload('company/update',
             array(
@@ -750,8 +944,8 @@ class Company extends REIM_Controller {
                 ,'member'=>$gmember
          //       ,'cate_arr'=>$cate_arr
                 ,'group'=>$gnames
-		,'ranks' => $ranks
-		,'levels' => $levels
+        ,'ranks' => $ranks
+        ,'levels' => $levels
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
@@ -777,7 +971,7 @@ class Company extends REIM_Controller {
 
         $frequency = $this->input->post('rule_frequency');
         $frequency_unlimit = $this->input->post('frequency_unlimit');
-        //	$frequency_time = $this->input->post('frequency_time');
+        //  $frequency_time = $this->input->post('frequency_time');
         $frequency_time = 1;
 
         $groups = $this->input->post('gids');
@@ -809,7 +1003,7 @@ class Company extends REIM_Controller {
 
         $start_time = $this->input->post('sdt');
         $end_time = $this->input->post('edt');
-        $buf=$this->company->update_rule($id,$rname,$category_id,$frequency,$frequency_time,$all_members,implode(',',$groups),implode(',',$members));	
+        $buf=$this->company->update_rule($id,$rname,$category_id,$frequency,$frequency_time,$all_members,implode(',',$groups),implode(',',$members));   
         log_message("debug","####CREATE:".json_encode($buf));
         return redirect(base_url('company/show'));
     }
@@ -831,55 +1025,55 @@ class Company extends REIM_Controller {
         $_categories_id = $this->input->post('categories');
         $category_ids = json_decode($_categories_id,True);
 
-	$_freq_counts = $this->input->post('freq_counts');
-	$freq_counts = json_decode($_freq_counts,True);
-	$_freq_periods = $this->input->post('freq_periods');
-	$freq_periods = json_decode($_freq_periods,True);
-	$_freq_unlimits = $this->input->post('freq_unlimits');
-	$freq_unlimits = json_decode($_freq_unlimits,True);
-	
+    $_freq_counts = $this->input->post('freq_counts');
+    $freq_counts = json_decode($_freq_counts,True);
+    $_freq_periods = $this->input->post('freq_periods');
+    $freq_periods = json_decode($_freq_periods,True);
+    $_freq_unlimits = $this->input->post('freq_unlimits');
+    $freq_unlimits = json_decode($_freq_unlimits,True);
+    
         $id = $this->input->post('rid');
-	log_message('debug','data:' . json_encode(array('categories'=>$_categories_id,'freq_counts'=>$_freq_counts,'freq_periods'=>$_freq_periods,'freq_unlimits'=>$_freq_unlimits)));
+    log_message('debug','data:' . json_encode(array('categories'=>$_categories_id,'freq_counts'=>$_freq_counts,'freq_periods'=>$_freq_periods,'freq_unlimits'=>$_freq_unlimits)));
 
-	
+    
         $amount = $this->input->post('rule_amount');
         $amount_unlimit = $this->input->post('amount_unlimit');
         $amount_time = $this->input->post('amount_time');
 
         $frequency = $this->input->post('rule_frequency');
         $frequency_unlimit = $this->input->post('frequency_unlimit');
-        //	$frequency_time = $this->input->post('frequency_time');
+        //  $frequency_time = $this->input->post('frequency_time');
         $frequency_time = 1;
 
         $_groups = $this->input->post('gids');
-	$groups = '';
+    $groups = '';
         $_members = $this->input->post('uids');
-	$members = '';
+    $members = '';
 
         $all_members = $this->input->post('all_members');
-	$_ranks = $this->input->post('ranks');
-	$_levels = $this->input->post('levels');
-	$ranks = '';
-	$levels ='';
+    $_ranks = $this->input->post('ranks');
+    $_levels = $this->input->post('levels');
+    $ranks = '';
+    $levels ='';
 
-	if($_groups)
-	{
-		$groups = implode(',',$_groups);
-	}
-	if($_members)
-	{
-		$members = implode(',',$_members);
-	}
+    if($_groups)
+    {
+        $groups = implode(',',$_groups);
+    }
+    if($_members)
+    {
+        $members = implode(',',$_members);
+    }
 
-	if($_ranks)
-	{
-		$ranks = implode(',',$_ranks);
-	}
+    if($_ranks)
+    {
+        $ranks = implode(',',$_ranks);
+    }
 
-	if($_levels)
-	{
-		$levels = implode(',',$_levels);
-	}
+    if($_levels)
+    {
+        $levels = implode(',',$_levels);
+    }
 
         if($frequency == '')
         {
@@ -899,35 +1093,35 @@ class Company extends REIM_Controller {
         }
         if($all_members == 1)
         {
-	    
-	    $ranks = '';
-	    $levels = '' ;
+        
+        $ranks = '';
+        $levels = '' ;
             $groups = '';
             $members = '';
         }
-	log_message('debug','ranks:' . $ranks);
-	log_message('debug','levels:' . $levels);
+    log_message('debug','ranks:' . $ranks);
+    log_message('debug','levels:' . $levels);
 
         $policies = array();
-	$len = count($category_ids);
-	for($i = 0 ; $i < $len ; $i++)
-	{
-		if($freq_unlimits[$i] == 1)
-			$freq_counts[$i] = 0;
-		array_push($policies,array('category'=>$category_ids[$i],'freq_count' => $freq_counts[$i] , 'freq_period' => $freq_periods[$i]));
-	}
+    $len = count($category_ids);
+    for($i = 0 ; $i < $len ; $i++)
+    {
+        if($freq_unlimits[$i] == 1)
+            $freq_counts[$i] = 0;
+        array_push($policies,array('category'=>$category_ids[$i],'freq_count' => $freq_counts[$i] , 'freq_period' => $freq_periods[$i]));
+    }
 
-	log_message('debug','policies:' . json_encode($policies));
-	log_message('debug','rule_id:' . $id);
-	if($id)
-	{
-		$buf = $this->company->create_update_rules($rname,$groups,$members,$levels,$ranks,json_encode($policies),$all_members,$id);
-	}
-	else
-	{
-		$buf = $this->company->create_update_rules($rname,$groups,$members,$levels,$ranks,json_encode($policies),$all_members);
-	}
-//        $buf=$this->company->create_rule($rname,$category_ids,$frequency,$frequency_time,$all_members,$groups,$members,$ranks,$levels);	
+    log_message('debug','policies:' . json_encode($policies));
+    log_message('debug','rule_id:' . $id);
+    if($id)
+    {
+        $buf = $this->company->create_update_rules($rname,$groups,$members,$levels,$ranks,json_encode($policies),$all_members,$id);
+    }
+    else
+    {
+        $buf = $this->company->create_update_rules($rname,$groups,$members,$levels,$ranks,json_encode($policies),$all_members);
+    }
+//        $buf=$this->company->create_rule($rname,$category_ids,$frequency,$frequency_time,$all_members,$groups,$members,$ranks,$levels);   
         log_message("debug","####CREATE:".json_encode($buf));
         return redirect(base_url('company/show'));
     }
@@ -943,7 +1137,7 @@ class Company extends REIM_Controller {
         {
             $_rules = $rules['data'];
         }
-	log_message('debug','rules:' . json_encode($_rules));
+    log_message('debug','rules:' . json_encode($_rules));
         $this->bsload('company/show',
             array(
                 'title'=>'新建规则'
@@ -1016,21 +1210,21 @@ class Company extends REIM_Controller {
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-	$_ranks = $this->groups->get_rank_level(1);
-	$_levels = $this->groups->get_rank_level(0);
-	
-	$ranks = array();
-	if($_ranks['status'] > 0)
-	{
-		$ranks = $_ranks['data'];
-	}
-
-	$levels = array();
-	if($_levels['status'] > 0)
-	{
-		$levels = $_levels['data'];
-	}
-	
+        $_ranks = $this->groups->get_rank_level(1);
+        $_levels = $this->groups->get_rank_level(0);
+        
+        $ranks = array();
+        if($_ranks['status'] > 0)
+        {
+            $ranks = $_ranks['data'];
+        }
+    
+        $levels = array();
+        if($_levels['status'] > 0)
+        {
+            $levels = $_levels['data'];
+        }
+    
         $group = $this->groups->get_my_list();
         $_gnames = $this->ug->get_my_list();
         $gnames = $_gnames['data']['group'];
@@ -1048,8 +1242,8 @@ class Company extends REIM_Controller {
                 ,'error'=>$error
                 ,'member'=>$gmember
                 ,'group'=>$gnames
-		,'ranks' => $ranks
-		,'levels' => $levels
+                ,'ranks' => $ranks
+                ,'levels' => $levels
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
@@ -1066,7 +1260,7 @@ class Company extends REIM_Controller {
         $this->session->unset_userdata('last_error');
         $company = $this->company->get();
         $_config = array();
-	log_message('debug','company:' . json_encode($company));
+    log_message('debug','company:' . json_encode($company));
         if(array_key_exists('data', $company) && array_key_exists('config', $company['data'])){
             $_config = $company['data']['config'];
         }
@@ -1108,7 +1302,7 @@ public function common(){
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa home-icon')
                         ,array('url'  => base_url('company/submit'), 'name' => '公司设置', 'class' => '')
             ,array('url' => '','name' => '通用规则','class' => '')
-                    ),	
+                    ),  
             )
         );
     }
@@ -1201,7 +1395,7 @@ public function common(){
         $this->session->unset_userdata('last_error');
         $this->bsload('company/create_custom_item',
             array(
-                'title' => '添加自定义消费'
+                'title' => '添加消费模板'
                 ,'item' => $custom_item
                 ,'error' => $error
                 ,'breadcrumbs' => array(
@@ -1231,7 +1425,7 @@ public function common(){
         }
         $this->bsload('company/custom_item',
             array(
-                'title' => '自定义消费'
+                'title' => '消费模板'
                 ,'error' => $error
                 ,'rules' => $_list
                 ,'breadcrumbs' => array(
@@ -1278,14 +1472,14 @@ public function common(){
         $close_directly = 0;
         $note_compulsory = 0;
         $not_auto_time = 0;
-	$disable_borrow = 0;
-	$disable_budget = 0;
-    $open_exchange = 0;
-	
-	$calendar_month = $this->input->post('calendar_month');
+        $disable_borrow = 0;
+        $disable_budget = 0;
+        $open_exchange = 0;
+    
+        $calendar_month = $this->input->post('calendar_month');
         $need_bank = $this->input->post('need_bank_info');
         $isadmin = $this->input->post('isadmin');
-	log_message("debug", "FROM FORM IS ADMIN" . $isadmin);
+        log_message("debug", "FROM FORM IS ADMIN" . $isadmin);
         $isremark = $this->input->post('isremark');
         $iscompany = $this->input->post('iscompany');
         $template = $this->input->post('template');
@@ -1298,8 +1492,8 @@ public function common(){
         $_close_directly = $this->input->post('close_directly');
         $_note_compulsory = $this->input->post('note_compulsory');
         $_not_auto_time = $this->input->post('not_auto_time');
-	$_disable_borrow = $this->input->post('allow_borrow');
-	$_disable_budget = $this->input->post('allow_budget');
+        $_disable_borrow = $this->input->post('allow_borrow');
+        $_disable_budget = $this->input->post('allow_budget');
         $_open_exchange = $this->input->post('open_exchange');
 
         if($_open_exchange == "true")
@@ -1354,16 +1548,16 @@ public function common(){
             $close_directly = 1;
         }
         $data = $this->company->get();
-        //	$config = $data['data']['config'];
-        //	if(array_key_exists('same_category',$confarr))
-        //	{
-        //		$confarr['same_category'] = $pid;
-        //	}
-        //	if(array_key_exists('template',$confarr))
-        //	{
-        //		$confarr['template'] = $template;
-        //	}
-	log_message('debug','same_category:' . $pids);
+        //  $config = $data['data']['config'];
+        //  if(array_key_exists('same_category',$confarr))
+        //  {
+        //      $confarr['same_category'] = $pid;
+        //  }
+        //  if(array_key_exists('template',$confarr))
+        //  {
+        //      $confarr['template'] = $template;
+        //  }
+    log_message('debug','same_category:' . $pids);
         $in=array();
         $in['export_no_company']=$company_id;
         $in['same_category'] = $pids;
@@ -1379,13 +1573,13 @@ public function common(){
         $in['max_allowed_months'] = $max_allowed_months;
         $in['mail_notify'] = $mail_notify;
         $in['low_amount_only'] = $low_amount_only;
-	$in['disable_borrow'] = $disable_borrow;
-	$in['disable_budget'] = $disable_budget;
-	$in['calendar_month'] = $calendar_month;
+    $in['disable_borrow'] = $disable_borrow;
+    $in['disable_budget'] = $disable_budget;
+    $in['calendar_month'] = $calendar_month;
     $in['open_exchange'] = $open_exchange;
-	log_message('debug','company_in:' .json_encode($in));
+    log_message('debug','company_in:' .json_encode($in));
         $this->company->profile($in);
         //die(json_encode($re));
-	die(json_encode(array('msg'=>'保存成功')));
+    die(json_encode(array('msg'=>'保存成功')));
     }
 }

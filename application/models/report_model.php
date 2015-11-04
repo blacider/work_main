@@ -1,6 +1,70 @@
 <?php
 
 class Report_Model extends Reim_Model {
+
+    public function update_report_template($id,$name,$config,$type)
+    {
+    	$jwt = $this->session->userdata('jwt');
+	    if(!$jwt) return false;
+        $url = $this->get_url('report_template/' . $id);
+        $data = array(
+            'id' => $id,
+            'type' => $type,
+            'name' => $name,
+            'config' => json_encode($config)
+        );
+	    $buf = $this->do_Put($url,$data,$jwt);
+	    log_message('debug','report_template_url:'.$url);
+	    log_message('debug','report_template_data:'.json_encode($data));
+	    log_message('debug','report_template_back:'.$buf);
+
+	    return json_decode($buf,True);
+    }
+
+    public function create_report_template($name,$config)
+    {
+    	$jwt = $this->session->userdata('jwt');
+	    if(!$jwt) return false;
+        $url = $this->get_url('report_template');
+        $data = array(
+            'name' => $name,
+            'config' => $config
+        );
+	    $buf = $this->do_Post($url,$data,$jwt);
+	    log_message('debug','report_template_url:'.$url);
+	    log_message('debug','report_template_data:'.json_encode($data));
+	    log_message('debug','report_template_back:'.$buf);
+
+	    return json_decode($buf,True);
+    }
+
+    public function get_report_template($id = 0)
+    {
+    	$jwt = $this->session->userdata('jwt');
+	    if(!$jwt) return false;
+        if(0 == $id)
+        	$url = $this->get_url('report_template');
+        else
+            $url = $this->get_url('report_template/' . $id);
+	    $buf = $this->do_Get($url,$jwt);
+	    log_message('debug','report_template_url:'.json_encode($url));
+	    log_message('debug','report_template_back:'.$buf);
+
+	    return json_decode($buf,True);
+    }
+
+    public function delete_report_template($id)
+    {
+    	$jwt = $this->session->userdata('jwt');
+	    if(!$jwt) return false;
+        $url = $this->get_url('report_template/' . $id);
+	    $buf = $this->do_Delete($url,array(),$jwt);
+	    log_message('debug','delete_report_template_url:'.json_encode($url));
+	    log_message('debug','delete_report_template_back:'.$buf);
+
+	    return json_decode($buf,True);
+    }
+
     public function add_comment($rid,$comment)
     {
         $jwt = $this->session->userdata('jwt');
@@ -115,7 +179,7 @@ class Report_Model extends Reim_Model {
         return $buf;
     }
 
-    public function create($title, $receiver, $cc, $iids, $type = 0, $status = 1, $force = 0, $extra = array()){
+    public function create($title, $receiver, $cc, $iids, $type = 0, $status = 1, $force = 0, $extra = array(),$template_id){
         $data = array(
             'manager_id' => $receiver
             ,'cc' => $cc
@@ -126,16 +190,20 @@ class Report_Model extends Reim_Model {
             ,'createdt' => time()
             ,'force_submit' => $force
             ,'extras' => json_encode($extra)
+            ,'template_id' => $template_id
         );
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $url = $this->get_url("report");
         $buf = $this->do_Post($url, $data, $jwt);
+        log_message('debug','create_report_data:' . json_encode($data));
+        log_message('debug','create_report_url:' . $url);
+        log_message('debug','create_report_back:' . $buf);
         return $buf;
 
     }
 
-    public function update($id, $title, $receiver, $cc, $iids, $type = 0, $status = 1, $force = 0, $extra = array()){
+    public function update($id, $title, $receiver, $cc, $iids, $type = 0, $status = 1, $force = 0, $extra = array(),$template_id){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(
@@ -148,12 +216,15 @@ class Report_Model extends Reim_Model {
             ,'createdt' => time()
             ,'force_submit' => $force
             ,'extras' => json_encode($extra)
+            ,'template_id' => $template_id
         );
         log_message("debug", "Update:" . json_encode($data));
-        $url = $this->get_url("report/$id");
-        log_message("debug", "URL:" . $url);
+		$url = $this->get_url("report/$id");
         $buf = $this->do_Put($url, $data, $jwt);
-        $obj = json_decode($buf, true);
+		$obj = json_decode($buf, true);
+        log_message("debug", "URL:" . $url);
+        log_message("debug", "update_report_data:" . json_encode($data));
+        log_message("debug", "update_report_back:" . $buf);
         return $buf;
 
     }

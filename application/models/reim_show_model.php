@@ -4,7 +4,26 @@ class Reim_Show_Model extends Reim_Model {
     public function __construct() {
         parent::__construct();
         $this->load->model('items_model', 'items');
+        $this->load->model('report_model', 'reports');
     }
+    
+    public function get_report_template()
+    {
+        $_report_template = $this->reports->get_report_template();
+        $report_template = array();
+        $report_template_dic = array();
+        if($_report_template['status'] > 0)
+        {
+            $report_template = $_report_template['data'];    
+        }
+        foreach($report_template as $rt)
+        {
+            $report_template_dic[$rt['id']] = $rt['name'];
+        }
+
+        return $report_template_dic;
+    }
+
     public function get_item_type_name()
     {
         $obj = $this->items->get_item_type_name();
