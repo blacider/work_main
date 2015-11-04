@@ -267,14 +267,15 @@ class REIM_Controller extends CI_Controller{
             $title = $sheet_data["title"];
             $rows = $sheet_data["data"];
 
+            // TODO: 自动宽度应该在设置值之后
             $sheet->setTitle($title);
             $first_row = $rows[0];
             $j = 0;
             foreach ($first_row as $k => $v) {
                 $c_name = $this->getCharByNunber($j);
                 $sheet->getStyle($c_name)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
-                $sheet->getColumnDimension($c_name)->setAutoSize(true);
                 $sheet->setCellValue($c_name . '1', ' ' . strval($k));
+                $sheet->getColumnDimension($c_name)->setAutoSize(true);
                 $j++;
             }
 
@@ -284,13 +285,19 @@ class REIM_Controller extends CI_Controller{
                 foreach ($row as $k => $v) {
                     $c_name = $this->getCharByNunber($y);
                     $sheet->getStyle($c_name)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
-                    $sheet->getColumnDimension($c_name)->setAutoSize(true);
                     $sheet->setCellValue($this->getCharByNunber($y) . $x, ' ' . strval($v));
                     $y++;
                 }
                 $x++;
             }
+
+            $j = 0;
+            foreach ($first_row as $k => $v) {
+                $c_name = $this->getCharByNunber($y);
+                $sheet->getColumnDimension($c_name)->setAutoSize(true);
+            }
         }
+
         $objwriter = IOFactory::createWriter($__excel, 'Excel5');
         return  $objwriter;
     }
