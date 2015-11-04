@@ -136,7 +136,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3 ){
 ?>
 
                        <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">上级</label>
+                                <label class="col-sm-1 control-label no-padding-right">默认审批人</label>
                                 <div class="col-xs-6 col-sm-6">
 <?php
     if($open == 1) {
