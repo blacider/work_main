@@ -148,71 +148,23 @@
                                         case 4:
                                 ?>
                                         <div class="field_value" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" data-required="<?php echo $field['required'];?>" >
+                                        </div>
+
                                         <div class="form-group">
                                             <label class="col-sm-1 control-label no-padding-right"><?php echo $field['name'];?></label>
-                                            <div class="col-xs-9 col-sm-9">
-                                                <div class="radio col-xs-12 col-sm-12">
-                                                    <input type="text" class="form-controller col-xs-8 account" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" placeholder="银行户名" <?php if($field['required'] == 1){echo 'required';}?>/>
+                                            <div class="col-xs-6 col-sm-6">
+                                                <div class="col-xs-12 col-sm-12 "  style="margin-left:0px !important;padding-left:0px !important;" >
+                                                    <div class="btn-toolbar" id="<?php echo 'btns' . $field['id'];?>">
+                                                        <div class="btn-group">
+                                                            <a href="javascript:void(0)" class="btn btn-success new_credit" data-id="<?php echo $field['id'];?>">
+                                                                <i class="ace-icon fa fa-credit-card icon-only"></i>
+                                                                添加银行卡
+                                                            </a>
+                                                        </div><!-- /.btn-group -->
+                                                    </div>
                                                 </div>
                                             </div>
-                                        
                                         </div>
-
-                                        <div class="form-group">
-                                            <label class="col-sm-1 control-label no-padding-right"></label>
-                                            <div class="col-xs-9 col-sm-9">
-                                                <div class="radio col-xs-12 col-sm-12">
-                                                    <input type="text" class="form-controller col-xs-8 cardno" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" placeholder="银行账号" <?php if($field['required'] == 1){echo 'required';}?>/>
-                                                </div>
-                                            </div>
-                                        
-                                        </div>
-
-                                          <div class="form-group">
-                                            <label class="col-sm-1 control-label no-padding-right"></label>
-                                            <div class="col-xs-9 col-sm-9">
-                                                <div class="radio col-xs-12 col-sm-12">
-                                                    <input type="text" class="form-controller col-xs-8 bankname" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" placeholder="开户行名" <?php if($field['required'] == 1){echo 'required';}?>/>
-                                                </div>
-                                            </div>
-                                        
-                                        </div>
-
-                                          <div class="form-group">
-                                            <label class="col-sm-1 control-label no-padding-right"></label>
-                                            <div class="col-xs-9 col-sm-9">
-                                                <div class="radio col-xs-12 col-sm-12">
-                                                    <input type="text" class="form-controller col-xs-8 bankloc" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" placeholder="开户地" <?php if($field['required'] == 1){echo 'required';}?>/>
-                                                </div>
-                                            </div>
-                                        
-                                        </div>
-
-                                          <div class="form-group">
-                                            <label class="col-sm-1 control-label no-padding-right"></label>
-                                            <div class="col-xs-9 col-sm-9">
-                                                <div class="radio col-xs-12 col-sm-12">
-                                                    <input type="text" class="form-controller col-xs-8 subbranch" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" placeholder="支行" <?php if($field['required'] == 1){echo 'required';}?>/>
-                                                </div>
-                                            </div>
-                                        
-                                        </div>
-                                        </div>
-                                            <div class="form-group">
-                        <label class="col-sm-1 control-label no-padding-right">银行卡号</label>
-                        <div class="col-xs-6 col-sm-6">
-                            <div class="col-xs-12 col-sm-12 "  style="margin-left:0px !important;padding-left:0px !important;" >
-                                <div class="btn-toolbar" id="btns">
-                                    <div class="btn-group">
-                                        <a href="javascript:void(0)" class="btn btn-success new_credit">
-                                            <i class="ace-icon fa fa-credit-card icon-only"></i>
-                                            添加银行卡
-                                        </a>
-                                    </div><!-- /.btn-group -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                                 <?php
                                         break;
@@ -592,7 +544,14 @@ foreach($items as $i){
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right">支行</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <input id="subbranch" name="subbranch" type="text" class="form-controller col-xs-12" placeholder="支行" />
+                                </div>
+                            </div>
 
+                            <input type="hidden" name="bank_field_id" id="bank_field_id" />
                             <div class="clearfix form-actions">
                                 <div class="col-md-offset-3 col-md-9">
                                     <a class="btn btn-white btn-primary new_card" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
@@ -644,24 +603,28 @@ function get_province(){
 }
 
 
-function reset_bank(disable, title) {
+function reset_bank(disable, title,bank_field_id) {
         $('#modal_title').val();
         $('#account' ).val("");
         $('#cardloc' ).val("");
         $('#cardno'  ).val("");
         $('#cardbank').val("");
+        $('#subbranch').val("");
+        $('#bank_field_id').val(bank_field_id);
         if(!disable) {
             $('.new_card').hide();
             $('#account').attr("disabled",  true);
             $('#cardloc').attr("disabled",  true);
             $('#cardno').attr("disabled",   true);
             $('#cardbank').attr("disabled", true);
+            $('#subbranch').attr("disabled",true);
         } else {
             $('.new_card').show();
             $('#account').attr("disabled",  false);
             $('#cardloc').attr("disabled",  false);
             $('#cardno').attr("disabled",   false);
             $('#cardbank').attr("disabled", false);
+            $('#subbranch').attr("disabled",false);
         }
         $('.cancel').click(function(){
             $('#credit_model').modal('hide');
@@ -672,26 +635,19 @@ function reset_bank(disable, title) {
 
     function del_credit(node){
         var _id = $(node).data('id');
-        //var _uid = $(node).data('uid');
-        $.ajax({
-            url : __BASE + "users/del_credit/"  + _id + "/" + user_id,
-                dataType : 'json',
-                method : 'GET',
-                success : function(data){
-                    $('#bank_' + _id).remove();
-                    show_notify('银行卡删除成功');
-                }
-        });
+        $('#bank_' + _id).remove();
     }
 
 
     function update_credit(node){
-        reset_bank(1, '修改银行卡');
-        $('#id').val($(node).data('id'));
+        var _id = $(node).data('id');
+        reset_bank(1, '修改银行卡', _id);
+       
         $('#account').val($(node).data('account'));
         $('#cardbank').val($(node).data('bankname'));
         $('#cardloc').val($(node).data('bankloc'));
         $('#cardno').val($(node).data('cardno'));
+        $('#subbranch').val($(node).data('subbranch'));
         $('#credit_model').modal('show');
         var i = 1, loc = $(node).data('bankloc');
 
@@ -713,12 +669,13 @@ function reset_bank(disable, title) {
     }
 
     function show_credit(node){
-        reset_bank(0, '银行卡详情');
-        $('#id').val($(node).data('id'));
+        var _id = $(node).data('id');
+        reset_bank(0, '银行卡详情',_id);
         $('#account').val($(node).data('account'));
         $('#cardbank').val($(node).data('bankname'));
         $('#cardloc').val($(node).data('bankloc'));
         $('#cardno').val($(node).data('cardno'));
+        $('#subbranch').val($(node).data('subbranch'));
         $('#credit_model').modal('show');
         var i = 1, loc = $(node).data('bankloc');
         do {
@@ -876,48 +833,27 @@ function do_post(force) {
         if(field_type == 4)
         {
             var field_bank = $(this).data('bank');
-            var field_account = $('.account',this).val();
-            var field_cardno = $('.cardno',this).val();
-            var field_bankname = $('.bankname',this).val();
-            var field_bankloc = $('.bankloc',this).val();
-            var field_subbranch = $('.subbranch',this).val();
-            if(field_required == 1)
+            var bank_info = $('#bank_' + field_id);
+       
+            var field_account = '';
+            var field_cardno = '';
+            var field_bankname = '';
+            var field_bankloc = '';
+            var field_subbranch = '';
+          
+            if(field_required == 1 && bank_info == undefined)
             {
-                if(trim(field_account) == '')
-                {
-                    $('.account',this).focus();
-                    show_notify('必填项目不能为空');
-                    is_submit = 0;
-                    return false;
-                }
-                if(trim(field_cardno) == '')
-                {
-                    $('.cardno',this).focus();
-                    show_notify('必填项目不能为空');
-                    is_submit = 0;
-                    return false;
-                }
-                if(trim(field_bankname) == '')
-                {
-                    $('.bankname',this).focus();
-                    show_notify('必填项目不能为空');
-                    is_submit = 0;
-                    return false;
-                }
-                if(trim(field_bankloc) == '')
-                {
-                    $('.bankloc',this).focus();
-                    show_notify('必填项目不能为空');
-                    is_submit = 0;
-                    return false;
-                }
-                if(trim(field_subbranch) == '')
-                {
-                    $('.subbranch',this).focus();
-                    show_notify('必填项目不能为空');
-                    is_submit = 0;
-                    return false;
-                }
+                show_notify('必填银行卡项目不能为空');
+                is_submit = 0;
+                return false;
+            }
+            if(bank_info != undefined)
+            {
+                var field_account = bank_info.data('account');
+                var field_cardno = bank_info.data('cardno');
+                var field_bankname = bank_info.data('bankname');
+                var field_bankloc = bank_info.data('bankloc');
+                var field_subbranch = bank_info.data('subbranch');
             }
             extra.push({'id':field_id,'value':JSON.stringify({
                                                'account':field_account,
@@ -1007,6 +943,7 @@ function do_post(force) {
     // 获取所有的 条目
     var _cc = $('#cc').val();
     if(!_cc) _cc = Array();
+
     if(is_submit)
     {
         $.ajax({
@@ -1047,58 +984,38 @@ function do_post(force) {
 $(document).ready(function(){
     get_province();
 
-    $('.new_credit').click(function(){
-                        reset_bank(1, '添加新银行卡');
+    $('.new_credit').each(function(){
+        var _id = $(this).data('id');
+        $(this).click(function(){
+                        reset_bank(1, '添加新银行卡',_id);
                         $('#credit_model').modal({keyborard: false});
                     });
+    })
     $('.new_card').click(function(){
+        var _id = $('#bank_field_id').val();
         var _p = $('#province').val();
         var _c = $('#city').val();
         var _account = $('#account').val();
         var _bank = $('#cardbank').val();
+        var _subbranch = $('#subbranch').val();
         var _no = $('#cardno').val();
         var _loc = _p + _c;//$('#cardloc').val();
-        var _id = $('#id').val();
-        $.ajax({
-            url : __BASE + "users/new_credit",
-                data : {
-                    'account' : _account
-                        ,'cardbank' : _bank
-                        ,'cardno' : _no
-                        ,'cardloc' :  _loc
-                        ,'id' :  _id
-                        ,'uid' : user_id
-                },
-                dataType : 'json',
-                method : 'POST',
-                success : function(data){
-                    if(data.status){
-                        var _id = data.data.id;
-                        $('#credit_model').modal('hide');
-                        if(_id > 0){
-                            $('#bank_' + _id).remove();
-                        }
-                        var buf = '<div class="btn-group" id="bank_' + _id + '"> '
-                            + '<button data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">' 
-                            + _account 
-                            + '<i class="ace-icon fa fa-angle-down icon-on-right"></i> </button>'
-                            + '<ul class="dropdown-menu"> '
-                            + '<li> <a href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="edit_bank" >修改</a> </li>'
-                            + '<li> <a  href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '"  class="show_bank">展示</a> </li> '
-                            + '<li class="divider"></li> '
-                            + '<li> <a href="javascript:void(0)" data-uid="' + user_id + '" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="del_bank">删除</a> </li>'
-                            + ' </ul> </div>';
-                        $('#btns').prepend(buf);
-                        bind_event();
-                        show_notify('银行卡添加成功');
-                    } else {
-                        show_notify(data.data.msg);
-                    }
-                },
-                    error: function (){
-                        show_notify('操作失败，请稍后尝试');
-                    }
-        });
+       
+        $('#credit_model').modal('hide');
+        $('#bank_' + _id).remove();
+        var buf = '<div class="btn-group bank_info" id="bank_' + _id + '" data-subbranch="'+ _subbranch +'" data-id="'+ _id +'" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '"> '
+            + '<button data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">' 
+            + _account 
+            + '<i class="ace-icon fa fa-angle-down icon-on-right"></i> </button>'
+            + '<ul class="dropdown-menu"> '
+            + '<li> <a href="javascript:void(0)" data-subbranch="'+ _subbranch +'" data-id="'+ _id +'" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="edit_bank" >修改</a> </li>'
+            + '<li> <a  href="javascript:void(0)" data-subbranch="'+ _subbranch +'" data-id="'+ _id +'" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '"  class="show_bank">展示</a> </li> '
+            + '<li class="divider"></li> '
+            + '<li> <a href="javascript:void(0)" data-subbranch="'+ _subbranch +'" data-id="'+ _id +'" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="del_bank">删除</a> </li>'
+            + ' </ul> </div>';
+        $('#btns'+_id).prepend(buf);
+        bind_event();
+        show_notify('银行卡添加成功');
     });
 
     bind_event();

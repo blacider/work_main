@@ -850,7 +850,10 @@ class Category extends REIM_Controller {
 	{
 		if($cate['pid'] !=-1)
 		{
-		array_push($all_categories[$cate['pid']]['child'],array('id'=>$cate['id'],'name'=>$cate['category_name']));
+        if(array_key_exists($cate['pid'],$all_categories) && array_key_exists('child',$all_categories[$cate['pid']]))
+        {
+		    array_push($all_categories[$cate['pid']]['child'],array('id'=>$cate['id'],'name'=>$cate['category_name']));
+        }
 		}
 	}
 	/*
