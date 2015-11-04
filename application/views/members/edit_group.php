@@ -29,7 +29,7 @@
                          <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">部门管理员</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <select class="chosen-select tag-input-style" id="manager" name="manager" data-placeholder="请选择标签">
+                                    <select class="chosen-select tag-input-style" id="manager" name="manager" data-placeholder="请选择员工">
                                          <option value=0>无</option>
                                     <?php 
                                     foreach($member as $m){
@@ -78,7 +78,7 @@
                                 <label class="col-sm-1 control-label no-padding-right">员工</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <input type="hidden" name="gid" value="<?php echo $group['id']; ?>" >
-                                    <select class="chosen-select tag-input-style" name="uids[]" multiple="multiple" data-placeholder="请选择标签">
+                                    <select class="chosen-select tag-input-style" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
                                     <?php 
                                     foreach($member as $m){
                                         if(in_array($m['id'], $smember)){
@@ -98,8 +98,12 @@
                                 <label class="col-sm-1 control-label no-padding-right">LOGO</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <div class="col-xs-12 col-sm-12">
-                                        <ul class="ace-thumbnails clearfix" id="imageList">
-                                        </ul>
+                                      <div id="group_logo_container" class="ace-thumbnails clearfix" style="position:relative;float:left;">
+                                        <img id="group_logo" class="thumbnail" style="min-height: 150px; max-height: 300px; min-width: 150px; max-width: 300px">
+                                        <div href="#" class="red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;">
+                                          <i class="glyphicon glyphicon-trash"></i>
+                                        </div>
+                                      </div>
                                     </div>
                                     <div class="col-xs-12 col-sm-12">
                                         <a id="filePicker" >选择图片</a>
@@ -160,19 +164,8 @@ var uploader = WebUploader.create({
 });
 
 // 当有文件添加进来的时候
-uploader.on( 'fileQueued', function( file ) {
-    var $li = $(
-            '<div id="' + file.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
-                '<img>' +
-                '<div class="glyphicon glyphicon-trash red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
-            '</div>'
-            ),
-        $img = $li.find('img');
-    ifUp = 0;
-
-    // $list为容器jQuery实例
-    $('#imageList').append( $li );
-
+    uploader.on( 'fileQueued', function( file ) {
+        $img = $("#group_logo");
     // 创建缩略图
     // 如果为非图片文件，可以不用调用此方法。
     // thumbnailWidth x thumbnailHeight 为 100 x 100
@@ -183,15 +176,15 @@ uploader.on( 'fileQueued', function( file ) {
         }
 
         $img.attr( 'src', src );
-        bind_event();
     }, 150, 150 );
 });
 
 
 // 文件上传过程中创建进度条实时显示。
 uploader.on( 'uploadProgress', function( file, percentage ) {
-    var $li = $( '#'+file.id ),
-        $percent = $li.find('.progress span');
+    var $li = $("#group_logo_container");
+    var $percent = $li.find('.progress span');
+    
 
     // 避免重复创建
     if ( !$percent.length ) {
@@ -204,9 +197,9 @@ uploader.on( 'uploadProgress', function( file, percentage ) {
 });
 
 // 文件上传成功，给item添加成功class, 用样式标记上传成功。
-uploader.on( 'uploadSuccess', function( file ) {
-    var $li = $( '#'+file.id ),
-        $success = $li.find('div.success');
+    uploader.on( 'uploadSuccess', function( file ) {
+        var $li = $("#group_logo_container");
+        var $success = $li.find('div.success');
 
     // 避免重复创建
     if ( !$success.length ) {
@@ -218,9 +211,10 @@ uploader.on( 'uploadSuccess', function( file ) {
 
 
 // 文件上传失败，显示上传出错。
-uploader.on( 'uploadError', function( file ) {
-    var $li = $( '#'+file.id ),
-        $error = $li.find('div.error');
+    uploader.on( 'uploadError', function( file ) {
+        var $li = $("#group_logo_container");
+        var $error = $li.find('div.error');
+        
     ifUp = 1;
     // 避免重复创建
     if ( !$error.length ) {
@@ -234,21 +228,21 @@ uploader.on( 'uploadError', function( file ) {
 uploader.on( 'uploadAccept', function( file, response ) {
     if ( response['status'] > 0 ) {
         // 通过return false来告诉组件，此文件上传有错。
-        var imageDom = $('#' + file.file.id);
-        imagesDict[file.file.id] = 'WU_FILE_' + String(response['data']['id']);
-        if ($("input[name='images']").val() == '') {
-            $("input[name='images']").val(response['data']['id']);
-        } else {
-            $("input[name='images']").val($("input[name='images']").val() + ',' + response['data']['id']);
-        }
+        $("input[name='images']").val(response['data']['id']);
         return true;
     } else return false;
 });
 
 // 完成上传完了，成功或者失败，先删除进度条。
 uploader.on( 'uploadComplete', function( file ) {
-    $( '#'+file.id ).find('.progress').remove();
+    $("#group_logo_container").find('.progress').remove();
 });
+
+$('.del-button').click(function(e) {
+    $("input[name=images]").val(0);
+    $("#group_logo").attr("src", "#");
+});
+
 });
 function updateSelectSob(data) {
     $("#sobs").empty();
@@ -256,45 +250,14 @@ function updateSelectSob(data) {
     $("#sobs").trigger('change');
     $("#sobs").trigger("chosen:updated");
 }
-function bind_event(){
-    $('.del-button').click(function(e) {
-            var key = imagesDict[this.parentNode.id].split("WU_FILE_")[1];
-            var images = $("input[name='images']").val();
-            var arr_img = images.split(',');
-            var result = '';
-            for (var item = 0; item < arr_img.length; item++) {
-                if (arr_img[item] != key) {
-                    if (item == 0) result += arr_img[item];
-                    else result += ',' + arr_img[item];
-                }
-            }
-            $("input[name='images']").val(result);
-            $(this.parentNode).remove();
-        });
-}
 
-var imagesDict = {};
 function load_exists(){
-    $('#imageList').empty();
-    var $li = $(
-            '<div id="WU_FILE_' + _image + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
-                '<img style="width:150px;height:150px;">' +
-                '<div class="glyphicon glyphicon-trash red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
-            '</div>'
-            ),$img = $li.find('img');
-    // $list为容器jQuery实例
-    $('#imageList').append( $li );
-    imagesDict["WU_FILE_" + _image] = "WU_FILE_" + _image;
     // 创建缩略图
     // 如果为非图片文件，可以不用调用此方法。
     // thumbnailWidth x thumbnailHeight 为 100 x 100
-
+    var $img = $("#group_logo");
     $img.attr('src', _image_url);
     $('input[name="images"]').val(_image);
-    bind_event();
-}
-function move_list_items(sourceid, destinationid) {
-    $("#"+sourceid+"  option:selected").appendTo("#"+destinationid);
 }
 
 var __BASE = "<?php echo $base_url; ?>";
@@ -306,13 +269,6 @@ $(document).ready(function(){
     $("#pgroups").trigger("chosen:updated");
     //$("#year option[text="+_pid+"]").attr("selected",true);
 
-
-    $('#moveleft').click(function(){
-        move_list_items('uids', 'srcs');
-    });
-    $('#moveright').click(function(){
-        move_list_items('srcs', 'uids');
-    });
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
         .off('resize.chosen')
