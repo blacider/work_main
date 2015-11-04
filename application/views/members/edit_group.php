@@ -249,7 +249,7 @@ uploader.on( 'uploadAccept', function( file, response ) {
 uploader.on( 'uploadComplete', function( file ) {
     $( '#'+file.id ).find('.progress').remove();
 });
-}
+});
 function updateSelectSob(data) {
     $("#sobs").empty();
     $("#sobs").append(data);
@@ -272,6 +272,8 @@ function bind_event(){
             $(this.parentNode).remove();
         });
 }
+
+var imagesDict = {};
 function load_exists(){
     $('#imageList').empty();
     var $li = $(
@@ -282,14 +284,13 @@ function load_exists(){
             ),$img = $li.find('img');
     // $list为容器jQuery实例
     $('#imageList').append( $li );
-
+    imagesDict["WU_FILE_" + _image] = "WU_FILE_" + _image;
     // 创建缩略图
     // 如果为非图片文件，可以不用调用此方法。
     // thumbnailWidth x thumbnailHeight 为 100 x 100
 
     $img.attr('src', _image_url);
-    });
-    $('input[name="images"]').val(result);
+    $('input[name="images"]').val(_image);
     bind_event();
 }
 function move_list_items(sourceid, destinationid) {
@@ -330,5 +331,5 @@ $(document).ready(function(){
         history.go(-1);
     });
 });
-var imagesDict = {};
+
 </script>

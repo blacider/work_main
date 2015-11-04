@@ -23,7 +23,7 @@ class Groups extends REIM_Controller {
         if($_images)
         {
             $images = $_images;
-        }
+        }        
         $info = $this->ug->create_group($manager,$uids, $name,$code,$pid,$images);
         redirect(base_url('members/groups'));
     }
