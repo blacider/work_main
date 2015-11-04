@@ -1267,6 +1267,8 @@ class Reports extends REIM_Controller {
 
         $banks = $data['banks'];
         $_banks = array();
+
+        // TODO: banks 中的信息并不是用户默认的银行信息
         foreach($banks as $b){
             $_banks[$b['uid']] = $b;
         }
