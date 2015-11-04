@@ -742,6 +742,8 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                 </div>
                             </div>
 
+                            <input type="hidden" name="defualt_id" id="default_id" />
+
 
                             <div class="clearfix form-actions">
                                 <div class="col-md-offset-3 col-md-9">
@@ -862,6 +864,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         $('#cardloc' ).val("");
         $('#cardno'  ).val("");
         $('#cardbank').val("");
+        $('#default_id').val("");
         if(!disable) {
             $('.new_card').hide();
             $('#account').attr("disabled",  true);
@@ -910,6 +913,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         $('#cardloc').val($(node).data('bankloc'));
         $('#cardno').val($(node).data('cardno'));
         $('#subbranch').val($(node).data('subbranch'));
+        $('#default_id').val($(node).data('default'));
         var _is_default = $(node).data('default');
         if(_is_default == $(node).data('id'))
         {
@@ -1085,7 +1089,18 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                         var _loc = _p + _c;//$('#cardloc').val();
                         var _id = $('#id').val();
                         var _subbranch = $('#subbranch').val();
+                        var _default_id = $('#default_id').val();
                         var _default = ($('#is_default').is(':checked') ? 1:0);
+                        if(_default == 1)
+                        {
+                            _default_id = _id;
+                        }
+                        else if(_default_id == _id)
+                        {
+                                _default_id = 0;
+                        }
+                    
+    
 
                         $.ajax({
                             url : __BASE + "users/new_credit",
@@ -1113,8 +1128,8 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                             + _account 
                                             + '<i class="ace-icon fa fa-angle-down icon-on-right"></i> </button>'
                                             + '<ul class="dropdown-menu"> '
-                                            + '<li> <a href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" "data-subbranch=' + _subbranch + '"' + '"data-default=' + _default + '"' +' class="edit_bank" >修改</a> </li>'
-                                            + '<li> <a  href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" "data-subbranch=' + _subbranch + '"' + '"data-default=' + _default + '"' +'  class="show_bank">展示</a> </li> '
+                                            + '<li> <a href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" data-subbranch="' + _subbranch + '"' + ' data-default="' + _default_id + '"' +' class="edit_bank" >修改</a> </li>'
+                                            + '<li> <a  href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" data-subbranch="' + _subbranch + '"' + ' data-default="' + _default_id + '"' +'  class="show_bank">展示</a> </li> '
                                             + '<li class="divider"></li> '
                                             + '<li> <a href="javascript:void(0)" data-uid="' + user_id + '" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="del_bank">删除</a> </li>'
                                             + ' </ul> </div>';
