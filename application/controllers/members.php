@@ -658,8 +658,11 @@ class Members extends REIM_Controller {
         $this->need_group_it();
         $group = $this->groups->get_my_list();
         $_gnames = $this->ug->get_my_list();
-        $single = $this->ug->get_single_group(18);
-        $gnames = $_gnames['data']['group'];
+        $gnames = array();
+        if($_gnames['status'] > 0 && array_key_exists('group',$_gnames['data']))
+        {
+            $gnames = $_gnames['data']['group'];
+        }
 
         $ginfo = array();
         $gmember = array();
@@ -678,7 +681,6 @@ class Members extends REIM_Controller {
                 'member' => $gmember
                 ,'group' => $gnames
                 ,'ginfo' => $_gnames
-                ,'info' => $single
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
@@ -1477,6 +1479,12 @@ class Members extends REIM_Controller {
         $uids = $this->input->post('uids');
         $pid = $this->input->post('pgroup');
         $gid = $this->input->post('gid');
+        $images = '';
+        $_images = $this->input->post('images');
+        if($_images)
+        {
+            $images = $_images;
+        }
         if($uids)
         {
             $uids = implode(",", $uids);
@@ -1485,7 +1493,7 @@ class Members extends REIM_Controller {
         {
             $uids='';
         }
-        $info = $this->ug->update_data($manager,$uids, $name,$code,$pid,$gid);
+        $info = $this->ug->update_data($manager,$uids, $name,$code,$pid,$gid,$images);
         log_message("debug","@@@@@@@@@".json_encode($info));
         if($info['status'] > 0){
             redirect(base_url('members/groups'));

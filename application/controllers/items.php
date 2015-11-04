@@ -40,7 +40,7 @@ class Items extends REIM_Controller {
         $symbol = '?';
         $coin_symbol_dic = array( 
                             'cny'=>'￥','usd'=>'$','eur'=>'€','hkd'=>'$','mop'=>'$','twd'=>'$','jpy'=>'￥','ker'=>'₩',
-                            'gbp'=>'£','rub'=>'Rbs','sgd'=>'$','php'=>'₱','idr'=>'Rps','myr'=>'$','thb'=>'฿','cad'=>'$',
+                            'gbp'=>'£','rub'=>'₽','sgd'=>'$','php'=>'₱','idr'=>'Rps','myr'=>'$','thb'=>'฿','cad'=>'$',
                             'aud'=>'$','nzd'=>'$','chf'=>'₣','dkk'=>'Kr','nok'=>'Kr','sek'=>'Kr','brl'=>'$'
                             );                           
         if(array_key_exists($key,$coin_symbol_dic))
@@ -136,7 +136,7 @@ class Items extends REIM_Controller {
         $group_config = array();
         $item_configs = array();
         $item_config = array();
-        if($_profile)
+        if($_profile && array_key_exists('profile',$_profile['data']))
         {
             $profile = $_profile['data']['profile'];
         }
