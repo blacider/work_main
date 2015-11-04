@@ -1165,16 +1165,106 @@ class Reports extends REIM_Controller {
         die(json_encode($data));
     }
 
+    private function try_get_element() {
+        if (func_num_args() == 0)
+            return NULL;
+
+        $data = func_get_arg(0);
+
+        for ($i = 1; $i < func_num_args(); $i++) {
+            $field = func_get_arg($i);
+            if ($data && is_array($data) && array_key_exists($field, $data))
+                $data = $data[$field];
+            else
+                return NULL;
+        }
+
+        return $data;
+    }
+
+    function get_bank_field_from_template($template, $bank_account_type) {
+        foreach ($template["config"] as $fieldset) {
+            foreach ($fieldset["children"] as $field) {
+                if ($field["type"] == 4) {
+                    if ($field["property"]["bank_account_type"] == $bank_account_type) {
+                        return $field;
+                    }
+                }
+            }
+        }
+
+        return NULL;
+    }
+
+    private function build_extra_cells($template, $extra) {
+        log_message("debug", "build extra cells from " . json_encode($template));
+        log_message("debug", "build extra cells with " . json_encode($extra));
+
+        $extra_dict = array();
+        $obj = array();
+        // 空的extra也得构造这些自定义列，不然同模板的报告列不相同，顺序就乱了
+        if (!is_array($extra))
+            $extra = array();
+
+        foreach ($extra as $e) {
+            if (is_array($e) && array_key_exists("id", $e)) {
+                $extra_dict[$e["id"]] = $e;
+            }
+        }
+
+        if (empty($template) || !array_key_exists("config", $template))
+            return $obj;
+
+        foreach ($template["config"] as $conf) {
+            // 字段组
+            if ($conf["type"] == 0) {
+                if (array_key_exists("printable", $conf) && $conf["printable"]) {
+                    foreach ($conf["children"] as $child) {
+                        $child_name = $conf["name"] . " - " . $child["name"];
+                        $id = $child["id"];
+                        if ($child["type"] == 4) {
+                            $obj[$child_name . " - 户名"] = $this->try_get_element($extra_dict, $id, "value", "account");
+                            $obj[$child_name . " - 账号"] = $this->try_get_element($extra_dict, $id, "value", "cardno");
+                            $obj[$child_name . " - 开户行"] = $this->try_get_element($extra_dict, $id, "value", "bankname");
+                            $obj[$child_name . " - 开户地"] = $this->try_get_element($extra_dict, $id, "value", "bankloc");
+                            $obj[$child_name . " - 开户支行"] = $this->try_get_element($extra_dict, $id, "value", "subbranch");
+                        } else {
+                            $obj[$child_name] = $this->try_get_element($extra_dict, $id, "value");
+                        }
+                    }
+                }
+            }
+        }
+        return $obj;
+    }
 
     private function exports_by_rids($ids) {
+        $_data = $this->reports->get_reports_by_ids($ids);
+        if (empty($_data) || $_data["status"] < 0) {
+            $this->session->set_userdata('last_error', $_data["_msg"]);
+            return;
+        }
 
-        $simbol_dic = array('cny'=>'人民币','usd'=>'美元','eur'=>'欧元','hkd'=>'港币','mop'=>'澳门币','twd'=>'新台币','jpy'=>'日元','ker'=>'韩国元','gbp'=>'英镑','rub'=>'卢布','sgd'=>'新加坡元','php'=>'菲律宾比索','idr'=>'印尼卢比','myr'=>'马来西亚元','thb'=>'泰铢','cad'=>'加拿大元','aud'=>'澳大利亚元','nzd'=>'新西兰元','chf'=>'瑞士法郎','dkk'=>'丹麦克朗','nok'=>'挪威克朗','sek'=>'瑞典克朗','brl'=>'巴西里亚尔'
-                 ); 
-        $icon_dic = array('cny'=>'￥','usd'=>'$','eur'=>'€','hkd'=>'$','mop'=>'$','twd'=>'$','jpy'=>'￥','ker'=>'₩','gbp'=>'£','rub'=>'₽','sgd'=>'$','php'=>'₱','idr'=>'Rps','myr'=>'$','thb'=>'฿','cad'=>'$','aud'=>'$','nzd'=>'$','chf'=>'₣','dkk'=>'Kr','nok'=>'Kr','sek'=>'Kr','brl'=>'$'
-                   ); 
+        $data = $_data["data"];
+        log_message("debug", "got data => " . json_encode($data));
 
-        $data = $this->reports->get_reports_by_ids($ids);
+        $dict_by_template = array();
+        foreach ($data["report"] as $id => $r) {
+            $template_id = 0;
+            if (array_key_exists("template_id", $r) && $r["template_id"]) {
+                $template_id = $r["template_id"];
+            }
+
+            if (!array_key_exists($template_id, $dict_by_template)) {
+                $dict_by_template[$template_id] = array();
+            }
+            array_push($dict_by_template[$template_id], $r);
+        }
+
         $_categories = $this->category->get_list();
+
+        $simbol_dic = array('cny'=>'人民币','usd'=>'美元','eur'=>'欧元','hkd'=>'港币','mop'=>'澳门币','twd'=>'新台币','jpy'=>'日元','ker'=>'韩国元','gbp'=>'英镑','rub'=>'卢布','sgd'=>'新加坡元','php'=>'菲律宾比索','idr'=>'印尼卢比','myr'=>'马来西亚元','thb'=>'泰铢','cad'=>'加拿大元','aud'=>'澳大利亚元','nzd'=>'新西兰元','chf'=>'瑞士法郎','dkk'=>'丹麦克朗','nok'=>'挪威克朗','sek'=>'瑞典克朗','brl'=>'巴西里亚尔');
+        $icon_dic = array('cny'=>'￥','usd'=>'$','eur'=>'€','hkd'=>'$','mop'=>'$','twd'=>'$','jpy'=>'￥','ker'=>'₩','gbp'=>'£','rub'=>'Rbs','sgd'=>'$','php'=>'₱','idr'=>'Rps','myr'=>'$','thb'=>'฿','cad'=>'$','aud'=>'$','nzd'=>'$','chf'=>'₣','dkk'=>'Kr','nok'=>'Kr','sek'=>'Kr','brl'=>'$');
 
         //添加汇率
         $profile = $_categories['data']['profile'];
@@ -1182,11 +1272,19 @@ class Reports extends REIM_Controller {
         $company_config = array();
         if(array_key_exists('config',$profile['group']))
             $company_config = json_decode($profile['group']['config'],True);
-        if(array_key_exists('open_exchange',$company_config))
-        {
+
+        // 转换模板字典
+        $dict_templates = array();
+        if (array_key_exists("report_setting", $profile))
+            if (array_key_exists("templates", $profile["report_setting"]))
+                foreach ($profile["report_setting"]["templates"] as $t)
+                    $dict_templates[$t["id"]] = $t;
+
+        log_message("debug", "got templates => " . json_encode($dict_templates));
+
+        if(array_key_exists('open_exchange',$company_config)) {
             $open_exchange = $company_config['open_exchange'];
         }
-        log_message('debug','open_exchange:' . $open_exchange);
 
         $sobs = array();
         $_sobs = $this->account_set->get_account_set_list();
@@ -1194,26 +1292,22 @@ class Reports extends REIM_Controller {
             $sobs = $_sobs['data'];
         $sob_dic = array();
         $sob_dic[0] = '默认帐套';
-        foreach($sobs as $sob)
-        {
+        foreach($sobs as $sob) {
             $sob_dic[$sob['sob_id']] = $sob['sob_name'];
         }
-        log_message('debug','sob_dic: ' . json_encode($sob_dic));
 
         $categories = array();
         $cate_dic = array();
-        if($_categories['status'] > 0)
-        {
-            $categories = $_categories['data']['categories']; 
+        if($_categories['status'] > 0) {
+            $categories = $_categories['data']['categories'];
         }
-        log_message('debug','cates:'.json_encode($categories));
-        foreach($categories as $cate)
-        {
-           if(array_key_exists($cate['sob_id'],$sob_dic))
-                 $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code'],'sob_name' => $sob_dic[$cate['sob_id']]); 
-           else
-                 $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code'],'sob_name' => ''); 
-                    
+
+        foreach($categories as $cate) {
+            if(array_key_exists($cate['sob_id'],$sob_dic))
+                $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code'],'sob_name' => $sob_dic[$cate['sob_id']]);
+            else
+                $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code'],'sob_name' => '');
+
         }
         $group = $this->groups->get_my_full_list();
         $ginfo = array();
@@ -1224,105 +1318,211 @@ class Reports extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-
-        
         //ugs部门
         $ug = array();
         $_ugs = $this->ug->get_my_list();
-        if($_ugs['status'] > 0) 
-        {
+        if($_ugs['status'] > 0) {
             $ug = $_ugs['data']['group'];
         }
         $ug_dic = array();
-        foreach($ug as $u)
-        {
+        foreach($ug as $u) {
             $ug_dic[$u['id']] = array('id' => $u['id'], 'name' => $u['name'] ,'pid' => $u['pid']);
         }
-        
+
         $member_dic = array();
-        foreach($gmember as $gm)
-        {
-            $member_dic[$gm['id']] = $gm; 
+        foreach($gmember as $gm) {
+            $member_dic[$gm['id']] = $gm;
         }
-        
-        log_message('debug','member_dic:' . json_encode($member_dic));
+
         $_ranks = $this->reim_show->rank_level(1);
         $ranks = array();
         $_levels = $this->reim_show->rank_level(0);
         $levels = array();
 
-        if($_ranks['status'] > 0)
-        {
+        if($_ranks['status'] > 0) {
             $ranks = $_ranks['data'];
         }
 
-        if($_levels['status'] > 0)
-        {
+        if($_levels['status'] > 0) {
             $levels = $_levels['data'];
         }
 
         $rank_dic = array();
         $level_dic = array();
-        foreach($ranks as $r)
-        {
+        foreach($ranks as $r) {
             $rank_dic[$r['id']] = $r['name'];
         }
-        foreach($levels as $l)
-        {
+        foreach($levels as $l) {
             $level_dic[$l['id']] = $l['name'];
         }
-        $_excel = array();
-        $_members = array();
-        if($data['status'] > 0){
-            $_reports = $data['data'];
-            $reports = $_reports['report'];
-            $banks = $_reports['banks'];
-            $_banks = array();
-            foreach($banks as $b){
-                $_banks[$b['uid']] = $b;
-            }
+
+        $banks = $data['banks'];
+        $_banks = array();
+
+        // TODO: banks 中的信息并不是用户默认的银行信息
+        foreach($banks as $b){
+            $_banks[$b['uid']] = $b;
+        }
+
+        $excel = array();
+        foreach ($dict_by_template as $template_id => $_reports) {
+            $template = array();
+            if (array_key_exists($template_id, $dict_templates))
+                $template = $dict_templates[$template_id];
+
             $_t_items = array();
-            foreach($reports as &$r){
-                if(!array_key_exists($r['uid'], $_members)){
-                    $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
+            // 报告汇总
+            $stat_cells = array();
+            // 报告明细
+            $report_cells = array();
+            // 消费明细
+            $item_cells = array();
+            // 自定义属性 cell 记录
+            // 记录这些值用来填充到消费中
+            $dict_extra_cells = array();
+
+            $user_bank_field = NULL;
+            $public_bank_field = NULL;
+            if (array_key_exists("config", $template)) {
+                $user_bank_field = $this->get_bank_field_from_template($template, 0);
+                $public_bank_field = $this->get_bank_field_from_template($template, 1);
+            }
+
+            foreach($_reports as &$r){
+                log_message("debug", "process report => " . json_encode(($r)));
+
+                $extra_json = $r["extras"];
+                $extra = json_decode($extra_json, TRUE);
+
+                // 用户收款银行
+                $userbankinfo = array();
+                // 付款账户
+                $publicbankinfo = array();
+
+                if ($template) {
+                    // extra 里数据太乱了
+                    if (is_array($extra)) {
+                        $dict_extra = array();
+                        foreach ($extra as $e) {
+                            $dict_extra[$e["id"]] = $e;
+                        }
+
+                        // 尝试取自定义的用户付款银行
+                        if (!empty($user_bank_field)) {
+                            if (array_key_exists($user_bank_field["id"], $dict_extra)) {
+                                $value = $dict_extra[$user_bank_field["id"]]["value"];
+                                // 兼容混乱的输入
+                                if (is_array($value))
+                                    $userbankinfo = $value;
+                                else
+                                    $userbankinfo = json_decode($value, TRUE);
+                                log_message("debug", "found user bank info => " . json_encode($userbankinfo));
+                            }
+                        }
+
+                        // 尝试取自定义的用户收款银行
+                        if (!empty($public_bank_field)) {
+                            if (array_key_exists($public_bank_field["id"], $dict_extra)) {
+                                $value = $dict_extra[$public_bank_field["id"]]["value"];
+                                // 兼容混乱的输入
+                                if (is_array($value))
+                                    $publicbankinfo = $value;
+                                else
+                                    $publicbankinfo = json_decode($value, TRUE);
+                                log_message("debug", "found public bank info => " . json_encode($publicbankinfo));
+                            }
+                        }
+                    }
+                }
+
+                // 取设置的收款银行账号
+                $cardno = "";
+                if (is_array($userbankinfo) && array_key_exists("cardno", $userbankinfo)) {
+                    $cardno = $userbankinfo["cardno"];
                 }
                 
+                // 如果没有设置取用户的默认设置
+                if (!$cardno) {
+                    if (array_key_exists($r["uid"], $_banks)) {
+                        $userbankinfo = $_banks[$r["uid"]];
+                        $cardno = $_banks[$r["uid"]]["cardno"];
+                    }
+                }
+
+                // 汇总key
+                $key_array = array(
+                    "name" => $r["nickname"],
+                    "usercardno" => $cardno,
+                    "publiccardno" => $this->try_get_element($publicbankinfo, "cardno")
+                );
+                $key = sha1(json_encode($key_array));
+
+                // 构造汇总基本数据
+                if (!array_key_exists($key, $stat_cells)) {
+                    // 加载自定义字段名称
+                    $user_bank_field_prefix = "收款银行";
+                    if (!empty($user_bank_field)) {
+                        $user_bank_field_prefix = $user_bank_field["name"];
+                    }
+                    // 加载自定义字段名称
+                    $public_bank_field_prefix = "付款银行";
+                    if (!empty($public_bank_field)) {
+                        $public_bank_field_prefix = $public_bank_field["name"];
+                    }
+
+                    $_stat_cells = array();
+                    
+                    $_stat_cells["提交人"] = $r["nickname"];
+                    $_stat_cells[$user_bank_field_prefix . " - 户名"] = $this->try_get_element($userbankinfo, "account");
+                    $_stat_cells[$user_bank_field_prefix . " - 账号"] = $this->try_get_element($userbankinfo, "cardno");
+                    $_stat_cells[$user_bank_field_prefix . " - 开户行"] = $this->try_get_element($userbankinfo, "bankname");
+                    $_stat_cells[$user_bank_field_prefix . " - 开户地"] = $this->try_get_element($userbankinfo, "bankloc");
+                    $_stat_cells[$user_bank_field_prefix . " - 开户支行"] = $this->try_get_element($userbankinfo, "subbranch");
+
+                    if (!empty($public_bank_field)) {
+                        $_stat_cells[$public_bank_field_prefix . " - 户名"] = $this->try_get_element($publicbankinfo, "account");
+                        $_stat_cells[$public_bank_field_prefix . " - 账号"] = $this->try_get_element($publicbankinfo, "cardno");
+                        $_stat_cells[$public_bank_field_prefix . " - 开户行"] = $this->try_get_element($publicbankinfo, "bankname");
+                        $_stat_cells[$public_bank_field_prefix . " - 开户地"] = $this->try_get_element($publicbankinfo, "bankloc");
+                        $_stat_cells[$public_bank_field_prefix . " - 开户支行"] = $this->try_get_element($publicbankinfo, "subbranch");
+                    }
+                    $_stat_cells["金额"] = 0;
+                    $_stat_cells["注释"] = "";
+                    
+                    $stat_cells[$key] = $_stat_cells;
+                }
+
+                // 计算报告审批人列表
                 $flow = array();
                 $_flow = $this->reports->report_flow($r['id']);
-                if($_flow['status'] > 0)
-                {
-                   $flow_member = $_flow['data']['data'];
-                   foreach($flow_member as $fm)
-                   {
-                        if($fm['status'] == 2)
-                        {
+                if($_flow['status'] > 0) {
+                    $flow_member = $_flow['data']['data'];
+                    foreach($flow_member as $fm) {
+                        if($fm['status'] == 2) {
                             array_push($flow,array('name' => $fm['nickname'],'step' => $fm['step']));
                         }
-                   }
+                    }
                 }
                 $r['flow'] = '';
-                if($flow)
-                {
-                    usort($flow,function($a,$b){
-                        if($a['step'] == $b['step'])
-                        {
+                if($flow) {
+                    usort($flow,function($a,$b) {
+                        if($a['step'] == $b['step']) {
                             return 0;
                         }
 
                         return ($a['step'] > $b['step']) ? -1 : 1;
                     });
                     $f_m = array();
-                    foreach($flow as $f)
-                    {
+                    foreach($flow as $f) {
                         array_push($f_m,$f['name']);
                     }
                     $r['flow'] = implode(',',$f_m);
                 }
-                
-                log_message('debug','report_flow:' . json_encode($_flow));
+
+                // 金额汇总
                 $r['total'] = 0;
                 $r['paid'] = 0;
-                //log_message('debug', json_encode($r));
+
                 $_items = $r['items'];
                 foreach($_items as $i){
                     $i['amount'] = sprintf("%.2f", $i['amount']);
@@ -1333,9 +1533,9 @@ class Reports extends REIM_Controller {
                     if($open_exchange == 1)
                     {
                         if(array_key_exists('currency', $i) && (strtolower($i['currency']) != "" )){
-                            $i['icon_type_name'] = $simbol_dic[$i['currency']]; 
+                            $i['icon_type_name'] = $simbol_dic[$i['currency']];
                             $i['icon_simbol'] = $icon_dic[$i['currency']];
-                            }
+                        }
                         else
                         {
                             $i['icon_type_name'] = '';
@@ -1343,10 +1543,8 @@ class Reports extends REIM_Controller {
                         }
 
                     }
-                    log_message("debug", "Items23:"  . json_encode($i));
+
                     $r['total'] += ($i['amount'] * $_rate);
-                    log_message("debug", "Items13:"  . json_encode($i['amount']));
-                    log_message("debug", "Items33:"  . json_encode($_rate));
                     $i['paid'] = ($i['amount'] * $_rate);
                     if(in_array($r['status'], array(4, 7, 8))){
                         // 已完成状态的，付款额度就是已付额度
@@ -1362,10 +1560,9 @@ class Reports extends REIM_Controller {
                         $i['member_info'] = $member_dic[$r['uid']];
                     }
                     //$r['total'] += ($i['amount'] * $_rate);
-                    //log_message("debug", "Items2:"  . json_encode($i));
+
                     array_push($_t_items, $i);
                     if($i['reimbursed'] == 0) {
-                        log_message("debug", "Ignore :"  . json_encode($i));
                         continue;
                     }
                     if($i['prove_ahead'] > 0){
@@ -1378,52 +1575,36 @@ class Reports extends REIM_Controller {
                     $r['paid'] = $r['total'];
                 }
                 $r['last'] = $r['total'] - $r['paid'];
-                log_message("debug", $r['status'] . "," . $r['id'] . " Total:" . $r['total']);
-                log_message("debug", $r['status'] . "," . $r['id'] . " Paid:" . $r['paid']);
-                log_message("debug", $r['status'] . "," . $r['id'] . " Last:" . $r['last']);
-                $_members[$r['uid']]['paid'] += $r['total'];//$r['last'];
-                $_members[$r['uid']]['uid'] = $r['uid'];
+
                 $obj = array();
                 $obj['报告名'] = $r['title'];
                 $obj['创建者'] = $r['nickname'];
                 $obj['创建日期'] = strftime('%Y年%m月%d日', $r['createdt']);
+
+                // 根据模板信息填充自定义值
+                $extra_cells = $this->build_extra_cells($template, $extra);
+                $dict_extra_cells[$r["id"]] = $extra_cells;
+                $obj = array_merge($obj, $extra_cells);
+
                 $obj['金额'] = $r['total'];
                 $obj['已付'] = $r['paid'];
                 $obj['应付'] = $r['last'];
 
-                array_push($_excel, $obj);
-            }
-            log_message("debug", "export --> " . json_encode($_t_items));
-            log_message("debug", "export Mmeber *** --> " . json_encode($_members));
+                // 累加已完成金额
+                $stat_cells[$key]["金额"] += $r["paid"];
 
-
-
-            $members = array();
-            foreach($_members as $x){
-                log_message("debug", "Member:" . json_encode($x));
-                $_bank = array('cardno' => '', 'account' => '', 'bankloc' => '', 'bankname' => '');
-                if(array_key_exists($x['uid'], $_banks)) $_bank = $_banks[$x['uid']];
-                $o = array();
-                $o['帐号'] = $_bank['cardno'];
-                $o['户名'] = $_bank['account'];
-                $o['金额'] = $x['paid'];
-                $o['开户行'] = $_bank['bankname'];
-                $o['开户地'] = $_bank['bankloc'];
-                $o['昵称'] = $x['nickname'];
-                $o['注释'] = '';
-                array_push($members, $o);
+                array_push($report_cells, $obj);
             }
 
-            $nicks = $_reports['nicks'];
+            $nicks = $data['nicks'];
 
             $__members = array();
             foreach($nicks as $i){
                 $__members[$i['uid']] =  $i['nickname'];
             }
-            $_detail_items = array();
+
             foreach($_t_items as $i){
                 $i['amount'] = sprintf("%.2f", $i['amount']);
-                log_message('debug', "alvayang Itemx :" .json_encode($i));
                 $_relates = explode(',', $i['relates']);
                 $__relates = array();
                 foreach($_relates as $r){
@@ -1433,7 +1614,6 @@ class Reports extends REIM_Controller {
                 }
                 $s = $i['category_code'];
                 if($s == 0) $s = '';
-                log_message("debug", "alvayang export item:" . json_encode($i));
                 $o = array();
                 $o['日期'] = date('Y年m月d日', date($i['createdt']));
                 $o['时间'] = date('H:i:s', date($i['createdt']));
@@ -1470,7 +1650,7 @@ class Reports extends REIM_Controller {
                     // 来了新玩法了，希望所有的直接部门和上级部门都能列出来，因此，不用再取第一个了
                     $unames = explode('/',$i['member_info']['d']);
                     foreach($unames as $name) {
-                        $_name = explode("-", $name); 
+                        $_name = explode("-", $name);
                         if(count($_name) > 1) {
                             array_push($_higher_department, $_name[0]);
                             array_push($_department, $_name[1]);
@@ -1499,35 +1679,6 @@ class Reports extends REIM_Controller {
                         $o['职位'] = $level_dic[$i['member_info']['level_id']];
                     }
                 }
-               /* 
-                $afford = $i['fee_afford'];
-                log_message("debug", "alvayang fee afford : " . $afford);
-                $_parts = explode("|", $afford);
-                $final = array();
-                $_afford_member = array();
-                $_afford_dept = array();
-                
-                foreach($_parts as $x) {
-                log_message("debug", "alvayang fee afford parts: " . $x);
-                    $__parts = explode("-", $x);
-                log_message("debug", "alvayang fee afford parts: " . count($__parts));
-                    if(count($__parts) == 3) {
-                        if(trim($__parts[1]) != "") 
-                            array_push($_afford_dept, $__parts[1]);
-                        if(trim($__parts[2]) != "") 
-                            array_push($_afford_member,$__parts[2]);
-                    }
-                }
-                $_str_afford_dept = $o['部门'];
-                $_str_afford_member = $i['nickname'];
-
-                if(count($_afford_dept)) {
-                    $_str_afford_dept = implode(",", $_afford_dept);
-                }
-                if(count($_afford_member)){
-                    $_str_afford_member = implode(",", $_afford_member);
-                }
-                */
                 //$o['类别'] = $i['category_name'];
                 $_str_afford_dept = $o['部门'];
                 $_str_afford_member = $i['nickname'];
@@ -1565,43 +1716,84 @@ class Reports extends REIM_Controller {
                 }
                 if($open_exchange == 1)
                 {
-                        $o['币种名称'] = $i['icon_type_name'] . '(' .$i['icon_simbol'] . ')';
-//                        $o['外币金额'] = (string)$i['amount'] . $i['icon_simbol'];
-                        $o['外币金额'] = $i['amount'];
-                        $o['汇率'] = '1.0';
-                        if($i['currency'] != 'cny')
-                            $o['汇率'] = round($i['rate']/100,6);
+                    $o['币种名称'] = $i['icon_type_name'] . '(' .$i['icon_simbol'] . ')';
+                    //                        $o['外币金额'] = (string)$i['amount'] . $i['icon_simbol'];
+                    $o['外币金额'] = $i['amount'];
+                    $o['汇率'] = '1.0';
+                    if($i['currency'] != 'cny')
+                        $o['汇率'] = round($i['rate']/100,6);
                 }
-//                $o['人民币金额'] = (string)($i['amount'] * $_rate) . '￥';
+                //                $o['人民币金额'] = (string)($i['amount'] * $_rate) . '￥';
                 $o['人民币金额'] = round($i['amount'] * $_rate,2);
                 $_paid = 0;
                 if($i['prove_ahead'] > 0){
                     $_paid = $i['pa_amount'];
                 }
                 $_last = $i['amount'] - $_paid;
-//                $o['已付'] = (string)($i['paid']) . '￥';
+                //                $o['已付'] = (string)($i['paid']) . '￥';
                 $o['已付'] = $i['paid'];
-//                $o['应付'] = (string)(($i['amount'] * $_rate) - $i['paid']) . '￥';
+                //                $o['应付'] = (string)(($i['amount'] * $_rate) - $i['paid']) . '￥';
                 $o['应付'] = $i['amount'] * $_rate - $i['paid'];
                 $o['报告名'] = $i['title'];
                 $o['报告ID'] = $i['rid'];
 
-                $_bank = array('cardno' => '', 'account' => '', 'bankloc' => '', 'bankname' => '');
-                if(array_key_exists($i['uid'], $_banks)) $_bank = $_banks[$i['uid']];
+                // 合并进来自定义字段
+                if (array_key_exists($i["rid"], $dict_extra_cells)) {
+                    $o = array_merge($o, $dict_extra_cells[$i["rid"]]);
+                }
 
-                $o['账号'] = $_bank['account'];
-                $o['卡号'] = $_bank['cardno'];
-                $o['开户行'] = $_bank['bankname'];
-                array_push($_detail_items, $o);
-                log_message('debug','members: ' . json_encode($i['member_info']));
+                array_push($item_cells, $o);
             }
 
-            $this->load->library('user_agent');
-            $excle_name = '报销报告列表' . date('Y-m-d', time()) . '.xls';
+            $template_name = "";
+            if ($template)
+                $template_name = $template["name"];
 
-            self::render_to_download('报告汇总', $members, $excle_name, '报告明细', $_excel, '消费明细', $_detail_items);
+            $template_excel = array(
+                "报告汇总" => array_values($stat_cells),
+                "报告明细" => $report_cells,
+                "消费明细" => $item_cells
+            );
 
+            log_message("debug", "报告汇总 => " . json_encode($stat_cells));
+            log_message("debug", "报告明细 => " . json_encode($report_cells));
+            log_message("debug", "消费明细 => " . json_encode($item_cells));
+
+            // 重命名已存在同名模板
+            if (array_key_exists($template_name, $excel)) {
+                $_excel = $excel[$template_name];
+                unset($excel[$template_name]);
+                $excel[$template_name . "1"] = $_excel;
+                $excel[$template_name . "2"] = $template_excel;
+            } elseif (array_key_exists($template_name + "1", $excel)) {
+                for ($i = 2; $i < 255; $i++) {
+                    if (!array_key_exists($template_name . $i, $excel)) {
+                        $excel[$template_name . $i] = $template_excel;
+                        break;
+                    }
+                }
+            } else {
+                $excel[$template_name] = $template_excel;
+            }
         }
+        $this->load->library('user_agent');
+        $excel_name = '报销报告列表' . date('Y-m-d', time()) . '.xls';
+
+        $data = array();
+        foreach ($excel as $template_name => $template_excel) {
+            foreach ($template_excel as $name => $excel) {
+                $title = $name;
+                if (!empty($template_name))
+                    $title = $template_name . " - " . $name;
+
+                array_push($data, array(
+                    "title" => $title,
+                    "data" => $excel
+                ));
+            }
+        }
+
+        self::render_to_download_2($excel_name, $data);
     }
 
     public function exports(){
