@@ -67,44 +67,42 @@ class Report_Model extends Reim_Model {
 
     public function add_comment($rid,$comment)
     {
-    	$jwt = $this->session->userdata('jwt');
-	    if(!$jwt) return false;
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
 
-	    $url = $this->get_url('report/'.$rid);
-    	$data=array(
-			'comment'=>$comment
-		);
-	    $buf = $this->do_Put($url,$data,$jwt);
-	    log_message("debug","add_comment:".json_encode($buf));
-    	return $buf;
+        $url = $this->get_url('report/'.$rid);
+        $data=array(
+            'comment'=>$comment
+        );
+        $buf = $this->do_Put($url,$data,$jwt);
+        log_message("debug","add_comment:".json_encode($buf));
+        return $buf;
     }
 
     public function revoke($rid)
     {
-    	$jwt = $this->session->userdata('jwt');
-    	if(!$jwt) return false;
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
 
-    	$url = $this->get_url('revoke/'.$rid);
-    	$buf = $this->do_Get($url,$jwt);
-    	log_message('debug','######'.json_encode($buf));
+        $url = $this->get_url('revoke/'.$rid);
+        $buf = $this->do_Get($url,$jwt);
+        log_message('debug','######'.json_encode($buf));
 
-    	return $buf;
+        return $buf;
     }
-
     public function sendout($rid,$email)
     {
-    	$jwt = $this->session->userdata('jwt');
-    	if(!$jwt) return false;
-    	$url = $this->get_url('exports');
-    	$data = array(
-    		'rid' => $rid
-    		,'email' => $email
-    	);
-    	$buf = $this->do_Post($url,$data,$jwt);
-    	log_message("debug","send_report".json_encode($buf));
-    	return $buf;
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $url = $this->get_url('exports');
+        $data = array(
+            'rid' => $rid
+            ,'email' => $email
+        );
+        $buf = $this->do_Post($url,$data,$jwt);
+        log_message("debug","send_report".json_encode($buf));
+        return $buf;
     }
-
     public function get_permission($rid) {
         $jwt = $this->session->userdata('jwt');
         log_message("debug", $rid);
