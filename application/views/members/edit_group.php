@@ -137,8 +137,8 @@
 $(document).ready(function() {
     load_exists();
 });
-var _image = '<?php echo $group["image"]; ?> ';
-var _image_url = '<?php echo $group["image_url"]; ?>';
+var _image = '<?php if(array_key_exists('image',$group)){ echo $group["image"];} else {echo '';} ?> ';
+var _image_url = '<?php if(array_key_exists('image_url',$group)){$group["image_url"];} else {echo '';} ?>';
 $(document).ready(function() {
 var uploader = WebUploader.create({
 

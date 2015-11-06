@@ -258,13 +258,13 @@ $(document).ready(function(){
        
         if(gname.replace(/(^\s*)|(\s*$)/g,"") == ""){
          show_notify('请输入部门名称');
-         $('#receiver').focus();
+         $('#gname').focus();
          return false;
         }
         if(gname.indexOf('-') >= 0)
         {
             show_notify("部门名称中不能包含'-'");
-            $('receiver').focus();
+            $('#gname').focus();
             return false;
         }
         $('#mainform').submit();
