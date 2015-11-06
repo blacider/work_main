@@ -380,7 +380,7 @@ uploader_file.on( 'fileQueued', function( file ) {
             name_ = "pdf.png"
             break;
         default:
-            name_ = "excel.png";
+            name_ = "default.png";
             break;
     }
     $img.attr( 'src', path+name_);

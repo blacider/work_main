@@ -498,6 +498,9 @@ function getPngByType(filename) {
         case "pdf":
             name_ = "pdf.png"
             break;
+        default:
+            name_ = "default.png"
+            break;
     }
     return name_;
 }
