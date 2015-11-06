@@ -55,7 +55,7 @@ jQuery(grid_selector).jqGrid({
     height: 250,
     multiselect: true,
     loadtext: '',
-    colNames:['报告ID', '提交日期','报告名', '条目数', '提交者', '金额', '状态', '操作','部门'],
+    colNames:['报告ID', '报告模板', '提交日期','报告名', '消费类型', '条目数', '提交者', '金额', '状态', '操作','部门'],
     loadonce: true,
     caption: "费用审计",
     editurl: __BASE + 'bills/save',
@@ -64,14 +64,16 @@ jQuery(grid_selector).jqGrid({
     hoverrows : true,
 
     colModel:[
-    {name:'id', index:'id', width:100,editable: false,editoptions:{size:"20",maxlength:"30"}},
-    {name:'date_str', index:'date_str', width:100,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
-    {name:'title', index:'title', width:90,editable: false,editoptions:{size:"20",maxlength:"30"}},
-    {name:'item_count', index:'item_count', width:50,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
+    {name:'id', index:'id', width:30,editable: false,editoptions:{size:"20",maxlength:"30"}},
+    {name:'report_template', index:'report_template', width:60,editable: false,editoptions:{size:"20",maxlength:"50"}},
+    {name:'date_str', index:'date_str', width:60,editable: false,editoptions:{size:"20",maxlength:"60"},search:false},
+    {name:'title', index:'title', width:40,editable: false,editoptions:{size:"20",maxlength:"40"}},
+    {name:'prove_ahead', index:'prove_ahead', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
+    {name:'item_count', index:'item_count', width:30,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
     {name:'nickname', index:'nickname', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
-    {name:'amount',index:'amount', sorttype: myCustomSort,width:70, editable: false,editoptions: {size:"20",maxlength:"30"},formatter:'currency', formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'},unformat: aceSwitch,search:false},
+    {name:'amount',index:'amount', sorttype: myCustomSort,width:30, editable: false,editoptions: {size:"20",maxlength:"30"},formatter:'currency', formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'},unformat: aceSwitch,search:false},
     {name:'status_str',index:'status_str', width:70, editable: true,edittype:"select",editoptions: {value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},
-    {name:'options',index:'options', width:70, editable: true,edittype:"select",editoptions: {value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},
+    {name:'options',index:'options', width:30, editable: true,edittype:"select",editoptions: {size:"20",maxlength:"30",value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},
     {name:'ugs', index:'ugs', width:50,editable: false,editoptions:{size:"20",maxlength:"30"},hidden:true},
 
 

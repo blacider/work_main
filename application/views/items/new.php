@@ -223,18 +223,18 @@
 <label class="col-sm-1 control-label no-padding-right">类型</label>
 <div class="col-xs-6 col-sm-6">
 <select class="form-control" name="type" data-placeholder="请选择类型">
-<option value="0">报销</option>
+<option value="0"><?php echo $item_type_dic[0];?></option>
 <?php 
 if($__config && $__config['disable_borrow']=='0')
 {
 ?>
-<option value="1">预算</option>
+<option value="1"><?php echo $item_type_dic[1]; ?></option>
 <?php
 }
 if($__config && $__config['disable_budget'] == '0')
 {
 ?>
-<option value="2">预借</option>
+<option value="2"><?php echo $item_type_dic[2]; ?></option>
 <?php
 }
 ?>
@@ -479,7 +479,7 @@ var simbol_dic = {'cny':'人民币','usd':'美元','eur':'欧元','hkd':'港币'
                               'aud':'澳大利亚元','nzd':'新西兰元','chf':'瑞士法郎','dkk':'丹麦克朗','nok':'挪威克朗','sek':'瑞典克朗','brl':'巴西里亚尔'
                              }; 
 var icon_dic = {'cny':'￥','usd':'$','eur':'€','hkd':'$','mop':'$','twd':'$','jpy':'￥','ker':'₩',
-                              'gbp':'£','rub':'Rbs','sgd':'$','php':'₱','idr':'Rps','myr':'$','thb':'฿','cad':'$',
+                              'gbp':'£','rub':'₽','sgd':'$','php':'₱','idr':'Rps','myr':'$','thb':'฿','cad':'$',
                               'aud':'$','nzd':'$','chf':'₣','dkk':'Kr','nok':'Kr','sek':'Kr','brl':'$'
                              }; 
 var typed_currency = [];

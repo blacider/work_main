@@ -284,7 +284,7 @@
                                 <div class="col-xs-6 col-sm-6">
     <input type="hidden" value="<?php echo $item['prove_ahead']; ?>">
 <?php 
-                                                $_prove_dict = array('0' => '报销', '2' => '预借', '1' => '预算');
+                                                $_prove_dict = $item_type_dic;
 ?>
     <input type="hidden" value="<?php echo $item['prove_ahead']; ?>">
                                     <select class="form-control" name="type" data-placeholder="请选择类型">
@@ -592,7 +592,7 @@ var simbol_dic = {'cny':'人民币','usd':'美元','eur':'欧元','hkd':'港币'
                               'aud':'澳大利亚元','nzd':'新西兰元','chf':'瑞士法郎','dkk':'丹麦克朗','nok':'挪威克朗','sek':'瑞典克朗','brl':'巴西里亚尔'
                              }; 
 var icon_dic = {'cny':'￥','usd':'$','eur':'€','hkd':'$','mop':'$','twd':'$','jpy':'￥','ker':'₩',
-                              'gbp':'£','rub':'Rbs','sgd':'$','php':'₱','idr':'Rps','myr':'$','thb':'฿','cad':'$',
+                              'gbp':'£','rub':'₽','sgd':'$','php':'₱','idr':'Rps','myr':'$','thb':'฿','cad':'$',
                               'aud':'$','nzd':'$','chf':'₣','dkk':'Kr','nok':'Kr','sek':'Kr','brl':'$'
                              }; 
 var _currency = "<?php echo $item['currency'];?>";

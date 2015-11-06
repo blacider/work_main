@@ -7,7 +7,9 @@ class Items extends REIM_Controller {
         $this->load->model('report_model', 'report');
         $this->load->model('user_model','user');
         $this->load->model('group_model', 'groups');
+        $this->load->model('reim_show_model', 'reim_show');
     }
+    
     public function attachment() {
         if(empty($_FILES)) 
             die(''); 
@@ -38,7 +40,7 @@ class Items extends REIM_Controller {
         $symbol = '?';
         $coin_symbol_dic = array( 
                             'cny'=>'￥','usd'=>'$','eur'=>'€','hkd'=>'$','mop'=>'$','twd'=>'$','jpy'=>'￥','ker'=>'₩',
-                            'gbp'=>'£','rub'=>'Rbs','sgd'=>'$','php'=>'₱','idr'=>'Rps','myr'=>'$','thb'=>'฿','cad'=>'$',
+                            'gbp'=>'£','rub'=>'₽','sgd'=>'$','php'=>'₱','idr'=>'Rps','myr'=>'$','thb'=>'฿','cad'=>'$',
                             'aud'=>'$','nzd'=>'$','chf'=>'₣','dkk'=>'Kr','nok'=>'Kr','sek'=>'Kr','brl'=>'$'
                             );                           
         if(array_key_exists($key,$coin_symbol_dic))
@@ -126,12 +128,15 @@ class Items extends REIM_Controller {
 
     public function newitem(){
         //        $profile = $this->session->userdata('profile');
+        //获取消费类型字典
+        $item_type_dic = $this->reim_show->get_item_type_name();
+
         $_profile = $this->user->reim_get_user();	
         $profile = array();
         $group_config = array();
         $item_configs = array();
         $item_config = array();
-        if($_profile)
+        if($_profile && array_key_exists('profile',$_profile['data']))
         {
             $profile = $_profile['data']['profile'];
         }
@@ -216,7 +221,8 @@ class Items extends REIM_Controller {
                 'categories' => $_categories,
                 'tags' => $tags,
                 'item_config' => $item_config,
-                'is_burden' => $is_burden
+                'is_burden' => $is_burden,
+                'item_type_dic' => $item_type_dic
             ));
     }
     public function index(){
@@ -324,6 +330,9 @@ class Items extends REIM_Controller {
 
 
     public function listdata(){
+        //获取消费类型字典
+        $item_type_dic = $this->reim_show->get_item_type_name();
+       
         $items = $this->items->get_list();
         $category = $this->category->get_list();
         $categories = array();
@@ -347,11 +356,7 @@ class Items extends REIM_Controller {
                 $s['cate_str'] = '未指定的分类';
                 $s['createdt'] = strftime("%Y-%m-%d %H:%M", intval($s['createdt']));
                 $s['dt'] = strftime("%Y-%m-%d %H:%M", intval($s['dt']));
-                $_type = '报销';
-                switch($s['type']){
-                case 1: {$_type = '预算';};break;
-                case 2: {$_type = '预借';};break;
-                }
+                $_type = $item_type_dic[$s['type']];
                 $s['type'] = $_type;
 
                 if(array_key_exists($s['category'], $_cates)){
@@ -463,6 +468,7 @@ class Items extends REIM_Controller {
 
     public function ishow($id = 0) {
         if(0 === $id) redirect(base_url('items'));
+        $item_type_dic = $this->reim_show->get_item_type_name();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
         $_profile = $this->user->reim_get_user();	
@@ -616,9 +622,9 @@ class Items extends REIM_Controller {
         $_type = '报销';
         $prove_ahead = $item['prove_ahead'];
         switch($prove_ahead) {
-        case 0:{$_type = '报销';};break;
-        case 1:{$_type = '预算';};break;
-        case 2:{$_type = '预借';};break;
+        case 0:{$_type = $item_type_dic[0];};break;
+        case 1:{$_type = $item_type_dic[1];};break;
+        case 2:{$_type = $item_type_dic[2];};break;
         }
         $item['prove_ahead'] = $_type;
 
@@ -676,6 +682,8 @@ class Items extends REIM_Controller {
         if($obj['status'] < 1){
             redirect(base_url('items'));
         }
+
+        $item_type_dic = $this->reim_show->get_item_type_name();
 
         $_profile = $this->user->reim_get_user();	
         $profile = array();
@@ -785,9 +793,9 @@ class Items extends REIM_Controller {
         $_type = '报销';
         $prove_ahead = $item['prove_ahead'];
         switch($prove_ahead) {
-        case 0:{$_type = '报销';};break;
-        case 1:{$_type = '预算';};break;
-        case 2:{$_type = '预借';};break;
+        case 0:{$_type = $item_type_dic[0];};break;
+        case 1:{$_type = $item_type_dic[1];};break;
+        case 2:{$_type = $item_type_dic[2];};break;
         }
         $item['prove_ahead'] = $_type;
 
@@ -894,6 +902,8 @@ class Items extends REIM_Controller {
     }
 
     public function edit($id = 0, $from_report = 0) {
+        //获取消费类型字典
+        $item_type_dic = $this->reim_show->get_item_type_name();
         log_message('debug','item_id' . $id);
         if(0 === $id) redirect(base_url('items'));
         $_profile = $this->user->reim_get_user();	
@@ -1060,6 +1070,7 @@ class Items extends REIM_Controller {
 				,'fee_afford_ids' => implode(',',$fee_afford_ids)
 				,'fee_afford_type' => $afford_type
 				,'is_burden' => $is_burden
+				,'item_type_dic' => $item_type_dic
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')

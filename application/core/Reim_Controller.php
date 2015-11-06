@@ -136,7 +136,17 @@ class REIM_Controller extends CI_Controller{
         $this->load->model('user_model');
         $this->load->model('module_tip_model');
         $uid = $this->session->userdata('uid');
-        $profile = $this->session->userdata('profile');
+        $profile = array();
+        $common = array();
+        $_common = $this->user_model->get_common();
+        if($_common['status'] > 0)
+        {
+            $common = $_common['data'];
+        }
+        if(array_key_exists('profile',$common))
+        {
+            $profile = $common['profile'];
+        }
         if(!($profile || $uid)){
             // 重定向到登陆
             log_message("debug","Nothing ");
@@ -151,8 +161,10 @@ class REIM_Controller extends CI_Controller{
             $custom_data['tip'] = $this->module_tip_model->get_tip($custom_data['uid']);
             $custom_data['description'] =  '';
         } else {
-            if(array_key_exists('templates', $profile)) {
-                $report_template = $profile['templates'];
+//            if(array_key_exists('templates', $profile)) {
+            if(array_key_exists('report_setting', $profile)) {
+                if(array_key_exists('templates',$profile['report_setting']))
+                $report_template = $profile['report_setting']['templates'];
             }
             $this->session->set_userdata('user', $profile);
             $custom_data['profile'] = $profile;
@@ -215,19 +227,92 @@ class REIM_Controller extends CI_Controller{
 
     }
 
-    public function render_to_download($title, $data, $excle_name, $title_2 = '', $data_2 = array(), $title_3 = '', $data_3 = array()){
+    public function render_to_download_2($filename, $data) {
+        if($this->agent->is_browser('Internet Explorer')) {
+            $excle_name = urlencode($filename);
+        }
+
+        $writer = $this->build_excel($data);
+
+        header("Pragma: public");
+        header("Content-Type: application/vnd.ms-execl");
+        header('Content-Disposition: attachment;filename=' . $filename);
+        header("Content-Transfer-Encoding: binary");
+        header("Expires: Mon, 26 Jul 1970 05:00:00 GMT");
+        header("Pragma: no-cache");
+        $writer->save("php://output");
+
+        exit();
+    }
+
+    public function render_to_download($title, $data, $excel_name, $title_2 = '', $data_2 = array(), $title_3 = '', $data_3 = array()){
         if($this->agent->is_browser('Internet Explorer')) {
             $excle_name = urlencode($excle_name);
         }
         $objwriter = $this->return_buf($title, $data, $title_2, $data_2, $title_3, $data_3);
         header("Pragma: public");
         header("Content-Type: application/vnd.ms-execl");
-        header('Content-Disposition: attachment;filename=' . $excle_name);
+        header('Content-Disposition: attachment;filename=' . $excel_name);
         header("Content-Transfer-Encoding: binary");
         header("Expires: Mon, 26 Jul 1970 05:00:00 GMT");
         header("Pragma: no-cache");
         $objwriter->save("php://output");
         exit();
+    }
+
+    public function build_excel($data)
+    {
+        $__excel = new PHPExcel();
+        $__excel->getProperties()
+            ->setCreator("RushuCloud Ltd.co")
+            ->setLastModifiedBy("RushuCloud.Ltd.co");
+
+        while ($__excel->getSheetCount() < count($data)) {
+            $__excel->createSheet();
+        }
+
+        foreach ($data as $index => $sheet_data) {
+            $sheet = $__excel->setActiveSheetIndex($index);
+
+            log_message("debug", "create sheet with " . json_encode($sheet_data));
+
+            $title = $sheet_data["title"];
+            $rows = $sheet_data["data"];
+
+            // TODO: 自动宽度应该在设置值之后
+            $sheet->setTitle($title);
+            $first_row = $rows[0];
+            $j = 0;
+            foreach ($first_row as $k => $v) {
+                $c_name = $this->getCharByNunber($j);
+                $sheet->getStyle($c_name)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+                $sheet->setCellValue($c_name . '1', ' ' . strval($k));
+                $sheet->getColumnDimension($c_name)->setAutoSize(true);
+                $j++;
+            }
+
+            $x = 2;
+            foreach ($rows as $row) {
+                $y = 0;
+                foreach ($row as $k => $v) {
+                    $c_name = $this->getCharByNunber($y);
+                    $sheet->getStyle($c_name)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+                    $sheet->setCellValue($this->getCharByNunber($y) . $x, ' ' . strval($v));
+                    $y++;
+                }
+                $x++;
+            }
+
+            $j = 0;
+            foreach ($first_row as $k => $v) {
+                $c_name = $this->getCharByNunber($j);
+                $sheet->getColumnDimension($c_name)->setAutoSize(true);
+                $j++;
+            }
+        }
+
+        $objwriter = IOFactory::createWriter($__excel, 'Excel5');
+        return  $objwriter;
     }
 
     public function return_buf($title, $data, $title_2 = '', $data_2 = array(), $title_3 = '', $data_3 = array()) {
