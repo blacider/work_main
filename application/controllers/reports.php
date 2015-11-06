@@ -1591,7 +1591,7 @@ class Reports extends REIM_Controller {
                 $obj['应付'] = $r['last'];
 
                 // 累加已完成金额
-                $stat_cells[$key]["金额"] += $r["paid"];
+                $stat_cells[$key]["金额"] += $r["last"];
 
                 array_push($report_cells, $obj);
             }
