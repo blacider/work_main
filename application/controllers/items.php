@@ -353,6 +353,35 @@ class Items extends REIM_Controller {
             log_message("debug","list item:" . json_encode($data));
             foreach($item_data as &$s){
                 //if($s['status'] < 0) continue;
+                /*获取附件*/
+                $s['attachment'] = '';
+                if(array_key_exists('attachments',$s))
+                {
+                    $img_path = '/static/images/';
+                    $img = 'excel.png';
+                    $attach_img_dic = array(
+                                     'application/vnd.openxmlformats-officedocument.presentationml.presentation'=>'powerpoint.png',
+                                     'application/vnd.ms-powerpoint'=>'powerpoint.png',
+                                     'application/vnd.openxmlformats-officedocument.wordprocessingml.document'=>'word.png',   
+                                     'application/msword'=>'word.png',
+                                     'application/pdf'=>'pdf.png'
+                                     );
+                    if($s['attachments'])
+                    {
+	                    foreach($s['attachments'] as $attach)
+	                    {
+	                        if(array_key_exists($attach['mime'],$attach_img_dic) && array_key_exists($attach['mime'],$attach_img_dic))
+	                        {
+	                            $img = $attach_img_dic[$attach['mime']];
+	                        }
+	                        $_attach = '<img title="' . $attach['filename']  .  '" style="width:25px;height:25px" src = "' . $img_path . $img . '"/>';
+//                            $_attach_name = '<div style="bottom:10px;with:10px;clear:both" font-size="1px">' . $attach['filename']  .'</div>';
+                            $_attach_url = '<a title="' . $attach['filename']  . '"  href="' . $attach['url']  . '">' . $_attach . '</a>';
+
+	                        $s['attachment'] = $s['attachment'] . '&nbsp;&nbsp;' . $_attach_url;
+	                    }
+                    }
+                }
                 $s['cate_str'] = '未指定的分类';
                 $s['createdt'] = strftime("%Y-%m-%d %H:%M", intval($s['createdt']));
                 $s['dt'] = strftime("%Y-%m-%d %H:%M", intval($s['dt']));
