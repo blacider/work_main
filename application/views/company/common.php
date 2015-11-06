@@ -25,7 +25,7 @@
                         <div class="col-xs-12 col-sm-12">
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">不允许预借</label>
+                                <label class="col-sm-3 control-label no-padding-right">不允许预算</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
@@ -39,7 +39,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">不允许预算</label>
+                                <label class="col-sm-3 control-label no-padding-right">不允许预借</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
@@ -173,13 +173,28 @@
 
 
                             <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right">是否开放外汇</label>
+                                <div class="col-xs-6 col-sm-6">
+                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
+                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
+                                        <label style="margin-top:8px;">
+                                            <input name="open_exchange" class="ace ace-switch btn-rotate" type="checkbox" id="open_exchange" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+
+                                   <!-- </div> -->
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">报销单打印模板设置</label>
                                 <div class="col-xs-4 col-sm-4">
                                     <select id="temp" class="chosen-select tag-input-style" name="temp"  data-placeholder="请选择模板">
                                     <option value="a4.yaml">A4模板</option>
                                     <option value="a5.yaml">A5模板</option>
                                     <option value="b5.yaml">B5模板</option>
-                                    <option value="disanshi.yaml">210*114 分类目模板</option>
+                                    <option value="disanshi.yaml">210*114 分类别模板</option>
                                 
                                 </select>
                                 </div>
@@ -215,6 +230,7 @@
                                 </div>
                             </div>
 
+                           
 
 
 
@@ -251,6 +267,15 @@ var __BASE = "<?php echo $base_url; ?>";
     dataType:'json',
     success:function(data){
 
+        if(data.open_exchange!=undefined)
+        {
+            if(data.open_exchange==1)
+            {
+            $('#open_exchange').attr('checked', data.open_exchange);
+            $("#open_exchange").trigger("chosen:updated");
+            }
+
+        }
 
          if(data.disable_budget!=undefined)
         {
@@ -427,13 +452,14 @@ var __BASE = "<?php echo $base_url; ?>";
                     close_directly :$('#close_directly').is(':checked'),
                     low_amount_only:$('#low_amount_only').is(':checked'),
                     max_allowed_months:$('#max_allowed_months').val(),
-		    private_structure:$('#private_structure').is(':checked'),
+		            private_structure:$('#private_structure').is(':checked'),
                     need_bank_info:$('#need_bank_info').is(':checked'),
-		    isadmin:$('#isadmin').is(':checked'),
-		    isremark:$('#isremark').is(':checked'),
-		    iscompany:$('#iscompany').is(':checked'),
-		    template:$('#temp option:selected').val(),
-		    limit:lval,reports_limit:r_limit
+        		    isadmin:$('#isadmin').is(':checked'),
+        		    isremark:$('#isremark').is(':checked'),
+        		    iscompany:$('#iscompany').is(':checked'),
+        		    template:$('#temp option:selected').val(),
+        		    limit:lval,reports_limit:r_limit,
+                    open_exchange:$('#open_exchange').is(':checked')
 		    },
                 dataType:'json',
                 success:function(data){

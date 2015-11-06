@@ -2,6 +2,8 @@
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 
+<!-- page specific plugin styles -->
+<link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 <script src="/static/ace/js/date-time/moment.min.js"></script>
 <!-- <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script> -->
@@ -12,13 +14,8 @@
 <script src="/static/ace/js/date-time/moment.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script>
-    
-     
-	 
-	   <script src="/static/ace/js/jquery.colorbox-min.js"></script>
-	   
-	     <!-- page specific plugin styles -->
-	     <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
+<script src="/static/ace/js/jquery.colorbox-min.js"></script>
+<script src="/static/js/reports.js"></script>
 
 
 
@@ -38,6 +35,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">发送至</label>
                                 <div class="col-xs-9 col-sm-9">
+                                    <input type="hidden" name="hidden_receiver" id="hidden_receiver" />
                                     <select class="chosen-select tag-input-style" name="receiver[]" multiple="multiple" data-placeholder="请选择审批人" id="receiver">
                                         <?php 
 					$user = $this->session->userdata('user');
@@ -114,29 +112,26 @@ if($__config)
 }
 foreach($items as $i){
     if($i['rid'] == 0 && in_array($i['prove_ahead'], $item_type)){
+                                     $item_amount = '';
+                                     if($i['currency'] != 'cny')
+                                                {
+                                                    $item_amount = round($i['amount']*$i['rate']/100,2);
+                                                }else
+                                                { 
+                                                    $item_amount =  $i['amount'];
+                                                } 
                                         ?>
                                         <tr id="<?php echo 'item'.$i['id']?>">
                                         <td>
-<input name="item[]" value="<?php echo $i['id']; ?>" 
-type="checkbox" class="form-controller amount" 
-data-amount = "<?php echo $i['amount'] ?>" 
-data-id="<?php echo $i['id']; ?>" 
-></td>
+                                            <input name="item[]" value="<?php echo $i['id']; ?>" 
+                                            type="checkbox" class="form-controller amount" 
+                                            data-amount = "<?php echo $item_amount; ?>" 
+                                            data-id="<?php echo $i['id']; ?>" 
+                                            ></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['cate_str'];?></td>
-                                            <td><?php echo '￥'.$i['amount']; ?></td>
-                                            <td><?php 
-        
-                                                $buf = '';
-switch($i['prove_ahead']) {
-case 0 : $buf = '报销';break;
-case 1 : $buf = '预算';break;
-case 2 : $buf = '预借';break;
-} 
-echo $buf;
-
-
-                                                ?></td>
+                                            <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
+                                            <td><?php echo $item_type_dic[$i['prove_ahead']];?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td><?php echo $i['note']; ?></td>
                                             <td>
@@ -172,6 +167,36 @@ echo $buf;
         </form>
     </div>
 </div>
+
+<div class="modal fade" id="modal_next">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">根据公司规定，你的报告需要提交给</h4>
+                <input type="hidden" name="rid" value="" id="rid">
+                <input type="hidden" name="status" value="2" id="status">
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="col-xs-9 col-sm-9" id="label_receiver">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-success submit_by_rule" value="按照公司规定发送报告" />
+                <input type="submit" class="btn btn-primary my_submit" value="按照我的选择发送报告" />
+                <div class="btn btn-primary" onclick="cancel_modal_next()">取消</div>
+            </div>
+                <script type="text/javascript">
+                  function cancel_modal_next() {
+                    $('#modal_next').modal('hide');
+                    return;
+                  }
+                </script>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 <div class="modal fade" id="force_submit">
@@ -271,6 +296,7 @@ function do_post(force) {
     // 转ajax,否则不能正确处理
     var _renew = $('#renew').val();
     if(_renew == 0) force = 1;
+    // 先去验证一次
     // 获取所有的 条目
     var _cc = $('#cc').val();
     if(!_cc) _cc = Array();
@@ -303,7 +329,16 @@ function do_post(force) {
 }
 
 $(document).ready(function(){
-    //var now = moment();
+    $('.submit_by_rule').click(function(){
+        var _receivers = ($('#hidden_receiver').val());
+        if(!_receivers) do_post();
+        _receivers = _receivers.split(",");
+        $('#receiver').val(_receivers).trigger("chosen:updated");
+        do_post();
+    });
+    $('.my_submit').click(function(){
+        do_post();
+    });
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
             //locale:  moment.locale('zh-cn'),
@@ -360,16 +395,12 @@ $(document).ready(function(){
             $('.amount').each(function(){
                 $(this).prop('checked',true);
             });   
-
-            //$("[name='item[]']").prop('checked',true);
         }
         else
         {
             $('.amount').each(function(){
                 $(this).prop('checked',false);
-              // $(this).removeAttr("checked"); 
             });
-           // $("[name='item[]']").prop('checked',false);
         }
         update_tamount();
      });
@@ -377,8 +408,7 @@ $(document).ready(function(){
 
     $('.renew').click(function(){
         $('#renew').val($(this).data('renew'));
-        /// 不强制
-        do_post(0);
+        submit_check();
     });
     $('.force_submit_btn').click(function() {
         $('#renew').val(1);

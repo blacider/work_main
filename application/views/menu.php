@@ -28,7 +28,7 @@ echo $username;
                 <a href="<?php echo base_url('users/profile'); ?>">个人资料</a>
                 <!--
                 <a href="#">支付设置</a>
-                <a href="#">类目设置</a>
+                <a href="#">类别设置</a>
                 -->
                 <a href="<?php echo base_url('login/dologout'); ?>">退出</a>
             </div>

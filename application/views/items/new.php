@@ -1,21 +1,72 @@
 <link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
+<script src="/static/ace/js/jquery.json.min.js"></script>
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
+
 <!-- <link rel="stylesheet" href="/static/third-party/jqui/jquery-ui.min.css" id="main-ace-style" /> -->
 
 <!-- page specific plugin styles -->
 <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 <div class="page-content">
 <div class="page-content-area">
+<?php
+    $_config = '';
+    if(array_key_exists('config',$profile['group']))
+    {
+        $_config = $profile['group']['config'];
+    }
+    $__config = json_decode($_config,True);
+?>
 <form role="form" action="<?php echo base_url('items/create');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="itemform">
 <div class="row">
 <div class="col-xs-12 col-sm-12">
+<?php
+    if(array_key_exists('open_exchange', $__config) && $__config['open_exchange'] == '1')
+    {
+?>
 <div class="form-group">
+    <label class="col-sm-1 control-label no-padding-right">金额</label>
+    <div class="col-xs-6 col-sm-6">
+
+
+        <select class="col-xs-4 col-sm-4" class="form-control  chosen-select tag-input-style" name="coin_type" id="coin_type">
+            <option value='cny,100'>人民币</option>
+        </select>
+        <div class="input-group input-group">
+            <span class="input-group-addon" id='coin_simbol'>￥</span>
+            <input type="text" class="form-controller col-xs-12 col-sm-12" name="amount" id="amount" placeholder="金额" required>
+            <span class="input-group-addon" id='rate_simbol'>￥0</span>
+        </div>
+
+    </div>
+
+
+</div>
+<div class="form-group" id="rate_note">
+<label class="col-sm-1 control-label no-padding-right"></label>
+<div class="col-xs-6 col-sm-6">
+<small>中行实时<small id='rate_type'>现钞卖出价</small>为：<small id='rate_amount'>1.0</small></small>
+</div>
+
+</div>
+<?php
+    }
+    else
+    {
+?>
+<div class="form-group" id="mul_amount">
 <label class="col-sm-1 control-label no-padding-right">金额</label>
 <div class="col-xs-6 col-sm-6">
 <input type="text" class="form-controller col-xs-12" name="amount" id="amount" placeholder="金额" required>
 </div>
+
 </div>
+
+<?php
+    }
+?>
+
+
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">类别</label>
 <div class="col-xs-6 col-sm-6">
@@ -25,7 +76,7 @@
 </select>
 
 
-<select class="col-xs-6 col-sm-6" name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类目">
+<select class="col-xs-6 col-sm-6" name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类别">
 </select>
 
 
@@ -155,7 +206,7 @@
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">标签</label>
 <div class="col-xs-6 col-sm-6">
-<select class="chosen-select tag-input-style" name="tags" multiple="multiple" data-placeholder="请选择标签">
+<select class="chosen-select tag-input-style" name="tags[]" multiple="multiple" data-placeholder="请选择标签">
 <?php foreach($tags as $category) {?>
 
 <option value="<?php echo $category['id']; ?>"><?php echo $category['name']; ?></option>
@@ -165,32 +216,25 @@
 </div>
 </div>
 <?php  } ?>
-<?php
-    $_config = '';
-    if(array_key_exists('config',$profile['group']))
-    {
-    	$_config = $profile['group']['config'];
-    }
-    $__config = json_decode($_config,True);
-?>
+
 
 
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">类型</label>
 <div class="col-xs-6 col-sm-6">
 <select class="form-control" name="type" data-placeholder="请选择类型">
-<option value="0">报销</option>
+<option value="0"><?php echo $item_type_dic[0];?></option>
 <?php 
 if($__config && $__config['disable_borrow']=='0')
 {
 ?>
-<option value="1">预算</option>
+<option value="1"><?php echo $item_type_dic[1]; ?></option>
 <?php
 }
 if($__config && $__config['disable_budget'] == '0')
 {
 ?>
-<option value="2">预借</option>
+<option value="2"><?php echo $item_type_dic[2]; ?></option>
 <?php
 }
 ?>
@@ -198,12 +242,31 @@ if($__config && $__config['disable_budget'] == '0')
 </div>
 </div>
 
+<?php
+foreach($item_config as $s) {
+    if($s['cid'] == -1  && $s['type'] == 1 && $s['active'] == 1) {
+?>
+<div class="form-group">
+<label class="col-sm-1 control-label no-padding-right"><?php echo $s['name']; ?></label>
+<div class="col-xs-6 col-sm-6">
+<textarea data-type="<?php echo $s['id']; ?>" name="extra_<?php echo $s['id']; ?>" id="note_2_c" class="col-xs-12 col-sm-12  extra_textarea form-controller" ></textarea>
+</div>
+</div>
+<?php
+    }
+}
+?>
+
+<input type="hidden" name="hidden_extra" id="hidden_extra" value="">
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">备注</label>
 <div class="col-xs-6 col-sm-6">
 <textarea name="note" id="note" class="col-xs-12 col-sm-12  form-controller" ></textarea>
 </div>
+
 </div>
+
+
 
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">照片</label>
@@ -224,14 +287,19 @@ if($__config && $__config['disable_budget'] == '0')
         <a class="filePicker" id="btn_simg" >添加图片</a>
     </div>
 </div>
+</div>
+<div class="form-group">
+<label class="col-sm-1 control-label no-padding-right">附件</label>
+<div class="col-xs-6 col-sm-6">
+<div id="uploader-file">
+    <!--用来存放文件信息-->
+    <div id="theList" class="uploader-list"></div>
+    <div class="col-xs-12 col-sm-12" style="padding-left: 0px; padding-top: 10px;">
+        <div id="picker">选择附件</div>
+        <span style="position: relative;top: -31px;left: 100px;">支持word,PDF,excel,PPT格式文件</span>
+    </div>
+</div>
 
-<!--
-<div class="col-xs-6 col-sm-6 dropzone" id="dropzone">
-<div class="fallback">
-<input name="file" type="file" multiple="" />
-</div>
-</div>
--->
 </div>
 
 <input type="hidden" id="renew" value="0" name="renew">
@@ -246,82 +314,198 @@ if($__config && $__config['disable_budget'] == '0')
 </div>
 </div>
 <input type="hidden" name="images" id="images" >
+<input type="hidden" name="attachments" id="files" >
 </form>
 </div>
 </div>
-<!--
-<div class="modal" id="select_img_modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">选择图片</h4>
-            </div>
-            <div class="modal-body">
-
-
-        </div>
-    </div>
-</div>
--->
-<!--
-<script src="/static/third-party/jquery.ajaxfileupload.js"></script>
-<script src="/static/third-party/jquery-image-upload.min.js"></script>
--->
-<!--
-<script src="/static/ace/js/chosen.jquery.min.js"></script>
-<script src="/static/ace/js/dropzone.min.js"></script>
-
-
-<script src="/static/ace/js/date-time/moment.js"></script>
-<script src="/static/ace/js/date-time/locale/zh-cn.js"></script>
-
-<script src="/static/ace/js/jquery.colorbox-min.js"></script>
-<script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
-<script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script>
--->
-
-<!--<script src="/static/ace/js/jquery1x.min.js"></script> -->
 
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
-
-
 <script src="/static/ace/js/date-time/moment.js"></script>
-<!--
-<script src="/static/ace/js/date-time/locale/zh-cn.js"></script>
--->
-
 <script src="/static/ace/js/jquery.colorbox-min.js"></script>
-<!--
-<script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
-<script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script>
--->
-
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
-
 <link rel="stylesheet" type="text/css" href="/static/third-party/webUploader/webuploader.css">
-
 <!--引入JS-->
 <script type="text/javascript" src="/static/third-party/webUploader/webuploader.js"></script>
 
+<script type="text/javascript">
+$(document).ready(function() {
+    var uploader_file = WebUploader.create({
+    auto:true,
+    // swf文件路径
+    swf: '/static/third-party/webUploader/Uploader.swf',
 
+    // 文件接收服务端。
+    server: '<?php echo base_url('items/attachment'); ?>',
+
+    // 选择文件的按钮。可选。
+    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+    pick: '#picker',
+
+    // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+    resize: false,
+    accept: {
+        title: 'Files',
+        extensions: 'pdf,docx,doc,ppt,pptx,xls,xlsx',
+        mimeTypes: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,application/msword,application/vnd.ms-powerpoint,application/vnd.ms-excel'
+    }
+});
+
+// 当有文件添加进来的时候
+uploader_file.on( 'fileQueued', function( file ) {
+    var $li = $(
+            '<div id="' + file.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
+                '<img style="width:128px">' +
+                '<p style="text-align: center;margin: 0;max-width: 128px;">'+file.name+'</p>'+
+                '<div class="glyphicon glyphicon-trash red del-button_" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
+                '<div class="ui-icon ace-icon fa fa-download blue download-button_" style="  position: absolute;right: 10px;bottom: 10px;cursor: pointer;"></div>' +
+            '</div>'
+            ),$img = $li.find('img');
+    // $list为容器jQuery实例
+    $('#theList').append( $li );
+    var path = "/static/images/", name_ = "";
+    switch(file.type) {
+        case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+        case "application/vnd.ms-excel":
+            name_ = "excel.png";
+            break;
+        case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+        case "application/vnd.ms-powerpoint":
+            name_ = "powerpoint.png";
+            break;
+        case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        case "application/msword":
+            name_ = "word.png"
+            break;
+        case "application/pdf":
+            name_ = "pdf.png"
+            break;
+        default:
+            name_ = "excel.png";
+            break;
+    }
+    $img.attr( 'src', path+name_);
+    bind_event_file();
+});
+function bind_event_file(){
+        $('#theList .del-button_').click(function(e) {
+            var key = filesDict[this.parentNode.id];
+            var images = $("input[name='attachments']").val();
+            var arr_img = images.split(',');
+            var result = '';
+            for (var item = 0; item < arr_img.length; item++) {
+                if (arr_img[item] != key) {
+                    if (result == '') result += arr_img[item];
+                    else result += ',' + arr_img[item];
+                }
+            }
+            $("input[name='attachments']").val(result);
+            $(this.parentNode).remove();
+        });
+        $('#theList .download-button_').click(function(e) {
+            var url = filesUrlDict[this.parentNode.id];
+            var aLink = document.createElement('a');
+            aLink.href = url;
+            aLink.click();
+        });
+}
+// 文件上传过程中创建进度条实时显示。
+uploader_file.on( 'uploadProgress', function( file, percentage ) {
+    var $li = $( '#'+file.id ),
+        $percent = $li.find('.progress span');
+    // 避免重复创建
+    if ( !$percent.length ) {
+        $percent = $('<p class="progress"><span></span></p>')
+                .appendTo( $li )
+                .find('span');
+    }
+
+    $percent.css( 'width', percentage * 100 + '%' );
+});
+
+// 文件上传成功，给item添加成功class, 用样式标记上传成功。
+uploader_file.on( 'uploadSuccess', function( file ) {
+    var $li = $( '#'+file.id ),
+        $success = $li.find('div.success');
+
+    // 避免重复创建
+    if ( !$success.length ) {
+        $success = $('<div class="success blue center"></div>').appendTo( $li );
+    }
+
+    $success.text('上传成功');
+});
+
+// 文件上传失败，显示上传出错。
+uploader_file.on( 'uploadError', function( file ) {
+    var $li = $( '#'+file.id ),
+        $error = $li.find('div.error');
+
+    // 避免重复创建
+    if ( !$error.length ) {
+        $error = $('<div class="error red center"></div>').appendTo( $li );
+    }
+
+    $error.text('上传失败');
+});
+
+uploader_file.on( 'uploadAccept', function( file, response ) {
+    if ( response['status'] > 0 ) {
+        // 通过return false来告诉组件，此文件上传有错。
+        var imageDom = $('#' + file.file.id);
+        filesDict[file.file.id] = String(response['data']['id']);
+        filesUrlDict[file.file.id] = String(response['data']['url']);
+        if ($("input[name='attachments']").val() == '') {
+            $("input[name='attachments']").val(response['data']['id']);
+        } else {
+            $("input[name='attachments']").val($("input[name='attachments']").val() + ',' + response['data']['id']);
+        }
+        return true;
+    } else return false;
+});
+
+// 完成上传完了，成功或者失败，先删除进度条。
+uploader_file.on( 'uploadComplete', function( file ) {
+    $( '#'+file.id ).find('.progress').remove();
+});
+});
+var filesDict = {};
+var filesUrlDict = {};
+</script>
 
 <script language="javascript">
+
+var simbol_dic = {'cny':'人民币','usd':'美元','eur':'欧元','hkd':'港币','mop':'澳门币','twd':'新台币','jpy':'日元','ker':'韩国元',
+                              'gbp':'英镑','rub':'卢布','sgd':'新加坡元','php':'菲律宾比索','idr':'印尼卢比','myr':'马来西亚元','thb':'泰铢','cad':'加拿大元',
+                              'aud':'澳大利亚元','nzd':'新西兰元','chf':'瑞士法郎','dkk':'丹麦克朗','nok':'挪威克朗','sek':'瑞典克朗','brl':'巴西里亚尔'
+                             }; 
+var icon_dic = {'cny':'￥','usd':'$','eur':'€','hkd':'$','mop':'$','twd':'$','jpy':'￥','ker':'₩',
+                              'gbp':'£','rub':'₽','sgd':'$','php':'₱','idr':'Rps','myr':'$','thb':'฿','cad':'$',
+                              'aud':'$','nzd':'$','chf':'₣','dkk':'Kr','nok':'Kr','sek':'Kr','brl':'$'
+                             }; 
+var typed_currency = [];
+
 var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
 var config = '<?php echo $_config?>';
 var subs = "<?php echo $profile['subs'];?>";
 var __item_config = '<?php echo json_encode($item_config);?>';
+
 var item_config = [];
 if(__item_config != '')
 {
-    item_config = JSON.parse(__item_config);
+    try{
+        item_config = JSON.parse(__item_config);
+    }catch(e){
+       
+    }
 }
+
 var _item_config = new Object();
 for(var i = 0 ; i < item_config.length; i++)
 {
-    if(item_config[i]['type']==2 || item_config[i]['type'] == 5)
-    _item_config[item_config[i]['cid']] = item_config[i];
+    if(item_config[i]['type']==2 || item_config[i]['type'] == 5 || item_config[i]['type'] == 1) {
+        _item_config[item_config[i]['cid']] = item_config[i];
+    }
 }
 
 var __config = '';
@@ -449,7 +633,7 @@ function bind_event(){
             var result = '';
             for (var item = 0; item < arr_img.length; item++) {
                 if (arr_img[item] != key) {
-                    if (item == 0) result += arr_img[item];
+                    if (result == '') result += arr_img[item];
                     else result += ',' + arr_img[item];
                 }
             }
@@ -506,10 +690,97 @@ function get_sobs(){
         });
 }
 
+$('#coin_type').change(function(){
+    var temp = $('#coin_type').val();
+    var coin_list = temp.split(',');
+    $('#coin_simbol').text(icon_dic[coin_list[0]]);
+    var _amount = $('#amount').val();
+    $('#rate_simbol').text('￥' + Math.round(_amount*coin_list[1])/100);
+    if(coin_list[0] != 'cny')
+    {
+        if(typed_currency[coin_list[0]]['type'] == 0)
+        {
+            $('#rate_type').text('现钞卖出价');
+        }
+        if(typed_currency[coin_list[0]]['type'] == 2)
+        {
+            $('#rate_type').text('现汇卖出价');
+        }
+        $('#rate_amount').text(Math.round(coin_list[1]*10000)/1000000);
+    }
+    else
+    {
+         $('#rate_type').text('现钞卖出价');
+         $('#rate_amount').text('1.0');
+    }
+   
+    $('#amount').trigger('change');
+    $('#amount').trigger('change:updated');
+  
+});
+
+$('#amount').change(function(){
+    var temp = $('#coin_type').val();
+    var coin_list = temp.split(',');
+    $('#coin_simbol').text(icon_dic[coin_list[0]]);
+    var _amount = $('#amount').val();
+    $('#rate_simbol').text( '￥' + Math.round(_amount*coin_list[1])/100 );
+});
+
+/* 不包含汇率种类的实现
+function get_currency()
+{
+    $.ajax({
+        url:__BASE + 'items/get_currency',
+        dataType:'json',
+        method:'GET',
+        success:function(data){
+          
+            
+            var _h = '';
+            for(var item in data)
+            {
+                _h += '<option value="' + item + ',' + data[item] +'">' + simbol_dic[item] + '</option>';
+            }
+            $('#coin_type').append(_h);
+        },
+        error:function(a,b,c){
+          
+        }
+    });
+}
+*/
+
+function get_typed_currency()
+{
+     $.ajax({
+        url:__BASE + 'items/get_typed_currency',
+        dataType:'json',
+        method:'GET',
+        success:function(data){
+            var _h = '';
+            for(var item in data)
+            {
+                typed_currency[item] = JSON.parse(data[item]);
+                _h += '<option value="' + item + ',' + typed_currency[item]['value'] +'">' + simbol_dic[item] + '</option>';
+            }
+            $('#coin_type').append(_h);
+        },
+        error:function(a,b,c){
+          
+        }
+    });
+}
+
 var __multi_time = 0;
 var __average_count = 0;
 $(document).ready(function(){
 
+    //$('#mul_amount').empty();
+    if(__config['open_exchange']){
+       // get_currency();
+       get_typed_currency();
+    }
     get_sobs();
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
@@ -563,14 +834,12 @@ $(document).ready(function(){
             }
         });
     });
-
-    $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange'></i>");//let's add a custom loading icon
-    
+    $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange'></i>");
     $('#sob_category').change(function(){
             $('#endTime').hide();
             $('#average').hide();
-        __multi_time = 0;
-                __average_count = 0;
+            __multi_time = 0;
+            __average_count = 0;
         var category_id = $('#sob_category').val();
         if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 2)
         {
@@ -580,12 +849,13 @@ $(document).ready(function(){
             $('#date-timepicker2').val('');
             $('#endTime').show();
         } else  {
-            if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 5)
-            {
+            if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 5) {
                 $('#config_id').val(_item_config[category_id]['id']);
                 $('#config_type').val(_item_config[category_id]['type']);
                 $('#amount').change(function(){
                     var all_amount = $('#amount').val();
+                    var rates = $('#coin_type').val().split(',')[1];
+                    all_amount *= rates/100;
                     if (subs != '' && subs >= 0)
                         $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
                     else
@@ -599,9 +869,13 @@ $(document).ready(function(){
                 $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
                 $('#average').show();
                 __average_count = 1;
-            }
-            else
+            } else if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 1) {
+                $('#config_id').val(_item_config[category_id]['id']);
+                $('#config_type').val(_item_config[category_id]['type']);
+                $('#note_2').show();
+            } else
             {
+                $('#note_2').hide();
                 $('#config_id').val('');
                 $('#config_type').val('');
                 $('#average').val('');
@@ -618,21 +892,6 @@ $(document).ready(function(){
             _affid = $('.afford_chose').val().join(',');
         }catch(e) {}
         $('#afford_ids').val(_affid);
-        /*
-        if($('#amount').val() == 0) {
-            show_notify('请输入金额');
-            $('#amount').focus();
-            return false;
-        }
-    var amount = parseInt($('#amount').val());
-        if(amount <= 0) {
-            show_notify('请输入有效金额');
-            $('#amount').val('');
-            $('#amount').focus();
-            return false;
-        }
-         */
-
         if (ifUp == 0) {
             show_notify('正在上传图片，请稍候');
             return false;
@@ -663,7 +922,6 @@ $(document).ready(function(){
             if(dateTime2 == '' && __multi_time)
             {
                 show_notify('请填写结束时间');
-                //$('#date-timepicker1').focus();
                 return false;
             }
             if((dateTime2>'0') && (dateTime2 < dateTime))
@@ -686,7 +944,7 @@ $(document).ready(function(){
         }
         if($('#sob_category').val() == null)
         {
-            show_notify('请选择类目');
+            show_notify('请选择类别');
             return false;
         }
         if($('#config_type').val() == 5 && __average_count && $('#people-nums').val() == null && $('#people-nums').val() == 0) {
@@ -694,6 +952,13 @@ $(document).ready(function(){
             return false;
         }
 
+        var _extra = [];
+        $('.extra_textarea').each(function(idx, item) {
+            var _type_id = $(item).data('type');
+            var _value = $(item).val();
+            _extra.push({'id' : _type_id, 'type' : 1, 'value' : _value});
+        });
+        $('#hidden_extra').val($.toJSON(_extra));
         $('#renew').val($(this).data('renew'));
         $('#itemform').submit();
     });

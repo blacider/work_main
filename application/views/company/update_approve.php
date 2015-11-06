@@ -130,7 +130,7 @@
                                         </select>
                                     </div>
                                     <div class="col-xs-3 col-sm-3">
-                                        <select name="allow_category" class="sob_category chosen-select-niu" data-placeholder="类目">
+                                        <select name="allow_category" class="sob_category chosen-select-niu" data-placeholder="类别">
                                         </select>
                                     </div>
                                         <div class="checkbox col-xs-2 col-sm-2">
@@ -163,7 +163,7 @@
                                         </select>
                                     </div>
                                     <div class="col-xs-3 col-sm-3">
-                                        <select name="deny_category" class="sob_category chosen-select-niu" data-placeholder="类目">
+                                        <select name="deny_category" class="sob_category chosen-select-niu" data-placeholder="类别">
                                         </select>
                                     </div>
                                        
@@ -178,17 +178,10 @@
                             selectCache = <?php echo json_encode($cate_arr)?>;
                             function appendChecked(selectJqDom, data, item) {
                                 //第一个 selectJqDom.children()[0].children[0]
-                                //$(selectJqDom.children()[0].children[0]).parent().children().remove('div'); 
-                                $(selectJqDom.children()[0].children[0]).find("option[value='"+data['sob_id']+"']").attr("selected",true);
-                                $(selectJqDom.children()[0].children[0]).trigger("chosen:updated");
-                                //$(selectJqDom.children()[0].children[0]).change();
+                                $(selectJqDom.children()[0].children[0]).val(data['sob_id']).trigger("chosen:updated");
                                 //第二个
                                 $(selectJqDom.children()[0].children[0]).change();
-                                $(selectJqDom.children()[1].children[0]).find("option[value='"+data['category_id']+"']").attr("selected",true);
-                                $(selectJqDom.children()[1].children[0]).trigger("chosen:updated");
-                                //$(selectJqDom.children()[1].children[0]).find("option[value="+ data['sob_name']+"]").attr("selected",true);
-                                //checkbox
-                                //selectJqDom.find("option[text="+ data+"]").attr("selected",true);
+                                $(selectJqDom.children()[1].children[0]).val(data['category_id']).trigger("chosen:updated");
                                 if (data['act'] == 1) {
                                     selectJqDom.find("input[type='checkbox']")[0].checked = true;
                                 }
@@ -227,7 +220,7 @@
                             }
                             function addCategoryRow() {
                                 var addDom = $('.CategoryRow .addCategoryRow');
-                                var category = "<div class='form-group CategoryRow'><div class='col-xs-3 col-sm-3'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-3 col-sm-3'><select name='allow_category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='checkbox col-xs-2 col-sm-2'><label><input type='checkbox' class='def' id='frequency_unlimit' name='default' >第一默认审批人</label></div><div class='col-xs-1 col-sm-1'><div class='addCategoryRow' onclick='addCategoryRow()''>+</div>   </div></div>"
+                                var category = "<div class='form-group CategoryRow'><div class='col-xs-3 col-sm-3'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-3 col-sm-3'><select name='allow_category' class='sob_category chosen-select-niu' data-placeholder='类别'></select></div><div class='checkbox col-xs-2 col-sm-2'><label><input type='checkbox' class='def' id='frequency_unlimit' name='default' >第一默认审批人</label></div><div class='col-xs-1 col-sm-1'><div class='addCategoryRow' onclick='addCategoryRow()''>+</div>   </div></div>"
                                 addDom.removeClass('addCategoryRow');
                                 addDom.attr('onclick', 'removeCategoryRow(this)');
                                 addDom.addClass('removeCategoryRow');
@@ -254,7 +247,7 @@
                             });
                             function addDisableCategoryRow() {
                                 var addDom = $('.disableCategoryRow .addDisableCategoryRow');
-                                var category = "<div class='form-group disableCategoryRow'><div class='col-xs-3 col-sm-3'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-3 col-sm-3'><select name='deny_category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='col-xs-1 col-sm-1'><div class='addDisableCategoryRow' onclick='addDisableCategoryRow()''>+</div>   </div></div>"
+                                var category = "<div class='form-group disableCategoryRow'><div class='col-xs-3 col-sm-3'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-3 col-sm-3'><select name='deny_category' class='sob_category chosen-select-niu' data-placeholder='类别'></select></div><div class='col-xs-1 col-sm-1'><div class='addDisableCategoryRow' onclick='addDisableCategoryRow()''>+</div>   </div></div>"
                                 addDom.removeClass('addDisableCategoryRow');
                                 addDom.attr('onclick', 'removeCategoryRow(this)');
                                 addDom.addClass('removeCategoryRow');
@@ -469,22 +462,6 @@ function get_sobs(){
             error:function(XMLHttpRequest, textStatus, errorThrown) {
                 }
         });
-
-
-        $('.sobs').change(function(){
-            var s_id = $(this).val();
-            var _h = '';
-            if(selectDataCategory[s_id] != undefined)
-            {
-                for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
-                {
-                    _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
-                    
-                }
-            }
-            var selectDom = this.parentNode.nextElementSibling.children[0]
-            $(selectDom).empty().append(_h).trigger("chosen:updated");
-        });
 }
 
 $(document).ready(function(){
@@ -538,7 +515,20 @@ $(document).ready(function(){
         $(this).prev().focus();
     });
 
-    
+    $('.sobs').change(function(){
+            var s_id = $(this).val();
+            var _h = '';
+            if(selectDataCategory[s_id] != undefined)
+            {
+                for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
+                {
+                    _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                    
+                }
+            }
+            var selectDom = this.parentNode.nextElementSibling.children[0]
+            $(selectDom).empty().append(_h).trigger("chosen:updated");
+        });
     get_sobs();
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
@@ -681,7 +671,7 @@ $(document).ready(function(){
 
         if($('input[name="all_able"]:checked').val() == undefined)
         {
-            show_notify("请选择类目类型");
+            show_notify("请选择类别类型");
             return false;
         }
 

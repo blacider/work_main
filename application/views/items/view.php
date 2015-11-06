@@ -29,12 +29,73 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
+                           <?php
+                                $_config = '';
+                                if(array_key_exists('config',$profile['group']))
+                                {
+                                    $_config = $profile['group']['config'];
+                                }
+                                $__config = json_decode($_config,True);
+                            ?>
+                            <?php
+                                if(array_key_exists('open_exchange', $__config) && $__config['open_exchange'] == 1)
+                                {
+                            ?>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right">金额</label>
+                                        <div class="col-xs-6 col-sm-6">
+
+                                      
+                                            <select class="col-xs-4 col-sm-4" class="form-control  chosen-select tag-input-style" name="coin_type" id="coin_type" disabled>
+                                                
+                                            </select> 
+                                      
+                                            
+                                            <div class="input-group input-group">
+                                                <span class="input-group-addon" id='coin_simbol'>￥</span>
+                                                <input type="text" class="form-controller col-xs-12 col-sm-12" name="amount" id="amount" value="<?php echo $item['amount'];?>" placeholder="金额" required disabled>
+                                                <span class="input-group-addon" id='rate_simbol'>￥<?php 
+                                                if($item['currency'] == 'cny')
+                                                { 
+                                                    echo round($item['amount'],2);
+                                                }
+                                                else
+                                                {
+                                                    echo round($item['amount'] * $item['rate']/100,2);
+                                                }
+
+                                                ?></span>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                            <?php
+                                }
+                                else
+                                {
+                            ?>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">金额</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="金额" value=" ￥<?php echo $item['amount']; ?> " disabled>
+                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="金额" value=" ￥<?php 
+                                        if($item['currency'] == 'cny')
+                                        {
+                                            echo $item['amount'];
+                                        }
+                                        else
+                                        {
+                                            echo round($item['amount']*$item['rate']/100,2);
+                                        } 
+                                     ?> " disabled>
                                 </div>
                             </div>
+
+                            <?php 
+                                }
+                            ?>
+
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">分类</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -89,18 +150,6 @@
                                 if(array_key_exists('5',$item_value))
                                 {
                             ?>
-                         <!--   <div disabled class="form-group" id="average" >
-                                <label class="col-sm-1 control-label no-padding-right">人均:</label>
-                                <div class="col-xs-3 col-sm-3">
-                                    <div class="input-group">
-                                        <div id="average_id" name="average" type="text" class="form-control"><?php $_eva = $item['amount']/$item_value[5]['value']; echo sprintf("%.2f", $_eva);   ?>元/人*<?php echo $item_value[5]['value']?></div>
-
-                                    </span>
-                                </div>
-                            </div>
-                        </div> 
-                        -->
-
                         <div disabled class="form-group" id="average" >
                             <label class="col-sm-1 control-label no-padding-right">人数:</label>
                             <div class="col-xs-3 col-sm-3" disabled>
@@ -130,42 +179,6 @@
                          <?php
                                 }
                             ?>
-
-
-                            <!--
-
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">参与人</label>
-                                <div class="col-xs-6 col-sm-6">
-                                    <select disabled class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
-                
-                                        <?php 
-                                        $item_uids = array();
-                                        if(array_key_exists('relates',$item))
-                                        {
-                                            $item_uids = explode(',',$item['relates']);
-                                        }
-
-                                        foreach($member as $m){
-                                            if(in_array($m['id'],$item_uids))
-                                            {
-                                                ?>
-
-                                                <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . "[" . $m['email'] . "]"; ?></option>
-                                                <?php 
-                                            }
-                                            ?>
-                                            <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . "[" . $m['email'] . "]"; ?></option>
-
-                                            <?php
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div> 
-                            -->
-
-
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">商家</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -173,11 +186,32 @@
                                 </div>
                             </div>
 
+                          
+
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">标签</label>
                                 <div class="col-xs-6 col-sm-6">
+                                <select class="chosen-select tag-input-style" name="tags[]" multiple="multiple" data-placeholder="请选择标签" disabled>
+                                <?php
+                                    $tags_item = explode(',',$item['tag_ids']);
 
-                                    <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $item['tags']; ?> " disabled>
+                                 foreach($tags as $tag) {
+                                        if(in_array($tag['id'], $tags_item))
+                                        {
+                                    ?>
+                                     <option selected value="<?php echo $tag['id']; ?>"><?php echo $tag['name']; ?></option>
+                                    <?php
+                                     }else
+                                     {
+                                    ?>
+
+                                    <option value="<?php echo $tag['id']; ?>"><?php echo $tag['name']; ?></option>
+                                <?php
+                                     } 
+                                 }
+                                ?>
+                                </select>
+
                                 </div>
                             </div>
 
@@ -189,12 +223,37 @@
                                 </div>
                             </div>
 
+
+<?php
+$extra = array();
+foreach($item['extra'] as $i) {
+    $extra[$i['id']] = $i['value'];
+}
+foreach($item_config as $s) {
+    $val = '';
+    if(array_key_exists($s['id'], $extra)){
+        $val = $extra[$s['id']];
+    }
+    if(!array_key_exists($s['id'], $extra)) continue;
+    if($s['cid'] == -1  && $s['type'] == 1) {
+?>
+<div class="form-group">
+<label class="col-sm-1 control-label no-padding-right"><?php echo $s['name']; ?></label>
+<div class="col-xs-6 col-sm-6">
+<input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $val; ?> " disabled>
+</div>
+</div>
+<?php
+    }
+}
+?>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">备注</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <input type="text" class="form-controller col-xs-12" name="amount" placeholder="标签" value=" <?php echo $item['note']; ?> " disabled>
                                 </div>
                             </div>
+
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">照片</label>
@@ -210,7 +269,16 @@
                                     </div>
                                 </div>
                             </div>
-
+<div class="form-group">
+<label class="col-sm-1 control-label no-padding-right">附件</label>
+<div class="col-xs-6 col-sm-6">
+<div id="uploader-file">
+    <!--用来存放文件信息-->
+    <div id="theList" class="uploader-list">
+    </div>
+</div>
+</div>
+</div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">修改记录</label>
@@ -259,8 +327,71 @@
 </div>
 
 <script language="javascript">
+var filesUrlDict = {};
+var __files = <?php echo json_encode($item["attachments"]);?>;
+function loadFiles() {
+        for (var i = 0; i < __files.length; i++) {
+            var file = __files[i];
+            var $li = $(
+            '<div id="FILE_' + file.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
+                '<img style="width:128px">' +
+                '<p style="text-align: center;margin: 0;max-width: 128px;">'+file.filename+'</p>'+
+                '<div class="ui-icon ace-icon fa fa-download blue download-button_" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
+            '</div>'
+            ),$img = $li.find('img');
+            // $list为容器jQuery实例
+            $('#theList').append( $li );
+            var path = "/static/images/", name_ = getPngByType(file.filename);
+            $img.attr( 'src', path+name_);
+            filesUrlDict["FILE_"+String(file.id)] = String(file.url);
+        }
+        bind_event_file();
+    }
+    function getPngByType(filename) {
+    var types = filename.split('.');
+    var type = types[types.length-1];
+    var name_ = "";
+    switch(type) {
+        case "xls":
+        case "xlsx":
+            name_ = "excel.png";
+            break;
+        case "ppt":
+        case "pptx":
+            name_ = "powerpoint.png";
+            break;
+        case "docx":
+        case "doc":
+            name_ = "word.png"
+            break;
+        case "pdf":
+            name_ = "pdf.png"
+            break;
+    }
+    return name_;
+}
+function bind_event_file(){
+        $('#theList .download-button_').click(function(e) {
+            var url = filesUrlDict[this.parentNode.id];
+            window.open(url);
+        });
+}
 var __BASE = "<?php echo $base_url; ?>";
 var _error = "<?php echo $error ; ?>";
+var _coin_type = "<?php echo $item['currency'];?>";
+
+
+var simbol_dic = {'cny':'人民币','usd':'美元','eur':'欧元','hkd':'港币','mop':'澳门币','twd':'新台币','jpy':'日元','ker':'韩国元',
+                              'gbp':'英镑','rub':'卢布','sgd':'新加坡元','php':'菲律宾比索','idr':'印尼卢比','myr':'马来西亚元','thb':'泰铢','cad':'加拿大元',
+                              'aud':'澳大利亚元','nzd':'新西兰元','chf':'瑞士法郎','dkk':'丹麦克朗','nok':'挪威克朗','sek':'瑞典克朗','brl':'巴西里亚尔'
+                             }; 
+var icon_dic = {'cny':'￥','usd':'$','eur':'€','hkd':'$','mop':'$','twd':'$','jpy':'￥','ker':'₩',
+                              'gbp':'£','rub':'₽','sgd':'$','php':'₱','idr':'Rps','myr':'$','thb':'฿','cad':'$',
+                              'aud':'$','nzd':'$','chf':'₣','dkk':'Kr','nok':'Kr','sek':'Kr','brl':'$'
+                             }; 
+
+$('#coin_type').append("<option selected>" + simbol_dic[_coin_type] + "</option>");
+$('#coin_simbol').text(icon_dic[_coin_type]);
 
 if(_error)
 {
@@ -268,7 +399,7 @@ if(_error)
 }
 $(document).ready(function(){
 
-
+loadFiles();
 
 $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
@@ -315,4 +446,5 @@ $('.chosen-select').chosen({allow_single_deselect:true});
 <?php } ?>
     });
 });
+
 </script>

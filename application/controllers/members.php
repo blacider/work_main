@@ -658,8 +658,11 @@ class Members extends REIM_Controller {
         $this->need_group_it();
         $group = $this->groups->get_my_list();
         $_gnames = $this->ug->get_my_list();
-        $single = $this->ug->get_single_group(18);
-        $gnames = $_gnames['data']['group'];
+        $gnames = array();
+        if($_gnames['status'] > 0 && array_key_exists('group',$_gnames['data']))
+        {
+            $gnames = $_gnames['data']['group'];
+        }
 
         $ginfo = array();
         $gmember = array();
@@ -678,7 +681,6 @@ class Members extends REIM_Controller {
                 'member' => $gmember
                 ,'group' => $gnames
                 ,'ginfo' => $_gnames
-                ,'info' => $single
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
@@ -1109,7 +1111,7 @@ class Members extends REIM_Controller {
         $names = array();
         $email_id_matrix = array();
         foreach($gmember as $g){
-            $email_id_matrix[$g['email']] = $g['id'];
+
             $__email = $g['email']; 
             $__phone = $g['phone']; 
             $__name = $g['nickname'];
@@ -1124,8 +1126,10 @@ class Members extends REIM_Controller {
                 $names[$__name]['count'] += 1;
                 array_push($names[$__name]['ids'],$g['id']);
             }
-            if($__email)
+            if($__email) {
                 array_push($_emails, $__email);
+                $email_id_matrix[$g['email']] = $g['id'];
+            }
             if($__phone)
                 array_push($_phones, $__phone);
             if($__name)
@@ -1171,14 +1175,14 @@ class Members extends REIM_Controller {
             $obj['manager'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
             $obj['rank'] = trim($sheet->getCellByColumnAndRow(10, $row)->getValue());
             $obj['level'] = trim($sheet->getCellByColumnAndRow(11, $row)->getValue());
-            $obj['manager_id'] = 0;/*trim($sheet->getCellByColumnAndRow(8, $row)->getValue());*/
+            $obj['manager_id'] = "";/*trim($sheet->getCellByColumnAndRow(8, $row)->getValue());*/
             $obj['manager_email'] = trim($sheet->getCellByColumnAndRow(12, $row)->getValue());
             $obj['display_manager_email'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
             $obj['second'] = trim($sheet->getCellByColumnAndRow(13, $row)->getValue());
             $obj['third'] = trim($sheet->getCellByColumnAndRow(14, $row)->getValue());
             $obj['fourth'] = trim($sheet->getCellByColumnAndRow(15, $row)->getValue());
             $obj['fifth'] = trim($sheet->getCellByColumnAndRow(16, $row)->getValue());
-            $obj['display_manager_id'] = 0;
+            $obj['display_manager_id'] = "";
             if($obj['email']) {
                 $email_id_matrix[$obj['email']] = $obj['id'];
             }
@@ -1189,6 +1193,9 @@ class Members extends REIM_Controller {
             if("" == $obj['email'] && "" == $obj['phone']) continue;
             $obj['status'] = 0;
             if(in_array($obj['email'], $_emails)){
+                $obj['status'] = 1;
+            }
+            if (in_array($obj['phone'], $_phones)) {
                 $obj['status'] = 1;
             }
             log_message('debug','obj_name' . $obj['name']);
@@ -1472,6 +1479,12 @@ class Members extends REIM_Controller {
         $uids = $this->input->post('uids');
         $pid = $this->input->post('pgroup');
         $gid = $this->input->post('gid');
+        $images = '';
+        $_images = $this->input->post('images');
+        if($_images)
+        {
+            $images = $_images;
+        }
         if($uids)
         {
             $uids = implode(",", $uids);
@@ -1480,7 +1493,7 @@ class Members extends REIM_Controller {
         {
             $uids='';
         }
-        $info = $this->ug->update_data($manager,$uids, $name,$code,$pid,$gid);
+        $info = $this->ug->update_data($manager,$uids, $name,$code,$pid,$gid,$images);
         log_message("debug","@@@@@@@@@".json_encode($info));
         if($info['status'] > 0){
             redirect(base_url('members/groups'));

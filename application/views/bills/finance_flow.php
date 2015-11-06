@@ -5,7 +5,7 @@
 
 <link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
-
+<script type="text/javascript" src="/static/js/jqgrid_choseall.js"></script>
 <script src="/static/ace/js/date-time/moment.js"></script>
 <!--
 <script src="/static/ace/js/date-time/locale/zh-cn.js"></script>
@@ -725,7 +725,7 @@ function cancel_modal_next_()
       
       time_groups2 = [{
         groupOp:"AND",
-        rules:[{field:"approvaldt_str",op:"ge",data:startTime2},{field:"date_str",op:"le",data:endTime2}],
+        rules:[{field:"approvaldt_str",op:"ge",data:startTime2},{field:"approvaldt_str",op:"le",data:endTime2}],
         groups:time_groups
       }];
     }
