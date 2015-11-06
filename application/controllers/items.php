@@ -131,7 +131,7 @@ class Items extends REIM_Controller {
         //获取消费类型字典
         $item_type_dic = $this->reim_show->get_item_type_name();
 
-        $_profile = $this->user->reim_get_user();	
+        $_profile = $this->user->reim_get_user();   
         $profile = array();
         $group_config = array();
         $item_configs = array();
@@ -150,7 +150,7 @@ class Items extends REIM_Controller {
                 foreach($item_configs as $conf)
                 {
                     if($conf['disabled'] == 1) continue;
-                    array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => 'disabled'));	
+                    array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => 'disabled'));   
                 }
             }
         }
@@ -199,7 +199,7 @@ class Items extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-		log_message('debug','afford:'. json_encode($afford));
+        log_message('debug','afford:'. json_encode($afford));
         $is_burden = true;
         if(!$afford)
         {
@@ -360,24 +360,34 @@ class Items extends REIM_Controller {
                     $img_path = '/static/images/';
                     $img = 'excel.png';
                     $attach_img_dic = array(
-                                     'application/vnd.openxmlformats-officedocument.presentationml.presentation'=>'powerpoint.png',
-                                     'application/vnd.ms-powerpoint'=>'powerpoint.png',
-                                     'application/vnd.openxmlformats-officedocument.wordprocessingml.document'=>'word.png',   
-                                     'application/msword'=>'word.png',
-                                     'application/pdf'=>'pdf.png'
-                                     );
+                        'application/vnd.openxmlformats-officedocument.presentationml.presentation'=>'powerpoint.png',
+                        'application/vnd.ms-powerpoint'=>'powerpoint.png',
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'=>'word.png',   
+                        'application/msword'=>'word.png',
+                        'application/pdf'=>'pdf.png'
+                        );
                     if($s['attachments'])
                     {
-	                    foreach($s['attachments'] as $attach)
-	                    {
-	                        if(array_key_exists('mime',$attach) && array_key_exists($attach['mime'],$attach_img_dic))
-	                        {
-	                            $img = $attach_img_dic[$attach['mime']];
-	                        }
-	                        $_attach = '<img title="' . $attach['filename']  .  '" style="width:25px;height:25px" src = "' . $img_path . $img . '"/>';
-                            $_attach_url = '<a title="' . $attach['filename']  . '"  href="' . $attach['url']  . '">' . $_attach . '</a>';
-	                        $s['attachment'] = $s['attachment'] . '&nbsp;&nbsp;' . $_attach_url;
-	                    }
+                        foreach($s['attachments'] as $attach)
+                        {
+                            if(array_key_exists('mime',$attach) && array_key_exists($attach['mime'],$attach_img_dic))
+                            {
+                                $img = $attach_img_dic[$attach['mime']];
+                            }
+                            $_filename = '';
+                            $_file_url = '';
+                            if(array_key_exists('filename',$attach))
+                            {
+                                $_filename = $attach['filename'];
+                            }
+                            if(array_key_exists('url',$attach))
+                            {
+                                $_file_url = $attach['url'];
+                            }
+                            $_attach = '<img title="' . $_filename  .  '" style="width:25px;height:25px" src = "' . $img_path . $img . '"/>';
+                            $_attach_url = '<a title="' . $_filename  . '"  href="' . $_file_url  . '">' . $_attach . '</a>';
+                            $s['attachment'] = $s['attachment'] . '&nbsp;&nbsp;' . $_attach_url;
+                        }
                     }
                 }
                 $s['cate_str'] = '未指定的分类';
@@ -426,7 +436,7 @@ class Items extends REIM_Controller {
                 $edit_str = '';
                 if(in_array($s['status'], array(-1, 0, 3))) {
                     $edit_str =  '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $s['id'] . '"></span>'
-                  	.  '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>';
+                    .  '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>';
                 } else {
                     $edit_str =  '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $s['id'] . '"></span>';
                 }
@@ -498,7 +508,7 @@ class Items extends REIM_Controller {
         $item_type_dic = $this->reim_show->get_item_type_name();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-        $_profile = $this->user->reim_get_user();	
+        $_profile = $this->user->reim_get_user();   
         $profile = array();
         $group_config = array();
         $item_configs = array();
@@ -516,12 +526,12 @@ class Items extends REIM_Controller {
                 $item_configs = $group_config['item_config'];
                 foreach($item_configs as $conf)
                 {
-                    array_push($item_config,array('id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled'], 'active' => $conf['active']));	
+                    array_push($item_config,array('id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled'], 'active' => $conf['active'])); 
                 }
             }
         }
         $obj = $this->items->get_by_id($id);
-        $item_update_in = $this->session->userdata('item_update_in');	
+        $item_update_in = $this->session->userdata('item_update_in');   
         if($obj['status'] < 1){
             redirect(base_url('items'));
         }
@@ -533,48 +543,48 @@ class Items extends REIM_Controller {
             $tags = $category['data']['tags'];
         }
         $item = $obj['data'];
-		$fee_afford_ids = array();
-		if(array_key_exists('afford_ids',$item))
-		{
-			$fee_afford_ids = explode(',',$item['afford_ids']);
-		}
-		
+        $fee_afford_ids = array();
+        if(array_key_exists('afford_ids',$item))
+        {
+            $fee_afford_ids = explode(',',$item['afford_ids']);
+        }
+        
         $afford = array();
         if(array_key_exists('fee_afford', $profile)){
             $afford = $profile['fee_afford'];
         }
-		$afford_dic = array();
-		foreach($afford as $af)
-		{
-			$afford_dic[$af['id']] = array();
-			if(array_key_exists('dept',$af)){
-				foreach($af['dept'] as $a){
-					if(array_key_exists('member',$a)){
-						foreach($a['member'] as $m)
-						{
-							array_push($afford_dic[$af['id']],$m['id']);
-						}
-					}
-					else
-					{
-							array_push($afford_dic[$af['id']],$a['id']);
-					}
-				}	
-			}
-		}
-		log_message('debug','afford_dic:' . json_encode($afford_dic));
-		
-		$afford_type = -1 ;
-		if($fee_afford_ids){
-			foreach($afford_dic as $key => $it){
-				if(in_array($fee_afford_ids[0],$it)){
-					$afford_type = $key;
-					break;
-				}
-			}
-		}
-	log_message('debug','fee_afford_ids : ' .json_encode($fee_afford_ids));
-	log_message('debug','fee_afford_type : ' .json_encode($afford_type));
+        $afford_dic = array();
+        foreach($afford as $af)
+        {
+            $afford_dic[$af['id']] = array();
+            if(array_key_exists('dept',$af)){
+                foreach($af['dept'] as $a){
+                    if(array_key_exists('member',$a)){
+                        foreach($a['member'] as $m)
+                        {
+                            array_push($afford_dic[$af['id']],$m['id']);
+                        }
+                    }
+                    else
+                    {
+                            array_push($afford_dic[$af['id']],$a['id']);
+                    }
+                }   
+            }
+        }
+        log_message('debug','afford_dic:' . json_encode($afford_dic));
+        
+        $afford_type = -1 ;
+        if($fee_afford_ids){
+            foreach($afford_dic as $key => $it){
+                if(in_array($fee_afford_ids[0],$it)){
+                    $afford_type = $key;
+                    break;
+                }
+            }
+        }
+    log_message('debug','fee_afford_ids : ' .json_encode($fee_afford_ids));
+    log_message('debug','fee_afford_type : ' .json_encode($afford_type));
     /*$item_value = '';
     if(array_key_exists('extra',$item))
     {
@@ -583,7 +593,7 @@ class Items extends REIM_Controller {
         log_message('debug' , 'it:' . json_encode($it));
         if(array_key_exists('value',$it))
         {
-            $item_value = $it['value'];	
+            $item_value = $it['value']; 
         $item_value = date('Y-m-d H:i:s',$item_value);
         }
         }
@@ -690,9 +700,9 @@ class Items extends REIM_Controller {
                 ,'item_value' => $item_value
                 ,'error' => $error
                 ,'member' => $gmember
-				,'afford' => $afford
-				,'fee_afford_ids' => implode(',',$fee_afford_ids)
-				,'fee_afford_type' => $afford_type
+                ,'afford' => $afford
+                ,'fee_afford_ids' => implode(',',$fee_afford_ids)
+                ,'fee_afford_type' => $afford_type
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
@@ -712,7 +722,7 @@ class Items extends REIM_Controller {
 
         $item_type_dic = $this->reim_show->get_item_type_name();
 
-        $_profile = $this->user->reim_get_user();	
+        $_profile = $this->user->reim_get_user();   
         $profile = array();
         $group_config = array();
         $item_configs = array();
@@ -730,7 +740,7 @@ class Items extends REIM_Controller {
                 $item_configs = $group_config['item_config'];
                 foreach($item_configs as $conf)
                 {
-                    array_push($item_config,array('id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled'], 'active' => $conf['active']));	
+                    array_push($item_config,array('id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled'], 'active' => $conf['active'])); 
                 }
             }
         }
@@ -933,7 +943,7 @@ class Items extends REIM_Controller {
         $item_type_dic = $this->reim_show->get_item_type_name();
         log_message('debug','item_id' . $id);
         if(0 === $id) redirect(base_url('items'));
-        $_profile = $this->user->reim_get_user();	
+        $_profile = $this->user->reim_get_user();   
         $profile = array();
         $group_config = array();
         $item_configs = array();
@@ -952,7 +962,7 @@ class Items extends REIM_Controller {
                 foreach($item_configs as $conf)
                 {
                     if($conf['disabled'] == 1) continue;
-                    array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled']));	
+                    array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled']));    
                     log_message('debug','qqy_name:' .  $conf['name']);
                 }
             }
@@ -965,52 +975,52 @@ class Items extends REIM_Controller {
         }
         $item = $item['data'];
 
-		log_message('debug','afford_items:' . json_encode($item));
+        log_message('debug','afford_items:' . json_encode($item));
 
-		$fee_afford_ids = array();
-		if(array_key_exists('afford_ids',$item))
-		{
-			$fee_afford_ids = explode(',',$item['afford_ids']);
-		}
-		
+        $fee_afford_ids = array();
+        if(array_key_exists('afford_ids',$item))
+        {
+            $fee_afford_ids = explode(',',$item['afford_ids']);
+        }
+        
         $afford = array();
         if(array_key_exists('fee_afford', $profile)){
             $afford = $profile['fee_afford'];
         }
-		log_message('debug','afford:' . json_encode($afford));
-		$afford_dic = array();
-		foreach($afford as $af)
-		{
-			$afford_dic[$af['id']] = array();
-			if(array_key_exists('dept',$af)){
-				foreach($af['dept'] as $a){
-					if(array_key_exists('member',$a)){
-						foreach($a['member'] as $m)
-						{
-							array_push($afford_dic[$af['id']],$m['id']);
-						}
-					}
-					else
-					{
-							array_push($afford_dic[$af['id']],$a['id']);
-					}
-				}	
-			}
-		}
-		log_message('debug','afford_dic:' . json_encode($afford_dic));
-		
-		$afford_type = -1 ;
-		if($fee_afford_ids){
-			foreach($afford_dic as $key => $it){
-				if(in_array($fee_afford_ids[0],$it)){
-					$afford_type = $key;
-					break;
-				}
-			}
-		}
-		log_message('debug','afford_type:' . json_encode($afford_type));
-		log_message('debug','fee_afford_ids:' . json_encode($fee_afford_ids));
-		
+        log_message('debug','afford:' . json_encode($afford));
+        $afford_dic = array();
+        foreach($afford as $af)
+        {
+            $afford_dic[$af['id']] = array();
+            if(array_key_exists('dept',$af)){
+                foreach($af['dept'] as $a){
+                    if(array_key_exists('member',$a)){
+                        foreach($a['member'] as $m)
+                        {
+                            array_push($afford_dic[$af['id']],$m['id']);
+                        }
+                    }
+                    else
+                    {
+                            array_push($afford_dic[$af['id']],$a['id']);
+                    }
+                }   
+            }
+        }
+        log_message('debug','afford_dic:' . json_encode($afford_dic));
+        
+        $afford_type = -1 ;
+        if($fee_afford_ids){
+            foreach($afford_dic as $key => $it){
+                if(in_array($fee_afford_ids[0],$it)){
+                    $afford_type = $key;
+                    break;
+                }
+            }
+        }
+        log_message('debug','afford_type:' . json_encode($afford_type));
+        log_message('debug','fee_afford_ids:' . json_encode($fee_afford_ids));
+        
         $item_value = array();
         if(array_key_exists('extra',$item))
         {
@@ -1093,11 +1103,11 @@ class Items extends REIM_Controller {
                 ,'category_name' => $_want_key
                 ,'item_value' => $item_value
                 ,'member' => $gmember
-				,'afford' => $afford
-				,'fee_afford_ids' => implode(',',$fee_afford_ids)
-				,'fee_afford_type' => $afford_type
-				,'is_burden' => $is_burden
-				,'item_type_dic' => $item_type_dic
+                ,'afford' => $afford
+                ,'fee_afford_ids' => implode(',',$fee_afford_ids)
+                ,'fee_afford_type' => $afford_type
+                ,'is_burden' => $is_burden
+                ,'item_type_dic' => $item_type_dic
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
@@ -1115,7 +1125,7 @@ class Items extends REIM_Controller {
             $uids = implode(',',$_uids);
         }
 
-		$afford_ids = $this->input->post('afford_ids');
+        $afford_ids = $this->input->post('afford_ids');
         $id = $this->input->post('id');
         $rid = $this->input->post('rid');
         $from_report = $this->input->post("from_report");
@@ -1233,7 +1243,7 @@ class Items extends REIM_Controller {
         }
         else
         {
-			$obj = $this->items->update($id, $amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$__extra,$uids,$afford_ids,$attachments,$currency);
+            $obj = $this->items->update($id, $amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$__extra,$uids,$afford_ids,$attachments,$currency);
             log_message('debug','zz item_data:'.json_encode($obj));
         }
         log_message('debug','rid:' . $rid);
