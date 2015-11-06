@@ -370,14 +370,12 @@ class Items extends REIM_Controller {
                     {
 	                    foreach($s['attachments'] as $attach)
 	                    {
-	                        if(array_key_exists($attach['mime'],$attach_img_dic) && array_key_exists($attach['mime'],$attach_img_dic))
+	                        if(array_key_exists('mime',$attach) && array_key_exists($attach['mime'],$attach_img_dic))
 	                        {
 	                            $img = $attach_img_dic[$attach['mime']];
 	                        }
 	                        $_attach = '<img title="' . $attach['filename']  .  '" style="width:25px;height:25px" src = "' . $img_path . $img . '"/>';
-//                            $_attach_name = '<div style="bottom:10px;with:10px;clear:both" font-size="1px">' . $attach['filename']  .'</div>';
                             $_attach_url = '<a title="' . $attach['filename']  . '"  href="' . $attach['url']  . '">' . $_attach . '</a>';
-
 	                        $s['attachment'] = $s['attachment'] . '&nbsp;&nbsp;' . $_attach_url;
 	                    }
                     }
