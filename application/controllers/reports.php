@@ -620,7 +620,10 @@ class Reports extends REIM_Controller {
         $extra_dic = array();
         foreach($extra as $ex)
         {
-            $extra_dic[$ex['id']] = $ex;
+            if(array_key_exists('id',$ex))
+            {
+                $extra_dic[$ex['id']] = $ex;
+            }
         }
         log_message('debug','report:' . json_encode($report));
         log_message('debug','extra:' . json_encode($extra));
@@ -727,7 +730,7 @@ class Reports extends REIM_Controller {
             foreach($_flow['data']['data'] as $s){
                 $_s = $s['status'] % 100;
                 $audit = '待审批';
-                if($s['uid'] == $report['uid']) {
+                if($s['uid'] == $report['uid'] && $_s == 0) {
                         $audit = '待提交';
                 }
                 if($s['uid'] == $report['uid']) {
