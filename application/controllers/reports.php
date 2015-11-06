@@ -728,11 +728,11 @@ class Reports extends REIM_Controller {
                 $_s = $s['status'] % 100;
                 $audit = '待审批';
                 if($s['uid'] == $report['uid']) {
-                    $audit = '待提交';
+                        $audit = '待提交';
                 }
                 if($s['uid'] == $report['uid']) {
                     if($_s == 1) {
-                        $audit = '待提交';
+                        $audit = '已提交';
                     }
                 }
                 if($_s == 2)  {
