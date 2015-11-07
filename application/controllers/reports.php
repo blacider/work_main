@@ -1487,6 +1487,8 @@ class Reports extends REIM_Controller {
                         $_stat_cells[$public_bank_field_prefix . " - 开户支行"] = $this->try_get_element($publicbankinfo, "subbranch");
                     }
                     $_stat_cells["金额"] = 0;
+                    $_stat_cells["已付"] = 0;
+                    $_stat_cells["应付"] = 0;
                     $_stat_cells["注释"] = "";
                     
                     $stat_cells[$key] = $_stat_cells;
@@ -1591,7 +1593,9 @@ class Reports extends REIM_Controller {
                 $obj['应付'] = $r['last'];
 
                 // 累加已完成金额
-                $stat_cells[$key]["金额"] += $r["last"];
+                $stat_cells[$key]["金额"] += $r["total"];
+                $stat_cells[$key]["已付"] += $r["paid"];
+                $stat_cells[$key]["应付"] += $r["last"];
 
                 array_push($report_cells, $obj);
             }
