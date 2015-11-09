@@ -1124,6 +1124,7 @@ class Reports extends REIM_Controller {
             case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2]  . '</font>';};break;
             }
             $d['prove_ahead'] = $prove_ahead;
+            $d['report_template'] = '';
 
             if(array_key_exists('template_id',$d) && array_key_exists($d['template_id'],$report_template_dic))
             {
