@@ -843,7 +843,10 @@ class Reports extends REIM_Controller {
         $extra_dic = array();
         foreach($extra as $ex)
         {
-            $extra_dic[$ex['id']] = $ex;
+            if(array_key_exists('id',$ex))
+            {
+                $extra_dic[$ex['id']] = $ex;
+            }
         }
         
         $this->bsload('reports/view',
