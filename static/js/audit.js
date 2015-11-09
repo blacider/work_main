@@ -135,7 +135,7 @@ jQuery(grid_selector).jqGrid({
     sortorder: "desc",
     sortorder: "desc",
     loadComplete : function(data) {
-        if ("length" in data) {
+        if (data instanceof Array) {
             var IF_TEMPLATE = false;
             for (var i = 0; i < data.length; i++)
                 if ("report_template" in data[i])

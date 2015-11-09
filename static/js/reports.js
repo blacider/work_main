@@ -74,7 +74,7 @@ try{
         {name:'options',index:'options', width:40, editable: false,editoptions: {size:"20", maxlength : "40"},unformat: aceSwitch,search:false},
         ], 
         loadComplete : function(data) {
-            if ("length" in data) {
+            if (data instanceof Array) {
                 var IF_TEMPLATE = false;
                 for (var i = 0; i < data.length; i++)
                     if ("report_template" in data[i])
