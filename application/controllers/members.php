@@ -875,19 +875,7 @@ class Members extends REIM_Controller {
         if($info['status']) {
             $key = $email . "|" . $phone;
             if (array_key_exists($key, $info["data"])) {
-                $status = $info["data"][$key]["status"];
-
-                if ($status == 0) {
-                    $this->session->set_userdata("last_error", "添加失败，邮箱和手机号码不能全部为空");
-                } else if ($status == 1) {
-                    $this->session->set_userdata("last_error", "新用户添加成功");
-                } else if ($status == 2) {
-                    $this->session->set_userdata("last_error", "该用户已存在，更新用户信息、加入到当前公司");
-                } else if ($status == 3) {
-                    $this->session->set_userdata("last_error", "该用户已存在，并且已加入到当前公司，更新用户信息成功");
-                } else if ($status == 4) {
-                    $this->session->set_userdata("last_error", "该用户已经加入一个公司，请等待他通过你的邀请");
-                }
+                $this->session->set_userdata("last_error", $info["data"][$key]["status_text"]);
             } else {
                 $this->session->set_userdata('last_error', '添加成功');
             }
