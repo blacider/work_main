@@ -19,9 +19,9 @@
                                     <th>开户行</th>
                                  <!--   <th>开户地</th> -->
                                     <th>部门</th>
-                                    <th>上级ID</th>
-                                    <th>上级姓名</th>
-                                    <th>上级Email</th>
+                                    <th>默认审批人ID</th>
+                                    <th>默认审批人姓名</th>
+                                    <th>默认审批人Email</th>
                                     <th>级别</th>
                                     <th>职位</th>
                                     <th>一级审批</th>
@@ -66,7 +66,7 @@
                                     <td class="red"><?php 
                                         if($d['status']&4)
                                         {
-                                            echo '员工上级信息缺失或有误，导入后将无上级信息。';
+                                            echo '员工默认审批人信息缺失或有误，导入后将无默认审批人信息。';
                                         }
                                         else if($d['status']&2)
                                         {

@@ -96,7 +96,7 @@ foreach($levels as $m){
 
 
                               <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">上级</label>
+                                <label class="col-sm-1 control-label no-padding-right">默认审批人</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" name="manager" data-placeholder="请选择标签">
                                         <option value='0'>无</option>
