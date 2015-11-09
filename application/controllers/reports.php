@@ -737,6 +737,10 @@ class Reports extends REIM_Controller {
                     if($_s == 1) {
                         $audit = '已提交';
                     }
+                    if($_s == 1 && array_key_exists('ticket_type',$s) && $s['ticket_type'] == 1)
+                    {
+                        $audit = '待审批';
+                    }
                 }
                 if($_s == 2)  {
                     $audit = '通过';
