@@ -875,7 +875,7 @@ class Members extends REIM_Controller {
         if($info['status']) {
             $key = $email . "|" . $phone;
             if (array_key_exists($key, $info["data"])) {
-                $status = $info["data"][$key];
+                $status = $info["data"][$key]["status"];
 
                 if ($status == 0) {
                     $this->session->set_userdata("last_error", "添加失败，邮箱和手机号码不能全部为空");
@@ -891,11 +891,11 @@ class Members extends REIM_Controller {
             } else {
                 $this->session->set_userdata('last_error', '添加成功');
             }
-            log_message('debug', "last_error: " . $this->session->userdata("last_error"));
         } else {
             $this->session->set_userdata('last_error', '添加失败');
             return redirect('members/newmember', "refresh");
         }
+        
         if($renew == 0)
         {
             return redirect('members/index', "refresh");
