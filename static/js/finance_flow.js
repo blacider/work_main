@@ -149,9 +149,15 @@ jQuery(grid_selector).jqGrid({
 
     ], 
     loadComplete : function(data) {
-        if ("length" in data && !("report_template" in data[0])) {
-            jQuery(grid_selector).jqGrid('hideCol','report_template');
-            $(window).resize();
+        if ("length" in data) {
+            var IF_TEMPLATE = false;
+            for (var i = 0; i < data.length; i++)
+                if ("report_template" in data[i])
+                    IF_TEMPLATE = true;
+            if (!IF_TEMPLATE) {
+                jQuery(grid_selector).jqGrid('hideCol','report_template');
+                $(window).resize();
+            }
         }
         jQuery.each(selectRows,function(index,row){
             jQuery(grid_selector).jqGrid('setSelection',row);

@@ -138,7 +138,7 @@ jQuery(grid_selector).jqGrid({
         if ("length" in data) {
             var IF_TEMPLATE = false;
             for (var i = 0; i < data.length; i++)
-                if ("report_template" in data[0])
+                if ("report_template" in data[i])
                     IF_TEMPLATE = true;
             if (!IF_TEMPLATE) {
                 jQuery(grid_selector).jqGrid('hideCol','report_template');
