@@ -135,9 +135,15 @@ jQuery(grid_selector).jqGrid({
     sortorder: "desc",
     sortorder: "desc",
     loadComplete : function(data) {
-        if ("length" in data && !("report_template" in data[0])) {
-            jQuery(grid_selector).jqGrid('hideCol','report_template');
-            $(window).resize();
+        if ("length" in data) {
+            var IF_TEMPLATE = false;
+            for (var i = 0; i < data.length; i++)
+                if ("report_template" in data[0])
+                    IF_TEMPLATE = true;
+            if (!IF_TEMPLATE) {
+                jQuery(grid_selector).jqGrid('hideCol','report_template');
+                $(window).resize();
+            }
         }
         bind_event();
         var table = this;
