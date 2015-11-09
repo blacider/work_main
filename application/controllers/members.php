@@ -881,14 +881,14 @@ class Members extends REIM_Controller {
             }
         } else {
             $this->session->set_userdata('last_error', '添加失败');
-            return redirect('members/newmember', "refresh");
+            return redirect(base_url('members/newmember'));
         }
         
         if($renew == 0)
         {
-            return redirect('members/index', "refresh");
+            return redirect(base_url('members/index'));
         }
-        return redirect('members/newmember', "refresh");
+        return redirect(base_url('members/newmember'));
 
         //print_r($info);
         //$this->groups->set_invite($email, $nickname, $phone, $credit, $groups);
