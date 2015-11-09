@@ -83,7 +83,7 @@ position: absolute;
                     <th>手机</th>
                     <th>部门</th>
                     <th>职位</th>
-                    <th>上级</th>
+                    <th>默认审批人</th>
                     <th>角色</th>
 <?php
 if($profile['admin'] == 1 || $profile['admin'] == 3) {
