@@ -148,7 +148,11 @@ jQuery(grid_selector).jqGrid({
 
 
     ], 
-    loadComplete : function() {
+    loadComplete : function(data) {
+        if ("length" in data && !("report_template" in data[0])) {
+            jQuery(grid_selector).jqGrid('hideCol','report_template');
+            $(window).resize();
+        }
         jQuery.each(selectRows,function(index,row){
             jQuery(grid_selector).jqGrid('setSelection',row);
         });

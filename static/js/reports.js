@@ -73,7 +73,11 @@ try{
         {name:'status_str',index:'status_str', width:40, editable: false,editoptions: {size:"20", maxlength : "30"}/*,unformat: aceSwitch*/,search:false},
         {name:'options',index:'options', width:40, editable: false,editoptions: {size:"20", maxlength : "40"},unformat: aceSwitch,search:false},
         ], 
-        loadComplete : function() {
+        loadComplete : function(data) {
+            if ("length" in data && !("report_template" in data[0])) {
+                jQuery(grid_selector).jqGrid('hideCol','report_template');
+                $(window).resize();
+            }
             bind_event();
             var table = this;
             setTimeout(function(){

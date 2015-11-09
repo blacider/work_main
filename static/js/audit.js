@@ -134,7 +134,11 @@ jQuery(grid_selector).jqGrid({
     ], 
     sortorder: "desc",
     sortorder: "desc",
-    loadComplete : function() {
+    loadComplete : function(data) {
+        if ("length" in data && !("report_template" in data[0])) {
+            jQuery(grid_selector).jqGrid('hideCol','report_template');
+            $(window).resize();
+        }
         bind_event();
         var table = this;
         setTimeout(function(){
