@@ -240,6 +240,7 @@ foreach($report['items'] as $i) {
                                             <td>类型</td>
                                             <td>商家</td>
                                             <td>备注</td>
+                                            <td>附件</td>
                                             <td>详情</td>
                                             <!--
                                             <td>操作</td>
@@ -293,6 +294,7 @@ foreach($report['items'] as $i) {
                                                 ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td><?php echo $i['note'];?></td>
+                                            <td><img title="name" style="width:20px;height:20px" src="/static/images/default.png"/></td>
                                             <td><?php $link = base_url('items/show/' . $i['id'] . "/1"); ?><a href="<?php echo $link; ?>">详情</a></td>
                                         </tr>
                                         <?php } ?>
