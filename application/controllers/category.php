@@ -741,122 +741,122 @@ class Category extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-	$_ranks = $this->reim_show->rank_level(1);
-	$_levels = $this->reim_show->rank_level(0);
+        $_ranks = $this->reim_show->rank_level(1);
+        $_levels = $this->reim_show->rank_level(0);
 //    $_extra = $this->category->get_custom_item();
 
-	$ranks = array();
-	$levels = array();
-
-	if($_ranks['status']>0)
-	{
-		$ranks = $_ranks['data'];
-	}
-
-	if($_levels['status']>0)
-	{
-		$levels = $_levels['data'];
-	}
-	$_members = $this->groups->get_my_list();
-	$members = array();
-	if($_members['status'] > 0)
-	{
-		$members = $_members['data']['gmember'];
-	}
-        $_sobs = $this->account_set->get_account_set_list();
-	$sobs = array();
-	$sob_ranks = array();
-	$sob_levels = array();
-	$sob_ranks_dic = array();
-	$sob_levels_dic =array();
-	$sob_members_dic =array();
-	$sob_groups = array();
-	$sob_members = array();
-	$range = '';
-	if($_sobs['status'])
-	{
-		$sobs = $_sobs['data'];
-	}
-	foreach($sobs as $s)
-	{
-		if($s['sob_id'] == $gid)
-		{
-			$sob_ranks = $s['ranks'];
-			$sob_levels = $s['levels'];
-			$sob_groups = $s['groups'];	
-			$sob_members = $s['users'];
-			if($sob_groups)
-			{
-				$range = 0;
-			}
-			if($sob_ranks)
-			{
-				$range = 1;
-			}
-			if($sob_levels)
-			{
-				$range = 2;
-			}
-			if($sob_members)
-			{
-				$range = 3;
-			}
-		}
-	}
-	foreach($sob_ranks as $sr)
-	{
-		array_push($sob_ranks_dic,$sr['id']);
-	}
-	foreach($sob_levels as $sl)
-	{
-		array_push($sob_levels_dic,$sl['id']);
-	}
-	foreach($sob_members as $sm)
-	{
-		array_push($sob_members_dic,$sm['id']);
-	}
-
-	$_categories = $this->category->get_list();
-	$categories = array();
-	if($_categories['status'] > 0)
-	{
-		$categories = $_categories['data']['categories'];
-	}
-	log_message('debug','***category:' . json_encode($_categories));
-	$sob_categories = array();
-	$all_categories = array();
-	$sob_keys =array();
-	foreach($categories as $cate)
-	{
-		$all_categories[$cate['id']]=array();
-		$path = "http://api.cloudbaoxiao.com/online/static/" . $cate['avatar'] .".png";
-		if($cate['sob_id'] == $gid && $cate['pid'] <= 0 )
-		{
-			array_push($sob_keys,$cate['id']);
-		}
-        if(array_key_exists('extra_type',$cate))
+        $ranks = array();
+        $levels = array();
+    
+        if($_ranks['status']>0)
         {
-            $all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code'],'note'=>$cate['note'],'force_attach'=>$cate['force_attach'], 'max_limit'=>$cate['max_limit'],'extra_type'=>$cate['extra_type'], 'alias_type' => $cate['dest']);
+            $ranks = $_ranks['data'];
         }
-        else
+    
+        if($_levels['status']>0)
         {
-            $all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code'],'note'=>$cate['note'],'force_attach'=>$cate['force_attach'], 'max_limit'=>$cate['max_limit'],'extra_type'=>0, 'alias_type' => $cate['dest']);
+            $levels = $_levels['data'];
         }
-	}
-			
-		$path = "http://api.cloudbaoxiao.com/online/static/0.png";
-		$all_categories[0]=array('child'=>array(),'avatar_'=>0,'avatar'=>$path,'id'=>0,'pid'=>-1,'name'=>"顶级分类",'sob_code'=>0,'note'=>'','force_attach'=>0,'extra_type'=>0);
-	foreach($categories as $cate)
-	{
-		if($cate['pid'] !=-1)
-		{
-        if(array_key_exists($cate['pid'],$all_categories) && array_key_exists('child',$all_categories[$cate['pid']]))
+        $_members = $this->groups->get_my_list();
+        $members = array();
+        if($_members['status'] > 0)
         {
-		    array_push($all_categories[$cate['pid']]['child'],array('id'=>$cate['id'],'name'=>$cate['category_name']));
+            $members = $_members['data']['gmember'];
         }
-		}
-	}
-	/*
+            $_sobs = $this->account_set->get_account_set_list();
+        $sobs = array();
+        $sob_ranks = array();
+        $sob_levels = array();
+        $sob_ranks_dic = array();
+        $sob_levels_dic =array();
+        $sob_members_dic =array();
+        $sob_groups = array();
+        $sob_members = array();
+        $range = '';
+        if($_sobs['status'])
+        {
+            $sobs = $_sobs['data'];
+        }
+        foreach($sobs as $s)
+        {
+            if($s['sob_id'] == $gid)
+            {
+                $sob_ranks = $s['ranks'];
+                $sob_levels = $s['levels'];
+                $sob_groups = $s['groups']; 
+                $sob_members = $s['users'];
+                if($sob_groups)
+                {
+                    $range = 0;
+                }
+                if($sob_ranks)
+                {
+                    $range = 1;
+                }
+                if($sob_levels)
+                {
+                    $range = 2;
+                }
+                if($sob_members)
+                {
+                    $range = 3;
+                }
+            }
+        }
+        foreach($sob_ranks as $sr)
+        {
+            array_push($sob_ranks_dic,$sr['id']);
+        }
+        foreach($sob_levels as $sl)
+        {
+            array_push($sob_levels_dic,$sl['id']);
+        }
+        foreach($sob_members as $sm)
+        {
+            array_push($sob_members_dic,$sm['id']);
+        }
+    
+        $_categories = $this->category->get_list();
+        $categories = array();
+        if($_categories['status'] > 0)
+        {
+            $categories = $_categories['data']['categories'];
+        }
+        log_message('debug','***category:' . json_encode($_categories));
+        $sob_categories = array();
+        $all_categories = array();
+        $sob_keys =array();
+        foreach($categories as $cate)
+        {
+            $all_categories[$cate['id']]=array();
+            $path = "http://api.cloudbaoxiao.com/online/static/" . $cate['avatar'] .".png";
+            if($cate['sob_id'] == $gid && $cate['pid'] <= 0 )
+            {
+                array_push($sob_keys,$cate['id']);
+            }
+            if(array_key_exists('extra_type',$cate))
+            {
+                $all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code'],'note'=>$cate['note'],'force_attach'=>$cate['force_attach'], 'max_limit'=>$cate['max_limit'],'extra_type'=>$cate['extra_type'], 'alias_type' => $cate['dest']);
+            }
+            else
+            {
+                $all_categories[$cate['id']]=array('child'=>array(),'avatar_'=>$cate['avatar'],'avatar'=>$path,'id'=>$cate['id'],'pid'=>$cate['pid'],'name'=>$cate['category_name'],'sob_code'=>$cate['sob_code'],'note'=>$cate['note'],'force_attach'=>$cate['force_attach'], 'max_limit'=>$cate['max_limit'],'extra_type'=>0, 'alias_type' => $cate['dest']);
+            }
+        }
+                
+            $path = "http://api.cloudbaoxiao.com/online/static/0.png";
+            $all_categories[0]=array('child'=>array(),'avatar_'=>0,'avatar'=>$path,'id'=>0,'pid'=>-1,'name'=>"顶级分类",'sob_code'=>0,'note'=>'','force_attach'=>0,'extra_type'=>0);
+        foreach($categories as $cate)
+        {
+            if($cate['pid'] !=-1)
+            {
+            if(array_key_exists($cate['pid'],$all_categories) && array_key_exists('child',$all_categories[$cate['pid']]))
+            {
+                array_push($all_categories[$cate['pid']]['child'],array('id'=>$cate['id'],'name'=>$cate['category_name']));
+            }
+            }
+        }
+    /*
         $_sobs = $sobs['data'];
         $data = array();
         foreach($_sobs as $sob)
@@ -875,12 +875,12 @@ class Category extends REIM_Controller {
                 array_push($data[$sob['sob_id']]['groups'],array('group_id'=>$sob['group_id'],'group_name'=>$sob['group_name']));
             }
         }
-	*/
+    */
 
         $ugroups = $this->ug->get_my_list();
-	log_message('debug','all_categories:' . json_encode($all_categories));
-	log_message('debug','sobs:' . json_encode($_sobs));
-	log_message('debug','sobs_keys:' . json_encode($sob_keys));
+        log_message('debug','all_categories:' . json_encode($all_categories));
+        log_message('debug','sobs:' . json_encode($_sobs));
+        log_message('debug','sobs_keys:' . json_encode($sob_keys));
         $this->bsload('account_set/update',
             array(
                 'last_error' => $error,
@@ -890,15 +890,15 @@ class Category extends REIM_Controller {
                 ,'ugroups' => $ugroups['data']['group']
                 ,'sob_data' => $sob_groups
                 ,'sob_id' => $gid
-		,'sob_keys' => $sob_keys
-		,'all_categories' => $all_categories
-		,'members' => $members
-		,'ranks' => $ranks
-		,'levels' => $levels
-		,'sob_ranks' => $sob_ranks_dic
-		,'sob_levels' => $sob_levels_dic
-		,'sob_members' => $sob_members_dic
-		,'range' => $range
+                ,'sob_keys' => $sob_keys
+                ,'all_categories' => $all_categories
+                ,'members' => $members
+                ,'ranks' => $ranks
+                ,'levels' => $levels
+                ,'sob_ranks' => $sob_ranks_dic
+                ,'sob_levels' => $sob_levels_dic
+                ,'sob_members' => $sob_members_dic
+                ,'range' => $range
                 ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
                     ,array('url' => '#','name' => '账套和标签','class' => '')
@@ -914,34 +914,34 @@ class Category extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-	$_ranks = $this->reim_show->rank_level(1);
-	$_levels = $this->reim_show->rank_level(0);
-
-	$ranks = array();
-	$levels = array();
-
-	if($_ranks['status']>0)
-	{
-		$ranks = $_ranks['data'];
-	}
-
-	if($_levels['status']>0)
-	{
-		$levels = $_levels['data'];
-	}
-		
-	$members = array();
-	$_members = $this->groups->get_my_list();
-	if($_members['status'] > 0)
-	{
-		$members = $_members['data']['gmember'];
-	}
-	$groups = array();
-        $_ugroups = $this->ug->get_my_list();
-	if($_ugroups['status']>0)
-	{
-		$groups = $_ugroups['data']['group'];
-	}
+	    $_ranks = $this->reim_show->rank_level(1);
+	    $_levels = $this->reim_show->rank_level(0);
+	
+	    $ranks = array();
+	    $levels = array();
+	
+	    if($_ranks['status']>0)
+	    {
+	        $ranks = $_ranks['data'];
+	    }
+	
+	    if($_levels['status']>0)
+	    {
+	        $levels = $_levels['data'];
+	    }
+	        
+	    $members = array();
+	    $_members = $this->groups->get_my_list();
+	    if($_members['status'] > 0)
+	    {
+	        $members = $_members['data']['gmember'];
+	    }
+	    $groups = array();
+	        $_ugroups = $this->ug->get_my_list();
+	    if($_ugroups['status']>0)
+	    {
+	        $groups = $_ugroups['data']['group'];
+	    }
         //  $_acc = json_encode($acc_sets);
         // log_message("debug","sob#############$_acc");
         $this->bsload('account_set/new',
@@ -950,9 +950,9 @@ class Category extends REIM_Controller {
                 //  ,'acc_sets' => $acc_sets
                 //  ,'acc_sets' => $acc_sets
                 ,'ugroups' => $groups
-		,'ranks' => $ranks
-		,'levels' => $levels
-		,'members' => $members
+		        ,'ranks' => $ranks
+		        ,'levels' => $levels
+		        ,'members' => $members
                 ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
                     ,array('url' => base_url('category/index'),'name' => '标签和分类','class' => '')
@@ -985,85 +985,85 @@ class Category extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
 
-	$range = $this->input->post('range');
+        $range = $this->input->post('range');
         $sid = $this->input->post('sid');
         $sob_name = $this->input->post('sob_name');
         $_groups = $this->input->post('groups');
-	//$_groups = json_decode($_groups,True);
-
-	$_ranks = $this->input->post('ranks');
-	//$_ranks = json_decode($_ranks,True);
-
-	$_levels = $this->input->post('levels');
-	//$_levels = json_decode($_levels,True);
-	$_members = $this->input->post('member');
-	//$_members = json_decode($_members,True);
-	$groups = '';
-	$ranks = '';
-	$levels = '';
-	$members = '';
-
-	switch($range)
-	{
-		case 0 :
-		{
-			if($_groups)
-			{
-				foreach($_groups as &$g)
-				{
-					$g=(int)$g;
-				}
-				$groups = implode(',',$_groups);
-			}
-			break;
-		}
-
-		case 1:
-		{
-			if($_ranks)
-			{
-				foreach($_ranks as &$r)
-				{
-					$r=(int)$r;
-				}
-				$ranks = implode(',',$_ranks);
-			}
-			break;
-		}
-
-		case 2:
-		{
-			if($_levels)
-			{
-				foreach($_levels as &$l)
-				{
-					$l=(int)$l;
-				}
-				$levels = implode(',',$_levels);
-			}
-			break;
-		}
-
-		case 3:
-		{
-			if($_members)
-			{
-				foreach($_members as &$m)
-				{
-					$m=(int)$m;
-				}
-				$members = implode(',',$_members);
-			}
-			break;
-		}
-
-	}
-        //$save = $this->input->post('renew');
-	log_message('debug','groups:' . $groups);
+	    //$_groups = json_decode($_groups,True);
+	
+	    $_ranks = $this->input->post('ranks');
+	    //$_ranks = json_decode($_ranks,True);
+	
+	    $_levels = $this->input->post('levels');
+	    //$_levels = json_decode($_levels,True);
+	    $_members = $this->input->post('member');
+	    //$_members = json_decode($_members,True);
+	    $groups = '';
+	    $ranks = '';
+	    $levels = '';
+	    $members = '';
+	
+	    switch($range)
+	    {
+	        case 0 :
+	        {
+	            if($_groups)
+	            {
+	                foreach($_groups as &$g)
+	                {
+	                    $g=(int)$g;
+	                }
+	                $groups = implode(',',$_groups);
+	            }
+	            break;
+	        }
+	
+	        case 1:
+	        {
+	            if($_ranks)
+	            {
+	                foreach($_ranks as &$r)
+	                {
+	                    $r=(int)$r;
+	                }
+	                $ranks = implode(',',$_ranks);
+	            }
+	            break;
+	        }
+	
+	        case 2:
+	        {
+	            if($_levels)
+	            {
+	                foreach($_levels as &$l)
+	                {
+	                    $l=(int)$l;
+	                }
+	                $levels = implode(',',$_levels);
+	            }
+	            break;
+	        }
+	
+	        case 3:
+	        {
+	            if($_members)
+	            {
+	                foreach($_members as &$m)
+	                {
+	                    $m=(int)$m;
+	                }
+	                $members = implode(',',$_members);
+	            }
+	            break;
+	        }
+	
+	    }
+	        //$save = $this->input->post('renew');
+	    log_message('debug','groups:' . $groups);
         $ret = $this->account_set->update_account_set($sid,$sob_name,$groups,$ranks,$levels,$members);
         $re = json_encode($ret);
         log_message("debug", "***&&*&*&*:$re");
-	log_message('debug','range:' . $range);
+        log_message('debug','range:' . $range);
         $arr = array('data' => 'success');
         die(json_encode($arr));
         //return redirect(base_url('category/account_set'));
@@ -1073,24 +1073,24 @@ class Category extends REIM_Controller {
     {
         $this->need_group_it();
         $_sobs = $this->account_set->get_account_set_list();
-	$sobs = array();
-	if($_sobs['status'])
-	{
-		$sobs = $_sobs['data'];
-	}
+	    $sobs = array();
+	    if($_sobs['status'])
+	    {
+	        $sobs = $_sobs['data'];
+	    }
         $data = array();
 
-	foreach($sobs as $s)
-	{
-		$data[$s['sob_id']]['sob_name'] = $s['sob_name'];
-		$data[$s['sob_id']]['groups'] = array();
-		foreach($s['groups'] as $g)
-		{
-			array_push($data[$s['sob_id']]['groups'],array('group_id'=>$g['id'],'group_name'=>$g['name']));
-		}
-	}
-
-	/*
+	    foreach($sobs as $s)
+	    {
+	        $data[$s['sob_id']]['sob_name'] = $s['sob_name'];
+	        $data[$s['sob_id']]['groups'] = array();
+	        foreach($s['groups'] as $g)
+	        {
+	            array_push($data[$s['sob_id']]['groups'],array('group_id'=>$g['id'],'group_name'=>$g['name']));
+	        }
+	    }
+	
+    /*
         foreach($_sobs as $sob)
         {
             if(array_key_exists($sob['sob_id'],$data))
@@ -1107,9 +1107,10 @@ class Category extends REIM_Controller {
                 array_push($data[$sob['sob_id']]['groups'],array('group_id'=>$sob['group_id'],'group_name'=>$sob['group_name']));
             }
         }
-	*/
+    */
         die(json_encode($data));
     }
+
     public function account_set(){
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
@@ -1117,11 +1118,11 @@ class Category extends REIM_Controller {
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
         $acc_sets = $this->account_set->get_sobs();
-	log_message('debug','account:' . json_encode($acc_sets));
+        log_message('debug','account:' . json_encode($acc_sets));
         $sobs = $acc_sets['data'];
         if(!$acc_sets['status'])
         {
-            $sobs = array();	
+            $sobs = array();    
         }
 
         $keys = array();
@@ -1144,7 +1145,7 @@ class Category extends REIM_Controller {
         $this->bsload('account_set/index',
             array(
                 'title' => '帐套管理'
-                //	,'acc_sets' => $acc_sets
+                //  ,'acc_sets' => $acc_sets
                 ,'acc_sets' => $acc_set
                 ,'error' => $error
                 ,'ugroups' => $ugroups['data']['group']
@@ -1153,7 +1154,7 @@ class Category extends REIM_Controller {
                     ,array('url' => '#','name' => '账套和标签','class' => '')
                     ,array('url' => '','name' => '帐套管理','class' => '')
                 ),
-            )	
+            )   
         );
     }
     public function index(){
@@ -1191,7 +1192,7 @@ class Category extends REIM_Controller {
         log_message("debug", "UG#########: $_ug");
         //TODO: 重新审核此段代码  END  庆义，长远
 
-	$_group = array();
+        $_group = array();
         if($category){
             $_group = $category['data']['categories'];
         }
@@ -1299,44 +1300,44 @@ class Category extends REIM_Controller {
 
     public function create_category()
     {
-    	$this->need_group_it();
-	$cid = $this->input->post('cid');
-	$name=$this->input->post('name');
-	$avatar = $this->input->post('avatar');
-	$code=$this->input->post('code');
-	$sob_id = $this->input->post('sob_id');
-	$pid = $this->input->post('pid');
-	$note = $this->input->post('note');
-    $max_limit = $this->input->post('max_limit');
-	$_force_attach = $this->input->post('force_attach');
-    $extra_type = $this->input->post('extra_type');
-    $alias_type = $this->input->post('alias_type');
-	$force_attach = 0;
-	if($_force_attach)
-	{
-		$force_attach = 1;
-	}
-		
-	log_message('debug','cid:' . $cid);
-	log_message('debug','name:' . $name);
-	log_message('debug','avatar:' . $avatar);
-	log_message('debug','code:' . $code);
-	log_message('debug','note:' . $note);
-	log_message('debug','force_attach:' . $force_attach);
-    log_message('debug', 'max_limit:' . $max_limit);
-    log_message('debug', 'extra_type:' . $extra_type);
-    
-	$obj = $this->category->create_update($cid,$pid,$sob_id,$name,$avatar,$code,$force_attach,$note,$max_limit,$extra_type, $alias_type);
-	if($obj['status'] > 0)
-	{
-		$this->session->set_userdata('last_error','添加成功');
-		return redirect(base_url('category/sob_update/' . $sob_id));
-	}	
-	else
-	{
-		$this->session->set_userdata('last_error','添加失败');
-		return redirect(base_url('category/sob_update/' . $sob_id));
-	}
+        $this->need_group_it();
+	    $cid = $this->input->post('cid');
+	    $name=$this->input->post('name');
+	    $avatar = $this->input->post('avatar');
+	    $code=$this->input->post('code');
+	    $sob_id = $this->input->post('sob_id');
+	    $pid = $this->input->post('pid');
+	    $note = $this->input->post('note');
+	    $max_limit = $this->input->post('max_limit');
+	    $_force_attach = $this->input->post('force_attach');
+	    $extra_type = $this->input->post('extra_type');
+	    $alias_type = $this->input->post('alias_type');
+	    $force_attach = 0;
+	    if($_force_attach)
+	    {
+	        $force_attach = 1;
+	    }
+	        
+	    log_message('debug','cid:' . $cid);
+	    log_message('debug','name:' . $name);
+	    log_message('debug','avatar:' . $avatar);
+	    log_message('debug','code:' . $code);
+	    log_message('debug','note:' . $note);
+	    log_message('debug','force_attach:' . $force_attach);
+	    log_message('debug', 'max_limit:' . $max_limit);
+	    log_message('debug', 'extra_type:' . $extra_type);
+	    
+	    $obj = $this->category->create_update($cid,$pid,$sob_id,$name,$avatar,$code,$force_attach,$note,$max_limit,$extra_type, $alias_type);
+	    if($obj['status'] > 0)
+	    {
+	        $this->session->set_userdata('last_error','添加成功');
+	        return redirect(base_url('category/sob_update/' . $sob_id));
+	    }   
+	    else
+	    {
+	        $this->session->set_userdata('last_error','添加失败');
+	        return redirect(base_url('category/sob_update/' . $sob_id));
+	    }
     }
     public function create(){
         $this->need_group_it();
@@ -1391,11 +1392,11 @@ class Category extends REIM_Controller {
             log_message("debug", "删除失败 F");
         }
         $this->session->set_userdata('last_error', $msg);
-	if($sob_id == -1)
-	{
-       		return  redirect(base_url('category'));
-	}
-	return redirect(base_url('category/sob_update/' . $sob_id));
+    if($sob_id == -1)
+    {
+            return  redirect(base_url('category'));
+    }
+    return redirect(base_url('category/sob_update/' . $sob_id));
     }
     public function gettreelist(){
         $this->need_group_it();
@@ -1416,18 +1417,18 @@ class Category extends REIM_Controller {
     public function get_sob_category()
     {
         $sobs = $this->account_set->get_account_set_list();
-	log_message('debug','sobs:' . json_encode($sobs));
-	$_sobs = array();
-	if($sobs['status']>0)
-	{
-        	$_sobs = $sobs['data'];
-	}
+    log_message('debug','sobs:' . json_encode($sobs));
+    $_sobs = array();
+    if($sobs['status']>0)
+    {
+            $_sobs = $sobs['data'];
+    }
         $data = array();
         foreach($_sobs as $sob)
         {
             if(array_key_exists($sob['sob_id'],$data))
             {
-	    	$data[$sob['sob_id']]['groups'] = $sob['groups'];
+            $data[$sob['sob_id']]['groups'] = $sob['groups'];
             }
             else
             {
@@ -1485,28 +1486,28 @@ class Category extends REIM_Controller {
         }
 
         log_message('debug','data:' . json_encode($data));
-	    log_message('debug','sobs:' . json_encode($sobs));
+        log_message('debug','sobs:' . json_encode($sobs));
         die(json_encode($data));
     }
     public function get_my_sob_category($uid=0)
     {
-    	if($uid > 0)
-	{
-    		$__profile = $this->users->reim_get_info($uid);
-		$_profile = json_decode($__profile,True);
-		if($_profile['status'] < 0)
-		{
-			die(json_encode(array('msg'=>'返回值错误')));
-		}
+        if($uid > 0)
+    {
+            $__profile = $this->users->reim_get_info($uid);
+        $_profile = json_decode($__profile,True);
+        if($_profile['status'] < 0)
+        {
+            die(json_encode(array('msg'=>'返回值错误')));
+        }
 
-		$profile = $_profile['data'];
-		
-		log_message('debug','user_info:'.json_encode($_profile));
-	}
-	else
-	{
-       		 $profile = $this->session->userdata('profile');
-	}
+        $profile = $_profile['data'];
+        
+        log_message('debug','user_info:'.json_encode($_profile));
+    }
+    else
+    {
+             $profile = $this->session->userdata('profile');
+    }
         $sobs = $profile['sob'];
         $_sob_id = array();
         //$_my_sobs = array();
@@ -1590,7 +1591,7 @@ class Category extends REIM_Controller {
                     return ($a['p_flag'] > $b['p_flag']) ? 1 : -1;
             });
         }
-	    log_message('debug','mysobs:' . json_encode($_sob_id));
+        log_message('debug','mysobs:' . json_encode($_sob_id));
         log_message('debug','data' . json_encode($data));
 
         die(json_encode($data));
