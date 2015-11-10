@@ -26,9 +26,9 @@
                      
 
                            <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-rigtht">报销单模板名</label>
+                                <label class="col-sm-2 control-label no-padding-rigtht">报销单模板名称</label>
                                 <div class="col-xs-4 col-sm-4">
-                                <input id="template_name" type="text" class="form-controller col-xs-12" name="template_name" placeholder="输入报销单模板名">
+                                <input id="template_name" type="text" class="form-controller col-xs-12" name="template_name" placeholder="输入报销单模板名称">
                                 </div>
                             </div>
 
