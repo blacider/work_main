@@ -612,7 +612,10 @@ class Reports extends REIM_Controller {
         $extra_dic = array();
         foreach($extra as $ex)
         {
-            $extra_dic[$ex['id']] = $ex;
+            if(is_array($ex) && array_key_exists('id',$ex))
+            {
+                $extra_dic[$ex['id']] = $ex;
+            }
         }
         log_message('debug','report:' . json_encode($report));
         log_message('debug','extra:' . json_encode($extra));
@@ -719,12 +722,16 @@ class Reports extends REIM_Controller {
             foreach($_flow['data']['data'] as $s){
                 $_s = $s['status'] % 100;
                 $audit = '待审批';
-                if($s['uid'] == $report['uid']) {
-                    $audit = '待提交';
+                if($s['uid'] == $report['uid'] && $_s == 0) {
+                        $audit = '待提交';
                 }
                 if($s['uid'] == $report['uid']) {
                     if($_s == 1) {
-                        $audit = '待提交';
+                        $audit = '已提交';
+                    }
+                    if($_s == 1 && array_key_exists('ticket_type',$s) && $s['ticket_type'] == 1)
+                    {
+                        $audit = '待审批';
                     }
                 }
                 if($_s == 2)  {
@@ -828,7 +835,10 @@ class Reports extends REIM_Controller {
         $extra_dic = array();
         foreach($extra as $ex)
         {
-            $extra_dic[$ex['id']] = $ex;
+            if(is_array($ex) && array_key_exists('id',$ex))
+            {
+                $extra_dic[$ex['id']] = $ex;
+            }
         }
         
         $this->bsload('reports/view',
