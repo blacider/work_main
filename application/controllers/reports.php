@@ -281,20 +281,12 @@ class Reports extends REIM_Controller {
             }
             $d['prove_ahead'] = $prove_ahead;
 
-            if(!array_key_exists('template_id',$d))            
-            {
-                $d['report_template'] = '';
-            }
 
             if(array_key_exists('template_id',$d))
             {
                 if(array_key_exists($d['template_id'],$report_template_dic))
                 {
                     $d['report_template'] = $report_template_dic[$d['template_id']];
-                }
-                else
-                {
-                    $d['report_template'] = '';
                 }
             }
             
@@ -620,7 +612,10 @@ class Reports extends REIM_Controller {
         $extra_dic = array();
         foreach($extra as $ex)
         {
-            $extra_dic[$ex['id']] = $ex;
+            if(is_array($ex) && array_key_exists('id',$ex))
+            {
+                $extra_dic[$ex['id']] = $ex;
+            }
         }
         log_message('debug','report:' . json_encode($report));
         log_message('debug','extra:' . json_encode($extra));
@@ -727,12 +722,16 @@ class Reports extends REIM_Controller {
             foreach($_flow['data']['data'] as $s){
                 $_s = $s['status'] % 100;
                 $audit = '待审批';
-                if($s['uid'] == $report['uid']) {
-                    $audit = '待提交';
+                if($s['uid'] == $report['uid'] && $_s == 0) {
+                        $audit = '待提交';
                 }
                 if($s['uid'] == $report['uid']) {
                     if($_s == 1) {
-                        $audit = '待提交';
+                        $audit = '已提交';
+                    }
+                    if($_s == 1 && array_key_exists('ticket_type',$s) && $s['ticket_type'] == 1)
+                    {
+                        $audit = '待审批';
                     }
                 }
                 if($_s == 2)  {
@@ -836,7 +835,10 @@ class Reports extends REIM_Controller {
         $extra_dic = array();
         foreach($extra as $ex)
         {
-            $extra_dic[$ex['id']] = $ex;
+            if(is_array($ex) && array_key_exists('id',$ex))
+            {
+                $extra_dic[$ex['id']] = $ex;
+            }
         }
         
         $this->bsload('reports/view',
@@ -1487,6 +1489,8 @@ class Reports extends REIM_Controller {
                         $_stat_cells[$public_bank_field_prefix . " - 开户支行"] = $this->try_get_element($publicbankinfo, "subbranch");
                     }
                     $_stat_cells["金额"] = 0;
+                    $_stat_cells["已付"] = 0;
+                    $_stat_cells["应付"] = 0;
                     $_stat_cells["注释"] = "";
                     
                     $stat_cells[$key] = $_stat_cells;
@@ -1591,7 +1595,9 @@ class Reports extends REIM_Controller {
                 $obj['应付'] = $r['last'];
 
                 // 累加已完成金额
-                $stat_cells[$key]["金额"] += $r["paid"];
+                $stat_cells[$key]["金额"] += $r["total"];
+                $stat_cells[$key]["已付"] += $r["paid"];
+                $stat_cells[$key]["应付"] += $r["last"];
 
                 array_push($report_cells, $obj);
             }

@@ -860,6 +860,7 @@ class Members extends REIM_Controller {
         $data['level'] = $level;
         $data['manager'] = '';
         $data['manager_id'] = 0;
+        $data['display_manager_id'] = 0;
         if(count($manager) == 2)
         {
             $data['manager_id'] = $manager[0];
@@ -872,11 +873,17 @@ class Members extends REIM_Controller {
         $info = $this->groups->reim_imports(array('members'=>json_encode($input)));
         //$info = $this->groups->doimports($email, $nickname, $phone, $admin, $groups, $account, $cardno, $cardbank, $cardloc , $manager, $rank, $level);
         if($info['status']) {
-            $this->session->set_userdata('last_error', '添加成功');
+            $key = $email . "|" . $phone;
+            if (array_key_exists($key, $info["data"])) {
+                $this->session->set_userdata("last_error", $info["data"][$key]["status_text"]);
+            } else {
+                $this->session->set_userdata('last_error', '添加成功');
+            }
         } else {
             $this->session->set_userdata('last_error', '添加失败');
             return redirect(base_url('members/newmember'));
         }
+        
         if($renew == 0)
         {
             return redirect(base_url('members/index'));

@@ -45,7 +45,7 @@
 <div class="form-group" id="rate_note">
 <label class="col-sm-1 control-label no-padding-right"></label>
 <div class="col-xs-6 col-sm-6">
-<small>中行实时<small id='rate_type'>现钞卖出价</small>为：<small id='rate_amount'>1.0</small></small>
+<small>中行实时<span id='rate_type'>现钞卖出价</span>为：<span id='rate_amount'>1.0</span></small>
 </div>
 
 </div>
