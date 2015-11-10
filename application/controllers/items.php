@@ -357,6 +357,7 @@ class Items extends REIM_Controller {
                 $s['attachment'] = '';
                 if(array_key_exists('attachments',$s))
                 {
+                /*
                     $img_path = '/static/images/';
                     $img = 'default.png';
                     $attach_img_dic = array(
@@ -391,6 +392,8 @@ class Items extends REIM_Controller {
                             $s['attachment'] = $s['attachment'] . '&nbsp;&nbsp;' . $_attach_url;
                         }
                     }
+                    */
+                    $this->items->show_attachments($s);
                 }
                 $s['cate_str'] = '未指定的分类';
                 $s['createdt'] = strftime("%Y-%m-%d %H:%M", intval($s['createdt']));

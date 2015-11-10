@@ -214,6 +214,11 @@ class Reports extends REIM_Controller {
 
         $data = $items['data']['data'];
         foreach($data as &$d){
+            if(true||(array_key_exists('has_attachment',$d) && $d['has_attachment']))
+            {
+                $url = base_url('reports/show/' . $d['id']);
+                $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
+            }
             $trash= $d['status'] === 1 ? 'gray' : 'red';
             $edit = ($d['status'] === 1)   ? 'gray' : 'green';
             $export = ($d['status'] === 1)   ? 'gray' : 'grey';
@@ -840,6 +845,17 @@ class Reports extends REIM_Controller {
                 $extra_dic[$ex['id']] = $ex;
             }
         }
+
+        if(array_key_exists('items',$report))
+        {
+            foreach($report['items'] as &$item)
+            {
+                if(array_key_exists('attachments',$item))
+                {
+                    $this->items->show_attachments($item);
+                }
+            }
+        }
         
         $this->bsload('reports/view',
             array(
@@ -1075,6 +1091,11 @@ class Reports extends REIM_Controller {
 
         $data = $items['data']['data'];
         foreach($data as &$d){
+            if(array_key_exists('has_attachment',$d) && $d['has_attachment'])
+            {
+                $url = base_url('reports/show/' . $d['id']);
+                $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
+            }
             log_message("debug", "xxx audit data:" . json_encode($d));
             $trash= $d['status'] === 1 ? 'grey' : 'red';
             $edit = ($d['status'] === 1)   ? 'grey' : 'green';
