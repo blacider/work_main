@@ -401,7 +401,7 @@ class Items extends REIM_Controller {
                 if(array_key_exists($s['category'], $_cates)){
                     $s['cate_str'] = $_cates[$s['category']];
                 }
-                $_report = '尚未添加到报告';
+                $_report = '尚未添加到报销单';
                 if($_report) {
                 }
                 $s['report'] = $_report;

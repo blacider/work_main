@@ -18,7 +18,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-rigtht">名称</label>
                             <div class="col-xs-3 col-sm-3">
-                                <input id="sob_name" type="text" class="form-controller col-xs-12" value="<?php echo $report_template["name"];?>" name="sob_name" placeholder="输入报告模板名"></div>
+                                <input id="sob_name" type="text" class="form-controller col-xs-12" value="<?php echo $report_template["name"];?>" name="sob_name" placeholder="输入报销单模板名"></div>
                         </div>
 
                         
