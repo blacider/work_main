@@ -158,7 +158,7 @@
             if($_type == 2) {
                 $config_id = $_item['id'];
                 $config_type = $_item['type'];
-                $ddt = date('Y-m-d H:i:s', $_item['value']); 
+                $ddt = date('Y-m-d', $_item['value']); 
             }
             if($_type == 5) {
                 $config_id = $_item['id'];
