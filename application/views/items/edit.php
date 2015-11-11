@@ -1015,7 +1015,7 @@ $(document).ready(function(){
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
         defaultDate: _dt,
-        format: 'YYYY-MM-DD HH:mm:ss',
+        format: 'YYYY-MM-DD',
         linkField: "dt1",
     }).next().on(ace.click_event, function(){
         $(this).prev().focus();
@@ -1030,7 +1030,7 @@ $(document).ready(function(){
             $('#date-timepicker2').datetimepicker({
                 language: 'zh-cn',
                 defaultDate: _ddt,
-                format: 'YYYY-MM-DD HH:mm:ss',
+                format: 'YYYY-MM-DD',
                 linkField: "dt_end1",
                 }).next().on(ace.click_event, function(){
                     $(this).prev().focus();

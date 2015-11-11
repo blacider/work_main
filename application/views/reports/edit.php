@@ -1183,9 +1183,9 @@ $(document).ready(function(){
         language: 'zh-cn',
             //locale:  moment.locale('zh-cn'),
             useCurrent: true,
-            format: 'YYYY-MM-DD HH:mm:ss',
+            format: 'YYYY-MM-DD',
             linkField: "dt",
-            linkFormat: "YYYY-MM-DD HH:mm:ss",
+            linkFormat: "YYYY-MM-DD",
             sideBySide: true
     }).next().on('dp.change', function(ev){
     }).on(ace.click_event, function(){
