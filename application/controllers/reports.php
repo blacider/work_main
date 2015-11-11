@@ -214,7 +214,7 @@ class Reports extends REIM_Controller {
 
         $data = $items['data']['data'];
         foreach($data as &$d){
-            if(true||(array_key_exists('has_attachment',$d) && $d['has_attachment']))
+            if(array_key_exists('has_attachment',$d) && $d['has_attachment'])
             {
                 $url = base_url('reports/show/' . $d['id']);
                 $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
