@@ -119,7 +119,7 @@
     var _no_levels = '<?php echo json_encode($no_levels)?>';
     var _no_groups = '<?php echo json_encode($no_groups)?>';
     var _members = '<?php echo json_encode($members)?>';
-    var insert_count_globle = 0;
+    
     var all_count = $('#all_count').data('nums');
 
     var no_ranks = '';
@@ -290,6 +290,7 @@ function travel(is_mail)
 
 function insertMem()
 {
+    var insert_count_globle = 0;
      var in_members = new Array();
      var insert_count = 0;
     $('.judge').each(function(idx, item) {
