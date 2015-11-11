@@ -128,6 +128,9 @@ var all_count = $('#all_count').data('nums');
                                         $(this).removeClass('green').addClass('red').text('用户不存在');
                                     } else{
                                         $(this).removeClass('red').addClass('green').text('已导入');
+                                        insert_count++;
+                                        $('#insert_count').text(insert_count);
+                                        $('#uninsert_count').text(all_count - insert_count);
                                     }
                                 });
                             } else {
