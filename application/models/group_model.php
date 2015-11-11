@@ -25,18 +25,19 @@ class Group_Model extends Reim_Model {
         $url = $this->get_url('load');
     	$data = array();
     	//$data = $persons;
-	log_message('debug','persons:' . json_encode($persons));
-	foreach($persons as $p){
-		array_push($data, $p);
-	}
+		log_message('debug','persons:' . json_encode($persons));
+		foreach($persons as $p){
+			array_push($data, $p);
+		}
+		
+		$data = array('relations' => json_encode($data));
 	
-	$data = array('relations' => json_encode($data));
-
-	//log_message('debug','xxx set_managers:' . json_encode($data));
-	$buf = $this->do_Put($url,$data,$jwt);
-
-	log_message('debug','set_managers:' . $buf);
-	return json_decode($buf,True);
+		//log_message('debug','xxx set_managers:' . json_encode($data));
+		$buf = $this->do_Put($url,$data,$jwt);
+	
+        log_message('debug','set_managers_data:' . json_encode($data));
+		log_message('debug','set_managers:' . $buf);
+		return json_decode($buf,True);
     }
 
     public function reim_imports($data)

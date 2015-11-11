@@ -328,18 +328,18 @@ function insertMem()
                           for(var p in back_info['data'])
                           {
                            //var back_id = back_info['data'][uid];
-                           if(back_info['data'][p] < 0)
+                           if(back_info['data'][p]['status'] < 0)
                            {
                                // $(this).removeClass('fa-times red').addClass('fa-check green');
                                myself.text('导入出错');
                            }
                            
-                            if((back_info['data'][p])>0)
+                            if((back_info['data'][p]['status'])>0)
                             {
 
                                   if(manager_name)
                                   {
-                                        var person = {'id':back_info['data'][p],'manager':manager_name};
+                                        var person = {'id':back_info['data'][p]['uid'],'manager':manager_name};
                                         in_members.push(person);
                                     }
                                   myself.removeClass('red').addClass('green');
