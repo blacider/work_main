@@ -868,6 +868,7 @@ class Items extends REIM_Controller {
         log_message("debug","item_updta_in".$this->session->userdata("item_update_in"));
         log_message("debug","flow".json_encode($flow));
         log_message("debug","users:".json_encode($user));
+        log_message("debug","error:".$error);
         
         $this->bsload('items/view',
             array(
@@ -1246,6 +1247,12 @@ class Items extends REIM_Controller {
         else
         {
             $obj = $this->items->update($id, $amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$__extra,$uids,$afford_ids,$attachments,$currency);
+            if($obj && array_key_exists('data',$obj) && array_key_exists('status',$obj['data'][0]) && $obj['data'][0]['status'] <= 0)
+            {
+                
+                $this->session->set_userdata('last_error',$obj['data'][0]['msg']);
+            }
+            log_message('debug','status' . $obj['status']);
             log_message('debug','zz item_data:'.json_encode($obj));
         }
         log_message('debug','rid:' . $rid);
