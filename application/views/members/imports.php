@@ -310,6 +310,7 @@ function insertMem()
                 ,dataType: 'json'
                 ,data : {'member' : load_mem,'quiet':is_quiet_mail}
                 ,success : function(data){
+                        console.log(data);
                     /*var back_info = data['data'];
                             $('.judge').each(function(){
                                 var _id = $(this).data('id');
@@ -329,10 +330,10 @@ function insertMem()
                           for(var p in back_info['data'])
                           {
                            //var back_id = back_info['data'][uid];
-                           if(back_info['data'][p]['status'] < 0)
+                           if(back_info['data'][p]['status'] <= 0)
                            {
                                // $(this).removeClass('fa-times red').addClass('fa-check green');
-                               myself.text('导入出错');
+                               myself.text(back_info['data'][p]['status_text']);
                            }
                            
                             if((back_info['data'][p]['status'])>0)
