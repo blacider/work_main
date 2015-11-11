@@ -310,7 +310,6 @@ function insertMem()
                 ,dataType: 'json'
                 ,data : {'member' : load_mem,'quiet':is_quiet_mail}
                 ,success : function(data){
-                        console.log(data);
                     /*var back_info = data['data'];
                             $('.judge').each(function(){
                                 var _id = $(this).data('id');
