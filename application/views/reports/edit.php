@@ -82,6 +82,11 @@ foreach($members as $m) {
                             }
                             foreach($config['config'] as $field_group){
                             ?>
+                                <div class="form-group">
+                                        <div class="col-md-6">
+                                            <label class="col-md-3 control-label no-padding-left"><em class='blue'><?php echo $field_group['name'] . ':';?></em></label>                        
+                                        </div>
+                                </div>
                                 <?php
                                     if(array_key_exists('children', $field_group))
                                     {
