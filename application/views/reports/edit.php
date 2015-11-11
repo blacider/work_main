@@ -84,7 +84,7 @@ foreach($members as $m) {
                             ?>
                                 <div class="form-group">
                                         <div class="col-md-6">
-                                            <label class="col-md-3 control-label no-padding-left"><em class='blue'><?php echo $field_group['name'] . ':';?></em></label>                        
+                                            <label class="col-md-3 control-label no-padding-left"><em class='blue'><?php if(array_key_exists('name', $field_group)){echo $field_group['name'] . ':';}?></em></label>                        
                                         </div>
                                 </div>
                                 <?php
