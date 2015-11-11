@@ -55,7 +55,7 @@ jQuery(grid_selector).jqGrid({
     height: 250,
     multiselect: true,
     loadtext: '',
-    colNames:['报告ID', '报告模板', '提交日期','报告名', '消费类型', '条目数', '提交者', '金额', '状态', '操作','部门'],
+    colNames:['报销单ID', '报销单模板', '提交日期','报销单名', '消费类型', '条目数', '提交者', '金额', '状态', '操作','部门'],
     loadonce: true,
     caption: "费用审计",
     editurl: __BASE + 'bills/save',
@@ -268,14 +268,14 @@ try{
 
 .navButtonAdd(pager_selector,{
     caption:"",
-    title:"下载选中报告",
+    title:"下载选中报销单",
     buttonicon:"ace-icon fa fa-download blue" ,
     onClickButton:function() {
 //TODO
 //         chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
         // if (chosenids.length == 0) {
          if (selectRows.length == 0) {
-            alert("请选择报告!");
+            alert("请选择报销单!");
             return;
          }
        	$.ajax({
@@ -295,13 +295,13 @@ try{
 	 })
 .navButtonAdd(pager_selector,{
     caption:"",
-    title:__STATUS == 2 ? "支付选中报告" : "",
+    title:__STATUS == 2 ? "支付选中报销单" : "",
     buttonicon:__STATUS == 2 ? "ace-icon fa fa-check green" : "",
     onClickButton:__STATUS == 2 ? function() {
          // chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
          chosenids = selectRows;
          if (chosenids.length == 0) {
-            alert("请选择报告!");
+            alert("请选择报销单!");
             return;
          }
          $('#modal-table').modal().css({
@@ -321,7 +321,7 @@ try{
             height: 250,
             multiselect: false, 
             loadtext: '',
-            colNames:['提交日期','报告名', '条目数', '提交者', '金额', '状态', '操作'],
+            colNames:['提交日期','报销单名', '条目数', '提交者', '金额', '状态', '操作'],
             loadonce: true,
             caption: "费用审计",
             editurl: __BASE + 'bills/save',

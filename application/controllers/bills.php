@@ -314,12 +314,12 @@ class Bills extends REIM_Controller {
             $this->session->set_userdata('item_update_in','3');
             $this->bsload('bills/index',
                 array(
-                    'title' => '全部报告'
+                    'title' => '全部报销单'
                     ,'error' => $error
                     , 'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
-                        ,array('url' => '','name' => '全部报告','class' => '')
+                        ,array('url' => '','name' => '全部报销单','class' => '')
                     )
                     ,'reports' => $data
                     ,'status' => $status
@@ -336,7 +336,7 @@ class Bills extends REIM_Controller {
             $this->session->set_userdata('item_update_in','3');
             $this->bsload('bills/index',
                 array(
-                    'title' => '全部报告'
+                    'title' => '全部报销单'
                     ,'error' => $error
                     , 'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')

@@ -42,7 +42,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="blue bigger"> 导出报告 </h4>
+            <h4 class="blue bigger"> 导出报销单 </h4>
           </div>
           <form method="post" >
             <div class="modal-body">
@@ -51,7 +51,7 @@
 
 
                   <div class="form-group">
-                    <label for="form-field-username">请输入报告发送的email地址:</label>
+                    <label for="form-field-username">请输入报销单发送的email地址:</label>
                     <div>
                       <input class=" col-xs-8 col-sm-8" type="text" id="email" name="email" class="form-control">
                       <input type="hidden" id="report_id" name="report_id">

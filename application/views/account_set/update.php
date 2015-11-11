@@ -365,7 +365,7 @@ if($last_error) {
                     <span class="caret"></span>
                 </div>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuImg">
-                    <?php for($i = 1; $i <= 11; $i++){ ?>
+                    <?php for($i = 1; $i <= 20; $i++){ ?>
                     <li role="presentation">
                         <a href="#" onclick="changeImg(this)" role="menuitem" tabindex="-1">
                             <span>
@@ -475,7 +475,7 @@ if($last_error) {
                     <span class="caret"></span>
                 </div>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuImg_">
-                    <?php for($i = 1; $i <= 11; $i++){ ?>
+                    <?php for($i = 1; $i <= 20; $i++){ ?>
                     <li role="presentation">
                         <a href="#" onclick="changeImg_(this)" role="menuitem" tabindex="-1">
                             <span>

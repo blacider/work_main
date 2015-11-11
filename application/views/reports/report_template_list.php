@@ -16,7 +16,7 @@
                         <table id="sample-table-1" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>报销模板名</th>
+                                    <th>报销单名称</th>
                                     <th><a href="<?php echo base_url('company/create_report_template')?>" role="button" class="green" data-toggle="modal">
                                             <i id="add_new_btn" class="ace glyphicon glyphicon-plus-sign" ></i>
                                         </a> </th>

@@ -388,7 +388,7 @@ foreach($items as $i){
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">根据公司规定，你的报告需要提交给</h4>
+                <h4 class="modal-title">根据公司规定，你的报销单需要提交给</h4>
                 <input type="hidden" name="rid" value="" id="rid">
                 <input type="hidden" name="status" value="2" id="status">
             </div>
@@ -399,8 +399,8 @@ foreach($items as $i){
                 </div>
             </div>
             <div class="modal-footer">
-                <input type="submit" class="btn btn-success submit_by_rule" value="按照公司规定发送报告" />
-                <input type="submit" class="btn btn-primary my_submit" value="按照我的选择发送报告" />
+                <input type="submit" class="btn btn-success submit_by_rule" value="按照公司规定发送报销单" />
+                <input type="submit" class="btn btn-primary my_submit" value="按照我的选择发送报销单" />
                 <div class="btn btn-primary" onclick="cancel_modal_next()">取消</div>
             </div>
                 <script type="text/javascript">
@@ -827,7 +827,7 @@ function do_post(force) {
     var s = $('#receiver').val();
     var title = $('#title').val();
     if(title == "") {
-        show_notify('请添加报告名');
+        show_notify('请添加报销单名');
         $('#title').focus();
         return false;
     }
@@ -851,7 +851,7 @@ function do_post(force) {
             }
             if(report_type != item_type)
             {
-                show_notify('同一报告中不能包含不同的消费类型');
+                show_notify('同一报销单中不能包含不同的消费类型');
                 is_submit = 0;
                 return false;
             }
@@ -860,7 +860,7 @@ function do_post(force) {
 		};
 	});
     if(_ids.length == 0) {
-        show_notify('提交的报告不能为空');
+        show_notify('提交的报销单不能为空');
         return false;
     }
 
@@ -872,7 +872,7 @@ function do_post(force) {
 
 
 	if(sum<= 0) {
-		show_notify("报告总额不能小于等于0");
+		show_notify("报销单总额不能小于等于0");
 		return false;
 	}
     

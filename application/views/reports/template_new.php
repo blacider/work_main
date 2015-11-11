@@ -773,7 +773,7 @@ function do_post(force) {
     var s = $('#receiver').val();
     var title = $('#title').val();
     if(title == "") {
-        show_notify('请添加报告名');
+        show_notify('请添加报销单名');
         $('#title').focus();
         return false;
     }
@@ -797,7 +797,7 @@ function do_post(force) {
             }
             if(report_type != item_type)
             {
-                show_notify('同一报告中不能包含不同的消费类型');
+                show_notify('同一报销单中不能包含不同的消费类型');
                 is_submit = 0;
                 return false;
             }
@@ -807,7 +807,7 @@ function do_post(force) {
 		};
 	});
     if(_ids.length == 0) {
-        show_notify('提交的报告不能为空');
+        show_notify('提交的报销单不能为空');
         return false;
     }
 
@@ -960,7 +960,7 @@ function do_post(force) {
 
 
 	if(sum <= 0) {
-		show_notify("报告总额不能小于等于0");
+		show_notify("报销单总额不能小于等于0");
 		return false;
 	}
     
