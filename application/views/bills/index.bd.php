@@ -8,7 +8,7 @@
             <div class="main_choose_hd"><span class="fl tit">筛选</span><!-- <span class="fr btn_reset"><a href="javascript:void(0)" class="br3">重置</a></span>--></div>
             <div class="main_choose_bd">
                 <div class="clear br3 main_choose_search">
-                    <input id="search_prop" type="search"  class="fl inp" value="报告名、提交者、总额" />
+                    <input id="search_prop" type="search"  class="fl inp" value="报销单名、提交者、总额" />
                     <input name="" type="button"  class="fr btn"/>
                 </div>
                 <div class="clear main_choose_date">
@@ -39,7 +39,7 @@
             <!--
             <div class="main_table_hd"> 
                 <span class="fl n1">创建时间</span> 
-                <span class="fl n2">报告名</span> 
+                <span class="fl n2">报销单名</span> 
                 <span class="fl n3">费用条数</span> 
                 <span class="fl n4">提交者</span> 
                 <span class="fl n5">历史审批人</span> 
@@ -53,7 +53,7 @@
                         <th><input type="checkbox" id="sall"></th>
                         <th></th>
                         <th>日期</th>
-                        <th>报告名</th>
+                        <th>报销单名</th>
                         <th>费用条目</th>
                         <th>提交者</th>
                         <th>金额</th>
@@ -131,11 +131,11 @@
 
 <div id="darkbg" style="display:none;"></div>
 <div id="report_detail"  style="display:none;" class="pop_creat pop_creat_1">
-    <div class="pop_creat_hd"><span class="fl tit">报告详情</span><span class="fr close"><a href="javascript:void(0)"></a></span></div>
+    <div class="pop_creat_hd"><span class="fl tit">报销单详情</span><span class="fr close"><a href="javascript:void(0)"></a></span></div>
     <div class="pop_creat_bd" id="report_body">
         <div class="pop_creat_form">
             <ul>
-                <li><span class="fl tit">报告名：</span>
+                <li><span class="fl tit">报销单名：</span>
                 <div class="fl con">
                     <input name="" type="text" class="inp inp_1" id="reportname" value="" />
                 </div>

@@ -66,15 +66,15 @@ class Reports extends REIM_Controller {
         $this->session->set_userdata("report_list_url", "reports");
         $this->bsload('reports/index',
             array(
-                'title' => '我的报告'
+                'title' => '我的报销单'
                 ,'items' => $item_data
                 ,'error' => $error
                 ,'type' => $type
                 ,'search' => urldecode($search)
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa home-icon')
-                    ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
-                    ,array('url'  => '', 'name' => '我的报告', 'class' => '')
+                    ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
+                    ,array('url'  => '', 'name' => '我的报销单', 'class' => '')
                 ),
             ));
     }
@@ -111,7 +111,7 @@ class Reports extends REIM_Controller {
                 if(array_key_exists($s['category'], $_cates)){
                     $s['cate_str'] = $_cates[$s['category']];
                 }
-                $_report = '尚未添加到报告';
+                $_report = '尚未添加到报销单';
                 if($_report) {
                 }
                 $s['report'] = $_report;
@@ -188,14 +188,14 @@ class Reports extends REIM_Controller {
 
         $this->bsload('reports/new',
             array(
-                'title' => '新建报告',
+                'title' => '新建报销单',
                 'members' => $_members,
                 'item_type_dic' => $item_type_dic,
                 'items' => $_items
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
-                    ,array('url'  => '', 'name' => '新建报告', 'class' => '')
+                    ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
+                    ,array('url'  => '', 'name' => '新建报销单', 'class' => '')
                 ),
             ));
     }
@@ -377,7 +377,7 @@ class Reports extends REIM_Controller {
         $items = $this->input->post('item');
         if(''==$items)
         {
-            $this->session->set_userdata('last_error','提交报告不能为空');
+            $this->session->set_userdata('last_error','提交报销单不能为空');
             return redirect(base_url('reports/index')); 
         }
         $title = $this->input->post('title');
@@ -622,7 +622,7 @@ class Reports extends REIM_Controller {
         log_message('debug','config:' . json_encode($config));
         $this->bsload('reports/edit',
             array(
-                'title' => '修改报告',
+                'title' => '修改报销单',
                 'members' => $_members,
                 'items' => $_items,
                 'config' => $config,
@@ -633,8 +633,8 @@ class Reports extends REIM_Controller {
                 'report' => $report
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
-                    ,array('url'  => '', 'name' => '修改报告', 'class' => '')
+                    ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
+                    ,array('url'  => '', 'name' => '修改报销单', 'class' => '')
                 ),
             ));
     }
@@ -843,7 +843,7 @@ class Reports extends REIM_Controller {
         
         $this->bsload('reports/view',
             array(
-                'title' => '查看报告',
+                'title' => '查看报销单',
                 'report' => $report,
                 'error' => $error,
                 'flow' => $flow
@@ -858,8 +858,8 @@ class Reports extends REIM_Controller {
                 ,"report_list_url" => $url
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
-                    ,array('url'  => '', 'name' => '查看报告', 'class' => '')
+                    ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
+                    ,array('url'  => '', 'name' => '查看报销单', 'class' => '')
                 ),
             ));
     }
@@ -869,7 +869,7 @@ class Reports extends REIM_Controller {
         $items = $this->input->post('item');
         if(''==$items || !$id)
         {
-            $this->session->set_userdata('last_error','提交报告不能为空');
+            $this->session->set_userdata('last_error','提交报销单不能为空');
             return redirect(base_url('reports/index')); 
         }
         $title = $this->input->post('title');
@@ -1027,15 +1027,15 @@ class Reports extends REIM_Controller {
         $this->session->set_userdata("report_list_url", "reports/audit");
         $this->bsload('reports/audit',
             array(
-                'title' => '收到的报告'
+                'title' => '收到的报销单'
                 ,'items' => $item_data
                 ,'members' => $_members
                 ,'error' => $_error
                 ,'search' => urldecode($search)
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
-                    ,array('url'  => '', 'name' => '收到的报告', 'class' => '')
+                    ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
+                    ,array('url'  => '', 'name' => '收到的报销单', 'class' => '')
                 ),
             ));
     }
@@ -1204,7 +1204,7 @@ class Reports extends REIM_Controller {
 
         $extra_dict = array();
         $obj = array();
-        // 空的extra也得构造这些自定义列，不然同模板的报告列不相同，顺序就乱了
+        // 空的extra也得构造这些自定义列，不然同模板的报销单列不相同，顺序就乱了
         if (!is_array($extra))
             $extra = array();
 
@@ -1373,9 +1373,9 @@ class Reports extends REIM_Controller {
                 $template = $dict_templates[$template_id];
 
             $_t_items = array();
-            // 报告汇总
+            // 报销单汇总
             $stat_cells = array();
-            // 报告明细
+            // 报销单明细
             $report_cells = array();
             // 消费明细
             $item_cells = array();
@@ -1496,7 +1496,7 @@ class Reports extends REIM_Controller {
                     $stat_cells[$key] = $_stat_cells;
                 }
 
-                // 计算报告审批人列表
+                // 计算报销单审批人列表
                 $flow = array();
                 $_flow = $this->reports->report_flow($r['id']);
                 if($_flow['status'] > 0) {
@@ -1581,7 +1581,7 @@ class Reports extends REIM_Controller {
                 $r['last'] = $r['total'] - $r['paid'];
 
                 $obj = array();
-                $obj['报告名'] = $r['title'];
+                $obj['报销单名'] = $r['title'];
                 $obj['创建者'] = $r['nickname'];
                 $obj['创建日期'] = strftime('%Y年%m月%d日', $r['createdt']);
 
@@ -1740,8 +1740,8 @@ class Reports extends REIM_Controller {
                 $o['已付'] = $i['paid'];
                 //                $o['应付'] = (string)(($i['amount'] * $_rate) - $i['paid']) . '￥';
                 $o['应付'] = $i['amount'] * $_rate - $i['paid'];
-                $o['报告名'] = $i['title'];
-                $o['报告ID'] = $i['rid'];
+                $o['报销单名'] = $i['title'];
+                $o['报销单ID'] = $i['rid'];
 
                 // 合并进来自定义字段
                 if (array_key_exists($i["rid"], $dict_extra_cells)) {
@@ -1756,13 +1756,13 @@ class Reports extends REIM_Controller {
                 $template_name = $template["name"];
 
             $template_excel = array(
-                "报告汇总" => array_values($stat_cells),
-                "报告明细" => $report_cells,
+                "报销单汇总" => array_values($stat_cells),
+                "报销单明细" => $report_cells,
                 "消费明细" => $item_cells
             );
 
-            log_message("debug", "报告汇总 => " . json_encode($stat_cells));
-            log_message("debug", "报告明细 => " . json_encode($report_cells));
+            log_message("debug", "报销单汇总 => " . json_encode($stat_cells));
+            log_message("debug", "报销单明细 => " . json_encode($report_cells));
             log_message("debug", "消费明细 => " . json_encode($item_cells));
 
             // 重命名已存在同名模板
@@ -1783,7 +1783,7 @@ class Reports extends REIM_Controller {
             }
         }
         $this->load->library('user_agent');
-        $excel_name = '报销报告列表' . date('Y-m-d', time()) . '.xls';
+        $excel_name = '报销报销单列表' . date('Y-m-d', time()) . '.xls';
 
         $data = array();
         foreach ($excel as $template_name => $template_excel) {
@@ -2037,7 +2037,7 @@ class Reports extends REIM_Controller {
                 }
                 return $this->bsload('reports/template_new',
                     array(
-                        'title' => '新建[' . $config['name'] . '] 报告',
+                        'title' => '新建[' . $config['name'] . '] 报销单',
                         'members' => $_members,
                         'config' => $config,
                         'banks' => $banks,
@@ -2045,7 +2045,7 @@ class Reports extends REIM_Controller {
                         'items' => $_items
                         ,'breadcrumbs' => array(
                             array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                            ,array('url'  => base_url('reports/index'), 'name' => '报告', 'class' => '')
+                            ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
                             ,array('url'  => '', 'name' => '新建' . $config['name'] . '', 'class' => '')
                         ),
             ));
@@ -2059,7 +2059,7 @@ class Reports extends REIM_Controller {
         $items = $this->input->post('item');
         if(''==$items)
         {
-            $this->session->set_userdata('last_error','提交报告不能为空');
+            $this->session->set_userdata('last_error','提交报销单不能为空');
             return redirect(base_url('reports/index')); 
         }
         $receiver = $this->input->post('receiver');

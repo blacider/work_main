@@ -154,7 +154,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
     <li class="hsub" id="reports">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-file-text"></i>
-        <span class="menu-text"> 报告 </span>
+        <span class="menu-text"> 报销单 </span>
 
         <b class="arrow fa fa-angle-down"></b>
     </a>
@@ -165,12 +165,12 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 <?php if(count($report_templates) > 0) { ?>
         <a href="#"  class="dropdown-toggle">
             <i class="menu-icon fa fa-caret-right"></i>
-            新建报告 
+            新建报销单 
         </a>
 <?php } else { ?>
         <a href="<?php echo base_url('reports/newreport'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
-            新建报告
+            新建报销单
         </a>
 <?php } ?>
 
@@ -193,7 +193,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         <li class="hsub" id="index">
         <a href="<?php echo base_url('reports'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
-            我的报告
+            我的报销单
         </a>
 
         <b class="arrow"></b>
@@ -202,7 +202,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         <li class="hsub" id="audit">
         <a href="<?php echo base_url('reports/audit'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
-             收到的报告
+             收到的报销单
         </a>
 
         <b class="arrow"></b>
@@ -390,7 +390,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 <!--
 
         <li class="hsub" id="report_settings_list">
-        <a href="<?php echo base_url('company/report_settings_list'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 报告设置</a>
+        <a href="<?php echo base_url('company/report_settings_list'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 报销单设置</a>
         <b class="arrow"></b>
         </li>
 -->
@@ -441,7 +441,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         </li>
 
         <li class="hsub" id="report_template_list">
-        <a href="<?php echo base_url('company/report_template_list'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 报告模板 </a>
+        <a href="<?php echo base_url('company/report_template_list'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 报销单模板 </a>
           <b class="arrow"></b>
         </li> 
 

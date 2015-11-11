@@ -17,7 +17,7 @@
             </div>
             <div class="main_choose_bd">
                 <div class="clear br3 main_choose_search">
-                    <input id="search_prop" type="search" class="fl inp" placeholder="报告名、提交者、审批人" />
+                    <input id="search_prop" type="search" class="fl inp" placeholder="报销单名、提交者、审批人" />
                     <input name="" type="button"  class="fr btn"/>
                 </div>
                 <div class="clear main_choose_date">
@@ -50,7 +50,7 @@
                     <a data-types="1" id="t_0" class="types active" href="<?php echo base_url('reports/index/1'); ?>">我创建的</a>&nbsp;/&nbsp;
                     <a data-types="0" id="t_1" class="types" href="<?php echo base_url('reports/index/0'); ?>">需要我审批的<i></i></a>
                     <span class="fr btn">
-                        <a href="javascript:void(0)" style="display:none" class="br3 creatBtn_1">+创建报告</a>
+                        <a href="javascript:void(0)" style="display:none" class="br3 creatBtn_1">+创建报销单</a>
                     </span> 
            </div>
            <div class="main_table_bd">
@@ -59,7 +59,7 @@
                        <tr>
                            <th></th>
                            <th style="text-align: center;">创建时间</th>
-                           <th style="text-align: center;">报告名</th>
+                           <th style="text-align: center;">报销单名</th>
                            <th style="text-align: center;">费用条数</th>
                            <th style="width: 80px; text-align: center; line-height: 35px; overflow: hidden; ">金额总计</th>
                            <th style="display:none;">状态</th>
@@ -121,11 +121,11 @@ foreach($items as $item){
 
 <div id="darkbg" style="display:none;"></div>
 <div id="report_detail"  style="display:none;" class="pop_creat pop_creat_1">
-    <div class="pop_creat_hd"><span class="fl tit">报告详情</span><span class="fr close"><a href="javascript:void(0)"></a></span></div>
+    <div class="pop_creat_hd"><span class="fl tit">报销单详情</span><span class="fr close"><a href="javascript:void(0)"></a></span></div>
     <div class="pop_creat_bd" id="report_body">
         <div class="pop_creat_form">
             <ul>
-                <li><span class="fl tit">报告名：</span>
+                <li><span class="fl tit">报销单名：</span>
                 <div class="fl con">
                     <input name="" type="text" class="inp inp_1" id="reportname" value="" />
                 </div>

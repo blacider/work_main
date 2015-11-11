@@ -67,7 +67,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">同一报告中允许包含不同类别的消费</label>
+                                <label class="col-sm-3 control-label no-padding-right">同一报销单中允许包含不同类别的消费</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
@@ -117,7 +117,7 @@
                             </div>
 
                               <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">报告状态变化时邮件通知</label>
+                                <label class="col-sm-3 control-label no-padding-rigtht">报销单状态变化时邮件通知</label>
                                 <div class="col-xs-4 col-sm-4">
                                         <label style="margin-top:8px;">
                                             <input name="mail_notify" class="ace ace-switch btn-rotate" type="checkbox" id="mail_notify" style="margin-top:4px;" />
@@ -210,9 +210,9 @@
                              
 
                              <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">每月最多可提交的报告数量</label>
+                                <label class="col-sm-3 control-label no-padding-rigtht">每月最多可提交的报销单数量</label>
                                 <div class="col-xs-4 col-sm-4">
-                                <input id="reports_limit" type="text" class="form-controller col-xs-12" name="reports_limit" placeholder="报告数">
+                                <input id="reports_limit" type="text" class="form-controller col-xs-12" name="reports_limit" placeholder="报销单数">
                                 </div>
                             </div>
 
