@@ -3,7 +3,7 @@
     <div class="page-content-area">
         <div class="row">
             <div class="col-xs-12">
-             <div><h4 class='blue' >待导入帐套总数:<em data-nums = "<?php echo count($sobs);?>" id="all_count"><?php echo count($sobs);?></em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已导入帐套数:<em id='insert_count'>0</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;未导入帐套数:<em id='uninsert_count'><?php echo count($sobs);?></em> </h4></div> 
+             <div><h4 class='blue' >待导入数据<em data-nums = "<?php echo count($sobs);?>" id="all_count"><?php echo count($sobs);?></em>条&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已导入数据<em id='insert_count'>0</em>条&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;未导入数据<em id='uninsert_count'><?php echo count($sobs);?></em>条 </h4></div> 
                 <div class="panel panel-primary">
                     <form role="form" method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
                         <div class="form-contorller">
