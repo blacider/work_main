@@ -724,7 +724,7 @@ function get_sobs(){
             var pre_name = pre_cate.data('name');
             if(pre_name)
             {
-                pre_cate.text("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + pre_name);
+                pre_cate.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + pre_name);
             }
             $('#sob_category .cate_selected').removeClass('cate_selected');
             var selected_cate = $('#sob_category option:selected');
