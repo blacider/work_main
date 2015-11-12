@@ -341,8 +341,8 @@ function get_sobs(){
                 var pre_name = pre_cate.data('name');
                 console.log(pre_cate);
                 console.log(pre_parent);
-                console.log(pre_name);
-                if(pre_name)
+                console.log('pre_name' + pre_name);
+                if(pre_parent)
                 {
                     pre_cate.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + pre_name);
                 }
