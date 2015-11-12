@@ -92,7 +92,7 @@ class Login extends REIM_Controller {
     }
 
     public function dologin(){
-        $username = $this->input->post('u', TRUE);
+        $username = trim($this->input->post('u', TRUE));
         $password = $this->input->post('p', TRUE);
         $is_r = $this->input->post('is_r',TRUE);
         log_message("debug","is_r:".$is_r);
