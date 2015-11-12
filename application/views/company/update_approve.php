@@ -525,7 +525,7 @@ $(document).ready(function(){
                     {
                         parent_name = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
                     }
-                    _h += "<option  data-parent='" + selectDataCategory[s_id][i].parent_name + "' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                    _h += "<option  data-parent='" + selectDataCategory[s_id][i].parent_name + "' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>"+ parent_name +selectDataCategory[s_id][i].category_name + " </option>";
                     
                 }
             }
@@ -535,12 +535,12 @@ $(document).ready(function(){
 
         $('.sob_category').each(function(){
             $(this).change(function(){
-                var pre_cate = $('.cate_selected',$(this));
+var pre_cate = $('.cate_selected',$(this));
                 var pre_parent = pre_cate.data('parent');
                 var pre_name = pre_cate.data('name');
                 console.log(pre_cate);
                 console.log(pre_parent);
-                console.log("pre_name:" + pre_name);
+                console.log('pre_name' + pre_name);
                 if(pre_parent)
                 {
                     pre_cate.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + pre_name);
@@ -555,8 +555,9 @@ $(document).ready(function(){
                 if(selected_cate_parent)
                 {
                     selected_cate.text(selected_cate_parent+'-'+selected_cate_name);
-                    selected_cate.prop('class','cate_selected').trigger('chosen:updated');
                 }
+                selected_cate.prop('class','cate_selected').trigger('chosen:updated');
+
 
             });
         });
