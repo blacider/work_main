@@ -1197,7 +1197,7 @@ class Members extends REIM_Controller {
             $obj['level'] = trim($sheet->getCellByColumnAndRow(8, $row)->getValue());
             $obj['rank'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
              */
-            if("" == $obj['email'] && "" == $obj['phone']) continue;
+            if("" == $obj['email'] && "" == $obj['phone'] && "" == $obj['name']) continue;
             $obj['status'] = 0;
             if(in_array($obj['email'], $_emails)){
                 $obj['status'] = 1;
