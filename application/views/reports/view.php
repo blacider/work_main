@@ -114,7 +114,7 @@
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
                                                     <input type="text" class="form-controller col-xs-8 period field_value date-timepicker1" data-type="3" data-id="<?php echo $field['id'];?>" name="dt" 
-                                                            placeholder="时间" <?php if($field['required'] == 1){echo 'required';}?> value="<?php if(array_key_exists($field['id'], $extra_dic)){echo date('Y-m-d H:i:s',$extra_dic[$field['id']]['value']);}?>" disabled>
+                                                            placeholder="时间" <?php if($field['required'] == 1){echo 'required';}?> value="<?php if(array_key_exists($field['id'], $extra_dic)){echo date('Y-m-d',$extra_dic[$field['id']]['value']);}?>" disabled>
                                                 </div>
                                             </div>
                                         </div>
