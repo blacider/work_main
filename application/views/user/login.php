@@ -40,7 +40,8 @@
       }
      });
 </script>
-   <script type="text/javascript" src="/static/js/index.js"></script>
+<script type="text/javascript" src="/static/js/util.js"></script>
+<script type="text/javascript" src="/static/js/index.js"></script>
 <script type="text/javascript" src="/static/js/login.js"></script>
 <script type="text/javascript" src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
 </head>
