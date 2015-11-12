@@ -177,9 +177,12 @@
                             function appendChecked(selectJqDom, data, item) {
                                 //第一个 selectJqDom.children()[0].children[0]
                                 $(selectJqDom.children()[0].children[0]).val(data['sob_id']).trigger("chosen:updated");
+                                bind_event_level_sobs();
                                 //第二个
                                 $(selectJqDom.children()[0].children[0]).change();
                                 $(selectJqDom.children()[1].children[0]).val(data['category_id']).trigger("chosen:updated");
+                                bind_event_level_category();
+                                $(selectJqDom.children()[1].children[0]).change();
                                 if (data['act'] == 1) {
                                     selectJqDom.find("input[type='checkbox']")[0].checked = true;
                                 }
@@ -773,9 +776,6 @@ $(document).ready(function(){
   $("#all_members").change(update_users);*/
    bind_event_level_sobs();
    bind_event_level_category();
-   $('.sob_category').each(function(){
-            $(this).change();
-    });
 });
 function changeAble(value) {
         if (value == 1 || value == -1) {
