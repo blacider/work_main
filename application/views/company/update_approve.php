@@ -564,6 +564,7 @@ $(document).ready(function(){
     });
 
 
+
     get_sobs();
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
