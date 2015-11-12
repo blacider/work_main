@@ -788,7 +788,7 @@ $(document).ready(function(){
             format: 'YYYY-MM-DD',
             linkField: "dt",
             linkFormat: "YYYY-MM-DD",
-            sideBySide: true
+            sideBySide: false
     }).next().on('dp.change', function(ev){
     }).on(ace.click_event, function(){
         $(this).prev().focus();
@@ -800,7 +800,7 @@ $(document).ready(function(){
             format: 'YYYY-MM-DD',
             linkField: "dt_end",
             linkFormat: "YYYY-MM-DD",
-            sideBySide: true
+            sideBySide: false
     }).next().on('dp.change', function(ev){
     }).on(ace.click_event, function(){
         $(this).prev().focus();

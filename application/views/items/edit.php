@@ -1017,6 +1017,7 @@ $(document).ready(function(){
         defaultDate: _dt,
         format: 'YYYY-MM-DD',
         linkField: "dt1",
+        sideBySide: false
     }).next().on(ace.click_event, function(){
         $(this).prev().focus();
     });
@@ -1032,6 +1033,7 @@ $(document).ready(function(){
                 defaultDate: _ddt,
                 format: 'YYYY-MM-DD',
                 linkField: "dt_end1",
+                sideBySide: false
                 }).next().on(ace.click_event, function(){
                     $(this).prev().focus();
                 });

@@ -149,7 +149,7 @@ foreach($members as $m) {
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
                                                     <input type="text" class="form-controller col-xs-8 period field_value date-timepicker1" data-type="3" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" name="dt" 
-                                                            placeholder="时间" <?php if($field['required'] == 1){echo 'required';}?> value="<?php if(array_key_exists($field['id'], $extra_dic)){echo date('Y-m-d H:i:s',$extra_dic[$field['id']]['value']);}?>">
+                                                            placeholder="时间" <?php if($field['required'] == 1){echo 'required';}?> value="<?php if(array_key_exists($field['id'], $extra_dic)){echo date('Y-m-d',$extra_dic[$field['id']]['value']);}?>">
                                                 </div>
                                             </div>
                                         </div>
@@ -1163,8 +1163,9 @@ $(document).ready(function(){
     $('#period_start').datetimepicker({
         language: 'zh-cn',
         defaultDate: _sdt,
-        format: 'YYYY-MM-DD HH:mm:ss',
+        format: 'YYYY-MM-DD',
         linkField: "sdt",
+        sideBySide: false
     }).next().on(ace.click_event, function(){
         $(this).prev().focus();
     });
@@ -1173,6 +1174,7 @@ $(document).ready(function(){
         defaultDate: _edt,
         format: 'YYYY-MM-DD HH:mm:ss',
         linkField: "edt",
+        sideBySide: false
     }).next().on(ace.click_event, function(){
         $(this).prev().focus();
     });
@@ -1186,7 +1188,7 @@ $(document).ready(function(){
             format: 'YYYY-MM-DD',
             linkField: "dt",
             linkFormat: "YYYY-MM-DD",
-            sideBySide: true
+            sideBySide: false
     }).next().on('dp.change', function(ev){
     }).on(ace.click_event, function(){
         $(this).prev().focus();
