@@ -1,6 +1,5 @@
 <link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
-<link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 <!-- <link rel="stylesheet" href="/static/third-party/jqui/jquery-ui.min.css" id="main-ace-style" /> -->
 
@@ -8,7 +7,6 @@
 <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 <!--<script src="/static/ace/js/jquery1x.min.js"></script> -->
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
-<script src="/static/ace/js/dropzone.min.js"></script>
 
 
 <script src="/static/ace/js/date-time/moment.js"></script>
@@ -358,8 +356,8 @@ function get_sobs(){
                 if(selected_cate_parent)
                 {
                     selected_cate.text(selected_cate_parent+'-'+selected_cate_name);
-                    selected_cate.prop('class','cate_selected').trigger('chosen:updated');
                 }
+                selected_cate.prop('class','cate_selected').trigger('chosen:updated');
 
             });
         });
