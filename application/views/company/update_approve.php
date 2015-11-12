@@ -773,7 +773,9 @@ $(document).ready(function(){
   $("#all_members").change(update_users);*/
    bind_event_level_sobs();
    bind_event_level_category();
-   $('.sob_category').change();
+   $('.sob_category').each(function(){
+            $(this).change();
+    });
 });
 function changeAble(value) {
         if (value == 1 || value == -1) {
