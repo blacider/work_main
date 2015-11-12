@@ -696,11 +696,16 @@ function get_sobs(){
             {
                 for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
                 {
+                    var parent_name = '';
+                    if(selectDataCategory[s_id][i].parent_name)
+                    {
+                        parent_name = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    }
                     if(selectDataCategory[s_id][i].category_id == _item_category) {
                         _sid = s_id;
-                        _h += "<option selected='selected' value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name  + " </option>";
+                        _h += "<option selected='selected' data-parent='" + selectDataCategory[s_id][i].parent_name + "' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>"+ parent_name + selectDataCategory[s_id][i].category_name  + " </option>";
                     } else {
-                        _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name  + " </option>";
+                        _h += "<option  data-parent='" + selectDataCategory[s_id][i].parent_name + "' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>"+ parent_name + selectDataCategory[s_id][i].category_name  + " </option>";
                     }
                     
                 }
@@ -711,6 +716,26 @@ function get_sobs(){
             $('#sob_category').trigger('change:updated');
             $('#hidden_category').val(_item_category);
            
+        });
+
+       $('#sob_category').change(function(){
+            var pre_cate = $('#sob_category .cate_selected');
+            var pre_parent = pre_cate.data('parent');
+            var pre_name = pre_cate.data('name');
+            if(pre_name)
+            {
+                pre_cate.text("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + pre_name);
+            }
+            $('#sob_category .cate_selected').removeClass('cate_selected');
+            var selected_cate = $('#sob_category option:selected');
+            var selected_cate_parent = selected_cate.data('parent');
+            var selected_cate_name = selected_cate.data('name');
+            if(selected_cate_parent)
+            {
+                selected_cate.text(selected_cate_parent+'-'+selected_cate_name);
+                selected_cate.prop('class','cate_selected').trigger('chosen:updated');
+            }
+
         });
 }
 
