@@ -522,13 +522,47 @@ $(document).ready(function(){
             {
                 for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
                 {
-                    _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                    var parent_name = '';
+                    if(selectDataCategory[s_id][i].parent_name)
+                    {
+                        parent_name = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    }
+                    _h += "<option  data-parent='" + selectDataCategory[s_id][i].parent_name + "' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
                     
                 }
             }
             var selectDom = this.parentNode.nextElementSibling.children[0]
             $(selectDom).empty().append(_h).trigger("chosen:updated");
         });
+
+        $('.sob_category').each(function(){
+            $(this).change(function(){
+                var pre_cate = $('.cate_selected',$(this));
+                var pre_parent = pre_cate.data('parent');
+                var pre_name = pre_cate.data('name');
+                console.log(pre_cate);
+                console.log(pre_parent);
+                console.log(pre_name);
+                if(pre_name)
+                {
+                    pre_cate.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + pre_name);
+                }
+                $('.cate_selected',$(this)).removeClass('cate_selected');
+                var selected_cate = $('option:selected',$(this));
+                var selected_cate_parent = selected_cate.data('parent');
+                var selected_cate_name = selected_cate.data('name');
+             //   console.log(selected_cate_parent);
+             //   console.log(selected_cate_name);
+                console.log(selected_cate);
+                if(selected_cate_parent)
+                {
+                    selected_cate.text(selected_cate_parent+'-'+selected_cate_name);
+                    selected_cate.prop('class','cate_selected').trigger('chosen:updated');
+                }
+
+            });
+        });
+
     get_sobs();
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
