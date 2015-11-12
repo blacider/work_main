@@ -534,6 +534,7 @@ class Category extends REIM_Controller {
         $sob_hash = array();
         $exitst_sobs = array();
         $idx = 1;
+        $create_count = 1;
         for ($row = 3; $row <= $highestRow; $row++){//行数是以第4行开始
             // 前三列为标准列，后面的为三个一组的类目
             $obj = Array();
@@ -593,8 +594,9 @@ class Category extends REIM_Controller {
             } else {
                 // 数据库中不存在，那么留下来，准备建设新的
                 if(!array_key_exists($_hash, $sob_hash)) {
-                    $sob_hash[$_hash] = array('name' => '自动帐套' . date('Y-m-d h:i:sa'), 'emails' => array(), 'cids' => $_ids, 'detail' => $obj['cates']);
+                    $sob_hash[$_hash] = array('name' => '自动帐套' . $create_count  . '(' . date('Y-m-d h:i:sa') . ')', 'emails' => array(), 'cids' => $_ids, 'detail' => $obj['cates']);
                     $idx += 1;
+                    $create_count += 1;
                 }
                 //array_push($sob_hash[$_hash]['emails'], $obj['email']);
                 if($obj['email'])
