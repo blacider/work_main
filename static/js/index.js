@@ -47,6 +47,7 @@ function isNull(str){
     return re.test(str); 
 } 
 function isEmail( str ){  
+    str = trim(str);
     var myReg = /^[-\._A-Za-z0-9]+@([-_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/; 
     if(myReg.test(str)) return true; 
     return false; 
