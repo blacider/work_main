@@ -13,6 +13,13 @@ class Company extends REIM_Controller {
         $this->load->model('report_model','reports');
     }
     
+    public function active_item_type($key = '', $value = 1){
+        $this->need_group_it();
+        if('' == $key) return redirect(base_url('company/get_item_type_name'));
+        $ret = $this->company->isactive_company_config($key, $value);
+        die(json_encode($ret));
+    }
+
     public function dodelete_report_template($id)
     {
         $buf = $this->reports->delete_report_template($id); 
@@ -210,6 +217,12 @@ class Company extends REIM_Controller {
     {
         $item_type_list = array();
         $_item_type_list = $this->items->get_item_type_name();
+        $company_config = array();
+        $_company_config = $this->company->get_company_config();
+        if($_company_config && $_company_config['status'] > 0)
+        {
+            $company_config = $_company_config['data'];
+        }
         if($_item_type_list['status'] > 0)
         {
             $item_type_list = $_item_type_list['data'];
@@ -226,8 +239,9 @@ class Company extends REIM_Controller {
                     ,array('url'  => '', 'name' => '消费设置', 'class' => '')
                     ,array('url'  => '', 'name' => '消费类型设置', 'class' => '')
                 ),
-                'item_type_list' => $item_type_list,
-                'error' => $error
+                'item_type_list' => $item_type_list
+                ,'error' => $error
+                ,'company_config' => $company_config
             ));
     }
 
@@ -1472,8 +1486,6 @@ public function common(){
         $close_directly = 0;
         $note_compulsory = 0;
         $not_auto_time = 0;
-        $disable_borrow = 0;
-        $disable_budget = 0;
         $open_exchange = 0;
     
         $calendar_month = $this->input->post('calendar_month');
@@ -1492,21 +1504,11 @@ public function common(){
         $_close_directly = $this->input->post('close_directly');
         $_note_compulsory = $this->input->post('note_compulsory');
         $_not_auto_time = $this->input->post('not_auto_time');
-        $_disable_borrow = $this->input->post('allow_borrow');
-        $_disable_budget = $this->input->post('allow_budget');
         $_open_exchange = $this->input->post('open_exchange');
 
         if($_open_exchange == "true")
         {
             $open_exchange = 1;
-        }
-        if($_disable_borrow == "true")
-        {
-            $disable_borrow = 1;
-        }
-        if($_disable_budget == "true")
-        {
-            $disable_budget = 1;
         }
         if($isadmin == "true")
         {
@@ -1557,7 +1559,7 @@ public function common(){
         //  {
         //      $confarr['template'] = $template;
         //  }
-    log_message('debug','same_category:' . $pids);
+        log_message('debug','same_category:' . $pids);
         $in=array();
         $in['export_no_company']=$company_id;
         $in['same_category'] = $pids;
@@ -1573,13 +1575,11 @@ public function common(){
         $in['max_allowed_months'] = $max_allowed_months;
         $in['mail_notify'] = $mail_notify;
         $in['low_amount_only'] = $low_amount_only;
-    $in['disable_borrow'] = $disable_borrow;
-    $in['disable_budget'] = $disable_budget;
-    $in['calendar_month'] = $calendar_month;
-    $in['open_exchange'] = $open_exchange;
-    log_message('debug','company_in:' .json_encode($in));
+        $in['calendar_month'] = $calendar_month;
+        $in['open_exchange'] = $open_exchange;
+        log_message('debug','company_in:' .json_encode($in));
         $this->company->profile($in);
         //die(json_encode($re));
-    die(json_encode(array('msg'=>'保存成功')));
+        die(json_encode(array('msg'=>'保存成功')));
     }
 }
