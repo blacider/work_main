@@ -202,9 +202,17 @@
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">员工在此金额下无需确认收款</label>
-                                <div class="col-xs-4 col-sm-4">
+                                <div class="col-xs-2 col-sm-2">
 					               <input id="limit" type="text" class="form-controller col-xs-12" name="limit" placeholder="输入额度">
                                 </div>
+                                <div class="col-sm-2 col-sm-2">
+                                    <div class="checkbox" style="margin-left:35px;">
+                                        <label>
+                                         <input type="checkbox" id="confirm_unlimit" name="confirm_unlimit" >
+                                            无限制
+                                         </label>
+                                    </div>
+                                 </div>
                             </div>
 
                              
@@ -261,6 +269,16 @@ var __BASE = "<?php echo $base_url; ?>";
     var _checked = $('#isadmin').is('checked');
     $('#profile').submit();
 	});*/
+   $("#confirm_unlimit").change(function(){
+        if($(this).is(':checked'))
+        {
+            $('#limit').prop('disabled',true).trigger('chosen:updated');
+        }
+        else
+        {
+            $('#limit').prop('disabled',false).trigger('chosen:updated');
+        }
+   });
    $.ajax({
     type:"get",
     url:__BASE+"company/getsetting",
@@ -400,7 +418,17 @@ var __BASE = "<?php echo $base_url; ?>";
         }
 
         if(data.user_confirm != undefined) {
-            $('#limit').val(data.user_confirm);
+            if(data.user_confirm == -1)
+            {
+                $('#confirm_unlimit').attr('checked',true);
+                $('#confirm_unlimit').trigger('change');
+                $('#confirm_unlimit').trigger('change:updated');
+                //$('#confirm_unlimit').trigger('click');
+            }
+            else
+            {
+                $('#limit').val(data.user_confirm);
+            }
         }
 
         if(data.max_allowed_months != undefined) {
@@ -419,9 +447,14 @@ var __BASE = "<?php echo $base_url; ?>";
     }
    });
 
-        $('.renew').click(function(){
-	   var lval = parseInt($('#limit').val());
-       var r_limit = $('#reports_limit').val();
+      $('.renew').click(function(){
+	  var lval = parseInt($('#limit').val());
+      if($('#confirm_unlimit').is(':checked'))
+      {
+            lval = -1;
+      }
+
+      var r_limit = $('#reports_limit').val();
       var calendar_month = $('#calendar_month').val();
       if(isNaN(calendar_month))
       {
@@ -437,7 +470,7 @@ var __BASE = "<?php echo $base_url; ?>";
        {
             lval = 0;
        }
-	   if(lval>=0)
+	   if(lval>=0 || lval == -1)
 	   {
            $.ajax({
                 type:"post",
