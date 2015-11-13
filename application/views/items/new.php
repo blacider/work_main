@@ -703,7 +703,7 @@ function get_sobs(){
             var pre_cate = $('#sob_category .cate_selected');
             var pre_parent = pre_cate.data('parent');
             var pre_name = pre_cate.data('name');
-            if(pre_name)
+            if(pre_parent)
             {
                 pre_cate.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + pre_name);
             }
