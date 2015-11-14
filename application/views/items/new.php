@@ -69,14 +69,13 @@
 
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">类别</label>
-<div class="col-xs-6 col-sm-6">
 
-
-<select class="col-xs-6 col-sm-6" class="form-control" name="sob" id="sobs">
+<div class="col-xs-3 col-sm-3" style="margin-top:2px">
+<select class="form-control chosen-select" name="sob" id="sobs">
 </select>
-
-
-<select class="col-xs-6 col-sm-6" name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类别">
+</div>
+<div class="col-xs-3 col-sm-3" style="margin-top:2px;">
+<select class="sob_category chosen-select" name="category" id="sob_category" data-placeholder="类别">
 </select>
 
 
@@ -681,42 +680,39 @@ function get_sobs(){
             {
                 for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
                 {
-                    var _note = selectDataCategory[s_id][i].note;
                     var parent_name = '';
                     if(selectDataCategory[s_id][i].parent_name)
                     {
                         parent_name = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
                     }
-                    if(_note) {
-                        _h += "<option data-parent='" + selectDataCategory[s_id][i].parent_name + "' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>" + parent_name + selectDataCategory[s_id][i].category_name + "( " + _note + " ) </option>";
-                    } else{
-                        _h += "<option data-parent='" + selectDataCategory[s_id][i].parent_name + "' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>" + parent_name + selectDataCategory[s_id][i].category_name + " </option>";
-                    }
+                    _h += "<option data-parent='" + selectDataCategory[s_id][i].parent_name + "' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>"+ parent_name +selectDataCategory[s_id][i].category_name + " </option>";
                     
                 }
             }
-            $(this.nextElementSibling).empty().append(_h).trigger("chosen:updated");
-            $('#sob_category').trigger('change');
+            var selectDom = this.parentNode.nextElementSibling.children[0]
+            $(selectDom).empty().append(_h).trigger("chosen:updated");
         });
     
-        $('#sob_category').change(function(){
-            var pre_cate = $('#sob_category .cate_selected');
-            var pre_parent = pre_cate.data('parent');
-            var pre_name = pre_cate.data('name');
-            if(pre_parent)
-            {
-                pre_cate.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + pre_name);
-            }
-            $('#sob_category .cate_selected').removeClass('cate_selected');
-            var selected_cate = $('#sob_category option:selected');
-            var selected_cate_parent = selected_cate.data('parent');
-            var selected_cate_name = selected_cate.data('name');
-            if(selected_cate_parent)
-            {
-                selected_cate.text(selected_cate_parent+'-'+selected_cate_name);
+        $('#sob_category').each(function(){
+            $(this).change(function(){
+                var pre_cate = $('.cate_selected',$(this));
+                var pre_parent = pre_cate.data('parent');
+                var pre_name = pre_cate.data('name');
+                if(pre_parent)
+                {
+                    pre_cate.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + pre_name);
+                }
+                $('.cate_selected',$(this)).removeClass('cate_selected');
+                var selected_cate = $('option:selected',$(this));
+                var selected_cate_parent = selected_cate.data('parent');
+                var selected_cate_name = selected_cate.data('name');
                 selected_cate.prop('class','cate_selected').trigger('chosen:updated');
-            }
+                if(selected_cate_parent)
+                {
+                    $(this).next().find('span').text(selected_cate_parent+'-'+selected_cate_name);
+                }
 
+            });
         });
 }
 

@@ -92,11 +92,13 @@
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">分类</label>
-                                <div class="col-xs-6 col-sm-6">
-                                    <select class="col-xs-6 col-sm-6" name="sob" id="sobs">
-                                    </select>
-                                    <select name="category" id="sob_category" class="col-xs-6 col-sm-6 sob_category chosen-select-niu" data-placeholder="类目">
-                                    </select>
+                                    <div class="col-xs-3 col-sm-3" style="margin-top:2px">
+<select class="form-control chosen-select" name="sob" id="sobs">
+</select>
+</div>
+<div class="col-xs-3 col-sm-3" style="margin-top:2px;">
+<select class="sob_category chosen-select" name="category" id="sob_category" data-placeholder="类别">
+</select>
                                     <input type="hidden" name="hidden_category" id="hidden_category" value="<?php echo $item['category']; ?>">
 
                                 </div>
@@ -711,7 +713,7 @@ function get_sobs(){
                 }
             }
             $("#sobs").attr("value", _sid);
-            $(this.nextElementSibling).empty().append(_h).trigger("chosen:updated");
+            $('#sob_category').empty().append(_h).trigger("chosen:updated");
             $('#sob_category').trigger('change');
             $('#sob_category').trigger('change:updated');
             $('#hidden_category').val(_item_category);
@@ -730,11 +732,11 @@ function get_sobs(){
             var selected_cate = $('#sob_category option:selected');
             var selected_cate_parent = selected_cate.data('parent');
             var selected_cate_name = selected_cate.data('name');
-            if(selected_cate_parent)
-            {
-                selected_cate.text(selected_cate_parent+'-'+selected_cate_name);
-                selected_cate.prop('class','cate_selected').trigger('chosen:updated');
-            }
+            selected_cate.prop('class','cate_selected').trigger('chosen:updated');
+                if(selected_cate_parent)
+                {
+                    $(this).next().find('span').text(selected_cate_parent+'-'+selected_cate_name);
+                }
 
         });
 }

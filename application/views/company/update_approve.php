@@ -495,9 +495,6 @@ function bind_event_level_sobs() {
                 var pre_cate = $('.cate_selected',$(this));
                 var pre_parent = pre_cate.data('parent');
                 var pre_name = pre_cate.data('name');
-                console.log(pre_cate);
-                console.log(pre_parent);
-                console.log('pre_name' + pre_name);
                 if(pre_parent)
                 {
                     pre_cate.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + pre_name);
@@ -506,14 +503,12 @@ function bind_event_level_sobs() {
                 var selected_cate = $('option:selected',$(this));
                 var selected_cate_parent = selected_cate.data('parent');
                 var selected_cate_name = selected_cate.data('name');
-             //   console.log(selected_cate_parent);
-             //   console.log(selected_cate_name);
-                console.log(selected_cate);
+                selected_cate.prop('class','cate_selected').trigger('chosen:updated');
                 if(selected_cate_parent)
                 {
-                    selected_cate.text(selected_cate_parent+'-'+selected_cate_name);
+                    $(this).next().find('span').text(selected_cate_parent+'-'+selected_cate_name);
                 }
-                selected_cate.prop('class','cate_selected').trigger('chosen:updated');
+
             });
         });
     }
