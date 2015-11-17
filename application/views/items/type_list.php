@@ -169,15 +169,21 @@ $(document).ready(function(){
             _key = 'disable_budget';
         }
 
-        var _url = __BASEURL + "/company/active_item_type/" + _key + '/' + _value; 
-        $.getJSON(_url, function (data){ 
+        $.ajax({
+          url:__BASEURL + "/company/set_single_company_config",
+          method:"POST",
+          dataType:"json",
+          data:{'key':_key,'value':_value},
+          success:function(data){
             if(data.status) {
                 show_notify('操作成功');
             } else {
                 show_notify('操作失败');
             }
+          },
+          error:function(a,b,c)
+          {}
         });
-
     });
 });
 </script>

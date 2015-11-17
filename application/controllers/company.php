@@ -13,10 +13,11 @@ class Company extends REIM_Controller {
         $this->load->model('report_model','reports');
     }
     
-    public function active_item_type($key = '', $value = 1){
+    public function set_single_company_config(){
         $this->need_group_it();
-        if('' == $key) return redirect(base_url('company/get_item_type_name'));
-        $ret = $this->company->isactive_company_config($key, $value);
+        $key = $this->input->post('key');
+        $value = $this->input->post('value');
+        $ret = $this->company->set_single_company_config($key, $value);
         die(json_encode($ret));
     }
 

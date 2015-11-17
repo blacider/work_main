@@ -6,7 +6,7 @@ class Company_Model extends Reim_Model {
         parent::__construct();
     }
 
-    public function isactive_company_config($key,$value)
+    public function set_single_company_config($key,$value)
     {
         $jwt = $this->session->userdata('jwt');
         log_message("debug", "JWT: " . json_encode($jwt));
