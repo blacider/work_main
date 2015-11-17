@@ -133,6 +133,7 @@ if($profile['gid'] > 0){
 
 if($profile['admin'] == 1 || $profile['admin'] == 3 ){
     $open = 1;
+}
 ?>
 
                        <div class="form-group">
@@ -165,9 +166,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3 ){
                                     </select>
                                 </div>
                         </div>
-<?php
-}
-?>
+
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">级别</label>
