@@ -370,43 +370,51 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 ?>
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">角色</label>
-                        <div class="col-xs-6 col-sm-6">
-                            <div class="col-xs-12 col-sm-12 "  style="margin-left:0px !important;padding-left:0px !important;" >
-                                <div class="btn-toolbar" id="btns">
-                                    <select name="admin_new" id="admin_new" class="form-control" style="width:120px"> 
-<?php
-        $chara = array(0 => "员工", 
-            1 => "管理员",
-            2 => "出纳",
-            3 => "IT人员");
-        if($profile['admin'] == 3) {
-            $chara = array(0 => "员工", 
-                2 => "出纳",
-                3 => "IT人员");
-        }
-        foreach($chara as $val => $des) {
-            //for ($i=0; $i < 4; $i++) { 
-            $str1 = '<option value="' . $val . '"';
-            $select = 'selected="true"';
-            $str2 = '>' . $chara[$val] . "</option>";
-            if ($val == $member['admin']) {
-                echo $str1.$select.$str2;
-            } else {
-                echo $str1.$str2;
-            }
-        }
-?>
+                                <div class="col-xs-2 col-sm-2">
+                                 <select name="admin_new" id="admin_new" class="chosen-select tag-input-style"> 
+                                   <?php
+                                            $chara = array(0 => "员工", 
+                                                1 => "管理员",
+                                                2 => "出纳",
+                                                3 => "IT人员");
+                                            if($profile['admin'] == 3) {
+                                                $chara = array(0 => "员工", 
+                                                    2 => "出纳",
+                                                    3 => "IT人员");
+                                            }
+                                            foreach($chara as $val => $des) {
+                                                //for ($i=0; $i < 4; $i++) { 
+                                                $str1 = '<option value="' . $val . '"';
+                                                $select = 'selected="true"';
+                                                $str2 = '>' . $chara[$val] . "</option>";
+                                                if ($val == $member['admin']) {
+                                                    echo $str1.$select.$str2;
+                                                } else {
+                                                    echo $str1.$str2;
+                                                }
+                                            }
+                                    ?>
                                     </select>
-                                    <input type="hidden" name="admin_old" value="<?php echo $member['admin']; ?>" type="hidden" />
                                 </div>
-                            </div>
-                        </div>
+
+                              <div class="col-xs-4 col-sm-4" id="cashier_view" hidden>
+                                 <select name="ug_views" id="ug_views" multiple="multiple" class="chosen-select tag-input-style" data-placeholder="请选择部门" <?php if($profile['admin']!=1){ echo "disabled";}?>> 
+                             <?php
+                                 foreach($ug as $g)
+                                 {
+                             ?>
+                                     <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+                             <?php 
+                                 }
+                             ?>
+                                 </select>
+                              </div>
                     </div>
-
-
 <?php 
-    }
+}
 ?>
+
+                    <input type="hidden" name="admin_old" value="<?php echo $member['admin']; ?>" type="hidden" />
 
 
                     <div class="clearfix form-actions col-md-8">
@@ -994,6 +1002,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 
     }
 
+
     $(document).ready(function(){
         get_province();
         if(__error) show_notify(__error);
@@ -1020,6 +1029,19 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
             $('#profile_form').submit();
         });
 
+        $('#admin_new').change(function(){
+            var admin_type_id = $('#admin_new').val();
+            if(admin_type_id == 2)
+            {
+                $('#cashier_view').prop('hidden',false).trigger('chosen:updated');
+            }
+            else
+            {
+                $('#cashier_view').prop('hidden',true).trigger('chosen:updated');
+            }
+        });
+        $('#admin_new').trigger('change');
+        $('#admin_new').trigger('change:updated');
         /*
     $('#btn_cimg').click(function(){
         $('#src').click();
