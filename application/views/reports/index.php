@@ -53,7 +53,7 @@
                   <div class="form-group">
                     <label for="form-field-username">请输入报销单发送的email地址:</label>
                     <div>
-                      <input class=" col-xs-8 col-sm-8" type="text" id="email" name="email" class="form-control">
+                      <input class=" col-xs-8 col-sm-8" type="text" id="email" name="email" class="form-control" value="<?php if(array_key_exists('email',$profile)){ echo $profile['email'];}?>">
                       <input type="hidden" id="report_id" name="report_id">
                     </div>
                     
