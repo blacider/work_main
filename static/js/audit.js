@@ -109,10 +109,10 @@ jQuery(grid_selector).jqGrid({
     mtype: "GET",
     datatype: "local",
     height: 250,
-    colNames:['ID', '报告模板', '标题', '消费类型', '创建日期', '金额','消费条目数','发起人', '附件', '状态', '操作', ''],
+    colNames:['ID', '报销单模板', '标题', '消费类型', '创建日期', '金额','消费条目数','发起人', '附件', '状态', '操作', ''],
     loadonce: true,
     //rownumbers: true, // show row numbers
-    caption: "报告列表",
+    caption: "报销单列表",
     editurl: __BASE + 'reports/save',
     datatype: "json",
     loadtext: '',

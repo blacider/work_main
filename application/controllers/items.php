@@ -404,7 +404,7 @@ class Items extends REIM_Controller {
                 if(array_key_exists($s['category'], $_cates)){
                     $s['cate_str'] = $_cates[$s['category']];
                 }
-                $_report = '尚未添加到报告';
+                $_report = '尚未添加到报销单';
                 if($_report) {
                 }
                 $s['report'] = $_report;
@@ -690,7 +690,7 @@ class Items extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-        $item['dt'] = date('Y-m-d H:i:s',$item['dt']);
+        $item['dt'] = date('Y-m-d',$item['dt']);
         log_message("debug", "ITEM:" . json_encode($item));
         $this->bsload('items/iview',
             array(
@@ -758,7 +758,7 @@ class Items extends REIM_Controller {
         }
         $item = $obj['data'];
         //$item_value = '';
-        $item['dt'] = date('Y-m-d H:i:s',$item['dt']);
+        $item['dt'] = date('Y-m-d',$item['dt']);
         $item_value = array();
         if(array_key_exists('extra',$item))
         {
@@ -871,6 +871,7 @@ class Items extends REIM_Controller {
         log_message("debug","item_updta_in".$this->session->userdata("item_update_in"));
         log_message("debug","flow".json_encode($flow));
         log_message("debug","users:".json_encode($user));
+        log_message("debug","error:".$error);
         
         $this->bsload('items/view',
             array(
@@ -1088,7 +1089,7 @@ class Items extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-        $item['dt'] = date('Y-m-d H:i:s',$item['dt']);
+        $item['dt'] = date('Y-m-d',$item['dt']);
         $is_burden = true;
         if(!$afford)
         {
@@ -1249,6 +1250,12 @@ class Items extends REIM_Controller {
         else
         {
             $obj = $this->items->update($id, $amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$__extra,$uids,$afford_ids,$attachments,$currency);
+            if($obj && array_key_exists('data',$obj) && array_key_exists('status',$obj['data'][0]) && $obj['data'][0]['status'] <= 0)
+            {
+                
+                $this->session->set_userdata('last_error',$obj['data'][0]['msg']);
+            }
+            log_message('debug','status' . $obj['status']);
             log_message('debug','zz item_data:'.json_encode($obj));
         }
         log_message('debug','rid:' . $rid);

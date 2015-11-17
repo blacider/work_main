@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 <script src="/static/ace/js/date-time/moment.min.js"></script>
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
+<script src="/static/js/util.js"></script>
 
 
 
@@ -18,7 +19,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-rigtht">名称</label>
                             <div class="col-xs-3 col-sm-3">
-                                <input id="sob_name" type="text" class="form-controller col-xs-12" value="<?php echo $report_template["name"];?>" name="sob_name" placeholder="输入报告模板名"></div>
+                                <input id="sob_name" type="text" class="form-controller col-xs-12" value="<?php echo $report_template["name"];?>" name="sob_name" placeholder="输入报销单模板名"></div>
                         </div>
 
                         
@@ -379,23 +380,16 @@
             var sgroups = $('#group').val();
             //if(sname)
          
-            if(sname == '')
+            if(trim(sname) == '')
             {
                 $('#sob_name').focus();
                 show_notify("请输入用户名");
                 return false;
             }
-
-            console.log(__dataUpload);
-            /*if(sgroups == null)
-            {
-                $('#group').focus();
-                show_notify("请选择部门");
-                return false;
-            }*/
+            __dataUpload['name'] = sname;
 
         
-                $.ajax({
+            $.ajax({
                 type:"post",
                 url:__BASE+"company/doupdate_report_template",
                 data:{temp_info:__dataUpload},
@@ -471,7 +465,7 @@
                                                     '</div>');
                                     } else if (data.type == 4) {
 
-                                        $('#modal_0').find('input[name="bank"]')[0].checked = (data.property.bank_account_type == "1");
+                                        $('#modal_1').find('input[name="bank"]')[0].checked = (data.property.bank_account_type == "1");
                                     }
                                 }
                                 ifCreate = false;

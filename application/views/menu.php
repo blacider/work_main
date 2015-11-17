@@ -39,7 +39,7 @@ echo $username;
 <div class="clear menu_wrap">
     <div class="box menu"> 
         <a id="items" href="<?php echo base_url('items'); ?>">费用明细</a> 
-        <a id="reports" href="<?php echo base_url('reports'); ?>">报告审批</a> 
+        <a id="reports" href="<?php echo base_url('reports'); ?>">报销单审批</a> 
         <a id="bills" href="<?php echo base_url('bills'); ?>">财务核算</a> 
         <a id="groups" href="<?php echo base_url('groups'); ?>">成员管理</a> 
         <!-- <a id="roles" href="<?php echo base_url('roles'); ?>">规则设定</a>-->

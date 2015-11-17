@@ -16,7 +16,7 @@
                         <table id="sample-table-1" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>报告模板名称</th>
+                                    <th>报销单模板名称</th>
                                     <th>最后修改时间</th>
                                     <th class="hidden-680">
                                         <a href="<?php echo base_url('company/report_settings_new');?>" role="button" class="green" data-toggle="modal">

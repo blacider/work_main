@@ -320,7 +320,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
     ?> 
   </select>
 </div>
-<input name="key" placeholder="ID、报告名或提交者" value="<?php echo $search_text;?>" type='text' id="globalSearchText" />
+<input name="key" placeholder="ID、报销单名或提交者" value="<?php echo $search_text;?>" type='text' id="globalSearchText" />
 <div class="col-sm-2 col-xs-2" id="dataSelect">
   <ul class="nav nav-pills">
     <li class="dropdown all-camera-dropdown active">
@@ -414,7 +414,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
                 <form action="<?php echo base_url('bills/report_finance_end'); ?>" method="post" class="form-horizontal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">报告将发送至以下审批人，请确认</h4>
+                <h4 class="modal-title">报销单将发送至以下审批人，请确认</h4>
                 <input type="hidden" name="rid" value="" id="rid">
                 <input type="hidden" name="status" value="2" id="status">
             </div>
@@ -461,7 +461,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
                     <div class="col-xs-9 col-sm-9">
                         <select style="display:none;" class="chosen-select_ tag-input-style form-control col-xs-12 col-sm-12" name="receiver[]" multiple="multiple" id="modal_managers" style="width:300px;">
                         </select>
-                        <h4 class="modal-title">是否结束这条报告?</h4>
+                        <h4 class="modal-title">是否结束这条报销单?</h4>
                     </div>
                 </div>
             </div>
@@ -483,7 +483,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">结束以下报告</h4>
+        <h4 class="modal-title">结束以下报销单</h4>
       </div>
       <div class="modal-body">
         <table id="grid-table-finish"></table> 
@@ -502,16 +502,16 @@ Date.prototype.Format = function (fmt) { //author: meizz
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="blue bigger"> 导出报告 </h4>
+            <h4 class="blue bigger"> 导出报销单 </h4>
           </div>
          <div class="modal-body">
            <div class="container">
               <div class="col-xs-12 col-sm-12">
                 <div class="row">
                   <div class="form-group">
-                      <label for="form-field-username">请输入报告发送的Email地址:</label>
+                      <label for="form-field-username">请输入报销单发送的Email地址:</label>
                       <div>
-                        <input class="col-xs-4 col-sm-4" type="text" id="email" name="email" class="form-control" />
+                        <input class="col-xs-4 col-sm-4" type="text" id="email" name="email" class="form-control" value="<?php if(array_key_exists('email',$profile)){ echo $profile['email'];}?>"/>
                         <input type="hidden" id="report_id" name="report_id" />
                       </div>
                   </div>   

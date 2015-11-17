@@ -154,13 +154,13 @@ class Company extends REIM_Controller {
 //        $item_type_dic = $this->reim_show->
         $this->bsload('reports/update_report_template',
             array(
-                    'title'=>'修改报告模板',
+                    'title'=>'修改报销单模板',
                     'report_template' => $report_template
                     ,'item_type_dic' => $item_type_dic
                     ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
-                    ,array('url'=>'','name'=>'修改报告模板','class'=>'')
+                    ,array('url'=>'','name'=>'修改报销单模板','class'=>'')
                 ),
             )
         );
@@ -170,11 +170,11 @@ class Company extends REIM_Controller {
     {
         $this->bsload('reports/create_report_template',
             array(
-                    'title'=>'新建报告模板',
+                    'title'=>'新建报销单模板',
                     'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
-                    ,array('url'=>'','name'=>'修改报告模板','class'=>'')
+                    ,array('url'=>'','name'=>'修改报销单模板','class'=>'')
                 ),
             )
         );
@@ -196,11 +196,11 @@ class Company extends REIM_Controller {
             array(
                 'template_list' => $report_template_list
                 ,'error' => $error
-                ,'title'=>'报告模板'
+                ,'title'=>'报销单模板'
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
-                    ,array('url'=>'','name'=>'报告模板','class'=>'')
+                    ,array('url'=>'','name'=>'报销单模板','class'=>'')
                 ),
             )
         );
@@ -272,13 +272,13 @@ class Company extends REIM_Controller {
         $this->bsload('company/report_settings_update',
             array(
                 'images'=>$config['logo']
-                ,'title'=>'修改报告模板'
+                ,'title'=>'修改报销单模板'
                 ,'setting'=>$setting
                 ,'id'=>$id
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
-                    ,array('url'=>'','name'=>'修改报告模板','class'=>'')
+                    ,array('url'=>'','name'=>'修改报销单模板','class'=>'')
                 ),
             )
         );
@@ -360,11 +360,11 @@ class Company extends REIM_Controller {
     {
         $this->bsload('company/report_settings_new',
             array(
-                'title'=>'新建报告模板'
+                'title'=>'新建报销单模板'
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
-                    ,array('url'=>'','name'=>'新建报告模板','class'=>'')
+                    ,array('url'=>'','name'=>'新建报销单模板','class'=>'')
                 ),
             )
         );
@@ -383,13 +383,13 @@ class Company extends REIM_Controller {
         $this->session->unset_userdata('last_error');
         $this->bsload('company/report_settings',
             array(
-                'title'=>'报告设置'
+                'title'=>'报销单设置'
                 ,'report_settings'=>$settings
                 ,'error'=>$error
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
-                    ,array('url'=>'','name'=>'报告设置','class'=>'')
+                    ,array('url'=>'','name'=>'报销单设置','class'=>'')
                 ),
             )
         );

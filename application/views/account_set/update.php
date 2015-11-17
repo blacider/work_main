@@ -337,7 +337,7 @@ if($last_error) {
     <div class="modal-body">
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">名称</label>
-            <input type="text" maxlength="10" name='name' data-placeholder="请输入名称"></div>
+            <input type="text" maxlength="30" id='update_cate_name' name='name' data-placeholder="请输入名称"></div>
         <div class="form-group">
             <label class="col-sm-2 control-label no-padding-rigtht">说明</label>
                             
@@ -365,7 +365,7 @@ if($last_error) {
                     <span class="caret"></span>
                 </div>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuImg">
-                    <?php for($i = 1; $i <= 11; $i++){ ?>
+                    <?php for($i = 1; $i <= 20; $i++){ ?>
                     <li role="presentation">
                         <a href="#" onclick="changeImg(this)" role="menuitem" tabindex="-1">
                             <span>
@@ -420,7 +420,7 @@ if($last_error) {
             <i class="ace-icon fa fa-times"></i>
                 取消
         </button>
-        <input type="submit" class="btn btn-sm btn-primary">
+        <input type="submit" class="btn btn-sm btn-primary" onclick="return checkLength(1);">
             </div>
         </div>
     </div>
@@ -448,7 +448,7 @@ if($last_error) {
     <div class="modal-body">
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">名称</label>
-            <input type="text" maxlength="10" name='name' data-placeholder="请输入名称"></div>
+            <input type="text" maxlength="30" id='create_cate_name' name='name' data-placeholder="请输入名称"></div>
         <div class="form-group">
             <label class="col-sm-2 control-label no-padding-rigtht">说明</label>
                             
@@ -475,7 +475,7 @@ if($last_error) {
                     <span class="caret"></span>
                 </div>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuImg_">
-                    <?php for($i = 1; $i <= 11; $i++){ ?>
+                    <?php for($i = 1; $i <= 20; $i++){ ?>
                     <li role="presentation">
                         <a href="#" onclick="changeImg_(this)" role="menuitem" tabindex="-1">
                             <span>
@@ -527,7 +527,7 @@ if($last_error) {
             <i class="ace-icon fa fa-times"></i>
                 取消
         </button>
-        <input type="submit" class="btn btn-sm btn-primary">
+        <input type="submit" class="btn btn-sm btn-primary" onclick="return checkLength(0);">
     </div>
     <input type="text" name="sob_id" class="hidden" value="<?php echo $sob_id; ?>">
     <input type="text" name="pid" class="hidden"></form>
@@ -537,6 +537,31 @@ if($last_error) {
 <!-- PAGE CONTENT ENDS -->
 
 <script type="text/javascript">
+function trim(str)
+{
+    return str.replace(/(^\s*)|(\s*$)/g, "");
+}
+function checkLength(is_update)
+{
+    var str = $('#create_cate_name').val();
+    if(is_update)
+    {
+        str = $('#update_cate_name').val();
+    }
+    str = str.replace(/[\u4E00-\u9FA5\uf900-\ufa2d]/g,'aa');
+    if(!trim(str))
+    {
+        show_notify('请输入名称');
+        return false;
+    }
+    if(str.length > 30)
+    {
+        show_notify('输入字符长度超过30');
+        return false;
+    }
+    return true;
+}
+
 function changeImg(dom) {
     $('#menuImg').attr('src', $(dom).find('.img-select').attr('src'));
     $('#form_moda').find('input[name="avatar"]').val( $(dom).find('.img-select').attr('alt') );

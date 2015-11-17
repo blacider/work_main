@@ -285,7 +285,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
     ?> 
   </select>
 </div>
-<input name="key" placeholder="ID、报告名或提交者" value="<?php echo $search_text;?>" type='text' id="globalSearchText" />
+<input name="key" placeholder="ID、报销单名或提交者" value="<?php echo $search_text;?>" type='text' id="globalSearchText" />
 <div class="col-sm-3 col-xs-3" id="dataSelect">
   <ul class="nav nav-pills">
     <li class="dropdown all-camera-dropdown active">
@@ -326,7 +326,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">支付以下报告</h4>
+        <h4 class="modal-title">支付以下报销单</h4>
       </div>
       <div class="modal-body">
         <table id="grid-table-new"></table> 
@@ -345,16 +345,16 @@ Date.prototype.Format = function (fmt) { //author: meizz
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="blue bigger"> 导出报告 </h4>
+            <h4 class="blue bigger"> 导出报销单 </h4>
           </div>
          <div class="modal-body">
            <div class="container">
               <div class="col-xs-12 col-sm-12">
                 <div class="row">
                   <div class="form-group">
-                      <label for="form-field-username">请输入报告发送的Email地址:</label>
+                      <label for="form-field-username">请输入报销单发送的Email地址:</label>
                       <div>
-                        <input class="col-xs-4 col-sm-4" type="text" id="email" name="email" class="form-control" />
+                        <input class="col-xs-4 col-sm-4" type="text" id="email" name="email" class="form-control" value="<?php if(array_key_exists('email',$profile)){ echo $profile['email'];}?>"/>
                         <input type="hidden" id="report_id" name="report_id" />
                       </div>
                   </div>   

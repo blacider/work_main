@@ -114,7 +114,7 @@
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
                                                     <input type="text" class="form-controller col-xs-8 period field_value date-timepicker1" data-type="3" data-id="<?php echo $field['id'];?>" name="dt" 
-                                                            placeholder="时间" <?php if($field['required'] == 1){echo 'required';}?> value="<?php if(array_key_exists($field['id'], $extra_dic)){echo date('Y-m-d H:i:s',$extra_dic[$field['id']]['value']);}?>" disabled>
+                                                            placeholder="时间" <?php if($field['required'] == 1){echo 'required';}?> value="<?php if(array_key_exists($field['id'], $extra_dic)){echo date('Y-m-d',$extra_dic[$field['id']]['value']);}?>" disabled>
                                                 </div>
                                             </div>
                                         </div>
@@ -477,7 +477,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                 <form action="<?php echo base_url('reports/permit'); ?>" method="post" class="form-horizontal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">报告将发送至以下审批人，请确认</h4>
+                <h4 class="modal-title">报销单将发送至以下审批人，请确认</h4>
                 <input type="hidden" name="rid" value="" id="rid">
                 <input type="hidden" name="status" value="2" id="status">
             </div>
@@ -522,7 +522,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                     <div class="col-xs-10 col-sm-10">
                         <select style="display:none;" class="chosen-select_ tag-input-style form-control col-xs-12 col-sm-12" name="receiver[]" multiple="multiple" id="modal_managers" style="width:300px;">
                         </select>
-                        <h4 class="modal-title">是否结束这条报告?</h4>
+                        <h4 class="modal-title">是否结束这条报销单?</h4>
                     </div>
                 </div>
             </div>
@@ -584,7 +584,7 @@ $(document).ready(function(){
     });
 
     $('.callback').click(function(){
-       if(confirm('确认要撤回报告吗?')){
+       if(confirm('确认要撤回报销单吗?')){
                 location.href = __BASE + "/reports/revoke/" + rid;
             }
     });
