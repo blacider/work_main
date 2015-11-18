@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 <script src="/static/ace/js/date-time/moment.min.js"></script>
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
+<script src="/static/js/util.js"></script>
 
 
 
@@ -379,23 +380,16 @@
             var sgroups = $('#group').val();
             //if(sname)
          
-            if(sname == '')
+            if(trim(sname) == '')
             {
                 $('#sob_name').focus();
                 show_notify("请输入用户名");
                 return false;
             }
-
-            console.log(__dataUpload);
-            /*if(sgroups == null)
-            {
-                $('#group').focus();
-                show_notify("请选择部门");
-                return false;
-            }*/
+            __dataUpload['name'] = sname;
 
         
-                $.ajax({
+            $.ajax({
                 type:"post",
                 url:__BASE+"company/doupdate_report_template",
                 data:{temp_info:__dataUpload},

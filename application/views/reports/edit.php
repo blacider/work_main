@@ -82,6 +82,10 @@ foreach($members as $m) {
                             }
                             foreach($config['config'] as $field_group){
                             ?>
+                                <div class="form-group">
+                                            <label class="col-sm-1 control-label no-padding-right blue"><?php if(array_key_exists('name', $field_group)){echo $field_group['name'];}?></label>                        
+                                        
+                                </div>
                                 <?php
                                     if(array_key_exists('children', $field_group))
                                     {
@@ -165,7 +169,14 @@ foreach($members as $m) {
                                             $value = array();
                                             if(array_key_exists($field['id'], $extra_dic))
                                             {
-                                                $value = json_decode($extra_dic[$field['id']]['value'],True);
+                                                if(is_array($extra_dic[$field['id']]['value']))
+                                                {
+                                                    $value = $extra_dic[$field['id']]['value'];
+                                                }
+                                                else
+                                                {
+                                                    $value = json_decode($extra_dic[$field['id']]['value'],True);
+                                                }
                                             }
                                         ?>
                                         <div class="field_value" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" data-required="<?php echo $field['required'];?>" >
