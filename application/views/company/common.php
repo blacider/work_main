@@ -175,7 +175,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">员工在此金额下无需确认收款</label>
                                 <div class="col-xs-2 col-sm-2">
-					               <input id="limit" type="text" class="form-controller col-xs-12" name="limit" placeholder="输入额度">
+					               <input id="limit" type="number" class="form-controller col-xs-12" name="limit" placeholder="输入额度">
                                 </div>
                                 <div class="col-sm-2 col-sm-2">
                                     <div class="checkbox" style="margin-left:35px;">
@@ -398,7 +398,7 @@ var __BASE = "<?php echo $base_url; ?>";
    });
 
     $('.renew').click(function(){
-    	var lval = parseInt($('#limit').val());
+    	var lval = $('#limit').val();
         if($('#confirm_unlimit').is(':checked'))
         {
             lval = -1;
