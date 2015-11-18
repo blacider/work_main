@@ -398,7 +398,7 @@ var __BASE = "<?php echo $base_url; ?>";
    });
 
     $('.renew').click(function(){
-    	var lval = $('#limit').val();
+        var lval = $('#limit').val();
         if($('#confirm_unlimit').is(':checked'))
         {
             lval = -1;
@@ -420,8 +420,8 @@ var __BASE = "<?php echo $base_url; ?>";
         {
                 lval = 0;
         }
-    	   if(lval>=0 || lval == -1)
-    	   {
+       if(lval>=0 || lval == -1)
+       {
                $.ajax({
                     type:"post",
                     url:__BASE+"company/profile",
@@ -433,15 +433,15 @@ var __BASE = "<?php echo $base_url; ?>";
                         close_directly :$('#close_directly').is(':checked'),
                         low_amount_only:$('#low_amount_only').is(':checked'),
                         max_allowed_months:$('#max_allowed_months').val(),
-    		            private_structure:$('#private_structure').is(':checked'),
+                        private_structure:$('#private_structure').is(':checked'),
                         need_bank_info:$('#need_bank_info').is(':checked'),
-            		    isadmin:$('#isadmin').is(':checked'),
-            		    isremark:$('#isremark').is(':checked'),
-            		    iscompany:$('#iscompany').is(':checked'),
-            		    template:$('#temp option:selected').val(),
-            		    limit:lval,reports_limit:r_limit,
+                        isadmin:$('#isadmin').is(':checked'),
+                        isremark:$('#isremark').is(':checked'),
+                        iscompany:$('#iscompany').is(':checked'),
+                        template:$('#temp option:selected').val(),
+                        limit:lval,reports_limit:r_limit,
                         open_exchange:$('#open_exchange').is(':checked')
-    		    },
+       },
                     dataType:'json',
                     success:function(data){
                            show_notify('保存成功');
