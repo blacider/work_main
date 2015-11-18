@@ -540,6 +540,11 @@ class Bills extends REIM_Controller {
         $ugs = array();
         $_data = array();
         foreach($data as $d){
+            if(array_key_exists('has_attachment',$d) && $d['has_attachment'])
+            {
+                $url = base_url('reports/show/' . $d['id']);
+                $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
+            }
             log_message("debug", "alvayang Bill: [ $type] $type: " . json_encode($d));
             log_message("debug", "xBill: $type: " . json_encode($d));
             log_message("debug", "nICe");
@@ -607,6 +612,11 @@ $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data
         $ugs = $bills['data']['ugs'];
         $_data = array();
         foreach($data as $d){
+            if(array_key_exists('has_attachment',$d) && $d['has_attachment'])
+            {
+                $url = base_url('reports/show/' . $d['id']);
+                $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
+            }
             log_message("debug", "Bill: [ $type] $type: " . json_encode($d));
             $prove_ahead = '报销';
             switch($d['prove_ahead']){
