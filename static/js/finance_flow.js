@@ -133,12 +133,12 @@ jQuery(grid_selector).jqGrid({
     hoverrows : true,
 
     colModel:[
-    {name:'id', index:'id', width:30,editable: false,editoptions:{size:"20",maxlength:"30"}},
-    {name:'report_template', index:'report_template', width:50,editable: false,editoptions:{size:"20",maxlength:"50"}},
-    {name:'date_str', index:'date_str', width:100,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
+    {name:'id', index:'id', width:45,editable: false,editoptions:{size:"20",maxlength:"30"}},
+    {name:'report_template', index:'report_template', width:70,editable: false,editoptions:{size:"20",maxlength:"50"}},
+    {name:'date_str', index:'date_str', width:110,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
     {name:'title', index:'title', width:90,editable: false,editoptions:{size:"20",maxlength:"30"}},
-    {name:'prove_ahead', index:'prove_ahead', width:90,editable: false,editoptions:{size:"20",maxlength:"30"}},
-    {name:'item_count', index:'item_count', width:50,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
+    {name:'prove_ahead', index:'prove_ahead', width:60,editable: false,editoptions:{size:"20",maxlength:"30"}},
+    {name:'item_count', index:'item_count', width:40,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
     {name:'nickname', index:'nickname', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
     {name:'amount',index:'amount', sorttype: myCustomSort,width:70, editable: false,editoptions: {size:"20",maxlength:"30"},formatter:'currency', formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'},unformat: aceSwitch,search:false},
     {name:'attachments',index:'attachments', width:40, editable: true,edittype:"select",editoptions: {size:"20",maxlength:"30",value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},

@@ -6,6 +6,34 @@ class Company_Model extends Reim_Model {
         parent::__construct();
     }
 
+    public function set_single_company_config($key,$value)
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('company_config');
+        $data = array('key'=>$key,'value'=>$value);
+        $buf = $this->do_Put($url,$data,$jwt);
+        log_message('debug','active_company_config_data:' . json_encode($data));
+        log_message('debug','get_company_config_back:' . $buf);
+
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
+    public function get_company_config()
+    {
+        $jwt = $this->session->userdata('jwt');
+        log_message("debug", "JWT: " . json_encode($jwt));
+        if(!$jwt) return false;
+        $url = $this->get_url('company_config');
+        $buf = $this->do_Get($url,$jwt);
+        log_message('debug','get_company_config_back:' . $buf);
+
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+
     public function deny_report_finance($rid,$comment)
     {
         $jwt = $this->session->userdata('jwt');
@@ -20,6 +48,7 @@ class Company_Model extends Reim_Model {
         $obj = json_decode($buf, true);
         return $obj;
     }
+
     public function pass_report_finance($rid)
     {
         $jwt = $this->session->userdata('jwt');
@@ -110,175 +139,175 @@ class Company_Model extends Reim_Model {
         $obj = json_decode($buf, true);
         return $obj;
     }
-	public function delete_approve($pid)
-	{
-		$jwt = $this->session->userdata('jwt');
-		if(!$jwt) return false;
-		$url = $this->get_url('audit_policy/'.$pid);
-		$buf = $this->do_Delete($url, array(), $jwt);
-		log_message("debug","####DeleteAPP:".json_encode($buf));
-		return $buf;
-	}
-	public function show_approve()
-	{
-		$jwt=$this->session->userdata('jwt');		
-		if(!$jwt) return false;
-		$url = $this->get_url('audit_policy');
-		$data = array();
-		$buf = $this->do_Get($url,$jwt);
-		log_message('debug',"@@@@:APPRSHOW:".json_encode($buf));
-		return $buf;
-	}
-    	public function create_approve($name,$members,$amount,$allow_all_category,$policies,$pid=-1,$ranks,$levels,$groups)
-	{
-		$jwt = $this->session->userdata('jwt');
-		if(!$jwt) return false;
-		$url = $this->get_url('audit_policy');
-		if($pid == -1)
-		{
-			$data = array(
-				'name'=>$name
-				,'members'=>$members
-				,'amount'=>$amount
-				,'allow_all_category'=>$allow_all_category
-				,'policies'=>$policies
-			);
-		}
-		else
-		{
-			$data = array(
-				'pid'=>$pid
-				,'name'=>$name
-				,'members'=>$members
-				,'amount'=>$amount
-				,'allow_all_category'=>$allow_all_category
-				,'policies'=>$policies
-			);
-		}
-		$buf = $this->do_Post($url,$data,$jwt);
-		log_message("debug","@@@@APPR:".json_encode($buf));
-		return $buf;
-	}
+    public function delete_approve($pid)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $url = $this->get_url('audit_policy/'.$pid);
+        $buf = $this->do_Delete($url, array(), $jwt);
+        log_message("debug","####DeleteAPP:".json_encode($buf));
+        return $buf;
+    }
+    public function show_approve()
+    {
+        $jwt=$this->session->userdata('jwt');       
+        if(!$jwt) return false;
+        $url = $this->get_url('audit_policy');
+        $data = array();
+        $buf = $this->do_Get($url,$jwt);
+        log_message('debug',"@@@@:APPRSHOW:".json_encode($buf));
+        return $buf;
+    }
+        public function create_approve($name,$members,$amount,$allow_all_category,$policies,$pid=-1,$ranks,$levels,$groups)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $url = $this->get_url('audit_policy');
+        if($pid == -1)
+        {
+            $data = array(
+                'name'=>$name
+                ,'members'=>$members
+                ,'amount'=>$amount
+                ,'allow_all_category'=>$allow_all_category
+                ,'policies'=>$policies
+            );
+        }
+        else
+        {
+            $data = array(
+                'pid'=>$pid
+                ,'name'=>$name
+                ,'members'=>$members
+                ,'amount'=>$amount
+                ,'allow_all_category'=>$allow_all_category
+                ,'policies'=>$policies
+            );
+        }
+        $buf = $this->do_Post($url,$data,$jwt);
+        log_message("debug","@@@@APPR:".json_encode($buf));
+        return $buf;
+    }
 
-	public function delete_rule($pid)
-	{
-		$jwt = $this->session->userdata('jwt');
-		if(!$jwt) return false;
-		$url=$this->get_url('commit_policy/'.$pid);
-		$data = array();
-		$buf = $this->do_Delete($url,$data,$jwt);
-		log_message("debug","######DEL:".json_encode($buf));
-	}
+    public function delete_rule($pid)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $url=$this->get_url('commit_policy/'.$pid);
+        $data = array();
+        $buf = $this->do_Delete($url,$data,$jwt);
+        log_message("debug","######DEL:".json_encode($buf));
+    }
 
-	public function show_rules()
-	{
-		$jwt = $this->session->userdata('jwt');
-		if(!$jwt) return false;
-		$url = $this->get_url('commit_policy');
-		$data = array();
-		$buf = $this->do_Get($url,$jwt);
-		log_message('debug',"######RULES:".$buf);
-		return $buf;
-	}
+    public function show_rules()
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $url = $this->get_url('commit_policy');
+        $data = array();
+        $buf = $this->do_Get($url,$jwt);
+        log_message('debug',"######RULES:".$buf);
+        return $buf;
+    }
 
-	public function update_rule($rid,$name,$category,$count,$period,$all_company,$groups,$members,$ranks,$levels)
-	{
-		$jwt = $this->session->userdata('jwt');
-		if(!$jwt) return false;
-		$url = $this->get_url('commit_policy');
-		if($all_company==1)
-		{
-			$data=array(
-				'pid' => $rid,
-				'name'=>$name,
-				'category'=>$category,
-				'count'=>$count,
-				'period'=>$period,
-				'all_company'=>$all_company,
-			);
-		}
-		else
-		{
-			$data=array(
-				'pid'=>$rid,
-				'name'=>$name,
-				'category'=>$category,
-				'count'=>$count,
-				'period'=>$period,
-				'all_company'=>$all_company,
-				'groups'=>$groups,
-				'members'=>$members,
-			);
-		}
-		$buf = $this->do_Post($url,$data,$jwt);
-		log_message("debug","@@@@@:".$buf);
-		return $buf;
-	}
+    public function update_rule($rid,$name,$category,$count,$period,$all_company,$groups,$members,$ranks,$levels)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $url = $this->get_url('commit_policy');
+        if($all_company==1)
+        {
+            $data=array(
+                'pid' => $rid,
+                'name'=>$name,
+                'category'=>$category,
+                'count'=>$count,
+                'period'=>$period,
+                'all_company'=>$all_company,
+            );
+        }
+        else
+        {
+            $data=array(
+                'pid'=>$rid,
+                'name'=>$name,
+                'category'=>$category,
+                'count'=>$count,
+                'period'=>$period,
+                'all_company'=>$all_company,
+                'groups'=>$groups,
+                'members'=>$members,
+            );
+        }
+        $buf = $this->do_Post($url,$data,$jwt);
+        log_message("debug","@@@@@:".$buf);
+        return $buf;
+    }
 
-	public function create_update_rules($name,$ugids,$mems,$level,$rank,$policies,$all_company,$pid=0)
-	{
-		log_message('debug','pid:' . $pid);
-		$jwt = $this->session->userdata('jwt');
-		if(!$jwt) return false;
-		$url = $this->get_url('commit_policy');
-		
-		$data = array(
-			'name'=>$name,
-			'groups'=>$ugids,
-			'members'=>$mems,
-			'levels'=>$level,
-			'ranks'=>$rank,
-			'policies'=>$policies,
-			'all_company'=>$all_company
-		);
+    public function create_update_rules($name,$ugids,$mems,$level,$rank,$policies,$all_company,$pid=0)
+    {
+        log_message('debug','pid:' . $pid);
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $url = $this->get_url('commit_policy');
+        
+        $data = array(
+            'name'=>$name,
+            'groups'=>$ugids,
+            'members'=>$mems,
+            'levels'=>$level,
+            'ranks'=>$rank,
+            'policies'=>$policies,
+            'all_company'=>$all_company
+        );
 
-		if($pid == 0)
-		{
-			log_message('debug','create_rules_data:' . json_encode($data));
-			$buf = $this->do_Post($url,$data,$jwt);	
-		}
-		else
-		{
-			$data['pid'] = $pid;
-			log_message('debug','update_rules_data:' . json_encode($data));
-			$buf = $this->do_Post($url,$data,$jwt);
-		}
+        if($pid == 0)
+        {
+            log_message('debug','create_rules_data:' . json_encode($data));
+            $buf = $this->do_Post($url,$data,$jwt); 
+        }
+        else
+        {
+            $data['pid'] = $pid;
+            log_message('debug','update_rules_data:' . json_encode($data));
+            $buf = $this->do_Post($url,$data,$jwt);
+        }
 
-		log_message('debug','create_update_rules:' . $buf);
-		return json_decode($buf,True);
-	}
+        log_message('debug','create_update_rules:' . $buf);
+        return json_decode($buf,True);
+    }
 
-	public function create_rule($name,$category,$count,$period,$all_company,$groups,$members,$ranks,$levels)
-	{
-		$jwt = $this->session->userdata('jwt');
-		if(!$jwt) return false;
-		$url = $this->get_url('commit_policy');
-		if($all_company==1)
-		{
-			$data=array(
-				'name'=>$name,
-				'category'=>$category,
-				'count'=>$count,
-				'period'=>$period,
-				'all_company'=>$all_company,
-			);
-		}
-		else
-		{
-			$data=array(
-				'name'=>$name,
-				'category'=>$category,
-				'count'=>$count,
-				'period'=>$period,
-				'all_company'=>$all_company,
-				'groups'=>$groups,
-				'members'=>$members,
-			);
-		}
-		$buf = $this->do_Post($url,$data,$jwt);
-		log_message("debug","@@@@@:".$buf);
-		return $buf;
-	}
+    public function create_rule($name,$category,$count,$period,$all_company,$groups,$members,$ranks,$levels)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        $url = $this->get_url('commit_policy');
+        if($all_company==1)
+        {
+            $data=array(
+                'name'=>$name,
+                'category'=>$category,
+                'count'=>$count,
+                'period'=>$period,
+                'all_company'=>$all_company,
+            );
+        }
+        else
+        {
+            $data=array(
+                'name'=>$name,
+                'category'=>$category,
+                'count'=>$count,
+                'period'=>$period,
+                'all_company'=>$all_company,
+                'groups'=>$groups,
+                'members'=>$members,
+            );
+        }
+        $buf = $this->do_Post($url,$data,$jwt);
+        log_message("debug","@@@@@:".$buf);
+        return $buf;
+    }
         public function get(){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
