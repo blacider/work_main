@@ -398,7 +398,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                 </div>
 
                               <div class="col-xs-4 col-sm-4" id="cashier_view" hidden>
-                                 <select name="ug_views" id="ug_views" multiple="multiple" class="chosen-select tag-input-style" data-placeholder="请选择部门" <?php if($profile['admin']!=1){ echo "disabled";}?>> 
+                                 <select name="ug_views" id="cashier_ug_views" multiple="multiple" class="chosen-select tag-input-style" data-placeholder="请选择部门" <?php if($profile['admin']!=1){ echo "disabled";}?>> 
                              <?php
                                  foreach($ug as $g)
                                  {

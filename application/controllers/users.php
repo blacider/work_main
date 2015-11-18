@@ -236,7 +236,16 @@ class Users extends REIM_Controller {
         $max_report = $this->input->post('max_report');
         $rank = $this->input->post('rank');
         $level = $this->input->post('level');
+        $cashier_ug_views = array();
+        $_cashier_ug_views = $this->input->post('cashier_ug_views');
+
+        if($admin == 2)
+        {
+            $cashier_ug_views = $_cashier_ug_views;
+        }
+
         $usergroups = array();
+        log_message('debug','cashier_ug_views:' . $cashier_ug_views);
         if($_usergroups)
         {
             $usergroups = implode(',',$_usergroups);
@@ -262,10 +271,12 @@ class Users extends REIM_Controller {
         } else {
             $this->session->set_userdata('login_error', $info['data']['msg']);
         }
+        /*
         if ($isOther == 1)
             redirect(base_url('members/index'));
         else
             redirect(base_url('users/profile'));
+            */
     }
 
 
