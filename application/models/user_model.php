@@ -253,7 +253,7 @@ class User_Model extends Reim_Model {
         return $buf;
     }
 
-    public function reim_update_profile($email, $phone, $nickname, $credit_card,$usergroups, $uid = 0, $admin = 0,$manager_id=0,$max_report,$rank,$level,$client_id){
+    public function reim_update_profile($email, $phone, $nickname, $credit_card,$usergroups, $uid = 0, $admin = 0,$manager_id=0,$max_report,$rank,$level,$client_id,$admin_groups_granted){
         if($uid > 0) {
             $data['uid'] = $uid;
         }
@@ -269,6 +269,7 @@ class User_Model extends Reim_Model {
         if(!empty($phone)) {
             $data['phone'] = $phone;
         }
+        $data['admin_groups_granted'] = $admin_groups_granted;
         $data['manager_id'] = $manager_id;
         $data['admin'] = $admin;
         $data['groups'] = $usergroups;
