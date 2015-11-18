@@ -109,7 +109,7 @@ jQuery(grid_selector).jqGrid({
     mtype: "GET",
     datatype: "local",
     height: 250,
-    colNames:['ID', '报销单模板', '标题', '消费类型', '创建日期', '金额','消费条目数','发起人', '附件', '状态', '操作', ''],
+    colNames:['报销单ID', '报销单模板', '标题', '消费类型', '创建日期', '金额','消费条目数','发起人', '附件', '状态', '操作', ''],
     loadonce: true,
     //rownumbers: true, // show row numbers
     caption: "报销单列表",
@@ -128,7 +128,7 @@ jQuery(grid_selector).jqGrid({
         {name:'amount', index:'amount',sorttype: myCustomSort, width:50, formatter:'currency', formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'}, editable: true,editoptions:{size:"20",maxlength:"30"},search:false},
         {name:'item_count', index:'item_count', width:50,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
         {name:'author', index:'author', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
-        {name:'attachments', index:'attachments', width:15,editable: false,editoptions:{size:"15",maxlength:"20"}},
+        {name:'attachments', index:'attachments', width:18,editable: false,editoptions:{size:"15",maxlength:"20"}},
         {name:'status_str',index:'status_str', width:40, editable: false,editoptions: {size:"20", maxlength : "40",search:false}/*,unformat: aceSwitch*/},
         {name:'options',index:'options', width:40, editable: false,editoptions: {size:"20", maxlength : "50"},unformat: aceSwitch,search:false},
         { name : 'lastdt', index : 'lastdt', hidden:true , sortable : true,search:false}

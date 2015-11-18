@@ -141,7 +141,7 @@ jQuery(grid_selector).jqGrid({
     {name:'item_count', index:'item_count', width:40,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
     {name:'nickname', index:'nickname', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
     {name:'amount',index:'amount', sorttype: myCustomSort,width:70, editable: false,editoptions: {size:"20",maxlength:"30"},formatter:'currency', formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'},unformat: aceSwitch,search:false},
-    {name:'attachments',index:'attachments', width:30, editable: true,edittype:"select",editoptions: {size:"30",maxlength:"30",value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},
+    {name:'attachments',index:'attachments', width:34, editable: true,edittype:"select",editoptions: {size:"30",maxlength:"40",value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},
     {name:'status_str',index:'status_str', width:70, editable: true,edittype:"select",editoptions: {value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},
     {name:"approvaldt_str", index:"approvaldt_str", width:100, editable: false, editoptions:{size:"20",maxlength:"30"}, search:false, hidden:(__STATUS != 2)},	
     {name:'options',index:'options', width:70, editable: true,edittype:"select",editoptions: {value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},
