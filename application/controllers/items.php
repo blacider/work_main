@@ -8,6 +8,7 @@ class Items extends REIM_Controller {
         $this->load->model('user_model','user');
         $this->load->model('group_model', 'groups');
         $this->load->model('reim_show_model', 'reim_show');
+        $this->load->helper('util');
     }
     
     public function attachment() {
@@ -350,7 +351,7 @@ class Items extends REIM_Controller {
             }
             $data = $items['data'];
             $item_data = $data['items'];
-            log_message("debug","list item:" . json_encode($data));
+            log_message("debug","list_item:" . json_encode($data));
             foreach($item_data as &$s){
                 //if($s['status'] < 0) continue;
                 /*获取附件*/
@@ -393,7 +394,7 @@ class Items extends REIM_Controller {
                         }
                     }
                     */
-                    $this->items->show_attachments($s);
+                    show_attachments($s);
                 }
                 $s['cate_str'] = '未指定的分类';
                 $s['createdt'] = strftime("%Y-%m-%d %H:%M", intval($s['createdt']));

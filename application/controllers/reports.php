@@ -10,6 +10,7 @@ class Reports extends REIM_Controller {
         $this->load->model('reim_show_model','reim_show');
         $this->load->model('usergroup_model','ug');
         $this->load->model('account_set_model','account_set');
+        $this->load->helper('util');
     }
 
     public function get_coin_symbol($key = 'cny')
@@ -852,7 +853,7 @@ class Reports extends REIM_Controller {
             {
                 if(array_key_exists('attachments',$item))
                 {
-                    $this->items->show_attachments($item);
+                    show_attachments($item);
                 }
             }
         }
