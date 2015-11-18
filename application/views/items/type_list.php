@@ -18,24 +18,40 @@
                                 <tr>
                                     <th>名称</th>
                                     <th>说明</th>
+                                    <th>是否生效</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody>
  <?php
  
-
-foreach($item_type_list as $item){
+$description_dic = array('0'=>'适于用日常报销','1'=>'费用支出前，需先经过业务部门批准。费用支出后，则进入正常的报销流程。适用于差旅申请及报销。','2'=>'费用支出前，员工通过审批获得公司借款。费用支出后，员工再完善费用细节，提交给财务，之前借款多退少补。');
+foreach($item_type_list as $key => $item){
+    $_checked = 'checked';
+    $_is_able = '';
+    if($key == 0)
+    {
+      $_is_able = 'disabled';
+    }
+    if($key == 1 && array_key_exists('disable_borrow', $company_config) && $company_config['disable_borrow'])
+    {
+        $_checked = '';
+    }
+    if($key == 2 && array_key_exists('disable_budget', $company_config) && $company_config['disable_budget'])
+    {
+        $_checked = '';
+    }
     $str = "<tr>";
     $name = '<td class="u_username">' . $item['name'] . '</td>';
-    $description = '<td class="u_username">' . $item['description'] . '</td>';
+    $description = '<td class="u_username">' . htmlspecialchars($description_dic[$key]) . '</td>';
+    $is_effective = '<td><label> <input name="form-field-checkbox" data-type="' . $item['type'] . '" class="disabled_label ace ace-switch" ' . $_checked . ' type="checkbox"' . $_is_able . '/> <span class="lbl"> </span> </label></td>';
     $start_icon = '<td style="width:100px;">';  
-    $edit_icon =  '<a href="#modal-table" data-toggle="modal"  class="edit"  data-type="' . $item['type'] . '"' . ' data-name="' . $item['name'] . '"' . ' data-description="' . $item['description'] . '"><span class="blue glyphicon glyphicon-pencil"></span></a> ';
+    $edit_icon =  '<a href="#modal-table" data-toggle="modal"  class="edit"  data-type="' . $item['type'] . '"' . ' data-name="' . $item['name'] . '"' . ' data-description="' . htmlspecialchars($description_dic[$key]) . '"><span class="blue glyphicon glyphicon-pencil"></span></a> ';
     $end_icon = '</tr>';
-  
-	$str = $str . $name . $description . $start_icon . $edit_icon . $end_icon;
+    
+	  $str = $str . $name . $description . $is_effective . $start_icon . $edit_icon . $end_icon;
 
-	echo $str;
+	  echo $str;
 
 }
 
@@ -50,6 +66,7 @@ foreach($item_type_list as $item){
 </div><!-- /.page-content-area -->
 </div><!-- /.page-content -->
 </div><!-- /.main-content -->
+
 
 <div id="modal-table" class="modal" tabindex="-1">
   <div class="modal-dialog">
@@ -76,12 +93,7 @@ foreach($item_type_list as $item){
               <input type='hidden' name='item_type' id='item_type' value='0'/>
               <div class="col-xs-12 col-sm-12">
                 <div class="row"> 
-                  <div class="form-group">
-                    <label class="col-sm-1 control-label no-padding-right">说明:</label>
-                    <div class="col-xs-8 col-sm-8">
-                        <textarea class="form-controller col-xs-12" name="description" id="description" style="margin: 0px; height: 180px; width: 475px;" placeholder="类型说明" required> </textarea>
-                    </div>
-                </div> 
+
                 </div>    <!-- row -->
               </div>    <!-- col-xs-12 -->
 
@@ -98,7 +110,6 @@ foreach($item_type_list as $item){
         </form>
   </div>
 </div><!-- PAGE CONTENT ENDS -->
-
 
 <script type="text/javascript">
     var __BASEURL = "<?php echo $base_url; ?>";
@@ -118,9 +129,6 @@ $(document).ready(function(){
             var _type = $(this).data('type');
             var _name = $(this).data('name');
             var _description = $(this).data('description');
-            console.log(_type);
-            console.log(_name);
-            console.log(_description);
             $('#item_type').val(_type);
             $('#type_name').val(_name);
             $('#description').val(_description);
@@ -142,6 +150,40 @@ $(document).ready(function(){
         }
 
 
+    });
+
+    $('.disabled_label').change(function() {
+        var _type = $(this).data('type');
+        var _key = '';
+        var _value = 0;
+        if(!$(this).is(':checked'))
+        {
+          _value = 1; 
+        }
+        if(_type == 1)
+        {
+            _key = 'disable_borrow';
+        }
+        if(_type == 2)
+        {
+            _key = 'disable_budget';
+        }
+
+        $.ajax({
+          url:__BASEURL + "/company/set_single_company_config",
+          method:"POST",
+          dataType:"json",
+          data:{'key':_key,'value':_value},
+          success:function(data){
+            if(data.status) {
+                show_notify('操作成功');
+            } else {
+                show_notify('操作失败');
+            }
+          },
+          error:function(a,b,c)
+          {}
+        });
     });
 });
 </script>
