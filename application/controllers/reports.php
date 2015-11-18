@@ -10,7 +10,7 @@ class Reports extends REIM_Controller {
         $this->load->model('reim_show_model','reim_show');
         $this->load->model('usergroup_model','ug');
         $this->load->model('account_set_model','account_set');
-        $this->load->helper('util');
+        $this->load->helper('report_view_utils');
     }
 
     public function get_coin_symbol($key = 'cny')

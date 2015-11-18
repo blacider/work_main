@@ -8,7 +8,7 @@ class Items extends REIM_Controller {
         $this->load->model('user_model','user');
         $this->load->model('group_model', 'groups');
         $this->load->model('reim_show_model', 'reim_show');
-        $this->load->helper('util');
+        $this->load->helper('report_view_utils');
     }
     
     public function attachment() {
@@ -358,42 +358,6 @@ class Items extends REIM_Controller {
                 $s['attachment'] = '';
                 if(array_key_exists('attachments',$s))
                 {
-                /*
-                    $img_path = '/static/images/';
-                    $img = 'default.png';
-                    $attach_img_dic = array(
-                        'application/vnd.openxmlformats-officedocument.presentationml.presentation'=>'powerpoint.png',
-                        'application/vnd.ms-powerpoint'=>'powerpoint.png',
-                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'=>'word.png',   
-                        'application/msword'=>'word.png',
-                        'application/pdf'=>'pdf.png',
-                        'pplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet'=>'excel.png',
-                        'application/vnd.ms-excel'=>'excel.png'
-                        );
-                    if($s['attachments'])
-                    {
-                        foreach($s['attachments'] as $attach)
-                        {
-                            if(array_key_exists('mime',$attach) && array_key_exists($attach['mime'],$attach_img_dic))
-                            {
-                                $img = $attach_img_dic[$attach['mime']];
-                            }
-                            $_filename = '';
-                            $_file_url = '';
-                            if(array_key_exists('filename',$attach))
-                            {
-                                $_filename = $attach['filename'];
-                            }
-                            if(array_key_exists('url',$attach))
-                            {
-                                $_file_url = $attach['url'];
-                            }
-                            $_attach = '<img title="' . htmlentities($_filename)  .  '" style="width:25px;height:25px" src = "' . htmlentities($img_path . $img) . '"/>';
-                            $_attach_url = '<a title="' . htmlentities($_filename)  . '"  href="' . htmlentities($_file_url) . '">' . $_attach . '</a>';
-                            $s['attachment'] = $s['attachment'] . '&nbsp;&nbsp;' . $_attach_url;
-                        }
-                    }
-                    */
                     show_attachments($s);
                 }
                 $s['cate_str'] = '未指定的分类';
