@@ -447,68 +447,68 @@ var __BASE = "<?php echo $base_url; ?>";
     }
    });
 
-      $('.renew').click(function(){
-	  var lval = parseInt($('#limit').val());
-      if($('#confirm_unlimit').is(':checked'))
-      {
-            lval = -1;
-      }
+    $('.renew').click(function(){
+    	  var lval = parseInt($('#limit').val());
+          if($('#confirm_unlimit').is(':checked'))
+          {
+                lval = -1;
+          }
 
-      var r_limit = $('#reports_limit').val();
-      var calendar_month = $('#calendar_month').val();
-      if(isNaN(calendar_month))
-      {
-        calendar_month = 0;
-      }
-      if(calendar_month>=32 || calendar_month <= 0)
-      {
-        $('#calendar_month').focus();
-        show_notify('请输入有效的自然月');
-        return false;
-      }
-       if(isNaN(lval))
-       {
-            lval = 0;
-       }
-	   if(lval>=0 || lval == -1)
-	   {
-           $.ajax({
-                type:"post",
-                url:__BASE+"company/profile",
-                data:{
-                    calendar_month:$('#calendar_month').val(),
-                    allow_borrow:$('#allow_borrow').is(':checked'),
-                    allow_budget:$('#allow_budget').is(':checked'),
-                    note_compulsory:$('#note_compulsory').is(':checked'),
-                    not_auto_time:$('#not_auto_time').is(':checked'),
-                    mail_notify:$('#mail_notify').is(':checked'),
-                    close_directly :$('#close_directly').is(':checked'),
-                    low_amount_only:$('#low_amount_only').is(':checked'),
-                    max_allowed_months:$('#max_allowed_months').val(),
-		            private_structure:$('#private_structure').is(':checked'),
-                    need_bank_info:$('#need_bank_info').is(':checked'),
-        		    isadmin:$('#isadmin').is(':checked'),
-        		    isremark:$('#isremark').is(':checked'),
-        		    iscompany:$('#iscompany').is(':checked'),
-        		    template:$('#temp option:selected').val(),
-        		    limit:lval,reports_limit:r_limit,
-                    open_exchange:$('#open_exchange').is(':checked')
-		    },
-                dataType:'json',
-                success:function(data){
-                       show_notify('保存成功');
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    },            });
-	 }
-	 else
-	 {
-	 	show_notify('请输入有效额度');
-	 	$('#limit').val('');
-		$('#limit').focus();
-		return false;
-	 }
-       }); 
+          var r_limit = $('#reports_limit').val();
+          var calendar_month = $('#calendar_month').val();
+          if(isNaN(calendar_month))
+          {
+            calendar_month = 0;
+          }
+          if(calendar_month>=32 || calendar_month <= 0)
+          {
+            $('#calendar_month').focus();
+            show_notify('请输入有效的自然月');
+            return false;
+          }
+           if(isNaN(lval))
+           {
+                lval = 0;
+           }
+    	   if(lval>=0 || lval == -1)
+    	   {
+               $.ajax({
+                    type:"post",
+                    url:__BASE+"company/profile",
+                    data:{
+                        calendar_month:$('#calendar_month').val(),
+                        allow_borrow:$('#allow_borrow').is(':checked'),
+                        allow_budget:$('#allow_budget').is(':checked'),
+                        note_compulsory:$('#note_compulsory').is(':checked'),
+                        not_auto_time:$('#not_auto_time').is(':checked'),
+                        mail_notify:$('#mail_notify').is(':checked'),
+                        close_directly :$('#close_directly').is(':checked'),
+                        low_amount_only:$('#low_amount_only').is(':checked'),
+                        max_allowed_months:$('#max_allowed_months').val(),
+    		            private_structure:$('#private_structure').is(':checked'),
+                        need_bank_info:$('#need_bank_info').is(':checked'),
+            		    isadmin:$('#isadmin').is(':checked'),
+            		    isremark:$('#isremark').is(':checked'),
+            		    iscompany:$('#iscompany').is(':checked'),
+            		    template:$('#temp option:selected').val(),
+            		    limit:lval,reports_limit:r_limit,
+                        open_exchange:$('#open_exchange').is(':checked')
+    		    },
+                    dataType:'json',
+                    success:function(data){
+                           show_notify('保存成功');
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        },            });
+    	 }
+    	 else
+    	 {
+    	 	show_notify('请输入有效额度');
+    	 	$('#limit').val('');
+    		$('#limit').focus();
+    		return false;
+    	 }
+    }); 
 
         $('.chosen-select').chosen({allow_single_deselect:true}); 
         $(window)
