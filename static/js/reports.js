@@ -70,7 +70,7 @@ try{
         {name:'date_str', index:'date_str', width:50,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
         {name:'amount',sorttype: myCustomSort,formatter:'currency', formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'}, index:'amount', width:50,editable: true,editoptions:{size:"20",maxlength:"30"},search:false},
         {name:'item_count', index:'item_count', width:40,editable: false,editoptions:{size:"20",maxlength:"40"},search:false},
-        {name:'attachments',index:'attachments', width:20, editable: false,editoptions: {size:"20", maxlength : "20"},search:false},
+        {name:'attachments',index:'attachments', width:15, editable: false,editoptions: {size:"15", maxlength : "20"},search:false},
         {name:'status_str',index:'status_str', width:40, editable: false,editoptions: {size:"20", maxlength : "30"}/*,unformat: aceSwitch*/,search:false},
         {name:'options',index:'options', width:40, editable: false,editoptions: {size:"20", maxlength : "40"},unformat: aceSwitch,search:false},
         ], 
