@@ -80,6 +80,10 @@
                             }
                             foreach($config['config'] as $field_group){
                             ?>
+                                 <div class="form-group">
+                                            <label class="col-sm-1 control-label no-padding-right blue"><?php if(array_key_exists('name', $field_group)){echo $field_group['name'];}?></label>                        
+                                        
+                                </div>
                                 <?php
                                     if(array_key_exists('children', $field_group))
                                     {
@@ -1041,7 +1045,7 @@ $(document).ready(function(){
             //locale:  moment.locale('zh-cn'),
             useCurrent: true,
         format: 'YYYY-MM-DD HH:mm:ss',
-            sideBySide: true
+            sideBySide: false
     }).next().on('dp.change', function(ev){
     }).on(ace.click_event, function(){
         $(this).prev().focus();
@@ -1051,7 +1055,7 @@ $(document).ready(function(){
             //locale:  moment.locale('zh-cn'),
             useCurrent: true,
             format: 'YYYY-MM-DD HH:mm:ss',
-            sideBySide: true
+            sideBySide: false
     }).next().on('dp.change', function(ev){
     }).on(ace.click_event, function(){
         $(this).prev().focus();
@@ -1072,10 +1076,10 @@ $(document).ready(function(){
         language: 'zh-cn',
             //locale:  moment.locale('zh-cn'),
             useCurrent: true,
-            format: 'YYYY-MM-DD HH:mm:ss',
+            format: 'YYYY-MM-DD',
             linkField: "dt",
-            linkFormat: "YYYY-MM-DD HH:mm:ss",
-            sideBySide: true
+            linkFormat: "YYYY-MM-DD",
+            sideBySide: false
     }).next().on('dp.change', function(ev){
     }).on(ace.click_event, function(){
         $(this).prev().focus();

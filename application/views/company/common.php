@@ -24,34 +24,6 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
 
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">不允许预算</label>
-                                <div class="col-xs-6 col-sm-6">
-                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
-                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
-                                        <label style="margin-top:8px;">
-                                            <input name="allow_borrow" class="ace ace-switch btn-rotate" type="checkbox" id="allow_borrow" style="margin-top:4px;" />
-                                            <span class="lbl"></span>
-                                        </label>
-
-                                   <!-- </div> -->
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">不允许预借</label>
-                                <div class="col-xs-6 col-sm-6">
-                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
-                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
-                                        <label style="margin-top:8px;">
-                                            <input name="allow_budget" class="ace ace-switch btn-rotate" type="checkbox" id="allow_budget" style="margin-top:4px;" />
-                                            <span class="lbl"></span>
-                                        </label>
-
-                                   <!-- </div> -->
-                                </div>
-                            </div>
-
                               <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">必须填写银行信息</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -276,28 +248,6 @@ var __BASE = "<?php echo $base_url; ?>";
             }
 
         }
-
-         if(data.disable_budget!=undefined)
-        {
-            if(data.disable_budget==1)
-            {
-            $('#allow_budget').attr('checked', data.disable_budget);
-            $("#allow_budget").trigger("chosen:updated");
-            }
-
-        }
-
-
-
-       if(data.disable_borrow!=undefined)
-        {
-            if(data.disable_borrow==1)
-            {
-            $('#allow_borrow').attr('checked', data.disable_borrow);
-            $("#allow_borrow").trigger("chosen:updated");
-            }
-
-        }
        
         if(data.same_category!=undefined)
         {
@@ -444,8 +394,6 @@ var __BASE = "<?php echo $base_url; ?>";
                 url:__BASE+"company/profile",
                 data:{
                     calendar_month:$('#calendar_month').val(),
-                    allow_borrow:$('#allow_borrow').is(':checked'),
-                    allow_budget:$('#allow_budget').is(':checked'),
                     note_compulsory:$('#note_compulsory').is(':checked'),
                     not_auto_time:$('#not_auto_time').is(':checked'),
                     mail_notify:$('#mail_notify').is(':checked'),

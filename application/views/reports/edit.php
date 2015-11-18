@@ -82,6 +82,10 @@ foreach($members as $m) {
                             }
                             foreach($config['config'] as $field_group){
                             ?>
+                                <div class="form-group">
+                                            <label class="col-sm-1 control-label no-padding-right blue"><?php if(array_key_exists('name', $field_group)){echo $field_group['name'];}?></label>                        
+                                        
+                                </div>
                                 <?php
                                     if(array_key_exists('children', $field_group))
                                     {
@@ -149,7 +153,7 @@ foreach($members as $m) {
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
                                                     <input type="text" class="form-controller col-xs-8 period field_value date-timepicker1" data-type="3" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" name="dt" 
-                                                            placeholder="时间" <?php if($field['required'] == 1){echo 'required';}?> value="<?php if(array_key_exists($field['id'], $extra_dic)){echo date('Y-m-d H:i:s',$extra_dic[$field['id']]['value']);}?>">
+                                                            placeholder="时间" <?php if($field['required'] == 1){echo 'required';}?> value="<?php if(array_key_exists($field['id'], $extra_dic)){echo date('Y-m-d',$extra_dic[$field['id']]['value']);}?>">
                                                 </div>
                                             </div>
                                         </div>
@@ -165,7 +169,14 @@ foreach($members as $m) {
                                             $value = array();
                                             if(array_key_exists($field['id'], $extra_dic))
                                             {
-                                                $value = json_decode($extra_dic[$field['id']]['value'],True);
+                                                if(is_array($extra_dic[$field['id']]['value']))
+                                                {
+                                                    $value = $extra_dic[$field['id']]['value'];
+                                                }
+                                                else
+                                                {
+                                                    $value = json_decode($extra_dic[$field['id']]['value'],True);
+                                                }
                                             }
                                         ?>
                                         <div class="field_value" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" data-required="<?php echo $field['required'];?>" >
@@ -1163,8 +1174,9 @@ $(document).ready(function(){
     $('#period_start').datetimepicker({
         language: 'zh-cn',
         defaultDate: _sdt,
-        format: 'YYYY-MM-DD HH:mm:ss',
+        format: 'YYYY-MM-DD',
         linkField: "sdt",
+        sideBySide: false
     }).next().on(ace.click_event, function(){
         $(this).prev().focus();
     });
@@ -1173,6 +1185,7 @@ $(document).ready(function(){
         defaultDate: _edt,
         format: 'YYYY-MM-DD HH:mm:ss',
         linkField: "edt",
+        sideBySide: false
     }).next().on(ace.click_event, function(){
         $(this).prev().focus();
     });
@@ -1183,10 +1196,10 @@ $(document).ready(function(){
         language: 'zh-cn',
             //locale:  moment.locale('zh-cn'),
             useCurrent: true,
-            format: 'YYYY-MM-DD HH:mm:ss',
+            format: 'YYYY-MM-DD',
             linkField: "dt",
-            linkFormat: "YYYY-MM-DD HH:mm:ss",
-            sideBySide: true
+            linkFormat: "YYYY-MM-DD",
+            sideBySide: false
     }).next().on('dp.change', function(ev){
     }).on(ace.click_event, function(){
         $(this).prev().focus();
