@@ -448,28 +448,28 @@ var __BASE = "<?php echo $base_url; ?>";
    });
 
     $('.renew').click(function(){
-    	  var lval = parseInt($('#limit').val());
-          if($('#confirm_unlimit').is(':checked'))
-          {
-                lval = -1;
-          }
+    	var lval = parseInt($('#limit').val());
+        if($('#confirm_unlimit').is(':checked'))
+        {
+            lval = -1;
+        }
 
-          var r_limit = $('#reports_limit').val();
-          var calendar_month = $('#calendar_month').val();
-          if(isNaN(calendar_month))
-          {
+        var r_limit = $('#reports_limit').val();
+        var calendar_month = $('#calendar_month').val();
+        if(isNaN(calendar_month))
+        {
             calendar_month = 0;
-          }
-          if(calendar_month>=32 || calendar_month <= 0)
-          {
+        }
+        if(calendar_month>=32 || calendar_month <= 0)
+        {
             $('#calendar_month').focus();
             show_notify('请输入有效的自然月');
             return false;
-          }
-           if(isNaN(lval))
-           {
+        }
+        if(isNaN(lval))
+        {
                 lval = 0;
-           }
+        }
     	   if(lval>=0 || lval == -1)
     	   {
                $.ajax({
