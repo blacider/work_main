@@ -95,7 +95,6 @@ $(document).ready(function() {
         $('.android').hide();
 		$('.pc').hide();
 		$('#download').css('display', 'block');
-		$('#download').hide();
         $('.ios').show();
 		$('.ios').css('display', 'block');
         $('.ios').show();
