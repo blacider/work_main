@@ -405,7 +405,18 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                  {
                                      $groups_granted = explode(',',$pro['admin_groups_granted']);
                                  }
-
+                            if(!$groups_granted)
+                                    {
+                            ?>
+                                        <option selected value='0'>公司</option>
+                            <?php
+                                    }
+                                    else
+                                    {
+                            ?>
+                                        <option value='0'>公司</option>
+                            <?php
+                                    }
                                  foreach($ug as $g)
                                  {
                                     if(in_array($g['id'], $groups_granted))
