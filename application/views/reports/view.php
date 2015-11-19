@@ -639,7 +639,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                     </div>
                     <div class="clearfix form-actions">
                         <div class="col-md-offset-3 col-md-9">
-                            <a class="btn btn-white btn-primary new_card" data-renew="0"><i class="ace-icon fa fa-save "></i>退回</a>
+                            <a class="btn btn-white btn-primary finance_deny"  data-renew="0"><i class="ace-icon fa fa-save "></i>退回</a>
                             <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
                         </div>
                     </div>
@@ -650,7 +650,6 @@ if($i['ts'] != '0000-00-00 00:00:00') {
 </div><!-- /.modal -->
 
 <script src="/static/js/base.js" ></script>
-<script src="/static/js/audit.js" ></script>
 <?php
 
 $close_directly = 0;
@@ -671,6 +670,9 @@ var close_directly = "<?php echo $close_directly; ?>";
 $(document).ready(function(){
     $('.new_card').click(function(){
         $('#form_discard').submit();
+    });
+    $('.finance_deny').click(function(){
+        $('#form_discard','#finance_comment_dialog').submit();
     });
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
@@ -800,5 +802,6 @@ $(document).ready(function(){
         $('#finance_modal_next_').modal('hide');
         $('#finance_modal_next').modal('show');
     }
+
 });
 </script>
