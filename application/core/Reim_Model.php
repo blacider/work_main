@@ -167,57 +167,43 @@ class Reim_Model extends CI_Model {
         return $this->curl_hanlder;
     }
 
-    public function do_Post($url, $fields, $extraheader = array(), $force_bin = 0){
+    private function fire_api_call($method, $url, $fields, $extraheader = array()) {
+        # TODO support query
+        $method = strtoupper($method);
         $ch = $this->get_curl_handler();
-        curl_setopt($ch, CURLOPT_URL, $url) ;
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POST, count($fields)) ;
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        if ($method != 'GET') {
+            curl_setopt($ch, CURLOPT_POST, true); # for POST PUT DELETE
+        }
         curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-        curl_setopt($ch, CURLOPT_ENCODING, '');
-        if($extraheader) {
+        if (!empty($fields)) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+        }
+        if (!empty($extraheader)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
         }
+        curl_setopt($ch, CURLOPT_ENCODING, '');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch);
         return $result;
     }
 
-    public function do_Get($url, $extraheader = array()){
-        $ch = $this->get_curl_handler();
-        curl_setopt($ch, CURLOPT_URL, $url ) ;
-        curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_ENCODING, '');
-        $output = curl_exec($ch) ;
-        return $output;
+    public function do_Post($url, $fields, $extraheader = array(), $force_bin = 0){
+        return $this->fire_api_call('POST', $url, $fields, $extraheader);
+    }
+
+    public function do_Get($url, $extraheader=array()) {
+        return $this->fire_api_call('GET', $url, [], $extraheader);
     }
 
     public function do_Put($url, $fields, $extraheader = array()){
-        $ch = $this->get_curl_handler();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
-        curl_setopt($ch, CURLOPT_POST, count ( $fields )) ;
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields );
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_ENCODING, '');
-        $result = curl_exec($ch );
-        return $result;
+        return $this->fire_api_call('PUT', $url, $fields, $extraheader);
     }
 
     public function do_Delete($url, $fields, $extraheader = array()){
-        $ch = $this->get_curl_handler();
-        curl_setopt($ch, CURLOPT_URL, $url ) ;
-        curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
-        $result = curl_exec($ch );
-        return $result;
+        return $this->fire_api_call('DELETE', $url, $fields, $extraheader);
     }
 
     public function get_curl_upload_field($file_path  = '') {
