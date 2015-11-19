@@ -209,11 +209,23 @@
                                         if(in_array($m['id'],$rule['members']))
                                         {
                                     ?>
-                                        <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . " - [" . $m['email'] . "]"; ?></option>
+                                        <option value="<?php echo $m['id']; ?>" selected><?php
+                                        $str_uid = $m['nickname'] . '-[' . $m['email'] .']';
+                                        if (strlen($str_uid) > 52) {
+                                            echo substr($str_uid, 0, 52);
+                                        } else {
+                                            echo $str_uid;
+                                        }?></option>
                                     <?php
                                         }else{
                                     ?>
-                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . " - [" . $m['email'] . "]"; ?></option>
+                                        <option value="<?php echo $m['id']; ?>"><?php
+                                        $str_uid = $m['nickname'] . '-[' . $m['email'] .']';
+                                        if (strlen($str_uid) > 52) {
+                                            echo substr($str_uid, 0, 52);
+                                        } else {
+                                            echo $str_uid;
+                                        }?></option>
                                     <?php
                                      }
                                     }
