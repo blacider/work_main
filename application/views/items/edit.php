@@ -92,11 +92,13 @@
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">分类</label>
-                                <div class="col-xs-6 col-sm-6">
-                                    <select class="col-xs-6 col-sm-6" name="sob" id="sobs">
-                                    </select>
-                                    <select name="category" id="sob_category" class="col-xs-6 col-sm-6 sob_category chosen-select-niu" data-placeholder="类目">
-                                    </select>
+                                    <div class="col-xs-3 col-sm-3" style="margin-top:2px">
+<select class="form-control chosen-select" name="sob" id="sobs">
+</select>
+</div>
+<div class="col-xs-3 col-sm-3" style="margin-top:2px;">
+<select class="sob_category chosen-select" name="category" id="sob_category" data-placeholder="类别">
+</select>
                                     <input type="hidden" name="hidden_category" id="hidden_category" value="<?php echo $item['category']; ?>">
 
                                 </div>
@@ -696,21 +698,46 @@ function get_sobs(){
             {
                 for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
                 {
+                    var parent_name = '';
+                    if(selectDataCategory[s_id][i].parent_name)
+                    {
+                        parent_name = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    }
                     if(selectDataCategory[s_id][i].category_id == _item_category) {
                         _sid = s_id;
-                        _h += "<option selected='selected' value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name  + " </option>";
+                        _h += "<option selected='selected' data-parent='" + selectDataCategory[s_id][i].parent_name + "' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>"+ parent_name + selectDataCategory[s_id][i].category_name  + " </option>";
                     } else {
-                        _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name  + " </option>";
+                        _h += "<option  data-parent='" + selectDataCategory[s_id][i].parent_name + "' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>"+ parent_name + selectDataCategory[s_id][i].category_name  + " </option>";
                     }
                     
                 }
             }
             $("#sobs").attr("value", _sid);
-            $(this.nextElementSibling).empty().append(_h).trigger("chosen:updated");
+            $('#sob_category').empty().append(_h).trigger("chosen:updated");
             $('#sob_category').trigger('change');
             $('#sob_category').trigger('change:updated');
             $('#hidden_category').val(_item_category);
            
+        });
+
+       $('#sob_category').change(function(){
+            var pre_cate = $('#sob_category .cate_selected');
+            var pre_parent = pre_cate.data('parent');
+            var pre_name = pre_cate.data('name');
+            if(pre_parent)
+            {
+                pre_cate.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + pre_name);
+            }
+            $('#sob_category .cate_selected').removeClass('cate_selected');
+            var selected_cate = $('#sob_category option:selected');
+            var selected_cate_parent = selected_cate.data('parent');
+            var selected_cate_name = selected_cate.data('name');
+            selected_cate.prop('class','cate_selected').trigger('chosen:updated');
+                if(selected_cate_parent)
+                {
+                    $(this).next().find('span').text(selected_cate_parent+'-'+selected_cate_name);
+                }
+
         });
 }
 
