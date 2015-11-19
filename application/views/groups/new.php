@@ -24,7 +24,7 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
 
-                          <div class="form-group">
+                          <div class="form-group" style="display:none">
                                 <label class="col-sm-1 control-label no-padding-right">部门管理员</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" name="manager" data-placeholder="请选择员工">
@@ -100,7 +100,7 @@
 <div class="col-xs-6 col-sm-6">
     <div class="col-xs-12 col-sm-12" style="padding-left:0px;">
       <div id="group_logo_container" class="ace-thumbnails clearfix" style="position:relative;float: left;">
-        <img id="group_logo" class="thumbnail" style="min-height: 150px; max-height: 300px; min-width: 150px; max-width: 300px">
+        <img id="group_logo" class="thumbnail" style="min-height: 150px; max-height: 300px; min-width: 150px; max-width: 300px;width:150px">
         <div href="#" class="red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;">
           <i class="glyphicon glyphicon-trash"></i>
         </div>
@@ -236,7 +236,7 @@ uploader.on( 'uploadComplete', function( file ) {
 
 $('.del-button').click(function(e) {
     $("input[name=images]").val(0);
-    $("#group_logo").attr("src", "#");
+    $("#group_logo").attr("src", "");
 });
 
 });//ready
