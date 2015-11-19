@@ -2,7 +2,9 @@
 <div class="page-content">
     <div class="page-content-area">
         <div class="row">
+
             <div class="col-xs-12">
+            <div><h4 class='blue' >待导入总人数:<em data-nums = "<?php echo count($members);?>" id="all_count"><?php echo count($members);?></em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已导入人数:<em id='insert_count'>0</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;未导入人数:<em id='uninsert_count'><?php echo count($members);?></em> </h4></div> 
                 <div class="panel panel-primary">
                     <form role="form" method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
                         <div class="form-contorller">
@@ -17,9 +19,9 @@
                                     <th>开户行</th>
                                  <!--   <th>开户地</th> -->
                                     <th>部门</th>
-                                    <th>上级ID</th>
-                                    <th>上级姓名</th>
-                                    <th>上级Email</th>
+                                    <th>默认审批人ID</th>
+                                    <th>默认审批人姓名</th>
+                                    <th>默认审批人Email</th>
                                     <th>级别</th>
                                     <th>职位</th>
                                     <th>一级审批</th>
@@ -64,7 +66,7 @@
                                     <td class="red"><?php 
                                         if($d['status']&4)
                                         {
-                                            echo '员工上级信息缺失或有误，导入后将无上级信息。';
+                                            echo '员工默认审批人信息缺失或有误，导入后将无默认审批人信息。';
                                         }
                                         else if($d['status']&2)
                                         {
@@ -117,6 +119,8 @@
     var _no_levels = '<?php echo json_encode($no_levels)?>';
     var _no_groups = '<?php echo json_encode($no_groups)?>';
     var _members = '<?php echo json_encode($members)?>';
+    
+    var all_count = $('#all_count').data('nums');
 
     var no_ranks = '';
     if(_no_ranks)
@@ -286,12 +290,13 @@ function travel(is_mail)
 
 function insertMem()
 {
-     var in_members = new Array();
-     var insert_count = 0;
+    var insert_member_count = 0;
+    var in_members = new Array();
+    var insert_count = 0;
     $('.judge').each(function(idx, item) {
         var load_mem = new Array();
         var v = $(item).data('value');
-          var manager_name = $(this).data('manager');
+        var manager_name = $(this).data('manager');
         var uid = $(this).data('uid');
         var _status = $(this).data('status');
         var myself = $(this);
@@ -315,6 +320,7 @@ function insertMem()
                             });
                         show_notify('员工创建成功');*/
                          insert_count++;
+                         
                         var back_info = data['data'];
 
                         if(back_info.status>0)
@@ -323,21 +329,25 @@ function insertMem()
                           for(var p in back_info['data'])
                           {
                            //var back_id = back_info['data'][uid];
-                           if(back_info['data'][p] < 0)
+                           if(back_info['data'][p]['status'] <= 0)
                            {
                                // $(this).removeClass('fa-times red').addClass('fa-check green');
-                               myself.text('导入出错');
+                               myself.text(back_info['data'][p]['status_text']);
                            }
                            
-                            if((back_info['data'][p])>0)
+                            if((back_info['data'][p]['status'])>0)
                             {
 
                                   if(manager_name)
                                   {
-                                        var person = {'id':back_info['data'][p],'manager':manager_name};
+                                        var person = {'id':back_info['data'][p]['uid'],'manager':manager_name};
                                         in_members.push(person);
                                     }
                                   myself.removeClass('red').addClass('green');
+                                  insert_member_count++;
+                                  
+                                  $('#insert_count').text(insert_member_count);
+                                  $('#uninsert_count').text((all_count - insert_member_count));
                                   if(_status&1 == 1)
                                   {
                                     myself.text('已更新');

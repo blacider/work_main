@@ -36,10 +36,10 @@
  {
      $idx = 0;
 foreach($rules as $item){
-    $idx += 1;
     if($item['type'] != 1) continue;
     if($item['disabled'] == 1) continue;
     $_name = '';
+    $idx += 1;
     switch($item['type']) {
     case 1: $_name = '备注'; break;
     case 2: $_name = '多时间段'; break;
@@ -93,7 +93,7 @@ $(document).ready(function(){
             var _title = $(this).data('title');
             var _id = $(this).data('id');
 
-           location.href=__BASEURL+"/company/custom_item_create/"+ _id;
+           location.href=__BASEURL+"company/custom_item_create/"+ _id;
         });
     });
     $('.del').each(function(){

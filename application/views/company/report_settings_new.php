@@ -11,9 +11,9 @@
 <div class="row">
 <div class="col-xs-12 col-sm-12">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label no-padding-right">报告模板名称</label>
+                        <label class="col-sm-2 control-label no-padding-right">报销单模板名称</label>
                         <div class="col-xs-6 col-sm-6">
-                            <input type="text" class="form-controller col-xs-12" name="report_property_name" id="report_property_name" placeholder="报告模板名称" required></div>
+                            <input type="text" class="form-controller col-xs-12" name="report_property_name" id="report_property_name" placeholder="报销单模板名称" required></div>
                     </div>
                     <hr>
 

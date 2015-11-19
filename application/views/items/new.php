@@ -45,7 +45,7 @@
 <div class="form-group" id="rate_note">
 <label class="col-sm-1 control-label no-padding-right"></label>
 <div class="col-xs-6 col-sm-6">
-<small>中行实时<small id='rate_type'>现钞卖出价</small>为：<small id='rate_amount'>1.0</small></small>
+<small>中行实时<span id='rate_type'>现钞卖出价</span>为：<span id='rate_amount'>1.0</span></small>
 </div>
 
 </div>
@@ -69,14 +69,13 @@
 
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">类别</label>
-<div class="col-xs-6 col-sm-6">
 
-
-<select class="col-xs-6 col-sm-6" class="form-control" name="sob" id="sobs">
+<div class="col-xs-3 col-sm-3" style="margin-top:2px">
+<select class="form-control chosen-select" name="sob" id="sobs">
 </select>
-
-
-<select class="col-xs-6 col-sm-6" name="category" id="sob_category" class="sob_category chosen-select-niu" data-placeholder="类别">
+</div>
+<div class="col-xs-3 col-sm-3" style="margin-top:2px;">
+<select class="sob_category chosen-select" name="category" id="sob_category" data-placeholder="类别">
 </select>
 
 
@@ -223,18 +222,18 @@
 <label class="col-sm-1 control-label no-padding-right">类型</label>
 <div class="col-xs-6 col-sm-6">
 <select class="form-control" name="type" data-placeholder="请选择类型">
-<option value="0">报销</option>
+<option value="0"><?php echo $item_type_dic[0];?></option>
 <?php 
 if($__config && $__config['disable_borrow']=='0')
 {
 ?>
-<option value="1">预算</option>
+<option value="1"><?php echo $item_type_dic[1]; ?></option>
 <?php
 }
 if($__config && $__config['disable_budget'] == '0')
 {
 ?>
-<option value="2">预借</option>
+<option value="2"><?php echo $item_type_dic[2]; ?></option>
 <?php
 }
 ?>
@@ -380,7 +379,7 @@ uploader_file.on( 'fileQueued', function( file ) {
             name_ = "pdf.png"
             break;
         default:
-            name_ = "excel.png";
+            name_ = "default.png";
             break;
     }
     $img.attr( 'src', path+name_);
@@ -479,7 +478,7 @@ var simbol_dic = {'cny':'人民币','usd':'美元','eur':'欧元','hkd':'港币'
                               'aud':'澳大利亚元','nzd':'新西兰元','chf':'瑞士法郎','dkk':'丹麦克朗','nok':'挪威克朗','sek':'瑞典克朗','brl':'巴西里亚尔'
                              }; 
 var icon_dic = {'cny':'￥','usd':'$','eur':'€','hkd':'$','mop':'$','twd':'$','jpy':'￥','ker':'₩',
-                              'gbp':'£','rub':'Rbs','sgd':'$','php':'₱','idr':'Rps','myr':'$','thb':'฿','cad':'$',
+                              'gbp':'£','rub':'₽','sgd':'$','php':'₱','idr':'Rps','myr':'$','thb':'฿','cad':'$',
                               'aud':'$','nzd':'$','chf':'₣','dkk':'Kr','nok':'Kr','sek':'Kr','brl':'$'
                              }; 
 var typed_currency = [];
@@ -657,6 +656,7 @@ function get_sobs(){
             dataType : 'json',
             method : 'GET',
             success : function(data){
+                console.log(data);
                 for(var item in data) {
                     var _h = "<option value='" +  item + "'>"+  data[item].sob_name + " </option>";
                     selectDataCategory[item] = data[item]['category'];
@@ -665,7 +665,11 @@ function get_sobs(){
                 selectPostData = data;
                 updateSelectSob(selectDataSobs);
             },
-            error:function(XMLHttpRequest, textStatus, errorThrown) {}
+            error:function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrownr);
+            }
         });
 
 
@@ -676,17 +680,39 @@ function get_sobs(){
             {
                 for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
                 {
-                    var _note = selectDataCategory[s_id][i].note;
-                    if(_note) {
-                        _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + "( " + _note + " ) </option>";
-                    } else{
-                        _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
+                    var parent_name = '';
+                    if(selectDataCategory[s_id][i].parent_name)
+                    {
+                        parent_name = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
                     }
+                    _h += "<option data-parent='" + selectDataCategory[s_id][i].parent_name + "' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>"+ parent_name +selectDataCategory[s_id][i].category_name + " </option>";
                     
                 }
             }
-            $(this.nextElementSibling).empty().append(_h).trigger("chosen:updated");
-            $('#sob_category').trigger('change');
+            var selectDom = this.parentNode.nextElementSibling.children[0]
+            $(selectDom).empty().append(_h).trigger("chosen:updated");
+        });
+    
+        $('#sob_category').each(function(){
+            $(this).change(function(){
+                var pre_cate = $('.cate_selected',$(this));
+                var pre_parent = pre_cate.data('parent');
+                var pre_name = pre_cate.data('name');
+                if(pre_parent)
+                {
+                    pre_cate.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + pre_name);
+                }
+                $('.cate_selected',$(this)).removeClass('cate_selected');
+                var selected_cate = $('option:selected',$(this));
+                var selected_cate_parent = selected_cate.data('parent');
+                var selected_cate_name = selected_cate.data('name');
+                selected_cate.prop('class','cate_selected').trigger('chosen:updated');
+                if(selected_cate_parent)
+                {
+                    $(this).next().find('span').text(selected_cate_parent+'-'+selected_cate_name);
+                }
+
+            });
         });
 }
 
@@ -797,9 +823,9 @@ $(document).ready(function(){
     $('#date-timepicker2').datetimepicker({
         language: 'zh-cn',
             useCurrent: true,
-            format: 'YYYY-MM-DD HH:mm:ss',
+            format: 'YYYY-MM-DD hh:ii:ss',
             linkField: "dt_end",
-            linkFormat: "YYYY-MM-DD HH:mm:ss",
+            linkFormat: "YYYY-MM-DD hh:ii:ss",
             sideBySide: true
     }).next().on('dp.change', function(ev){
     }).on(ace.click_event, function(){

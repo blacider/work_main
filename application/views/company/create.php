@@ -137,7 +137,9 @@ function bind_event() {
                                     var selectDom = this.parentNode.nextElementSibling.children[0]
                                     $(selectDom).empty().append(_h).trigger("chosen:updated");
                                 });
+                                bind_event_level_sobs();
                                 $($(".CategoryRow .sobs")[$(".CategoryRow .sobs").length-1]).trigger('change');
+                                bind_event_level_category();
                                 bind_event();
                             }
                                 $(document).ready(function($) {
@@ -297,6 +299,50 @@ function bind_event() {
    var selectPostData = {};
    var selectDataCategory = {};
    var selectDataSobs = '';
+   function bind_event_level_sobs() {
+        $('.sobs').change(function(){
+            var s_id = $(this).val();
+            var _h = '';
+            if(selectDataCategory[s_id] != undefined)
+            {
+                for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
+                {
+                    var parent_name = '';
+                    if(selectDataCategory[s_id][i].parent_name)
+                    {
+                        parent_name = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    }
+                    _h += "<option data-parent='" + selectDataCategory[s_id][i].parent_name + "' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>"+ parent_name +selectDataCategory[s_id][i].category_name + " </option>";
+                    
+                }
+            }
+            var selectDom = this.parentNode.nextElementSibling.children[0]
+            $(selectDom).empty().append(_h).trigger("chosen:updated");
+        });
+    }
+        function bind_event_level_category() {
+        $('.sob_category').each(function(){
+            $(this).change(function(){
+                var pre_cate = $('.cate_selected',$(this));
+                var pre_parent = pre_cate.data('parent');
+                var pre_name = pre_cate.data('name');
+                if(pre_parent)
+                {
+                    pre_cate.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + pre_name);
+                }
+                $('.cate_selected',$(this)).removeClass('cate_selected');
+                var selected_cate = $('option:selected',$(this));
+                var selected_cate_parent = selected_cate.data('parent');
+                var selected_cate_name = selected_cate.data('name');
+                selected_cate.prop('class','cate_selected').trigger('chosen:updated');
+                if(selected_cate_parent)
+                {
+                    $(this).next().find('span').text(selected_cate_parent+'-'+selected_cate_name);
+                }
+
+            });
+        });
+    }
     function updateSelectSob(data) {
                                 $("#sobs").empty();
                                 $("#sobs").append(data);
@@ -571,7 +617,8 @@ setTimeout(function(){
   };
   $(update_users);
   $("#all_members").change(update_users);*/
-
+  bind_event_level_sobs();
+  bind_event_level_category();
 });
 </script>
 

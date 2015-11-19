@@ -658,8 +658,11 @@ class Members extends REIM_Controller {
         $this->need_group_it();
         $group = $this->groups->get_my_list();
         $_gnames = $this->ug->get_my_list();
-        $single = $this->ug->get_single_group(18);
-        $gnames = $_gnames['data']['group'];
+        $gnames = array();
+        if($_gnames['status'] > 0 && array_key_exists('group',$_gnames['data']))
+        {
+            $gnames = $_gnames['data']['group'];
+        }
 
         $ginfo = array();
         $gmember = array();
@@ -678,7 +681,6 @@ class Members extends REIM_Controller {
                 'member' => $gmember
                 ,'group' => $gnames
                 ,'ginfo' => $_gnames
-                ,'info' => $single
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
@@ -858,6 +860,7 @@ class Members extends REIM_Controller {
         $data['level'] = $level;
         $data['manager'] = '';
         $data['manager_id'] = 0;
+        $data['display_manager_id'] = 0;
         if(count($manager) == 2)
         {
             $data['manager_id'] = $manager[0];
@@ -870,11 +873,17 @@ class Members extends REIM_Controller {
         $info = $this->groups->reim_imports(array('members'=>json_encode($input)));
         //$info = $this->groups->doimports($email, $nickname, $phone, $admin, $groups, $account, $cardno, $cardbank, $cardloc , $manager, $rank, $level);
         if($info['status']) {
-            $this->session->set_userdata('last_error', '添加成功');
+            $key = $email . "|" . $phone;
+            if (array_key_exists($key, $info["data"])) {
+                $this->session->set_userdata("last_error", $info["data"][$key]["status_text"]);
+            } else {
+                $this->session->set_userdata('last_error', '添加成功');
+            }
         } else {
             $this->session->set_userdata('last_error', '添加失败');
             return redirect(base_url('members/newmember'));
         }
+        
         if($renew == 0)
         {
             return redirect(base_url('members/index'));
@@ -1188,7 +1197,7 @@ class Members extends REIM_Controller {
             $obj['level'] = trim($sheet->getCellByColumnAndRow(8, $row)->getValue());
             $obj['rank'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
              */
-            if("" == $obj['email'] && "" == $obj['phone']) continue;
+            if("" == $obj['email'] && "" == $obj['phone'] && "" == $obj['name']) continue;
             $obj['status'] = 0;
             if(in_array($obj['email'], $_emails)){
                 $obj['status'] = 1;
@@ -1477,6 +1486,12 @@ class Members extends REIM_Controller {
         $uids = $this->input->post('uids');
         $pid = $this->input->post('pgroup');
         $gid = $this->input->post('gid');
+        $images = '';
+        $_images = $this->input->post('images');
+        if($_images)
+        {
+            $images = $_images;
+        }
         if($uids)
         {
             $uids = implode(",", $uids);
@@ -1485,7 +1500,7 @@ class Members extends REIM_Controller {
         {
             $uids='';
         }
-        $info = $this->ug->update_data($manager,$uids, $name,$code,$pid,$gid);
+        $info = $this->ug->update_data($manager,$uids, $name,$code,$pid,$gid,$images);
         log_message("debug","@@@@@@@@@".json_encode($info));
         if($info['status'] > 0){
             redirect(base_url('members/groups'));

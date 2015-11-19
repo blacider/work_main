@@ -124,7 +124,7 @@ jQuery(grid_selector).jqGrid({
     height: 250,
     multiselect: true,
     loadtext: '',
-    colNames:['报告ID', '提交日期','报告名', '条目数', '提交者', '金额', '状态', '审批日期', '操作','部门'], 
+    colNames:['报销单ID', '报销单模板', '提交日期','报销单名', '消费类型' ,'条目数', '提交者', '金额', '附件', '状态', '审批日期', '操作','部门'], 
     loadonce: true,
     caption: "费用审计",
     editurl: __BASE + 'bills/save',
@@ -133,12 +133,15 @@ jQuery(grid_selector).jqGrid({
     hoverrows : true,
 
     colModel:[
-    {name:'id', index:'id', width:100,editable: false,editoptions:{size:"20",maxlength:"30"}},
-    {name:'date_str', index:'date_str', width:100,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
+    {name:'id', index:'id', width:45,editable: false,editoptions:{size:"20",maxlength:"30"}},
+    {name:'report_template', index:'report_template', width:70,editable: false,editoptions:{size:"20",maxlength:"50"}},
+    {name:'date_str', index:'date_str', width:110,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
     {name:'title', index:'title', width:90,editable: false,editoptions:{size:"20",maxlength:"30"}},
-    {name:'item_count', index:'item_count', width:50,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
+    {name:'prove_ahead', index:'prove_ahead', width:60,editable: false,editoptions:{size:"20",maxlength:"30"}},
+    {name:'item_count', index:'item_count', width:40,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
     {name:'nickname', index:'nickname', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
     {name:'amount',index:'amount', sorttype: myCustomSort,width:70, editable: false,editoptions: {size:"20",maxlength:"30"},formatter:'currency', formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'},unformat: aceSwitch,search:false},
+    {name:'attachments',index:'attachments', width:34, editable: true,edittype:"select",editoptions: {size:"30",maxlength:"40",value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},
     {name:'status_str',index:'status_str', width:70, editable: true,edittype:"select",editoptions: {value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},
     {name:"approvaldt_str", index:"approvaldt_str", width:100, editable: false, editoptions:{size:"20",maxlength:"30"}, search:false, hidden:(__STATUS != 2)},	
     {name:'options',index:'options', width:70, editable: true,edittype:"select",editoptions: {value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},
@@ -146,7 +149,17 @@ jQuery(grid_selector).jqGrid({
 
 
     ], 
-    loadComplete : function() {
+    loadComplete : function(data) {
+        if (data instanceof Array) {
+            var IF_TEMPLATE = false;
+            for (var i = 0; i < data.length; i++)
+                if ("report_template" in data[i])
+                    IF_TEMPLATE = true;
+            if (!IF_TEMPLATE) {
+                jQuery(grid_selector).jqGrid('hideCol','report_template');
+                $(window).resize();
+            }
+        }
         jQuery.each(selectRows,function(index,row){
             jQuery(grid_selector).jqGrid('setSelection',row);
         });
@@ -327,14 +340,14 @@ try{
 
 .navButtonAdd(pager_selector,{
     caption:"",
-    title:"下载选中报告",
+    title:"下载选中报销单",
     buttonicon:"ace-icon fa fa-download blue" ,
     onClickButton:function() {
 //TODO
 //         chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
         // if (chosenids.length == 0) {
          if (selectRows.length == 0) {
-            alert("请选择报告!");
+            alert("请选择报销单!");
             return;
          }
        	$.ajax({
@@ -355,13 +368,13 @@ try{
 
 .navButtonAdd(pager_selector,{
     caption:"",
-    title:"结束选中报告",
+    title:"结束选中报销单",
     buttonicon:"ace-icon fa fa-check green",
     onClickButton:function() {
          // chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
          chosenids = selectRows;
          if (chosenids.length == 0) {
-            alert("请选择报告!");
+            alert("请选择报销单!");
             return;
          }
          $('#modal-table-finish').modal().css({
@@ -381,7 +394,7 @@ try{
             height: 250,
             multiselect: false, 
             loadtext: '',
-            colNames:['提交日期','报告名', '条目数', '提交者', '金额', '状态', '操作'],
+            colNames:['提交日期','报销单名', '条目数', '提交者', '金额', '状态', '操作'],
             loadonce: true,
             caption: "费用审计",
             editurl: __BASE + 'bills/save',

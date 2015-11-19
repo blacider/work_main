@@ -9,6 +9,7 @@ class Bills extends REIM_Controller {
         $this->load->model('usergroup_model','ug');
         $this->load->model('user_model','user');
         $this->load->model('company_model','company');
+        $this->load->model('reim_show_model','reim_show');
         $this->load->library('reim_cipher');
     }
 
@@ -313,12 +314,12 @@ class Bills extends REIM_Controller {
             $this->session->set_userdata('item_update_in','3');
             $this->bsload('bills/index',
                 array(
-                    'title' => '全部报告'
+                    'title' => '全部报销单'
                     ,'error' => $error
                     , 'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
-                        ,array('url' => '','name' => '全部报告','class' => '')
+                        ,array('url' => '','name' => '全部报销单','class' => '')
                     )
                     ,'reports' => $data
                     ,'status' => $status
@@ -335,7 +336,7 @@ class Bills extends REIM_Controller {
             $this->session->set_userdata('item_update_in','3');
             $this->bsload('bills/index',
                 array(
-                    'title' => '全部报告'
+                    'title' => '全部报销单'
                     ,'error' => $error
                     , 'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -525,6 +526,10 @@ class Bills extends REIM_Controller {
         $rows = $this->input->get('rows');
         $sort = $this->input->get('sord');
         $bills = $this->reports->get_finance($type);
+
+        $item_type_dic = $this->reim_show->get_item_type_name();
+        $report_template_dic = $this->reim_show->get_report_template();
+
         log_message('debug','alvayang finance_reports: ' . json_encode($bills));
         if($bills['status'] < 1){
             die(json_encode(array()));
@@ -535,10 +540,27 @@ class Bills extends REIM_Controller {
         $ugs = array();
         $_data = array();
         foreach($data as $d){
+            if(array_key_exists('has_attachment',$d) && $d['has_attachment'])
+            {
+                $url = base_url('reports/show/' . $d['id']);
+                $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
+            }
             log_message("debug", "alvayang Bill: [ $type] $type: " . json_encode($d));
             log_message("debug", "xBill: $type: " . json_encode($d));
             log_message("debug", "nICe");
 
+            $prove_ahead = '报销';
+            switch($d['prove_ahead']){
+            case 0: {$prove_ahead = '<font color="black">' . $item_type_dic[0]  . '</font>';};break;
+            case 1: {$prove_ahead = '<font color="green">' . $item_type_dic[1]  . '</font>';};break;
+            case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2]  . '</font>';};break;
+            }
+            $d['prove_ahead'] = $prove_ahead;
+
+            if(array_key_exists('template_id',$d) && array_key_exists($d['template_id'],$report_template_dic))
+            {
+                $d['report_template'] = $report_template_dic[$d['template_id']];
+            }
             $d['date_str'] = date('Y-m-d H:i:s', $d['createdt']);
             $d["approvaldt_str"] = "0000-00-00 00:00:00";
             if (array_key_exists("approvaldt", $d)) {
@@ -579,6 +601,10 @@ $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data
             $_status = -3;
         }
         $bills = $this->reports->get_bills($_status);
+
+        $item_type_dic = $this->reim_show->get_item_type_name();
+        $report_template_dic = $this->reim_show->get_report_template();
+
         if($bills['status'] < 1){
             die(json_encode(array()));
         }
@@ -586,7 +612,25 @@ $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data
         $ugs = $bills['data']['ugs'];
         $_data = array();
         foreach($data as $d){
+            if(array_key_exists('has_attachment',$d) && $d['has_attachment'])
+            {
+                $url = base_url('reports/show/' . $d['id']);
+                $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
+            }
             log_message("debug", "Bill: [ $type] $type: " . json_encode($d));
+            $prove_ahead = '报销';
+            switch($d['prove_ahead']){
+            case 0: {$prove_ahead = '<font color="black">' . $item_type_dic[0]  . '</font>';};break;
+            case 1: {$prove_ahead = '<font color="green">' . $item_type_dic[1]  . '</font>';};break;
+            case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2]  . '</font>';};break;
+            }
+            $d['prove_ahead'] = $prove_ahead;
+
+            if(array_key_exists('template_id',$d) && array_key_exists($d['template_id'],$report_template_dic))
+            {
+                $d['report_template'] = $report_template_dic[$d['template_id']];
+            }
+
             if($type !=  1) {
                 if($type == 4 ) {
                     if(!in_array(intval($d['status']), array(4, 7, 8))) {

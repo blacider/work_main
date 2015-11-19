@@ -24,34 +24,6 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
 
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">不允许预借</label>
-                                <div class="col-xs-6 col-sm-6">
-                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
-                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
-                                        <label style="margin-top:8px;">
-                                            <input name="allow_borrow" class="ace ace-switch btn-rotate" type="checkbox" id="allow_borrow" style="margin-top:4px;" />
-                                            <span class="lbl"></span>
-                                        </label>
-
-                                   <!-- </div> -->
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">不允许预算</label>
-                                <div class="col-xs-6 col-sm-6">
-                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
-                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
-                                        <label style="margin-top:8px;">
-                                            <input name="allow_budget" class="ace ace-switch btn-rotate" type="checkbox" id="allow_budget" style="margin-top:4px;" />
-                                            <span class="lbl"></span>
-                                        </label>
-
-                                   <!-- </div> -->
-                                </div>
-                            </div>
-
                               <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">必须填写银行信息</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -67,7 +39,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">同一报告中允许包含不同类别的消费</label>
+                                <label class="col-sm-3 control-label no-padding-right">同一报销单中允许包含不同类别的消费</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
@@ -117,7 +89,7 @@
                             </div>
 
                               <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">报告状态变化时邮件通知</label>
+                                <label class="col-sm-3 control-label no-padding-rigtht">报销单状态变化时邮件通知</label>
                                 <div class="col-xs-4 col-sm-4">
                                         <label style="margin-top:8px;">
                                             <input name="mail_notify" class="ace ace-switch btn-rotate" type="checkbox" id="mail_notify" style="margin-top:4px;" />
@@ -202,17 +174,25 @@
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">员工在此金额下无需确认收款</label>
-                                <div class="col-xs-4 col-sm-4">
-					               <input id="limit" type="text" class="form-controller col-xs-12" name="limit" placeholder="输入额度">
+                                <div class="col-xs-2 col-sm-2">
+					               <input id="limit" type="number" class="form-controller col-xs-12" name="limit" placeholder="输入额度">
                                 </div>
+                                <div class="col-sm-2 col-sm-2">
+                                    <div class="checkbox" style="margin-left:35px;">
+                                        <label>
+                                         <input type="checkbox" id="confirm_unlimit" name="confirm_unlimit" >
+                                            无限制
+                                         </label>
+                                    </div>
+                                 </div>
                             </div>
 
                              
 
                              <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">每月最多可提交的报告数量</label>
+                                <label class="col-sm-3 control-label no-padding-rigtht">每月最多可提交的报销单数量</label>
                                 <div class="col-xs-4 col-sm-4">
-                                <input id="reports_limit" type="text" class="form-controller col-xs-12" name="reports_limit" placeholder="报告数">
+                                <input id="reports_limit" type="text" class="form-controller col-xs-12" name="reports_limit" placeholder="报销单数">
                                 </div>
                             </div>
 
@@ -261,6 +241,16 @@ var __BASE = "<?php echo $base_url; ?>";
     var _checked = $('#isadmin').is('checked');
     $('#profile').submit();
 	});*/
+   $("#confirm_unlimit").change(function(){
+        if($(this).is(':checked'))
+        {
+            $('#limit').prop('disabled',true).trigger('chosen:updated');
+        }
+        else
+        {
+            $('#limit').prop('disabled',false).trigger('chosen:updated');
+        }
+   });
    $.ajax({
     type:"get",
     url:__BASE+"company/getsetting",
@@ -273,28 +263,6 @@ var __BASE = "<?php echo $base_url; ?>";
             {
             $('#open_exchange').attr('checked', data.open_exchange);
             $("#open_exchange").trigger("chosen:updated");
-            }
-
-        }
-
-         if(data.disable_budget!=undefined)
-        {
-            if(data.disable_budget==1)
-            {
-            $('#allow_budget').attr('checked', data.disable_budget);
-            $("#allow_budget").trigger("chosen:updated");
-            }
-
-        }
-
-
-
-       if(data.disable_borrow!=undefined)
-        {
-            if(data.disable_borrow==1)
-            {
-            $('#allow_borrow').attr('checked', data.disable_borrow);
-            $("#allow_borrow").trigger("chosen:updated");
             }
 
         }
@@ -400,7 +368,17 @@ var __BASE = "<?php echo $base_url; ?>";
         }
 
         if(data.user_confirm != undefined) {
-            $('#limit').val(data.user_confirm);
+            if(data.user_confirm == -1)
+            {
+                $('#confirm_unlimit').attr('checked',true);
+                $('#confirm_unlimit').trigger('change');
+                $('#confirm_unlimit').trigger('change:updated');
+                //$('#confirm_unlimit').trigger('click');
+            }
+            else
+            {
+                $('#limit').val(data.user_confirm);
+            }
         }
 
         if(data.max_allowed_months != undefined) {
@@ -419,66 +397,68 @@ var __BASE = "<?php echo $base_url; ?>";
     }
    });
 
-        $('.renew').click(function(){
-	   var lval = parseInt($('#limit').val());
-       var r_limit = $('#reports_limit').val();
-      var calendar_month = $('#calendar_month').val();
-      if(isNaN(calendar_month))
-      {
-        calendar_month = 0;
-      }
-      if(calendar_month>=32 || calendar_month <= 0)
-      {
-        $('#calendar_month').focus();
-        show_notify('请输入有效的自然月');
-        return false;
-      }
-       if(isNaN(lval))
-       {
-            lval = 0;
-       }
-	   if(lval>=0)
-	   {
-           $.ajax({
-                type:"post",
-                url:__BASE+"company/profile",
-                data:{
-                    calendar_month:$('#calendar_month').val(),
-                    allow_borrow:$('#allow_borrow').is(':checked'),
-                    allow_budget:$('#allow_budget').is(':checked'),
-                    note_compulsory:$('#note_compulsory').is(':checked'),
-                    not_auto_time:$('#not_auto_time').is(':checked'),
-                    mail_notify:$('#mail_notify').is(':checked'),
-                    close_directly :$('#close_directly').is(':checked'),
-                    low_amount_only:$('#low_amount_only').is(':checked'),
-                    max_allowed_months:$('#max_allowed_months').val(),
-		            private_structure:$('#private_structure').is(':checked'),
-                    need_bank_info:$('#need_bank_info').is(':checked'),
-        		    isadmin:$('#isadmin').is(':checked'),
-        		    isremark:$('#isremark').is(':checked'),
-        		    iscompany:$('#iscompany').is(':checked'),
-        		    template:$('#temp option:selected').val(),
-        		    limit:lval,reports_limit:r_limit,
-                    open_exchange:$('#open_exchange').is(':checked')
-		    },
-                dataType:'json',
-                success:function(data){
-                       show_notify('保存成功');
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    },            });
-	 }
-	 else
-	 {
-	 	show_notify('请输入有效额度');
-	 	$('#limit').val('');
-		$('#limit').focus();
-		return false;
-	 }
-       }); 
+    $('.renew').click(function(){
+        var lval = $('#limit').val();
+        if($('#confirm_unlimit').is(':checked'))
+        {
+            lval = -1;
+        }
 
-        $('.chosen-select').chosen({allow_single_deselect:true}); 
-        $(window)
+        var r_limit = $('#reports_limit').val();
+        var calendar_month = $('#calendar_month').val();
+        if(isNaN(calendar_month))
+        {
+            calendar_month = 0;
+        }
+        if(calendar_month>=32 || calendar_month <= 0)
+        {
+            $('#calendar_month').focus();
+            show_notify('请输入有效的自然月');
+            return false;
+        }
+        if(isNaN(lval))
+        {
+                lval = 0;
+        }
+       if(lval>=0 || lval == -1)
+       {
+               $.ajax({
+                    type:"post",
+                    url:__BASE+"company/profile",
+                    data:{
+                        calendar_month:$('#calendar_month').val(),
+                        note_compulsory:$('#note_compulsory').is(':checked'),
+                        not_auto_time:$('#not_auto_time').is(':checked'),
+                        mail_notify:$('#mail_notify').is(':checked'),
+                        close_directly :$('#close_directly').is(':checked'),
+                        low_amount_only:$('#low_amount_only').is(':checked'),
+                        max_allowed_months:$('#max_allowed_months').val(),
+                        private_structure:$('#private_structure').is(':checked'),
+                        need_bank_info:$('#need_bank_info').is(':checked'),
+                        isadmin:$('#isadmin').is(':checked'),
+                        isremark:$('#isremark').is(':checked'),
+                        iscompany:$('#iscompany').is(':checked'),
+                        template:$('#temp option:selected').val(),
+                        limit:lval,reports_limit:r_limit,
+                        open_exchange:$('#open_exchange').is(':checked')
+       },
+                    dataType:'json',
+                    success:function(data){
+                           show_notify('保存成功');
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        },            });
+    	 }
+    	 else
+    	 {
+    	 	show_notify('请输入有效额度');
+    	 	$('#limit').val('');
+    		$('#limit').focus();
+    		return false;
+    	 }
+    }); 
+    $('.chosen-select').chosen({allow_single_deselect:true}); 
+    $(window)
             .off('resize.chosen')
             .on('resize.chosen', function() {
                 $('.chosen-select').each(function() {

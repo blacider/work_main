@@ -7,7 +7,10 @@ class Items extends REIM_Controller {
         $this->load->model('report_model', 'report');
         $this->load->model('user_model','user');
         $this->load->model('group_model', 'groups');
+        $this->load->model('reim_show_model', 'reim_show');
+        $this->load->helper('report_view_utils');
     }
+    
     public function attachment() {
         if(empty($_FILES)) 
             die(''); 
@@ -38,7 +41,7 @@ class Items extends REIM_Controller {
         $symbol = '?';
         $coin_symbol_dic = array( 
                             'cny'=>'￥','usd'=>'$','eur'=>'€','hkd'=>'$','mop'=>'$','twd'=>'$','jpy'=>'￥','ker'=>'₩',
-                            'gbp'=>'£','rub'=>'Rbs','sgd'=>'$','php'=>'₱','idr'=>'Rps','myr'=>'$','thb'=>'฿','cad'=>'$',
+                            'gbp'=>'£','rub'=>'₽','sgd'=>'$','php'=>'₱','idr'=>'Rps','myr'=>'$','thb'=>'฿','cad'=>'$',
                             'aud'=>'$','nzd'=>'$','chf'=>'₣','dkk'=>'Kr','nok'=>'Kr','sek'=>'Kr','brl'=>'$'
                             );                           
         if(array_key_exists($key,$coin_symbol_dic))
@@ -126,12 +129,15 @@ class Items extends REIM_Controller {
 
     public function newitem(){
         //        $profile = $this->session->userdata('profile');
-        $_profile = $this->user->reim_get_user();	
+        //获取消费类型字典
+        $item_type_dic = $this->reim_show->get_item_type_name();
+
+        $_profile = $this->user->reim_get_user();   
         $profile = array();
         $group_config = array();
         $item_configs = array();
         $item_config = array();
-        if($_profile)
+        if($_profile && array_key_exists('profile',$_profile['data']))
         {
             $profile = $_profile['data']['profile'];
         }
@@ -145,7 +151,7 @@ class Items extends REIM_Controller {
                 foreach($item_configs as $conf)
                 {
                     if($conf['disabled'] == 1) continue;
-                    array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => 'disabled'));	
+                    array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => 'disabled'));   
                 }
             }
         }
@@ -194,7 +200,7 @@ class Items extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-		log_message('debug','afford:'. json_encode($afford));
+        log_message('debug','afford:'. json_encode($afford));
         $is_burden = true;
         if(!$afford)
         {
@@ -216,7 +222,8 @@ class Items extends REIM_Controller {
                 'categories' => $_categories,
                 'tags' => $tags,
                 'item_config' => $item_config,
-                'is_burden' => $is_burden
+                'is_burden' => $is_burden,
+                'item_type_dic' => $item_type_dic
             ));
     }
     public function index(){
@@ -324,6 +331,9 @@ class Items extends REIM_Controller {
 
 
     public function listdata(){
+        //获取消费类型字典
+        $item_type_dic = $this->reim_show->get_item_type_name();
+       
         $items = $this->items->get_list();
         $category = $this->category->get_list();
         $categories = array();
@@ -341,23 +351,25 @@ class Items extends REIM_Controller {
             }
             $data = $items['data'];
             $item_data = $data['items'];
-            log_message("debug","list item:" . json_encode($data));
+            log_message("debug","list_item:" . json_encode($data));
             foreach($item_data as &$s){
                 //if($s['status'] < 0) continue;
+                /*获取附件*/
+                $s['attachment'] = '';
+                if(array_key_exists('attachments',$s))
+                {
+                    show_attachments($s);
+                }
                 $s['cate_str'] = '未指定的分类';
                 $s['createdt'] = strftime("%Y-%m-%d %H:%M", intval($s['createdt']));
                 $s['dt'] = strftime("%Y-%m-%d %H:%M", intval($s['dt']));
-                $_type = '报销';
-                switch($s['type']){
-                case 1: {$_type = '预算';};break;
-                case 2: {$_type = '预借';};break;
-                }
+                $_type = $item_type_dic[$s['type']];
                 $s['type'] = $_type;
 
                 if(array_key_exists($s['category'], $_cates)){
                     $s['cate_str'] = $_cates[$s['category']];
                 }
-                $_report = '尚未添加到报告';
+                $_report = '尚未添加到报销单';
                 if($_report) {
                 }
                 $s['report'] = $_report;
@@ -394,7 +406,7 @@ class Items extends REIM_Controller {
                 $edit_str = '';
                 if(in_array($s['status'], array(-1, 0, 3))) {
                     $edit_str =  '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $s['id'] . '"></span>'
-                  	.  '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>';
+                    .  '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>';
                 } else {
                     $edit_str =  '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $s['id'] . '"></span>';
                 }
@@ -463,9 +475,10 @@ class Items extends REIM_Controller {
 
     public function ishow($id = 0) {
         if(0 === $id) redirect(base_url('items'));
+        $item_type_dic = $this->reim_show->get_item_type_name();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-        $_profile = $this->user->reim_get_user();	
+        $_profile = $this->user->reim_get_user();   
         $profile = array();
         $group_config = array();
         $item_configs = array();
@@ -483,12 +496,12 @@ class Items extends REIM_Controller {
                 $item_configs = $group_config['item_config'];
                 foreach($item_configs as $conf)
                 {
-                    array_push($item_config,array('id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled'], 'active' => $conf['active']));	
+                    array_push($item_config,array('id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled'], 'active' => $conf['active'])); 
                 }
             }
         }
         $obj = $this->items->get_by_id($id);
-        $item_update_in = $this->session->userdata('item_update_in');	
+        $item_update_in = $this->session->userdata('item_update_in');   
         if($obj['status'] < 1){
             redirect(base_url('items'));
         }
@@ -500,48 +513,48 @@ class Items extends REIM_Controller {
             $tags = $category['data']['tags'];
         }
         $item = $obj['data'];
-		$fee_afford_ids = array();
-		if(array_key_exists('afford_ids',$item))
-		{
-			$fee_afford_ids = explode(',',$item['afford_ids']);
-		}
-		
+        $fee_afford_ids = array();
+        if(array_key_exists('afford_ids',$item))
+        {
+            $fee_afford_ids = explode(',',$item['afford_ids']);
+        }
+        
         $afford = array();
         if(array_key_exists('fee_afford', $profile)){
             $afford = $profile['fee_afford'];
         }
-		$afford_dic = array();
-		foreach($afford as $af)
-		{
-			$afford_dic[$af['id']] = array();
-			if(array_key_exists('dept',$af)){
-				foreach($af['dept'] as $a){
-					if(array_key_exists('member',$a)){
-						foreach($a['member'] as $m)
-						{
-							array_push($afford_dic[$af['id']],$m['id']);
-						}
-					}
-					else
-					{
-							array_push($afford_dic[$af['id']],$a['id']);
-					}
-				}	
-			}
-		}
-		log_message('debug','afford_dic:' . json_encode($afford_dic));
-		
-		$afford_type = -1 ;
-		if($fee_afford_ids){
-			foreach($afford_dic as $key => $it){
-				if(in_array($fee_afford_ids[0],$it)){
-					$afford_type = $key;
-					break;
-				}
-			}
-		}
-	log_message('debug','fee_afford_ids : ' .json_encode($fee_afford_ids));
-	log_message('debug','fee_afford_type : ' .json_encode($afford_type));
+        $afford_dic = array();
+        foreach($afford as $af)
+        {
+            $afford_dic[$af['id']] = array();
+            if(array_key_exists('dept',$af)){
+                foreach($af['dept'] as $a){
+                    if(array_key_exists('member',$a)){
+                        foreach($a['member'] as $m)
+                        {
+                            array_push($afford_dic[$af['id']],$m['id']);
+                        }
+                    }
+                    else
+                    {
+                            array_push($afford_dic[$af['id']],$a['id']);
+                    }
+                }   
+            }
+        }
+        log_message('debug','afford_dic:' . json_encode($afford_dic));
+        
+        $afford_type = -1 ;
+        if($fee_afford_ids){
+            foreach($afford_dic as $key => $it){
+                if(in_array($fee_afford_ids[0],$it)){
+                    $afford_type = $key;
+                    break;
+                }
+            }
+        }
+    log_message('debug','fee_afford_ids : ' .json_encode($fee_afford_ids));
+    log_message('debug','fee_afford_type : ' .json_encode($afford_type));
     /*$item_value = '';
     if(array_key_exists('extra',$item))
     {
@@ -550,7 +563,7 @@ class Items extends REIM_Controller {
         log_message('debug' , 'it:' . json_encode($it));
         if(array_key_exists('value',$it))
         {
-            $item_value = $it['value'];	
+            $item_value = $it['value']; 
         $item_value = date('Y-m-d H:i:s',$item_value);
         }
         }
@@ -616,9 +629,9 @@ class Items extends REIM_Controller {
         $_type = '报销';
         $prove_ahead = $item['prove_ahead'];
         switch($prove_ahead) {
-        case 0:{$_type = '报销';};break;
-        case 1:{$_type = '预算';};break;
-        case 2:{$_type = '预借';};break;
+        case 0:{$_type = $item_type_dic[0];};break;
+        case 1:{$_type = $item_type_dic[1];};break;
+        case 2:{$_type = $item_type_dic[2];};break;
         }
         $item['prove_ahead'] = $_type;
 
@@ -657,9 +670,9 @@ class Items extends REIM_Controller {
                 ,'item_value' => $item_value
                 ,'error' => $error
                 ,'member' => $gmember
-				,'afford' => $afford
-				,'fee_afford_ids' => implode(',',$fee_afford_ids)
-				,'fee_afford_type' => $afford_type
+                ,'afford' => $afford
+                ,'fee_afford_ids' => implode(',',$fee_afford_ids)
+                ,'fee_afford_type' => $afford_type
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
@@ -677,7 +690,9 @@ class Items extends REIM_Controller {
             redirect(base_url('items'));
         }
 
-        $_profile = $this->user->reim_get_user();	
+        $item_type_dic = $this->reim_show->get_item_type_name();
+
+        $_profile = $this->user->reim_get_user();   
         $profile = array();
         $group_config = array();
         $item_configs = array();
@@ -695,7 +710,7 @@ class Items extends REIM_Controller {
                 $item_configs = $group_config['item_config'];
                 foreach($item_configs as $conf)
                 {
-                    array_push($item_config,array('id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled'], 'active' => $conf['active']));	
+                    array_push($item_config,array('id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled'], 'active' => $conf['active'])); 
                 }
             }
         }
@@ -785,9 +800,9 @@ class Items extends REIM_Controller {
         $_type = '报销';
         $prove_ahead = $item['prove_ahead'];
         switch($prove_ahead) {
-        case 0:{$_type = '报销';};break;
-        case 1:{$_type = '预算';};break;
-        case 2:{$_type = '预借';};break;
+        case 0:{$_type = $item_type_dic[0];};break;
+        case 1:{$_type = $item_type_dic[1];};break;
+        case 2:{$_type = $item_type_dic[2];};break;
         }
         $item['prove_ahead'] = $_type;
 
@@ -821,6 +836,7 @@ class Items extends REIM_Controller {
         log_message("debug","item_updta_in".$this->session->userdata("item_update_in"));
         log_message("debug","flow".json_encode($flow));
         log_message("debug","users:".json_encode($user));
+        log_message("debug","error:".$error);
         
         $this->bsload('items/view',
             array(
@@ -894,9 +910,11 @@ class Items extends REIM_Controller {
     }
 
     public function edit($id = 0, $from_report = 0) {
+        //获取消费类型字典
+        $item_type_dic = $this->reim_show->get_item_type_name();
         log_message('debug','item_id' . $id);
         if(0 === $id) redirect(base_url('items'));
-        $_profile = $this->user->reim_get_user();	
+        $_profile = $this->user->reim_get_user();   
         $profile = array();
         $group_config = array();
         $item_configs = array();
@@ -915,7 +933,7 @@ class Items extends REIM_Controller {
                 foreach($item_configs as $conf)
                 {
                     if($conf['disabled'] == 1) continue;
-                    array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled']));	
+                    array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled']));    
                     log_message('debug','qqy_name:' .  $conf['name']);
                 }
             }
@@ -928,52 +946,52 @@ class Items extends REIM_Controller {
         }
         $item = $item['data'];
 
-		log_message('debug','afford_items:' . json_encode($item));
+        log_message('debug','afford_items:' . json_encode($item));
 
-		$fee_afford_ids = array();
-		if(array_key_exists('afford_ids',$item))
-		{
-			$fee_afford_ids = explode(',',$item['afford_ids']);
-		}
-		
+        $fee_afford_ids = array();
+        if(array_key_exists('afford_ids',$item))
+        {
+            $fee_afford_ids = explode(',',$item['afford_ids']);
+        }
+        
         $afford = array();
         if(array_key_exists('fee_afford', $profile)){
             $afford = $profile['fee_afford'];
         }
-		log_message('debug','afford:' . json_encode($afford));
-		$afford_dic = array();
-		foreach($afford as $af)
-		{
-			$afford_dic[$af['id']] = array();
-			if(array_key_exists('dept',$af)){
-				foreach($af['dept'] as $a){
-					if(array_key_exists('member',$a)){
-						foreach($a['member'] as $m)
-						{
-							array_push($afford_dic[$af['id']],$m['id']);
-						}
-					}
-					else
-					{
-							array_push($afford_dic[$af['id']],$a['id']);
-					}
-				}	
-			}
-		}
-		log_message('debug','afford_dic:' . json_encode($afford_dic));
-		
-		$afford_type = -1 ;
-		if($fee_afford_ids){
-			foreach($afford_dic as $key => $it){
-				if(in_array($fee_afford_ids[0],$it)){
-					$afford_type = $key;
-					break;
-				}
-			}
-		}
-		log_message('debug','afford_type:' . json_encode($afford_type));
-		log_message('debug','fee_afford_ids:' . json_encode($fee_afford_ids));
-		
+        log_message('debug','afford:' . json_encode($afford));
+        $afford_dic = array();
+        foreach($afford as $af)
+        {
+            $afford_dic[$af['id']] = array();
+            if(array_key_exists('dept',$af)){
+                foreach($af['dept'] as $a){
+                    if(array_key_exists('member',$a)){
+                        foreach($a['member'] as $m)
+                        {
+                            array_push($afford_dic[$af['id']],$m['id']);
+                        }
+                    }
+                    else
+                    {
+                            array_push($afford_dic[$af['id']],$a['id']);
+                    }
+                }   
+            }
+        }
+        log_message('debug','afford_dic:' . json_encode($afford_dic));
+        
+        $afford_type = -1 ;
+        if($fee_afford_ids){
+            foreach($afford_dic as $key => $it){
+                if(in_array($fee_afford_ids[0],$it)){
+                    $afford_type = $key;
+                    break;
+                }
+            }
+        }
+        log_message('debug','afford_type:' . json_encode($afford_type));
+        log_message('debug','fee_afford_ids:' . json_encode($fee_afford_ids));
+        
         $item_value = array();
         if(array_key_exists('extra',$item))
         {
@@ -1056,10 +1074,11 @@ class Items extends REIM_Controller {
                 ,'category_name' => $_want_key
                 ,'item_value' => $item_value
                 ,'member' => $gmember
-				,'afford' => $afford
-				,'fee_afford_ids' => implode(',',$fee_afford_ids)
-				,'fee_afford_type' => $afford_type
-				,'is_burden' => $is_burden
+                ,'afford' => $afford
+                ,'fee_afford_ids' => implode(',',$fee_afford_ids)
+                ,'fee_afford_type' => $afford_type
+                ,'is_burden' => $is_burden
+                ,'item_type_dic' => $item_type_dic
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
@@ -1077,7 +1096,7 @@ class Items extends REIM_Controller {
             $uids = implode(',',$_uids);
         }
 
-		$afford_ids = $this->input->post('afford_ids');
+        $afford_ids = $this->input->post('afford_ids');
         $id = $this->input->post('id');
         $rid = $this->input->post('rid');
         $from_report = $this->input->post("from_report");
@@ -1195,7 +1214,13 @@ class Items extends REIM_Controller {
         }
         else
         {
-			$obj = $this->items->update($id, $amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$__extra,$uids,$afford_ids,$attachments,$currency);
+            $obj = $this->items->update($id, $amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$__extra,$uids,$afford_ids,$attachments,$currency);
+            if($obj && array_key_exists('data',$obj) && array_key_exists('status',$obj['data'][0]) && $obj['data'][0]['status'] <= 0)
+            {
+                
+                $this->session->set_userdata('last_error',$obj['data'][0]['msg']);
+            }
+            log_message('debug','status' . $obj['status']);
             log_message('debug','zz item_data:'.json_encode($obj));
         }
         log_message('debug','rid:' . $rid);

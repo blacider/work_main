@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 <script src="/static/ace/js/date-time/moment.min.js"></script>
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
+<script src="/static/js/util.js"></script>
 
 
 
@@ -18,7 +19,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-rigtht">名称</label>
                             <div class="col-xs-3 col-sm-3">
-                                <input id="sob_name" type="text" class="form-controller col-xs-12" value="<?php echo $report_template["name"];?>" name="sob_name" placeholder="输入报告模板名"></div>
+                                <input id="sob_name" type="text" class="form-controller col-xs-12" value="<?php echo $report_template["name"];?>" name="sob_name" placeholder="输入报销单模板名"></div>
                         </div>
 
                         
@@ -84,6 +85,16 @@
                         <div class="form-group">
                             <div style="border-radius:10px;" onclick="addCate(this.parentNode)" class="col-sm-1 col-xs-1 col-sm-offset-2 col-xs-offset-2 btn-primary addDrop">添加+</div>    
                         </div>
+                        <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">使用范围</label>
+                        <div class="col-xs-5 col-sm-5">
+                                    <select class="chosen-select tag-input-style" id="type" multiple="multiple" data-placeholder="请选择类型" placeholder="请选择类型">
+                                        <option value="0"><?php echo $item_type_dic[0];?></option>
+                                        <option value="1"><?php echo $item_type_dic[1];?></option>
+                                        <option value="2"><?php echo $item_type_dic[2];?></option>
+                                    </select>
+                                </div>
+                            </div>
                 <input type="reset" style="display:none;" id="reset">
                 <div class="clearfix form-actions">
                     <div class="col-md-offset-3 col-md-9">
@@ -215,13 +226,13 @@
             <label class="col-sm-3 control-label no-padding-right">是否打印</label>
                                 <div class="col-xs-6 col-sm-6">
                                         <label style="margin-top:8px;">
-                                            <input name="force_attach" class="ace ace-switch btn-rotate" type="checkbox" id="force_attach" style="margin-top:4px;" />
+                                            <input name="printable" class="ace ace-switch btn-rotate" type="checkbox" id="force_attach" style="margin-top:4px;" />
                                             <span class="lbl"></span>
                                         </label>
                                 </div>
         </div>
         
-	
+    
     </div>
     <div class="modal-footer">
         <button class="btn btn-sm" data-dismiss="modal">
@@ -230,7 +241,7 @@
         </button>
         <input type="submit" id="createGroup" class="btn btn-sm btn-primary">
     </div>
-    <input type="text" name="pid" class="hidden"></form>
+    <input type="text" name="groupId" class="hidden"></form>
 </div>
 </div>
 </div>
@@ -255,20 +266,22 @@
         return -1;
     }
    $(document).ready(function(){
+        $("#type").val(__dataUpload['type']).trigger("chosen:updated").change(function(event) {
+            __dataUpload['type'] = $("#type").val();
+        });
         $("#createSub").click(function(event) {
             var groupId = $('#modal_1').find('input[name="groupId"]').val();
             var subId = $('#modal_1').find('input[name="subId"]').val();
             var name = $('#modal_1').find('input[name="name"]').val();
             var explanation = $('#modal_1').find('input[name="explanation"]').val();
-            var required = $('#modal_1').find('input[name="required"]').val();
+            var required = $('#modal_1').find('input[name="required"]')[0].checked;
             var type = $('#modal_1').find('select').val();
             var option = [];
             var data = {
                 explanation: explanation,
                 name: name,
-                required: required,
-                type: type,
-                nid:__nid
+                required: (required?1:0),
+                type: type
             };
             if (type == 2) {
                 $("#options").find("input").each(function(index, el) {
@@ -278,15 +291,19 @@
                 data.property.options = option;
             } else if (type == 4) {
                 data.property = {};
-                data.property.bank_account_type = $('#modal_1').find('input[name="bank"]').val();
+                var bank_account_type_temp = $('#modal_1').find('input[name="bank"]')[0].checked;
+                data.property.bank_account_type = (bank_account_type_temp?1:0);
             }
             var index = getGroupIndexById(groupId);
             if (ifCreate) {
+                data.nid = __nid;
+                __nid--;
                 __dataUpload['config'][index]['children'].push(data);
             } else {
-                var subIndex = getSubIndexById(subId);
+                var subIndex = getSubIndexById(groupId, subId);
                 var _data = __dataUpload['config'][index]['children'][subIndex];
-                data.id = subId;
+                if (_data.id != undefined) data.id = _data.id;
+                else data.nid = _data.nid;
                 __dataUpload['config'][index]['children'][subIndex] = data;
             }
             //下面是添加到页面上
@@ -302,12 +319,12 @@
                     '</li>'
                 );
             }
-            __nid--;
             $('#modal_1').modal('hide');
             return false;
         });
         $("#createGroup").click(function(event) {
             var name = $("#create_form").find("input[name='name']").val();
+            var printable = $('#modal_0').find('input[name="printable"]')[0].checked;
             if (name == "") {
                 $("#create_form").find("input[name='name']").focus();
                 show_notify("请输入字段组名称");
@@ -317,8 +334,11 @@
                 children:[],
                 name:name,
                 type:0,
-                nid:__nid
+                printable:(printable?1:0)
             };
+            var groupId = $('#modal_0').find('input[name="groupId"]').val();
+        if (groupId == "") {
+            data.nid = __nid;
             var index = __nid;
             __nid--;
             $(".addDrop").parent().before(
@@ -346,6 +366,11 @@
                         '</div>'
                 );
             __dataUpload['config'].push(data);
+        } else {
+            __dataUpload['config'][getGroupIndexById(groupId)].name = data.name;
+            __dataUpload['config'][getGroupIndexById(groupId)].printable = data.printable;
+            $("#_"+groupId).find(".dropdown-toggle").empty().append(data.name).append('<span class="caret" style="float: right; top: 30px; margin-top: 20px; margin-right: 20px;"></span>');
+        }
             $('#modal_0').modal('hide');
             return false;
         });
@@ -355,23 +380,16 @@
             var sgroups = $('#group').val();
             //if(sname)
          
-            if(sname == '')
+            if(trim(sname) == '')
             {
                 $('#sob_name').focus();
                 show_notify("请输入用户名");
                 return false;
             }
-
-            console.log(__dataUpload);
-            /*if(sgroups == null)
-            {
-                $('#group').focus();
-                show_notify("请选择部门");
-                return false;
-            }*/
+            __dataUpload['name'] = sname;
 
         
-                $.ajax({
+            $.ajax({
                 type:"post",
                 url:__BASE+"company/doupdate_report_template",
                 data:{temp_info:__dataUpload},
@@ -388,6 +406,9 @@
                        }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log(XMLHttpRequest);
+                        console.log(textStatus);
+                        console.log(errorThrown);
                     },            });
            
      
@@ -426,7 +447,7 @@
                                     $('#modal_1').find('input[name="groupId"]').val(groupId);
                                     $('#modal_1').find('input[name="name"]').val(data.name);
                                     $('#modal_1').find('input[name="explanation"]').val(data.explanation);
-                                    $('#modal_1').find('input[name="required"]').val(data.required);
+                                    $('#modal_1').find('input[name="required"]')[0].checked = (data.required == "1");
                                     $('#modal_1').find('select').val(data.type).trigger("chosen:updated");
                                     $('#modal_1').find('select').change();
                                     if (data.type == 2) {
@@ -443,7 +464,8 @@
                                                     '<a onclick="addOption(this.parentNode)" class="addOption">+</a>'+
                                                     '</div>');
                                     } else if (data.type == 4) {
-                                        $('#modal_1').find('input[name="bank"]').val(data.property.bank_account_type);
+
+                                        $('#modal_1').find('input[name="bank"]')[0].checked = (data.property.bank_account_type == "1");
                                     }
                                 }
                                 ifCreate = false;
@@ -453,6 +475,10 @@
                                 var index = getGroupIndexById(groupId);
                                 var data = __dataUpload['config'][index];
                                 $('#modal_0').find('input[name="name"]').val(data['name']);
+                                $('#modal_0').find('input[name="groupId"]').val(groupId);
+
+                                $('#modal_0').find('input[name="printable"]')[0].checked = (data.printable == "1");
+                                ifCreateGroup = false;
                                 $('#modal_0').modal('show');
                             }
                             function addSub(groupId) {
@@ -460,7 +486,7 @@
                                 $('#modal_1').find('input[name="groupId"]').val(groupId);
                                 $('#modal_1').find('input[name="name"]').val("");
                                 $('#modal_1').find('input[name="explanation"]').val("");
-                                $('#modal_1').find('input[name="required"]').val(0);
+                                $('#modal_1').find('input[name="required"]')[0].checked = 0;
                                 $('#modal_1').find('select').val(1).trigger("chosen:updated");
                                 $('#modal_1').find('select').change();
                                 $("#options").empty();
@@ -488,7 +514,11 @@
                                 $("#_"+id_).remove();
                             }
                             function addCate(dom) {
+                                $('#modal_0').find('input[name="groupId"]').val("");
                                 $('#modal_0').find('input[name="pid"]').val(0);
+                                $('#modal_0').find('input[name="name"]').val("");
+                                $('#modal_0').find('input[name="printable"]')[0].checked = 0;
+                                ifCreateGroup = true;
                                 $('#modal_0').modal('show');
                             }
                             $("#extra_type").change(function(event) {

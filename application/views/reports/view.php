@@ -39,9 +39,17 @@
 ?>
                             <input type="hidden" id="template_id" name="template_id" value="<?php echo $config['id']; ?>">
                             <?php
+                            if($config['config'])
+                            {
+                                ?>
+                            <hr>
+                                <?php 
+                            }
                             foreach($config['config'] as $field_group){
                             ?>
-                            <hr>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label no-padding-right blue"><?php if(array_key_exists('name', $field_group)){echo $field_group['name'];}?></label>                              
+                                </div>
                                 <?php
                                     if(array_key_exists('children', $field_group))
                                     {
@@ -109,7 +117,7 @@
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
                                                     <input type="text" class="form-controller col-xs-8 period field_value date-timepicker1" data-type="3" data-id="<?php echo $field['id'];?>" name="dt" 
-                                                            placeholder="时间" <?php if($field['required'] == 1){echo 'required';}?> value="<?php if(array_key_exists($field['id'], $extra_dic)){echo date('Y-m-d H:i:s',$extra_dic[$field['id']]['value']);}?>" disabled>
+                                                            placeholder="时间" <?php if($field['required'] == 1){echo 'required';}?> value="<?php if(array_key_exists($field['id'], $extra_dic)){echo date('Y-m-d',$extra_dic[$field['id']]['value']);}?>" disabled>
                                                 </div>
                                             </div>
                                         </div>
@@ -235,6 +243,7 @@ foreach($report['items'] as $i) {
                                             <td>类型</td>
                                             <td>商家</td>
                                             <td>备注</td>
+                                            <td>附件</td>
                                             <td>详情</td>
                                             <!--
                                             <td>操作</td>
@@ -284,18 +293,15 @@ foreach($report['items'] as $i) {
 ?>
     <td><?php echo $i['currency_logo']; ?> &nbsp;<?php echo $i['amount']; ?> <?php echo  $update_amount . $_extra_amount; ?> </td>
                                             <td><?php 
-                                                $buf = '';
-                                                switch($i['prove_ahead']) {
-                                                case 0 : $buf = '报销';break;
-                                                case 1 : $buf = '预算';break;
-                                                case 2 : $buf = '预借';break;
-                                                } 
-                                                echo $buf;
-
-
+                                                echo $item_type_dic[$i['prove_ahead']];
                                                 ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td><?php echo $i['note'];?></td>
+                                            <td>
+                                                <?php 
+                                                    echo $i['attachment'];
+                                                ?>
+                                            
                                             <td><?php $link = base_url('items/show/' . $i['id'] . "/1"); ?><a href="<?php echo $link; ?>">详情</a></td>
                                         </tr>
                                         <?php } ?>
@@ -474,7 +480,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                 <form action="<?php echo base_url('reports/permit'); ?>" method="post" class="form-horizontal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">报告将发送至以下审批人，请确认</h4>
+                <h4 class="modal-title">报销单将发送至以下审批人，请确认</h4>
                 <input type="hidden" name="rid" value="" id="rid">
                 <input type="hidden" name="status" value="2" id="status">
             </div>
@@ -519,7 +525,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                     <div class="col-xs-10 col-sm-10">
                         <select style="display:none;" class="chosen-select_ tag-input-style form-control col-xs-12 col-sm-12" name="receiver[]" multiple="multiple" id="modal_managers" style="width:300px;">
                         </select>
-                        <h4 class="modal-title">是否结束这条报告?</h4>
+                        <h4 class="modal-title">是否结束这条报销单?</h4>
                     </div>
                 </div>
             </div>
@@ -577,17 +583,11 @@ var error = "<?php echo $error; ?>";
 $(document).ready(function(){
     if(error) show_notify(error);
     $('.cancel').click(function() {
-<?php if (!isset($report_list_url)) { $report_list_url = FALSE; } ?>
-<?php if ($report_list_url) { ?>
-            location.href = "<?php echo $report_list_url; ?>";            
-<?php } else { ?>
             history.go(-1);
-<?php } ?>
-
     });
 
     $('.callback').click(function(){
-       if(confirm('确认要撤回报告吗?')){
+       if(confirm('确认要撤回报销单吗?')){
                 location.href = __BASE + "/reports/revoke/" + rid;
             }
     });
