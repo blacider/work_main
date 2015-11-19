@@ -47,6 +47,9 @@
                             }
                             foreach($config['config'] as $field_group){
                             ?>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label no-padding-right blue"><?php if(array_key_exists('name', $field_group)){echo $field_group['name'];}?></label>                              
+                                </div>
                                 <?php
                                     if(array_key_exists('children', $field_group))
                                     {
@@ -240,6 +243,7 @@ foreach($report['items'] as $i) {
                                             <td>类型</td>
                                             <td>商家</td>
                                             <td>备注</td>
+                                            <td>附件</td>
                                             <td>详情</td>
                                             <!--
                                             <td>操作</td>
@@ -293,6 +297,11 @@ foreach($report['items'] as $i) {
                                                 ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td><?php echo $i['note'];?></td>
+                                            <td>
+                                                <?php 
+                                                    echo $i['attachment'];
+                                                ?>
+                                            
                                             <td><?php $link = base_url('items/show/' . $i['id'] . "/1"); ?><a href="<?php echo $link; ?>">详情</a></td>
                                         </tr>
                                         <?php } ?>
