@@ -262,7 +262,13 @@ function bind_event() {
                                     <?php 
                                     foreach($member as $m){
                                     ?>
-                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
+                                        <option value="<?php echo $m['id']; ?>"><?php
+                                        $str_uid = $m['nickname'] . '-[' . $m['email'] .']';
+                                        if (strlen($str_uid) > 52) {
+                                            echo substr($str_uid, 0, 52);
+                                        } else {
+                                            echo $str_uid;
+                                        }?></option>
                                     <?php
                                     }
                                     ?>
