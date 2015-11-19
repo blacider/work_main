@@ -247,6 +247,10 @@ class Users extends REIM_Controller {
         {
             $admin_groups_granted = implode(',',$admin_groups_granted);
         }
+        else
+        {
+            $admin_groups_granted = '-1';
+        }
 
         $usergroups = array();
         log_message('debug','admin:' . $admin);
