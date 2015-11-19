@@ -433,6 +433,13 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                     <a style="margin-left: 20px;" class="btn btn-white tdeny" ><i class="ace-icon  glyphicon glyphicon-remove gray bigger-110"></i>退回</a>
                     <?php 
                 }
+                else
+                {
+                     ?>
+                    <a style="margin-left: 20px;" class="btn btn-white tapprove" ><i class="ace-icon fa fa-check-square-o gray bigger-110"></i>通过</a>
+                    <a style="margin-left: 20px;" class="btn btn-white finance_tdeny" ><i class="ace-icon  glyphicon glyphicon-remove gray bigger-110"></i>退回</a>
+                    <?php 
+                }
                 ?>                               
                 <a style="margin-left: 20px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>返回</a>
             </div>
@@ -547,7 +554,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">报销单将发送至以下审批人，请确认</h4>
-                <input type="hidden" name="rid" value="" id="rid">
+                <input type="hidden" name="rid" value="<?php echo $rid;?>" id="rid">
                 <input type="hidden" name="status" value="2" id="status">
             </div>
             <div class="modal-body">
@@ -565,12 +572,19 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                 <input type="hidden" id="pass" name="pass" value="0" />
                 <input type="submit" class="btn btn-primary" id="mypass" value="确认" />
                <!-- <div class="btn btn-primary" onclick="deny_report()">拒绝</div> -->
-                <div class="btn btn-primary" onclick="cancel_modal_next()">取消</div>
+                <div class="btn btn-primary" onclick="cancel_modal_next(1)">取消</div>
             </div>
                 </form>
                 <script type="text/javascript">
-                  function cancel_modal_next() {
-                    $('#finance_modal_next').modal('hide');
+                  function cancel_modal_next(id) {
+                    if(id == 1)
+                    {
+                        $('#finance_modal_next').modal('hide');
+                    }
+                    if(id == 0)
+                    {
+                        $('#finance_modal_next_').modal('hide');
+                    }
                     return;
                   }
 
@@ -584,7 +598,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                 <form action="<?php echo base_url('bills/report_finance_end'); ?>" method="post" class="form-horizontal" id="permit_form">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <input type="hidden" name="rid" value="" id="rid_">
+                <input type="hidden" name="rid" value="<?php echo $rid;?>" id="rid_">
                 <input type="hidden" name="status" value="2" id_="status">
                 <h4 class="modal-title">是否结束</h4>
             </div>
@@ -601,7 +615,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                 <input type="hidden" id="pass" name="pass" value="0">
                 <input type="submit" class="btn btn-primary pass" value="确认结束">
               <!--  <div class="btn btn-primary" onclick="deny_end_report()">拒绝</div> -->
-                <div class="btn btn-primary" onclick="cancel_modal_next_()">取消</div>
+                <div class="btn btn-primary" onclick="cancel_modal_next(0)">取消</div>
                 <!--<div class="btn btn-primary repass" onClick="chose_others(this.parentNode.parentNode.rid.value)">取消</div> -->
             </div>
                 </form>
@@ -618,7 +632,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
             </div>
             <form action="<?php echo base_url('/bills/report_finance_deny'); ?>" method="post" id="form_discard">
                 <div class="modal-body">
-                    <input type="hidden" id="div_id" class="thumbnail" name="rid" style="display:none;" value=""/>
+                    <input type="hidden" id="div_id" class="thumbnail" name="rid" style="display:none;" value="<?php echo $rid;?>"/>
                     <input type="hidden" id="status"  name="status" style="display:none;" value="3" />
                     <div class="form-group">
                         <textarea class="form-control" name="content"></textarea>
@@ -726,8 +740,6 @@ $(document).ready(function(){
 
     $('.tdeny').each(function() {
         $(this).click(function(){
-            var _id = rid;
-            $('#div_id').val(_id);
             $('#comment_dialog').modal('show');
         });
     });
@@ -746,10 +758,8 @@ $(document).ready(function(){
                     if (data['status'] > 0) {
                         getData = data['data'].suggestion;
                         if (data['data'].complete == 0) {
-                            $('#rid').val(_id);
                             chose_others_zero(_id,data['data'].suggestion);
                         } else {
-                            $('#rid_').val(_id);
                             $('#finance_modal_next_').modal('show');
                         }
                     }
@@ -759,8 +769,6 @@ $(document).ready(function(){
     });
     $('.finance_tdeny').each(function() {
         $(this).click(function(){
-            var _id = rid;
-            $('#finance_div_id').val(_id);
             $('#finance_comment_dialog').modal('show');
         });
     });
@@ -770,28 +778,27 @@ $(document).ready(function(){
     for (var item in getData) {
         if (item != undefined) {
             //console.log(getData[item]);
-            $($('.chosen-select')[0]).find("option[value='"+getData[item]+"']").attr("selected",true);
-            $($('.chosen-select')[0]).trigger("chosen:updated");
+            $($('.chosen-select','#finance_modal_next')[0]).find("option[value='"+getData[item]+"']").attr("selected",true);
+            $($('.chosen-select','#finance_modal_next')[0]).trigger("chosen:updated");
         }
     }
-    $('#modal_next').modal('show');
+    $('#finance_modal_next').modal('show');
     console.log(nextId);
     if(nextId.length)
     {
-        $('#modal_managers').val(nextId[0]).prop('selected',true);
-        $('#modal_managers').trigger('chosen:updated');
+        $('#modal_managers','#finance_modal_next').val(nextId[0]).prop('selected',true);
+        $('#modal_managers','#finance_modal_next').trigger('chosen:updated');
     }
     else
     {
-        $('#mypass').attr('disabled',true).trigger('chosen:updated');
+        $('#mypass','#finance_modal_next').attr('disabled',true).trigger('chosen:updated');
     }
-    $('#modal_managers').attr('disabled',true).trigger('chosen:updated');
+    $('#modal_managers','#finance_modal_next').attr('disabled',true).trigger('chosen:updated');
     }
 
     function chose_others(_id) {
-        $('#modal_next_').modal('hide');
-        $('#rid').val(_id);
-        $('#modal_next').modal('show');
+        $('#finance_modal_next_').modal('hide');
+        $('#finance_modal_next').modal('show');
     }
 });
 </script>
