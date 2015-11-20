@@ -168,17 +168,6 @@ class Report_Model extends Reim_Model {
         return $obj;
     }
 
-    public function mark_success($data, $status = 4){
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        log_message("debug", "JWT:" . json_encode($jwt));
-        $url = $this->get_url("success");
-        $buf = $this->do_Put($url, array('rids' => $data, 'status' => $status), $jwt);
-        log_message("debug", "From Server [ $url ]:" . $buf);
-        //$obj = json_decode($buf, true);
-        return $buf;
-    }
-
     public function create($title, $receiver, $cc, $iids, $type = 0, $status = 1, $force = 0, $extra = array(),$template_id){
         $data = array(
             'manager_id' => $receiver
