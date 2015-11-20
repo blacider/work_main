@@ -173,9 +173,6 @@ class Reim_Model extends CI_Model {
         $ch = $this->get_curl_handler();
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_URL, $url);
-        if ($method != 'GET') {
-            curl_setopt($ch, CURLOPT_POST, true); # for POST PUT DELETE
-        }
         curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
         if (!empty($fields)) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
@@ -186,6 +183,7 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_ENCODING, '');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        //curl_setopt($ch, CURLOPT_VERBOSE, true);
         $result = curl_exec($ch);
         return $result;
     }
