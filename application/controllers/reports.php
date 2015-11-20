@@ -1653,7 +1653,7 @@ class Reports extends REIM_Controller {
                 $o['日期'] = date('Y年m月d日', date($i['dt']));
                 $o['时间'] = date('H:i:s', date($i['dt']));
                 $o['类别'] = $i['category_name'];
-                $o['帐套'] = $cate_dic[$i['category']]['sob_name'];
+                $o['帐套'] = $this->try_get_element($cate_dic, $i['category'], 'sob_name');
                 $o['创建者'] = $i['nickname'];
                 $o['邮箱'] = '';
                 $o['员工ID'] = '';
