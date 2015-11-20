@@ -739,42 +739,4 @@ $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data
         }
         die(json_encode($_data));
     }
-
-    public function save(){
-        $this->need_group_casher();
-        $status = $this->input->post('status_str');
-        $id = $this->input->post('id');
-        $oper = $this->input->post('oper');
-
-        if($oper == "edit"){
-            die($this->reports->mark_success(implode(",", array($id))));
-        }
-
-    }
-
-
-    public function marksuccess($ids = '0', $type = -1){
-        $this->need_group_casher();
-        $ids = explode('%23', $ids);
-        foreach ($ids as $id ) {
-            if(0 === $id){
-                $type = $this->input->post('type');
-                $data = $this->input->post('data');
-                $id = implode(",", $data);
-                $status = 2;
-                if(0 === $type) {
-                    $status = 4;
-                }
-                die($this->reports->mark_success($id, $status));
-            } else {
-                $status = 3;
-                if(0 === intval($type)) {
-                    $status = 4;
-                }
-                $this->reports->mark_success($id, $status);
-            }
-        }
-        redirect(base_url('bills'));
-    }
-
 }
