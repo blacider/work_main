@@ -57,20 +57,10 @@ if(is_array($user)){
 }
 ?>
 
-<?php 
-$path = "http://reim-avatar.oss-cn-beijing.aliyuncs.com/" . $user['apath'];
-if("" == $user['apath']) {
-    $path = base_url('/static/default.png');
-} else {
-    $path = $user['apath']; 
-    //if(1 == $user['abs_path']){
-    //}
-}
-?>
 						<!-- #section:basics/navbar.user_menu -->
 						<li class="light-blue" style="background:#2C3E50">
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle" style="background:#2C3E50">
-                                <img class="nav-user-photo" src="<?php echo $path; ?>">
+                                <img class="nav-user-photo" src="<?php echo $user['avatar_url']; ?>">
 								<span class="user-info" style="top:13px;">
                                     <?php echo $username; ?>
 								</span>
