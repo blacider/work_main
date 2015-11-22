@@ -157,7 +157,6 @@ class Users extends REIM_Controller {
             $profile =  $profile['data'];
             $manager_id = $profile['manager_id'];
             log_message("debug","####".json_encode($profile));
-            $path = base_url($this->user->reim_get_hg_avatar());
             //print_r($profile);
         } else  {
             $config = array();
@@ -170,8 +169,6 @@ class Users extends REIM_Controller {
             $profile['admin'] = array();
             $profile['wx_token'] = '不管';
             $profile['lastdt'] = $user->create_time;
-
-            $path = '';//base_url();
         }
 
         $group = $this->groups->get_my_list();
@@ -190,7 +187,6 @@ class Users extends REIM_Controller {
                 ,'member' => $profile
                 ,'self' => 1
                 ,'error' => $error
-                ,'avatar_path' => $path
                 ,'isOther' => 0
                 ,'manager_id' => $manager_id
                 ,'gmember' => $gmember

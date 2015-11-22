@@ -29,19 +29,9 @@ font:bold 11px Arial, Helvetica, sans-serif;
                         <div class="col-xs-6 col-sm-6 filePicker">
                             <?php $user = $member; ?>
                             <?php $disabled = $self == 1 ? '' : 'disabled'; ?>
-<?php 
-$path = "http://reim-avatar.oss-cn-beijing.aliyuncs.com/" . $user['apath'];
-//if("" == $user['apath']) {
-if("" == $user['apath']) {
-    $path = base_url('/static/default.png');
-} else {
-    // $path = $user['apath'];
-    $path = $avatar_path;
-}
-?>
 
 <!--avatar_container <a id="btn_cimg" style="height:140px;width:140px" href="javascript:void(0)" class="avatar thumbnail"> btn btn-primary btn-white-->
-          <a id="btn_cimg" class="filePicker"  style="height:144px;width:155px" class="btn btn-primary btn-white"><img src="<?php echo $path;?>" style="height:130px;width:130px" id="avatar_src" /> </a>
+          <a id="btn_cimg" class="filePicker"  style="height:144px;width:155px" class="btn btn-primary btn-white"><img src="<?php echo $user['avatar_url'];?>" style="height:130px;width:130px" id="avatar_src" /> </a>
                         </div>
                     </div>
 

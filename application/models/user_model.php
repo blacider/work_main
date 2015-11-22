@@ -143,24 +143,18 @@ class User_Model extends Reim_Model {
         $obj = json_decode($buf, true);
         $profile = array();
         if($obj['status']){
-            $profile = $obj['data']['profile'];
-            log_message("debug", json_encode($profile));
+            $profile = &$obj['data']['profile'];
+            log_message("debug", 'profile -> ' . json_encode($obj['data']['profile']));
             // 下载头像
-            $avatar = $profile['avatar'];
-            if($avatar) {
-                $profile['src_avatar'] = $avatar;
-                $avatar = 'http://reim-avatar.oss-cn-beijing.aliyuncs.com/' . $avatar;
-                $profile['avatar'] = $avatar;//base_url($avatar);
-            } else {
-            $profile['avatar'] = base_url('/static/default.png');
+            if(empty($profile['avatar'])) {
+                log_message('debug', 'load default avatar -> ' . base_url('/static/default.png'));
+                $profile['avatar_url'] = base_url('/static/default.png');
+                log_message("debug", 'profile -> ' . json_encode($obj['data']['profile']));
             }
             $this->session->set_userdata('profile', $profile);
         }
         return $obj;
     }
-
-
-
 
     public function reim_update_avatar($file) {
         $obj = $this->upload_avatar($file);
@@ -176,18 +170,6 @@ class User_Model extends Reim_Model {
             $this->session->set_userdata('profile', $profile);
         }
         return $obj;
-    }
-
-    public function reim_get_hg_avatar($avatar = 0){
-        if($avatar == 0){
-            $profile = $this->session->userdata('profile');
-            if(array_key_exists('src_avatar', $profile)) {
-            // 下载头像
-                $avatar = $profile['src_avatar'];
-            }
-        }
-        log_message("debug", "avatar: $avatar");
-        return $this->reim_fetch_avatar($avatar, 0);
     }
 
     public function reim_joingroup($code) {
@@ -207,34 +189,20 @@ class User_Model extends Reim_Model {
         return $obj;
     }
 
-    public function reim_detail($uid){
-        $jwt = $this->session->userdata('jwt');
-        $url = $this->get_url('profile/' . $uid);
-        $buf = $this->do_Get($url, $jwt);
-        $obj = json_decode($buf, true);
-        log_message("debug", "Get:" . $buf . ",JWT: " . json_encode($jwt));
-        if($obj['status'] && $obj['data']['avatar']) {
-            $avatar = $obj['data']['avatar'];
-            $obj['avatar'] = $this->reim_get_hg_avatar($avatar);
-        } else {
-            $obj['avatar'] = "";
-        }
-        return json_encode($obj);
-    }
     public function reim_get_info($uid){
         $jwt = $this->session->userdata('jwt');
         $url = $this->get_url('users/' . $uid);
         $buf = $this->do_Get($url, $jwt);
         $obj = json_decode($buf, true);
         log_message("debug", "Get:" . $buf . ",JWT: " . json_encode($jwt));
-        if($obj['status'] && $obj['data']['avatar']) {
-            $avatar = $obj['data']['avatar'];
-            $obj['avatar'] = 'http://reim-avatar.oss-cn-beijing.aliyuncs.com/' . $obj['data']['apath']; //$this->reim_get_hg_avatar($avatar);
-        } else {
-            $obj['avatar'] = "";
+        if (empty($obj['data']['avatar'])) {
+            log_message('debug', 'load default avatar -> ' . base_url('/static/default.png'));
+            $obj['data']['avatar_url'] = base_url('/static/default.png');
+            log_message("debug", 'profile -> ' . json_encode($obj));
         }
         return json_encode($obj);
     }
+    
     public function reim_update_manager($id, $manager_id) {
         $data = array('manager_id' => $manager_id, 'uid' => $id);
         $url = $this->get_url('users');
