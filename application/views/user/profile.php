@@ -31,7 +31,9 @@ font:bold 11px Arial, Helvetica, sans-serif;
                             <?php $disabled = $self == 1 ? '' : 'disabled'; ?>
 
 <!--avatar_container <a id="btn_cimg" style="height:140px;width:140px" href="javascript:void(0)" class="avatar thumbnail"> btn btn-primary btn-white-->
-          <a id="btn_cimg" class="filePicker"  style="height:144px;width:155px" class="btn btn-primary btn-white"><img src="<?php echo $user['avatar_url'];?>" style="height:130px;width:130px" id="avatar_src" /> </a>
+                          <a id="btn_cimg" class="filePicker"  style="height:144px;width:155px" class="btn btn-primary btn-white">
+                            <input type="hidden" id="avatar" name="avatar" value="<?php echo $user['avatar']; ?>" />
+                            <img src="<?php echo $user['avatar_url'];?>" style="height:130px;width:130px" id="avatar_src" /> </a>
                         </div>
                     </div>
 
@@ -843,7 +845,9 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         uploader.on( 'uploadSuccess', function( file, resp ) {
             close_loading();
             if(resp.status > 0) {
+                var _id = resp['data']['id'];
                 var _src = resp['data']['url'];
+                $('#avatar').val(_id);
                 $('#avatar_src').attr( 'src', _src);
             }
         });

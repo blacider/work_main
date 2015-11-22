@@ -221,7 +221,7 @@ class User_Model extends Reim_Model {
         return $buf;
     }
 
-    public function reim_update_profile($email, $phone, $nickname, $credit_card,$usergroups, $uid = 0, $admin = 0,$manager_id=0,$max_report,$rank,$level,$client_id,$admin_groups_granted){
+    public function reim_update_profile($email, $phone, $nickname, $credit_card,$usergroups, $uid = 0, $admin = 0, $manager_id = 0, $max_report = 0, $rank = 0, $level = 0, $client_id = '', $avatar = 0, $admin_groups_granted = ''){
         if($uid > 0) {
             $data['uid'] = $uid;
         }
@@ -245,6 +245,7 @@ class User_Model extends Reim_Model {
         $data['rank'] = $rank;
         $data['level'] = $level;
         $data['client_id'] = $client_id;
+        $data['avatar'] = $avatar;
         $url = $this->get_url('users');
         $jwt = $this->session->userdata('jwt');
         if(!$jwt)  return false;

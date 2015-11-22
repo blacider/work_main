@@ -225,6 +225,7 @@ class Users extends REIM_Controller {
         $email = $this->input->post('email');
         $phone = $this->input->post('phone');
         $uid = $this->input->post('uid');
+        $avatar = $this->input->post('avatar');
         $credit_card = $this->input->post('credit_card');
         $manager_id = $this->input->post('manager');
         $admin = $this->input->post('admin_new');
@@ -262,7 +263,8 @@ class Users extends REIM_Controller {
         if(!($uid || $nickname || $email || $phone || $credit_card)){
             redirect(base_url('users/profile'));
         }
-        $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin,$manager_id,$max_report,$rank,$level,$client_id,$admin_groups_granted), true);
+        $data = $this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin, $manager_id, $max_report, $rank, $level, $client_id, $avatar, $admin_groups_granted);
+        $info = json_decode($data, true);
         log_message('debug','info:' . json_encode($info));
         log_message('debug','profile' . json_encode($profile));
         if(array_key_exists('admin',$profile))
