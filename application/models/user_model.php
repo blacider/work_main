@@ -92,23 +92,6 @@ class User_Model extends Reim_Model {
         $profile = array();
         if($obj['status']){
             $profile = $obj['data']['profile'];
-            // 下载头像
-            $avatar = $profile['avatar'];
-            $abs_path = $profile['abs_path'];
-            log_message("debug", json_encode($profile['abs_path']));
-            if($avatar) {
-                if($abs_path){
-                    $profile['src_avatar'] = $avatar;
-                    $avatar = $profile['apath'];//avatar;
-                    $profile['avatar'] = $avatar;//base_url($avatar);
-                } else {
-                    $profile['src_avatar'] = $avatar;
-                    $avatar = 'http://reim-avatar.oss-cn-beijing.aliyuncs.com/' . $avatar;
-                    $profile['avatar'] = $avatar;//base_url($avatar);
-                }
-            } else {
-            $profile['avatar'] = base_url('/static/default.png');
-            }
             $this->session->set_userdata('profile', $profile);
         }
         return $obj;
@@ -130,13 +113,6 @@ class User_Model extends Reim_Model {
         $profile = array();
         if($obj['status']){
             $profile = &$obj['data']['profile'];
-            log_message("debug", 'profile -> ' . json_encode($obj['data']['profile']));
-            // 下载头像
-            if(empty($profile['avatar'])) {
-                log_message('debug', 'load default avatar -> ' . base_url('/static/default.png'));
-                $profile['avatar_url'] = base_url('/static/default.png');
-                log_message("debug", 'profile -> ' . json_encode($obj['data']['profile']));
-            }
             $this->session->set_userdata('profile', $profile);
         }
         return $obj;
@@ -165,11 +141,6 @@ class User_Model extends Reim_Model {
         $buf = $this->do_Get($url, $jwt);
         $obj = json_decode($buf, true);
         log_message("debug", "Get:" . $buf . ",JWT: " . json_encode($jwt));
-        if (empty($obj['data']['avatar'])) {
-            log_message('debug', 'load default avatar -> ' . base_url('/static/default.png'));
-            $obj['data']['avatar_url'] = base_url('/static/default.png');
-            log_message("debug", 'profile -> ' . json_encode($obj));
-        }
         return json_encode($obj);
     }
     
