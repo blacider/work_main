@@ -379,64 +379,6 @@ class Users extends REIM_Controller {
         }
     }
 
-    public function avatar(){
-        $profile = $this->session->userdata('profile');
-        $this->eload('user/avatar',
-            array(
-                'title' => '修改头像'
-                ,'profile' => $profile
-            ));
-    }
-
-
-    public function update_avatar(){
-        $result = array();
-        $successNum = 0;
-        $i = 0;
-        while (list($key, $val) = each($_FILES)) {
-            if ( $_FILES[$key]['error'] > 0)
-            {
-                $this->session->set_userdata('avatar_error', array('status'=>False, 'msg' => '头像获取失败'));
-                $result['msg'] = '头像上传出错,请检查网络后重试';
-            }
-            else
-            {
-                $fileName = date("YmdHis").'_'.floor(microtime() * 1000).'_'.$this->createRandomCode(8);
-                //头像图片(file 域的名称：__avatar1,2,3...)。
-                if (strpos($key, '__avatar1') === 0)
-                {
-                    $relate_file = 'static/users_data/avatar/' . date('Y/m') . "/" . $fileName . ".jpg";
-                    $virtualPath = BASEPATH . '../static/users_data/avatar/' . date('Y/m');
-                    if(!file_exists($virtualPath)){
-                        $mkres = mkdir($virtualPath, 0777, true);
-                        if(!$mkres){
-                            die('Can NOT mkdir');
-                        }
-                    }
-                    $virtualPath = $virtualPath . "/" .  $fileName . ".jpg";
-                    $result['avatarUrls'][$i] = base_url($virtualPath);
-                    move_uploaded_file($_FILES[$key]["tmp_name"], $virtualPath);
-                    $successNum++;
-                    $i++;
-                    $obj = $this->user->update_avatar($virtualPath);
-                    if($obj['status'] < 1){
-                        //// iid
-                        //$iid = $obj['data']['id'];
-                        //$profile = $this->session->userdata('profile');
-                        //$profile['avatar'] = $obj['data']['path'];
-                        //$this->session->set_userdata('profile', $profile);
-                    } else {
-                        $this->session->set_userdata('last_error', '更新失败');
-                    }
-                    die(json_encode(array(
-                        'success' => true
-                    )));
-                }
-            }
-        }
-    }
-
-
     private function createRandomCode($length)
     {
         $randomCode = "";

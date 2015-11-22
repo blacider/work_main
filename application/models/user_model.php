@@ -78,20 +78,6 @@ class User_Model extends Reim_Model {
 
 
 
-    private function reim_fetch_avatar($path, $type = 1){
-        if($path == '' || $path == 0) return '';
-        $path = "images/" . $path;
-        $new_file_path = "/static/users_data/". md5($path . $type) . ".jpg";
-        if(file_exists(BASEPATH . "../" . $new_file_path)) return $new_file_path;
-        
-        $jwt = $this->session->userdata('jwt');
-        $url = $this->get_url($path . "/" . $type);
-        $buf = $this->do_Get($url, $jwt);
-        log_message("debug", "Avatar:" . $new_file_path . ", with length:" . strlen($buf) . ", FromURL:" . $url);
-        file_put_contents(BASEPATH . "../" . $new_file_path, $buf);
-        return $new_file_path;
-    }
-
     public function reim_oauth($unionid = '', $openid = '', $token = '', $check = 1){
         $jwt = $this->get_jwt($unionid, "");
         $this->session->set_userdata('jwt', $jwt);
@@ -151,22 +137,6 @@ class User_Model extends Reim_Model {
                 $profile['avatar_url'] = base_url('/static/default.png');
                 log_message("debug", 'profile -> ' . json_encode($obj['data']['profile']));
             }
-            $this->session->set_userdata('profile', $profile);
-        }
-        return $obj;
-    }
-
-    public function reim_update_avatar($file) {
-        $obj = $this->upload_avatar($file);
-        if($obj['status']){
-            $profile = $this->session->userdata('profile');
-            // 下载头像
-            $avatar = $obj['data']['avatar'];
-            $profile['src_avatar'] = $avatar;
-            log_message("debug", "update avatar:" . $avatar);
-            $avatar = $this->_fetch_avatar($avatar);
-            $profile['avatar'] = base_url($avatar);
-            log_message("debug", json_encode($profile));
             $this->session->set_userdata('profile', $profile);
         }
         return $obj;
