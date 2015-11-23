@@ -2,6 +2,24 @@
 
 class Report_Model extends Reim_Model {
 
+    public function confirm_success($rid)
+    {
+    	$jwt = $this->session->userdata('jwt');
+	    if(!$jwt) return false;
+        $url = $this->get_url('success');
+        $data = array(
+            'act' => 'confirm',
+            'status' => 2,
+            'rids' => $rid
+        );
+	    $buf = $this->do_Put($url,$data,$jwt);
+	    log_message('debug','confirm_success_url:'.$url);
+	    log_message('debug','confirm_success_data:'.json_encode($data));
+	    log_message('debug','confirm_success_back:'.$buf);
+
+	    return json_decode($buf,True);
+    }
+
     public function update_report_template($id,$name,$config,$type)
     {
     	$jwt = $this->session->userdata('jwt');

@@ -1,5 +1,14 @@
 
 function bind_event(){
+    $('.tconfirm').each(function() {
+        $(this).click(function(){
+            var _id = $(this).data('id');
+            if(confirm('确认已收款？'))
+            {
+                location.href = __BASE + "reports/confirm_success/" + _id;
+            }
+        });
+    });
     $('.tdetail').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
