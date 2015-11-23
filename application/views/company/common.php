@@ -171,6 +171,17 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-rigtht">报销单页脚配置</label>
+                                <div class="col-xs-4 col-sm-4">
+                                    <select id="footer_format" class="chosen-select tag-input-style" name="footer_format"  data-placeholder="请选择页脚的格式">
+                                    <option value="0">无</option>
+                                    <option value="1">仅公司名称</option>
+                                    <option value="2">仅部门名称</option>
+                                    <option value="3">公司/部门名称</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">报销单打印模板设置</label>
                                 <div class="col-xs-4 col-sm-4">
                                     <select id="temp" class="chosen-select tag-input-style" name="temp"  data-placeholder="请选择模板">
@@ -268,7 +279,10 @@ var __BASE = "<?php echo $base_url; ?>";
     url:__BASE+"company/getsetting",
     dataType:'json',
     success:function(data){
-
+        if(data.footer_format != undefined) {
+            $("#footer_format").val(data.footer_format).attr('selected',true);
+            $(".footer-format").trigger("chosen:updated");
+        }
         if(data.same_category_pdf != undefined)
         {
             if(data.same_category_pdf ==1)
@@ -276,7 +290,6 @@ var __BASE = "<?php echo $base_url; ?>";
                 $('#same_category_pdf').attr('checked', data.same_category_pdf);
                 $("#same_category_pdf").trigger("chosen:updated");
             }
-
         }
         if(data.open_exchange!=undefined)
         {
@@ -460,6 +473,7 @@ var __BASE = "<?php echo $base_url; ?>";
                         isremark:$('#isremark').is(':checked'),
                         iscompany:$('#iscompany').is(':checked'),
                         template:$('#temp option:selected').val(),
+                        footer_format:$('#footer_format option:selected').val(),
                         limit:lval,reports_limit:r_limit,
                         open_exchange:$('#open_exchange').is(':checked'),
                         same_category_pdf:$('#same_category_pdf').is(':checked')
