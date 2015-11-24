@@ -495,7 +495,7 @@ function bind_event_level_sobs() {
                     }
                     else
                     {
-                            _h += "<option selected data-parent='' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>" +selectDataCategory[s_id][i].category_name + " </option>";
+                            _h += "<option selected data-parent='' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].id + "'>" +selectDataCategory[s_id][i].category_name + " </option>";
                     }
                 }
             }
