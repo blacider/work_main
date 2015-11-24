@@ -638,7 +638,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                     <div class="clearfix form-actions">
                         <div class="col-md-offset-3 col-md-9">
                             <a class="btn btn-white btn-primary finance_deny"  data-renew="0"><i class="ace-icon fa fa-save "></i>退回</a>
-                            <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
+                            <a style="margin-left: 80px;" class="btn btn-white" data-renew="-1" data-dismiss="modal"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
                         </div>
                     </div>
                 </div>
@@ -696,6 +696,8 @@ $(document).ready(function(){
     $('.cancel').click(function() {
             history.go(-1);
     });
+
+    $('.finance_cancel')
 
     $('.callback').click(function(){
        if(confirm('确认要撤回报销单吗?')){
