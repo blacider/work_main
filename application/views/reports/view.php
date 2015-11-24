@@ -697,8 +697,6 @@ $(document).ready(function(){
             history.go(-1);
     });
 
-    $('.finance_cancel')
-
     $('.callback').click(function(){
        if(confirm('确认要撤回报销单吗?')){
                 location.href = __BASE + "/reports/revoke/" + rid;
@@ -776,16 +774,13 @@ $(document).ready(function(){
     });
 
     function chose_others_zero(item,nextId) {
-    //console.log(item);
     for (var item in getData) {
         if (item != undefined) {
-            //console.log(getData[item]);
             $($('.chosen-select','#finance_modal_next')[0]).find("option[value='"+getData[item]+"']").attr("selected",true);
             $($('.chosen-select','#finance_modal_next')[0]).trigger("chosen:updated");
         }
     }
     $('#finance_modal_next').modal('show');
-    console.log(nextId);
     if(nextId.length)
     {
         $('#modal_managers','#finance_modal_next').val(nextId[0]).prop('selected',true);
