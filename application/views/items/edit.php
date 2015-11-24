@@ -706,28 +706,28 @@ function get_sobs(){
                         _h+="<optgroup style='font-style: normal;' label='"+ parent_name +"'>"
                         for(var j = 0 ; j < selectDataCategory[s_id][i]['children'].length; j++)
                         {
-                            if(selectDataCategory[s_id][i]['children'][j]['category_id'] == _item_category)
+                            if(selectDataCategory[s_id][i]['children'][j]['id'] == _item_category)
                             {
                                 _sid = s_id;
-                                _h+="<option selected data-parent='" + parent_name + "' data-name='" + selectDataCategory[s_id][i]['children'][j]['category_name'] + "' value='" +  selectDataCategory[s_id][i]['children'][j]['category_id'] + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + selectDataCategory[s_id][i]['children'][j]['category_name'] + " </option>";
+                                _h+="<option selected data-parent='" + parent_name + "' data-name='" + selectDataCategory[s_id][i]['children'][j]['category_name'] + "' value='" +  selectDataCategory[s_id][i]['children'][j]['id'] + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + selectDataCategory[s_id][i]['children'][j]['category_name'] + " </option>";
                             }
                             else
                             {
-                                _h+="<option data-parent='" + parent_name + "' data-name='" + selectDataCategory[s_id][i]['children'][j]['category_name'] + "' value='" +  selectDataCategory[s_id][i]['children'][j]['category_id'] + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + selectDataCategory[s_id][i]['children'][j]['category_name'] + " </option>";
+                                _h+="<option data-parent='" + parent_name + "' data-name='" + selectDataCategory[s_id][i]['children'][j]['category_name'] + "' value='" +  selectDataCategory[s_id][i]['children'][j]['id'] + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + selectDataCategory[s_id][i]['children'][j]['category_name'] + " </option>";
                             }
                         }
                         _h+="</optgroup>";
                     }
                     else
                     {
-                        if(selectDataCategory[s_id][i]['category_id'] == _item_category)
+                        if(selectDataCategory[s_id][i]['id'] == _item_category)
                         {
                             _sid = s_id;
-                            _h += "<option selected data-parent='' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>" +selectDataCategory[s_id][i].category_name + " </option>";
+                            _h += "<option selected data-parent='' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].id + "'>" +selectDataCategory[s_id][i].category_name + " </option>";
                         }
                         else
                         {
-                            _h += "<option selected data-parent='' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>" +selectDataCategory[s_id][i].category_name + " </option>";
+                            _h += "<option selected data-parent='' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].id + "'>" +selectDataCategory[s_id][i].category_name + " </option>";
                         }
                     }   
 
