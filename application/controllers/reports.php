@@ -1318,6 +1318,18 @@ class Reports extends REIM_Controller {
         if (array_key_exists('item_type', $profile['group']))
             foreach ($profile['group']['item_type'] as $name)
                 $dict_item_type_names[$name['type']] = $name['name'];
+
+        // 转换自定义备注字段
+        $dict_customized_note_field = array();
+        if (array_key_exists('item_config', $profile['group'])) {
+            foreach ($profile['group']['item_config'] as $conf) {
+                if ($conf['cid'] == -1 && $conf['type'] == 1) {
+                    if ($conf['active'] && !$conf['disabled']) {
+                        $dict_customized_note_field[$conf['id']] = $conf['name'];
+                    }
+                }
+            }
+        }
         
         //添加汇率
         $open_exchange = 0 ;
@@ -1765,6 +1777,12 @@ class Reports extends REIM_Controller {
                 $o['会计科目上级'] = $_sob_name;
                 $o['会计科目代码'] = $_sob_code;
                 $o['报销审核人'] = $i['flow'];
+                foreach ($dict_customized_note_field as $fid => $fname) {
+                    $o[$fname] = '';
+                    if (!empty($i['extra'][$fid])) {
+                        $o[$fname] = $i['extra'][$fid]['value'];
+                    }
+                }
                 $o['备注'] = $i['note'];
                 $o['消费类型'] = $this->try_get_element($dict_item_type_names, $i['prove_ahead']);
                 $_rate = 1.0;
