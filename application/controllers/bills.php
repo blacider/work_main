@@ -103,6 +103,7 @@ class Bills extends REIM_Controller {
             }
         }
         $with_note = 1;
+        $footer_format = 0;
         $template = 'a4.yaml';
         $_splite_by_category = 0;
         $_rid = $this->input->post('chosenids');
@@ -115,19 +116,16 @@ class Bills extends REIM_Controller {
         $company = urlencode($group['group_name']);
         if($config) {
             $config = json_decode($config,True);
-
-            if(($config) && (array_key_exists('export_no_company', $config)) && ($config['export_no_company'] == '0'))
-                if($config && array_key_exists('export_no_company', $config) && $config['export_no_company'] == '0')
-                {
-                    $company = '';
-                }
-
             $with_no_note = 0;
             if(($config) && (array_key_exists('export_no_note', $config)) && ($config['export_no_note']))
             {
                 $with_no_note = $config['export_no_note'];
             }
             $_splite_by_category = 0;
+            if(($config) && (array_key_exists('footer_format', $config)) && ($config['footer_format']))
+            {
+                $footer_format = $config['footer_format'];
+            }
             if(($config) && (array_key_exists('same_category_pdf', $config)) && ($config['same_category_pdf']))
             {
                 $_splite_by_category = $config['same_category_pdf'];
@@ -156,7 +154,8 @@ class Bills extends REIM_Controller {
         // 1 -- 仅公司名称
         // 2 -- 仅部门名称
         // 3 -- 公司/部门
-        $url = "https://www.yunbaoxiao.com/report/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category;
+        //$url = "https://www.yunbaoxiao.com/report/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category;
+        $url = "https://www.yunbaoxiao.com/report/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category . '&footer_format=' . $footer_format;
         log_message('debug','hhh'. $url);
         die(json_encode(array('url' => $url)));
     }
@@ -196,8 +195,7 @@ class Bills extends REIM_Controller {
         $footer_format = 0;
         foreach($_rid as $r)
         {
-            array_push($rid,$r);
-            //array_push($rid,$this->reim_cipher->encode($r));
+            array_push($rid,$this->reim_cipher->encode($r));
         }
         $company = urlencode($group['group_name']);
         if($config) {
@@ -235,7 +233,7 @@ class Bills extends REIM_Controller {
         //log_message('debug','profile'.json_encode($profile['data']['profile']['group']));
         //$url = "https://report.yunbaoxiao.com/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
         $url = "https://www.yunbaoxiao.com/report/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category . '&footer_format=' . $footer_format;
-        $url = "http://admin.cloudbaoxiao.com:12345/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&footer_format=" . $footer_format;
+        //$url = "http://admin.cloudbaoxiao.com:12345/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category ."&footer_format=" . $footer_format;
         log_message('debug','hhh'. $url);
         die(json_encode(array('url' => $url)));
     }
