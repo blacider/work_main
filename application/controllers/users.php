@@ -236,7 +236,26 @@ class Users extends REIM_Controller {
         $max_report = $this->input->post('max_report');
         $rank = $this->input->post('rank');
         $level = $this->input->post('level');
+        $admin_groups_granted = '';
+        $_admin_groups_granted = $this->input->post('admin_groups_granted');
+
+        if($admin == 2)
+        {
+            $admin_groups_granted = $_admin_groups_granted;
+        }
+        if($admin_groups_granted)
+        {
+            $admin_groups_granted = implode(',',$admin_groups_granted);
+        }
+        else
+        {
+            $admin_groups_granted = '-1';
+        }
+
         $usergroups = array();
+        log_message('debug','admin:' . $admin);
+        log_message('debug','admin_groups_granted:' . json_encode($admin_groups_granted));
+        log_message('debug','_admin_groups_granted:' . json_encode($_admin_groups_granted));
         if($_usergroups)
         {
             $usergroups = implode(',',$_usergroups);
@@ -247,7 +266,7 @@ class Users extends REIM_Controller {
         if(!($uid || $nickname || $email || $phone || $credit_card)){
             redirect(base_url('users/profile'));
         }
-        $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin,$manager_id,$max_report,$rank,$level,$client_id), true);
+        $info = json_decode($this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin,$manager_id,$max_report,$rank,$level,$client_id,$admin_groups_granted), true);
         log_message('debug','info:' . json_encode($info));
         log_message('debug','profile' . json_encode($profile));
         if(array_key_exists('admin',$profile))

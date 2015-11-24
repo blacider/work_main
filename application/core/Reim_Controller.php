@@ -279,14 +279,16 @@ class REIM_Controller extends CI_Controller{
             $title = $sheet_data["title"];
             $rows = $sheet_data["data"];
 
-            // TODO: 自动宽度应该在设置值之后
             $sheet->setTitle($title);
             $first_row = $rows[0];
             $j = 0;
             foreach ($first_row as $k => $v) {
                 $c_name = $this->getCharByNunber($j);
-                $sheet->getStyle($c_name)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
-                $sheet->setCellValue($c_name . '1', ' ' . strval($k));
+                $addr = $c_name . '1';
+                $sheet->getStyle($addr)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+                $sheet->getStyle($addr)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                $sheet->getStyle($addr)->getFont()->setBold(true)->setName('微软雅黑')->setSize(12);
+                $sheet->setCellValue($addr, strval($k));
                 $sheet->getColumnDimension($c_name)->setAutoSize(true);
                 $j++;
             }
@@ -296,8 +298,9 @@ class REIM_Controller extends CI_Controller{
                 $y = 0;
                 foreach ($row as $k => $v) {
                     $c_name = $this->getCharByNunber($y);
-                    $sheet->getStyle($c_name)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
-                    $sheet->setCellValue($this->getCharByNunber($y) . $x, ' ' . strval($v));
+                    $addr = $c_name . $x;
+                    $sheet->getStyle($addr)->getFont()->setName('微软雅黑')->setSize(12);
+                    $sheet->setCellValueExplicit($addr, strval($v), PHPExcel_Cell_DataType::TYPE_STRING);
                     $y++;
                 }
                 $x++;
@@ -310,6 +313,9 @@ class REIM_Controller extends CI_Controller{
                 $j++;
             }
         }
+
+        //
+        $__excel->setActiveSheetIndex(0);
 
         $objwriter = IOFactory::createWriter($__excel, 'Excel5');
         return  $objwriter;

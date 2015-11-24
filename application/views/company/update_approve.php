@@ -1,6 +1,5 @@
 <link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
-<link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 <!-- <link rel="stylesheet" href="/static/third-party/jqui/jquery-ui.min.css" id="main-ace-style" /> -->
 
@@ -8,7 +7,6 @@
 <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 <!--<script src="/static/ace/js/jquery1x.min.js"></script> -->
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
-<script src="/static/ace/js/dropzone.min.js"></script>
 
 
 <script src="/static/ace/js/date-time/moment.js"></script>
@@ -179,9 +177,12 @@
                             function appendChecked(selectJqDom, data, item) {
                                 //第一个 selectJqDom.children()[0].children[0]
                                 $(selectJqDom.children()[0].children[0]).val(data['sob_id']).trigger("chosen:updated");
+                                bind_event_level_sobs();
                                 //第二个
                                 $(selectJqDom.children()[0].children[0]).change();
                                 $(selectJqDom.children()[1].children[0]).val(data['category_id']).trigger("chosen:updated");
+                                bind_event_level_category();
+                                $(selectJqDom.children()[1].children[0]).change();
                                 if (data['act'] == 1) {
                                     selectJqDom.find("input[type='checkbox']")[0].checked = true;
                                 }
@@ -240,7 +241,9 @@
                                     var selectDom = this.parentNode.nextElementSibling.children[0]
                                     $(selectDom).empty().append(_h).trigger("chosen:updated");
                                 });
+                                bind_event_level_sobs();
                                 $($(".CategoryRow .sobs")[$(".CategoryRow .sobs").length-1]).trigger('change');
+                                bind_event_level_category();
                             }
                             $(document).ready(function($) {
                                 $(".chosen-select-niu").chosen({width:"100%"});
@@ -267,7 +270,9 @@
                                     var selectDom = this.parentNode.nextElementSibling.children[0]
                                     $(selectDom).empty().append(_h).trigger("chosen:updated");
                                 });
+                                bind_event_level_sobs();
                                 $($(".disableCategoryRow .sobs")[$(".disableCategoryRow .sobs").length-1]).trigger('change');
+                                bind_event_level_category();
                             }
                         </script>
 
@@ -463,10 +468,51 @@ function get_sobs(){
                 }
         });
 }
+function bind_event_level_sobs() {
+        $('.sobs').change(function(){
+            var s_id = $(this).val();
+            var _h = '';
+            if(selectDataCategory[s_id] != undefined)
+            {
+                for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
+                {
+                    var parent_name = '';
+                    if(selectDataCategory[s_id][i].parent_name)
+                    {
+                        parent_name = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    }
+                    _h += "<option data-parent='" + selectDataCategory[s_id][i].parent_name + "' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>"+ parent_name +selectDataCategory[s_id][i].category_name + " </option>";
+                    
+                }
+            }
+            var selectDom = this.parentNode.nextElementSibling.children[0]
+            $(selectDom).empty().append(_h).trigger("chosen:updated");
+        });
+    }
+    function bind_event_level_category() {
+        $('.sob_category').each(function(){
+            $(this).change(function(){
+                var pre_cate = $('.cate_selected',$(this));
+                var pre_parent = pre_cate.data('parent');
+                var pre_name = pre_cate.data('name');
+                if(pre_parent)
+                {
+                    pre_cate.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + pre_name);
+                }
+                $('.cate_selected',$(this)).removeClass('cate_selected');
+                var selected_cate = $('option:selected',$(this));
+                var selected_cate_parent = selected_cate.data('parent');
+                var selected_cate_name = selected_cate.data('name');
+                selected_cate.prop('class','cate_selected').trigger('chosen:updated');
+                if(selected_cate_parent)
+                {
+                    $(this).next().find('span').text(selected_cate_parent+'-'+selected_cate_name);
+                }
 
+            });
+        });
+    }
 $(document).ready(function(){
-   
-
         /*$.ajax({
         url:__BASE + "category/get_sob_category/"+s_id,
         dataType:'json',
@@ -515,20 +561,8 @@ $(document).ready(function(){
         $(this).prev().focus();
     });
 
-    $('.sobs').change(function(){
-            var s_id = $(this).val();
-            var _h = '';
-            if(selectDataCategory[s_id] != undefined)
-            {
-                for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
-                {
-                    _h += "<option value='" +  selectDataCategory[s_id][i].category_id + "'>"+  selectDataCategory[s_id][i].category_name + " </option>";
-                    
-                }
-            }
-            var selectDom = this.parentNode.nextElementSibling.children[0]
-            $(selectDom).empty().append(_h).trigger("chosen:updated");
-        });
+
+
     get_sobs();
     $('.chosen-select').chosen({allow_single_deselect:true}); 
     $(window)
@@ -735,7 +769,8 @@ $(document).ready(function(){
   };
   $(update_users);
   $("#all_members").change(update_users);*/
-
+   bind_event_level_sobs();
+   bind_event_level_category();
 });
 function changeAble(value) {
         if (value == 1 || value == -1) {

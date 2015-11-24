@@ -1199,7 +1199,7 @@ $(document).ready(function(){
             format: 'YYYY-MM-DD',
             linkField: "dt",
             linkFormat: "YYYY-MM-DD",
-            sideBySide: false
+            pickTime:false
     }).next().on('dp.change', function(ev){
     }).on(ace.click_event, function(){
         $(this).prev().focus();

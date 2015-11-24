@@ -1488,6 +1488,7 @@ public function common(){
         $note_compulsory = 0;
         $not_auto_time = 0;
         $open_exchange = 0;
+        $same_category_pdf = 0;
     
         $calendar_month = $this->input->post('calendar_month');
         $need_bank = $this->input->post('need_bank_info');
@@ -1506,6 +1507,7 @@ public function common(){
         $_note_compulsory = $this->input->post('note_compulsory');
         $_not_auto_time = $this->input->post('not_auto_time');
         $_open_exchange = $this->input->post('open_exchange');
+        $_same_category_pdf = $this->input->post('same_category_pdf');
 
         if($_open_exchange == "true")
         {
@@ -1550,6 +1552,10 @@ public function common(){
         {
             $close_directly = 1;
         }
+        if($_same_category_pdf == "true")
+        {
+            $same_category_pdf = 1;
+        }
         $data = $this->company->get();
         //  $config = $data['data']['config'];
         //  if(array_key_exists('same_category',$confarr))
@@ -1578,7 +1584,7 @@ public function common(){
         $in['low_amount_only'] = $low_amount_only;
         $in['calendar_month'] = $calendar_month;
         $in['open_exchange'] = $open_exchange;
-        log_message('debug','company_in:' .json_encode($in));
+        $in['same_category_pdf'] = $same_category_pdf;
         $this->company->profile($in);
         //die(json_encode($re));
         die(json_encode(array('msg'=>'保存成功')));
