@@ -158,6 +158,17 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right">报告按照类目分类</label>
+                                <div class="col-xs-6 col-sm-6">
+                                        <label style="margin-top:8px;">
+                                            <input name="same_category_pdf" class="ace ace-switch btn-rotate" type="checkbox" id="same_category_pdf" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+
+                                   <!-- </div> -->
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">报销单打印模板设置</label>
@@ -166,7 +177,8 @@
                                     <option value="a4.yaml">A4模板</option>
                                     <option value="a5.yaml">A5模板</option>
                                     <option value="b5.yaml">B5模板</option>
-                                    <option value="disanshi.yaml">210*114 分类别模板</option>
+                                    <option value="disanshihead.yaml">210*114</option>
+                                    <option value="disanshi.yaml">A4 表头有金额</option>
                                 
                                 </select>
                                 </div>
@@ -257,6 +269,15 @@ var __BASE = "<?php echo $base_url; ?>";
     dataType:'json',
     success:function(data){
 
+        if(data.same_category_pdf != undefined)
+        {
+            if(data.same_category_pdf ==1)
+            {
+                $('#same_category_pdf').attr('checked', data.same_category_pdf);
+                $("#same_category_pdf").trigger("chosen:updated");
+            }
+
+        }
         if(data.open_exchange!=undefined)
         {
             if(data.open_exchange==1)
@@ -440,7 +461,8 @@ var __BASE = "<?php echo $base_url; ?>";
                         iscompany:$('#iscompany').is(':checked'),
                         template:$('#temp option:selected').val(),
                         limit:lval,reports_limit:r_limit,
-                        open_exchange:$('#open_exchange').is(':checked')
+                        open_exchange:$('#open_exchange').is(':checked'),
+                        same_category_pdf:$('#same_category_pdf').is(':checked')
        },
                     dataType:'json',
                     success:function(data){

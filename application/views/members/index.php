@@ -326,8 +326,8 @@ function load_group(gid){
                     + '<th>手机</th>'
                     + '<th>部门</th>'
                     + '<th>职位</th>'
-                    + '<th>上级</th>'
-                    + '<th>身份</th>';
+                    + '<th>默认审批人</th>'
+                    + '<th>角色</th>';
                     if(_admin == 1 || _admin == 3){
                         _th += '<th>操作</th>'
                     }
@@ -339,7 +339,14 @@ function load_group(gid){
                         var _p = '员工';
                     var _color = '<span class="label label-success arrowed">管理员</span>';
                     switch(item.admin) {
-                         case '2' : {
+                    case '3' : {
+                        //$desc = '出纳';
+
+                        _color = '<span class="label label-purple arrowed">IT人员</span>';                        
+                        _c = 'green';
+                        _p = '点击设置为员工'; 
+                    }; break;
+                    case '2' : {
                         //$desc = '出纳';
 
                         _color = '<span class="label label-warning arrowed">出纳</span>';                        
