@@ -1489,6 +1489,7 @@ public function common(){
         $not_auto_time = 0;
         $open_exchange = 0;
         $same_category_pdf = 0;
+        $footer_format = 0;
     
         $calendar_month = $this->input->post('calendar_month');
         $need_bank = $this->input->post('need_bank_info');
@@ -1508,6 +1509,7 @@ public function common(){
         $_not_auto_time = $this->input->post('not_auto_time');
         $_open_exchange = $this->input->post('open_exchange');
         $_same_category_pdf = $this->input->post('same_category_pdf');
+        $footer_format = $this->input->post('footer_format');
 
         if($_open_exchange == "true")
         {
@@ -1575,6 +1577,7 @@ public function common(){
         $in['not_auto_time'] = $not_auto_time;
         $in['export_no_note'] = $remark_id;
         $in['template'] = $template;
+        $in['footer_format'] = $footer_format;
         $in['user_confirm'] = $user_confirm;
         $in['report_quota'] = $reports_limit;
         $in['private_structure'] = $private_structure;
