@@ -433,7 +433,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                     <a style="margin-left: 20px;" class="btn btn-white tdeny" ><i class="ace-icon  glyphicon glyphicon-remove gray bigger-110"></i>退回</a>
                     <?php 
                 }
-                else
+                else if(in_array($profile['admin'],[1,2]) && $report['status'] == 2)
                 {
                      ?>
                     <a style="margin-left: 20px;" class="btn btn-white tapprove" ><i class="ace-icon fa fa-check-square-o gray bigger-110"></i>通过</a>
@@ -449,8 +449,6 @@ if($i['ts'] != '0000-00-00 00:00:00') {
     </div>
 
 </div>
-
-
 
 
 <div class="modal fade" id="comment_dialog">
