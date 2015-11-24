@@ -215,7 +215,7 @@ function bind_event() {
                             <hr>
                               <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">适用范围</label>
-                                <div class="col-xs-3 col-sm-3">
+                                <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" id="ranks" name="ranks[]" multiple="multiple" data-placeholder="请选择级别" placeholder="请选择级别">
                                     <?php 
                                     foreach($ranks as $g){
@@ -226,7 +226,10 @@ function bind_event() {
                                     ?>
                                     </select>
                                 </div>
-                                <div class="col-xs-3 col-sm-3">
+                                </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right"></label>
+                                <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" id="levels" name="levels[]" multiple="multiple" data-placeholder="请选择职位">
                                     <?php 
                                     foreach($levels as $m){
@@ -240,7 +243,7 @@ function bind_event() {
 			     </div>
                               <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right"></label>
-                                <div class="col-xs-3 col-sm-3">
+                                <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" id="group" name="gids[]" multiple="multiple" data-placeholder="请选择部门" placeholder="请选择部门">
                                     <?php 
                                     foreach($group as $g){
@@ -251,12 +254,21 @@ function bind_event() {
                                     ?>
                                     </select>
                                 </div>
-                                <div class="col-xs-3 col-sm-3">
+                                </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right"></label>
+                                <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
                                     <?php 
                                     foreach($member as $m){
                                     ?>
-                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
+                                        <option value="<?php echo $m['id']; ?>"><?php
+                                        $str_uid = $m['nickname'] . '-[' . $m['email'] .']';
+                                        if (strlen($str_uid) > 52) {
+                                            echo substr($str_uid, 0, 52);
+                                        } else {
+                                            echo $str_uid;
+                                        }?></option>
                                     <?php
                                     }
                                     ?>
