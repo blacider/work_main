@@ -104,6 +104,7 @@ class Bills extends REIM_Controller {
         }
         $with_note = 1;
         $template = 'a4.yaml';
+        $_splite_by_category = 0;
         $_rid = $this->input->post('chosenids');
         $_rid = $this->input->post('chosenids');
         $rid = array();
@@ -126,7 +127,13 @@ class Bills extends REIM_Controller {
             {
                 $with_no_note = $config['export_no_note'];
             }
+            $_splite_by_category = 0;
+            if(($config) && (array_key_exists('same_category_pdf', $config)) && ($config['same_category_pdf']))
+            {
+                $_splite_by_category = $config['same_category_pdf'];
+            }
             log_message('debug','note:'.$with_no_note);
+
             if(intval($with_no_note) == 1)
             {
                 $with_note = 0;
@@ -144,9 +151,7 @@ class Bills extends REIM_Controller {
         $archive = 1;
 
         log_message('debug','profile'.json_encode($profile['data']['profile']['group']));
-        //$url = "https://report.yunbaoxiao.com/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
-        $url = "https://www.yunbaoxiao.com/report/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
-        //$url = "http://admin.cloudbaoxiao.com:7780/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
+        $url = "https://www.yunbaoxiao.com/report/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category;
         log_message('debug','hhh'. $url);
         die(json_encode(array('url' => $url)));
     }
@@ -178,6 +183,7 @@ class Bills extends REIM_Controller {
         $_rid = $this->input->post('chosenids');
         $_rid = $this->input->post('chosenids');
         $rid = array();
+        $_splite_by_category = 0;
         foreach($_rid as $r)
         {
             array_push($rid,$this->reim_cipher->encode($r));
@@ -206,6 +212,11 @@ class Bills extends REIM_Controller {
             {
                 $with_note = 1;
             }
+            $_splite_by_category = 0;
+            if(($config) && (array_key_exists('same_category_pdf', $config)) && ($config['same_category_pdf']))
+            {
+                $_splite_by_category = $config['same_category_pdf'];
+            }
             if(($config) && (array_key_exists('template', $config)) && ($config['template']))
             {
                 $template = $config['template'];
@@ -216,7 +227,7 @@ class Bills extends REIM_Controller {
 
         log_message('debug','profile'.json_encode($profile['data']['profile']['group']));
         //$url = "https://report.yunbaoxiao.com/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
-        $url = "https://www.yunbaoxiao.com/report/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
+        $url = "https://www.yunbaoxiao.com/report/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category;
         //$url = "http://admin.cloudbaoxiao.com:7780/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1";
         log_message('debug','hhh'. $url);
         die(json_encode(array('url' => $url)));
@@ -570,18 +581,26 @@ class Bills extends REIM_Controller {
             $d['status_str'] = '';
             $edit = '';
             $extra = '';
-            if($d['finance_status'] == 2) {
-                $edit = 'gray';
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-$extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span>';
-            }
-            if($d['finance_status'] == 1) {
+            if($d['status'] == 2) {
                 $edit = 'green';
                 $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>';
                 $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span><span class="ui-icon ui-icon ace-icon fa fa-check tapprove green" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon ui-icon red ace-icon fa fa-times tdeny" data-id="' . $d['id'] . '"></span>';
             }
-
-
+            if($d['status'] == 4 || $d['status'] == 7 || $d['status'] == 8) {
+                $edit = 'gray';
+                $describe_status = '已完成';
+                if($d['status'] == 7)
+                    $describe_status = '完成待确认';
+                if($d['status'] == 8)
+                    $describe_status = '完成已确认';
+                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">' . $describe_status . '</button>';
+                $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span>' ;
+            }
+            if($d['status'] == 1) {
+                $edit = 'blue';
+                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
+                $extra = '';
+            }
             $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                 . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . ''. $extra
                 . '</div>';
@@ -675,7 +694,12 @@ $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data
             }
             if($d['status'] == 4 || $d['status'] == 7 || $d['status'] == 8) {
                 $edit = 'gray';
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
+                $describe_status = '已完成';
+                if($d['status'] == 7)
+                    $describe_status = '完成待确认';
+                if($d['status'] == 8)
+                    $describe_status = '完成已确认';
+                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">' . $describe_status . '</button>';
                 $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span>' ;
             }
             if($d['status'] == 1) {
@@ -728,42 +752,4 @@ $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data
         }
         die(json_encode($_data));
     }
-
-    public function save(){
-        $this->need_group_casher();
-        $status = $this->input->post('status_str');
-        $id = $this->input->post('id');
-        $oper = $this->input->post('oper');
-
-        if($oper == "edit"){
-            die($this->reports->mark_success(implode(",", array($id))));
-        }
-
-    }
-
-
-    public function marksuccess($ids = '0', $type = -1){
-        $this->need_group_casher();
-        $ids = explode('%23', $ids);
-        foreach ($ids as $id ) {
-            if(0 === $id){
-                $type = $this->input->post('type');
-                $data = $this->input->post('data');
-                $id = implode(",", $data);
-                $status = 2;
-                if(0 === $type) {
-                    $status = 4;
-                }
-                die($this->reports->mark_success($id, $status));
-            } else {
-                $status = 3;
-                if(0 === intval($type)) {
-                    $status = 4;
-                }
-                $this->reports->mark_success($id, $status);
-            }
-        }
-        redirect(base_url('bills'));
-    }
-
 }

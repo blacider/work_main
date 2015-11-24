@@ -655,7 +655,7 @@ class Items extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-        $item['dt'] = date('Y-m-d',$item['dt']);
+        $item['dt'] = date('Y-m-d H:i:s',$item['dt']);
         log_message("debug", "ITEM:" . json_encode($item));
         $this->bsload('items/iview',
             array(
@@ -723,7 +723,7 @@ class Items extends REIM_Controller {
         }
         $item = $obj['data'];
         //$item_value = '';
-        $item['dt'] = date('Y-m-d',$item['dt']);
+        $item['dt'] = date('Y-m-d H:i:s',$item['dt']);
         $item_value = array();
         if(array_key_exists('extra',$item))
         {
@@ -1054,7 +1054,7 @@ class Items extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-        $item['dt'] = date('Y-m-d',$item['dt']);
+        $item['dt'] = date('Y-m-d H:i:s',$item['dt']);
         $is_burden = true;
         if(!$afford)
         {

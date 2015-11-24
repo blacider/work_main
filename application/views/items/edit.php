@@ -160,7 +160,7 @@
             if($_type == 2) {
                 $config_id = $_item['id'];
                 $config_type = $_item['type'];
-                $ddt = date('Y-m-d', $_item['value']); 
+                $ddt = date('Y-m-d H:i:s', $_item['value']); 
             }
             if($_type == 5) {
                 $config_id = $_item['id'];
@@ -1077,9 +1077,9 @@ $(document).ready(function(){
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
         defaultDate: _dt,
-        format: 'YYYY-MM-DD',
+        format: 'YYYY-MM-DD HH:mm:ss',
         linkField: "dt1",
-        sideBySide: false
+        sideBySide: true
     }).next().on(ace.click_event, function(){
         $(this).prev().focus();
     });
@@ -1092,10 +1092,10 @@ $(document).ready(function(){
         $('#date-timepicker2').val(_ddt);
             $('#date-timepicker2').datetimepicker({
                 language: 'zh-cn',
-                defaultDate: _ddt,
-                format: 'YYYY-MM-DD',
+                defaultDate: _ddt, 
+                format: 'YYYY-MM-DD HH:mm:ss',
                 linkField: "dt_end1",
-                sideBySide: false
+                sideBySide: true
                 }).next().on(ace.click_event, function(){
                     $(this).prev().focus();
                 });

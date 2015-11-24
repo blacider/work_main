@@ -821,10 +821,10 @@ $(document).ready(function(){
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
             useCurrent: true,
-            format: 'YYYY-MM-DD',
+            format: 'YYYY-MM-DD HH:mm:ss',
             linkField: "dt",
-            linkFormat: "YYYY-MM-DD",
-            sideBySide: false
+            linkFormat: "YYYY-MM-DD HH:mm:ss",
+            sideBySide: true
     }).next().on('dp.change', function(ev){
     }).on(ace.click_event, function(){
         $(this).prev().focus();
@@ -833,10 +833,10 @@ $(document).ready(function(){
     $('#date-timepicker2').datetimepicker({
         language: 'zh-cn',
             useCurrent: true,
-            format: 'YYYY-MM-DD',
+            format: 'YYYY-MM-DD hh:ii:ss',
             linkField: "dt_end",
-            linkFormat: "YYYY-MM-DD",
-            sideBySide: false
+            linkFormat: "YYYY-MM-DD hh:ii:ss",
+            sideBySide: true
     }).next().on('dp.change', function(ev){
     }).on(ace.click_event, function(){
         $(this).prev().focus();

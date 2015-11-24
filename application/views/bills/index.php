@@ -408,10 +408,6 @@ $(document).ready(function(){
         }).trigger('resize.chosen');
     });
 
-function pay() {
-    var _id = chosenids.join('%23');
-    location.href = __BASE + "bills/marksuccess/" + _id + "/0";
-}
 
 function exportExel() {
         var form=$("<form>");//定义一个form表单
