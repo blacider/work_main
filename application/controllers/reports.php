@@ -13,9 +13,10 @@ class Reports extends REIM_Controller {
         $this->load->helper('report_view_utils');
     }
 
-    public function confirm_success($rid=0)
+    public function confirm_success()
     {
-        if(0 == $rid) redirect(base_url('reports'));
+        $rid = $this->input->post('rid');
+        if(!$rid) redirect(base_url('reports'));
         $buf = $this->reports->confirm_success($rid);
         if($buf['status'] > 0)
         {
@@ -25,7 +26,7 @@ class Reports extends REIM_Controller {
         {
             $this->session->set_userdata('last_error',$buf['data']['msg']);
         }
-        return redirect(base_url('reports'));
+        echo json_encode(array());
     }
 
     public function get_coin_symbol($key = 'cny')

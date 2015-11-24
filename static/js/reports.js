@@ -5,7 +5,18 @@ function bind_event(){
             var _id = $(this).data('id');
             if(confirm('确认已收款？'))
             {
-                location.href = __BASE + "reports/confirm_success/" + _id;
+                $.ajax({
+                    url:__BASE + "/reports/confirm_success",
+                    method:'post',
+                    dataType:'json',
+                    data:{'rid':_id},
+                    success:function(data){
+                        location.href = __BASE + "/reports";
+                    },
+                    error:function(a,b,c){
+
+                    }
+                });
             }
         });
     });

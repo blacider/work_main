@@ -603,7 +603,18 @@ $(document).ready(function(){
 
     $('.confirm_success').click(function(){
        if(confirm('确认已经收款?')){
-                location.href = __BASE + "/reports/confirm_success/" + rid;
+                $.ajax({
+                    url:__BASE + "/reports/confirm_success",
+                    method:'post',
+                    dataType:'json',
+                    data:{'rid':rid},
+                    success:function(data){
+                        location.href = __BASE + "/reports";
+                    },
+                    error:function(a,b,c){
+
+                    }
+                });
             }
     });
 
