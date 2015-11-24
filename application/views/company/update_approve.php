@@ -783,8 +783,6 @@ $(document).ready(function(){
   };
   $(update_users);
   $("#all_members").change(update_users);*/
-   bind_event_level_sobs();
-   bind_event_level_category();
 });
 function changeAble(value) {
         if (value == 1 || value == -1) {
@@ -810,6 +808,7 @@ function changeAble(value) {
             $('.CategoryRow .removeCategoryRow').attr('onclick','removeCategoryRow(this)');
             $('.disableCategoryRow .removeCategoryRow').attr('onclick','');
         }
+        $('.sob_category').change();
       }
 </script>
 
