@@ -21,7 +21,7 @@
 <div class="row">
 <div class="col-xs-12 col-sm-12">
 <?php
-    if(array_key_exists('open_exchange', $__config) && $__config['open_exchange'] == '1')
+    if($__config && array_key_exists('open_exchange', $__config) && $__config['open_exchange'] == '1')
     {
 ?>
 <div class="form-group">
