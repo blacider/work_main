@@ -13,6 +13,22 @@ class Reports extends REIM_Controller {
         $this->load->helper('report_view_utils');
     }
 
+    public function confirm_success()
+    {
+        $rid = $this->input->post('rid');
+        if(!$rid) redirect(base_url('reports'));
+        $buf = $this->reports->confirm_success($rid);
+        if($buf['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','操作成功');
+        }
+        else
+        {
+            $this->session->set_userdata('last_error',$buf['data']['msg']);
+        }
+        echo json_encode(array());
+    }
+
     public function get_coin_symbol($key = 'cny')
     {
         $symbol = '?';
@@ -229,6 +245,7 @@ class Reports extends REIM_Controller {
             $edit_icon = '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>';
             $export_icon = '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>';
             $trash_icon = '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>';
+            $confirm_icon = '<span class="ui-icon ace-icon fa fa-check green' . $trash . '  tconfirm" data-id="' . $d['id'] . '"></span>';
             $download_icon = '<span class="ui-icon ace-icon fa fa-download ' . 'blue' . '  tdown" data-id="' . $d['id'] . '"></span>';
             $end_icon = '</div>';
             
@@ -243,6 +260,10 @@ class Reports extends REIM_Controller {
             else if(in_array($d['status'],[2]))
             {
                 $d['options'] = $base_icon . $show_icon .  $export_icon . $download_icon . $end_icon;
+            }
+            else if(in_array($d['status'],[7]))
+            {
+                $d['options'] = $base_icon . $show_icon . $export_icon . $download_icon . $confirm_icon . $end_icon;
             }
             else
             {
@@ -1297,6 +1318,18 @@ class Reports extends REIM_Controller {
         if (array_key_exists('item_type', $profile['group']))
             foreach ($profile['group']['item_type'] as $name)
                 $dict_item_type_names[$name['type']] = $name['name'];
+
+        // 转换自定义备注字段
+        $dict_customized_note_field = array();
+        if (array_key_exists('item_config', $profile['group'])) {
+            foreach ($profile['group']['item_config'] as $conf) {
+                if ($conf['cid'] == -1 && $conf['type'] == 1) {
+                    if ($conf['active'] && !$conf['disabled']) {
+                        $dict_customized_note_field[$conf['id']] = $conf['name'];
+                    }
+                }
+            }
+        }
         
         //添加汇率
         $open_exchange = 0 ;
@@ -1744,6 +1777,12 @@ class Reports extends REIM_Controller {
                 $o['会计科目上级'] = $_sob_name;
                 $o['会计科目代码'] = $_sob_code;
                 $o['报销审核人'] = $i['flow'];
+                foreach ($dict_customized_note_field as $fid => $fname) {
+                    $o[$fname] = '';
+                    if (!empty($i['extra'][$fid])) {
+                        $o[$fname] = $i['extra'][$fid]['value'];
+                    }
+                }
                 $o['备注'] = $i['note'];
                 $o['消费类型'] = $this->try_get_element($dict_item_type_names, $i['prove_ahead']);
                 $_rate = 1.0;

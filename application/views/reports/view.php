@@ -420,11 +420,20 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                 <?php
                 $_ruid = $report['uid'];
                 $_uid = $profile['id'];
-                if($_ruid == $_uid  && (($report['status'] == 1) || ($report['status'] == 2)) ) 
+                if($_ruid == $_uid) 
                 {
+                    if(($report['status'] == 1) || ($report['status'] == 2))
+                    {
                     ?>
                     <a style="margin-left: 80px;" class="btn btn-white callback" data-renew="-2"><i class="ace-icon fa fa-undo gray bigger-110"></i>撤回</a>
                     <?php 
+                    }
+                    else if($report['status'] == 7)
+                    {
+                    ?>
+                    <a style="margin-left: 80px;" class="btn btn-white confirm_success" data-renew="-2"><i class="ace-icon fa fa-check-square-o gray bigger-110"></i>确认已收款</a>
+                    <?php   
+                    }
                 }
                 if($decision == 1)
                 {
@@ -591,6 +600,24 @@ $(document).ready(function(){
                 location.href = __BASE + "/reports/revoke/" + rid;
             }
     });
+
+    $('.confirm_success').click(function(){
+       if(confirm('确认已经收款?')){
+                $.ajax({
+                    url:__BASE + "/reports/confirm_success",
+                    method:'post',
+                    dataType:'json',
+                    data:{'rid':rid},
+                    success:function(data){
+                        location.href = __BASE + "/reports";
+                    },
+                    error:function(a,b,c){
+
+                    }
+                });
+            }
+    });
+
 
     $('#submit1').click(function(){
         $('#comment').submit();

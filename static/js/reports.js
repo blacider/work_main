@@ -1,5 +1,25 @@
 
 function bind_event(){
+    $('.tconfirm').each(function() {
+        $(this).click(function(){
+            var _id = $(this).data('id');
+            if(confirm('确认已收款？'))
+            {
+                $.ajax({
+                    url:__BASE + "/reports/confirm_success",
+                    method:'post',
+                    dataType:'json',
+                    data:{'rid':_id},
+                    success:function(data){
+                        location.href = __BASE + "/reports";
+                    },
+                    error:function(a,b,c){
+
+                    }
+                });
+            }
+        });
+    });
     $('.tdetail').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
