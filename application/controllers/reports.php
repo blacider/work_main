@@ -1247,14 +1247,17 @@ class Reports extends REIM_Controller {
                     foreach ($conf["children"] as $child) {
                         $child_name = $conf["name"] . " - " . $child["name"];
                         $id = $child["id"];
+                        $value = $this->try_get_element($extra_dict, $id, 'value');
                         if ($child["type"] == 4) {
-                            $obj[$child_name . " - 户名"] = $this->try_get_element($extra_dict, $id, "value", "account");
-                            $obj[$child_name . " - 账号"] = $this->try_get_element($extra_dict, $id, "value", "cardno");
-                            $obj[$child_name . " - 开户行"] = $this->try_get_element($extra_dict, $id, "value", "bankname");
-                            $obj[$child_name . " - 开户地"] = $this->try_get_element($extra_dict, $id, "value", "bankloc");
-                            $obj[$child_name . " - 开户支行"] = $this->try_get_element($extra_dict, $id, "value", "subbranch");
+                            $bankinfo = json_decode($value, TRUE);
+                            
+                            $obj[$child_name . " - 户名"] = $this->try_get_element($bankinfo, "account");
+                            $obj[$child_name . " - 账号"] = $this->try_get_element($bankinfo, "cardno");
+                            $obj[$child_name . " - 开户行"] = $this->try_get_element($bankinfo, "bankname");
+                            $obj[$child_name . " - 开户地"] = $this->try_get_element($bankinfo, "bankloc");
+                            $obj[$child_name . " - 开户支行"] = $this->try_get_element($bankinfo, "subbranch");
                         } else {
-                            $obj[$child_name] = $this->try_get_element($extra_dict, $id, "value");
+                            $obj[$child_name] = $value;
                         }
                     }
                 }
