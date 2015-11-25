@@ -53,7 +53,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">审批时修改后金额不能⼤于提交⾦额</label>
+                                <label class="col-sm-3 control-label no-padding-right">审批时修改后金额不能大于提交金额</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
@@ -119,7 +119,7 @@
                             </div>
 
                               <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">消费时间不⾃动生成</label>
+                                <label class="col-sm-3 control-label no-padding-rigtht">消费时间不自动生成</label>
                                 <div class="col-xs-4 col-sm-4">
                                         <label style="margin-top:8px;">
                                             <input name="not_auto_time" class="ace ace-switch btn-rotate" type="checkbox" id="not_auto_time" style="margin-top:4px;" />
