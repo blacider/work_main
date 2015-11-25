@@ -21,7 +21,7 @@
 <div class="row">
 <div class="col-xs-12 col-sm-12">
 <?php
-    if(array_key_exists('open_exchange', $__config) && $__config['open_exchange'] == '1')
+    if($__config && array_key_exists('open_exchange', $__config) && $__config['open_exchange'] == '1')
     {
 ?>
 <div class="form-group">
@@ -823,9 +823,9 @@ $(document).ready(function(){
     $('#date-timepicker2').datetimepicker({
         language: 'zh-cn',
             useCurrent: true,
-            format: 'YYYY-MM-DD hh:ii:ss',
+            format: 'YYYY-MM-DD HH:mm:ss',
             linkField: "dt_end",
-            linkFormat: "YYYY-MM-DD hh:ii:ss",
+            linkFormat: "YYYY-MM-DD HH:mm:ss",
             sideBySide: true
     }).next().on('dp.change', function(ev){
     }).on(ace.click_event, function(){
