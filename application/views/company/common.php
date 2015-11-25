@@ -53,7 +53,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">审批时修改后金额不能⼤于提交⾦额</label>
+                                <label class="col-sm-3 control-label no-padding-right">审批时修改后金额不能大于提交金额</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
@@ -119,7 +119,7 @@
                             </div>
 
                               <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">消费时间不⾃动生成</label>
+                                <label class="col-sm-3 control-label no-padding-rigtht">消费时间不自动生成</label>
                                 <div class="col-xs-4 col-sm-4">
                                         <label style="margin-top:8px;">
                                             <input name="not_auto_time" class="ace ace-switch btn-rotate" type="checkbox" id="not_auto_time" style="margin-top:4px;" />
@@ -170,6 +170,17 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-rigtht">报销单页脚配置</label>
+                                <div class="col-xs-4 col-sm-4">
+                                    <select id="footer_format" class="chosen-select tag-input-style" name="footer_format"  data-placeholder="请选择页脚的格式">
+                                    <option value="0">无</option>
+                                    <option value="1">仅公司名称</option>
+                                    <option value="2">仅部门名称</option>
+                                    <option value="3">公司/部门名称</option>
+                                </select>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">报销单打印模板设置</label>
                                 <div class="col-xs-4 col-sm-4">
@@ -268,7 +279,10 @@ var __BASE = "<?php echo $base_url; ?>";
     url:__BASE+"company/getsetting",
     dataType:'json',
     success:function(data){
-
+        if(data.footer_format != undefined) {
+            $("#footer_format").val(data.footer_format).attr('selected',true);
+            $(".footer-format").trigger("chosen:updated");
+        }
         if(data.same_category_pdf != undefined)
         {
             if(data.same_category_pdf ==1)
@@ -276,7 +290,6 @@ var __BASE = "<?php echo $base_url; ?>";
                 $('#same_category_pdf').attr('checked', data.same_category_pdf);
                 $("#same_category_pdf").trigger("chosen:updated");
             }
-
         }
         if(data.open_exchange!=undefined)
         {
@@ -460,6 +473,7 @@ var __BASE = "<?php echo $base_url; ?>";
                         isremark:$('#isremark').is(':checked'),
                         iscompany:$('#iscompany').is(':checked'),
                         template:$('#temp option:selected').val(),
+                        footer_format:$('#footer_format option:selected').val(),
                         limit:lval,reports_limit:r_limit,
                         open_exchange:$('#open_exchange').is(':checked'),
                         same_category_pdf:$('#same_category_pdf').is(':checked')

@@ -37,7 +37,7 @@
                             <input type="hidden" name="rid" value="<?php echo $item['rid']; ?>" />
                             <input type="hidden" name="from_report" value="<?php echo $from_report; ?>" />
                             <?php 
-                                if(array_key_exists('open_exchange', $__config) && $__config['open_exchange'] == '1'){
+                                if($__config && array_key_exists('open_exchange', $__config) && $__config['open_exchange'] == '1'){
                             ?>
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label no-padding-right">金额</label>

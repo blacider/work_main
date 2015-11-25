@@ -166,6 +166,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         <a href="#"  class="dropdown-toggle">
             <i class="menu-icon fa fa-caret-right"></i>
             新建报销单 
+            <b class="arrow fa fa-angle-down"></b>
         </a>
 <?php } else { ?>
         <a href="<?php echo base_url('reports/newreport'); ?>" >
@@ -173,8 +174,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
             新建报销单
         </a>
 <?php } ?>
-
-        <b class="arrow"></b>
+<b class="arrow"></b>
 <?php if(count($report_templates) > 0) { ?>
 <ul class="submenu rushumenu">
 <?php foreach($report_templates as $r) { ?>
