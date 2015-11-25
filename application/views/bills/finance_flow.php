@@ -397,7 +397,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
                     <div class="clearfix form-actions">
                         <div class="col-md-offset-3 col-md-9">
                             <a class="btn btn-white btn-primary new_card" data-renew="0"><i class="ace-icon fa fa-save "></i>退回</a>
-                            <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
+                            <a style="margin-left: 80px;" class="btn btn-white " data-renew="-1" data-dismiss="modal"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
                         </div>
                     </div>
                 </div>
