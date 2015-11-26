@@ -1477,105 +1477,35 @@ public function common(){
     
     public function profile()
     {
-        $pids = 1;
-        $remark_id = 0;
-        $company_id = 0;
-        $need_bank_info = 0;
-        $private_structure = 0;
-        $mail_notify = 0;
-        $low_amount_only = 0;
-        $close_directly = 0;
-        $note_compulsory = 0;
-        $not_auto_time = 0;
-        $open_exchange = 0;
-        $same_category_pdf = 0;
-        $footer_format = 0;
-    
         $calendar_month = $this->input->post('calendar_month');
-        $need_bank = $this->input->post('need_bank_info');
-        $isadmin = $this->input->post('isadmin');
-        log_message("debug", "FROM FORM IS ADMIN" . $isadmin);
-        $isremark = $this->input->post('isremark');
-        $iscompany = $this->input->post('iscompany');
+        $need_bank_info = $this->input->post('need_bank_info');
+        $same_category = $this->input->post('same_category')^1;
+        $export_no_note = $this->input->post('export_no_note');
+        $export_no_company = $this->input->post('export_no_company');
         $template = $this->input->post('template');
         $user_confirm = $this->input->post('limit');
         $reports_limit = $this->input->post('reports_limit');
         $max_allowed_months = $this->input->post('max_allowed_months');
-        $_private_structure = $this->input->post('private_structure');
-        $_mail_notify = $this->input->post('mail_notify');
-        $_max_amount_allowd = $this->input->post('low_amount_only');
-        $_close_directly = $this->input->post('close_directly');
-        $_note_compulsory = $this->input->post('note_compulsory');
-        $_not_auto_time = $this->input->post('not_auto_time');
-        $_open_exchange = $this->input->post('open_exchange');
-        $_same_category_pdf = $this->input->post('same_category_pdf');
+        $private_structure = $this->input->post('private_structure');
+        $mail_notify = $this->input->post('mail_notify');
+        $low_amount_only = $this->input->post('low_amount_only');
+        $close_directly = $this->input->post('close_directly');
+        $note_compulsory = $this->input->post('note_compulsory');
+        $not_auto_time = $this->input->post('not_auto_time');
+        $open_exchange = $this->input->post('open_exchange');
+        $same_category_pdf = $this->input->post('same_category_pdf');
         $footer_format = $this->input->post('footer_format');
+        $statistic_using_category = $this->input->post('statistic_using_category');
 
-        if($_open_exchange == "true")
-        {
-            $open_exchange = 1;
-        }
-        if($isadmin == "true")
-        {
-            $pids = 0;
-        }
-        if($isremark == "true")
-        {
-            $remark_id = 1;
-        }
-        if($iscompany == "true")
-        {
-            $company_id = 1;
-        }
-        if($_not_auto_time == "true") {
-            $not_auto_time = 1;
-        }
-        if($_note_compulsory == "true")
-        {
-            $note_compulsory = 1;
-        }
-        if($_mail_notify == "true")
-        {
-            $mail_notify = 1;
-        }
-        if($_private_structure == "true")
-        {
-            $private_structure = 1;
-        }
-        if($need_bank == "true")
-        {
-            $need_bank_info = 1;
-        }
-        if($_max_amount_allowd == "true")
-        {
-            $low_amount_only= 1;
-        }
-        if($_close_directly == "true")
-        {
-            $close_directly = 1;
-        }
-        if($_same_category_pdf == "true")
-        {
-            $same_category_pdf = 1;
-        }
-        $data = $this->company->get();
-        //  $config = $data['data']['config'];
-        //  if(array_key_exists('same_category',$confarr))
-        //  {
-        //      $confarr['same_category'] = $pid;
-        //  }
-        //  if(array_key_exists('template',$confarr))
-        //  {
-        //      $confarr['template'] = $template;
-        //  }
-        log_message('debug','same_category:' . $pids);
+        //$data = $this->company->get();
+
         $in=array();
-        $in['export_no_company']=$company_id;
-        $in['same_category'] = $pids;
+        $in['export_no_company']=$export_no_company;
+        $in['same_category'] = $same_category;
         $in['close_directly'] = $close_directly;
         $in['note_compulsory'] = $note_compulsory;
         $in['not_auto_time'] = $not_auto_time;
-        $in['export_no_note'] = $remark_id;
+        $in['export_no_note'] = $export_no_note;
         $in['template'] = $template;
         $in['footer_format'] = $footer_format;
         $in['user_confirm'] = $user_confirm;
@@ -1588,6 +1518,8 @@ public function common(){
         $in['calendar_month'] = $calendar_month;
         $in['open_exchange'] = $open_exchange;
         $in['same_category_pdf'] = $same_category_pdf;
+        $in['statistic_using_category'] = $statistic_using_category;
+        log_message('debug',json_encode($in));
         $this->company->profile($in);
         //die(json_encode($re));
         die(json_encode(array('msg'=>'保存成功')));
