@@ -1162,7 +1162,6 @@ class Members extends REIM_Controller {
             $gmember = $gmember ? $gmember : array();
         }
         log_message('debug','@@@@manger_id:'.$manager_id);
-        $path = base_url($this->users->reim_get_hg_avatar($info['avatar']));
 
         //print_r($info);
         $this->bsload('user/profile',
