@@ -476,13 +476,6 @@ function bind_event_level_sobs() {
             {
                 for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
                 {
-                    /*var parent_name = '';
-                    if(selectDataCategory[s_id][i].parent_name)
-                    {
-                        parent_name = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                    }
-                    _h += "<option data-parent='" + selectDataCategory[s_id][i].parent_name + "' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>"+ parent_name +selectDataCategory[s_id][i].category_name + " </option>";
-                    */
                     var parent_name = '';
                     if(selectDataCategory[s_id][i]['children']!=undefined) {
                         parent_name = selectDataCategory[s_id][i]['category_name'];
