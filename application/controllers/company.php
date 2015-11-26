@@ -1479,6 +1479,7 @@ public function common(){
     {
         $pids = 1;
         $remark_id = 0;
+        $hide_merchants = 0;
         $company_id = 0;
         $need_bank_info = 0;
         $private_structure = 0;
@@ -1496,6 +1497,7 @@ public function common(){
         $isadmin = $this->input->post('isadmin');
         log_message("debug", "FROM FORM IS ADMIN" . $isadmin);
         $isremark = $this->input->post('isremark');
+        $_hide_merchants = $this->input->post('hide_merchants');
         $iscompany = $this->input->post('iscompany');
         $template = $this->input->post('template');
         $user_confirm = $this->input->post('limit');
@@ -1522,6 +1524,10 @@ public function common(){
         if($isremark == "true")
         {
             $remark_id = 1;
+        }
+        if($_hide_merchants == "true")
+        {
+            $hide_merchants = 1;
         }
         if($iscompany == "true")
         {
@@ -1576,6 +1582,7 @@ public function common(){
         $in['note_compulsory'] = $note_compulsory;
         $in['not_auto_time'] = $not_auto_time;
         $in['export_no_note'] = $remark_id;
+        $in['hide_merchants'] = $hide_merchants;
         $in['template'] = $template;
         $in['footer_format'] = $footer_format;
         $in['user_confirm'] = $user_confirm;
