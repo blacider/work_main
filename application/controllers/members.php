@@ -1144,14 +1144,21 @@ class Members extends REIM_Controller {
         }
 
         $data = array();
+        $this->load->helper('escape');
         /** 循环读取每个单元格的数据 */
         for ($row = 4; $row <= $highestRow; $row++){//行数是以第1行开始
+            $email = trim($sheet->getCellByColumnAndRow(2, $row)->getValue());
+            $email = _escape_email($email);
+            
+            $phone = trim($sheet->getCellByColumnAndRow(3, $row)->getValue());
+            $phone = _escape_phone($phone);
+
             $obj = Array();
             $obj['id'] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue());
             $obj['name'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue());
             $obj['nickname'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue());
-            $obj['email'] = trim($sheet->getCellByColumnAndRow(2, $row)->getValue());
-            $obj['phone'] = trim($sheet->getCellByColumnAndRow(3, $row)->getValue());
+            $obj['email'] = $email;
+            $obj['phone'] = $phone;
             $obj['accounts'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue()); ;
             $obj['account'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue()); ;
             $obj['cardno'] = trim($sheet->getCellByColumnAndRow(4, $row)->getValue());
