@@ -229,21 +229,21 @@
                              <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">每月最多可提交的报销单数量</label>
                                 <div class="col-xs-4 col-sm-4">
-                                <input id="reports_limit" type="text" class="form-controller col-xs-12" name="reports_limit" placeholder="报销单数">
+                                <input id="reports_limit" type="number" class="form-controller col-xs-12" name="reports_limit" placeholder="报销单数">
                                 </div>
                             </div>
 
                               <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">最多可提交最近几个月之前的报销</label>
                                 <div class="col-xs-4 col-sm-4">
-                                <input id="max_allowed_months" type="text" class="form-controller col-xs-12" name="max_allowed_months" placeholder="月数">
+                                <input id="max_allowed_months" type="number" class="form-controller col-xs-12" name="max_allowed_months" placeholder="月数">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">自然月起始</label>
                                 <div class="col-xs-4 col-sm-4">
-                                <input id="calendar_month" type="text" class="form-controller col-xs-12" name="calendar_month" placeholder="自然月">
+                                <input id="calendar_month" type="number" class="form-controller col-xs-12" name="calendar_month" placeholder="自然月">
                                 </div>
                             </div>
 
