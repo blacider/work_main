@@ -1352,6 +1352,13 @@ class Reports extends REIM_Controller {
             $open_exchange = $company_config['open_exchange'];
         }
 
+        //是否打印类目汇总sheet
+        $statistic_using_category = 0;
+        if(array_key_exists('statistic_using_category',$company_config))
+        {
+            $statistic_using_category = $company_config['statistic_using_category'];
+        }
+
         $sobs = array();
         $_sobs = $this->account_set->get_account_set_list();
         if($_sobs['status'])
@@ -1678,25 +1685,28 @@ class Reports extends REIM_Controller {
 
             foreach($_t_items as $i){
                 //初始化类目汇总表单中对应的类目的信息
-                if(!array_key_exists($i['category'],$category_cells_dic))
+                if($statistic_using_category)
                 {
-                    $sob_name = '';
-                    if(array_key_exists($i['category'],$cate_dic))
-                    {
-                        $sob_name = $cate_dic[$i['category']]['sob_name'];
-                    }
-                    $category_cells_dic[$i['category']] = array(
-                        'sob_name'=> $sob_name,
-                        'category_name'=>$i['category_name'],
-                        'category_code'=>$i['category_code'],
-                        'amount'=>$i['amount'],
-                        'pa_amount'=>$i['pa_amount']
-                        );
-                }
-                else
-                {
-                    $category_cells_dic[$i['category']]['amount'] += $i['amount'];
-                    $category_cells_dic[$i['category']]['pa_amount'] += $i['pa_amount'];
+	                if(!array_key_exists($i['category'],$category_cells_dic))
+	                {
+	                    $sob_name = '';
+	                    if(array_key_exists($i['category'],$cate_dic))
+	                    {
+	                        $sob_name = $cate_dic[$i['category']]['sob_name'];
+	                    }
+	                    $category_cells_dic[$i['category']] = array(
+	                        'sob_name'=> $sob_name,
+	                        'category_name'=>$i['category_name'],
+	                        'category_code'=>$i['category_code'],
+	                        'amount'=>$i['amount'],
+	                        'pa_amount'=>$i['pa_amount']
+	                        );
+	                }
+	                else
+	                {
+	                    $category_cells_dic[$i['category']]['amount'] += $i['amount'];
+	                    $category_cells_dic[$i['category']]['pa_amount'] += $i['pa_amount'];
+	                }
                 }
 
                 $i['amount'] = sprintf("%.2f", $i['amount']);
@@ -1851,24 +1861,27 @@ class Reports extends REIM_Controller {
             if ($template)
                 $template_name = $template["name"];
 
-            foreach($category_cells_dic as $ccd)
-            {
-                $o = array();
-                $o['帐套'] = $ccd['sob_name'];
-                $o['类目'] = $ccd['category_name'];
-                $o['类目代码'] = $ccd['category_code'];
-                $o['总额'] = $ccd['amount'];
-                $o['应付'] = $ccd['amount'] - $ccd['pa_amount'];
-                $o['已付'] = $ccd['pa_amount'];
-                array_push($category_cells,$o);
-            }
 
             $template_excel = array(
                 "报销单汇总" => array_values($stat_cells),
                 "报销单明细" => $report_cells,
                 "消费明细" => $item_cells,
-                "类目金额汇总" => $category_cells
             );
+            if($statistic_using_category)
+            {
+	            foreach($category_cells_dic as $ccd)
+	            {
+	                $o = array();
+	                $o['帐套'] = $ccd['sob_name'];
+	                $o['类目'] = $ccd['category_name'];
+	                $o['类目代码'] = $ccd['category_code'];
+	                $o['总额'] = $ccd['amount'];
+	                $o['应付'] = $ccd['amount'] - $ccd['pa_amount'];
+	                $o['已付'] = $ccd['pa_amount'];
+	                array_push($category_cells,$o);
+	            }
+	            $template_excel["类目金额汇总"] = $category_cells;
+            }
 
             log_message("debug", "报销单汇总 => " . json_encode($stat_cells));
             log_message("debug", "报销单明细 => " . json_encode($report_cells));
