@@ -681,16 +681,26 @@ function get_sobs(){
                 for(var i = 0 ; i < selectDataCategory[s_id].length; i++)
                 {
                     var parent_name = '';
-                    if(selectDataCategory[s_id][i].parent_name)
+                    if(selectDataCategory[s_id][i]['children']!=undefined)
                     {
-                        parent_name = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                        parent_name = selectDataCategory[s_id][i]['category_name'];
+                        _h+="<optgroup style='font-style: normal;' label='"+ parent_name +"'>"
+                        for(var j = 0 ; j < selectDataCategory[s_id][i]['children'].length; j++)
+                        {
+                            _h+="<option data-parent='" + parent_name + "' data-name='" + selectDataCategory[s_id][i]['children'][j]['category_name'] + "' value='" +  selectDataCategory[s_id][i]['children'][j]['id'] + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + selectDataCategory[s_id][i]['children'][j]['category_name'] + " </option>";
+                        }
+                        _h+="</optgroup>";
                     }
-                    _h += "<option data-parent='" + selectDataCategory[s_id][i].parent_name + "' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].category_id + "'>"+ parent_name +selectDataCategory[s_id][i].category_name + " </option>";
-                    
+                    else
+                    {
+                        _h += "<option data-parent='' data-name='" + selectDataCategory[s_id][i].category_name + "' value='" +  selectDataCategory[s_id][i].id + "'>" +selectDataCategory[s_id][i].category_name + " </option>";
+                    }   
                 }
             }
             var selectDom = this.parentNode.nextElementSibling.children[0]
             $(selectDom).empty().append(_h).trigger("chosen:updated");
+            $('#sob_category').trigger('change');
+            $('#sob_category').trigger('change:updated');
         });
     
         $('#sob_category').each(function(){

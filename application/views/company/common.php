@@ -77,6 +77,15 @@
                                    <!-- </div> -->
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right">报销单打印时隐藏商家</label>
+                                <div class="col-xs-6 col-sm-6">
+                                        <label style="margin-top:8px;">
+                                            <input name="hide_merchants" class="ace ace-switch btn-rotate" type="checkbox" id="hide_merchants" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+                                </div>
+                            </div>
 
                               <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">不允许自主选择下一审批人</label>
@@ -203,6 +212,7 @@
                                     <option value="a5.yaml">A5模板</option>
                                     <option value="b5.yaml">B5模板</option>
                                     <option value="disanshihead.yaml">210*114</option>
+                                    <option value="disanshidepart.yaml">210*114 表头包含部门</option>
                                     <option value="disanshi.yaml">A4 表头有金额</option>
                                 
                                 </select>
@@ -361,7 +371,15 @@ var __BASE = "<?php echo $base_url; ?>";
             $('#export_no_note').attr('checked', data.export_no_note);
             $("#export_no_note").trigger("chosen:updated");
             }
+        }
 
+        if(data.hide_merchants != undefined)
+        {
+            if(data.hide_merchants == 1)
+            {
+            $('#hide_merchants').attr('checked', data.hide_merchants);
+            $("#hide_merchants").trigger("chosen:updated");
+            }
         }
 
          if(data.need_bank_info!=undefined)
@@ -506,6 +524,7 @@ var __BASE = "<?php echo $base_url; ?>";
                         same_category:$('#same_category').val(),
                         export_no_note:$('#export_no_note').val(),
                         export_no_company:$('#export_no_company').val(),
+                        hide_merchants:$('#hide_merchants').val(),
                         template:$('#temp option:selected').val(),
                         footer_format:$('#footer_format option:selected').val(),
                         limit:lval,reports_limit:r_limit,

@@ -1482,6 +1482,7 @@ public function common(){
         $same_category = $this->input->post('same_category')^1;
         $export_no_note = $this->input->post('export_no_note');
         $export_no_company = $this->input->post('export_no_company');
+        $hide_merchants = $this->input->post('hide_merchants');
         $template = $this->input->post('template');
         $user_confirm = $this->input->post('limit');
         $reports_limit = $this->input->post('reports_limit');
@@ -1497,8 +1498,6 @@ public function common(){
         $footer_format = $this->input->post('footer_format');
         $statistic_using_category = $this->input->post('statistic_using_category');
 
-        //$data = $this->company->get();
-
         $in=array();
         $in['export_no_company']=$export_no_company;
         $in['same_category'] = $same_category;
@@ -1506,6 +1505,8 @@ public function common(){
         $in['note_compulsory'] = $note_compulsory;
         $in['not_auto_time'] = $not_auto_time;
         $in['export_no_note'] = $export_no_note;
+        $in['export_no_note'] = $remark_id;
+        $in['hide_merchants'] = $hide_merchants;
         $in['template'] = $template;
         $in['footer_format'] = $footer_format;
         $in['user_confirm'] = $user_confirm;

@@ -78,20 +78,6 @@ class User_Model extends Reim_Model {
 
 
 
-    private function reim_fetch_avatar($path, $type = 1){
-        if($path == '' || $path == 0) return '';
-        $path = "images/" . $path;
-        $new_file_path = "/static/users_data/". md5($path . $type) . ".jpg";
-        if(file_exists(BASEPATH . "../" . $new_file_path)) return $new_file_path;
-        
-        $jwt = $this->session->userdata('jwt');
-        $url = $this->get_url($path . "/" . $type);
-        $buf = $this->do_Get($url, $jwt);
-        log_message("debug", "Avatar:" . $new_file_path . ", with length:" . strlen($buf) . ", FromURL:" . $url);
-        file_put_contents(BASEPATH . "../" . $new_file_path, $buf);
-        return $new_file_path;
-    }
-
     public function reim_oauth($unionid = '', $openid = '', $token = '', $check = 1){
         $jwt = $this->get_jwt($unionid, "");
         $this->session->set_userdata('jwt', $jwt);
@@ -106,23 +92,6 @@ class User_Model extends Reim_Model {
         $profile = array();
         if($obj['status']){
             $profile = $obj['data']['profile'];
-            // 下载头像
-            $avatar = $profile['avatar'];
-            $abs_path = $profile['abs_path'];
-            log_message("debug", json_encode($profile['abs_path']));
-            if($avatar) {
-                if($abs_path){
-                    $profile['src_avatar'] = $avatar;
-                    $avatar = $profile['apath'];//avatar;
-                    $profile['avatar'] = $avatar;//base_url($avatar);
-                } else {
-                    $profile['src_avatar'] = $avatar;
-                    $avatar = 'http://reim-avatar.oss-cn-beijing.aliyuncs.com/' . $avatar;
-                    $profile['avatar'] = $avatar;//base_url($avatar);
-                }
-            } else {
-            $profile['avatar'] = base_url('/static/default.png');
-            }
             $this->session->set_userdata('profile', $profile);
         }
         return $obj;
@@ -143,51 +112,10 @@ class User_Model extends Reim_Model {
         $obj = json_decode($buf, true);
         $profile = array();
         if($obj['status']){
-            $profile = $obj['data']['profile'];
-            log_message("debug", json_encode($profile));
-            // 下载头像
-            $avatar = $profile['avatar'];
-            if($avatar) {
-                $profile['src_avatar'] = $avatar;
-                $avatar = 'http://reim-avatar.oss-cn-beijing.aliyuncs.com/' . $avatar;
-                $profile['avatar'] = $avatar;//base_url($avatar);
-            } else {
-            $profile['avatar'] = base_url('/static/default.png');
-            }
+            $profile = &$obj['data']['profile'];
             $this->session->set_userdata('profile', $profile);
         }
         return $obj;
-    }
-
-
-
-
-    public function reim_update_avatar($file) {
-        $obj = $this->upload_avatar($file);
-        if($obj['status']){
-            $profile = $this->session->userdata('profile');
-            // 下载头像
-            $avatar = $obj['data']['avatar'];
-            $profile['src_avatar'] = $avatar;
-            log_message("debug", "update avatar:" . $avatar);
-            $avatar = $this->_fetch_avatar($avatar);
-            $profile['avatar'] = base_url($avatar);
-            log_message("debug", json_encode($profile));
-            $this->session->set_userdata('profile', $profile);
-        }
-        return $obj;
-    }
-
-    public function reim_get_hg_avatar($avatar = 0){
-        if($avatar == 0){
-            $profile = $this->session->userdata('profile');
-            if(array_key_exists('src_avatar', $profile)) {
-            // 下载头像
-                $avatar = $profile['src_avatar'];
-            }
-        }
-        log_message("debug", "avatar: $avatar");
-        return $this->reim_fetch_avatar($avatar, 0);
     }
 
     public function reim_joingroup($code) {
@@ -207,34 +135,15 @@ class User_Model extends Reim_Model {
         return $obj;
     }
 
-    public function reim_detail($uid){
-        $jwt = $this->session->userdata('jwt');
-        $url = $this->get_url('profile/' . $uid);
-        $buf = $this->do_Get($url, $jwt);
-        $obj = json_decode($buf, true);
-        log_message("debug", "Get:" . $buf . ",JWT: " . json_encode($jwt));
-        if($obj['status'] && $obj['data']['avatar']) {
-            $avatar = $obj['data']['avatar'];
-            $obj['avatar'] = $this->reim_get_hg_avatar($avatar);
-        } else {
-            $obj['avatar'] = "";
-        }
-        return json_encode($obj);
-    }
     public function reim_get_info($uid){
         $jwt = $this->session->userdata('jwt');
         $url = $this->get_url('users/' . $uid);
         $buf = $this->do_Get($url, $jwt);
         $obj = json_decode($buf, true);
         log_message("debug", "Get:" . $buf . ",JWT: " . json_encode($jwt));
-        if($obj['status'] && $obj['data']['avatar']) {
-            $avatar = $obj['data']['avatar'];
-            $obj['avatar'] = 'http://reim-avatar.oss-cn-beijing.aliyuncs.com/' . $obj['data']['apath']; //$this->reim_get_hg_avatar($avatar);
-        } else {
-            $obj['avatar'] = "";
-        }
         return json_encode($obj);
     }
+    
     public function reim_update_manager($id, $manager_id) {
         $data = array('manager_id' => $manager_id, 'uid' => $id);
         $url = $this->get_url('users');
@@ -253,7 +162,7 @@ class User_Model extends Reim_Model {
         return $buf;
     }
 
-    public function reim_update_profile($email, $phone, $nickname, $credit_card,$usergroups, $uid = 0, $admin = 0,$manager_id=0,$max_report,$rank,$level,$client_id,$admin_groups_granted){
+    public function reim_update_profile($email, $phone, $nickname, $credit_card,$usergroups, $uid = 0, $admin = 0, $manager_id = 0, $max_report = 0, $rank = 0, $level = 0, $client_id = '', $avatar = 0, $admin_groups_granted = ''){
         if($uid > 0) {
             $data['uid'] = $uid;
         }
@@ -277,6 +186,7 @@ class User_Model extends Reim_Model {
         $data['rank'] = $rank;
         $data['level'] = $level;
         $data['client_id'] = $client_id;
+        $data['avatar'] = $avatar;
         $url = $this->get_url('users');
         $jwt = $this->session->userdata('jwt');
         if(!$jwt)  return false;
