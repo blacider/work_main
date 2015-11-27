@@ -1419,12 +1419,12 @@ class Category extends REIM_Controller {
     public function get_sob_category()
     {
         $sobs = $this->account_set->get_account_set_list();
-    log_message('debug','sobs:' . json_encode($sobs));
-    $_sobs = array();
-    if($sobs['status']>0)
-    {
-            $_sobs = $sobs['data'];
-    }
+	    log_message('debug','sobs:' . json_encode($sobs));
+	    $_sobs = array();
+	    if($sobs['status']>0)
+	    {
+	            $_sobs = $sobs['data'];
+	    }
         $data = array();
         foreach($_sobs as $sob)
         {
@@ -1447,46 +1447,30 @@ class Category extends REIM_Controller {
         $category = $this->category->get_list();
         $categories = $category['data']['categories'];
         $cate_dic = array();
+        //没有上级类目的顶级类目
+        $root_cate = array();
         foreach($categories as $item)
         {
-            $cate_dic[$item['id']] = $item['category_name'];
-            if(array_key_exists($item['sob_id'],$data))
+            if($item['pid'] <= 0) 
             {
-                $p_flag = $item['pid'];
-                $level = 2;
-                if($item['pid'] <= 0 )
-                {
-                    $p_flag = $item['id'];
-                    $level = 1;
-                }
-                array_push($data[$item['sob_id']]['category'],array('category_id'=>$item['id'],
-                                                                    'category_name'=>$item['category_name'],
-                                                                    'p_flag' => $p_flag,
-                                                                    'parent_name' => (array_key_exists($item['pid'],$cate_dic)?$cate_dic[$item['pid']]:''),
-                                                                    'level' => $level
-                                                                    )
-                                                                    );
+                $root_cate[$item['id']] = $item;
+                continue;
             }
-            log_message("debug","@@@@@@@@@@@@".$item['sob_id']."+++".$item['category_name']);
+            if(!array_key_exists($item['pid'],$root_cate)) continue;
+            if(!array_key_exists('children',$root_cate[$item['pid']]))
+            {
+                $root_cate[$item['pid']]['children'] = array();
+            }
+            array_push($root_cate[$item['pid']]['children'],$item);
         }
-        //将对应的类目排序
-        foreach($data as $key => &$val)
+        log_message('debug','root_cate:' . json_encode($root_cate));
+        foreach($root_cate as $key => $value)
         {
-            usort($val['category'],function($a,$b){
-                if($a['p_flag'] == $b['p_flag'])
-                {
-                    if($a['level'] == $b['level'])
-                        return 0;
-                    else
-                        return ($a['level'] > $b['level']) ? 1 : -1;
-                }
-                else
-                    return ($a['p_flag'] > $b['p_flag']) ? 1 : -1;
-            });
+            if(array_key_exists($value['sob_id'],$data))
+                array_push($data[$value['sob_id']]['category'],$value);
         }
-
-        log_message('debug','data:' . json_encode($data));
-        log_message('debug','sobs:' . json_encode($sobs));
+        
+        log_message('debug','data' . json_encode($data));
         die(json_encode($data));
     }
     public function get_my_sob_category($uid=0)
@@ -1547,50 +1531,29 @@ class Category extends REIM_Controller {
         $category = $this->category->get_list();
         $categories = $category['data']['categories'];
         $cate_dic = array();
-        
-        //目前支持二级类目的情况
-       //一级的类目建立一定在它二级类目建立之前 
+        //没有上级类目的顶级类目
+        $root_cate = array();
         foreach($categories as $item)
         {
-            $cate_dic[$item['id']] = $item['category_name'];
-            log_message("debug", "alvayang Item:" . json_encode($_sob_id) . ", " . count($_sob_id));
-            if(array_key_exists('sob_id', $item) && array_key_exists($item['sob_id'],$data))
+            if($item['pid'] <= 0) 
             {
-                log_message("debug", "view:" . json_encode($item));
-                $p_flag = $item['pid'];
-                $level = 2;
-                if($item['pid'] <= 0 )
-                {
-                    $p_flag = $item['id'];
-                    $level = 1;
-                }
-                array_push($data[$item['sob_id']]['category'],array('note' => $item['note'], 
-                                                                    'category_id'=>$item['id'],
-                                                                    'category_name'=>$item['category_name'],
-                                                                    'p_flag' => $p_flag,
-                                                                    'parent_name' => (array_key_exists($item['pid'],$cate_dic)?$cate_dic[$item['pid']]:''),
-                                                                    'level' => $level
-                                                                    )
-                                                                    );
+                $root_cate[$item['id']] = $item;
+                continue;
             }
+            if(!array_key_exists($item['pid'],$root_cate)) continue;
+            if(!array_key_exists('children',$root_cate[$item['pid']]))
+            {
+                $root_cate[$item['pid']]['children'] = array();
+            }
+            array_push($root_cate[$item['pid']]['children'],$item);
         }
-
-        //将对应的类目排序
-        foreach($data as $key => &$val)
+        log_message('debug','root_cate:' . json_encode($root_cate));
+        foreach($root_cate as $key => $value)
         {
-            usort($val['category'],function($a,$b){
-                if($a['p_flag'] == $b['p_flag'])
-                {
-                    if($a['level'] == $b['level'])
-                        return 0;
-                    else
-                        return ($a['level'] > $b['level']) ? 1 : -1;
-                }
-                else
-                    return ($a['p_flag'] > $b['p_flag']) ? 1 : -1;
-            });
+            if(array_key_exists($value['sob_id'],$data))
+                array_push($data[$value['sob_id']]['category'],$value);
         }
-        log_message('debug','mysobs:' . json_encode($_sob_id));
+        
         log_message('debug','data' . json_encode($data));
 
         die(json_encode($data));
