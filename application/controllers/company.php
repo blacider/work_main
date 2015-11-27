@@ -1505,7 +1505,6 @@ public function common(){
         $in['note_compulsory'] = $note_compulsory;
         $in['not_auto_time'] = $not_auto_time;
         $in['export_no_note'] = $export_no_note;
-        $in['export_no_note'] = $remark_id;
         $in['hide_merchants'] = $hide_merchants;
         $in['template'] = $template;
         $in['footer_format'] = $footer_format;
