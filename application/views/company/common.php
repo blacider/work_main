@@ -77,6 +77,15 @@
                                    <!-- </div> -->
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right">报销单打印时隐藏商家</label>
+                                <div class="col-xs-6 col-sm-6">
+                                        <label style="margin-top:8px;">
+                                            <input name="hide_merchants" class="ace ace-switch btn-rotate" type="checkbox" id="hide_merchants" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+                                </div>
+                            </div>
 
                               <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">不允许自主选择下一审批人</label>
@@ -189,6 +198,7 @@
                                     <option value="a5.yaml">A5模板</option>
                                     <option value="b5.yaml">B5模板</option>
                                     <option value="disanshihead.yaml">210*114</option>
+                                    <option value="disanshidepart.yaml">210*114 表头包含部门</option>
                                     <option value="disanshi.yaml">A4 表头有金额</option>
                                 
                                 </select>
@@ -337,7 +347,15 @@ var __BASE = "<?php echo $base_url; ?>";
             $('#isremark').attr('checked', data.export_no_note);
             $("#isremark").trigger("chosen:updated");
             }
+        }
 
+        if(data.hide_merchants != undefined)
+        {
+            if(data.hide_merchants == 1)
+            {
+            $('#hide_merchants').attr('checked', data.hide_merchants);
+            $("#hide_merchants").trigger("chosen:updated");
+            }
         }
 
          if(data.need_bank_info!=undefined)
@@ -471,6 +489,7 @@ var __BASE = "<?php echo $base_url; ?>";
                         need_bank_info:$('#need_bank_info').is(':checked'),
                         isadmin:$('#isadmin').is(':checked'),
                         isremark:$('#isremark').is(':checked'),
+                        hide_merchants:$('#hide_merchants').is(':checked'),
                         iscompany:$('#iscompany').is(':checked'),
                         template:$('#temp option:selected').val(),
                         footer_format:$('#footer_format option:selected').val(),
