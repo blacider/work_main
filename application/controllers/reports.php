@@ -1286,7 +1286,6 @@ class Reports extends REIM_Controller {
         }
         return $obj;
     }
-
     private function exports_by_rids($ids) {
         $_data = $this->reports->get_reports_by_ids($ids);
         if (empty($_data) || $_data["status"] < 0) {
@@ -1371,9 +1370,9 @@ class Reports extends REIM_Controller {
 
         foreach($categories as $cate) {
             if(array_key_exists($cate['sob_id'],$sob_dic))
-                $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code'],'sob_name' => $sob_dic[$cate['sob_id']]);
+                $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code'],'sob_name' => $sob_dic[$cate['sob_id']],'sob_id' => $cate['sob_id']);
             else
-                $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code'],'sob_name' => '');
+                $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code'],'sob_name' => '','sob_id' => $cate['sob_id']);
 
         }
         $group = $this->groups->get_my_full_list();
@@ -1438,6 +1437,9 @@ class Reports extends REIM_Controller {
                 $template = $dict_templates[$template_id];
 
             $_t_items = array();
+            // 类目金额汇总 
+            $category_cells = array();
+            $category_cells_dic = array();
             // 报销单汇总
             $stat_cells = array();
             // 报销单明细
@@ -1675,6 +1677,28 @@ class Reports extends REIM_Controller {
             }
 
             foreach($_t_items as $i){
+                //初始化类目汇总表单中对应的类目的信息
+                if(!array_key_exists($i['category'],$category_cells_dic))
+                {
+                    $sob_name = '';
+                    if(array_key_exists($i['category'],$cate_dic))
+                    {
+                        $sob_name = $cate_dic[$i['category']]['sob_name'];
+                    }
+                    $category_cells_dic[$i['category']] = array(
+                        'sob_name'=> $sob_name,
+                        'category_name'=>$i['category_name'],
+                        'category_code'=>$i['category_code'],
+                        'amount'=>$i['amount'],
+                        'pa_amount'=>$i['pa_amount']
+                        );
+                }
+                else
+                {
+                    $category_cells_dic[$i['category']]['amount'] += $i['amount'];
+                    $category_cells_dic[$i['category']]['pa_amount'] += $i['pa_amount'];
+                }
+
                 $i['amount'] = sprintf("%.2f", $i['amount']);
                 $_relates = explode(',', $i['relates']);
                 $__relates = array();
@@ -1827,15 +1851,29 @@ class Reports extends REIM_Controller {
             if ($template)
                 $template_name = $template["name"];
 
+            foreach($category_cells_dic as $ccd)
+            {
+                $o = array();
+                $o['帐套'] = $ccd['sob_name'];
+                $o['类目'] = $ccd['category_name'];
+                $o['类目代码'] = $ccd['category_code'];
+                $o['总额'] = $ccd['amount'];
+                $o['应付'] = $ccd['amount'] - $ccd['pa_amount'];
+                $o['已付'] = $ccd['pa_amount'];
+                array_push($category_cells,$o);
+            }
+
             $template_excel = array(
                 "报销单汇总" => array_values($stat_cells),
                 "报销单明细" => $report_cells,
-                "消费明细" => $item_cells
+                "消费明细" => $item_cells,
+                "类目金额汇总" => $category_cells
             );
 
             log_message("debug", "报销单汇总 => " . json_encode($stat_cells));
             log_message("debug", "报销单明细 => " . json_encode($report_cells));
             log_message("debug", "消费明细 => " . json_encode($item_cells));
+            log_message("debug", "类目金额汇总 => " . json_encode($category_cells));
 
             // 重命名已存在同名模板
             if (array_key_exists($template_name, $excel)) {
