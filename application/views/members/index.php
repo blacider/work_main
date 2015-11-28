@@ -142,6 +142,9 @@ if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['d'],
     } else if ($m['admin'] == 3){
         $desc = 'IT人员';
         $color = '<span class="label label-purple arrowed">IT人员</span>';
+    } else if ($m['admin'] == 4){
+        $desc = '部门管理员';
+        $color = '<span class="label label-purple arrowed">部门管理员</span>';
     }
 ?>
 <a href="javascript:void(0)" title="<?php echo $desc; ?>" data-id="<?php echo $m['id']; ?>" ><?php echo $color; ?></a>
@@ -339,6 +342,13 @@ function load_group(gid){
                         var _p = '员工';
                     var _color = '<span class="label label-success arrowed">管理员</span>';
                     switch(item.admin) {
+                    case '4' : {
+                        //$desc = '出纳';
+
+                        _color = '<span class="label label-purple arrowed">部门管理员</span>';                        
+                        _c = 'green';
+                        _p = '点击设置为员工'; 
+                    }; break;
                     case '3' : {
                         //$desc = '出纳';
 

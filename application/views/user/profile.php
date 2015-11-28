@@ -358,12 +358,12 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 
 
 <?php 
-    if($profile['admin'] == 1 || $profile['admin'] == 3){
+    if(in_array($profile['admin'], [1,2,3,4])){
 ?>
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">角色</label>
                                 <div class="col-xs-2 col-sm-2">
-                                 <select name="admin_new" id="admin_new" class="chosen-select tag-input-style"> 
+                                 <select name="admin_new" id="admin_new" class="chosen-select tag-input-style" <?php if(!in_array($profile['admin'], [1,3])){echo "disabled";}?>> 
                                    <?php
                                             $chara = array(0 => "员工", 
                                                 1 => "管理员",
@@ -1053,8 +1053,12 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 
         $('#admin_new').change(function(){
             var admin_type_id = $('#admin_new').val();
-            if(admin_type_id == 2)
+            if(admin_type_id == 2 || admin_type_id == 4)
             {
+                if(admin_type_id == 4)
+                {
+                    $('#cashier_view').val([]).trigger('chosen:updated');
+                }
                 $('#cashier_view').prop('hidden',false).trigger('chosen:updated');
             }
             else

@@ -533,6 +533,7 @@ class Members extends REIM_Controller {
                 'title' => '公司部门'
                 ,'group' => $ginfo
                 ,'members' => $gmember
+                ,'error' => $error
                 ,'search' => urldecode($search)
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
@@ -1503,9 +1504,13 @@ class Members extends REIM_Controller {
         $info = $this->ug->update_data($manager,$uids, $name,$code,$pid,$gid,$images);
         log_message("debug","@@@@@@@@@".json_encode($info));
         if($info['status'] > 0){
-            redirect(base_url('members/groups'));
-            //redirect(base_url('members/index'));
+            $this->session->set_userdata('last_error','修改成功');
         }
+        else
+        {
+            $this->session->set_userdata('last_error',$info['data']['msg']);
+        }
+        redirect(base_url('members/groups'));
     }
 
 
@@ -1564,7 +1569,7 @@ class Members extends REIM_Controller {
                 ,'error' => $error 
                 ,'last_error' => $last_error
                 ,'isOther' => 1
-                ,'avatar_path' => $path
+                //,'avatar_path' => $path
                 ,'gmember' => $gmember
                 ,'manager_id' => $manager_id
                 ,'pid' => $id

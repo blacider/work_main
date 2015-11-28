@@ -443,7 +443,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     </li>
 
 <?php  } 
-if($profile['admin'] == 1 || $profile['admin'] == 2) {
+if(in_array($profile['admin'], [1,2,4])) {
 ?>
 
     <li class="hsub" id="bills">
