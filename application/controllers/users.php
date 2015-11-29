@@ -253,7 +253,7 @@ class Users extends REIM_Controller {
             $admin_groups_granted = '-1';
         }
 
-        $usergroups = array();
+        $usergroups = '';
         log_message('debug','admin:' . $admin);
         log_message('debug','admin_groups_granted:' . json_encode($admin_groups_granted));
         log_message('debug','_admin_groups_granted:' . json_encode($_admin_groups_granted));
