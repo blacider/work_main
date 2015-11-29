@@ -269,7 +269,7 @@ class Users extends REIM_Controller {
         }
         if(array_key_exists('admin',$profile))
         {
-            if(!($profile['admin'] == 1 || $profile['admin'] == 3))
+            if(!in_array($profile['admin'],[1,3,4]))
             {
                 $client_id = '';
             }
