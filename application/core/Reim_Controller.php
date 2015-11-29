@@ -168,6 +168,12 @@ class REIM_Controller extends CI_Controller{
             }
             $this->session->set_userdata('user', $profile);
             $custom_data['profile'] = $profile;
+            $admin_groups_granted = array();
+            if(array_key_exists("admin_groups_granted", $profile) && $profile["admin_groups_granted"])
+            {
+                $admin_groups_granted = explode(",", $profile["admin_groups_granted"]);
+            }
+            $custom_data['admin_groups_granted'] = $admin_groups_granted;
         }
 
         $custom_data['groupname'] = $this->session->userdata('groupname');
@@ -458,6 +464,12 @@ class REIM_Controller extends CI_Controller{
         return redirect(base_url('items'), 'refresh');
     }
 
+    public function need_group_agent(){
+        $admin = $this->get_privilege();
+        if($admin == 1 || $admin == 3 || $admin == 4) return true;
+        $this->session->set_userdata("last_error", "权限不足");
+        return redirect(base_url('items'), 'refresh');
+    }
     public function need_group_casher(){
         $admin = $this->get_privilege();
         if($admin == 1 || $admin == 2) return true;;
