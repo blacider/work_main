@@ -742,16 +742,35 @@ class Members extends REIM_Controller {
         $rows = $this->input->get('rows');
         $sort = $this->input->get('sord');
         $group = $this->ug->get_my_list();
+        $profile = $this->session->userdata('profile');
+        $admin_groups_granted = array();
+        if(array_key_exists('admin_groups_granted',$profile) && $profile['admin_groups_granted'])
+        {
+            $admin_groups_granted = explode(',',$profile['admin_groups_granted']); 
+        }
         /// 结构好奇怪啊
         //
         if($group['status']){
             $_data = array();
             //die(json_encode(array('data' => $group['data'])));
             foreach($group['data']['group'] as &$s){
+                $editable = 0;
+                if(in_array($profile['admin'],[1,3]))
+                {
+                    $editable = 1;
+                }
+                if(!$editable && in_array($s['id'],$admin_groups_granted))
+                {
+                    $editable = 1; 
+                }
                 $s['type'] = 'item';
-                $s['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
-                    . '<span class="ui-icon ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>'
-                    . '<span class="ui-icon ui-icon-trash tdel" data-id="' . $s['id'] . '"></span></div>';
+                $s['options'] = '';
+                if($editable)
+                {
+                    $s['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
+                        . '<span class="ui-icon ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>'
+                        . '<span class="ui-icon ui-icon-trash tdel" data-id="' . $s['id'] . '"></span></div>';
+                }
             }
             /*
             array_push($group['data']['group'], array('option' => '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="-1">' . '<span class="ui-icon ui-icon-pencil tedit" data-id="-1"></span>' . '<span class="ui-icon ui-icon-trash tdel" data-id="-1"></span></div>', 'name' => '已邀请', 'id' => "-1"));
