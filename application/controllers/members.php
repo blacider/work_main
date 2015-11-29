@@ -739,6 +739,15 @@ class Members extends REIM_Controller {
         $sort = $this->input->get('sord');
         $group = $this->ug->get_my_list();
         $profile = $this->session->userdata('profile');
+        $_common = $this->users->get_common();
+        if($_common['status'] > 0)
+        {
+            $common = $_common['data'];
+        }
+        if(array_key_exists('profile',$common))
+        {
+            $profile = $common['profile'];
+        }
         $admin_groups_granted = array();
         if(array_key_exists('admin_groups_granted_all',$profile) && $profile['admin_groups_granted_all'])
         {
