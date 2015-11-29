@@ -46,7 +46,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">上级部门</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <select class="chosen-select tag-input-style" id="pgroups" name= "pgroup"  data-placeholder="请选择部门">
+                                    <select class="chosen-select tag-input-style" id="pgroups" name= "pgroup" <?php if(!in_array($profile['admin'], [1,3])){echo "disabled";}?> data-placeholder="请选择部门">
                                     <?php 
                                         if($profile['admin'] == 4 && $pid <= 0)
                                         {
@@ -91,7 +91,7 @@
                                 <label class="col-sm-1 control-label no-padding-right">员工</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <input type="hidden" name="gid" value="<?php echo $group['id']; ?>" >
-                                    <select class="chosen-select tag-input-style" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
+                                    <select class="chosen-select tag-input-style" name="uids[]" multiple="multiple" <?php if(!in_array($profile['admin'], [1,3])){echo "disabled";}?> data-placeholder="请选择员工">
                                     <?php 
                                     foreach($member as $m){
                                         if(in_array($m['id'], $smember)){

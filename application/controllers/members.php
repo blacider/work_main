@@ -1496,11 +1496,14 @@ class Members extends REIM_Controller {
 
 
     public function updategroup(){
+        $profile = $this->session->userdata('profile');
         $manager = $this->input->post('manager');
         $name = $this->input->post('gname');
         $code = $this->input->post('gcode');
-        $uids = $this->input->post('uids');
-        $pid = $this->input->post('pgroup');
+        $uids = '';
+        $_uids = $this->input->post('uids');
+        $pid = '';
+        $_pid = $this->input->post('pgroup');
         $gid = $this->input->post('gid');
         $images = '';
         $_images = $this->input->post('images');
@@ -1508,13 +1511,17 @@ class Members extends REIM_Controller {
         {
             $images = $_images;
         }
-        if($uids)
+        if($profile['admin'] == 4)
         {
-            $uids = implode(",", $uids);
+            $uids = -1;
         }
-        else
+        else if($_uids)
         {
-            $uids='';
+            $uids = implode(',',$_uids);
+        }
+        if($_pid)
+        {
+            $pid = $_pid;
         }
         $info = $this->ug->update_data($manager,$uids, $name,$code,$pid,$gid,$images);
         log_message("debug","@@@@@@@@@".json_encode($info));
