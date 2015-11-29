@@ -1,4 +1,5 @@
 <script src="/static/ace/js/fuelux/fuelux.tree.min.js"></script>
+<script src="/static/js/util.js"></script>
 
 <script language='javascript'>
     var _admin = "<?php echo $profile['admin']; ?>";
@@ -51,12 +52,19 @@ position: absolute;
         </div>
     </div>
 </div> -->
-
+<?php 
+    $admin_groups_granted = array();
+    if(array_key_exists("admin_groups_granted", $profile) && $profile["admin_groups_granted"])
+    {
+        $admin_groups_granted = explode(",", $profile["admin_groups_granted"]);
+    }
+?>
 
 
 <div class="col-sm-2">
         <div class="widget-box widget-color-blue">
                 <div class="widget-header">
+                    <div id="admin_groups_granted" data-gids="<?php echo htmlspecialchars(json_encode($admin_groups_granted))?>"></div>
                     <h4 class="widget-title lighter smaller">组织结构</h4>
                     </div>
 
@@ -182,6 +190,9 @@ if($profile['admin'] == 1 ||  $profile['admin'] == 3) {
 <script src="/static/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 
 <script language="javascript">
+var admin_groups_granted = $('#admin_groups_granted').data("gids");
+console.log(admin_groups_granted);
+console.log(typeof admin_groups_granted);
 var __BASE = "<?php echo $base_url; ?>";
 var error = "<?php echo $error;?>";
 var _levels_dic = '<?php echo json_encode($levels); ?>';
@@ -294,12 +305,21 @@ function load_group(gid){
                 if(!data.status) {
                     show_notify('获取信息失败');
                 } else {
+                    var is_under_control = 0;
+                    if(_admin == 4 && in_array(admin_groups_granted,gid))
+                    {
+                        is_under_control = 1;
+                    }
                     //show_notify('获取信息成功');
                     var _g_du = '<a href="' + __BASE + '/members/editgroup/' + gid + '"><i class="ace-icon align-top bigger-125 fa fa-pencil white" style="margin-left:10px;" ></i></a>'
                                  +'<a href="javascript:void(0)" class="remove_group" data-id="' + gid + '"><i  style="margin-left:10px;"  class="ace-icon align-top bigger-125 white fa fa-trash-o"></i></a>';
-                    if(_admin == 1 || _admin == 3)
+                    if(_admin == 1 || _admin == 3 || is_under_control)
                     {
                         $('#g_du').html(_g_du);
+                    }
+                    else
+                    {
+                        $('#g_du').html('');
                     }
                     if(gid == -1){
                         build_invite(data.data);
@@ -390,7 +410,7 @@ function load_group(gid){
                     + '<td>' + _level + '</td>'
                     + '<td>' + item.manager + '</td>'
                     + '<td><a href="javascript:void(0)">' + _color + '</a>';
-                    if(_admin == 1 || _admin == 3){
+                    if(_admin == 1 || _admin == 3 || is_under_control){
                     _th += '<td><a href="' + __BASE + '/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a>'
                     if(gid > 0)
                     {
@@ -485,7 +505,6 @@ function bind_remove_from_group() {
     });
 });*/
 </script>
-
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 </script>
