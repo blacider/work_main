@@ -740,9 +740,9 @@ class Members extends REIM_Controller {
         $group = $this->ug->get_my_list();
         $profile = $this->session->userdata('profile');
         $admin_groups_granted = array();
-        if(array_key_exists('admin_groups_granted',$profile) && $profile['admin_groups_granted'])
+        if(array_key_exists('admin_groups_granted_all',$profile) && $profile['admin_groups_granted_all'])
         {
-            $admin_groups_granted = explode(',',$profile['admin_groups_granted']); 
+            $admin_groups_granted = $profile['admin_groups_granted_all']; 
         }
         /// 结构好奇怪啊
         //
@@ -774,6 +774,7 @@ class Members extends REIM_Controller {
             array_push($group['data']['group'], array('name' => '全体员工', 'id' => "-2", "additionalParameters" => array('children' => $group['data']['group']), 'type' => 'folder'));
              */
             log_message('debug','groupscount:'.json_encode($group['data']['group']));
+            log_message('debug','groups_granted:'.json_encode($admin_groups_granted));
             die(json_encode($group['data']['group']));
         }
     }

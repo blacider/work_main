@@ -127,6 +127,7 @@ class Group_Model extends Reim_Model {
         $url = $this->get_url('groups/0');
         $buf = $this->do_Get($url, $jwt);
         $obj = json_decode($buf, true);
+        log_message('debug','get_my_list_back:' . json_encode($obj));
         return $obj;
     }
 

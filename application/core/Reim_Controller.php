@@ -169,9 +169,9 @@ class REIM_Controller extends CI_Controller{
             $this->session->set_userdata('user', $profile);
             $custom_data['profile'] = $profile;
             $admin_groups_granted = array();
-            if(array_key_exists("admin_groups_granted", $profile) && $profile["admin_groups_granted"])
+            if(array_key_exists("admin_groups_granted_all", $profile) && $profile["admin_groups_granted_all"])
             {
-                $admin_groups_granted = explode(",", $profile["admin_groups_granted"]);
+                $admin_groups_granted = $profile["admin_groups_granted_all"];
             }
             $custom_data['admin_groups_granted'] = $admin_groups_granted;
         }

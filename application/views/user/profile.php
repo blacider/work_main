@@ -680,7 +680,7 @@ if(in_array($profile['admin'],[1,3,4])){
                                         <option value='福建省农村信用社联合社'>福建省农村信用社联合社</option>
                                         <option value='贵阳市商业银行'>贵阳市商业银行</option>
                                         <option value='大庆市商业银行'>大庆市商业银行</option>
-                    <option value='青岛商行'>青岛商行</option>
+                                        <option value='青岛商行'>青岛商行</option>
                                         <option value='佛山市三水区农村信用合作社'>佛山市三水区农村信用合作社</option>
                                         <option value='南通市商业银行'>南通市商业银行</option>
                                         <option value='南宁市商业银行'>南宁市商业银行</option>
