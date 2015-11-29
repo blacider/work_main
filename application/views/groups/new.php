@@ -45,14 +45,31 @@
                                 <label class="col-sm-1 control-label no-padding-right">上级部门</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" name= "pgroup"  data-placeholder="请选择部门">
-                                    <option value=0>顶级部门</option>
                                     <?php 
-                                    foreach($group as $m){
+                                        if($profile['admin'] == 4)
+                                        {
+                                            foreach($group as $g)
+                                            {
+                                                if(in_array($g['id'], $admin_groups_granted))
+                                                {
                                     ?>
-                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                                <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
                                     <?php
-                                    }
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
                                     ?>
+                                            <option value=0>顶级部门</option>
+                                            <?php 
+                                            foreach($group as $g){
+                                            ?>
+                                                <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+                                            <?php
+                                            }
+                                        }
+                                        ?>
                                     </select>
                                 </div>
                             </div>

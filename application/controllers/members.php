@@ -656,7 +656,7 @@ class Members extends REIM_Controller {
         );
     }
     public function add() {
-        $this->need_group_it();
+        $this->need_group_agent();
         $group = $this->groups->get_my_list();
         $_gnames = $this->ug->get_my_list();
         $gnames = array();
@@ -784,7 +784,7 @@ class Members extends REIM_Controller {
 
 
     public function newmember(){
-        $this->need_group_it();
+        $this->need_group_agent();
         $group = $this->ug->get_my_list();
         $_group = $this->groups->get_my_list();
         $_ranks = $this->reim_show->rank_level(1);

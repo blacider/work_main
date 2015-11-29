@@ -52,13 +52,6 @@ position: absolute;
         </div>
     </div>
 </div> -->
-<?php 
-    $admin_groups_granted = array();
-    if(array_key_exists("admin_groups_granted", $profile) && $profile["admin_groups_granted"])
-    {
-        $admin_groups_granted = explode(",", $profile["admin_groups_granted"]);
-    }
-?>
 
 
 <div class="col-sm-2">

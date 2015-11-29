@@ -251,21 +251,19 @@ if($open == 1) {
             <i class="menu-icon fa fa-caret-right"></i>
             <span class="menu-text"> 公司部门 </span>
         </a>
-
-        <b class="arrow"></b>
-        </li>
 <?php 
-if($profile['admin'] == 1 || $profile['admin'] == 3){
+if(in_array($profile['admin'],[1,3,4])){
 ?>
-        <li class="hsub" id="newrank">
-        <a href="<?php echo base_url('members/rank'); ?>" >
-            <i class="menu-icon fa fa-caret-right"></i>
-           职位设置 
-        </a>
-
         <b class="arrow"></b>
-
         </li>
+        <li class="hsub" id="add">
+        <a href="<?php echo base_url('members/add'); ?>" >
+            <i class="menu-icon fa fa-caret-right"></i>
+            添加部门
+        </a>
+        <b class="arrow"></b>
+        </li>
+       
         <li class="hsub" id="newmember">
         <a href="<?php echo base_url('members/newmember'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
@@ -275,10 +273,14 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <b class="arrow"></b>
 
         </li>
-        <li class="hsub" id="add">
-        <a href="<?php echo base_url('members/add'); ?>" >
+<?php 
+}
+if($profile['admin'] == 1 || $profile['admin'] == 3){
+?>
+        <li class="hsub" id="newrank">
+        <a href="<?php echo base_url('members/rank'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
-            添加部门
+           职位设置 
         </a>
 
         <b class="arrow"></b>
