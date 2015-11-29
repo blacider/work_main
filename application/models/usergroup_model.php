@@ -26,6 +26,7 @@ class UserGroup_Model extends Reim_Model {
             log_message("debug", "create group with " . json_encode($data));
             $url = $this->get_url('user_group');
             $buf = $this->do_Post($url,$data,$jwt);
+            log_message('debug','create_group_back:' . $buf);
             $obj = json_decode($buf,true);
             return $obj;
     }
