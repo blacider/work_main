@@ -69,7 +69,7 @@ if($self != 1) {
                         <label class="col-sm-1 control-label no-padding-right">用户ID</label>
                         <div class="col-xs-6 col-sm-6">
                         <?php
-                            if($profile['admin'] == 1 || $profile['admin'] == 3)
+                            if(in_array($profile['admin'],[1,2,4]))
                             {
                         ?>
                             <input type="text" class="col-xs-6 col-sm-6 form-control" name="client_id" value="<?php echo $user['client_id']; ?>"  />
@@ -89,7 +89,7 @@ if($self != 1) {
                         <label class="col-sm-1 control-label no-padding-right">姓名</label>
                         <div class="col-xs-6 col-sm-6">
                         <?php
-                            if($profile['admin'] == 1 || $profile['admin'] == 3)
+                            if(in_array($profile['admin'],[1,2,4]))
                             {
                         ?>
                             <input type="text" class="col-xs-6 col-sm-6 form-control" name="nickname" value="<?php echo $user['nickname']; ?>"  />
@@ -123,7 +123,7 @@ if($profile['gid'] > 0){
     }
 }
 
-if($profile['admin'] == 1 || $profile['admin'] == 3 ){
+if(in_array($profile['admin'],[1,2,4])){
     $open = 1;
 }
 ?>
@@ -163,7 +163,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3 ){
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">级别</label>
                                 <div class="col-xs-6 col-sm-6">
-<?php if($profile['admin'] == 1 || $profile['admin'] == 3){ ?>
+<?php if(in_array($profile['admin'],[1,2,4])){ ?>
                                     <select class="chosen-select tag-input-style" name="rank" data-placeholder="级别" >
 <?php } elseif($self) { ?>
                                     <select class="chosen-select tag-input-style" name="rank" data-placeholder="级别" disabled>
@@ -192,7 +192,7 @@ foreach($ranks as $m){
                                 <label class="col-sm-1 control-label no-padding-right">职位</label>
                                 <div class="col-xs-6 col-sm-6">
 <?php 
-if($profile['admin'] == 1 || $profile['admin'] == 3){
+if(in_array($profile['admin'],[1,2,4])){
 ?>
                                     <select class="col-xs-6 col-sm-6 chosen-select tag-input-style" name="level" data-placeholder="职位" >
 <?php } elseif($self) { ?>
@@ -243,7 +243,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                 <label class="col-sm-1 control-label no-padding-right">所属部门</label>
                                 <div class="col-xs-6 col-sm-6">
 <?php
-    if($profile['admin'] == 1 || $profile['admin'] == 3){
+    if(in_array($profile['admin'],[1,2,4])){
 ?>
                                         <select class="chosen-select tag-input-style" multiple="multiple" name="usergroups[]" data-placeholder="部门信息" >
 <?php
@@ -268,9 +268,21 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     {
         if(!in_array($g['id'], $in_groups))
         {
+            if($profile['admin']!=4)
+            {
 ?>
                                         <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
 <?php
+            }
+            else
+            {
+                if(in_array($g['id'], $admin_groups_granted))
+                {
+?>
+                                        <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+<?php
+                }
+            }
         }
     }
 ?>

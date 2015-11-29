@@ -180,7 +180,10 @@ class User_Model extends Reim_Model {
         }
         $data['admin_groups_granted'] = $admin_groups_granted;
         $data['manager_id'] = $manager_id;
-        $data['admin'] = $admin;
+        if($admin >=0 )
+        {
+            $data['admin'] = $admin;
+        }
         $data['groups'] = $usergroups;
         $data['max_report'] = $max_report;
         $data['rank'] = $rank;

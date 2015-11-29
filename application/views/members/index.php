@@ -188,6 +188,7 @@ console.log(admin_groups_granted);
 console.log(typeof admin_groups_granted);
 var __BASE = "<?php echo $base_url; ?>";
 var error = "<?php echo $error;?>";
+console.log(error);
 var _levels_dic = '<?php echo json_encode($levels); ?>';
 var levels_dic = [];
 if(_levels_dic!='')

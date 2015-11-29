@@ -345,8 +345,8 @@ class Members extends REIM_Controller {
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
         if($error == '') {
-            $error = $this->session->userdata('login_error');
-            $this->session->unset_userdata('login_error');
+            $error = $this->session->userdata('last_error');
+            $this->session->unset_userdata('last_error');
         }
         $_ranks = $this->reim_show->rank_level(1);
         $_levels = $this->reim_show->rank_level(0);
@@ -405,6 +405,7 @@ class Members extends REIM_Controller {
     }
     public function index(){
         $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         $profile = $this->session->userdata('profile');
         $groups = $profile['group'];
         if(array_key_exists('config', $groups) && $groups['config']) {
@@ -423,11 +424,6 @@ class Members extends REIM_Controller {
         //$config = 
         //log_message('debug', 'Profile:' . json_encode($profile));
         // 获取当前所属的组
-        $this->session->unset_userdata('last_error');
-        if($error == '') {
-            $error = $this->session->userdata('login_error');
-            $this->session->unset_userdata('login_error');
-        }
         $_ranks = $this->reim_show->rank_level(1);
         $_levels = $this->reim_show->rank_level(0);
         $ranks = array();
@@ -1541,8 +1537,8 @@ class Members extends REIM_Controller {
         //$profile = $this->user->reim_get_user($id);
         $last_error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-        $error = $this->session->userdata('login_error');
-        $this->session->unset_userdata('login_error');
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
 
         $_ranks = $this->groups->get_rank_level(1);
         $_levels = $this->groups->get_rank_level(0);
