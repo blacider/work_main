@@ -2053,8 +2053,8 @@ class Reports extends REIM_Controller {
                 ,'现金流量借方金额' => ''
                 ,'现金流量贷方金额' => ''
                 ,'金额' => ''
-        ,'员工姓名' => ''
-        ,'员工号' => ''
+                ,'员工姓名' => ''
+                ,'员工号' => ''
             );
             $idx = 0;
             $_total_amount = 0;
@@ -2112,10 +2112,8 @@ class Reports extends REIM_Controller {
                     $o['借方金额'] = sprintf("%.2f",$_amount * $rate); 
                     $o['贷方金额'] = $_total_amount;
                     $o['部门编码'] = implode(',', $_gids);
-            $o['员工姓名'] = $r['nickname'];
-            $o['员工号'] = $r['client_id'];
-                    /*
-                     */
+                    $o['员工姓名'] = $r['nickname'];
+                    $o['员工号'] = $r['client_id'];
                     array_push($_excel, $o);
                 }
             }
