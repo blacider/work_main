@@ -58,7 +58,7 @@ class Reports extends REIM_Controller {
     }
 
     public function sendout() {
-        $rid = $this->input->post('report_id');	
+        $rid = $this->input->post('report_id'); 
         $email = $this->input->post('email');
         $buf = $this->reports->sendout($rid,$email);
         log_message("debug","###".json_encode($buf));
@@ -485,7 +485,7 @@ class Reports extends REIM_Controller {
                 foreach($quota as $key => $q)
                 {
                     $str = $str . $categories[$key] . ' ';
-                }	
+                }   
                 $this->session->set_userdata('last_error', $str . '金额超出公司月度限额，是否仍要提交');
             } elseif($ret['code'] == -63) {
                 $info = $this->category->get_list();
@@ -509,7 +509,7 @@ class Reports extends REIM_Controller {
                         $str = $str . $categories[$key] . ' ';
                         log_message('debug','value:' . $str);
                     }
-                }	
+                }   
                 $this->session->set_userdata('last_error', '你的 ' . $str .'提交次数已经超出公司规定');
             } else {
                 log_message("debug", "alvayang:" . json_encode($ret));
@@ -603,11 +603,11 @@ class Reports extends REIM_Controller {
                     }
                 }
             }
-	        $banks = array();
-	        if(array_key_exists('banks',$profile))
-	        {
-	            $banks = $profile['banks'];
-	        }
+            $banks = array();
+            if(array_key_exists('banks',$profile))
+            {
+                $banks = $profile['banks'];
+            }
         }
 
         
@@ -986,7 +986,7 @@ class Reports extends REIM_Controller {
                 foreach($quota as $key => $q)
                 {
                     $str = $str . $categories[$key] . ' ';
-                }	
+                }   
                 if($str) 
                     $this->session->set_userdata('last_error', $str . '金额超出公司月度限额，是否仍要提交');
             }
@@ -1005,7 +1005,7 @@ class Reports extends REIM_Controller {
 
                 foreach($_categories as $cate)
                 {
-                    //	array_push($categories,array($cate['id'] => $cate['category_name']));
+                    //  array_push($categories,array($cate['id'] => $cate['category_name']));
                     $categories[$cate['id']] = $cate['category_name'];
                 }
                 $quota = $ret['data']['quota'];
@@ -1017,7 +1017,7 @@ class Reports extends REIM_Controller {
                         $str = $str . $categories[$key] . ' ';
                         log_message('debug','value:' . $str);
                     }
-                }	
+                }   
                 $this->session->set_userdata('last_error', '你的 ' . $str .'提交次数已经超出公司规定');
             } else {
                 log_message("debug", "alvayang:" . json_encode($ret));
@@ -1286,7 +1286,6 @@ class Reports extends REIM_Controller {
         }
         return $obj;
     }
-
     private function exports_by_rids($ids) {
         $_data = $this->reports->get_reports_by_ids($ids);
         if (empty($_data) || $_data["status"] < 0) {
@@ -1353,6 +1352,13 @@ class Reports extends REIM_Controller {
             $open_exchange = $company_config['open_exchange'];
         }
 
+        //是否打印类目汇总sheet
+        $statistic_using_category = 0;
+        if(array_key_exists('statistic_using_category',$company_config))
+        {
+            $statistic_using_category = $company_config['statistic_using_category'];
+        }
+
         $sobs = array();
         $_sobs = $this->account_set->get_account_set_list();
         if($_sobs['status'])
@@ -1371,9 +1377,9 @@ class Reports extends REIM_Controller {
 
         foreach($categories as $cate) {
             if(array_key_exists($cate['sob_id'],$sob_dic))
-                $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code'],'sob_name' => $sob_dic[$cate['sob_id']]);
+                $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code'],'sob_name' => $sob_dic[$cate['sob_id']],'sob_id' => $cate['sob_id']);
             else
-                $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code'],'sob_name' => '');
+                $cate_dic[$cate['id']] = array('id' => $cate['id'],'name' => $cate['category_name'],'pid' => $cate['pid'] , 'note' => $cate['note'],'sob_code' => $cate['sob_code'],'sob_name' => '','sob_id' => $cate['sob_id']);
 
         }
         $group = $this->groups->get_my_full_list();
@@ -1438,6 +1444,9 @@ class Reports extends REIM_Controller {
                 $template = $dict_templates[$template_id];
 
             $_t_items = array();
+            // 类目金额汇总 
+            $category_cells = array();
+            $category_cells_dic = array();
             // 报销单汇总
             $stat_cells = array();
             // 报销单明细
@@ -1675,6 +1684,31 @@ class Reports extends REIM_Controller {
             }
 
             foreach($_t_items as $i){
+                //初始化类目汇总表单中对应的类目的信息
+                if($statistic_using_category)
+                {
+                    if(!array_key_exists($i['category'],$category_cells_dic))
+                    {
+                        $sob_name = '';
+                        if(array_key_exists($i['category'],$cate_dic))
+                        {
+                            $sob_name = $cate_dic[$i['category']]['sob_name'];
+                        }
+                        $category_cells_dic[$i['category']] = array(
+                            'sob_name'=> $sob_name,
+                            'category_name'=>$i['category_name'],
+                            'category_code'=>$i['category_code'],
+                            'amount'=>$i['amount'],
+                            'pa_amount'=>$i['pa_amount']
+                            );
+                    }
+                    else
+                    {
+                        $category_cells_dic[$i['category']]['amount'] += $i['amount'];
+                        $category_cells_dic[$i['category']]['pa_amount'] += $i['pa_amount'];
+                    }
+                }
+
                 $i['amount'] = sprintf("%.2f", $i['amount']);
                 $_relates = explode(',', $i['relates']);
                 $__relates = array();
@@ -1827,15 +1861,32 @@ class Reports extends REIM_Controller {
             if ($template)
                 $template_name = $template["name"];
 
+
             $template_excel = array(
                 "报销单汇总" => array_values($stat_cells),
                 "报销单明细" => $report_cells,
-                "消费明细" => $item_cells
+                "消费明细" => $item_cells,
             );
+            if($statistic_using_category)
+            {
+                foreach($category_cells_dic as $ccd)
+                {
+                    $o = array();
+                    $o['帐套'] = $ccd['sob_name'];
+                    $o['类目'] = $ccd['category_name'];
+                    $o['类目代码'] = $ccd['category_code'];
+                    $o['总额'] = $ccd['amount'];
+                    $o['应付'] = $ccd['amount'] - $ccd['pa_amount'];
+                    $o['已付'] = $ccd['pa_amount'];
+                    array_push($category_cells,$o);
+                }
+                $template_excel["类目金额汇总"] = $category_cells;
+            }
 
             log_message("debug", "报销单汇总 => " . json_encode($stat_cells));
             log_message("debug", "报销单明细 => " . json_encode($report_cells));
             log_message("debug", "消费明细 => " . json_encode($item_cells));
+            log_message("debug", "类目金额汇总 => " . json_encode($category_cells));
 
             // 重命名已存在同名模板
             if (array_key_exists($template_name, $excel)) {
@@ -2002,8 +2053,8 @@ class Reports extends REIM_Controller {
                 ,'现金流量借方金额' => ''
                 ,'现金流量贷方金额' => ''
                 ,'金额' => ''
-		,'员工姓名' => ''
-		,'员工号' => ''
+                ,'员工姓名' => ''
+                ,'员工号' => ''
             );
             $idx = 0;
             $_total_amount = 0;
@@ -2061,10 +2112,8 @@ class Reports extends REIM_Controller {
                     $o['借方金额'] = sprintf("%.2f",$_amount * $rate); 
                     $o['贷方金额'] = $_total_amount;
                     $o['部门编码'] = implode(',', $_gids);
-		    $o['员工姓名'] = $r['nickname'];
-		    $o['员工号'] = $r['client_id'];
-                    /*
-                     */
+                    $o['员工姓名'] = $r['nickname'];
+                    $o['员工号'] = $r['client_id'];
                     array_push($_excel, $o);
                 }
             }
