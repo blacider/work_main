@@ -420,7 +420,7 @@ if($last_error) {
             <i class="ace-icon fa fa-times"></i>
                 取消
         </button>
-        <input type="submit" class="btn btn-sm btn-primary" onclick="return checkLength(1);">
+        <input type="submit" class="btn btn-sm btn-primary" onclick="return checkLength(1);" value="提交">
             </div>
         </div>
     </div>
@@ -527,7 +527,7 @@ if($last_error) {
             <i class="ace-icon fa fa-times"></i>
                 取消
         </button>
-        <input type="submit" class="btn btn-sm btn-primary" onclick="return checkLength(0);">
+        <input type="submit" class="btn btn-sm btn-primary" onclick="return checkLength(0);" value="提交">
     </div>
     <input type="text" name="sob_id" class="hidden" value="<?php echo $sob_id; ?>">
     <input type="text" name="pid" class="hidden"></form>
