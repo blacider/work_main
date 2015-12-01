@@ -236,8 +236,7 @@ class Users extends REIM_Controller {
         $admin_groups_granted = '';
         $_admin_groups_granted = $this->input->post('admin_groups_granted');
 
-        log_message('debug','admin:' . $admin);
-        if(!$admin && $admin != 0)
+        if($admin == '')
         {
             $admin = -1;
         }
@@ -256,15 +255,10 @@ class Users extends REIM_Controller {
 
         $usergroups = '';
         log_message('debug','admin:' . $admin);
-        log_message('debug','admin_groups_granted:' . json_encode($admin_groups_granted));
-        log_message('debug','_admin_groups_granted:' . json_encode($_admin_groups_granted));
         if($_usergroups)
         {
             $usergroups = implode(',',$_usergroups);
         }
-        log_message('debug','rank:' . $rank);
-        log_message('debug','level:' . $level);
-        log_message('debug','max_report' . $max_report);
         if(!($uid || $nickname || $email || $phone || $credit_card)){
             redirect(base_url('users/profile'));
         }
@@ -277,8 +271,6 @@ class Users extends REIM_Controller {
         }
         $data = $this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin, $manager_id, $max_report, $rank, $level, $client_id, $avatar, $admin_groups_granted);
         $info = json_decode($data, true);
-        log_message('debug','info:' . json_encode($info));
-        log_message('debug','profile' . json_encode($profile));
         if($info['status'] > 0){
             $this->session->set_userdata('last_error', '信息修改成功');
         } else {
