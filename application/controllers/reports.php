@@ -1808,11 +1808,17 @@ class Reports extends REIM_Controller {
                     $o['标签'] = $i['tag_names'];
                 }
                 $o['会计科目'] = $i['category_name'];
-                $o['会计科目代码'] = $_sob_code;
+                $o['会计科目代码'] = $i['category_code'];
                 $o['会计科目上级'] = '';
                 $o['会计科目上级代码'] = '';
-                $o['会计科目上级'] = $_sob_name;
-                $o['会计科目代码'] = $_sob_code;
+                if (array_key_exists($i['category'], $cate_dic)) {
+                    $cate = $cate_dic[$i['category']];
+                    if (array_key_exists($cate['pid'], $cate_dic)) {
+                        $p_cate = $cate_dic[$cate['pid']];
+                        $o['会计科目上级'] = $p_cate['name'];
+                        $o['会计科目上级代码'] = $p_cate['sob_code'];
+                    }
+                }
                 $o['报销审核人'] = $i['flow'];
                 foreach ($dict_customized_note_field as $fid => $fname) {
                     $o[$fname] = '';
