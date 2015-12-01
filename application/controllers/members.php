@@ -1524,14 +1524,12 @@ class Members extends REIM_Controller {
         {
             $images = $_images;
         }
-        if($profile['admin'] == 4)
-        {
-            $uids = -1;
-        }
-        else if($_uids)
+
+        if($_uids)
         {
             $uids = implode(',',$_uids);
         }
+
         if($_pid)
         {
             $pid = $_pid;
