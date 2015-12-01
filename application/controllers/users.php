@@ -447,15 +447,21 @@ class Users extends REIM_Controller {
 
 
     public function new_credit() {
+        $profile = $this->session->userdata('profile');
+        $uid = $profile['id'];
         $account = $this->input->post('account');
         $cardbank = $this->input->post('cardbank');
         $cardno = $this->input->post('cardno');
         $cardloc = $this->input->post('cardloc');
         $id = $this->input->post('id');
-        $uid = $this->input->post('uid');
+        $_uid = $this->input->post('uid');
         $subbranch = $this->input->post('subbranch');
         $default = $this->input->post('default');
-
+        
+        if($_uid)
+        {
+            $uid = $_uid;
+        }
         if($id) {
         $buf = $this->user->update_credit($id, $account, $cardno, $cardbank, $cardloc, $uid, $subbranch, $default);
         } else {

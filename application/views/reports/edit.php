@@ -1125,8 +1125,25 @@ $(document).ready(function(){
         $('#credit_model').modal('hide');
         $('#bank_select_' + _id).append(buf);
         $('#bank_select_' + _id).trigger('chosen:updated');
-        console.log($('#bank_select_' + _id));
-        show_notify('银行卡添加成功');
+        $.ajax({
+            url : __BASE + "users/new_credit",
+            data : {
+                'account' : _account
+                    ,'cardbank' : _bank
+                    ,'cardno' : _no
+                    ,'cardloc' :  _loc
+                    ,'subbranch':_subbranch
+                    ,'default':0
+            },
+            dataType : 'json',
+            method : 'POST',
+            success:function(data){
+                if(data['status'] > 0)
+                {
+                    show_notify('银行卡添加成功');
+                }
+            }
+        });
     });
 
     bind_event();
