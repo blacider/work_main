@@ -236,7 +236,8 @@ class Users extends REIM_Controller {
         $admin_groups_granted = '';
         $_admin_groups_granted = $this->input->post('admin_groups_granted');
 
-        if(!$admin)
+        log_message('debug','admin:' . $admin);
+        if(!$admin && $admin != 0)
         {
             $admin = -1;
         }

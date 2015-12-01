@@ -48,7 +48,7 @@ class Group_Model extends Reim_Model {
         $url = $this->get_url('load');
         $buf = $this->do_Post($url,$data,$jwt);
 
-        log_message('debug','imports_back:' . json_encode($buf));
+        log_message('debug','imports_back:' . $buf);
         return json_decode($buf,True);
     }
     public function update_rank_level($rank,$id,$name)
