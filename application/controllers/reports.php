@@ -1403,6 +1403,12 @@ class Reports extends REIM_Controller {
         $cate_dic = array();
         if($_categories['status'] > 0) {
             $categories = $_categories['data']['categories'];
+            if (array_key_exists('categories_disabled', $_categories['data'])) {
+                $categories = array_merge(
+                    $categories,
+                    $_categories['data']['categories_disabled']
+                );
+            }
         }
 
         foreach($categories as $cate) {
@@ -1826,27 +1832,24 @@ class Reports extends REIM_Controller {
                 $o['参与人员'] = implode(',', $__relates);
                 $o['承担部门'] = $_str_afford_dept;
                 $o['承担对象'] = $_str_afford_member;
-                $_sob_code = 0;
-                if(array_key_exists($i['category'], $cate_dic) && array_key_exists('sob_code', $cate_dic[$i['category']])){
-                    $_sob_code = $cate_dic[$i['category']]['sob_code'];
-                }
-                $_sob_name = '';
-                if(array_key_exists($i['category'], $cate_dic) && array_key_exists('name', $cate_dic[$i['category']])){
-                    $_sob_name = $cate_dic[$i['category']]['name'];
-                }
                 if (array_key_exists("tag_names", $i)) {
                     $o['标签'] = $i['tag_names'];
                 }
-                $o['会计科目'] = $i['category_name'];
-                $o['会计科目代码'] = $i['category_code'];
-                $o['会计科目上级'] = '';
-                $o['会计科目上级代码'] = '';
+                $o['一级会计科目'] = '';
+                $o['一级会计科目代码'] = '';
+                $o['二级会计科目'] = '';
+                $o['二级会计科目代码'] = '';
                 if (array_key_exists($i['category'], $cate_dic)) {
                     $cate = $cate_dic[$i['category']];
                     if (array_key_exists($cate['pid'], $cate_dic)) {
                         $p_cate = $cate_dic[$cate['pid']];
-                        $o['会计科目上级'] = $p_cate['name'];
-                        $o['会计科目上级代码'] = $p_cate['sob_code'];
+                        $o['一级会计科目'] = $p_cate['name'];
+                        $o['一级会计科目代码'] = $p_cate['sob_code'];
+                        $o['二级会计科目'] = $cate['name'];;
+                        $o['二级会计科目代码'] = $cate['sob_code'];;
+                    } else {
+                        $o['一级会计科目'] = $cate['name'];
+                        $o['一级会计科目代码'] = $cate['sob_code'];
                     }
                 }
                 $o['报销审核人'] = $i['flow'];
