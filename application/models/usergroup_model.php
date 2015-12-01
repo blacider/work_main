@@ -56,8 +56,9 @@ class UserGroup_Model extends Reim_Model {
         $data = array();
 		$url = $this->get_url('user_group/' . $id);
 		$buf = $this->do_Delete($url, $data, $jwt);
-        log_message("debug", "model:" . $buf);
-        return $buf;
+        $obj = json_decode($buf,True);
+        log_message('debug','del_group_back:' . $buf);
+        return $obj;
     }
 
 

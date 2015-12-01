@@ -1422,8 +1422,16 @@ class Members extends REIM_Controller {
 
     public function delgroup($id = 0){
         if($id == 0) redirect(base_url('members/groups'));
-        $this->ug->delete_group($id);
-        //        redirect(base_url('members/groups'));
+        $info = $this->ug->delete_group($id);
+        if($info['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','删除成功');
+        }
+        else
+        {
+            $this->session->set_userdata('last_error',$info['data']['msg']);
+        }
+
         redirect(base_url('members/groups'));
 
     }
