@@ -9,11 +9,10 @@
                             <div class="col-xs-4 col-sm-4">
                                 <select id="member" class="chosen-select tag-input-style" style="width:95%" multiple="multiple" name="member[]"  data-placeholder="请选择员工">
                                     <?php
-                                    foreach($members as $ug){
+                                    foreach($members as $m){
                                     ?>
-                                    <option  value="<?php echo $ug['email']; ?>">
-                                        <?php echo $ug['nickname']; ?>
-                                        (<?php echo $ug['email']; ?>)</option>
+                                    <option  value="<?php echo $m['email']; ?>">
+                                        <?php echo $m['nickname'];if($m['email']){echo "[" . $m['email'] . "]";} elseif($m['phone']){echo "[" . $m['phone'] . "]";}?></option>
                                     <?php
                                     }
 
