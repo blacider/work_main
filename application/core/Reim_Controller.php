@@ -317,9 +317,11 @@ class REIM_Controller extends CI_Controller{
                 $sheet->getStyle($range)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
                 $j++;
                                 
-                if (empty($style[$k])) 
+                if (empty($style[$k])) {
+                    $sheet->getStyle($range)->getNumberFormat()->setFormatCode('#');                    
                     continue;
-                    
+                }
+                
                 $s = $style[$k];
                 if (!empty($s['data_type'])) {
                     if ($s['data_type'] == "number") {
