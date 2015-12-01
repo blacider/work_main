@@ -133,9 +133,9 @@
             <div class="col-xs-6 col-sm-6">
                                 <select id="member" class="chosen-select range tag-input-style" name="member[]" multiple  data-placeholder="请选择员工">
                                     <?php
-                                    foreach($members as $ug){
+                                    foreach($members as $m){
                                     ?>
-                                    <option value="<?php echo $ug['id']; ?>"><?php echo $ug['nickname'] . " - [" . $ug['email'] . "]"; ?></option>
+                                    <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname'];if($m['email']){echo "[" . $m['email'] . "]";} elseif($m['phone']){echo "[" . $m['phone'] . "]";}?></option>
 
                                     <?php } ?></select>
         </div>

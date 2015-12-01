@@ -1596,7 +1596,6 @@ class Members extends REIM_Controller {
                 ,'error' => $error 
                 ,'last_error' => $last_error
                 ,'isOther' => 1
-                //,'avatar_path' => $path
                 ,'gmember' => $gmember
                 ,'manager_id' => $manager_id
                 ,'pid' => $id

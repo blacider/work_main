@@ -44,7 +44,7 @@
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
                                         <label style="margin-top:8px;">
-                                            <input name="isadmin" class="ace ace-switch btn-rotate" type="checkbox" id="isadmin" style="margin-top:4px;" />
+                                            <input name="same_category" class="ace ace-switch btn-rotate" type="checkbox" id="same_category" style="margin-top:4px;" />
                                             <span class="lbl"></span>
                                         </label>
 
@@ -71,7 +71,7 @@
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
                                         <label style="margin-top:8px;">
-                                            <input name="isremark" class="ace ace-switch btn-rotate" type="checkbox" id="isremark" style="margin-top:4px;" />
+                                            <input name="export_no_note" class="ace ace-switch btn-rotate" type="checkbox" id="export_no_note" style="margin-top:4px;" />
                                             <span class="lbl"></span>
                                         </label>
                                    <!-- </div> -->
@@ -144,7 +144,7 @@
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
                                         <label style="margin-top:8px;">
-                                            <input name="iscompany" class="ace ace-switch btn-rotate" type="checkbox" id="iscompany" style="margin-top:4px;" />
+                                            <input name="export_no_company" class="ace ace-switch btn-rotate" type="checkbox" id="export_no_company" style="margin-top:4px;" />
                                             <span class="lbl"></span>
                                         </label>
 
@@ -160,6 +160,20 @@
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
                                         <label style="margin-top:8px;">
                                             <input name="open_exchange" class="ace ace-switch btn-rotate" type="checkbox" id="open_exchange" style="margin-top:4px;" />
+                                            <span class="lbl"></span>
+                                        </label>
+
+                                   <!-- </div> -->
+                                </div>
+                            </div>
+
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right">在Excel中增加类目金额汇总</label>
+                                <div class="col-xs-6 col-sm-6">
+                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
+                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
+                                        <label style="margin-top:8px;">
+                                            <input name="statistic_using_category" class="ace ace-switch btn-rotate" type="checkbox" id="statistic_using_category" style="margin-top:4px;" />
                                             <span class="lbl"></span>
                                         </label>
 
@@ -225,21 +239,21 @@
                              <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">每月最多可提交的报销单数量</label>
                                 <div class="col-xs-4 col-sm-4">
-                                <input id="reports_limit" type="text" class="form-controller col-xs-12" name="reports_limit" placeholder="报销单数">
+                                <input id="reports_limit" type="number" class="form-controller col-xs-12" name="reports_limit" placeholder="报销单数">
                                 </div>
                             </div>
 
                               <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">最多可提交最近几个月之前的报销</label>
                                 <div class="col-xs-4 col-sm-4">
-                                <input id="max_allowed_months" type="text" class="form-controller col-xs-12" name="max_allowed_months" placeholder="月数">
+                                <input id="max_allowed_months" type="number" class="form-controller col-xs-12" name="max_allowed_months" placeholder="月数">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">自然月起始</label>
                                 <div class="col-xs-4 col-sm-4">
-                                <input id="calendar_month" type="text" class="form-controller col-xs-12" name="calendar_month" placeholder="自然月">
+                                <input id="calendar_month" type="number" class="form-controller col-xs-12" name="calendar_month" placeholder="自然月">
                                 </div>
                             </div>
 
@@ -274,6 +288,7 @@ var __BASE = "<?php echo $base_url; ?>";
     var _checked = $('#isadmin').is('checked');
     $('#profile').submit();
 	});*/
+
    $("#confirm_unlimit").change(function(){
         if($(this).is(':checked'))
         {
@@ -289,6 +304,15 @@ var __BASE = "<?php echo $base_url; ?>";
     url:__BASE+"company/getsetting",
     dataType:'json',
     success:function(data){
+          if(data.statistic_using_category != undefined)
+        {
+            if(data.statistic_using_category ==1)
+            {
+                $('#statistic_using_category').attr('checked', data.same_category_pdf);
+                $("#statistic_using_category").trigger("chosen:updated");
+            }
+        }
+
         if(data.footer_format != undefined) {
             $("#footer_format").val(data.footer_format).attr('selected',true);
             $(".footer-format").trigger("chosen:updated");
@@ -315,8 +339,8 @@ var __BASE = "<?php echo $base_url; ?>";
         {
             if(data.same_category==0)
             {
-            $('#isadmin').attr('checked', data.same_category);
-            $("#isadmin").trigger("chosen:updated");
+            $('#same_category').attr('checked', data.same_category);
+            $("#same_category").trigger("chosen:updated");
             }
 
         }
@@ -344,8 +368,8 @@ var __BASE = "<?php echo $base_url; ?>";
         {
             if(data.export_no_note==1)
             {
-            $('#isremark').attr('checked', data.export_no_note);
-            $("#isremark").trigger("chosen:updated");
+            $('#export_no_note').attr('checked', data.export_no_note);
+            $("#export_no_note").trigger("chosen:updated");
             }
         }
 
@@ -390,8 +414,8 @@ var __BASE = "<?php echo $base_url; ?>";
         {
             if(data.export_no_company==1)
             {
-            $('#iscompany').attr('checked', data.export_no_company);
-            $("#iscompany").trigger("chosen:updated");
+            $('#export_no_company').attr('checked', data.export_no_company);
+            $("#export_no_company").trigger("chosen:updated");
             }
 
         }
@@ -450,6 +474,16 @@ var __BASE = "<?php echo $base_url; ?>";
    });
 
     $('.renew').click(function(){
+        $('.btn-rotate').each(function(){
+            if($(this).is(':checked'))
+            {
+                $(this).val(1);
+            }
+            else
+            {
+                $(this).val(0);
+            }
+        });
         var lval = $('#limit').val();
         if($('#confirm_unlimit').is(':checked'))
         {
@@ -479,23 +513,24 @@ var __BASE = "<?php echo $base_url; ?>";
                     url:__BASE+"company/profile",
                     data:{
                         calendar_month:$('#calendar_month').val(),
-                        note_compulsory:$('#note_compulsory').is(':checked'),
-                        not_auto_time:$('#not_auto_time').is(':checked'),
-                        mail_notify:$('#mail_notify').is(':checked'),
-                        close_directly :$('#close_directly').is(':checked'),
-                        low_amount_only:$('#low_amount_only').is(':checked'),
+                        note_compulsory:$('#note_compulsory').val(),
+                        not_auto_time:$('#not_auto_time').val(),
+                        mail_notify:$('#mail_notify').val(),
+                        close_directly :$('#close_directly').val(),
+                        low_amount_only:$('#low_amount_only').val(),
                         max_allowed_months:$('#max_allowed_months').val(),
-                        private_structure:$('#private_structure').is(':checked'),
-                        need_bank_info:$('#need_bank_info').is(':checked'),
-                        isadmin:$('#isadmin').is(':checked'),
-                        isremark:$('#isremark').is(':checked'),
-                        hide_merchants:$('#hide_merchants').is(':checked'),
-                        iscompany:$('#iscompany').is(':checked'),
+                        private_structure:$('#private_structure').val(),
+                        need_bank_info:$('#need_bank_info').val(),
+                        same_category:$('#same_category').val(),
+                        export_no_note:$('#export_no_note').val(),
+                        export_no_company:$('#export_no_company').val(),
+                        hide_merchants:$('#hide_merchants').val(),
                         template:$('#temp option:selected').val(),
                         footer_format:$('#footer_format option:selected').val(),
                         limit:lval,reports_limit:r_limit,
-                        open_exchange:$('#open_exchange').is(':checked'),
-                        same_category_pdf:$('#same_category_pdf').is(':checked')
+                        open_exchange:$('#open_exchange').val(),
+                        same_category_pdf:$('#same_category_pdf').val(),
+                        statistic_using_category:$('#statistic_using_category').val()
        },
                     dataType:'json',
                     success:function(data){
