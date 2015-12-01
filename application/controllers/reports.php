@@ -1603,7 +1603,7 @@ class Reports extends REIM_Controller {
 
                 $_items = $r['items'];
                 foreach($_items as $i){
-                    $i['amount'] = sprintf("%.2f", $i['amount']);
+                    $i['amount'] = round($i['amount'], 2);
                     $_rate = 1.0;
                     if(array_key_exists('currency', $i) && (strtolower($i['currency']) != "" && strtolower($i['currency']) != 'cny')) {
                         $_rate = $i['rate'] / 100;
@@ -1709,7 +1709,7 @@ class Reports extends REIM_Controller {
                     }
                 }
 
-                $i['amount'] = sprintf("%.2f", $i['amount']);
+                $i['amount'] = round($i['amount'], 2);
                 $_relates = explode(',', $i['relates']);
                 $__relates = array();
                 foreach($_relates as $r){
@@ -1835,8 +1835,7 @@ class Reports extends REIM_Controller {
                     if($i['currency'] != 'cny')
                         $o['汇率'] = round($i['rate']/100,6);
                 }
-                //                $o['人民币金额'] = (string)($i['amount'] * $_rate) . '￥';
-                $o['人民币金额'] = round($i['amount'] * $_rate,2);
+                $o['人民币金额'] = round($i['amount'] * $_rate, 2);
                 $_paid = 0;
                 if($i['prove_ahead'] > 0){
                     $_paid = $i['pa_amount'];
@@ -2065,9 +2064,9 @@ class Reports extends REIM_Controller {
                     if($item['currency'] != '' && strtolower($item['currency']) != 'cny') {
                         $rate = $item['rate'] / 100;
                     }
-                    $_amount = sprintf("%.2f", $item['amount']);
+                    $_amount = round($item['amount'], 2);
                     if($item['prove_ahead'] == 2){
-                        $_amount = sprintf("%.2f", $item['amount'] - $item['pa_amount']);
+                        $_amount = round($item['amount'] - $item['pa_amount'], 2);
 
                     }
                     $_total_amount += $_amount * $rate;
@@ -2105,7 +2104,7 @@ class Reports extends REIM_Controller {
                     if(trim($i['currency']) != '' && strtolower($i['currency']) != 'cny') {
                         $rate = $i['rate'] / 100;
                     }
-                    $_amount = sprintf("%.2f", $i['amount']);
+                    $_amount = round($i['amount'], 2);
                     if($i['prove_ahead'] == 2){
                         $_amount = sprintf("%.2f", $i['amount'] - $i['pa_amount']);
                     }
