@@ -1286,6 +1286,36 @@ class Reports extends REIM_Controller {
         }
         return $obj;
     }
+
+    static $stat_style = [
+        "金额" => [ "data_type" => "number" ],
+        "已付" => [ "data_type" => "number" ],
+        "应付" => [ "data_type" => "number" ],
+    ];
+
+    static $report_style = [
+        "金额" => [ "data_type" => "number" ],
+        "已付" => [ "data_type" => "number" ],
+        "应付" => [ "data_type" => "number" ],
+    ];
+
+    static $item_style = [
+        "日期" => [ "data_type" => "date" ],
+        "时间" => [ "data_type" => "time" ],
+        "金额" => [ "data_type" => "number" ],
+        "外币金额" => [ "data_type" => "number" ],
+        "汇率" => [ "data_type" => "number", "decimal_places" => 3 ],
+        "人民币金额" => [ "data_type" => "number" ],
+        "已付" => [ "data_type" => "number" ],
+        "应付" => [ "data_type" => "number" ],
+    ];
+
+    static $category_style = [
+        "总额" => [ "data_type" => "number" ],
+        "已付" => [ "data_type" => "number" ],
+        "应付" => [ "data_type" => "number" ],
+    ];
+
     private function exports_by_rids($ids) {
         $_data = $this->reports->get_reports_by_ids($ids);
         if (empty($_data) || $_data["status"] < 0) {
@@ -1720,8 +1750,8 @@ class Reports extends REIM_Controller {
                 $s = $i['category_code'];
                 if($s == 0) $s = '';
                 $o = array();
-                $o['日期'] = date('Y年m月d日', date($i['dt']));
-                $o['时间'] = date('H:i:s', date($i['dt']));
+                $o['日期'] = date('Y-m-d', $i['dt']);
+                $o['时间'] = date('H:i:s', $i['dt']);
                 $o['类别'] = $i['category_name'];
                 $o['帐套'] = $this->try_get_element($cate_dic, $i['category'], 'sob_name');
                 $o['创建者'] = $i['nickname'];
@@ -1866,12 +1896,11 @@ class Reports extends REIM_Controller {
             if ($template)
                 $template_name = $template["name"];
 
-
-            $template_excel = array(
-                "报销单汇总" => array_values($stat_cells),
-                "报销单明细" => $report_cells,
-                "消费明细" => $item_cells,
-            );
+            $template_excel = [
+                [ "title" => "报销单汇总", "data" => array_values($stat_cells), "style" => self::$stat_style ],
+                [ "title" => "报销单明细", "data"  => $report_cells, "style" => self::$report_style ],
+                [ "title" => "消费明细", "data" => $item_cells, "style" => self::$item_style ],
+            ];
             if($statistic_using_category)
             {
                 foreach($category_cells_dic as $ccd)
@@ -1885,7 +1914,7 @@ class Reports extends REIM_Controller {
                     $o['已付'] = $ccd['pa_amount'];
                     array_push($category_cells,$o);
                 }
-                $template_excel["类目金额汇总"] = $category_cells;
+                $template_excel[] = [ "title" => "类目金额汇总", "data" => $category_cells, "style" => self::$category_style ];
             }
 
             log_message("debug", "报销单汇总 => " . json_encode($stat_cells));
@@ -1915,14 +1944,15 @@ class Reports extends REIM_Controller {
 
         $data = array();
         foreach ($excel as $template_name => $template_excel) {
-            foreach ($template_excel as $name => $excel) {
-                $title = $name;
+            foreach ($template_excel as $excel) {
+                $title = $excel['title'];
                 if (!empty($template_name))
                     $title = $template_name . " - " . $name;
 
                 array_push($data, array(
                     "title" => $title,
-                    "data" => $excel
+                    "data" => $excel['data'],
+                    "style" => $excel['style'],
                 ));
             }
         }

@@ -278,6 +278,7 @@ class REIM_Controller extends CI_Controller{
 
             $title = $sheet_data["title"];
             $rows = $sheet_data["data"];
+            $style = $sheet_data["style"];
 
             $sheet->setTitle($title);
             $first_row = $rows[0];
@@ -300,7 +301,8 @@ class REIM_Controller extends CI_Controller{
                     $c_name = $this->getCharByNunber($y);
                     $addr = $c_name . $x;
                     $sheet->getStyle($addr)->getFont()->setName('微软雅黑')->setSize(12);
-                    $sheet->setCellValueExplicit($addr, strval($v), PHPExcel_Cell_DataType::TYPE_STRING);
+                    //$sheet->setCellValueExplicit($addr, strval($v), PHPExcel_Cell_DataType::TYPE_STRING);
+                    $sheet->setCellValue($addr, $v);
                     $y++;
                 }
                 $x++;
@@ -309,8 +311,31 @@ class REIM_Controller extends CI_Controller{
             $j = 0;
             foreach ($first_row as $k => $v) {
                 $c_name = $this->getCharByNunber($j);
+                $range = $c_name . '2:' . $c_name . (count($rows) + 1);
+                
                 $sheet->getColumnDimension($c_name)->setAutoSize(true);
+                $sheet->getStyle($range)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
                 $j++;
+                                
+                if (empty($style[$k])) 
+                    continue;
+                    
+                $s = $style[$k];
+                if (!empty($s['data_type'])) {
+                    if ($s['data_type'] == "number") {
+                        $decimal_places = 2;
+                        if (!empty($s['decimal_places']) && is_numeric($s['decimal_places'])) {
+                            $decimal_places = $s['decimal_places'];
+                        }
+
+                        $format = '#,##0.' . str_repeat('0', $decimal_places);
+                        $sheet->getStyle($range)->getNumberFormat()->setFormatCode($format);
+                    } elseif ($s['data_type'] == "date") {
+                        $sheet->getStyle($range)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDD2);
+                    } elseif ($s['data_type'] == "time") {
+                        $sheet->getStyle($range)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME6);
+                    }
+                }
             }
         }
 
