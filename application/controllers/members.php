@@ -653,31 +653,26 @@ class Members extends REIM_Controller {
     }
     public function add() {
         $this->need_group_agent();
-        $group = $this->groups->get_my_list();
         $_gnames = $this->ug->get_my_list();
         $gnames = array();
-        if($_gnames['status'] > 0 && array_key_exists('group',$_gnames['data']))
+        $gmember = array();
+        if($_gnames['status'] > 0)
         {
-            $gnames = $_gnames['data']['group'];
+            if(array_key_exists('group',$_gnames['data']))
+            {
+                $gnames = $_gnames['data']['group'];
+            }
+            if(array_key_exists('member',$_gnames['data']))
+            {
+                $gmember = $_gnames['data']['member'];
+            }
         }
 
-        $ginfo = array();
-        $gmember = array();
-        if($group) {
-            if(array_key_exists('ginfo', $group['data'])){
-                $ginfo = $group['data']['ginfo'];
-            }
-            if(array_key_exists('gmember', $group['data'])){
-                $gmember = $group['data']['gmember'];
-            }
-            $gmember = $gmember ? $gmember : array();
-        }
         $this->bsload('groups/new',
             array(
                 'title' => '添加部门',
                 'member' => $gmember
                 ,'group' => $gnames
-                ,'ginfo' => $_gnames
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
@@ -1458,20 +1453,20 @@ class Members extends REIM_Controller {
 
     public function editgroup($id = 0){
         if($id == 0) redirect(base_url('members/groups'));
-        $group = $this->groups->get_my_list();
         $_gnames = $this->ug->get_my_list();
-        $gnames = $_gnames['data']['group'];
-        $ginfo = array();
-        $gmember = array();
-        if($group) {
-            if(array_key_exists('ginfo', $group['data'])){
-                $ginfo = $group['data']['ginfo'];
+        $gmembers = array();
+        if($_gnames['status'] > 0)
+        {
+            if(array_key_exists('group',$_gnames['data']))
+            {
+                $gnames = $_gnames['data']['group'];
             }
-            if(array_key_exists('gmember', $group['data'])){
-                $gmember = $group['data']['gmember'];
+            if(array_key_exists('member',$_gnames['data']))
+            {
+                $gmembers = $_gnames['data']['member'];
             }
-            $gmember = $gmember ? $gmember : array();
         }
+
         $info = json_decode($this->ug->get_single_group($id), True);
         if($info['status'] > 0){
             $info = $info['data'];
@@ -1487,8 +1482,8 @@ class Members extends REIM_Controller {
                     ,'gnames' => $gnames
                     ,'smember' => $mid
                     ,'group' => $group
-                    ,'member' => $gmember
                     ,'pid' => $group['pid']
+                    ,'member' => $gmembers
                     ,'manager' => $group['manager']
                     ,'breadcrumbs' => array(
                         array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')

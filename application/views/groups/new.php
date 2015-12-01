@@ -95,9 +95,21 @@
                                     <select class="chosen-select tag-input-style" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
                                     <?php 
                                     foreach($member as $m){
+                                        if($profile['admin'] == 4)
+                                        {
+                                            if(array_intersect($m['gids'], $admin_groups_granted))
+                                            {
                                     ?>
-                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . "[" . $m['email'] . "]"; ?></option>
+                                            <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . "[" . $m['email'] . "]"; ?></option>
                                     <?php
+                                            }
+                                        }
+                                        else
+                                        {
+                                    ?>
+                                            <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname'] . "[" . $m['email'] . "]"; ?></option>
+                                    <?php
+                                        }
                                     }
                                     ?>
                                     </select>
