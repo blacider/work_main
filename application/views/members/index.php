@@ -112,7 +112,7 @@ if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['d'],
         <?php echo $m['client_id']; ?>
     </td>
     <td>
-        <a href="/members/editmember/<?php echo $m['id']; ?>"> <?php echo $m['nickname']; ?> </a>
+        <?php echo $m['nickname']; ?> 
     </td>
     <td>
         <?php echo $m['email']; ?>
@@ -184,8 +184,6 @@ if($profile['admin'] == 1 ||  $profile['admin'] == 3) {
 
 <script language="javascript">
 var admin_groups_granted = $('#admin_groups_granted').data("gids");
-console.log(admin_groups_granted);
-console.log(typeof admin_groups_granted);
 var __BASE = "<?php echo $base_url; ?>";
 var error = "<?php echo $error;?>";
 console.log(error);
@@ -397,7 +395,7 @@ function load_group(gid){
 		}
                 _th = '<tr>'
                     + '<td>' + item.client_id + '</a></td>'
-                    + '<td><a href="' + __BASE + '/members/editmember/' + item.id + '">' + item.nickname+ '</a></td>'
+                    + '<td>' + item.nickname+ '</td>'
                     + '<td>' + item.email + '</td>'
                     + '<td>' + item.phone + '</td>'
                     + '<td>' + item.d + '</td>'
