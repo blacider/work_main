@@ -96,8 +96,8 @@ class Users extends REIM_Controller {
     }
 
     public function profile(){
-        $error = $this->session->userdata('login_error');
-        $this->session->unset_userdata('login_error');
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         $ug = $this->reim_show->usergroups();
         $_ranks = $this->groups->get_rank_level(1);
         $_levels = $this->groups->get_rank_level(0);
@@ -236,7 +236,11 @@ class Users extends REIM_Controller {
         $admin_groups_granted = '';
         $_admin_groups_granted = $this->input->post('admin_groups_granted');
 
-        if($admin == 2)
+        if($admin == '')
+        {
+            $admin = -1;
+        }
+        if(in_array($admin,[2,4]))
         {
             $admin_groups_granted = $_admin_groups_granted;
         }
@@ -249,35 +253,28 @@ class Users extends REIM_Controller {
             $admin_groups_granted = '-1';
         }
 
-        $usergroups = array();
+        $usergroups = '';
         log_message('debug','admin:' . $admin);
-        log_message('debug','admin_groups_granted:' . json_encode($admin_groups_granted));
-        log_message('debug','_admin_groups_granted:' . json_encode($_admin_groups_granted));
         if($_usergroups)
         {
             $usergroups = implode(',',$_usergroups);
         }
-        log_message('debug','rank:' . $rank);
-        log_message('debug','level:' . $level);
-        log_message('debug','max_report' . $max_report);
         if(!($uid || $nickname || $email || $phone || $credit_card)){
             redirect(base_url('users/profile'));
         }
-        $data = $this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin, $manager_id, $max_report, $rank, $level, $client_id, $avatar, $admin_groups_granted);
-        $info = json_decode($data, true);
-        log_message('debug','info:' . json_encode($info));
-        log_message('debug','profile' . json_encode($profile));
         if(array_key_exists('admin',$profile))
         {
-            if(!($profile['admin'] == 1 || $profile['admin'] == 3))
+            if(!in_array($profile['admin'],[1,3,4]))
             {
                 $client_id = '';
             }
         }
+        $data = $this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin, $manager_id, $max_report, $rank, $level, $client_id, $avatar, $admin_groups_granted);
+        $info = json_decode($data, true);
         if($info['status'] > 0){
-            $this->session->set_userdata('login_error', '信息修改成功');
+            $this->session->set_userdata('last_error', '信息修改成功');
         } else {
-            $this->session->set_userdata('login_error', $info['data']['msg']);
+            $this->session->set_userdata('last_error', $info['data']['msg']);
         }
         if ($isOther == 1)
             redirect(base_url('members/index'));
@@ -304,7 +301,7 @@ class Users extends REIM_Controller {
         $pid = $this->input->post('pid');
 
         if($re_password != $new_password) {
-            $this->session->set_userdata('login_error', '新密码不相同');
+            $this->session->set_userdata('last_error', '新密码不相同');
         }
         $info = json_decode($this->user->reim_update_password($old_password, $new_password,$pid), true);
         log_message('debug','info:' . json_encode($info));
@@ -329,7 +326,7 @@ class Users extends REIM_Controller {
         $pid = $this->input->post('pid');
         log_message("debug","######".$pid." ".$profile_id);
         if(!($old_password && $new_password && $re_password)){
-            $this->session->set_userdata('login_error', '参数错误');
+            $this->session->set_userdata('last_error', '参数错误');
         if($pid == $profile_id)
         {
                 return redirect('users/profile');
@@ -340,7 +337,7 @@ class Users extends REIM_Controller {
         }
         }
         if($re_password != $new_password) {
-            $this->session->set_userdata('login_error', '新密码不相同');
+            $this->session->set_userdata('last_error', '新密码不相同');
         if($pid == $profile_id)
         {
                 return redirect('users/profile');
@@ -356,16 +353,16 @@ class Users extends REIM_Controller {
             {
                 $this->session->unset_userdata('jwt');
                 $this->session->unset_userdata('profile');
-                $this->session->set_userdata('login_error', '密码修改成功');
+                $this->session->set_userdata('last_error', '密码修改成功');
                 redirect(base_url('login'));
             }
             else
             {
-                $this->session->set_userdata('login_error', '密码修改成功');
+                $this->session->set_userdata('last_error', '密码修改成功');
                 redirect(base_url('members/editmember/'.$pid));
             }
         } else {
-            $this->session->set_userdata('login_error', '信息修改失败');
+            $this->session->set_userdata('last_error', '信息修改失败');
             if($pid == $profile_id)
             {
                 redirect(base_url('users/profile'));

@@ -1286,6 +1286,36 @@ class Reports extends REIM_Controller {
         }
         return $obj;
     }
+
+    static $stat_style = [
+        "金额" => [ "data_type" => "number" ],
+        "已付" => [ "data_type" => "number" ],
+        "应付" => [ "data_type" => "number" ],
+    ];
+
+    static $report_style = [
+        "金额" => [ "data_type" => "number" ],
+        "已付" => [ "data_type" => "number" ],
+        "应付" => [ "data_type" => "number" ],
+    ];
+
+    static $item_style = [
+        "日期" => [ "data_type" => "date" ],
+        "时间" => [ "data_type" => "time" ],
+        "金额" => [ "data_type" => "number" ],
+        "外币金额" => [ "data_type" => "number" ],
+        "汇率" => [ "data_type" => "number", "decimal_places" => 3 ],
+        "人民币金额" => [ "data_type" => "number" ],
+        "已付" => [ "data_type" => "number" ],
+        "应付" => [ "data_type" => "number" ],
+    ];
+
+    static $category_style = [
+        "总额" => [ "data_type" => "number" ],
+        "已付" => [ "data_type" => "number" ],
+        "应付" => [ "data_type" => "number" ],
+    ];
+
     private function exports_by_rids($ids) {
         $_data = $this->reports->get_reports_by_ids($ids);
         if (empty($_data) || $_data["status"] < 0) {
@@ -1373,6 +1403,12 @@ class Reports extends REIM_Controller {
         $cate_dic = array();
         if($_categories['status'] > 0) {
             $categories = $_categories['data']['categories'];
+            if (array_key_exists('categories_disabled', $_categories['data'])) {
+                $categories = array_merge(
+                    $categories,
+                    $_categories['data']['categories_disabled']
+                );
+            }
         }
 
         foreach($categories as $cate) {
@@ -1603,7 +1639,7 @@ class Reports extends REIM_Controller {
 
                 $_items = $r['items'];
                 foreach($_items as $i){
-                    $i['amount'] = sprintf("%.2f", $i['amount']);
+                    $i['amount'] = round($i['amount'], 2);
                     $_rate = 1.0;
                     if(array_key_exists('currency', $i) && (strtolower($i['currency']) != "" && strtolower($i['currency']) != 'cny')) {
                         $_rate = $i['rate'] / 100;
@@ -1709,7 +1745,7 @@ class Reports extends REIM_Controller {
                     }
                 }
 
-                $i['amount'] = sprintf("%.2f", $i['amount']);
+                $i['amount'] = round($i['amount'], 2);
                 $_relates = explode(',', $i['relates']);
                 $__relates = array();
                 foreach($_relates as $r){
@@ -1720,8 +1756,8 @@ class Reports extends REIM_Controller {
                 $s = $i['category_code'];
                 if($s == 0) $s = '';
                 $o = array();
-                $o['日期'] = date('Y年m月d日', date($i['dt']));
-                $o['时间'] = date('H:i:s', date($i['dt']));
+                $o['日期'] = date('Y-m-d', $i['dt']);
+                $o['时间'] = date('H:i:s', $i['dt']);
                 $o['类别'] = $i['category_name'];
                 $o['帐套'] = $this->try_get_element($cate_dic, $i['category'], 'sob_name');
                 $o['创建者'] = $i['nickname'];
@@ -1796,23 +1832,26 @@ class Reports extends REIM_Controller {
                 $o['参与人员'] = implode(',', $__relates);
                 $o['承担部门'] = $_str_afford_dept;
                 $o['承担对象'] = $_str_afford_member;
-                $_sob_code = 0;
-                if(array_key_exists($i['category'], $cate_dic) && array_key_exists('sob_code', $cate_dic[$i['category']])){
-                    $_sob_code = $cate_dic[$i['category']]['sob_code'];
-                }
-                $_sob_name = '';
-                if(array_key_exists($i['category'], $cate_dic) && array_key_exists('name', $cate_dic[$i['category']])){
-                    $_sob_name = $cate_dic[$i['category']]['name'];
-                }
                 if (array_key_exists("tag_names", $i)) {
                     $o['标签'] = $i['tag_names'];
                 }
-                $o['会计科目'] = $i['category_name'];
-                $o['会计科目代码'] = $_sob_code;
-                $o['会计科目上级'] = '';
-                $o['会计科目上级代码'] = '';
-                $o['会计科目上级'] = $_sob_name;
-                $o['会计科目代码'] = $_sob_code;
+                $o['一级会计科目'] = '';
+                $o['一级会计科目代码'] = '';
+                $o['二级会计科目'] = '';
+                $o['二级会计科目代码'] = '';
+                if (array_key_exists($i['category'], $cate_dic)) {
+                    $cate = $cate_dic[$i['category']];
+                    if (array_key_exists($cate['pid'], $cate_dic)) {
+                        $p_cate = $cate_dic[$cate['pid']];
+                        $o['一级会计科目'] = $p_cate['name'];
+                        $o['一级会计科目代码'] = $p_cate['sob_code'];
+                        $o['二级会计科目'] = $cate['name'];;
+                        $o['二级会计科目代码'] = $cate['sob_code'];;
+                    } else {
+                        $o['一级会计科目'] = $cate['name'];
+                        $o['一级会计科目代码'] = $cate['sob_code'];
+                    }
+                }
                 $o['报销审核人'] = $i['flow'];
                 foreach ($dict_customized_note_field as $fid => $fname) {
                     $o[$fname] = '';
@@ -1835,8 +1874,7 @@ class Reports extends REIM_Controller {
                     if($i['currency'] != 'cny')
                         $o['汇率'] = round($i['rate']/100,6);
                 }
-                //                $o['人民币金额'] = (string)($i['amount'] * $_rate) . '￥';
-                $o['人民币金额'] = round($i['amount'] * $_rate,2);
+                $o['人民币金额'] = round($i['amount'] * $_rate, 2);
                 $_paid = 0;
                 if($i['prove_ahead'] > 0){
                     $_paid = $i['pa_amount'];
@@ -1861,12 +1899,11 @@ class Reports extends REIM_Controller {
             if ($template)
                 $template_name = $template["name"];
 
-
-            $template_excel = array(
-                "报销单汇总" => array_values($stat_cells),
-                "报销单明细" => $report_cells,
-                "消费明细" => $item_cells,
-            );
+            $template_excel = [
+                [ "title" => "报销单汇总", "data" => array_values($stat_cells), "style" => self::$stat_style ],
+                [ "title" => "报销单明细", "data"  => $report_cells, "style" => self::$report_style ],
+                [ "title" => "消费明细", "data" => $item_cells, "style" => self::$item_style ],
+            ];
             if($statistic_using_category)
             {
                 foreach($category_cells_dic as $ccd)
@@ -1880,7 +1917,7 @@ class Reports extends REIM_Controller {
                     $o['已付'] = $ccd['pa_amount'];
                     array_push($category_cells,$o);
                 }
-                $template_excel["类目金额汇总"] = $category_cells;
+                $template_excel[] = [ "title" => "类目金额汇总", "data" => $category_cells, "style" => self::$category_style ];
             }
 
             log_message("debug", "报销单汇总 => " . json_encode($stat_cells));
@@ -1910,14 +1947,15 @@ class Reports extends REIM_Controller {
 
         $data = array();
         foreach ($excel as $template_name => $template_excel) {
-            foreach ($template_excel as $name => $excel) {
-                $title = $name;
+            foreach ($template_excel as $excel) {
+                $title = $excel['title'];
                 if (!empty($template_name))
                     $title = $template_name . " - " . $name;
 
                 array_push($data, array(
                     "title" => $title,
-                    "data" => $excel
+                    "data" => $excel['data'],
+                    "style" => $excel['style'],
                 ));
             }
         }
@@ -2065,9 +2103,9 @@ class Reports extends REIM_Controller {
                     if($item['currency'] != '' && strtolower($item['currency']) != 'cny') {
                         $rate = $item['rate'] / 100;
                     }
-                    $_amount = sprintf("%.2f", $item['amount']);
+                    $_amount = round($item['amount'], 2);
                     if($item['prove_ahead'] == 2){
-                        $_amount = sprintf("%.2f", $item['amount'] - $item['pa_amount']);
+                        $_amount = round($item['amount'] - $item['pa_amount'], 2);
 
                     }
                     $_total_amount += $_amount * $rate;
@@ -2105,7 +2143,7 @@ class Reports extends REIM_Controller {
                     if(trim($i['currency']) != '' && strtolower($i['currency']) != 'cny') {
                         $rate = $i['rate'] / 100;
                     }
-                    $_amount = sprintf("%.2f", $i['amount']);
+                    $_amount = round($i['amount'], 2);
                     if($i['prove_ahead'] == 2){
                         $_amount = sprintf("%.2f", $i['amount'] - $i['pa_amount']);
                     }
