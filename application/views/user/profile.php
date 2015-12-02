@@ -1158,7 +1158,19 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                             $('#cardno').focus();
                             return false;
                         };
-
+                        if (_account == "") {
+                            show_notify('请输入户名');
+                            $('#account').focus();
+                            return false;
+                        };
+                        
+                        if (_bank == "") {
+                            show_notify('请选择银行卡开户行');
+                            $('#cardbank').focus();
+                            return false;
+                        };
+                        
+                        
                         $.ajax({
                             url : __BASE + "users/new_credit",
                                 data : {
