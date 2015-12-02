@@ -169,12 +169,23 @@
                             <div class="col-xs-3 col-sm-3">
                                 <div class="input-group">
                                     <div id="average_id" name="average" type="text" class="form-control"><?php 
-                                        $_ava = $item['amount'];
-                                        if($item_value[5]['value'] != 0)
-                                        {
-                                            $_ava = $item['amount']/$item_value[5]['value'];  
-                                        }
-                                        echo sprintf("%.2f", $_ava);   ?>元/人*<?php echo $item_value[5]['value']?></div>
+                                    if($item['currency'] == 'cny')
+                                    { 
+                                        $all_amount = round($item['amount'],2);
+                                    }
+                                    else
+                                    {
+                                        $all_amount = round($item['amount'] * $item['rate']/100,2);
+                                    }
+                                    if($item_value[5]['value']) 
+                                    {
+                                        $_ava = $all_amount/$item_value[5]['value']; 
+                                    }
+                                    else
+                                    {
+                                        $_ava = $all_amount; 
+                                    }
+                                    echo sprintf("%.2f", $_ava);   ?>元/人*<?php echo $item_value[5]['value']?></div>
 
 
                                 </div>
