@@ -53,6 +53,11 @@ position: absolute;
 
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
+var error = "<?php echo $error;?>";
+if(error)
+{
+  show_notify(error);
+}
 </script>
 <script src="/static/js/base.js" ></script>
 <script src="/static/js/groups.js" ></script>
