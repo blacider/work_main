@@ -22,8 +22,7 @@
     var _error = "<?php echo $error; ?>";
 </script>
     <script type="text/javascript" src="/static/js/jquery.js"></script>
-    <script type="text/javascript" src="/static/js/index.js"></script>
-    <script type="text/javascript" src="/static/js/login.js"></script>
+    <script src="/static/js/resetpwd.js"></script>
 </head>
 <body>
   <div class="header">
@@ -47,7 +46,7 @@
       <div class="login">
           <div class="login-left" style="padding-top:36px;font-size:25px;"><br>为邮箱设置密码<br> <div style="color:#ff575b;  word-wrap: break-word;"><?php echo $name; ?></div><br></div>
         <div class="login-right">
-          <form id="form-phone-step2" style="display:block;" method="POST" action="<?php echo base_url('resetpwd/doupdate'); ?>/<?php echo $active?>/1">
+          <form id="form-phone-step2" style="display:block;" method="POST" onsubmit="return checkLogin()" action="<?php echo base_url('resetpwd/doupdate'); ?>/<?php echo $active?>/1">
             <div class="form-password">
 <?php
 $placeholder = '';
@@ -57,13 +56,13 @@ if($name){
 
 ?>
               <span>密码</span>
-              <span class="error">请输入密码</span>
-              <input type="password" id="pass" name="passc">
+              <span class="error" id="error">请输入密码</span>
+              <input type="password" placeholder="请输入英文与数字的混合密码，长度8位以上" id="pass" name="passc">
             </div>
             <div class="form-password">
               <span>重新输入密码</span>
               <span class="error">两次输入不一致</span>
-              <input type="password" id="pass2" name="pass">
+              <input type="password" placeholder="重新输入密码" id="pass2" name="pass">
             </div>
               <input type="hidden" id="phone_hidden" />
               <input type="hidden" name="code" value="<?php echo $code; ?>" />
@@ -99,12 +98,5 @@ if($name){
   	  </div>
   	</div>
   </div>
-<script language="javascript">
-$(document).ready(function(){
-    if(_error) {
-        alert(_error);
-    }
-});
-</script>
 </body>
 </html>
