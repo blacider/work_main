@@ -404,16 +404,18 @@ if(in_array($profile['admin'],[1,3,4])){
                                 </div>
 
                               <div class="col-xs-4 col-sm-4" id="cashier_view" hidden>
-                                 <select name="admin_groups_granted[]" id="admin_groups_granted" multiple="multiple" class="chosen-select tag-input-style" data-placeholder="请选择部门" <?php if($profile['admin']!=1){ echo "disabled";}?>> 
+                                <select name="admin_groups_granted[]" id="admin_groups_granted" multiple="multiple" class="chosen-select tag-input-style" data-placeholder="请选择部门" <?php if($profile['admin']!=1){ echo "disabled";}?>> 
                              <?php
-                                 $groups_granted = array();
-                                 if($pro && array_key_exists('admin_groups_granted', $pro) && $pro['admin_groups_granted'])
-                                 {
-                                     $groups_granted = explode(',',$pro['admin_groups_granted']);
-                                 }
+                                $groups_granted = array();
+                                if($pro && array_key_exists('admin_groups_granted', $pro) && $pro['admin_groups_granted'])
+                                {
+                                    $groups_granted = explode(',',$pro['admin_groups_granted']);
+                                }
+                
                             ?>
-                                        <option value='0'>公司</option>
+                                    <option value='0'>公司</option>
                             <?php
+
                                  foreach($ug as $g)
                                  {
                                     if(in_array($g['id'], $groups_granted))
@@ -1054,16 +1056,26 @@ if(in_array($profile['admin'],[1,3,4])){
             $('#profile_form').submit();
         });
 
+        var flag = 0;
         $('#admin_new').change(function(){
             var admin_type_id = $('#admin_new').val();
             if(admin_type_id == 2 || admin_type_id == 4)
             {
+                if(admin_type_id == 2 && flag)
+                {
+                    $('#admin_groups_granted').val([0]).prop('selected',true).trigger('chosen:updated');
+                }
+                else if(admin_type_id == 4 && flag)
+                {
+                    $('#admin_groups_granted').val([]).prop('selected',true).trigger('chosen:updated');
+                }
                 $('#cashier_view').prop('hidden',false).trigger('chosen:updated');
             }
             else
             {
                 $('#cashier_view').prop('hidden',true).trigger('chosen:updated');
             }
+            flag = 1;
         });
         $('#admin_new').trigger('change');
         $('#admin_new').trigger('change:updated');
