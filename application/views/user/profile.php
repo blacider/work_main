@@ -539,7 +539,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">卡号</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input id="cardno" name="cardno" type="text" class="form-controller col-xs-12" placeholder="卡号" />
+                                    <input id="cardno" maxlength="19" name="cardno" type="text" class="form-controller col-xs-12" placeholder="卡号" />
                                 </div>
                             </div>
                             <script type="text/javascript">
@@ -1153,7 +1153,11 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                 _default_id = 0;
                         }
                     
-    
+                        if (_no.length < 12) {
+                            show_notify('请输入正确银行卡号');
+                            $('#cardno').focus();
+                            return false;
+                        };
 
                         $.ajax({
                             url : __BASE + "users/new_credit",
