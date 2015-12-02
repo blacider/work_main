@@ -20,7 +20,7 @@
 	     <!-- page specific plugin styles -->
 	     <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 
-
+<script src="/static/js/bank_code.json"></script>
 
 <div class="page-content">
     <div class="page-content-area">
@@ -1041,14 +1041,6 @@ $(document).ready(function(){
         var _loc = _p + _c;//$('#cardloc').val();
         var value = {"account":_account,"bankname":_bank,"subbranch":_subbranch,"bankloc":_loc,"cardno":_no};
         var _value = JSON.stringify(value);
-                        if(_default == 1)
-                        {
-                            _default_id = _id;
-                        }
-                        else if(_default_id == _id)
-                        {
-                                _default_id = 0;
-                        }
                     
                         if (_no.length < 12) {
                             show_notify('请输入正确银行卡号');
