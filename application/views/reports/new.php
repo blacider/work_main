@@ -307,8 +307,8 @@ function do_post(force) {
     }
 
 
-    if(sum < 0) {
-        show_notify("报销单总额不能小于0");
+    if(sum <= 0) {
+        show_notify("报销单总额不能小于等于0");
         return false;
     }
     
