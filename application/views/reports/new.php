@@ -125,7 +125,8 @@ foreach($items as $i){
                                         <td>
                                             <input name="item[]" value="<?php echo $i['id']; ?>" 
                                             type="checkbox" class="form-controller amount" 
-                                            data-amount = "<?php echo $item_amount; ?>" 
+                                            data-amount = "<?php echo $item_amount; ?>"
+                                            data-type="<?php echo $i['prove_ahead'];?>"
                                             data-id="<?php echo $i['id']; ?>" 
                                             ></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
@@ -265,17 +266,35 @@ function do_post(force) {
 
 
     var sum=0;
-
+    
+    var report_type = 0;
+    var flag = 0 ;
+    var is_only_one_type = true;
     var _ids = Array();
 	$('.amount').each(function(){
 		if($(this).is(':checked')){
             _ids.push($(this).data('id'));
 			var amount = $(this).data('amount');
+            var item_type = $(this).data('type'); 
+            if(flag == 0)
+            {
+                report_type = item_type;
+                flag = 1;
+            }
+            if(report_type != item_type)
+            {
+                is_only_one_type = false;
+            }
            
 			amount = parseInt(amount);
 			sum+=amount;
 		};
 	});
+    if(!is_only_one_type)
+    {
+        show_notify('同一报销单中不能包含不同的消费类型');
+        return false;
+    }
     if(_ids.length == 0) {
         show_notify('提交的报销单不能为空');
         return false;
@@ -308,7 +327,8 @@ function do_post(force) {
                     'receiver' : $('#receiver').val(),
                     'cc' : _cc,
                     'renew' : _renew,
-                    'force' : force
+                    'force' : force,
+                    'type' : report_type 
                 },
                 dataType: 'json',
                 success : function(data){
