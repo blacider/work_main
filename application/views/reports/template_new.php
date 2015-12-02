@@ -356,6 +356,19 @@ foreach($items as $i){
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">开卡行</label>
+                                <script type="text/javascript">
+                            $(document).ready(function() {
+                                $("#cardno").keyup(function(event) {
+                                    var value = this.value;
+                                    if (value >= 6) {
+                                        value = value.substring(0,6);
+                                    };
+                                    if (BANK_CODE[value] != undefined) {
+                                        $("#cardbank").val(BANK_CODE[value]);
+                                    };
+                                });
+                            });
+                            </script>
                                 <div class="col-xs-6 col-sm-6">
                                     <select id="cardbank" name="cardbank" class="form-control">
                                         <option value='工商银行'>工商银行</option>
