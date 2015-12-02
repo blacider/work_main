@@ -411,18 +411,9 @@ if(in_array($profile['admin'],[1,3,4])){
                                  {
                                      $groups_granted = explode(',',$pro['admin_groups_granted']);
                                  }
-                            if(!$groups_granted)
-                                    {
-                            ?>
-                                        <option selected value='0'>公司</option>
-                            <?php
-                                    }
-                                    else
-                                    {
                             ?>
                                         <option value='0'>公司</option>
                             <?php
-                                    }
                                  foreach($ug as $g)
                                  {
                                     if(in_array($g['id'], $groups_granted))
@@ -1067,10 +1058,6 @@ if(in_array($profile['admin'],[1,3,4])){
             var admin_type_id = $('#admin_new').val();
             if(admin_type_id == 2 || admin_type_id == 4)
             {
-                if(admin_type_id == 4)
-                {
-                    $('#cashier_view').val([]).trigger('chosen:updated');
-                }
                 $('#cashier_view').prop('hidden',false).trigger('chosen:updated');
             }
             else
