@@ -53,10 +53,27 @@
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" name="groups" id="ugroups" multiple="multiple" data-placeholder="请选择部门">
                                         <!-- <option value="0">请选择部门</option> -->
-                                        <?php foreach($groups['group'] as $g) { ?>
+                                        <?php 
+                                        if($profile['admin'] == 4)
+                                        {
+                                                foreach ($groups['group'] as $g) 
+                                                {
+                                                    if(in_array($g['id'],$admin_groups_granted))
+                                                    {
+
+                                        ?>
+                                        <option value="<?php echo $g['name']; ?>"><?php echo $g['name']; ?></option>
+                                        <?php
+                                                    }
+                            
+                                                }
+                                        }
+                                        else
+                                        {
+                                        foreach($groups['group'] as $g) { ?>
                                         
                                         <option value="<?php echo $g['name']; ?>"><?php echo $g['name']; ?></option>
-                                        <?php } ?>
+                                        <?php } }?>
                                     </select>
                                 </div>
                             </div>
@@ -362,6 +379,7 @@ foreach($gmember as $m){
 
 <script type="text/javascript">
     var error = "<?php echo $this->session->userdata('last_error');?>";
+    var _admin = "<?php echo $profile['admin'];?>";
 </script>
 <script language="javascript">
     var __PROVINCE = Array();
@@ -451,6 +469,12 @@ $(document).ready(function(){
 		return false;
 	}
 	
+    if(_admin == 4 && !groups)
+    {
+        show_notify('请选择部门');
+        $('#ugroups').focus();
+        return false;
+    }
 
         $('#renew').val($(this).data('renew'));
         $('#mainform').submit();
