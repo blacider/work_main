@@ -1420,8 +1420,14 @@ class Members extends REIM_Controller {
      */
     }
 
-    public function delgroup($id = 0){
-        if($id == 0) redirect(base_url('members/groups'));
+    public function delgroup(){
+        $id = $this->input->post('id');
+        if(!$id)
+        {
+            $this->session->set_userdata('last_error','部门id错误');
+            echo json_encode(array());
+            return; 
+        }
         $info = $this->ug->delete_group($id);
         if($info['status'] > 0)
         {
@@ -1432,7 +1438,7 @@ class Members extends REIM_Controller {
             $this->session->set_userdata('last_error',$info['data']['msg']);
         }
 
-        redirect(base_url('members/groups'));
+        echo json_encode($info);
 
     }
 
