@@ -132,7 +132,8 @@ class REIM_Controller extends CI_Controller{
     }
 
 
-    public function  bsload($view_name, $custom_data, $menu_page = 'menu.bs.php'){
+    public function  bsload($view_name, $custom_data,$template_views = array()){
+        $menu_page = 'menu.bs.php'; 
         $this->load->model('user_model');
         $this->load->model('module_tip_model');
         $uid = $this->session->userdata('uid');
@@ -181,6 +182,10 @@ class REIM_Controller extends CI_Controller{
         $this->load->view('header.bs.php', $custom_data);
         $this->load->view($menu_page, $custom_data);
         $this->load->view($view_name, $custom_data);
+        foreach($template_views as $tv)
+        {
+            $this->load->view($tv,$custom_data);
+        }
         $this->load->view('footer.bs.php', $custom_data);
     }
 

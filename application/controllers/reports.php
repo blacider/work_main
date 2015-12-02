@@ -647,11 +647,27 @@ class Reports extends REIM_Controller {
         log_message('debug','report:' . json_encode($report));
         log_message('debug','extra:' . json_encode($extra));
         log_message('debug','config:' . json_encode($config));
+        $comments = array();
+        if(array_key_exists('comments',$report))
+        {
+            $comments = $report['comments']['data'];
+        }
+
+        foreach($comments as &$comment)
+        {
+            $comment['lastdt'] = date('Y-m-d H:i:s',$comment['lastdt']);
+        }
+        $template_views = array();
+        array_push($template_views,'models/reports/comments');
+        array_push($template_views,'models/reports/report_flow');
+        array_push($template_views,'models/reports/report_item_list');
+        array_push($template_views,'models/reports/report_footer');
         $this->bsload('reports/edit',
             array(
                 'title' => '修改报销单',
                 'members' => $_members,
                 'items' => $_items,
+                'comments' => $comments,
                 'config' => $config,
                 'extra' => $extra,
                 'banks' => $banks,
@@ -663,15 +679,17 @@ class Reports extends REIM_Controller {
                     ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
                     ,array('url'  => '', 'name' => '修改报销单', 'class' => '')
                 ),
-            ));
+            ),
+            $template_views
+            );
     }
     public function show($id = 0, $decision = 0){
         $item_type_dic = $this->reim_show->get_item_type_name();
         if($id == 0) return redirect(base_url('reports/index'));
-        $report = $this->reports->get_detail($id);
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
 
+        $report = $this->reports->get_detail($id);
         if($report['status'] <= 0){
             return redirect(base_url('reports/index'));
         }
