@@ -69,7 +69,7 @@ if($self != 1) {
                         <label class="col-sm-1 control-label no-padding-right">用户ID</label>
                         <div class="col-xs-6 col-sm-6">
                         <?php
-                            if(in_array($profile['admin'],[1,2,4]))
+                            if(in_array($profile['admin'],[1,3,4]))
                             {
                         ?>
                             <input type="text" class="col-xs-6 col-sm-6 form-control" name="client_id" value="<?php echo $user['client_id']; ?>"  />

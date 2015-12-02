@@ -1,6 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class REIM_Controller extends CI_Controller{
+
+    const WORKER = 0;
+    const ADMIN = 1;
+    const CASHIER = 2;
+    const IT = 3;
+    const GROUP_MANAGER = 4;
+
     public function _remap($method,$params)
     {
         $this->load->library('user_agent');
@@ -452,27 +459,27 @@ class REIM_Controller extends CI_Controller{
 
     public function need_group_admin(){
         $admin = $this->get_privilege();
-        if($admin == 1) return true;
+        if($admin == self::ADMIN) return true;
         $this->session->set_userdata("last_error", "权限不足");
         return redirect(base_url('items'), 'refresh');
     }
 
     public function need_group_it(){
         $admin = $this->get_privilege();
-        if($admin == 1 || $admin == 3) return true;
+        if($admin == self::ADMIN || $admin == self::IT) return true;
         $this->session->set_userdata("last_error", "权限不足");
         return redirect(base_url('items'), 'refresh');
     }
 
     public function need_group_agent(){
         $admin = $this->get_privilege();
-        if($admin == 1 || $admin == 3 || $admin == 4) return true;
+        if($admin == self::ADMIN || $admin == self::IT || $admin == self::GROUP_MANAGER) return true;
         $this->session->set_userdata("last_error", "权限不足");
         return redirect(base_url('items'), 'refresh');
     }
     public function need_group_casher(){
         $admin = $this->get_privilege();
-        if($admin == 1 || $admin == 2) return true;;
+        if($admin == self::ADMIN || $admin == self::CASHIER) return true;;
         $this->session->set_userdata("last_error", "权限不足");
         return redirect(base_url('items'), 'refresh');
     }
