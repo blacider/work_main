@@ -1041,13 +1041,36 @@ $(document).ready(function(){
         var _loc = _p + _c;//$('#cardloc').val();
         var value = {"account":_account,"bankname":_bank,"subbranch":_subbranch,"bankloc":_loc,"cardno":_no};
         var _value = JSON.stringify(value);
-
+                        if(_default == 1)
+                        {
+                            _default_id = _id;
+                        }
+                        else if(_default_id == _id)
+                        {
+                                _default_id = 0;
+                        }
+                    
+                        if (_no.length < 12) {
+                            show_notify('请输入正确银行卡号');
+                            $('#cardno').focus();
+                            return false;
+                        };
+                        if (_account == "") {
+                            show_notify('请输入户名');
+                            $('#account').focus();
+                            return false;
+                        };
+                        
+                        if (_bank == "") {
+                            show_notify('请选择银行卡开户行');
+                            $('#cardbank').focus();
+                            return false;
+                        };
        
         var buf = '<option selected value="'+ escapeHtml(_value) +'">'+ _account + '-' + _bank + '-' + _no +'</option>';
         $('#credit_model').modal('hide');
         $('#bank_select_' + _id).append(buf);
         $('#bank_select_' + _id).trigger('chosen:updated');
-        console.log($('#bank_select_' + _id));
         show_notify('银行卡添加成功');
     });
 
