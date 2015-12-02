@@ -16,7 +16,7 @@ font:bold 11px Arial, Helvetica, sans-serif;
 </style>
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
-
+<script type="text/javascript" src="/static/js/bank_code.json"></script>
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 
 <div class="page-content">
@@ -542,7 +542,19 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                     <input id="cardno" name="cardno" type="text" class="form-controller col-xs-12" placeholder="卡号" />
                                 </div>
                             </div>
-
+                            <script type="text/javascript">
+                            $(document).ready(function() {
+                                $("#cardno").keyup(function(event) {
+                                    var value = this.value;
+                                    if (value >= 6) {
+                                        value = value.substring(0,6);
+                                    };
+                                    if (BANK_CODE[value] != undefined) {
+                                        $("#cardbank").val(BANK_CODE[value]);
+                                    };
+                                });
+                            });
+                            </script>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">开卡行</label>
                                 <div class="col-xs-6 col-sm-6">
