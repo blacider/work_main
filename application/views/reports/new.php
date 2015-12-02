@@ -38,9 +38,9 @@
                                     <input type="hidden" name="hidden_receiver" id="hidden_receiver" />
                                     <select class="chosen-select tag-input-style" name="receiver[]" multiple="multiple" data-placeholder="请选择审批人" id="receiver">
                                         <?php 
-					$user = $this->session->userdata('user');
-					foreach($members as $m) {
-					if($user['id'] != $m['id']){
+                    $user = $this->session->userdata('user');
+                    foreach($members as $m) {
+                    if($user['id'] != $m['id']){
                         if ($user['manager_id'] != $m['id']){?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
                                         <?php } else {?>
@@ -56,7 +56,7 @@
                                 <div class="col-xs-9 col-sm-9">
                                     <select class="chosen-select tag-input-style" name="cc[]" id="cc" multiple="multiple" data-placeholder="请选择抄送人">
                                         <?php foreach($members as $m) {
-					if($user['id'] != $m['id']){?>
+                    if($user['id'] != $m['id']){?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
                                        
                                         <?php }} ?>
@@ -271,10 +271,10 @@ function do_post(force) {
     var flag = 0 ;
     var is_only_one_type = true;
     var _ids = Array();
-	$('.amount').each(function(){
-		if($(this).is(':checked')){
+    $('.amount').each(function(){
+        if($(this).is(':checked')){
             _ids.push($(this).data('id'));
-			var amount = $(this).data('amount');
+            var amount = $(this).data('amount');
             var item_type = $(this).data('type'); 
             if(flag == 0)
             {
@@ -286,10 +286,10 @@ function do_post(force) {
                 is_only_one_type = false;
             }
            
-			amount = parseInt(amount);
-			sum+=amount;
-		};
-	});
+            amount = parseInt(amount);
+            sum+=amount;
+        };
+    });
     if(!is_only_one_type)
     {
         show_notify('同一报销单中不能包含不同的消费类型');
@@ -300,17 +300,17 @@ function do_post(force) {
         return false;
     }
 
-	if(s == null){
-	     show_notify('请选择审批人');
-	     $('#receiver').focus();
-	     return false;
-	}
+    if(s == null){
+         show_notify('请选择审批人');
+         $('#receiver').focus();
+         return false;
+    }
 
 
-	if(sum < 0) {
-		show_notify("报销单总额不能小于0");
-		return false;
-	}
+    if(sum < 0) {
+        show_notify("报销单总额不能小于0");
+        return false;
+    }
     
     // 转ajax,否则不能正确处理
     var _renew = $('#renew').val();
