@@ -44,7 +44,6 @@
                                 <option value="-1">公司</option>
                                 </select>
                             </div>
-                            <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">部门</label>
                         </div>
                 <input type="hidden" id="renew" name="renew" value="0" />
                 <input type="reset" style="display:none;" id="reset">
