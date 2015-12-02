@@ -38,9 +38,9 @@
                                     <input type="hidden" name="hidden_receiver" id="hidden_receiver" />
                                     <select class="chosen-select tag-input-style" name="receiver[]" multiple="multiple" data-placeholder="请选择审批人" id="receiver">
                                         <?php 
-                    $user = $this->session->userdata('user');
-                    foreach($members as $m) {
-                    if($user['id'] != $m['id']){
+                        $user = $this->session->userdata('user');
+                        foreach($members as $m) {
+                        if($user['id'] != $m['id']){
                         if ($user['manager_id'] != $m['id']){?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
                                         <?php } else {?>
@@ -56,7 +56,7 @@
                                 <div class="col-xs-9 col-sm-9">
                                     <select class="chosen-select tag-input-style" name="cc[]" id="cc" multiple="multiple" data-placeholder="请选择抄送人">
                                         <?php foreach($members as $m) {
-                    if($user['id'] != $m['id']){?>
+                                        if($user['id'] != $m['id']){?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
                                        
                                         <?php }} ?>
