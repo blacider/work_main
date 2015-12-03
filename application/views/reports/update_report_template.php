@@ -308,7 +308,6 @@
             var index = getGroupIndexById(groupId);
             if (ifCreate) {
                 data.nid = __nid;
-                __nid--;
                 __dataUpload['config'][index]['children'].push(data);
             } else {
                 var subIndex = getSubIndexById(groupId, subId);
@@ -331,6 +330,7 @@
                 );
             }
             $('#modal_1').modal('hide');
+            __nid--;
             return false;
         });
         $("#createGroup").click(function(event) {
@@ -498,6 +498,7 @@
                                 ifCreate = true;
                                 $('#modal_1').find('input[name="groupId"]').val(groupId);
                                 $('#modal_1').find('input[name="name"]').val("");
+                                $('#modal_1').find('input[name="subId"]').val("");
                                 $('#modal_1').find('input[name="explanation"]').val("");
                                 $('#modal_1').find('input[name="required"]')[0].checked = 0;
                                 $('#modal_1').find('select').val(1).trigger("chosen:updated");
