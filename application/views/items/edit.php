@@ -416,6 +416,11 @@ foreach($item_config as $s) {
 <script src="/static/ace/js/jquery.colorbox-min.js"></script>
 
 <script type="text/javascript">
+var error = "<?php echo $error;?>";
+if(error)
+{
+    show_notify(error);
+}
 $(document).ready(function() {
     function loadFiles() {
         for (var i = 0; i < __files.length; i++) {
