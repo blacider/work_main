@@ -932,7 +932,7 @@ $(document).ready(function(){
             show_notify('正在上传图片，请稍候');
             return false;
         }
-        if($('#amount').val() < 0) {
+        if($('#amount').val() <= 0) {
             show_notify('请输入有效金额');
             $('#amount').val('');
             $('#amount').focus();

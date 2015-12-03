@@ -1146,6 +1146,14 @@ class Items extends REIM_Controller {
         if($profile['id'] != $_uid){
             $item_update_in = 1;
         }
+
+        //自己修改数据不让改为0
+        if($item_update_in == 0 && $amount == 0)
+        {
+            $this->session->set_userdata('金额不能为0');
+            redirect(base_url('items/edit/' . $id));
+        }
+            
         log_message("debug", "##UID  $_uid :" . $profile['id']);
 
         $merchant = $this->input->post('merchant');
