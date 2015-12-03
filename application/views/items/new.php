@@ -893,13 +893,13 @@ $(document).ready(function(){
                 $('#config_type').val(_item_config[category_id]['type']);
                 $('#amount').change(function(){
                     var all_amount = $('#amount').val();
+                    var coin_id = 'cny';
                     if($('#coin_type').val())
                     {
-                        var rates = $('#coin_type').val().split(',')[1];
-                        all_amount *= rates/100;
+                         coin_id = $('#coin_type').val().split(',')[0];
                     }
                     if (subs != '' && subs >= 0)
-                        $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
+                        $('#average_id').text(icon_dic[coin_id] + Number(all_amount/subs).toFixed(2) +'/人' + '*' + subs);
                     else
                         $('#average_id').text("请输入正确人数");
                 });

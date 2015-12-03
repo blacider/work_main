@@ -168,15 +168,8 @@
                             <label class="col-sm-1 control-label no-padding-right">人均:</label>
                             <div class="col-xs-3 col-sm-3">
                                 <div class="input-group">
-                                    <div id="average_id" name="average" type="text" class="form-control"><?php 
-                                    if($item['currency'] == 'cny')
-                                    { 
-                                        $all_amount = round($item['amount'],2);
-                                    }
-                                    else
-                                    {
-                                        $all_amount = round($item['amount'] * $item['rate']/100,2);
-                                    }
+                                    <div id="average_id" name="average" type="text" class="form-control"><strong id="icon_type"></strong><?php 
+                                    $all_amount = round($item['amount'],2);
                                     if($item_value[5]['value']) 
                                     {
                                         $_ava = $all_amount/$item_value[5]['value']; 
@@ -185,7 +178,7 @@
                                     {
                                         $_ava = $all_amount; 
                                     }
-                                    echo sprintf("%.2f", $_ava);   ?>元/人*<?php echo $item_value[5]['value']?></div>
+                                    echo sprintf("%.2f", $_ava);   ?>/人*<?php echo $item_value[5]['value']?></div>
 
 
                                 </div>
@@ -373,6 +366,7 @@ var icon_dic = {'cny':'￥','usd':'$','eur':'€','hkd':'$','mop':'$','twd':'$',
 
 $('#coin_type').append("<option selected>" + simbol_dic[_coin_type] + "</option>");
 $('#coin_simbol').text(icon_dic[_coin_type]);
+$('#icon_type').text(icon_dic[_coin_type]);
 
 
 $(document).ready(function(){
