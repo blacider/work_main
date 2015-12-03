@@ -772,8 +772,7 @@ class Reports extends REIM_Controller {
         $template_views = array();
         array_push($template_views,'models/reports/report_flow');
         array_push($template_views,'models/reports/comments');
-        array_push($template_views,'models/reports/report_item_list');
-        array_push($template_views,'models/reports/report_footer');
+        array_push($template_views,'models/reports/edit_report_footer');
         $this->bsload('reports/edit',
             array(
                 'title' => '修改报销单',
@@ -1002,6 +1001,11 @@ class Reports extends REIM_Controller {
             }
         }
         
+        $template_views = array();
+        array_push($template_views,'models/reports/report_flow');
+        array_push($template_views,'models/reports/comments');
+        array_push($template_views,'models/reports/show_report_footer');
+
         $this->bsload('reports/view',
             array(
                 'title' => '查看报销单',
@@ -1022,7 +1026,9 @@ class Reports extends REIM_Controller {
                     ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
                     ,array('url'  => '', 'name' => '查看报销单', 'class' => '')
                 ),
-            ));
+            ),
+            $template_views
+            );
     }
 
     public function update(){
