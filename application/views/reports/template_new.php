@@ -1068,9 +1068,8 @@ $(document).ready(function(){
                                         ,'cardno' : _no
                                         ,'cardloc' :  _loc
                                         ,'id' :  _id
-                                        ,'uid' : user_id
                                         ,'subbranch':_subbranch
-                                        ,'default':_default
+                                        ,'default':0
                                 },
                                 dataType : 'json',
                                 method : 'POST',
@@ -1078,10 +1077,10 @@ $(document).ready(function(){
                                     if(data.status){
                                         
                                         var buf = '<option selected value="'+ escapeHtml(_value) +'">'+ _account + '-' + _bank + '-' + _no +'</option>';
-        $('#credit_model').modal('hide');
-        $('#bank_select_' + _id).append(buf);
-        $('#bank_select_' + _id).trigger('chosen:updated');
-        show_notify('银行卡添加成功');
+                                        $('#credit_model').modal('hide');
+                                        $('#bank_select_' + _id).append(buf);
+                                        $('#bank_select_' + _id).trigger('chosen:updated');
+                                        show_notify('银行卡添加成功');
                                     } else {
                                         show_notify(data.data.msg);
                                     }
