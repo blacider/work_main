@@ -1053,7 +1053,7 @@ $(document).ready(function(){
                             return false;
                         };
                         
-                        if (_bank == "") {
+                        if (_bank == "" || _bank == null || _bank == undefined) {
                             show_notify('请选择银行卡开户行');
                             $('#cardbank').focus();
                             return false;
