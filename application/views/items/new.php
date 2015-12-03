@@ -156,7 +156,7 @@
 <label class="col-sm-1 control-label no-padding-right">费用承担</label>
 <div class="col-xs-6 col-sm-6">
 
-<div class="col-xs-3 col-sm-3" style="margin-left:0px;padding-left:0px;">
+<div class="col-xs-3 col-sm-3" style="margin-left:0px;padding-left:0px; ">
 <input type="hidden" value="" id="afford_ids" name="afford_ids" />
 <select class="chosen-select tag-input-style" id="afford_type" name="afford_type" data-placeholder="请选择类型">
 <option value="-1"><?php echo $profile['nickname']; ?></option>
@@ -187,7 +187,7 @@
 </select>
 </div>
 
-<div class="col-xs-9 col-sm-9">
+<div class="col-xs-9 col-sm-9" style="   position: relative;top: -4px;">
 <?php echo implode("", $select_multi); ?>
 </div>
 
