@@ -180,7 +180,10 @@ class User_Model extends Reim_Model {
         }
         $data['admin_groups_granted'] = $admin_groups_granted;
         $data['manager_id'] = $manager_id;
-        $data['admin'] = $admin;
+        if($admin >=0 )
+        {
+            $data['admin'] = $admin;
+        }
         $data['groups'] = $usergroups;
         $data['max_report'] = $max_report;
         $data['rank'] = $rank;
@@ -193,6 +196,7 @@ class User_Model extends Reim_Model {
         log_message("debug",'profile_data:' . json_encode($data));
         $buf = $this->do_Put($url, $data, $jwt);
         log_message("debug", 'profile:' . $buf);
+        log_message('debug','admin:'.$admin);
         return $buf;
     }
 

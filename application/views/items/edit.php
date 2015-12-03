@@ -358,12 +358,12 @@ foreach($item_config as $s) {
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">照片</label>
-                                <div class="col-xs-6 col-sm-6">
-                                    <div class="col-xs-12 col-sm-12">
+                                <div>
+                                    <div class="col-xs-6 col-sm-6">
                                         <ul class="ace-thumbnails clearfix" id="imageList">
                                         </ul>
                                     </div>
-                                    <div class="col-xs-12 col-sm-12">
+                                    <div class="col-xs-6 col-sm-6">
                                         <a id="filePicker" >选择图片</a>
                                     </div>
                                     </div>

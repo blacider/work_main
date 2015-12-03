@@ -11,7 +11,17 @@ function bind_event(){
     $('.tdel').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
-            location.href = __BASE + "members/delgroup/" + _id;
+            $.ajax({
+                url:__BASE + "members/delgroup",
+                method:'POST',
+                data:{'id':_id},
+                success:function(data){
+                    history.go(0);
+                },
+                error:function(a,b,c)
+                {
+                }
+            });
         });
     });
     $('.tedit').each(function() {

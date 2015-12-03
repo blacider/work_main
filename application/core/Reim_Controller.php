@@ -1,6 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class REIM_Controller extends CI_Controller{
+
+    const WORKER = 0;
+    const ADMIN = 1;
+    const CASHIER = 2;
+    const IT = 3;
+    const GROUP_MANAGER = 4;
+
     public function _remap($method,$params)
     {
         $this->load->library('user_agent');
@@ -169,6 +176,12 @@ class REIM_Controller extends CI_Controller{
             }
             $this->session->set_userdata('user', $profile);
             $custom_data['profile'] = $profile;
+            $admin_groups_granted = array();
+            if(array_key_exists("admin_groups_granted_all", $profile) && $profile["admin_groups_granted_all"])
+            {
+                $admin_groups_granted = $profile["admin_groups_granted_all"];
+            }
+            $custom_data['admin_groups_granted'] = $admin_groups_granted;
         }
 
         $custom_data['groupname'] = $this->session->userdata('groupname');
@@ -283,6 +296,7 @@ class REIM_Controller extends CI_Controller{
 
             $title = $sheet_data["title"];
             $rows = $sheet_data["data"];
+            $style = $sheet_data["style"];
 
             $sheet->setTitle($title);
             $first_row = $rows[0];
@@ -305,7 +319,8 @@ class REIM_Controller extends CI_Controller{
                     $c_name = $this->getCharByNunber($y);
                     $addr = $c_name . $x;
                     $sheet->getStyle($addr)->getFont()->setName('微软雅黑')->setSize(12);
-                    $sheet->setCellValueExplicit($addr, strval($v), PHPExcel_Cell_DataType::TYPE_STRING);
+                    //$sheet->setCellValueExplicit($addr, strval($v), PHPExcel_Cell_DataType::TYPE_STRING);
+                    $sheet->setCellValue($addr, $v);
                     $y++;
                 }
                 $x++;
@@ -314,8 +329,33 @@ class REIM_Controller extends CI_Controller{
             $j = 0;
             foreach ($first_row as $k => $v) {
                 $c_name = $this->getCharByNunber($j);
+                $range = $c_name . '2:' . $c_name . (count($rows) + 1);
+                
                 $sheet->getColumnDimension($c_name)->setAutoSize(true);
+                $sheet->getStyle($range)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
                 $j++;
+                                
+                if (empty($style[$k])) {
+                    $sheet->getStyle($range)->getNumberFormat()->setFormatCode('#');                    
+                    continue;
+                }
+                
+                $s = $style[$k];
+                if (!empty($s['data_type'])) {
+                    if ($s['data_type'] == "number") {
+                        $decimal_places = 2;
+                        if (!empty($s['decimal_places']) && is_numeric($s['decimal_places'])) {
+                            $decimal_places = $s['decimal_places'];
+                        }
+
+                        $format = '#,##0.' . str_repeat('0', $decimal_places);
+                        $sheet->getStyle($range)->getNumberFormat()->setFormatCode($format);
+                    } elseif ($s['data_type'] == "date") {
+                        $sheet->getStyle($range)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDD2);
+                    } elseif ($s['data_type'] == "time") {
+                        $sheet->getStyle($range)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME6);
+                    }
+                }
             }
         }
 
@@ -451,21 +491,27 @@ class REIM_Controller extends CI_Controller{
 
     public function need_group_admin(){
         $admin = $this->get_privilege();
-        if($admin == 1) return true;
+        if($admin == self::ADMIN) return true;
         $this->session->set_userdata("last_error", "权限不足");
         return redirect(base_url('items'), 'refresh');
     }
 
     public function need_group_it(){
         $admin = $this->get_privilege();
-        if($admin == 1 || $admin == 3) return true;
+        if($admin == self::ADMIN || $admin == self::IT) return true;
         $this->session->set_userdata("last_error", "权限不足");
         return redirect(base_url('items'), 'refresh');
     }
 
+    public function need_group_agent(){
+        $admin = $this->get_privilege();
+        if($admin == self::ADMIN || $admin == self::IT || $admin == self::GROUP_MANAGER) return true;
+        $this->session->set_userdata("last_error", "权限不足");
+        return redirect(base_url('items'), 'refresh');
+    }
     public function need_group_casher(){
         $admin = $this->get_privilege();
-        if($admin == 1 || $admin == 2) return true;;
+        if($admin == self::ADMIN || $admin == self::CASHIER) return true;;
         $this->session->set_userdata("last_error", "权限不足");
         return redirect(base_url('items'), 'refresh');
     }
