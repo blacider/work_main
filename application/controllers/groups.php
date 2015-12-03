@@ -9,7 +9,7 @@ class Groups extends REIM_Controller {
     }
 
     public function update(){
-        $this->need_group_it();
+        $this->need_group_agent();
         $pid = $this->input->post('pgroup');
         $code = $this->input->post('gcode');
         $manager = $this->input->post('manager');
@@ -25,6 +25,15 @@ class Groups extends REIM_Controller {
             $images = $_images;
         }        
         $info = $this->ug->create_group($manager,$uids, $name,$code,$pid,$images);
+        
+        if($info['status'] > 0)
+        {
+            $this->session->set_userdata('last_error','创建部门成功');
+        }
+        else
+        {
+            $this->session->set_userdata('last_error',$info['data']['msg']);
+        }
         redirect(base_url('members/groups'));
     }
 

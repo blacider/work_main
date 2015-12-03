@@ -46,13 +46,36 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">上级部门</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <select class="chosen-select tag-input-style" id="pgroups" name= "pgroup"  data-placeholder="请选择部门">
-                                    <option value=0>顶级部门</option>
+                                    <select class="chosen-select tag-input-style" id="pgroups" name= "pgroup" data-placeholder="请选择部门">
                                     <?php 
-                                    foreach($gnames as $m){
-                                        if($m['id'] != $group['id']){
+                                        if($profile['admin'] == 4 && $pid <= 0)
+                                        {
                                     ?>
-                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
+                                            <option value=0>顶级部门</option>
+                                    <?php
+                                        }
+                                        else
+                                        {
+                                    ?>
+                                            <option value=0>顶级部门</option>
+                                    <?php
+                                        }
+                                    ?>
+                                    <?php 
+                                    foreach($gnames as $g){
+                                        if($profile['admin'] == 4)
+                                        {
+                                            if(in_array($g['id'], $admin_groups_granted) && $g['id'] != $group['id'])
+                                            {
+                                        ?>
+                                            <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+                                        <?php
+                                            }
+                                        }
+                                        else
+                                        {
+                                    ?>
+                                        <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
                                     <?php
                                         }
                                     }
@@ -78,17 +101,32 @@
                                 <label class="col-sm-1 control-label no-padding-right">员工</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <input type="hidden" name="gid" value="<?php echo $group['id']; ?>" >
-                                    <select class="chosen-select tag-input-style" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
+                                    <select class="chosen-select tag-input-style" name="uids[]" multiple="multiple"  data-placeholder="请选择员工">
                                     <?php 
                                     foreach($member as $m){
                                         if(in_array($m['id'], $smember)){
                                     ?>
                                         <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname'];if($m['email']){echo "[" . $m['email'] . "]";} elseif($m['phone']){echo "[" . $m['phone'] . "]";}?></option>
-                                    <?php } else { ?>
+                                    <?php } 
+                                    else 
+                                    { 
+                                        if($profile['admin'] == 4)
+                                        {
+                                            if(array_intersect($m['gids'], $admin_groups_granted))
+                                            {
+                                    ?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname'];if($m['email']){echo "[" . $m['email'] . "]";} elseif($m['phone']){echo "[" . $m['phone'] . "]";}?></option>
                                     <?php
+                                            }
+                                        }
+                                        else
+                                        {
+                                    ?>
+                                        <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname'];if($m['email']){echo "[" . $m['email'] . "]";} elseif($m['phone']){echo "[" . $m['phone'] . "]";}?></option>
+                                    <?php
+                                        }
                                     }
-                                    }
+                                }
                                     ?>
                                     </select>
                                 </div>

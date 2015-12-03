@@ -1,4 +1,5 @@
 <script src="/static/ace/js/fuelux/fuelux.tree.min.js"></script>
+<script src="/static/js/util.js"></script>
 
 <script language='javascript'>
     var _admin = "<?php echo $profile['admin']; ?>";
@@ -53,10 +54,10 @@ position: absolute;
 </div> -->
 
 
-
 <div class="col-sm-2">
         <div class="widget-box widget-color-blue">
                 <div class="widget-header">
+                    <div id="admin_groups_granted" data-gids="<?php echo htmlspecialchars(json_encode($admin_groups_granted))?>"></div>
                     <h4 class="widget-title lighter smaller">组织结构</h4>
                     </div>
 
@@ -111,7 +112,7 @@ if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['d'],
         <?php echo $m['client_id']; ?>
     </td>
     <td>
-        <a href="/members/editmember/<?php echo $m['id']; ?>"> <?php echo $m['nickname']; ?> </a>
+        <?php echo $m['nickname']; ?> 
     </td>
     <td>
         <?php echo $m['email']; ?>
@@ -142,6 +143,9 @@ if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['d'],
     } else if ($m['admin'] == 3){
         $desc = 'IT人员';
         $color = '<span class="label label-purple arrowed">IT人员</span>';
+    } else if ($m['admin'] == 4){
+        $desc = '部门管理员';
+        $color = '<span class="label label-purple arrowed">部门管理员</span>';
     }
 ?>
 <a href="javascript:void(0)" title="<?php echo $desc; ?>" data-id="<?php echo $m['id']; ?>" ><?php echo $color; ?></a>
@@ -179,8 +183,10 @@ if($profile['admin'] == 1 ||  $profile['admin'] == 3) {
 <script src="/static/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 
 <script language="javascript">
+var admin_groups_granted = $('#admin_groups_granted').data("gids");
 var __BASE = "<?php echo $base_url; ?>";
 var error = "<?php echo $error;?>";
+console.log(error);
 var _levels_dic = '<?php echo json_encode($levels); ?>';
 var levels_dic = [];
 if(_levels_dic!='')
@@ -291,12 +297,21 @@ function load_group(gid){
                 if(!data.status) {
                     show_notify('获取信息失败');
                 } else {
+                    var is_under_control = 0;
+                    if(_admin == 4 && in_array(admin_groups_granted,gid))
+                    {
+                        is_under_control = 1;
+                    }
                     //show_notify('获取信息成功');
                     var _g_du = '<a href="' + __BASE + '/members/editgroup/' + gid + '"><i class="ace-icon align-top bigger-125 fa fa-pencil white" style="margin-left:10px;" ></i></a>'
                                  +'<a href="javascript:void(0)" class="remove_group" data-id="' + gid + '"><i  style="margin-left:10px;"  class="ace-icon align-top bigger-125 white fa fa-trash-o"></i></a>';
-                    if(_admin == 1 || _admin == 3)
+                    if(_admin == 1 || _admin == 3 || is_under_control)
                     {
                         $('#g_du').html(_g_du);
+                    }
+                    else
+                    {
+                        $('#g_du').html('');
                     }
                     if(gid == -1){
                         build_invite(data.data);
@@ -339,6 +354,13 @@ function load_group(gid){
                         var _p = '员工';
                     var _color = '<span class="label label-success arrowed">管理员</span>';
                     switch(item.admin) {
+                    case '4' : {
+                        //$desc = '出纳';
+
+                        _color = '<span class="label label-purple arrowed">部门管理员</span>';                        
+                        _c = 'green';
+                        _p = '点击设置为员工'; 
+                    }; break;
                     case '3' : {
                         //$desc = '出纳';
 
@@ -373,14 +395,14 @@ function load_group(gid){
 		}
                 _th = '<tr>'
                     + '<td>' + item.client_id + '</a></td>'
-                    + '<td><a href="' + __BASE + '/members/editmember/' + item.id + '">' + item.nickname+ '</a></td>'
+                    + '<td>' + item.nickname+ '</td>'
                     + '<td>' + item.email + '</td>'
                     + '<td>' + item.phone + '</td>'
                     + '<td>' + item.d + '</td>'
                     + '<td>' + _level + '</td>'
                     + '<td>' + item.manager + '</td>'
                     + '<td><a href="javascript:void(0)">' + _color + '</a>';
-                    if(_admin == 1 || _admin == 3){
+                    if(_admin == 1 || _admin == 3 || is_under_control){
                     _th += '<td><a href="' + __BASE + '/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a>'
                     if(gid > 0)
                     {
@@ -475,7 +497,6 @@ function bind_remove_from_group() {
     });
 });*/
 </script>
-
 <script language="javascript">
 var __BASE = "<?php echo $base_url; ?>";
 </script>

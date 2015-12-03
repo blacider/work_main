@@ -69,7 +69,7 @@ if($self != 1) {
                         <label class="col-sm-1 control-label no-padding-right">用户ID</label>
                         <div class="col-xs-6 col-sm-6">
                         <?php
-                            if($profile['admin'] == 1 || $profile['admin'] == 3)
+                            if(in_array($profile['admin'],[1,3,4]))
                             {
                         ?>
                             <input type="text" class="col-xs-6 col-sm-6 form-control" name="client_id" value="<?php echo $user['client_id']; ?>"  />
@@ -89,7 +89,7 @@ if($self != 1) {
                         <label class="col-sm-1 control-label no-padding-right">姓名</label>
                         <div class="col-xs-6 col-sm-6">
                         <?php
-                            if($profile['admin'] == 1 || $profile['admin'] == 3)
+                            if(in_array($profile['admin'],[1,3,4]))
                             {
                         ?>
                             <input type="text" class="col-xs-6 col-sm-6 form-control" name="nickname" value="<?php echo $user['nickname']; ?>"  />
@@ -123,7 +123,7 @@ if($profile['gid'] > 0){
     }
 }
 
-if($profile['admin'] == 1 || $profile['admin'] == 3 ){
+if(in_array($profile['admin'],[1,3,4])){
     $open = 1;
 }
 ?>
@@ -163,7 +163,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3 ){
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">级别</label>
                                 <div class="col-xs-6 col-sm-6">
-<?php if($profile['admin'] == 1 || $profile['admin'] == 3){ ?>
+<?php if(in_array($profile['admin'],[1,3,4])){ ?>
                                     <select class="chosen-select tag-input-style" name="rank" data-placeholder="级别" >
 <?php } elseif($self) { ?>
                                     <select class="chosen-select tag-input-style" name="rank" data-placeholder="级别" disabled>
@@ -192,7 +192,7 @@ foreach($ranks as $m){
                                 <label class="col-sm-1 control-label no-padding-right">职位</label>
                                 <div class="col-xs-6 col-sm-6">
 <?php 
-if($profile['admin'] == 1 || $profile['admin'] == 3){
+if(in_array($profile['admin'],[1,3,4])){
 ?>
                                     <select class="col-xs-6 col-sm-6 chosen-select tag-input-style" name="level" data-placeholder="职位" >
 <?php } elseif($self) { ?>
@@ -243,7 +243,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                 <label class="col-sm-1 control-label no-padding-right">所属部门</label>
                                 <div class="col-xs-6 col-sm-6">
 <?php
-    if($profile['admin'] == 1 || $profile['admin'] == 3){
+    if(in_array($profile['admin'],[1,3])){
 ?>
                                         <select class="chosen-select tag-input-style" multiple="multiple" name="usergroups[]" data-placeholder="部门信息" >
 <?php
@@ -268,9 +268,21 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     {
         if(!in_array($g['id'], $in_groups))
         {
+            if($profile['admin']!=4)
+            {
 ?>
                                         <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
 <?php
+            }
+            else
+            {
+                if(in_array($g['id'], $admin_groups_granted))
+                {
+?>
+                                        <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
+<?php
+                }
+            }
         }
     }
 ?>
@@ -358,21 +370,23 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 
 
 <?php 
-    if($profile['admin'] == 1 || $profile['admin'] == 3){
+    if(in_array($profile['admin'], [1,2,3,4])){
 ?>
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">角色</label>
                                 <div class="col-xs-2 col-sm-2">
-                                 <select name="admin_new" id="admin_new" class="chosen-select tag-input-style"> 
+                                 <select name="admin_new" id="admin_new" class="chosen-select tag-input-style" <?php if(!in_array($profile['admin'], [1,3])){echo "disabled";}?>> 
                                    <?php
                                             $chara = array(0 => "员工", 
                                                 1 => "管理员",
                                                 2 => "出纳",
-                                                3 => "IT人员");
+                                                3 => "IT人员",
+                                                4 => "部门管理员");
                                             if($profile['admin'] == 3) {
                                                 $chara = array(0 => "员工", 
                                                     2 => "出纳",
-                                                    3 => "IT人员");
+                                                    3 => "IT人员",
+                                                    4 => "部门管理员");
                                             }
                                             foreach($chara as $val => $des) {
                                                 //for ($i=0; $i < 4; $i++) { 
@@ -390,25 +404,18 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                 </div>
 
                               <div class="col-xs-4 col-sm-4" id="cashier_view" hidden>
-                                 <select name="admin_groups_granted[]" id="admin_groups_granted" multiple="multiple" class="chosen-select tag-input-style" data-placeholder="请选择部门" <?php if($profile['admin']!=1){ echo "disabled";}?>> 
+                                <select name="admin_groups_granted[]" id="admin_groups_granted" multiple="multiple" class="chosen-select tag-input-style" data-placeholder="请选择部门" <?php if($profile['admin']!=1){ echo "disabled";}?>> 
                              <?php
-                                 $groups_granted = array();
-                                 if($pro && array_key_exists('admin_groups_granted', $pro) && $pro['admin_groups_granted'])
-                                 {
-                                     $groups_granted = explode(',',$pro['admin_groups_granted']);
-                                 }
-                            if(!$groups_granted)
-                                    {
+                                $groups_granted = array();
+                                if($pro && array_key_exists('admin_groups_granted', $pro) && $pro['admin_groups_granted'])
+                                {
+                                    $groups_granted = explode(',',$pro['admin_groups_granted']);
+                                }
+                
                             ?>
-                                        <option selected value='0'>公司</option>
+                                    <option value='0'>公司</option>
                             <?php
-                                    }
-                                    else
-                                    {
-                            ?>
-                                        <option value='0'>公司</option>
-                            <?php
-                                    }
+
                                  foreach($ug as $g)
                                  {
                                     if(in_array($g['id'], $groups_granted))
@@ -666,7 +673,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
                                         <option value='福建省农村信用社联合社'>福建省农村信用社联合社</option>
                                         <option value='贵阳市商业银行'>贵阳市商业银行</option>
                                         <option value='大庆市商业银行'>大庆市商业银行</option>
-                    <option value='青岛商行'>青岛商行</option>
+                                        <option value='青岛商行'>青岛商行</option>
                                         <option value='佛山市三水区农村信用合作社'>佛山市三水区农村信用合作社</option>
                                         <option value='南通市商业银行'>南通市商业银行</option>
                                         <option value='南宁市商业银行'>南宁市商业银行</option>
@@ -1049,16 +1056,26 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
             $('#profile_form').submit();
         });
 
+        var flag = 0;
         $('#admin_new').change(function(){
             var admin_type_id = $('#admin_new').val();
-            if(admin_type_id == 2)
+            if(admin_type_id == 2 || admin_type_id == 4)
             {
+                if(admin_type_id == 2 && flag)
+                {
+                    $('#admin_groups_granted').val([0]).prop('selected',true).trigger('chosen:updated');
+                }
+                else if(admin_type_id == 4 && flag)
+                {
+                    $('#admin_groups_granted').val([]).prop('selected',true).trigger('chosen:updated');
+                }
                 $('#cashier_view').prop('hidden',false).trigger('chosen:updated');
             }
             else
             {
                 $('#cashier_view').prop('hidden',true).trigger('chosen:updated');
             }
+            flag = 1;
         });
         $('#admin_new').trigger('change');
         $('#admin_new').trigger('change:updated');
