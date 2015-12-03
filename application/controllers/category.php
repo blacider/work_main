@@ -765,8 +765,9 @@ class Category extends REIM_Controller {
         {
             $members = $_members['data']['gmember'];
         }
-            $_sobs = $this->account_set->get_account_set_list();
+        $_sobs = $this->account_set->get_account_set_list();
         $sobs = array();
+        $all_sob_keys = [0];
         $sob_ranks = array();
         $sob_levels = array();
         $sob_ranks_dic = array();
@@ -781,6 +782,7 @@ class Category extends REIM_Controller {
         }
         foreach($sobs as $s)
         {
+            array_push($all_sob_keys,$s['sob_id']);
             if($s['sob_id'] == $gid)
             {
                 $sob_ranks = $s['ranks'];
@@ -830,6 +832,9 @@ class Category extends REIM_Controller {
         $sob_keys =array();
         foreach($categories as $cate)
         {
+            //如果不在任何帐套中
+            if(!in_array($cate['sob_id'],$all_sob_keys)) continue;
+
             $all_categories[$cate['id']]=array();
             $path = "http://api.cloudbaoxiao.com/online/static/" . $cate['avatar'] .".png";
             if($cate['sob_id'] == $gid && $cate['pid'] <= 0 )
@@ -850,12 +855,13 @@ class Category extends REIM_Controller {
             $all_categories[0]=array('child'=>array(),'avatar_'=>0,'avatar'=>$path,'id'=>0,'pid'=>-1,'name'=>"顶级分类",'sob_code'=>0,'note'=>'','force_attach'=>0,'extra_type'=>0);
         foreach($categories as $cate)
         {
+            if(!in_array($cate['sob_id'],$all_sob_keys)) continue;
             if($cate['pid'] !=-1)
             {
-            if(array_key_exists($cate['pid'],$all_categories) && array_key_exists('child',$all_categories[$cate['pid']]))
-            {
-                array_push($all_categories[$cate['pid']]['child'],array('id'=>$cate['id'],'name'=>$cate['category_name']));
-            }
+                if(array_key_exists($cate['pid'],$all_categories) && array_key_exists('child',$all_categories[$cate['pid']]))
+                {
+                    array_push($all_categories[$cate['pid']]['child'],array('id'=>$cate['id'],'name'=>$cate['category_name']));
+                }
             }
         }
     /*
@@ -883,6 +889,7 @@ class Category extends REIM_Controller {
         log_message('debug','all_categories:' . json_encode($all_categories));
         log_message('debug','sobs:' . json_encode($_sobs));
         log_message('debug','sobs_keys:' . json_encode($sob_keys));
+        log_message('debug','all_sobs_keys:' . json_encode($all_sob_keys));
         $this->bsload('account_set/update',
             array(
                 'last_error' => $error,
