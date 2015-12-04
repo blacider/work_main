@@ -127,6 +127,34 @@ class Items extends REIM_Controller {
 
     }
 
+    //获取希望得到的公司配置信息
+    public function get_company_config($wanted = array(),$profile = array())
+    {
+        $company_config = array();
+        if(!$profile)
+        {
+            $profile = $this->session->userdata('profile');
+        }
+
+        if($profile && array_key_exists('group',$profile) && array_key_exists('config',$profile['group']))
+        {
+            $company_config = json_decode($profile['group']['config'],True); 
+        }
+        
+        if(!$wanted)
+            return $company_config;
+
+        foreach($wanted as $w)
+        {
+            if(!array_key_exists($w,$company_config)) 
+            {
+                $company_config[$w] = "0";
+            }
+        }
+
+        return $company_config;
+    }
+
     public function newitem(){
         //        $profile = $this->session->userdata('profile');
 
@@ -145,7 +173,10 @@ class Items extends REIM_Controller {
         {
             $profile = $_profile['data']['profile'];
         }
-        log_message('debug' , 'profile:' . json_encode($profile));
+        
+        $wanted_config = ['open_exchange','disable_borrow','disable_budget'];
+        $company_config = $this->get_company_config($wanted_config,$profile);
+
         if(array_key_exists('group',$profile))
         {
             $group_config = $profile['group'];
@@ -215,6 +246,9 @@ class Items extends REIM_Controller {
         {
            $is_burden = false; 
         }
+        $html_company_config = $this->get_html_container($company_config,'company_config',true);
+        $html_item_config = $this->get_html_container($item_config,'item_config',true);
+        log_message('debug','html_company_config:' . $html_company_config);
         $this->bsload('items/new',
             array(
                 'title' => '新建消费'
@@ -231,6 +265,9 @@ class Items extends REIM_Controller {
                 'categories' => $_categories,
                 'tags' => $tags,
                 'item_config' => $item_config,
+                'html_item_config' => $html_item_config,
+                'company_config' => $company_config,
+                'html_company_config' => $html_company_config,
                 'is_burden' => $is_burden,
                 'item_customization' => $item_customization,
                 'item_type_dic' => $item_type_dic
