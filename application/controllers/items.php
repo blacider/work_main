@@ -129,6 +129,10 @@ class Items extends REIM_Controller {
 
     public function newitem(){
         //        $profile = $this->session->userdata('profile');
+
+        //自定义消费字段信息
+        $item_customization = array();
+
         //获取消费类型字典
         $item_type_dic = $this->reim_show->get_item_type_name();
 
@@ -153,6 +157,11 @@ class Items extends REIM_Controller {
                     if($conf['disabled'] == 1) continue;
                     array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => 'disabled'));   
                 }
+            }
+
+            if(array_key_exists('item_customization',$profile))
+            {
+                $item_customization = $profile['item_customization']; 
             }
         }
         $afford = array();
@@ -223,6 +232,7 @@ class Items extends REIM_Controller {
                 'tags' => $tags,
                 'item_config' => $item_config,
                 'is_burden' => $is_burden,
+                'item_customization' => $item_customization,
                 'item_type_dic' => $item_type_dic
             ));
     }
