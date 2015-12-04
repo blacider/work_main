@@ -1169,17 +1169,17 @@ if(in_array($profile['admin'],[1,3,4])){
                         {
                                 _default_id = 0;
                         }
-                    
-                        if (_no.length < 12) {
-                            show_notify('请输入正确银行卡号');
-                            $('#cardno').focus();
-                            return false;
-                        };
                         if (_account == "") {
                             show_notify('请输入户名');
                             $('#account').focus();
                             return false;
                         };
+                        if (_no.length < 12) {
+                            show_notify('请输入正确银行卡号');
+                            $('#cardno').focus();
+                            return false;
+                        };
+                        
                         
                         if (_bank == "" || _bank == null || _bank == undefined) {
                             show_notify('请选择银行卡开户行');

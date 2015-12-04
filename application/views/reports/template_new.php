@@ -1040,17 +1040,17 @@ $(document).ready(function(){
         var _loc = _p + _c;//$('#cardloc').val();
         var value = {"account":_account,"bankname":_bank,"subbranch":_subbranch,"bankloc":_loc,"cardno":_no};
         var _value = JSON.stringify(value);
-                    
-                        if (_no.length < 12) {
-                            show_notify('请输入正确银行卡号');
-                            $('#cardno').focus();
-                            return false;
-                        };
                         if (_account == "") {
                             show_notify('请输入户名');
                             $('#account').focus();
                             return false;
                         };
+                        if (_no.length < 12) {
+                            show_notify('请输入正确银行卡号');
+                            $('#cardno').focus();
+                            return false;
+                        };
+                        
                         
                         if (_bank == "" || _bank == null || _bank == undefined) {
                             show_notify('请选择银行卡开户行');
