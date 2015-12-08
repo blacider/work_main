@@ -22,30 +22,30 @@ function chose_others(_id) {
 var getData = {};
 function bind_event(){
     $('.texport').each(function(){
-    	$(this).click(function(){
-	    var _id = $(this).data('id');
-	    console.log(_id);
-	    $('#report_id').val(_id);
-	});
+        $(this).click(function(){
+            var _id = $(this).data('id');
+            console.log(_id);
+            $('#report_id').val(_id);
+        });
     });
     $('.tdetail').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
-	    var _decision = $(this).data('decision');
-	    if(_decision != undefined)
-	    {
-            	location.href = __BASE + "reports/show/" + _id + "/" + _decision;
-	    }
-	    else
-	    {
-	    	location.href = __BASE + "reports/show/" + _id;
-	    }
+            var _decision = $(this).data('decision');
+            if(_decision != undefined)
+            {
+                location.href = __BASE + "reports/show/" + _id + "/" + _decision;
+            }
+            else
+            {
+                location.href = __BASE + "reports/show/" + _id;
+            }
         });
     });
     $('.tpass').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
-	    console.log("ehhhe");
+            console.log("ehhhe");
             $.ajax({
                 type:"GET",
                 url:__BASE + "reports/check_permission",
@@ -62,7 +62,7 @@ function bind_event(){
                         } else {
                             $('#rid_').val(_id);
                             if(close_directly == 0) {
-                                $('#modal_next_').modal('show'); 
+                                $('#modal_next_').modal('show');
                             } else {
                                 $('#permit_form').submit();
                             }
@@ -90,7 +90,7 @@ function bind_event(){
                 error:function(a,b)
                 {
                 }
-	}); 	
+        });
         });
     });
     $('.tdeny').each(function() {
@@ -132,7 +132,7 @@ jQuery(grid_selector).jqGrid({
         {name:'status_str',index:'status_str', width:40, editable: false,editoptions: {size:"20", maxlength : "40",search:false}/*,unformat: aceSwitch*/},
         {name:'options',index:'options', width:40, editable: false,editoptions: {size:"20", maxlength : "50"},unformat: aceSwitch,search:false},
         { name : 'lastdt', index : 'lastdt', hidden:true , sortable : true,search:false}
-    ], 
+    ],
     sortorder: "desc",
     sortorder: "desc",
     loadComplete : function(data) {
@@ -169,7 +169,7 @@ jQuery(grid_selector).jqGrid({
     scrollLeftOffset: "83%",
     viewrecords: true,
     //scroll: 1, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
-    emptyrecords: '没有数据', // the message will be displayed at the bottom 
+    emptyrecords: '没有数据', // the message will be displayed at the bottom
     pager : pager_selector,
     //viewsortcols: [true,'vertical',false],
     viewsortcols : [true,'vertical',true]
@@ -178,7 +178,7 @@ jQuery(grid_selector).jqGrid({
 
     jQuery(grid_selector).jqGrid('navGrid',pager_selector,
             {   //navbar options
-                
+
                 edit: false,
                 closeAfterEdit: true,
         editicon : 'ace-icon fa fa-pencil blue',
