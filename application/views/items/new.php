@@ -34,7 +34,7 @@
         </select>
         <div class="input-group input-group">
             <span class="input-group-addon" id='coin_simbol'>￥</span>
-            <input type="text" class="form-controller col-xs-12 col-sm-12" name="amount" id="amount" placeholder="金额" required>
+            <input type="number" class="form-controller col-xs-12 col-sm-12" name="amount" id="amount" placeholder="金额" required>
             <span class="input-group-addon" id='rate_simbol'>￥0</span>
         </div>
 
@@ -57,7 +57,7 @@
 <div class="form-group" id="mul_amount">
 <label class="col-sm-1 control-label no-padding-right">金额</label>
 <div class="col-xs-6 col-sm-6">
-<input type="text" class="form-controller col-xs-12" name="amount" id="amount" placeholder="金额" required>
+<input type="number" class="form-controller col-xs-12" name="amount" id="amount" placeholder="金额" required>
 </div>
 
 </div>
@@ -118,7 +118,7 @@
 <label class="col-sm-1 control-label no-padding-right">人数:</label>
 <div class="col-xs-3 col-sm-3">
 <div class="input-group">
-<input type="text" id="people-nums" name="peoples">
+<input type="number" id="people-nums" name="peoples">
 </div>
 </div>
 <label class="col-sm-1 control-label no-padding-right">人均:</label>
@@ -932,7 +932,7 @@ $(document).ready(function(){
             show_notify('正在上传图片，请稍候');
             return false;
         }
-        if(isNaN($('#amount').val())) {
+        if($('#amount').val() <= 0) {
             show_notify('请输入有效金额');
             $('#amount').val('');
             $('#amount').focus();

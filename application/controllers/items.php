@@ -910,6 +910,8 @@ class Items extends REIM_Controller {
     }
 
     public function edit($id = 0, $from_report = 0) {
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         //获取消费类型字典
         $item_type_dic = $this->reim_show->get_item_type_name();
         log_message('debug','item_id' . $id);
@@ -1063,6 +1065,7 @@ class Items extends REIM_Controller {
         $this->bsload('items/edit',
             array(
                 'title' => '修改消费'
+                ,'error' => $error
                 ,'categories' => $categories
                 ,'images' => json_encode($_images)
                 ,'item' => $item
@@ -1146,6 +1149,14 @@ class Items extends REIM_Controller {
         if($profile['id'] != $_uid){
             $item_update_in = 1;
         }
+
+        //自己修改数据不让改为0
+        if($item_update_in == 0 && $amount == 0)
+        {
+            $this->session->set_userdata('last_error','金额不能为0');
+            redirect(base_url('items/edit/' . $id));
+        }
+            
         log_message("debug", "##UID  $_uid :" . $profile['id']);
 
         $merchant = $this->input->post('merchant');
