@@ -183,7 +183,6 @@ var typed_currency = [];
 var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
 var __config = $('#company_config').data('value');
-console.log(__config);
 var subs = "<?php echo $profile['subs'];?>";
 var __item_config = $('#item_config').data('value');
 
@@ -415,7 +414,7 @@ function get_sobs(){
             });
         });
 }
-
+/*1208
 $('#coin_type').change(function(){
     var temp = $('#coin_type').val();
     var coin_list = temp.split(',');
@@ -444,7 +443,9 @@ $('#coin_type').change(function(){
     $('#amount').trigger('change:updated');
   
 });
+*/
 
+/*1208
 $('#amount').change(function(){
     var temp = $('#coin_type').val();
     var coin_list = temp.split(',');
@@ -452,6 +453,7 @@ $('#amount').change(function(){
     var _amount = $('#amount').val();
     $('#rate_simbol').text( '￥' + Math.round(_amount*coin_list[1])/100 );
 });
+*/
 
 /* 不包含汇率种类的实现
 function get_currency()
@@ -477,6 +479,7 @@ function get_currency()
 }
 */
 
+/*1208
 function get_typed_currency()
 {
      $.ajax({
@@ -497,6 +500,7 @@ function get_typed_currency()
         }
     });
 }
+*/
 
 var __multi_time = 0;
 var __average_count = 0;
@@ -578,12 +582,14 @@ $(document).ready(function(){
             if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 5) {
                 $('#config_id').val(_item_config[category_id]['id']);
                 $('#config_type').val(_item_config[category_id]['type']);
+
                 $('#amount').change(function(){
                     var all_amount = $('#amount').val();
-                    var rates = $('#coin_type').val().split(',')[1];
-                    all_amount *= rates/100;
+                    var selected_coin = $('#coin_type option:selected');
+                    var coin_symbol = selected_coin.data('symbol');
+                    var coin_rate = selected_coin.data('rate');
                     if (subs != '' && subs >= 0)
-                        $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
+                        $('#average_id').text(coin_symbol + Number(all_amount/subs).toFixed(2) + '/人*' + subs);
                     else
                         $('#average_id').text("请输入正确人数");
                 });
@@ -592,7 +598,7 @@ $(document).ready(function(){
                     $('#amount').change();
                 });
                 var all_amount = $('#amount').val();
-                $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
+                $('#average_id').text('￥' + Number(all_amount/subs).toFixed(2) + '/人*' + subs);
                 $('#average').show();
                 __average_count = 1;
             } else if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 1) {

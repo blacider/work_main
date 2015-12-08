@@ -11,6 +11,74 @@ class Items extends REIM_Controller {
         $this->load->helper('report_view_utils');
     }
     
+    public function get_template_views($item_customization = array())
+    {
+        //获取页面模板
+        $template_views = array();
+        $prefix = 'models/items/';
+        if(!$item_customization)
+        {
+            $template_views = ['item_amount','item_category','item_time','item_affiliated_person','item_fee_afford','item_seller','item_tags','item_custom_types','item_notes','item_picture','item_attachments','item_footer'];
+            foreach($template_views as &$tv)
+	        {
+	            $tv = $prefix . $tv; 
+	        }
+            return $template_views;
+        }
+
+        foreach($item_customization as $ic)
+        {
+            $view_name = '';
+            switch($ic['type']) 
+            {
+                case 1:
+                    $view_name = 'item_amount'; 
+                    break;
+                case 3:
+                    $view_name = 'item_category';
+                    break;
+                case 4:
+                    $view_name = 'item_time';
+                    break;
+                case 6:
+                    $view_name = 'item_affiliated_person';
+                    break;
+                case 7:
+                    $view_name = 'item_fee_afford';
+                    break;
+                case 8:
+                    $view_name = 'item_seller';
+                    break;
+                case 9:
+                    $view_name = 'item_tags';
+                    break;
+                case 10:
+                    $view_name = 'item_custom_types';
+                    break;
+                case 11:
+                    $view_name = 'item_notes';
+                    break;
+                case 12:
+                    $view_name = 'item_picture';
+                    break;
+                case 13:
+                    $view_name = 'item_attachments';
+                    break;
+            }
+            if($view_name)
+            {
+                array_push($template_views,$view_name);
+            }
+        }
+            
+        array_push($template_views,'item_footer');
+	    foreach($template_views as &$tv)
+	    {
+	        $tv = $prefix . $tv; 
+	    }
+        return $template_views;
+    }
+
     public function attachment() {
         if(empty($_FILES)) 
             die(''); 
@@ -190,9 +258,10 @@ class Items extends REIM_Controller {
                 }
             }
 
-            if(array_key_exists('item_customization',$profile))
+            //获取自定义消费字段
+            if(array_key_exists('item_customization',$group_config))
             {
-                $item_customization = $profile['item_customization']; 
+                $item_customization = $group_config['item_customization']; 
             }
         }
         $afford = array();
@@ -252,11 +321,8 @@ class Items extends REIM_Controller {
         $html_item_config = $this->get_html_container($item_config,'item_config',true);
 
         //获取页面模板
-        $template_views = ['item_amount','item_category','item_time','item_affiliated_person','item_fee_afford','item_seller','item_tags','item_custom_types','item_notes','item_picture','item_attachments','item_footer'];
-        foreach($template_views as &$tv)
-        {
-            $tv = 'models/items/' . $tv; 
-        }
+        $template_views = $this->get_template_views($item_customization);
+
 
         $this->bsload('models/items/item_header',
 //        $this->bsload('items/new',
