@@ -20,7 +20,7 @@
 	     <!-- page specific plugin styles -->
 	     <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 
-
+<script src="/static/js/bank_code.json"></script>
 
 <div class="page-content">
     <div class="page-content-area">
@@ -208,20 +208,19 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">选择消费</label>
-                                <div class="col-xs-9 col-sm-9">
+                                <div class="col-xs-11 col-sm-11">
                                     <table class="table table-border">
                                         <tr>
                                             <thead>
-                                                <td>
+                                                <td style="width: 60px;">
                                                    <input name="all_item" id="all_item" type="checkbox" class="form-controller all_item"> 全选</td>
-                                                </td>
-                                                <td>消费时间</td>
-                                                <td>类型</td>
-                                                <td>金额</td>
-                                                <td>类别</td>
-                                                <td>商家</td>
+                                                <td style="width: 135px;">消费时间</td>
+                                                <td style="min-width:103px;">类型</td>
+                                                <td style="width: 60px;">金额</td>
+                                                <td style="width: 45px;">类别</td>
+                                                <td style="min-width: 100px;">商家</td>
                                                 <td>备注</td>
-                                                <td>操作</td>
+                                                <td style="min-width: 86px;">操作</td>
                                             </thead>
                                         </tr>
 <?php
@@ -350,12 +349,25 @@ foreach($items as $i){
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">卡号</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input id="cardno" name="cardno" type="text" class="form-controller col-xs-12" placeholder="卡号" />
+                                    <input id="cardno" name="cardno" maxlength="19" type="text" class="form-controller col-xs-12" placeholder="卡号" />
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">开卡行</label>
+                                <script type="text/javascript">
+                            $(document).ready(function() {
+                                $("#cardno").keyup(function(event) {
+                                    var value = this.value;
+                                    if (value >= 6) {
+                                        value = value.substring(0,6);
+                                    };
+                                    if (BANK_CODE[value] != undefined) {
+                                        $("#cardbank").val(BANK_CODE[value]);
+                                    };
+                                });
+                            });
+                            </script>
                                 <div class="col-xs-6 col-sm-6">
                                     <select id="cardbank" name="cardbank" class="form-control">
                                         <option value='工商银行'>工商银行</option>
@@ -1028,6 +1040,24 @@ $(document).ready(function(){
         var _loc = _p + _c;//$('#cardloc').val();
         var value = {"account":_account,"bankname":_bank,"subbranch":_subbranch,"bankloc":_loc,"cardno":_no};
         var _value = JSON.stringify(value);
+                        if (_account == "") {
+                            show_notify('请输入户名');
+                            $('#account').focus();
+                            return false;
+                        };
+                        if (_no.length < 12) {
+                            show_notify('请输入正确银行卡号');
+                            $('#cardno').focus();
+                            return false;
+                        };
+                        
+                        
+                        if (_bank == "" || _bank == null || _bank == undefined) {
+                            show_notify('请选择银行卡开户行');
+                            $('#cardbank').focus();
+                            return false;
+                        };
+
 
        
         var buf = '<option selected value="'+ escapeHtml(_value) +'">'+ _account + '-' + _bank + '-' + _no +'</option>';
@@ -1053,7 +1083,7 @@ $(document).ready(function(){
                 }
             }
         });
-  
+
     });
 
     bind_event();
