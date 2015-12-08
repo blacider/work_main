@@ -246,10 +246,20 @@ class Items extends REIM_Controller {
         {
            $is_burden = false; 
         }
+        
+        //获取html标签包含的内容
         $html_company_config = $this->get_html_container($company_config,'company_config',true);
         $html_item_config = $this->get_html_container($item_config,'item_config',true);
-        log_message('debug','html_company_config:' . $html_company_config);
-        $this->bsload('items/new',
+
+        //获取页面模板
+        $template_views = ['item_amount','item_category','item_time','item_affiliated_person','item_fee_afford','item_seller','item_tags','item_custom_types','item_notes','item_picture','item_attachments','item_footer'];
+        foreach($template_views as &$tv)
+        {
+            $tv = 'models/items/' . $tv; 
+        }
+
+        $this->bsload('models/items/item_header',
+//        $this->bsload('items/new',
             array(
                 'title' => '新建消费'
                 ,'breadcrumbs' => array(
@@ -271,7 +281,9 @@ class Items extends REIM_Controller {
                 'is_burden' => $is_burden,
                 'item_customization' => $item_customization,
                 'item_type_dic' => $item_type_dic
-            ));
+            )
+            ,$template_views
+            );
     }
     public function index(){
         $error = $this->session->userdata('last_error');
