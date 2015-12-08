@@ -985,10 +985,13 @@ $('#coin_type').change(function(){
 
 $('#amount').change(function(){
     var temp = $('#coin_type').val();
-    var coin_list = temp.split(',');
-    $('#coin_simbol').text(icon_dic[coin_list[0]]);
-    var _amount = $('#amount').val();
-    $('#rate_simbol').text('￥' + Math.round(_amount*coin_list[1])/100);
+    if(temp)
+    {
+	    var coin_list = temp.split(',');
+	    $('#coin_simbol').text(icon_dic[coin_list[0]]);
+	    var _amount = $('#amount').val();
+	    $('#rate_simbol').text('￥' + Math.round(_amount*coin_list[1])/100);
+    }
 });
 
 /* 不包含汇率种类的实现
@@ -1164,10 +1167,13 @@ $('#sob_category').change(function(){
                 $('#config_type').val(_item_config[category_id]['type']);
                 $('#amount').change(function(){
                     var all_amount = $('#amount').val();
-                    var rates = $('#coin_type').val().split(',')[1];
-                    all_amount *= rates/100;
+                    var coin_id = 'cny';
+                    if($('#coin_type').val())
+                    {
+                         coin_id = $('#coin_type').val().split(',')[0];
+                    }
                     if (subs != '' && subs >= 0)
-                        $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
+                        $('#average_id').text(icon_dic[coin_id] + Number(all_amount/subs).toFixed(2) +'/人' + '*' + subs);
                     else
                         $('#average_id').text("请输入正确人数");
                 });
@@ -1178,9 +1184,12 @@ $('#sob_category').change(function(){
                 $('#people-nums').trigger('change');
                 $('#people-nums').trigger('change:updated');
                 var all_amount = $('#amount').val();
-                var rates = $('#coin_type').val().split(',')[1];
-                all_amount *= rates/100;
-                $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
+                var coin_id = 'cny';
+                if($('#coin_type').val())
+                {
+                    var coin_id = $('#coin_type').val().split(',')[0];
+                }
+                $('#average_id').text(icon_dic[coin_id] + Number(all_amount/subs).toFixed(2) +'/人' + '*' + subs);
                 $('#average').show();
         } else if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 1) {
             $('#config_id').val(_item_config[category_id]['id']);
