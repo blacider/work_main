@@ -63,6 +63,11 @@ function get_typed_currency()
     });
 }
     $(document).ready(function(){
+        if(__config['open_exchange']){
+            // get_currency();
+            get_typed_currency();
+        }
+
         $('#coin_type').change(function(){
             var coin_type_id = $('#coin_type').val();
             var selected_coin = $('#coin_type option:selected');

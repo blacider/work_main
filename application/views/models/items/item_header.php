@@ -45,4 +45,15 @@ for(var i = 0 ; i < item_config.length; i++)
     }
 }
 
+$(document).ready(function(){
+  $('.chosen-select').chosen({allow_single_deselect:true}); 
+  $(window)
+  .off('resize.chosen')
+  .on('resize.chosen', function() {
+    $('.chosen-select').each(function() {
+      var $this = $(this);
+      $this.next().css({'width': $this.parent().width()});
+    })
+  }).trigger('resize.chosen');
+});
 </script>
