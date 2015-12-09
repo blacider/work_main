@@ -169,7 +169,7 @@ var filesUrlDict = {};
 </script>
 
 <script language="javascript">
-
+/*
 var simbol_dic = {'cny':'人民币','usd':'美元','eur':'欧元','hkd':'港币','mop':'澳门币','twd':'新台币','jpy':'日元','ker':'韩国元',
                               'gbp':'英镑','rub':'卢布','sgd':'新加坡元','php':'菲律宾比索','idr':'印尼卢比','myr':'马来西亚元','thb':'泰铢','cad':'加拿大元',
                               'aud':'澳大利亚元','nzd':'新西兰元','chf':'瑞士法郎','dkk':'丹麦克朗','nok':'挪威克朗','sek':'瑞典克朗','brl':'巴西里亚尔'
@@ -199,7 +199,7 @@ for(var i = 0 ; i < item_config.length; i++)
         _item_config[item_config[i]['cid']] = item_config[i];
     }
 }
-
+*/
 
 var not_auto_note = "";
 var flag = 0;
@@ -585,9 +585,13 @@ $(document).ready(function(){
 
                 $('#amount').change(function(){
                     var all_amount = $('#amount').val();
-                    var selected_coin = $('#coin_type option:selected');
-                    var coin_symbol = selected_coin.data('symbol');
-                    var coin_rate = selected_coin.data('rate');
+                    var coin_symbol = '￥';
+                    if(__config['open_exchange'] == '1')
+                    {
+                        var selected_coin = $('#coin_type option:selected');
+                        coin_symbol = selected_coin.data('symbol');
+                        var coin_rate = selected_coin.data('rate');
+                    }
                     if (subs != '' && subs >= 0)
                         $('#average_id').text(coin_symbol + Number(all_amount/subs).toFixed(2) + '/人*' + subs);
                     else
