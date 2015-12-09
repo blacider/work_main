@@ -1538,31 +1538,35 @@ class Category extends REIM_Controller {
         $category = $this->category->get_list();
         $categories = $category['data']['categories'];
         $cate_dic = array();
+
         //没有上级类目的顶级类目
         $root_cate = array();
-        foreach($categories as $item)
-        {
-            if($item['pid'] <= 0)
-            {
+        foreach($categories as $item) {
+            if($item['pid'] <= 0) {
                 $root_cate[$item['id']] = $item;
+            }
+        }
+
+        foreach($categories as $item) {
+            if($item['pid'] <= 0) {
                 continue;
             }
-            if(!array_key_exists($item['pid'],$root_cate)) continue;
-            if(!array_key_exists('children',$root_cate[$item['pid']]))
-            {
+            if(!array_key_exists($item['pid'],$root_cate)) {
+                log_message('error', "category parent not exists: " . json_encode($item));
+                continue;
+            }
+            if(!array_key_exists('children',$root_cate[$item['pid']])) {
                 $root_cate[$item['pid']]['children'] = array();
             }
             array_push($root_cate[$item['pid']]['children'],$item);
         }
-        log_message('debug','root_cate:' . json_encode($root_cate));
-        foreach($root_cate as $key => $value)
-        {
-            if(array_key_exists($value['sob_id'],$data))
+        //log_message('debug','root_cate:' . json_encode($root_cate));
+        foreach($root_cate as $key => $value) {
+            if(array_key_exists($value['sob_id'],$data)) {
                 array_push($data[$value['sob_id']]['category'],$value);
+            }
         }
-
-        log_message('debug','data' . json_encode($data));
-
+        //log_message('debug','data' . json_encode($data));
         die(json_encode($data));
     }
 }
