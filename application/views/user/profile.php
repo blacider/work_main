@@ -580,6 +580,11 @@ if(in_array($profile['admin'],[1,3,4])){
                                         <option value='华夏银行'>华夏银行</option>
                                         <option value='广发银行'>广发银行</option>
                                         <option value='北京银行'>北京银行</option>
+                                        <option value='广州银行'>广州银行</option>
+                                        <option value='晋商银行'>晋商银行</option>
+                                        <option value='九江银行'>九江银行</option>
+                                        <option value='锦州银行'>锦州银行</option>
+                                        <option value='江苏银行'>江苏银行</option>
                                         <option value='中国邮政储蓄银行'>中国邮政储蓄银行</option>
                                         <option value='上海浦东银行'>上海浦东银行</option>
                                         <option value='D.F.S.I'>D.F.S.I</option>
