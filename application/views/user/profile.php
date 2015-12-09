@@ -593,7 +593,6 @@ if(in_array($profile['admin'],[1,3,4])){
                                         <option value='花旗银行有限公司'>花旗银行有限公司</option>
                                         <option value='兰州市商业银行'>兰州市商业银行</option>
                                         <option value='天津市商业银行'>天津市商业银行</option>
-                                        <option value='广州市商业银行'>广州市商业银行</option>
                                         <option value='威海市商业银行'>威海市商业银行</option>
                                         <option value='宁波市商业银行'>宁波市商业银行</option>
                                         <option value='高要市农村信用合作社联合社'>高要市农村信用合作社联合社</option>
@@ -639,7 +638,6 @@ if(in_array($profile['admin'],[1,3,4])){
                                         <option value='成都商业银行'>成都商业银行</option>
                                         <option value='西安市商业银行'>西安市商业银行</option>
                                         <option value='丹东商行'>丹东商行</option>
-                                        <option value='九江市商业银行'>九江市商业银行</option>
                                         <option value='江苏农信社'>江苏农信社</option>
                                         <option value='南京市商业银行'>南京市商业银行</option>
                                         <option value='三门峡市城市信用社'>三门峡市城市信用社</option>
