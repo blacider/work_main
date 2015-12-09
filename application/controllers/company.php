@@ -1477,51 +1477,9 @@ public function common(){
     
     public function profile()
     {
-        $calendar_month = $this->input->post('calendar_month');
-        $need_bank_info = $this->input->post('need_bank_info');
-        $same_category = $this->input->post('same_category')^1;
-        $export_no_note = $this->input->post('export_no_note');
-        $export_no_company = $this->input->post('export_no_company');
-        $hide_merchants = $this->input->post('hide_merchants');
-        $template = $this->input->post('template');
-        $user_confirm = $this->input->post('user_confirm');
-        $reports_limit = $this->input->post('reports_limit');
-        $max_allowed_months = $this->input->post('max_allowed_months');
-        $private_structure = $this->input->post('private_structure');
-        $mail_notify = $this->input->post('mail_notify');
-        $low_amount_only = $this->input->post('low_amount_only');
-        $close_directly = $this->input->post('close_directly');
-        $note_compulsory = $this->input->post('note_compulsory');
-        $not_auto_time = $this->input->post('not_auto_time');
-        $open_exchange = $this->input->post('open_exchange');
-        $same_category_pdf = $this->input->post('same_category_pdf');
-        $footer_format = $this->input->post('footer_format');
-        $statistic_using_category = $this->input->post('statistic_using_category');
-
-        $in=array();
-        $in['export_no_company']=$export_no_company;
-        $in['same_category'] = $same_category;
-        $in['close_directly'] = $close_directly;
-        $in['note_compulsory'] = $note_compulsory;
-        $in['not_auto_time'] = $not_auto_time;
-        $in['export_no_note'] = $export_no_note;
-        $in['hide_merchants'] = $hide_merchants;
-        $in['template'] = $template;
-        $in['footer_format'] = $footer_format;
-        $in['user_confirm'] = $user_confirm;
-        $in['report_quota'] = $reports_limit;
-        $in['private_structure'] = $private_structure;
-        $in['need_bank_info'] = $need_bank_info;
-        $in['max_allowed_months'] = $max_allowed_months;
-        $in['mail_notify'] = $mail_notify;
-        $in['low_amount_only'] = $low_amount_only;
-        $in['calendar_month'] = $calendar_month;
-        $in['open_exchange'] = $open_exchange;
-        $in['same_category_pdf'] = $same_category_pdf;
-        $in['statistic_using_category'] = $statistic_using_category;
-        log_message('debug',json_encode($in));
-        $this->company->profile($in);
-        //die(json_encode($re));
+        $company_config = $this->input->post('company_config');
+        log_message('debug',json_encode($company_config));
+        $this->company->profile($company_config);
         die(json_encode(array('msg'=>'保存成功')));
     }
 }

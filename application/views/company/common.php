@@ -239,7 +239,7 @@
                              <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">每月最多可提交的报销单数量</label>
                                 <div class="col-xs-4 col-sm-4">
-                                <input id="reports_limit" type="number" class="form-controller col-xs-12 text_input" name="reports_limit" placeholder="报销单数">
+                                <input id="report_quota" type="number" class="form-controller col-xs-12 text_input" name="report_quota" placeholder="报销单数">
                                 </div>
                             </div>
 
@@ -304,154 +304,39 @@ var __BASE = "<?php echo $base_url; ?>";
     url:__BASE+"company/getsetting",
     dataType:'json',
     success:function(data){
-        var checkbox_items = [];
-        var select_items = [];
-        var text_items = [];
+        //设置checkbox的值
         $('.btn-rotate').each(function(){
-
+            var temp_name = $(this).prop('name');
+            if(data[temp_name] == 1)
+            {
+                $("input[name="+temp_name+"]").prop('checked',data[temp_name]);
+                $("input[name="+temp_name+"]").trigger('chosen:updated');
+            }
         });
-          if(data.statistic_using_category != undefined)
-        {
-            if(data.statistic_using_category ==1)
+
+        //设置select的值
+        $('.chosen-select').each(function(){
+            var temp_name = $(this).prop('name');
+            if(data[temp_name] != undefined)
             {
-                $('#statistic_using_category').attr('checked', data.same_category_pdf);
-                $("#statistic_using_category").trigger("chosen:updated");
+                $("#"+temp_name).val(data[temp_name]).prop('selected',true);
+                $("#"+temp_name).trigger("chosen:updated");
             }
-        }
+        });
 
-        if(data.footer_format != undefined) {
-            $("#footer_format").val(data.footer_format).attr('selected',true);
-            $(".footer-format").trigger("chosen:updated");
-        }
-        if(data.same_category_pdf != undefined)
-        {
-            if(data.same_category_pdf ==1)
+        //设置text的值
+        $('.text_input').each(function(){
+            var temp_name = $(this).prop('name');
+            if(data[temp_name] != undefined)
             {
-                $('#same_category_pdf').attr('checked', data.same_category_pdf);
-                $("#same_category_pdf").trigger("chosen:updated");
+                $('input[name='+temp_name+']').val(data[temp_name]);
             }
-        }
-        if(data.open_exchange!=undefined)
-        {
-            if(data.open_exchange==1)
-            {
-            $('#open_exchange').attr('checked', data.open_exchange);
-            $("#open_exchange").trigger("chosen:updated");
-            }
-
-        }
-       
-        if(data.same_category!=undefined)
-        {
-            if(data.same_category==0)
-            {
-            $('#same_category').attr('checked', data.same_category);
-            $("#same_category").trigger("chosen:updated");
-            }
-
-        }
-
-        if(data.not_auto_time!=undefined)
-        {
-            if(data.not_auto_time==1) {
-                $('#not_auto_time').attr('checked', data.not_auto_time);
-                $("#not_auto_time").trigger("chosen:updated");
-            }
-        }
-
-
-        if(data.note_compulsory != undefined)
-        {
-            if(data.note_compulsory ==1) {
-                $('#note_compulsory').attr('checked', data.note_compulsory);
-                $("#note_compulsory").trigger("chosen:updated");
-            }
-        }
-
-
-
-        if(data.export_no_note!=undefined)
-        {
-            if(data.export_no_note==1)
-            {
-            $('#export_no_note').attr('checked', data.export_no_note);
-            $("#export_no_note").trigger("chosen:updated");
-            }
-        }
-
-        if(data.hide_merchants != undefined)
-        {
-            if(data.hide_merchants == 1)
-            {
-            $('#hide_merchants').attr('checked', data.hide_merchants);
-            $("#hide_merchants").trigger("chosen:updated");
-            }
-        }
-
-         if(data.need_bank_info!=undefined)
-        {
-            if(data.need_bank_info==1)
-            {
-            $('#need_bank_info').attr('checked', data.need_bank_info);
-            $("#need_bank_info").trigger("chosen:updated");
-            }
-
-        }
-        if(data.close_directly!=undefined)
-        {
-            if(data.close_directly==1)
-            {
-            $('#close_directly').attr('checked', data.close_directly);
-            $("#close_directly").trigger("chosen:updated");
-            }
-
-        }
-        if(data.low_amount_only!=undefined)
-        {
-            if(data.low_amount_only==1)
-            {
-            $('#low_amount_only').attr('checked', data.low_amount_only);
-            $("#low_amount_only").trigger("chosen:updated");
-            }
-
-        }
-
-        if(data.export_no_company!=undefined)
-        {
-            if(data.export_no_company==1)
-            {
-            $('#export_no_company').attr('checked', data.export_no_company);
-            $("#export_no_company").trigger("chosen:updated");
-            }
-
-        }
-        if(data.mail_notify !=undefined)
-        {
-            if(data.mail_notify==1)
-            {
-            $('#mail_notify').attr('checked', data.mail_notify);
-            $("#mail_notify").trigger("chosen:updated");
-            }
-
-        }
-        if(data.private_structure !=undefined)
-        {
-            if(data.private_structure ==1)
-            {
-            $('#private_structure').attr('checked', data.private_structure);
-            $("#private_structure").trigger("chosen:updated");
-            }
-
-        }
-
-        if(data.template != undefined) {
-            $("#temp").val( data.template ).attr('selected',true);
-            $(".chosen-select").trigger("chosen:updated");
-        }
+        });
 
         if(data.user_confirm != undefined) {
             if(data.user_confirm == -1)
             {
+                $('#user_confirm').val('');
                 $('#confirm_unlimit').attr('checked',true);
                 $('#confirm_unlimit').trigger('change');
                 $('#confirm_unlimit').trigger('change:updated');
@@ -461,20 +346,6 @@ var __BASE = "<?php echo $base_url; ?>";
             {
                 $('#user_confirm').val(data.user_confirm);
             }
-        }
-
-        if(data.max_allowed_months != undefined) {
-            $('#max_allowed_months').val(data.max_allowed_months);
-        }
-
-        if(data.report_quota != undefined)
-        {
-            $('#reports_limit').val(data.report_quota);
-        }
-
-         if(data.calendar_month != undefined)
-        {
-            $('#calendar_month').val(data.calendar_month);
         }
     }
    });
@@ -517,7 +388,6 @@ var __BASE = "<?php echo $base_url; ?>";
             lval = -1;
         }
 
-        var r_limit = $('#reports_limit').val();
         var calendar_month = $('#calendar_month').val();
         if(isNaN(calendar_month))
         {
@@ -539,28 +409,7 @@ var __BASE = "<?php echo $base_url; ?>";
                $.ajax({
                     type:"post",
                     url:__BASE+"company/profile",
-                    data:upload_data,
-                   /* data:{
-                        calendar_month:$('#calendar_month').val(),
-                        note_compulsory:$('#note_compulsory').val(),
-                        not_auto_time:$('#not_auto_time').val(),
-                        mail_notify:$('#mail_notify').val(),
-                        close_directly :$('#close_directly').val(),
-                        low_amount_only:$('#low_amount_only').val(),
-                        max_allowed_months:$('#max_allowed_months').val(),
-                        private_structure:$('#private_structure').val(),
-                        need_bank_info:$('#need_bank_info').val(),
-                        same_category:$('#same_category').val(),
-                        export_no_note:$('#export_no_note').val(),
-                        export_no_company:$('#export_no_company').val(),
-                        hide_merchants:$('#hide_merchants').val(),
-                        template:$('#temp option:selected').val(),
-                        footer_format:$('#footer_format option:selected').val(),
-                        limit:lval,reports_limit:r_limit,
-                        open_exchange:$('#open_exchange').val(),
-                        same_category_pdf:$('#same_category_pdf').val(),
-                        statistic_using_category:$('#statistic_using_category').val()
-       },*/
+                    data:{'company_config':upload_data},
                     dataType:'json',
                     success:function(data){
                            show_notify('保存成功');
