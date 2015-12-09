@@ -506,7 +506,7 @@ if($last_error) {
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类别代码</label>
             <input name="code" type="text" data-placeholder="请输入名称"></div>
-    </div>
+    
         <div class="form-group" style="height:30px;">
            <label class="col-sm-2 control-label no-padding-right">关联到:</label>
                     <div class="col-sm-4"  style="padding:0;">
@@ -521,6 +521,7 @@ if($last_error) {
                         </select>
                     </div>
                    
+        </div>
         </div>
     <div class="modal-footer">
         <button class="btn btn-sm" data-dismiss="modal">
