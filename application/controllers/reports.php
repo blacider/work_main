@@ -1041,9 +1041,21 @@ class Reports extends REIM_Controller {
         die($rep);
         //niu
     }
-    public function audit($search=''){
-        $this->session->set_userdata('item_update_in',4);
 
+    public function audit_todo($search=''){
+        return $this->_audit('todo', $search);
+    }
+
+    public function audit_done($search=''){
+        return $this->_audit('done', $search);
+    }
+
+    public function audit($search=''){
+        return $this->_audit('all', $search);
+    }
+
+    private function _audit($filter, $search=''){
+        $this->session->set_userdata('item_update_in',4);
         $items = $this->items->get_suborinate();
         if(!$items['status']){
             die(json_encode(array()));
@@ -1062,20 +1074,20 @@ class Reports extends REIM_Controller {
         }
         $_error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-        log_message("debug", "Last Error:" . $_error);
         $this->session->set_userdata("report_list_url", "reports/audit");
         $this->bsload('reports/audit',
             array(
-                'title' => '收到的报销单'
-                ,'items' => $item_data
-                ,'members' => $_members
-                ,'error' => $_error
-                ,'search' => urldecode($search)
-                ,'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
-                    ,array('url'  => '', 'name' => '收到的报销单', 'class' => '')
-                ),
+                'title' => '收到的报销单',
+                'items' => $item_data,
+                'members' => $_members,
+                'error' => $_error,
+                'search' => urldecode($search),
+                'filter' => $filter,
+                'breadcrumbs' => [
+                    ['url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon'],
+                    ['url'  => base_url('reports/index'), 'name' => '报销单', 'class' => ''],
+                    ['url'  => '', 'name' => '收到的报销单', 'class' => ''],
+                ],
             ));
     }
 
@@ -1094,7 +1106,8 @@ class Reports extends REIM_Controller {
         $page = $this->input->get('page');
         $rows = $this->input->get('rows');
         $sort = $this->input->get('sord');
-        $items = $this->items->get_suborinate(1);
+        $filter = $this->input->get('filter', 'all');
+        $items = $this->items->get_suborinate(1, $filter);
 
         $item_type_dic = $this->reim_show->get_item_type_name();
         $report_template_dic = $this->reim_show->get_report_template();
@@ -1129,20 +1142,7 @@ class Reports extends REIM_Controller {
             }
             log_message("debug", "Rstatus: **** " . json_encode($d));
 
-/*
-            $base_icon = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">';
-//            $show_icon = '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>';
-            $show_icon='<span class="ui-icon fa fa-search-plus tdetail" data-decision="1" data-id="' . $d['id'] . '"></span>';
-            $edit_icon = '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>';
-            $pass_icon = '<span class="ui-icon ' . 'green' . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>';
-            $deny_icon = '<span class="ui-icon  ui-icon-closethick ' . 'red'  . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span>';
-            $export_icon = '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>';
-            $trash_icon = '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>';
-            $end_icon = '</div>';
-            */
             $download_icon = '<span class="ui-icon ace-icon fa fa-download ' . 'blue' . '  tdown" data-id="' . $d['id'] . '"></span>';
-
-
 
             if(in_array($d['status'],[2,4,5,7,8]))
             {

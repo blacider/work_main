@@ -296,4 +296,9 @@ $('#send').click(function(){
 });
 </script>
 
+<script>
+var filter = "<?=$filter?>";
+</script>
+
 <script src="/static/js/audit.js" ></script>
+

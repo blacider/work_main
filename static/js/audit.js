@@ -104,7 +104,7 @@ function bind_event(){
 var FLAG = 1;
 jQuery(grid_selector).jqGrid({
 
-    url: __BASE + 'reports/listauditdata',
+    url: __BASE + 'reports/listauditdata?filter=' + filter,
     multiselect: false,
     mtype: "GET",
     datatype: "local",

@@ -145,12 +145,13 @@ class Items_Model extends Reim_Model {
     }
 
 
-    public function get_suborinate($me = 0){
+    public function get_suborinate($me = 0, $filter='all'){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $url = $this->get_url('subordinate_reports/'. $me . "/0/9999999");
+        $url = $url . '?' . http_build_query(['filter' => $filter]);
         $buf = $this->do_Get($url, $jwt);
-        log_message("debug", $buf);
+        //log_message("debug", $buf);
         $obj = json_decode($buf, true);
         return $obj;
     }
