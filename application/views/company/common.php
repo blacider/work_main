@@ -207,7 +207,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">报销单打印模板设置</label>
                                 <div class="col-xs-4 col-sm-4">
-                                    <select id="temp" class="chosen-select tag-input-style" name="temp"  data-placeholder="请选择模板">
+                                    <select id="template" class="chosen-select tag-input-style" name="template"  data-placeholder="请选择模板">
                                     <option value="a4.yaml">A4模板</option>
                                     <option value="a5.yaml">A5模板</option>
                                     <option value="b5.yaml">B5模板</option>
@@ -222,7 +222,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">员工在此金额下无需确认收款</label>
                                 <div class="col-xs-2 col-sm-2">
-					               <input id="limit" type="number" class="form-controller col-xs-12" name="limit" placeholder="输入额度">
+					               <input id="user_confirm" type="number" class="form-controller col-xs-12 text_input" name="user_confirm" placeholder="输入额度">
                                 </div>
                                 <div class="col-sm-2 col-sm-2">
                                     <div class="checkbox" style="margin-left:35px;">
@@ -239,21 +239,21 @@
                              <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">每月最多可提交的报销单数量</label>
                                 <div class="col-xs-4 col-sm-4">
-                                <input id="reports_limit" type="number" class="form-controller col-xs-12" name="reports_limit" placeholder="报销单数">
+                                <input id="reports_limit" type="number" class="form-controller col-xs-12 text_input" name="reports_limit" placeholder="报销单数">
                                 </div>
                             </div>
 
                               <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">最多可提交最近几个月之前的报销</label>
                                 <div class="col-xs-4 col-sm-4">
-                                <input id="max_allowed_months" type="number" class="form-controller col-xs-12" name="max_allowed_months" placeholder="月数">
+                                <input id="max_allowed_months" type="number" class="form-controller col-xs-12 text_input" name="max_allowed_months" placeholder="月数">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">自然月起始</label>
                                 <div class="col-xs-4 col-sm-4">
-                                <input id="calendar_month" type="number" class="form-controller col-xs-12" name="calendar_month" placeholder="自然月">
+                                <input id="calendar_month" type="number" class="form-controller col-xs-12 text_input" name="calendar_month" placeholder="自然月">
                                 </div>
                             </div>
 
@@ -292,11 +292,11 @@ var __BASE = "<?php echo $base_url; ?>";
    $("#confirm_unlimit").change(function(){
         if($(this).is(':checked'))
         {
-            $('#limit').prop('disabled',true).trigger('chosen:updated');
+            $('#user_confirm').prop('disabled',true).trigger('chosen:updated');
         }
         else
         {
-            $('#limit').prop('disabled',false).trigger('chosen:updated');
+            $('#user_confirm').prop('disabled',false).trigger('chosen:updated');
         }
    });
    $.ajax({
@@ -304,6 +304,12 @@ var __BASE = "<?php echo $base_url; ?>";
     url:__BASE+"company/getsetting",
     dataType:'json',
     success:function(data){
+        var checkbox_items = [];
+        var select_items = [];
+        var text_items = [];
+        $('.btn-rotate').each(function(){
+
+        });
           if(data.statistic_using_category != undefined)
         {
             if(data.statistic_using_category ==1)
@@ -453,7 +459,7 @@ var __BASE = "<?php echo $base_url; ?>";
             }
             else
             {
-                $('#limit').val(data.user_confirm);
+                $('#user_confirm').val(data.user_confirm);
             }
         }
 
@@ -474,6 +480,11 @@ var __BASE = "<?php echo $base_url; ?>";
    });
 
     $('.renew').click(function(){
+
+        //保存上传数据
+        var upload_data = new Object();
+
+        //checkbox数据获取
         $('.btn-rotate').each(function(){
             if($(this).is(':checked'))
             {
@@ -483,8 +494,24 @@ var __BASE = "<?php echo $base_url; ?>";
             {
                 $(this).val(0);
             }
+            var temp_name = $(this).prop('name');
+            upload_data[temp_name] = $(this).val();
         });
-        var lval = $('#limit').val();
+
+        //单选框数据获取
+        $('.chosen-select').each(function(){
+            var temp_name = $(this).prop('name');
+            upload_data[temp_name] = $('option:selected',this).val();
+        });
+
+        //输入文本框数据获取
+        $('.text_input').each(function(){
+            var temp_name = $(this).prop('name');
+            upload_data[temp_name] = $(this).val();
+        });
+
+
+        var lval = $('#user_confirm').val();
         if($('#confirm_unlimit').is(':checked'))
         {
             lval = -1;
@@ -506,12 +533,14 @@ var __BASE = "<?php echo $base_url; ?>";
         {
                 lval = 0;
         }
+        upload_data['user_confirm'] = lval;
        if(lval>=0 || lval == -1)
        {
                $.ajax({
                     type:"post",
                     url:__BASE+"company/profile",
-                    data:{
+                    data:upload_data,
+                   /* data:{
                         calendar_month:$('#calendar_month').val(),
                         note_compulsory:$('#note_compulsory').val(),
                         not_auto_time:$('#not_auto_time').val(),
@@ -531,7 +560,7 @@ var __BASE = "<?php echo $base_url; ?>";
                         open_exchange:$('#open_exchange').val(),
                         same_category_pdf:$('#same_category_pdf').val(),
                         statistic_using_category:$('#statistic_using_category').val()
-       },
+       },*/
                     dataType:'json',
                     success:function(data){
                            show_notify('保存成功');
@@ -542,8 +571,8 @@ var __BASE = "<?php echo $base_url; ?>";
     	 else
     	 {
     	 	show_notify('请输入有效额度');
-    	 	$('#limit').val('');
-    		$('#limit').focus();
+    	 	$('#user_confirm').val('');
+    		$('#user_confirm').focus();
     		return false;
     	 }
     }); 

@@ -1275,7 +1275,7 @@ class Company extends REIM_Controller {
         $this->session->unset_userdata('last_error');
         $company = $this->company->get();
         $_config = array();
-    log_message('debug','company:' . json_encode($company));
+        log_message('debug','company:' . json_encode($company));
         if(array_key_exists('data', $company) && array_key_exists('config', $company['data'])){
             $_config = $company['data']['config'];
         }
@@ -1484,7 +1484,7 @@ public function common(){
         $export_no_company = $this->input->post('export_no_company');
         $hide_merchants = $this->input->post('hide_merchants');
         $template = $this->input->post('template');
-        $user_confirm = $this->input->post('limit');
+        $user_confirm = $this->input->post('user_confirm');
         $reports_limit = $this->input->post('reports_limit');
         $max_allowed_months = $this->input->post('max_allowed_months');
         $private_structure = $this->input->post('private_structure');
