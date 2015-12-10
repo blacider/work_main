@@ -39,3 +39,25 @@
 
 </div>
 </div>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('.afford_detail').each(function(idx, item) {
+        $(this).next().hide();
+    });
+
+    $('.afford_detail').hide();
+    $('#afford_type').change(function(){
+        var _id = $(this).val();
+        $('.afford_detail').each(function(idx, item) {
+            $(item).hide();
+            $(item).next().hide();
+            $(item).removeClass('afford_chose');
+            if($(item).data('pid') == _id) {
+                $(item).show();
+                $(item).next().show();
+                $(item).addClass('afford_chose');
+            }
+        });
+    });
+});
+</script>

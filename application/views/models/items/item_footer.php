@@ -24,6 +24,7 @@
 <script type="text/javascript" src="/static/third-party/webUploader/webuploader.js"></script>
 
 <script type="text/javascript">
+/*1209
 $(document).ready(function() {
     var uploader_file = WebUploader.create({
     auto:true,
@@ -166,6 +167,7 @@ uploader_file.on( 'uploadComplete', function( file ) {
 });
 var filesDict = {};
 var filesUrlDict = {};
+*/
 </script>
 
 <script language="javascript">
@@ -201,7 +203,7 @@ for(var i = 0 ; i < item_config.length; i++)
 }
 */
 
-var not_auto_note = "";
+/*1209
 var flag = 0;
 function initUploader() {
     if (flag == 1) {
@@ -329,7 +331,7 @@ function bind_event(){
             $(this.parentNode).remove();
         });
 }
-
+*/
 /*
     function updateSelectSob(data) {
                                 $("#sobs").empty();
@@ -556,6 +558,7 @@ $(document).ready(function(){
         }).trigger('resize.chosen');
         */
 
+/*1209
     $('.afford_detail').each(function(idx, item) {
         $(this).next().hide();
     });
@@ -574,7 +577,9 @@ $(document).ready(function(){
             }
         });
     });
+*/
     $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange'></i>");
+    /*
     $('#sob_category').change(function(){
             $('#endTime').hide();
             $('#average').hide();
@@ -630,6 +635,7 @@ $(document).ready(function(){
         }
 
     });
+*/
 
     $('.renew').click(function(){
 
