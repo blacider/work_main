@@ -1964,6 +1964,7 @@ class Reports extends REIM_Controller {
     }
 
     public function exports(){
+        ini_set('memory_limit', '1024M');
         $ids = $this->input->post('ids');
         if("" == $ids) die("");
         $this->exports_by_rids($ids);
