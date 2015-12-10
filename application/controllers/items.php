@@ -15,7 +15,7 @@ class Items extends REIM_Controller {
     {
         //获取页面模板
         $template_views = array();
-        $prefix = 'models/items/';
+        $prefix = 'module/items/';
         if(!$item_customization)
         {
             $template_views = ['item_amount','item_category','item_time','item_affiliated_person','item_fee_afford','item_seller','item_tags','item_custom_types','item_notes','item_picture','item_attachments','item_footer'];
@@ -239,6 +239,7 @@ class Items extends REIM_Controller {
 
         $_profile = $this->user->reim_get_user();   
         $profile = array();
+
         $group_config = array();
         $item_configs = array();
         $item_config = array();
@@ -253,6 +254,7 @@ class Items extends REIM_Controller {
         if(array_key_exists('group',$profile))
         {
             $group_config = $profile['group'];
+            /*
             if(array_key_exists('item_config',$group_config))
             {
                 $item_configs = $group_config['item_config'];
@@ -262,6 +264,7 @@ class Items extends REIM_Controller {
                     array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => 'disabled'));   
                 }
             }
+            */
 
             //获取自定义消费字段
             if(array_key_exists('item_customization',$group_config))
@@ -329,7 +332,7 @@ class Items extends REIM_Controller {
         $template_views = $this->get_template_views($item_customization);
 
 
-        $this->bsload('models/items/item_header',
+        $this->bsload('module/items/item_header',
 //        $this->bsload('items/new',
             array(
                 'title' => '新建消费'
@@ -1054,6 +1057,9 @@ class Items extends REIM_Controller {
             $profile = $_profile['data']['profile'];
         }
 
+        $wanted_config = ['open_exchange','disable_borrow','disable_budget'];
+        $company_config = $this->get_company_config($wanted_config,$profile);
+
         //自定义消费字段信息
         $item_customization = array();
         
@@ -1199,10 +1205,21 @@ class Items extends REIM_Controller {
         {
            $is_burden = false; 
         }
-        $this->bsload('items/edit',
+
+        //获取html标签包含的内容
+        $html_company_config = $this->get_html_container($company_config,'company_config',true);
+        $html_item_config = $this->get_html_container($item_config,'item_config',true);
+
+        //获取页面模板
+        $template_views = $this->get_template_views($item_customization);
+//        $this->bsload('items/edit',
+        $this->bsload('module/items/item_header',
             array(
                 'title' => '修改消费'
                 ,'categories' => $categories
+                ,'company_config' => $company_config
+                ,'html_company_config' => $html_company_config
+                ,'html_item_config' => $html_item_config
                 ,'images' => json_encode($_images)
                 ,'item' => $item
                 ,'from_report' => $from_report
@@ -1223,7 +1240,9 @@ class Items extends REIM_Controller {
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
                     ,array('url'  => '', 'name' => '修改消费', 'class' => '')
                 ),
-            ));
+            ),
+            $template_views
+            );
     }
 
     public function update(){
