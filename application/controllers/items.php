@@ -28,6 +28,8 @@ class Items extends REIM_Controller {
 
         foreach($item_customization as $ic)
         {
+            if(!$ic['enabled'])
+                continue;
             $view_name = '';
             switch($ic['type']) 
             {
@@ -39,6 +41,9 @@ class Items extends REIM_Controller {
                     break;
                 case 4:
                     $view_name = 'item_time';
+                    break;
+                case 5:
+                    $view_name = 'item_time_period';
                     break;
                 case 6:
                     $view_name = 'item_affiliated_person';
@@ -1048,7 +1053,10 @@ class Items extends REIM_Controller {
         {
             $profile = $_profile['data']['profile'];
         }
-        log_message('debug' , 'profile:' . json_encode($profile));
+
+        //自定义消费字段信息
+        $item_customization = array();
+        
         if(array_key_exists('group',$profile))
         {
             $group_config = $profile['group'];
@@ -1062,7 +1070,13 @@ class Items extends REIM_Controller {
                     log_message('debug','qqy_name:' .  $conf['name']);
                 }
             }
+            
+            if(array_key_exists('item_customization',$group_config))
+            {
+                $item_customization = $group_config['item_customization'];
+            }
         }
+
         $item = $this->items->get_by_id($id);
         $item_update_in = $this->session->userdata('item_update_in');
         if($item['status'] < 1){
