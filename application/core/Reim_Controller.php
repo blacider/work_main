@@ -301,8 +301,12 @@ class REIM_Controller extends CI_Controller{
                     $c_name = $this->getCharByNunber($y);
                     $addr = $c_name . $x;
                     $sheet->getStyle($addr)->getFont()->setName('微软雅黑')->setSize(12);
-                    //$sheet->setCellValueExplicit($addr, strval($v), PHPExcel_Cell_DataType::TYPE_STRING);
-                    $sheet->setCellValue($addr, $v);
+                    // 如果未设置样式或者数据类型指定了string
+                    if (empty($style[$k]) || empty($style[$k]['data_type']) || $style[$k]['data_type'] == 'string') {
+                        $sheet->setCellValueExplicit($addr, strval($v), PHPExcel_Cell_DataType::TYPE_STRING);  
+                    } else {
+                        $sheet->setCellValue($addr, $v);
+                    }
                     $y++;
                 }
                 $x++;
