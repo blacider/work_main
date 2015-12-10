@@ -546,7 +546,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
             <div class="modal-footer">
                 <input type="hidden" id="pass" name="pass" value="0">
                 <input type="submit" class="btn btn-primary pass" value="确认结束">
-                <div class="btn btn-primary repass" onClick="chose_others(this.parentNode.parentNode.rid.value)">继续选择</div>
+                <div class="btn btn-primary repass" onClick="chose_others_audit(this.parentNode.parentNode.rid.value)">继续选择</div>
             </div>
                 </form>
         </div><!-- /.modal-content -->
@@ -749,7 +749,7 @@ $(document).ready(function(){
                         getData = data['data'].suggestion;
                         if (data['data'].complete == 0) {
                             $('#rid').val(_id);
-                            chose_others_zero(_id);
+                            chose_others_zero_audit(_id);
                         } else {
                             $('#rid_').val(_id);
                             $('#status_').val(2);
@@ -826,4 +826,21 @@ $(document).ready(function(){
     }
 
 });
+
+function chose_others_zero_audit(item) {
+    //console.log(item);
+    for (var item in getData) {
+        if (item != undefined) {
+            //console.log(getData[item]);
+            $($('.chosen-select')[0]).find("option[value='"+getData[item]+"']").attr("selected",true);
+            $($('.chosen-select')[0]).trigger("chosen:updated");
+        }
+    }
+    $('#modal_next').modal('show');
+}
+function chose_others_audit(_id) {
+    $('#modal_next_').modal('hide');
+    $('#rid').val(_id);
+    $('#modal_next').modal('show');
+}
 </script>
