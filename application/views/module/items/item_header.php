@@ -1,6 +1,3 @@
-<?php
-  echo __DIR__;
-?>
 <link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <script src="/static/ace/js/jquery.json.min.js"></script>
