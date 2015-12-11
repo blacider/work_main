@@ -20,7 +20,7 @@
     echo $html_sob_id;
     echo $html_fee_afford_type;
     echo $html_fee_afford_ids;
-    echo get_html_container($images,'html_images',false);
+    echo get_html_container($images,'html_images',true);
   }
 ?>
 <script type="text/javascript">
