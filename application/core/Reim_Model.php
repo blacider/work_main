@@ -171,6 +171,8 @@ class Reim_Model extends CI_Model {
         # TODO support query
         $method = strtoupper($method);
         $ch = $this->get_curl_handler();
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
