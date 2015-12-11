@@ -20,6 +20,11 @@
 </div>
 
 <script type="text/javascript">
+if(PAGE_TYPE != 0)
+{
+    var _images = $('#html_images').data('value');
+}
+
 var flag = 0;
 function initUploader() {
     if (flag == 1) {
@@ -147,4 +152,38 @@ function bind_event(){
             $(this.parentNode).remove();
         });
 }
+
+function load_exists(){
+    var images = _images;
+    $('#imageList').empty();
+    var result = '', flag_ = 0;
+    $(images).each(function(idx, item) {
+        if (flag_ == 0) {
+            result = String(item.id);
+            flag_ = 1;
+        }   else {
+            result += ',' + String(item.id);
+        }
+        imagesDict['WU_FILE_'+String(item.id)] = 'WU_FILE_'+String(item.id);
+        var $li = $(
+            '<div id="WU_FILE_' + item.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
+                '<img style="width:150px;height:150px;">' +
+                '<div class="glyphicon glyphicon-trash red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
+            '</div>'
+            ),$img = $li.find('img');
+    // $list为容器jQuery实例
+    $('#imageList').append( $li );
+
+    // 创建缩略图
+    // 如果为非图片文件，可以不用调用此方法。
+    // thumbnailWidth x thumbnailHeight 为 100 x 100
+
+        $img.attr('src', item['url']);
+    });
+    $('input[name="images"]').val(result);
+    bind_event();
+}
+$(document).ready(function(){
+    load_exists();
+});
 </script>
