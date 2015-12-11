@@ -6,3 +6,15 @@
 </div>
 
 </div>
+<script type="text/javascript">
+	function init_notes_module()
+	{
+		$('#note').val(item_info['note']);
+	}
+	$(document).ready(function(){
+		if(PAGE_TYPE != 0)
+		{
+			init_notes_module();
+		}
+	});
+</script>
