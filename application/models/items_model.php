@@ -169,7 +169,7 @@ class Items_Model extends Reim_Model {
     }
 
 
-    public function create($amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '', $afford_ids = -1,$attachments,$currency){
+    public function create($amount, $category, $tags, $dt, $merchant, $type, $note, $images,$end_dt, $uids = '', $afford_ids = -1,$attachments,$currency){
         $items = array();
         $s = array(
             'local_id' => 1,
@@ -181,6 +181,7 @@ class Items_Model extends Reim_Model {
             'afford_ids' => $afford_ids,
             'image_id' => $images,
             'dt' => $dt, 
+            'end_dt' => $end_dt, 
             'note' => $note,
             'reimbursed' => 1,
             'tags' => $tags, 
@@ -191,7 +192,7 @@ class Items_Model extends Reim_Model {
             'attachment_ids' => $attachments,
             'type' => 1,
             'currency' => $currency,
-        'extra' => $extra);
+        );
         array_push($items, $s);
         $data = array('items' => json_encode($items));
         $jwt = $this->session->userdata('jwt');
