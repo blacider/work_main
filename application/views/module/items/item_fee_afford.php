@@ -40,6 +40,14 @@
 </div>
 </div>
 <script type="text/javascript">
+function init_fee_afford_module()
+{
+    var afford_type = $('#html_fee_afford_type').data('value');
+    var af_ids = $('#html_fee_afford_ids').data('value');
+    $('#afford_type').val(afford_type).trigger('chosen:updated').trigger('change');
+    $('.afford_chose').val(af_ids).trigger('chosen:updated').trigger('change');
+}
+
 $(document).ready(function(){
     $('.afford_detail').each(function(idx, item) {
         $(this).next().hide();
@@ -59,5 +67,10 @@ $(document).ready(function(){
             }
         });
     });
+
+    if(PAGE_TYPE != 0)
+    {
+        init_fee_afford_module();
+    }
 });
 </script>
