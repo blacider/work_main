@@ -1,6 +1,18 @@
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
 <div class="col-xs-6 col-sm-6">
-<input type="text" name="merchant" class="form-controller col-xs-12" placeholder="消费商家">
+<input type="text" name="merchant" id="merchant" class="form-controller col-xs-12" placeholder="消费商家">
 </div>
 </div>
+<script type="text/javascript">
+	function init_seller_module()
+	{
+		$('#merchant').val(item_info['merchants']);
+	}
+	$(document).ready(function(){
+		if(PAGE_TYPE != 0)
+		{
+			init_seller_module();
+		}
+	});
+</script>
