@@ -11,6 +11,11 @@
 </div>
 
 <script type="text/javascript">
+function init_time_module()
+{
+	$('#date-timepicker1').val(item_info['dt']);
+}
+
 $(document).ready(function(){
 	$('.date-timepicker').datetimepicker({
         language: 'zh-cn',
@@ -23,5 +28,11 @@ $(document).ready(function(){
     }).on(ace.click_event, function(){
         $(this).prev().focus();
     });
+
+    if(PAGE_TYPE !=0)
+    {
+    	init_time_module();
+    }
 });
+
 </script>
