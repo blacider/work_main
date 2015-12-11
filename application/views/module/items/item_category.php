@@ -12,13 +12,44 @@
 	</div>
 </div>
 <script type="text/javascript">
+var is_exist_category = false;
+var is_init_category = false;
+var sob_id = $('#html_sob_id').data('value');
+
+function init_category_module()
+{
+    init_sob();
+}
+
+function init_sob()
+{
+    if(is_exist_category)
+    {
+        $('#sobs').val(sob_id).prop('selected',true);
+        $('#sobs').trigger('chosen:updated');
+        $('#sobs').trigger('change');
+        init_category();
+    }
+    else
+    {
+        $('#sobs').append('<option selected value="-1">-已过期帐套</option>');
+    }
+}
+
+function init_category()
+{
+    $('#sob_category').val(item_info['category']).prop('selected',true);
+    $('#sob_category').trigger('change');
+    $('#sob_category').trigger('chosen:updated');
+}
+
 function updateSelectSob(data) {
     $("#sobs").empty();
     $("#sobs").append(data);
     $("#sobs").trigger('change');
     $("#sobs").trigger("chosen:updated");
 }
-function get_sobs(){
+function get_sobs(callback){
     var selectPostData = {};
     var selectDataCategory = {};
     var selectDataSobs = '';
@@ -27,14 +58,18 @@ function get_sobs(){
         dataType : 'json',
         method : 'GET',
         success : function(data){
-            console.log(data);
             for(var item in data) {
+                if(PAGE_TYPE !=0 && item == sob_id)
+                {
+                    is_exist_category = true;
+                }
                 var _h = "<option value='" +  item + "'>"+  data[item].sob_name + " </option>";
                 selectDataCategory[item] = data[item]['category'];
                 selectDataSobs += _h;
             }
             selectPostData = data;
             updateSelectSob(selectDataSobs);
+            callback();
         },
         error:function(XMLHttpRequest, textStatus, errorThrown) {
             console.log(XMLHttpRequest);
@@ -95,9 +130,18 @@ function get_sobs(){
 
         });
     });
+
+    
 }
 $(document).ready(function(){
-	get_sobs();
+    if(PAGE_TYPE)
+    {
+	   get_sobs(init_category_module);
+    }
+    else
+    {
+        get_sobs();
+    }
 });
 
 </script>

@@ -655,33 +655,7 @@ $(document).ready(function(){
             return false;
         }
 
-         var dateTime = $('#date-timepicker1').val()
-         var dateTime = dateTime.replace(/(^\s*)|(\s*$)/g,'');
-        if(__config && __config['not_auto_time'] == 1)
-        {
-            if(dateTime == '')
-            {
-                show_notify('请填写时间');
-                //$('#date-timepicker1').focus();
-                return false;
-            }
-        }
-
-         var dateTime2 = $('#date-timepicker2').val();
-         dateTime2 = dateTime2.replace(/(^\s*)|(\s*$)/g,'');
-        if(__config && __config['not_auto_time'] == 1)
-        {
-            if(dateTime2 == '' && __multi_time)
-            {
-                show_notify('请填写结束时间');
-                return false;
-            }
-            if((dateTime2>'0') && (dateTime2 < dateTime))
-            {
-                show_notify('结束时间应该大于开始时间');
-                return false;
-            }
-        }
+       
 
         var note = $('#note').val();
         if(__config && __config['note_compulsory'] == 1)

@@ -13,7 +13,13 @@
 <div class="row">
 <div class="col-xs-12 col-sm-12">
 <?php echo $html_company_config;?>
-<?php echo $html_item_config;?>
+<?php
+  if($page_type == 1)
+  {
+    echo $html_item;
+    echo $html_sob_id;
+  }
+?>
 <script type="text/javascript">
 var simbol_dic = {'cny':'人民币','usd':'美元','eur':'欧元','hkd':'港币','mop':'澳门币','twd':'新台币','jpy':'日元','ker':'韩国元',
                               'gbp':'英镑','rub':'卢布','sgd':'新加坡元','php':'菲律宾比索','idr':'印尼卢比','myr':'马来西亚元','thb':'泰铢','cad':'加拿大元',
@@ -26,6 +32,14 @@ var icon_dic = {'cny':'￥','usd':'$','eur':'€','hkd':'$','mop':'$','twd':'$',
 var typed_currency = [];
 
 var ifUp = 1;
+
+//定义页面类型，获取页面内容
+var PAGE_TYPE = "<?php echo $page_type; ?>";
+if(PAGE_TYPE == 1)
+{
+  var item_info = $('#item_info').data('value');
+}
+
 var __BASE = "<?php echo $base_url; ?>";
 var __config = $('#company_config').data('value');
 var subs = "<?php echo $profile['subs'];?>";
@@ -65,15 +79,24 @@ $(document).ready(function(){
         {
             if(array_key_exists($ic['type'],$item_type_view_dic) && $item_type_view_dic[$ic['type']])
             {
-                get_sub_weget($item_type_view_dic[$ic['type']],array(
+                $load_data = array( 
                     'item_customization_value' => $ic,
                     'company_config' => $company_config,
                     'is_burden' => $is_burden,
                     'profile' => $profile,
                     'tags' => $tags,
+                    'afford' => $afford,
                     'item_type_dic' => $item_type_dic,
-                    'member' => $member
-                    ));
+                    'member' => $member,
+                    'page_type' => $page_type
+                    );
+                if($page_type == 1)
+                {
+                    $load_data['item'] = $item;
+                    $load_data['sob_id'] = $sob_id;
+                }
+                    
+                get_sub_weget($item_type_view_dic[$ic['type']],$load_data);
             }
         }
     }

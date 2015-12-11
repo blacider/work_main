@@ -42,7 +42,25 @@ else
     }
 ?>
 <script type="text/javascript">
-function get_typed_currency()
+function init_amount(item_info)
+{
+    $('#amount').val(item_info['amount']);
+}
+
+function init_coin_type(item_info)
+{
+    $('#coin_type').val(item_info['currency']).prop('selected',true);
+    $('#coin_type').trigger('chosen:updated');
+}
+
+function init_amount_module(item_info)
+{
+    init_amount(item_info);
+    init_coin_type(item_info);
+    $('#amount').trigger('change');
+}
+
+function get_typed_currency(is_init)
 {
      $.ajax({
         url:__BASE + 'items/get_typed_currency',
@@ -56,6 +74,11 @@ function get_typed_currency()
                 _h += '<option data-symbol="' + icon_dic[item] + '" data-rate="' + typed_currency[item]['value'] + '" value="' + item + '">' + simbol_dic[item] + '</option>';
             }
             $('#coin_type').append(_h);
+            if(is_init != 0)
+            {
+                console.log(is_init);
+                init_amount_module(item_info);
+            }
         },
         error:function(a,b,c){
           
@@ -65,7 +88,7 @@ function get_typed_currency()
     $(document).ready(function(){
         if(__config['open_exchange']){
             // get_currency();
-            get_typed_currency();
+            get_typed_currency(PAGE_TYPE);
         }
 
         $('#coin_type').change(function(){
@@ -109,4 +132,7 @@ function get_typed_currency()
             $('#rate_simbol').text( '￥' + Math.round(_amount*coin_rate)/100 );
         });
     });
+
+
+
 </script>
