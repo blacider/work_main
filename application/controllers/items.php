@@ -280,18 +280,6 @@ class Items extends REIM_Controller {
         if(array_key_exists('group',$profile))
         {
             $group_config = $profile['group'];
-            /*
-            if(array_key_exists('item_config',$group_config))
-            {
-                $item_configs = $group_config['item_config'];
-                foreach($item_configs as $conf)
-                {
-                    if($conf['disabled'] == 1) continue;
-                    array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => 'disabled'));   
-                }
-            }
-            */
-
             //获取自定义消费字段
             if(array_key_exists('item_customization',$group_config))
             {
@@ -357,6 +345,9 @@ class Items extends REIM_Controller {
         //获取页面模板
         $item_type_view_dic = $this->get_item_type_view_dic();
 
+        //页面种类(0 => 新建)
+        $page_type = 0;
+
         $this->bsload('module/items/item_header',
 //        $this->bsload('items/new',
             array(
@@ -366,6 +357,7 @@ class Items extends REIM_Controller {
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
                     ,array('url'  => '', 'name' => '新建消费', 'class' => '')
                 ),
+                'page_type' => $page_type,
                 'categories' => $categories,
                 'afford' => $afford,
                 'sobs' => $_sobs,
@@ -429,56 +421,28 @@ class Items extends REIM_Controller {
         $amount = $this->input->post('amount');
         $category= $this->input->post('category');
         $timestamp = strtotime($this->input->post('dt'));
-        $endtime = strtotime($this->input->post('dt_end'));
-        $config_id = $this->input->post('config_id');
-        $config_type = $this->input->post('config_type');
-        $subs = $this->input->post('peoples');
-        $note_2 = $this->input->post('note_2');
-        log_message('debug','config_id:' . $config_id);
-        log_message('debug','config_type:' . $config_type);
-        log_message('debug','afford_ids:' . $afford_ids);
-        $extra = array();
-        $_extra = array();
-        if($config_type == 2)
-        {
-            $_extra = array('id'=>$config_id ,'type'=>$config_type,'value'=>$endtime);
-        }
-        if($config_type == 1)
-        {
-            $_extra = array('id'=>$config_id ,'type'=>$config_type,'value'=>$note_2);
-        }
+        $end_dt = strtotime($this->input->post('end_dt'));
 
-        if($config_type == 5)
-        {
-            $_extra = array('id'=>$config_id ,'type'=>$config_type,'value'=>$subs);
-        }
-        array_push($extra,$_extra);
-        $_hidden_extra = $this->input->post('hidden_extra');
-        if($_hidden_extra) {
-            $_hidden_extra = json_decode($_hidden_extra);
-            array_push($_hidden_extra, $_extra);
-            $extra = $_hidden_extra;
-        }
-        $__extra = json_encode($extra);
         $merchant = $this->input->post('merchant');
         $tags = $this->input->post('tags');
         $type = $this->input->post('type');
         $note = $this->input->post('note');
         $images = $this->input->post('images');
         $renew = $this->input->post('renew');
+        $customization = $this->input->post('customization');
+
         //汇率
         $currency = 'cny';
         $_currency = $this->input->post('coin_type');
         log_message('debug', 'qqy currency:' . $_currency);
         if($_currency)
         {
-            $temp = explode(',',$_currency);
-            $currency = $temp[0];
+            $currency = $_currency;
         }
         log_message('debug', 'qqy currency:' . $currency);
 
         $attachments = $this->input->post('attachments');
-        $obj = $this->items->create($amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$__extra,$uids, $afford_ids,$attachments, $currency);
+        $obj = $this->items->create($amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$end_dt,$uids, $afford_ids,$attachments, $currency);
         log_message('debug','create_item_back:' . json_encode($obj));
         // TODO: 提醒的Tips
         if($renew){
@@ -1076,8 +1040,10 @@ class Items extends REIM_Controller {
         $_profile = $this->user->reim_get_user();   
         $profile = array();
         $group_config = array();
+        /*
         $item_configs = array();
         $item_config = array();
+        */
         if($_profile)
         {
             $profile = $_profile['data']['profile'];
@@ -1092,6 +1058,7 @@ class Items extends REIM_Controller {
         if(array_key_exists('group',$profile))
         {
             $group_config = $profile['group'];
+            /*
             if(array_key_exists('item_config',$group_config))
             {
                 $item_configs = $group_config['item_config'];
@@ -1102,6 +1069,7 @@ class Items extends REIM_Controller {
                     log_message('debug','qqy_name:' .  $conf['name']);
                 }
             }
+            */
             
             if(array_key_exists('item_customization',$group_config))
             {
@@ -1163,6 +1131,7 @@ class Items extends REIM_Controller {
         log_message('debug','afford_type:' . json_encode($afford_type));
         log_message('debug','fee_afford_ids:' . json_encode($fee_afford_ids));
         
+        /*
         $item_value = array();
         if(array_key_exists('extra',$item))
         {
@@ -1175,6 +1144,7 @@ class Items extends REIM_Controller {
                 }
             }
         }
+        */
         log_message('debug','all_item:' . json_encode($item));
         $category = $this->category->get_list();
         $categories = array();
@@ -1234,40 +1204,53 @@ class Items extends REIM_Controller {
 
         //获取html标签包含的内容
         $html_company_config = $this->get_html_container($company_config,'company_config',true);
-        $html_item_config = $this->get_html_container($item_config,'item_config',true);
+        //$html_item_config = $this->get_html_container($item_config,'item_config',true);
+        $html_item = $this->get_html_container($item,'item_info',false);
+        $html_sob_id = $this->get_html_container($item_sob,'html_sob_id',true);
 
         //获取页面模板
-        $template_views = $this->get_template_views($item_customization);
+        $item_type_view_dic = $this->get_item_type_view_dic();
+
+        //获取页面模板
+        //$template_views = $this->get_template_views($item_customization);
 //        $this->bsload('items/edit',
+        $page_type = 1;
+        
+
         $this->bsload('module/items/item_header',
             array(
                 'title' => '修改消费'
+                ,'page_type' => $page_type
+                ,'html_item' => $html_item
                 ,'categories' => $categories
                 ,'company_config' => $company_config
                 ,'html_company_config' => $html_company_config
-                ,'html_item_config' => $html_item_config
+        //        ,'html_item_config' => $html_item_config
                 ,'images' => json_encode($_images)
                 ,'item' => $item
                 ,'from_report' => $from_report
                 ,'tags' => $tags
-                ,'item_config'=>$item_config
+         //       ,'item_config'=>$item_config
                 ,'images_ids' => implode(",", $_image_ids)
                 ,'sob_id' => $item_sob
+                ,'html_sob_id' => $html_sob_id
                 ,'category_name' => $_want_key
-                ,'item_value' => $item_value
+          //      ,'item_value' => $item_value
                 ,'member' => $gmember
                 ,'afford' => $afford
                 ,'fee_afford_ids' => implode(',',$fee_afford_ids)
                 ,'fee_afford_type' => $afford_type
                 ,'is_burden' => $is_burden
                 ,'item_type_dic' => $item_type_dic
+                ,'item_type_view_dic' => $item_type_view_dic
+                ,'item_customization' => $item_customization
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
                     ,array('url'  => '', 'name' => '修改消费', 'class' => '')
                 ),
-            ),
-            $template_views
+            )
+         //   $template_views
             );
     }
 
