@@ -1207,8 +1207,8 @@ class Items extends REIM_Controller {
         //$html_item_config = get_html_container($item_config,'item_config',true);
         $html_item = get_html_container($item,'item_info',false);
         $html_sob_id = get_html_container($item_sob,'html_sob_id',true);
-        $html_fee_afford_type= get_html_container($afford_type,'html_fee_afford_type',false);
-        $html_fee_afford_ids= get_html_container($fee_afford_ids,'html_fee_afford_ids',false);
+        $html_fee_afford_type= get_html_container($afford_type,'html_fee_afford_type',true);
+        $html_fee_afford_ids= get_html_container($fee_afford_ids,'html_fee_afford_ids',true);
 
         //获取页面模板
         $item_type_view_dic = $this->get_item_type_view_dic();
