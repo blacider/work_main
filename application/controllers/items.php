@@ -11,6 +11,32 @@ class Items extends REIM_Controller {
         $this->load->helper('report_view_utils');
     }
     
+    public function get_item_type_view_dic()
+    {
+        $prefix = 'module/items/';
+        $templates = array(
+            '1' => 'item_amount',
+            '3' => 'item_category',
+            '4' => 'item_time',
+            '5' => 'item_time_period',
+            '6' => 'item_affiliated_person',
+            '7' => 'item_fee_afford',
+            '8' => 'item_seller',
+            '9' => 'item_tags',
+            '10' => 'item_custom_types',
+            '11' => 'item_notes',
+            '12' => 'item_picture',
+            '13' => 'item_attachments',
+        );
+
+        foreach($templates as &$temp)
+        {
+            $temp = $prefix . $temp;
+        }
+
+        return $templates;
+    }
+
     public function get_template_views($item_customization = array())
     {
         //获取页面模板
@@ -329,8 +355,7 @@ class Items extends REIM_Controller {
         $html_item_config = $this->get_html_container($item_config,'item_config',true);
 
         //获取页面模板
-        $template_views = $this->get_template_views($item_customization);
-
+        $item_type_view_dic = $this->get_item_type_view_dic();
 
         $this->bsload('module/items/item_header',
 //        $this->bsload('items/new',
@@ -354,9 +379,10 @@ class Items extends REIM_Controller {
                 'html_company_config' => $html_company_config,
                 'is_burden' => $is_burden,
                 'item_customization' => $item_customization,
-                'item_type_dic' => $item_type_dic
+                'item_type_dic' => $item_type_dic,
+                'item_type_view_dic' => $item_type_view_dic
             )
-            ,$template_views
+            //,$template_views
             );
     }
     public function index(){

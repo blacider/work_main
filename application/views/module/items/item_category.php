@@ -1,5 +1,5 @@
 <div class="form-group">
-	<label class="col-sm-1 control-label no-padding-right">类别</label>
+	<label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
 
 	<div class="col-xs-3 col-sm-3" style="margin-top:2px">
 		<select class="form-control chosen-select" name="sob" id="sobs">

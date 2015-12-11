@@ -57,4 +57,27 @@ $(document).ready(function(){
   }).trigger('resize.chosen');
 });
 </script>
-<?php include __DIR__ . '/' . 'item_amount.php'; ?>
+
+<?
+    foreach($item_customization as $ic)
+    {
+        if($ic['enabled'])
+        {
+            if(array_key_exists($ic['type'],$item_type_view_dic) && $item_type_view_dic[$ic['type']])
+            {
+                get_sub_weget($item_type_view_dic[$ic['type']],array(
+                    'item_customization_value' => $ic,
+                    'company_config' => $company_config,
+                    'is_burden' => $is_burden,
+                    'profile' => $profile,
+                    'tags' => $tags,
+                    'item_type_dic' => $item_type_dic,
+                    'member' => $member
+                    ));
+            }
+        }
+    }
+
+    include get_sub_module('module/items/item_footer');
+?>
+

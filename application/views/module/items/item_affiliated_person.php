@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label class="col-sm-1 control-label no-padding-right">参与人</label>
+    <label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
     <div class="col-xs-4 col-sm-4">
         <select class="chosen-select tag-input-style" id="member" name="uids[]" multiple="multiple" data-placeholder="请选择员工">
             <?php 

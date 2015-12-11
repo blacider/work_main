@@ -1,5 +1,5 @@
 <div class="form-group" id="burden" <?php if(!$is_burden) echo 'hidden'?>>
-<label class="col-sm-1 control-label no-padding-right">费用承担</label>
+<label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
 <div class="col-xs-6 col-sm-6">
 
 <div class="col-xs-3 col-sm-3" style="margin-left:0px;padding-left:0px;">

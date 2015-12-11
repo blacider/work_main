@@ -1,5 +1,5 @@
 <div class="form-group">
-<label class="col-sm-1 control-label no-padding-right">附件</label>
+<label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
 <div class="col-xs-6 col-sm-6">
 <div id="uploader-file">
     <!--用来存放文件信息-->

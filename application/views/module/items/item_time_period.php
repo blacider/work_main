@@ -1,5 +1,5 @@
 <div class="form-group">
-	<label class="col-sm-1 control-label no-padding-right">截止时间:</label>
+	<label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
 	<div class="col-xs-6 col-sm-6">
 		<div class="input-group">
 			<input id="date_peroid" name="date_peroid" type="text" class="form-control date-timepicker" />
