@@ -1,6 +1,5 @@
 <?php
 
-define("API_SERVER", "https://api.cloudbaoxiao.com/online/");
 define("PUBKEY", "1NDgzZGY1OWViOWRmNjI5ZT");
 
 class Reim_Model extends CI_Model {
@@ -9,14 +8,17 @@ class Reim_Model extends CI_Model {
     const APP_TABLE = "tbl_apps";
 
     private $curl_hanlder = null;
+    private $api_url_base = null;
 
     public function __construct(){
         parent::__construct();
         $this->load->library('JWT', 'jwt');
+        $this->config->load('api');
+        $this->api_url_base = $this->config->item('api_url_base');
     }
 
     public function get_url($part){
-        return API_SERVER . $part;
+        return $this->api_url_base . $part;
     }
 
     public function get_jwt($username, $password, $server_token = '',$device_type = 'admin'){
