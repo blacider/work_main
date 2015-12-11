@@ -18,6 +18,9 @@
   {
     echo $html_item;
     echo $html_sob_id;
+    echo $html_fee_afford_type;
+    echo $html_fee_afford_ids;
+    echo get_html_container($images,'html_images',false);
   }
 ?>
 <script type="text/javascript">
@@ -35,7 +38,7 @@ var ifUp = 1;
 
 //定义页面类型，获取页面内容
 var PAGE_TYPE = "<?php echo $page_type; ?>";
-if(PAGE_TYPE == 1)
+if(PAGE_TYPE != 0)
 {
   var item_info = $('#item_info').data('value');
 }
