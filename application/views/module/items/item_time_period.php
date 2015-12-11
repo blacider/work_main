@@ -9,3 +9,9 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+function init_time_period_module()
+{
+	$('end_dt').val(item_info['end_dt']);
+}
+</script>
