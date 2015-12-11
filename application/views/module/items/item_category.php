@@ -39,8 +39,8 @@ function init_sob()
 function init_category()
 {
     $('#sob_category').val(item_info['category']).prop('selected',true);
-    $('#sob_category').trigger('change');
     $('#sob_category').trigger('chosen:updated');
+    $('#sob_category').trigger('change');
 }
 
 function updateSelectSob(data) {
