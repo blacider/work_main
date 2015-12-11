@@ -339,8 +339,8 @@ class Items extends REIM_Controller {
         }
         
         //获取html标签包含的内容
-        $html_company_config = $this->get_html_container($company_config,'company_config',true);
-        $html_item_config = $this->get_html_container($item_config,'item_config',true);
+        $html_company_config = get_html_container($company_config,'company_config',true);
+        $html_item_config = get_html_container($item_config,'item_config',true);
 
         //获取页面模板
         $item_type_view_dic = $this->get_item_type_view_dic();
@@ -1203,10 +1203,12 @@ class Items extends REIM_Controller {
         }
 
         //获取html标签包含的内容
-        $html_company_config = $this->get_html_container($company_config,'company_config',true);
-        //$html_item_config = $this->get_html_container($item_config,'item_config',true);
-        $html_item = $this->get_html_container($item,'item_info',false);
-        $html_sob_id = $this->get_html_container($item_sob,'html_sob_id',true);
+        $html_company_config = get_html_container($company_config,'company_config',true);
+        //$html_item_config = get_html_container($item_config,'item_config',true);
+        $html_item = get_html_container($item,'item_info',false);
+        $html_sob_id = get_html_container($item_sob,'html_sob_id',true);
+        $html_fee_afford_type= get_html_container($afford_type,'html_fee_afford_type',false);
+        $html_fee_afford_ids= get_html_container($fee_afford_ids,'html_fee_afford_ids',false);
 
         //获取页面模板
         $item_type_view_dic = $this->get_item_type_view_dic();
@@ -1240,6 +1242,8 @@ class Items extends REIM_Controller {
                 ,'afford' => $afford
                 ,'fee_afford_ids' => implode(',',$fee_afford_ids)
                 ,'fee_afford_type' => $afford_type
+                ,'html_fee_afford_type' => $html_fee_afford_type
+                ,'html_fee_afford_ids' => $html_fee_afford_ids
                 ,'is_burden' => $is_burden
                 ,'item_type_dic' => $item_type_dic
                 ,'item_type_view_dic' => $item_type_view_dic
