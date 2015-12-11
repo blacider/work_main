@@ -26,6 +26,14 @@
 </div>
 
 <script type="text/javascript">
+function init_affiliated_person_module()
+{
+    var person_list = item_info['relates'].split(',');
+    $('#member').val(person_list).prop('selected',true);
+    $('#member').trigger('change');
+    $('#member').trigger('chosen:updated');
+}
+
 function set_average_affiliated_amount()
 {
     var affiliated_nums = 0;
@@ -63,5 +71,9 @@ function set_average_affiliated_amount()
         });
         $('#member').trigger('change');
 
+        if(PAGE_TYPE != 0)
+        {
+            init_affiliated_person_module();
+        }
     });
 </script>
