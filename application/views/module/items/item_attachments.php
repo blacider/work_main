@@ -13,6 +13,83 @@
 </div>
 </div>
 <script type="text/javascript">
+function getPngByType(filename) {
+    var types = filename.split('.');
+    var type = types[types.length-1];
+    var name_ = "";
+    switch(type) {
+        case "xls":
+        case "xlsx":
+            name_ = "excel.png";
+            break;
+        case "ppt":
+        case "pptx":
+            name_ = "powerpoint.png";
+            break;
+        case "docx":
+        case "doc":
+            name_ = "word.png"
+            break;
+        case "pdf":
+            name_ = "pdf.png"
+            break;
+        default:
+            name_ = "default.png"
+            break;
+    }
+    return name_;
+}
+
+function bind_event_file(){
+        $('#theList .del-button_').click(function(e) {
+            var key = filesDict[this.parentNode.id];
+            var images = $("input[name='attachments']").val();
+            var arr_img = images.split(',');
+            var result = '';
+            for (var item = 0; item < arr_img.length; item++) {
+                if (arr_img[item] != key) {
+                    if (result == '') result += arr_img[item];
+                    else result += ',' + arr_img[item];
+                }
+            }
+            $("input[name='attachments']").val(result);
+            $(this.parentNode).remove();
+        });
+        $('#theList .download-button_').click(function(e) {
+            var url = filesUrlDict[this.parentNode.id];
+            window.open(url);
+        });
+}
+
+
+function loadFiles() {
+    var __files = item_info['attachments'];
+    for (var i = 0; i < __files.length; i++) {
+        var file = __files[i];
+        var $li = $(
+        '<div id="FILE_' + file.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
+            '<img style="width:128px">' +
+            '<p style="text-align: center;margin: 0;max-width: 128px;">'+file.filename+'</p>'+
+            '<div class="glyphicon glyphicon-trash red del-button_" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
+            '<div class="ui-icon ace-icon fa fa-download blue download-button_" style="  position: absolute;right: 10px;bottom: 10px;cursor: pointer;"></div>' +
+        '</div>'
+        ),$img = $li.find('img');
+        // $list为容器jQuery实例
+        $('#theList').append( $li );
+        var path = "/static/images/", name_ = getPngByType(file.filename);
+        $img.attr( 'src', path+name_);
+        bind_event_file();
+        var imageDom = $('#' + file.id);
+        filesDict["FILE_"+String(file.id)] = String(file.id);
+        filesUrlDict["FILE_"+String(file.id)] = String(file.url);
+        if ($("input[name='attachments']").val() == '') {
+            $("input[name='attachments']").val(file.id);
+        } else {
+            $("input[name='attachments']").val($("input[name='attachments']").val() + ',' + file.id);
+        }
+    }
+}
+
 $(document).ready(function() {
     var uploader_file = WebUploader.create({
     auto:true,
@@ -34,6 +111,7 @@ $(document).ready(function() {
         mimeTypes: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,application/msword,application/vnd.ms-powerpoint,application/vnd.ms-excel'
     }
 });
+
 
 // 当有文件添加进来的时候
 uploader_file.on( 'fileQueued', function( file ) {
@@ -152,6 +230,10 @@ uploader_file.on( 'uploadAccept', function( file, response ) {
 uploader_file.on( 'uploadComplete', function( file ) {
     $( '#'+file.id ).find('.progress').remove();
 });
+    if(PAGE_TYPE !=0 )
+    {
+        loadFiles();
+    }
 });
 var filesDict = {};
 var filesUrlDict = {};
