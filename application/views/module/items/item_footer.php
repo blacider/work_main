@@ -12,6 +12,7 @@
 <input type="hidden" name="images" id="images" >
 <input type="hidden" name="attachments" id="files" >
 <input type="hidden" name="customization" id="customization">
+<input type="hidden" name="default_customization" id="default_customization">
 </form>
 </div>
 </div>
@@ -46,7 +47,24 @@ $(document).ready(function(){
             customization.push(temp);
         });
         $('#customization').val(JSON.stringify(customization));
-        console.log(customization);
+
+        var default_customization = [];
+        $('.default_custom').each(function(){
+            var _id = $(this).data('id');
+            var _value = $(this).val();
+            if(_value instanceof Array)
+            {
+                _value = _value.join(',');
+            }
+            console.log(_value instanceof Array);
+            var temp = new Object();
+            temp['id'] = _id;
+            temp['val'] = _value;
+            default_customization.push(temp);
+        });
+        $('#default_customization').val(JSON.stringify(default_customization));
+
+        console.log(default_customization);
 
         var _affid = '';
         try {

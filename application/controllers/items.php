@@ -1,6 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Items extends REIM_Controller {
 
+    const DEFAULT_CUSTOM_TYPE_NUM = 13;
+
     public function __construct() {
         parent::__construct();
         $this->load->model('items_model', 'items');
@@ -1272,48 +1274,25 @@ class Items extends REIM_Controller {
             $item_update_in = 1;
         }
 
-        $_item_data = $this->items->get_by_id($id);
-        log_message('debug', 'item_get_by_id:' . json_encode($_item_data));
-        
         if($item_update_in != 0) {
-            $default_custom_id_name_dic = $this->input->post('default_custom_id_name_dic');
+            $input_data = array();
+            $default_customization = array();
+            $_default_customization = $this->input->post('default_customization');
+            if($_default_customization)
+            {
+                $default_customization = json_decode($_default_customization,true); 
+            }
+
+            foreach(json_decode($common_item_input['customization'],true) as $cii)
+            {
+                array_push($default_customization,array('id' => $cii['id'],'val' => $cii['value']));
+            }
+
+            log_message('debug','default_customization:' . json_encode($default_customization));
             $item_data = $this->items->get_by_id($id);
-            $rate = 1.0;
-            $_rate = $this->input->post('rate');
+//            $obj = $this->items->update_item($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra,'',$currency,$rate);
+            $obj = $this->items->update_item($id,$default_customization);
 
-            if($_rate)
-            {
-                $rate = $_rate*100;
-            }
-
-            $data = $item_data['data'];
-            if($currency == $data['currency'] && $amount == $data['amount'])
-            {
-                $amount=-1;
-            }
-            if($category == $data['category'])
-            {
-                $category = -1;
-            }
-            if($tags == $data['tags'])
-            {
-                $tags = -1;
-            }
-
-            if(strtotime($time) == $data['dt'] || $time == '')
-            {
-                $timestamp = -1;
-            }
-            if($merchant == $data['merchants'])
-            {
-                $merchant = -1;
-            }
-            if($note == $data['note'])
-            {
-                $note = -1;
-            }
-            $obj = $this->items->update_item($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra,'',$currency,$rate);
-            log_message('debug','xx item_data:'.json_encode($obj));
             if(!$obj['status']) {
                 $this->session->set_userdata('last_error', $obj['data']['msg']);
             }

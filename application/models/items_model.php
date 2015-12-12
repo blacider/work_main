@@ -74,20 +74,11 @@ class Items_Model extends Reim_Model {
         $obj = json_decode($buf, true);
         return $obj;
     }
-    public function update_item($data){
+    public function update_item($id,$opts){
         $items = array();
-        $s = array(
-        array('type' => 1,'val' => $category)
-        ,array('type' => 2,'val' => $note)
-        ,array('type' => 3,'val' => $tags)
-        ,array('type' => 4,'val' => $merchant)
-        ,array('type' => 6,'val' => $amount,'currency' => $currency , 'rate' => $rate)
-        ,array('type' => 8,'val' => $dt)
-        ,array('type' => 9,'val' => $extra)
-        );
         $data = array(
               "iid" => $id
-              ,"opts" => json_encode($s)
+              ,"opts" => json_encode($opts)
              );
         $jwt = $this->session->userdata('jwt');
         $url = $this->get_url('update_item');

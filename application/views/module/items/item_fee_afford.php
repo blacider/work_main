@@ -4,7 +4,7 @@
 
 <div class="col-xs-3 col-sm-3" style="margin-left:0px;padding-left:0px;">
 <input type="hidden" value="" id="afford_ids" name="afford_ids" />
-<select class="chosen-select tag-input-style" id="afford_type" name="afford_type" data-placeholder="请选择类型">
+<select class="chosen-select tag-input-style default_custom" id="afford_type" data-id="<?php echo $item_customization_value['id'];?>" name="afford_type" data-placeholder="请选择类型">
 <option value="-1"><?php echo $profile['nickname']; ?></option>
 <?php 
     $select_multi = array();
