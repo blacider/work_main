@@ -93,7 +93,7 @@ $(document).ready(function(){
                     'member' => $member,
                     'page_type' => $page_type
                     );
-                if($page_type == 1)
+                if($page_type != 0)
                 {
                     $load_data['item'] = $item;
                     $load_data['sob_id'] = $sob_id;

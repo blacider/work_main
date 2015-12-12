@@ -27,6 +27,10 @@ class Items extends REIM_Controller {
             '11' => 'item_notes',
             '12' => 'item_picture',
             '13' => 'item_attachments',
+            '101' => 'item_customization',
+            '102' => 'item_customization',
+            '103' => 'item_customization',
+            '104' => 'item_customization',
         );
 
         foreach($templates as &$temp)
@@ -429,7 +433,12 @@ class Items extends REIM_Controller {
         $note = $this->input->post('note');
         $images = $this->input->post('images');
         $renew = $this->input->post('renew');
-        $customization = $this->input->post('customization');
+        $customization = array();
+        $_customization = $this->input->post('customization');
+        if($_customization)
+        {
+            $customization = json_decode($_customization,true);
+        }
 
         //汇率
         $currency = 'cny';
@@ -442,6 +451,12 @@ class Items extends REIM_Controller {
         log_message('debug', 'qqy currency:' . $currency);
 
         $attachments = $this->input->post('attachments');
+
+        //customization自定义字段信息
+        $customization = $this->input->post('customization');
+
+        log_message('debug','customization:' . json_encode($customization));
+
         $obj = $this->items->create($amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$end_dt,$uids, $afford_ids,$attachments, $currency);
         log_message('debug','create_item_back:' . json_encode($obj));
         // TODO: 提醒的Tips
