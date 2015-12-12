@@ -770,9 +770,9 @@ class Reports extends REIM_Controller {
         $flow = $this->get_report_flow($id,$report);
 
         $template_views = array();
-        array_push($template_views,'models/reports/report_flow');
-        array_push($template_views,'models/reports/comments');
-        array_push($template_views,'models/reports/edit_report_footer');
+        array_push($template_views,'module/reports/report_flow');
+        array_push($template_views,'module/reports/comments');
+        array_push($template_views,'module/reports/edit_report_footer');
         $this->bsload('reports/edit',
             array(
                 'title' => '修改报销单',
@@ -1002,9 +1002,9 @@ class Reports extends REIM_Controller {
         }
         
         $template_views = array();
-        array_push($template_views,'models/reports/report_flow');
-        array_push($template_views,'models/reports/comments');
-        array_push($template_views,'models/reports/show_report_footer');
+        array_push($template_views,'module/reports/report_flow');
+        array_push($template_views,'module/reports/comments');
+        array_push($template_views,'module/reports/show_report_footer');
 
         $this->bsload('reports/view',
             array(
