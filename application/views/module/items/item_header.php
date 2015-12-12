@@ -110,7 +110,10 @@ $(document).ready(function(){
             }
         }
     }
-
+    if(in_array($page_type,[2,3]))
+    {
+      include get_sub_module('module/items/item_operate_flow');
+    }
     include get_sub_module('module/items/item_footer');
 ?>
 

@@ -2,7 +2,7 @@
 <div class="clearfix form-actions col-sm-8 col-xs-8">
 <div class="col-md-offset-3 col-md-8" >
 <?php
-    if($page_type != 2)
+    if(!in_array($page_type,[2,3]))
     {
 ?>
 <a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
@@ -37,7 +37,7 @@
 var __multi_time = 0;
 var __average_count = 0;
 $(document).ready(function(){
-    if(PAGE_TYPE == 2)
+    if(PAGE_TYPE == 2 || PAGE_TYPE == 3)
     {
         $('.default_custom').each(function(){
             $(this).prop('disabled',true);
@@ -54,6 +54,8 @@ $(document).ready(function(){
         });
         $('#sobs').prop('disabled',true);
         $('#sobs').trigger('chosen:udpated');
+        $('.afford_chose').prop('disabled',true);
+        $('.afford_chose').trigger('chosen:updated');
     }
 
     $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange'></i>");

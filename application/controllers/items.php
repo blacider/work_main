@@ -633,14 +633,93 @@ class Items extends REIM_Controller {
         }
         else redirect(base_url('items'));
     }
+
+    public function get_myself_editable($item)
+    {
+        $_editable = 0;
+        //log_message("debug", "***** Rstatus: $_uid ********** " . $item['rstatus'] . ", " . $item['uid']);
+        // 收到的,检查我是否是被cc，以及状态
+        $_rid = $item['rid'];
+        if($_rid > 0 ){
+            $_relate_report = $this->report->get_report_by_id($_rid);
+            //log_message("debug", "Find :" . json_encode($_relate_report));
+            //log_message("debug", "Relate Report:" . $_relate_report['data']['status']);
+            if($_relate_report['status']){
+                $_report = $_relate_report['data'];
+                $_cc = $_relate_report['data']['cc'];
+                if(in_array($_relate_report['data']['status'], array(0, 3))) {
+                    $_editable = 1;
+                }
+            }
+        } else {
+            $_editable = 1;
+        }
+        return $_editable;
+    }
+
+
+    public function get_others_editable($item)
+    {
+        $profile = $this->session->userdata('profile');
+        $_uid = $profile['id'];
+        $_editable = 0;
+        $_rid = $item['rid'];
+        if($_rid > 0 ){
+            $_relate_report = $this->report->get_report_by_id($_rid);
+            if($_relate_report['status']){
+
+                $_report = $_relate_report['data'];
+                $_cc = $_relate_report['data']['cc'];
+                if($_cc < 0 && $user['admin'] > 0) {
+                    $_editable = 1;
+                } else {
+                    if($_report['uid'] == $_uid) {
+                        if(in_array($_relate_report['data']['status'], array(0, 3))) {
+                            $_editable = 1;
+                        }
+                    } elseif (in_array($_relate_report['data']['status'], array(1, 2))) {
+                        $_editable = 1;
+                    }
+                }
+            }
+        } else {
+            $_editable = 1;
+        }
+        return $_editable;
+    }
+
     public function show($id)
     {
-        $this->edit_show($id,0,2);
+        $_flow = $this->items->item_flow($id);
+        $flow = array();
+        if ($_flow['status'] == 1) {
+            foreach ($_flow['data'] as $d) {
+                $peropt = $this->str_split_unicode($d['newvalue'],1);
+                array_push($flow, array(
+                    'operator' => $peropt['name'],
+                    'optdate' => $d['submitdt'],
+                    'operation' => $peropt['opt'],
+                ));
+            }
+        }
+        $this->edit_show($id,0,3,$flow);
     }
 
     public function ishow($id)
     {
-        $this->edit_show($id,0,2);
+        $_flow = $this->items->item_flow($id);
+        $flow = array();
+        if ($_flow['status'] == 1) {
+            foreach ($_flow['data'] as $d) {
+                $peropt = $this->str_split_unicode($d['newvalue'],1);
+                array_push($flow, array(
+                    'operator' => $peropt['name'],
+                    'optdate' => $d['submitdt'],
+                    'operation' => $peropt['opt'],
+                ));
+            }
+        }
+        $this->edit_show($id,0,2,$flow);
     }
 /*
     public function ishow($id = 0) {
@@ -1071,7 +1150,7 @@ class Items extends REIM_Controller {
         $this->edit_show($id,$from_report,1);
     }
 
-    public function edit_show($id = 0, $from_report = 0,$page_type = 1) {
+    public function edit_show($id = 0, $from_report = 0,$page_type = 1,$flow = array()) {
         //获取消费类型字典
         $item_type_dic = $this->reim_show->get_item_type_name();
         log_message('debug','item_id' . $id);
@@ -1111,6 +1190,16 @@ class Items extends REIM_Controller {
         }
         $item = $item['data'];
 
+        //获得是否能修改消费
+        $editable = 0;
+        if($page_type == 2)
+        {
+            $editable = $this->get_myself_editable($item);
+        }
+        if($page_type == 3)
+        {
+            $editable = $this->get_others_editable($item);
+        }
         log_message('debug','afford_items:' . json_encode($item));
 
         $fee_afford_ids = array();
@@ -1224,7 +1313,9 @@ class Items extends REIM_Controller {
         $this->bsload('module/items/item_header',
             array(
                 'title' => '修改消费'
+                ,'editable' => $editable
                 ,'page_type' => $page_type
+                ,'flow' => $flow
                 ,'html_item' => $html_item
                 ,'categories' => $categories
                 ,'company_config' => $company_config
