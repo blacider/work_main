@@ -83,7 +83,7 @@ $(document).ready(function(){
 });
 </script>
 
-<?
+<?php
     foreach($item_customization as $ic)
     {
         if($ic['enabled'])
