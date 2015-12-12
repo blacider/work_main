@@ -213,6 +213,14 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
             <b class="arrow"></b>
         </li>
 
+        <li class="hsub" id="audit_cc">
+        <a href="<?php echo base_url('reports/audit_cc'); ?>" >
+            <i class="menu-icon fa fa-caret-right"></i>
+            抄送给我的报销单
+        </a>
+        <b class="arrow"></b>
+        </li>
+
     </ul>
     </li>
 

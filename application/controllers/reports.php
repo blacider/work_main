@@ -1042,6 +1042,10 @@ class Reports extends REIM_Controller {
         //niu
     }
 
+    public function audit_cc($search=''){
+        return $this->_audit('cc', $search);
+    }
+
     public function audit_todo($search=''){
         return $this->_audit('todo', $search);
     }
@@ -1051,6 +1055,7 @@ class Reports extends REIM_Controller {
     }
 
     public function audit($search=''){
+        # FIXME
         return $this->_audit('all', $search);
     }
 
@@ -2008,7 +2013,7 @@ class Reports extends REIM_Controller {
             $this->session->set_userdata('last_error', '操作失败');
             log_message("debug","**********:$buf");
         }
-        redirect(base_url('reports/audit'));
+        redirect(base_url('reports/audit_todo'));
     }
 
 
