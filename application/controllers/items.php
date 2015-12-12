@@ -17,6 +17,7 @@ class Items extends REIM_Controller {
         $prefix = 'module/items/';
         $templates = array(
             '1' => 'item_amount',
+            '2' => 'item_currency',
             '3' => 'item_category',
             '4' => 'item_time',
             '5' => 'item_time_period',
