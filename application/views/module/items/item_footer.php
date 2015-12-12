@@ -1,8 +1,15 @@
 <input type="hidden" id="renew" value="0" name="renew">
 <div class="clearfix form-actions col-sm-8 col-xs-8">
 <div class="col-md-offset-3 col-md-8" >
+<?php
+    if($page_type != 2)
+    {
+?>
 <a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
 <a class="btn btn-white btn-default renew" data-renew="1"><i class="ace-icon fa fa-check "></i>保存再记</a>
+<?php
+    }
+?>
 </div>
 </div>
 <input type="reset" style="display:none;" id="reset">
@@ -30,6 +37,25 @@
 var __multi_time = 0;
 var __average_count = 0;
 $(document).ready(function(){
+    if(PAGE_TYPE == 2)
+    {
+        $('.default_custom').each(function(){
+            $(this).prop('disabled',true);
+            $(this).trigger('chosen:updated');
+        });
+
+        $('.customization_type').each(function(){
+            $(this).prop('disabled',true);
+            $(this).trigger('chosen:updated');
+        });
+        $('.add_attach_pic_btn').each(function(){
+            $(this).prop('hidden',true);
+            $(this).trigger('chosen:updated');
+        });
+        $('#sobs').prop('disabled',true);
+        $('#sobs').trigger('chosen:udpated');
+    }
+
     $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange'></i>");
     $('.renew').click(function(){
         var customization = [];

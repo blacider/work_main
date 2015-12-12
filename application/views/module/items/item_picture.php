@@ -13,7 +13,7 @@
         </div>
     </div>
     
-    <div class="col-xs-12 col-sm-12" style="padding-left: 0px; padding-top: 10px;">
+    <div class="col-xs-12 col-sm-12 add_attach_pic_btn" style="padding-left: 0px; padding-top: 10px;" >
         <a class="filePicker" id="btn_simg" >添加图片</a>
     </div>
 </div>

@@ -12,10 +12,9 @@
 <form role="form" action="<?php if($page_type == 0){echo base_url('items/create');} else {echo base_url('items/update');} ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="itemform">
 <div class="row">
 <div class="col-xs-12 col-sm-12">
-
 <?php echo $html_company_config;?>
 <?php
-  if($page_type == 1)
+  if($page_type != 0)
   {
     echo $html_item;
     echo $html_sob_id;

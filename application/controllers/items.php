@@ -633,7 +633,16 @@ class Items extends REIM_Controller {
         }
         else redirect(base_url('items'));
     }
+    public function show($id)
+    {
+        $this->edit_show($id,0,2);
+    }
 
+    public function ishow($id)
+    {
+        $this->edit_show($id,0,2);
+    }
+/*
     public function ishow($id = 0) {
         if(0 === $id) redirect(base_url('items'));
         $item_type_dic = $this->reim_show->get_item_type_name();
@@ -716,20 +725,6 @@ class Items extends REIM_Controller {
         }
     log_message('debug','fee_afford_ids : ' .json_encode($fee_afford_ids));
     log_message('debug','fee_afford_type : ' .json_encode($afford_type));
-    /*$item_value = '';
-    if(array_key_exists('extra',$item))
-    {
-        foreach($item['extra'] as $it)
-        {
-        log_message('debug' , 'it:' . json_encode($it));
-        if(array_key_exists('value',$it))
-        {
-            $item_value = $it['value']; 
-        $item_value = date('Y-m-d H:i:s',$item_value);
-        }
-        }
-    }
-     */
         $item_value = array();
         if(array_key_exists('extra',$item))
         {
@@ -1020,6 +1015,7 @@ class Items extends REIM_Controller {
                 ),
             ));
     }
+    */
 
 
     function str_split_unicode($str, $l = 0) {
@@ -1070,7 +1066,12 @@ class Items extends REIM_Controller {
         }
     }
 
-    public function edit($id = 0, $from_report = 0) {
+    public function edit($id = 0 , $from_report = 0)
+    {
+        $this->edit_show($id,$from_report,1);
+    }
+
+    public function edit_show($id = 0, $from_report = 0,$page_type = 1) {
         //获取消费类型字典
         $item_type_dic = $this->reim_show->get_item_type_name();
         log_message('debug','item_id' . $id);
@@ -1219,9 +1220,6 @@ class Items extends REIM_Controller {
         //获取页面模板
         $item_type_view_dic = $this->get_item_type_view_dic();
 
-        //获取页面模板
-        $page_type = 1;
-        
 
         $this->bsload('module/items/item_header',
             array(
