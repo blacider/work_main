@@ -670,7 +670,7 @@ class Items extends REIM_Controller {
 
                 $_report = $_relate_report['data'];
                 $_cc = $_relate_report['data']['cc'];
-                if($_cc < 0 && $user['admin'] > 0) {
+                if($_cc < 0 && $profile['admin'] > 0) {
                     $_editable = 1;
                 } else {
                     if($_report['uid'] == $_uid) {
