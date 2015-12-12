@@ -78,19 +78,19 @@ function bind_event(){
             var chosen_id = [];
             chosen_id.push(_id);
             console.log(chosen_id);
-                $.ajax({
+            $.ajax({
                 url:__BASE + "/bills/download_single_report",
                 method:"post",
                 dataType:"json",
                 //data:{"chosenids":chosenids},
                 data:{"chosenids":chosen_id},
                 success:function(data){
-                location.href = data['url'];
+                    location.href = data['url'];
                 },
                 error:function(a,b)
                 {
                 }
-        });
+            });
         });
     });
     $('.tdeny').each(function() {
@@ -101,9 +101,9 @@ function bind_event(){
         });
     });
 }
+
 var FLAG = 1;
 jQuery(grid_selector).jqGrid({
-
     url: __BASE + 'reports/listauditdata?filter=' + filter,
     multiselect: false,
     mtype: "GET",
@@ -120,18 +120,18 @@ jQuery(grid_selector).jqGrid({
 
     viewsortcols : [true,'vertical',true],
     colModel:[
-        {name:'id', index:'id', width:20,editable: false,editoptions:{size:"20",maxlength:"30"}},
-        {name:'report_template', index:'report_template', width:40,editable: false,editoptions:{size:"20",maxlength:"50"}},
-        {name:'title', index:'title', width:40,editable: false,editoptions:{size:"20",maxlength:"50"}},
-        {name:'prove_ahead', index:'prove_ahead', width:40,editable: false,editoptions:{size:"20",maxlength:"50"},search:false},
-        {name:'date_str', index:'date_str', width:50,editable: false,editoptions:{size:"20",maxlength:"50"},search:false},
-        {name:'amount', index:'amount',sorttype: myCustomSort, width:50, formatter:'currency', formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'}, editable: true,editoptions:{size:"20",maxlength:"30"},search:false},
-        {name:'item_count', index:'item_count', width:50,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
-        {name:'author', index:'author', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
-        {name:'attachments', index:'attachments', width:18,editable: false,editoptions:{size:"15",maxlength:"20"}},
-        {name:'status_str',index:'status_str', width:40, editable: false,editoptions: {size:"20", maxlength : "40",search:false}/*,unformat: aceSwitch*/},
-        {name:'options',index:'options', width:40, editable: false,editoptions: {size:"20", maxlength : "50"},unformat: aceSwitch,search:false},
-        { name : 'lastdt', index : 'lastdt', hidden:true , sortable : true,search:false}
+    {name:'id', index:'id', width:20,editable: false,editoptions:{size:"20",maxlength:"30"}},
+    {name:'report_template', index:'report_template', width:40,editable: false,editoptions:{size:"20",maxlength:"50"}},
+    {name:'title', index:'title', width:40,editable: false,editoptions:{size:"20",maxlength:"50"}},
+    {name:'prove_ahead', index:'prove_ahead', width:40,editable: false,editoptions:{size:"20",maxlength:"50"},search:false},
+    {name:'date_str', index:'date_str', width:50,editable: false,editoptions:{size:"20",maxlength:"50"},search:false},
+    {name:'amount', index:'amount',sorttype: myCustomSort, width:50, formatter:'currency', formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'}, editable: true,editoptions:{size:"20",maxlength:"30"},search:false},
+    {name:'item_count', index:'item_count', width:50,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
+    {name:'author', index:'author', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
+    {name:'attachments', index:'attachments', width:18,editable: false,editoptions:{size:"15",maxlength:"20"}},
+    {name:'status_str',index:'status_str', width:40, editable: false,editoptions: {size:"20", maxlength : "40",search:false}/*,unformat: aceSwitch*/},
+    {name:'options',index:'options', width:40, editable: false,editoptions: {size:"20", maxlength : "50"},unformat: aceSwitch,search:false},
+    { name : 'lastdt', index : 'lastdt', hidden:true , sortable : true,search:false}
     ],
     sortorder: "desc",
     sortorder: "desc",
@@ -174,98 +174,90 @@ jQuery(grid_selector).jqGrid({
     //viewsortcols: [true,'vertical',false],
     viewsortcols : [true,'vertical',true]
 
-    });
+});
 
-    jQuery(grid_selector).jqGrid('navGrid',pager_selector,
-            {   //navbar options
+jQuery(grid_selector).jqGrid('navGrid',pager_selector, {
+    //navbar options
+    edit: false,
+    closeAfterEdit: true,
+    editicon : 'ace-icon fa fa-pencil blue',
+    add: false,
+    addicon : 'ace-icon fa fa-plus-circle purple',
+    del: false,
+    delicon : 'ace-icon fa fa-trash-o red',
+    search: false,
+    searchicon : 'ace-icon fa fa-search orange',
+    refresh: false,
+    refreshicon : 'ace-icon fa fa-refresh green',
+    view: false,
+    viewicon : 'ace-icon fa fa-search-plus grey',
+},
+{
+    //edit record form
+    closeAfterEdit: true,
+    //width: 700,
+    recreateForm: true,
+    beforeShowForm : function(e) {
+        var form = $(e[0]);
+        form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />');
+        //style_edit_form(form);
+    }
+},
+{
+    //new record form
+    //width: 700,
+    closeAfterAdd: true,
+    recreateForm: true,
+    viewPagerButtons: false,
+    beforeShowForm : function(e) {
+        var form = $(e[0]);
+        form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+            .wrapInner('<div class="widget-header" />');
+        //style_edit_form(form);
+    }
+},
+{
+    //delete record form
+    recreateForm: true,
+    beforeShowForm : function(e) {
+        var form = $(e[0]);
+        if(form.data('styled')) return false;
 
-                edit: false,
-                closeAfterEdit: true,
-        editicon : 'ace-icon fa fa-pencil blue',
-        add: false,
-        addicon : 'ace-icon fa fa-plus-circle purple',
-        del: false,
-        delicon : 'ace-icon fa fa-trash-o red',
-        search: false,
-        searchicon : 'ace-icon fa fa-search orange',
-        refresh: false,
-        refreshicon : 'ace-icon fa fa-refresh green',
-        view: false,
-        viewicon : 'ace-icon fa fa-search-plus grey',
-            },
-            {
-                //edit record form
-                closeAfterEdit: true,
-                //width: 700,
-                recreateForm: true,
-        beforeShowForm : function(e) {
-            var form = $(e[0]);
-            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />');
-                //style_edit_form(form);
-        }
-            },
-            {
-                //new record form
-                //width: 700,
-                closeAfterAdd: true,
-                recreateForm: true,
-                viewPagerButtons: false,
-                beforeShowForm : function(e) {
-                    var form = $(e[0]);
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
-                        .wrapInner('<div class="widget-header" />');
-                        //style_edit_form(form);
-                }
-            },
-            {
-                //delete record form
-                recreateForm: true,
-                beforeShowForm : function(e) {
-                    var form = $(e[0]);
-                    if(form.data('styled')) return false;
+        form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />');
+        //style_delete_form(form);
 
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />');
-                        //style_delete_form(form);
-
-                    form.data('styled', true);
-                },
-                onClick : function(e) {
-                    alert(1);
-                }
-            },
-            {
-                //search form
-                recreateForm: true,
-                afterShowSearch: function(e){
-                    var form = $(e[0]);
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-                        style_search_form(form);
-                },
-                afterRedraw: function(){
-                    style_search_filters($(this));
-                }
-                ,
-                    /**
-                    multipleSearch: true,
-                      multipleGroup:true,
-                      showQuery: true
-                      */
-            },
-            {
-                //view record form
-                recreateForm: true,
-                beforeShowForm: function(e){
-                    var form = $(e[0]);
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-                }
-            }
-    )
+        form.data('styled', true);
+    },
+    onClick : function(e) {
+        alert(1);
+    }
+},
+{
+    //search form
+    recreateForm: true,
+    afterShowSearch: function(e){
+        var form = $(e[0]);
+        form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+            style_search_form(form);
+    },
+    afterRedraw: function(){
+        style_search_filters($(this));
+    }
+    ,
+},
+{
+    //view record form
+    recreateForm: true,
+    beforeShowForm: function(e){
+        var form = $(e[0]);
+        form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+    }
+}
+);
 
 $(document).ready(function () {
     $(grid_selector).jqGrid();
     $('.ui-jqdialog').remove();
 
 });
-
-
 
