@@ -74,7 +74,7 @@ class Items_Model extends Reim_Model {
         $obj = json_decode($buf, true);
         return $obj;
     }
-    public function update_item($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '',$currency,$rate){
+    public function update_item($data){
         $items = array();
         $s = array(
         array('type' => 1,'val' => $category)
@@ -169,30 +169,30 @@ class Items_Model extends Reim_Model {
     }
 
 
-    public function create($amount, $category, $tags, $dt, $merchant, $type, $note, $images,$end_dt, $uids = '', $afford_ids = -1,$attachments,$currency,$customization = array()){
+    public function create($data)
+    {
         $items = array();
         $s = array(
             'local_id' => 1,
-            'category' => $category,
-            'amount' => $amount,
-            'category' => $category,
-            'uids' => $uids,
-            'prove_ahead' => $type,
-            'afford_ids' => $afford_ids,
-            'image_id' => $images,
-            'dt' => $dt, 
-            'end_dt' => $end_dt, 
-            'note' => $note,
+            'category' => $data['category'],
+            'amount' => $data['amount'],
+            'uids' => $data['uids'],
+            'prove_ahead' => $data['type'],
+            'afford_ids' => $data['afford_ids'],
+            'image_id' => $data['images'],
+            'dt' => $data['dt'], 
+            'end_dt' => $data['end_dt'], 
+            'note' => $data['note'],
             'reimbursed' => 1,
-            'tags' => $tags, 
+            'tags' => $data['tags'], 
             'location' => '',
             'latitude' => 0,
             'longitude' => 0,
-            'merchants' => $merchant,
-            'attachment_ids' => $attachments,
+            'merchants' => $data['merchant'],
+            'attachment_ids' => $data['attachments'],
             'type' => 1,
-            'currency' => $currency,
-            'customization' => $customization
+            'currency' => $data['currency'],
+            'customization' => $data['customization']
         );
         array_push($items, $s);
         $data = array('items' => json_encode($items));
@@ -229,30 +229,31 @@ class Items_Model extends Reim_Model {
 
     }
 
-    public function update($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '',$fee_afford_ids=-1,$attachments,$currency){
+    public function update($data){
         $items = array();
         $s = array(
+            'id' => $data['id'],
             'local_id' => 1,
-            'id' => $id,
-            'category' => $category,
-            'amount' => $amount,
-            'category' => $category,
-            'uids' => $uids,
-            'prove_ahead' => $type,
-            'image_id' => $images,
-            'dt' => $dt, 
-            'note' => $note,
+            'category' => $data['category'],
+            'amount' => $data['amount'],
+            'uids' => $data['uids'],
+            'prove_ahead' => $data['type'],
+            'afford_ids' => $data['afford_ids'],
+            'image_id' => $data['images'],
+            'dt' => $data['dt'], 
+            'end_dt' => $data['end_dt'], 
+            'note' => $data['note'],
             'reimbursed' => 1,
-            'tags' => $tags, 
+            'tags' => $data['tags'], 
             'location' => '',
             'latitude' => 0,
             'longitude' => 0,
-            'merchants' => $merchant,
-            'attachment_ids' => $attachments,
+            'merchants' => $data['merchant'],
+            'attachment_ids' => $data['attachments'],
             'type' => 1,
-            'afford_ids' => $fee_afford_ids,
-            'currency' => $currency,
-        'extra' => $extra);
+            'currency' => $data['currency'],
+            'customization' => $data['customization']
+        );
         array_push($items, $s);
         $data = array('items' => json_encode($items));
         $jwt = $this->session->userdata('jwt');
