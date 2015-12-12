@@ -433,11 +433,11 @@ class Items extends REIM_Controller {
         $note = $this->input->post('note');
         $images = $this->input->post('images');
         $renew = $this->input->post('renew');
-        $customization = array();
+        $customization = '';
         $_customization = $this->input->post('customization');
         if($_customization)
         {
-            $customization = json_decode($_customization,true);
+            $customization = $_customization;
         }
 
         //汇率
@@ -452,12 +452,9 @@ class Items extends REIM_Controller {
 
         $attachments = $this->input->post('attachments');
 
-        //customization自定义字段信息
-        $customization = $this->input->post('customization');
-
         log_message('debug','customization:' . json_encode($customization));
 
-        $obj = $this->items->create($amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$end_dt,$uids, $afford_ids,$attachments, $currency);
+        $obj = $this->items->create($amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$end_dt,$uids, $afford_ids,$attachments, $currency,$customization);
         log_message('debug','create_item_back:' . json_encode($obj));
         // TODO: 提醒的Tips
         if($renew){
@@ -1073,19 +1070,6 @@ class Items extends REIM_Controller {
         if(array_key_exists('group',$profile))
         {
             $group_config = $profile['group'];
-            /*
-            if(array_key_exists('item_config',$group_config))
-            {
-                $item_configs = $group_config['item_config'];
-                foreach($item_configs as $conf)
-                {
-                    if($conf['disabled'] == 1) continue;
-                    array_push($item_config,array('active'=>$conf['active'],'id'=>$conf['id'],'type'=>$conf['type'],'cid'=>$conf['cid'], 'name' => $conf['name'], 'disabled' => $conf['disabled']));    
-                    log_message('debug','qqy_name:' .  $conf['name']);
-                }
-            }
-            */
-            
             if(array_key_exists('item_customization',$group_config))
             {
                 $item_customization = $group_config['item_customization'];
@@ -1143,24 +1127,7 @@ class Items extends REIM_Controller {
                 }
             }
         }
-        log_message('debug','afford_type:' . json_encode($afford_type));
-        log_message('debug','fee_afford_ids:' . json_encode($fee_afford_ids));
-        
-        /*
-        $item_value = array();
-        if(array_key_exists('extra',$item))
-        {
-            foreach($item['extra'] as $it)
-            {
-                log_message('debug' , 'extra it:' . json_encode($it));
-                if(array_key_exists('value',$it))
-                {
-                    $item_value[$it['type']] = array('id'=> $it['id'], 'type' => $it['type'], 'value' => $it['value']);
-                }
-            }
-        }
-        */
-        log_message('debug','all_item:' . json_encode($item));
+
         $category = $this->category->get_list();
         $categories = array();
         $tags = array();
@@ -1200,8 +1167,6 @@ class Items extends REIM_Controller {
                 log_message('debug','cate---:' . $cate['sob_id']);
             }
         }
-        log_message('debug', 'item:' . $item['category']);
-        log_message('debug' , 'sob:' . $item_sob);
         $group = $this->groups->get_my_list();
         $gmember = array();
         if($group) {
@@ -1269,7 +1234,6 @@ class Items extends REIM_Controller {
                     ,array('url'  => '', 'name' => '修改消费', 'class' => '')
                 ),
             )
-         //   $template_views
             );
     }
 
