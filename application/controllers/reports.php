@@ -1,4 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 class Reports extends REIM_Controller {
     public function __construct() {
         parent::__construct();
@@ -32,14 +33,14 @@ class Reports extends REIM_Controller {
     public function get_coin_symbol($key = 'cny')
     {
         $symbol = '?';
-        $coin_symbol_dic = array( 
+        $coin_symbol_dic = array(
                             'cny'=>'￥','usd'=>'$','eur'=>'€','hkd'=>'$','mop'=>'$','twd'=>'$','jpy'=>'￥','ker'=>'₩',
                             'gbp'=>'£','rub'=>'₽','sgd'=>'$','php'=>'₱','idr'=>'Rps','myr'=>'$','thb'=>'฿','cad'=>'$',
                             'aud'=>'$','nzd'=>'$','chf'=>'₣','dkk'=>'Kr','nok'=>'Kr','sek'=>'Kr','brl'=>'$'
-                            );                           
+                            );
         if(array_key_exists($key,$coin_symbol_dic))
         {
-            $symbol = $coin_symbol_dic[$key]; 
+            $symbol = $coin_symbol_dic[$key];
         }
 
         return $symbol;
@@ -58,7 +59,7 @@ class Reports extends REIM_Controller {
     }
 
     public function sendout() {
-        $rid = $this->input->post('report_id'); 
+        $rid = $this->input->post('report_id');
         $email = $this->input->post('email');
         $buf = $this->reports->sendout($rid,$email);
         log_message("debug","###".json_encode($buf));
@@ -248,7 +249,7 @@ class Reports extends REIM_Controller {
             $confirm_icon = '<span class="ui-icon ace-icon fa fa-check green' . $trash . '  tconfirm" data-id="' . $d['id'] . '"></span>';
             $download_icon = '<span class="ui-icon ace-icon fa fa-download ' . 'blue' . '  tdown" data-id="' . $d['id'] . '"></span>';
             $end_icon = '</div>';
-            
+
             if(in_array($d['status'],[0,3]))
             {
                 $d['options'] = $base_icon . $edit_icon . $trash_icon . $end_icon;
@@ -269,7 +270,7 @@ class Reports extends REIM_Controller {
             {
                 $d['options'] = $base_icon . $show_icon . $export_icon .$download_icon . $end_icon;
             }
-            
+
             /*
             if($d['status'] == 1) {
                 $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
@@ -316,7 +317,7 @@ class Reports extends REIM_Controller {
                     $d['report_template'] = $report_template_dic[$d['template_id']];
                 }
             }
-            
+
             switch($d['status']) {
             case 0: {
                 $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
@@ -405,7 +406,7 @@ class Reports extends REIM_Controller {
         if(''==$items)
         {
             $this->session->set_userdata('last_error','提交报销单不能为空');
-            return redirect(base_url('reports/index')); 
+            return redirect(base_url('reports/index'));
         }
         $title = $this->input->post('title');
         $receiver = $this->input->post('receiver');
@@ -421,8 +422,8 @@ class Reports extends REIM_Controller {
             foreach($extra as &$ex)
             {
                 if($ex['type'] != 3) continue;
-                
-                $ex['value'] = strtotime($ex['value']); 
+
+                $ex['value'] = strtotime($ex['value']);
                 log_message('debug','time:' . $ex['value']);
             }
             /*
@@ -485,7 +486,7 @@ class Reports extends REIM_Controller {
                 foreach($quota as $key => $q)
                 {
                     $str = $str . $categories[$key] . ' ';
-                }   
+                }
                 $this->session->set_userdata('last_error', $str . '金额超出公司月度限额，是否仍要提交');
             } elseif($ret['code'] == -63) {
                 $info = $this->category->get_list();
@@ -509,7 +510,7 @@ class Reports extends REIM_Controller {
                         $str = $str . $categories[$key] . ' ';
                         log_message('debug','value:' . $str);
                     }
-                }   
+                }
                 $this->session->set_userdata('last_error', '你的 ' . $str .'提交次数已经超出公司规定');
             } else {
                 log_message("debug", "alvayang:" . json_encode($ret));
@@ -557,8 +558,8 @@ class Reports extends REIM_Controller {
             array_push($o, date('m月d日', $i['lastdt']));
             array_push($o, $i['title']);
             array_push($o, $i['item_count']);
-            array_push($o, 
-                '<i class="tstatus tstatus_' . $i['status'] . "></i>" . 
+            array_push($o,
+                '<i class="tstatus tstatus_' . $i['status'] . "></i>" .
                 '<strong class="price">&yen;' . $i['amount'] . '</strong>'
             );
 
@@ -591,7 +592,7 @@ class Reports extends REIM_Controller {
             $_common = $this->users->get_common();
             if($_common['status'] > 0 && array_key_exists('profile',$_common['data']))
             {
-                $profile = $_common['data']['profile']; 
+                $profile = $_common['data']['profile'];
             }
             $config = array();
             if($profile && array_key_exists('report_setting',$profile)  && array_key_exists('templates', $profile['report_setting'])) {
@@ -610,7 +611,7 @@ class Reports extends REIM_Controller {
             }
         }
 
-        
+
 
         $_members = array();
         $members = $this->users->reim_get_user();
@@ -628,7 +629,7 @@ class Reports extends REIM_Controller {
         }
 
         $report['receivers']['managers'] = $_managers;
-        $report['receivers']['cc'] = $_ccs; 
+        $report['receivers']['cc'] = $_ccs;
         $_items = $this->_getitems();
 
         foreach($report['items'] as &$rt)
@@ -715,10 +716,10 @@ class Reports extends REIM_Controller {
         /*
         array_push($flow, array(
             'nickname' => $report['nickname']
-            ,'ts' =>  $_ts           
+            ,'ts' =>  $_ts
             ,'status' => '提交'
             ,'step' => 0
-            ,'wingman' => '' 
+            ,'wingman' => ''
         ));
         */
 
@@ -793,7 +794,7 @@ class Reports extends REIM_Controller {
                 {
                     if(array_key_exists($s['wingman'],$members_dic))
                     {
-                       $s['wingman_name'] = $members_dic[$s['wingman']]; 
+                       $s['wingman_name'] = $members_dic[$s['wingman']];
                     }
                 }
                 array_push($flow, array(
@@ -801,7 +802,7 @@ class Reports extends REIM_Controller {
                     ,'nickname' => $s['nickname']
                     ,'ts' => $_ts
                     ,'step' => $s['step']
-                    ,'wingman' => $s['wingman_name'] 
+                    ,'wingman' => $s['wingman_name']
                 ));
             }
         }
@@ -840,7 +841,7 @@ class Reports extends REIM_Controller {
             $_common = $this->users->get_common();
             if($_common['status'] > 0 && array_key_exists('profile',$_common['data']))
             {
-                $profile = $_common['data']['profile']; 
+                $profile = $_common['data']['profile'];
             }
             $config = array();
             if($profile && array_key_exists('report_setting', $profile) && array_key_exists('templates', $profile['report_setting'])) {
@@ -878,7 +879,7 @@ class Reports extends REIM_Controller {
                 }
             }
         }
-        
+
         $this->bsload('reports/view',
             array(
                 'title' => '查看报销单',
@@ -908,7 +909,7 @@ class Reports extends REIM_Controller {
         if(''==$items || !$id)
         {
             $this->session->set_userdata('last_error','提交报销单不能为空');
-            return redirect(base_url('reports/index')); 
+            return redirect(base_url('reports/index'));
         }
         $title = $this->input->post('title');
         $receiver = $this->input->post('receiver');
@@ -925,11 +926,11 @@ class Reports extends REIM_Controller {
             foreach($extra as &$ex)
             {
                 if($ex['type'] != 3) continue;
-                
-                $ex['value'] = strtotime($ex['value']); 
+
+                $ex['value'] = strtotime($ex['value']);
                 log_message('debug','time:' . $ex['value']);
             }
-            
+
         /*
             $_account = $this->input->post('account');
             $_account_name = $this->input->post('account_name');
@@ -986,8 +987,8 @@ class Reports extends REIM_Controller {
                 foreach($quota as $key => $q)
                 {
                     $str = $str . $categories[$key] . ' ';
-                }   
-                if($str) 
+                }
+                if($str)
                     $this->session->set_userdata('last_error', $str . '金额超出公司月度限额，是否仍要提交');
             }
             else if($ret['code'] == -63)
@@ -1017,7 +1018,7 @@ class Reports extends REIM_Controller {
                         $str = $str . $categories[$key] . ' ';
                         log_message('debug','value:' . $str);
                     }
-                }   
+                }
                 $this->session->set_userdata('last_error', '你的 ' . $str .'提交次数已经超出公司规定');
             } else {
                 log_message("debug", "alvayang:" . json_encode($ret));
@@ -1133,21 +1134,21 @@ class Reports extends REIM_Controller {
 //            $show_icon = '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>';
             $show_icon='<span class="ui-icon fa fa-search-plus tdetail" data-decision="1" data-id="' . $d['id'] . '"></span>';
             $edit_icon = '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>';
-            $pass_icon = '<span class="ui-icon ' . 'green' . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>'; 
+            $pass_icon = '<span class="ui-icon ' . 'green' . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>';
             $deny_icon = '<span class="ui-icon  ui-icon-closethick ' . 'red'  . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span>';
             $export_icon = '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>';
             $trash_icon = '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>';
             $end_icon = '</div>';
             */
             $download_icon = '<span class="ui-icon ace-icon fa fa-download ' . 'blue' . '  tdown" data-id="' . $d['id'] . '"></span>';
-            
-           
+
+
 
             if(in_array($d['status'],[2,4,5,7,8]))
             {
                 if($d['mdecision'] == 1 && !$d['cc_flag']){
                     $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del"  data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-decision="1" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in texport' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>' .   $download_icon . '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
-                } else { 
+                } else {
                     $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in ' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>' . $download_icon  . '</div>';
                 }
             }
@@ -1271,7 +1272,7 @@ class Reports extends REIM_Controller {
                         $value = $this->try_get_element($extra_dict, $id, 'value');
                         if ($child["type"] == 4) {
                             $bankinfo = json_decode($value, TRUE);
-                            
+
                             $obj[$child_name . " - 户名"] = $this->try_get_element($bankinfo, "account");
                             $obj[$child_name . " - 账号"] = $this->try_get_element($bankinfo, "cardno");
                             $obj[$child_name . " - 开户行"] = $this->try_get_element($bankinfo, "bankname");
@@ -1362,7 +1363,7 @@ class Reports extends REIM_Controller {
                 }
             }
         }
-        
+
         //添加汇率
         $open_exchange = 0 ;
         $company_config = array();
@@ -1480,7 +1481,7 @@ class Reports extends REIM_Controller {
                 $template = $dict_templates[$template_id];
 
             $_t_items = array();
-            // 类目金额汇总 
+            // 类目金额汇总
             $category_cells = array();
             $category_cells_dic = array();
             // 报销单汇总
@@ -1552,7 +1553,7 @@ class Reports extends REIM_Controller {
                 if (is_array($userbankinfo) && array_key_exists("cardno", $userbankinfo)) {
                     $cardno = $userbankinfo["cardno"];
                 }
-                
+
                 // 如果没有设置取用户的默认设置
                 if (!$cardno) {
                     if (array_key_exists($r["uid"], $_banks)) {
@@ -1583,7 +1584,7 @@ class Reports extends REIM_Controller {
                     }
 
                     $_stat_cells = array();
-                    
+
                     $_stat_cells["提交人"] = $r["nickname"];
                     $_stat_cells[$user_bank_field_prefix . " - 户名"] = $this->try_get_element($userbankinfo, "account");
                     $_stat_cells[$user_bank_field_prefix . " - 账号"] = $this->try_get_element($userbankinfo, "cardno");
@@ -1602,7 +1603,7 @@ class Reports extends REIM_Controller {
                     $_stat_cells["已付"] = 0;
                     $_stat_cells["应付"] = 0;
                     $_stat_cells["注释"] = "";
-                    
+
                     $stat_cells[$key] = $_stat_cells;
                 }
 
@@ -2139,7 +2140,7 @@ class Reports extends REIM_Controller {
                     $o['凭证ID'] = $idx;
                     $o['凭证号'] = $r['id'];
                     $o['科目编码'] = $i['category_code'];
-                    $o['摘要'] = '计提' . date('m月') . '员工报销 - ' . $i['category_name']  . ' - ' . $r['nickname']; 
+                    $o['摘要'] = '计提' . date('m月') . '员工报销 - ' . $i['category_name']  . ' - ' . $r['nickname'];
                     $rate = 1.0;
                     if(trim($i['currency']) != '' && strtolower($i['currency']) != 'cny') {
                         $rate = $i['rate'] / 100;
@@ -2148,7 +2149,7 @@ class Reports extends REIM_Controller {
                     if($i['prove_ahead'] == 2){
                         $_amount = sprintf("%.2f", $i['amount'] - $i['pa_amount']);
                     }
-                    $o['借方金额'] = sprintf("%.2f",$_amount * $rate); 
+                    $o['借方金额'] = sprintf("%.2f",$_amount * $rate);
                     $o['贷方金额'] = $_total_amount;
                     $o['部门编码'] = implode(',', $_gids);
                     $o['员工姓名'] = $r['nickname'];
@@ -2167,7 +2168,7 @@ class Reports extends REIM_Controller {
         $_common = $this->users->get_common();
         if($_common['status'] > 0 && array_key_exists('profile',$_common['data']))
         {
-            $profile = $_common['data']['profile']; 
+            $profile = $_common['data']['profile'];
         }
         $item_type_dic = $this->reim_show->get_item_type_name();
         $config = array();
@@ -2220,7 +2221,7 @@ class Reports extends REIM_Controller {
         if(''==$items)
         {
             $this->session->set_userdata('last_error','提交报销单不能为空');
-            return redirect(base_url('reports/index')); 
+            return redirect(base_url('reports/index'));
         }
         $receiver = $this->input->post('receiver');
         $buf = $this->reports->submit_check(implode(',', $receiver), implode(',', $items));
