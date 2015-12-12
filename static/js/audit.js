@@ -102,12 +102,14 @@ function bind_event(){
     });
 }
 
+var selectRows = [];
+var IF_SELECT_ALL = 0;
 var FLAG = 1;
 jQuery(grid_selector).jqGrid({
     url: __BASE + 'reports/listauditdata?filter=' + filter,
-    multiselect: false,
     mtype: "GET",
     datatype: "local",
+    multiselect: can_export_excel,
     height: 250,
     colNames:['报销单ID', '报销单模板', '标题', '消费类型', '创建日期', '金额','消费条目数','发起人', '附件', '状态', '操作', ''],
     loadonce: true,
@@ -146,6 +148,10 @@ jQuery(grid_selector).jqGrid({
                 $(window).resize();
             }
         }
+        jQuery.each(selectRows,function(index,row){
+            jQuery(grid_selector).jqGrid('setSelection',row);
+        });
+        if (IF_SELECT_ALL) $("#cb_grid-table")[0].checked = true;
         bind_event();
         var table = this;
         setTimeout(function(){
@@ -159,7 +165,31 @@ jQuery(grid_selector).jqGrid({
             }
         }, 0);
     },
-
+    onSelectAll : function(aRows, status) {
+        if (status) {
+            var array_selectRows = jqgrid_choseall_plus(grid_selector);
+            jQuery.each(array_selectRows,function(index,rowid){
+                if (jQuery.inArray(rowid,selectRows) == -1) {
+                    selectRows.push(rowid);
+                }
+            });
+            IF_SELECT_ALL = 1;
+        } else {
+            jQuery.each(aRows,function(index,rowid){
+                selectRows.splice(jQuery.inArray(rowid,selectRows),1);
+            });
+            IF_SELECT_ALL = 0;
+        }
+    },
+    onSelectRow : function(rowid, status) {
+        if (status) {
+            if (jQuery.inArray(rowid,selectRows) == -1) {
+                selectRows.push(rowid);
+            }
+        } else {
+            selectRows.splice(jQuery.inArray(rowid,selectRows),1);
+        }
+    },
 
     //page: 1,
     width: 780,
@@ -176,15 +206,29 @@ jQuery(grid_selector).jqGrid({
 
 });
 
-jQuery(grid_selector).jqGrid('navGrid',pager_selector, {
+jQuery(grid_selector).jqGrid('navGrid', pager_selector, {
     //navbar options
     edit: false,
     closeAfterEdit: true,
     editicon : 'ace-icon fa fa-pencil blue',
-    add: false,
-    addicon : 'ace-icon fa fa-plus-circle purple',
+    add: can_export_excel,
+    addicon : 'ace-icon fa fa-print',
+    addtitle: '导出excel',
+    addfunc : function(rowids, p){
+        var form=$("<form>");
+        form.attr("style","display:none");
+        form.attr("target","");
+        form.attr("method","post");
+        form.attr("action", __BASE + "/reports/exports");
+        var input1=$("<input>");
+        input1.attr("type","hidden");
+        input1.attr("name","ids");
+        input1.attr("value", selectRows.join(','));
+        $("body").append(form);
+        form.append(input1);
+        form.submit();
+    },
     del: false,
-    delicon : 'ace-icon fa fa-trash-o red',
     search: false,
     searchicon : 'ace-icon fa fa-search orange',
     refresh: false,

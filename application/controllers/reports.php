@@ -1088,6 +1088,7 @@ class Reports extends REIM_Controller {
                 'error' => $_error,
                 'search' => urldecode($search),
                 'filter' => $filter,
+                'can_export_excel' => $filter == 'done' ? 'true' : 'false',
                 'breadcrumbs' => [
                     ['url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon'],
                     ['url'  => base_url('reports/index'), 'name' => '报销单', 'class' => ''],
@@ -2015,7 +2016,6 @@ class Reports extends REIM_Controller {
         }
         redirect(base_url('reports/audit_todo'));
     }
-
 
     public function export_u8(){
         $ids = $this->input->post('ids');

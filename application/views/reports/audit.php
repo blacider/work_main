@@ -298,7 +298,9 @@ $('#send').click(function(){
 
 <script>
 var filter = "<?=$filter?>";
+var can_export_excel = <?=$can_export_excel?>;
 </script>
 
+<script type="text/javascript" src="/static/js/jqgrid_choseall.js"></script>
 <script src="/static/js/audit.js" ></script>
 
