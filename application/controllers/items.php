@@ -1,5 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Items extends REIM_Controller {
+
     public function __construct() {
         parent::__construct();
         $this->load->model('items_model', 'items');
@@ -412,27 +413,33 @@ class Items extends REIM_Controller {
         }
     }
 
-    public function create(){
+    public function get_item_common_input()
+    {
+        $data = array();
         $_uids = $this->input->post('uids');
         $uids = '';
         if($_uids)
         {
             $uids = implode(',',$_uids);
         }
-        $profile = $this->session->userdata('profile');
         $afford_ids = $this->input->post('afford_ids');
         if(!$afford_ids) $afford_ids = -1;
         $amount = $this->input->post('amount');
         $category= $this->input->post('category');
-        $timestamp = strtotime($this->input->post('dt'));
+        $dt = strtotime($this->input->post('dt'));
         $end_dt = strtotime($this->input->post('end_dt'));
-
         $merchant = $this->input->post('merchant');
-        $tags = $this->input->post('tags');
+
+        $tags = '';
+        $_tags = $this->input->post('tags');
+        if($_tags)
+        {
+            $tags = implode(',',$_tags);
+        }
+
         $type = $this->input->post('type');
         $note = $this->input->post('note');
         $images = $this->input->post('images');
-        $renew = $this->input->post('renew');
         $customization = '';
         $_customization = $this->input->post('customization');
         if($_customization)
@@ -443,18 +450,34 @@ class Items extends REIM_Controller {
         //汇率
         $currency = 'cny';
         $_currency = $this->input->post('coin_type');
-        log_message('debug', 'qqy currency:' . $_currency);
         if($_currency)
         {
             $currency = $_currency;
         }
-        log_message('debug', 'qqy currency:' . $currency);
-
         $attachments = $this->input->post('attachments');
 
-        log_message('debug','customization:' . json_encode($customization));
+        $data['uids'] = $uids;
+        $data['afford_ids'] = $afford_ids;
+        $data['amount'] = $amount;
+        $data['category'] = $category;
+        $data['dt'] = $dt;
+        $data['end_dt'] = $end_dt;
+        $data['merchant'] = $merchant;
+        $data['tags'] = $tags;
+        $data['type'] = $type;
+        $data['note'] = $note;
+        $data['images'] = $images;
+        $data['customization'] = $customization;
+        $data['currency'] = $currency;
+        $data['attachments'] = $attachments;
+        return $data;
+    }
 
-        $obj = $this->items->create($amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$end_dt,$uids, $afford_ids,$attachments, $currency,$customization);
+    public function create(){
+        $renew = $this->input->post('renew');
+        $data = $this->get_item_common_input();
+        $obj = $this->items->create($data);
+        //$obj = $this->items->create($amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$end_dt,$uids, $afford_ids,$attachments, $currency,$customization);
         log_message('debug','create_item_back:' . json_encode($obj));
         // TODO: 提醒的Tips
         if($renew){
@@ -1194,8 +1217,6 @@ class Items extends REIM_Controller {
         $item_type_view_dic = $this->get_item_type_view_dic();
 
         //获取页面模板
-        //$template_views = $this->get_template_views($item_customization);
-//        $this->bsload('items/edit',
         $page_type = 1;
         
 
@@ -1207,17 +1228,14 @@ class Items extends REIM_Controller {
                 ,'categories' => $categories
                 ,'company_config' => $company_config
                 ,'html_company_config' => $html_company_config
-        //        ,'html_item_config' => $html_item_config
                 ,'images' => json_encode($_images)
                 ,'item' => $item
                 ,'from_report' => $from_report
                 ,'tags' => $tags
-         //       ,'item_config'=>$item_config
                 ,'images_ids' => implode(",", $_image_ids)
                 ,'sob_id' => $item_sob
                 ,'html_sob_id' => $html_sob_id
                 ,'category_name' => $_want_key
-          //      ,'item_value' => $item_value
                 ,'member' => $gmember
                 ,'afford' => $afford
                 ,'fee_afford_ids' => implode(',',$fee_afford_ids)
@@ -1237,87 +1255,27 @@ class Items extends REIM_Controller {
             );
     }
 
-    public function update(){
-        $item_update_in = $this->session->userdata('item_update_in');
-        $_uids = $this->input->post('uids');
-        $uids = '';
-        if($_uids)
-        {
-            $uids = implode(',',$_uids);
-        }
 
-        $afford_ids = $this->input->post('afford_ids');
+    public function update(){
+        $profile = $this->session->userdata('profile');
+
         $id = $this->input->post('id');
+        $common_item_input = $this->get_item_common_input();
+        $common_item_input['id'] = $id;
+
         $rid = $this->input->post('rid');
         $from_report = $this->input->post("from_report");
         $_uid = $this->input->post('uid');
-        $amount = $this->input->post('amount');
-        $category= $this->input->post('category');
-        $_hidden_category = $this->input->post('hidden_category');
-        if(0 < $_hidden_category) {
-            $category = $_hidden_category;
-        }
-        $subs = $this->input->post('peoples');
-        log_message('debug', "##TM SRC:" . $this->input->post('dt1'));
-        $time = $this->input->post('dt1');
-        $timestamp = strtotime($this->input->post('dt1'));
-        $temestamp = $timestamp*1000;
-        $endtime = strtotime($this->input->post('dt_end1'));
-        $config_id = $this->input->post('config_id');
-        $config_type = $this->input->post('config_type');
-        log_message('debug','config_id:' . $config_id);
-        log_message('debug','config_type:' . $config_type);
-        log_message('debug','dtend :' . $endtime);
-        log_message('debug','dtend :' . $this->input->post('dt_end'));
-        log_message('debug','dtend :' . $this->input->post('dt_end1'));
-        $extra = array();
-        $_extra = array();
-        $profile = $this->session->userdata('profile');
-        if($config_type == 2)
-        {
-            $_extra = array('id'=>$config_id ,'type'=>$config_type,'value'=>$endtime);
-        }
-
-        if($config_type == 5)
-        {
-            $_extra = array('id'=>$config_id ,'type'=>$config_type,'value'=>$subs/*$profile['subs']*/);
-        }
-        //array_push($extra,$_extra);
-        array_push($extra,$_extra);
-        $_hidden_extra = $this->input->post('hidden_extra');
-        if($_hidden_extra) {
-            $_hidden_extra = json_decode($_hidden_extra);
-            array_push($_hidden_extra, $_extra);
-            $extra = $_hidden_extra;
-        }
-        $__extra = json_encode($extra);
-        log_message('debug','extra:' . $__extra);
         $item_update_in = 0;
         if($profile['id'] != $_uid){
             $item_update_in = 1;
         }
-        log_message("debug", "##UID  $_uid :" . $profile['id']);
 
-        $merchant = $this->input->post('merchant');
-        $tags = $this->input->post('tags');
-        $type = $this->input->post('type');
-        $note = $this->input->post('note');
-        $images = $this->input->post('images');
-        $attachments = $this->input->post('attachments');
-        log_message('debug','attachments:' . $attachments);
-        log_message("debug", "alvayang: Item Update In:" . $item_update_in);
         $_item_data = $this->items->get_by_id($id);
         log_message('debug', 'item_get_by_id:' . json_encode($_item_data));
-        $currency = 'cny';
-        $_currency = $this->input->post('coin_type');
-        if($_currency)
-        {
-            $temp = explode(',',$_currency);
-            $currency = $temp[0];
-        }
         
-        //添加汇率字段
         if($item_update_in != 0) {
+            $default_custom_id_name_dic = $this->input->post('default_custom_id_name_dic');
             $item_data = $this->items->get_by_id($id);
             $rate = 1.0;
             $_rate = $this->input->post('rate');
@@ -1340,8 +1298,6 @@ class Items extends REIM_Controller {
             {
                 $tags = -1;
             }
-            log_message("debug",'time:'.strtotime($time));
-            log_message("debug","gettime:".$data['dt']);
 
             if(strtotime($time) == $data['dt'] || $time == '')
             {
@@ -1364,7 +1320,7 @@ class Items extends REIM_Controller {
         }
         else
         {
-            $obj = $this->items->update($id, $amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$__extra,$uids,$afford_ids,$attachments,$currency);
+            $obj = $this->items->update($common_item_input);
             if($obj && array_key_exists('data',$obj) && array_key_exists('status',$obj['data'][0]) && $obj['data'][0]['status'] <= 0)
             {
                 
@@ -1373,7 +1329,6 @@ class Items extends REIM_Controller {
             log_message('debug','status' . $obj['status']);
             log_message('debug','zz item_data:'.json_encode($obj));
         }
-        log_message('debug','rid:' . $rid);
         if(!$id) {
             return redirect(base_url('items/index'));
         } else {
