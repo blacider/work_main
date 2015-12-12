@@ -379,14 +379,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 
     <ul class="submenu nav-show" style="display: block;">
 
-<!--
-
-        <li class="hsub" id="report_settings_list">
-        <a href="<?php echo base_url('company/report_settings_list'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 报销单设置</a>
-        <b class="arrow"></b>
-        </li>
--->
-
         <li class="hsub" id="approval_flow">
         <a href="<?php echo base_url('company/approval_flow'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 财务审批流</a>
         <b class="arrow"></b>
@@ -397,12 +389,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <b class="arrow"></b>
         </li>
 
-    <!--
-        <li class="hsub" id="broadcast_create">
-        <a href="<?php echo base_url('broadcast/create'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 创建系统消息  </a>
-        <b class="arrow"></b>
-        </li>
-     -->
 
   <li class="hsub" id="show">
         <a href="<?php echo base_url('company/show'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 提交规则 </a>
@@ -521,39 +507,11 @@ if($profile['admin'] == 1 || $profile['admin'] == 2) {
 
 
 
-<!--
-
-<li class="rsmenu" id="groups">
-<a href="<?php echo base_url('groups'); ?>">
-<i class="menu-icon fa fa-users"></i>
-<span class="menu-text"> 用户组管理 </span>
-</a>
-
-<b class="arrow"></b>
-</li>
-
-<li class="rsmenu" id="rules">
-<a href="<?php echo base_url('rules'); ?>">
-<i class="menu-icon fa fa-users"></i>
-<span class="menu-text"> 规则管理</span>
-</a>
-
-<b class="arrow"></b>
-</li>
--->
-
-
 </ul>
 </li>
 </ul><!-- /.nav-list -->
 
 <!-- #section:basics/sidebar.layout.minimize -->
-<!-- 
-<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-<i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
-</div>
--->
-
 
 <!-- /section:basics/sidebar.layout.minimize -->
 <script type="text/javascript">
