@@ -50,3 +50,37 @@
 <?php
 	}
 ?>
+<script type="text/javascript">
+is_init_customization_module = false;
+function init_customization_module()
+{
+	var item_customization = $('#html_item_customization').data('value');
+	var customization_id_type_dic = new Object();
+	for(var j in item_customization)
+	{
+		customization_id_type_dic[item_customization[j]['id']] = item_customization[j]['type'];
+	}
+	var item_customization = $('#html_item_customization').data('value');
+	var _value ='';
+	var _id = '';
+	for(var i in item_info['customization'])
+	{
+		_value = item_info['customization'][i]['value'];
+		_id = item_info['customization'][i]['id'];
+		$('#customization_' + _id).val(_value);
+		if(customization_id_type_dic[_id] == '103')
+		{
+			$('#customization_' + _id).prop('selected',true);
+			$('#customization_' + _id).trigger('chosen:updated');
+		}
+	}
+	
+}
+$(document).ready(function(){
+	if(PAGE_TYPE != 0 && !is_init_customization_module)
+	{
+		init_customization_module();
+		is_init_customization_module = true;
+	}
+});
+</script>
