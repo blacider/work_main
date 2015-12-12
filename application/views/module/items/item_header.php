@@ -9,9 +9,10 @@
 <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 <div class="page-content">
 <div class="page-content-area">
-<form role="form" action="<?php echo base_url('items/create');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="itemform">
+<form role="form" action="<?php if($page_type == 0){echo base_url('items/create');} else {echo base_url('items/update');} ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="itemform">
 <div class="row">
 <div class="col-xs-12 col-sm-12">
+
 <?php echo $html_company_config;?>
 <?php
   if($page_type == 1)
@@ -22,6 +23,12 @@
     echo $html_fee_afford_ids;
     echo get_html_container($images,'html_images',true);
     echo get_html_container($item_customization,'html_item_customization',true);
+?>
+<input type="hidden" name="id" value="<?php echo $item['id']; ?>" />
+<input type="hidden" name="uid" value="<?php echo $item['uid']; ?>" />
+<input type="hidden" name="rid" value="<?php echo $item['rid']; ?>" />
+<input type="hidden" name="from_report" value="<?php echo $from_report; ?>" />
+<?php
   }
 ?>
 <script type="text/javascript">
