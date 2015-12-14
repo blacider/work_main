@@ -2164,7 +2164,21 @@ class Reports extends REIM_Controller {
             }
         }
         //print_r($_excel);
-        self::render_to_download('工作表1', $_excel, 'u8_' . date('Y-m-d', time()) . ".xls");
+
+        $filename = 'u8_' . date('Y-m-d', time()) . ".xls";
+        $style = [
+            "制单日期" => [ "data_type" => "date" ],
+            "贷方金额" => [ "data_type" => "number" ],
+            "借方金额" => [ "data_type" => "number" ],
+        ];
+        $data = [
+            [
+                'title' => 'sheet1',
+                'data' => $_excel,
+                'style' => $style,
+            ]
+        ];
+        self::render_to_download_2($filename, $data);
     }
 
     public function report_template($id = 0){
