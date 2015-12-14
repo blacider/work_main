@@ -2103,22 +2103,6 @@ class Reports extends REIM_Controller {
             '员工号' => '',
         );
         $idx = 0;
-        $_total_amount = 0;
-        foreach($reports as &$r){
-            $_items = $r['items'];
-            foreach($_items as $item){
-                $rate = 1.0;
-                if($item['currency'] != '' && strtolower($item['currency']) != 'cny') {
-                    $rate = $item['rate'] / 100;
-                }
-                $_amount = round($item['amount'], 2);
-                if($item['prove_ahead'] == 2){
-                    $_amount = round($item['amount'] - $item['pa_amount'], 2);
-
-                }
-                $_total_amount += $_amount * $rate;
-            }
-        }
         foreach($reports as &$r){
             if(!array_key_exists($r['uid'], $_members)){
                 $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
@@ -2143,10 +2127,13 @@ class Reports extends REIM_Controller {
                 $idx += 1;
                 //log_message("debug", "Item:" . json_encode($i));
                 $o = $_headers;
-                $o['凭证ID'] = $idx;
                 $o['凭证号'] = $r['id'];
                 $o['科目编码'] = $i['category_code'];
                 $o['摘要'] = '计提' . date('m月') . '员工报销 - ' . $i['category_name']  . ' - ' . $r['nickname'];
+                $o['部门编码'] = implode(',', $_gids);
+                $o['员工姓名'] = $r['nickname'];
+                $o['员工号'] = $r['client_id'];
+
                 $rate = 1.0;
                 if(trim($i['currency']) != '' && strtolower($i['currency']) != 'cny') {
                     $rate = $i['rate'] / 100;
@@ -2155,11 +2142,18 @@ class Reports extends REIM_Controller {
                 if($i['prove_ahead'] == 2){
                     $_amount = sprintf("%.2f", $i['amount'] - $i['pa_amount']);
                 }
-                $o['借方金额'] = sprintf("%.2f",$_amount * $rate);
-                $o['贷方金额'] = $_total_amount;
-                $o['部门编码'] = implode(',', $_gids);
-                $o['员工姓名'] = $r['nickname'];
-                $o['员工号'] = $r['client_id'];
+                $amount = sprintf("%.2f",$_amount * $rate);
+
+                $o['凭证ID'] = $idx;
+                $o['科目编码'] = $i['category_code'];
+                $o['借方金额'] = $amount;
+                $o['贷方金额'] = '';
+                array_push($_excel, $o);
+
+                $o['凭证ID'] = $idx;
+                $o['科目编码'] = 1002;
+                $o['借方金额'] = '';
+                $o['贷方金额'] = $amount;
                 array_push($_excel, $o);
             }
         }
