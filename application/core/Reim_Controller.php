@@ -339,11 +339,15 @@ class REIM_Controller extends CI_Controller{
                 if (!empty($s['data_type'])) {
                     if ($s['data_type'] == "number") {
                         $decimal_places = 2;
-                        if (!empty($s['decimal_places']) && is_numeric($s['decimal_places'])) {
+                        if (isset($s['decimal_places']) && is_numeric($s['decimal_places'])) {
                             $decimal_places = $s['decimal_places'];
                         }
-
-                        $format = '#,##0.' . str_repeat('0', $decimal_places);
+                        if ($decimal_places > 0) {
+                            $format = '0.' . str_repeat('0', $decimal_places);
+                        }
+                        else {
+                            $format = '0';
+                        }
                         $sheet->getStyle($range)->getNumberFormat()->setFormatCode($format);
                     } elseif ($s['data_type'] == "date") {
                         $sheet->getStyle($range)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDD2);

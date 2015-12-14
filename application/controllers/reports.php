@@ -2159,6 +2159,7 @@ class Reports extends REIM_Controller {
         $filename = 'u8_' . date('Y-m-d', time()) . ".xls";
         $style = [
             "制单日期" => [ "data_type" => "date" ],
+            "科目编码" => [ "data_type" => "number", "decimal_places" => 0 ],
             "贷方金额" => [ "data_type" => "number" ],
             "借方金额" => [ "data_type" => "number" ],
         ];
