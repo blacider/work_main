@@ -2063,6 +2063,7 @@ class Reports extends REIM_Controller {
             '摘要' => '',
             '结算方式编码' => '',
             '票据号' => '',
+            '票据日期' => '',
             '币种名称' => '人民币',
             '汇率' => '',
             '单价' => '',
@@ -2074,6 +2075,7 @@ class Reports extends REIM_Controller {
             '借方金额' => 0,
             '贷方金额' => 0,
             '部门编码' => 0,
+            '职员编码' => '',
             '客户编码' => '',
             '供应商编码' => '',
             '项目大类编码' => '',
@@ -2098,9 +2100,6 @@ class Reports extends REIM_Controller {
             '现金流项目' => '',
             '现金流量借方金额' => '',
             '现金流量贷方金额' => '',
-            '金额' => '',
-            '员工姓名' => '',
-            '员工号' => '',
         );
         $idx = 0;
         foreach($reports as &$r){
@@ -2128,11 +2127,9 @@ class Reports extends REIM_Controller {
                 //log_message("debug", "Item:" . json_encode($i));
                 $o = $_headers;
                 $o['凭证号'] = $r['id'];
-                $o['科目编码'] = $i['category_code'];
                 $o['摘要'] = '计提' . date('m月') . '员工报销 - ' . $i['category_name']  . ' - ' . $r['nickname'];
                 $o['部门编码'] = implode(',', $_gids);
-                $o['员工姓名'] = $r['nickname'];
-                $o['员工号'] = $r['client_id'];
+                $o['职员编码'] = $r['client_id'];
 
                 $rate = 1.0;
                 if(trim($i['currency']) != '' && strtolower($i['currency']) != 'cny') {
