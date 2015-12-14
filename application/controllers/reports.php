@@ -1949,7 +1949,7 @@ class Reports extends REIM_Controller {
                 $excel[$template_name] = $template_excel;
             }
         }
-        $this->load->library('user_agent');
+
         $excel_name = '报销报销单列表' . date('Y-m-d', time()) . '.xls';
 
         $data = array();

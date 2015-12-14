@@ -242,19 +242,15 @@ class REIM_Controller extends CI_Controller{
 
     public function render_to_download_2($filename, $data) {
         if($this->agent->is_browser('Internet Explorer')) {
-            $excle_name = urlencode($filename);
+            $filename = urlencode($filename);
         }
-
         $writer = $this->build_excel($data);
-
-        header("Pragma: public");
         header("Content-Type: application/vnd.ms-execl");
         header('Content-Disposition: attachment;filename=' . $filename);
         header("Content-Transfer-Encoding: binary");
+        header("Cache-Control: no-cache");
         header("Expires: Mon, 26 Jul 1970 05:00:00 GMT");
-        header("Pragma: no-cache");
         $writer->save("php://output");
-
         exit();
     }
 
