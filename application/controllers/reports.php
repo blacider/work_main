@@ -2019,7 +2019,6 @@ class Reports extends REIM_Controller {
 
     public function export_u8(){
         $ids = $this->input->post('ids');
-        //$_ids = explode(",", $ids);
         if("" == $ids) {
             $this->session->set_userdata('last_error', '没有选择任何报销');
             die("<script language='javascript'>history.go(-1); </script>");
@@ -2040,131 +2039,132 @@ class Reports extends REIM_Controller {
         }
         $_maker = $username;
         $data = $this->reports->get_reports_by_ids($ids);
+        if ($data['status'] <= 0) {
+            return;
+        }
         $_excel = array();
         $_members = array();
-        if($data['status'] > 0){
-            $_reports = $data['data'];
-            $reports = $_reports['report'];
-            $groups = $_reports['groups'];
-            log_message("debug", "GROUPS:" . json_encode($groups));
-            $_headers =  array(
-                '凭证ID' => 0
-                ,'会计年' => date('Y')
-                ,'会计期间' => date('m')
-                ,'制单日期' => date('Y-m-d')
-                ,'凭证类别' => '转'
-                ,'凭证号' => 0
-                ,'制单人' => $_maker
-                ,'所附单据数' => ''
-                ,'备注1' => ''
-                ,'备注2' => ''
-                ,'科目编码' => 0
-                ,'摘要' => ''
-                ,'结算方式编码' => ''
-                ,'票据号' => ''
-                ,'币种名称' => '人民币'
-                ,'汇率' => ''
-                ,'单价' => ''
-                ,'借方数量' => ''
-                ,'贷方数量' => ''
-                ,'贷方数量' => ''
-                ,'原币借方' => ''
-                ,'原币贷方' => ''
-                ,'借方金额' => 0
-                ,'贷方金额' => 0
-                ,'部门编码' => 0
-                ,'客户编码' => ''
-                ,'供应商编码' => ''
-                ,'项目大类编码' => ''
-                ,'项目编码' => ''
-                ,'业务员' => ''
-                ,'自定义项1' => ''
-                ,'自定义项2' => ''
-                ,'自定义项3' => ''
-                ,'自定义项4' => ''
-                ,'自定义项5' => ''
-                ,'自定义项6' => ''
-                ,'自定义项7' => ''
-                ,'自定义项8' => ''
-                ,'自定义项9' => ''
-                ,'自定义项10' => ''
-                ,'自定义项11' => ''
-                ,'自定义项12' => ''
-                ,'自定义项13' => ''
-                ,'自定义项14' => ''
-                ,'自定义项15' => ''
-                ,'自定义项16' => ''
-                ,'现金流项目' => ''
-                ,'现金流量借方金额' => ''
-                ,'现金流量贷方金额' => ''
-                ,'金额' => ''
-                ,'员工姓名' => ''
-                ,'员工号' => ''
-            );
-            $idx = 0;
-            $_total_amount = 0;
-            foreach($reports as &$r){
-                $_items = $r['items'];
-                foreach($_items as $item){
-                    $rate = 1.0;
-                    if($item['currency'] != '' && strtolower($item['currency']) != 'cny') {
-                        $rate = $item['rate'] / 100;
-                    }
-                    $_amount = round($item['amount'], 2);
-                    if($item['prove_ahead'] == 2){
-                        $_amount = round($item['amount'] - $item['pa_amount'], 2);
+        $_reports = $data['data'];
+        $reports = $_reports['report'];
+        $groups = $_reports['groups'];
+        //log_message("debug", "GROUPS:" . json_encode($groups));
+        $_headers = array(
+            '凭证ID' => 0,
+            '会计年' => date('Y'),
+            '会计期间' => date('m'),
+            '制单日期' => date('Y-m-d'),
+            '凭证类别' => '转',
+            '凭证号' => 0,
+            '制单人' => $_maker,
+            '所附单据数' => '',
+            '备注1' => '',
+            '备注2' => '',
+            '科目编码' => 0,
+            '摘要' => '',
+            '结算方式编码' => '',
+            '票据号' => '',
+            '币种名称' => '人民币',
+            '汇率' => '',
+            '单价' => '',
+            '借方数量' => '',
+            '贷方数量' => '',
+            '贷方数量' => '',
+            '原币借方' => '',
+            '原币贷方' => '',
+            '借方金额' => 0,
+            '贷方金额' => 0,
+            '部门编码' => 0,
+            '客户编码' => '',
+            '供应商编码' => '',
+            '项目大类编码' => '',
+            '项目编码' => '',
+            '业务员' => '',
+            '自定义项1' => '',
+            '自定义项2' => '',
+            '自定义项3' => '',
+            '自定义项4' => '',
+            '自定义项5' => '',
+            '自定义项6' => '',
+            '自定义项7' => '',
+            '自定义项8' => '',
+            '自定义项9' => '',
+            '自定义项10' => '',
+            '自定义项11' => '',
+            '自定义项12' => '',
+            '自定义项13' => '',
+            '自定义项14' => '',
+            '自定义项15' => '',
+            '自定义项16' => '',
+            '现金流项目' => '',
+            '现金流量借方金额' => '',
+            '现金流量贷方金额' => '',
+            '金额' => '',
+            '员工姓名' => '',
+            '员工号' => '',
+        );
+        $idx = 0;
+        $_total_amount = 0;
+        foreach($reports as &$r){
+            $_items = $r['items'];
+            foreach($_items as $item){
+                $rate = 1.0;
+                if($item['currency'] != '' && strtolower($item['currency']) != 'cny') {
+                    $rate = $item['rate'] / 100;
+                }
+                $_amount = round($item['amount'], 2);
+                if($item['prove_ahead'] == 2){
+                    $_amount = round($item['amount'] - $item['pa_amount'], 2);
 
-                    }
-                    $_total_amount += $_amount * $rate;
                 }
+                $_total_amount += $_amount * $rate;
             }
-            foreach($reports as &$r){
-                if(!array_key_exists($r['uid'], $_members)){
-                    $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
-                }
-                $_gname = '';
-                $_gids = array();
-                if(array_key_exists($r['uid'], $groups)){
-                    $_uid = $r['uid'];
-                    $_name = array();
-                    $_groups = $groups[$_uid];
-                    foreach($_groups as $s){
-                        array_push($_name, $s['gname']);
-                        array_push($_gids, $s['gcode']);
-                    }
-                    $_gname = implode('/', $_name);
-                }
-                log_message("debug", json_encode($r));
-                $r['total'] = 0;
-                $r['paid'] = 0;
-                $_items = $r['items'];
-                foreach($_items as $i){
-                    $idx += 1;
-                    log_message("debug", "Item:" . json_encode($i));
-                    $o = $_headers;
-                    $o['凭证ID'] = $idx;
-                    $o['凭证号'] = $r['id'];
-                    $o['科目编码'] = $i['category_code'];
-                    $o['摘要'] = '计提' . date('m月') . '员工报销 - ' . $i['category_name']  . ' - ' . $r['nickname'];
-                    $rate = 1.0;
-                    if(trim($i['currency']) != '' && strtolower($i['currency']) != 'cny') {
-                        $rate = $i['rate'] / 100;
-                    }
-                    $_amount = round($i['amount'], 2);
-                    if($i['prove_ahead'] == 2){
-                        $_amount = sprintf("%.2f", $i['amount'] - $i['pa_amount']);
-                    }
-                    $o['借方金额'] = sprintf("%.2f",$_amount * $rate);
-                    $o['贷方金额'] = $_total_amount;
-                    $o['部门编码'] = implode(',', $_gids);
-                    $o['员工姓名'] = $r['nickname'];
-                    $o['员工号'] = $r['client_id'];
-                    array_push($_excel, $o);
-                }
-            }
-            //print_r($_excel);
-            self::render_to_download('工作表1', $_excel, 'u8_' . date('Y-m-d', time()) . ".xls");
         }
+        foreach($reports as &$r){
+            if(!array_key_exists($r['uid'], $_members)){
+                $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
+            }
+            $_gname = '';
+            $_gids = array();
+            if(array_key_exists($r['uid'], $groups)){
+                $_uid = $r['uid'];
+                $_name = array();
+                $_groups = $groups[$_uid];
+                foreach($_groups as $s){
+                    array_push($_name, $s['gname']);
+                    array_push($_gids, $s['gcode']);
+                }
+                $_gname = implode('/', $_name);
+            }
+            //log_message("debug", json_encode($r));
+            $r['total'] = 0;
+            $r['paid'] = 0;
+            $_items = $r['items'];
+            foreach($_items as $i){
+                $idx += 1;
+                //log_message("debug", "Item:" . json_encode($i));
+                $o = $_headers;
+                $o['凭证ID'] = $idx;
+                $o['凭证号'] = $r['id'];
+                $o['科目编码'] = $i['category_code'];
+                $o['摘要'] = '计提' . date('m月') . '员工报销 - ' . $i['category_name']  . ' - ' . $r['nickname'];
+                $rate = 1.0;
+                if(trim($i['currency']) != '' && strtolower($i['currency']) != 'cny') {
+                    $rate = $i['rate'] / 100;
+                }
+                $_amount = round($i['amount'], 2);
+                if($i['prove_ahead'] == 2){
+                    $_amount = sprintf("%.2f", $i['amount'] - $i['pa_amount']);
+                }
+                $o['借方金额'] = sprintf("%.2f",$_amount * $rate);
+                $o['贷方金额'] = $_total_amount;
+                $o['部门编码'] = implode(',', $_gids);
+                $o['员工姓名'] = $r['nickname'];
+                $o['员工号'] = $r['client_id'];
+                array_push($_excel, $o);
+            }
+        }
+        //print_r($_excel);
+        self::render_to_download('工作表1', $_excel, 'u8_' . date('Y-m-d', time()) . ".xls");
     }
 
     public function report_template($id = 0){
