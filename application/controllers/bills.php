@@ -246,7 +246,7 @@ class Bills extends REIM_Controller {
     }
 
     public function _logic($status = 2, $search = ''){
-        $this->need_group_agent();
+        $this->need_group_casher();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
@@ -623,7 +623,7 @@ class Bills extends REIM_Controller {
     }
 
     public function listdata($type = 2){
-        $this->need_group_agent();
+        $this->need_group_casher();
         $page = $this->input->get('page');
         $rows = $this->input->get('rows');
         $sort = $this->input->get('sord');

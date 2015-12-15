@@ -510,7 +510,7 @@ class REIM_Controller extends CI_Controller{
     }
     public function need_group_casher(){
         $admin = $this->get_privilege();
-        if($admin == self::ADMIN || $admin == self::CASHIER) return true;;
+        if($admin == self::ADMIN || $admin == self::CASHIER || $admin == self::GROUP_MANAGER) return true;;
         $this->session->set_userdata("last_error", "权限不足");
         return redirect(base_url('items'), 'refresh');
     }
