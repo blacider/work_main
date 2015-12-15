@@ -246,7 +246,7 @@ try{
             form.submit();//表单提交
         },
         del: true,
-        delicon : 'ace-icon fa fa-print',
+        delicon : 'ace-icon fa fa-file-excel-o',
         deltitle: '导出excel',
         delfunc : function(rowids, p){
             var form=$("<form>");//定义一个form表单
