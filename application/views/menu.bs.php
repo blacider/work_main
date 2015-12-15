@@ -212,7 +212,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
             </ul>
             <b class="arrow"></b>
         </li>
-
+        <?php if (!isset($company_config['enable_report_cc']) || $company_config['enable_report_cc']) { ?>
         <li class="hsub" id="audit_cc">
         <a href="<?php echo base_url('reports/audit_cc'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
@@ -220,6 +220,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         </a>
         <b class="arrow"></b>
         </li>
+        <?php } ?>
 
     </ul>
     </li>
