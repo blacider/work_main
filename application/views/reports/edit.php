@@ -53,7 +53,7 @@ foreach($members as $m) {
                                     </select>
                                 </div>
                             </div>
-
+                            <?php if (!isset($company_config['enable_report_cc']) || $company_config['enable_report_cc']) { ?>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">抄送至</label>
                                 <div class="col-xs-9 col-sm-9">
@@ -69,6 +69,7 @@ foreach($members as $m) {
                                     </select>
                                 </div>
                             </div>
+                            <?php } ?>
 <?php
                         if(!empty($config)) {
 ?>

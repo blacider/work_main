@@ -50,7 +50,7 @@
                                     </select>
                                 </div>
                             </div>
-
+                            <?php if (!isset($company_config['enable_report_cc']) || $company_config['enable_report_cc']) { ?>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">抄送至</label>
                                 <div class="col-xs-9 col-sm-9">
@@ -63,7 +63,7 @@
                                     </select>
                                 </div>
                             </div>
-
+                            <?php } ?>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">总额</label>

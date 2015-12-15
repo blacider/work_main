@@ -161,6 +161,7 @@ class REIM_Controller extends CI_Controller{
         }
         $report_template = array();
 
+        $custom_data['company_config'] = array();
         if(!$profile){
             $custom_data['opt_error'] = $this->session->userdata('last_error');
             $custom_data['username'] = $this->session->userdata('username');
@@ -181,8 +182,10 @@ class REIM_Controller extends CI_Controller{
                 $admin_groups_granted = $profile["admin_groups_granted_all"];
             }
             $custom_data['admin_groups_granted'] = $admin_groups_granted;
+            if (isset($profile['group']['config'])) {
+                $custom_data['company_config'] = json_decode($profile['group']['config'], TRUE);
+            }
         }
-
         $custom_data['groupname'] = $this->session->userdata('groupname');
         $custom_data['report_templates'] = $report_template;
         log_message("debug", "Get From Cache =====================");
