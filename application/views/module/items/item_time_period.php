@@ -49,7 +49,7 @@ function set_day_average()
     }
 
     var days = Math.ceil((end_date - start_date)/(1000*24*3600));
-    if($('#amount').val() && days)
+    if($('#amount').val() && days > 0)
     {
         $('#average_day').text(coin_symbol + Math.round(100*amount/days)/100);
     }
