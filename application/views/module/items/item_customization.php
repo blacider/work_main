@@ -43,10 +43,46 @@
 ?>
 <div class="form-group">
     <label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
-    <div class="col-xs-6 col-sm-6">
-        <input type="text" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="单位金额" required>
+    <div class="col-xs-2 col-sm-2">
+        <input type="text" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type member_nums" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="人数" required>
     </div>
+    <label class="col-sm-1 control-label no-padding-right">人均:</label>
+	<div class="col-xs-2 col-sm-2">
+	    <div id="member_average" name="member_average" type="text" class="form-control"></div>
+	</div>
 </div>
+<script type="text/javascript">
+function set_member_average()
+{
+	var amount = $('#amount').val();
+	var member_nums = $('.member_nums').val();
+	var coin_symbol = '￥';
+    var coin_rate = 100;
+    var selected_icon = $('#coin_type option:selected');
+    if(selected_icon.data('symbol') != undefined)
+    {
+        coin_symbol = selected_icon.data('symbol');
+    }
+    if($('#amount').val() && member_nums)
+    {
+        $('#member_average').text(coin_symbol + Math.round(100*amount/member_nums)/100 + "/人*" + member_nums);
+    }
+    else
+    {
+        $('#member_average').text('');
+    }
+}
+$('.member_nums').on('change',function(){
+	set_member_average();
+});
+$('#amount').on('change',function(){
+	set_member_average();
+});
+$(document).ready(function(){
+
+});
+</script>
+
 <?php
 	}
 ?>
