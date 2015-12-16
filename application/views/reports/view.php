@@ -24,15 +24,14 @@
                                     <input type="text" class="form-controller col-xs-12" name="title" placeholder="名称" value="<?php echo $report['receivers']['managers']; ?>" disabled>
                                 </div>
                             </div>
-
+                            <?php if (!isset($company_config['enable_report_cc']) || $company_config['enable_report_cc']) { ?>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">抄送至</label>
                                 <div class="col-xs-10 col-sm-10">
                                     <input type="text" class="form-controller col-xs-12" name="title" placeholder="名称" value="<?php echo $report['receivers']['cc']; ?>" disabled>
                                 </div>
                             </div>
-
-
+                            <?php } ?>
 
 <?php
                         if(!empty($config)) {
