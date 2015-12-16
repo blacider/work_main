@@ -212,7 +212,7 @@ jQuery(grid_selector).jqGrid('navGrid', pager_selector, {
     closeAfterEdit: true,
     editicon : 'ace-icon fa fa-pencil blue',
     add: can_export_excel,
-    addicon : 'ace-icon fa fa-print',
+    addicon : 'ace-icon fa fa-file-excel-o',
     addtitle: '导出excel',
     addfunc : function(rowids, p){
         var form=$("<form>");
