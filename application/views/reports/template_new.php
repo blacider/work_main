@@ -349,7 +349,7 @@ foreach($items as $i){
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">卡号</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input id="cardno" name="cardno" maxlength="19" type="text" class="form-controller col-xs-12" placeholder="卡号" />
+                                    <input id="cardno" name="cardno" maxlength="20" type="text" class="form-controller col-xs-12" placeholder="卡号" />
                                 </div>
                             </div>
 
