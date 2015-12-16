@@ -14,10 +14,10 @@ class REIM_Controller extends CI_Controller{
         $refer = $this->agent->referrer();
         $jwt = $this->session->userdata('jwt');
         $controller = $this->uri->rsegment_array();
-        $method_set = ['login','install', 'pub','users', 'register' ,'resetpwd'];
+        $method_set = ['login', 'install', 'pub','users', 'register' ,'resetpwd'];
         if(!in_array($controller[1],$method_set))
         {
-            if(!$jwt) 
+            if(!$jwt)
             {
                 redirect(base_url('login'));
             }
@@ -58,7 +58,7 @@ class REIM_Controller extends CI_Controller{
         return false;
     }
 
-    public function  eload($view_name, $custom_data, $menu_page = 'menu.php'){
+    public function eload($view_name, $custom_data, $menu_page = 'menu.php'){
         $this->load->model('user_model');
         $this->load->model('module_tip_model');
         $uid = $this->session->userdata('uid');
@@ -89,25 +89,6 @@ class REIM_Controller extends CI_Controller{
         $this->load->view('footer', $custom_data);
     }
 
-    public function jsalert($msg, $target = ''){
-        if($target){
-            die('<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><script language="javascript">alert("' . $msg . '"); location.href="' . $target . '";</script>');
-        }else {
-            die('<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><script language="javascript">alert("' . $msg . '"); history.go(-1);</script>');
-        }
-
-    }
-
-    public function _pager($url, $total, $pn, $rn){
-        $this->load->library('pager');
-        $config['base_url'] = base_url($url);
-        $config['total'] = $total;
-        $config['rn'] = $rn;
-        $config['pn'] = $pn;
-        $this->pager->initialize($config);
-        return $this->pager->create_links();
-    }
-
     public function _upload($uid, $name){
         if($name == "") $name = 'package';
         $this->load->helper('file');
@@ -131,7 +112,7 @@ class REIM_Controller extends CI_Controller{
         if(!$this->upload->do_upload($name))
         {
             return array('status' => false, 'msg' => '图片上传失败', 'detail' => $this->upload->display_errors());
-        } 
+        }
         else
         {
             return array('status' => true, 'data' => $this->upload->data(), 'prefix' => $prefix);
@@ -139,7 +120,7 @@ class REIM_Controller extends CI_Controller{
     }
 
 
-    public function  bsload($view_name, $custom_data, $menu_page = 'menu.bs.php'){
+    public function bsload($view_name, $custom_data, $menu_page = 'menu.bs.php'){
         $this->load->model('user_model');
         $this->load->model('module_tip_model');
         $uid = $this->session->userdata('uid');
@@ -156,7 +137,6 @@ class REIM_Controller extends CI_Controller{
         }
         if(!($profile || $uid)){
             // 重定向到登陆
-            log_message("debug","Nothing ");
             redirect(base_url('login'), 'refresh');
         }
         $report_template = array();
@@ -201,7 +181,7 @@ class REIM_Controller extends CI_Controller{
     }
 
 
-    public function  aeload($view_name, $custom_data){
+    public function aeload($view_name, $custom_data){
         $this->load->model('user_model');
         $this->load->model('module_tip_model');
         $uid = $this->session->userdata('uid');
@@ -230,17 +210,6 @@ class REIM_Controller extends CI_Controller{
         $this->load->view('menu.old.php', $custom_data);
         $this->load->view($view_name, $custom_data);
         $this->load->view('footer.old.php', $custom_data);
-    }
-
-    public function show_error($msg){
-    }
-
-    public function save_to_local($title, $data, $excle_name) {
-        $exclefile = $excle_name;
-        $objwriter = $this->return_buf($title, $data);
-        $objwriter->save($exclefile);
-        return $exclefile;
-
     }
 
     public function render_to_download_2($filename, $data) {
@@ -315,7 +284,7 @@ class REIM_Controller extends CI_Controller{
                     $sheet->getStyle($addr)->getFont()->setName('微软雅黑')->setSize(12);
                     // 如果未设置样式或者数据类型指定了string
                     if (empty($style[$k]) || empty($style[$k]['data_type']) || $style[$k]['data_type'] == 'string') {
-                        $sheet->setCellValueExplicit($addr, strval($v), PHPExcel_Cell_DataType::TYPE_STRING);  
+                        $sheet->setCellValueExplicit($addr, strval($v), PHPExcel_Cell_DataType::TYPE_STRING);
                     } else {
                         $sheet->setCellValue($addr, $v);
                     }
@@ -328,16 +297,16 @@ class REIM_Controller extends CI_Controller{
             foreach ($first_row as $k => $v) {
                 $c_name = $this->getCharByNunber($j);
                 $range = $c_name . '2:' . $c_name . (count($rows) + 1);
-                
+
                 $sheet->getColumnDimension($c_name)->setAutoSize(true);
                 $sheet->getStyle($range)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
                 $j++;
-                                
+
                 if (empty($style[$k])) {
-                    $sheet->getStyle($range)->getNumberFormat()->setFormatCode('#');                    
+                    $sheet->getStyle($range)->getNumberFormat()->setFormatCode('#');
                     continue;
                 }
-                
+
                 $s = $style[$k];
                 if (!empty($s['data_type'])) {
                     if ($s['data_type'] == "number") {
@@ -402,8 +371,6 @@ class REIM_Controller extends CI_Controller{
             $x++;
         }
 
-
-
         // TODO: 如此肮脏，算了，先推下来再说吧。
         if($title_2 && count($data_2) > 0){
             $Excel->createSheet();
@@ -453,10 +420,7 @@ class REIM_Controller extends CI_Controller{
             }
         }
 
-
-        //$objwriter = new PHPExcel_Writer_Excel2007($Excel);
         $objwriter = IOFactory::createWriter($Excel, 'Excel5');
-        //$objwriter = IOFactory::createWriter($Excel, 'Excel2007');
         return $objwriter;
     }
 
@@ -469,14 +433,12 @@ class REIM_Controller extends CI_Controller{
 
     public function do_Get($url, $extraheader = array()){
         $ch = curl_init();
-        curl_setopt($ch , CURLOPT_URL, $url ) ;
-        curl_setopt($ch,CURLOPT_HTTPHEADER, $extraheader);
+        curl_setopt($ch, CURLOPT_URL, $url ) ;
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
-        curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
-        log_message("debug", "Start Request");
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        //curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
         $output = curl_exec($ch) ;
-        log_message("debug", "Get Success:" . $output);
         curl_close($ch);
         return $output;
     }
@@ -488,7 +450,6 @@ class REIM_Controller extends CI_Controller{
             return redirect(base_url('login'), 'refresh');
         }
         return $profile['admin'];
-
     }
 
     public function need_group_admin(){
@@ -518,25 +479,5 @@ class REIM_Controller extends CI_Controller{
         return redirect(base_url('items'), 'refresh');
     }
 
-
-    public function stringFromColumnIndex($pColumnIndex = 0) 
-    { 
-        static $_indexCache = array(); 
-
-        if (!isset($_indexCache[$pColumnIndex])) { 
-            // Determine column string 
-            if ($pColumnIndex < 26) { 
-                $_indexCache[$pColumnIndex] = chr(65 + $pColumnIndex); 
-            } elseif ($pColumnIndex < 702) { 
-                $_indexCache[$pColumnIndex] = chr(64 + ($pColumnIndex / 26)) . 
-                    chr(65 + $pColumnIndex % 26); 
-            } else { 
-                $_indexCache[$pColumnIndex] = chr(64 + (($pColumnIndex - 26) / 676)) . 
-                    chr(65 + ((($pColumnIndex - 26) % 676) / 26)) . 
-                    chr(65 + $pColumnIndex % 26); 
-            } 
-        } 
-        return $_indexCache[$pColumnIndex]; 
-    }
 
 }

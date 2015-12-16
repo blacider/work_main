@@ -7,7 +7,7 @@ class Users extends REIM_Controller {
         $this->load->model('user_model', 'user');
         $this->load->model('group_model', 'groups');
         $this->load->model('reim_show_model','reim_show');
-        //$this->load->model('users/customer_model', 'cmodel');  
+        //$this->load->model('users/customer_model', 'cmodel');
     }
 
     public function join_company()
@@ -44,7 +44,7 @@ class Users extends REIM_Controller {
 
     public function raise_invites()
     {
-        $this->need_group_it(); 
+        $this->need_group_it();
         $groupname = $this->session->userdata('groupname');
         $_guests = $this->input->post('guests');
         $guests = '';
@@ -52,10 +52,10 @@ class Users extends REIM_Controller {
         {
             $guests = implode(',',$_guests);
         }
-    
-    
+
+
         $buf = $this->user->raise_invites($groupname,$guests);
-    
+
         if($buf['status'] > 0)
         {
             $data = $buf['data'];
@@ -64,7 +64,7 @@ class Users extends REIM_Controller {
         {
             $data = array('msg',$buf['data']['msg']);
         }
-    
+
         die(json_encode($data));
     }
 
@@ -113,51 +113,47 @@ class Users extends REIM_Controller {
         }
         // 重新获取
         $profile = $this->user->reim_get_user();
-        //print_r($profile);
-        //$profile = $this->session->userdata('prOfile');
         if($profile){
             $pro = $profile['data']['profile'];
             $config = $profile['data']['profile'];
-	        if(array_key_exists('group',$config))
-	        {
-	             if(array_key_exists('config',$profile['data']['profile']['group']))
-	             {
-	                 $config = $profile['data']['profile']['group']['config'];
-	             }
-	        }
-	        else
-	        {
-	             $config =array();
-	        }
-	            //print_r($profile);
-	        $profile = $profile['data']['profile'];
-	        $sobs = array();
-	        $usergroups = array();
-	        $audits = array();
-	        $commits = array();
-	
-	
-	        if(array_key_exists('commits',$profile))
-	        {
-	            $sobs = $profile['commits'];
-	        }
-	        
-	
-	        if(array_key_exists('sob',$profile))
-	        {
-	            $sobs = $profile['sob'];
-	        }
-	        if(array_key_exists('usergroups',$profile))
-	        {
-	            $usergroups = $profile['usergroups'];
-	        }
+            if(array_key_exists('group',$config))
+            {
+                 if(array_key_exists('config',$profile['data']['profile']['group']))
+                 {
+                     $config = $profile['data']['profile']['group']['config'];
+                 }
+            }
+            else
+            {
+                 $config =array();
+            }
+            $profile = $profile['data']['profile'];
+            $sobs = array();
+            $usergroups = array();
+            $audits = array();
+            $commits = array();
+
+
+            if(array_key_exists('commits',$profile))
+            {
+                $sobs = $profile['commits'];
+            }
+
+
+            if(array_key_exists('sob',$profile))
+            {
+                $sobs = $profile['sob'];
+            }
+            if(array_key_exists('usergroups',$profile))
+            {
+                $usergroups = $profile['usergroups'];
+            }
 
             $uid = $profile['id'];
             $profile = json_decode($this->user->reim_get_info($uid), True);
             $profile =  $profile['data'];
             $manager_id = $profile['manager_id'];
             log_message("debug","####".json_encode($profile));
-            //print_r($profile);
         } else  {
             $config = array();
             $user = $this->session->userdata('user');
@@ -180,7 +176,6 @@ class Users extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-        //print_r($profile);
         $this->bsload('user/profile',
             array(
                 'title' => '个人管理'
@@ -400,8 +395,6 @@ class Users extends REIM_Controller {
 
         $obj = $this->user->reim_get_info($id);
         die(json_encode(array('status' => true, 'data' => $obj)));
-
-
     }
 
     public function forget(){
@@ -454,7 +447,7 @@ class Users extends REIM_Controller {
         $_uid = $this->input->post('uid');
         $subbranch = $this->input->post('subbranch');
         $default = $this->input->post('default');
-        
+
         if($_uid)
         {
             $uid = $_uid;

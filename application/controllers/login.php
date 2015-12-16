@@ -1,13 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Login extends REIM_Controller {
+
     public function __construct() {
         parent::__construct();
         $this->load->model('user_model', 'users');
         $this->load->helper('cookie');
         $this->load->library('reim_cipher');
     }
-
 
     public function join_company()
     {
@@ -21,7 +21,7 @@ class Login extends REIM_Controller {
         }
         else
         {
-        
+
             $this->session->set_userdata('last_error','加入成功');
             return redirect(base_url());
         }
@@ -50,20 +50,16 @@ class Login extends REIM_Controller {
         $error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
         $data =array();
-        /*
-        $username = get_cookie('username',TRUE);
-        $password = get_cookie('password',TRUE);
-         */
         $username = $this->reim_cipher->decode($this->input->cookie('username'));
         $password = $this->reim_cipher->decode($this->input->cookie('password'));
         log_message("debug", "UserName:" . $username);
         log_message("debug", "Password:" . $password);
         //die($username);
         $body = $this->load->view('user/login', array(
-						'errors' => $error
-						, 'title' => '登录'
-						, 'username' => $username
-						, 'password' => $password));
+                        'errors' => $error
+                        , 'title' => '登录'
+                        , 'username' => $username
+                        , 'password' => $password));
     }
 
 
@@ -180,38 +176,8 @@ class Login extends REIM_Controller {
         redirect(base_url());
     }
 
-    private function _check_user($username, $password){
-        $errors = '';
-        $success= '登录成功...';
-
-        echo "in check";
-        if(empty($username)){
-            $errors = '请输入用户名.';
-            return array(false, $errors);
-        }
-        if(empty($password)){
-            return array(false, $errors);
-        }
-
-        if(!$errors){
-        echo "in get user";
-            $data = $this->users->get_user($username, $password);
-
-            if(count($data) > 0){
-                $this->session->set_userdata('user', $data);
-                $this->session->set_userdata('uid', $data['id']);
-                $this->session->set_userdata('username', $data['username']);
-                return array(TRUE, $success);
-            }
-            else{
-                $errors = '用户名不存在.';
-            }
-        }
-        return array(FALSE, $errors);
-    }
-
     public function wxlogin(){
-        // 
+        //
         $_code = $this->input->get('code');
         $appid = 'wxa718c52caef08633';
         $appsec = '02c3df9637d1210a84447524f3606dc1';
@@ -219,7 +185,7 @@ class Login extends REIM_Controller {
         $buf = $this->do_Get($auth_url);
         $obj = json_decode($buf, True);
         if(array_key_exists('errcode', $obj)) {
-            //TODO: 
+            //TODO:
         } else {
             $openid  = $obj['openid'];
             $token = $obj['access_token'];
@@ -240,17 +206,6 @@ class Login extends REIM_Controller {
             $this->session->set_userdata("groupname", $__g);
             // 获取一下组信息，然后设置一下
             redirect(base_url('items'));
-
-            /*
-        {
-            access_token: "OezXcEiiBSKSxW0eoylIeE-sVMTrnjgr4HIMn_AwB1y5A2UVTp_O_NcCS5iN4nvFjJUphBgZlnp1dJPg-WuyGX7s5LnFPVP78lypuqTC3Zn9y0SwiIjH7tKL3kvbN7b9U6zMB_4Cw07PtMaB6hakAQ",
-                expires_in: 7200,
-                refresh_token: "OezXcEiiBSKSxW0eoylIeE-sVMTrnjgr4HIMn_AwB1y5A2UVTp_O_NcCS5iN4nvFsZkvMXThshUm1rnmouUsUeiUU_5p5LaNpO4dh8wRQJIPegwxghSNePnKdo7YxwF_FOS8UPrBh434OipAiaNbCw",
-                openid: "oqu3At1tE-Yz-qbjvvTbk6tr9oXE",
-                scope: "snsapi_login",
-                unionid: "oEdh1uAvUA3Fjc-Ua-YOjLEIH79k"
-        }
-             */
         }
     }
 
