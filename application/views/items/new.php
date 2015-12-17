@@ -697,7 +697,7 @@ function get_sobs(){
                     }   
                 }
             }
-            var selectDom = this.parentNode.nextElementSibling.children[0]
+            var selectDom = $(this).parent().next().find("select")[0];
             $(selectDom).empty().append(_h).trigger("chosen:updated");
             $('#sob_category').trigger('change');
             $('#sob_category').trigger('change:updated');
