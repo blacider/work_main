@@ -1138,7 +1138,7 @@ class Reports extends REIM_Controller {
                 $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
             }
             log_message("debug", "xxx audit data:" . json_encode($d));
-            $trash= $d['status'] === 1 ? 'grey' : 'red';
+            $trash = $d['status'] === 1 ? 'grey' : 'red';
             $edit = ($d['status'] === 1)   ? 'grey' : 'green';
             $exports = ($d['status'] === 1) ? 'grey' : 'grey';
             $d['author'] = '';
