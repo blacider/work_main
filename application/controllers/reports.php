@@ -1133,8 +1133,7 @@ class Reports extends REIM_Controller {
 
         $data = $items['data']['data'];
         foreach($data as &$d){
-            if(array_key_exists('has_attachment',$d) && $d['has_attachment'])
-            {
+            if(array_key_exists('has_attachment',$d) && $d['has_attachment']) {
                 $url = base_url('reports/show/' . $d['id']);
                 $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
             }
@@ -1176,7 +1175,6 @@ class Reports extends REIM_Controller {
             case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2]  . '</font>';};break;
             }
             $d['prove_ahead'] = $prove_ahead;
-            $d['attachments'] = '';
 
             if(array_key_exists('template_id',$d) && array_key_exists($d['template_id'],$report_template_dic))
             {
