@@ -169,10 +169,7 @@ class Login extends REIM_Controller {
 
     public function dologout()
     {
-        $this->session->unset_userdata('userid');
-        $this->session->unset_userdata('profile');
-        $this->session->unset_userdata('user');
-        $this->session->unset_userdata('jwt');
+        $this->users->logout();
         redirect(base_url());
     }
 

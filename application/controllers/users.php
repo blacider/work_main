@@ -96,6 +96,13 @@ class Users extends REIM_Controller {
     }
 
     public function profile(){
+        // 重新获取
+        $profile = $this->user->reim_get_user();
+        if(empty($profile) or empty($profile['data']['profile'])){
+            $this->user->logout();
+            return redirect(base_url('login'));
+        }
+
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
         $ug = $this->reim_show->usergroups();
@@ -111,61 +118,46 @@ class Users extends REIM_Controller {
         if($_levels['status']) {
             $levels = $_levels['data'];
         }
-        // 重新获取
-        $profile = $this->user->reim_get_user();
-        if($profile){
-            $pro = $profile['data']['profile'];
-            $config = $profile['data']['profile'];
-            if(array_key_exists('group',$config))
-            {
-                 if(array_key_exists('config',$profile['data']['profile']['group']))
-                 {
-                     $config = $profile['data']['profile']['group']['config'];
-                 }
-            }
-            else
-            {
-                 $config =array();
-            }
-            $profile = $profile['data']['profile'];
-            $sobs = array();
-            $usergroups = array();
-            $audits = array();
-            $commits = array();
 
-
-            if(array_key_exists('commits',$profile))
-            {
-                $sobs = $profile['commits'];
-            }
-
-
-            if(array_key_exists('sob',$profile))
-            {
-                $sobs = $profile['sob'];
-            }
-            if(array_key_exists('usergroups',$profile))
-            {
-                $usergroups = $profile['usergroups'];
-            }
-
-            $uid = $profile['id'];
-            $profile = json_decode($this->user->reim_get_info($uid), True);
-            $profile =  $profile['data'];
-            $manager_id = $profile['manager_id'];
-            log_message("debug","####".json_encode($profile));
-        } else  {
-            $config = array();
-            $user = $this->session->userdata('user');
-            //log_message("debug", json_encode($user));
-            $profile['nickname'] = $user->nickname;
-            $profile['email'] = $user->email;
-            $profile['phone'] = '不管';
-            $profile['group'] = array('group_name' => '如数管理员');
-            $profile['admin'] = array();
-            $profile['wx_token'] = '不管';
-            $profile['lastdt'] = $user->create_time;
+        $pro = $profile['data']['profile'];
+        $config = $profile['data']['profile'];
+        if(array_key_exists('group',$config))
+        {
+             if(array_key_exists('config',$profile['data']['profile']['group']))
+             {
+                 $config = $profile['data']['profile']['group']['config'];
+             }
         }
+        else
+        {
+             $config =array();
+        }
+        $profile = $profile['data']['profile'];
+        $sobs = array();
+        $usergroups = array();
+        $audits = array();
+        $commits = array();
+
+
+        if(array_key_exists('commits',$profile))
+        {
+            $sobs = $profile['commits'];
+        }
+
+
+        if(array_key_exists('sob',$profile))
+        {
+            $sobs = $profile['sob'];
+        }
+        if(array_key_exists('usergroups',$profile))
+        {
+            $usergroups = $profile['usergroups'];
+        }
+
+        $uid = $profile['id'];
+        $profile = json_decode($this->user->reim_get_info($uid), True);
+        $profile =  $profile['data'];
+        $manager_id = $profile['manager_id'];
 
         $group = $this->groups->get_my_list();
 
