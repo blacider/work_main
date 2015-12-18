@@ -1149,8 +1149,9 @@ class Reports extends REIM_Controller {
 
             $download_icon = '<span class="ui-icon ace-icon fa fa-download ' . 'blue' . '  tdown" data-id="' . $d['id'] . '"></span>';
 
-            if(in_array($d['status'],[2,4,5,7,8]))
-            {
+            if (in_array($d['status'],[2,4,5,7,8]) or
+                ($d['status'] == 0 and $d['pa_approval'])
+            ) {
                 if($d['mdecision'] == 1 && !$d['cc_flag']){
                     $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del"  data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-decision="1" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in texport' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>' .   $download_icon . '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
                 } else {
