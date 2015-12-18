@@ -815,8 +815,6 @@ function do_post(force) {
                 is_submit = 0;
                 return false;
             }
-           
-			amount = parseInt(amount);
 			sum+=amount;
 		};
 	});
