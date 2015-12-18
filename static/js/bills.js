@@ -93,7 +93,10 @@ jQuery(grid_selector).jqGrid({
         jQuery.each(selectRows,function(index,row){
             jQuery(grid_selector).jqGrid('setSelection',row);
         });
-        if (IF_SELECT_ALL) $("#cb_grid-table")[0].checked = true;
+        if (IF_SELECT_ALL) 
+            $(".cbox").each(function(index, el) {
+                $(".cbox")[index].checked = true;
+            });
         bind_event();
         var table = this;
         setTimeout(function(){
