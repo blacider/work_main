@@ -109,13 +109,13 @@ jQuery(grid_selector).jqGrid({
     },
     onSelectAll : function(aRows, status) {
         if (status) {
+            IF_SELECT_ALL = 1;
             var array_selectRows = jqgrid_choseall_plus(grid_selector);
             jQuery.each(array_selectRows,function(index,rowid){
                 if (jQuery.inArray(rowid,selectRows) == -1) {
                     selectRows.push(rowid);
                 }
             });
-            IF_SELECT_ALL = 1;
         } else {
             jQuery.each(aRows,function(index,rowid){
                 selectRows.splice(jQuery.inArray(rowid,selectRows),1);
