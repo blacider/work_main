@@ -42,12 +42,12 @@
                             {
                                 ?>
                             <hr>
-                                <?php 
+                                <?php
                             }
                             foreach($config['config'] as $field_group){
                             ?>
                                 <div class="form-group">
-                                    <label class="col-sm-1 control-label no-padding-right blue"><?php if(array_key_exists('name', $field_group)){echo $field_group['name'];}?></label>                              
+                                    <label class="col-sm-1 control-label no-padding-right blue"><?php if(array_key_exists('name', $field_group)){echo $field_group['name'];}?></label>
                                 </div>
                                 <?php
                                     if(array_key_exists('children', $field_group))
@@ -59,7 +59,7 @@
                                 <?php
                                     switch(intval($field['type']))
                                     {
-                            
+
                                         case 1:
                                 ?>
                                         <div class="form-group">
@@ -69,7 +69,7 @@
                                                     <input type="text" class="form-controller col-xs-8 field_value" data-type="1" data-id="<?php echo $field['id'];?>" <?php if($field['required'] == 1){echo 'required';}?> value="<?php if(array_key_exists($field['id'], $extra_dic)){echo $extra_dic[$field['id']]['value'];}?>" disabled/>
                                                 </div>
                                             </div>
-                                        
+
                                         </div>
 
                                 <?php
@@ -84,19 +84,19 @@
                                             <div class="col-xs-3 col-sm-3">
                                                 <div class="radio col-xs-12 col-sm-12">
                                                     <select class="chosen-select tag-input-style col-xs-6 field_value" data-type="2" data-id="<?php echo $field['id'];?>" data-placeholder="请选择" <?php if($field['required'] == 1){echo 'required';}?> disabled>
-                                                        <?php foreach($field['property']['options'] as $m) { 
+                                                        <?php foreach($field['property']['options'] as $m) {
                                                                 if(array_key_exists($field['id'], $extra_dic) && $m == $extra_dic[$field['id']]['value'])
                                                                 {
                                                             ?>
                                                                 <option selected value="<?php echo $m; ?>"><?php echo $m; ?></option>
-                                                       
-                                                        <?php 
+
+                                                        <?php
                                                                 }
                                                                 else
                                                                 {
                                                         ?>
                                                                 <option value="<?php echo $m; ?>"><?php echo $m; ?></option>
-                                                        <?php            
+                                                        <?php
                                                                 }
                                                         } ?>
                                                     </select>
@@ -115,7 +115,7 @@
                                             <label class="col-sm-1 control-label no-padding-right"><?php echo $field['name'];?></label>
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
-                                                    <input type="text" class="form-controller col-xs-8 period field_value date-timepicker1" data-type="3" data-id="<?php echo $field['id'];?>" name="dt" 
+                                                    <input type="text" class="form-controller col-xs-8 period field_value date-timepicker1" data-type="3" data-id="<?php echo $field['id'];?>" name="dt"
                                                             placeholder="时间" <?php if($field['required'] == 1){echo 'required';}?> value="<?php if(array_key_exists($field['id'], $extra_dic)){echo date('Y-m-d',$extra_dic[$field['id']]['value']);}?>" disabled>
                                                 </div>
                                             </div>
@@ -128,7 +128,7 @@
                                 <?php
                                         case 4:
                                 ?>
-                                        <?php 
+                                        <?php
                                             $value = array();
                                             if(array_key_exists($field['id'], $extra_dic))
                                             {
@@ -140,22 +140,22 @@
                                             <label class="col-sm-1 control-label no-padding-right"><?php echo $field['name'];?></label>
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
-                                                    <input type="text" class="form-controller col-xs-8 account" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" 
+                                                    <input type="text" class="form-controller col-xs-8 account" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>"
                                                         placeholder="银行户名" value="<?php if($value && array_key_exists('account', $value)){ echo $value['account'];}?>" <?php if($field['required'] == 1){echo 'required';}?> disabled/>
                                                 </div>
                                             </div>
-                                        
+
                                         </div>
 
                                         <div class="form-group">
                                             <label class="col-sm-1 control-label no-padding-right"></label>
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
-                                                    <input type="text" class="form-controller col-xs-8 cardno" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" 
+                                                    <input type="text" class="form-controller col-xs-8 cardno" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>"
                                                         placeholder="银行账号" value="<?php if($value && array_key_exists('cardno', $value)){ echo $value['cardno'];}?>"  <?php if($field['required'] == 1){echo 'required';}?> disabled/>
                                                 </div>
                                             </div>
-                                        
+
                                         </div>
 
 
@@ -163,33 +163,33 @@
                                             <label class="col-sm-1 control-label no-padding-right"></label>
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
-                                                    <input type="text" class="form-controller col-xs-8 bankname" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" 
+                                                    <input type="text" class="form-controller col-xs-8 bankname" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>"
                                                         placeholder="开户行名" value="<?php if($value && array_key_exists('bankname', $value)){ echo $value['bankname'];}?>"  <?php if($field['required'] == 1){echo 'required';}?> disabled/>
                                                 </div>
                                             </div>
-                                        
+
                                         </div>
 
                                           <div class="form-group">
                                             <label class="col-sm-1 control-label no-padding-right"></label>
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
-                                                    <input type="text" class="form-controller col-xs-8 bankloc" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" 
+                                                    <input type="text" class="form-controller col-xs-8 bankloc" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>"
                                                         placeholder="开户地" value="<?php if($value && array_key_exists('bankloc', $value)){ echo $value['bankloc'];}?>"  <?php if($field['required'] == 1){echo 'required';}?> disabled/>
                                                 </div>
                                             </div>
-                                        
+
                                         </div>
 
                                           <div class="form-group">
                                             <label class="col-sm-1 control-label no-padding-right"></label>
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
-                                                    <input type="text" class="form-controller col-xs-8 subbranch" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>" 
+                                                    <input type="text" class="form-controller col-xs-8 subbranch" data-type="4" data-id="<?php echo $field['id'];?>" data-bank="<?php echo $field['property']['bank_account_type'];?>"
                                                         placeholder="支行" value="<?php if($value && array_key_exists('subbranch', $value)){ echo $value['subbranch'];}?>"  <?php if($field['required'] == 1){echo 'required';}?> disabled/>
                                                 </div>
                                             </div>
-                                        
+
                                         </div>
                                         </div>
 
@@ -197,7 +197,7 @@
                                         break;
                                 ?>
 
-                                <?php 
+                                <?php
                                     }
                                 ?>
 
@@ -264,18 +264,18 @@ foreach($report['items'] as $i) {
                                                         if(date('H', $edt) > 12) $_day_delta += 1;
                                                         // 都切换到12点去
                                                         $_date_str = strftime('%Y-%m-%d %H:%M', $i['dt']) . '至' . strftime('%Y-%m-%d %H:%M', $edt);
-							
+
                                                         if ($_day_delta > 0) {
-                                                            $_date_str = $_date_str . "(共" . $_day_delta . "天)";							
+                                                            $_date_str = $_date_str . "(共" . $_day_delta . "天)";
                                                             $_extra_amount = '（' . sprintf("%.2f", $i['amount'] / $_day_delta) . "元/天）";
                                                         }
                                                     }
                                                     if($e['type'] == 5) {
                                                         // 多人的
                                                         $members = $e['value'];
-							if ($members > 0) {
+                            if ($members > 0) {
                                                             $_extra_amount = '（' . sprintf("%.2f", $i['amount'] / $members) . "元/人 共" . $members . "人）";
-							}
+                            }
                                                     }
                                                 }
                                             }
@@ -284,23 +284,23 @@ foreach($report['items'] as $i) {
                                             <td><?php echo $_date_str; ?></td>
                                             <td>
                                             <?php echo $i['category_name']; ?></td>
-<?php 
+<?php
                                                 $update_amount = '';
-                                                if($i['src_amount'] > 0) { 
+                                                if($i['src_amount'] > 0) {
                                                     $update_amount = "[" . $i['currency_logo'] . $i['src_amount'] . " 由  ". $i['lastmodifier'] . "修改]";
                                                 }
 ?>
     <td><?php echo $i['currency_logo']; ?> &nbsp;<?php echo $i['amount']; ?> <?php echo  $update_amount . $_extra_amount; ?> </td>
-                                            <td><?php 
+                                            <td><?php
                                                 echo $item_type_dic[$i['prove_ahead']];
                                                 ?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td><?php echo $i['note'];?></td>
                                             <td>
-                                                <?php 
+                                                <?php
                                                     echo $i['attachment'];
                                                 ?>
-                                            
+
                                             <td><?php $link = base_url('items/show/' . $i['id'] . "/1"); ?><a href="<?php echo $link; ?>">详情</a></td>
                                         </tr>
                                         <?php } ?>
@@ -316,16 +316,16 @@ foreach($report['items'] as $i) {
                                             <td>审批人</td>
                                             <td>审批意见</td>
                                             <td>审批时间</td>
-                                       
+
                                             <!--
                                             <td>操作</td>
                                             -->
                                         </tr>
                                         <?php foreach($flow as $i){ ?>
                                         <tr>
-                                   
-                                            <td><?php 
-                                                if($i['wingman']) 
+
+                                            <td><?php
+                                                if($i['wingman'])
                                                     {
                                                         echo $i['nickname'].'('.$i['wingman'].'代提交)';
                                                     }
@@ -335,9 +335,9 @@ foreach($report['items'] as $i) {
                                                 }
                                              ?></td>
                                             <td><?php echo $i['status']; ?></td>
-                                            <td><?php 
+                                            <td><?php
 if($i['ts'] != '0000-00-00 00:00:00') {
-                                                echo $i['ts']; 
+                                                echo $i['ts'];
 }
 ?></td>
                                         </tr>
@@ -353,18 +353,18 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                                             <td>姓名</td>
                                             <td>留言</td>
                                             <td>内容</td>
-                                       
+
                                             <!--
                                             <td>操作</td>
                                             -->
                                         </tr>
                                         <?php foreach($comments as $i){ ?>
                                         <tr>
-                                   
+
                                             <td><?php echo $i['nickname']; ?></td>
-                                            <td><?php 
+                                            <td><?php
                                             if($i['lastdt'] != '0000-00-00 00:00:00') {
-                                                echo $i['lastdt']; 
+                                                echo $i['lastdt'];
                                             }
                                             ?></td>
                                             <td><?php echo $i['comment']; ?></td>
@@ -373,7 +373,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                                     </table>
                                 </div>
                             </div>
-               
+
 
 <style type="text/css">
      #submit1 {
@@ -381,7 +381,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
   border: 0;
   color: white;
   height: 30px;
-  border-radius: 3px;   
+  border-radius: 3px;
   font-size: 12px;
    }
    #submit1:hover {
@@ -397,13 +397,13 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                                 </center>
                             </div>
                             -->
-                   
-                   
+
+
                     </div>
         </form>
 
         <div class="form-group">
-            <form method="post" id='comment' action="<?php echo base_url('reports/add_comment');  ?>" > 
+            <form method="post" id='comment' action="<?php echo base_url('reports/add_comment');  ?>" >
                 <div class="col-xs-6 col-sm-6 col-xs-offset-2 col-sm-offset-2">
                     <input type="text" name="comment" style="width:100%;">
                 </div>
@@ -419,19 +419,19 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                 <?php
                 $_ruid = $report['uid'];
                 $_uid = $profile['id'];
-                if($_ruid == $_uid) 
+                if($_ruid == $_uid)
                 {
                     if(($report['status'] == 1) || ($report['status'] == 2))
                     {
                     ?>
                     <a style="margin-left: 80px;" class="btn btn-white callback" data-renew="-2"><i class="ace-icon fa fa-undo gray bigger-110"></i>撤回</a>
-                    <?php 
+                    <?php
                     }
                     else if($report['status'] == 7)
                     {
                     ?>
                     <a style="margin-left: 80px;" class="btn btn-white confirm_success" data-renew="-2"><i class="ace-icon fa fa-check-square-o gray bigger-110"></i>确认已收款</a>
-                    <?php   
+                    <?php
                     }
                 }
                 if($decision == 1)
@@ -439,16 +439,16 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                     ?>
                     <a style="margin-left: 20px;" class="btn btn-white tpass" ><i class="ace-icon fa fa-check-square-o gray bigger-110"></i>通过</a>
                     <a style="margin-left: 20px;" class="btn btn-white tdeny" ><i class="ace-icon  glyphicon glyphicon-remove gray bigger-110"></i>退回</a>
-                    <?php 
+                    <?php
                 }
                 else if(in_array($profile['admin'],[1,2]) && $report['status'] == 2)
                 {
                      ?>
                     <a style="margin-left: 20px;" class="btn btn-white tapprove" ><i class="ace-icon fa fa-check-square-o gray bigger-110"></i>通过</a>
                     <a style="margin-left: 20px;" class="btn btn-white finance_tdeny" ><i class="ace-icon  glyphicon glyphicon-remove gray bigger-110"></i>退回</a>
-                    <?php 
+                    <?php
                 }
-                ?>                               
+                ?>
                 <a style="margin-left: 20px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>返回</a>
             </div>
         </div>
@@ -680,7 +680,7 @@ $(document).ready(function(){
     $('.finance_deny').click(function(){
         $('#form_discard','#finance_comment_dialog').submit();
     });
-    $('.chosen-select').chosen({allow_single_deselect:true}); 
+    $('.chosen-select').chosen({allow_single_deselect:true});
     $(window)
         .off('resize.chosen')
         .on('resize.chosen', function() {
@@ -753,7 +753,7 @@ $(document).ready(function(){
                             $('#rid_').val(_id);
                             $('#status_').val(2);
                             if(close_directly == 0) {
-                                $('#modal_next_').modal('show'); 
+                                $('#modal_next_').modal('show');
                             } else {
                                 $('#permit_form').submit();
                             }
