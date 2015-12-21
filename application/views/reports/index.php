@@ -16,7 +16,7 @@
     border: 0;
     color: white;
     height: 25px;
-    border-radius: 3px;   
+    border-radius: 3px;
     font-size: 12px;
   }
   #globalSearch:hover {
@@ -56,7 +56,7 @@
                       <input class=" col-xs-8 col-sm-8" type="text" id="email" name="email" class="form-control" value="<?php if(array_key_exists('email',$profile)){ echo $profile['email'];}?>">
                       <input type="hidden" id="report_id" name="report_id">
                     </div>
-                    
+
                   </div>
                        <br>
                        <br>
@@ -106,20 +106,20 @@
   <script src="/static/js/base.js" ></script>
   <script src="/static/js/reports.js" ></script>
 
-	<!--<script type="text/javascript">
+    <!--<script type="text/javascript">
 $(function() {
 
-	$('#mysearch').filterGrid('#grid-table',{
-		enableSearch:true,
-		filterModel:[
-			{label: 'title', name: 'title', stype: 'text'}
-		],
-		buttonclass:'search-submit',
-		tableclass:'search',
-		autosearch:false,
-		searchButton:'搜索'});
-	$('#mysearch label').css('display','none')
-	});
+    $('#mysearch').filterGrid('#grid-table',{
+        enableSearch:true,
+        filterModel:[
+            {label: 'title', name: 'title', stype: 'text'}
+        ],
+        buttonclass:'search-submit',
+        tableclass:'search',
+        autosearch:false,
+        searchButton:'搜索'});
+    $('#mysearch label').css('display','none')
+    });
 
 </script>-->
 <script type="text/javascript">

@@ -426,35 +426,6 @@ class Reports extends REIM_Controller {
                 $ex['value'] = strtotime($ex['value']);
                 log_message('debug','time:' . $ex['value']);
             }
-            /*
-            $_account = $this->input->post('account');
-            $_account_name = $this->input->post('account_name');
-            $_account_no = $this->input->post('account_no');
-            $_payment = $this->input->post('payment');
-            $_borrowing = $this->input->post('borrowing');
-            $_location_from = $this->input->post('location_from');
-            $_location_to = $this->input->post('location_to');
-            $_period_start = $this->input->post('period_start');
-            $_period_end = $this->input->post('period_end');
-            $_contract = $this->input->post('contract');
-            $_contract_note = $this->input->post('contract_note');
-            $_note = $this->input->post('note');
-            //$_contract = $_contract == 2 ? 0 : 1;
-            $extra = array(
-                'template_id' => $template_id
-                ,'borrowing' => $_borrowing
-                ,'account' => array(
-                    'id' => $_account
-                    ,'name' => $_account_name
-                    ,'no' => $_account_no
-                )
-                ,'payment' => $_payment
-                ,'period' => array('start' => $_period_start, 'end' => $_period_end)
-                ,'location' => array('start' => $_location_from, 'dest' => $_location_to)
-                ,'contract' => array('available' => $_contract, 'note' => $_contract_note)
-                ,'note' => $_note
-            );
-            */
         }
         if(!$cc) $cc = array();
         if(!$force) $force = 0;
