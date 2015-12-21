@@ -802,8 +802,7 @@ $(document).ready(function(){
     function chose_others_zero(item,nextId) {
     for (var item in getData) {
         if (item != undefined) {
-            $($('.chosen-select','#finance_modal_next')[0]).find("option[value='"+getData[item]+"']").attr("selected",true);
-            $($('.chosen-select','#finance_modal_next')[0]).trigger("chosen:updated");
+            $($('.chosen-select','#finance_modal_next')[0]).val(item).trigger("chosen:updated");
         }
     }
     $('#finance_modal_next').modal('show');
