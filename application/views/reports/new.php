@@ -285,8 +285,7 @@ function do_post(force) {
             {
                 is_only_one_type = false;
             }
-           
-            amount = parseInt(amount);
+
             sum+=amount;
         };
     });
