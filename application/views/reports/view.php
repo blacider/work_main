@@ -748,7 +748,7 @@ $(document).ready(function(){
                         getData = data['data'].suggestion;
                         if (data['data'].complete == 0) {
                             $('#rid').val(_id);
-                            chose_others_zero_audit(_id);
+                            chose_others_zero_audit(getData);
                         } else {
                             $('#rid_').val(_id);
                             $('#status_').val(2);
@@ -827,14 +827,7 @@ $(document).ready(function(){
 });
 
 function chose_others_zero_audit(item) {
-    //console.log(item);
-    for (var item in getData) {
-        if (item != undefined) {
-            //console.log(getData[item]);
-            $($('.chosen-select')[0]).find("option[value='"+getData[item]+"']").attr("selected",true);
-            $($('.chosen-select')[0]).trigger("chosen:updated");
-        }
-    }
+    $('#modal_next').find('.chosen-select').val(item).trigger("chosen:updated");
     $('#modal_next').modal('show');
 }
 function chose_others_audit(_id) {
