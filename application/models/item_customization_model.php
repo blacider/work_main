@@ -79,9 +79,13 @@ class Item_Customization_Model extends Reim_Model {
             $action = 'deactive';
         }
 
+        // PUT 空数据会出错，所以随便构造一点数据
+        $data = array(
+            'key' => 'value'
+        );
         $url = $this->get_url(sprintf('item_customization/%s/%d', $action, $id));
         $jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Put($url, [ ], $jwt);
+        $buf = $this->do_Put($url, $data, $jwt);
 
         log_message('debug', 'toggle enabled : ' . $buf);
         $data = json_decode($buf, TRUE);
