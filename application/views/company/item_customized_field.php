@@ -188,10 +188,10 @@
             <i class="glyphicon glyphicon-floppy-disk"></i>
             保存
           </button>
-          <button style="position:relative;left:80px;" class="btn btn-white cancel" data-renew="-1">
+          <a role="button" href="javascript:history.back(-1);"style="position:relative;left:80px;" class="btn btn-white cancel">
             <i class="glyphicon glyphicon-repeat"></i>
             取消
-          </button>
+          </a>
         </div>
       </div>
     </form>
