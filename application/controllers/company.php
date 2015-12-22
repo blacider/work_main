@@ -11,6 +11,7 @@ class Company extends REIM_Controller {
         $this->load->model('reim_show_model','reim_show');
         $this->load->model('items_model','items');
         $this->load->model('report_model','reports');
+        $this->load->model('item_customization_model');
     }
     
     public function set_single_company_config(){
@@ -1451,6 +1452,123 @@ public function common(){
                 ),
             )
         );
+    }
+
+    public function item_customization($action = 'list', $id = '0') {
+        $action = strtolower($action);
+        if ($action == 'new') {
+            return $this->item_customization_new();
+        } elseif ($action == 'edit') {
+            return $this->item_customization_edit($id);
+        } elseif ($action == 'list' || $action == 'index') {
+            return $this->item_customization_list();
+        } else {
+            show_404();
+        }
+    }
+
+    private function item_customization_list() {
+        $this->need_group_it();
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+
+        $fields_result = $this->item_customization_model->get_list();
+        $declaration_result = $this->item_customization_model->get_declarations();
+        if (empty($fields_result['status'])) {
+            $error = $fields_result['data']['msg'];
+        } elseif (empty($declaration_result['status'])) {
+            $error = $declaration_result['data']['msg'];
+        }
+        $fields = $fields_result['data'];
+        $declaration = $declaration_result['data'];
+
+        $this->bsload('company/item_customized_fields', array(
+            'title' => '消费字段自定义',
+            'fields' => $fields,
+            'declaration' => $declaration,
+            'error' => $error,
+            'breadcrumbs' => array(
+                array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon'),
+                array('url'  => '', 'name' => '公司设置', 'class' => ''),
+                array('url'  => '', 'name' => '消费设置', 'class' => ''),
+                array('url'  => '', 'name' => '消费字段设置', 'class' => ''),
+            ),
+        ));
+    }
+
+    private function item_customization_new() {
+        $this->need_group_it();
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+
+        $type = $this->input->get('type');
+        if (empty($type)) {
+            // 默认新建类型101
+            $type = 101;
+        }
+
+        $sob_tree_result = $this->category->get_sob_tree();
+        if (empty($sob_tree_result['status'])) {
+            $this->session->set_userdata('last_error', $sob_tree_result['data']['msg']);
+            redirect('company/item_customization');
+        }
+        $sob_tree = $sob_tree_result['data'];
+
+        $field_result = $this->item_customization_model->get_by_type($type);
+        if (empty($field_result['status'])) {
+            $this->session->set_userdata('last_error', $field_result['data']['msg']);
+            redirect('company/item_customization');
+        }
+        $field = $field_result['data'];
+        $title = '新建⎡' . $field['declaration']['type_name'] . '⎦字段';
+            
+        $this->bsload('company/item_customized_field', array(
+            'title' => $title,
+            'error' => $error,
+            'field' => $field,
+            'sob_tree' => $sob_tree,
+            'breadcrumbs' => array(
+                array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon'),
+                array('url'  => '', 'name' => '公司设置', 'class' => ''),
+                array('url'  => '', 'name' => '消费设置', 'class' => ''),
+                array('url'  => base_url('/company/item_customization'), 'name' => '消费字段设置', 'class' => ''),
+                array('url'  => '', 'name' => $title, 'class' => ''),
+            ),
+        ));
+    }
+
+    private function item_customization_edit($id) {
+        $this->need_group_it();
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+
+        $sob_tree_result = $this->category->get_sob_tree();
+        if (empty($sob_tree_result['status'])) {
+            $this->session->set_userdata('last_error', $sob_tree_result['data']['msg']);
+            redirect('company/item_customization');
+        }
+        $sob_tree = $sob_tree_result['data'];
+
+        $field_result = $this->item_customization_model->get($id);
+        if (empty($field_result['status'])) {
+            $this->session->set_userdata('last_error', $field_result['data']['msg']);
+            redirect('company/item_customization');
+        }
+        $field = $field_result['data'];
+        $title = '修改⎡' . $field['title'] . '⎦';
+        $this->bsload('company/item_customized_field', array(
+            'title' => $title,
+            'error' => $error,
+            'field' => $field,
+            'sob_tree' => $sob_tree,
+            'breadcrumbs' => array(
+                array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon'),
+                array('url'  => '', 'name' => '公司设置', 'class' => ''),
+                array('url'  => '', 'name' => '消费设置', 'class' => ''),
+                array('url'  => base_url('/company/item_customization'), 'name' => '消费字段设置', 'class' => ''),
+                array('url'  => '', 'name' => $title, 'class' => ''),
+            ),
+        ));
     }
 
     public function setting(){

@@ -1,0 +1,135 @@
+.form-group-control {
+    display: block;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    background-color: #fff;
+    background-image: none;
+}
+
+.tree, .tree ul {
+    margin: 0;
+    padding: 0;
+    list-style: none
+}
+.tree ul {
+    margin-left: 7px;
+    position: relative;
+    display: none;
+}
+
+.tree li.open > ul {
+    display: block;
+}
+
+.tree li {
+    margin: 0;
+    padding: 0 1em;
+    line-height: 2em;
+    position: relative
+}
+
+.tree ul:before {
+    content: "";
+    display: block;
+    width: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    border-left: 1px dotted
+}
+
+.tree ul li:before {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 0;
+    border-top: 1px dotted;
+    margin-top: -1px;
+    position: absolute;
+    top: 1em;
+    left: 0
+}
+
+.tree ul li:last-child:before {
+    background: #fff;
+    height: auto;
+    top: 1em;
+    bottom: 0
+}
+
+.tree li .checkstate {
+    float: left;
+    margin-top: 5px;
+    height: 16px;
+    width: 16px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-image: url("/static/images/treecheckstate.png");
+}
+
+.tree li img {
+    float: left;
+    margin: 5px 3px 0;
+    height: 16px;
+    width: 16px;    
+}
+
+.tree li .indicator {
+    float: left;
+    margin-top: 5px;
+    height: 16px;
+    width: 16px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-image: url("/static/images/treecheckstate.png");
+    background-position: 0px -64px;
+}
+
+.tree li.open> .indicator {
+    float: left;
+    margin-top: 5px;
+    margin-right: 3px;
+    height: 16px;
+    width: 16px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-image: url("/static/images/treecheckstate.png");
+    background-position: -16px -64px;    
+}
+
+.tree .checkstate.unchecked {
+    background-position: 0 0;
+}
+
+.tree .checkstate.unchecked:hover {
+    background-position: 0 -16px;
+}
+
+.tree .checkstate.checked {
+    background-position: 0 -16px;
+}
+
+.tree .checkstate.checked:hover {
+    background-position: -16px -16px;
+}
+
+.tree .checkstate.mixed {
+    background-position: 0px -32px;
+}
+
+.tree .checkstate.mixed:hover {
+    background-position: -16px -32px;
+}
+
+.tree .checkstate.unchecked.disabled {
+    background-position: 0 -48px;    
+}
+
+.tree .checkstate.checked.disabled {
+    background-position: -16px -48px; 
+}
+
+

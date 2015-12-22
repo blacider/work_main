@@ -227,4 +227,17 @@ class Category_Model extends Reim_Model {
 		$obj = json_decode($buf, true);
         return $obj;
     }
+
+    public function get_sob_tree() {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) {
+            return false;
+        }
+
+        $url = $this->get_url('sob/tree');
+		$buf = $this->do_Get($url, $jwt);
+
+		$obj = json_decode($buf, true);
+        return $obj;
+    }
 }

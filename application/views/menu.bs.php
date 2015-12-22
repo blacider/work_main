@@ -431,7 +431,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <b class="arrow"></b>
             <ul class="submenu rushumenu submenu_custom">
                 <li id="custom_item">
-                    <a href="<?php echo base_url('company/custom_item'); ?>" >  消费字段设置 </a>
+                    <a href="<?php echo base_url('company/item_customization'); ?>" >  消费字段自定义 </a>
                     <b class="arrow"></b>
                 </li> 
 
