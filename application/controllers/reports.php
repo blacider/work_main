@@ -2205,6 +2205,9 @@ class Reports extends REIM_Controller {
             return redirect(base_url('reports/index'));
         }
         $receiver = $this->input->post('receiver');
+        if (empty($receiver)) {
+            $receiver = [ ];
+        }
         $buf = $this->reports->submit_check(implode(',', $receiver), implode(',', $items));
         die($buf);
     }
