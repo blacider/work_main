@@ -26,7 +26,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">名称</label>
                                 <div class="col-xs-9 col-sm-9">
-                                    <input type="text" class="form-controller col-xs-12" name="title" placeholder="名称" value="<?php echo $report['title']; ?>">
+                                    <input type="text" class="form-controller col-xs-12" id="title" name="title" placeholder="名称" value="<?php echo $report['title']; ?>">
                                 </div>
                             </div>
                             <div class="form-group">
