@@ -347,7 +347,7 @@ if($last_error) {
 
 
         <div class="form-group" style="height:30px">
-            <label class="col-sm-3 control-label no-padding-right">是否需要图片</label>
+            <label class="col-sm-3 control-label no-padding-right">是否需要照片</label>
                                 <div class="col-xs-6 col-sm-6">
                                         <label style="margin-top:8px;">
                                             <input name="force_attach" class="ace ace-switch btn-rotate" type="checkbox" id="force_attach" style="margin-top:4px;" />
@@ -456,7 +456,7 @@ if($last_error) {
         </div>
             
         <div class="form-group" style="height:30px">
-            <label class="col-sm-3 control-label no-padding-right">是否需要图片</label>
+            <label class="col-sm-3 control-label no-padding-right">是否需要照片</label>
                                 <div class="col-xs-6 col-sm-6">
                                         <label style="margin-top:8px;">
                                             <input name="force_attach" class="ace ace-switch btn-rotate" type="checkbox" id="force_attach" style="margin-top:4px;" />
