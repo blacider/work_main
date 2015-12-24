@@ -34,7 +34,7 @@
         <td data-column="type_name"><?php echo $fd['type_name']; ?></td>
         <td data-column="description"><?php echo $f['description']; ?></td>
         <td data-column="toggle">
-          <input class="toggle-enabled ace ace-switch" type="checkbox" <?php if ($f['enabled']) { echo 'checked '; } ?><?php if ($fd['frozen']) { echo 'disabled '; } ?>/>
+          <input class="toggle-enabled ace ace-switch" type="checkbox" <?php if ($f['enabled']) { echo 'checked '; } ?><?php if (!$fd['editable_enabled']) { echo 'disabled '; } ?>/>
           <span class="lbl"></span>
         </td>
         <td data-column="lastdt"><?php echo date('Y-m-d H:i:s', $f['lastdt']); ?></td>
