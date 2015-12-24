@@ -180,8 +180,20 @@ function hookTree() {
 function setNode(node, state, related) {
     var checkbox = $(node).find(' > div.checkstate');
     var id = $(node).data('id');
-    console.log('change ' + id + ' to ' + state);
+    // console.log('change ' + id + ' to ' + state);
     checkbox.removeClass('unchecked').removeClass('checked').removeClass('mixed').addClass(state);
+
+    // 如果target-tree 那么就要影响required-tree
+    if ($(node).closest('.tree').is('#target-tree')) {
+        var related_node = $('#required-tree').find('li[data-id=' + id + ']');
+        if (state == 'checked' || state == 'mixed') {
+            related_node.removeClass('missing');
+        } else {
+            related_node.addClass('missing');
+            //setNode(related_node, 'unchecked', true);
+            saveTree(related_node);
+        }
+    }
 
     // 如果影响关联节点就设置父节点和子节点
     if (related) {
@@ -269,8 +281,12 @@ function saveTree(node) {
             var sob = sobs[i];
             var state = getNodeState(sob);
 
-            console.log('sob ' + $(sob).find(' > span').text() + ' was ' + state);
+            // console.log('sob ' + $(sob).find(' > span').text() + ' was ' + state);
 
+            // missing 隐藏跳过保存
+            if ($(sob).is('.missing'))
+                continue;
+            
             // 如果帐套未选中则跳过继续
             if (state == 'unchecked') 
                 continue;
@@ -281,8 +297,12 @@ function saveTree(node) {
                 var cate = categories[j];
                 var state = getNodeState(cate);
                 
-                console.log('category ' + $(cate).find(' > span').text() + ' was ' + state);
+                // console.log('category ' + $(cate).find(' > span').text() + ' was ' + state);
 
+                // missing 隐藏跳过保存
+                if ($(cate).is('.missing'))
+                    continue;
+            
                 // 跳过未选中的类别
                 if (state == 'unchecked') 
                     continue;
@@ -299,10 +319,15 @@ function saveTree(node) {
                     var sub_cate = sub_categories[l];
                     var state = getNodeState(sub_cate);
                     
-                    console.log('sub category ' + $(sub_cate).find('> span').text() + ' was ' + state);
+                    // console.log('sub category ' + $(sub_cate).find('> span').text() + ' was ' + state);
+
+                    // missing 隐藏跳过保存
+                    if ($(sub_cate).is('.missing'))
+                        continue;
+                    
                     // 记录选中的二级类别
                     if (state == 'checked') {
-                        ids.push($(cate).data(id));
+                        ids.push($(sub_cate).data('id'));
                     }
                 }
             }

@@ -157,9 +157,9 @@
             <?php if ($fd['editable_' . $cf]) { ?>
             <div class="col-sm-4">
               <input type="hidden" name="<?php echo $cf; ?>" value="<?php echo json_encode($field[$cf]); ?>" />
-              <ul class="tree" role="tree" aria-expanded="true" aria-checked="false">
+              <ul id="<?php echo $cf . '-tree'; ?>" class="tree" role="tree" aria-expanded="true" aria-checked="false">
                 <?php foreach ($sob_tree as $s) { ?>
-                <li class="" role="treeitem" aria-level="0">
+                <li class="" role="treeitem" data-id="<?php echo -$s['id']; ?>" aria-level="0">
                   <div class="indicator"></div>
                   <div class="checkstate unchecked"></div>
                   <span><?php echo $s['name']; ?></span>

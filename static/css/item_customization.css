@@ -137,4 +137,6 @@
     background-position: -16px -48px; 
 }
 
-
+.tree li.missing {
+    display: none;
+}
