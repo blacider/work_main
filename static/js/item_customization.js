@@ -128,10 +128,19 @@ function hookTagRemove() {
 }
 
 function hookTree() {
+    // 初始化树选择
     $('.tree').each(function() {
         var value = $(this).prev('input[type=hidden]').val();
         var ids = JSON.parse(value);
 
+        // [0] 代表全选
+        if (ids.length == 1 && ids[0] == 0) {
+            $(this).find(' > li').each(function() {
+                setNode(this, 'checked', true);
+            });
+        }
+
+        // 按照选择设置
         for (var i = 0; i < ids.length; i++) {
             var id = ids[i];
             var node = $(this).find('li[data-id=' + id + ']');
@@ -139,6 +148,7 @@ function hookTree() {
         }
     });
 
+    // 双击展开树
     $('.tree li > span').dblclick(function() {
         var _li = $(this).closest('li');
         if ($(_li).find('ul').length) {
@@ -146,10 +156,12 @@ function hookTree() {
         }
     });
 
+    // 点击切换树选择
     $('.tree li > .indicator').click(function() {
         $(this).closest('li').toggleClass('open');
     });
 
+    // 点击切换选择状态
     $('.tree li > .checkstate').click(function() {
         var _li = $(this).closest('li');
         var state = getNodeState(_li);
@@ -158,23 +170,27 @@ function hookTree() {
             dest = 'unchecked';
         }
 
+        // 关联设置
         setNode(_li, dest, true);
         saveTree(_li);
     });
 }
 
+// related: 是否影响关联节点
 function setNode(node, state, related) {
     var checkbox = $(node).find(' > div.checkstate');
     var id = $(node).data('id');
     console.log('change ' + id + ' to ' + state);
     checkbox.removeClass('unchecked').removeClass('checked').removeClass('mixed').addClass(state);
 
+    // 如果影响关联节点就设置父节点和子节点
     if (related) {
         setChildren(node, state);
         setParent(node, state);
     }
 }
 
+// 获取节点当前状态
 function getNodeState(node) {
     var checkbox = $(node).find(' > div.checkstate');
     if (checkbox.is('.checked')) {
@@ -186,25 +202,19 @@ function getNodeState(node) {
     }
 }
 
-function toggle(node) {
-    var checkbox = $(node).find(' > div.checkstate');
-    var src = getNodeState(node);
-    var id = $(node).data('id');
-    console.log('change ' + id + ' to ' + dest);
-    checkbox.removeClass(src).addClass(dest);
-    return dest;
-}
-
-
 function setParent(node, state) {
     var parent = $(node).parent().closest('.tree li').get(0);
+    // 父节点可能不存在
     if (parent) {
         var state = calcNodeState(parent);
+        // 设置父节点
         setNode(parent, state);
+        // 递归设置祖父节点
         setParent(parent, state);
     }
 }
 
+// 根据子节点的选择状态计算当前状态
 function calcNodeState(node) {
     var children = $(node).find(' > ul > li').has(' > .checkstate');
     
@@ -225,8 +235,10 @@ function calcNodeState(node) {
 function setChildren(node, state) {
     console.assert(state != 'mixed');
 
+    // 遍历设置所有子节点
     $(node).find('ul > li').each(function() {
         setNode(this, state);
+        // 递归子节点
         setChildren(this, state);
     });
 }
@@ -234,44 +246,68 @@ function setChildren(node, state) {
 function saveTree(node) {
     var tree = $(node).closest('.tree');
     var ids = [ ];
+
+    // 取帐套节点
     var sobs = tree.find(' > li');
 
-    for (var i = 0; i < sobs.length; i++) {
+    // 检测是否全选状态
+    var allchecked = true;
+    for (var i = 0; i< sobs.length; i++) {
         var sob = sobs[i];
         var state = getNodeState(sob);
+        if (state != 'checked') {
+            allchecked = false;
+            break;
+        }
+    }
+    
+    if (allchecked) {
+        // 全选和 [ 0 ] 等价
+        ids.push(0);
+    } else {
+        for (var i = 0; i < sobs.length; i++) {
+            var sob = sobs[i];
+            var state = getNodeState(sob);
 
-        console.log('sob ' + $(sob).find(' > span').text() + ' was ' + state);
+            console.log('sob ' + $(sob).find(' > span').text() + ' was ' + state);
 
-        if (state == 'unchecked') 
-            continue;
-
-        var categories = $(sob).find('> ul > li');
-        for (var j = 0; j < categories.length; j++) {
-            var cate = categories[j];
-            var state = getNodeState(cate);
-            
-            console.log('category ' + $(cate).find(' > span').text() + ' was ' + state);
-
+            // 如果帐套未选中则跳过继续
             if (state == 'unchecked') 
                 continue;
 
-            if (state == 'checked') {
-                ids.push($(cate).data('id'));
-                continue;
-            }
-
-            var sub_categories = $(cate).find(' > ul > li');
-            for (var l = 0; l < sub_categories.length; l++) {
-                var sub_cate = sub_categories[l];
-                var state = getNodeState(sub_cate);
+            // 取类别
+            var categories = $(sob).find('> ul > li');
+            for (var j = 0; j < categories.length; j++) {
+                var cate = categories[j];
+                var state = getNodeState(cate);
                 
-                console.log('sub category ' + $(sub_cate).find('> span').text() + ' was ' + state);
+                console.log('category ' + $(cate).find(' > span').text() + ' was ' + state);
+
+                // 跳过未选中的类别
+                if (state == 'unchecked') 
+                    continue;
+
+                // 类别选中，则跳过子类别
                 if (state == 'checked') {
-                    ids.push($(cate).data(id));
+                    ids.push($(cate).data('id'));
+                    continue;
+                }
+
+                // 取二级类别
+                var sub_categories = $(cate).find(' > ul > li');
+                for (var l = 0; l < sub_categories.length; l++) {
+                    var sub_cate = sub_categories[l];
+                    var state = getNodeState(sub_cate);
+                    
+                    console.log('sub category ' + $(sub_cate).find('> span').text() + ' was ' + state);
+                    // 记录选中的二级类别
+                    if (state == 'checked') {
+                        ids.push($(cate).data(id));
+                    }
                 }
             }
         }
     }
-
+    
     $(tree).prev('input[type=hidden]').val(JSON.stringify(ids));
 }

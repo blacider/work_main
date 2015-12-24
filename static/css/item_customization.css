@@ -8,6 +8,10 @@
     background-image: none;
 }
 
+.tree-header {
+    margin-bottom: 12px;
+}
+
 .tree, .tree ul {
     margin: 0;
     padding: 0;

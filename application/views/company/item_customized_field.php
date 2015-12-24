@@ -138,10 +138,10 @@
         <div class="col-sm-10">
           <div class="row">
             <?php if ($fd['editable_target']) { ?>
-            <label class="col-sm-4 align-left control-label">显示</label>
+            <h4 class="col-sm-4 tree-header">显示</h4>
             <?php } ?>
             <?php if ($fd['editable_required']) { ?>
-            <label class="col-sm-4 align-left control-label">必选</label>
+            <h4 class="col-sm-4 tree-header">必须录入</h4>
             <?php } ?>
           </div>
           <div class="row">
