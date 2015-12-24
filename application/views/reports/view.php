@@ -468,7 +468,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
             </div>
             <form action="<?php echo base_url('/reports/permit'); ?>" method="post" id="form_discard">
                 <div class="modal-body">
-                    <input type="hidden" id="div_id" class="thumbnail" name="rid" style="display:none;" value=""/>
+                    <input type="hidden" id="div_id" class="thumbnail" name="rid" value="<?php echo $rid; ?>" />
                     <input type="hidden" id="status"  name="status" style="display:none;" value="3" />
                     <div class="form-group">
                         <textarea class="form-control" name="content"></textarea>
