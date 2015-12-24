@@ -110,11 +110,13 @@
         <div class="col-sm-10">
           <div class="table">
             <div class="row">
+              <div class="col-sm-2"></div>
               <label class="col-sm-2 control-label">在Excel中显示</label>
               <label class="col-sm-2 control-label">在PDF中显示</label>
             </div>
             <?php     foreach ($fd['printable'] as $p) { ?>
             <div class="row">
+              <div class="col-sm-2 align-right"><?php echo $p['text']; ?></div>
               <div class="col-sm-2 form-group-control align-right">
                 <input type="checkbox" class="ace ace-switch" name="printable[<?php echo $p['name']; ?>][excel]" <?php if (!empty($field['printable'][$p['name']]['excel'])) { echo 'checked '; } ?>/>
                 <span class="lbl"></span>
