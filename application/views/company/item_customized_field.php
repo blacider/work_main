@@ -24,6 +24,14 @@
           </select>
         </div>
       </div>
+      <?php if ($fd['editable_placeholder']) { ?>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">说明</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="description" value="<?php echo $field['description']; ?>" />
+        </div>
+      </div>
+      <?php } ?>
       <div class="space-12"></div>
       <?php foreach ($fd['configuration'] as $fc) { ?>
       <?php if ($fc['type'] == 'link') { ?>
