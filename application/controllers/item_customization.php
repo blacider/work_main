@@ -37,6 +37,7 @@ class Item_Customization extends REIM_Controller {
             'type' => $type
         );
 
+        // 匹配字段配置
         if ($fd['editable_title']) {
             $data['title'] = $this->input->post('title');
         }
@@ -44,10 +45,12 @@ class Item_Customization extends REIM_Controller {
             $data['description'] = $this->input->post('description');
         }
         if ($fd['editable_target']) {
-            $data['target'] = $this->input->post('target');
+            $target = $this->input->post('target');
+            $data['target'] = json_decode($target, TRUE);
         }
         if ($fd['editable_required']) {
-            $data['required'] = $this->input->post('required');
+            $required = $this->input->post('required');
+            $data['required'] = json_decode($required, TRUE);
         }
         $data['extra'] = array();
         $extra = $this->input->post('extra');

@@ -7,6 +7,7 @@ $(document).ready(function() {
     hookSwitch();
     hookTagAdd();
     hookTagRemove();
+    hookTree();
 });
 
 function hookEnabledSwitch() {
@@ -124,4 +125,153 @@ function hookTagRemove() {
 
         $(_li).remove();
     });
+}
+
+function hookTree() {
+    $('.tree').each(function() {
+        var value = $(this).prev('input[type=hidden]').val();
+        var ids = JSON.parse(value);
+
+        for (var i = 0; i < ids.length; i++) {
+            var id = ids[i];
+            var node = $(this).find('li[data-id=' + id + ']');
+            setNode(node, 'checked', true);
+        }
+    });
+
+    $('.tree li > span').dblclick(function() {
+        var _li = $(this).closest('li');
+        if ($(_li).find('ul').length) {
+            $(_li).toggleClass('open');
+        }
+    });
+
+    $('.tree li > .indicator').click(function() {
+        $(this).closest('li').toggleClass('open');
+    });
+
+    $('.tree li > .checkstate').click(function() {
+        var _li = $(this).closest('li');
+        var state = getNodeState(_li);
+        var dest = 'checked';
+        if (state == 'checked') {
+            dest = 'unchecked';
+        }
+
+        setNode(_li, dest, true);
+        saveTree(_li);
+    });
+}
+
+function setNode(node, state, related) {
+    var checkbox = $(node).find(' > div.checkstate');
+    var id = $(node).data('id');
+    console.log('change ' + id + ' to ' + state);
+    checkbox.removeClass('unchecked').removeClass('checked').removeClass('mixed').addClass(state);
+
+    if (related) {
+        setChildren(node, state);
+        setParent(node, state);
+    }
+}
+
+function getNodeState(node) {
+    var checkbox = $(node).find(' > div.checkstate');
+    if (checkbox.is('.checked')) {
+        return 'checked';
+    } else if (checkbox.is('.mixed')) {
+        return 'mixed';
+    } else {
+        return 'unchecked';
+    }
+}
+
+function toggle(node) {
+    var checkbox = $(node).find(' > div.checkstate');
+    var src = getNodeState(node);
+    var id = $(node).data('id');
+    console.log('change ' + id + ' to ' + dest);
+    checkbox.removeClass(src).addClass(dest);
+    return dest;
+}
+
+
+function setParent(node, state) {
+    var parent = $(node).parent().closest('.tree li').get(0);
+    if (parent) {
+        var state = calcNodeState(parent);
+        setNode(parent, state);
+        setParent(parent, state);
+    }
+}
+
+function calcNodeState(node) {
+    var children = $(node).find(' > ul > li').has(' > .checkstate');
+    
+    var count = children.length;
+    var countChecked = children.has(' > .checked').length;
+    var countUnchecked = children.has(' > .unchecked').length;
+    var countMixed = children.has(' > .mixed').length;
+
+    if (count == countChecked) {
+        return 'checked';
+    } else if (count == countUnchecked) {
+        return 'unchecked';
+    } else {
+        return 'mixed';
+    }
+}
+
+function setChildren(node, state) {
+    console.assert(state != 'mixed');
+
+    $(node).find('ul > li').each(function() {
+        setNode(this, state);
+        setChildren(this, state);
+    });
+}
+
+function saveTree(node) {
+    var tree = $(node).closest('.tree');
+    var ids = [ ];
+    var sobs = tree.find(' > li');
+
+    for (var i = 0; i < sobs.length; i++) {
+        var sob = sobs[i];
+        var state = getNodeState(sob);
+
+        console.log('sob ' + $(sob).find(' > span').text() + ' was ' + state);
+
+        if (state == 'unchecked') 
+            continue;
+
+        var categories = $(sob).find('> ul > li');
+        for (var j = 0; j < categories.length; j++) {
+            var cate = categories[j];
+            var state = getNodeState(cate);
+            
+            console.log('category ' + $(cate).find(' > span').text() + ' was ' + state);
+
+            if (state == 'unchecked') 
+                continue;
+
+            if (state == 'checked') {
+                ids.push($(cate).data('id'));
+                continue;
+            }
+
+            var sub_categories = $(cate).find(' > ul > li');
+            for (var l = 0; l < sub_categories.length; l++) {
+                var sub_cate = sub_categories[l];
+                var state = getNodeState(sub_cate);
+                
+                console.log('sub category ' + $(sub_cate).find('> span').text() + ' was ' + state);
+                if (state == 'checked') {
+                    ids.push($(cate).data(id));
+                }
+            }
+        }
+    }
+
+    $(tree).prev('input[type=hidden]').val(JSON.stringify(ids));
 }

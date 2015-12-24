@@ -129,17 +129,24 @@
         </div>
       </div>
       <?php } ?>
+      <?php if ($fd['editable_target'] || $fd['editable_required']) { ?>
       <div class="space-12"></div>
       <div class="form-group">
         <label class="col-sm-2 control-label">适用范围</label>
         <div class="col-sm-10">
           <div class="row">
-            <label class="col-sm-4 control-label">显示</label>
-            <label class="col-sm-4 control-label">必选</label>
+            <?php if ($fd['editable_target']) { ?>
+            <label class="col-sm-4 align-left control-label">显示</label>
+            <?php } ?>
+            <?php if ($fd['editable_required']) { ?>
+            <label class="col-sm-4 align-left control-label">必选</label>
+            <?php } ?>
           </div>
           <div class="row">
+            <?php foreach ([ 'target', 'required', ] as $cf) { ?>
+            <?php if ($fd['editable_' . $cf]) { ?>
             <div class="col-sm-4">
-              <input type="hidden" name="target" value="<?php echo json_encode($field['target']); ?>" />
+              <input type="hidden" name="<?php echo $cf; ?>" value="<?php echo json_encode($field[$cf]); ?>" />
               <ul class="tree" role="tree" aria-expanded="true" aria-checked="false">
                 <?php foreach ($sob_tree as $s) { ?>
                 <li class="" role="treeitem" aria-level="0">
@@ -176,12 +183,12 @@
                 <?php } ?>
               </ul>
             </div>
-            <div class="col-sm-4">
-              <input type="hidden" name="required" value="<?php echo json_encode($field['required']); ?>" />
-            </div>
+            <?php } ?>
+            <?php } ?>
           </div>
         </div>
       </div>
+      <?php } ?>
       <div class="clearfix form-actions">
         <div class="col-md-offset-3 col-md-9">
           <button class="btn btn-white btn-primary renew" data-renew="0">
