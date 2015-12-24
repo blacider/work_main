@@ -72,13 +72,13 @@
             </div>
             <div class="row">
               <div class="chosen-container chosen-container-multi width-75 form-group-control tags-view">
-                <ul class="chosen-choices">
+                <ul class="chosen-choices" style="min-height: 34px">
                   <?php if (isset($field['extra']['options'])) { ?>
                   <?php     foreach ($field['extra']['options'] as $index => $opt) { ?>
                   <li class="search-choice" data-index="<?php echo $index; ?>" data-id="<?php echo $opt['id']; ?>">
-                    <input type="hidden" name="<?php echo 'extra[' . $index . '][id]'; ?>" value="<?php echo $opt['id']; ?>" />
-                    <input type="hidden" name="<?php echo 'extra[' . $index . '][value]'; ?>" value="<?php echo $opt['value']; ?>" />
-                    <span><?php echo $opt['value']; ?></span>
+                    <input type="hidden" name="<?php echo 'extra[options][' . $index . '][id]'; ?>" value="<?php echo $opt['id']; ?>" />
+                    <input type="hidden" name="<?php echo 'extra[options][' . $index . '][name]'; ?>" value="<?php echo $opt['name']; ?>" />
+                    <span><?php echo $opt['name']; ?></span>
                     <a class="search-choice-close"></a>
                   </li>
                   <?php     } ?>

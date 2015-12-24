@@ -101,12 +101,12 @@ function hookTagAdd() {
 
         var lastIndex = $('ul.chosen-choices li:last').data('index');
         if (lastIndex == undefined) {
-            lastIndex = 0;
+            lastIndex = -1;
         }
 
         var _li = $('<li></li>', { 'class': 'search-choice', 'data-index': lastIndex + 1 });
-        _li.append($('<input />', { 'type': 'hidden', 'name': 'extra[' + (lastIndex + 1) + '][id]', 'value': 0 }));
-        _li.append($('<input />', { 'type': 'hidden', 'name': 'extra[' + (lastIndex + 1) + '][name]', 'value': text }));
+        _li.append($('<input />', { 'type': 'hidden', 'name': 'extra[options][' + (lastIndex + 1) + '][id]', 'value': 0 }));
+        _li.append($('<input />', { 'type': 'hidden', 'name': 'extra[options][' + (lastIndex + 1) + '][name]', 'value': text }));
         _li.append($('<span></span>').text(text));
         _li.append($('<a></a>', { class: 'search-choice-close' }));
             
