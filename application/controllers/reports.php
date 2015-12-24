@@ -67,25 +67,13 @@ class Reports extends REIM_Controller {
     }
 
     public function index($search='',$type = 1) {
-        $items = $this->items->get_suborinate($type);
-        if(!$items['status']){
-            return redirect(base_url('items'));
-        }
         $this->session->set_userdata('item_update_in','1');
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-        $ret = array();
-        if(!$items) redirect(base_url('login'));
-        $item_data = array();
-        if($items && $items['status']) {
-            $data = $items['data'];
-            $item_data = $data['data'];
-        }
         $this->session->set_userdata("report_list_url", "reports");
         $this->bsload('reports/index',
             array(
                 'title' => '我的报销单'
-                ,'items' => $item_data
                 ,'error' => $error
                 ,'type' => $type
                 ,'search' => urldecode($search)
