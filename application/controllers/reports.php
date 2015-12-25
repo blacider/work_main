@@ -632,7 +632,7 @@ class Reports extends REIM_Controller {
         } else {
             $report['receivers']['cc'] = ' ';
         }
-        $_flow = $this->reports->report_flow($id);
+        $_flow = $this->reports->report_flow($id, 1);
 
         $flow = array();
         $_ts = '';
