@@ -45,9 +45,10 @@ function hookEnabledSwitch() {
 }
 
 function hookDeleteButton() {
-    $('.delete_field').click(function() {
-        var id = $(this).closest('tr').data('id');
-        var title = $(this).closest('tr').find('td[data-column=title]').text();
+    $('table').on('click', '.delete_field', function() {
+        var tr = $(this).closest('tr');
+        var id = tr.data('id');
+        var title = tr.find('td[data-column=title]').text();
 
         var confirmed = confirm('删除的字段不可恢复，确认要删除字段⎡' + title + '⎦吗？');
         if (!confirmed)
@@ -59,10 +60,10 @@ function hookDeleteButton() {
             success: function (data, status, xhr){
                 console.log(data);
                 if (data['status']) {
-                    $(this).closest('tr').remove();
                     var msg = '字段⎡' + title + '⎦已删除';
                     console.log('notification: ' + msg);
                     show_notify(msg);
+                    tr.remove();
                 } else {
                     var msg = data['data']['msg'];
                     console.log('notification: ' + msg);
