@@ -128,6 +128,9 @@ function hookTagRemove() {
 }
 
 function hookTree() {
+    // 必须录入tree默认隐藏所有
+    $('#required-tree').find('li').addClass('missing');
+
     // 初始化树选择
     $('.tree').each(function() {
         var value = $(this).prev('input[type=hidden]').val();
