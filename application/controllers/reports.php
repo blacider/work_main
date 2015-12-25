@@ -634,22 +634,11 @@ class Reports extends REIM_Controller {
         }
         $_flow = $this->reports->report_flow($id, 1);
 
-        $flow = array();
         $_ts = '';
         log_message("debug", "Rreport" . json_encode($report));
         if($report['createdt'] > 0) {
             $_ts = date('Y-m-d H:i:s', $report['createdt']);
         }
-        /*
-        array_push($flow, array(
-            'nickname' => $report['nickname']
-            ,'ts' =>  $_ts
-            ,'status' => '提交'
-            ,'step' => 0
-            ,'wingman' => ''
-        ));
-        */
-
 
         //获取全体员工
         $group = $this->groups->get_my_list();
@@ -673,43 +662,29 @@ class Reports extends REIM_Controller {
         // 先找到提交的信息
         // 昵称，审核意见，时间，step
         log_message("debug", 'flow data:' . json_encode($_flow));
+        
+        $sliced_flow = array();
         if($_flow['status'] == 1) {
-            foreach($_flow['data']['data'] as $s){
-                $_s = $s['status'] % 100;
-                $audit = '待审批';
-                if($s['uid'] == $report['uid'] && $_s == 0) {
-                        $audit = '待提交';
+            // 分组
+            $last_group = null;
+            // 计算起始step分组
+            // 计算分组大小
+
+            $_flows = $_flow['data']['data'];
+            // step 升序
+            array_multisort(array_column($_flows, 'step'), $_flows);
+            
+            foreach($_flows as $s) {
+                $group = 0;
+                if ($s['ticket_type'] == 1) {
+                    $group = 1;
                 }
-                if($s['uid'] == $report['uid']) {
-                    if($_s == 1) {
-                        $audit = '已提交';
-                    }
-                    if($_s == 1 && array_key_exists('ticket_type',$s) && $s['ticket_type'] == 1)
-                    {
-                        $audit = '待审批';
-                    }
+
+                if ($last_group !== $group) {
+                    array_push($sliced_flow, array());
+                    $last_group = $group;
                 }
-                if($_s == 2)  {
-                    $audit = '通过';
-                }
-                if($_s == 3)  {
-                    $audit = '拒绝';
-                    if($s['uid'] == $report['uid']) {
-                    $audit = '撤回';
-                    }
-                }
-                if($_s == 4 || $_s == 5)  {
-                    $audit = '已完成';
-                }
-                if($_s == 6)  {
-                    $audit = '待支付';
-                }
-                if($_s == 7)  {
-                    $audit = '完成待结束';
-                }
-                if($_s == 8)  {
-                    $audit = '完成已结束';
-                }
+
                 $_ts = '';
                 if($s['udt'] != '0') {
                     $_ts = date('Y-m-d H:i:s', $s['udt']);
@@ -717,33 +692,26 @@ class Reports extends REIM_Controller {
 
                 $s['wingman_name'] = '';
                 log_message("debug","wingman:" . $s['wingman']);
-                if(array_key_exists('wingman',$s))
-                {
-                    if(array_key_exists($s['wingman'],$members_dic))
-                    {
+                if(array_key_exists('wingman',$s)) {
+                    if(array_key_exists($s['wingman'],$members_dic)) {
                        $s['wingman_name'] = $members_dic[$s['wingman']];
                     }
                 }
-                array_push($flow, array(
-                    'status' => $audit
-                    ,'nickname' => $s['nickname']
-                    ,'ts' => $_ts
-                    ,'step' => $s['step']
-                    ,'wingman' => $s['wingman_name']
+
+                $last_slice = array_pop($sliced_flow);
+                array_push($last_slice, array(
+                    'group' => $group,
+                    'status' => $s['status_text'],
+                    'nickname' => $s['nickname'],
+                    'ts' => $_ts,
+                    'step' => $s['step'],
+                    'wingman' => $s['wingman_name'],
+                    'ticket_type' => $s['ticket_type'],
                 ));
+                
+                array_push($sliced_flow, $last_slice);
             }
         }
-        usort($flow, function($a,$b)
-                {
-                    if($a['step'] == $b['step'])
-                    {
-                        return 0;
-                    }
-                    return ($a['step'] < $b['step']) ?-1:1;
-                });
-        foreach($flow as &$x) {
-        }
-        log_message("debug", "Recievers: ---> " . json_encode($flow));
 
         log_message("debug","*********:".json_encode($report));
         $prove_ahead = $report['prove_ahead'];
@@ -812,7 +780,7 @@ class Reports extends REIM_Controller {
                 'title' => '查看报销单',
                 'report' => $report,
                 'error' => $error,
-                'flow' => $flow
+                'flow' => $sliced_flow
                 ,'rid' => $id
                 ,'config' => $config
                 ,'extra' => $extra
