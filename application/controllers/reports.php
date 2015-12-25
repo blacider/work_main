@@ -259,35 +259,7 @@ class Reports extends REIM_Controller {
                 $d['options'] = $base_icon . $show_icon . $export_icon .$download_icon . $end_icon;
             }
 
-            /*
-            if($d['status'] == 1) {
-                $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
-                    . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
-                . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
-            } else {
-                if(in_array($d['status'],array(2,4,5)))
-                {
-                    $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
-                        . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
-                        . '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span></div>';
-                    //. '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
-                } else if (in_array($d['status'],array(0,3))) {
-                    $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
-                        . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>'
-                        . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span></div>';
-                }
-                else
-                {
-                    $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
-                        . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
-                        //. '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>'
-                        . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span></div>';
-                }
-            }
-            */
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
-            $d['status_str'] = '待提交';
-            //$d['amount'] = '￥' . $d['amount'];
 
             $prove_ahead = '报销';
             switch($d['prove_ahead']){
@@ -306,47 +278,9 @@ class Reports extends REIM_Controller {
                 }
             }
 
-            switch($d['status']) {
-            case 0: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
-            };break;
-            case 1: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
-            };break;
-            case 2: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>';
-            };break;
-            case 3: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#B472B1;background:#B472B1 !important;">退回</button>';
-            };break;
-            case 4: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-            };break;
-            case 5: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-            };break;
-            case 6: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#42B698 !important;">待支付</button>';
-            };break;
-            case 7: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成待确认</button>';
-            };break;
-            case 8: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成已确认</button>';
-            };break;
-            }
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
             $d['status_str'] = '待提交';
-            //$d['amount'] = '￥' . $d['amount'];
-        /*
-                $prove_ahead = '报销';
-                switch($d['prove_ahead']){
-                case 2: {$prove_ahead = '<font color="red">预借</font>';};break;
-                case 1: {$prove_ahead = '<font color="green">预算</font>';};break;
-                }
-                $d['prove_ahead'] = $prove_ahead;
 
-         */
             switch($d['status']) {
             case 0: {
                 $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
