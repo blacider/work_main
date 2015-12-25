@@ -11,11 +11,11 @@ class Bills extends REIM_Controller {
         $this->load->model('company_model','company');
         $this->load->model('reim_show_model','reim_show');
         $this->load->library('reim_cipher');
+        $this->load->helper('report_view_utils');
     }
 
     public function report_finance_deny()
     {
-
            $rid = $this->input->post('rid');
            $comment = $this->input->post('content');
            $buf = $this->company->deny_report_finance($rid,$comment);
@@ -32,6 +32,7 @@ class Bills extends REIM_Controller {
 
            return redirect('bills/finance_flow');
     }
+
     public function report_finance_end()
     {
            $rid = $this->input->post('rid');  
@@ -507,8 +508,6 @@ class Bills extends REIM_Controller {
             die(json_encode(array()));
         }
         $data = $bills['data']['data'];
-        //log_message("debug", "alvayang bills:" . json_encode($bill['data']));
-       // $ugs = $bills['data']['ugs'];
         $ugs = array();
         $_data = array();
         foreach($data as $d){
@@ -517,9 +516,6 @@ class Bills extends REIM_Controller {
                 $url = base_url('reports/show/' . $d['id']);
                 $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
             }
-            log_message("debug", "alvayang Bill: [ $type] $type: " . json_encode($d));
-            log_message("debug", "xBill: $type: " . json_encode($d));
-            log_message("debug", "nICe");
 
             $prove_ahead = '报销';
             switch($d['prove_ahead']){
@@ -539,27 +535,19 @@ class Bills extends REIM_Controller {
                 $d["approvaldt_str"] = date('Y-m-d H:i:s', $d["approvaldt"]);
             }
             $d['amount'] =  sprintf("%.2f",$d['amount'] );
-            $d['status_str'] = '';
+            $d['status_str'] = get_report_status_str($d['status']);
             $edit = '';
             $extra = '';
             if($d['status'] == 2) {
                 $edit = 'green';
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>';
                 $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span><span class="ui-icon ui-icon ace-icon fa fa-check tapprove green" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon ui-icon red ace-icon fa fa-times tdeny" data-id="' . $d['id'] . '"></span>';
             }
             if($d['status'] == 4 || $d['status'] == 7 || $d['status'] == 8) {
                 $edit = 'gray';
-                $describe_status = '已完成';
-                if($d['status'] == 7)
-                    $describe_status = '完成待确认';
-                if($d['status'] == 8)
-                    $describe_status = '完成已确认';
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">' . $describe_status . '</button>';
                 $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span>' ;
             }
             if($d['status'] == 1) {
                 $edit = 'blue';
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
                 $extra = '';
             }
             $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
@@ -567,7 +555,7 @@ class Bills extends REIM_Controller {
                 . '</div>';
             array_push($_data, $d);
         }
-        log_message('debug','alvayang _data:' . json_encode($_data));
+        //log_message('debug','alvayang _data:' . json_encode($_data));
         die(json_encode($_data));
     }
 
