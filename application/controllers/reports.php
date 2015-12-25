@@ -67,25 +67,13 @@ class Reports extends REIM_Controller {
     }
 
     public function index($search='',$type = 1) {
-        $items = $this->items->get_suborinate($type);
-        if(!$items['status']){
-            return redirect(base_url('items'));
-        }
         $this->session->set_userdata('item_update_in','1');
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-        $ret = array();
-        if(!$items) redirect(base_url('login'));
-        $item_data = array();
-        if($items && $items['status']) {
-            $data = $items['data'];
-            $item_data = $data['data'];
-        }
         $this->session->set_userdata("report_list_url", "reports");
         $this->bsload('reports/index',
             array(
                 'title' => '我的报销单'
-                ,'items' => $item_data
                 ,'error' => $error
                 ,'type' => $type
                 ,'search' => urldecode($search)
@@ -511,38 +499,6 @@ class Reports extends REIM_Controller {
 
         return redirect(base_url('reports/index'));
     }
-
-
-    public function get_suborinate($me = 0){
-        $items = $this->items->get_suborinate($me);
-        if(!$items['status']){
-            die(json_encode(array()));
-        }
-        $ret = array();
-        foreach($items['data']['data'] as $i){
-            $o = array();
-            $p = '';
-            if($i['prove_ahead']) {
-                $p = '<span class="icon"><i class="icon_yu"><img src="/static/images/icon_yu.png" /></i></span>';
-            }
-            array_push($o, $p);
-            array_push($o, date('m月d日', $i['lastdt']));
-            array_push($o, $i['title']);
-            array_push($o, $i['item_count']);
-            array_push($o,
-                '<i class="tstatus tstatus_' . $i['status'] . "></i>" .
-                '<strong class="price">&yen;' . $i['amount'] . '</strong>'
-            );
-
-            array_push($o, $i['status']);
-            array_push($o, $i['prove_ahead']);
-            array_push($o, $i['createdt']);
-
-            array_push($ret, $o);
-        }
-        print_r(json_encode(array('data' => $ret)));
-    }
-
 
     public function edit($id = 0){
         $item_type_dic = $this->reim_show->get_item_type_name();

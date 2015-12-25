@@ -401,7 +401,6 @@ class Bills extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-        $reports = $this->reports->get_finance();
         $_tags = $this->tags->get_list();
         $usergroups = $this->ug->get_my_list();
         if($usergroups['status']>0)
@@ -416,31 +415,6 @@ class Bills extends REIM_Controller {
         if($_tags && array_key_exists('tags', $_tags['data'])){
             $_tags = $_tags['data']['tags'];
         }
-        log_message("debug", 'reports:' . json_encode($reports));
-        $data = array();
-        $_data = array();
-        if($reports['status']) {
-            $data = $reports['data']['data'];
-
-            foreach($data as $item) {
-                log_message("debug", "alvayang:" . json_encode($item));
-                    array_push($_data, $item);
-                    /*
-                if($item['status'] == 2){
-                    array_push($_data, $item);
-                } 
-                if($status == 4) {
-                    if(in_array($item['status'], array(4, 7, 8)))
-                        array_push($_data, $item);
-                }
-                if($status == 1)
-                {
-                    array_push($_data,$item);
-                }
-                     */
-            }
-        }
-
         $_group = $this->groups->get_my_list();
 
         $gmember = array();
@@ -461,7 +435,6 @@ class Bills extends REIM_Controller {
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
                         ,array('url' => '','name' => '待审批','class' => '')
                     )
-                    ,'reports' => $data
                     ,'status' => 1/*$status*/
                     ,'category' => $_tags
                     ,'search' => urldecode($search)
@@ -477,40 +450,17 @@ class Bills extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-        $reports = $this->reports->get_finance($status);
         $_tags = $this->tags->get_list();
         $usergroups = $this->ug->get_my_list();
-        if($usergroups['status']>0)
-        {
+        if($usergroups['status']>0) {
             $_usergroups=$usergroups['data']['group'];
         }
-        else
-        {
+        else {
             $_usergroups = array();
         }
         log_message('debug','usergroup:'.json_encode($usergroups));
         if($_tags && array_key_exists('tags', $_tags['data'])){
             $_tags = $_tags['data']['tags'];
-        }
-        log_message("debug", 'reports:' . json_encode($reports));
-        $data = array();
-        $_data = array();
-        if($reports['status']) {
-            $data = $reports['data']['data'];
-
-            foreach($data as $item) {
-                if($item['status'] == 2){
-                    array_push($_data, $item);
-                } 
-                if($status == 4) {
-                    if(in_array($item['status'], array(4, 7, 8)))
-                        array_push($_data, $item);
-                }
-                if($status == 1)
-                {
-                    array_push($_data,$item);
-                }
-            }
         }
 
         $_group = $this->groups->get_my_list();
@@ -533,7 +483,6 @@ class Bills extends REIM_Controller {
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
                         ,array('url' => '','name' => '已审批','class' => '')
                     )
-                    ,'reports' => $data
                     ,'status' => $status
                     ,'category' => $_tags
                     ,'error' => $error
