@@ -249,46 +249,16 @@ class Bills extends REIM_Controller {
     public function _logic($status = 2, $search = ''){
         $this->need_group_casher();
         $error = $this->session->userdata('last_error');
-        // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-        $reports = $this->reports->get_bills($status);
-        $_tags = $this->tags->get_list();
+        // 获取当前所属的组
         $usergroups = $this->ug->get_my_list();
-        if($usergroups['status']>0)
-        {
+        if($usergroups['status']>0) {
             $_usergroups=$usergroups['data']['group'];
         }
-        else
-        {
+        else {
             $_usergroups = array();
         }
         log_message('debug','usergroup:'.json_encode($usergroups));
-        if($_tags && array_key_exists('tags', $_tags['data'])){
-            $_tags = $_tags['data']['tags'];
-        }
-        log_message("debug", 'reports:' . json_encode($reports));
-        $data = array();
-        $_data = array();
-        if($reports['status']) {
-            $data = $reports['data']['data'];
-
-            foreach($data as $item) {
-                if($item['status'] == 1){
-                    array_push($_data, $item);
-                }
-                if($item['status'] == 2){
-                    array_push($_data, $item);
-                }
-                if($status == 4) {
-                    if(in_array($item['status'], array(4, 7, 8)))
-                        array_push($_data, $item);
-                }
-                if($status == 1)
-                {
-                    array_push($_data,$item);
-                }
-            }
-        }
         if($status == 2){
             $this->session->set_userdata("report_list_url", "bills/index");
             $this->session->set_userdata('item_update_in','2');
@@ -301,10 +271,7 @@ class Bills extends REIM_Controller {
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
                         ,array('url' => '','name' => '待结算','class' => '')
                     )
-                    ,'reports' => $data
                     ,'status' => $status
-                    ,'category' => $_tags
-                    ,'error' => $error
                     ,'usergroups' => $_usergroups
                     ,'search' => urldecode($search)
                 )
@@ -323,10 +290,7 @@ class Bills extends REIM_Controller {
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
                         ,array('url' => '','name' => '已完成','class' => '')
                     )
-                    ,'reports' => $data
                     ,'status' => $status
-                    ,'category' => $_tags
-                    ,'error' => $error
                     ,'usergroups' => $_usergroups
                     ,'search' => urldecode($search)
                 )
@@ -345,10 +309,7 @@ class Bills extends REIM_Controller {
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
                         ,array('url' => '','name' => '全部报销单','class' => '')
                     )
-                    ,'reports' => $data
                     ,'status' => $status
-                    ,'category' => $_tags
-                    ,'error' => $error
                     ,'usergroups' => $_usergroups
                     ,'search' => urldecode($search)
                 )
@@ -367,10 +328,7 @@ class Bills extends REIM_Controller {
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
                         ,array('url' => '','name' => '审核中','class' => '')
                     )
-                    ,'reports' => $data
                     ,'status' => $status
-                    ,'category' => $_tags
-                    ,'error' => $error
                     ,'usergroups' => $_usergroups
                     ,'search' => urldecode($search)
                 )
