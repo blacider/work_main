@@ -4,14 +4,8 @@
         <div class="input-group input-group">
             <span class="input-group-addon" id='coin_simbol'>￥</span>
             <input type="number" class="form-controller col-xs-12 col-sm-12 default_custom" data-id="<?php echo $item_customization_value['id'];?>" name="amount" id="amount" placeholder="金额" required>
-        <?php 
-        if($company_config['open_exchange']) 
-        {
-        ?>
             <span class="input-group-addon" id='rate_simbol'>￥0</span>
-        <?php
-        }
-        ?>
+      
         </div>
 
     </div>
@@ -32,11 +26,17 @@ function init_amount_module()
 
 $(document).ready(function(){
     $('#amount').change(function(){
-        var coin_type_id = $('#coin_type').val();
-        var selected_coin = $('#coin_type option:selected');
-        var coin_symbol = selected_coin.data('symbol');
-        var coin_rate = selected_coin.data('rate');
-        $('#coin_simbol').text(coin_symbol);
+        var coin_type_id = 'cny';
+        var coin_symbol = '￥';
+        var coin_rate = 100;
+        if($('#coin_type').val() != undefined)
+        {
+            coin_type_id = $('#coin_type').val();
+            var selected_coin = $('#coin_type option:selected');
+            coin_symbol = selected_coin.data('symbol');
+            coin_rate = selected_coin.data('rate');
+            $('#coin_simbol').text(coin_symbol);
+        }
         var _amount = $('#amount').val();
         $('#rate_simbol').text( '￥' + Math.round(_amount*coin_rate)/100 );
     });
