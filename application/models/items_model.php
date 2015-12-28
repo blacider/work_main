@@ -166,7 +166,6 @@ class Items_Model extends Reim_Model {
         $items = array();
         $s = array(
             'local_id' => 1,
-//<<<<<<< HEAD
             'category' => $data['category'],
             'amount' => $data['amount'],
             'uids' => $data['uids'],
@@ -178,20 +177,6 @@ class Items_Model extends Reim_Model {
             'note' => $data['note'],
             'reimbursed' => 1,
             'tags' => $data['tags'], 
-/*=======
-            'category' => $category,
-            'amount' => $amount,
-            'category' => $category,
-            'uids' => $uids,
-            'prove_ahead' => $type,
-            'afford_ids' => $afford_ids,
-            'image_id' => $images,
-            'dt' => $dt,
-            'note' => $note,
-            'reimbursed' => 1,
-            'tags' => $tags,
->>>>>>> origin/master
-*/
             'location' => '',
             'latitude' => 0,
             'longitude' => 0,
