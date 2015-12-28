@@ -57,17 +57,26 @@ function set_day_average()
     {
         $('#average_day').text('');
     }
+
 }
 
 $('#amount').on('change',function(){
 	set_day_average();
 });
-
+/*
 $('#date-timepicker1').on('change',function(){
 	set_day_average();
 });
 
 $('#end_dt').on('change',function(){
+	set_day_average();
+});
+*/
+$('#date-timepicker1').on('click',function(){
+	set_day_average();
+});
+
+$('#end_dt').on('click',function(){
 	set_day_average();
 });
 $(document).ready(function(){
