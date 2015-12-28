@@ -184,6 +184,7 @@ function load_exists(){
     bind_event();
 }
 $(document).ready(function(){
+    initUploader();
     load_exists();
 });
 </script>
