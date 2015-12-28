@@ -238,8 +238,6 @@
                                     <option value="a4.yaml">A4模板</option>
                                     <option value="a5.yaml">A5模板</option>
                                     <option value="b5.yaml">B5模板</option>
-                                    <option value="disanshihead.yaml">210*114</option>
-                                    <option value="disanshidepart.yaml">210*114 表头包含部门</option>
                                     <option value="disanshi.yaml">A4 表头有金额</option>
                                 
                                 </select>
