@@ -60,26 +60,32 @@ function set_day_average()
 
 }
 
+function init_timepicker()
+{
+	$('.date-timepicker').each(function(){
+		$(this).val(' ');
+	});
+}
+
+$('.date-timepicker').each(function(){
+	$(this).on('change',function(){
+		set_day_average();
+	});
+});
+
+$('.date-timepicker').each(function(){
+	$(this).on('click',function(){
+		$(this).trigger('change');
+	});
+});
+
 $('#amount').on('change',function(){
 	set_day_average();
 });
-/*
-$('#date-timepicker1').on('change',function(){
-	set_day_average();
-});
 
-$('#end_dt').on('change',function(){
-	set_day_average();
-});
-*/
-$('#date-timepicker1').on('click',function(){
-	set_day_average();
-});
 
-$('#end_dt').on('click',function(){
-	set_day_average();
-});
 $(document).ready(function(){
+	//init_timepicker();
 	if(PAGE_TYPE != 0)
 	{
 		init_time_period_module();
