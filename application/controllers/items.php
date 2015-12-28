@@ -391,15 +391,8 @@ class Items extends REIM_Controller {
                     }
                 }
                 $symbol = $this->get_coin_symbol($s['currency']);
-                log_message('debug', 'symbol' . $symbol);
                 $s['amount'] = $symbol . $s['amount'];
-                /*
-                if($s['currency'] != 'cny')
-                {
-                    $s['amount'] = round($s['amount'] * $s['rate'] / 100,2); 
-                }
-                */
-                $s['status_str'] = '';
+                $s['status_str'] = get_report_status_str($s['status']);
                 log_message("debug", "Item:" . json_encode($s));
                 $trash= $s['status'] === 0 ? 'gray' : 'red';
                 $edit = $s['status'] === 0 ? 'gray' : 'green';
@@ -411,45 +404,9 @@ class Items extends REIM_Controller {
                     $edit_str =  '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $s['id'] . '"></span>';
                 }
 
-
                 $s['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
                     . $edit_str
                     . '</div>';
-                switch($s['status']){
-                case -1: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
-                };break;
-                case 0: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
-                };break;
-                case 1: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
-                };break;
-                case 2: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>';
-                };break;
-                case 3: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#B472B1;background:#B472B1 !important;">退回</button>';
-                };break;
-                case 4: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-                };break;
-                case 5: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-                };break;
-                case 6: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#42B698 !important;">待支付</button>';
-                };break;
-                case 7: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成待确认</button>';
-                };break;
-                case 8: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成已确认</button>';
-                };break;
-                default: {
-                    $s['status_str'] = $s['status'];
-                }
-                }
                 array_push($_items, $s);
             }
             die(json_encode($_items));
