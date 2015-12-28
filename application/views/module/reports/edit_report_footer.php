@@ -32,7 +32,6 @@
 
     $item_type = array();
     $extra_item_type = [0,1,2];
-    $extra_item_type = array();
     if(array_key_exists('type', $config))
     {
         $extra_item_type = $config['type'];

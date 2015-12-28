@@ -647,7 +647,6 @@ class Reports extends REIM_Controller {
         }
 <<<<<<< HEAD
 =======
-        /*
         array_push($flow, array(
             'nickname' => $report['nickname']
             ,'ts' =>  $_ts
@@ -657,7 +656,6 @@ class Reports extends REIM_Controller {
         ));
 
 >>>>>>> origin/master
-        */
 
         //获取全体员工
         $group = $this->groups->get_my_list();
@@ -819,8 +817,10 @@ class Reports extends REIM_Controller {
 //<<<<<<< HEAD
         
         $template_views = array();
+        /*
         array_push($template_views,'module/reports/report_flow');
         array_push($template_views,'module/reports/comments');
+        */
         array_push($template_views,'module/reports/show_report_footer');
         /*
 =======
