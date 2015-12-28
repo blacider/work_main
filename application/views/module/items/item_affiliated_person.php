@@ -28,7 +28,7 @@
 <script type="text/javascript">
 function init_affiliated_person_module()
 {
-    var person_list = item_info['relates'].split(',');
+    var person_list = item_info['uids'].split(',');
     $('#member').val(person_list).prop('selected',true);
     $('#member').trigger('change');
     $('#member').trigger('chosen:updated');
