@@ -12,15 +12,15 @@
 <script src="/static/ace/js/date-time/moment.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script>
-    
-     
-	 
-	   <script src="/static/ace/js/jquery.colorbox-min.js"></script>
-	   
-	     <!-- page specific plugin styles -->
-	     <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 
 
+
+       <script src="/static/ace/js/jquery.colorbox-min.js"></script>
+
+         <!-- page specific plugin styles -->
+         <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
+
+<script src="/static/js/bank_code.json"></script>
 
 <div class="page-content">
     <div class="page-content-area">
@@ -39,10 +39,10 @@
                                 <label class="col-sm-1 control-label no-padding-right">发送至</label>
                                 <div class="col-xs-9 col-sm-9">
                                     <select class="chosen-select tag-input-style" name="receiver[]" multiple="multiple" data-placeholder="请选择审批人" id="receiver">
-                                        <?php 
-					$user = $this->session->userdata('user');
-					foreach($members as $m) {
-					if($user['id'] != $m['id']){
+                                        <?php
+                    $user = $this->session->userdata('user');
+                    foreach($members as $m) {
+                    if($user['id'] != $m['id']){
                         if ($user['manager_id'] != $m['id']){?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
                                         <?php } else {?>
@@ -52,20 +52,20 @@
                                     </select>
                                 </div>
                             </div>
-
+                            <?php if (!isset($company_config['enable_report_cc']) || $company_config['enable_report_cc']) { ?>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">抄送至</label>
                                 <div class="col-xs-9 col-sm-9">
                                     <select class="chosen-select tag-input-style" name="cc[]" id="cc" multiple="multiple" data-placeholder="请选择抄送人">
                                         <?php foreach($members as $m) {
-					if($user['id'] != $m['id']){?>
+                    if($user['id'] != $m['id']){?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
-                                       
+
                                         <?php }} ?>
                                     </select>
                                 </div>
                             </div>
-
+                            <?php } ?>
 <?php
                         if(!empty($config)) {
 ?>
@@ -76,13 +76,13 @@
                             {
                                 ?>
                             <hr>
-                                <?php 
+                                <?php
                             }
                             foreach($config['config'] as $field_group){
                             ?>
                                  <div class="form-group">
-                                            <label class="col-sm-1 control-label no-padding-right blue"><?php if(array_key_exists('name', $field_group)){echo $field_group['name'];}?></label>                        
-                                        
+                                            <label class="col-sm-1 control-label no-padding-right blue"><?php if(array_key_exists('name', $field_group)){echo $field_group['name'];}?></label>
+
                                 </div>
                                 <?php
                                     if(array_key_exists('children', $field_group))
@@ -94,7 +94,7 @@
                                 <?php
                                     switch(intval($field['type']))
                                     {
-                            
+
                                         case 1:
                                 ?>
                                         <div class="form-group">
@@ -104,7 +104,7 @@
                                                     <input type="text" class="form-controller col-xs-8 field_value" data-type="1" data-required="<?php echo $field['required'];?>" data-id="<?php echo $field['id'];?>" <?php if($field['required'] == 1){echo 'required';}?>/>
                                                 </div>
                                             </div>
-                                        
+
                                         </div>
 
                                 <?php
@@ -121,7 +121,7 @@
                                                     <select class="chosen-select tag-input-style col-xs-6 field_value" data-type="2" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" data-placeholder="请选择" <?php if($field['required'] == 1){echo 'required';}?>>
                                                         <?php foreach($field['property']['options'] as $m) { ?>
                                                                 <option value="<?php echo $m; ?>"><?php echo $m; ?></option>
-                                                       
+
                                                         <?php } ?>
                                                     </select>
                                                 </div>
@@ -160,14 +160,14 @@
                                                 <div class="col-xs-12 col-sm-12 "  style="margin-left:0px !important;padding-left:0px !important;" >
                                                     <div class="btn-toolbar" id="<?php echo 'btns' . $field['id'];?>">
                                                         <div class="col-xs-8 col-sm-8">
-                                              
+
                                                                 <select class="chosen-select tag-input-style col-xs-6 field_value bank_select" id="<?php echo 'bank_select_' . $field['id'];?>" data-type="4" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" data-placeholder="请选择" <?php if($field['required'] == 1){echo 'required';}?>>
                                                                     <?php foreach($banks as $b) { ?>
                                                                             <option value='<?php echo json_encode($b); ?>'><?php echo $b['account']  . '-' . $b['bankname'] . '-' . $b['cardno']; ?></option>
-                                                                   
+
                                                                     <?php } ?>
                                                                 </select>
-                                                        
+
                                                         </div>
                                                         <div class="btn-group">
                                                             <a href="javascript:void(0)" class="btn btn-success new_credit" data-id="<?php echo $field['id'];?>">
@@ -184,7 +184,7 @@
                                         break;
                                 ?>
 
-                                <?php 
+                                <?php
                                     }
                                 ?>
 
@@ -208,20 +208,19 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">选择消费</label>
-                                <div class="col-xs-9 col-sm-9">
+                                <div class="col-xs-11 col-sm-11">
                                     <table class="table table-border">
                                         <tr>
                                             <thead>
-                                                <td>
+                                                <td style="width: 60px;">
                                                    <input name="all_item" id="all_item" type="checkbox" class="form-controller all_item"> 全选</td>
-                                                </td>
-                                                <td>消费时间</td>
-                                                <td>类型</td>
-                                                <td>金额</td>
-                                                <td>类别</td>
-                                                <td>商家</td>
+                                                <td style="width: 135px;">消费时间</td>
+                                                <td style="min-width:103px;">类型</td>
+                                                <td style="width: 60px;">金额</td>
+                                                <td style="width: 45px;">类别</td>
+                                                <td style="min-width: 100px;">商家</td>
                                                 <td>备注</td>
-                                                <td>操作</td>
+                                                <td style="min-width: 86px;">操作</td>
                                             </thead>
                                         </tr>
 <?php
@@ -259,16 +258,16 @@ foreach($items as $i){
                                         }
                                         else
                                         {
-                                            $item_amount = $i['amount']; 
+                                            $item_amount = $i['amount'];
                                         }
 
                                         ?>
                                         <tr id="<?php echo 'item'.$i['id']?>">
                                         <td>
-                                            <input name="item[]" value="<?php echo $i['id']; ?>" 
-                                            type="checkbox" class="form-controller amount" 
+                                            <input name="item[]" value="<?php echo $i['id']; ?>"
+                                            type="checkbox" class="form-controller amount"
                                             data-amount = "<?php echo $item_amount; ?>" data-type="<?php echo $i['prove_ahead'];?>"
-                                            data-id="<?php echo $i['id']; ?>" 
+                                            data-id="<?php echo $i['id']; ?>"
                                             ></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['cate_str'];?></td>
@@ -350,12 +349,25 @@ foreach($items as $i){
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">卡号</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input id="cardno" name="cardno" type="text" class="form-controller col-xs-12" placeholder="卡号" />
+                                    <input id="cardno" name="cardno" maxlength="20" type="text" class="form-controller col-xs-12" placeholder="卡号" />
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">开卡行</label>
+                                <script type="text/javascript">
+                            $(document).ready(function() {
+                                $("#cardno").keyup(function(event) {
+                                    var value = this.value;
+                                    if (value >= 6) {
+                                        value = value.substring(0,6);
+                                    };
+                                    if (BANK_CODE[value] != undefined) {
+                                        $("#cardbank").val(BANK_CODE[value]);
+                                    };
+                                });
+                            });
+                            </script>
                                 <div class="col-xs-6 col-sm-6">
                                     <select id="cardbank" name="cardbank" class="form-control">
                                         <option value='工商银行'>工商银行</option>
@@ -372,6 +384,11 @@ foreach($items as $i){
                                         <option value='华夏银行'>华夏银行</option>
                                         <option value='广发银行'>广发银行</option>
                                         <option value='北京银行'>北京银行</option>
+                                        <option value='广州银行'>广州银行</option>
+                                        <option value='晋商银行'>晋商银行</option>
+                                        <option value='九江银行'>九江银行</option>
+                                        <option value='锦州银行'>锦州银行</option>
+                                        <option value='江苏银行'>江苏银行</option>
                                         <option value='中国邮政储蓄银行'>中国邮政储蓄银行</option>
                                         <option value='上海浦东银行'>上海浦东银行</option>
                                         <option value='D.F.S.I'>D.F.S.I</option>
@@ -380,7 +397,6 @@ foreach($items as $i){
                                         <option value='花旗银行有限公司'>花旗银行有限公司</option>
                                         <option value='兰州市商业银行'>兰州市商业银行</option>
                                         <option value='天津市商业银行'>天津市商业银行</option>
-                                        <option value='广州市商业银行'>广州市商业银行</option>
                                         <option value='威海市商业银行'>威海市商业银行</option>
                                         <option value='宁波市商业银行'>宁波市商业银行</option>
                                         <option value='高要市农村信用合作社联合社'>高要市农村信用合作社联合社</option>
@@ -426,7 +442,6 @@ foreach($items as $i){
                                         <option value='成都商业银行'>成都商业银行</option>
                                         <option value='西安市商业银行'>西安市商业银行</option>
                                         <option value='丹东商行'>丹东商行</option>
-                                        <option value='九江市商业银行'>九江市商业银行</option>
                                         <option value='江苏农信社'>江苏农信社</option>
                                         <option value='南京市商业银行'>南京市商业银行</option>
                                         <option value='三门峡市城市信用社'>三门峡市城市信用社</option>
@@ -666,7 +681,7 @@ function reset_bank(disable, title,bank_field_id) {
     function update_credit(node){
         var _id = $(node).data('id');
         reset_bank(1, '修改银行卡', _id);
-       
+
         $('#account').val($(node).data('account'));
         $('#cardbank').val($(node).data('bankname'));
         $('#cardloc').val($(node).data('bankloc'));
@@ -682,7 +697,7 @@ function reset_bank(disable, title,bank_field_id) {
             {
                 break;
             }
-        } while ($('select[name="province"]').val() == null); 
+        } while ($('select[name="province"]').val() == null);
         /*for(var i=1;i<=loc.length+1;i++)
             {
              $('select[name="province"]').val(loc.substr(0,i));
@@ -735,34 +750,34 @@ function trim(str){ //删除左右两端的空格
 　　 return str.replace(/(^\s*)|(\s*$)/g, "");
 }
 
-function toDecimal(x) {  
-    var f = parseFloat(x);  
-    if (isNaN(f)) {  
-        return;  
-    }  
-    f = Math.round(x*100)/100;  
-    return f;  
-}  
-//制保留2位小数，如：2，会在2后面补上00.即2.00  
-function toDecimal2(x) {  
-    
-    var f = parseFloat(x);  
-    
-    if (isNaN(f)) {  
-        return false;  
-    }  
-    var f = Math.round(x*100)/100;  
-    var s = f.toString();  
-    var rs = s.indexOf('.');  
-    if (rs < 0) {  
-        rs = s.length;  
-        s += '.';  
-    }  
-    while (s.length <= rs + 2) {  
-        s += '0';  
-    }  
-    return s;  
-}  
+function toDecimal(x) {
+    var f = parseFloat(x);
+    if (isNaN(f)) {
+        return;
+    }
+    f = Math.round(x*100)/100;
+    return f;
+}
+//制保留2位小数，如：2，会在2后面补上00.即2.00
+function toDecimal2(x) {
+
+    var f = parseFloat(x);
+
+    if (isNaN(f)) {
+        return false;
+    }
+    var f = Math.round(x*100)/100;
+    var s = f.toString();
+    var rs = s.indexOf('.');
+    if (rs < 0) {
+        rs = s.length;
+        s += '.';
+    }
+    while (s.length <= rs + 2) {
+        s += '0';
+    }
+    return s;
+}
 
 
 
@@ -784,10 +799,10 @@ function do_post(force) {
     var report_type = 0;
     var flag = 0;
     var is_submit = 1;
-	$('.amount').each(function(){
-		if($(this).is(':checked')){
+    $('.amount').each(function(){
+        if($(this).is(':checked')){
             _ids.push($(this).data('id'));
-			var amount = $(this).data('amount');
+            var amount = $(this).data('amount');
             var item_type = $(this).data('type');
             if(flag == 0)
             {
@@ -800,11 +815,9 @@ function do_post(force) {
                 is_submit = 0;
                 return false;
             }
-           
-			amount = parseInt(amount);
-			sum+=amount;
-		};
-	});
+            sum+=amount;
+        };
+    });
     if(_ids.length == 0) {
         show_notify('提交的报销单不能为空');
         return false;
@@ -847,7 +860,7 @@ function do_post(force) {
     } catch(e) {}
 
     var extra = [];
- 
+
     $('.field_value').each(function(){
         var field_value = $(this).val();
         var field_id = $(this).data('id');
@@ -858,13 +871,13 @@ function do_post(force) {
         {
             var field_bank = $(this).data('bank');
             var bank_info = $('#bank_select_' + field_id).val();
-       
+
             var field_account = '';
             var field_cardno = '';
             var field_bankname = '';
             var field_bankloc = '';
             var field_subbranch = '';
-          
+
             if(field_required == 1 && !bank_info)
             {
                 show_notify('必填银行卡项目不能为空');
@@ -903,7 +916,7 @@ function do_post(force) {
             }
             extra.push({'id':field_id,'value':field_value,'type':field_type});
         }
-        
+
     });
 
 /*
@@ -913,7 +926,7 @@ function do_post(force) {
     } catch(e) {}
 
     try {
-        _payment = $('input[name="payment"]:checked').val(); 
+        _payment = $('input[name="payment"]:checked').val();
         if(!_payment) _payment = 0;
     }catch(e){}
 
@@ -923,7 +936,7 @@ function do_post(force) {
     } catch(e) {}
 
     try {
-        _contract = $('input[name="contract"]:checked').val(); 
+        _contract = $('input[name="contract"]:checked').val();
         if(!_contract) _contract = -1;
     }catch(e){}
     if(_contract == 2) {
@@ -951,18 +964,18 @@ function do_post(force) {
     }catch(e){} */
 
 
-	if(s == null){
-	     show_notify('请选择审批人');
-	     $('#receiver').focus();
-	     return false;
-	}
+    if(s == null){
+         show_notify('请选择审批人');
+         $('#receiver').focus();
+         return false;
+    }
 
 
-	if(sum <= 0) {
-		show_notify("报销单总额不能小于等于0");
-		return false;
-	}
-    
+    if(sum <= 0) {
+        show_notify("报销单总额不能小于等于0");
+        return false;
+    }
+
     // 转ajax,否则不能正确处理
     var _renew = $('#renew').val();
     if(_renew == 0) force = 1;
@@ -974,7 +987,7 @@ function do_post(force) {
     {
         $.ajax({
             type : 'POST',
-                url : __BASE + "reports/create", 
+                url : __BASE + "reports/create",
                     data : {'item' : _ids,
                         'title' : $('#title').val(),
                         'receiver' : $('#receiver').val(),
@@ -1028,8 +1041,26 @@ $(document).ready(function(){
         var _loc = _p + _c;//$('#cardloc').val();
         var value = {"account":_account,"bankname":_bank,"subbranch":_subbranch,"bankloc":_loc,"cardno":_no};
         var _value = JSON.stringify(value);
+                        if (_account == "") {
+                            show_notify('请输入户名');
+                            $('#account').focus();
+                            return false;
+                        };
+                        if (_no.length < 12) {
+                            show_notify('请输入正确银行卡号');
+                            $('#cardno').focus();
+                            return false;
+                        };
 
-       
+
+                        if (_bank == "" || _bank == null || _bank == undefined) {
+                            show_notify('请选择银行卡开户行');
+                            $('#cardbank').focus();
+                            return false;
+                        };
+
+
+
         var buf = '<option selected value="'+ escapeHtml(_value) +'">'+ _account + '-' + _bank + '-' + _no +'</option>';
         $('#credit_model').modal('hide');
         $('#bank_select_' + _id).append(buf);
@@ -1053,7 +1084,7 @@ $(document).ready(function(){
                 }
             }
         });
-  
+
     });
 
     bind_event();
@@ -1103,7 +1134,7 @@ $(document).ready(function(){
         $(this).prev().focus();
     });
     });
-    $('.chosen-select').chosen({allow_single_deselect:true}); 
+    $('.chosen-select').chosen({allow_single_deselect:true});
     $(window)
         .off('resize.chosen')
         .on('resize.chosen', function() {
@@ -1139,14 +1170,14 @@ $(document).ready(function(){
             location.href = __BASE + "items/edit/" + _id;
         });
     });
-    
+
 
     $('#all_item').click(function(){
         if($('#all_item').is(":checked"))
         {
             $('.amount').each(function(){
                 $(this).prop('checked',true);
-            });   
+            });
 
             //$("[name='item[]']").prop('checked',true);
         }
@@ -1154,7 +1185,7 @@ $(document).ready(function(){
         {
             $('.amount').each(function(){
                 $(this).prop('checked',false);
-              // $(this).removeAttr("checked"); 
+              // $(this).removeAttr("checked");
             });
            // $("[name='item[]']").prop('checked',false);
         }

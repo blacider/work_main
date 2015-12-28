@@ -1,10 +1,77 @@
+  <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">审批流程</label>
+                                <div class="col-xs-10 col-sm-10">
+                                    <table class="table table-bordered table-striped">
+                                        <tr>
+                                            <td>审批人</td>
+                                            <td>审批意见</td>
+                                            <td>审批时间</td>
+
+                                            <!--
+                                            <td>操作</td>
+                                            -->
+                                        </tr>
+                                        <?php foreach($flow as $i){ ?>
+                                        <tr>
+
+                                            <td><?php
+                                                if($i['wingman'])
+                                                    {
+                                                        echo $i['nickname'].'('.$i['wingman'].'代提交)';
+                                                    }
+                                                else
+                                                {
+                                                    echo $i['nickname'];
+                                                }
+                                             ?></td>
+                                            <td><?php echo $i['status']; ?></td>
+                                            <td><?php
+if($i['ts'] != '0000-00-00 00:00:00') {
+                                                echo $i['ts'];
+}
+?></td>
+                                        </tr>
+                                        <?php } ?>
+                                    </table>
+                                </div>
+                            </div>
+                        <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">留言</label>
+                                <div class="col-xs-10 col-sm-10">
+                                    <table class="table table-bordered table-striped">
+                                        <tr>
+                                            <td>姓名</td>
+                                            <td>留言</td>
+                                            <td>内容</td>
+
+                                            <!--
+                                            <td>操作</td>
+                                            -->
+                                        </tr>
+                                        <?php foreach($comments as $i){ ?>
+                                        <tr>
+
+                                            <td><?php echo $i['nickname']; ?></td>
+                                            <td><?php
+                                            if($i['lastdt'] != '0000-00-00 00:00:00') {
+                                                echo $i['lastdt'];
+                                            }
+                                            ?></td>
+                                            <td><?php echo $i['comment']; ?></td>
+                                        </tr>
+                                        <?php } ?>
+                                    </table>
+                                </div>
+                            </div>
+
+
 <style type="text/css">
      #submit1 {
   background-color: #fe575f;
   border: 0;
   color: white;
   height: 30px;
-  border-radius: 3px;   
+  border-radius: 3px;
   font-size: 12px;
    }
    #submit1:hover {
@@ -20,13 +87,13 @@
                                 </center>
                             </div>
                             -->
-                   
-                   
+
+
                     </div>
         </form>
 
         <div class="form-group">
-            <form method="post" id='comment' action="<?php echo base_url('reports/add_comment');  ?>" > 
+            <form method="post" id='comment' action="<?php echo base_url('reports/add_comment');  ?>" >
                 <div class="col-xs-6 col-sm-6 col-xs-offset-2 col-sm-offset-2">
                     <input type="text" name="comment" style="width:100%;">
                 </div>
@@ -42,19 +109,19 @@
                 <?php
                 $_ruid = $report['uid'];
                 $_uid = $profile['id'];
-                if($_ruid == $_uid) 
+                if($_ruid == $_uid)
                 {
                     if(($report['status'] == 1) || ($report['status'] == 2))
                     {
                     ?>
                     <a style="margin-left: 80px;" class="btn btn-white callback" data-renew="-2"><i class="ace-icon fa fa-undo gray bigger-110"></i>撤回</a>
-                    <?php 
+                    <?php
                     }
                     else if($report['status'] == 7)
                     {
                     ?>
                     <a style="margin-left: 80px;" class="btn btn-white confirm_success" data-renew="-2"><i class="ace-icon fa fa-check-square-o gray bigger-110"></i>确认已收款</a>
-                    <?php   
+                    <?php
                     }
                 }
                 if($decision == 1)
@@ -62,16 +129,16 @@
                     ?>
                     <a style="margin-left: 20px;" class="btn btn-white tpass" ><i class="ace-icon fa fa-check-square-o gray bigger-110"></i>通过</a>
                     <a style="margin-left: 20px;" class="btn btn-white tdeny" ><i class="ace-icon  glyphicon glyphicon-remove gray bigger-110"></i>退回</a>
-                    <?php 
+                    <?php
                 }
                 else if(in_array($profile['admin'],[1,2]) && $report['status'] == 2)
                 {
                      ?>
                     <a style="margin-left: 20px;" class="btn btn-white tapprove" ><i class="ace-icon fa fa-check-square-o gray bigger-110"></i>通过</a>
                     <a style="margin-left: 20px;" class="btn btn-white finance_tdeny" ><i class="ace-icon  glyphicon glyphicon-remove gray bigger-110"></i>退回</a>
-                    <?php 
+                    <?php
                 }
-                ?>                               
+                ?>
                 <a style="margin-left: 20px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>返回</a>
             </div>
         </div>
@@ -91,7 +158,7 @@
             </div>
             <form action="<?php echo base_url('/reports/permit'); ?>" method="post" id="form_discard">
                 <div class="modal-body">
-                    <input type="hidden" id="div_id" class="thumbnail" name="rid" style="display:none;" value=""/>
+                    <input type="hidden" id="div_id" class="thumbnail" name="rid" value="<?php echo $rid; ?>" />
                     <input type="hidden" id="status"  name="status" style="display:none;" value="3" />
                     <div class="form-group">
                         <textarea class="form-control" name="content"></textarea>
@@ -168,7 +235,7 @@
             <div class="modal-footer">
                 <input type="hidden" id="pass" name="pass" value="0">
                 <input type="submit" class="btn btn-primary pass" value="确认结束">
-                <div class="btn btn-primary repass" onClick="chose_others(this.parentNode.parentNode.rid.value)">继续选择</div>
+                <div class="btn btn-primary repass" onClick="chose_others_audit(this.parentNode.parentNode.rid.value)">继续选择</div>
             </div>
                 </form>
         </div><!-- /.modal-content -->
@@ -303,7 +370,7 @@ $(document).ready(function(){
     $('.finance_deny').click(function(){
         $('#form_discard','#finance_comment_dialog').submit();
     });
-    $('.chosen-select').chosen({allow_single_deselect:true}); 
+    $('.chosen-select').chosen({allow_single_deselect:true});
     $(window)
         .off('resize.chosen')
         .on('resize.chosen', function() {
@@ -371,12 +438,12 @@ $(document).ready(function(){
                         getData = data['data'].suggestion;
                         if (data['data'].complete == 0) {
                             $('#rid').val(_id);
-                            chose_others_zero(_id);
+                            chose_others_zero_audit(getData);
                         } else {
                             $('#rid_').val(_id);
                             $('#status_').val(2);
                             if(close_directly == 0) {
-                                $('#modal_next_').modal('show'); 
+                                $('#modal_next_').modal('show');
                             } else {
                                 $('#permit_form').submit();
                             }
@@ -425,8 +492,7 @@ $(document).ready(function(){
     function chose_others_zero(item,nextId) {
     for (var item in getData) {
         if (item != undefined) {
-            $($('.chosen-select','#finance_modal_next')[0]).find("option[value='"+getData[item]+"']").attr("selected",true);
-            $($('.chosen-select','#finance_modal_next')[0]).trigger("chosen:updated");
+            $($('.chosen-select','#finance_modal_next')[0]).val(item).trigger("chosen:updated");
         }
     }
     $('#finance_modal_next').modal('show');
@@ -448,4 +514,14 @@ $(document).ready(function(){
     }
 
 });
+
+function chose_others_zero_audit(item) {
+    $('#modal_next').find('.chosen-select').val(item).trigger("chosen:updated");
+    $('#modal_next').modal('show');
+}
+function chose_others_audit(_id) {
+    $('#modal_next_').modal('hide');
+    $('#rid').val(_id);
+    $('#modal_next').modal('show');
+}
 </script>

@@ -28,7 +28,7 @@
         </select>
         <div class="input-group input-group">
             <span class="input-group-addon" id='coin_simbol'>￥</span>
-            <input type="text" class="form-controller col-xs-12 col-sm-12" name="amount" id="amount" placeholder="金额" required>
+            <input type="number" class="form-controller col-xs-12 col-sm-12" name="amount" id="amount" placeholder="金额" required>
             <span class="input-group-addon" id='rate_simbol'>￥0</span>
         </div>
 
@@ -51,7 +51,7 @@
 <div class="form-group" id="mul_amount">
 <label class="col-sm-1 control-label no-padding-right">金额</label>
 <div class="col-xs-6 col-sm-6">
-<input type="text" class="form-controller col-xs-12" name="amount" id="amount" placeholder="金额" required>
+<input type="number" class="form-controller col-xs-12" name="amount" id="amount" placeholder="金额" required>
 </div>
 
 </div>
@@ -112,7 +112,7 @@
 <label class="col-sm-1 control-label no-padding-right">人数:</label>
 <div class="col-xs-3 col-sm-3">
 <div class="input-group">
-<input type="text" id="people-nums" name="peoples">
+<input type="number" id="people-nums" name="peoples">
 </div>
 </div>
 <label class="col-sm-1 control-label no-padding-right">人均:</label>
@@ -150,7 +150,7 @@
 <label class="col-sm-1 control-label no-padding-right">费用承担</label>
 <div class="col-xs-6 col-sm-6">
 
-<div class="col-xs-3 col-sm-3" style="margin-left:0px;padding-left:0px;">
+<div class="col-xs-3 col-sm-3" style="margin-left:0px;padding-left:0px; ">
 <input type="hidden" value="" id="afford_ids" name="afford_ids" />
 <select class="chosen-select tag-input-style" id="afford_type" name="afford_type" data-placeholder="请选择类型">
 <option value="-1"><?php echo $profile['nickname']; ?></option>
@@ -181,7 +181,7 @@
 </select>
 </div>
 
-<div class="col-xs-9 col-sm-9">
+<div class="col-xs-9 col-sm-9" style="   position: relative;top: -4px;">
 <?php echo implode("", $select_multi); ?>
 </div>
 
@@ -672,7 +672,7 @@ function get_sobs(){
                     }   
                 }
             }
-            var selectDom = this.parentNode.nextElementSibling.children[0]
+            var selectDom = $(this).parent().next().find("select")[0];
             $(selectDom).empty().append(_h).trigger("chosen:updated");
             $('#sob_category').trigger('change');
             $('#sob_category').trigger('change:updated');
@@ -732,10 +732,13 @@ $('#coin_type').change(function(){
 
 $('#amount').change(function(){
     var temp = $('#coin_type').val();
-    var coin_list = temp.split(',');
-    $('#coin_simbol').text(icon_dic[coin_list[0]]);
-    var _amount = $('#amount').val();
-    $('#rate_simbol').text( '￥' + Math.round(_amount*coin_list[1])/100 );
+    if(temp)
+    {
+        var coin_list = temp.split(',');
+        $('#coin_simbol').text(icon_dic[coin_list[0]]);
+        var _amount = $('#amount').val();
+        $('#rate_simbol').text( '￥' + Math.round(_amount*coin_list[1])/100 );
+    }
 });
 
 /* 不包含汇率种类的实现
@@ -865,10 +868,13 @@ $(document).ready(function(){
                 $('#config_type').val(_item_config[category_id]['type']);
                 $('#amount').change(function(){
                     var all_amount = $('#amount').val();
-                    var rates = $('#coin_type').val().split(',')[1];
-                    all_amount *= rates/100;
+                    var coin_id = 'cny';
+                    if($('#coin_type').val())
+                    {
+                         coin_id = $('#coin_type').val().split(',')[0];
+                    }
                     if (subs != '' && subs >= 0)
-                        $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
+                        $('#average_id').text(icon_dic[coin_id] + Number(all_amount/subs).toFixed(2) +'/人' + '*' + subs);
                     else
                         $('#average_id').text("请输入正确人数");
                 });
@@ -907,7 +913,7 @@ $(document).ready(function(){
             show_notify('正在上传图片，请稍候');
             return false;
         }
-        if(isNaN($('#amount').val())) {
+        if($('#amount').val() <= 0) {
             show_notify('请输入有效金额');
             $('#amount').val('');
             $('#amount').focus();

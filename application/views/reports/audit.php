@@ -24,7 +24,7 @@ position: absolute;
   border: 0;
   color: white;
   height: 25px;
-  border-radius: 3px;   
+  border-radius: 3px;
   font-size: 12px;
    }
    #globalSearch:hover {
@@ -87,8 +87,8 @@ position: absolute;
                 <div class="form-group">
                     <div class="col-xs-9 col-sm-9">
                         <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="receiver[]" multiple="multiple" id="modal_managers" style="width:300px;">
-                            <?php foreach($members as $m) { 
-                                
+                            <?php foreach($members as $m) {
+
                               ?>
                             <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
                             <?php } ?>
@@ -160,7 +160,7 @@ position: absolute;
                       <input class=" col-xs-8 col-sm-8" type="text" id="email" name="email" class="form-control" value="<?php if(array_key_exists('email',$profile)){ echo $profile['email'];}?>">
                       <input type="hidden" id="report_id" name="report_id">
                     </div>
-                    
+
                   </div>
                   <div class="space-4"></div>
                 <br>
@@ -211,7 +211,7 @@ $(document).ready(function(){
     $('.new_card').click(function(){
         $('#form_discard').submit();
     });
-    $('.chosen-select').chosen({allow_single_deselect:true}); 
+    $('.chosen-select').chosen({allow_single_deselect:true});
     $(window)
         .off('resize.chosen')
         .on('resize.chosen', function() {
@@ -258,10 +258,10 @@ function doSearch() {
     return false;
 }
 
-function isEmail( str ){  
-    var myReg = /^[-\._A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/; 
-    if(myReg.test(str)) return true; 
-    return false; 
+function isEmail( str ){
+    var myReg = /^[-\._A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/;
+    if(myReg.test(str)) return true;
+    return false;
 }
 $('#send').click(function(){
     if ($('#email').val() == '' || !isEmail($('#email').val())) {
@@ -296,4 +296,11 @@ $('#send').click(function(){
 });
 </script>
 
+<script>
+var filter = "<?=$filter?>";
+var can_export_excel = <?=$can_export_excel?>;
+</script>
+
+<script type="text/javascript" src="/static/js/jqgrid_choseall.js"></script>
 <script src="/static/js/audit.js" ></script>
+

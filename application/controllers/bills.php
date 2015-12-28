@@ -11,11 +11,11 @@ class Bills extends REIM_Controller {
         $this->load->model('company_model','company');
         $this->load->model('reim_show_model','reim_show');
         $this->load->library('reim_cipher');
+        $this->load->helper('report_view_utils');
     }
 
     public function report_finance_deny()
     {
-
            $rid = $this->input->post('rid');
            $comment = $this->input->post('content');
            $buf = $this->company->deny_report_finance($rid,$comment);
@@ -32,9 +32,10 @@ class Bills extends REIM_Controller {
 
            return redirect('bills/finance_flow');
     }
+
     public function report_finance_end()
     {
-           $rid = $this->input->post('rid');  
+           $rid = $this->input->post('rid');
 
            $buf = $this->company->pass_report_finance($rid);
 
@@ -75,7 +76,7 @@ class Bills extends REIM_Controller {
         $data = array();
         if($buf['status'] > 0)
         {
-           $data = $buf['status']; 
+           $data = $buf['status'];
         }
         log_message('debug','permission:' . json_encode($buf));
         die(json_encode($buf));
@@ -246,48 +247,18 @@ class Bills extends REIM_Controller {
     }
 
     public function _logic($status = 2, $search = ''){
-        $this->need_group_agent();
+        $this->need_group_casher();
         $error = $this->session->userdata('last_error');
-        // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-        $reports = $this->reports->get_bills($status);
-        $_tags = $this->tags->get_list();
+        // 获取当前所属的组
         $usergroups = $this->ug->get_my_list();
-        if($usergroups['status']>0)
-        {
+        if($usergroups['status']>0) {
             $_usergroups=$usergroups['data']['group'];
         }
-        else
-        {
+        else {
             $_usergroups = array();
         }
         log_message('debug','usergroup:'.json_encode($usergroups));
-        if($_tags && array_key_exists('tags', $_tags['data'])){
-            $_tags = $_tags['data']['tags'];
-        }
-        log_message("debug", 'reports:' . json_encode($reports));
-        $data = array();
-        $_data = array();
-        if($reports['status']) {
-            $data = $reports['data']['data'];
-
-            foreach($data as $item) {
-                if($item['status'] == 1){
-                    array_push($_data, $item);
-                } 
-                if($item['status'] == 2){
-                    array_push($_data, $item);
-                } 
-                if($status == 4) {
-                    if(in_array($item['status'], array(4, 7, 8)))
-                        array_push($_data, $item);
-                }
-                if($status == 1)
-                {
-                    array_push($_data,$item);
-                }
-            }
-        }
         if($status == 2){
             $this->session->set_userdata("report_list_url", "bills/index");
             $this->session->set_userdata('item_update_in','2');
@@ -300,10 +271,7 @@ class Bills extends REIM_Controller {
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
                         ,array('url' => '','name' => '待结算','class' => '')
                     )
-                    ,'reports' => $data
                     ,'status' => $status
-                    ,'category' => $_tags
-                    ,'error' => $error
                     ,'usergroups' => $_usergroups
                     ,'search' => urldecode($search)
                 )
@@ -322,10 +290,7 @@ class Bills extends REIM_Controller {
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
                         ,array('url' => '','name' => '已完成','class' => '')
                     )
-                    ,'reports' => $data
                     ,'status' => $status
-                    ,'category' => $_tags
-                    ,'error' => $error
                     ,'usergroups' => $_usergroups
                     ,'search' => urldecode($search)
                 )
@@ -344,10 +309,7 @@ class Bills extends REIM_Controller {
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
                         ,array('url' => '','name' => '全部报销单','class' => '')
                     )
-                    ,'reports' => $data
                     ,'status' => $status
-                    ,'category' => $_tags
-                    ,'error' => $error
                     ,'usergroups' => $_usergroups
                     ,'search' => urldecode($search)
                 )
@@ -366,10 +328,7 @@ class Bills extends REIM_Controller {
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
                         ,array('url' => '','name' => '审核中','class' => '')
                     )
-                    ,'reports' => $data
                     ,'status' => $status
-                    ,'category' => $_tags
-                    ,'error' => $error
                     ,'usergroups' => $_usergroups
                     ,'search' => urldecode($search)
                 )
@@ -401,7 +360,6 @@ class Bills extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-        $reports = $this->reports->get_finance();
         $_tags = $this->tags->get_list();
         $usergroups = $this->ug->get_my_list();
         if($usergroups['status']>0)
@@ -416,31 +374,6 @@ class Bills extends REIM_Controller {
         if($_tags && array_key_exists('tags', $_tags['data'])){
             $_tags = $_tags['data']['tags'];
         }
-        log_message("debug", 'reports:' . json_encode($reports));
-        $data = array();
-        $_data = array();
-        if($reports['status']) {
-            $data = $reports['data']['data'];
-
-            foreach($data as $item) {
-                log_message("debug", "alvayang:" . json_encode($item));
-                    array_push($_data, $item);
-                    /*
-                if($item['status'] == 2){
-                    array_push($_data, $item);
-                } 
-                if($status == 4) {
-                    if(in_array($item['status'], array(4, 7, 8)))
-                        array_push($_data, $item);
-                }
-                if($status == 1)
-                {
-                    array_push($_data,$item);
-                }
-                     */
-            }
-        }
-
         $_group = $this->groups->get_my_list();
 
         $gmember = array();
@@ -461,7 +394,6 @@ class Bills extends REIM_Controller {
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
                         ,array('url' => '','name' => '待审批','class' => '')
                     )
-                    ,'reports' => $data
                     ,'status' => 1/*$status*/
                     ,'category' => $_tags
                     ,'search' => urldecode($search)
@@ -472,45 +404,22 @@ class Bills extends REIM_Controller {
     }
 
     public function finance_done($search = '') {
-        $status = 2; 
+        $status = 2;
         $this->need_group_casher();
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-        $reports = $this->reports->get_finance($status);
         $_tags = $this->tags->get_list();
         $usergroups = $this->ug->get_my_list();
-        if($usergroups['status']>0)
-        {
+        if($usergroups['status']>0) {
             $_usergroups=$usergroups['data']['group'];
         }
-        else
-        {
+        else {
             $_usergroups = array();
         }
         log_message('debug','usergroup:'.json_encode($usergroups));
         if($_tags && array_key_exists('tags', $_tags['data'])){
             $_tags = $_tags['data']['tags'];
-        }
-        log_message("debug", 'reports:' . json_encode($reports));
-        $data = array();
-        $_data = array();
-        if($reports['status']) {
-            $data = $reports['data']['data'];
-
-            foreach($data as $item) {
-                if($item['status'] == 2){
-                    array_push($_data, $item);
-                } 
-                if($status == 4) {
-                    if(in_array($item['status'], array(4, 7, 8)))
-                        array_push($_data, $item);
-                }
-                if($status == 1)
-                {
-                    array_push($_data,$item);
-                }
-            }
         }
 
         $_group = $this->groups->get_my_list();
@@ -533,7 +442,6 @@ class Bills extends REIM_Controller {
                         ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
                         ,array('url' => '','name' => '已审批','class' => '')
                     )
-                    ,'reports' => $data
                     ,'status' => $status
                     ,'category' => $_tags
                     ,'error' => $error
@@ -558,8 +466,6 @@ class Bills extends REIM_Controller {
             die(json_encode(array()));
         }
         $data = $bills['data']['data'];
-        //log_message("debug", "alvayang bills:" . json_encode($bill['data']));
-       // $ugs = $bills['data']['ugs'];
         $ugs = array();
         $_data = array();
         foreach($data as $d){
@@ -568,9 +474,6 @@ class Bills extends REIM_Controller {
                 $url = base_url('reports/show/' . $d['id']);
                 $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
             }
-            log_message("debug", "alvayang Bill: [ $type] $type: " . json_encode($d));
-            log_message("debug", "xBill: $type: " . json_encode($d));
-            log_message("debug", "nICe");
 
             $prove_ahead = '报销';
             switch($d['prove_ahead']){
@@ -590,27 +493,19 @@ class Bills extends REIM_Controller {
                 $d["approvaldt_str"] = date('Y-m-d H:i:s', $d["approvaldt"]);
             }
             $d['amount'] =  sprintf("%.2f",$d['amount'] );
-            $d['status_str'] = '';
+            $d['status_str'] = get_report_status_str($d['status']);
             $edit = '';
             $extra = '';
             if($d['status'] == 2) {
                 $edit = 'green';
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>';
                 $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span><span class="ui-icon ui-icon ace-icon fa fa-check tapprove green" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon ui-icon red ace-icon fa fa-times tdeny" data-id="' . $d['id'] . '"></span>';
             }
             if($d['status'] == 4 || $d['status'] == 7 || $d['status'] == 8) {
                 $edit = 'gray';
-                $describe_status = '已完成';
-                if($d['status'] == 7)
-                    $describe_status = '完成待确认';
-                if($d['status'] == 8)
-                    $describe_status = '完成已确认';
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">' . $describe_status . '</button>';
                 $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span>' ;
             }
             if($d['status'] == 1) {
                 $edit = 'blue';
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
                 $extra = '';
             }
             $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
@@ -618,12 +513,12 @@ class Bills extends REIM_Controller {
                 . '</div>';
             array_push($_data, $d);
         }
-        log_message('debug','alvayang _data:' . json_encode($_data));
+        //log_message('debug','alvayang _data:' . json_encode($_data));
         die(json_encode($_data));
     }
 
     public function listdata($type = 2){
-        $this->need_group_agent();
+        $this->need_group_casher();
         $page = $this->input->get('page');
         $rows = $this->input->get('rows');
         $sort = $this->input->get('sord');
@@ -678,9 +573,6 @@ class Bills extends REIM_Controller {
                     if($d['status'] < 1) continue;
                     if($d['status'] == 3) continue;
             }
-            log_message("debug", "xBill: $type: " . json_encode($d));
-            log_message("debug", "nICe");
-            log_message("debug", "ugs:".json_encode($bills['data']['ugs']));
 
             $d['date_str'] = date('Y-m-d H:i:s', $d['createdt']);
             $d['ugs'] = array();
@@ -688,38 +580,28 @@ class Bills extends REIM_Controller {
             {
                 if(array_key_exists($d['uid'],$ugs))
                 {
-                    $d['ugs'] = $ugs[$d['uid']];		
+                    $d['ugs'] = $ugs[$d['uid']];
                 }
 
             }
             array_push($d['ugs'],'0');
             $d['ugs'] = implode(',',$d['ugs']);
             $d['amount'] =  sprintf("%.2f",$d['amount'] );
-            $d['status_str'] = '';
+            $d['status_str'] = get_report_status_str($d['status']);
             $edit = '';
             $extra = '';
             if($d['status'] == 2) {
                 $edit = 'green';
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>';
                 $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span>';
-                //$extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span><span class="ui-icon ui-icon ace-icon fa fa-check tapprove green" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon ui-icon red ace-icon fa fa-times tdeny" data-id="' . $d['id'] . '"></span>';
             }
             if($d['status'] == 4 || $d['status'] == 7 || $d['status'] == 8) {
                 $edit = 'gray';
-                $describe_status = '已完成';
-                if($d['status'] == 7)
-                    $describe_status = '完成待确认';
-                if($d['status'] == 8)
-                    $describe_status = '完成已确认';
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">' . $describe_status . '</button>';
                 $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span>' ;
             }
             if($d['status'] == 1) {
                 $edit = 'blue';
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
                 $extra = '' ;
             }
-
 
             $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                 . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . ''. $extra
