@@ -1256,6 +1256,7 @@ class Items extends REIM_Controller {
             $gmember = $gmember ? $gmember : array();
         }
         $item['dt'] = date('Y-m-d H:i:s',$item['dt']);
+        $item['end_dt'] = date('Y-m-d H:i:s',$item['end_dt']);
         $is_burden = true;
         if(!$afford)
         {
