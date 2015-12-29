@@ -15,7 +15,6 @@
 <div class="col-xs-12 col-sm-12">
 <?php echo $html_company_config;?>
 <?php
-echo get_html_container($item_customization,'html_item_customization',false);
   if($page_type != 0)
   {
     echo $html_item;
