@@ -1,4 +1,4 @@
-<div class="form-group">
+<div class="form-group customization_form" data-value='<?php echo htmlspecialchars(json_encode($item_customization_value));?>'>
 <label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
 <div class="col-xs-6 col-sm-6">
 <input type="text" name="merchant" id="merchant" class="form-controller col-xs-12 default_custom" data-id="<?php echo $item_customization_value['id'];?>" placeholder="消费商家">
