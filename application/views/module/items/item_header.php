@@ -32,43 +32,87 @@
   }
 ?>
 <script type="text/javascript">
+var ITEMS = [];
+function formValidate(itemList)
+{
+    for(var i = 0 ; i < itemList.length ; i++)
+    {
+        var tempValue = itemList[i].val();
+        if(tempValue == '' || tempValue == undefined)
+        {
+            itemList[i].focus();
+            show_notify('请输入必填项的值');
+            return false; //直接返回不能提交表单
+        }
+    }
+}
 
-function add_show_listener(item_array,form_node)
+function is_ok(arrayList,category_id,category_parent_id)
+{
+    var is_ok_value = false;
+    if(arrayList.length == 1 && arrayList[0] == 0)
+    {
+        is_ok_value = true;
+    }
+    if(in_array(arrayList,category_id) || in_array(arrayList,category_parent_id))
+    {
+        is_ok_value = true;
+    }
+
+    return is_ok_value;
+}
+
+function is_show(item_array,form_node,category_id,category_parent_id)
+{
+    var is_show_value = is_ok(item_array,category_id,category_parent_id);
+    
+    if(is_show_value)
+    {
+        form_node.prop('hidden',false);
+    }
+    else
+    {
+        form_node.prop('hidden',true);
+    }
+}
+
+function is_required(required_list,form_node,category_id,category_parent_id)
+{
+    var is_required_value = is_ok(required_list,form_node,category_id,category_parent_id);
+    var input_node = $('.need_check',form_node);
+    console.log(input_node.val());
+    if(is_required_value)
+    {
+        if(!in_array(ITEMS,input_node))
+        {
+            ITEMS.push(input_node);
+        }
+    }
+    else
+    {
+        pop_all_from_array(ITEMS,input_node);
+    }
+}
+
+function add_show_listener(item_array,form_node,required_list)
 {
     $('#sob_category').on('change',function(){
         var category_id = $('#sob_category').val();
         var category_parent_id = $('option:selected','#sob_category').data('pid');
-        var is_show = 0;
-        if(item_array.length == 1 && item_array[0] == 0)
-        {
-            is_show = 1;
-        }
-        if(in_array(item_array,category_id) || in_array(item_array,category_parent_id))
-        {
-            is_show = 1;
-        }
-        if(is_show == 1)
-        {
-            form_node.prop('hidden',false);
-        }
-        else
-        {
-            form_node.prop('hidden',true);
-        }
+        is_show(item_array,form_node,category_id,category_parent_id);
+        is_required(required_list,form_node,category_id,category_parent_id);
     });
 }
 
 $(document).ready(function(){
     $('.customization_form').each(function(){
-        console.log('form_load');
         var customization_form_node = $(this);
         var customization_form_val = $(this).data('value');
         var target = customization_form_val['target'];
-        console.log(customization_form_val);
-        console.log(target);
+        var required = customization_form_val['required'];
         if(target != undefined)
         {
-            add_show_listener(target,customization_form_node);
+            add_show_listener(target,customization_form_node,required);
         }
     });
 });
