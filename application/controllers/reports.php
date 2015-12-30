@@ -1047,7 +1047,10 @@ class Reports extends REIM_Controller {
                         $id = $child["id"];
                         $value = $this->try_get_element($extra_dict, $id, 'value');
                         if ($child["type"] == 4) {
-                            $bankinfo = json_decode($value, TRUE);
+                            if (!is_array($value)) {
+                                $value = json_decode($value, TRUE);
+                            }
+                            $bankinfo = $value;
 
                             $obj[$child_name . " - 户名"] = $this->try_get_element($bankinfo, "account");
                             $obj[$child_name . " - 账号"] = $this->try_get_element($bankinfo, "cardno");
