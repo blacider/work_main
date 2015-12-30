@@ -2,7 +2,8 @@
 	<label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
 	<div class="col-xs-4 col-sm-4">
 		<div class="input-group">
-			<input id="date-timepicker1" name="dt" type="text" class="form-control date-timepicker default_custom" data-id="<?php echo $item_customization_value['id'];?>"/>
+			<input id="date-timepicker1" name="dt" type="text" class="form-control date-timepicker default_custom" data-id="<?php echo $item_customization_value['id'];?>" 
+				   value="<?php if($item_customization_value['extra']['default_current_timestamp']){ echo date('Y-m-d H:i:s');}?>" />
 			<span class="input-group-addon">
 				<i class="fa fa-clock-o bigger-110"></i>
 			</span>
