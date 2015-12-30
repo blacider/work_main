@@ -11,6 +11,7 @@
 </div>
 
 </div>
+<input type="hidden" name="attachments" id="files" >
 </div>
 <script type="text/javascript">
 function getPngByType(filename) {
