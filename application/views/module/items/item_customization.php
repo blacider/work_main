@@ -45,9 +45,9 @@
 
     <label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
     <div class="col-xs-2 col-sm-2">
-        <input data-title="<?php echo $item_customization_value['title'];?>" type="text" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type member_nums need_check" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="人数" required>
+        <input data-title="<?php echo $item_customization_value['title'];?>" type="text" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type member_nums need_check" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="" required>
     </div>
-    <label class="col-sm-1 control-label no-padding-right">人均:</label>
+    <label class="col-sm-1 control-label no-padding-right">平均:</label>
 	<div class="col-xs-2 col-sm-2">
 	    <div id="member_average" name="member_average" type="text" class="form-control"></div>
 	</div>
