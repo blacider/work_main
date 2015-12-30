@@ -52,7 +52,14 @@ function set_day_average()
 		return ;
 	}
 	var days = Math.ceil((end_date - start_date)/(1000*24*3600));
-	$('#days').text(days);
+	if(days > 0)
+	{
+		$('#days').text(days);
+	}
+	else
+	{
+		$('#days').text('');
+	}
 
 	if(amount == '')
 	{
