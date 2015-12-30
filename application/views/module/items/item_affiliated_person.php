@@ -15,6 +15,10 @@
             ?>
         </select>
     </div>
+    <?php
+        if($item_customization_value['extra']['show_calculation'])
+        {
+    ?>
     <label class="col-sm-1 control-label no-padding-right">人数:</label>
     <div class="col-xs-2 col-sm-2">
         <div id="affiliated_nums" name="affiliated_nums" type="text" class="form-control"></div>
@@ -23,6 +27,9 @@
     <div class="col-xs-2 col-sm-2">
         <div id="affiliated_average" name="affiliated_average" type="text" class="form-control"></div>
     </div>
+    <?php
+        }
+    ?>
 </div>
 
 <script type="text/javascript">
