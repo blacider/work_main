@@ -1,3 +1,4 @@
+<?php echo get_html_container($item_customization_value,'html_item_customization_period',true); ?>
 <div class="form-group customization_form" data-value='<?php echo htmlspecialchars(json_encode($item_customization_value));?>'>
 	<label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
 	<div class="col-xs-4 col-sm-4">
@@ -111,6 +112,8 @@ $('#amount').on('change',function(){
 
 
 $(document).ready(function(){
+	var item_customization_value = $('#html_item_customization_period').data('value');
+	$('#time_label').text(item_customization_value['extra']['title_start']);
 	//init_timepicker();
 	if(PAGE_TYPE != 0)
 	{

@@ -186,7 +186,6 @@ $(document).ready(function(){
             {
                 $load_data = array( 
                     'item_customization_value' => $ic,
-                    'html_item_customization_value' => get_html_container($ic,'html_item_customization_value',false),
                     'company_config' => $company_config,
                     'is_burden' => $is_burden,
                     'profile' => $profile,
