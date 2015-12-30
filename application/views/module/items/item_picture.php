@@ -17,7 +17,7 @@
         <a class="filePicker" id="btn_simg" >添加图片</a>
     </div>
 </div>
-<input type="hidden" class='need_check' name="images" id="images" >
+<input type="hidden" data-title="<?php echo $item_customization_value['title'];?>" class='need_check' name="images" id="images" >
 </div>
 
 <script type="text/javascript">

@@ -16,8 +16,6 @@
 
 </div>
 </div>
-<input type="hidden" name="images" id="images" >
-<input type="hidden" name="attachments" id="files" >
 <input type="hidden" name="customization" id="customization">
 <input type="hidden" name="default_customization" id="default_customization">
 </form>
@@ -103,33 +101,16 @@ $(document).ready(function(){
             show_notify('正在上传图片，请稍候');
             return false;
         }
-        if(isNaN($('#amount').val())) {
+        if($('#amount').val() == '') {
             show_notify('请输入有效金额');
             $('#amount').val('');
             $('#amount').focus();
             return false;
         }
 
-       
-
-        var note = $('#note').val();
-        if(__config && __config['note_compulsory'] == 1)
-        {
-            if(note.trim()=='')
-            {
-
-                show_notify('请输入备注');
-                $('#note').focus();
-                return false;
-            }
-        }
         if($('#sob_category').val() == null)
         {
             show_notify('请选择类别');
-            return false;
-        }
-        if($('#config_type').val() == 5 && __average_count && $('#people-nums').val() == null && $('#people-nums').val() == 0) {
-            show_notify('必须填写参与人数');
             return false;
         }
 
@@ -141,7 +122,11 @@ $(document).ready(function(){
         });
         $('#hidden_extra').val($.toJSON(_extra));
         $('#renew').val($(this).data('renew'));
-       // $('#itemform').submit();
+
+        if(formValidate(ITEMS))
+        {
+            $('#itemform').submit();
+        }
     });
     $('.cancel').click(function(){
         $('#reset').click();

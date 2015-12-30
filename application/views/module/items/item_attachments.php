@@ -11,7 +11,7 @@
 </div>
 
 </div>
-<input type="hidden" name="attachments" class='need_check' id="files" >
+<input type="hidden" data-title="<?php echo $item_customization_value['title'];?>" name="attachments" class='need_check' id="files" >
 </div>
 <script type="text/javascript">
 function getPngByType(filename) {

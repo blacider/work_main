@@ -8,7 +8,7 @@
 
     <label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
     <div class="col-xs-6 col-sm-6">
-        <input type="text" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type need_check" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="金额" required>
+        <input data-title="<?php echo $item_customization_value['title'];?>" type="text" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type need_check" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="金额" required>
     </div>
 </div>
 
@@ -19,7 +19,7 @@
 
     <label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
     <div class="col-xs-6 col-sm-6">
-        <input type="number" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type need_check" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="数字" required>
+        <input data-title="<?php echo $item_customization_value['title'];?>" type="number" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type need_check" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="数字" required>
     </div>
 </div>
 <?php
@@ -29,7 +29,7 @@
 
     <label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
 	<div class="col-xs-6 col-sm-6">
-	<select class="chosen-select tag-input-style customization_type need_check" data-id="<?php echo $item_customization_value['id'];?>" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" <?php if($item_customization_value['extra']['multi-selectable']){echo 'multiple="multiple"';}?> data-placeholder="请选择标签">
+	<select data-title="<?php echo $item_customization_value['title'];?>" class="chosen-select tag-input-style customization_type need_check" data-id="<?php echo $item_customization_value['id'];?>" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" <?php if($item_customization_value['extra']['multi-selectable']){echo 'multiple="multiple"';}?> data-placeholder="请选择标签">
 	<?php foreach($item_customization_value['extra']['options'] as $opt) {?>
 
 	<option value="<?php echo $opt['id']; ?>"><?php echo $opt['value']; ?></option>
@@ -45,7 +45,7 @@
 
     <label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
     <div class="col-xs-2 col-sm-2">
-        <input type="text" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type member_nums need_check" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="人数" required>
+        <input data-title="<?php echo $item_customization_value['title'];?>" type="text" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type member_nums need_check" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="人数" required>
     </div>
     <label class="col-sm-1 control-label no-padding-right">人均:</label>
 	<div class="col-xs-2 col-sm-2">

@@ -2,7 +2,7 @@
 <div class="form-group customization_form" data-value='<?php echo htmlspecialchars(json_encode($item_customization_value));?>'>
 <label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
 <div class="col-xs-6 col-sm-6">
-<textarea name="note" id="note" data-id="<?php echo $item_customization_value['id'];?>" class="col-xs-12 col-sm-12 form-controller default_custom need_check" ></textarea>
+<textarea name="note" id="note" data-title="<?php echo $item_customization_value['title'];?>" data-id="<?php echo $item_customization_value['id'];?>" class="col-xs-12 col-sm-12 form-controller default_custom need_check" ></textarea>
 </div>
 
 </div>

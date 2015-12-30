@@ -33,18 +33,21 @@
 ?>
 <script type="text/javascript">
 var ITEMS = [];
-function formValidate(itemList)
+function formValidate()
 {
-    for(var i = 0 ; i < itemList.length ; i++)
-    {
-        var tempValue = itemList[i].val();
-        if(tempValue == '' || tempValue == undefined)
+    var is_validate = true;
+    $('.need_check').each(function(){
+        if($(this).prop('required') == true && ($(this).val()==''))
         {
-            itemList[i].focus();
-            show_notify('请输入必填项的值');
-            return false; //直接返回不能提交表单
+            var tempTitle = $(this).data('title');
+            $(this).focus();
+            show_notify(tempTitle + '为必填项');
+            is_validate = false;
+            return false ;
         }
-    }
+    });
+
+    return is_validate;
 }
 
 function is_ok(arrayList,category_id,category_parent_id)
@@ -78,19 +81,23 @@ function is_show(item_array,form_node,category_id,category_parent_id)
 
 function is_required(required_list,form_node,category_id,category_parent_id)
 {
-    var is_required_value = is_ok(required_list,form_node,category_id,category_parent_id);
     var input_node = $('.need_check',form_node);
-    console.log(input_node.val());
+    if(input_node.val() === undefined)
+    {
+        return;
+    }
+
+    var is_required_value = is_ok(required_list,form_node,category_id,category_parent_id);
     if(is_required_value)
     {
-        if(!in_array(ITEMS,input_node))
-        {
-            ITEMS.push(input_node);
-        }
+        console.log(input_node.data('title'));
+        input_node.prop('required',true);
+        input_node.trigger('chosen:udpated');
     }
     else
     {
-        pop_all_from_array(ITEMS,input_node);
+        input_node.prop('required',false);
+        input_node.trigger('chosen:updated');
     }
 }
 
