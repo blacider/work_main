@@ -1102,11 +1102,11 @@ class Reports extends REIM_Controller {
             $this->session->set_userdata('last_error', $_data["_msg"]);
             return;
         }
-
         $data = $_data["data"];
         log_message("debug", "got data => " . json_encode($data));
-
+        
         $dict_by_template = array();
+        $_rids = array();
         foreach ($data["report"] as $id => $r) {
             $template_id = 0;
             if (array_key_exists("template_id", $r) && $r["template_id"]) {
@@ -1116,7 +1116,28 @@ class Reports extends REIM_Controller {
             if (!array_key_exists($template_id, $dict_by_template)) {
                 $dict_by_template[$template_id] = array();
             }
+            array_push($_rids, $id);
             array_push($dict_by_template[$template_id], $r);
+        }
+
+        
+        // 每次请求的报告数量不超过4096个
+        $rids_chunks = array_chunk($_rids, 4096);
+        $flows_dict = array();
+        foreach ($rids_chunks as $_rids) {
+            $_flows_chunk = $this->reports->multi_report_flow(array_values($_rids));
+            if ($_flows_chunk['status'] < 0) {
+                $this->session->set_userdata('last_error', $_data["_msg"]);
+                return;
+            }
+
+            foreach ($_flows_chunk['data'] as $f) {
+                if (!array_key_exists($f['rid'], $flows_dict)) {
+                    $flows_dict[$f['rid']] = array();
+                }
+
+                array_push($flows_dict[$f['rid']], $f);
+            }
         }
 
         $_categories = $this->category->get_list();
@@ -1388,9 +1409,8 @@ class Reports extends REIM_Controller {
 
                 // 计算报销单审批人列表
                 $flow = array();
-                $_flow = $this->reports->report_flow($r['id']);
-                if($_flow['status'] > 0) {
-                    $flow_member = $_flow['data']['data'];
+                if(array_key_exists($r['id'], $flows_dict)) {
+                    $flow_member = $flows_dict[$r['id']];
                     foreach($flow_member as $fm) {
                         if($fm['status'] == 2) {
                             array_push($flow,array('name' => $fm['nickname'],'step' => $fm['step']));
