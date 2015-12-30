@@ -17,7 +17,7 @@
         <a class="filePicker" id="btn_simg" >添加图片</a>
     </div>
 </div>
-<input type="hidden" name="images" id="images" >
+<input type="hidden" class='need_check' name="images" id="images" >
 </div>
 
 <script type="text/javascript">
