@@ -141,7 +141,7 @@ $(document).ready(function(){
         });
         $('#hidden_extra').val($.toJSON(_extra));
         $('#renew').val($(this).data('renew'));
-        $('#itemform').submit();
+       // $('#itemform').submit();
     });
     $('.cancel').click(function(){
         $('#reset').click();
