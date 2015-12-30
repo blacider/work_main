@@ -87,10 +87,9 @@ function is_required(required_list,form_node,category_id,category_parent_id)
         return;
     }
 
-    var is_required_value = is_ok(required_list,form_node,category_id,category_parent_id);
+    var is_required_value = is_ok(required_list,category_id,category_parent_id);
     if(is_required_value)
     {
-        console.log(input_node.data('title'));
         input_node.prop('required',true);
         input_node.trigger('chosen:udpated');
     }
