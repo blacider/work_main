@@ -1334,6 +1334,7 @@ class Items extends REIM_Controller {
 
     public function update(){
         $profile = $this->session->userdata('profile');
+        $renew = $this->input->post('renew');
 
         $id = $this->input->post('id');
         $common_item_input = $this->get_item_common_input();
@@ -1395,6 +1396,11 @@ class Items extends REIM_Controller {
             }
             log_message('debug','status' . $obj['status']);
             log_message('debug','zz item_data:'.json_encode($obj));
+        }
+
+        if($renew)
+        {
+            redirect(base_url('items/newitem'));
         }
         if(!$id) {
             return redirect(base_url('items/index'));
