@@ -1255,8 +1255,22 @@ class Items extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-        $item['dt'] = date('Y-m-d H:i:s',$item['dt']);
-        $item['end_dt'] = date('Y-m-d H:i:s',$item['end_dt']);
+        if($item['dt'] != 0)
+        {
+            $item['dt'] = date('Y-m-d H:i:s',$item['dt']);
+        }
+        else
+        {
+            $item['dt'] = '';
+        }
+        if($item['end_dt'] != 0)
+        {
+            $item['end_dt'] = date('Y-m-d H:i:s',$item['end_dt']);
+        }
+        else
+        {
+            $item['end_dt'] = '';
+        }
         $is_burden = true;
         if(!$afford)
         {
