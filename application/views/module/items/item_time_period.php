@@ -1,6 +1,6 @@
 <div class="form-group customization_form" data-value='<?php echo htmlspecialchars(json_encode($item_customization_value));?>'>
 	<label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
-	<div class="col-xs-6 col-sm-6">
+	<div class="col-xs-4 col-sm-4">
 		<div class="input-group">
 			<input id="end_dt" name="end_dt" type="text" class="form-control date-timepicker default_custom" data-id="<?php echo $item_customization_value['id'];?>"/>
 			<span class="input-group-addon">
@@ -8,10 +8,21 @@
 			</span>
 		</div>
 	</div>
+	<?php
+		if($item_customization_value['extra']['show_calculation'])
+		{
+	?>
+	<label class="col-sm-1 control-label no-padding-right">天数:</label>
+    <div class="col-xs-2 col-sm-2">
+        <div id="days" name="days" type="text" class="form-control"></div>
+    </div>
 	<label class="col-sm-1 control-label no-padding-right">日均:</label>
     <div class="col-xs-2 col-sm-2">
         <div id="average_day" name="average_day" type="text" class="form-control"></div>
     </div>
+    <?php
+    	}
+    ?>
 </div>
 <script type="text/javascript">
 function stringToDate(str)
@@ -34,9 +45,18 @@ function set_day_average()
 	var end_day = $('#end_dt').val();
 	var end_date = stringToDate(end_day);
 
-	if(amount == '' || start_date == NaN || end_date == NaN)
+	if(start_date == NaN || end_date == NaN)
 	{
-		$('#average_day').val('');
+		$('#days').text('');
+		$('#average_day').text('');
+		return ;
+	}
+	var days = Math.ceil((end_date - start_date)/(1000*24*3600));
+	$('#days').text(days);
+
+	if(amount == '')
+	{
+		$('#average_day').text('');
 		return ;
 	}
 
@@ -48,7 +68,8 @@ function set_day_average()
         coin_symbol = selected_icon.data('symbol');
     }
 
-    var days = Math.ceil((end_date - start_date)/(1000*24*3600));
+   
+
     if($('#amount').val() && days > 0)
     {
         $('#average_day').text(coin_symbol + Math.round(100*amount/days)/100);
