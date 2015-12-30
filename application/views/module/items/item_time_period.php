@@ -44,17 +44,15 @@ function set_day_average()
 	var start_date = stringToDate(start_day);
 	var end_day = $('#end_dt').val();
 	var end_date = stringToDate(end_day);
-
-	if(start_date == NaN || end_date == NaN)
-	{
-		$('#days').text('');
-		$('#average_day').text('');
-		return ;
-	}
 	var days = Math.ceil((end_date - start_date)/(1000*24*3600));
 	if(days > 0)
 	{
 		$('#days').text(days);
+	}
+	else if(days <= 0)
+	{
+		show_notify('结束时间小于开始时间');
+		$('#days').text('');
 	}
 	else
 	{
