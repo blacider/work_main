@@ -697,7 +697,7 @@ class Category extends REIM_Controller {
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '帐套和标签', 'class' => '')
-                    ,array('url'  => '', 'name' => '导入/导出员工', 'class' => '')
+                    ,array('url'  => '', 'name' => '导入帐套', 'class' => '')
                 ),
             )
         );
