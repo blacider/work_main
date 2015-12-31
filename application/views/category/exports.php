@@ -9,7 +9,7 @@
                     <div class="form-group">
                         <div>
                             <label class="col-sm-4 form-controller no-padding-right" style="text-align:left">
-                                1、下载员工导入模板。
+                                1、下载帐套导入模板。
                             </label>
                         </div>
                     </div>
