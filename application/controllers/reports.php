@@ -667,22 +667,24 @@ class Reports extends REIM_Controller {
         if($_flow['status'] == 1) {
             // 分组
             $last_group = null;
-            // 计算起始step分组
-            // 计算分组大小
+            $last_slice = array();
 
             $_flows = $_flow['data']['data'];
             // step 升序
             array_multisort(array_column($_flows, 'step'), $_flows);
-            
+
             foreach($_flows as $s) {
                 $group = 0;
                 if ($s['ticket_type'] == 1) {
                     $group = 1;
                 }
 
-                if ($last_group !== $group) {
-                    array_push($sliced_flow, array());
+                if (is_null($last_group)) {
                     $last_group = $group;
+                } else if ($last_group !== $group) {
+                    array_push($sliced_flow, $last_slice);
+                    $last_group = $group;
+                    $last_slice = array();
                 }
 
                 $_ts = '';
@@ -698,7 +700,6 @@ class Reports extends REIM_Controller {
                     }
                 }
 
-                $last_slice = array_pop($sliced_flow);
                 array_push($last_slice, array(
                     'group' => $group,
                     'status' => $s['status_text'],
@@ -708,7 +709,9 @@ class Reports extends REIM_Controller {
                     'wingman' => $s['wingman_name'],
                     'ticket_type' => $s['ticket_type'],
                 ));
-                
+            }
+
+            if (!empty($last_slice)) {
                 array_push($sliced_flow, $last_slice);
             }
         }
