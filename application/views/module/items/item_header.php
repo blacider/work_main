@@ -86,7 +86,12 @@ function is_required(required_list,form_node,category_id,category_parent_id)
     {
         return;
     }
-
+    if(form_node.prop('hidden') == true)
+    {
+        input_node.prop('required',false);
+        input_node.trigger('chosen:updated');
+        return ;
+    }
     var is_required_value = is_ok(required_list,category_id,category_parent_id);
     if(is_required_value)
     {
