@@ -65,9 +65,16 @@ function get_days(start_date,end_date)
 	{
 		days+=1;
 	}
-	else
+	else 
 	{
-		days+=2;
+		if(days == 0)
+		{
+			days+=1;
+		}
+		else
+		{
+			days+=2;
+		}
 	}
 	return days;
 }
@@ -82,7 +89,6 @@ function set_day_average()
 	//var days = Math.ceil((end_date - start_date)/(1000*24*3600));
 	var days = get_days(start_date,end_date);
 	var dates = new Date(start_date);
-	console.log(dates.getHours());
 	if(!is_set_time)
 	{
 		if(start_day)
@@ -90,14 +96,12 @@ function set_day_average()
 			$('#end_dt').val(start_day);
 			$('#date-timepicker1').val(start_day);
 			is_set_time = true;
-			show_notify('请选择开始或者结束时间');
 		}
 		if(end_day)
 		{
 			$('#start_dt').val(end_day);
 			$('#date-timepicker1').val(end_day);
 			is_set_time = true;
-			show_notify('请选择开始或者结束时间');
 		}
 	}
 	if(days > 0)
