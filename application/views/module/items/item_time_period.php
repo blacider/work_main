@@ -4,7 +4,7 @@
 	<label class="col-sm-1 control-label no-padding-right" id='time_label'><?php echo $item_customization_value['extra']['title_start'];?></label>
 	<div class="col-xs-4 col-sm-4">
 		<div class="input-group">
-			<input id="start_dt" name="start_dt" type="text" class="form-control date-timepicker" data-id="<?php echo $item_customization_value['id'];?>" 
+			<input id="start_dt" name="start_dt" type="text" class="form-control date-timepicker default_custom" data-id="<?php echo $item_customization_value['id'];?>" 
 				   value="" />
 			<span class="input-group-addon">
 				<i class="fa fa-clock-o bigger-110"></i>
@@ -53,6 +53,25 @@ function init_time_period_module()
 	set_day_average();
 }
 
+function get_days(start_date,end_date)
+{
+	var days = Math.floor((end_date - start_date)/(1000*24*3600));
+	var end_date = new Date(end_date);
+	var start_date = new Date(start_date);
+	var start_hour = (start_date.getHours() + 12) %24+ 1;
+	var end_hour = (end_date.getHours() + 12)%24 + 1;
+
+	if(start_hour <= end_hour)
+	{
+		days+=1;
+	}
+	else
+	{
+		days+=2;
+	}
+	return days;
+}
+
 function set_day_average()
 {
 	var amount = $('#amount').val();
@@ -60,7 +79,10 @@ function set_day_average()
 	var start_date = stringToDate(start_day);
 	var end_day = $('#end_dt').val();
 	var end_date = stringToDate(end_day);
-	var days = Math.ceil((end_date - start_date)/(1000*24*3600));
+	//var days = Math.ceil((end_date - start_date)/(1000*24*3600));
+	var days = get_days(start_date,end_date);
+	var dates = new Date(start_date);
+	console.log(dates.getHours());
 	if(!is_set_time)
 	{
 		if(start_day)
@@ -153,7 +175,9 @@ $(document).ready(function(){
 	//init_timepicker();
 	if(PAGE_TYPE != 0)
 	{
+		is_set_time = true;
 		init_time_period_module();
+
 	}
 });
 </script>
