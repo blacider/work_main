@@ -1,3 +1,6 @@
+<script type="text/javascript" src="/static/ace/js/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="/static/ace/css/jquery-ui.min.css" />
+<link rel="stylesheet" href="/static/css/item_customization.css" />
 <div class="page-content">
   <table id="field_list" class="table table-striped table-bordered">
     <thead>
@@ -28,7 +31,7 @@
     <tbody>
       <?php foreach ($fields as $f) { ?>
       <?php $fd = $f['declaration']; ?>
-      <tr data-id="<?php echo $f['id']; ?>">
+      <tr data-id="<?php echo $f['id']; ?>" data-frozen="<?php echo $fd['frozen'] ? 'true' : 'false'; ?>">
         <td data-column="sequence"><?php echo $f['sequence']; ?></td>
         <td data-column="title"><?php echo $f['title']; ?></td>
         <td data-column="type_name"><?php echo $fd['type_name']; ?></td>
@@ -53,4 +56,4 @@
     </tbody>
   </table>
 </div>
-<script type="text/javascript" src="/static/js/item_customization.js"></script>
+<script type="text/javascript" src="/static/js/item_customized_field_list.js"></script>

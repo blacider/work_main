@@ -21,6 +21,21 @@ class Item_Customization extends REIM_Controller {
         echo json_encode($ret);
     }
 
+    public function move($id) {
+        $id = intval($id);
+        if (empty($id)) {
+            show_404();
+            return NULL;
+        }
+
+        $to_id = $this->input->post('to');
+        log_message('debug', 'move ' . $id . ' before ' . $to_id);
+        $ret = $this->item_customization_model->move($id, $to_id);
+        
+        header('Content-Type: application/json');
+        echo json_encode($ret);
+    }
+
     public function save() {
         log_message('debug', 'field data: ' . json_encode($_POST));
         $id = $this->input->post('id');

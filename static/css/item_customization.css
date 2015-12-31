@@ -1,3 +1,21 @@
+.ui-sortable tr:not([data-frozen=true]) {
+    cursor: move;
+}
+
+.ui-sortable ui-sortable-placeholder {
+    visiblity: visible !important;
+}
+
+.ui-sortable tr.ui-sortable-handle:hover,
+.ui-sortable tr.ui-sortable-handle:hover > td {
+    background-color: rgb(127, 140, 141) !important;
+    color: #ffffff !important;
+}
+
+tr.ui-sortable-helper > td {
+    padding: 8px !important;
+}
+
 .form-group-control {
     display: block;
     height: 34px;

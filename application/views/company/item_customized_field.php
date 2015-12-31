@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <link rel="stylesheet" href="/static/css/item_customization.css" />
-<script type="text/javascript" src="/static/js/item_customization.js"></script>
+<script type="text/javascript" src="/static/js/item_customized_field.js"></script>
 <div class="page-content">
   <?php
      $fd = $field['declaration'];
