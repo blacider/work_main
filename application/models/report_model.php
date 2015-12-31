@@ -284,6 +284,21 @@ class Report_Model extends Reim_Model {
         $obj = json_decode($buf, true);
         return $obj;
     }
+
+    public function multi_report_flow($rids) {
+        $jwt = $this->session->userdata('jwt');
+        if(!$jwt) return false;
+        
+        $url = $this->get_url("report_flow");
+        $data = array(
+            'rids' => implode(',', $rids),
+        );
+        $buf = $this->do_Post($url, $data, $jwt);
+        log_message("debug","report_flow:" . $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
+    
     public function submit_check($manager_ids, $iids){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
