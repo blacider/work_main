@@ -1,4 +1,4 @@
-<div class="form-group">
+<div class="form-group" id="time_form">
 	<label class="col-sm-1 control-label no-padding-right" id='time_label'><?php echo $item_customization_value['title'];?></label>
 	<div class="col-xs-4 col-sm-4">
 		<div class="input-group">

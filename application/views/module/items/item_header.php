@@ -77,6 +77,20 @@ function is_show(item_array,form_node,category_id,category_parent_id)
     {
         form_node.prop('hidden',true);
     }
+
+    var form_node_value = form_node.data('value');
+    var item_type = form_node_value['type'];
+    if(item_type == 5)
+    {
+        if(form_node.prop('hidden') == true)
+        {
+            $('#time_form').prop('hidden',false);
+        }
+        else
+        {
+             $('#time_form').prop('hidden',true);
+        }
+    }
 }
 
 function is_required(required_list,form_node,category_id,category_parent_id)
