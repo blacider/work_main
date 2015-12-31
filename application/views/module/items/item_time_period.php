@@ -4,7 +4,7 @@
 	<label class="col-sm-1 control-label no-padding-right" id='time_label'><?php echo $item_customization_value['extra']['title_start'];?></label>
 	<div class="col-xs-4 col-sm-4">
 		<div class="input-group">
-			<input id="start_dt" name="start_dt" type="text" class="form-control date-timepicker default_custom" data-id="<?php echo $item_customization_value['id'];?>" 
+			<input id="start_dt" data-title="<?php echo $item_customization_value['extra']['title_start'];?>" name="start_dt" type="text" class="form-control date-timepicker default_custom need_check" data-id="<?php echo $item_customization_value['id'];?>" 
 				   value="" />
 			<span class="input-group-addon">
 				<i class="fa fa-clock-o bigger-110"></i>
@@ -16,7 +16,7 @@
 	<label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
 	<div class="col-xs-4 col-sm-4">
 		<div class="input-group">
-			<input id="end_dt" name="end_dt" type="text" class="form-control date-timepicker default_custom" data-id="<?php echo $item_customization_value['id'];?>"/>
+			<input id="end_dt" data-title="<?php echo $item_customization_value['title'];?>" name="end_dt" type="text" class="form-control date-timepicker default_custom need_check" data-id="<?php echo $item_customization_value['id'];?>"/>
 			<span class="input-group-addon">
 				<i class="fa fa-clock-o bigger-110"></i>
 			</span>
