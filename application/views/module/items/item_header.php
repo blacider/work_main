@@ -37,7 +37,7 @@ function formValidate()
 {
     var is_validate = true;
     $('.need_check').each(function(){
-        if($(this).prop('required') == true && ($(this).val()==''))
+        if($(this).prop('required') == true && ($(this).val()=='' || $(this).val() == null))
         {
             var tempTitle = $(this).data('title');
             $(this).focus();
@@ -92,6 +92,7 @@ function is_required(required_list,form_node,category_id,category_parent_id)
         input_node.trigger('chosen:updated');
         return ;
     }
+
     var is_required_value = is_ok(required_list,category_id,category_parent_id);
     if(is_required_value)
     {
