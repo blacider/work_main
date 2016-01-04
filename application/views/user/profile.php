@@ -546,7 +546,7 @@ if(in_array($profile['admin'],[1,3,4])){
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">卡号</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input id="cardno" maxlength="20" name="cardno" type="text" class="form-controller col-xs-12" placeholder="卡号" />
+                                    <input id="cardno" maxlength="21" name="cardno" type="text" class="form-controller col-xs-12" placeholder="卡号" />
                                 </div>
                             </div>
                             <script type="text/javascript">
