@@ -671,7 +671,7 @@ class Reports extends REIM_Controller {
 
             $_flows = $_flow['data']['data'];
             // step 升序
-            array_multisort(array_column($_flows, 'step'), $_flows);
+            usort($_flows, function($a, $b) { return $a['step'] - $b['step']; });
 
             foreach($_flows as $s) {
                 $group = 0;
