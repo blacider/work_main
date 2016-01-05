@@ -1095,6 +1095,7 @@ class Reports extends REIM_Controller {
         // 每次请求的报告数量不超过4096个
         $rids_chunks = array_chunk($_rids, 4096);
         $flows_dict = array();
+        log_message('debug','rids_chunks:' . json_encode($rids_chunks));
         foreach ($rids_chunks as $_rids) {
             $_flows_chunk = $this->reports->multi_report_flow(array_values($_rids));
             if ($_flows_chunk['status'] < 0) {
@@ -1506,13 +1507,13 @@ class Reports extends REIM_Controller {
                             'category_name'=>$i['category_name'],
                             'category_code'=>$i['category_code'],
                             'amount'=>$i['amount'],
-                            'pa_amount'=>$i['pa_amount']
+                            'pa_amount'=>$i['paid']
                             );
                     }
                     else
                     {
                         $category_cells_dic[$i['category']]['amount'] += $i['amount'];
-                        $category_cells_dic[$i['category']]['pa_amount'] += $i['pa_amount'];
+                        $category_cells_dic[$i['category']]['pa_amount'] += $i['paid'];
                     }
                 }
 
@@ -1646,11 +1647,13 @@ class Reports extends REIM_Controller {
                         $o['汇率'] = round($i['rate']/100,6);
                 }
                 $o['人民币金额'] = round($i['amount'] * $_rate, 2);
+                /*
                 $_paid = 0;
                 if($i['prove_ahead'] > 0){
                     $_paid = $i['pa_amount'];
                 }
                 $_last = $i['amount'] - $_paid;
+                */
                 //                $o['已付'] = (string)($i['paid']) . '￥';
                 $o['已付'] = $i['paid'];
                 //                $o['应付'] = (string)(($i['amount'] * $_rate) - $i['paid']) . '￥';
@@ -1684,8 +1687,8 @@ class Reports extends REIM_Controller {
                     $o['类目'] = $ccd['category_name'];
                     $o['类目代码'] = $ccd['category_code'];
                     $o['总额'] = $ccd['amount'];
-                    $o['应付'] = $ccd['amount'] - $ccd['pa_amount'];
                     $o['已付'] = $ccd['pa_amount'];
+                    $o['应付'] = $ccd['amount'] - $ccd['pa_amount'];
                     array_push($category_cells,$o);
                 }
                 $template_excel[] = [ "title" => "类目金额汇总", "data" => $category_cells, "style" => self::$category_style ];
