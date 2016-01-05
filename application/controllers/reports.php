@@ -1067,6 +1067,13 @@ class Reports extends REIM_Controller {
         "应付" => [ "data_type" => "number" ],
     ];
 
+    private function get_rate($currency,$rate)
+    {
+        if($currency == 'cny')
+            return 1.0;
+        return $rate/100;
+    }
+
     private function exports_by_rids($ids) {
         $_data = $this->reports->get_reports_by_ids($ids);
         if (empty($_data) || $_data["status"] < 0) {
@@ -1495,6 +1502,8 @@ class Reports extends REIM_Controller {
                 //初始化类目汇总表单中对应的类目的信息
                 if($statistic_using_category)
                 {
+                    $temp_rate = $this->get_rate($i['currency'],$i['rate']);
+                    log_message('debug','temp_rate:'.$temp_rate);
                     if(!array_key_exists($i['category'],$category_cells_dic))
                     {
                         $sob_name = '';
@@ -1506,13 +1515,13 @@ class Reports extends REIM_Controller {
                             'sob_name'=> $sob_name,
                             'category_name'=>$i['category_name'],
                             'category_code'=>$i['category_code'],
-                            'amount'=>$i['amount'],
+                            'amount'=>$i['amount']*$temp_rate,
                             'pa_amount'=>$i['paid']
                             );
                     }
                     else
                     {
-                        $category_cells_dic[$i['category']]['amount'] += $i['amount'];
+                        $category_cells_dic[$i['category']]['amount'] += $i['amount']*$temp_rate;
                         $category_cells_dic[$i['category']]['pa_amount'] += $i['paid'];
                     }
                 }
