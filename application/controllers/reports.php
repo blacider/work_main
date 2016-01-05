@@ -1439,7 +1439,7 @@ class Reports extends REIM_Controller {
 
                     $r['total'] += ($i['amount'] * $_rate);
                     $i['paid'] = ($i['amount'] * $_rate);
-                    if(in_array($r['status'], array(4, 7, 8))){
+                    if(in_array($r['status'], array(4, 7, 8)) || $i['prove_ahead'] > 0){
                         // 已完成状态的，付款额度就是已付额度
                         $i['paid'] = ($i['amount'] * $_rate);
                     } else {
