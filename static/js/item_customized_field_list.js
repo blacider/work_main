@@ -21,6 +21,7 @@ function hookTable() {
         axis: 'y',
         items: ' > tr:not([data-frozen=true])',
         helper: fixHelperModified,
+        start: startMoving,
         beforeStop: beforeStopMoving,
         stop: function(e, ui) {
             renum_field_list();
@@ -28,15 +29,34 @@ function hookTable() {
     });
 }
 
+// 记录tr拖拽开始时，下一个tr的id
+var nextId;
+
+function startMoving(e, ui) {
+    nextId = getNextId(ui.item);
+}
+
+function getNextId(tr) {
+    var id = $(tr).nextAll('tr:not(.ui-sortable-helper):not(.ui-sortable-placeholder)').eq(0).data('id');
+    if (id == undefined)
+        id = 0;
+
+    return id;
+}
+
+
 function beforeStopMoving(e, ui) {
     // 字段 id
     var id = $(ui.item).data('id');
     var title = $(ui.item).find('td[data-column=title]').text();
     // 目标位置 id
-    var to_id = $(ui.placeholder).next('tr:not(.ui-sortable-helper)').data('id');
-    if (to_id == undefined) {
-        to_id = 0;
+    var to_id = getNextId(ui.placeholder);
+
+    // 是否移动
+    if (to_id == nextId) {
+        return;
     }
+    
     console.log('move ' + id + ' before ' + to_id);
 
     $.ajax({
