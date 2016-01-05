@@ -32,7 +32,7 @@
 	<select data-title="<?php echo $item_customization_value['title'];?>" class="chosen-select tag-input-style customization_type need_check" data-id="<?php echo $item_customization_value['id'];?>" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" <?php if($item_customization_value['extra']['multi-selectable']){echo 'multiple="multiple"';}?> data-placeholder="请选择标签">
 	<?php foreach($item_customization_value['extra']['options'] as $opt) {?>
 
-	<option value="<?php echo $opt['id']; ?>"><?php echo $opt['value']; ?></option>
+	<option value="<?php echo $opt['id']; ?>"><?php echo $opt['name']; ?></option>
 	<?php } ?>
 	</select>
 
