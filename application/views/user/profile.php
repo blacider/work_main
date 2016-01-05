@@ -642,7 +642,7 @@ if(in_array($profile['admin'],[1,3,4])){
                                         <option value='南京市商业银行'>南京市商业银行</option>
                                         <option value='三门峡市城市信用社'>三门峡市城市信用社</option>
                                         <option value='沈阳市商业银行'>沈阳市商业银行</option>
-                                        <option value='西宁市商业银行'>西宁市农商银行</option>
+                                        <option value='西宁市农商银行'>西宁市农商银行</option>
                                         <option value='浙江省农村信用社联合社'>浙江省农村信用社联合社</option>
                                         <option value='星展银行'>星展银行</option>
                                         <option value='绍兴商业银行'>绍兴商业银行</option>
