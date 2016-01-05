@@ -349,7 +349,7 @@ foreach($items as $i){
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">卡号</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input id="cardno" name="cardno" maxlength="20" type="text" class="form-controller col-xs-12" placeholder="卡号" />
+                                    <input id="cardno" name="cardno" maxlength="21" type="text" class="form-controller col-xs-12" placeholder="卡号" />
                                 </div>
                             </div>
 
@@ -446,7 +446,7 @@ foreach($items as $i){
                                         <option value='南京市商业银行'>南京市商业银行</option>
                                         <option value='三门峡市城市信用社'>三门峡市城市信用社</option>
                                         <option value='沈阳市商业银行'>沈阳市商业银行</option>
-                                        <option value='西宁市商业银行'>西宁市商业银行</option>
+                                        <option value='西宁市农商银行'>西宁市农商银行</option>
                                         <option value='浙江省农村信用社联合社'>浙江省农村信用社联合社</option>
                                         <option value='星展银行'>星展银行</option>
                                         <option value='绍兴商业银行'>绍兴商业银行</option>
@@ -557,6 +557,7 @@ foreach($items as $i){
                                         <option value='靖江市长江城市信用社'>靖江市长江城市信用社</option>
                                         <option value='郑州商业银行'>郑州商业银行</option>
                                         <option value='集友银行'>集友银行</option>
+                                        <option value='中江市农村信用社'>中江市农村信用社</option>
                                     </select>
                                 </div>
                             </div>
