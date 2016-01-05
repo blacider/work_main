@@ -1439,10 +1439,15 @@ class Reports extends REIM_Controller {
 
                     $r['total'] += ($i['amount'] * $_rate);
                     $i['paid'] = ($i['amount'] * $_rate);
-                    if(in_array($r['status'], array(4, 7, 8)) || $i['prove_ahead'] > 0){
+                    if(in_array($r['status'], array(4, 7, 8))){
                         // 已完成状态的，付款额度就是已付额度
                         $i['paid'] = ($i['amount'] * $_rate);
-                    } else {
+                    } 
+                    else if($i['prove_ahead'] == 2 && $i['pa_approval'] == 1) 
+                    {
+                        $i['paid'] = ($i['pa_amount'] * $_rate);
+                    }
+                    else {
                         $i['paid'] = 0;
                     }
                     $i['nickname'] = $r['nickname'];
@@ -1458,7 +1463,7 @@ class Reports extends REIM_Controller {
                     if($i['reimbursed'] == 0) {
                         continue;
                     }
-                    if($i['prove_ahead'] > 0){
+                    if($i['prove_ahead'] == 2 &&  $i['pa_approval'] == 1){
                         $r['paid'] += ($i['pa_amount'] * $_rate);
                     }
 
