@@ -557,6 +557,7 @@ foreach($items as $i){
                                         <option value='靖江市长江城市信用社'>靖江市长江城市信用社</option>
                                         <option value='郑州商业银行'>郑州商业银行</option>
                                         <option value='集友银行'>集友银行</option>
+                                        <option value='中江市农村信用社'>中江市农村信用社</option>
                                     </select>
                                 </div>
                             </div>
