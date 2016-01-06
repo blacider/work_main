@@ -11,8 +11,10 @@ function bind_event(){
     });
     $('.tdel').each(function() {
         $(this).click(function(){
-            var _id = $(this).data('id');
-            location.href = __BASE + "items/del/" + _id;
+            if(confirm('是否确认删除此消费？')){
+                var _id = $(this).data('id');
+                location.href = __BASE + "items/del/" + _id;
+            }
         });
     });
     $('.tedit').each(function() {

@@ -28,8 +28,10 @@ function bind_event(){
     });
     $('.tdel').each(function() {
         $(this).click(function(){
-            var _id = $(this).data('id');
-            location.href = __BASE + "reports/del/" + _id;
+            if(confirm('是否确认删除此报销单？')){
+                var _id = $(this).data('id');
+                location.href = __BASE + "reports/del/" + _id;
+            }
         });
     });
 
