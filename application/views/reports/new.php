@@ -388,16 +388,17 @@ $(document).ready(function(){
     });
     $('.txdel').each(function() {
         $(this).click(function(){
-            var _id = $(this).data('id');
-           // location.href = __BASE + "items/del/" + _id + "/1";
-           $.ajax({
-            url:__BASE + "items/del/" + _id + "/1",
-            method:'GET',
-            success:function(data){
-                $('#item'+_id).remove();
-                show_notify('删除成功');
-            }
-           });
+            if(confirm('是否确认删除此消费？')){
+                var _id = $(this).data('id');
+                $.ajax({
+                    url:__BASE + "items/del/" + _id + "/1",
+                    method:'GET',
+                    success:function(data){
+                        $('#item'+_id).remove();
+                        show_notify('删除成功');
+                    }
+                });
+           }
         });
     });
     $('.txedit').each(function() {
