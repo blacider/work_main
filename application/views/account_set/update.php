@@ -25,7 +25,7 @@ if($last_error) {
 <div class="page-content">
 <div class="page-content-area">
     <form role="form"  class="form-horizontal"  enctype="multipart/form-data" id="mainform">
-        <div class="row" style="overflow:hidden;">
+        <div class="row">
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 col-sm-12">
