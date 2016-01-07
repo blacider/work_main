@@ -11,7 +11,7 @@ table td {
 }
      
 </style>
-<div class="page-content">
+<div class="page-content" style="    overflow: hidden;">
   <div class="page-content-area">
     <form role="form" class="form-horizontal"  enctype="multipart/form-data" >
       <div class="row">
