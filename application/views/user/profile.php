@@ -1228,6 +1228,14 @@ if(in_array($profile['admin'],[1,3,4])){
                                         $('#btns').prepend(buf);
                                         bind_event();
                                         show_notify('银行卡添加成功');
+                                        $('#modal_title').val();
+                                        $('#account' ).val("");
+                                        $('#id' ).val("");
+                                        $('#uid').val(user_id);
+                                        $('#cardloc' ).val("");
+                                        $('#cardno'  ).val("");
+                                        $('#cardbank').val("");
+                                        $('#default_id').val("");
                                     } else {
                                         show_notify(data.data.msg);
                                     }

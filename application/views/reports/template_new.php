@@ -1084,6 +1084,12 @@ $(document).ready(function(){
                 if(data['status'] > 0)
                 {
                     show_notify('银行卡添加成功');
+                    $('#modal_title').val();
+                    $('#account' ).val("");
+                    $('#cardloc' ).val("");
+                    $('#cardno'  ).val("");
+                    $('#cardbank').val("");
+                    $('#subbranch').val("");
                 }
             }
         });
