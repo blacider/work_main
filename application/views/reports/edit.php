@@ -272,11 +272,11 @@ foreach($members as $m) {
     array_push($item_type,0);
     if($__config)
     {
-        if(array_key_exists('disable_borrow', $__config) && $__config['disable_borrow'] == '0')
+        if(array_key_exists('disable_budget', $__config) && $__config['disable_budget'] == '0')
         {
             array_push($item_type,1);
         }
-        if(array_key_exists('disable_budget', $__config) && $__config['disable_budget'] == '0')
+        if(array_key_exists('disable_borrow', $__config) && $__config['disable_borrow'] == '0')
         {
             array_push($item_type,2);
         }
