@@ -224,13 +224,13 @@
 <select class="form-control" name="type" data-placeholder="请选择类型">
 <option value="0"><?php echo $item_type_dic[0];?></option>
 <?php 
-if($__config && $__config['disable_borrow']=='0')
+if($__config && $__config['disable_budget']=='0')
 {
 ?>
 <option value="1"><?php echo $item_type_dic[1]; ?></option>
 <?php
 }
-if($__config && $__config['disable_budget'] == '0')
+if($__config && $__config['disable_borrow'] == '0')
 {
 ?>
 <option value="2"><?php echo $item_type_dic[2]; ?></option>
