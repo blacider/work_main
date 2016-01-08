@@ -907,6 +907,7 @@ if(in_array($profile['admin'],[1,3,4])){
     }
 
     function reset_bank(disable, title) {
+        /*
         $('#modal_title').val();
         $('#account' ).val("");
         $('#id' ).val("");
@@ -915,6 +916,7 @@ if(in_array($profile['admin'],[1,3,4])){
         $('#cardno'  ).val("");
         $('#cardbank').val("");
         $('#default_id').val("");
+        */
         if(!disable) {
             $('.new_card').hide();
             $('#account').attr("disabled",  true);
