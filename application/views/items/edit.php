@@ -49,7 +49,7 @@
                                             </select>
                                             <div class="input-group input-group">
                                                 <span class="input-group-addon" id='coin_simbol'>￥</span>
-                                                <input type="text" class="form-controller col-xs-12 col-sm-12" name="amount" id="amount" value="<?php echo $item['amount'];?>" placeholder="金额" required>
+                                                <input type="number" class="form-controller col-xs-12 col-sm-12" name="amount" id="amount" value="<?php echo $item['amount'];?>" placeholder="金额" required>
                                                 <span class="input-group-addon" id='rate_simbol'>￥0</span>
                                             </div>
 
@@ -138,7 +138,7 @@
                                 <label class="col-sm-1 control-label no-padding-right">人数:</label>
                                 <div class="col-xs-3 col-sm-3">
                                 <div class="input-group">
-                                <input type="text" id="people-nums" name="peoples">
+                                <input type="number" id="people-nums" name="peoples">
                                 </div>
                                 </div>
                                 <label class="col-sm-1 control-label no-padding-right">人均:</label>
@@ -416,6 +416,11 @@ foreach($item_config as $s) {
 <script src="/static/ace/js/jquery.colorbox-min.js"></script>
 
 <script type="text/javascript">
+var error = "<?php echo $error;?>";
+if(error)
+{
+    show_notify(error);
+}
 $(document).ready(function() {
     function loadFiles() {
         for (var i = 0; i < __files.length; i++) {
@@ -980,10 +985,13 @@ $('#coin_type').change(function(){
 
 $('#amount').change(function(){
     var temp = $('#coin_type').val();
-    var coin_list = temp.split(',');
-    $('#coin_simbol').text(icon_dic[coin_list[0]]);
-    var _amount = $('#amount').val();
-    $('#rate_simbol').text('￥' + Math.round(_amount*coin_list[1])/100);
+    if(temp)
+    {
+	    var coin_list = temp.split(',');
+	    $('#coin_simbol').text(icon_dic[coin_list[0]]);
+	    var _amount = $('#amount').val();
+	    $('#rate_simbol').text('￥' + Math.round(_amount*coin_list[1])/100);
+    }
 });
 
 /* 不包含汇率种类的实现
@@ -1159,10 +1167,13 @@ $('#sob_category').change(function(){
                 $('#config_type').val(_item_config[category_id]['type']);
                 $('#amount').change(function(){
                     var all_amount = $('#amount').val();
-                    var rates = $('#coin_type').val().split(',')[1];
-                    all_amount *= rates/100;
+                    var coin_id = 'cny';
+                    if($('#coin_type').val())
+                    {
+                         coin_id = $('#coin_type').val().split(',')[0];
+                    }
                     if (subs != '' && subs >= 0)
-                        $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
+                        $('#average_id').text(icon_dic[coin_id] + Number(all_amount/subs).toFixed(2) +'/人' + '*' + subs);
                     else
                         $('#average_id').text("请输入正确人数");
                 });
@@ -1173,9 +1184,12 @@ $('#sob_category').change(function(){
                 $('#people-nums').trigger('change');
                 $('#people-nums').trigger('change:updated');
                 var all_amount = $('#amount').val();
-                var rates = $('#coin_type').val().split(',')[1];
-                all_amount *= rates/100;
-                $('#average_id').text(Number(all_amount/subs).toFixed(2) +'元/人');
+                var coin_id = 'cny';
+                if($('#coin_type').val())
+                {
+                    var coin_id = $('#coin_type').val().split(',')[0];
+                }
+                $('#average_id').text(icon_dic[coin_id] + Number(all_amount/subs).toFixed(2) +'/人' + '*' + subs);
                 $('#average').show();
         } else if(_item_config[category_id]!=undefined && _item_config[category_id]['type'] == 1) {
             $('#config_id').val(_item_config[category_id]['id']);
@@ -1203,7 +1217,7 @@ $('#sob_category').change(function(){
         }catch(e) {}
         $('#afford_ids').val(_affid);
 
-        if(isNaN($('#amount').val())) {
+        if($('#amount').val() < 0) {
             show_notify('请输入有效金额');
             $('#amount').val('');
             $('#amount').focus();

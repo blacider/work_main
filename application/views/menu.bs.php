@@ -180,24 +180,48 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 
 <?php } ?>
         </li>
+
         <li class="hsub" id="index">
         <a href="<?php echo base_url('reports'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
             我的报销单
         </a>
-
         <b class="arrow"></b>
-
         </li>
+
         <li class="hsub" id="audit">
-        <a href="<?php echo base_url('reports/audit'); ?>" >
-            <i class="menu-icon fa fa-caret-right"></i>
-             收到的报销单
-        </a>
+            <a href="#"  class="dropdown-toggle">
+                <i class="menu-icon fa fa-caret-right"></i>
+                收到的报销单
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
 
-        <b class="arrow"></b>
-
+            <ul class="submenu rushumenu">
+                <li class="" id="audit_todo">
+                    <a href="<?= base_url('reports/audit_todo'); ?>">
+                    待处理
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+                <li class="" id="audit_done">
+                    <a href="<?= base_url('reports/audit_done'); ?>">
+                    已处理
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+            <b class="arrow"></b>
         </li>
+        <?php if (!isset($company_config['enable_report_cc']) || $company_config['enable_report_cc']) { ?>
+        <li class="hsub" id="audit_cc">
+        <a href="<?php echo base_url('reports/audit_cc'); ?>" >
+            <i class="menu-icon fa fa-caret-right"></i>
+            抄送给我的报销单
+        </a>
+        <b class="arrow"></b>
+        </li>
+        <?php } ?>
+
     </ul>
     </li>
 
@@ -349,7 +373,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         </li>
 
         <li class="hsub" id="cexport">
-        <a href="<?php echo base_url('category/cexport'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 账套导入/导出 </a>
+        <a href="<?php echo base_url('category/cexport'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 导入帐套 </a>
         <b class="arrow"></b>
         </li>
 
@@ -379,14 +403,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 
     <ul class="submenu nav-show" style="display: block;">
 
-<!--
-
-        <li class="hsub" id="report_settings_list">
-        <a href="<?php echo base_url('company/report_settings_list'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 报销单设置</a>
-        <b class="arrow"></b>
-        </li>
--->
-
         <li class="hsub" id="approval_flow">
         <a href="<?php echo base_url('company/approval_flow'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 财务审批流</a>
         <b class="arrow"></b>
@@ -397,12 +413,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <b class="arrow"></b>
         </li>
 
-    <!--
-        <li class="hsub" id="broadcast_create">
-        <a href="<?php echo base_url('broadcast/create'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 创建系统消息  </a>
-        <b class="arrow"></b>
-        </li>
-     -->
 
   <li class="hsub" id="show">
         <a href="<?php echo base_url('company/show'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 提交规则 </a>
@@ -521,39 +531,11 @@ if($profile['admin'] == 1 || $profile['admin'] == 2) {
 
 
 
-<!--
-
-<li class="rsmenu" id="groups">
-<a href="<?php echo base_url('groups'); ?>">
-<i class="menu-icon fa fa-users"></i>
-<span class="menu-text"> 用户组管理 </span>
-</a>
-
-<b class="arrow"></b>
-</li>
-
-<li class="rsmenu" id="rules">
-<a href="<?php echo base_url('rules'); ?>">
-<i class="menu-icon fa fa-users"></i>
-<span class="menu-text"> 规则管理</span>
-</a>
-
-<b class="arrow"></b>
-</li>
--->
-
-
 </ul>
 </li>
 </ul><!-- /.nav-list -->
 
 <!-- #section:basics/sidebar.layout.minimize -->
-<!-- 
-<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-<i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
-</div>
--->
-
 
 <!-- /section:basics/sidebar.layout.minimize -->
 <script type="text/javascript">
@@ -906,6 +888,13 @@ $(document).ready(function(){
         $('#company').find('.submenu_custom').show();
         $("#custom_item").addClass('active');
     }
+
+
+    if(_method == "audit_todo" || _method == "audit_done") {
+        $('#audit').addClass('open');
+        $('#audit').find('.submenu').show();
+    }
+
     if(_controller != '') {
         $('#' + _controller).addClass('active open');
         $('#' + _controller).children().each(function(){

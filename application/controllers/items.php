@@ -391,15 +391,8 @@ class Items extends REIM_Controller {
                     }
                 }
                 $symbol = $this->get_coin_symbol($s['currency']);
-                log_message('debug', 'symbol' . $symbol);
                 $s['amount'] = $symbol . $s['amount'];
-                /*
-                if($s['currency'] != 'cny')
-                {
-                    $s['amount'] = round($s['amount'] * $s['rate'] / 100,2); 
-                }
-                */
-                $s['status_str'] = '';
+                $s['status_str'] = get_report_status_str($s['status']);
                 log_message("debug", "Item:" . json_encode($s));
                 $trash= $s['status'] === 0 ? 'gray' : 'red';
                 $edit = $s['status'] === 0 ? 'gray' : 'green';
@@ -411,45 +404,9 @@ class Items extends REIM_Controller {
                     $edit_str =  '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $s['id'] . '"></span>';
                 }
 
-
                 $s['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
                     . $edit_str
                     . '</div>';
-                switch($s['status']){
-                case -1: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
-                };break;
-                case 0: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
-                };break;
-                case 1: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
-                };break;
-                case 2: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>';
-                };break;
-                case 3: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#B472B1;background:#B472B1 !important;">退回</button>';
-                };break;
-                case 4: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-                };break;
-                case 5: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-                };break;
-                case 6: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#42B698 !important;">待支付</button>';
-                };break;
-                case 7: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成待确认</button>';
-                };break;
-                case 8: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成已确认</button>';
-                };break;
-                default: {
-                    $s['status_str'] = $s['status'];
-                }
-                }
                 array_push($_items, $s);
             }
             die(json_encode($_items));
@@ -910,6 +867,8 @@ class Items extends REIM_Controller {
     }
 
     public function edit($id = 0, $from_report = 0) {
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         //获取消费类型字典
         $item_type_dic = $this->reim_show->get_item_type_name();
         log_message('debug','item_id' . $id);
@@ -1063,6 +1022,7 @@ class Items extends REIM_Controller {
         $this->bsload('items/edit',
             array(
                 'title' => '修改消费'
+                ,'error' => $error
                 ,'categories' => $categories
                 ,'images' => json_encode($_images)
                 ,'item' => $item
@@ -1146,6 +1106,14 @@ class Items extends REIM_Controller {
         if($profile['id'] != $_uid){
             $item_update_in = 1;
         }
+
+        //自己修改数据不让改为0
+        if($item_update_in == 0 && $amount == 0)
+        {
+            $this->session->set_userdata('last_error','金额不能为0');
+            redirect(base_url('items/edit/' . $id));
+        }
+            
         log_message("debug", "##UID  $_uid :" . $profile['id']);
 
         $merchant = $this->input->post('merchant');

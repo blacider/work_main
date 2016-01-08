@@ -163,9 +163,13 @@ jQuery(grid_selector).jqGrid({
         jQuery.each(selectRows,function(index,row){
             jQuery(grid_selector).jqGrid('setSelection',row);
         });
-        if (IF_SELECT_ALL) $("#cb_grid-table")[0].checked = true;
+        if (IF_SELECT_ALL) 
+            $(".cbox").each(function(index, el) {
+                $(".cbox")[index].checked = true;
+            });
         bind_event();
         var table = this;
+        this.p.lastSelected = lastSelected;
         setTimeout(function(){
             //styleCheckbox(table);
             updateActionIcons(table);
@@ -180,13 +184,13 @@ jQuery(grid_selector).jqGrid({
     },
     onSelectAll : function(aRows, status) {
         if (status) {
+            IF_SELECT_ALL = 1;
             var array_selectRows = jqgrid_choseall_plus(grid_selector);
             jQuery.each(array_selectRows,function(index,rowid){
                 if (jQuery.inArray(rowid,selectRows) == -1) {
                     selectRows.push(rowid);
                 }
             });
-            IF_SELECT_ALL = 1;
         } else {
             jQuery.each(aRows,function(index,rowid){
                 selectRows.splice(jQuery.inArray(rowid,selectRows),1);
@@ -246,7 +250,7 @@ try{
             form.submit();//表单提交
         },
         del: true,
-        delicon : 'ace-icon fa fa-print',
+        delicon : 'ace-icon fa fa-file-excel-o',
         deltitle: '导出excel',
         delfunc : function(rowids, p){
             var form=$("<form>");//定义一个form表单

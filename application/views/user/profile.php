@@ -16,7 +16,7 @@ font:bold 11px Arial, Helvetica, sans-serif;
 </style>
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
-
+<script type="text/javascript" src="/static/js/bank_code.json"></script>
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 
 <div class="page-content">
@@ -546,10 +546,22 @@ if(in_array($profile['admin'],[1,3,4])){
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">卡号</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input id="cardno" name="cardno" type="text" class="form-controller col-xs-12" placeholder="卡号" />
+                                    <input id="cardno" maxlength="25" name="cardno" type="text" class="form-controller col-xs-12" placeholder="卡号" />
                                 </div>
                             </div>
-
+                            <script type="text/javascript">
+                            $(document).ready(function() {
+                                $("#cardno").keyup(function(event) {
+                                    var value = this.value;
+                                    if (value >= 6) {
+                                        value = value.substring(0,6);
+                                    };
+                                    if (BANK_CODE[value] != undefined) {
+                                        $("#cardbank").val(BANK_CODE[value]);
+                                    };
+                                });
+                            });
+                            </script>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">开卡行</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -568,15 +580,19 @@ if(in_array($profile['admin'],[1,3,4])){
                                         <option value='华夏银行'>华夏银行</option>
                                         <option value='广发银行'>广发银行</option>
                                         <option value='北京银行'>北京银行</option>
+                                        <option value='广州银行'>广州银行</option>
+                                        <option value='晋商银行'>晋商银行</option>
+                                        <option value='九江银行'>九江银行</option>
+                                        <option value='锦州银行'>锦州银行</option>
+                                        <option value='江苏银行'>江苏银行</option>
                                         <option value='中国邮政储蓄银行'>中国邮政储蓄银行</option>
-                                        <option value='上海浦东银行'>上海浦东银行</option>
+                                        <option value='浦东发展银行'>上海浦东发展银行</option>
                                         <option value='D.F.S.I'>D.F.S.I</option>
                                         <option value='金华市商业银行'>金华市商业银行</option>
                                         <option value='徐州市郊农村信用合作联社'>徐州市郊农村信用合作联社</option>
                                         <option value='花旗银行有限公司'>花旗银行有限公司</option>
                                         <option value='兰州市商业银行'>兰州市商业银行</option>
                                         <option value='天津市商业银行'>天津市商业银行</option>
-                                        <option value='广州市商业银行'>广州市商业银行</option>
                                         <option value='威海市商业银行'>威海市商业银行</option>
                                         <option value='宁波市商业银行'>宁波市商业银行</option>
                                         <option value='高要市农村信用合作社联合社'>高要市农村信用合作社联合社</option>
@@ -622,12 +638,11 @@ if(in_array($profile['admin'],[1,3,4])){
                                         <option value='成都商业银行'>成都商业银行</option>
                                         <option value='西安市商业银行'>西安市商业银行</option>
                                         <option value='丹东商行'>丹东商行</option>
-                                        <option value='九江市商业银行'>九江市商业银行</option>
                                         <option value='江苏农信社'>江苏农信社</option>
                                         <option value='南京市商业银行'>南京市商业银行</option>
                                         <option value='三门峡市城市信用社'>三门峡市城市信用社</option>
                                         <option value='沈阳市商业银行'>沈阳市商业银行</option>
-                                        <option value='西宁市商业银行'>西宁市商业银行</option>
+                                        <option value='西宁市农商银行'>西宁市农商银行</option>
                                         <option value='浙江省农村信用社联合社'>浙江省农村信用社联合社</option>
                                         <option value='星展银行'>星展银行</option>
                                         <option value='绍兴商业银行'>绍兴商业银行</option>
@@ -738,6 +753,7 @@ if(in_array($profile['admin'],[1,3,4])){
                                         <option value='靖江市长江城市信用社'>靖江市长江城市信用社</option>
                                         <option value='郑州商业银行'>郑州商业银行</option>
                                         <option value='集友银行'>集友银行</option>
+                                        <option value='中江市农村信用社'>中江农村信用社</option>
                                     </select>
                                 </div>
                             </div>
@@ -1157,9 +1173,25 @@ if(in_array($profile['admin'],[1,3,4])){
                         {
                                 _default_id = 0;
                         }
-                    
-    
-
+                        if (_account == "") {
+                            show_notify('请输入户名');
+                            $('#account').focus();
+                            return false;
+                        };
+                        if (_no.length < 12) {
+                            show_notify('请输入正确银行卡号');
+                            $('#cardno').focus();
+                            return false;
+                        };
+                        
+                        
+                        if (_bank == "" || _bank == null || _bank == undefined) {
+                            show_notify('请选择银行卡开户行');
+                            $('#cardbank').focus();
+                            return false;
+                        };
+                        
+                        
                         $.ajax({
                             url : __BASE + "users/new_credit",
                                 data : {

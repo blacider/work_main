@@ -1,4 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 class Reports extends REIM_Controller {
     public function __construct() {
         parent::__construct();
@@ -32,14 +33,14 @@ class Reports extends REIM_Controller {
     public function get_coin_symbol($key = 'cny')
     {
         $symbol = '?';
-        $coin_symbol_dic = array( 
+        $coin_symbol_dic = array(
                             'cny'=>'￥','usd'=>'$','eur'=>'€','hkd'=>'$','mop'=>'$','twd'=>'$','jpy'=>'￥','ker'=>'₩',
                             'gbp'=>'£','rub'=>'₽','sgd'=>'$','php'=>'₱','idr'=>'Rps','myr'=>'$','thb'=>'฿','cad'=>'$',
                             'aud'=>'$','nzd'=>'$','chf'=>'₣','dkk'=>'Kr','nok'=>'Kr','sek'=>'Kr','brl'=>'$'
-                            );                           
+                            );
         if(array_key_exists($key,$coin_symbol_dic))
         {
-            $symbol = $coin_symbol_dic[$key]; 
+            $symbol = $coin_symbol_dic[$key];
         }
 
         return $symbol;
@@ -58,7 +59,7 @@ class Reports extends REIM_Controller {
     }
 
     public function sendout() {
-        $rid = $this->input->post('report_id'); 
+        $rid = $this->input->post('report_id');
         $email = $this->input->post('email');
         $buf = $this->reports->sendout($rid,$email);
         log_message("debug","###".json_encode($buf));
@@ -66,25 +67,13 @@ class Reports extends REIM_Controller {
     }
 
     public function index($search='',$type = 1) {
-        $items = $this->items->get_suborinate($type);
-        if(!$items['status']){
-            return redirect(base_url('items'));
-        }
         $this->session->set_userdata('item_update_in','1');
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-        $ret = array();
-        if(!$items) redirect(base_url('login'));
-        $item_data = array();
-        if($items && $items['status']) {
-            $data = $items['data'];
-            $item_data = $data['data'];
-        }
         $this->session->set_userdata("report_list_url", "reports");
         $this->bsload('reports/index',
             array(
                 'title' => '我的报销单'
-                ,'items' => $item_data
                 ,'error' => $error
                 ,'type' => $type
                 ,'search' => urldecode($search)
@@ -149,43 +138,16 @@ class Reports extends REIM_Controller {
                         }
                     }
                 }
-//                $s['amount'] = '￥' . $s['amount'];
-
                 $s['coin_symbol'] = $this->get_coin_symbol($s['currency']);
                 $s['amount'] = sprintf("%.2f",$s['amount']);
-                $s['status_str'] = '';
+                $s['status_str'] = get_report_status_str($s['istatus']);
                 $trash= $s['istatus'] === 0 ? 'gray' : 'red';
                 $edit = $s['istatus'] === 0 ? 'gray' : 'green';
                 $s['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
                     . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $s['id'] . '"></span>'
                     . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>'
                     . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $s['id'] . '"></span></div>';
-                switch($s['istatus']){
-                case 0: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
-                };break;
-                case 1: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
-                };break;
-                case 2: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>';
-                };break;
-                case 3: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#B472B1;background:#B472B1 !important;">退回</button>';
-                };break;
-                case 4: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-                };break;
-                case 5: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-                };break;
-                case 6: {
-                    $s['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#42B698 !important;">待支付</button>';
-                };break;
-                default: {
-                    $s['status_str'] = $s['status'];
-                }
-                }
+                '';
                 array_push($_items, $s);
             }
         }
@@ -240,7 +202,7 @@ class Reports extends REIM_Controller {
             $edit = ($d['status'] === 1)   ? 'gray' : 'green';
             $export = ($d['status'] === 1)   ? 'gray' : 'grey';
 
-            $base_icon = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">';
+            $base_icon = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">';
             $show_icon = '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>';
             $edit_icon = '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>';
             $export_icon = '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>';
@@ -248,7 +210,7 @@ class Reports extends REIM_Controller {
             $confirm_icon = '<span class="ui-icon ace-icon fa fa-check green' . $trash . '  tconfirm" data-id="' . $d['id'] . '"></span>';
             $download_icon = '<span class="ui-icon ace-icon fa fa-download ' . 'blue' . '  tdown" data-id="' . $d['id'] . '"></span>';
             $end_icon = '</div>';
-            
+
             if(in_array($d['status'],[0,3]))
             {
                 $d['options'] = $base_icon . $edit_icon . $trash_icon . $end_icon;
@@ -269,36 +231,8 @@ class Reports extends REIM_Controller {
             {
                 $d['options'] = $base_icon . $show_icon . $export_icon .$download_icon . $end_icon;
             }
-            
-            /*
-            if($d['status'] == 1) {
-                $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
-                    . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
-                . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
-            } else {
-                if(in_array($d['status'],array(2,4,5)))
-                {
-                    $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
-                        . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
-                        . '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span></div>';
-                    //. '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span></div>';
-                } else if (in_array($d['status'],array(0,3))) {
-                    $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
-                        . '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>'
-                        . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span></div>';
-                }
-                else
-                {
-                    $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
-                        . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>'
-                        //. '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>'
-                        . '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span></div>';
-                }
-            }
-            */
-            $d['date_str'] = date('Y年m月d日', $d['createdt']);
-            $d['status_str'] = '待提交';
-            //$d['amount'] = '￥' . $d['amount'];
+
+            $d['status_str'] = get_report_status_str($d['status']);
 
             $prove_ahead = '报销';
             switch($d['prove_ahead']){
@@ -307,7 +241,7 @@ class Reports extends REIM_Controller {
             case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2]  . '</font>';};break;
             }
             $d['prove_ahead'] = $prove_ahead;
-
+            $d['date_str'] = date('Y年m月d日', $d['createdt']);
 
             if(array_key_exists('template_id',$d))
             {
@@ -316,77 +250,7 @@ class Reports extends REIM_Controller {
                     $d['report_template'] = $report_template_dic[$d['template_id']];
                 }
             }
-            
-            switch($d['status']) {
-            case 0: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
-            };break;
-            case 1: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
-            };break;
-            case 2: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>';
-            };break;
-            case 3: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#B472B1;background:#B472B1 !important;">退回</button>';
-            };break;
-            case 4: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-            };break;
-            case 5: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-            };break;
-            case 6: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#42B698 !important;">待支付</button>';
-            };break;
-            case 7: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成待确认</button>';
-            };break;
-            case 8: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成已确认</button>';
-            };break;
-            }
-            $d['date_str'] = date('Y年m月d日', $d['createdt']);
-            $d['status_str'] = '待提交';
-            //$d['amount'] = '￥' . $d['amount'];
-        /*
-                $prove_ahead = '报销';
-                switch($d['prove_ahead']){
-                case 2: {$prove_ahead = '<font color="red">预借</font>';};break;
-                case 1: {$prove_ahead = '<font color="green">预算</font>';};break;
-                }
-                $d['prove_ahead'] = $prove_ahead;
 
-         */
-            switch($d['status']) {
-            case 0: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
-            };break;
-            case 1: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
-            };break;
-            case 2: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>';
-            };break;
-            case 3: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#B472B1;background:#B472B1 !important;">退回</button>';
-            };break;
-            case 4: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-            };break;
-            case 5: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-            };break;
-            case 6: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#42B698 !important;">待支付</button>';
-            };break;
-            case 7: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成待确认</button>';
-            };break;
-            case 8: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成已确认</button>';
-            };break;
-            }
         }
         die(json_encode($data));
     }
@@ -405,7 +269,7 @@ class Reports extends REIM_Controller {
         if(''==$items)
         {
             $this->session->set_userdata('last_error','提交报销单不能为空');
-            return redirect(base_url('reports/index')); 
+            return redirect(base_url('reports/index'));
         }
         $title = $this->input->post('title');
         $receiver = $this->input->post('receiver');
@@ -421,39 +285,10 @@ class Reports extends REIM_Controller {
             foreach($extra as &$ex)
             {
                 if($ex['type'] != 3) continue;
-                
-                $ex['value'] = strtotime($ex['value']); 
+
+                $ex['value'] = strtotime($ex['value']);
                 log_message('debug','time:' . $ex['value']);
             }
-            /*
-            $_account = $this->input->post('account');
-            $_account_name = $this->input->post('account_name');
-            $_account_no = $this->input->post('account_no');
-            $_payment = $this->input->post('payment');
-            $_borrowing = $this->input->post('borrowing');
-            $_location_from = $this->input->post('location_from');
-            $_location_to = $this->input->post('location_to');
-            $_period_start = $this->input->post('period_start');
-            $_period_end = $this->input->post('period_end');
-            $_contract = $this->input->post('contract');
-            $_contract_note = $this->input->post('contract_note');
-            $_note = $this->input->post('note');
-            //$_contract = $_contract == 2 ? 0 : 1;
-            $extra = array(
-                'template_id' => $template_id
-                ,'borrowing' => $_borrowing
-                ,'account' => array(
-                    'id' => $_account
-                    ,'name' => $_account_name
-                    ,'no' => $_account_no
-                )
-                ,'payment' => $_payment
-                ,'period' => array('start' => $_period_start, 'end' => $_period_end)
-                ,'location' => array('start' => $_location_from, 'dest' => $_location_to)
-                ,'contract' => array('available' => $_contract, 'note' => $_contract_note)
-                ,'note' => $_note
-            );
-            */
         }
         if(!$cc) $cc = array();
         if(!$force) $force = 0;
@@ -485,7 +320,7 @@ class Reports extends REIM_Controller {
                 foreach($quota as $key => $q)
                 {
                     $str = $str . $categories[$key] . ' ';
-                }   
+                }
                 $this->session->set_userdata('last_error', $str . '金额超出公司月度限额，是否仍要提交');
             } elseif($ret['code'] == -63) {
                 $info = $this->category->get_list();
@@ -509,7 +344,7 @@ class Reports extends REIM_Controller {
                         $str = $str . $categories[$key] . ' ';
                         log_message('debug','value:' . $str);
                     }
-                }   
+                }
                 $this->session->set_userdata('last_error', '你的 ' . $str .'提交次数已经超出公司规定');
             } else {
                 log_message("debug", "alvayang:" . json_encode($ret));
@@ -540,38 +375,6 @@ class Reports extends REIM_Controller {
         return redirect(base_url('reports/index'));
     }
 
-
-    public function get_suborinate($me = 0){
-        $items = $this->items->get_suborinate($me);
-        if(!$items['status']){
-            die(json_encode(array()));
-        }
-        $ret = array();
-        foreach($items['data']['data'] as $i){
-            $o = array();
-            $p = '';
-            if($i['prove_ahead']) {
-                $p = '<span class="icon"><i class="icon_yu"><img src="/static/images/icon_yu.png" /></i></span>';
-            }
-            array_push($o, $p);
-            array_push($o, date('m月d日', $i['lastdt']));
-            array_push($o, $i['title']);
-            array_push($o, $i['item_count']);
-            array_push($o, 
-                '<i class="tstatus tstatus_' . $i['status'] . "></i>" . 
-                '<strong class="price">&yen;' . $i['amount'] . '</strong>'
-            );
-
-            array_push($o, $i['status']);
-            array_push($o, $i['prove_ahead']);
-            array_push($o, $i['createdt']);
-
-            array_push($ret, $o);
-        }
-        print_r(json_encode(array('data' => $ret)));
-    }
-
-
     public function edit($id = 0){
         $item_type_dic = $this->reim_show->get_item_type_name();
         if($id == 0) return redirect(base_url('reports/index'));
@@ -591,7 +394,7 @@ class Reports extends REIM_Controller {
             $_common = $this->users->get_common();
             if($_common['status'] > 0 && array_key_exists('profile',$_common['data']))
             {
-                $profile = $_common['data']['profile']; 
+                $profile = $_common['data']['profile'];
             }
             $config = array();
             if($profile && array_key_exists('report_setting',$profile)  && array_key_exists('templates', $profile['report_setting'])) {
@@ -610,7 +413,7 @@ class Reports extends REIM_Controller {
             }
         }
 
-        
+
 
         $_members = array();
         $members = $this->users->reim_get_user();
@@ -628,7 +431,7 @@ class Reports extends REIM_Controller {
         }
 
         $report['receivers']['managers'] = $_managers;
-        $report['receivers']['cc'] = $_ccs; 
+        $report['receivers']['cc'] = $_ccs;
         $_items = $this->_getitems();
 
         foreach($report['items'] as &$rt)
@@ -704,24 +507,13 @@ class Reports extends REIM_Controller {
         } else {
             $report['receivers']['cc'] = ' ';
         }
-        $_flow = $this->reports->report_flow($id);
+        $_flow = $this->reports->report_flow($id, 1);
 
-        $flow = array();
         $_ts = '';
         log_message("debug", "Rreport" . json_encode($report));
         if($report['createdt'] > 0) {
             $_ts = date('Y-m-d H:i:s', $report['createdt']);
         }
-        /*
-        array_push($flow, array(
-            'nickname' => $report['nickname']
-            ,'ts' =>  $_ts           
-            ,'status' => '提交'
-            ,'step' => 0
-            ,'wingman' => '' 
-        ));
-        */
-
 
         //获取全体员工
         $group = $this->groups->get_my_list();
@@ -745,43 +537,31 @@ class Reports extends REIM_Controller {
         // 先找到提交的信息
         // 昵称，审核意见，时间，step
         log_message("debug", 'flow data:' . json_encode($_flow));
+        
+        $sliced_flow = array();
         if($_flow['status'] == 1) {
-            foreach($_flow['data']['data'] as $s){
-                $_s = $s['status'] % 100;
-                $audit = '待审批';
-                if($s['uid'] == $report['uid'] && $_s == 0) {
-                        $audit = '待提交';
+            // 分组
+            $last_group = null;
+            $last_slice = array();
+
+            $_flows = $_flow['data']['data'];
+            // step 升序
+            usort($_flows, function($a, $b) { return $a['step'] - $b['step']; });
+
+            foreach($_flows as $s) {
+                $group = 0;
+                if ($s['ticket_type'] == 1) {
+                    $group = 1;
                 }
-                if($s['uid'] == $report['uid']) {
-                    if($_s == 1) {
-                        $audit = '已提交';
-                    }
-                    if($_s == 1 && array_key_exists('ticket_type',$s) && $s['ticket_type'] == 1)
-                    {
-                        $audit = '待审批';
-                    }
+
+                if (is_null($last_group)) {
+                    $last_group = $group;
+                } else if ($last_group !== $group) {
+                    array_push($sliced_flow, $last_slice);
+                    $last_group = $group;
+                    $last_slice = array();
                 }
-                if($_s == 2)  {
-                    $audit = '通过';
-                }
-                if($_s == 3)  {
-                    $audit = '拒绝';
-                    if($s['uid'] == $report['uid']) {
-                    $audit = '撤回';
-                    }
-                }
-                if($_s == 4 || $_s == 5)  {
-                    $audit = '已完成';
-                }
-                if($_s == 6)  {
-                    $audit = '待支付';
-                }
-                if($_s == 7)  {
-                    $audit = '完成待结束';
-                }
-                if($_s == 8)  {
-                    $audit = '完成已结束';
-                }
+
                 $_ts = '';
                 if($s['udt'] != '0') {
                     $_ts = date('Y-m-d H:i:s', $s['udt']);
@@ -789,33 +569,27 @@ class Reports extends REIM_Controller {
 
                 $s['wingman_name'] = '';
                 log_message("debug","wingman:" . $s['wingman']);
-                if(array_key_exists('wingman',$s))
-                {
-                    if(array_key_exists($s['wingman'],$members_dic))
-                    {
-                       $s['wingman_name'] = $members_dic[$s['wingman']]; 
+                if(array_key_exists('wingman',$s)) {
+                    if(array_key_exists($s['wingman'],$members_dic)) {
+                       $s['wingman_name'] = $members_dic[$s['wingman']];
                     }
                 }
-                array_push($flow, array(
-                    'status' => $audit
-                    ,'nickname' => $s['nickname']
-                    ,'ts' => $_ts
-                    ,'step' => $s['step']
-                    ,'wingman' => $s['wingman_name'] 
+
+                array_push($last_slice, array(
+                    'group' => $group,
+                    'status' => $s['status_text'],
+                    'nickname' => $s['nickname'],
+                    'ts' => $_ts,
+                    'step' => $s['step'],
+                    'wingman' => $s['wingman_name'],
+                    'ticket_type' => $s['ticket_type'],
                 ));
             }
+
+            if (!empty($last_slice)) {
+                array_push($sliced_flow, $last_slice);
+            }
         }
-        usort($flow, function($a,$b)
-                {
-                    if($a['step'] == $b['step'])
-                    {
-                        return 0;
-                    }
-                    return ($a['step'] < $b['step']) ?-1:1;
-                });
-        foreach($flow as &$x) {
-        }
-        log_message("debug", "Recievers: ---> " . json_encode($flow));
 
         log_message("debug","*********:".json_encode($report));
         $prove_ahead = $report['prove_ahead'];
@@ -840,7 +614,7 @@ class Reports extends REIM_Controller {
             $_common = $this->users->get_common();
             if($_common['status'] > 0 && array_key_exists('profile',$_common['data']))
             {
-                $profile = $_common['data']['profile']; 
+                $profile = $_common['data']['profile'];
             }
             $config = array();
             if($profile && array_key_exists('report_setting', $profile) && array_key_exists('templates', $profile['report_setting'])) {
@@ -878,13 +652,13 @@ class Reports extends REIM_Controller {
                 }
             }
         }
-        
+
         $this->bsload('reports/view',
             array(
                 'title' => '查看报销单',
                 'report' => $report,
                 'error' => $error,
-                'flow' => $flow
+                'flow' => $sliced_flow
                 ,'rid' => $id
                 ,'config' => $config
                 ,'extra' => $extra
@@ -908,7 +682,7 @@ class Reports extends REIM_Controller {
         if(''==$items || !$id)
         {
             $this->session->set_userdata('last_error','提交报销单不能为空');
-            return redirect(base_url('reports/index')); 
+            return redirect(base_url('reports/index'));
         }
         $title = $this->input->post('title');
         $receiver = $this->input->post('receiver');
@@ -925,11 +699,11 @@ class Reports extends REIM_Controller {
             foreach($extra as &$ex)
             {
                 if($ex['type'] != 3) continue;
-                
-                $ex['value'] = strtotime($ex['value']); 
+
+                $ex['value'] = strtotime($ex['value']);
                 log_message('debug','time:' . $ex['value']);
             }
-            
+
         /*
             $_account = $this->input->post('account');
             $_account_name = $this->input->post('account_name');
@@ -986,8 +760,8 @@ class Reports extends REIM_Controller {
                 foreach($quota as $key => $q)
                 {
                     $str = $str . $categories[$key] . ' ';
-                }   
-                if($str) 
+                }
+                if($str)
                     $this->session->set_userdata('last_error', $str . '金额超出公司月度限额，是否仍要提交');
             }
             else if($ret['code'] == -63)
@@ -1017,7 +791,7 @@ class Reports extends REIM_Controller {
                         $str = $str . $categories[$key] . ' ';
                         log_message('debug','value:' . $str);
                     }
-                }   
+                }
                 $this->session->set_userdata('last_error', '你的 ' . $str .'提交次数已经超出公司规定');
             } else {
                 log_message("debug", "alvayang:" . json_encode($ret));
@@ -1040,9 +814,26 @@ class Reports extends REIM_Controller {
         die($rep);
         //niu
     }
-    public function audit($search=''){
-        $this->session->set_userdata('item_update_in',4);
 
+    public function audit_cc($search=''){
+        return $this->_audit('cc', $search);
+    }
+
+    public function audit_todo($search=''){
+        return $this->_audit('todo', $search);
+    }
+
+    public function audit_done($search=''){
+        return $this->_audit('done', $search);
+    }
+
+    public function audit($search=''){
+        # FIXME
+        return $this->_audit('all', $search);
+    }
+
+    private function _audit($filter, $search=''){
+        $this->session->set_userdata('item_update_in',4);
         $items = $this->items->get_suborinate();
         if(!$items['status']){
             die(json_encode(array()));
@@ -1061,20 +852,21 @@ class Reports extends REIM_Controller {
         }
         $_error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-        log_message("debug", "Last Error:" . $_error);
         $this->session->set_userdata("report_list_url", "reports/audit");
         $this->bsload('reports/audit',
             array(
-                'title' => '收到的报销单'
-                ,'items' => $item_data
-                ,'members' => $_members
-                ,'error' => $_error
-                ,'search' => urldecode($search)
-                ,'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
-                    ,array('url'  => '', 'name' => '收到的报销单', 'class' => '')
-                ),
+                'title' => '收到的报销单',
+                'items' => $item_data,
+                'members' => $_members,
+                'error' => $_error,
+                'search' => urldecode($search),
+                'filter' => $filter,
+                'can_export_excel' => $filter == 'done' ? 'true' : 'false',
+                'breadcrumbs' => [
+                    ['url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon'],
+                    ['url'  => base_url('reports/index'), 'name' => '报销单', 'class' => ''],
+                    ['url'  => '', 'name' => '收到的报销单', 'class' => ''],
+                ],
             ));
     }
 
@@ -1093,7 +885,8 @@ class Reports extends REIM_Controller {
         $page = $this->input->get('page');
         $rows = $this->input->get('rows');
         $sort = $this->input->get('sord');
-        $items = $this->items->get_suborinate(1);
+        $filter = $this->input->get('filter', 'all');
+        $items = $this->items->get_suborinate(1, $filter);
 
         $item_type_dic = $this->reim_show->get_item_type_name();
         $report_template_dic = $this->reim_show->get_report_template();
@@ -1113,13 +906,12 @@ class Reports extends REIM_Controller {
 
         $data = $items['data']['data'];
         foreach($data as &$d){
-            if(array_key_exists('has_attachment',$d) && $d['has_attachment'])
-            {
+            if(array_key_exists('has_attachment',$d) && $d['has_attachment']) {
                 $url = base_url('reports/show/' . $d['id']);
                 $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
             }
             log_message("debug", "xxx audit data:" . json_encode($d));
-            $trash= $d['status'] === 1 ? 'grey' : 'red';
+            $trash = $d['status'] === 1 ? 'grey' : 'red';
             $edit = ($d['status'] === 1)   ? 'grey' : 'green';
             $exports = ($d['status'] === 1) ? 'grey' : 'grey';
             $d['author'] = '';
@@ -1128,27 +920,15 @@ class Reports extends REIM_Controller {
             }
             log_message("debug", "Rstatus: **** " . json_encode($d));
 
-/*
-            $base_icon = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">';
-//            $show_icon = '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>';
-            $show_icon='<span class="ui-icon fa fa-search-plus tdetail" data-decision="1" data-id="' . $d['id'] . '"></span>';
-            $edit_icon = '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>';
-            $pass_icon = '<span class="ui-icon ' . 'green' . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>'; 
-            $deny_icon = '<span class="ui-icon  ui-icon-closethick ' . 'red'  . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span>';
-            $export_icon = '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>';
-            $trash_icon = '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>';
-            $end_icon = '</div>';
-            */
             $download_icon = '<span class="ui-icon ace-icon fa fa-download ' . 'blue' . '  tdown" data-id="' . $d['id'] . '"></span>';
-            
-           
 
-            if(in_array($d['status'],[2,4,5,7,8]))
-            {
+            if (in_array($d['status'],[2,4,5,7,8]) or
+                ($d['status'] == 0 and $d['pa_approval'])
+            ) {
                 if($d['mdecision'] == 1 && !$d['cc_flag']){
-                    $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del"  data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-decision="1" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in texport' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>' .   $download_icon . '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
-                } else { 
-                    $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in ' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>' . $download_icon  . '</div>';
+                    $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del"  data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-decision="1" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in texport' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>' .   $download_icon . '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
+                } else {
+                    $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in ' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>' . $download_icon  . '</div>';
                 }
             }
             else
@@ -1160,7 +940,7 @@ class Reports extends REIM_Controller {
                 }
             }
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
-            $d['status_str'] = '待提交';
+            $d['status_str'] = get_report_status_str($d['status']);
 
             $prove_ahead = '报销';
             switch($d['prove_ahead']){
@@ -1169,44 +949,12 @@ class Reports extends REIM_Controller {
             case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2]  . '</font>';};break;
             }
             $d['prove_ahead'] = $prove_ahead;
-            $d['attachments'] = '';
 
             if(array_key_exists('template_id',$d) && array_key_exists($d['template_id'],$report_template_dic))
             {
                 $d['report_template'] = $report_template_dic[$d['template_id']];
             }
-
-            //$d['amount'] = '￥' . (sprintf("%.2f",$d['amount']));
             $d['amount'] = sprintf("%.2f",$d['amount']);
-            switch($d['status']) {
-            case 0: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#A07358;background:#A07358 !important;">待提交</button>';
-            };break;
-            case 1: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#46A3D3;background:#46A3D3 !important;">审核中</button>';
-            };break;
-            case 2: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>';
-            };break;
-            case 3: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#B472B1;background:#B472B1 !important;">退回</button>';
-            };break;
-            case 4: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-            };break;
-            case 5: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-            };break;
-            case 6: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#42B698 !important;">待支付</button>';
-            };break;
-            case 7: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成待确认</button>';
-            };break;
-            case 8: {
-                $d['status_str'] = '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">完成已确认</button>';
-            };break;
-            }
         }
         die(json_encode($data));
     }
@@ -1270,8 +1018,11 @@ class Reports extends REIM_Controller {
                         $id = $child["id"];
                         $value = $this->try_get_element($extra_dict, $id, 'value');
                         if ($child["type"] == 4) {
-                            $bankinfo = json_decode($value, TRUE);
-                            
+                            if (!is_array($value)) {
+                                $value = json_decode($value, TRUE);
+                            }
+                            $bankinfo = $value;
+
                             $obj[$child_name . " - 户名"] = $this->try_get_element($bankinfo, "account");
                             $obj[$child_name . " - 账号"] = $this->try_get_element($bankinfo, "cardno");
                             $obj[$child_name . " - 开户行"] = $this->try_get_element($bankinfo, "bankname");
@@ -1316,17 +1067,24 @@ class Reports extends REIM_Controller {
         "应付" => [ "data_type" => "number" ],
     ];
 
+    private function get_rate($currency,$rate)
+    {
+        if($currency == 'cny')
+            return 1.0;
+        return $rate/100;
+    }
+
     private function exports_by_rids($ids) {
         $_data = $this->reports->get_reports_by_ids($ids);
         if (empty($_data) || $_data["status"] < 0) {
             $this->session->set_userdata('last_error', $_data["_msg"]);
             return;
         }
-
         $data = $_data["data"];
         log_message("debug", "got data => " . json_encode($data));
-
+        
         $dict_by_template = array();
+        $_rids = array();
         foreach ($data["report"] as $id => $r) {
             $template_id = 0;
             if (array_key_exists("template_id", $r) && $r["template_id"]) {
@@ -1336,7 +1094,29 @@ class Reports extends REIM_Controller {
             if (!array_key_exists($template_id, $dict_by_template)) {
                 $dict_by_template[$template_id] = array();
             }
+            array_push($_rids, $id);
             array_push($dict_by_template[$template_id], $r);
+        }
+
+        
+        // 每次请求的报告数量不超过4096个
+        $rids_chunks = array_chunk($_rids, 4096);
+        $flows_dict = array();
+        log_message('debug','rids_chunks:' . json_encode($rids_chunks));
+        foreach ($rids_chunks as $_rids) {
+            $_flows_chunk = $this->reports->multi_report_flow(array_values($_rids));
+            if ($_flows_chunk['status'] < 0) {
+                $this->session->set_userdata('last_error', $_data["_msg"]);
+                return;
+            }
+
+            foreach ($_flows_chunk['data'] as $f) {
+                if (!array_key_exists($f['rid'], $flows_dict)) {
+                    $flows_dict[$f['rid']] = array();
+                }
+
+                array_push($flows_dict[$f['rid']], $f);
+            }
         }
 
         $_categories = $this->category->get_list();
@@ -1362,7 +1142,7 @@ class Reports extends REIM_Controller {
                 }
             }
         }
-        
+
         //添加汇率
         $open_exchange = 0 ;
         $company_config = array();
@@ -1480,7 +1260,7 @@ class Reports extends REIM_Controller {
                 $template = $dict_templates[$template_id];
 
             $_t_items = array();
-            // 类目金额汇总 
+            // 类目金额汇总
             $category_cells = array();
             $category_cells_dic = array();
             // 报销单汇总
@@ -1552,7 +1332,7 @@ class Reports extends REIM_Controller {
                 if (is_array($userbankinfo) && array_key_exists("cardno", $userbankinfo)) {
                     $cardno = $userbankinfo["cardno"];
                 }
-                
+
                 // 如果没有设置取用户的默认设置
                 if (!$cardno) {
                     if (array_key_exists($r["uid"], $_banks)) {
@@ -1583,7 +1363,7 @@ class Reports extends REIM_Controller {
                     }
 
                     $_stat_cells = array();
-                    
+
                     $_stat_cells["提交人"] = $r["nickname"];
                     $_stat_cells[$user_bank_field_prefix . " - 户名"] = $this->try_get_element($userbankinfo, "account");
                     $_stat_cells[$user_bank_field_prefix . " - 账号"] = $this->try_get_element($userbankinfo, "cardno");
@@ -1602,15 +1382,14 @@ class Reports extends REIM_Controller {
                     $_stat_cells["已付"] = 0;
                     $_stat_cells["应付"] = 0;
                     $_stat_cells["注释"] = "";
-                    
+
                     $stat_cells[$key] = $_stat_cells;
                 }
 
                 // 计算报销单审批人列表
                 $flow = array();
-                $_flow = $this->reports->report_flow($r['id']);
-                if($_flow['status'] > 0) {
-                    $flow_member = $_flow['data']['data'];
+                if(array_key_exists($r['id'], $flows_dict)) {
+                    $flow_member = $flows_dict[$r['id']];
                     foreach($flow_member as $fm) {
                         if($fm['status'] == 2) {
                             array_push($flow,array('name' => $fm['nickname'],'step' => $fm['step']));
@@ -1663,7 +1442,12 @@ class Reports extends REIM_Controller {
                     if(in_array($r['status'], array(4, 7, 8))){
                         // 已完成状态的，付款额度就是已付额度
                         $i['paid'] = ($i['amount'] * $_rate);
-                    } else {
+                    } 
+                    else if($i['prove_ahead'] == 2 && $i['pa_approval'] == 1) 
+                    {
+                        $i['paid'] = ($i['pa_amount'] * $_rate);
+                    }
+                    else {
                         $i['paid'] = 0;
                     }
                     $i['nickname'] = $r['nickname'];
@@ -1679,7 +1463,7 @@ class Reports extends REIM_Controller {
                     if($i['reimbursed'] == 0) {
                         continue;
                     }
-                    if($i['prove_ahead'] > 0){
+                    if($i['prove_ahead'] == 2 &&  $i['pa_approval'] == 1){
                         $r['paid'] += ($i['pa_amount'] * $_rate);
                     }
 
@@ -1723,6 +1507,8 @@ class Reports extends REIM_Controller {
                 //初始化类目汇总表单中对应的类目的信息
                 if($statistic_using_category)
                 {
+                    $temp_rate = $this->get_rate($i['currency'],$i['rate']);
+                    log_message('debug','temp_rate:'.$temp_rate);
                     if(!array_key_exists($i['category'],$category_cells_dic))
                     {
                         $sob_name = '';
@@ -1734,14 +1520,14 @@ class Reports extends REIM_Controller {
                             'sob_name'=> $sob_name,
                             'category_name'=>$i['category_name'],
                             'category_code'=>$i['category_code'],
-                            'amount'=>$i['amount'],
-                            'pa_amount'=>$i['pa_amount']
+                            'amount'=>$i['amount']*$temp_rate,
+                            'pa_amount'=>$i['paid']
                             );
                     }
                     else
                     {
-                        $category_cells_dic[$i['category']]['amount'] += $i['amount'];
-                        $category_cells_dic[$i['category']]['pa_amount'] += $i['pa_amount'];
+                        $category_cells_dic[$i['category']]['amount'] += $i['amount']*$temp_rate;
+                        $category_cells_dic[$i['category']]['pa_amount'] += $i['paid'];
                     }
                 }
 
@@ -1875,11 +1661,13 @@ class Reports extends REIM_Controller {
                         $o['汇率'] = round($i['rate']/100,6);
                 }
                 $o['人民币金额'] = round($i['amount'] * $_rate, 2);
+                /*
                 $_paid = 0;
                 if($i['prove_ahead'] > 0){
                     $_paid = $i['pa_amount'];
                 }
                 $_last = $i['amount'] - $_paid;
+                */
                 //                $o['已付'] = (string)($i['paid']) . '￥';
                 $o['已付'] = $i['paid'];
                 //                $o['应付'] = (string)(($i['amount'] * $_rate) - $i['paid']) . '￥';
@@ -1913,8 +1701,8 @@ class Reports extends REIM_Controller {
                     $o['类目'] = $ccd['category_name'];
                     $o['类目代码'] = $ccd['category_code'];
                     $o['总额'] = $ccd['amount'];
-                    $o['应付'] = $ccd['amount'] - $ccd['pa_amount'];
                     $o['已付'] = $ccd['pa_amount'];
+                    $o['应付'] = $ccd['amount'] - $ccd['pa_amount'];
                     array_push($category_cells,$o);
                 }
                 $template_excel[] = [ "title" => "类目金额汇总", "data" => $category_cells, "style" => self::$category_style ];
@@ -1942,7 +1730,7 @@ class Reports extends REIM_Controller {
                 $excel[$template_name] = $template_excel;
             }
         }
-        $this->load->library('user_agent');
+
         $excel_name = '报销报销单列表' . date('Y-m-d', time()) . '.xls';
 
         $data = array();
@@ -1964,6 +1752,7 @@ class Reports extends REIM_Controller {
     }
 
     public function exports(){
+        ini_set('memory_limit', '1024M');
         $ids = $this->input->post('ids');
         if("" == $ids) die("");
         $this->exports_by_rids($ids);
@@ -2006,13 +1795,11 @@ class Reports extends REIM_Controller {
             $this->session->set_userdata('last_error', '操作失败');
             log_message("debug","**********:$buf");
         }
-        redirect(base_url('reports/audit'));
+        redirect(base_url('reports/audit_todo'));
     }
-
 
     public function export_u8(){
         $ids = $this->input->post('ids');
-        //$_ids = explode(",", $ids);
         if("" == $ids) {
             $this->session->set_userdata('last_error', '没有选择任何报销');
             die("<script language='javascript'>history.go(-1); </script>");
@@ -2033,131 +1820,138 @@ class Reports extends REIM_Controller {
         }
         $_maker = $username;
         $data = $this->reports->get_reports_by_ids($ids);
+        if ($data['status'] <= 0) {
+            return;
+        }
         $_excel = array();
         $_members = array();
-        if($data['status'] > 0){
-            $_reports = $data['data'];
-            $reports = $_reports['report'];
-            $groups = $_reports['groups'];
-            log_message("debug", "GROUPS:" . json_encode($groups));
-            $_headers =  array(
-                '凭证ID' => 0
-                ,'会计年' => date('Y')
-                ,'会计期间' => date('m')
-                ,'制单日期' => date('Y-m-d')
-                ,'凭证类别' => '转'
-                ,'凭证号' => 0
-                ,'制单人' => $_maker
-                ,'所附单据数' => ''
-                ,'备注1' => ''
-                ,'备注2' => ''
-                ,'科目编码' => 0
-                ,'摘要' => ''
-                ,'结算方式编码' => ''
-                ,'票据号' => ''
-                ,'币种名称' => '人民币'
-                ,'汇率' => ''
-                ,'单价' => ''
-                ,'借方数量' => ''
-                ,'贷方数量' => ''
-                ,'贷方数量' => ''
-                ,'原币借方' => ''
-                ,'原币贷方' => ''
-                ,'借方金额' => 0
-                ,'贷方金额' => 0
-                ,'部门编码' => 0
-                ,'客户编码' => ''
-                ,'供应商编码' => ''
-                ,'项目大类编码' => ''
-                ,'项目编码' => ''
-                ,'业务员' => ''
-                ,'自定义项1' => ''
-                ,'自定义项2' => ''
-                ,'自定义项3' => ''
-                ,'自定义项4' => ''
-                ,'自定义项5' => ''
-                ,'自定义项6' => ''
-                ,'自定义项7' => ''
-                ,'自定义项8' => ''
-                ,'自定义项9' => ''
-                ,'自定义项10' => ''
-                ,'自定义项11' => ''
-                ,'自定义项12' => ''
-                ,'自定义项13' => ''
-                ,'自定义项14' => ''
-                ,'自定义项15' => ''
-                ,'自定义项16' => ''
-                ,'现金流项目' => ''
-                ,'现金流量借方金额' => ''
-                ,'现金流量贷方金额' => ''
-                ,'金额' => ''
-                ,'员工姓名' => ''
-                ,'员工号' => ''
-            );
-            $idx = 0;
-            $_total_amount = 0;
-            foreach($reports as &$r){
-                $_items = $r['items'];
-                foreach($_items as $item){
-                    $rate = 1.0;
-                    if($item['currency'] != '' && strtolower($item['currency']) != 'cny') {
-                        $rate = $item['rate'] / 100;
-                    }
-                    $_amount = round($item['amount'], 2);
-                    if($item['prove_ahead'] == 2){
-                        $_amount = round($item['amount'] - $item['pa_amount'], 2);
+        $_reports = $data['data'];
+        $reports = $_reports['report'];
+        $groups = $_reports['groups'];
+        //log_message("debug", "GROUPS:" . json_encode($groups));
+        $_headers = array(
+            '凭证ID' => 0,
+            '会计年' => date('Y'),
+            '会计期间' => date('m'),
+            '制单日期' => date('Y-m-d'),
+            '凭证类别' => '转',
+            '凭证号' => 0,
+            '制单人' => $_maker,
+            '所附单据数' => '',
+            '备注1' => '',
+            '备注2' => '',
+            '科目编码' => 0,
+            '摘要' => '',
+            '结算方式编码' => '',
+            '票据号' => '',
+            '票据日期' => '',
+            '币种名称' => '人民币',
+            '汇率' => '',
+            '单价' => '',
+            '借方数量' => '',
+            '贷方数量' => '',
+            '贷方数量' => '',
+            '原币借方' => '',
+            '原币贷方' => '',
+            '借方金额' => 0,
+            '贷方金额' => 0,
+            '部门编码' => 0,
+            '职员编码' => '',
+            '客户编码' => '',
+            '供应商编码' => '',
+            '项目大类编码' => '',
+            '项目编码' => '',
+            '业务员' => '',
+            '自定义项1' => '',
+            '自定义项2' => '',
+            '自定义项3' => '',
+            '自定义项4' => '',
+            '自定义项5' => '',
+            '自定义项6' => '',
+            '自定义项7' => '',
+            '自定义项8' => '',
+            '自定义项9' => '',
+            '自定义项10' => '',
+            '自定义项11' => '',
+            '自定义项12' => '',
+            '自定义项13' => '',
+            '自定义项14' => '',
+            '自定义项15' => '',
+            '自定义项16' => '',
+            '现金流项目' => '',
+            '现金流量借方金额' => '',
+            '现金流量贷方金额' => '',
+        );
+        $idx = 0;
+        foreach($reports as &$r){
+            if(!array_key_exists($r['uid'], $_members)){
+                $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
+            }
+            $_gname = '';
+            $_gids = array();
+            if(array_key_exists($r['uid'], $groups)){
+                $_uid = $r['uid'];
+                $_name = array();
+                $_groups = $groups[$_uid];
+                foreach($_groups as $s){
+                    array_push($_name, $s['gname']);
+                    array_push($_gids, $s['gcode']);
+                }
+                $_gname = implode('/', $_name);
+            }
+            //log_message("debug", json_encode($r));
+            $r['total'] = 0;
+            $r['paid'] = 0;
+            $_items = $r['items'];
+            foreach($_items as $i){
+                $idx += 1;
+                //log_message("debug", "Item:" . json_encode($i));
+                $o = $_headers;
+                $o['凭证号'] = $r['id'];
+                $o['摘要'] = '计提' . date('m月') . '员工报销 - ' . $i['category_name']  . ' - ' . $r['nickname'];
+                $o['部门编码'] = implode(',', $_gids);
+                $o['职员编码'] = $r['client_id'];
 
-                    }
-                    $_total_amount += $_amount * $rate;
+                $rate = 1.0;
+                if(trim($i['currency']) != '' && strtolower($i['currency']) != 'cny') {
+                    $rate = $i['rate'] / 100;
                 }
+                $_amount = round($i['amount'], 2);
+                if($i['prove_ahead'] == 2){
+                    $_amount = sprintf("%.2f", $i['amount'] - $i['pa_amount']);
+                }
+                $amount = sprintf("%.2f",$_amount * $rate);
+
+                $o['凭证ID'] = $idx;
+                $o['科目编码'] = $i['category_code'];
+                $o['借方金额'] = $amount;
+                $o['贷方金额'] = '';
+                array_push($_excel, $o);
+
+                $o['凭证ID'] = $idx;
+                $o['科目编码'] = 1002;
+                $o['借方金额'] = '';
+                $o['贷方金额'] = $amount;
+                array_push($_excel, $o);
             }
-            foreach($reports as &$r){
-                if(!array_key_exists($r['uid'], $_members)){
-                    $_members[$r['uid']] = array('credit_card' => $r['credit_card'], 'nickname' => $r['nickname'], 'paid' => 0);
-                }
-                $_gname = '';
-                $_gids = array();
-                if(array_key_exists($r['uid'], $groups)){
-                    $_uid = $r['uid'];
-                    $_name = array();
-                    $_groups = $groups[$_uid];
-                    foreach($_groups as $s){
-                        array_push($_name, $s['gname']);
-                        array_push($_gids, $s['gcode']);
-                    }
-                    $_gname = implode('/', $_name);
-                }
-                log_message("debug", json_encode($r));
-                $r['total'] = 0;
-                $r['paid'] = 0;
-                $_items = $r['items'];
-                foreach($_items as $i){
-                    $idx += 1;
-                    log_message("debug", "Item:" . json_encode($i));
-                    $o = $_headers;
-                    $o['凭证ID'] = $idx;
-                    $o['凭证号'] = $r['id'];
-                    $o['科目编码'] = $i['category_code'];
-                    $o['摘要'] = '计提' . date('m月') . '员工报销 - ' . $i['category_name']  . ' - ' . $r['nickname']; 
-                    $rate = 1.0;
-                    if(trim($i['currency']) != '' && strtolower($i['currency']) != 'cny') {
-                        $rate = $i['rate'] / 100;
-                    }
-                    $_amount = round($i['amount'], 2);
-                    if($i['prove_ahead'] == 2){
-                        $_amount = sprintf("%.2f", $i['amount'] - $i['pa_amount']);
-                    }
-                    $o['借方金额'] = sprintf("%.2f",$_amount * $rate); 
-                    $o['贷方金额'] = $_total_amount;
-                    $o['部门编码'] = implode(',', $_gids);
-                    $o['员工姓名'] = $r['nickname'];
-                    $o['员工号'] = $r['client_id'];
-                    array_push($_excel, $o);
-                }
-            }
-            //print_r($_excel);
-            self::render_to_download('工作表1', $_excel, 'u8_' . date('Y-m-d', time()) . ".xls");
         }
+        //print_r($_excel);
+
+        $filename = 'u8_' . date('Y-m-d', time()) . ".xls";
+        $style = [
+            "制单日期" => [ "data_type" => "date" ],
+            "科目编码" => [ "data_type" => "number", "decimal_places" => 0 ],
+            "贷方金额" => [ "data_type" => "number" ],
+            "借方金额" => [ "data_type" => "number" ],
+        ];
+        $data = [
+            [
+                'title' => 'sheet1',
+                'data' => $_excel,
+                'style' => $style,
+            ]
+        ];
+        self::render_to_download_2($filename, $data);
     }
 
     public function report_template($id = 0){
@@ -2166,7 +1960,7 @@ class Reports extends REIM_Controller {
         $_common = $this->users->get_common();
         if($_common['status'] > 0 && array_key_exists('profile',$_common['data']))
         {
-            $profile = $_common['data']['profile']; 
+            $profile = $_common['data']['profile'];
         }
         $item_type_dic = $this->reim_show->get_item_type_name();
         $config = array();
@@ -2219,9 +2013,12 @@ class Reports extends REIM_Controller {
         if(''==$items)
         {
             $this->session->set_userdata('last_error','提交报销单不能为空');
-            return redirect(base_url('reports/index')); 
+            return redirect(base_url('reports/index'));
         }
         $receiver = $this->input->post('receiver');
+        if (empty($receiver)) {
+            $receiver = [ ];
+        }
         $buf = $this->reports->submit_check(implode(',', $receiver), implode(',', $items));
         die($buf);
     }

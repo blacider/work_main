@@ -7,7 +7,7 @@
         <div class="footer-content">
             <span class="bigger-120">
                 <span class="blue bolder"><a href="http://www.yunbaoxiao.com" target="_blank">如数科技</a></span>
-                © 2014-2015
+                ©2016
             </span>
 
             &nbsp; &nbsp;

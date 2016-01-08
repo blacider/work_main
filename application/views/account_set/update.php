@@ -25,7 +25,7 @@ if($last_error) {
 <div class="page-content">
 <div class="page-content-area">
     <form role="form"  class="form-horizontal"  enctype="multipart/form-data" id="mainform">
-        <div class="row" style="overflow:hidden;">
+        <div class="row">
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 col-sm-12">
@@ -347,7 +347,7 @@ if($last_error) {
 
 
         <div class="form-group" style="height:30px">
-            <label class="col-sm-3 control-label no-padding-right">是否需要附件</label>
+            <label class="col-sm-3 control-label no-padding-right">是否需要照片</label>
                                 <div class="col-xs-6 col-sm-6">
                                         <label style="margin-top:8px;">
                                             <input name="force_attach" class="ace ace-switch btn-rotate" type="checkbox" id="force_attach" style="margin-top:4px;" />
@@ -456,7 +456,7 @@ if($last_error) {
         </div>
             
         <div class="form-group" style="height:30px">
-            <label class="col-sm-3 control-label no-padding-right">是否需要附件</label>
+            <label class="col-sm-3 control-label no-padding-right">是否需要照片</label>
                                 <div class="col-xs-6 col-sm-6">
                                         <label style="margin-top:8px;">
                                             <input name="force_attach" class="ace ace-switch btn-rotate" type="checkbox" id="force_attach" style="margin-top:4px;" />
@@ -506,7 +506,7 @@ if($last_error) {
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类别代码</label>
             <input name="code" type="text" data-placeholder="请输入名称"></div>
-    </div>
+    
         <div class="form-group" style="height:30px;">
            <label class="col-sm-2 control-label no-padding-right">关联到:</label>
                     <div class="col-sm-4"  style="padding:0;">
@@ -521,6 +521,7 @@ if($last_error) {
                         </select>
                     </div>
                    
+        </div>
         </div>
     <div class="modal-footer">
         <button class="btn btn-sm" data-dismiss="modal">

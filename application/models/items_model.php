@@ -2,7 +2,7 @@
 
 class Items_Model extends Reim_Model {
 
-    public function get_item_type_name() 
+    public function get_item_type_name()
     {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
@@ -13,7 +13,7 @@ class Items_Model extends Reim_Model {
         $obj = json_decode($buf, True);
         return $obj;
     }
-    
+
     public function update_item_type_name($type,$name,$description)
     {
         $jwt = $this->session->userdata('jwt');
@@ -145,12 +145,13 @@ class Items_Model extends Reim_Model {
     }
 
 
-    public function get_suborinate($me = 0){
+    public function get_suborinate($me = 0, $filter='all'){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $url = $this->get_url('subordinate_reports/'. $me . "/0/9999999");
+        $url = $url . '?' . http_build_query(['filter' => $filter]);
         $buf = $this->do_Get($url, $jwt);
-        log_message("debug", $buf);
+        //log_message("debug", $buf);
         $obj = json_decode($buf, true);
         return $obj;
     }
@@ -180,10 +181,10 @@ class Items_Model extends Reim_Model {
             'prove_ahead' => $type,
             'afford_ids' => $afford_ids,
             'image_id' => $images,
-            'dt' => $dt, 
+            'dt' => $dt,
             'note' => $note,
             'reimbursed' => 1,
-            'tags' => $tags, 
+            'tags' => $tags,
             'location' => '',
             'latitude' => 0,
             'longitude' => 0,
@@ -238,10 +239,10 @@ class Items_Model extends Reim_Model {
             'uids' => $uids,
             'prove_ahead' => $type,
             'image_id' => $images,
-            'dt' => $dt, 
+            'dt' => $dt,
             'note' => $note,
             'reimbursed' => 1,
-            'tags' => $tags, 
+            'tags' => $tags,
             'location' => '',
             'latitude' => 0,
             'longitude' => 0,

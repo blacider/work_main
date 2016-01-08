@@ -14,10 +14,10 @@ class REIM_Controller extends CI_Controller{
         $refer = $this->agent->referrer();
         $jwt = $this->session->userdata('jwt');
         $controller = $this->uri->rsegment_array();
-        $method_set = ['login','install', 'pub','users', 'register' ,'resetpwd'];
+        $method_set = ['login', 'install', 'pub','users', 'register' ,'resetpwd'];
         if(!in_array($controller[1],$method_set))
         {
-            if(!$jwt) 
+            if(!$jwt)
             {
                 redirect(base_url('login'));
             }
@@ -58,7 +58,7 @@ class REIM_Controller extends CI_Controller{
         return false;
     }
 
-    public function  eload($view_name, $custom_data, $menu_page = 'menu.php'){
+    public function eload($view_name, $custom_data, $menu_page = 'menu.php'){
         $this->load->model('user_model');
         $this->load->model('module_tip_model');
         $uid = $this->session->userdata('uid');
@@ -89,25 +89,6 @@ class REIM_Controller extends CI_Controller{
         $this->load->view('footer', $custom_data);
     }
 
-    public function jsalert($msg, $target = ''){
-        if($target){
-            die('<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><script language="javascript">alert("' . $msg . '"); location.href="' . $target . '";</script>');
-        }else {
-            die('<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><script language="javascript">alert("' . $msg . '"); history.go(-1);</script>');
-        }
-
-    }
-
-    public function _pager($url, $total, $pn, $rn){
-        $this->load->library('pager');
-        $config['base_url'] = base_url($url);
-        $config['total'] = $total;
-        $config['rn'] = $rn;
-        $config['pn'] = $pn;
-        $this->pager->initialize($config);
-        return $this->pager->create_links();
-    }
-
     public function _upload($uid, $name){
         if($name == "") $name = 'package';
         $this->load->helper('file');
@@ -131,7 +112,7 @@ class REIM_Controller extends CI_Controller{
         if(!$this->upload->do_upload($name))
         {
             return array('status' => false, 'msg' => '图片上传失败', 'detail' => $this->upload->display_errors());
-        } 
+        }
         else
         {
             return array('status' => true, 'data' => $this->upload->data(), 'prefix' => $prefix);
@@ -139,7 +120,7 @@ class REIM_Controller extends CI_Controller{
     }
 
 
-    public function  bsload($view_name, $custom_data, $menu_page = 'menu.bs.php'){
+    public function bsload($view_name, $custom_data, $menu_page = 'menu.bs.php'){
         $this->load->model('user_model');
         $this->load->model('module_tip_model');
         $uid = $this->session->userdata('uid');
@@ -156,11 +137,11 @@ class REIM_Controller extends CI_Controller{
         }
         if(!($profile || $uid)){
             // 重定向到登陆
-            log_message("debug","Nothing ");
             redirect(base_url('login'), 'refresh');
         }
         $report_template = array();
 
+        $custom_data['company_config'] = array();
         if(!$profile){
             $custom_data['opt_error'] = $this->session->userdata('last_error');
             $custom_data['username'] = $this->session->userdata('username');
@@ -181,8 +162,10 @@ class REIM_Controller extends CI_Controller{
                 $admin_groups_granted = $profile["admin_groups_granted_all"];
             }
             $custom_data['admin_groups_granted'] = $admin_groups_granted;
+            if (isset($profile['group']['config'])) {
+                $custom_data['company_config'] = json_decode($profile['group']['config'], TRUE);
+            }
         }
-
         $custom_data['groupname'] = $this->session->userdata('groupname');
         $custom_data['report_templates'] = $report_template;
         log_message("debug", "Get From Cache =====================");
@@ -198,7 +181,7 @@ class REIM_Controller extends CI_Controller{
     }
 
 
-    public function  aeload($view_name, $custom_data){
+    public function aeload($view_name, $custom_data){
         $this->load->model('user_model');
         $this->load->model('module_tip_model');
         $uid = $this->session->userdata('uid');
@@ -229,32 +212,17 @@ class REIM_Controller extends CI_Controller{
         $this->load->view('footer.old.php', $custom_data);
     }
 
-    public function show_error($msg){
-    }
-
-    public function save_to_local($title, $data, $excle_name) {
-        $exclefile = $excle_name;
-        $objwriter = $this->return_buf($title, $data);
-        $objwriter->save($exclefile);
-        return $exclefile;
-
-    }
-
     public function render_to_download_2($filename, $data) {
         if($this->agent->is_browser('Internet Explorer')) {
-            $excle_name = urlencode($filename);
+            $filename = urlencode($filename);
         }
-
         $writer = $this->build_excel($data);
-
-        header("Pragma: public");
         header("Content-Type: application/vnd.ms-execl");
         header('Content-Disposition: attachment;filename=' . $filename);
         header("Content-Transfer-Encoding: binary");
+        header("Cache-Control: no-cache");
         header("Expires: Mon, 26 Jul 1970 05:00:00 GMT");
-        header("Pragma: no-cache");
         $writer->save("php://output");
-
         exit();
     }
 
@@ -314,8 +282,12 @@ class REIM_Controller extends CI_Controller{
                     $c_name = $this->getCharByNunber($y);
                     $addr = $c_name . $x;
                     $sheet->getStyle($addr)->getFont()->setName('微软雅黑')->setSize(12);
-                    //$sheet->setCellValueExplicit($addr, strval($v), PHPExcel_Cell_DataType::TYPE_STRING);
-                    $sheet->setCellValue($addr, $v);
+                    // 如果未设置样式或者数据类型指定了string
+                    if (empty($style[$k]) || empty($style[$k]['data_type']) || $style[$k]['data_type'] == 'string') {
+                        $sheet->setCellValueExplicit($addr, strval($v), PHPExcel_Cell_DataType::TYPE_STRING);
+                    } else {
+                        $sheet->setCellValue($addr, $v);
+                    }
                     $y++;
                 }
                 $x++;
@@ -325,25 +297,29 @@ class REIM_Controller extends CI_Controller{
             foreach ($first_row as $k => $v) {
                 $c_name = $this->getCharByNunber($j);
                 $range = $c_name . '2:' . $c_name . (count($rows) + 1);
-                
+
                 $sheet->getColumnDimension($c_name)->setAutoSize(true);
                 $sheet->getStyle($range)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
                 $j++;
-                                
+
                 if (empty($style[$k])) {
-                    $sheet->getStyle($range)->getNumberFormat()->setFormatCode('#');                    
+                    $sheet->getStyle($range)->getNumberFormat()->setFormatCode('#');
                     continue;
                 }
-                
+
                 $s = $style[$k];
                 if (!empty($s['data_type'])) {
                     if ($s['data_type'] == "number") {
                         $decimal_places = 2;
-                        if (!empty($s['decimal_places']) && is_numeric($s['decimal_places'])) {
+                        if (isset($s['decimal_places']) && is_numeric($s['decimal_places'])) {
                             $decimal_places = $s['decimal_places'];
                         }
-
-                        $format = '#,##0.' . str_repeat('0', $decimal_places);
+                        if ($decimal_places > 0) {
+                            $format = '0.' . str_repeat('0', $decimal_places);
+                        }
+                        else {
+                            $format = '0';
+                        }
                         $sheet->getStyle($range)->getNumberFormat()->setFormatCode($format);
                     } elseif ($s['data_type'] == "date") {
                         $sheet->getStyle($range)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDD2);
@@ -395,8 +371,6 @@ class REIM_Controller extends CI_Controller{
             $x++;
         }
 
-
-
         // TODO: 如此肮脏，算了，先推下来再说吧。
         if($title_2 && count($data_2) > 0){
             $Excel->createSheet();
@@ -446,10 +420,7 @@ class REIM_Controller extends CI_Controller{
             }
         }
 
-
-        //$objwriter = new PHPExcel_Writer_Excel2007($Excel);
         $objwriter = IOFactory::createWriter($Excel, 'Excel5');
-        //$objwriter = IOFactory::createWriter($Excel, 'Excel2007');
         return $objwriter;
     }
 
@@ -462,14 +433,12 @@ class REIM_Controller extends CI_Controller{
 
     public function do_Get($url, $extraheader = array()){
         $ch = curl_init();
-        curl_setopt($ch , CURLOPT_URL, $url ) ;
-        curl_setopt($ch,CURLOPT_HTTPHEADER, $extraheader);
+        curl_setopt($ch, CURLOPT_URL, $url ) ;
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
-        curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
-        log_message("debug", "Start Request");
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        //curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
         $output = curl_exec($ch) ;
-        log_message("debug", "Get Success:" . $output);
         curl_close($ch);
         return $output;
     }
@@ -481,7 +450,6 @@ class REIM_Controller extends CI_Controller{
             return redirect(base_url('login'), 'refresh');
         }
         return $profile['admin'];
-
     }
 
     public function need_group_admin(){
@@ -506,30 +474,10 @@ class REIM_Controller extends CI_Controller{
     }
     public function need_group_casher(){
         $admin = $this->get_privilege();
-        if($admin == self::ADMIN || $admin == self::CASHIER) return true;;
+        if($admin == self::ADMIN || $admin == self::CASHIER || $admin == self::GROUP_MANAGER) return true;;
         $this->session->set_userdata("last_error", "权限不足");
         return redirect(base_url('items'), 'refresh');
     }
 
-
-    public function stringFromColumnIndex($pColumnIndex = 0) 
-    { 
-        static $_indexCache = array(); 
-
-        if (!isset($_indexCache[$pColumnIndex])) { 
-            // Determine column string 
-            if ($pColumnIndex < 26) { 
-                $_indexCache[$pColumnIndex] = chr(65 + $pColumnIndex); 
-            } elseif ($pColumnIndex < 702) { 
-                $_indexCache[$pColumnIndex] = chr(64 + ($pColumnIndex / 26)) . 
-                    chr(65 + $pColumnIndex % 26); 
-            } else { 
-                $_indexCache[$pColumnIndex] = chr(64 + (($pColumnIndex - 26) / 676)) . 
-                    chr(65 + ((($pColumnIndex - 26) % 676) / 26)) . 
-                    chr(65 + $pColumnIndex % 26); 
-            } 
-        } 
-        return $_indexCache[$pColumnIndex]; 
-    }
 
 }

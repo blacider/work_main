@@ -254,12 +254,12 @@ font-weight: 300 !important;
 }
 
 .ui-jqgrid .loading { 
-    width: 50px;
-    height: 50px;
-    padding: 0px;
-    margin: 0px;
-    border: 0px;
-    background: url(../images/loading.gif); 
+    width: 50px !important;
+    height: 50px !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    border: 0px !important;
+    background: url(../images/loading.gif) !important; 
 }
 .ace-thumbnails>li {
     border: 0px !important;

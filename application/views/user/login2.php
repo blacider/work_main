@@ -123,7 +123,7 @@
   <div class="footer">
     <div class="main-block">
       <div class="copyright">
-        <p class="footer-text">© 2014-2015 如数科技有限公司 / All Rights Reserved</p>
+        <p class="footer-text">©2016 如数科技有限公司 / All Rights Reserved</p>
       </div>
   	  <div class="footer-link">
   	  	<ul>

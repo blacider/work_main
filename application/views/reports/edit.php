@@ -26,7 +26,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">名称</label>
                                 <div class="col-xs-9 col-sm-9">
-                                    <input type="text" class="form-controller col-xs-12" name="title" placeholder="名称" value="<?php echo $report['title']; ?>">
+                                    <input type="text" class="form-controller col-xs-12" id="title" name="title" placeholder="名称" value="<?php echo $report['title']; ?>">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -34,7 +34,7 @@
                                 <div class="col-xs-9 col-sm-9">
                                     <input type="hidden" name="hidden_receiver" id="hidden_receiver" />
                                     <select class="chosen-select tag-input-style" name="receiver[]" multiple="multiple" data-placeholder="请选择审批人" id="receiver">
-<?php 
+<?php
 $user = $this->session->userdata('user');
 $_empty = 0;
     if(!$report['receivers']['managers']){
@@ -46,19 +46,19 @@ foreach($members as $m) {
 <option selected value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
 <?php } else { ?>
 <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
-<?php 
+<?php
 }
 }
  ?>
                                     </select>
                                 </div>
                             </div>
-
+                            <?php if (!isset($company_config['enable_report_cc']) || $company_config['enable_report_cc']) { ?>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">抄送至</label>
                                 <div class="col-xs-9 col-sm-9">
                                     <select class="chosen-select tag-input-style" name="cc[]" id="cc"  multiple="multiple" data-placeholder="请选择抄送人">
-<?php 
+<?php
 foreach($members as $m) {
     if(in_array($m['id'], $report['receivers']['cc'])){
 ?>
@@ -69,6 +69,7 @@ foreach($members as $m) {
                                     </select>
                                 </div>
                             </div>
+                            <?php } ?>
 <?php
                         if(!empty($config)) {
 ?>
@@ -78,13 +79,13 @@ foreach($members as $m) {
                             {
                                 ?>
                             <hr>
-                                <?php 
+                                <?php
                             }
                             foreach($config['config'] as $field_group){
                             ?>
                                 <div class="form-group">
-                                            <label class="col-sm-1 control-label no-padding-right blue"><?php if(array_key_exists('name', $field_group)){echo $field_group['name'];}?></label>                        
-                                        
+                                            <label class="col-sm-1 control-label no-padding-right blue"><?php if(array_key_exists('name', $field_group)){echo $field_group['name'];}?></label>
+
                                 </div>
                                 <?php
                                     if(array_key_exists('children', $field_group))
@@ -96,7 +97,7 @@ foreach($members as $m) {
                                 <?php
                                     switch(intval($field['type']))
                                     {
-                            
+
                                         case 1:
                                 ?>
                                         <div class="form-group">
@@ -106,7 +107,7 @@ foreach($members as $m) {
                                                     <input type="text" class="form-controller col-xs-8 field_value" data-type="1" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" <?php if($field['required'] == 1){echo 'required';}?> value="<?php if(array_key_exists($field['id'], $extra_dic)){echo $extra_dic[$field['id']]['value'];}?>"/>
                                                 </div>
                                             </div>
-                                        
+
                                         </div>
 
                                 <?php
@@ -121,19 +122,19 @@ foreach($members as $m) {
                                             <div class="col-xs-3 col-sm-3">
                                                 <div class="radio col-xs-12 col-sm-12">
                                                     <select class="chosen-select tag-input-style col-xs-6 field_value" data-type="2" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" data-placeholder="请选择" <?php if($field['required'] == 1){echo 'required';}?>>
-                                                        <?php foreach($field['property']['options'] as $m) { 
+                                                        <?php foreach($field['property']['options'] as $m) {
                                                                 if(array_key_exists($field['id'], $extra_dic) && $m == $extra_dic[$field['id']]['value'])
                                                                 {
                                                             ?>
                                                                 <option selected value="<?php echo $m; ?>"><?php echo $m; ?></option>
-                                                       
-                                                        <?php 
+
+                                                        <?php
                                                                 }
                                                                 else
                                                                 {
                                                         ?>
                                                                 <option value="<?php echo $m; ?>"><?php echo $m; ?></option>
-                                                        <?php            
+                                                        <?php
                                                                 }
                                                         } ?>
                                                     </select>
@@ -152,7 +153,7 @@ foreach($members as $m) {
                                             <label class="col-sm-1 control-label no-padding-right"><?php echo $field['name'];?></label>
                                             <div class="col-xs-9 col-sm-9">
                                                 <div class="radio col-xs-12 col-sm-12">
-                                                    <input type="text" class="form-controller col-xs-8 period field_value date-timepicker1" data-type="3" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" name="dt" 
+                                                    <input type="text" class="form-controller col-xs-8 period field_value date-timepicker1" data-type="3" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" name="dt"
                                                             placeholder="时间" <?php if($field['required'] == 1){echo 'required';}?> value="<?php if(array_key_exists($field['id'], $extra_dic)){echo date('Y-m-d',$extra_dic[$field['id']]['value']);}?>">
                                                 </div>
                                             </div>
@@ -165,7 +166,7 @@ foreach($members as $m) {
                                 <?php
                                         case 4:
                                 ?>
-                                        <?php 
+                                        <?php
                                             $value = array();
                                             if(array_key_exists($field['id'], $extra_dic))
                                             {
@@ -188,15 +189,15 @@ foreach($members as $m) {
                                                 <div class="col-xs-12 col-sm-12 "  style="margin-left:0px !important;padding-left:0px !important;" >
                                                     <div class="btn-toolbar" id="<?php echo 'btns' . $field['id'];?>">
                                                         <div class="col-xs-8 col-sm-8">
-                                              
+
                                                                 <select class="chosen-select tag-input-style col-xs-6 field_value bank_select" id="<?php echo 'bank_select_' . $field['id'];?>" data-type="4" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" data-placeholder="请选择" <?php if($field['required'] == 1){echo 'required';}?>>
                                                                             <option value='<?php echo json_encode($value);?>'><?php echo $value['account'] . '-' . $value['bankname'] . '-' . $value['cardno'];?></option>>
                                                                     <?php foreach($banks as $b) { ?>
                                                                             <option value='<?php echo json_encode($b); ?>'><?php echo $b['account']  . '-' . $b['bankname'] . '-' . $b['cardno']; ?></option>
-                                                                   
+
                                                                     <?php } ?>
                                                                 </select>
-                                                        
+
                                                         </div>
                                                         <div class="btn-group">
                                                             <a href="javascript:void(0)" class="btn btn-success new_credit" data-id="<?php echo $field['id'];?>">
@@ -213,7 +214,7 @@ foreach($members as $m) {
                                         break;
                                 ?>
 
-                                <?php 
+                                <?php
                                     }
                                 ?>
 
@@ -253,7 +254,7 @@ foreach($members as $m) {
                                                 <td>操作</td>
                                             </thead>
                                         </tr>
-<?php 
+<?php
     $_config = '';
     if(array_key_exists('config',$profile['group']))
     {
@@ -289,11 +290,11 @@ foreach($report['items'] as $i){
         }
         else
         {
-            $item_amount = $i['amount']; 
+            $item_amount = $i['amount'];
         }
                                         ?>
                                         <tr>
-                                            <td><input checked='true' name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>" 
+                                            <td><input checked='true' name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>"
                                                 data-id="<?php echo $i['id']; ?>" data-type="<?php echo $i['prove_ahead'];?>"></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['category_name']; ?></td>
@@ -310,7 +311,7 @@ foreach($report['items'] as $i){
                                             </td>
                                         </tr>
                                         <?php  } ?>
-<?php 
+<?php
 foreach($items as $i){
     if($i['rid'] == 0 && in_array($i['prove_ahead'], $item_type) && in_array($i['prove_ahead'], $extra_item_type)){
         $item_amount = '';
@@ -320,16 +321,16 @@ foreach($items as $i){
         }
         else
         {
-            $item_amount = $i['amount']; 
+            $item_amount = $i['amount'];
         }
-                                       
+
                                         ?>
                                         <tr>
-                                            <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>"  
+                                            <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>"
                                                     data-id="<?php echo $i['id']; ?>" data-type="<?php echo $i['prove_ahead'];?>"></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['cate_str']; ?></td>
-                                           
+
                                             <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
                                             <td><?php echo $item_type_dic[$i['prove_ahead']];?></td>
                                             <td><?php echo $i['merchants']; ?></td>
@@ -463,6 +464,11 @@ foreach($items as $i){
                                         <option value='华夏银行'>华夏银行</option>
                                         <option value='广发银行'>广发银行</option>
                                         <option value='北京银行'>北京银行</option>
+                                        <option value='广州银行'>广州银行</option>
+                                        <option value='晋商银行'>晋商银行</option>
+                                        <option value='九江银行'>九江银行</option>
+                                        <option value='锦州银行'>锦州银行</option>
+                                        <option value='江苏银行'>江苏银行</option>
                                         <option value='中国邮政储蓄银行'>中国邮政储蓄银行</option>
                                         <option value='上海浦东银行'>上海浦东银行</option>
                                         <option value='D.F.S.I'>D.F.S.I</option>
@@ -471,7 +477,6 @@ foreach($items as $i){
                                         <option value='花旗银行有限公司'>花旗银行有限公司</option>
                                         <option value='兰州市商业银行'>兰州市商业银行</option>
                                         <option value='天津市商业银行'>天津市商业银行</option>
-                                        <option value='广州市商业银行'>广州市商业银行</option>
                                         <option value='威海市商业银行'>威海市商业银行</option>
                                         <option value='宁波市商业银行'>宁波市商业银行</option>
                                         <option value='高要市农村信用合作社联合社'>高要市农村信用合作社联合社</option>
@@ -517,7 +522,6 @@ foreach($items as $i){
                                         <option value='成都商业银行'>成都商业银行</option>
                                         <option value='西安市商业银行'>西安市商业银行</option>
                                         <option value='丹东商行'>丹东商行</option>
-                                        <option value='九江市商业银行'>九江市商业银行</option>
                                         <option value='江苏农信社'>江苏农信社</option>
                                         <option value='南京市商业银行'>南京市商业银行</option>
                                         <option value='三门峡市城市信用社'>三门峡市城市信用社</option>
@@ -758,7 +762,7 @@ function reset_bank(disable, title,bank_field_id) {
     function update_credit(node){
         var _id = $(node).data('id');
         reset_bank(1, '修改银行卡', _id);
-       
+
         $('#account').val($(node).data('account'));
         $('#cardbank').val($(node).data('bankname'));
         $('#cardloc').val($(node).data('bankloc'));
@@ -774,7 +778,7 @@ function reset_bank(disable, title,bank_field_id) {
             {
                 break;
             }
-        } while ($('select[name="province"]').val() == null); 
+        } while ($('select[name="province"]').val() == null);
         /*for(var i=1;i<=loc.length+1;i++)
             {
              $('select[name="province"]').val(loc.substr(0,i));
@@ -845,11 +849,11 @@ function do_post(force) {
     var report_type = 0;
     var flag = 0;
     var is_submit = 1;
-	$('.amount').each(function(){
-		if($(this).is(':checked')){
+    $('.amount').each(function(){
+        if($(this).is(':checked')){
             _ids.push($(this).data('id'));
-			var amount = $(this).data('amount');
-			var item_type = $(this).data('type');
+            var amount = $(this).data('amount');
+            var item_type = $(this).data('type');
             if(flag == 0)
             {
                 report_type = item_type;
@@ -862,26 +866,26 @@ function do_post(force) {
                 return false;
             }
 
-			sum+=amount;
-		};
-	});
+            sum+=amount;
+        };
+    });
     if(_ids.length == 0) {
         show_notify('提交的报销单不能为空');
         return false;
     }
 
-	if(s == null){
-	     show_notify('请选择审批人');
-	     $('#receiver').focus();
-	     return false;
-	}
+    if(s == null){
+         show_notify('请选择审批人');
+         $('#receiver').focus();
+         return false;
+    }
 
 
-	if(sum<= 0) {
-		show_notify("报销单总额不能小于等于0");
-		return false;
-	}
-    
+    if(sum<= 0) {
+        show_notify("报销单总额不能小于等于0");
+        return false;
+    }
+
 
     // 获取所有的 条目
     var _cc = $('#cc').val();
@@ -926,7 +930,7 @@ function do_post(force) {
 
 
     var extra = [];
- 
+
     $('.field_value').each(function(){
         var field_value = $(this).val();
         var field_id = $(this).data('id');
@@ -937,13 +941,13 @@ function do_post(force) {
         {
             var field_bank = $(this).data('bank');
             var bank_info = $('#bank_select_' + field_id).val();
-       
+
             var field_account = '';
             var field_cardno = '';
             var field_bankname = '';
             var field_bankloc = '';
             var field_subbranch = '';
-          
+
             if(field_required == 1 && !bank_info)
             {
                 show_notify('必填银行卡项目不能为空');
@@ -982,7 +986,7 @@ function do_post(force) {
 
             extra.push({'id':field_id,'value':field_value,'type':field_type});
         }
-        
+
     });
 
 /*
@@ -998,11 +1002,11 @@ function do_post(force) {
     } catch(e) {}
 
     try {
-        _payment = $('input[name="payment"]:checked').val(); 
+        _payment = $('input[name="payment"]:checked').val();
         if(!_payment) _payment = -1;
     }catch(e){}
     try {
-        _contract = $('input[name="contract"]:checked').val(); 
+        _contract = $('input[name="contract"]:checked').val();
         if(!_contract) _contract = -1;
     }catch(e){ }
     if(_contract == 0) {
@@ -1033,7 +1037,7 @@ function do_post(force) {
     {
         $.ajax({
             type : 'POST',
-                url : __BASE + "reports/update", 
+                url : __BASE + "reports/update",
                 data : {
                     'item' : _ids,
                         'title' : $('#title').val(),
@@ -1070,33 +1074,33 @@ function do_post(force) {
 String.prototype.trim=function() {
     return this.replace(/(^\s*)(\s*$)/g, '');
 }
-Date.prototype.format = function(format) {  
-        /* 
-            *      * eg:format="yyyy-MM-dd hh:mm:ss"; 
-        *           */  
-        var o = {  
-            "M+" : this.getMonth() + 1, // month  
-                "d+" : this.getDate(), // day  
-        "h+" : this.getHours(), // hour  
-        "m+" : this.getMinutes(), // minute  
-        "s+" : this.getSeconds(), // second  
-        "q+" : Math.floor((this.getMonth() + 3) / 3), // quarter  
-        "S" : this.getMilliseconds()  
-        };  
+Date.prototype.format = function(format) {
+        /*
+            *      * eg:format="yyyy-MM-dd hh:mm:ss";
+        *           */
+        var o = {
+            "M+" : this.getMonth() + 1, // month
+                "d+" : this.getDate(), // day
+        "h+" : this.getHours(), // hour
+        "m+" : this.getMinutes(), // minute
+        "s+" : this.getSeconds(), // second
+        "q+" : Math.floor((this.getMonth() + 3) / 3), // quarter
+        "S" : this.getMilliseconds()
+        };
 
-        if (/(y+)/.test(format)) {  
-            format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4  
-                - RegExp.$1.length));  
-        }  
+        if (/(y+)/.test(format)) {
+            format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4
+                - RegExp.$1.length));
+        }
 
-        for (var k in o) {  
-            if (new RegExp("(" + k + ")").test(format)) {  
-                format = format.replace(RegExp.$1, RegExp.$1.length == 1  
-                    ? o[k]  
-                    : ("00" + o[k]).substr(("" + o[k]).length));  
-            }  
-        }  
-        return format;  
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(format)) {
+                format = format.replace(RegExp.$1, RegExp.$1.length == 1
+                    ? o[k]
+                    : ("00" + o[k]).substr(("" + o[k]).length));
+            }
+        }
+        return format;
 };
 $(document).ready(function(){
     get_province();
@@ -1120,7 +1124,7 @@ $(document).ready(function(){
         var value = {"account":_account,"bankname":_bank,"subbranch":_subbranch,"bankloc":_loc,"cardno":_no};
         var _value = JSON.stringify(value);
 
-       
+
         var buf = '<option selected value="'+ escapeHtml(_value) +'">'+ _account + '-' + _bank + '-' + _no +'</option>';
         $('#credit_model').modal('hide');
         $('#bank_select_' + _id).append(buf);
@@ -1158,7 +1162,7 @@ $(document).ready(function(){
     $('.my_submit').click(function(){
         do_post();
     });
-    _contract = $('input[name="contract"]:checked').val(); 
+    _contract = $('input[name="contract"]:checked').val();
     if(_contract == 0) {
                 $('#contract_note').show();
     } else {
@@ -1177,7 +1181,7 @@ $(document).ready(function(){
     try{
     var _sdt = $('#sdt').val().trim();
     var _edt = $('#sdt').val().trim();
-    if(!_sdt || _sdt == "") { 
+    if(!_sdt || _sdt == "") {
         _sdt = new Date(); //new Date();
         _sdt = _sdt.format("yyyy-MM-dd hh:mm:ss");
     }
@@ -1222,7 +1226,7 @@ $(document).ready(function(){
         $(this).prev().focus();
     });
     });
-    $('.chosen-select').chosen({allow_single_deselect:true}); 
+    $('.chosen-select').chosen({allow_single_deselect:true});
     $(window)
         .off('resize.chosen')
         .on('resize.chosen', function() {
@@ -1266,7 +1270,7 @@ $('.tdetail').each(function(){
         {
             $('.amount').each(function(){
                 $(this).prop('checked',true);
-            });   
+            });
         }
         else
         {
@@ -1295,23 +1299,23 @@ $('.tdetail').each(function(){
     });
     update_tamount();
 });
-function toDecimal2(x) {  
-    var f = parseFloat(x);  
-    if (isNaN(f)) {  
-        return false;  
-    }  
-    var f = Math.round(x*100)/100;  
-    var s = f.toString();  
-    var rs = s.indexOf('.');  
-    if (rs < 0) {  
-        rs = s.length;  
-        s += '.';  
-    }  
-    while (s.length <= rs + 2) {  
-        s += '0';  
-    }  
-    return s;  
-}  
+function toDecimal2(x) {
+    var f = parseFloat(x);
+    if (isNaN(f)) {
+        return false;
+    }
+    var f = Math.round(x*100)/100;
+    var s = f.toString();
+    var rs = s.indexOf('.');
+    if (rs < 0) {
+        rs = s.length;
+        s += '.';
+    }
+    while (s.length <= rs + 2) {
+        s += '0';
+    }
+    return s;
+}
 function update_tamount(){
     var sum = 0;
     $('.amount').each(function(){

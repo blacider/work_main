@@ -37,7 +37,7 @@
                                 <div class="col-xs-9 col-sm-9">
                                     <input type="hidden" name="hidden_receiver" id="hidden_receiver" />
                                     <select class="chosen-select tag-input-style" name="receiver[]" multiple="multiple" data-placeholder="请选择审批人" id="receiver">
-                                        <?php 
+                                        <?php
                         $user = $this->session->userdata('user');
                         foreach($members as $m) {
                         if($user['id'] != $m['id']){
@@ -50,7 +50,7 @@
                                     </select>
                                 </div>
                             </div>
-
+                            <?php if (!isset($company_config['enable_report_cc']) || $company_config['enable_report_cc']) { ?>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">抄送至</label>
                                 <div class="col-xs-9 col-sm-9">
@@ -58,12 +58,12 @@
                                         <?php foreach($members as $m) {
                                         if($user['id'] != $m['id']){?>
                                         <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
-                                       
+
                                         <?php }} ?>
                                     </select>
                                 </div>
                             </div>
-
+                            <?php } ?>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">总额</label>
@@ -117,17 +117,17 @@ foreach($items as $i){
                                                 {
                                                     $item_amount = round($i['amount']*$i['rate']/100,2);
                                                 }else
-                                                { 
+                                                {
                                                     $item_amount =  $i['amount'];
-                                                } 
+                                                }
                                         ?>
                                         <tr id="<?php echo 'item'.$i['id']?>">
                                         <td>
-                                            <input name="item[]" value="<?php echo $i['id']; ?>" 
-                                            type="checkbox" class="form-controller amount" 
+                                            <input name="item[]" value="<?php echo $i['id']; ?>"
+                                            type="checkbox" class="form-controller amount"
                                             data-amount = "<?php echo $item_amount; ?>"
                                             data-type="<?php echo $i['prove_ahead'];?>"
-                                            data-id="<?php echo $i['id']; ?>" 
+                                            data-id="<?php echo $i['id']; ?>"
                                             ></td>
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['cate_str'];?></td>
@@ -224,34 +224,34 @@ foreach($items as $i){
 <script language="javascript">
 update_tamount();
 var __BASE = "<?php echo $base_url; ?>";
-function toDecimal(x) {  
-    var f = parseFloat(x);  
-    if (isNaN(f)) {  
-        return;  
-    }  
-    f = Math.round(x*100)/100;  
-    return f;  
-}  
-//制保留2位小数，如：2，会在2后面补上00.即2.00  
-function toDecimal2(x) {  
-    
-    var f = parseFloat(x);  
-    
-    if (isNaN(f)) {  
-        return false;  
-    }  
-    var f = Math.round(x*100)/100;  
-    var s = f.toString();  
-    var rs = s.indexOf('.');  
-    if (rs < 0) {  
-        rs = s.length;  
-        s += '.';  
-    }  
-    while (s.length <= rs + 2) {  
-        s += '0';  
-    }  
-    return s;  
-}  
+function toDecimal(x) {
+    var f = parseFloat(x);
+    if (isNaN(f)) {
+        return;
+    }
+    f = Math.round(x*100)/100;
+    return f;
+}
+//制保留2位小数，如：2，会在2后面补上00.即2.00
+function toDecimal2(x) {
+
+    var f = parseFloat(x);
+
+    if (isNaN(f)) {
+        return false;
+    }
+    var f = Math.round(x*100)/100;
+    var s = f.toString();
+    var rs = s.indexOf('.');
+    if (rs < 0) {
+        rs = s.length;
+        s += '.';
+    }
+    while (s.length <= rs + 2) {
+        s += '0';
+    }
+    return s;
+}
 
 
 function do_post(force) {
@@ -266,7 +266,7 @@ function do_post(force) {
 
 
     var sum=0;
-    
+
     var report_type = 0;
     var flag = 0 ;
     var is_only_one_type = true;
@@ -275,7 +275,7 @@ function do_post(force) {
         if($(this).is(':checked')){
             _ids.push($(this).data('id'));
             var amount = $(this).data('amount');
-            var item_type = $(this).data('type'); 
+            var item_type = $(this).data('type');
             if(flag == 0)
             {
                 report_type = item_type;
@@ -285,8 +285,7 @@ function do_post(force) {
             {
                 is_only_one_type = false;
             }
-           
-            amount = parseInt(amount);
+
             sum+=amount;
         };
     });
@@ -311,7 +310,7 @@ function do_post(force) {
         show_notify("报销单总额不能小于等于0");
         return false;
     }
-    
+
     // 转ajax,否则不能正确处理
     var _renew = $('#renew').val();
     if(_renew == 0) force = 1;
@@ -321,14 +320,14 @@ function do_post(force) {
     if(!_cc) _cc = Array();
     $.ajax({
         type : 'POST',
-            url : __BASE + "reports/create", 
+            url : __BASE + "reports/create",
                 data : {'item' : _ids,
                     'title' : $('#title').val(),
                     'receiver' : $('#receiver').val(),
                     'cc' : _cc,
                     'renew' : _renew,
                     'force' : force,
-                    'type' : report_type 
+                    'type' : report_type
                 },
                 dataType: 'json',
                 success : function(data){
@@ -371,7 +370,7 @@ $(document).ready(function(){
     }).on(ace.click_event, function(){
         $(this).prev().focus();
     });
-    $('.chosen-select').chosen({allow_single_deselect:true}); 
+    $('.chosen-select').chosen({allow_single_deselect:true});
     $(window)
         .off('resize.chosen')
         .on('resize.chosen', function() {
@@ -389,16 +388,17 @@ $(document).ready(function(){
     });
     $('.txdel').each(function() {
         $(this).click(function(){
-            var _id = $(this).data('id');
-           // location.href = __BASE + "items/del/" + _id + "/1";
-           $.ajax({
-            url:__BASE + "items/del/" + _id + "/1",
-            method:'GET',
-            success:function(data){
-                $('#item'+_id).remove();
-                show_notify('删除成功');
-            }
-           });
+            if(confirm('是否确认删除此消费？')){
+                var _id = $(this).data('id');
+                $.ajax({
+                    url:__BASE + "items/del/" + _id + "/1",
+                    method:'GET',
+                    success:function(data){
+                        $('#item'+_id).remove();
+                        show_notify('删除成功');
+                    }
+                });
+           }
         });
     });
     $('.txedit').each(function() {
@@ -407,14 +407,14 @@ $(document).ready(function(){
             location.href = __BASE + "items/edit/" + _id;
         });
     });
-    
+
 
     $('#all_item').click(function(){
         if($('#all_item').is(":checked"))
         {
             $('.amount').each(function(){
                 $(this).prop('checked',true);
-            });   
+            });
         }
         else
         {
