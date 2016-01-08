@@ -644,12 +644,14 @@ function escapeHtml(unsafe) {
 
 
 function reset_bank(disable, title,bank_field_id) {
+        /*
         $('#modal_title').val();
         $('#account' ).val("");
         $('#cardloc' ).val("");
         $('#cardno'  ).val("");
         $('#cardbank').val("");
         $('#subbranch').val("");
+        */
         $('#bank_field_id').val(bank_field_id);
         if(!disable) {
             $('.new_card').hide();
