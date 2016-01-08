@@ -20,15 +20,12 @@
     $__config = json_decode($_config,True);
 ?>
 
-
 <div class="page-content">
     <div class="page-content-area">
         <form role="form" action="<?php echo base_url('items/update');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
             <div class="row">
                 <div class="container">
                     <div class="row">
-                                
-
 
                         <div class="col-xs-12 col-sm-12">
 
