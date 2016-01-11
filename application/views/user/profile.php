@@ -413,7 +413,18 @@ if(in_array($profile['admin'],[1,3,4])){
                                 }
                 
                             ?>
+                            <?php
+                                if(in_array(0, $groups_granted))
+                                {
+                            ?>
+                                    <option selected value='0'>公司</option>
+                            <?php
+                                } else {
+                            ?>
                                     <option value='0'>公司</option>
+                            <?php
+                                }
+                            ?>
                             <?php
 
                                  foreach($ug as $g)
