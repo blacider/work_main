@@ -642,7 +642,7 @@ if(in_array($profile['admin'],[1,3,4])){
                                         <option value='南京市商业银行'>南京市商业银行</option>
                                         <option value='三门峡市城市信用社'>三门峡市城市信用社</option>
                                         <option value='沈阳市商业银行'>沈阳市商业银行</option>
-                                        <option value='西宁市农商银行'>西宁市农商银行</option>
+                                        <option value='西宁农商银行'>西宁农商银行</option>
                                         <option value='浙江省农村信用社联合社'>浙江省农村信用社联合社</option>
                                         <option value='星展银行'>星展银行</option>
                                         <option value='绍兴商业银行'>绍兴商业银行</option>
@@ -753,7 +753,7 @@ if(in_array($profile['admin'],[1,3,4])){
                                         <option value='靖江市长江城市信用社'>靖江市长江城市信用社</option>
                                         <option value='郑州商业银行'>郑州商业银行</option>
                                         <option value='集友银行'>集友银行</option>
-                                        <option value='中江市农村信用社'>中江农村信用社</option>
+                                        <option value='中江市农村信用社'>中江市农村信用社</option>
                                     </select>
                                 </div>
                             </div>
@@ -907,14 +907,6 @@ if(in_array($profile['admin'],[1,3,4])){
     }
 
     function reset_bank(disable, title) {
-        $('#modal_title').val();
-        $('#account' ).val("");
-        $('#id' ).val("");
-        $('#uid').val(user_id);
-        $('#cardloc' ).val("");
-        $('#cardno'  ).val("");
-        $('#cardbank').val("");
-        $('#default_id').val("");
         if(!disable) {
             $('.new_card').hide();
             $('#account').attr("disabled",  true);
@@ -1226,6 +1218,14 @@ if(in_array($profile['admin'],[1,3,4])){
                                         $('#btns').prepend(buf);
                                         bind_event();
                                         show_notify('银行卡添加成功');
+                                        $('#modal_title').val();
+                                        $('#account' ).val("");
+                                        $('#id' ).val("");
+                                        $('#uid').val(user_id);
+                                        $('#cardloc' ).val("");
+                                        $('#cardno'  ).val("");
+                                        $('#cardbank').val("");
+                                        $('#default_id').val("");
                                     } else {
                                         show_notify(data.data.msg);
                                     }
