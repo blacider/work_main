@@ -493,7 +493,7 @@ uploader_file.on( 'fileQueued', function( file ) {
     var path = "/static/images/", name_ = getPngByType(file.name);
     $img.attr( 'src', path+name_);
     bind_event_file();
-    debugger
+    
     $('.btn-upload-file').css({
         'margin': '12px 0 0 82px'
     });
