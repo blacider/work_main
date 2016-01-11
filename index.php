@@ -1,5 +1,6 @@
 <?php
 
+date_default_timezone_set('Asia/Hong_Kong');
 define('BASEDIR', dirname(__FILE__));
 $include_path = BASEDIR . "/../../v1/reim/";
 
