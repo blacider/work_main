@@ -407,13 +407,24 @@ if(in_array($profile['admin'],[1,3,4])){
                                 <select name="admin_groups_granted[]" id="admin_groups_granted" multiple="multiple" class="chosen-select tag-input-style" data-placeholder="请选择部门" <?php if($profile['admin']!=1){ echo "disabled";}?>> 
                              <?php
                                 $groups_granted = array();
-                                if($pro && array_key_exists('admin_groups_granted', $pro) && $pro['admin_groups_granted'])
+                                if($pro && array_key_exists('admin_groups_granted', $pro))
                                 {
                                     $groups_granted = explode(',',$pro['admin_groups_granted']);
                                 }
                 
                             ?>
+                            <?php
+                                if(in_array(0, $groups_granted))
+                                {
+                            ?>
+                                    <option selected value='0'>公司</option>
+                            <?php
+                                } else {
+                            ?>
                                     <option value='0'>公司</option>
+                            <?php
+                                }
+                            ?>
                             <?php
 
                                  foreach($ug as $g)
