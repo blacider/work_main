@@ -50,7 +50,7 @@ class Reports extends REIM_Controller {
         $rid=$this->input->post("rid");
         $comment = $this->input->post("comment");
         $buf = $this->reports->add_comment($rid,$comment);
-        redirect(base_url('reports/show/' . $rid));
+        redirect(base_url('reports/show/' . $rid . '/1'));
     }
 
     public function revoke($id = 0) {
