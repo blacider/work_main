@@ -59,7 +59,7 @@ position: absolute;
 
 <div class="col-sm-3">
         <div class="widget-box widget-color-blue" style="margin-top: 0;border-top-left-radius: 3px;border-top-right-radius: 3px;">
-                <div class="widget-header" style="height: 30px;min-height: 30px;">
+                <div class="widget-header" style="height: 38px;min-height: 38px;background: #428bca;">
                     <div id="admin_groups_granted" data-gids="<?php echo htmlspecialchars(json_encode($admin_groups_granted))?>"></div>
                     <h4 class="widget-title lighter smaller">组织结构</h4>
                     </div>
@@ -77,7 +77,7 @@ position: absolute;
     <table id="grid-table"></table>
     -->
     <div class="panel panel-primary">
-    <div class="panel-heading"><h3 class="panel-title default col-sm-11 col-md-11" id="gname">人员信息[<?php echo count($members); ?>]</h3><p id="g_du"></p></div>
+    <div class="panel-heading" style="padding: 10px 0 18px 0;"><h3 class="panel-title default col-sm-11 col-md-11" id="gname">人员信息[<?php echo count($members); ?>]</h3><p id="g_du"></p></div>
         <div class="panel-body">
             <table class="table" id="gtable">
                 <tr>
