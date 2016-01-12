@@ -29,6 +29,16 @@ position: absolute;
    }
    .tree .tree-folder, .tree .tree-item {
         white-space: nowrap !important;
+        float: left;
+        clear: both;
+   }
+   .tree .tree-folder-content::after {
+        content: "";
+        display: block;
+        clear: both;
+   }
+   .tree {
+        overflow-x: auto !important;;
    }
 </style>
 <script type="text/javascript">
