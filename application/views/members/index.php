@@ -27,6 +27,9 @@ position: absolute;
   border-radius: 3px;   
   font-size: 12px;
    }
+   .tree .tree-folder, .tree .tree-item {
+        white-space: nowrap !important;
+   }
 </style>
 <script type="text/javascript">
     function searchSubmit(form) {
@@ -54,9 +57,9 @@ position: absolute;
 </div> -->
 
 
-<div class="col-sm-2">
-        <div class="widget-box widget-color-blue">
-                <div class="widget-header">
+<div class="col-sm-3">
+        <div class="widget-box widget-color-blue" style="margin-top: 0;border-top-left-radius: 3px;border-top-right-radius: 3px;">
+                <div class="widget-header" style="height: 30px;min-height: 30px;">
                     <div id="admin_groups_granted" data-gids="<?php echo htmlspecialchars(json_encode($admin_groups_granted))?>"></div>
                     <h4 class="widget-title lighter smaller">组织结构</h4>
                     </div>
@@ -69,7 +72,7 @@ position: absolute;
                 </div>
             </div>
 
-<div class="col-xs-10">
+<div class="col-xs-9">
     <!--
     <table id="grid-table"></table>
     -->
