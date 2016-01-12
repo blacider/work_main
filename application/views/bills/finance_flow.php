@@ -421,7 +421,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
             <div class="modal-body">
                 <div class="form-group">
                     <div class="col-xs-9 col-sm-9">
-                        <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="receiver[]" multiple="multiple" id="modal_managers" style="width:300px;">
+                        <select class="chosen-select tag-input-style form-control col-xs-12 col-sm-12" name="receiver[]" multiple="multiple" id="modal_managers" style="width:300px;" data-placeholder="请选择">
                             <?php foreach($members as $m) { ?>
                             <option value="<?php echo $m['id']; ?>"><?php echo $m['nickname']; ?> - [<?php echo $m['email']; ?> ]</option>
                             <?php } ?>
@@ -554,7 +554,18 @@ var error = "<?php echo $error; ?>";
 $(document).ready(function(){
     if(error) show_notify(error);
 
-    $('.chosen-select').chosen({allow_single_deselect:true}); 
+    $('.chosen-select').chosen({
+        allow_single_deselect:true,
+        width: 300,
+        no_results_text: '无可用选项'
+    })
+    $('#modal_managers').change(function  (e) {
+        if(!$(this).val()) {
+          $('#mypass').attr('disabled', true);
+        } else {
+          $('#mypass').attr('disabled', false);
+        }
+    }); 
     $(window)
         .off('resize.chosen')
         .on('resize.chosen', function() {

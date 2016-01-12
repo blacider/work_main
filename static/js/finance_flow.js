@@ -12,17 +12,20 @@ function chose_others_zero(item,nextId) {
         }
     }
     $('#modal_next').modal('show');
+    setTimeout(function  () {
+        $('#modal_managers_chosen').width(300);
+    }, 16);
     console.log(nextId);
-    if(nextId.length)
-    {
-            $('#modal_managers').val(nextId[0]).prop('selected',true);
-            $('#modal_managers').trigger('chosen:updated');
+    if (nextId.length) {
+        $('#modal_managers').val(nextId[0]).prop('selected', true);
+        $('#modal_managers').trigger('chosen:updated');
+    } else {
+        $('#mypass').attr('disabled', true).trigger('chosen:updated');
     }
-    else
-    {
-            $('#mypass').attr('disabled',true).trigger('chosen:updated');
-    }
-            $('#modal_managers').attr('disabled',true).trigger('chosen:updated');
+    
+    $('#modal_managers').trigger('chosen:updated');
+    
+	$('#modal_managers').trigger('change');
 }
 function chose_others(_id) {
     $('#modal_next_').modal('hide');
