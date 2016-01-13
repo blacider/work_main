@@ -39,7 +39,7 @@
       <div class="form-group">
         <label class="col-sm-2 control-label">说明</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" name="description" value="<?php echo $field['description']; ?>" />
+          <input type="text" class="form-control" name="description" value="<?php echo $field['description']; ?>" placeholder="内容将显示在输入框中作为提示，不超过40个字符" maxlength="40" />
         </div>
       </div>
       <?php } ?>
