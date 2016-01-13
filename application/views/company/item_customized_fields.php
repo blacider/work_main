@@ -8,7 +8,6 @@
         <th class="col-sm-1">序号</th>
         <th class="col-sm-2">标题</th>
         <th class="col-sm-1">类型</th>
-        <th class="col-sm-4">描述</th>
         <th class="col-sm-1">生效</th>
         <th class="col-sm-2">更新时间</th>
         <th class="col-sm-1">
@@ -35,7 +34,6 @@
         <td data-column="sequence"><?php echo $f['sequence']; ?></td>
         <td data-column="title"><?php echo $f['title']; ?></td>
         <td data-column="type_name"><?php echo $fd['type_name']; ?></td>
-        <td data-column="description"><?php echo $f['description']; ?></td>
         <td data-column="toggle">
           <input class="toggle-enabled ace ace-switch" type="checkbox" <?php if ($f['enabled']) { echo 'checked '; } ?><?php if (!$fd['editable_enabled']) { echo 'disabled '; } ?>/>
           <span class="lbl"></span>
