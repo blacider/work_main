@@ -3,18 +3,21 @@
 <script type="text/javascript" src="/static/js/item_customized_field.js"></script>
 <div class="page-content">
   <?php
-     $fd = $field['declaration'];
-     // var_dump($field);
-     ?>
+  $fd = $field['declaration'];
+  
+  // 如果configuration中有title类型的字段则隐藏默认名称设置
+  $title_overrided = FALSE;
+  foreach ($fd['configuration'] as $fc) {
+      if ($fc['type'] == 'title') {
+          $title_overrided = TRUE;
+          break;
+      }
+  }
+  ?>
   <div class="container col-sm-12">
     <form class="form-horizontal" action="<?php echo base_url('/item_customization/save'); ?>" method="post">
       <input type="hidden" name="id" value="<?php if (empty($field['id'])) { echo 0; } else { echo $field['id']; } ?>" />
-      <div class="form-group">
-        <label class="col-sm-2 control-label">名称</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" id="title" name="title" value="<?php echo $field['title']; ?>" <?php if (!$fd['editable_title']) { echo 'disabled '; } ?>/>
-        </div>
-      </div>
+      <div class="space-12"></div>
       <div class="form-group">
         <label class="col-sm-2 control-label">类型</label>
         <div class="col-sm-10">
@@ -24,6 +27,14 @@
           </select>
         </div>
       </div>
+      <?php if (!$title_overrided) { ?>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">名称</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="title" name="title" value="<?php echo $field['title']; ?>" <?php if (!$fd['editable_title']) { echo 'disabled '; } ?>/>
+        </div>
+      </div>
+      <?php } ?>
       <?php if ($fd['editable_placeholder']) { ?>
       <div class="form-group">
         <label class="col-sm-2 control-label">说明</label>
@@ -54,6 +65,13 @@
         <label class="col-sm-2 control-label"><?php echo $fc['text']; ?></label>
         <div class="col-sm-10">
           <input type="text" class="form-control" name="extra[<?php echo $fc['name']; ?>]" value="<?php if (isset($field['extra'][$fc['name']])) { echo $field['extra'][$fc['name']]; } ?>" />
+        </div>
+      </div>
+      <?php } elseif ($fc['type'] == 'title') { ?>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><?php echo $fc['text']; ?></label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="title" name="title" value="<?php echo $field['title']; ?>" />
         </div>
       </div>
       <?php } elseif ($fc['type'] == 'tags') { ?>
