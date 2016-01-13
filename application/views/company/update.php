@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
+<link rel="stylesheet" href="/static/css/widgets/loading-default.css" id="main-ace-style" />
 <!-- <link rel="stylesheet" href="/static/third-party/jqui/jquery-ui.min.css" id="main-ace-style" /> -->
 
 <!-- page specific plugin styles -->
@@ -25,7 +26,13 @@
 
 
 <div class="page-content">
-    <div class="page-content-area">
+    
+    <div class="page-content-area" style="position: relative">
+    <div class="ui-loading-layer">
+        <div class="ui-loading-icon">
+            
+        </div>
+    </div>
         <form role="form" action="<?php echo base_url('company/create_rule');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="mainform">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
@@ -362,6 +369,7 @@ function get_sobs(){
             dataType : 'json',
             method : 'GET',
             success : function(data){
+                $('.ui-loading-layer').remove()
                 for(var item in data){
                     var _h = "<option value='" +  item + "'>"+  data[item].sob_name + " </option>";
                     selectDataCategory[item] = data[item]['category'];
