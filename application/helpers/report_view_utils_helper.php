@@ -78,8 +78,7 @@ function get_report_status_str($status) {
     return $txt;
 }
 
-
-function get_prove_ahead($item_type_dic,$prove_ahead_id,$approval)
+function get_report_type_str($item_type_dic,$prove_ahead_id,$approval)
 {
 	$prove_ahead = '报销';
 	$extra = '';
