@@ -216,8 +216,8 @@ table td {
                     <td><?php echo $i['category_name']; ?></td>
                     <?php
                     $update_amount = '';
-                    if($i['src_amount'] > 0) {
-                        $update_amount = "[" . $i['currency_logo'] . $i['src_amount'] . " 由  ". $i['lastmodifier'] . "修改]";
+                    if($i['pa_amount'] > 0 &&  $i['pa_approval'] == 1 && ($i['pa_amount'] != $i['amount'] || $i['currency_logo'] != $i['pa_currency_logo'])) {
+                        $update_amount = "[" . " 由  " . $i['pa_currency_logo'] . $i['pa_amount']  . "修改]";
                     }
                     ?>
                     <td><?php echo $i['currency_logo']; ?> &nbsp;<?php echo $i['amount']; ?> <?php echo  $update_amount . $_extra_amount; ?> </td>
