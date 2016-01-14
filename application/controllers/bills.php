@@ -475,7 +475,7 @@ class Bills extends REIM_Controller {
                 $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
             }
 
-            $prove_ahead = $this->reim_show->get_prove_ahead($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
+            $prove_ahead = get_prove_ahead($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
             $d['prove_ahead'] = $prove_ahead;
 
             if(array_key_exists('template_id',$d) && array_key_exists($d['template_id'],$report_template_dic))
@@ -539,7 +539,7 @@ class Bills extends REIM_Controller {
                 $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
             }
             log_message("debug", "Bill: [ $type] $type: " . json_encode($d));
-            $prove_ahead = $this->reim_show->get_prove_ahead($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
+            $prove_ahead = get_prove_ahead($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
             $d['prove_ahead'] = $prove_ahead;
 
             if(array_key_exists('template_id',$d) && array_key_exists($d['template_id'],$report_template_dic))

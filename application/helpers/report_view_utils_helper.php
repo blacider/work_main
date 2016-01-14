@@ -79,3 +79,19 @@ function get_report_status_str($status) {
 }
 
 
+function get_prove_ahead($item_type_dic,$prove_ahead_id,$approval)
+{
+	$prove_ahead = '报销';
+	$extra = '';
+	if($approval == 0)
+	    $extra = '第一轮';
+	else if($approval == 1)
+	    $extra = '第二轮';
+	switch($prove_ahead_id){
+	    case 0: {$prove_ahead = '<font color="black">' . $item_type_dic[0]  . '</font>';};break;
+    	case 1: {$prove_ahead = '<font color="green">' . $item_type_dic[1] . $extra .'</font>';};break;
+    	case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2] . $extra . '</font>';};break;
+	}
+	
+	return $prove_ahead;
+}

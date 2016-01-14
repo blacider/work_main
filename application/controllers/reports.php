@@ -235,7 +235,7 @@ class Reports extends REIM_Controller {
             $d['status_str'] = get_report_status_str($d['status']);
 
 
-            $prove_ahead = $this->reim_show->get_prove_ahead($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
+            $prove_ahead = get_prove_ahead($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
             $d['prove_ahead'] = $prove_ahead;
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
 
@@ -588,7 +588,7 @@ class Reports extends REIM_Controller {
         }
 
         log_message("debug","*********:".json_encode($report));
-        $_type= $this->reim_show->get_prove_ahead($item_type_dic,$report['prove_ahead'],$report['pa_approval']);
+        $_type= get_prove_ahead($item_type_dic,$report['prove_ahead'],$report['pa_approval']);
         $report['prove_ahead'] =  $_type;
         $_members = array();
         $members = $this->users->reim_get_user();
@@ -941,7 +941,7 @@ class Reports extends REIM_Controller {
             case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2]  . '</font>';};break;
             }
             */
-            $prove_ahead = $this->reim_show->get_prove_ahead($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
+            $prove_ahead = get_prove_ahead($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
             $d['prove_ahead'] = $prove_ahead;
 
             if(array_key_exists('template_id',$d) && array_key_exists($d['template_id'],$report_template_dic))
