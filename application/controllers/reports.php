@@ -234,12 +234,8 @@ class Reports extends REIM_Controller {
 
             $d['status_str'] = get_report_status_str($d['status']);
 
-            $prove_ahead = '报销';
-            switch($d['prove_ahead']){
-            case 0: {$prove_ahead = '<font color="black">' . $item_type_dic[0]  . '</font>';};break;
-            case 1: {$prove_ahead = '<font color="green">' . $item_type_dic[1] . '</font>';};break;
-            case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2]  . '</font>';};break;
-            }
+
+            $prove_ahead = $this->reim_show->get_prove_ahead($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
             $d['prove_ahead'] = $prove_ahead;
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
 
@@ -592,12 +588,7 @@ class Reports extends REIM_Controller {
         }
 
         log_message("debug","*********:".json_encode($report));
-        $prove_ahead = $report['prove_ahead'];
-        switch($prove_ahead) {
-        case 0:{$_type = '报销';};break;
-        case 1:{$_type = '预算';};break;
-        case 2:{$_type = '预借';};break;
-        }
+        $_type= $this->reim_show->get_prove_ahead($item_type_dic,$report['prove_ahead'],$report['pa_approval']);
         $report['prove_ahead'] =  $_type;
         $_members = array();
         $members = $this->users->reim_get_user();
@@ -944,12 +935,15 @@ class Reports extends REIM_Controller {
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
             $d['status_str'] = get_report_status_str($d['status']);
 
+            /*
             $prove_ahead = '报销';
             switch($d['prove_ahead']){
             case 0: {$prove_ahead = '<font color="black">' . $item_type_dic[0]  . '</font>';};break;
             case 1: {$prove_ahead = '<font color="green">' . $item_type_dic[1]  . '</font>';};break;
             case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2]  . '</font>';};break;
             }
+            */
+            $prove_ahead = $this->reim_show->get_prove_ahead($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
             $d['prove_ahead'] = $prove_ahead;
 
             if(array_key_exists('template_id',$d) && array_key_exists($d['template_id'],$report_template_dic))
