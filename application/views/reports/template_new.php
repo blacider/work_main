@@ -399,6 +399,7 @@ foreach($items as $i){
                                         <option value='天津市商业银行'>天津市商业银行</option>
                                         <option value='威海市商业银行'>威海市商业银行</option>
                                         <option value='宁波市商业银行'>宁波市商业银行</option>
+                                        <option value='宜宾市商业银行'>宜宾市商业银行</option>
                                         <option value='高要市农村信用合作社联合社'>高要市农村信用合作社联合社</option>
                                         <option value='曲靖市商业银行'>曲靖市商业银行</option>
                                         <option value='营口市商业银行'>营口市商业银行</option>

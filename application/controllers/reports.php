@@ -637,6 +637,8 @@ class Reports extends REIM_Controller {
         {
             foreach($report['items'] as &$item)
             {
+                //将货币符号加入
+                $item['pa_currency_logo'] = $this->get_coin_symbol($item['pa_currency']);
                 if(array_key_exists('attachments',$item))
                 {
                     show_attachments($item);
