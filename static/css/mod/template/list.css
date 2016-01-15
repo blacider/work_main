@@ -1,0 +1,129 @@
+.mod-reim-template {
+	width: 900px;
+	margin: 0 auto;
+	height: 2900px;
+}
+.mod-reim-template .header {
+	text-align: right;
+	border: none;
+
+}
+.mod-reim-template a {
+	display: inline-block;
+	width: 130px;
+	height: 45px;
+	background: url("/static/img/mod/template/btn-add.png");
+}
+
+.mod-reim-template .paper .paper-header {
+	height: 60px;
+	background: url("/static/img/mod/template/header-bg.jpg") repeat-x;
+	border-radius: 3px 3px 0 0;
+}
+
+.mod-reim-template .paper .paper-content {
+	border: 30px solid #F6F9FB;
+}
+
+.mod-reim-template .paper-content .title {
+	text-align: center;
+	font-size: 18px;
+	color: #596774;
+	height: 120px;
+	line-height: 120px;
+}
+
+/* field-group compoents */
+.field-group {
+	font-size: 14px;
+	padding-right: 65px;
+}
+.field-group::after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.field-group .field-group-label {
+	float: left;
+	text-align: center;
+	width: 20%;
+	color: #b9b9b9;
+	font-size: 14px;
+}
+
+.field-group .field-group-title {
+	color: #4a4a4a;
+	padding-left: 20%;
+	font-size: 14px;
+	margin: 30px 0 17px 0;
+	position: relative;
+	line-height: 22px;
+}
+
+.field-group .field-group-table {
+	float: left;
+	width: 80%;
+	font-size: 14px;
+}
+
+.field-group .field-group-table table {
+	width: 100%;
+	max-width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 100%;
+	display: table;
+	background-color: transparent;
+	text-align: center;
+}
+.field-group .field-group-table table thead th {
+	background: #67727E;
+    color: #FFFFFF;
+    height: 30px;
+    text-align: center;
+}
+
+.field-group .field-group-table table td {
+	height: 30px;
+	/*vertical-align: middle;*/
+}
+
+.field-group-table {
+	border: 1px solid #b9b9b9;
+	border-radius: 3px;
+}
+.buttons {
+	white-space: nowrap;
+	position: absolute;
+	right: 0;
+	top: 0;
+	margin: 0;
+    padding: 0;
+    font: 0/0 normal;
+}
+.buttons .button {
+	height: 22px;
+	width: 22px;
+	display: inline-block;
+	margin-left: 20px;
+	background: url("/static/img/mod/template/btn-trash.png") no-repeat center center;
+}
+.buttons .btn-trash {
+	background-image: url("/static/img/mod/template/btn-trash.png");
+}
+.buttons .btn-edit {
+	background-image: url("/static/img/mod/template/btn-edit.png");
+}
+.buttons .btn-drag {
+	background-image: url("/static/img/mod/template/btn-drag.png");
+}
+.buttons .btn-trash:hover {
+	background-image: url("/static/img/mod/template/btn-trash.dark.png");
+}
+.buttons .btn-edit:hover {
+	background-image: url("/static/img/mod/template/btn-edit.dark.png");
+}
+.buttons .btn-drag:hover {
+	background-image: url("/static/img/mod/template/btn-drag.dark.png");
+}
