@@ -1,12 +1,16 @@
+/*
+1. 多个字段组字段间隔
+ */
 .mod-reim-template {
 	width: 900px;
 	margin: 0 auto;
-	height: 2900px;
+	height: auto;
+	padding: 0;
+	font-family: STHeitiSC-Light;
 }
 .mod-reim-template .header {
 	text-align: right;
 	border: none;
-
 }
 .mod-reim-template a {
 	display: inline-block;
@@ -14,60 +18,275 @@
 	height: 45px;
 	background: url("/static/img/mod/template/btn-add.png");
 }
-
+.mod-reim-template .paper {
+	margin-bottom: 20px;
+}
 .mod-reim-template .paper .paper-header {
 	height: 60px;
-	background: url("/static/img/mod/template/header-bg.jpg") repeat-x;
+	background: url("/static/img/mod/template/bg-template-header.png") repeat-x;
 	border-radius: 3px 3px 0 0;
+	position: relative;
+	padding-left: 12px;
+}
+
+.mod-reim-template .paper .paper-header input {
+	border: none;
+	background: transparent;
+	color: #fff;
+	padding: 16px;
+	font-size: 18px;
+}
+
+.mod-reim-template .paper .paper-header .buttons {
+	margin-top: 12px;
+	margin-right: 20px;
+}
+.mod-reim-template .paper .paper-header .buttons .button {
+	height: 36px;
+	width: 36px;
+}
+
+.mod-reim-template .paper .paper-header .buttons .btn-eye {
+	background: url("/static/img/mod/template/36/btn-eye.png") repeat-x;
+}
+
+.mod-reim-template .paper .paper-header .buttons .btn-trash {
+	background: url("/static/img/mod/template/36/btn-trash.png") repeat-x;
+}
+
+.mod-reim-template .paper .paper-header .buttons .btn-accordion {
+    background: url("/static/img/mod/template/36/btn-up.png") repeat-x;
+}
+
+.mod-reim-template .field-table-title .buttons .button {
+	margin-left: 8px;
+}
+.mod-reim-template .field-table-title .buttons .btn-trash:hover {
+	background-image: url("/static/img/mod/template/24/btn-trash.dark.png");
+}
+.mod-reim-template .field-table-title .buttons .btn-edit:hover {
+	background-image: url("/static/img/mod/template/24/btn-edit.dark.png");
+}
+.mod-reim-template .field-table-title .buttons .btn-drag:hover {
+	background-image: url("/static/img/mod/template/24/btn-drag.dark.png");
 }
 
 .mod-reim-template .paper .paper-content {
 	border: 30px solid #F6F9FB;
+	padding: 20px;
+	border-bottom-width: 10px;
 }
 
 .mod-reim-template .paper-content .title {
 	text-align: center;
 	font-size: 18px;
 	color: #596774;
-	height: 120px;
-	line-height: 120px;
+	padding: 20px;
 }
 
-/* field-group compoents */
-.field-group {
-	font-size: 14px;
-	padding-right: 65px;
-}
-.field-group::after {
-	content: "";
-	display: block;
-	clear: both;
+.mod-reim-template .paper-content .title input {
+    border: none;
+    background: transparent;
+    color: #fff;
+    padding: 18px;
+    color: #596774;
+    font-size: 18px;
+    text-align: center;
 }
 
-.field-group .field-group-label {
-	float: left;
+.mod-reim-template .field-group .field-options .field-name,
+.mod-reim-template .field-group .field-options .field-type,
+.mod-reim-template .field-group .field-options .field-desc,
+.mod-reim-template .field-group .field-options .field-checkbox {
+    padding-right: 10px;
+}
+
+.mod-reim-template .field-group .field-options .field-name input,
+.mod-reim-template .field-group .field-options .field-type select,
+.mod-reim-template .field-group .field-options .field-desc input,
+.mod-reim-template .field-group .field-options .field-checkbox label {
+    font-size: 14px;
+    color: #4a4a4a;
+}
+
+.mod-reim-template .field-group .btn-add-field-group {
+    display: inline-block;
+    width: 100px;
+    height: 45px;
+    background: url("/static/img/mod/template/btn-add-field-group.png") no-repeat;
+}
+
+.mod-reim-template .field-group.row-group .column-wrap {
+    margin: 30px 0;
+}
+.mod-reim-template .default-field-table .field-table-title {
+	font-weight: bold;
+}
+
+.mod-reim-template .default-field-table .btn-eye {
+	display: inline-block;
+	width: 36px;
+	height: 24px;
+	background: url("/static/img/mod/template/36/btn-eye.gray.png") no-repeat center center;
+}
+
+.mod-reim-template .default-field-table .btn-eye:hover {
+	background-image: url("/static/img/mod/template/36/btn-eye.dark.png");
+}
+
+.mod-reim-template .default-field-table .field-table-content-multi-row {
+	width: 80%;
+}
+
+.mod-reim-template .default-field-table .field-table-content-multi-row .field-table-content {
+	width: 100%;
+}
+
+.mod-reim-template .default-field-table .field-table-content-multi-row .field-checkbox,
+.mod-reim-template .default-field-table .field-table-content-multi-row .field-radio {
+	margin-bottom: 16px;
+}
+
+.mod-reim-template .paper-footer {
+	padding-left: 45px;
+    background-color: #f8fafc;
+}
+
+.mod-reim-template .paper-footer a {
+	height: 45px;
+	width: 100px;
+	margin: 30px 0 30px 10px;
+}
+.mod-reim-template .paper-footer .btn-cancel {
+	margin: 30px 200px 30px 150px;
+	margin-left: 20%;
+	background: url("/static/img/mod/template/btn-cancel.png") no-repeat;
+}
+
+.mod-reim-template .paper-footer .btn-preview {
+	background: url("/static/img/mod/template/btn-preview.png") no-repeat;
+}
+
+.mod-reim-template .paper-footer .btn-save {
+	background: url("/static/img/mod/template/btn-save.png") no-repeat;
+}
+
+.mod-reim-template .paper-footer .btn-save:hover {
+	background: url("/static/img/mod/template/btn-save.active.png") no-repeat;
+}
+.mod-reim-template .paper.shrink .print-settings {
+	display: none;
+}
+.mod-reim-template .paper.shrink .paper-content {
+	display: none;
+}
+
+.mod-reim-template .paper.shrink .paper-footer {
+	display: none;
+}
+
+.mod-reim-template .paper .paper-header .buttons .btn-accordion {
+	background: url("/static/img/mod/template/36/btn-up.png") center center no-repeat;
+}
+
+.mod-reim-template .paper.shrink .paper-header .buttons .btn-accordion {
+    background-image: url("/static/img/mod/template/36/btn-down.png");
+}
+
+.mod-reim-template .default-field-table label {
+	color: #4a4a4a;
+}
+
+.mod-reim-template .print-settings {
+	border: 30px solid #F6F9FB;
+	padding-bottom: 0;
+	border-top: none;
+	border-radius: 2px;
+}
+.mod-reim-template .print-settings .group-container {
+	padding-bottom: 60px;
+}
+.mod-reim-template .print-settings .column-wrap {
+	padding: 30px 21px;
+	border-top: 1px solid #f2f6fa;
+}
+.mod-reim-template .print-settings:hover {
+	box-shadow: none;
+}
+.mod-reim-template .print-settings .field-table-title {
+	color: #596774;
+	font-size: 18px;
+	padding: 0 0;
+	margin: 0;
 	text-align: center;
-	width: 20%;
-	color: #b9b9b9;
-	font-size: 14px;
+	height: 36px;
+	line-height: 36px;
+}
+.mod-reim-template .print-settings .field-table-title .btn-accordion {
+	width: 36px;
+	height: 36px;
+	background: url("/static/img/mod/template/36/btn-down.dark.png") center center no-repeat;
 }
 
-.field-group .field-group-title {
+.mod-reim-template .print-settings .field-table-title .btn-accordion.btn-up {
+	background-image: url("/static/img/mod/template/36/btn-up.dark.png");
+}
+
+.mod-reim-template .print-settings .pager-size .field-radio {
+	display: inline-block;
+	margin: 0 40px 0 0;
+}
+
+
+/* field-table compoents */
+
+.field-table {
+	font-size: 14px;
+	/*overflow: hidden;*/
+	border-radius: 3px;
+    padding: 32px 45px;
+    padding-top: 0;
+    border: 1px solid #fff;
+}
+
+.field-table:hover {
+	/*border: 1px solid #f2f6fa;*/
+	box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.30);
+	filter: progid:DXImageTransform.Microsoft.DropShadow(OffX=0, OffY=1, Color=#ff0000);
+	zoom: 1;
+}
+
+
+.field-table .line,
+.field-group .line {
+	border-top: 1px solid #f2f6fa;
+	position: relative;
+	top: -1px;
+}
+.field-table:hover .line,
+.field-group:hover .line {
+	visibility: hidden;
+}
+.field-table .field-table-title {
 	color: #4a4a4a;
 	padding-left: 20%;
 	font-size: 14px;
-	margin: 30px 0 17px 0;
+	margin: 16px 0;
 	position: relative;
-	line-height: 22px;
+	line-height: 24px;
+	height: 24px;
 }
 
-.field-group .field-group-table {
-	float: left;
+.field-table .field-table-content {
 	width: 80%;
 	font-size: 14px;
+    border: 1px solid #ABABAB;
+    border-right: none;
+    border-radius: 3px;
+    
 }
 
-.field-group .field-group-table table {
+.field-table .field-table-content table {
 	width: 100%;
 	max-width: 100%;
 	border-collapse: collapse;
@@ -77,21 +296,205 @@
 	background-color: transparent;
 	text-align: center;
 }
-.field-group .field-group-table table thead th {
-	background: #67727E;
+.field-table .field-table-content table thead th {
+	background: rgba(89, 102, 116, 0.80);
     color: #FFFFFF;
     height: 30px;
     text-align: center;
 }
 
-.field-group .field-group-table table td {
+.field-table .field-table-content table td {
 	height: 30px;
 	/*vertical-align: middle;*/
 }
+.field-table .field-table-content table td, th {
+    border-right: 1px solid #b9b9b9;
 
-.field-group-table {
-	border: 1px solid #b9b9b9;
+}
+
+.field-group {
+	font-size: 14px;
+	/*overflow: hidden;*/
 	border-radius: 3px;
+    padding: 32px 45px;
+    padding-top: 0;
+    border: 1px solid #fff;
+}
+.field-group .field-group-title {
+    padding: 10px 20%;
+}
+
+.field-group .field-group-title .field-input {
+    width: 160px;
+    line-height: 27px;
+}
+.field-group .field-checkbox {
+	padding-left: 52px;
+}
+.field-group .field-select {
+	width: 90px;
+}
+.field-table .field-table-label, .field-group .field-group-label {
+    text-align: left;
+    width: 20%;
+    color: #b9b9b9;
+    font-size: 14px;
+}
+
+.field-group .field-group-rows {
+    width: 80%;
+}
+.field-group .field-group-rows .field-options {
+    margin-bottom: 10px;
+}
+.field-group .field-group-rows .btn-trash {
+    width: 24px;
+    height: 24px;
+    background: url("/static/img/mod/template/24/btn-trash.png") no-repeat center center;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.field-group .field-group-footer {
+    position: relative;
+    height: 42px;
+}
+
+.field-group .field-group-footer .buttons {
+    padding: 12px 20px;
+    float: right;
+    height: 24px;
+    white-space: nowrap;
+
+}
+
+.field-group .field-group-footer .buttons .button {
+	cursor: default;
+    padding-left: 28px;
+    height: 24px;
+    width: auto;
+    white-space: nowrap;
+    font-size: 14px;
+    line-height: 24px;
+    margin-left: 14px;
+    background: url("/static/img/mod/template/24/btn-add.png") no-repeat 0 center;
+}
+.field-group .field-group-footer .buttons .button:hover {
+	opacity: 0.6;
+}
+
+.field-group .field-group-footer .buttons .btn-save {
+    background-image: url("/static/img/mod/template/24/btn-save.png");
+}
+.field-group .field-group-footer .buttons .btn-cancel {
+    background-image: url("/static/img/mod/template/24/btn-cancel.png");
+}
+
+.fields {
+	display: table;
+	padding: 30px;
+	background: #f2f6fa;
+	width: 100%;
+}
+.fields .field-name {
+	padding: 0;
+}
+.table-layout {
+    display: table;
+    font-size: 0;
+    width: 100%;
+}
+
+.table-cell {
+    vertical-align: middle;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.field-input  {
+	margin: 0;
+	padding: 0px;
+	border: rgba(89, 102, 116, 0.50);
+	border-radius: 2px;
+}
+.field-input input {
+	padding: 5px 4px 6px 8px;
+	width: 100%;
+	display: block !important;
+	color: #4a4a4a
+}
+
+.field-select {
+	width: 100%;
+	border: 1px solid rgb(213, 213, 213);
+	background: #fff;
+
+	height: 34px;
+} 
+.field-select select {
+	display: block;
+	width: 100%;
+	border: none;
+	height: 100%;
+}
+
+.field-checkbox {
+	position: relative;
+	height: 18px;
+	vertical-align: middle;
+}
+.field-checkbox input[type="checkbox"] {
+	visibility: hidden;
+}
+
+.field-checkbox label {
+	padding-left: 24px;
+	background: url("/static/img/mod/template/18/input-checkbox.blue.png") no-repeat;
+	height: 18px;
+	white-space: nowrap;
+	line-height: 18px;
+	margin: 0;
+}
+.field-checkbox.white label {
+	background-image: url("/static/img/mod/template/18/input-checkbox.png");
+}
+.field-checkbox.checked label {
+	background-image: url("/static/img/mod/template/18/input-checkbox.selected.png");
+}
+.field-checkbox.checked.disabled label {
+	background-image: url("/static/img/mod/template/18/input-checkbox.selected.disabled.png");
+	color: #929292;
+}
+
+
+.field-radio {
+	position: relative;
+	height: 18px;
+	vertical-align: middle;
+}
+.field-radio input[type="radio"] {
+	visibility: hidden;
+}
+
+.field-radio label {
+	padding-left: 24px;
+	background: url("/static/img/mod/template/18/input-radio.png") no-repeat;
+	height: 18px;
+	white-space: nowrap;
+	line-height: 18px;
+	margin: 0;
+
+}
+.field-radio.checked label {
+	background-image: url("/static/img/mod/template/18/input-radio.checked.png");
+}
+
+/* end field-compoents */
+
+.none {
+	display: none;
 }
 .buttons {
 	white-space: nowrap;
@@ -103,27 +506,19 @@
     font: 0/0 normal;
 }
 .buttons .button {
-	height: 22px;
-	width: 22px;
+	height: 24px;
+	width: 24px;
 	display: inline-block;
-	margin-left: 20px;
-	background: url("/static/img/mod/template/btn-trash.png") no-repeat center center;
+	/*margin-left: 20px;*/
 }
 .buttons .btn-trash {
-	background-image: url("/static/img/mod/template/btn-trash.png");
+	background-image: url("/static/img/mod/template/24/btn-trash.png");
 }
 .buttons .btn-edit {
-	background-image: url("/static/img/mod/template/btn-edit.png");
+	background-image: url("/static/img/mod/template/24/btn-edit.png");
 }
 .buttons .btn-drag {
-	background-image: url("/static/img/mod/template/btn-drag.png");
+	background-image: url("/static/img/mod/template/24/btn-drag.png");
 }
-.buttons .btn-trash:hover {
-	background-image: url("/static/img/mod/template/btn-trash.dark.png");
-}
-.buttons .btn-edit:hover {
-	background-image: url("/static/img/mod/template/btn-edit.dark.png");
-}
-.buttons .btn-drag:hover {
-	background-image: url("/static/img/mod/template/btn-drag.dark.png");
-}
+
+ 
