@@ -53,19 +53,6 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">审批时修改后金额不能大于提交金额</label>
-                                <div class="col-xs-6 col-sm-6">
-                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
-                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
-                                        <label style="margin-top:8px;">
-                                            <input name="low_amount_only" class="ace ace-switch btn-rotate" type="checkbox" id="low_amount_only" style="margin-top:4px;" />
-                                            <span class="lbl"></span>
-                                        </label>
-                                   <!-- </div> -->
-                                </div>
-                            </div>
-
-                            <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">报销单打印时隐藏备注</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
@@ -117,26 +104,6 @@
                                 </div>
                             </div>
 
-                              <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">不填写「备注」无法提交报销</label>
-                                <div class="col-xs-4 col-sm-4">
-                                        <label style="margin-top:8px;">
-                                            <input name="note_compulsory" class="ace ace-switch btn-rotate" type="checkbox" id="note_compulsory" style="margin-top:4px;" />
-                                            <span class="lbl"></span>
-                                        </label>
-                                </div>
-                            </div>
-
-                              <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">消费时间不自动生成</label>
-                                <div class="col-xs-4 col-sm-4">
-                                        <label style="margin-top:8px;">
-                                            <input name="not_auto_time" class="ace ace-switch btn-rotate" type="checkbox" id="not_auto_time" style="margin-top:4px;" />
-                                            <span class="lbl"></span>
-                                        </label>
-                                </div>
-                            </div>
-
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">允许报销单在审批时抄送给他人</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -158,21 +125,6 @@
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
                                         <label style="margin-top:8px;">
                                             <input name="export_no_company" class="ace ace-switch btn-rotate" type="checkbox" id="export_no_company" style="margin-top:4px;" />
-                                            <span class="lbl"></span>
-                                        </label>
-
-                                   <!-- </div> -->
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">是否开放外汇</label>
-                                <div class="col-xs-6 col-sm-6">
-                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
-                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
-                                        <label style="margin-top:8px;">
-                                            <input name="open_exchange" class="ace ace-switch btn-rotate" type="checkbox" id="open_exchange" style="margin-top:4px;" />
                                             <span class="lbl"></span>
                                         </label>
 
