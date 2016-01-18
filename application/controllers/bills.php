@@ -344,7 +344,7 @@ class Bills extends REIM_Controller {
         return $this->_logic(2,$search);
     }
 
-    public function exports($search=''){
+    public function finished($search=''){
         return $this->_logic(4,$search);
     }
     public function all_reports($search = '')
