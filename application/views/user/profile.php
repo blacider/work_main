@@ -495,20 +495,33 @@ if(in_array($profile['admin'],[1,3,4])){
                 <h4 class="modal-title">修改手机号</h4>
             </div>
             <div class="modal-body">
-
+            
                 <form id="phone_form" class="form-horizontal" role="form" method="post" action="<?php echo base_url('users/update_phone'); ?>">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
+                            <?php
+                                $updateWithoutVCode = false;
 
+                                if(isset($user_type) == false) {
+                                    $updateWithoutVCode = false;
+                                } else if($user_type == 1 && !$is_self) {
+                                    $updateWithoutVCode = true;
+                                }
+                                $visibilityStyle = '';
+                                if($updateWithoutVCode) {
+                                    $visibilityStyle = 'display: none';
+                                }
+
+                            ?>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">手机号</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <input name="phone" type="text" class="form-controller col-xs-7" id="phone" placeholder="新手机号" />
-                                <a href="javascript:void(0)" style="margin-left:5px;" class="btn btn-primary btn-sm getvcode" >获取验证码</a>
+                                <a href="javascript:void(0)" style="margin-left:5px; <?php echo $visibilityStyle; ?>" class="btn btn-primary btn-sm getvcode" >获取验证码</a>
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" style="<?php echo $visibilityStyle; ?>">
                                 <label class="col-sm-2 control-label no-padding-right">验证码</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <input name="vcode" id="vcode" type="text" class="form-controller col-xs-12 br3 inp" placeholder="验证码" />
@@ -517,8 +530,7 @@ if(in_array($profile['admin'],[1,3,4])){
 
                             <div class="clearfix form-actions">
                                 <div class="col-md-offset-3 col-md-9">
-                                    <a class="btn btn-white btn-primary update_phone" data-renew="0"><i class="ace-icon fa fa-save "></i>修改并登出</a>
-
+                                    <a data-nocode="<?php echo $updateWithoutVCode; ?>" class="btn btn-white btn-primary update_phone" data-renew="0"><i class="ace-icon fa fa-save "></i>修改<?php if(!$updateWithoutVCode) {echo "并登出";} ;?></a>
                                 </div>
                             </div>
 
@@ -912,12 +924,15 @@ if(in_array($profile['admin'],[1,3,4])){
                         //$('#phone_form').submit();
                         var _phone = $('#phone').val();
                         var _vcode = $('#vcode').val();
+                        var _vcode = $('#vcode').val();
+                        var _self = this;
                         $.ajax({
                             url:__BASE+"users/update_phone",
                                 method:"POST",
                                 dataType:"json",
-                                data:{'phone':_phone,'vcode':_vcode},
+                                data:{'phone':_phone,'vcode':_vcode, uid: user_id},
                                 success:function(data){
+                                    debugger;
                                     if(data.status==0 || data.status=='false')
                                     {
                                         show_notify(data.data.msg);
@@ -925,8 +940,12 @@ if(in_array($profile['admin'],[1,3,4])){
                                     else if(data.status == 1)
                                     {
                                         $('#phone_modal').modal('hide');
-                                        show_notify("手机绑定成功,1秒之后跳转至登陆页面");
-                                        setTimeout(function(){window.location.href="/login"}, 1000);
+                                        if(!$(_self).data('nocode')) {
+                                            show_notify("手机绑定成功,1秒之后跳转至登陆页面");
+                                            setTimeout(function(){window.location.href="/login"}, 1000);
+                                        } else {
+                                            show_notify("手机绑定成功");
+                                        }
                                     }
 
                                     // $('#phone_modal').modal('hide');
