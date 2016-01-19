@@ -146,8 +146,7 @@ foreach($gmember as $m){
                                 <label class="col-sm-1 control-label no-padding-right">开卡行</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select id="cardbank" name="cardbank" class="form-control" data-placeholder="请输入或者选择银行">
-                    				    <option value=''></option>
-   				    	                
+                                        <option value=''></option>
                                     </select>
                                 </div>
                             </div>
