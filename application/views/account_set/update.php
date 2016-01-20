@@ -25,7 +25,7 @@ if($last_error) {
 <div class="page-content">
 <div class="page-content-area">
     <form role="form"  class="form-horizontal"  enctype="multipart/form-data" id="mainform">
-        <div class="row" style="overflow:hidden;">
+        <div class="row">
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 col-sm-12">
@@ -416,10 +416,11 @@ if($last_error) {
 
         <div class="clearfix form-actions">
             <div class="col-md-offset-3 col-md-9">
-                <button class="btn btn-sm" data-dismiss="modal">
+            
+        <div class="btn btn-sm"  value="button" id="deleteSub">
             <i class="ace-icon fa fa-times"></i>
-                取消
-        </button>
+                删除
+        </div>
         <input type="submit" class="btn btn-sm btn-primary" onclick="return checkLength(1);" value="提交">
             </div>
         </div>
@@ -579,7 +580,13 @@ var range = "<?php echo $range?>";
     var _checked = $('#isadmin').is('checked');
     $('#profile').submit();
     });*/
- 
+    $("#deleteSub").click(function(event) {
+            if(confirm('确认要删除吗?')){
+                var sob_id = $("#modal_sob").find("input[name='sob_id']").val();
+                var cid = $("#modal_sob").find("input[name='cid']").val();
+                location.href = __BASE + "/category/drop/" + cid + "/" + sob_id;
+            }
+        });
     $("input[name=range]:eq("+range+")").attr('checked','checked');
     choseRange(range);
   

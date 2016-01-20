@@ -33,11 +33,11 @@ foreach($item_type_list as $key => $item){
     {
       $_is_able = 'disabled';
     }
-    if($key == 1 && array_key_exists('disable_borrow', $company_config) && $company_config['disable_borrow'])
+    if($key == 1 && array_key_exists('disable_budget', $company_config) && $company_config['disable_budget'])
     {
         $_checked = '';
     }
-    if($key == 2 && array_key_exists('disable_budget', $company_config) && $company_config['disable_budget'])
+    if($key == 2 && array_key_exists('disable_borrow', $company_config) && $company_config['disable_borrow'])
     {
         $_checked = '';
     }
@@ -162,11 +162,11 @@ $(document).ready(function(){
         }
         if(_type == 1)
         {
-            _key = 'disable_borrow';
+            _key = 'disable_budget';
         }
         if(_type == 2)
         {
-            _key = 'disable_budget';
+            _key = 'disable_borrow';
         }
 
         $.ajax({

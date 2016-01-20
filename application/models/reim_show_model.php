@@ -7,6 +7,7 @@ class Reim_Show_Model extends Reim_Model {
         $this->load->model('report_model', 'reports');
     }
     
+
     public function get_report_template()
     {
         $_report_template = $this->reports->get_report_template();

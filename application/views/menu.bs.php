@@ -373,7 +373,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         </li>
 
         <li class="hsub" id="cexport">
-        <a href="<?php echo base_url('category/cexport'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 账套导入/导出 </a>
+        <a href="<?php echo base_url('category/cexport'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 导入帐套 </a>
         <b class="arrow"></b>
         </li>
 
@@ -487,8 +487,8 @@ if(in_array($profile['admin'], [1,2,4])) {
         </li>
 
 
-        <li class="hsub" id="exports">
-        <a href="<?php echo base_url('bills/exports'); ?>" > 已完成</a>
+        <li class="hsub" id="finished">
+        <a href="<?php echo base_url('bills/finished'); ?>" > 已完成</a>
         <b class="arrow"></b>
         </li>
 

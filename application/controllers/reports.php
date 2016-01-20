@@ -30,10 +30,10 @@ class Reports extends REIM_Controller {
 
     public function get_report_flow($id,$report)
     {
-        $_flow = $this->reports->report_flow($id);
+        $_flow = $this->reports->report_flow($id, 1);
 
-        $flow = array();
         $_ts = '';
+        log_message("debug", "Rreport" . json_encode($report));
         if($report['createdt'] > 0) {
             $_ts = date('Y-m-d H:i:s', $report['createdt']);
         }
@@ -60,43 +60,31 @@ class Reports extends REIM_Controller {
         // 先找到提交的信息
         // 昵称，审核意见，时间，step
         log_message("debug", 'flow data:' . json_encode($_flow));
+        
+        $sliced_flow = array();
         if($_flow['status'] == 1) {
-            foreach($_flow['data']['data'] as $s){
-                $_s = $s['status'] % 100;
-                $audit = '待审批';
-                if($s['uid'] == $report['uid'] && $_s == 0) {
-                        $audit = '待提交';
+            // 分组
+            $last_group = null;
+            $last_slice = array();
+
+            $_flows = $_flow['data']['data'];
+            // step 升序
+            usort($_flows, function($a, $b) { return $a['step'] - $b['step']; });
+
+            foreach($_flows as $s) {
+                $group = 0;
+                if ($s['ticket_type'] == 1) {
+                    $group = 1;
                 }
-                if($s['uid'] == $report['uid']) {
-                    if($_s == 1) {
-                        $audit = '已提交';
-                    }
-                    if($_s == 1 && array_key_exists('ticket_type',$s) && $s['ticket_type'] == 1)
-                    {
-                        $audit = '待审批';
-                    }
+
+                if (is_null($last_group)) {
+                    $last_group = $group;
+                } else if ($last_group !== $group) {
+                    array_push($sliced_flow, $last_slice);
+                    $last_group = $group;
+                    $last_slice = array();
                 }
-                if($_s == 2)  {
-                    $audit = '通过';
-                }
-                if($_s == 3)  {
-                    $audit = '拒绝';
-                    if($s['uid'] == $report['uid']) {
-                    $audit = '撤回';
-                    }
-                }
-                if($_s == 4 || $_s == 5)  {
-                    $audit = '已完成';
-                }
-                if($_s == 6)  {
-                    $audit = '待支付';
-                }
-                if($_s == 7)  {
-                    $audit = '完成待结束';
-                }
-                if($_s == 8)  {
-                    $audit = '完成已结束';
-                }
+
                 $_ts = '';
                 if($s['udt'] != '0') {
                     $_ts = date('Y-m-d H:i:s', $s['udt']);
@@ -104,31 +92,28 @@ class Reports extends REIM_Controller {
 
                 $s['wingman_name'] = '';
                 log_message("debug","wingman:" . $s['wingman']);
-                if(array_key_exists('wingman',$s))
-                {
-                    if(array_key_exists($s['wingman'],$members_dic))
-                    {
-                       $s['wingman_name'] = $members_dic[$s['wingman']]; 
+                if(array_key_exists('wingman',$s)) {
+                    if(array_key_exists($s['wingman'],$members_dic)) {
+                       $s['wingman_name'] = $members_dic[$s['wingman']];
                     }
                 }
-                array_push($flow, array(
-                    'status' => $audit
-                    ,'nickname' => $s['nickname']
-                    ,'ts' => $_ts
-                    ,'step' => $s['step']
-                    ,'wingman' => $s['wingman_name'] 
+
+                array_push($last_slice, array(
+                    'group' => $group,
+                    'status' => $s['status_text'],
+                    'nickname' => $s['nickname'],
+                    'ts' => $_ts,
+                    'step' => $s['step'],
+                    'wingman' => $s['wingman_name'],
+                    'ticket_type' => $s['ticket_type'],
                 ));
             }
+
+            if (!empty($last_slice)) {
+                array_push($sliced_flow, $last_slice);
+            }
         }
-        usort($flow, function($a,$b)
-                {
-                    if($a['step'] == $b['step'])
-                    {
-                        return 0;
-                    }
-                    return ($a['step'] < $b['step']) ?-1:1;
-                });
-        return $flow;
+        return $sliced_flow;
     }
     public function confirm_success()
     {
@@ -166,7 +151,7 @@ class Reports extends REIM_Controller {
         $rid=$this->input->post("rid");
         $comment = $this->input->post("comment");
         $buf = $this->reports->add_comment($rid,$comment);
-        redirect(base_url('reports/show/' . $rid));
+        redirect(base_url('reports/show/' . $rid . '/1'));
     }
 
     public function revoke($id = 0) {
@@ -350,12 +335,8 @@ class Reports extends REIM_Controller {
 
             $d['status_str'] = get_report_status_str($d['status']);
 
-            $prove_ahead = '报销';
-            switch($d['prove_ahead']){
-            case 0: {$prove_ahead = '<font color="black">' . $item_type_dic[0]  . '</font>';};break;
-            case 1: {$prove_ahead = '<font color="green">' . $item_type_dic[1] . '</font>';};break;
-            case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2]  . '</font>';};break;
-            }
+
+            $prove_ahead = get_report_type_str($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
             $d['prove_ahead'] = $prove_ahead;
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
 
@@ -636,18 +617,9 @@ class Reports extends REIM_Controller {
         } else {
             $report['receivers']['cc'] = ' ';
         }
-        $flow = $this->get_report_flow($id,$report);
-        foreach($flow as &$x) {
-        }
-        log_message("debug", "Recievers: ---> " . json_encode($flow));
-
+        $sliced_flow = $this->get_report_flow($id,$report);
         log_message("debug","*********:".json_encode($report));
-        $prove_ahead = $report['prove_ahead'];
-        switch($prove_ahead) {
-        case 0:{$_type = '报销';};break;
-        case 1:{$_type = '预算';};break;
-        case 2:{$_type = '预借';};break;
-        }
+        $_type= get_report_type_str($item_type_dic,$report['prove_ahead'],$report['pa_approval']);
         $report['prove_ahead'] =  $_type;
         $_members = array();
         $members = $this->users->reim_get_user();
@@ -696,6 +668,8 @@ class Reports extends REIM_Controller {
         {
             foreach($report['items'] as &$item)
             {
+                //将货币符号加入
+                $item['pa_currency_logo'] = $this->get_coin_symbol($item['pa_currency']);
                 if(array_key_exists('attachments',$item))
                 {
                     show_attachments($item);
@@ -704,14 +678,13 @@ class Reports extends REIM_Controller {
         }
         
         $template_views = array();
-        array_push($template_views,'module/reports/show_report_footer');
 
         $this->bsload('reports/view',
             array(
                 'title' => '查看报销单',
                 'report' => $report,
                 'error' => $error,
-                'flow' => $flow
+                'flow' => $sliced_flow
                 ,'rid' => $id
                 ,'config' => $config
                 ,'extra' => $extra
@@ -968,12 +941,15 @@ class Reports extends REIM_Controller {
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
             $d['status_str'] = get_report_status_str($d['status']);
 
+            /*
             $prove_ahead = '报销';
             switch($d['prove_ahead']){
             case 0: {$prove_ahead = '<font color="black">' . $item_type_dic[0]  . '</font>';};break;
             case 1: {$prove_ahead = '<font color="green">' . $item_type_dic[1]  . '</font>';};break;
             case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2]  . '</font>';};break;
             }
+            */
+            $prove_ahead = get_report_type_str($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
             $d['prove_ahead'] = $prove_ahead;
 
             if(array_key_exists('template_id',$d) && array_key_exists($d['template_id'],$report_template_dic))
@@ -1044,7 +1020,10 @@ class Reports extends REIM_Controller {
                         $id = $child["id"];
                         $value = $this->try_get_element($extra_dict, $id, 'value');
                         if ($child["type"] == 4) {
-                            $bankinfo = json_decode($value, TRUE);
+                            if (!is_array($value)) {
+                                $value = json_decode($value, TRUE);
+                            }
+                            $bankinfo = $value;
 
                             $obj[$child_name . " - 户名"] = $this->try_get_element($bankinfo, "account");
                             $obj[$child_name . " - 账号"] = $this->try_get_element($bankinfo, "cardno");
@@ -1090,17 +1069,24 @@ class Reports extends REIM_Controller {
         "应付" => [ "data_type" => "number" ],
     ];
 
+    private function get_rate($currency,$rate)
+    {
+        if($currency == 'cny')
+            return 1.0;
+        return $rate/100;
+    }
+
     private function exports_by_rids($ids) {
         $_data = $this->reports->get_reports_by_ids($ids);
         if (empty($_data) || $_data["status"] < 0) {
             $this->session->set_userdata('last_error', $_data["_msg"]);
             return;
         }
-
         $data = $_data["data"];
         log_message("debug", "got data => " . json_encode($data));
-
+        
         $dict_by_template = array();
+        $_rids = array();
         foreach ($data["report"] as $id => $r) {
             $template_id = 0;
             if (array_key_exists("template_id", $r) && $r["template_id"]) {
@@ -1110,7 +1096,29 @@ class Reports extends REIM_Controller {
             if (!array_key_exists($template_id, $dict_by_template)) {
                 $dict_by_template[$template_id] = array();
             }
+            array_push($_rids, $id);
             array_push($dict_by_template[$template_id], $r);
+        }
+
+        
+        // 每次请求的报告数量不超过4096个
+        $rids_chunks = array_chunk($_rids, 4096);
+        $flows_dict = array();
+        log_message('debug','rids_chunks:' . json_encode($rids_chunks));
+        foreach ($rids_chunks as $_rids) {
+            $_flows_chunk = $this->reports->multi_report_flow(array_values($_rids));
+            if ($_flows_chunk['status'] < 0) {
+                $this->session->set_userdata('last_error', $_data["_msg"]);
+                return;
+            }
+
+            foreach ($_flows_chunk['data'] as $f) {
+                if (!array_key_exists($f['rid'], $flows_dict)) {
+                    $flows_dict[$f['rid']] = array();
+                }
+
+                array_push($flows_dict[$f['rid']], $f);
+            }
         }
 
         $_categories = $this->category->get_list();
@@ -1382,9 +1390,8 @@ class Reports extends REIM_Controller {
 
                 // 计算报销单审批人列表
                 $flow = array();
-                $_flow = $this->reports->report_flow($r['id']);
-                if($_flow['status'] > 0) {
-                    $flow_member = $_flow['data']['data'];
+                if(array_key_exists($r['id'], $flows_dict)) {
+                    $flow_member = $flows_dict[$r['id']];
                     foreach($flow_member as $fm) {
                         if($fm['status'] == 2) {
                             array_push($flow,array('name' => $fm['nickname'],'step' => $fm['step']));
@@ -1437,7 +1444,12 @@ class Reports extends REIM_Controller {
                     if(in_array($r['status'], array(4, 7, 8))){
                         // 已完成状态的，付款额度就是已付额度
                         $i['paid'] = ($i['amount'] * $_rate);
-                    } else {
+                    } 
+                    else if($i['prove_ahead'] == 2 && $i['pa_approval'] == 1) 
+                    {
+                        $i['paid'] = ($i['pa_amount'] * $_rate);
+                    }
+                    else {
                         $i['paid'] = 0;
                     }
                     $i['nickname'] = $r['nickname'];
@@ -1453,7 +1465,7 @@ class Reports extends REIM_Controller {
                     if($i['reimbursed'] == 0) {
                         continue;
                     }
-                    if($i['prove_ahead'] > 0){
+                    if($i['prove_ahead'] == 2 &&  $i['pa_approval'] == 1){
                         $r['paid'] += ($i['pa_amount'] * $_rate);
                     }
 
@@ -1497,6 +1509,8 @@ class Reports extends REIM_Controller {
                 //初始化类目汇总表单中对应的类目的信息
                 if($statistic_using_category)
                 {
+                    $temp_rate = $this->get_rate($i['currency'],$i['rate']);
+                    log_message('debug','temp_rate:'.$temp_rate);
                     if(!array_key_exists($i['category'],$category_cells_dic))
                     {
                         $sob_name = '';
@@ -1508,14 +1522,14 @@ class Reports extends REIM_Controller {
                             'sob_name'=> $sob_name,
                             'category_name'=>$i['category_name'],
                             'category_code'=>$i['category_code'],
-                            'amount'=>$i['amount'],
-                            'pa_amount'=>$i['pa_amount']
+                            'amount'=>$i['amount']*$temp_rate,
+                            'pa_amount'=>$i['paid']
                             );
                     }
                     else
                     {
-                        $category_cells_dic[$i['category']]['amount'] += $i['amount'];
-                        $category_cells_dic[$i['category']]['pa_amount'] += $i['pa_amount'];
+                        $category_cells_dic[$i['category']]['amount'] += $i['amount']*$temp_rate;
+                        $category_cells_dic[$i['category']]['pa_amount'] += $i['paid'];
                     }
                 }
 
@@ -1649,11 +1663,13 @@ class Reports extends REIM_Controller {
                         $o['汇率'] = round($i['rate']/100,6);
                 }
                 $o['人民币金额'] = round($i['amount'] * $_rate, 2);
+                /*
                 $_paid = 0;
                 if($i['prove_ahead'] > 0){
                     $_paid = $i['pa_amount'];
                 }
                 $_last = $i['amount'] - $_paid;
+                */
                 //                $o['已付'] = (string)($i['paid']) . '￥';
                 $o['已付'] = $i['paid'];
                 //                $o['应付'] = (string)(($i['amount'] * $_rate) - $i['paid']) . '￥';
@@ -1687,8 +1703,8 @@ class Reports extends REIM_Controller {
                     $o['类目'] = $ccd['category_name'];
                     $o['类目代码'] = $ccd['category_code'];
                     $o['总额'] = $ccd['amount'];
-                    $o['应付'] = $ccd['amount'] - $ccd['pa_amount'];
                     $o['已付'] = $ccd['pa_amount'];
+                    $o['应付'] = $ccd['amount'] - $ccd['pa_amount'];
                     array_push($category_cells,$o);
                 }
                 $template_excel[] = [ "title" => "类目金额汇总", "data" => $category_cells, "style" => self::$category_style ];

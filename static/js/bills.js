@@ -48,6 +48,7 @@ var selectRows = [];
 var IF_SELECT_ALL = 0;
 try{
     var FLAG = 1;
+    
 jQuery(grid_selector).jqGrid({
     url: __BASE + 'bills/listdata/' + __STATUS,
     mtype: "GET",
@@ -99,6 +100,7 @@ jQuery(grid_selector).jqGrid({
             });
         bind_event();
         var table = this;
+        this.p.lastSelected = lastSelected;
         setTimeout(function(){
             //styleCheckbox(table);
             updateActionIcons(table);

@@ -190,6 +190,7 @@
         </div>
         <div class="clearfix form-actions">
             <div class="col-md-offset-3 col-md-9">
+            <input type="button" value="删除" id="deleteSub" class="btn btn-sm hidden">
                 <button class="btn btn-sm" data-dismiss="modal">
             <i class="ace-icon fa fa-times"></i>
                 取消
@@ -266,6 +267,16 @@
         return -1;
     }
    $(document).ready(function(){
+        $("#deleteSub").click(function(event) {
+            var groupId = $('#modal_1').find('input[name="groupId"]').val();
+            var subId = $('#modal_1').find('input[name="subId"]').val();
+            var gIndex = getGroupIndexById(groupId);
+            var sIndex = getSubIndexById(groupId,subId);
+            __dataUpload['config'][gIndex]['children'].splice(sIndex,1);
+            //下面删除元素
+            $("li[data-subid='_"+ subId +"']").remove()
+            $('#modal_1').modal('hide');
+        });
         $("#type").val(__dataUpload['type']).trigger("chosen:updated").change(function(event) {
             __dataUpload['type'] = $("#type").val();
         });
@@ -297,7 +308,6 @@
             var index = getGroupIndexById(groupId);
             if (ifCreate) {
                 data.nid = __nid;
-                __nid--;
                 __dataUpload['config'][index]['children'].push(data);
             } else {
                 var subIndex = getSubIndexById(groupId, subId);
@@ -320,6 +330,7 @@
                 );
             }
             $('#modal_1').modal('hide');
+            __nid--;
             return false;
         });
         $("#createGroup").click(function(event) {
@@ -455,20 +466,22 @@
                                         $("#options").empty();
                                         for (var i = 0; i < options.length-1; i++) {
                                             $("#options").append('<div class="form-group col-sm-offset-2 col-xs-offset-2">'+
-                                                    '<input name="code" value="'+ options[i] +'" type="text" data-placeholder="请输入选项">'+
-                                                    '<a onclick="removeOption(this.parentNode)" class="addOption">-</a>'+
+                                                    '<input name="code" value="'+ options[i] +'" type="text" data-placeholder="请输入选项" disabled>'+
                                                     '</div>');
                                         }
                                         $("#options").append('<div class="form-group col-sm-offset-2 col-xs-offset-2">'+
-                                                    '<input name="code" value="'+ options[i] +'" type="text" data-placeholder="请输入选项">'+
-                                                    '<a onclick="addOption(this.parentNode)" class="addOption">+</a>'+
+                                                    '<input name="code" value="'+ options[i] +'" type="text" data-placeholder="请输入选项" disabled>'+
                                                     '</div>');
+                                    
                                     } else if (data.type == 4) {
 
                                         $('#modal_1').find('input[name="bank"]')[0].checked = (data.property.bank_account_type == "1");
+                                        $('#modal_1').find('input[name="bank"]').attr("disabled","true").trigger("chosen:updated");
                                     }
+                                    $('#extra_type').attr("disabled","true").trigger("chosen:updated");
                                 }
                                 ifCreate = false;
+                                $("#deleteSub").removeClass('hidden')
                                 $('#modal_1').modal('show');
                             }
                             function showGroup(groupId) {
@@ -485,6 +498,7 @@
                                 ifCreate = true;
                                 $('#modal_1').find('input[name="groupId"]').val(groupId);
                                 $('#modal_1').find('input[name="name"]').val("");
+                                $('#modal_1').find('input[name="subId"]').val("");
                                 $('#modal_1').find('input[name="explanation"]').val("");
                                 $('#modal_1').find('input[name="required"]')[0].checked = 0;
                                 $('#modal_1').find('select').val(1).trigger("chosen:updated");
@@ -494,6 +508,8 @@
                                                     '<input name="code" type="text" data-placeholder="请输入选项">'+
                                                     '<a onclick="addOption(this.parentNode)" class="addOption">+</a>'+
                                                     '</div>');
+                                $('#extra_type').removeAttr("disabled").trigger("chosen:updated");
+                                $("#deleteSub").addClass('hidden');
                                 $('#modal_1').modal('show');
                             }
                             function addOption(dom) {

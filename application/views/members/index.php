@@ -27,6 +27,19 @@ position: absolute;
   border-radius: 3px;   
   font-size: 12px;
    }
+   .tree .tree-folder, .tree .tree-item {
+        white-space: nowrap !important;
+        float: left;
+        clear: both;
+   }
+   .tree .tree-folder-content::after {
+        content: "";
+        display: block;
+        clear: both;
+   }
+   .tree {
+        overflow-x: auto !important;;
+   }
 </style>
 <script type="text/javascript">
     function searchSubmit(form) {
@@ -54,11 +67,11 @@ position: absolute;
 </div> -->
 
 
-<div class="col-sm-2">
-        <div class="widget-box widget-color-blue">
-                <div class="widget-header">
+<div class="col-sm-3">
+        <div class="widget-box widget-color-blue" style="margin-top: 0;border-top-left-radius: 3px;border-top-right-radius: 3px;">
+                <div class="widget-header" style="height: 38px;min-height: 38px;background: #428bca;">
                     <div id="admin_groups_granted" data-gids="<?php echo htmlspecialchars(json_encode($admin_groups_granted))?>"></div>
-                    <h4 class="widget-title lighter smaller">组织结构</h4>
+                    <h4 class="widget-title lighter smaller" style="font-size: 16px;">组织结构</h4>
                     </div>
 
                     <div class="widget-body">
@@ -69,12 +82,12 @@ position: absolute;
                 </div>
             </div>
 
-<div class="col-xs-10">
+<div class="col-xs-9">
     <!--
     <table id="grid-table"></table>
     -->
     <div class="panel panel-primary">
-    <div class="panel-heading"><h3 class="panel-title default col-sm-11 col-md-11" id="gname">人员信息[<?php echo count($members); ?>]</h3><p id="g_du"></p></div>
+    <div class="panel-heading" style="padding: 10px 0 18px 0; height: 39px"><h3 class="panel-title default col-sm-11 col-md-11" id="gname">人员信息[<?php echo count($members); ?>]</h3><p id="g_du"></p></div>
         <div class="panel-body">
             <table class="table" id="gtable">
                 <tr>

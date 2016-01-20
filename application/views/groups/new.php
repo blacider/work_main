@@ -128,7 +128,7 @@
 <label class="col-sm-1 control-label no-padding-right">LOGO</label>
 <div class="col-xs-6 col-sm-6">
     <div class="col-xs-12 col-sm-12" style="padding-left:0px;">
-      <div id="group_logo_container" class="ace-thumbnails clearfix" style="position:relative;float: left;">
+      <div id="group_logo_container" class="ace-thumbnails clearfix" style="position:relative;float: left;display: none">
         <img id="group_logo" class="thumbnail" style="min-height: 150px; max-height: 300px; min-width: 150px; max-width: 300px;width:150px">
         <div href="#" class="red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;">
           <i class="glyphicon glyphicon-trash"></i>
@@ -201,6 +201,7 @@ $(document).ready(function() {
         }
 
         $img.attr( 'src', src );
+        $('#group_logo_container').show()
     }, 150, 150 );
 });
 
@@ -266,6 +267,7 @@ uploader.on( 'uploadComplete', function( file ) {
 $('.del-button').click(function(e) {
     $("input[name=images]").val(0);
     $("#group_logo").attr("src", "");
+    $('#group_logo_container').hide()
 });
 
 });//ready

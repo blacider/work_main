@@ -20,6 +20,16 @@
     $__config = json_decode($_config,True);
 ?>
 
+<style>
+    #imageList::after {
+        content: "";
+        display: block;
+        float: none;
+        clear: both;
+        padding: 0;
+        margin: 0;
+    }
+</style>
 
 <div class="page-content">
     <div class="page-content-area">
@@ -27,8 +37,6 @@
             <div class="row">
                 <div class="container">
                     <div class="row">
-                                
-
 
                         <div class="col-xs-12 col-sm-12">
 
@@ -297,13 +305,13 @@
 <option value="<?php echo $val; ?>" selected><?php echo $key; ?></option>
 <?php
                                                 } else {
-						if($__config && $__config['disable_borrow'] == 0 && $val == 1)
+						if($__config && $__config['disable_budget'] == 0 && $val == 1)
 						{
 ?>
 <option value="<?php echo $val; ?>"><?php echo $key; ?></option>
 <?php
 					    }
-					    if($__config && $__config['disable_budget'] == 0 && $val == 2)
+					    if($__config && $__config['disable_borrow'] == 0 && $val == 2)
 					    {
 ?>
 <option value="<?php echo $val; ?>"><?php echo $key; ?></option>
@@ -357,16 +365,16 @@ foreach($item_config as $s) {
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">照片</label>
-                                <div>
-                                    <div class="col-xs-6 col-sm-6">
-                                        <ul class="ace-thumbnails clearfix" id="imageList">
-                                        </ul>
+                                <label class="col-sm-1 control-label no-padding-right ">照片</label>
+                                <div style="padding-left: 94px;">
+                                    <div id="imageList" style="overflow: hidden">
+                                        
                                     </div>
-                                    <div class="col-xs-6 col-sm-6">
-                                        <a id="filePicker" >选择图片</a>
+                                    <div class="btn-upload-file" style="margin-top: 12px;">
+                                        <a id="filePicker" >添加图片</a>
                                     </div>
-                                    </div>
+                                    <div style="display:block; clear: both"></div>
+                                </div>
                             </div>
 <div class="form-group">
 <label class="col-sm-1 control-label no-padding-right">附件</label>
@@ -481,9 +489,14 @@ uploader_file.on( 'fileQueued', function( file ) {
             ),$img = $li.find('img');
     // $list为容器jQuery实例
     $('#theList').append( $li );
+
     var path = "/static/images/", name_ = getPngByType(file.name);
     $img.attr( 'src', path+name_);
     bind_event_file();
+    
+    $('.btn-upload-file').css({
+        'margin': '12px 0 0 82px'
+    });
 });
 function getPngByType(filename) {
     var types = filename.split('.');
@@ -819,7 +832,7 @@ uploader.on( 'fileQueued', function( file ) {
     ifUp = 0;
 
     // $list为容器jQuery实例
-    $('#imageList').append( $li );
+    $li.appendTo($('#imageList'));
 
     // 创建缩略图
     // 如果为非图片文件，可以不用调用此方法。

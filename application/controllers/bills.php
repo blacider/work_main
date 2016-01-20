@@ -344,7 +344,7 @@ class Bills extends REIM_Controller {
         return $this->_logic(2,$search);
     }
 
-    public function exports($search=''){
+    public function finished($search=''){
         return $this->_logic(4,$search);
     }
     public function all_reports($search = '')
@@ -475,12 +475,7 @@ class Bills extends REIM_Controller {
                 $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
             }
 
-            $prove_ahead = '报销';
-            switch($d['prove_ahead']){
-            case 0: {$prove_ahead = '<font color="black">' . $item_type_dic[0]  . '</font>';};break;
-            case 1: {$prove_ahead = '<font color="green">' . $item_type_dic[1]  . '</font>';};break;
-            case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2]  . '</font>';};break;
-            }
+            $prove_ahead = get_report_type_str($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
             $d['prove_ahead'] = $prove_ahead;
 
             if(array_key_exists('template_id',$d) && array_key_exists($d['template_id'],$report_template_dic))
@@ -544,12 +539,7 @@ class Bills extends REIM_Controller {
                 $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
             }
             log_message("debug", "Bill: [ $type] $type: " . json_encode($d));
-            $prove_ahead = '报销';
-            switch($d['prove_ahead']){
-            case 0: {$prove_ahead = '<font color="black">' . $item_type_dic[0]  . '</font>';};break;
-            case 1: {$prove_ahead = '<font color="green">' . $item_type_dic[1]  . '</font>';};break;
-            case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2]  . '</font>';};break;
-            }
+            $prove_ahead = get_report_type_str($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
             $d['prove_ahead'] = $prove_ahead;
 
             if(array_key_exists('template_id',$d) && array_key_exists($d['template_id'],$report_template_dic))

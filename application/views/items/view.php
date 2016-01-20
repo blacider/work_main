@@ -57,11 +57,11 @@
                                                 <span class="input-group-addon" id='rate_simbol'>￥<?php 
                                                 if($item['currency'] == 'cny')
                                                 { 
-                                                    echo round($item['amount'],2);
+                                                    echo sprintf('%.2f',round($item['amount'],2));
                                                 }
                                                 else
                                                 {
-                                                    echo round($item['amount'] * $item['rate']/100,2);
+                                                    echo sprintf('%.2f',round($item['amount'] * $item['rate']/100,2));
                                                 }
 
                                                 ?></span>

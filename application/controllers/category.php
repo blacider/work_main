@@ -312,7 +312,7 @@ class Category extends REIM_Controller {
                         ,'oid_dic' => $oid_dic
                         ,'breadcrumbs' => array(
                             array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                            ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
+                            ,array('url'  => '', 'name' => '帐套和标签', 'class' => '')
                             ,array('url'  => base_url('category/show_expense'), 'name' => '费用承担对象管理', 'class' => '')
                             ,array('url'  => '', 'name' => '修改对象', 'class' => '')
                         ),
@@ -335,7 +335,7 @@ class Category extends REIM_Controller {
                         ,'oid_dic' => $oid_dic
                         ,'breadcrumbs' => array(
                             array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                            ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
+                            ,array('url'  => '', 'name' => '帐套和标签', 'class' => '')
                             ,array('url'  => base_url('category/show_expense'), 'name' => '费用承担对象管理', 'class' => '')
                             ,array('url'  => '', 'name' => '修改对象', 'class' => '')
                         ),
@@ -358,7 +358,7 @@ class Category extends REIM_Controller {
                         ,'oid_dic' => $oid_dic
                         ,'breadcrumbs' => array(
                             array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                            ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
+                            ,array('url'  => '', 'name' => '帐套和标签', 'class' => '')
                             ,array('url'  => base_url('category/show_expense'), 'name' => '费用承担对象管理', 'class' => '')
                             ,array('url'  => '', 'name' => '修改对象', 'class' => '')
                         ),
@@ -386,7 +386,7 @@ class Category extends REIM_Controller {
                 ,'projects' => $projects
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
+                    ,array('url'  => '', 'name' => '帐套和标签', 'class' => '')
                     ,array('url'  => '', 'name' => '费用承担对象管理', 'class' => '')
                 ),
             )
@@ -439,7 +439,7 @@ class Category extends REIM_Controller {
                 ,'error' => $error
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
+                    ,array('url'  => '', 'name' => '帐套和标签', 'class' => '')
                     ,array('url'  => '', 'name' => '导入帐套', 'class' => '')
                 ),
             )
@@ -676,7 +676,7 @@ class Category extends REIM_Controller {
                 //,'sob_names' => $sob_names
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('category/index'), 'name' => '帐套和标签', 'class' => '')
+                    ,array('url'  => '', 'name' => '帐套和标签', 'class' => '')
                     ,array('url'  => '', 'name' => '导入帐套', 'class' => '')
                 ),
             )
@@ -696,8 +696,8 @@ class Category extends REIM_Controller {
                 ,'error' => $error
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('category/account_set'), 'name' => '帐套和标签', 'class' => '')
-                    ,array('url'  => '', 'name' => '导入/导出员工', 'class' => '')
+                    ,array('url'  => '', 'name' => '帐套和标签', 'class' => '')
+                    ,array('url'  => '', 'name' => '导入帐套', 'class' => '')
                 ),
             )
         );
@@ -1160,7 +1160,7 @@ class Category extends REIM_Controller {
                 ,'ugroups' => $ugroups['data']['group']
                 ,'breadcrumbs' => array(
                     array('url' => base_url(),'name' => '首页', 'class' => 'ace-icon fa home-icon')
-                    ,array('url' => '#','name' => '账套和标签','class' => '')
+                    ,array('url' => '','name' => '账套和标签','class' => '')
                     ,array('url' => '','name' => '帐套管理','class' => '')
                 ),
             )
@@ -1277,7 +1277,8 @@ class Category extends REIM_Controller {
                 ,'error' => $error
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa home-icon')
-                    ,array('url'  => base_url('tags/index'), 'name' => '标签管理', 'class' => '')
+                    ,array('url' => '','name' => '账套和标签','class' => '')
+                    ,array('url'  => '', 'name' => '标签管理', 'class' => '')
                 ),
             )
         );
