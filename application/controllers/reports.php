@@ -636,118 +636,6 @@ class Reports extends REIM_Controller {
         } else {
             $report['receivers']['cc'] = ' ';
         }
-        /*
-        $_flow = $this->reports->report_flow($id);
-
-        $flow = array();
-        $_ts = '';
-        log_message("debug", "Rreport" . json_encode($report));
-        if($report['createdt'] > 0) {
-            $_ts = date('Y-m-d H:i:s', $report['createdt']);
-        }
-<<<<<<< HEAD
-=======
-        array_push($flow, array(
-            'nickname' => $report['nickname']
-            ,'ts' =>  $_ts
-            ,'status' => '提交'
-            ,'step' => 0
-            ,'wingman' => ''
-        ));
-
->>>>>>> origin/master
-
-        //获取全体员工
-        $group = $this->groups->get_my_list();
-        $ginfo = array();
-        $gmember = array();
-        if($group) {
-            if(array_key_exists('ginfo', $group['data'])){
-                $ginfo = $group['data']['ginfo'];
-            }
-            if(array_key_exists('gmember', $group['data'])){
-                $gmember = $group['data']['gmember'];
-            }
-            $gmember = $gmember ? $gmember : array();
-        }
-        $members_dic = array();
-        foreach($gmember as $mem)
-        {
-            $members_dic[$mem['id']] = $mem['nickname'];
-        }
-        log_message("debug","all_members:" . json_encode($members_dic));
-        // 先找到提交的信息
-        // 昵称，审核意见，时间，step
-        log_message("debug", 'flow data:' . json_encode($_flow));
-        if($_flow['status'] == 1) {
-            foreach($_flow['data']['data'] as $s){
-                $_s = $s['status'] % 100;
-                $audit = '待审批';
-                if($s['uid'] == $report['uid'] && $_s == 0) {
-                        $audit = '待提交';
-                }
-                if($s['uid'] == $report['uid']) {
-                    if($_s == 1) {
-                        $audit = '已提交';
-                    }
-                    if($_s == 1 && array_key_exists('ticket_type',$s) && $s['ticket_type'] == 1)
-                    {
-                        $audit = '待审批';
-                    }
-                }
-                if($_s == 2)  {
-                    $audit = '通过';
-                }
-                if($_s == 3)  {
-                    $audit = '拒绝';
-                    if($s['uid'] == $report['uid']) {
-                    $audit = '撤回';
-                    }
-                }
-                if($_s == 4 || $_s == 5)  {
-                    $audit = '已完成';
-                }
-                if($_s == 6)  {
-                    $audit = '待支付';
-                }
-                if($_s == 7)  {
-                    $audit = '完成待结束';
-                }
-                if($_s == 8)  {
-                    $audit = '完成已结束';
-                }
-                $_ts = '';
-                if($s['udt'] != '0') {
-                    $_ts = date('Y-m-d H:i:s', $s['udt']);
-                }
-
-                $s['wingman_name'] = '';
-                log_message("debug","wingman:" . $s['wingman']);
-                if(array_key_exists('wingman',$s))
-                {
-                    if(array_key_exists($s['wingman'],$members_dic))
-                    {
-                       $s['wingman_name'] = $members_dic[$s['wingman']];
-                    }
-                }
-                array_push($flow, array(
-                    'status' => $audit
-                    ,'nickname' => $s['nickname']
-                    ,'ts' => $_ts
-                    ,'step' => $s['step']
-                    ,'wingman' => $s['wingman_name']
-                ));
-            }
-        }
-        usort($flow, function($a,$b)
-                {
-                    if($a['step'] == $b['step'])
-                    {
-                        return 0;
-                    }
-                    return ($a['step'] < $b['step']) ?-1:1;
-                });
-        */
         $flow = $this->get_report_flow($id,$report);
         foreach($flow as &$x) {
         }
@@ -814,18 +702,9 @@ class Reports extends REIM_Controller {
                 }
             }
         }
-//<<<<<<< HEAD
         
         $template_views = array();
-        /*
-        array_push($template_views,'module/reports/report_flow');
-        array_push($template_views,'module/reports/comments');
-        */
         array_push($template_views,'module/reports/show_report_footer');
-        /*
-=======
->>>>>>> origin/master
-*/
 
         $this->bsload('reports/view',
             array(
@@ -880,35 +759,6 @@ class Reports extends REIM_Controller {
                 log_message('debug','time:' . $ex['value']);
             }
 
-        /*
-            $_account = $this->input->post('account');
-            $_account_name = $this->input->post('account_name');
-            $_account_no = $this->input->post('account_no');
-            $_payment = $this->input->post('payment');
-            $_borrowing = $this->input->post('borrowing');
-            $_location_from = $this->input->post('location_from');
-            $_location_to = $this->input->post('location_to');
-            $_period_start = $this->input->post('period_start');
-            $_period_end = $this->input->post('period_end');
-            $_contract = $this->input->post('contract');
-            $_contract_note = $this->input->post('contract_note');
-            $_note = $this->input->post('note');
-            //$_contract = $_contract == 2 ? 0 : 1;
-            $extra = array(
-                'template_id' => $template_id
-                ,'borrowing' => $_borrowing
-                ,'account' => array(
-                    'id' => $_account
-                    ,'name' => $_account_name
-                    ,'no' => $_account_no
-                )
-                ,'payment' => $_payment
-                ,'period' => array('start' => $_period_start, 'end' => $_period_end)
-                ,'location' => array('start' => $_location_from, 'dest' => $_location_to)
-                ,'contract' => array('available' => $_contract, 'note' => $_contract_note)
-                ,'note' => $_note
-            );
-            */
         }
         $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items), $type, $save, $force, $extra , $template_id);
         $ret = json_decode($ret, true);
