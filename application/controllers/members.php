@@ -1551,14 +1551,17 @@ class Members extends REIM_Controller {
         }
         redirect(base_url('members/groups'));
     }
-
-
+    // 管理员修改密码，自己修改自己的密码需要验证码，否则不需要
+    // 1. 如何判断是管理员 admin = 1
+    // 2. 如何判断是自己 userid = edit_user_id
     public function editmember($id = 0){
         if($id == 0) {
             redirect(base_url('members/index'));
             exit();
         }
-        //$profile = $this->user->reim_get_user($id);
+
+        $profile = $this->session->userdata('profile');
+
         $last_error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
         $error = $this->session->userdata('last_error');
@@ -1605,6 +1608,9 @@ class Members extends REIM_Controller {
                 'title' => '修改资料'
                 ,'member' => $info
                 ,'self' => 0
+                , 'user_type' => $profile['admin']
+                , 'uid' => $profile['id']
+                , 'is_self'=> $profile['id'] == $id
                 ,'error' => $error 
                 ,'last_error' => $last_error
                 ,'isOther' => 1
