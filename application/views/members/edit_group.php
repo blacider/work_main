@@ -136,7 +136,7 @@
                                 <label class="col-sm-1 control-label no-padding-right">LOGO</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <div class="col-xs-12 col-sm-12">
-                                      <div id="group_logo_container" class="ace-thumbnails clearfix" style="position:relative;float:left;">
+                                      <div id="group_logo_container" class="ace-thumbnails clearfix" style="position:relative;float:left;display: none">
                                         <img id="group_logo" class="thumbnail" style="min-height: 150px; max-height: 300px; min-width: 150px; max-width: 300px;width:150px">
                                         <div href="#" class="red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;">
                                           <i class="glyphicon glyphicon-trash"></i>
@@ -214,6 +214,7 @@ var uploader = WebUploader.create({
         }
 
         $img.attr( 'src', src );
+        $('#group_logo_container').show();
     }, 150, 150 );
 });
 
@@ -278,7 +279,9 @@ uploader.on( 'uploadComplete', function( file ) {
 
 $('.del-button').click(function(e) {
     $("input[name=images]").val(0);
+
     $("#group_logo").attr("src", "");
+    $('#group_logo_container').hide();
 });
 
 });
@@ -294,8 +297,11 @@ function load_exists(){
     // 如果为非图片文件，可以不用调用此方法。
     // thumbnailWidth x thumbnailHeight 为 100 x 100
     var $img = $("#group_logo");
-    $img.attr('src', _image_url);
-    $('input[name="images"]').val(_image);
+    if(_image_url) {
+        $img.attr('src', _image_url);
+        $('input[name="images"]').val(_image);
+        $('#group_logo_container').show();
+    }
 }
 
 var __BASE = "<?php echo $base_url; ?>";
