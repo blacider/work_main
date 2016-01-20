@@ -79,6 +79,7 @@
                         }
                     };
                     $scope.onPreviewTemplate = function  (argument) {
+                        alert('预览模版－功能开发中')
                         // body...
                     };
                     $scope.onDeleteTemplate = function(item, $index) {
@@ -143,33 +144,30 @@
                         $target.addClass('checked').siblings().removeClass('checked');
                     };
 
-                    $scope.editColumnArray = [
-                        // {
-                        //     "explanation": "",
-                        //     "name": "事由",
-                        //     "required": "0",
-                        //     "type": "1",
-                        //     "id": "11"
-                        // }
-                    ];
-
-                    $scope.onAddColumnForFieldTableConfig = function (data, e, index) {
+                    $scope.onAddColumnEditConfig = function (data, e, index) {
                         $scope.templateEditMap[data.id][index].children.push(angular.copy(_defaultColumnEditConfig_));
                     };
-                    $scope.onAddFieldTable = function (data, e, index) {
-                         
+                    $scope.onAddTableConfig = function (data, e, index) {
                         if(!$scope.templateEditMap[data.id]) {
                             return ($scope.templateEditMap[data.id] = [angular.copy(_defaultTableEditConfig_)]);
                         }
                         debugger
                         $scope.templateEditMap[data.id].push(angular.copy(_defaultTableEditConfig_));
                     };
-                    $scope.onRemoveEditColumn = function  (index) {
-                        if($scope.editColumnArray.length <=1) {
+                    $scope.onRemoveColumnEditConfig = function(data, e, columnIndex, tableIndex) {
+                        var table = $scope.templateEditMap[data.id][tableIndex];
+                        if(table.children.length <=1) {
                             return alert('至少拥有一个字断')
                         }
-                        $scope.editColumnArray.splice(index, 1);                        
+                        table.children.splice(columnIndex, 1);                        
                     };
+
+                    $scope.onSaveColumnEditConfig = function  () {
+                        alert('功能还在开发中');
+                    }
+                    $scope.onCancelColumnEditConfig = function  () {
+                        alert('功能还在开发中');
+                    }
 
                     $scope.getUID = function  (e) {
                         return Utils.uid();

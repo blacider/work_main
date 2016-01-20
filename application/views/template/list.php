@@ -75,16 +75,16 @@
                                     <label for="">必填</label>
                                 </div>
                                 <div class="button field table-cell">
-                                    <p class="btn-trash" ng-click="onRemoveEditColumn($index)"></p>
+                                    <p class="btn-trash" ng-click="onRemoveColumnEditConfig(templateItem, $event, $index, $parent.$index)"></p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="field-group-footer">
                         <p class="buttons">
-                            <span class="button btn-add" ng-click="onAddColumnForFieldTableConfig(templateItem, $event, $index)">添加字段</span>
-                            <span class="button btn-save">保存字段</span>
-                            <span class="button btn-cancel">取消</span>
+                            <span class="button btn-add" ng-click="onAddColumnEditConfig(templateItem, $event, $index)">添加字段</span>
+                            <span class="button btn-save" ng-click="onSaveColumnEditConfig(templateItem, $event, $index)">保存字段</span>
+                            <span class="button btn-cancel" ng-click="onCancelColumnEditConfig(templateItem, $event, $index)">取消</span>
                         </p>
                     </div>           
                 </div>
@@ -93,7 +93,7 @@
                     <div class="column-wrap table-layout">
                         <h4 class="field-group-label table-cell"> 字段组 </h4>
                         <div class="table-cell">
-                            <a href="javascript:void(0)" class="btn-add-field-group" ng-click="onAddFieldTable(templateItem, $event, $index)"></a>
+                            <a href="javascript:void(0)" class="btn-add-field-group" ng-click="onAddTableConfig(templateItem, $event, $index)"></a>
                         </div>
                     </div>
                 </div>
