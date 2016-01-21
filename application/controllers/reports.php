@@ -278,8 +278,10 @@ class Reports extends REIM_Controller {
         if($template_id) {
             $extra = $this->input->post('extra');
             log_message('debug','extra:' . json_encode($extra));
-            foreach($extra as &$ex)
-            {
+            if (!is_array($extra)) {
+                $extra = [];
+            }
+            foreach($extra as &$ex) {
                 if($ex['type'] != 3) continue;
 
                 $ex['value'] = strtotime($ex['value']);
@@ -408,8 +410,6 @@ class Reports extends REIM_Controller {
                 $banks = $profile['banks'];
             }
         }
-
-
 
         $_members = array();
         $members = $this->users->reim_get_user();
@@ -689,6 +689,9 @@ class Reports extends REIM_Controller {
         if($template_id) {
             $extra = $this->input->post('extra');
             log_message('debug','extra:' . json_encode($extra));
+            if (!is_array($extra)) {
+                $extra = [];
+            }
             foreach($extra as &$ex)
             {
                 if($ex['type'] != 3) continue;
