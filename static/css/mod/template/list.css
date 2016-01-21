@@ -80,8 +80,12 @@
 .mod-reim-template .paper-content .title {
 	text-align: center;
 	font-size: 18px;
+	letter-spacing: 1px;
+	font-weight: bold;
 	color: #596774;
 	padding: 20px;
+    padding-bottom: 47px;
+    padding-top: 27px;
 }
 
 .mod-reim-template .paper-content .title input {
@@ -215,9 +219,10 @@
 }
 .mod-reim-template .print-settings .field-table-title {
 	color: #596774;
-	font-size: 18px;
 	padding: 0 0;
 	margin: 0;
+	font-size: 18px;
+	letter-spacing: 1px;
 	text-align: center;
 	height: 36px;
 	line-height: 36px;

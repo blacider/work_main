@@ -148,6 +148,12 @@ class Company extends REIM_Controller {
         die(json_encode(array('id'=>$id)));
     }
 
+    public function get_template_types()
+    {
+        $item_type_dic = $this->reim_show->get_item_type_name();
+        die(json_encode($item_type_dic));
+    }
+
     public function update_report_template($id)
     {
         $this->need_group_it();

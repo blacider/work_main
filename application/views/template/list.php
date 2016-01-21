@@ -9,22 +9,22 @@
             <div class="paper-header">
                 <input type="text" value="{{templateItem.name}}">
                 <p class="buttons">
-                    <span class="button btn-eye" ng-click="onPreviewTemplate(templateItem, $event)"></span>
+                    <span class="button btn-eye" ng-click="onPreviewTemplate($index, $event)"></span>
                     <span class="button btn-trash" ng-click="onDeleteTemplate(templateItem, $index)"></span>
                     <span class="button btn-accordion" ng-click="onAccordionTemplate(templateItem, $index, $event)"></span>
                 </p>
             </div>
             <div class="paper-content">
                 <div class="title">
-                    内容设置                    
+                    内容设置
                 </div>
                 <div class="field-table" ng-repeat="tableItem in templateItem.config">
                     <div class="line"></div>
                     <h4 class="field-table-title" >{{tableItem.name}}
                     <p class="buttons">
-                        <span class="button btn-trash"></span>
-                        <span class="button btn-edit"></span>
-                        <span class="button btn-drag"></span>
+                        <span class="button btn-trash" ng-click="onRemoveTable(templateItem, $event, $index, $parent.$index)"></span>
+                        <span class="button btn-edit" ng-click="onEditTable(templateItem, $event, $index, $parent.$index)"></span>
+                        <span class="button btn-drag" ng-click="onDragTable(templateItem, $event, $index, $parent.$index)"></span>
                     </p>
                     </h4>
                     <div class="column-wrap table-layout">
@@ -83,7 +83,7 @@
                     <div class="field-group-footer">
                         <p class="buttons">
                             <span class="button btn-add" ng-click="onAddColumnEditConfig(templateItem, $event, $index)">添加字段</span>
-                            <span class="button btn-save" ng-click="onSaveColumnEditConfig(templateItem, $event, $index)">保存字段</span>
+                            <span class="button btn-save" ng-click="onSaveColumnEditConfig(templateItem, $event, $index, $parent.$index)">保存</span>
                             <span class="button btn-cancel" ng-click="onCancelColumnEditConfig(templateItem, $event, $index)">取消</span>
                         </p>
                     </div>           
@@ -174,17 +174,9 @@
                     <div class="column-wrap table-layout">
                         <h4 class="field-table-label table-cell"> 适用范围 </h4>
                         <div class="table-cell field-table-content-multi-row">
-                            <div class="field-checkbox checked" ng-click="toggleCheckbox($event)">
-                                <input type="checkbox" tabindex="0" class="hidden">
-                                <label for="">报销</label>
-                            </div>
-                            <div class="field-checkbox" ng-click="toggleCheckbox($event)">
-                                <input type="checkbox" tabindex="0" class="hidden">
-                                <label for="">预算</label>
-                            </div>
-                            <div class="field-checkbox" ng-click="toggleCheckbox($event)">
-                                <input type="checkbox" tabindex="0" class="hidden">
-                                <label for="">预借</label>
+                            <div class="field-checkbox" ng-class="{checked: isTypeChecked($index, templateItem)}" ng-attr-style="{{!$last || 'margin-bottom: 0'}}" ng-repeat="templateTypeItem in templateTypeArray" ng-click="toggleCheckbox($event)">
+                                <input type="checkbox" tabindex="0" class="hidden" value="{{$index}}">
+                                <label for="">{{templateTypeItem}}</label>
                             </div>
                         </div>             
                     </div>
@@ -278,9 +270,9 @@
             </div>
 
             <div class="paper-footer">
-                <a href="javascript:void(0)" class="btn-cancel"></a>
-                <a href="javascript:void(0)" class="btn-preview"></a>
-                <a href="javascript:void(0)" class="btn-save"></a>
+                <a href="javascript:void(0)" class="btn-cancel" ng-click="onCancelTemplate($index, $event)"></a>
+                <a href="javascript:void(0)" class="btn-preview" ng-click="onPreviewTemplate($index, $event)"></a>
+                <a href="javascript:void(0)" class="btn-save" ng-click="onSaveTemplate($index, $event)"></a>
             </div>
         </div>
     </div>

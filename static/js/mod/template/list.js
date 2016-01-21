@@ -1,5 +1,7 @@
 (function() {
     var phonecatApp = angular.module('reimApp', []);
+    var _fieldCountLimit_ = 6;
+    var _templateTypes_ = null;
     var _defaultColumnEditConfig_ = {
         "explanation": "",
         "name": "起始地点",
@@ -65,10 +67,32 @@
                 function($http, $scope) {
                     // init edit config
                     $scope.templateEditMap = {};
+                    
+                    function loadPageData() {
+                        $.when(
+                            Utils.api('/company/get_template_list'),
+                            Utils.api('/company/get_template_types')
+                        ).done(function (rsTemplate, rsTypes) {
+                            $scope.$apply(function  () {
+                                $scope.templateTypeArray = rsTypes;
+                                $scope.templateArray = rsTemplate['data'];
+                            });
+                        })
+                    };
 
-                    $http.get('/company/get_template_list').success(function(rs) {
-                        $scope.templateArray = rs['data'];
-                    });
+                    loadPageData();
+
+                    // compute here
+                    $scope.isTypeChecked = function  (index, templateData) {
+                        if(templateData['type'].indexOf(index+'')!=-1) {
+                            return true
+                        } else {
+                            return false
+                        }
+                    };
+
+                    // events here
+                    
                     $scope.onAccordionTemplate = function(item, $index, e) {
                         var $targetEle = angular.element(e.target);
                         var $templateItem = $targetEle.parent().parent().parent();
@@ -145,13 +169,19 @@
                     };
 
                     $scope.onAddColumnEditConfig = function (data, e, index) {
+                        if($scope.templateEditMap[data.id][index].children.length > _fieldCountLimit_ - 1) {
+                            return alert('字段不能超过' + _fieldCountLimit_ + ' 个');
+                        }
                         $scope.templateEditMap[data.id][index].children.push(angular.copy(_defaultColumnEditConfig_));
                     };
                     $scope.onAddTableConfig = function (data, e, index) {
+                        
+                        if($scope.templateEditMap[data.id] && $scope.templateEditMap[data.id].length >=1) {
+                            return show_notify('请处理完已有字段组');
+                        }
                         if(!$scope.templateEditMap[data.id]) {
                             return ($scope.templateEditMap[data.id] = [angular.copy(_defaultTableEditConfig_)]);
                         }
-                        debugger
                         $scope.templateEditMap[data.id].push(angular.copy(_defaultTableEditConfig_));
                     };
                     $scope.onRemoveColumnEditConfig = function(data, e, columnIndex, tableIndex) {
@@ -162,16 +192,43 @@
                         table.children.splice(columnIndex, 1);                        
                     };
 
-                    $scope.onSaveColumnEditConfig = function  () {
-                        alert('功能还在开发中');
-                    }
-                    $scope.onCancelColumnEditConfig = function  () {
-                        alert('功能还在开发中');
-                    }
+                    $scope.onRemoveTable = function  (data, e, tableIndex, templateIndex) {
+                        $scope.templateArray[templateIndex].config.splice(tableIndex, 1);
+                    };
 
-                    $scope.getUID = function  (e) {
-                        return Utils.uid();
-                    }
+
+
+                    $scope.onSaveColumnEditConfig = function (templateData, e, tableEditIndex, templateIndex) {
+                        // 1. do check //over
+                        // 2. get old data
+                        // 3. read edit data
+                        // 4. reset view state
+
+                        var templateEditTableArray = $scope.templateEditMap[templateData.id];
+                        templateEditTableArray = angular.copy(templateEditTableArray);
+
+                        var data = angular.copy(templateData);
+                        data.config.push.apply(data.config, templateEditTableArray);
+
+                        Utils.api('/company/doupdate_report_template', {
+                            method: "post",
+                            data: {
+                                temp_info: data
+                            }
+                        }).done(function  (rs) {
+                            if(rs['status'] <= 0) {
+                                return show_notify(rs['msg']);
+                            }
+                            $scope.$apply(function  (e) {
+                                $scope.templateArray[templateIndex].config.push(templateEditTableArray[tableEditIndex]);
+                                $scope.templateEditMap[data.id].splice(tableEditIndex, 1);
+                            });
+                        });
+                    };
+
+                    $scope.onCancelColumnEditConfig = function(data, e, columnIndex, tableIndex) {
+                        alert('功能还在开发中');
+                    };
 
                 }
             ]);

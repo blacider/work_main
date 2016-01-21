@@ -14,6 +14,13 @@
 			  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
 			    s4() + '-' + s4() + s4() + s4();
 		},
+		size: function  (obj) {
+			var count = 0;
+			for(var i in obj) {
+				count++;
+			}
+			return count;
+		},
 		queryString: function(str) {
 			if (typeof str !== 'string') {
 				return {};
