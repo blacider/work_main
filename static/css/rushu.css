@@ -1,3 +1,26 @@
+/* placeholder color */
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #ddd !important;
+}
+
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #ddd  !important;
+    opacity:  1;
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #ddd !important;
+    opacity:  1;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:    #ddd !important;
+}
+
+:placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
+    color:    #ddd !important;
+}
+
 .footer {
     border-top: 1px solid;
     border-color: #d8d8d8;

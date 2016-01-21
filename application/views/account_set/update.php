@@ -47,7 +47,7 @@ if($last_error) {
 
                             function showSob(sobId) {
                                 if (sobId != -1) {
-                                    var extra_type = all_categories[sobId]['extra_type'],name = all_categories[sobId]['name'], note = all_categories[sobId]['note'],force_attach=all_categories[sobId]['force_attach'],code = all_categories[sobId]['sob_code'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'], name = all_categories[sobId]['name'], max_limit = all_categories[sobId]['max_limit'], pid = all_categories[sobId]['pid'],alias_type=all_categories[sobId]['alias_type'];
+                                    var name = all_categories[sobId]['name'], note = all_categories[sobId]['note'],code = all_categories[sobId]['sob_code'], img = all_categories[sobId]['avatar'], id = all_categories[sobId]['id'], name = all_categories[sobId]['name'], max_limit = all_categories[sobId]['max_limit'], pid = all_categories[sobId]['pid'],alias_type=all_categories[sobId]['alias_type'];
                                     $("#form_moda").find('input[name="name"]').val(name);
                                     $("#menuImg").attr('src', img);
                                     $('#form_moda').find('input[name="avatar"]').val(all_categories[sobId]['avatar_']);
@@ -58,18 +58,6 @@ if($last_error) {
                                     $("#form_moda").find('input[name="pid"]').val(pid);
                                     $("#form_moda").find('select[name="alias_type"]').val(alias_type).attr('selected',true).trigger('chosen:updated');
 
-                                    if(force_attach == 1)
-                                    {
-                                        $("#form_moda").find('input[name="force_attach"]').attr('checked',force_attach).trigger('chosen:updated');
-                                    } else {
-                                        $("#form_moda").find('input[name="force_attach"]').removeAttr('checked').trigger('chosen:updated');
-                                    }
-
-
-                                    if(extra_type)
-                                    {
-                                         $("#form_moda").find('select[name="extra_type"]').val(extra_type).attr('selected',true).trigger('chosen:updated');
-                                    }
                                 }
                                 $('#modal_sob').modal('show');
                             }
@@ -347,15 +335,6 @@ if($last_error) {
 
 
         <div class="form-group" style="height:30px">
-            <label class="col-sm-3 control-label no-padding-right">是否需要照片</label>
-                                <div class="col-xs-6 col-sm-6">
-                                        <label style="margin-top:8px;">
-                                            <input name="force_attach" class="ace ace-switch btn-rotate" type="checkbox" id="force_attach" style="margin-top:4px;" />
-                                            <span class="lbl"></span>
-                                        </label>
-                                </div>
-        </div>
-        <div class="form-group" style="height:30px">
             <label class="col-sm-2 col-xl-2">图片</label>
             <div class="dropdown col-sm-3 col-xl-3">
                 <div class="dropdown-toggle down-image" data-toggle="dropdown" id="dropdownMenuImg">
@@ -380,19 +359,6 @@ if($last_error) {
 	    <input id="max_limit" name="max_limit" type="number" date-placeholder="请输入类别限额" value="0" />
 	</div>
 
-     <div class="form-group" style="height:30px;">
-                    <label class="col-sm-2 control-label no-padding-right">特殊配置 </label>
-                                <div class="col-sm-4"  style="padding:0;">
-                                    <select class="chosen-select-niu tag-input-style" style="width:95%;" id="extra_type" name="extra_type" data-placeholder="配置类型" >
-
-                                        <option value='0'>无</option>
-                                        <option value='2'>时间段</option>
-                                        <option value='5'>人均属性</option>
-
-                                    </select>
-                    </div>
-                   
-        </div>
 
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类别ID</label>
@@ -457,15 +423,6 @@ if($last_error) {
         </div>
             
         <div class="form-group" style="height:30px">
-            <label class="col-sm-3 control-label no-padding-right">是否需要照片</label>
-                                <div class="col-xs-6 col-sm-6">
-                                        <label style="margin-top:8px;">
-                                            <input name="force_attach" class="ace ace-switch btn-rotate" type="checkbox" id="force_attach" style="margin-top:4px;" />
-                                            <span class="lbl"></span>
-                                        </label>
-                                </div>
-        </div>
-        <div class="form-group" style="height:30px">
             <label class="col-sm-2 col-xl-2">图片</label>
             <div class="dropdown col-sm-3 col-xl-3">
                 <div class="dropdown-toggle down-image" data-toggle="dropdown" id="dropdownMenuImg_">
@@ -491,19 +448,6 @@ if($last_error) {
             <input id="max_limit" name="max_limit" type="number" data-placeholder="请输入限额" value="0" />
         </div>
 
-        <div class="form-group" style="height:30px;">
-                    <label class="col-sm-2 control-label no-padding-right">特殊配置</label>
-                                <div class="col-sm-4" style="padding:0;">
-                                    <select class="chosen-select-niu tag-input-style" style="width:95%" id="extra_type" name="extra_type" data-placeholder="配置类型" >
-
-                                        <option value='0'>无</option>
-                                        <option value='2'>时间段</option>
-                                        <option value='5'>人均属性</option>
-
-                                    </select>
-                    </div>
-
-        </div>
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类别代码</label>
             <input name="code" type="text" data-placeholder="请输入名称"></div>

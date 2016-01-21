@@ -377,12 +377,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <b class="arrow"></b>
         </li>
 
-        <li class="hsub" id="tags">
-        <a href="<?php echo base_url('category/tags'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 标签管理 </a>
-        <b class="arrow"></b>
-        </li>
-
-
         <li class="hsub" id="show_expense">
         <a href="<?php echo base_url('category/show_expense'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 费用承担对象管理</a>
         <b class="arrow"></b>
@@ -431,7 +425,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <b class="arrow"></b>
             <ul class="submenu rushumenu submenu_custom">
                 <li id="custom_item">
-                    <a href="<?php echo base_url('company/custom_item'); ?>" >  消费字段设置 </a>
+                    <a href="<?php echo base_url('company/item_customization'); ?>" >  消费字段自定义 </a>
                     <b class="arrow"></b>
                 </li> 
 
