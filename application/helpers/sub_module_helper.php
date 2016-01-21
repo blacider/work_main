@@ -16,7 +16,7 @@
         return implode('/',$path_list) . $pathname . $extention;
     }
 
-    function get_sub_weget($pathname,$data = array())
+    function get_sub_widget($pathname,$data = array())
     {
          extract($data);
          include get_sub_module($pathname); 

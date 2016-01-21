@@ -221,7 +221,7 @@ $(document).ready(function(){
                     $load_data['sob_id'] = $sob_id;
                 }
                     
-                get_sub_weget($item_type_view_dic[$ic['type']],$load_data);
+                get_sub_widget($item_type_view_dic[$ic['type']],$load_data);
             }
         }
     }
