@@ -9,19 +9,13 @@
 <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 <div class="page-content">
 <div class="page-content-area">
-<?php
-    $_config = '';
-    if(array_key_exists('config',$profile['group']))
-    {
-        $_config = $profile['group']['config'];
-    }
-    $__config = json_decode($_config,True);
-?>
 <form role="form" action="<?php echo base_url('items/create');  ?>" method="post" class="form-horizontal"  enctype="multipart/form-data" id="itemform">
 <div class="row">
 <div class="col-xs-12 col-sm-12">
+<?php echo $html_company_config;?>
+<?php echo $html_item_config;?>
 <?php
-    if($__config && array_key_exists('open_exchange', $__config) && $__config['open_exchange'] == '1')
+    if($company_config['open_exchange'])
     {
 ?>
 <div class="form-group">
@@ -224,13 +218,13 @@
 <select class="form-control" name="type" data-placeholder="请选择类型">
 <option value="0"><?php echo $item_type_dic[0];?></option>
 <?php 
-if($__config && $__config['disable_budget']=='0')
+if(!$company_config['disable_borrow'])
 {
 ?>
 <option value="1"><?php echo $item_type_dic[1]; ?></option>
 <?php
 }
-if($__config && $__config['disable_borrow'] == '0')
+if(!$company_config['disable_budget'])
 {
 ?>
 <option value="2"><?php echo $item_type_dic[2]; ?></option>
@@ -241,20 +235,6 @@ if($__config && $__config['disable_borrow'] == '0')
 </div>
 </div>
 
-<?php
-foreach($item_config as $s) {
-    if($s['cid'] == -1  && $s['type'] == 1 && $s['active'] == 1) {
-?>
-<div class="form-group">
-<label class="col-sm-1 control-label no-padding-right"><?php echo $s['name']; ?></label>
-<div class="col-xs-6 col-sm-6">
-<textarea data-type="<?php echo $s['id']; ?>" name="extra_<?php echo $s['id']; ?>" id="note_2_c" class="col-xs-12 col-sm-12  extra_textarea form-controller" ></textarea>
-</div>
-</div>
-<?php
-    }
-}
-?>
 
 <input type="hidden" name="hidden_extra" id="hidden_extra" value="">
 <div class="form-group">
@@ -299,6 +279,7 @@ foreach($item_config as $s) {
     </div>
 </div>
 
+</div>
 </div>
 
 <input type="hidden" id="renew" value="0" name="renew">
@@ -485,18 +466,16 @@ var typed_currency = [];
 
 var ifUp = 1;
 var __BASE = "<?php echo $base_url; ?>";
-var config = '<?php echo $_config?>';
+var __config = $('#company_config').data('value');
+console.log(__config);
 var subs = "<?php echo $profile['subs'];?>";
-var __item_config = '<?php echo json_encode($item_config);?>';
+var __item_config = $('#item_config').data('value');
+console.log(__item_config);
 
 var item_config = [];
 if(__item_config != '')
 {
-    try{
-        item_config = JSON.parse(__item_config);
-    }catch(e){
-       
-    }
+  item_config = __item_config;
 }
 
 var _item_config = new Object();
@@ -507,11 +486,7 @@ for(var i = 0 ; i < item_config.length; i++)
     }
 }
 
-var __config = '';
-if(config != '')
-{
-    __config = JSON.parse(config);
-}
+
 var not_auto_note = "";
 var flag = 0;
 function initUploader() {

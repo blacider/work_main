@@ -117,6 +117,7 @@ class User_Model extends Reim_Model {
             $profile = &$obj['data']['profile'];
             $this->session->set_userdata('profile', $profile);
         }
+        log_message('debug','dologin_back:' . json_encode($obj));
         return $obj;
     }
 

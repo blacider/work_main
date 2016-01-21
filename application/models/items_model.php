@@ -74,20 +74,11 @@ class Items_Model extends Reim_Model {
         $obj = json_decode($buf, true);
         return $obj;
     }
-    public function update_item($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '',$currency,$rate){
+    public function update_item($id,$opts){
         $items = array();
-        $s = array(
-        array('type' => 1,'val' => $category)
-        ,array('type' => 2,'val' => $note)
-        ,array('type' => 3,'val' => $tags)
-        ,array('type' => 4,'val' => $merchant)
-        ,array('type' => 6,'val' => $amount,'currency' => $currency , 'rate' => $rate)
-        ,array('type' => 8,'val' => $dt)
-        ,array('type' => 9,'val' => $extra)
-        );
         $data = array(
               "iid" => $id
-              ,"opts" => json_encode($s)
+              ,"opts" => json_encode($opts)
              );
         $jwt = $this->session->userdata('jwt');
         $url = $this->get_url('update_item');
@@ -170,29 +161,31 @@ class Items_Model extends Reim_Model {
     }
 
 
-    public function create($amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '', $afford_ids = -1,$attachments,$currency){
+    public function create($data)
+    {
         $items = array();
         $s = array(
             'local_id' => 1,
-            'category' => $category,
-            'amount' => $amount,
-            'category' => $category,
-            'uids' => $uids,
-            'prove_ahead' => $type,
-            'afford_ids' => $afford_ids,
-            'image_id' => $images,
-            'dt' => $dt,
-            'note' => $note,
+            'category' => $data['category'],
+            'amount' => $data['amount'],
+            'uids' => $data['uids'],
+            'prove_ahead' => $data['type'],
+            'afford_ids' => $data['afford_ids'],
+            'image_id' => $data['images'],
+            'dt' => $data['dt'], 
+            'end_dt' => $data['end_dt'], 
+            'note' => $data['note'],
             'reimbursed' => 1,
-            'tags' => $tags,
+            'tags' => $data['tags'], 
             'location' => '',
             'latitude' => 0,
             'longitude' => 0,
-            'merchants' => $merchant,
-            'attachment_ids' => $attachments,
+            'merchants' => $data['merchant'],
+            'attachment_ids' => $data['attachments'],
             'type' => 1,
-            'currency' => $currency,
-        'extra' => $extra);
+            'currency' => $data['currency'],
+            'customization' => $data['customization']
+        );
         array_push($items, $s);
         $data = array('items' => json_encode($items));
         $jwt = $this->session->userdata('jwt');
@@ -228,30 +221,32 @@ class Items_Model extends Reim_Model {
 
     }
 
-    public function update($id, $amount, $category, $tags, $dt, $merchant, $type, $note, $images,$extra, $uids = '',$fee_afford_ids=-1,$attachments,$currency){
+    public function update($data){
         $items = array();
         $s = array(
+            'id' => $data['id'],
             'local_id' => 1,
-            'id' => $id,
-            'category' => $category,
-            'amount' => $amount,
-            'category' => $category,
-            'uids' => $uids,
-            'prove_ahead' => $type,
-            'image_id' => $images,
-            'dt' => $dt,
-            'note' => $note,
+//<<<<<<< HEAD
+            'category' => $data['category'],
+            'amount' => $data['amount'],
+            'uids' => $data['uids'],
+            'prove_ahead' => $data['type'],
+            'afford_ids' => $data['afford_ids'],
+            'image_id' => $data['images'],
+            'dt' => $data['dt'], 
+            'end_dt' => $data['end_dt'], 
+            'note' => $data['note'],
             'reimbursed' => 1,
-            'tags' => $tags,
+            'tags' => $data['tags'], 
             'location' => '',
             'latitude' => 0,
             'longitude' => 0,
-            'merchants' => $merchant,
-            'attachment_ids' => $attachments,
+            'merchants' => $data['merchant'],
+            'attachment_ids' => $data['attachments'],
             'type' => 1,
-            'afford_ids' => $fee_afford_ids,
-            'currency' => $currency,
-        'extra' => $extra);
+            'currency' => $data['currency'],
+            'customization' => $data['customization']
+        );
         array_push($items, $s);
         $data = array('items' => json_encode($items));
         $jwt = $this->session->userdata('jwt');

@@ -14,6 +14,107 @@ class Reports extends REIM_Controller {
         $this->load->helper('report_view_utils');
     }
 
+    public function get_report_comments($report)
+    {
+        $comments = array();
+        if(array_key_exists('comments',$report))
+        {
+            $comments = $report['comments']['data'];
+        }
+        foreach($comments as &$comment)
+        {
+            $comment['lastdt'] = date('Y-m-d H:i:s',$comment['lastdt']);
+        }
+        return $comments;
+    }
+
+    public function get_report_flow($id,$report)
+    {
+        $_flow = $this->reports->report_flow($id, 1);
+
+        $_ts = '';
+        log_message("debug", "Rreport" . json_encode($report));
+        if($report['createdt'] > 0) {
+            $_ts = date('Y-m-d H:i:s', $report['createdt']);
+        }
+
+        //获取全体员工
+        $group = $this->groups->get_my_list();
+        $ginfo = array();
+        $gmember = array();
+        if($group) {
+            if(array_key_exists('ginfo', $group['data'])){
+                $ginfo = $group['data']['ginfo'];
+            }
+            if(array_key_exists('gmember', $group['data'])){
+                $gmember = $group['data']['gmember'];
+            }
+            $gmember = $gmember ? $gmember : array();
+        }
+        $members_dic = array();
+        foreach($gmember as $mem)
+        {
+            $members_dic[$mem['id']] = $mem['nickname'];
+        }
+        log_message("debug","all_members:" . json_encode($members_dic));
+        // 先找到提交的信息
+        // 昵称，审核意见，时间，step
+        log_message("debug", 'flow data:' . json_encode($_flow));
+        
+        $sliced_flow = array();
+        if($_flow['status'] == 1) {
+            // 分组
+            $last_group = null;
+            $last_slice = array();
+
+            $_flows = $_flow['data']['data'];
+            // step 升序
+            usort($_flows, function($a, $b) { return $a['step'] - $b['step']; });
+
+            foreach($_flows as $s) {
+                $group = 0;
+                if ($s['ticket_type'] == 1) {
+                    $group = 1;
+                }
+
+                if (is_null($last_group)) {
+                    $last_group = $group;
+                } else if ($last_group !== $group) {
+                    array_push($sliced_flow, $last_slice);
+                    $last_group = $group;
+                    $last_slice = array();
+                }
+
+                $_ts = '';
+                if($s['udt'] != '0') {
+                    $_ts = date('Y-m-d H:i:s', $s['udt']);
+                }
+
+                $s['wingman_name'] = '';
+                log_message("debug","wingman:" . $s['wingman']);
+                if(array_key_exists('wingman',$s)) {
+                    if(array_key_exists($s['wingman'],$members_dic)) {
+                       $s['wingman_name'] = $members_dic[$s['wingman']];
+                    }
+                }
+
+                array_push($last_slice, array(
+                    'group' => $group,
+                    'status' => $s['status_text'],
+                    'nickname' => $s['nickname'],
+                    'ts' => $_ts,
+                    'step' => $s['step'],
+                    'wingman' => $s['wingman_name'],
+                    'ticket_type' => $s['ticket_type'],
+                ));
+            }
+
+            if (!empty($last_slice)) {
+                array_push($sliced_flow, $last_slice);
+            }
+        }
+        return $sliced_flow;
+    }
     public function confirm_success()
     {
         $rid = $this->input->post('rid');
@@ -446,11 +547,24 @@ class Reports extends REIM_Controller {
         log_message('debug','report:' . json_encode($report));
         log_message('debug','extra:' . json_encode($extra));
         log_message('debug','config:' . json_encode($config));
+
+        //评论模块数据
+        $comments = $this->get_report_comments($report);
+        //报告流信息
+        $flow = $this->get_report_flow($id,$report);
+
+        $template_views = array();
+        array_push($template_views,'module/reports/report_flow');
+        array_push($template_views,'module/reports/comments');
+        array_push($template_views,'module/reports/edit_report_footer');
         $this->bsload('reports/edit',
             array(
                 'title' => '修改报销单',
                 'members' => $_members,
+                'flow' => $flow,
+                'rid' => $id,
                 'items' => $_items,
+                'comments' => $comments,
                 'config' => $config,
                 'extra' => $extra,
                 'banks' => $banks,
@@ -462,25 +576,25 @@ class Reports extends REIM_Controller {
                     ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
                     ,array('url'  => '', 'name' => '修改报销单', 'class' => '')
                 ),
-            ));
+            ),
+            $template_views
+            );
     }
     public function show($id = 0, $decision = 0){
         $item_type_dic = $this->reim_show->get_item_type_name();
         if($id == 0) return redirect(base_url('reports/index'));
-        $report = $this->reports->get_detail($id);
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
 
+        $report = $this->reports->get_detail($id);
         if($report['status'] <= 0){
             return redirect(base_url('reports/index'));
         }
         $report = $report['data'];
 
-        $comments = $report['comments']['data'];
-        foreach($comments as &$comment)
-        {
-            $comment['lastdt'] = date('Y-m-d H:i:s',$comment['lastdt']);
-        }
+        //报告评论模块
+        $comments = $this->get_report_comments($report);
+
         $_managers = array();
         foreach($report['receivers']['managers'] as $m){
             array_push($_managers, $m['nickname']);
@@ -503,90 +617,7 @@ class Reports extends REIM_Controller {
         } else {
             $report['receivers']['cc'] = ' ';
         }
-        $_flow = $this->reports->report_flow($id, 1);
-
-        $_ts = '';
-        log_message("debug", "Rreport" . json_encode($report));
-        if($report['createdt'] > 0) {
-            $_ts = date('Y-m-d H:i:s', $report['createdt']);
-        }
-
-        //获取全体员工
-        $group = $this->groups->get_my_list();
-        $ginfo = array();
-        $gmember = array();
-        if($group) {
-            if(array_key_exists('ginfo', $group['data'])){
-                $ginfo = $group['data']['ginfo'];
-            }
-            if(array_key_exists('gmember', $group['data'])){
-                $gmember = $group['data']['gmember'];
-            }
-            $gmember = $gmember ? $gmember : array();
-        }
-        $members_dic = array();
-        foreach($gmember as $mem)
-        {
-            $members_dic[$mem['id']] = $mem['nickname'];
-        }
-        log_message("debug","all_members:" . json_encode($members_dic));
-        // 先找到提交的信息
-        // 昵称，审核意见，时间，step
-        log_message("debug", 'flow data:' . json_encode($_flow));
-        
-        $sliced_flow = array();
-        if($_flow['status'] == 1) {
-            // 分组
-            $last_group = null;
-            $last_slice = array();
-
-            $_flows = $_flow['data']['data'];
-            // step 升序
-            usort($_flows, function($a, $b) { return $a['step'] - $b['step']; });
-
-            foreach($_flows as $s) {
-                $group = 0;
-                if ($s['ticket_type'] == 1) {
-                    $group = 1;
-                }
-
-                if (is_null($last_group)) {
-                    $last_group = $group;
-                } else if ($last_group !== $group) {
-                    array_push($sliced_flow, $last_slice);
-                    $last_group = $group;
-                    $last_slice = array();
-                }
-
-                $_ts = '';
-                if($s['udt'] != '0') {
-                    $_ts = date('Y-m-d H:i:s', $s['udt']);
-                }
-
-                $s['wingman_name'] = '';
-                log_message("debug","wingman:" . $s['wingman']);
-                if(array_key_exists('wingman',$s)) {
-                    if(array_key_exists($s['wingman'],$members_dic)) {
-                       $s['wingman_name'] = $members_dic[$s['wingman']];
-                    }
-                }
-
-                array_push($last_slice, array(
-                    'group' => $group,
-                    'status' => $s['status_text'],
-                    'nickname' => $s['nickname'],
-                    'ts' => $_ts,
-                    'step' => $s['step'],
-                    'wingman' => $s['wingman_name'],
-                    'ticket_type' => $s['ticket_type'],
-                ));
-            }
-
-            if (!empty($last_slice)) {
-                array_push($sliced_flow, $last_slice);
-            }
-        }
-
+        $sliced_flow = $this->get_report_flow($id,$report);
         log_message("debug","*********:".json_encode($report));
         $_type= get_report_type_str($item_type_dic,$report['prove_ahead'],$report['pa_approval']);
         $report['prove_ahead'] =  $_type;
@@ -645,6 +676,7 @@ class Reports extends REIM_Controller {
                 }
             }
         }
+        
 
         $this->bsload('reports/view',
             array(
@@ -666,7 +698,8 @@ class Reports extends REIM_Controller {
                     ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
                     ,array('url'  => '', 'name' => '查看报销单', 'class' => '')
                 ),
-            ));
+            )
+            );
     }
 
     public function update(){
@@ -700,35 +733,6 @@ class Reports extends REIM_Controller {
                 log_message('debug','time:' . $ex['value']);
             }
 
-        /*
-            $_account = $this->input->post('account');
-            $_account_name = $this->input->post('account_name');
-            $_account_no = $this->input->post('account_no');
-            $_payment = $this->input->post('payment');
-            $_borrowing = $this->input->post('borrowing');
-            $_location_from = $this->input->post('location_from');
-            $_location_to = $this->input->post('location_to');
-            $_period_start = $this->input->post('period_start');
-            $_period_end = $this->input->post('period_end');
-            $_contract = $this->input->post('contract');
-            $_contract_note = $this->input->post('contract_note');
-            $_note = $this->input->post('note');
-            //$_contract = $_contract == 2 ? 0 : 1;
-            $extra = array(
-                'template_id' => $template_id
-                ,'borrowing' => $_borrowing
-                ,'account' => array(
-                    'id' => $_account
-                    ,'name' => $_account_name
-                    ,'no' => $_account_no
-                )
-                ,'payment' => $_payment
-                ,'period' => array('start' => $_period_start, 'end' => $_period_end)
-                ,'location' => array('start' => $_location_from, 'dest' => $_location_to)
-                ,'contract' => array('available' => $_contract, 'note' => $_contract_note)
-                ,'note' => $_note
-            );
-            */
         }
         $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items), $type, $save, $force, $extra , $template_id);
         $ret = json_decode($ret, true);
