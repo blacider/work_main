@@ -677,7 +677,6 @@ class Reports extends REIM_Controller {
             }
         }
         
-        $template_views = array();
 
         $this->bsload('reports/view',
             array(
@@ -699,8 +698,7 @@ class Reports extends REIM_Controller {
                     ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
                     ,array('url'  => '', 'name' => '查看报销单', 'class' => '')
                 ),
-            ),
-            $template_views
+            )
             );
     }
 
