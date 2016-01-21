@@ -54,9 +54,9 @@ class Items extends REIM_Controller {
         {
             $template_views = ['item_amount','item_category','item_time','item_affiliated_person','item_fee_afford','item_seller','item_tags','item_custom_types','item_notes','item_picture','item_attachments','item_footer'];
             foreach($template_views as &$tv)
-	        {
-	            $tv = $prefix . $tv; 
-	        }
+            {
+                $tv = $prefix . $tv; 
+            }
             return $template_views;
         }
 
@@ -64,46 +64,23 @@ class Items extends REIM_Controller {
         {
             if(!$ic['enabled'])
                 continue;
-            $view_name = '';
-            switch($ic['type']) 
-            {
-                case 1:
-                    $view_name = 'item_amount'; 
-                    break;
-                case 3:
-                    $view_name = 'item_category';
-                    break;
-                case 4:
-                    $view_name = 'item_time';
-                    break;
-                case 5:
-                    $view_name = 'item_time_period';
-                    break;
-                case 6:
-                    $view_name = 'item_affiliated_person';
-                    break;
-                case 7:
-                    $view_name = 'item_fee_afford';
-                    break;
-                case 8:
-                    $view_name = 'item_seller';
-                    break;
-                case 9:
-                    $view_name = 'item_tags';
-                    break;
-                case 10:
-                    $view_name = 'item_custom_types';
-                    break;
-                case 11:
-                    $view_name = 'item_notes';
-                    break;
-                case 12:
-                    $view_name = 'item_picture';
-                    break;
-                case 13:
-                    $view_name = 'item_attachments';
-                    break;
-            }
+            $d = array(
+                1 => 'item_amount',
+                3 => 'item_category',
+                4 => 'item_time',
+                5 => 'item_time_period',
+                6 => 'item_affiliated_person',
+                7 => 'item_fee_afford',
+                8 => 'item_seller',
+                9 => 'item_tags',
+                10 => 'item_custom_types',
+                11 => 'item_notes',
+                12 => 'item_picture',
+                13 => 'item_attachments',
+            );
+            if(!array_key_exists($ic['type'],$d))
+                continue;
+            $view_name = $d[$ic['type']];
             if($view_name)
             {
                 array_push($template_views,$view_name);
@@ -111,10 +88,10 @@ class Items extends REIM_Controller {
         }
             
         array_push($template_views,'item_footer');
-	    foreach($template_views as &$tv)
-	    {
-	        $tv = $prefix . $tv; 
-	    }
+        foreach($template_views as &$tv)
+        {
+            $tv = $prefix . $tv; 
+        }
         return $template_views;
     }
 
@@ -1073,19 +1050,12 @@ class Items extends REIM_Controller {
         }
     }
 
-//<<<<<<< HEAD
     public function edit($id = 0 , $from_report = 0)
     {
         $this->edit_show($id,$from_report,1);
     }
 
     public function edit_show($id = 0, $from_report = 0,$page_type = 1,$flow = array()) {
-/*=======
-    public function edit($id = 0, $from_report = 0) {
-        $error = $this->session->userdata('last_error');
-        $this->session->unset_userdata('last_error');
->>>>>>> origin/master
-*/
         //获取消费类型字典
         $item_type_dic = $this->reim_show->get_item_type_name();
         log_message('debug','item_id' . $id);
@@ -1263,15 +1233,10 @@ class Items extends REIM_Controller {
         $this->bsload('module/items/item_header',
             array(
                 'title' => '修改消费'
-//<<<<<<< HEAD
                 ,'editable' => $editable
                 ,'page_type' => $page_type
                 ,'flow' => $flow
                 ,'html_item' => $html_item
-/*=======
-                ,'error' => $error
->>>>>>> origin/master
-*/
                 ,'categories' => $categories
                 ,'company_config' => $company_config
                 ,'html_company_config' => $html_company_config
@@ -1318,20 +1283,6 @@ class Items extends REIM_Controller {
         if($profile['id'] != $_uid){
             $item_update_in = 1;
         }
-        /*
-<<<<<<< HEAD
-=======
-
-        //自己修改数据不让改为0
-        if($item_update_in == 0 && $amount == 0)
-        {
-            $this->session->set_userdata('last_error','金额不能为0');
-            redirect(base_url('items/edit/' . $id));
-        }
-            
-        log_message("debug", "##UID  $_uid :" . $profile['id']);
->>>>>>> origin/master
-*/
 
         if($item_update_in != 0) {
             $input_data = array();
