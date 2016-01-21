@@ -238,20 +238,6 @@ class Items_Model extends Reim_Model {
             'note' => $data['note'],
             'reimbursed' => 1,
             'tags' => $data['tags'], 
-/*=======
-            'id' => $id,
-            'category' => $category,
-            'amount' => $amount,
-            'category' => $category,
-            'uids' => $uids,
-            'prove_ahead' => $type,
-            'image_id' => $images,
-            'dt' => $dt,
-            'note' => $note,
-            'reimbursed' => 1,
-            'tags' => $tags,
->>>>>>> origin/master
-*/
             'location' => '',
             'latitude' => 0,
             'longitude' => 0,
