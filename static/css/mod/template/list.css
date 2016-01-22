@@ -54,8 +54,20 @@
 	background: url("/static/img/mod/template/36/btn-trash.png") repeat-x;
 }
 
-.mod-reim-template .paper .paper-header .buttons .btn-accordion {
-    background: url("/static/img/mod/template/36/btn-up.png") repeat-x;
+.mod-reim-template .paper .paper-header .buttons .btn-accordion:hover {
+    background-image: url("/static/img/mod/template/36/btn-up.dark.png");
+}
+
+.mod-reim-template .paper.shrink .paper-header .buttons .btn-accordion:hover {
+    background-image: url("/static/img/mod/template/36/btn-down.dark.png");
+}
+
+.mod-reim-template .paper .paper-header .buttons .btn-trash:hover {
+	background-image: url("/static/img/mod/template/36/btn-trash.dark.png");
+}
+
+.mod-reim-template .paper .paper-header .buttons .btn-eye:hover {
+    background-image: url("/static/img/mod/template/36/btn-eye.dark.png");
 }
 
 .mod-reim-template .field-table-title .buttons .button {
@@ -69,6 +81,11 @@
 }
 .mod-reim-template .field-table-title .buttons .btn-drag:hover {
 	background-image: url("/static/img/mod/template/24/btn-drag.dark.png");
+	transform: rotate(360deg);
+	-webkit-transform: rotate(360deg);
+	-o-transform: rotate(360deg);
+	-moz-transform: rotate(360deg);
+	-ms-transform: rotate(360deg);
 }
 
 .mod-reim-template .paper .paper-content {
@@ -243,6 +260,18 @@
 }
 
 
+/*dragging ui*/
+.mod-reim-template .field-table.sortable-ghost {
+	visibility: hidden;
+}
+.mod-reim-template .field-table.sortable-chosen {
+	box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.30);
+	filter: progid:DXImageTransform.Microsoft.DropShadow(OffX=0, OffY=1, Color=#ff0000);
+	zoom: 1;
+	border: 1px solid rgba(0, 0, 0, 0.30);
+	border-bottom-width: 3px;
+	opacity: 1 !important;
+}
 /* field-table compoents */
 
 .field-table {
@@ -528,3 +557,11 @@
 }
 
  
+/*animation ui*/
+.transition {
+	transition: .3s linear all;
+	-webkit-transition: .3s linear all;
+	-o-transition: .3s linear all;
+	-moz-transition: .3s linear all;
+	-ms-transition: .3s linear all;
+}

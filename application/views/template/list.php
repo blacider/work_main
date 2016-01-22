@@ -18,31 +18,33 @@
                 <div class="title">
                     内容设置
                 </div>
-                <div class="field-table" ng-repeat="tableItem in templateItem.config">
-                    <div class="line"></div>
-                    <h4 class="field-table-title">{{tableItem.name}}
-                        <p class="buttons">
-                            <span class="button btn-trash" ng-click="onRemoveTable($event, $index, $parent.$index)"></span>
-                            <span class="button btn-edit" ng-click="onEditTable($event, $index, $parent.$index)"></span>
-                            <span class="button btn-drag" ng-click="onDragTable($event, $index, $parent.$index)"></span>
-                        </p>
-                    </h4>
-                    <div class="column-wrap table-layout">
-                        <h4 class="field-table-label table-cell"> 字段组 </h4>
-                        <div class="field-table-content table-cell">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th ng-repeat="tableColumn in tableItem.children">{{tableColumn.name}}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td ng-repeat="i in tableItem.children"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>               
+                <div class="table-container">
+                    <div class="field-table" ng-repeat="tableItem in templateItem.config">
+                        <div class="line"></div>
+                        <h4 class="field-table-title">{{tableItem.name}}
+                            <p class="buttons">
+                                <span class="button btn-trash" ng-click="onRemoveTable($event, $index, $parent.$index)"></span>
+                                <span class="button btn-edit" ng-click="onEditTable($event, $index, $parent.$index)"></span>
+                                <span class="button btn-drag transition" ng-click="onDragTable($event, $index, $parent.$index)"></span>
+                            </p>
+                        </h4>
+                        <div class="column-wrap table-layout">
+                            <h4 class="field-table-label table-cell"> 字段组 </h4>
+                            <div class="field-table-content table-cell">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th ng-repeat="tableColumn in tableItem.children">{{tableColumn.name}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td ng-repeat="i in tableItem.children"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>               
+                        </div>
                     </div>
                 </div>
                 <div class="field-group" ng-if="templateEditTableMap[templateItem.id]">
@@ -75,7 +77,7 @@
                                     <input type="checkbox" class="hidden" ng-value="">
                                     <label for="{{labelForId}}">必填</label>
                                 </div>
-                                <div class="button field table-cell">
+                                <div class="button field table-cell" ng-if="templateEditTableMap[templateItem.id].children.length>1">
                                     <p class="btn-trash" ng-click="onRemoveColumnEditConfig(templateItem, $event, $index, $parent.$index)"></p>
                                 </div>
                             </div>
@@ -84,8 +86,8 @@
                     <div class="field-group-footer">
                         <p class="buttons">
                             <span class="button btn-add" ng-click="onAddColumnEditConfig(templateItem, $event, $index)">添加字段</span>
-                            <span class="button btn-save" ng-click="onSaveColumnEditConfig(templateItem, $event, $index)">保存</span>
-                            <span class="button btn-cancel" ng-click="onCancelColumnEditConfig(templateItem, $event, $index)">取消</span>
+                            <span class="button btn-save" ng-click="onSaveColumnsEditConfig(templateItem, $event, $index)">保存</span>
+                            <span class="button btn-cancel" ng-click="onCancelColumnsEditConfig(templateItem, $event, $index)">取消</span>
                         </p>
                     </div>           
                 </div>
@@ -284,4 +286,5 @@
         </div>
     </div>
 </div>
+<script src="/static/js/libs/Sortable.min.js"></script>
 <script src="/static/js/mod/template/list.js"></script>

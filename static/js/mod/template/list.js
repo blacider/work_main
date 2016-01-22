@@ -143,18 +143,19 @@
 
     return {
         initialize: function() {
-            phonecatApp.controller('templateController', ["$http", "$scope",
-                function($http, $scope) {
+            phonecatApp.controller('templateController', ["$http", "$scope", "$element",
+                function($http, $scope, $element) {
                     // init edit config
                     // templateEditTableMap = {
                     //      '331313': { template id
                     //             type: '1'
+                    //             children: [col_0,...col_n]
                     //      }
                     // }
                     $scope.templateEditTableMap = {};
                     
                     function loadPageData() {
-                        $.when(
+                        return $.when(
                             Utils.api('/company/get_template_list'),
                             Utils.api('/company/get_template_types')
                         ).done(function (rsTemplate, rsTypes) {
@@ -171,8 +172,36 @@
                             });
                         })
                     };
+                    // 拖动后编辑，是大坑
+                    function makeTableSortable() {
+                        Sortable.create($element.find('.table-container')[0], {
+                            handle: ".btn-drag",
+                            draggable: '.field-table',
+                            animation: '150',
+                            ghostClass: 'sortable-ghost',
+                            chosenClass: "sortable-chosen",
+                            scroll: true,
+                            onStart: function  (e) {
+                                // body...
+                            },
+                            onEnd: function (e) {
+                                // 交换数组两个元素的位置
+                                if(e.newIndex === undefined) {
+                                    return
+                                }
+                                var templateIndex = $element.find('.paper').index($(e.target).parents('.paper'));
 
-                    loadPageData();
+                                var tableTransfer = $scope.templateArray[templateIndex].config.splice(e.oldIndex, 1);
+                                tableTransfer = tableTransfer[0];
+                                $scope.templateArray[templateIndex].config.splice(e.newIndex, 0, tableTransfer);
+                                
+                            }
+                        });
+                    };
+
+                    loadPageData().done(function  (rs) {
+                        makeTableSortable()
+                    });
 
                     // compute here
                     $scope.isTypeChecked = function  (index, templateData) {
@@ -250,6 +279,25 @@
                         $target.addClass('checked').siblings().removeClass('checked');
                     };
 
+                    $scope.onEditTable = function  (e, tableIndex, templateIndex) {
+                        var templateData = $scope.templateArray[templateIndex];
+                        var tableData = templateData.config[tableIndex];
+                        // 检测是否已经有编辑项目了
+                        if($scope.templateEditTableMap[templateData.id]) {
+                            return show_notify('请保存或取消正在编辑的字段组');
+                        }
+
+                        // 丢弃编辑项目，时候，回滚的位置的信息
+                        tableData['_EDIT_SWAP_'] = {
+                            type: 'update',
+                            templateIndex: templateIndex,
+                            tableIndex, tableIndex
+                        };
+
+                        $scope.templateArray[templateIndex].config.splice(tableIndex, 1);
+                        $scope.templateEditTableMap[templateData.id] = angular.copy(tableData);
+                    };
+
                     $scope.onAddTemplate = function() {
                         var templateData = angular.copy(_defaultTemplateConfig_);
                         $scope.templateArray.push(templateData);
@@ -273,9 +321,7 @@
                         }
                         if(!$scope.templateEditTableMap[data.id]) {
                             $scope.templateEditTableMap[data.id] = angular.copy(_defaultTableEditConfig_);
-                            return;
                         }
-                        $scope.templateEditTableMap[data.id].push(angular.copy(_defaultTableEditConfig_));
                     };
                     
                     $scope.onAddColumnEditConfig = function (data, e, index) {
@@ -344,7 +390,7 @@
 
                     };
 
-                    $scope.onSaveColumnEditConfig = function (templateData, e, templateIndex) {
+                    $scope.onSaveColumnsEditConfig = function (templateData, e, templateIndex) {
                         // 1. do check //over
                         // 2. get old data
                         // 3. read edit data
@@ -354,11 +400,13 @@
                         templateEditTable = angular.copy(templateEditTable);
 
                         var data = angular.copy(templateData);
-                        data.config.push.apply(data.config, templateEditTable);
+
+                        data.config.push(templateEditTable);
 
                         if(data.type.length == 0) {
                             data.type = ['0'];
                         }
+
                         Utils.api('/company/doupdate_report_template', {
                             method: "post",
                             data: {
@@ -380,8 +428,27 @@
                         $scope.templateEditTableMap[data.id] = null;
                     };
 
-                    $scope.onCancelColumnEditConfig = function(templateData, e, templateIndex) {
-                        alert('功能还在开发中');
+                    function putBackUpdatingTable($scope, tableData) {
+
+                    };
+
+                    $scope.onCancelColumnsEditConfig = function(templateData, e, templateIndex) {
+
+                        var tableData = $scope.templateEditTableMap[templateData.id];
+
+                        if(confirm('你真的要取消?')) {
+                            // 回滚
+                            var _edit_swap_ = tableData['_EDIT_SWAP_'];
+                            if(_edit_swap_ && _edit_swap_['type'] == 'update') {
+                                $scope.templateArray[_edit_swap_.templateIndex];
+                                delete tableData['_EDIT_SWAP_'];
+                                $scope.templateArray[templateIndex].config.splice(_edit_swap_.tableIndex, 0, tableData);
+                                $scope.templateEditTableMap[templateData.id] = null;
+                            } else {//丢弃
+                                $scope.templateEditTableMap[templateData.id] = null;
+                            }
+                            
+                        }
                     };
 
                     $scope.isCategoryByGroup = function  (e) {
