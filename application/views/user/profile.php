@@ -516,7 +516,7 @@ if(in_array($profile['admin'],[1,3,4])){
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">手机号</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input name="phone" type="text" class="form-controller col-xs-7" id="phone" placeholder="新手机号" />
+                                    <input name="phone" type="text" class="form-controller col-xs-7" minlength="11" maxlength="11" id="phone" placeholder="新手机号" />
                                 <a href="javascript:void(0)" style="margin-left:5px; <?php echo $visibilityStyle; ?>" class="btn btn-primary btn-sm getvcode" >获取验证码</a>
                                 </div>
                             </div>
@@ -924,15 +924,21 @@ if(in_array($profile['admin'],[1,3,4])){
                         //$('#phone_form').submit();
                         var _phone = $('#phone').val();
                         var _vcode = $('#vcode').val();
-                        var _vcode = $('#vcode').val();
                         var _self = this;
+                        if(_phone.length!=11) {
+                            return show_notify('请输入11位手机号码');
+                        }
+
+                        if(!/^(1)[0-9]{10,10}/.test(_phone)) {
+                            return show_notify('请输入合法的手机号');
+                        }
+
                         $.ajax({
                             url:__BASE+"users/update_phone",
                                 method:"POST",
                                 dataType:"json",
                                 data:{'phone':_phone,'vcode':_vcode, uid: user_id},
                                 success:function(data){
-                                    debugger;
                                     if(data.status==0 || data.status=='false')
                                     {
                                         show_notify(data.data.msg);
@@ -958,6 +964,15 @@ if(in_array($profile['admin'],[1,3,4])){
                     });
                     $('.getvcode').click(function(){
                         var _phone = $('#phone').val();
+
+                        if(_phone.length!=11) {
+                            return show_notify('请输入11位手机号码');
+                        }
+
+                        if(!/^(1)[0-9]{10,10}/.test(_phone)) {
+                            return show_notify('请输入合法的手机号');
+                        }
+
                         $.ajax({
                             url : __BASE + "users/getvcode",
                                 data : {'phone' : _phone},
