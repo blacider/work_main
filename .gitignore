@@ -2,6 +2,8 @@
 *.sw[opn]
 tags
 application/config/development
+application/config/testing
+application/config/production
 
 application/cache/*
 !application/cache/index.html
