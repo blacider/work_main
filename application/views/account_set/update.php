@@ -567,7 +567,10 @@ var range = "<?php echo $range?>";
             var sname = $('#sob_name').val();
             var sgroups = $('#group').val();
             //if(sname)
-         
+            if (sob_keys == null || sob_keys.length == 0) {
+                show_notify("请添加类别");
+                return false;
+            };
             if(sname == '')
             {
                 $('#sob_name').focus();
