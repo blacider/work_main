@@ -114,7 +114,6 @@ class Resetpwd extends REIM_Controller  {
                 
                 $jwt = $this->users->my_get_jwt($username, $pass);
 //                    $jwt = $this->get_jwt($cid, $pass);
-                log_message('cid:' . $cid . " pass:" .$pass );
                 $this->session->set_userdata('jwt',$jwt);
                 return redirect(base_url('install/newcomer'));
             }
