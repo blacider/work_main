@@ -39,13 +39,10 @@ class Bills extends REIM_Controller {
 
            $buf = $this->company->pass_report_finance($rid);
 
-           if($buf['status'] > 0)
-           {
+           if ($buf['status'] > 0) {
                 $this->session->set_userdata('last_error','已通过');
-           }
-           else
-           {
-                $this->session->set_userdata('last_error','已通过');
+           } else {
+                $this->session->set_userdata('last_error',$buf['data']['msg']);
            }
 
            return redirect('bills/finance_flow');
@@ -57,13 +54,10 @@ class Bills extends REIM_Controller {
         foreach ($ids as $rid) {
             $buf = $this->company->pass_report_finance($rid);
 
-            if($buf['status'] > 0)
-            {
+            if ($buf['status'] > 0) {
                 $this->session->set_userdata('last_error','已通过');
-            }
-            else
-            {
-                $this->session->set_userdata('last_error','已通过');
+            } else {
+                $this->session->set_userdata('last_error',$buf['data']['msg']);
             }
 
         }
