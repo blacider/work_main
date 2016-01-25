@@ -281,17 +281,20 @@
 
                     $scope.onEditTable = function  (e, tableIndex, templateIndex) {
                         var templateData = $scope.templateArray[templateIndex];
-                        var tableData = templateData.config[tableIndex];
+                        var tableData = angular.copy(templateData.config[tableIndex]);
+                        var originTableData = angular.copy(tableData);
                         // 检测是否已经有编辑项目了
                         if($scope.templateEditTableMap[templateData.id]) {
                             return show_notify('请保存或取消正在编辑的字段组');
                         }
 
-                        // 丢弃编辑项目，时候，回滚的位置的信息
+                        // 丢弃编辑项目，时候，回滚的位置的信息，并记录会滚信息
+                        
                         tableData['_EDIT_SWAP_'] = {
                             type: 'update',
                             templateIndex: templateIndex,
-                            tableIndex, tableIndex
+                            tableIndex, tableIndex,
+                            originTableData: originTableData
                         };
 
                         $scope.templateArray[templateIndex].config.splice(tableIndex, 1);
@@ -407,6 +410,8 @@
                             data.type = ['0'];
                         }
 
+
+
                         Utils.api('/company/doupdate_report_template', {
                             method: "post",
                             data: {
@@ -434,6 +439,7 @@
 
                     $scope.onCancelColumnsEditConfig = function(templateData, e, templateIndex) {
 
+
                         var tableData = $scope.templateEditTableMap[templateData.id];
 
                         if(confirm('你真的要取消?')) {
@@ -441,8 +447,8 @@
                             var _edit_swap_ = tableData['_EDIT_SWAP_'];
                             if(_edit_swap_ && _edit_swap_['type'] == 'update') {
                                 $scope.templateArray[_edit_swap_.templateIndex];
-                                delete tableData['_EDIT_SWAP_'];
-                                $scope.templateArray[templateIndex].config.splice(_edit_swap_.tableIndex, 0, tableData);
+
+                                $scope.templateArray[templateIndex].config.splice(_edit_swap_.tableIndex, 0, _edit_swap_.originTableData);
                                 $scope.templateEditTableMap[templateData.id] = null;
                             } else {//丢弃
                                 $scope.templateEditTableMap[templateData.id] = null;

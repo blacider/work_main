@@ -7,7 +7,7 @@
         </div>
         <div class="paper" ng-class="{shrink: !$first}" ng-repeat="templateItem in templateArray" data-id="{{templateItem.id}}">
             <div class="paper-header">
-                <input type="text" ng-model="templateItem.name">
+                <input type="text" ng-model="templateItem.name" onfocus="">
                 <p class="buttons">
                     <span class="button btn-eye" ng-click="onPreviewTemplate($index, $event)"></span>
                     <span class="button btn-trash" ng-click="onRemoveTemplate(templateItem, $index)"></span>
@@ -50,7 +50,7 @@
                 <div class="field-group" ng-if="templateEditTableMap[templateItem.id]">
                     <h4 class="field-group-title">
                         <div class="field-input">
-                            <input type="text" placeholder="字段组名称" ng-model="tableEditItem.name">
+                            <input type="text" placeholder="字段组名称" ng-model="templateEditTableMap[templateItem.id].name">
                         </div>
                     </h4>
                     <div class="column-wrap table-layout">
@@ -59,23 +59,23 @@
                             <div class="fields field-options table-layout" ng-repeat="editColumnItem in templateEditTableMap[templateItem.id].children">
                                 <div class="table-cell field-name">
                                     <div class="field-input field">
-                                        <input type="text" placeholder="字段名称" value="{{editColumnItem.name}}">
+                                        <input type="text" placeholder="字段名称" ng-model="editColumnItem.name">
                                     </div>
                                 </div>
                                 <div class="table-cell field-type">
                                     <div class="field-select field">
-                                        <select>
+                                        <select ng-model="editColumnItem.type">
                                             <option value="">类型</option>
-                                            <option value="">文本框</option>
-                                            <option value="">单选框</option>
-                                            <option value="">日期选择</option>
-                                            <option value="">银行账户</option>
+                                            <option value="1">文本框</option>
+                                            <option value="2">单选框</option>
+                                            <option value="3">日期时间</option>
+                                            <option value="4">银行账户</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="table-cell field-checkbox white" ng-class="{checked: editColumnItem.required}" ng-click="toggleCheckbox($event)">
-                                    <input type="checkbox" class="hidden" ng-value="">
-                                    <label for="{{labelForId}}">必填</label>
+                                <div class="table-cell field-checkbox white" ng-class="{checked: editColumnItem.required == '1'}" ng-click="toggleCheckbox($event)">
+                                    <input type="checkbox" class="hidden" ng-model="editColumnItem.required"  id="{{labelForEditColumnId}}_{{$index}}" ng-init="labelForEditColumnId = getUID()" ng-click="$event.stopPropagation();" ng-true-value="1" ng-false-value="0">
+                                    <label for="{{labelForEditColumnId}}_{{$index}}">必填</label>
                                 </div>
                                 <div class="button field table-cell" ng-if="templateEditTableMap[templateItem.id].children.length>1">
                                     <p class="btn-trash" ng-click="onRemoveColumnEditConfig(templateItem, $event, $index, $parent.$index)"></p>

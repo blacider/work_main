@@ -391,6 +391,9 @@
     display: inline-block;
     vertical-align: middle;
 }
+.field-group .field-group-rows .btn-trash:hover {
+	background-image: url("/static/img/mod/template/24/btn-trash.dark.png");
+}
 
 .field-group .field-group-footer {
     position: relative;
