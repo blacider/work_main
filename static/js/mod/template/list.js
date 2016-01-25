@@ -1,16 +1,17 @@
 (function() {
     var phonecatApp = angular.module('reimApp', []);
     var _fieldCountLimit_ = 6;
+    var _templateNameLengthLimit_ = 10;
     var _templateTypes_ = null;
     var _defaultColumnEditConfig_ = {
         "explanation": "",
-        "name": "起始地点",
+        "name": "",
         "required": "0",
         "type": "1",
         "id": "3"
     };
     var _defaultTableEditConfig_ = {
-        "name": "新的表格",
+        "name": "未命名报销单",
         "type": "0",
         "printable": "1",
         "children": [angular.copy(_defaultColumnEditConfig_)],
@@ -199,8 +200,13 @@
                         });
                     };
 
+                    function makeTitleAutoWidth () {
+                        $element.find('.paper-header input').autoGrowInput({minWidth: 30, maxWidth: 600});
+                    };
+
                     loadPageData().done(function  (rs) {
-                        makeTableSortable()
+                        makeTableSortable();
+                        makeTitleAutoWidth()
                     });
 
                     // compute here
@@ -211,6 +217,16 @@
                             return false
                         }
                     };
+
+                    $scope.setFocusEnd = function(e) {
+                        var str = e.target.value;
+                        if(str.length >=_templateNameLengthLimit_) {
+                            str = str.substr(0, _templateNameLengthLimit_)
+                        }
+
+                        e.target.value = str;
+                        // $(e.target).trigger('click')
+                    }
 
                     // events here
                     
@@ -315,7 +331,9 @@
                                 $scope.templateArray.pop();
                                 return show_notify(rs['msg']);
                             }
+                            makeTitleAutoWidth()
                         });
+
                     };
                     
                     $scope.onAddTableConfig = function (data, e, index) {

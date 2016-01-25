@@ -7,7 +7,8 @@
         </div>
         <div class="paper" ng-class="{shrink: !$first}" ng-repeat="templateItem in templateArray" data-id="{{templateItem.id}}">
             <div class="paper-header">
-                <input type="text" ng-model="templateItem.name" onfocus="">
+                <input type="text" ng-model="templateItem.name" ng-click="setFocusEnd($event)">
+                <span class="icon"></span>
                 <p class="buttons">
                     <span class="button btn-eye" ng-click="onPreviewTemplate($index, $event)"></span>
                     <span class="button btn-trash" ng-click="onRemoveTemplate(templateItem, $index)"></span>
@@ -145,51 +146,57 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>  
-                            <div class="field-table-content" style="margin-top: 20px;" ng-if="templateItem.is_category_by_group">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>日期</th>
-                                            <th>商家</th>
-                                            <th>人员</th>
-                                            <th>备注</th>
-                                            <th>金额</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>  
-                            <div class="field-table-content" style="margin-top: 20px;" ng-if="templateItem.is_category_by_group">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>日期</th>
-                                            <th>商家</th>
-                                            <th>人员</th>
-                                            <th>备注</th>
-                                            <th>金额</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>  
+                            </div>
+                            <div ng-if="templateItem.is_category_by_group">
+                                <h4 class="title-category">类目A</h4>
+                                <div class="field-table-content">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>日期</th>
+                                                <th>商家</th>
+                                                <th>人员</th>
+                                                <th>备注</th>
+                                                <th>金额</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div ng-if="templateItem.is_category_by_group">
+                                <h4 class="title-category">类目B</h4>
+                                <div class="field-table-content">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>日期</th>
+                                                <th>商家</th>
+                                                <th>人员</th>
+                                                <th>备注</th>
+                                                <th>金额</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div> 
+                            </div> 
                         </div>             
                     </div>
                 </div>
@@ -286,5 +293,6 @@
         </div>
     </div>
 </div>
+<script src="/static/js/libs/jquery.auto-grow-input.min.js"></script>
 <script src="/static/js/libs/Sortable.min.js"></script>
 <script src="/static/js/mod/template/list.js"></script>
