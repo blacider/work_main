@@ -277,6 +277,9 @@
             $("li[data-subid='_"+ subId +"']").remove()
             $('#modal_1').modal('hide');
         });
+        if (__dataUpload['type'].length == 0) {
+            __dataUpload['type'].push("0");
+        };
         $("#type").val(__dataUpload['type']).trigger("chosen:updated").change(function(event) {
             __dataUpload['type'] = $("#type").val();
         });
