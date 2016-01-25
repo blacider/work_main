@@ -8,7 +8,7 @@
 
     <label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
     <div class="col-xs-6 col-sm-6">
-        <input data-title="<?php echo $item_customization_value['title'];?>" type="text" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type need_check" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="金额">
+        <input data-title="<?php echo $item_customization_value['title'];?>" type="text" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type need_check" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="<?php echo htmlspecialchars($item_customization_value['description']);?>">
     </div>
 </div>
 
@@ -19,7 +19,7 @@
 
     <label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
     <div class="col-xs-6 col-sm-6">
-        <input data-title="<?php echo $item_customization_value['title'];?>" type="number" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type need_check" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="数字">
+        <input data-title="<?php echo $item_customization_value['title'];?>" type="number" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type need_check" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="<?php echo htmlspecialchars($item_customization_value['description']);?>">
     </div>
 </div>
 <?php
@@ -45,7 +45,7 @@
 
     <label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
     <div class="col-xs-2 col-sm-2">
-        <input data-title="<?php echo $item_customization_value['title'];?>" type="text" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type member_nums need_check" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="">
+        <input data-title="<?php echo $item_customization_value['title'];?>" type="text" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type member_nums need_check" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="<?php echo htmlspecialchars($item_customization_value['description']);?>">
     </div>
     <label class="col-sm-1 control-label no-padding-right">平均:</label>
 	<div class="col-xs-2 col-sm-2">
