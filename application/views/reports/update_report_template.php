@@ -393,7 +393,7 @@
             var sname = $('#sob_name').val();
             var sgroups = $('#group').val();
             //if(sname)
-            if (__dataUpload['type'].length == 0) {
+            if (__dataUpload['type'] == null || __dataUpload['type'].length == 0) {
                 $('#type').focus();
                 show_notify("请选择使用范围");
                 return false;
