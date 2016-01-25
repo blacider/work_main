@@ -466,17 +466,19 @@
                                         $("#options").empty();
                                         for (var i = 0; i < options.length-1; i++) {
                                             $("#options").append('<div class="form-group col-sm-offset-2 col-xs-offset-2">'+
-                                                    '<input name="code" value="'+ options[i] +'" type="text" data-placeholder="请输入选项" disabled>'+
+                                                    '<input name="code" value="'+ options[i] +'" type="text" data-placeholder="请输入选项">'+
+                                                    '<a onclick="removeOption(this.parentNode)" class="addOption">-</a>'+
                                                     '</div>');
                                         }
                                         $("#options").append('<div class="form-group col-sm-offset-2 col-xs-offset-2">'+
-                                                    '<input name="code" value="'+ options[i] +'" type="text" data-placeholder="请输入选项" disabled>'+
+                                                    '<input name="code" value="'+ options[i] +'" type="text" data-placeholder="请输入选项">'+
+                                                    '<a onclick="addOption(this.parentNode)" class="addOption">+</a>'+
                                                     '</div>');
                                     
                                     } else if (data.type == 4) {
 
                                         $('#modal_1').find('input[name="bank"]')[0].checked = (data.property.bank_account_type == "1");
-                                        $('#modal_1').find('input[name="bank"]').attr("disabled","true").trigger("chosen:updated");
+                                        $('#modal_1').find('input[name="bank"]').trigger("chosen:updated");
                                     }
                                     $('#extra_type').attr("disabled","true").trigger("chosen:updated");
                                 }
