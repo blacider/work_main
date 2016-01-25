@@ -31,7 +31,7 @@
 	background: url("/static/img/mod/template/bg-template-header.png") repeat-x;
 	border-radius: 3px 3px 0 0;
 	position: relative;
-	padding-left: 12px;
+	padding-left: 32px;
 }
 
 .mod-reim-template .paper .paper-header input {
@@ -60,7 +60,7 @@
 
 .mod-reim-template .paper .paper-header .buttons {
 	margin-top: 12px;
-	margin-right: 20px;
+	margin-right: 24px;
 }
 .mod-reim-template .paper .paper-header .buttons .button {
 	height: 36px;
@@ -69,6 +69,7 @@
 
 .mod-reim-template .paper .paper-header .buttons .btn-eye {
 	background: url("/static/img/mod/template/36/btn-eye.png") repeat-x;
+	display: none;
 }
 
 .mod-reim-template .paper .paper-header .buttons .btn-trash {
@@ -77,6 +78,11 @@
 
 .mod-reim-template .paper .paper-header .buttons .btn-accordion:hover {
     background-image: url("/static/img/mod/template/36/btn-up.dark.png");
+     transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	-o-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	-ms-transform: rotate(180deg);
 }
 
 .mod-reim-template .paper.shrink .paper-header .buttons .btn-accordion:hover {
@@ -108,11 +114,15 @@
 	-moz-transform: rotate(360deg);
 	-ms-transform: rotate(360deg);
 }
+.mod-reim-template .wrap {
+	background: #F6F9FB;
+	padding: 30px;
+}
 
 .mod-reim-template .paper .paper-content {
-	border: 30px solid #F6F9FB;
+	background: #fff;
 	padding: 20px;
-	border-bottom-width: 10px;
+	border-radius: 2px;
 }
 
 .mod-reim-template .paper-content .title {
@@ -207,6 +217,7 @@
 
 .mod-reim-template .paper-footer .btn-preview {
 	background: url("/static/img/mod/template/btn-preview.png") no-repeat;
+	display: none;
 }
 
 .mod-reim-template .paper-footer .btn-save {
@@ -216,21 +227,19 @@
 .mod-reim-template .paper-footer .btn-save:hover {
 	background: url("/static/img/mod/template/btn-save.active.png") no-repeat;
 }
-.mod-reim-template .paper.shrink .print-settings {
-	display: none;
-}
-.mod-reim-template .paper.shrink .paper-content {
-	display: none;
-}
-
-.mod-reim-template .paper.shrink .paper-footer {
-	display: none;
+.mod-reim-template .paper.shrink .wrap {
+	height: 0;
+	overflow: hidden;
+	padding: 0;
 }
 
 .mod-reim-template .paper .paper-header .buttons .btn-accordion {
 	background: url("/static/img/mod/template/36/btn-up.png") center center no-repeat;
 }
-
+.mod-reim-template .paper.shrink .paper-header {
+	box-shadow: 0 1px 2px 0px rgba(0, 0, 0, 0.10);
+	height: 70px;
+}
 .mod-reim-template .paper.shrink .paper-header .buttons .btn-accordion {
     background-image: url("/static/img/mod/template/36/btn-down.png");
 }
@@ -240,16 +249,18 @@
 }
 
 .mod-reim-template .print-settings {
-	border: 30px solid #F6F9FB;
-	padding-bottom: 0;
 	border-top: none;
 	border-radius: 2px;
+	background-color: #fff;
+	margin-top: 10px;
+	padding: 0 62px;
+
 }
 .mod-reim-template .print-settings .group-container {
 	padding-bottom: 60px;
 }
 .mod-reim-template .print-settings .column-wrap {
-	padding: 30px 21px;
+	padding: 30px 0;
 	border-top: 1px solid #f2f6fa;
 }
 .mod-reim-template .print-settings:hover {

@@ -7,7 +7,7 @@
         "explanation": "",
         "name": "",
         "required": "0",
-        "type": "1",
+        "type": "",
         "id": "3"
     };
     var _defaultTableEditConfig_ = {
@@ -175,6 +175,9 @@
                     };
                     // 拖动后编辑，是大坑
                     function makeTableSortable() {
+                        if($element.find('.table-container .field-table').length<=0) {
+                            return;
+                        }
                         Sortable.create($element.find('.table-container')[0], {
                             handle: ".btn-drag",
                             draggable: '.field-table',
@@ -259,7 +262,7 @@
                     
                     
                     $scope.toggleTableVisible = function  (e) {
-                        var $table = $(e.target).parents('.field-table').find('.field-table-content');
+                        var $table = $(e.target).parents('.field-table').find('.field-table-content, .category-table');
                         if($table.hasClass('none')) {
                             $table.removeClass('none');
                         } else {
