@@ -455,6 +455,37 @@
     background-image: url("/static/img/mod/template/24/btn-cancel.png");
 }
 
+.field-radio-options {
+
+}
+.field-radio-option {
+	width: 280px;
+	display: table;
+	margin-top: 20px;
+}
+.field-radio-options .field-input {
+	display: table-cell;
+}
+.field-radio-options .btn-add-input {
+	display: table-cell;
+	height: 36px;
+	width: 36px;
+	background: url("/static/img/mod/template/24/btn-add-input.png") no-repeat center center;
+}
+.field-radio-options .btn-add-input:hover {
+	transform: rotate(360deg);
+	-webkit-transform: rotate(360deg);
+	-o-transform: rotate(360deg);
+	-moz-transform: rotate(360deg);
+	-ms-transform: rotate(360deg);
+}
+.field-radio-options .btn-add-input.btn-delete-input {
+	background-image: url("/static/img/mod/template/24/btn-delete-input.png");
+}
+.field-bank-options .field-checkbox {
+	padding-left: 0;
+	margin-top: 20px;
+}
 .fields {
 	display: table;
 	padding: 30px;

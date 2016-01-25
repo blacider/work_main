@@ -226,11 +226,24 @@
 
                         e.target.value = str;
                         // $(e.target).trigger('click')
-                    }
+                    };
+
+                    $scope.onFieldTypeChange = function  (type, templateData, columnIndex) {
+                        if(type==2) {
+                            $scope.templateEditTableMap[templateData.id].children[columnIndex]['property'] || ($scope.templateEditTableMap[templateData.id].children[columnIndex]['property'] = {options: ["", ""]});
+                        }
+                    };
+
+                    $scope.setOptionsForRadioGroup = function  (templateData, columnIndex, inputIndex, e) {
+                        if($(e.currentTarget).hasClass('btn-delete-input')) {
+                            $scope.templateEditTableMap[templateData.id].children[columnIndex]['property'].options.splice(inputIndex, 1);
+                        } else {
+                            $scope.templateEditTableMap[templateData.id].children[columnIndex]['property'].options.push('');
+                        }
+                    };
 
                     // events here
-                    
-                    $scope.onAccordionTemplate = function(item, $index, e) {
+                    $scope.onAccordionTemplate = function(item, index, e) {
                         var $targetEle = angular.element(e.target);
                         var $templateItem = $targetEle.parent().parent().parent();
                         if ($templateItem.hasClass('shrink')) {
@@ -457,7 +470,6 @@
 
                     $scope.onCancelColumnsEditConfig = function(templateData, e, templateIndex) {
 
-
                         var tableData = $scope.templateEditTableMap[templateData.id];
 
                         if(confirm('你真的要取消?')) {
@@ -475,11 +487,6 @@
                         }
                     };
 
-                    $scope.isCategoryByGroup = function  (e) {
-                        if($(e.currentTarget).hasClass('checked')) {
-
-                        }
-                    };
                     $scope.getUID = function  () {
                         return Utils.uid();
                     };

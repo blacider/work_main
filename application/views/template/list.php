@@ -65,7 +65,7 @@
                                 </div>
                                 <div class="table-cell field-type">
                                     <div class="field-select field">
-                                        <select ng-model="editColumnItem.type">
+                                        <select ng-model="editColumnItem.type" ng-change="onFieldTypeChange(editColumnItem.type, templateItem, $index, $parent.$index)">
                                             <option value="">类型</option>
                                             <option value="1">文本框</option>
                                             <option value="2">单选框</option>
@@ -80,6 +80,20 @@
                                 </div>
                                 <div class="button field table-cell" ng-if="templateEditTableMap[templateItem.id].children.length>1">
                                     <p class="btn-trash" ng-click="onRemoveColumnEditConfig(templateItem, $event, $index, $parent.$index)"></p>
+                                </div>
+                                <div class="field-radio-options" ng-if="editColumnItem.type == 2">
+                                    <div class="field-radio-option" ng-repeat="inputItem in editColumnItem.property.options track by $index">
+                                        <div class="field-input">
+                                            <input type="text" ng-model="editColumnItem.property.options[$index]">
+                                        </div>
+                                        <p class="btn-add-input transition" ng-class="{'btn-delete-input': $index < editColumnItem.property.options.length -1}" ng-click="setOptionsForRadioGroup(templateItem, $parent.$index, $index, $event)"></p>
+                                    </div>
+                                </div>
+                                <div class="field-bank-options" ng-if="editColumnItem.type == 4">
+                                    <div class="field-checkbox white" ng-class="{checked: editColumnItem.property.bank_account_type}" ng-click="toggleCheckbox($event);">
+                                        <input type="checkbox" ng-model="editColumnItem.property.bank_account_type" class="hidden" ng-init="labelForBankOptionId = getUID()" id="{{labelForBankOptionId}}" ng-click="$event.stopPropagation();">
+                                        <label for="{{labelForBankOptionId}}">设为付款银行帐户</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +125,7 @@
                     <div class="column-wrap table-layout">
                         <h4 class="field-table-label table-cell"> 字段组 </h4>
                         <div class="table-cell field-table-content-multi-row">
-                            <div class="field-checkbox" ng-class="{checked: templateItem.is_category_by_group}" style="display: block; margin-bottom: 0" ng-click="toggleCheckbox($event); isCategoryByGroup($event)">
+                            <div class="field-checkbox" ng-class="{checked: templateItem.is_category_by_group}" style="display: block; margin-bottom: 0" ng-click="toggleCheckbox($event);">
                                 <input id="12" type="checkbox" class="hidden" ng-model="templateItem.is_category_by_group" ng-click="$event.stopPropagation();">
                                 <label for="12">消费按类目分类</label>
                             </div>
