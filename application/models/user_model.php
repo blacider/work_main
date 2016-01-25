@@ -255,18 +255,19 @@ class User_Model extends Reim_Model {
         $url = $this->get_url('vcode');
         $data = array(
             'phone' => $phone,
-            'reset' => 1,
+            'reset' => 0,
         );
         $jwt = $this->session->userdata('jwt');
         $buf = $this->do_Post($url, $data, $jwt);
         return $buf;
     }
 
-    public function bind_phone($phone, $vcode){
+    public function bind_phone($phone, $vcode, $uid){
         $url = $this->get_url('users');
         $data = array(
             'phone' => $phone,
-            'vcode' => $vcode
+            'vcode' => $vcode,
+            'uid' => $uid
         );
         $jwt = $this->session->userdata('jwt');
         $buf = $this->do_Put($url, $data, $jwt);
