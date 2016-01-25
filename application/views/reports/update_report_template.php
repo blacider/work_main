@@ -393,7 +393,11 @@
             var sname = $('#sob_name').val();
             var sgroups = $('#group').val();
             //if(sname)
-         
+            if (__dataUpload['type'].length == 0) {
+                $('#type').focus();
+                show_notify("请选择使用范围");
+                return false;
+            }
             if(trim(sname) == '')
             {
                 $('#sob_name').focus();
