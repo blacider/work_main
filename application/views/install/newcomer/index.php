@@ -82,6 +82,7 @@
   </div>
   </div>
 <script language="javascript">
+var _url = "<?php echo $url; ?>";
    $(document).ready(function() {
 
   /* Act on the event */
@@ -97,8 +98,10 @@
     });
 });
 
-    function download() {
-      if(isWeixin()) {
+function download() {
+  //  window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/1.1.1/reim.apk'; 
+   /*  window.location.href = "<?php echo $url ;?>"; */
+   if(isWeixin()) {
         $('#winxin').css('display', 'block');
         setTimeout(function(){
           $('.block1')[0].onclick = function() {

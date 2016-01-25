@@ -61,6 +61,7 @@
   </div>
   </div>
 <script language="javascript">
+var _url = "<?php echo $url; ?>";
    $(document).ready(function() {
   /* Act on the event */
   $('.contain').css('height', String(document.body.scrollHeight));
@@ -72,7 +73,7 @@
 
 function download() {
     //window.location.href = '';
-      function download() {
+    function download() {
       if(isWeixin()) {
         $('#winxin').css('display', 'block');
         setTimeout(function(){
