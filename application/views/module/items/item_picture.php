@@ -53,10 +53,10 @@ var uploader = WebUploader.create({
 // 当有文件添加进来的时候
 uploader.on( 'fileQueued', function( file ) {
     var $li = $(
-            '<div id="' + file.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
+            '<a id="' + file.id + '" data-rel="colorbox" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
                 '<img>' +
                 '<div class="glyphicon glyphicon-trash red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
-            '</div>'
+            '</a>'
             ),
         $img = $li.find('img');
     // $list为容器jQuery实例
@@ -121,6 +121,7 @@ uploader.on( 'uploadAccept', function( file, response ) {
     if ( response['status'] > 0 ) {
         // 通过return false来告诉组件，此文件上传有错。
         var imageDom = $('#' + file.file.id);
+        imageDom.attr('href',response['data']['url']);
         imagesDict[file.file.id] = 'WU_FILE_' + String(response['data']['id']);
         if ($("input[name='images']").val() == '') {
             $("input[name='images']").val(response['data']['id']);
@@ -151,7 +152,10 @@ function bind_event(){
             }
             $("input[name='images']").val(result);
             $(this.parentNode).remove();
+            e.stopPropagation();
+            e.preventDefault();
         });
+        $('#imageList [data-rel="colorbox"]').colorbox(colorbox_params);
 }
 
 function load_exists(){
@@ -167,7 +171,7 @@ function load_exists(){
         }
         imagesDict['WU_FILE_'+String(item.id)] = 'WU_FILE_'+String(item.id);
         var $li = $(
-            '<div id="WU_FILE_' + item.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
+            '<a href="'+item['url']+'" id="WU_FILE_' + item.id + '" data-rel="colorbox" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
                 '<img style="width:150px;height:150px;">' +
                 '<div class="glyphicon glyphicon-trash red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
             '</div>'
@@ -184,8 +188,33 @@ function load_exists(){
     $('input[name="images"]').val(result);
     bind_event();
 }
+colorbox_params = {
+        rel: 'colorbox',
+            reposition:true,
+            scalePhotos:true,
+            scrolling:false,
+            previous:'<i class="ace-icon fa fa-arrow-left"></i>',
+            next:'<i class="ace-icon fa fa-arrow-right"></i>',
+            close:'&times;',
+            current:'{current} of {total}',
+            maxWidth:'100%',
+            maxHeight:'100%',
+            onOpen:function(){
+                $overflow = document.body.style.overflow;
+                document.body.style.overflow = 'hidden';
+            },
+                onClosed:function(){
+                    document.body.style.overflow = $overflow;
+                },
+                    onComplete:function(){
+                        $.colorbox.resize();
+                    }
+    };
 $(document).ready(function(){
     initUploader();
     load_exists();
+    var $overflow = '';
+
+    $('#imageList [data-rel="colorbox"]').colorbox(colorbox_params);
 });
 </script>
