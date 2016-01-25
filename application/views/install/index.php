@@ -61,6 +61,7 @@
   </div>
   </div>
 <script language="javascript">
+var _url = "<?php echo $url; ?>";
    $(document).ready(function() {
   /* Act on the event */
   $('.contain').css('height', String(document.body.scrollHeight));
@@ -72,6 +73,21 @@
 
 function download() {
     //window.location.href = '';
+    if(isWeixin()) {
+        $('#winxin').css('display', 'block');
+        setTimeout(function(){
+          $('.block1')[0].onclick = function() {
+              $('#winxin').css('display', 'none');
+              $('.block1')[0].onclick = function() {
+                return;
+              }
+            }
+        },50);
+    } else{
+        //window.location.protocol = "http:";
+        window.location.href = _url;
+        //window.open('http://' + _url, '_blank'); 
+    }
 }
 </script>
 </body>
