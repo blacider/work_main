@@ -71,7 +71,7 @@ var _url = "<?php echo $url; ?>";
     $('#block1').css({'height': document.body.scrollHeight + 'px', 'min-height' : document.body.scrollHeight + 'px'});
 });
 
-function download() {
+
     //window.location.href = '';
     function download() {
       if(isWeixin()) {
@@ -90,7 +90,7 @@ function download() {
         //window.open('http://' + _url, '_blank'); 
         }
     }
-}
+
     function isWeixin(){
     var ua = navigator.userAgent.toLowerCase();
     if(ua.match(/MicroMessenger/i)=="micromessenger") {
