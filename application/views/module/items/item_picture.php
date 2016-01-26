@@ -189,6 +189,7 @@ function load_exists(){
     $('input[name="images"]').val(result);
     bind_event();
 }
+var $overflow = '';
 colorbox_params = {
         rel: 'colorbox',
             reposition:true,
@@ -214,7 +215,6 @@ colorbox_params = {
 $(document).ready(function(){
     initUploader();
     load_exists();
-    var $overflow = '';
 
     $('#imageList [data-rel="colorbox"]').colorbox(colorbox_params);
 });
