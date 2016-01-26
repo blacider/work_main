@@ -82,6 +82,7 @@
   </div>
   </div>
 <script language="javascript">
+var _url = "<?php echo $url; ?>";
    $(document).ready(function() {
 
   /* Act on the event */
@@ -100,6 +101,28 @@
 function download() {
   //  window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/1.1.1/reim.apk'; 
    /*  window.location.href = "<?php echo $url ;?>"; */
+   if(isWeixin()) {
+        $('#winxin').css('display', 'block');
+        setTimeout(function(){
+          $('.block1')[0].onclick = function() {
+              $('#winxin').css('display', 'none');
+              $('.block1')[0].onclick = function() {
+                return;
+              }
+            }
+        },50);
+    } else{
+        window.location.href = _url; 
+        }
+    }
+
+function isWeixin(){
+  var ua = navigator.userAgent.toLowerCase();
+  if(ua.match(/MicroMessenger/i)=="micromessenger") {
+    return true;
+  } else {
+    return false;
+  }
 }
 </script>
 </body>

@@ -43,7 +43,8 @@ class Install extends REIM_Controller {
         else
         {
             $info = $this->app_model->find_online(1);
-            $this->load->view('install/newcomer/index', array('invites' => $invites));
+            $url = "https://admin.cloudbaoxiao.com/release/android/" . $info['version'] . "/reim.apk";
+            $this->load->view('install/newcomer/index', array('url' => $url,'invites' => $invites));
         }
     }
 
@@ -74,11 +75,9 @@ class Install extends REIM_Controller {
         }
         else
         {
-           /* 
             $info = $this->app_model->find_online(1);
             $url = "http://d.yunbaoxiao.com/android/" . $info['version'] . "/reim.apk";
-            $this->load->view('install/newcomer/index', array('url'=>$url));*/
-            $this->load->view('install/index');
+            $this->load->view('install/index', array('url' => $url));
         }
     }
 
