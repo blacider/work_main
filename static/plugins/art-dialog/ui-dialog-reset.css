@@ -13,3 +13,7 @@
     background-color: #ff575b;
     border-color: #d33e42;
 }
+
+.text-align .ui-dialog-content {
+	text-align: center;
+}

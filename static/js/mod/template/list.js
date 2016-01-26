@@ -302,6 +302,10 @@
                         var $templateItem = $targetEle.parent().parent().parent();
                         if ($templateItem.hasClass('shrink')) {
                             $templateItem.removeClass('shrink')
+                            var offset = $element.find('.paper').eq(index).offset();
+                            $('body').animate({
+                                scrollTop: offset.top
+                            })
                         } else {
                             $templateItem.addClass('shrink')
                         }
@@ -385,8 +389,7 @@
                         $scope.templateEditTableMap[templateData.id] = angular.copy(tableData);
                     };
 
-                    $scope.onAddTemplate = function() {
-
+                    $scope.onAddTemplate = function(e) {
 
                         var templateData = angular.copy(_defaultTemplateConfig_);
 
@@ -398,8 +401,9 @@
                         dialog({
                             title: '报销单名称设置',
                             content: _.template( [
-                                '<div class="field-input">',
+                                '<div class="field-input" style="position: relative">',
                                 '    <input type="text" placeholder="报销单名称" value="<%= name %>">',
+                                '    <div class="loading" style="display: none">正在加油提交数据......</div>',
                                 '</div>'
                             ].join(''))(templateData),
                             ok: function () {
@@ -412,12 +416,15 @@
 
                                 templateData.name = name;
 
+                                $(this.node).find('input').next().addClass('show')
+
                                 Utils.api('/company/docreate_report_template', {
                                     method: 'post',
                                     data: {
                                         template_name: templateData['name']
                                     }
                                 }).done(function  (rs) {
+                                    $(_self.node).find('input').next().removeClass('show')
                                     if (rs['status'] <= 0) {
                                         // $scope.templateArray.pop();
                                         return show_notify(rs['msg']);
@@ -429,10 +436,15 @@
                                     });
 
                                     _self.close();
-
+                                    $("body").animate({ scrollTop: $(document).height() }, 1000, function  () {
+                                        $element.find('.paper').eq($scope.templateArray.length -1).addClass('animated bounceIn')
+                                        show_notify('添加成功！');
+                                    });
                                 });
-                            }
-                        }).showModal()
+                                return false
+                            },
+                            okValue: '确定'
+                        }).showModal(e.currentTarget);
 
                     };
                     
@@ -462,15 +474,29 @@
                         dialog({
                             title: '温馨提示',
                             content: '确认要删除当前报销单模版?',
+                            width: 240,
+                            skin: 'text-align',
                             align: 'bottom right',
                             ok: function  () {
+                                var _self = this;
+                                this.content('正在删除......');
                                 $http.post('/company/dodelete_report_template/' + item.id).success(function(rs) {
                                     // $scope.templateArray = rs['data'];
                                     if (rs['status'] <= 0) {
+                                        _self.content('确认要删除当前报销单模版?');
                                         return show_notify(rs['msg']);
                                     }
-                                    $scope.templateArray.splice($index, 1);
+
+                                    _self.close();
+                                    // $scope.isLoaded = true;
+                                    $element.find('.paper').eq($index).addClass('animated fadeOut');
+                                    setTimeout(function  () {
+                                        $scope.$apply(function  () {
+                                            $scope.templateArray.splice($index, 1);
+                                        })
+                                    }, 1000);
                                 });
+                                return false;
                             },
                             cancel: function  () {
                                 this.close();
@@ -640,6 +666,4 @@
     }
 })().initialize();
 
-// 提交验证
-// 加载状态
-// 确认对话框
+// 编辑表格时，点击保存

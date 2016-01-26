@@ -2,12 +2,12 @@
 <link rel="stylesheet" href="/static/css/mod/template/list.css"/>
 <link rel="stylesheet" href="/static/css/widgets/loading-default.css"/>
 <div class="mod mod-reim-template" ng-app="reimApp">
-    <div class="page-content-area" ng-controller="templateController" ng-show="isLoaded">
+    <div class="page-content-area" ng-controller="templateController">
         <div class="ui-loading-layer" ng-if="!isLoaded">
             <div class="ui-loading-icon"></div>
         </div>
         <div class="header">
-            <a href="javascript:void(0)" class="btn-add" ng-click="onAddTemplate()"></a>
+            <a href="javascript:void(0)" class="btn-add" ng-click="onAddTemplate($event)"></a>
         </div>
         <div class="paper" ng-class="{shrink: !$first}" ng-repeat="templateItem in templateArray" data-id="{{templateItem.id}}">
             <div class="paper-header">
@@ -321,5 +321,6 @@
 <script src="/static/js/mod/template/list.js"></script>
 <script src="/static/js/libs/underscore-min.js"></script>
 
+<link rel="stylesheet" href="/static/css/base/animate.css">
 <link rel="stylesheet" href="/static/plugins/art-dialog/ui-dialog.css">
 <link rel="stylesheet" href="/static/plugins/art-dialog/ui-dialog-reset.css">
