@@ -11,7 +11,7 @@
                 <span class="icon"></span>
                 <p class="buttons">
                     <span class="button btn-eye" ng-click="onPreviewTemplate($index, $event)"></span>
-                    <span class="button btn-trash" ng-click="onRemoveTemplate(templateItem, $index)"></span>
+                    <span class="button btn-trash" ng-click="onRemoveTemplate(templateItem, $index, $event)"></span>
                     <span class="button btn-accordion transition" ng-click="onAccordionTemplate(templateItem, $index, $event)"></span>
                 </p>
             </div>
@@ -308,6 +308,11 @@
         </div>
     </div>
 </div>
+
 <script src="/static/js/libs/jquery.auto-grow-input.min.js"></script>
+<script src="/static/plugins/art-dialog/art-dialog.min.js"></script>
 <script src="/static/js/libs/Sortable.min.js"></script>
 <script src="/static/js/mod/template/list.js"></script>
+
+<link rel="stylesheet" href="/static/plugins/art-dialog/ui-dialog.css">
+<link rel="stylesheet" href="/static/plugins/art-dialog/ui-dialog-reset.css">

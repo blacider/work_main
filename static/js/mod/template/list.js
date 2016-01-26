@@ -5,61 +5,21 @@
     var _templateTypes_ = null;
     var _defaultColumnEditConfig_ = {
         "explanation": "",
-        "name": "",
+        "name": "字段名称",
         "required": "0",
-        "type": "",
-        "id": "3"
+        "type": ""
     };
     var _defaultTableEditConfig_ = {
-        "name": "未命名报销单",
+        "name": "字段组名称",
         "type": "0",
         "printable": "1",
         "children": [angular.copy(_defaultColumnEditConfig_)],
     };
     var _defaultTemplateConfig_ = {
         "id": "39",
-        "name": "差旅报销单" + Date.now(),
-        "type": ["2"],
-        "config": [{
-            "name": "差旅详情",
-            "type": "0",
-            "printable": "1",
-            "children": [{
-                "explanation": "",
-                "name": "起始地点",
-                "required": "0",
-                "type": "1",
-                "id": "3"
-            }, {
-                "explanation": "",
-                "name": "起始日期",
-                "required": "0",
-                "type": "1",
-                "id": "6"
-            }, {
-                "explanation": "",
-                "name": "事由",
-                "required": "0",
-                "type": "1",
-                "id": "11"
-            }],
-            "id": "21"
-        }, {
-            "name": "1",
-            "type": "0",
-            "printable": "0",
-            "children": [{
-                "explanation": "",
-                "name": "2",
-                "required": "0",
-                "type": "4",
-                "property": {
-                    "bank_account_type": "1"
-                },
-                "id": "16"
-            }],
-            "id": "22"
-        }],
+        "name": "未命名报销单",
+        "type": [],
+        "config": [],
         "disabled": "0"
     };
 
@@ -165,6 +125,9 @@
                                 $scope.templateTypeArray = rsTypes;
                                 $scope.templateArray = rsTemplate['data'];
 
+                                // remember all data
+                                $scope.templateArrayOriginal = new ArrayCache(angular.copy(rsTemplate['data']));
+
                                 // load local config
                                 $scope.tableHeaderOptions = _defaultTableHeaderOptions_;
                                 $scope.tableFooterOptions = _defaultTableFooterOptions_;
@@ -173,6 +136,34 @@
                             });
                         })
                     };
+
+                    var ArrayCache = (function() {
+                        function ArrayCache(list) {
+                            this.map = {};
+                            for (var i = 0; i < list.length; i++) {
+                                var item = list[i];
+                                this.map[item.id] = item;
+                            }
+                        };
+                        $.extend(ArrayCache.prototype, {
+                            updateById: function(id, data) {
+                                this.map[id] = data;
+                            },
+                            removeById: function(id) {
+                                if (this.map[id]) {
+                                    delete this.map[id];
+                                    return true
+                                } else {
+                                    return false;
+                                }
+                            },
+                            getItemById: function (id) {
+                                return this.map[id];
+                            }
+                        });
+                        return ArrayCache;
+                    })();
+
                     // 拖动后编辑，是大坑
                     function makeTableSortable() {
                         if($element.find('.table-container .field-table').length<=0) {
@@ -374,14 +365,27 @@
                         $scope.templateEditTableMap[data.id].children.push(angular.copy(_defaultColumnEditConfig_));
                     };
 
-                    $scope.onRemoveTemplate = function(item, $index) {
-                        $http.post('/company/dodelete_report_template/' + item.id).success(function(rs) {
-                            // $scope.templateArray = rs['data'];
-                            if (rs['status'] <= 0) {
-                                return show_notify(rs['msg']);
-                            }
-                            $scope.templateArray.splice($index, 1);
-                        });
+                    $scope.onRemoveTemplate = function(item, $index, e) {
+                        dialog({
+                            title: '温馨提示',
+                            content: '确认要删除当前报销单模版?',
+                            align: 'bottom right',
+                            ok: function  () {
+                                $http.post('/company/dodelete_report_template/' + item.id).success(function(rs) {
+                                    // $scope.templateArray = rs['data'];
+                                    if (rs['status'] <= 0) {
+                                        return show_notify(rs['msg']);
+                                    }
+                                    $scope.templateArray.splice($index, 1);
+                                });
+                            },
+                            cancel: function  () {
+                                this.close();
+                            },
+                            okValue: '删除',
+                            cancelValue: '取消'
+                        }).showModal(e.currentTarget);
+                        
                     };
 
                     $scope.onRemoveTable = function  (e, tableIndex, templateIndex) {
@@ -413,6 +417,10 @@
                     $scope.onSaveTemplate = function  (e, index) {
                         var templateData = $scope.templateArray[index];
                         var data = angular.copy(templateData);
+
+                        if(!data.config || data.config.length == 0) {
+                            return show_notify('请添加字段组');
+                        }
                         Utils.api('/company/doupdate_report_template', {
                             method: "post",
                             data: {
@@ -444,8 +452,6 @@
                             data.type = ['0'];
                         }
 
-
-
                         Utils.api('/company/doupdate_report_template', {
                             method: "post",
                             data: {
@@ -463,31 +469,40 @@
                         });
                     };
 
-                    $scope.onCancelTemplate = function  (data, e, index) {
+                    $scope.onCancelTemplate = function  (data, e, $index) {
+                        
                         $scope.templateEditTableMap[data.id] = null;
-                    };
+                        var originalTemplateData = $scope.templateArrayOriginal.getItemById(data.id);
 
-                    function putBackUpdatingTable($scope, tableData) {
-
+                        $scope.templateArray[$index] = angular.copy(originalTemplateData);
                     };
 
                     $scope.onCancelColumnsEditConfig = function(templateData, e, templateIndex) {
-
                         var tableData = $scope.templateEditTableMap[templateData.id];
+                        dialog({
+                            title: '温馨提示',
+                            content: '取消操作，编辑后的内容将不会被保存哦',
+                            ok: function  () {
+                                var _edit_swap_ = tableData['_EDIT_SWAP_'];
+                                // 检测是否要会滚
+                                if(_edit_swap_ && _edit_swap_['type'] == 'update') {
 
-                        if(confirm('你真的要取消?')) {
-                            // 回滚
-                            var _edit_swap_ = tableData['_EDIT_SWAP_'];
-                            if(_edit_swap_ && _edit_swap_['type'] == 'update') {
-                                $scope.templateArray[_edit_swap_.templateIndex];
+                                    $scope.templateArray[_edit_swap_.templateIndex];
 
-                                $scope.templateArray[templateIndex].config.splice(_edit_swap_.tableIndex, 0, _edit_swap_.originTableData);
-                                $scope.templateEditTableMap[templateData.id] = null;
-                            } else {//丢弃
-                                $scope.templateEditTableMap[templateData.id] = null;
-                            }
-                            
-                        }
+                                    $scope.$apply(function  () {
+                                        $scope.templateArray[templateIndex].config.splice(_edit_swap_.tableIndex, 0, _edit_swap_.originTableData);
+                                    })
+
+                                }
+                                //丢弃编辑内容
+                                $scope.$apply(function  () {
+                                    $scope.templateEditTableMap[templateData.id] = null;
+                                })
+
+                                return true;
+                            },
+                            okValue: '确认取消'
+                        }).showModal();
                     };
 
                     $scope.getUID = function  () {
@@ -499,3 +514,7 @@
         }
     }
 })().initialize();
+
+// 提交验证
+// 加载状态
+// 确认对话框
