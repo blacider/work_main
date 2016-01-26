@@ -129,8 +129,8 @@
                             <h4 class="field-table-label table-cell"> 字段组 </h4>
                             <div class="table-cell field-table-content-multi-row">
                                 <div class="field-checkbox" ng-class="{checked: templateItem.is_category_by_group}" style="display: block; margin-bottom: 0" ng-click="toggleCheckbox($event);">
-                                    <input id="12" type="checkbox" class="hidden" ng-model="templateItem.is_category_by_group" ng-click="$event.stopPropagation();">
-                                    <label for="12">消费按类目分类</label>
+                                    <input id="{{labelForCatetoryGroupId}}" type="checkbox" class="hidden" ng-model="templateItem.is_category_by_group" ng-click="$event.stopPropagation();" ng-init="labelForCatetoryGroupId = getUID()" id="{{labelForId}}">
+                                    <label for="{{labelForCatetoryGroupId}}">消费按类目分类</label>
                                 </div>
                                 <div class="field-table-content" style="margin-top: 20px;" ng-if="!templateItem.is_category_by_group">
                                     <table>
