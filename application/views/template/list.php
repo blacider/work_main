@@ -1,7 +1,11 @@
 <script src="/app/libs/angular/angular.js"></script>
 <link rel="stylesheet" href="/static/css/mod/template/list.css"/>
+<link rel="stylesheet" href="/static/css/widgets/loading-default.css"/>
 <div class="mod mod-reim-template" ng-app="reimApp">
-    <div class="page-content-area" ng-controller="templateController">
+    <div class="page-content-area" ng-controller="templateController" ng-show="isLoaded">
+        <div class="ui-loading-layer" ng-if="!isLoaded">
+            <div class="ui-loading-icon"></div>
+        </div>
         <div class="header">
             <a href="javascript:void(0)" class="btn-add" ng-click="onAddTemplate()"></a>
         </div>

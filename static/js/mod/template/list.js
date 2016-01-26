@@ -123,6 +123,7 @@
                         ).done(function (rsTemplate, rsTypes) {
                             $scope.$apply(function  () {
                                 // load remote config
+                                $scope.isLoaded = true
                                 $scope.templateTypeArray = rsTypes;
                                 $scope.templateArray = rsTemplate['data'];
 
@@ -269,7 +270,7 @@
 
                     loadPageData().done(function  (rs) {
                         makeTableSortable();
-                        makeTitleAutoWidth()
+                        makeTitleAutoWidth();
                     });
 
                     // compute here
