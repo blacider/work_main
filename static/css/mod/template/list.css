@@ -34,10 +34,19 @@
 	padding-left: 32px;
 }
 
+.mod-reim-template .paper .paper-header .name {
+	position: relative;
+    float: left;
+    top: 18px;
+    padding-right: 36px;
+}
+.mod-reim-template .paper .paper-header .name:hover .icon {
+	display: inline-block;
+}
 .mod-reim-template .paper .paper-header input {
 	border: none;
-	background: transparent;
-	color: #fff;
+	background: transparent !important;
+	color: #fff !important;
 	padding: 0;
 	border-bottom: 1px dotted transparent;
 	font-size: 18px;
@@ -52,10 +61,14 @@
 	display: inline-block;
 	width: 36px;
 	height: 36px;
-	position: relative;
-	top: 10px;
-	left: -6px;
+	position: absolute;
+    top: -5px;
+    right: 0;
 	background: url("/static/img/mod/template/36/btn-edit.png") no-repeat center center;
+	display: none;
+}
+.mod-reim-template .paper .paper-header .icon.show {
+	display: inline-block;
 }
 
 .mod-reim-template .paper .paper-header .buttons {

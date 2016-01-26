@@ -15,9 +15,10 @@
         "printable": "1",
         "children": [angular.copy(_defaultColumnEditConfig_)],
     };
+    var _defaultTemplateName_ = '未命名报销单';
     var _defaultTemplateConfig_ = {
         "id": "39",
-        "name": "未命名报销单",
+        "name": _defaultTemplateName_,
         "type": [],
         "config": [],
         "disabled": "0"
@@ -137,6 +138,9 @@
                         })
                     };
 
+                    /**
+                     * define a array cache for template modify revert
+                     */
                     var ArrayCache = (function() {
                         function ArrayCache(list) {
                             this.map = {};
@@ -162,6 +166,71 @@
                             }
                         });
                         return ArrayCache;
+                    })();
+
+                    var TemplateValidator = (function  () {
+                        return {
+                            howManyTemplateUnNamed: function(list) {
+                                var count = 0;
+                                for(var i=0;i<list.length;i++) {
+                                    if(list[i].name.indexOf(_defaultTemplateName_)!=-1) {
+                                        count++;
+                                    }
+                                }
+                                return count;
+                            },
+                            isFieldTypeValid: function (columnObject) {
+                                if(columnObject['type'] == 2) {
+                                    if(!columnObject.property || !columnObject.property.options || columnObject.property.options.length<=0) {
+                                        return {
+                                            valid: false,
+                                            code: 'NO_OPTIONS_ERROR',
+                                            tip: '请选择选项类型',
+                                            errorMsg: '无可用选项'
+                                        }
+                                    }
+                                    var options = columnObject.property.options;
+                                    for(var i=0;i<options.length;i++) {
+                                        if($.trim(options[i])=='') {
+                                            return {
+                                                valid: false,
+                                                code: 'OPTIONS_ITEM_EMPTY_ERROR',
+                                                tip: '请在文本框输入可用的选项',
+                                                errorMsg: '选项为空'
+                                            }
+                                        }
+                                    }
+                                }
+                                var isValid = !!columnObject['type'];
+                                if(!isValid) {
+                                    return {
+                                        valid: isValid,
+                                        tip: '请选择字段类型',
+                                        errorMsg: '无效的类型',
+                                        code: 'INVALID_TYPE'
+                                    }
+                                }
+                                return {
+                                    valid: true,
+                                    errorMsg: '',
+                                    tip: '',
+                                    code: 'OK'
+                                }
+                            },
+                           isFieldTypeArrayValid: function  (columns) {
+                                var invalidCount = 0;
+                                var validatorArray = [];
+                                for(var i = 0; i <columns.length; i++) {
+                                    var validator = this.isFieldTypeValid(columns[i]);
+                                    validatorArray.push(validator);
+                                    validator.valid || invalidCount++;
+                                }
+                                return {
+                                    invalidCount: invalidCount,
+                                    validatorArray: validatorArray
+                                };
+                            }
+                        }
                     })();
 
                     // 拖动后编辑，是大坑
@@ -195,7 +264,7 @@
                     };
 
                     function makeTitleAutoWidth () {
-                        $element.find('.paper-header input').autoGrowInput({minWidth: 30, maxWidth: 600});
+                        $element.find('.paper-header input').autoGrowInput({minWidth: 30, maxWidth: 600, comfortZone: 0});
                     };
 
                     loadPageData().done(function  (rs) {
@@ -210,16 +279,6 @@
                         } else {
                             return false
                         }
-                    };
-
-                    $scope.setFocusEnd = function(e) {
-                        var str = e.target.value;
-                        if(str.length >=_templateNameLengthLimit_) {
-                            str = str.substr(0, _templateNameLengthLimit_)
-                        }
-
-                        e.target.value = str;
-                        // $(e.target).trigger('click')
                     };
 
                     $scope.onFieldTypeChange = function  (type, templateData, columnIndex) {
@@ -260,6 +319,7 @@
                             $table.addClass('none')
                         }
                     };
+
                     $scope.togglePrintSettings = function  (e) {
                         var $target = $(e.target);
                         var $groupContainer = $(e.target).parents('.field-table').find('.group-container');
@@ -325,21 +385,53 @@
                     };
 
                     $scope.onAddTemplate = function() {
-                        var templateData = angular.copy(_defaultTemplateConfig_);
-                        $scope.templateArray.push(templateData);
 
-                        Utils.api('/company/docreate_report_template', {
-                            method: 'post',
-                            data: {
-                                template_name: templateData['name']
+
+                        var templateData = angular.copy(_defaultTemplateConfig_);
+
+                        var unnamedTemplateCount = TemplateValidator.howManyTemplateUnNamed($scope.templateArray);
+                        if(unnamedTemplateCount>0) {
+                            templateData.name = _defaultTemplateName_ + unnamedTemplateCount
+                        }
+
+                        dialog({
+                            title: '报销单名称设置',
+                            content: _.template( [
+                                '<div class="field-input">',
+                                '    <input type="text" placeholder="报销单名称" value="<%= name %>">',
+                                '</div>'
+                            ].join(''))(templateData),
+                            ok: function () {
+                                var _self = this;
+                                var name = $(this.node).find('input').val();
+                                if(!name) {
+                                    $(this.node).find('input').focus();
+                                    return false;
+                                }
+
+                                templateData.name = name;
+
+                                Utils.api('/company/docreate_report_template', {
+                                    method: 'post',
+                                    data: {
+                                        template_name: templateData['name']
+                                    }
+                                }).done(function  (rs) {
+                                    if (rs['status'] <= 0) {
+                                        // $scope.templateArray.pop();
+                                        return show_notify(rs['msg']);
+                                    }
+
+                                    $scope.$apply(function  () {
+                                        $scope.templateArray.push(templateData);
+                                        makeTitleAutoWidth()
+                                    });
+
+                                    _self.close();
+
+                                });
                             }
-                        }).done(function  (rs) {
-                            if (rs['status'] <= 0) {
-                                $scope.templateArray.pop();
-                                return show_notify(rs['msg']);
-                            }
-                            makeTitleAutoWidth()
-                        });
+                        }).showModal()
 
                     };
                     
@@ -418,9 +510,14 @@
                         var templateData = $scope.templateArray[index];
                         var data = angular.copy(templateData);
 
-                        if(!data.config || data.config.length == 0) {
-                            return show_notify('请添加字段组');
+                        if(data.type.length == 0) {
+                            return show_notify('请选择报销模版适用范围');
                         }
+
+                        if(TemplateValidator.howManyTemplateUnNamed($scope.templateArray)>0) {
+                            show_notify('检测到'+_defaultTemplateName_);
+                        }
+
                         Utils.api('/company/doupdate_report_template', {
                             method: "post",
                             data: {
@@ -448,8 +545,14 @@
 
                         data.config.push(templateEditTable);
 
+                        var validator = TemplateValidator.isFieldTypeArrayValid(templateEditTable.children);
+
+                        if(validator['invalidCount']>0) {
+                            return show_notify(validator.validatorArray[0].tip);
+                        }
+
                         if(data.type.length == 0) {
-                            data.type = ['0'];
+                            return show_notify('请选择报销模版适用范围');
                         }
 
                         Utils.api('/company/doupdate_report_template', {
@@ -470,7 +573,7 @@
                     };
 
                     $scope.onCancelTemplate = function  (data, e, $index) {
-                        
+
                         $scope.templateEditTableMap[data.id] = null;
                         var originalTemplateData = $scope.templateArrayOriginal.getItemById(data.id);
 
@@ -503,6 +606,27 @@
                             },
                             okValue: '确认取消'
                         }).showModal();
+                    };
+
+                    $scope.onFocusOut = function  ($index, e) {
+                        var $input = $(e.target);
+                        var name = $input.val();
+                        name = $.trim(name) || '';
+                        $input.val(name);
+                        if(name.length>_templateNameLengthLimit_) {
+                            $input.val(name.substr(0, _templateNameLengthLimit_));
+                            $input.trigger('autogrow')
+                            return false;
+                        }
+                        $input.attr('disabled', true).next().removeClass('show');
+                        $scope.templateArray[$index].name = name;
+                        return true;
+                    };
+
+                    $scope.onEditTemplateTitle = function  (e) {
+                        var $target = $(e.currentTarget);
+                        $target.addClass('show')
+                        $target.prev().attr('disabled', false).focus();
                     };
 
                     $scope.getUID = function  () {

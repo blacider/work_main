@@ -7,8 +7,10 @@
         </div>
         <div class="paper" ng-class="{shrink: !$first}" ng-repeat="templateItem in templateArray" data-id="{{templateItem.id}}">
             <div class="paper-header">
-                <input type="text" ng-model="templateItem.name" ng-click="setFocusEnd($event)">
-                <span class="icon"></span>
+                <div class="name">
+                    <input type="text" disabled ng-model="templateItem.name" ng-blur="onFocusOut($index, $event)">
+                    <span class="icon" ng-click="onEditTemplateTitle($event)"></span>
+                </div>
                 <p class="buttons">
                     <span class="button btn-eye" ng-click="onPreviewTemplate($index, $event)"></span>
                     <span class="button btn-trash" ng-click="onRemoveTemplate(templateItem, $index, $event)"></span>
@@ -313,6 +315,7 @@
 <script src="/static/plugins/art-dialog/art-dialog.min.js"></script>
 <script src="/static/js/libs/Sortable.min.js"></script>
 <script src="/static/js/mod/template/list.js"></script>
+<script src="/static/js/libs/underscore-min.js"></script>
 
 <link rel="stylesheet" href="/static/plugins/art-dialog/ui-dialog.css">
 <link rel="stylesheet" href="/static/plugins/art-dialog/ui-dialog-reset.css">
