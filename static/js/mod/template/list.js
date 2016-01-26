@@ -1,5 +1,5 @@
 (function() {
-    var phonecatApp = angular.module('reimApp', []);
+    var reimApp = angular.module('reimApp', []);
     var _fieldCountLimit_ = 6;
     var _templateNameLengthLimit_ = 10;
     var _templateTypes_ = null;
@@ -105,7 +105,7 @@
 
     return {
         initialize: function() {
-            phonecatApp.controller('templateController', ["$http", "$scope", "$element",
+            reimApp.controller('templateController', ["$http", "$scope", "$element",
                 function($http, $scope, $element) {
                     // init edit config
                     // templateEditTableMap = {
@@ -298,18 +298,20 @@
 
                     // events here
                     $scope.onAccordionTemplate = function(item, index, e) {
-                        var $targetEle = angular.element(e.target);
-                        var $templateItem = $targetEle.parent().parent().parent();
+                        var $targetEle = $(e.currentTarget);
+                        var $templateItem = $targetEle.parents('.paper');
+                        $templateItem.removeClass('animated bounceIn')
                         if ($templateItem.hasClass('shrink')) {
-                            $templateItem.removeClass('shrink')
+                            $templateItem.removeClass('shrink');
                             var offset = $element.find('.paper').eq(index).offset();
-                            $('body').animate({
-                                scrollTop: offset.top
+                            $('html, body').animate({
+                                scrollTop: offset.top - 15
                             })
                         } else {
-                            $templateItem.addClass('shrink')
+                            $templateItem.addClass('shrink').find('.paper-header').removeClass('fixed');
                         }
                     };
+
                     $scope.onPreviewTemplate = function  (argument) {
                         alert('预览模版－功能开发中')
                         // body...
@@ -424,6 +426,9 @@
                                         template_name: templateData['name']
                                     }
                                 }).done(function  (rs) {
+                                    // update arraycache
+                                    $scope.templateArrayOriginal.updateById(templateData.id, templateData);
+
                                     $(_self.node).find('input').next().removeClass('show')
                                     if (rs['status'] <= 0) {
                                         // $scope.templateArray.pop();
@@ -432,7 +437,10 @@
 
                                     $scope.$apply(function  () {
                                         $scope.templateArray.push(templateData);
-                                        makeTitleAutoWidth()
+                                        setTimeout(function () {
+                                            // body...
+                                            $element.find('.paper:last').find('.paper-header input').autoGrowInput({minWidth: 30, maxWidth: 600, comfortZone: 0});
+                                        }, 1000);
                                     });
 
                                     _self.close();
@@ -488,8 +496,9 @@
                                     }
 
                                     _self.close();
-                                    // $scope.isLoaded = true;
+
                                     $element.find('.paper').eq($index).addClass('animated fadeOut');
+
                                     setTimeout(function  () {
                                         $scope.$apply(function  () {
                                             $scope.templateArray.splice($index, 1);
@@ -545,15 +554,22 @@
                             show_notify('检测到'+_defaultTemplateName_);
                         }
 
+                        var loading = dialog({
+                            content: '正在上传数据......'
+                        }).showModal();
+
                         Utils.api('/company/doupdate_report_template', {
                             method: "post",
                             data: {
                                 temp_info: data
                             }
                         }).done(function  (rs) {
+                            loading.close();
                             if(rs['status'] <= 0) {
                                 return show_notify(rs['msg']);
                             }
+                            // update array cache
+                            $scope.templateArrayOriginal.updateById(data.id, data);
                             show_notify('保存成功！');
                         });
 
@@ -582,15 +598,21 @@
                             return show_notify('请选择报销模版适用范围');
                         }
 
+                        var loading = dialog({
+                            content: '正在上传数据......'
+                        }).showModal();
+
                         Utils.api('/company/doupdate_report_template', {
                             method: "post",
                             data: {
                                 temp_info: data
                             }
                         }).done(function  (rs) {
+                            loading.close();
                             if(rs['status'] <= 0) {
                                 return show_notify(rs['msg']);
                             }
+                            show_notify('保存成功！');
                             $scope.$apply(function (e) {
                                 $scope.templateArray[templateIndex]
                                 $scope.templateArray[templateIndex].config.push(templateEditTable);
@@ -603,7 +625,8 @@
 
                         $scope.templateEditTableMap[data.id] = null;
                         var originalTemplateData = $scope.templateArrayOriginal.getItemById(data.id);
-
+                        originalTemplateData.isShow = true;
+                        originalTemplateData.isHeaderFixed = true;
                         $scope.templateArray[$index] = angular.copy(originalTemplateData);
                     };
 
@@ -635,7 +658,7 @@
                         }).showModal();
                     };
 
-                    $scope.onFocusOut = function  ($index, e) {
+                    $scope.onFocusOut = function  (templateData, $index, e) {
                         var $input = $(e.target);
                         var name = $input.val();
                         name = $.trim(name) || '';
@@ -647,18 +670,71 @@
                         }
                         $input.attr('disabled', true).next().removeClass('show');
                         $scope.templateArray[$index].name = name;
+
+                        if(name != $scope.templateArrayOriginal.getItemById([templateData.id])['name']) {
+                            var data = angular.copy($scope.templateArray[$index]);
+                            dialog({
+                                content: '立即更新名称',
+                                okValue: '更新',
+                                cancelValue: '稍后',
+                                align: 'bottom',
+                                buttonAlign: 'center center',
+                                ok: function  () {
+                                    Utils.api('/company/doupdate_report_template', {
+                                        method: "post",
+                                        data: {
+                                            temp_info: data
+                                        }
+                                    }).done(function  (rs) {
+                                        if(rs['status'] <= 0) {
+                                            return show_notify(rs['msg']);
+                                        }
+                                        $scope.templateArrayOriginal.updateById(data.id, data);
+                                        show_notify('保存成功！');
+                                    });
+                                },
+                                cancel: function  () {
+                                    // body...
+                                }
+
+                            }).showModal(e.currentTarget);
+                        }
+
                         return true;
                     };
 
                     $scope.onEditTemplateTitle = function  (e) {
                         var $target = $(e.currentTarget);
-                        $target.addClass('show')
+                        $target.addClass('show');
                         $target.prev().attr('disabled', false).focus();
                     };
 
                     $scope.getUID = function  () {
                         return Utils.uid();
                     };
+
+                    $(window).on('scroll', function  () {
+                        // 1. get the target element
+                        // 2. set the target element as scroll, and othernot scroll
+                        var scrollTop = $(window).scrollTop();
+
+                        $element.find('.paper:not(.shrink)').each(function  (index, item) {
+                            var $item = $(item);
+                            var $itemHeader = $item.find('.paper-header');
+                            var offset = $item.offset(); 
+
+                            console.log(offset.top, scrollTop, index);
+
+                            if(offset.top <= scrollTop && offset.top + $item.height() >= scrollTop) {
+                                $itemHeader.addClass('fixed');
+                                $itemHeader.next();
+                            } else {
+                                $itemHeader.removeClass('fixed');
+                                $itemHeader.next().css('margin-top', 0);
+                            }
+                        });
+                        
+                    });
 
                 }
             ]);
@@ -667,3 +743,4 @@
 })().initialize();
 
 // 编辑表格时，点击保存
+// 回滚

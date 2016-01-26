@@ -9,17 +9,19 @@
         <div class="header">
             <a href="javascript:void(0)" class="btn-add" ng-click="onAddTemplate($event)"></a>
         </div>
-        <div class="paper" ng-class="{shrink: !$first}" ng-repeat="templateItem in templateArray" data-id="{{templateItem.id}}">
-            <div class="paper-header">
-                <div class="name">
-                    <input type="text" disabled ng-model="templateItem.name" ng-blur="onFocusOut($index, $event)">
-                    <span class="icon" ng-click="onEditTemplateTitle($event)"></span>
+        <div class="paper" ng-class="{shrink: !templateItem.isShow}" ng-repeat="templateItem in templateArray" data-id="{{templateItem.id}}">
+            <div class="header-wrap">
+                <div class="paper-header" ng-class="{fixed: templateItem.isHeaderFixed}">
+                    <div class="name">
+                        <input type="text" disabled ng-model="templateItem.name" ng-blur="onFocusOut(templateItem, $index, $event)">
+                        <span class="icon" ng-click="onEditTemplateTitle($event)"></span>
+                    </div>
+                    <p class="buttons">
+                        <span class="button btn-eye" ng-click="onPreviewTemplate($index, $event)"></span>
+                        <span class="button btn-trash" ng-click="onRemoveTemplate(templateItem, $index, $event)"></span>
+                        <span class="button btn-accordion transition" ng-click="onAccordionTemplate(templateItem, $index, $event)"></span>
+                    </p>
                 </div>
-                <p class="buttons">
-                    <span class="button btn-eye" ng-click="onPreviewTemplate($index, $event)"></span>
-                    <span class="button btn-trash" ng-click="onRemoveTemplate(templateItem, $index, $event)"></span>
-                    <span class="button btn-accordion transition" ng-click="onAccordionTemplate(templateItem, $index, $event)"></span>
-                </p>
             </div>
             <div class="wrap transition">
                 <div class="paper-content">

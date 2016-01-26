@@ -26,14 +26,23 @@
 .mod-reim-template .paper {
 	margin-bottom: 20px;
 }
+.mod-reim-template .paper .header-wrap {
+	height: 60px;
+}
 .mod-reim-template .paper .paper-header {
 	height: 60px;
 	background: url("/static/img/mod/template/bg-template-header.png") repeat-x;
 	border-radius: 3px 3px 0 0;
 	position: relative;
 	padding-left: 32px;
+	width: 900px;
+	z-index: 999;
 }
-
+.mod-reim-template .paper .paper-header.fixed {
+	position: fixed;
+	z-index: 999;
+	top: 0;
+}
 .mod-reim-template .paper .paper-header .name {
 	position: relative;
     float: left;
@@ -53,7 +62,7 @@
 	height: 24px;
 }
 
-.mod-reim-template .paper .paper-header input:hover {
+.mod-reim-template .paper .paper-header input:focus {
 	border-bottom-color: #fff;
 }
 
