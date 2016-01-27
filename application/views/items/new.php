@@ -62,14 +62,14 @@
 
 
 <div class="form-group">
-<label class="col-sm-1 control-label no-padding-right">类别</label>
+<label class="col-sm-1 control-label no-padding-right">类目</label>
 
 <div class="col-xs-3 col-sm-3" style="margin-top:2px">
 <select class="form-control chosen-select" name="sob" id="sobs">
 </select>
 </div>
 <div class="col-xs-3 col-sm-3" style="margin-top:2px;">
-<select class="sob_category chosen-select" name="category" id="sob_category" data-placeholder="类别">
+<select class="sob_category chosen-select" name="category" id="sob_category" data-placeholder="类目">
 </select>
 
 
@@ -961,7 +961,7 @@ $(document).ready(function(){
         }
         if($('#sob_category').val() == null)
         {
-            show_notify('请选择类别');
+            show_notify('请选择类目');
             return false;
         }
         if($('#config_type').val() == 5 && __average_count && $('#people-nums').val() == null && $('#people-nums').val() == 0) {

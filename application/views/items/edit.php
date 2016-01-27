@@ -105,7 +105,7 @@
 </select>
 </div>
 <div class="col-xs-3 col-sm-3" style="margin-top:2px;">
-<select class="sob_category chosen-select" name="category" id="sob_category" data-placeholder="类别">
+<select class="sob_category chosen-select" name="category" id="sob_category" data-placeholder="类目">
 </select>
                                     <input type="hidden" name="hidden_category" id="hidden_category" value="<?php echo $item['category']; ?>">
 
