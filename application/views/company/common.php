@@ -39,7 +39,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">同一报销单中允许包含不同类别的消费</label>
+                                <label class="col-sm-3 control-label no-padding-right">同一报销单中允许包含不同类目的消费</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
                                    <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
