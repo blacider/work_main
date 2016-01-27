@@ -220,7 +220,7 @@ function saveTree(node) {
             if (state == 'unchecked') 
                 continue;
 
-            // 取类别
+            // 取类目
             var categories = $(sob).find('> ul > li');
             for (var j = 0; j < categories.length; j++) {
                 var cate = categories[j];
@@ -232,17 +232,17 @@ function saveTree(node) {
                 if ($(cate).is('.missing'))
                     continue;
             
-                // 跳过未选中的类别
+                // 跳过未选中的类目
                 if (state == 'unchecked') 
                     continue;
 
-                // 类别选中，则跳过子类别
+                // 类目选中，则跳过子类目
                 if (state == 'checked') {
                     ids.push($(cate).data('id'));
                     continue;
                 }
 
-                // 取二级类别
+                // 取二级类目
                 var sub_categories = $(cate).find(' > ul > li');
                 for (var l = 0; l < sub_categories.length; l++) {
                     var sub_cate = sub_categories[l];
@@ -254,7 +254,7 @@ function saveTree(node) {
                     if ($(sub_cate).is('.missing'))
                         continue;
                     
-                    // 记录选中的二级类别
+                    // 记录选中的二级类目
                     if (state == 'checked') {
                         ids.push($(sub_cate).data('id'));
                     }
