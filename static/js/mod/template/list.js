@@ -17,9 +17,8 @@
     };
     var _defaultTemplateName_ = '未命名报销单';
     var _defaultTemplateConfig_ = {
-        "id": "39",
         "name": _defaultTemplateName_,
-        "type": [],
+        "type": ['0'],
         "config": [],
         "disabled": "0"
     };
@@ -274,8 +273,9 @@
                     });
 
                     // compute here
-                    $scope.isTypeChecked = function  (index, templateData) {
-                        if(templateData['type'].indexOf(index+'')!=-1) {
+                    $scope.isTypeChecked = function  ($index, templateData) {
+                        if(templateData['type'].indexOf($index+'')!=-1) {
+                            console.log($index, templateData['type'].indexOf($index+''))
                             return true
                         } else {
                             return false
@@ -352,6 +352,7 @@
                     };
 
                     $scope.updateTemplateType = function(e, index, templateIndex) {
+                        debugger
                         if($(e.currentTarget).hasClass('checked')) {
 
                             $scope.templateArray[templateIndex].type.push(index + '');
@@ -418,7 +419,10 @@
 
                                 templateData.name = name;
 
+
                                 $(this.node).find('input').next().addClass('show')
+
+                                debugger
 
                                 Utils.api('/company/docreate_report_template', {
                                     method: 'post',
@@ -434,6 +438,8 @@
                                         // $scope.templateArray.pop();
                                         return show_notify(rs['msg']);
                                     }
+
+                                    debugger
 
                                     $scope.$apply(function  () {
                                         $scope.templateArray.push(templateData);
@@ -673,6 +679,11 @@
 
                         if(name != $scope.templateArrayOriginal.getItemById([templateData.id])['name']) {
                             var data = angular.copy($scope.templateArray[$index]);
+
+                            if(data.type.length == 0) {
+                                return show_notify('请选择报销模版适用范围');
+                            }
+
                             dialog({
                                 content: '立即更新名称',
                                 okValue: '更新',
@@ -742,5 +753,4 @@
     }
 })().initialize();
 
-// 编辑表格时，点击保存
-// 回滚
+//创建模版默认类型

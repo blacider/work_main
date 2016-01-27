@@ -135,7 +135,7 @@
                             <h4 class="field-table-label table-cell"> 字段组 </h4>
                             <div class="table-cell field-table-content-multi-row">
                                 <div class="field-checkbox" ng-class="{checked: templateItem.is_category_by_group}" style="display: block; margin-bottom: 0" ng-click="toggleCheckbox($event);">
-                                    <input id="{{labelForCatetoryGroupId}}" type="checkbox" class="hidden" ng-model="templateItem.is_category_by_group" ng-click="$event.stopPropagation();" ng-init="labelForCatetoryGroupId = getUID()" id="{{labelForId}}">
+                                    <input id="{{labelForCatetoryGroupId}}" type="checkbox" class="hidden" ng-model="templateItem.is_category_by_group" ng-click="$event.stopPropagation();" ng-init="labelForCatetoryGroupId = getUID()">
                                     <label for="{{labelForCatetoryGroupId}}">消费按类目分类</label>
                                 </div>
                                 <div class="field-table-content" style="margin-top: 20px;" ng-if="!templateItem.is_category_by_group">
@@ -261,9 +261,9 @@
                         <div class="column-wrap table-layout">
                             <h4 class="field-table-label table-cell"> 适用范围 </h4>
                             <div class="table-cell field-table-content-multi-row">
-                                <div class="field-checkbox" ng-class="{checked: isTypeChecked($index, templateItem)}" ng-attr-style="{{!$last || 'margin-bottom: 0'}}" ng-repeat="templateTypeItem in templateTypeArray" ng-click="toggleCheckbox($event, $index); updateTemplateType($event, $index, $parent.$index)">
-                                    <input type="checkbox" class="hidden" ng-value="{{$index}}" ng-init="labelForId = getUID()" id="{{labelForId}}" ng-click="$event.stopPropagation();">
-                                    <label for="{{labelForId}}">{{templateTypeItem}}</label>
+                                <div class="field-checkbox" ng-class="{checked: templateItem['type'].indexOf($index+'')!=-1}" style="{{$last?'margin-bottom: 0':''}}" ng-repeat="templateTypeItem in templateTypeArray" ng-click="toggleCheckbox($event, $index); updateTemplateType($event, $index, $parent.$index)">
+                                    <input type="checkbox" class="hidden" ng-value="{{$index}}" ng-init="labelForUseTypeId = getUID()" id="{{labelForUseTypeId}}" ng-click="$event.stopPropagation();">
+                                    <label for="{{labelForUseTypeId}}">{{templateTypeItem}}</label>
                                 </div>
                             </div>             
                         </div>
