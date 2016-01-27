@@ -167,7 +167,7 @@ table td {
                 <table class="table table-bordered table-striped">
                   <tr>
                     <td>消费时间</td>
-                    <td>类别</td>
+                    <td>类目</td>
                     <td>金额</td>
                     <td>类型</td>
                     <td>商家</td>

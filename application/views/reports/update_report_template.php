@@ -122,7 +122,7 @@
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
-    <h4 class="modal-title">类别信息</h4>
+    <h4 class="modal-title">类目信息</h4>
 </div>
 <style>
     .img-select {
