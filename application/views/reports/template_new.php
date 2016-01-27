@@ -215,9 +215,9 @@
                                                 <td style="width: 60px;">
                                                    <input name="all_item" id="all_item" type="checkbox" class="form-controller all_item"> 全选</td>
                                                 <td style="width: 135px;">消费时间</td>
-                                                <td style="min-width:103px;">类型</td>
+                                                <td style="min-width:103px;">类目</td>
                                                 <td style="width: 60px;">金额</td>
-                                                <td style="width: 45px;">类别</td>
+                                                <td style="width: 45px;">类型</td>
                                                 <td style="min-width: 100px;">商家</td>
                                                 <td>备注</td>
                                                 <td style="min-width: 86px;">操作</td>

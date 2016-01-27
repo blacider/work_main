@@ -41,7 +41,7 @@ foreach($tags as $item){
                 </div>
                 <div class="clear br3 main_choose_choose">
                     <select id="cate_selector">
-                        <option value="-1">所有类别</option>
+                        <option value="-1">所有类目</option>
 <?php
 $top_category = array();
 $cates = array();
@@ -87,7 +87,7 @@ foreach($category as $item){
                         <th></th>
                         <th>日期</th>
                         <th>商家</th>
-                        <th>类别</th>
+                        <th>类目</th>
                         <th>标签</th>
                         <th>备注</th>
                         <th>金额</th>

@@ -7,7 +7,7 @@
 	</div>
 
 	<div class="col-xs-3 col-sm-3" style="margin-top:2px;">
-		<select class="sob_category chosen-select default_custom" name="category" data-id="<?php echo $item_customization_value['id'];?>" id="sob_category" data-placeholder="类别">
+		<select class="sob_category chosen-select default_custom" name="category" data-id="<?php echo $item_customization_value['id'];?>" id="sob_category" data-placeholder="类目">
 		</select>
 	</div>
 </div>

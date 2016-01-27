@@ -11,7 +11,7 @@
                                     <th>ID</th>
                                     <th>姓名</th>
                                     <th>邮箱</th>
-                                    <th>类别信息</th>
+                                    <th>类目信息</th>
                                     <th>错误信息</th>
                                 </tr>
                                 <?php foreach($members as $d){ ?>

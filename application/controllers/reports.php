@@ -1547,7 +1547,7 @@ class Reports extends REIM_Controller {
                 $o = array();
                 $o['日期'] = date('Y-m-d', $i['dt']);
                 $o['时间'] = date('H:i:s', $i['dt']);
-                $o['类别'] = $i['category_name'];
+                $o['类目'] = $i['category_name'];
                 $o['帐套'] = $this->try_get_element($cate_dic, $i['category'], 'sob_name');
                 $o['创建者'] = $i['nickname'];
                 $o['邮箱'] = '';
@@ -1609,7 +1609,7 @@ class Reports extends REIM_Controller {
                         $o['职位'] = $level_dic[$i['member_info']['level_id']];
                     }
                 }
-                //$o['类别'] = $i['category_name'];
+                //$o['类目'] = $i['category_name'];
                 $_str_afford_dept = $o['部门'];
                 $_str_afford_member = $i['nickname'];
                 if($i['afford_ids'] != "-1" && $i['afford_ids'] != "")

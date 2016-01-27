@@ -53,7 +53,7 @@
 
                             </div>
                         
-                            <label style="margin-left: -19px;position: relative;left: 12px;" class="col-sm-2 control-label no-padding-right">可审批类别</label>
+                            <label style="margin-left: -19px;position: relative;left: 12px;" class="col-sm-2 control-label no-padding-right">可审批类目</label>
                             <div id="category-content" style="position: relative;left: 7px;" class="col-sm-offset-2">
                                 <div class="form-group">
                                     <div class="radio col-xs-3 col-sm-3">
@@ -83,7 +83,7 @@
                                         </select>
                                     </div>
                                     <div class="col-xs-3 col-sm-3" >
-                                        <select name="allow_category" class="sob_category chosen-select-niu" data-placeholder="类别">
+                                        <select name="allow_category" class="sob_category chosen-select-niu" data-placeholder="类目">
                                         </select>
                                     </div>
                                         <div class="checkbox col-xs-2 col-sm-2">
@@ -111,7 +111,7 @@
                                         </select>
                                     </div>
                                     <div class="col-xs-3 col-sm-3">
-                                        <select name="deny_category" class="sob_category chosen-select-niu" data-placeholder="类别">
+                                        <select name="deny_category" class="sob_category chosen-select-niu" data-placeholder="类目">
                                         </select>
                                     </div>
                                        
@@ -134,7 +134,7 @@
                             }
                             function addCategoryRow() {
                                 var addDom = $('.CategoryRow .addCategoryRow');
-                                var category = "<div class='form-group CategoryRow'><div class='col-xs-3 col-sm-3'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-3 col-sm-3'><select name='allow_category' class='sob_category chosen-select-niu' data-placeholder='类别'></select></div><div class='checkbox col-xs-2 col-sm-2'><label><input type='checkbox' class='def' id='frequency_unlimit' name='default' >第一默认审批人</label></div><div class='col-xs-1 col-sm-1'><div class='addCategoryRow' onclick='addCategoryRow()''>+</div>   </div></div>"
+                                var category = "<div class='form-group CategoryRow'><div class='col-xs-3 col-sm-3'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-3 col-sm-3'><select name='allow_category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='checkbox col-xs-2 col-sm-2'><label><input type='checkbox' class='def' id='frequency_unlimit' name='default' >第一默认审批人</label></div><div class='col-xs-1 col-sm-1'><div class='addCategoryRow' onclick='addCategoryRow()''>+</div>   </div></div>"
                                 addDom.removeClass('addCategoryRow');
                                 addDom.attr('onclick', 'removeCategoryRow(this)');
                                 addDom.addClass('removeCategoryRow');
@@ -166,7 +166,7 @@
                             });
                             function addDisableCategoryRow() {
                                 var addDom = $('.disableCategoryRow .addDisableCategoryRow');
-                                var category = "<div class='form-group disableCategoryRow'><div class='col-xs-3 col-sm-3'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-3 col-sm-3'><select name='deny_category' class='sob_category chosen-select-niu' data-placeholder='类别'></select></div><div class='col-xs-1 col-sm-1'><div class='addDisableCategoryRow' onclick='addDisableCategoryRow()''>+</div>   </div></div>"
+                                var category = "<div class='form-group disableCategoryRow'><div class='col-xs-3 col-sm-3'><select name='sobs' class='sobs chosen-select-niu' data-placeholder='套帐''></select></div><div class='col-xs-3 col-sm-3'><select name='deny_category' class='sob_category chosen-select-niu' data-placeholder='类目'></select></div><div class='col-xs-1 col-sm-1'><div class='addDisableCategoryRow' onclick='addDisableCategoryRow()''>+</div>   </div></div>"
                                 addDom.removeClass('addDisableCategoryRow');
                                 addDom.attr('onclick', 'removeCategoryRow(this)');
                                 addDom.addClass('removeCategoryRow');
@@ -563,7 +563,7 @@ $(document).ready(function(){
 
         if($('input[name="all_able"]:checked').val() == undefined)
         {
-            show_notify("请选择类别类型");
+            show_notify("请选择类目类型");
             return false;
         }
 

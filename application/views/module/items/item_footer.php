@@ -110,7 +110,7 @@ $(document).ready(function(){
 
         if($('#sob_category').val() == null)
         {
-            show_notify('请选择类别');
+            show_notify('请选择类目');
             return false;
         }
 
