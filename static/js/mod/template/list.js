@@ -217,6 +217,16 @@
                                         code: 'INVALID_TYPE'
                                     }
                                 }
+
+                                if(!columnObject['name']) {
+                                    return {
+                                        valid: false,
+                                        tip: '请填写字段名称',
+                                        errorMsg: '空的字段名',
+                                        code: 'EMPTY_FIELD_NAME'
+                                    }   
+                                }
+
                                 return {
                                     valid: true,
                                     errorMsg: '',
@@ -224,13 +234,15 @@
                                     code: 'OK'
                                 }
                             },
-                           isFieldTypeArrayValid: function  (columns) {
+                           getInvalidFieldTypeArray: function  (columns) {
                                 var invalidCount = 0;
                                 var validatorArray = [];
                                 for(var i = 0; i <columns.length; i++) {
                                     var validator = this.isFieldTypeValid(columns[i]);
-                                    validatorArray.push(validator);
-                                    validator.valid || invalidCount++;
+                                    if(!validator.valid) {
+                                        validatorArray.push(validator);
+                                        invalidCount++;
+                                    }
                                 }
                                 return {
                                     invalidCount: invalidCount,
@@ -567,8 +579,7 @@
 
                         data.config.push(templateEditTable);
 
-                        var validator = TemplateValidator.isFieldTypeArrayValid(templateEditTable.children);
-
+                        var validator = TemplateValidator.getInvalidFieldTypeArray(templateEditTable.children);
                         if(validator['invalidCount']>0) {
                             return show_notify(validator.validatorArray[0].tip);
                         }
