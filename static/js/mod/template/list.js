@@ -29,22 +29,26 @@
         {
             disabled: true,
             text: '报销单名称',
-            value: ''
+            value: '',
+            checked: true
         },
         {
             disabled: true,
             text: '提交时间',
-            value: ''
+            value: '',
+            checked: true
         },
         {
             disabled: true,
             text: '提交者姓名',
-            value: ''
+            value: '',
+            checked: true
         },
         {
             disabled: true,
             text: '金额',
-            value: ''
+            value: '',
+            checked: true
         },
         {
             disabled: false,

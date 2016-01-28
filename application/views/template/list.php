@@ -280,7 +280,7 @@
                         <div class="column-wrap table-layout">
                             <h4 class="field-table-label table-cell"> 表头显示 </h4>
                             <div class="table-cell field-table-content-multi-row" ng-init="tableHeaderLabelId = getUID()">
-                                <div class="field-checkbox checked" style="{{$last?'margin-bottom:0':''}}" ng-class="{disabled: tableHeaderOptionsItem.disabled}" ng-click="toggleCheckbox($event)" ng-repeat="tableHeaderOptionsItem in tableHeaderOptions">
+                                <div class="field-checkbox" style="{{$last?'margin-bottom:0':''}}" ng-class="{checked: tableHeaderOptionsItem.checked, disabled: tableHeaderOptionsItem.disabled}" ng-click="toggleCheckbox($event)" ng-repeat="tableHeaderOptionsItem in tableHeaderOptions">
                                     <input type="checkbox" class="hidden" id="{{tableHeaderLabelId}}_{{$index}}" ng-click="$event.stopPropagation();">
                                     <label for="{tableHeaderLabelId}}_{{$index}}">{{tableHeaderOptionsItem.text}}</label>
                                 </div>
