@@ -417,25 +417,10 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <a href="<?php echo base_url('company/show_approve'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 审批规则 </a>
           <b class="arrow"></b>
         </li> 
-        <li class="hsub">
-        <a href="#" class="dropdown-toggle">
-            <i class="menu-icon fa fa-caret-right"></i> 消费设置
-            <b class="arrow fa fa-angle-down"></b>
-        </a>
-        <b class="arrow"></b>
-            <ul class="submenu rushumenu submenu_custom">
-                <li id="custom_item">
-                    <a href="<?php echo base_url('company/item_customization'); ?>" >  消费字段自定义 </a>
-                    <b class="arrow"></b>
-                </li> 
-
-                <li id="get_item_type_name">
-                    <a href="<?php echo base_url('company/get_item_type_name'); ?>" > 消费类型设置 </a>
-                    <b class="arrow"></b>
-                </li>
-            </ul>
+        <li class="hsub" id="item_customization">
+        <a href="<?php echo base_url('company/item_customization'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 消费设置 </a>
+          <b class="arrow"></b>
         </li>
-
         <li class="hsub" id="report_template_list">
         <a href="<?php echo base_url('company/report_template_list'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 报销单模板 </a>
           <b class="arrow"></b>
