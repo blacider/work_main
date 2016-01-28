@@ -1,14 +1,15 @@
 (function() {
-    var reimApp = angular.module('reimApp', []);
+    
     var _fieldCountLimit_ = 6;
     var _templateNameLengthLimit_ = 10;
+    var _templateTotalLimit_ = 10;
     var _templateTypes_ = null;
     var _ON_TEMPLATE_ADD_ANIMATION_ = 'animated flash';
     var _defaultColumnEditConfig_ = {
         "explanation": "",
         "name": "",
         "required": "0",
-        "type": ""
+        "type": "1"
     };
     var _defaultTableEditConfig_ = {
         "name": "",
@@ -105,7 +106,7 @@
 
     return {
         initialize: function() {
-            reimApp.controller('templateController', ["$http", "$scope", "$element",
+            angular.module('reimApp', ['ng-sortable']).controller('templateListController', ["$http", "$scope", "$element",
                 function($http, $scope, $element) {
                     // init edit config
                     // templateEditTableMap = {
@@ -135,6 +136,7 @@
                                 $scope.tableFooterOptions = _defaultTableFooterOptions_;
                                 $scope.tableHeaderOptions = _defaultTableHeaderOptions_;
                                 $scope.paperAvailableSize = _paperAvailableSize_;
+
                             });
                         })
                     };
@@ -234,43 +236,36 @@
                         }
                     })();
 
-                    // 拖动后编辑，是大坑
-                    function makeTableSortable() {
-                        if($element.find('.table-container .field-table').length<=0) {
-                            return;
-                        }
-                        Sortable.create($element.find('.table-container')[0], {
-                            handle: ".btn-drag",
-                            draggable: '.field-table',
-                            animation: '150',
-                            ghostClass: 'sortable-ghost',
-                            chosenClass: "sortable-chosen",
-                            scroll: true,
-                            onStart: function  (e) {
-                                // body...
-                            },
-                            onEnd: function (e) {
-                                // 交换数组两个元素的位置
-                                if(e.newIndex === undefined) {
-                                    return
-                                }
-                                var templateIndex = $element.find('.paper').index($(e.target).parents('.paper'));
+                    $scope.makeTableSortable = {
+                        handle: ".btn-drag",
+                        draggable: '.field-table',
+                        animation: 150,
+                        ghostClass: 'sortable-ghost',
+                        chosenClass: "sortable-chosen",
+                        scroll: true,
+                        onUpdate: function (e) {
+                            // 交换数组两个元素的位置
+                            var templateIndex = $element.find('.paper').index($(e.eleContainer).parents('.paper'));
 
-                                var tableTransfer = $scope.templateArray[templateIndex].config.splice(e.oldIndex, 1);
-                                tableTransfer = tableTransfer[0];
-                                $scope.templateArray[templateIndex].config.splice(e.newIndex, 0, tableTransfer);
-                                
-                            }
-                        });
+                            var tableTransfer = $scope.templateArray[templateIndex].config.splice(e.oldIndex, 1);
+                            tableTransfer = tableTransfer[0];
+                            $scope.templateArray[templateIndex].config.splice(e.newIndex, 0, tableTransfer);
+                            
+                        }
                     };
 
-                    function makeTitleAutoWidth () {
-                        $element.find('.paper-header input').autoGrowInput({minWidth: 30, maxWidth: 600, comfortZone: 0});
+                    function makeTitleAutoWidth (el) {
+                        var $eles = $element.find('.paper-header input');
+                        if(el) {
+                            $eles = $(el);
+                        }
+                        $eles.autoGrowInput({minWidth: 30, maxWidth: 200, comfortZone: 0});
                     };
 
                     loadPageData().done(function  (rs) {
-                        makeTableSortable();
-                        makeTitleAutoWidth();
+                        setTimeout(function  () {
+                            makeTitleAutoWidth();
+                        }, 100);
                     });
 
                     // compute here
@@ -303,10 +298,9 @@
                         var $templateItem = $targetEle.parents('.paper');
                         $templateItem.removeClass(_ON_TEMPLATE_ADD_ANIMATION_)
                         if ($templateItem.hasClass('show')) {
-                            $templateItem.removeClass('show');
-                            
+                            $templateItem.removeClass('show').find('.paper-header').removeClass('fixed');
                         } else {
-                            $templateItem.addClass('show').find('.paper-header').removeClass('fixed');
+                            $templateItem.addClass('show');
                             var offset = $element.find('.paper').eq(index).offset();
                             $('html, body').animate({
                                 scrollTop: offset.top - 15
@@ -319,13 +313,8 @@
                         // body...
                     };
                     
-                    $scope.toggleTableVisible = function  (e) {
-                        var $table = $(e.target).parents('.field-table').find('.field-table-content, .category-table');
-                        if($table.hasClass('none')) {
-                            $table.removeClass('none');
-                        } else {
-                            $table.addClass('none')
-                        }
+                    $scope.toggleTableVisible = function  (templateItem, e) {
+
                     };
 
                     $scope.togglePrintSettings = function  (e) {
@@ -353,7 +342,6 @@
                     };
 
                     $scope.updateTemplateType = function(e, index, templateIndex) {
-                        debugger
                         if($(e.currentTarget).hasClass('checked')) {
 
                             $scope.templateArray[templateIndex].type.push(index + '');
@@ -398,10 +386,15 @@
                         var templateData = angular.copy(_defaultTemplateConfig_);
 
                         var unnamedTemplateCount = TemplateValidator.howManyTemplateUnNamed($scope.templateArray);
+                        // 检测长度
+                        if($scope.templateArray.length >=_templateTotalLimit_) {
+                            return show_notify('可用模版不能超过' +_templateTotalLimit_+'个');
+                        }
+                        // 添加序号
                         if(unnamedTemplateCount>0) {
                             templateData.name = _defaultTemplateName_ + unnamedTemplateCount
                         }
-                         
+
                         Utils.api('/company/docreate_report_template', {
                             method: 'post',
                             data: {
@@ -423,15 +416,12 @@
 
                                 // angular do dom insert async
                                 setTimeout(function () {
-                                    $element.find('.paper:last').find('.paper-header input').autoGrowInput({minWidth: 30, maxWidth: 600, comfortZone: 0});
-                                }, 1000);
+                                    makeTitleAutoWidth($element.find('.paper:last').find('.paper-header input'));
+                                }, 100);
                             });
 
                             var $paper = $element.find('.paper').eq($scope.templateArray.length -1);
                             $paper.find('.btn-accordion').trigger('click');
-                            setTimeout(function  () {
-                                $("body").animate({ scrollTop:  $paper.offset()['top']}, 300, function  () {});
-                            }, 1000);
                         });
                   
                     };
@@ -446,6 +436,7 @@
                     };
                     
                     $scope.onAddColumnEditConfig = function (data, e, index) {
+
                         // 1. length limit check
                         if($scope.templateEditTableMap[data.id].children.length > _fieldCountLimit_ - 1) {
                             return alert('字段不能超过' + _fieldCountLimit_ + ' 个');
@@ -456,6 +447,7 @@
                         }
 
                         $scope.templateEditTableMap[data.id].children.push(angular.copy(_defaultColumnEditConfig_));
+
                     };
 
                     $scope.onRemoveTemplate = function(item, $index, e) {
@@ -611,6 +603,10 @@
                         originalTemplateData.isShow = true;
                         originalTemplateData.isHeaderFixed = true;
                         $scope.templateArray[$index] = angular.copy(originalTemplateData);
+
+                        setTimeout(function  () {
+                            makeTitleAutoWidth($element.find('.paper').eq($index).find('.paper-header input'))
+                        }, 0);
                     };
 
                     $scope.onCancelColumnsEditConfig = function(templateData, e, templateIndex) {

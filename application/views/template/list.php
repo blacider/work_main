@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/static/css/mod/template/list.css"/>
 <link rel="stylesheet" href="/static/css/widgets/loading-default.css"/>
 <div class="mod mod-reim-template" ng-app="reimApp">
-    <div class="page-content-area" ng-controller="templateController">
+    <div class="page-content-area" ng-controller="templateListController">
         <div class="ui-loading-layer" ng-if="!isLoaded">
             <div class="ui-loading-icon"></div>
         </div>
@@ -28,7 +28,7 @@
                     <div class="title">
                         内容设置
                     </div>
-                    <div class="table-container">
+                    <div class="table-container" ng-sortable="makeTableSortable">
                         <div class="field-table" ng-repeat="tableItem in templateItem.config">
                             <div class="line"></div>
                             <h4 class="field-table-title">{{tableItem.name}}
@@ -75,7 +75,6 @@
                                     <div class="table-cell field-type">
                                         <div class="field-select field">
                                             <select ng-model="editColumnItem.type" ng-change="onFieldTypeChange(editColumnItem.type, templateItem, $index, $parent.$index)">
-                                                <option value="">类型</option>
                                                 <option value="1">文本框</option>
                                                 <option value="2">单选框</option>
                                                 <option value="3">日期时间</option>
@@ -110,8 +109,8 @@
                         <div class="field-group-footer">
                             <p class="buttons">
                                 <span class="button btn-add" ng-click="onAddColumnEditConfig(templateItem, $event, $index)">添加字段</span>
-                                <span class="button btn-save" ng-click="onSaveColumnsEditConfig(templateItem, $event, $index)">保存</span>
                                 <span class="button btn-cancel" ng-click="onCancelColumnsEditConfig(templateItem, $event, $index)">取消</span>
+                                <span class="button btn-save" ng-click="onSaveColumnsEditConfig(templateItem, $event, $index)">确定</span>
                             </p>
                         </div>           
                     </div>
@@ -128,17 +127,17 @@
                         <div class="line"></div>
                         <h4 class="field-table-title">消费明细
                             <p class="buttons">
-                                <span class="button btn-eye" ng-click="toggleTableVisible($event)"></span>
+                                <span class="button btn-eye" ng-class="{'btn-clicked': templateItem.customDetail}" ng-click="templateItem.customDetail = !templateItem.customDetail;"></span>
                             </p>
                         </h4>
                         <div class="column-wrap table-layout">
-                            <h4 class="field-table-label table-cell"> 字段组 </h4>
+                            <h4 class="field-table-label table-cell" style="margin: 0"> 字段组 </h4>
                             <div class="table-cell field-table-content-multi-row">
-                                <div class="field-checkbox" ng-class="{checked: templateItem.is_category_by_group}" style="display: block; margin-bottom: 0" ng-click="toggleCheckbox($event);">
+                                <div class="field-checkbox" ng-class="{checked: templateItem.is_category_by_group}" style="margin-bottom: 0"  ng-init="templateItem.is_category_by_group = true">
                                     <input id="{{labelForCatetoryGroupId}}" type="checkbox" class="hidden" ng-model="templateItem.is_category_by_group" ng-click="$event.stopPropagation();" ng-init="labelForCatetoryGroupId = getUID()">
                                     <label for="{{labelForCatetoryGroupId}}">消费按类目分类</label>
                                 </div>
-                                <div class="field-table-content" style="margin-top: 20px;" ng-if="!templateItem.is_category_by_group">
+                                <div class="field-table-content" style="margin-top: 20px;" ng-show="templateItem.customDetail" ng-if="!templateItem.is_category_by_group">
                                     <table>
                                         <thead>
                                             <tr>
@@ -170,7 +169,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div ng-if="templateItem.is_category_by_group" class="category-table">
+                                <div ng-if="templateItem.is_category_by_group" class="category-table" ng-show="templateItem.customDetail">
                                     <h4 class="title-category">类目A</h4>
                                     <div class="field-table-content">
                                         <table>
@@ -195,7 +194,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div ng-if="templateItem.is_category_by_group" class="category-table">
+                                <div ng-if="templateItem.is_category_by_group" class="category-table" ng-show="templateItem.customDetail">
                                     <h4 class="title-category">类目B</h4>
                                     <div class="field-table-content">
                                         <table>
@@ -223,17 +222,17 @@
                             </div>             
                         </div>
                     </div>
-                    <div class="field-table default-field-table" style="">
+                    <div class="field-table default-field-table">
                         <div class="line" style="margin-bottom: 30px;"></div>
                         <div class="column-wrap table-layout">
-                            <h4 class="field-table-label table-cell"> 字段组 </h4>
+                            <h4 class="field-table-label table-cell" style="margin: 0"> 字段组 </h4>
                             <div class="table-cell field-table-content-multi-row">
                                 <h4 class="field-table-title" style="padding-left: 0; margin: 0">流转意见
                                     <p class="buttons">
-                                        <span class="button btn-eye" ng-click="toggleTableVisible($event)"></span>
+                                        <span class="button btn-eye" ng-class="{'btn-clicked': templateItem.turnOpinion}"  ng-click="templateItem.turnOpinion = !templateItem.turnOpinion;"></span>
                                     </p>
                                 </h4>
-                                <div class="field-table-content" style="margin-top: 20px;">
+                                <div class="field-table-content" style="margin-top: 20px;" ng-show="templateItem.turnOpinion">
                                     <table>
                                         <thead>
                                             <tr>
@@ -320,6 +319,8 @@
 <script src="/static/js/libs/jquery.auto-grow-input.min.js"></script>
 <script src="/static/plugins/art-dialog/art-dialog.min.js"></script>
 <script src="/static/js/libs/Sortable.min.js"></script>
+<script src="/static/js/libs/ng-sortable.js"></script>
+
 <script src="/static/js/mod/template/list.js"></script>
 <script src="/static/js/libs/underscore-min.js"></script>
 

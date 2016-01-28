@@ -201,6 +201,10 @@
 	background-image: url("/static/img/mod/template/36/btn-eye.dark.png");
 }
 
+.mod-reim-template .default-field-table .btn-eye.btn-clicked {
+	background-image: url("/static/img/mod/template/36/btn-eye.dark.png");
+}
+
 .mod-reim-template .default-field-table .field-table-content-multi-row {
 	width: 80%;
 }
@@ -237,6 +241,8 @@
 
 .mod-reim-template .paper-footer .btn-save {
 	background: url("/static/img/mod/template/btn-save.png") no-repeat;
+	float: right;
+	margin-right: 70px;
 }
 
 .mod-reim-template .paper-footer .btn-save:hover {
@@ -333,7 +339,7 @@
 	filter: progid:DXImageTransform.Microsoft.DropShadow(OffX=0, OffY=1, Color=#ff0000);
 	zoom: 1;
 	border: 1px solid rgba(0, 0, 0, 0.30);
-	border-bottom-width: 3px;
+	border-bottom-width: 2px;
 	opacity: 1 !important;
 }
 /* field-table compoents */
@@ -346,14 +352,6 @@
     padding-top: 0;
     border: 1px solid #fff;
 }
-
-.field-table:hover {
-	/*border: 1px solid #f2f6fa;*/
-	box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.30);
-	filter: progid:DXImageTransform.Microsoft.DropShadow(OffX=0, OffY=1, Color=#ff0000);
-	zoom: 1;
-}
-
 
 .field-table .line,
 .field-group .line {
@@ -571,14 +569,15 @@
 	padding: 5px 4px 6px 8px;
 	width: 100%;
 	display: block !important;
-	color: #4a4a4a
+	color: #4a4a4a;
+	border-radius: 2px !important;
 }
 
 .field-select {
 	width: 100%;
 	border: 1px solid rgb(213, 213, 213);
 	background: #fff;
-
+	border-radius: 2px !important;
 	height: 34px;
 } 
 .field-select select {
