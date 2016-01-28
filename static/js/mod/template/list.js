@@ -3,14 +3,15 @@
     var _fieldCountLimit_ = 6;
     var _templateNameLengthLimit_ = 10;
     var _templateTypes_ = null;
+    var _ON_TEMPLATE_ADD_ANIMATION_ = 'animated flash';
     var _defaultColumnEditConfig_ = {
         "explanation": "",
-        "name": "字段名称",
+        "name": "",
         "required": "0",
         "type": ""
     };
     var _defaultTableEditConfig_ = {
-        "name": "字段组名称",
+        "name": "",
         "type": "0",
         "printable": "1",
         "children": [angular.copy(_defaultColumnEditConfig_)],
@@ -300,15 +301,16 @@
                     $scope.onAccordionTemplate = function(item, index, e) {
                         var $targetEle = $(e.currentTarget);
                         var $templateItem = $targetEle.parents('.paper');
-                        $templateItem.removeClass('animated bounceIn')
-                        if ($templateItem.hasClass('shrink')) {
-                            $templateItem.removeClass('shrink');
+                        $templateItem.removeClass(_ON_TEMPLATE_ADD_ANIMATION_)
+                        if ($templateItem.hasClass('show')) {
+                            $templateItem.removeClass('show');
+                            
+                        } else {
+                            $templateItem.addClass('show').find('.paper-header').removeClass('fixed');
                             var offset = $element.find('.paper').eq(index).offset();
                             $('html, body').animate({
                                 scrollTop: offset.top - 15
-                            })
-                        } else {
-                            $templateItem.addClass('shrink').find('.paper-header').removeClass('fixed');
+                            });
                         }
                     };
 
@@ -316,7 +318,6 @@
                         alert('预览模版－功能开发中')
                         // body...
                     };
-                    
                     
                     $scope.toggleTableVisible = function  (e) {
                         var $table = $(e.target).parents('.field-table').find('.field-table-content, .category-table');
@@ -400,66 +401,39 @@
                         if(unnamedTemplateCount>0) {
                             templateData.name = _defaultTemplateName_ + unnamedTemplateCount
                         }
+                         
+                        Utils.api('/company/docreate_report_template', {
+                            method: 'post',
+                            data: {
+                                template_name: templateData['name'],
+                                type: templateData['type']
+                            }
+                        }).done(function  (rs) {
+                            // update arraycache
+                            $scope.templateArrayOriginal.updateById(templateData.id, templateData);
 
-                        dialog({
-                            title: '报销单名称设置',
-                            content: _.template( [
-                                '<div class="field-input" style="position: relative">',
-                                '    <input type="text" placeholder="报销单名称" value="<%= name %>">',
-                                '    <div class="loading" style="display: none">正在加油提交数据......</div>',
-                                '</div>'
-                            ].join(''))(templateData),
-                            ok: function () {
-                                var _self = this;
-                                var name = $(this.node).find('input').val();
-                                if(!name) {
-                                    $(this.node).find('input').focus();
-                                    return false;
-                                }
+                            if (rs['status'] <= 0) {
+                                // $scope.templateArray.pop();
+                                return show_notify(rs['msg']);
+                            }
 
-                                templateData.name = name;
+                            $scope.$apply(function () {
+                                $scope.templateArray.push(templateData);
+                                show_notify('添加成功！');
 
+                                // angular do dom insert async
+                                setTimeout(function () {
+                                    $element.find('.paper:last').find('.paper-header input').autoGrowInput({minWidth: 30, maxWidth: 600, comfortZone: 0});
+                                }, 1000);
+                            });
 
-                                $(this.node).find('input').next().addClass('show')
-
-                                debugger
-
-                                Utils.api('/company/docreate_report_template', {
-                                    method: 'post',
-                                    data: {
-                                        template_name: templateData['name']
-                                    }
-                                }).done(function  (rs) {
-                                    // update arraycache
-                                    $scope.templateArrayOriginal.updateById(templateData.id, templateData);
-
-                                    $(_self.node).find('input').next().removeClass('show')
-                                    if (rs['status'] <= 0) {
-                                        // $scope.templateArray.pop();
-                                        return show_notify(rs['msg']);
-                                    }
-
-                                    debugger
-
-                                    $scope.$apply(function  () {
-                                        $scope.templateArray.push(templateData);
-                                        setTimeout(function () {
-                                            // body...
-                                            $element.find('.paper:last').find('.paper-header input').autoGrowInput({minWidth: 30, maxWidth: 600, comfortZone: 0});
-                                        }, 1000);
-                                    });
-
-                                    _self.close();
-                                    $("body").animate({ scrollTop: $(document).height() }, 1000, function  () {
-                                        $element.find('.paper').eq($scope.templateArray.length -1).addClass('animated bounceIn')
-                                        show_notify('添加成功！');
-                                    });
-                                });
-                                return false
-                            },
-                            okValue: '确定'
-                        }).showModal(e.currentTarget);
-
+                            var $paper = $element.find('.paper').eq($scope.templateArray.length -1);
+                            $paper.find('.btn-accordion').trigger('click');
+                            setTimeout(function  () {
+                                $("body").animate({ scrollTop:  $paper.offset()['top']}, 300, function  () {});
+                            }, 1000);
+                        });
+                  
                     };
                     
                     $scope.onAddTableConfig = function (data, e, index) {
@@ -485,6 +459,9 @@
                     };
 
                     $scope.onRemoveTemplate = function(item, $index, e) {
+                        if($scope.templateArray.length<=1) {
+                            return show_notify('至少保留一份报销单模版!');
+                        }
                         dialog({
                             title: '温馨提示',
                             content: '确认要删除当前报销单模版?',
@@ -674,50 +651,15 @@
                             $input.trigger('autogrow')
                             return false;
                         }
-                        $input.attr('disabled', true).next().removeClass('show');
+                        $input.attr('disabled', true);
                         $scope.templateArray[$index].name = name;
-
-                        if(name != $scope.templateArrayOriginal.getItemById([templateData.id])['name']) {
-                            var data = angular.copy($scope.templateArray[$index]);
-
-                            if(data.type.length == 0) {
-                                return show_notify('请选择报销模版适用范围');
-                            }
-
-                            dialog({
-                                content: '立即更新名称',
-                                okValue: '更新',
-                                cancelValue: '稍后',
-                                align: 'bottom',
-                                buttonAlign: 'center center',
-                                ok: function  () {
-                                    Utils.api('/company/doupdate_report_template', {
-                                        method: "post",
-                                        data: {
-                                            temp_info: data
-                                        }
-                                    }).done(function  (rs) {
-                                        if(rs['status'] <= 0) {
-                                            return show_notify(rs['msg']);
-                                        }
-                                        $scope.templateArrayOriginal.updateById(data.id, data);
-                                        show_notify('保存成功！');
-                                    });
-                                },
-                                cancel: function  () {
-                                    // body...
-                                }
-
-                            }).showModal(e.currentTarget);
-                        }
 
                         return true;
                     };
 
                     $scope.onEditTemplateTitle = function  (e) {
                         var $target = $(e.currentTarget);
-                        $target.addClass('show');
-                        $target.prev().attr('disabled', false).focus();
+                        $target.find('input').attr('disabled', false).focus();
                     };
 
                     $scope.getUID = function  () {
@@ -729,7 +671,7 @@
                         // 2. set the target element as scroll, and othernot scroll
                         var scrollTop = $(window).scrollTop();
 
-                        $element.find('.paper:not(.shrink)').each(function  (index, item) {
+                        $element.find('.paper.show').each(function  (index, item) {
                             var $item = $(item);
                             var $itemHeader = $item.find('.paper-header');
                             var offset = $item.offset(); 

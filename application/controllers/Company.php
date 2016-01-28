@@ -129,9 +129,9 @@ class Company extends REIM_Controller {
     public function docreate_report_template()
     {
         $template_name = $this->input->post('template_name');
-//        $config = $this->input->post('config');
+        $type = $this->input->post('type');
         $config = json_encode(array());
-        $buf = $this->reports->create_report_template($template_name,$config);
+        $buf = $this->reports->create_report_template($template_name, $config, $type);
         $msg = '';
         $id = -1 ;
         if($buf['status'] > 0)

@@ -8,6 +8,9 @@
 	padding: 0;
 	font-family: STHeitiSC-Light;
 }
+.mod-reim-template .page-content-area {
+	padding-bottom: 20px;
+}
 .mod-reim-template .header {
 	text-align: right;
 	border: none;
@@ -43,31 +46,24 @@
 	z-index: 999;
 	top: 0;
 }
+
 .mod-reim-template .paper .paper-header .name {
 	position: relative;
     float: left;
     top: 18px;
     padding-right: 36px;
 }
-.mod-reim-template .paper .paper-header .name:hover .icon {
-	display: inline-block;
-}
-.mod-reim-template .paper .paper-header input {
+
+.mod-reim-template .paper .paper-header .name input {
 	border: none;
 	background: transparent !important;
 	color: #fff !important;
 	padding: 0;
-	border-bottom: 1px dotted transparent;
 	font-size: 18px;
 	height: 24px;
 }
 
-.mod-reim-template .paper .paper-header input:focus {
-	border-bottom-color: #fff;
-}
-
-.mod-reim-template .paper .paper-header .icon {
-	display: inline-block;
+.mod-reim-template .paper .paper-header .name .icon {
 	width: 36px;
 	height: 36px;
 	position: absolute;
@@ -76,7 +72,11 @@
 	background: url("/static/img/mod/template/36/btn-edit.png") no-repeat center center;
 	display: none;
 }
-.mod-reim-template .paper .paper-header .icon.show {
+
+.mod-reim-template .paper.show .paper-header .name input {
+	border-bottom: 1px dotted #fff;
+}
+.mod-reim-template .paper.show .paper-header .name .icon {
 	display: inline-block;
 }
 
@@ -99,16 +99,11 @@
 }
 
 .mod-reim-template .paper .paper-header .buttons .btn-accordion:hover {
-    background-image: url("/static/img/mod/template/36/btn-up.dark.png");
-     transform: rotate(180deg);
-	-webkit-transform: rotate(180deg);
-	-o-transform: rotate(180deg);
-	-moz-transform: rotate(180deg);
-	-ms-transform: rotate(180deg);
+    background-image: url("/static/img/mod/template/36/btn-down.dark.png");
 }
 
-.mod-reim-template .paper.shrink .paper-header .buttons .btn-accordion:hover {
-    background-image: url("/static/img/mod/template/36/btn-down.dark.png");
+.mod-reim-template .paper.show .paper-header .buttons .btn-accordion:hover {
+    background-image: url("/static/img/mod/template/36/btn-up.dark.png");
 }
 
 .mod-reim-template .paper .paper-header .buttons .btn-trash:hover {
@@ -130,11 +125,6 @@
 }
 .mod-reim-template .field-table-title .buttons .btn-drag:hover {
 	background-image: url("/static/img/mod/template/24/btn-drag.dark.png");
-	transform: rotate(360deg);
-	-webkit-transform: rotate(360deg);
-	-o-transform: rotate(360deg);
-	-moz-transform: rotate(360deg);
-	-ms-transform: rotate(360deg);
 }
 .mod-reim-template .wrap {
 	background: #F6F9FB;
@@ -252,21 +242,34 @@
 .mod-reim-template .paper-footer .btn-save:hover {
 	background: url("/static/img/mod/template/btn-save.active.png") no-repeat;
 }
-.mod-reim-template .paper.shrink .wrap {
+.mod-reim-template .paper .wrap {
 	height: 0;
 	overflow: hidden;
 	padding: 0;
 }
 
-.mod-reim-template .paper .paper-header .buttons .btn-accordion {
-	background: url("/static/img/mod/template/36/btn-up.png") center center no-repeat;
+.mod-reim-template .paper.show .wrap {
+	height: auto;
+	overflow: visible;
+	padding: 30px;
 }
-.mod-reim-template .paper.shrink .paper-header {
+
+.mod-reim-template .paper.show .paper-header {
+	box-shadow: none;
+	height: 60px;
+}
+
+.mod-reim-template .paper .paper-header {
 	box-shadow: 0 1px 2px 0px rgba(0, 0, 0, 0.10);
 	height: 70px;
 }
-.mod-reim-template .paper.shrink .paper-header .buttons .btn-accordion {
-    background-image: url("/static/img/mod/template/36/btn-down.png");
+
+.mod-reim-template .paper .paper-header .buttons .btn-accordion {
+	background: url("/static/img/mod/template/36/btn-down.png") center center no-repeat;
+}
+
+.mod-reim-template .paper.show .paper-header .buttons .btn-accordion {
+    background-image: url("/static/img/mod/template/36/btn-up.png");
 }
 
 .mod-reim-template .default-field-table label {
@@ -279,8 +282,8 @@
 	background-color: #fff;
 	margin-top: 10px;
 	padding: 0 62px;
-
 }
+
 .mod-reim-template .print-settings .group-container {
 	padding-bottom: 60px;
 }
@@ -561,8 +564,9 @@
 	margin: 0;
 	padding: 0px;
 	border: rgba(89, 102, 116, 0.50);
-	border-radius: 2px;
+	border-radius: 2px !important;
 }
+
 .field-input input {
 	padding: 5px 4px 6px 8px;
 	width: 100%;

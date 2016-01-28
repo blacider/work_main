@@ -9,12 +9,12 @@
         <div class="header">
             <a href="javascript:void(0)" class="btn-add" ng-click="onAddTemplate($event)"></a>
         </div>
-        <div class="paper" ng-class="{shrink: !templateItem.isShow}" ng-repeat="templateItem in templateArray" data-id="{{templateItem.id}}">
+        <div class="paper" ng-class="{show: templateItem.isShow}" ng-repeat="templateItem in templateArray" data-id="{{templateItem.id}}">
             <div class="header-wrap">
                 <div class="paper-header" ng-class="{fixed: templateItem.isHeaderFixed}">
-                    <div class="name">
+                    <div class="name" ng-click="onEditTemplateTitle($event)">
                         <input type="text" disabled ng-model="templateItem.name" ng-blur="onFocusOut(templateItem, $index, $event)">
-                        <span class="icon" ng-click="onEditTemplateTitle($event)"></span>
+                        <span class="icon"></span>
                     </div>
                     <p class="buttons">
                         <span class="button btn-eye" ng-click="onPreviewTemplate($index, $event)"></span>
@@ -260,7 +260,7 @@
                         <div class="line" style="margin-bottom: 30px"></div>
                         <div class="column-wrap table-layout">
                             <h4 class="field-table-label table-cell"> 适用范围 </h4>
-                            <div class="table-cell field-table-content-multi-row">
+                            <div class="table-cell field-table-content-multi-row" ng-init="templateItem['type'].length==0; templateItem['type'].push('0')">
                                 <div class="field-checkbox" ng-class="{checked: templateItem['type'].indexOf($index+'')!=-1}" style="{{$last?'margin-bottom: 0':''}}" ng-repeat="templateTypeItem in templateTypeArray" ng-click="toggleCheckbox($event, $index); updateTemplateType($event, $index, $parent.$index)">
                                     <input type="checkbox" class="hidden" ng-value="{{$index}}" ng-init="labelForUseTypeId = getUID()" id="{{labelForUseTypeId}}" ng-click="$event.stopPropagation();">
                                     <label for="{{labelForUseTypeId}}">{{templateTypeItem}}</label>
