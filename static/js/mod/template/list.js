@@ -430,8 +430,6 @@
 
                             $scope.$apply(function () {
                                 $scope.templateArray.push(templateData);
-                                show_notify('添加成功！');
-
                                 // angular do dom insert async
                                 setTimeout(function () {
                                     makeTitleAutoWidth($element.find('.paper:last').find('.paper-header input'));
@@ -473,7 +471,6 @@
                             return show_notify('至少保留一份报销单模版!');
                         }
                         dialog({
-                            title: '删除操作',
                             content: '确认要删除当前报销单模版?',
                             width: 240,
                             skin: 'text-align',
@@ -510,8 +507,12 @@
                     };
 
                     $scope.onRemoveTable = function  (e, tableIndex, templateIndex) {
-                        $scope.templateArray[templateIndex].config.splice(tableIndex, 1);
-                        show_notify('字段组已删除');
+                        var $table = $(e.currentTarget).parents('.field-table');
+                        $table.addClass('animated fadeOut');
+                        setTimeout(function  () {
+                            $table.remove();
+                            $scope.templateArray[templateIndex].config.splice(tableIndex, 1);
+                        }, 1000);
                     };
 
                     $scope.onRemoveColumnEditConfig = function(data, e, columnIndex, templateIndex) {
@@ -519,7 +520,12 @@
                         if(table.children.length <=1) {
                             return show_notify('至少拥有一个字段');
                         }
-                        table.children.splice(columnIndex, 1);                        
+                        var $fields = $(e.currentTarget).parents('.fields');
+                        $fields.addClass('animated fadeOut');
+                        setTimeout(function  () {
+                            $fields.remove();
+                            table.children.splice(columnIndex, 1);                        
+                        }, 1000);
                     };
 
                     // template event
@@ -536,7 +542,9 @@
                         }
 
                         var loading = dialog({
-                            content: '正在上传数据......'
+                            content: '正在上传数据......',
+                            skin: 'text-align',
+                            width: 200
                         }).showModal();
 
                         Utils.api('/company/doupdate_report_template', {
@@ -545,13 +553,15 @@
                                 temp_info: data
                             }
                         }).done(function  (rs) {
-                            loading.close();
+                            loading.content('已保存!');
+                            setTimeout(function  () {
+                                loading.close();
+                            }, 1200);
                             if(rs['status'] <= 0) {
                                 return show_notify(rs['msg']);
                             }
                             // update array cache
                             $scope.templateArrayOriginal.updateById(data.id, data);
-                            show_notify('保存成功！');
                         });
 
                     };
