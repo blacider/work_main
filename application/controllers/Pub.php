@@ -289,9 +289,8 @@ class Pub extends REIM_Controller {
     }
 
     public function xreim(){
-        $file_path = BASEDIR . "/" . APPPATH . "/config/plist";
+        $file_path = APPPATH . "/views/pub/plist";
         $info = $this->app_model->find_online(0);
-
         $buf = file_get_contents($file_path);
         $content = str_replace("__VERSION", $info['version'], $buf);
         die($content);
