@@ -408,10 +408,6 @@
                         if($scope.templateArray.length >=_templateTotalLimit_) {
                             return show_notify('可用模版不能超过' +_templateTotalLimit_+'个');
                         }
-                        // 添加序号
-                        if(unnamedTemplateCount>0) {
-                            templateData.name = _defaultTemplateName_ + unnamedTemplateCount
-                        }
 
                         Utils.api('/company/docreate_report_template', {
                             method: 'post',
