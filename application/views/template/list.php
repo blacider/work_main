@@ -44,12 +44,20 @@
                                     <table>
                                         <thead>
                                             <tr>
-                                                <th ng-repeat="tableColumn in tableItem.children">{{tableColumn.name}}</th>
+                                                <th ng-repeat-start="tableColumn in tableItem.children" ng-if="tableColumn.type!=4">{{tableColumn.name}}</th>
+                                                <th ng-if="tableColumn.type==4">{{tableColumn.name}}－户名</th>
+                                                <th ng-if="tableColumn.type==4">{{tableColumn.name}}－账号</th>
+                                                <th ng-if="tableColumn.type==4">{{tableColumn.name}}－银行</th>
+                                                <th ng-repeat-end ng-if="tableColumn.type==4">{{tableColumn.name}}－支行</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td ng-repeat="i in tableItem.children"></td>
+                                                <td ng-repeat-start="i in tableItem.children" ng-if="i.type!=4"></td>
+                                                <td ng-if="i.type==4"></td>
+                                                <td ng-if="i.type==4"></td>
+                                                <td ng-if="i.type==4"></td>
+                                                <td ng-repeat-end ng-if="i.type==4"></td>
                                             </tr>
                                         </tbody>
                                     </table>

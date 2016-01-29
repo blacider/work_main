@@ -333,10 +333,6 @@
                         alert('预览模版－功能开发中')
                         // body...
                     };
-                    
-                    $scope.toggleTableVisible = function  (templateItem, e) {
-
-                    };
 
                     $scope.togglePrintSettings = function  (e) {
                         var $target = $(e.target);
@@ -461,7 +457,7 @@
 
                         // 1. length limit check
                         if($scope.templateEditTableMap[data.id].children.length > _fieldCountLimit_ - 1) {
-                            return alert('字段不能超过' + _fieldCountLimit_ + ' 个');
+                            return show_notify('字段不能超过' + _fieldCountLimit_ + ' 个');
                         }
                         // 2. input check
                         if(true) {
