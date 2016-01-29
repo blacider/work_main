@@ -683,10 +683,11 @@
  
 /*animation ui*/
 .transition {
-	transition: .3s linear all;
-	-webkit-transition: .3s linear all;
-	-o-transition: .3s linear all;
-	-moz-transition: .3s linear all;
-	-ms-transition: .3s linear all;
+	transition: .2s linear all;
+	-webkit-transition: .2s linear all;
+	-o-transition: .2s linear all;
+	-moz-transition: .2s linear all;
+	-ms-transition: .2s linear all;
 }
  
+

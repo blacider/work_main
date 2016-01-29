@@ -9,7 +9,7 @@
         <div class="header">
             <a href="javascript:void(0)" class="btn-add" ng-click="onAddTemplate($event)"></a>
         </div>
-        <div class="paper" ng-class="{show: templateItem.isShow}" ng-repeat="templateItem in templateArray" ng-init="initTemplateItem(templateItem, $index)">
+        <div class="paper" ng-class="{show: templateItem.isShow}" ng-repeat="templateItem in templateArray" ng-init="initTemplateItem(templateItem, $index)" data-id="{{templateItem.id}}">
             <div class="header-wrap">
                 <div class="paper-header" ng-class="{fixed: templateItem.isHeaderFixed}">
                     <div class="name" ng-click="onEditTemplateTitle($event)">
@@ -325,7 +325,7 @@
 </div>
 
 <script src="/static/js/libs/jquery.auto-grow-input.min.js"></script>
-<script src="/static/plugins/art-dialog/art-dialog.min.js"></script>
+<script src="/static/plugins/cloud-dialog/dialog.js"></script>
 <script src="/static/js/libs/Sortable.min.js"></script>
 <script src="/static/js/libs/ng-sortable.js"></script>
 
@@ -333,5 +333,4 @@
 <script src="/static/js/libs/underscore-min.js"></script>
 
 <link rel="stylesheet" href="/static/css/base/animate.css">
-<link rel="stylesheet" href="/static/plugins/art-dialog/ui-dialog.css">
-<link rel="stylesheet" href="/static/plugins/art-dialog/ui-dialog-reset.css">
+<link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">

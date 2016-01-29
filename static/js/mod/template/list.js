@@ -1,5 +1,5 @@
 (function() {
-    
+
     var _fieldCountLimit_ = 6;
     var _templateNameLengthLimit_ = 10;
     var _templateTotalLimit_ = 10;
@@ -232,7 +232,7 @@
                                     code: 'OK'
                                 }
                             },
-                           getInvalidFieldTypeArray: function  (columns) {
+                            getInvalidFieldTypeArray: function  (columns) {
                                 var invalidCount = 0;
                                 var validatorArray = [];
                                 for(var i = 0; i <columns.length; i++) {
@@ -246,6 +246,19 @@
                                     invalidCount: invalidCount,
                                     validatorArray: validatorArray
                                 };
+                            },
+                            tryGetEditingTemplateData: function  () {
+                                for (var id in $scope.templateEditTableMap) {
+                                    if($scope.templateEditTableMap[id]) {
+                                        return $scope.templateEditTableMap[id];
+                                    }
+                                }
+                                return null
+                            },
+                            isTemplataChanged: function  (currentTemplateData) {
+                                var data = angular.copy(currentTemplateData);
+                                var originalData = angular.copy($scope.templateArrayOriginal.getItemById(templateData.id));
+                                return angular.equals(templateData, originalData);
                             }
                         }
                     })();
@@ -284,7 +297,7 @@
                     $scope.initTemplateItem = function  (templateData, $index) {
                         // ui variable
                         templateData['isShow'] = false;
-                        templateData['fixed'] = false;
+                        templateData['isHeaderFixed'] = false;
 
                         // data variable
                         // default use type
@@ -294,15 +307,6 @@
 
                         templateData.is_category_by_group = true;
 
-                    };
-
-                    $scope.isTypeChecked = function  ($index, templateData) {
-                        if(templateData['type'].indexOf($index+'')!=-1) {
-                            console.log($index, templateData['type'].indexOf($index+''))
-                            return true
-                        } else {
-                            return false
-                        }
                     };
 
                     $scope.onFieldTypeChange = function  (type, templateData, columnIndex) {
@@ -320,25 +324,87 @@
                     };
 
                     // events here
-                    $scope.onAccordionTemplate = function(item, index, e) {
+                    $scope.onAccordionTemplate = function(templateData, $index, e) {
+
                         // check if edition action is being
-                        if(Utils.size($scope.templateEditTableMap, true)) {
-                            return show_notify('请”确定“或”取消“正在编辑的字段组');
+                        var templateEditTable = $scope.templateEditTableMap[templateData.id];
+                        templateEditTable = angular.copy(templateEditTable);
+
+                        if(templateEditTable) {
+                            var validator = TemplateValidator.getInvalidFieldTypeArray(templateEditTable.children);
+                            if(validator['invalidCount']>0) {
+                                return show_notify(validator.validatorArray[0].tip);
+                            }
+                        }
+                        var originalData = $scope.templateArrayOriginal.getItemById(templateData.id);
+                        originalData = angular.copy(originalData);
+                        if(!angular.equals(templateData, originalData)) {
+                            var d = new CloudDialog({
+                                content: '是否要保存编辑的内容？',
+                                width: 240,
+                                fixed: true,
+                                ok: function  () {
+                                    alert('保存')
+                                    var _self = this;
+                                    _self.content('正在上传数据......');
+                                    Utils.api('/company/doupdate_report_template', {
+                                        method: "post",
+                                        data: {
+                                            temp_info: data
+                                        }
+                                    }).done(function  (rs) {
+                                        if(rs['status'] <= 0) {
+                                            return show_notify(rs['msg']);
+                                        }
+                                        _self.content('已保存!');
+
+                                        $scope.$apply(function  () {
+                                            var _EDIT_STASH_ = templateEditTable['_EDIT_STASH_'];
+
+                                            if(_EDIT_STASH_ && _EDIT_STASH_['type'] == 'REVERT_UPDATE') {
+                                                $scope.templateArray[templateIndex].config.splice(_EDIT_STASH_.tableIndex, 0, templateEditTable);
+                                            } else {
+                                                $scope.templateArray[templateIndex].config.push(templateEditTable);
+                                            }
+
+                                            $scope.templateEditTableMap[templateData.id] = null;
+                                        })
+
+                                        setTimeout(function  () {
+                                            _self.close();
+                                        }, 1200);
+                                        
+                                        // update array cache
+                                        $scope.templateArrayOriginal.updateById(data.id, data);
+                                        $(window).scrollTop($(window).scrollTop());
+                                    });
+                                     
+                                    return false;
+                                },
+                                cancel: function  () {
+                                    alert('不保存')
+                                    this.close();
+                                },
+                                okValue: '保存',
+                                cancelValue: '不保存'
+                            });
+                            d.showModal();
+                            return;
                         }
 
                         var $targetEle = $(e.currentTarget);
                         var $templateItem = $targetEle.parents('.paper');
                         $templateItem.removeClass(_ON_TEMPLATE_ADD_ANIMATION_)
+
                         if ($templateItem.hasClass('show')) {
                             $templateItem.removeClass('show').find('.paper-header').removeClass('fixed');
                         } else {
-
                             var $templateSiblings = $templateItem.siblings().removeClass('show');
                             $templateSiblings.find('.paper-header').removeClass('fixed');
 
                             $templateItem.addClass('show').siblings().removeClass('show');
 
-                            var offset = $element.find('.paper').eq(index).offset();
+                            var offset = $element.find('.paper').eq($index).offset();
 
                             $('html, body').animate({
                                 scrollTop: offset.top - 15
@@ -483,10 +549,9 @@
                         if($scope.templateArray.length<=1) {
                             return show_notify('至少保留一份报销单模版!');
                         }
-                        dialog({
+                        var d = new CloudDialog({
                             content: '确认要删除当前报销单模版?',
                             width: 240,
-                            skin: 'text-align',
                             align: 'bottom right',
                             ok: function  () {
                                 var _self = this;
@@ -515,7 +580,8 @@
                             },
                             okValue: '删除',
                             cancelValue: '取消'
-                        }).showModal(e.currentTarget);
+                        });
+                        d.showModal(e.currentTarget);
                         
                     };
 
@@ -554,11 +620,11 @@
                             show_notify('检测到'+_defaultTemplateName_);
                         }
 
-                        var loading = dialog({
+                        var loading = new CloudDialog({
                             content: '正在上传数据......',
-                            skin: 'text-align',
                             width: 200
-                        }).showModal();
+                        });
+                        loading.showModal();
 
                         Utils.api('/company/doupdate_report_template', {
                             method: "post",
@@ -612,27 +678,26 @@
                             return show_notify('无任何更改');
                         }
 
-                        originalTemplateData.isShow = true;
-                        originalTemplateData.isHeaderFixed = true;
+                        data.isShow = true;
 
-                        dialog({
-                            title: '取消编辑',
+                        data.isHeaderFixed = $(e.currentTarget).parents('.paper').find('.paper-header').hasClass('fixed');
+
+                        var d = new CloudDialog({
                             content: '确定要取消编辑的内容？',
+                            fixed: true,
                             ok: function  () {
+                                data.isHeaderFixed = false;
                                 $scope.$apply(function  () {
-                                    $scope.templateArray[$index] = angular.copy(originalTemplateData);
+                                    $scope.templateArray[$index] = angular.copy(data);
                                     setTimeout(function  () {
                                         makeTitleAutoWidth($element.find('.paper').eq($index).find('.paper-header input'))
                                     }, 0);
                                 });
                                 return true
                             },
-                            cancel: function  () {
-                                
-                            },
-                            okValue: '确定',
-                            cancelValue: '继续'
-                        }).showModal()
+                            cancel: null
+                        });
+                        d.showModal()
                     };
 
                     $scope.onCancelColumnsEditConfig = function(templateData, e, templateIndex) {
@@ -676,8 +741,8 @@
                     $(window).on('scroll', function  () {
                         // 1. get the target element
                         // 2. set the target element as scroll, and othernot scroll
+                        $element.find('.paper:not(.show)').removeClass('fixed');
                         var scrollTop = $(window).scrollTop();
-
                         $element.find('.paper.show').each(function  (index, item) {
                             var $item = $(item);
                             var $itemHeader = $item.find('.paper-header');

@@ -12,6 +12,7 @@
     color: #ffffff;
     background-color: #ff575b;
     border-color: #d33e42;
+    outline: none;
 }
 
 .text-align .ui-dialog-content {
