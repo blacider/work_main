@@ -132,8 +132,6 @@
                                 $scope.templateTypeArray = rsTypes;
                                 $scope.templateArray = rsTemplate['data'];
 
-                                // remember all data
-                                $scope.templateArrayOriginal = new ArrayCache(angular.copy(rsTemplate['data']));
 
                                 // load local config
                                 $scope.tableHeaderOptions = _defaultTableHeaderOptions_;
@@ -275,10 +273,29 @@
                     loadPageData().done(function  (rs) {
                         setTimeout(function  () {
                             makeTitleAutoWidth();
+
+                            // remember all template data as cache
+                            $scope.templateArrayOriginal = new ArrayCache(angular.copy($scope.templateArray));
+
                         }, 100);
                     });
 
                     // compute here
+                    $scope.initTemplateItem = function  (templateData, $index) {
+                        // ui variable
+                        templateData['isShow'] = false;
+                        templateData['fixed'] = false;
+
+                        // data variable
+                        // default use type
+                        if(templateData['type'].length==0) {
+                            templateData['type'].push('0');
+                        }
+
+                        templateData.is_category_by_group = true;
+
+                    };
+
                     $scope.isTypeChecked = function  ($index, templateData) {
                         if(templateData['type'].indexOf($index+'')!=-1) {
                             console.log($index, templateData['type'].indexOf($index+''))
@@ -587,16 +604,35 @@
                     };
 
                     $scope.onCancelTemplate = function  (data, e, $index) {
-
+                        data = angular.copy(data);
                         $scope.templateEditTableMap[data.id] = null;
                         var originalTemplateData = $scope.templateArrayOriginal.getItemById(data.id);
+
+                        if(angular.equals(data, originalTemplateData)) {
+                            return show_notify('无任何更改');
+                        }
+
                         originalTemplateData.isShow = true;
                         originalTemplateData.isHeaderFixed = true;
-                        $scope.templateArray[$index] = angular.copy(originalTemplateData);
 
-                        setTimeout(function  () {
-                            makeTitleAutoWidth($element.find('.paper').eq($index).find('.paper-header input'))
-                        }, 0);
+                        dialog({
+                            title: '取消编辑',
+                            content: '确定要取消编辑的内容？',
+                            ok: function  () {
+                                $scope.$apply(function  () {
+                                    $scope.templateArray[$index] = angular.copy(originalTemplateData);
+                                    setTimeout(function  () {
+                                        makeTitleAutoWidth($element.find('.paper').eq($index).find('.paper-header input'))
+                                    }, 0);
+                                });
+                                return true
+                            },
+                            cancel: function  () {
+                                
+                            },
+                            okValue: '确定',
+                            cancelValue: '继续'
+                        }).showModal()
                     };
 
                     $scope.onCancelColumnsEditConfig = function(templateData, e, templateIndex) {
@@ -647,7 +683,7 @@
                             var $itemHeader = $item.find('.paper-header');
                             var offset = $item.offset(); 
 
-                            console.log(offset.top, scrollTop, index);
+                            // console.log(offset.top, scrollTop, index);
 
                             if(offset.top <= scrollTop && offset.top + $item.height() >= scrollTop) {
                                 $itemHeader.addClass('fixed');

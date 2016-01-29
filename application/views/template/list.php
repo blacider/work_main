@@ -9,7 +9,7 @@
         <div class="header">
             <a href="javascript:void(0)" class="btn-add" ng-click="onAddTemplate($event)"></a>
         </div>
-        <div class="paper" ng-class="{show: templateItem.isShow}" ng-repeat="templateItem in templateArray" data-id="{{templateItem.id}}">
+        <div class="paper" ng-class="{show: templateItem.isShow}" ng-repeat="templateItem in templateArray" ng-init="initTemplateItem(templateItem, $index)">
             <div class="header-wrap">
                 <div class="paper-header" ng-class="{fixed: templateItem.isHeaderFixed}">
                     <div class="name" ng-click="onEditTemplateTitle($event)">
@@ -141,7 +141,7 @@
                         <div class="column-wrap table-layout">
                             <h4 class="field-table-label table-cell" style="margin: 0"> 字段组 </h4>
                             <div class="table-cell field-table-content-multi-row">
-                                <div class="field-checkbox" ng-class="{checked: templateItem.is_category_by_group}" style="margin-bottom: 0"  ng-init="templateItem.is_category_by_group = true">
+                                <div class="field-checkbox" ng-class="{checked: templateItem.is_category_by_group}" style="margin-bottom: 0">
                                     <input id="{{labelForCatetoryGroupId}}" type="checkbox" class="hidden" ng-model="templateItem.is_category_by_group" ng-click="$event.stopPropagation();" ng-init="labelForCatetoryGroupId = getUID()">
                                     <label for="{{labelForCatetoryGroupId}}">消费按类目分类</label>
                                 </div>
@@ -267,7 +267,7 @@
                         <div class="line" style="margin-bottom: 30px"></div>
                         <div class="column-wrap table-layout">
                             <h4 class="field-table-label table-cell"> 适用范围 </h4>
-                            <div class="table-cell field-table-content-multi-row" ng-init="templateItem['type'].length==0; templateItem['type'].push('0')">
+                            <div class="table-cell field-table-content-multi-row">
                                 <div class="field-checkbox" ng-class="{checked: templateItem['type'].indexOf($index+'')!=-1}" style="{{$last?'margin-bottom: 0':''}}" ng-repeat="templateTypeItem in templateTypeArray" ng-click="toggleCheckbox($event, $index); updateTemplateType($event, $index, $parent.$index)">
                                     <input type="checkbox" class="hidden" ng-value="{{$index}}" ng-init="labelForUseTypeId = getUID()" id="{{labelForUseTypeId}}" ng-click="$event.stopPropagation();">
                                     <label for="{{labelForUseTypeId}}">{{templateTypeItem}}</label>
