@@ -261,12 +261,6 @@
                         scroll: true,
                         onUpdate: function (e) {
                             // 交换数组两个元素的位置
-                            var templateIndex = $element.find('.paper').index($(e.eleContainer).parents('.paper'));
-
-                            var tableTransfer = $scope.templateArray[templateIndex].config.splice(e.oldIndex, 1);
-                            tableTransfer = tableTransfer[0];
-                            $scope.templateArray[templateIndex].config.splice(e.newIndex, 0, tableTransfer);
-                            
                         }
                     };
 
@@ -310,14 +304,25 @@
 
                     // events here
                     $scope.onAccordionTemplate = function(item, index, e) {
+                        // check if edition action is being
+                        if(Utils.size($scope.templateEditTableMap, true)) {
+                            return show_notify('请”确定“或”取消“正在编辑的字段组');
+                        }
+
                         var $targetEle = $(e.currentTarget);
                         var $templateItem = $targetEle.parents('.paper');
                         $templateItem.removeClass(_ON_TEMPLATE_ADD_ANIMATION_)
                         if ($templateItem.hasClass('show')) {
                             $templateItem.removeClass('show').find('.paper-header').removeClass('fixed');
                         } else {
-                            $templateItem.addClass('show');
+
+                            var $templateSiblings = $templateItem.siblings().removeClass('show');
+                            $templateSiblings.find('.paper-header').removeClass('fixed');
+
+                            $templateItem.addClass('show').siblings().removeClass('show');
+
                             var offset = $element.find('.paper').eq(index).offset();
+
                             $('html, body').animate({
                                 scrollTop: offset.top - 15
                             });
@@ -376,18 +381,19 @@
                     };
 
                     $scope.onEditTable = function  (e, tableIndex, templateIndex) {
+
                         var templateData = $scope.templateArray[templateIndex];
                         var tableData = angular.copy(templateData.config[tableIndex]);
                         var originTableData = angular.copy(tableData);
                         // 检测是否已经有编辑项目了
                         if($scope.templateEditTableMap[templateData.id]) {
-                            return show_notify('请保存或取消正在编辑的字段组');
+                            return show_notify('请”确定“或”取消“正在编辑的字段组');
                         }
 
                         // 丢弃编辑项目，时候，回滚的位置的信息，并记录会滚信息
                         
-                        tableData['_EDIT_SWAP_'] = {
-                            type: 'update',
+                        tableData['_EDIT_STASH_'] = {
+                            type: 'REVERT_UPDATE',
                             templateIndex: templateIndex,
                             tableIndex, tableIndex,
                             originTableData: originTableData
@@ -444,7 +450,7 @@
                     
                     $scope.onAddTableConfig = function (data, e, index) {
                         if($scope.templateEditTableMap[data.id]) {
-                            return show_notify('请处理完并保存编辑中的字段组');
+                            return show_notify('请”确定“或”取消“正在编辑的字段组');
                         }
                         if(!$scope.templateEditTableMap[data.id]) {
                             $scope.templateEditTableMap[data.id] = angular.copy(_defaultTableEditConfig_);
@@ -471,7 +477,7 @@
                             return show_notify('至少保留一份报销单模版!');
                         }
                         dialog({
-                            title: '温馨提示',
+                            title: '删除操作',
                             content: '确认要删除当前报销单模版?',
                             width: 240,
                             skin: 'text-align',
@@ -509,25 +515,13 @@
 
                     $scope.onRemoveTable = function  (e, tableIndex, templateIndex) {
                         $scope.templateArray[templateIndex].config.splice(tableIndex, 1);
-                        var data = angular.copy($scope.templateArray[templateIndex]);
-                        Utils.api('/company/doupdate_report_template', {
-                            method: "post",
-                            data: {
-                                temp_info: data
-                            }
-                        }).done(function  (rs) {
-                            if(rs['status'] <= 0) {
-                                return show_notify(rs['msg']);
-                            }
-                            show_notify('字段组已删除')
-                            
-                        });
+                        show_notify('字段组已删除');
                     };
 
                     $scope.onRemoveColumnEditConfig = function(data, e, columnIndex, templateIndex) {
                         var table = $scope.templateEditTableMap[data.id];
                         if(table.children.length <=1) {
-                            return alert('至少拥有一个字断')
+                            return show_notify('至少拥有一个字段');
                         }
                         table.children.splice(columnIndex, 1);                        
                     };
@@ -567,48 +561,27 @@
                     };
 
                     $scope.onSaveColumnsEditConfig = function (templateData, e, templateIndex) {
-                        // 1. do check //over
-                        // 2. get old data
-                        // 3. read edit data
-                        // 4. reset view state
+                        // step 1. do check for field array 
+                        // step 2. if update then put back the table, else append the table
 
+                        // step 1
                         var templateEditTable = $scope.templateEditTableMap[templateData.id];
                         templateEditTable = angular.copy(templateEditTable);
-
-                        var data = angular.copy(templateData);
-
-                        data.config.push(templateEditTable);
 
                         var validator = TemplateValidator.getInvalidFieldTypeArray(templateEditTable.children);
                         if(validator['invalidCount']>0) {
                             return show_notify(validator.validatorArray[0].tip);
                         }
 
-                        if(data.type.length == 0) {
-                            return show_notify('请选择报销模版适用范围');
+                        // step 2
+                        var _EDIT_STASH_ = templateEditTable['_EDIT_STASH_'];
+                        if(_EDIT_STASH_ && _EDIT_STASH_['type'] == 'REVERT_UPDATE') {
+                            $scope.templateArray[templateIndex].config.splice(_EDIT_STASH_.tableIndex, 0, templateEditTable);
+                        } else {
+                            $scope.templateArray[templateIndex].config.push(templateEditTable);
                         }
 
-                        var loading = dialog({
-                            content: '正在上传数据......'
-                        }).showModal();
-
-                        Utils.api('/company/doupdate_report_template', {
-                            method: "post",
-                            data: {
-                                temp_info: data
-                            }
-                        }).done(function  (rs) {
-                            loading.close();
-                            if(rs['status'] <= 0) {
-                                return show_notify(rs['msg']);
-                            }
-                            show_notify('保存成功！');
-                            $scope.$apply(function (e) {
-                                $scope.templateArray[templateIndex]
-                                $scope.templateArray[templateIndex].config.push(templateEditTable);
-                                $scope.templateEditTableMap[data.id] = null;
-                            });
-                        });
+                        $scope.templateEditTableMap[templateData.id] = null;
                     };
 
                     $scope.onCancelTemplate = function  (data, e, $index) {
@@ -626,30 +599,15 @@
 
                     $scope.onCancelColumnsEditConfig = function(templateData, e, templateIndex) {
                         var tableData = $scope.templateEditTableMap[templateData.id];
-                        dialog({
-                            title: '温馨提示',
-                            content: '取消操作，编辑后的内容将不会被保存哦',
-                            ok: function  () {
-                                var _edit_swap_ = tableData['_EDIT_SWAP_'];
-                                // 检测是否要会滚
-                                if(_edit_swap_ && _edit_swap_['type'] == 'update') {
+                        var _EDIT_STASH_ = tableData['_EDIT_STASH_'];
+                        // 检测回滚类型
+                        if(_EDIT_STASH_ && _EDIT_STASH_['type'] == 'REVERT_UPDATE') {
 
-                                    $scope.templateArray[_edit_swap_.templateIndex];
+                            $scope.templateArray[templateIndex].config.splice(_EDIT_STASH_.tableIndex, 0, _EDIT_STASH_.originTableData);
 
-                                    $scope.$apply(function  () {
-                                        $scope.templateArray[templateIndex].config.splice(_edit_swap_.tableIndex, 0, _edit_swap_.originTableData);
-                                    })
-
-                                }
-                                //丢弃编辑内容
-                                $scope.$apply(function  () {
-                                    $scope.templateEditTableMap[templateData.id] = null;
-                                })
-
-                                return true;
-                            },
-                            okValue: '确认取消'
-                        }).showModal();
+                        }
+                        //丢弃编辑内容
+                        $scope.templateEditTableMap[templateData.id] = null;
                     };
 
                     $scope.onFocusOut = function  (templateData, $index, e) {

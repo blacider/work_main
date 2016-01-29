@@ -14,10 +14,12 @@
 			  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
 			    s4() + '-' + s4() + s4() + s4();
 		},
-		size: function  (obj) {
+		size: function  (obj, valid) {
 			var count = 0;
 			for(var i in obj) {
-				count++;
+				if(obj[i] && valid) {
+					count++;
+				}
 			}
 			return count;
 		},
