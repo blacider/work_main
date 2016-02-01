@@ -1,5 +1,5 @@
 (function() {
-
+    
     var _fieldCountLimit_ = 6;
     var _templateNameLengthLimit_ = 10;
     var _templateTotalLimit_ = 10;
@@ -247,21 +247,160 @@
                                     validatorArray: validatorArray
                                 };
                             },
-                            tryGetEditingTemplateData: function  () {
+                            tryGetEditingTemplateID: function  () {
                                 for (var id in $scope.templateEditTableMap) {
                                     if($scope.templateEditTableMap[id]) {
-                                        return $scope.templateEditTableMap[id];
+                                        return id;
                                     }
                                 }
-                                return null
+                                return null;
                             },
                             isTemplataChanged: function  (currentTemplateData) {
                                 var data = angular.copy(currentTemplateData);
                                 var originalData = angular.copy($scope.templateArrayOriginal.getItemById(templateData.id));
                                 return angular.equals(templateData, originalData);
+                            },
+                            getTemplateByID: function  (id) {
+                                for (var i = $scope.templateArray.length - 1; i >= 0; i--) {
+                                    if ($scope.templateArray[i]['id'] === id) {
+                                        return $scope.templateArray[i];
+                                    }
+                                };
+                                return null;
                             }
                         }
                     })();
+
+                    // ani action leads to save the template
+                    // accordion temlate \add new template \save the template
+                    // 1. first to make the the table-editing 'ensured'
+                    // 2. then try to ask the user is  to save or not
+                    function doClearTableEdited (templateData, templateIndex) {
+                        // check if edition action is being
+                        templateData = angular.copy(templateData);
+                        var templateEditTable = angular.copy($scope.templateEditTableMap[templateData.id]);
+                        
+                        // 先处理编辑的表格
+                        if(templateEditTable) {
+                            var validator = TemplateValidator.getInvalidFieldTypeArray(templateEditTable.children);
+                            if(validator['invalidCount']>0) {
+                                var _EDIT_STASH_ = templateEditTable['_EDIT_STASH_'];
+                                // 检测回滚类型，如果是修改已有的数据，回退到修改之前
+                                if(_EDIT_STASH_ && _EDIT_STASH_['type'] == 'REVERT_UPDATE') {
+                                    $scope.templateArray[templateIndex].config.splice(_EDIT_STASH_.tableIndex, 0, _EDIT_STASH_.originTableData);
+                                }
+                                
+                                
+                            } else {
+                                var _EDIT_STASH_ = templateEditTable['_EDIT_STASH_'];
+                                // 检测回滚类型，如果是修改已有的数据，直接更新
+                                if(_EDIT_STASH_ && _EDIT_STASH_['type'] == 'REVERT_UPDATE') {
+                                    $scope.templateArray[templateIndex].config.splice(_EDIT_STASH_.tableIndex, 0, templateEditTable);
+                                } else {
+                                    $scope.templateArray[templateIndex].config.push(templateEditTable);
+                                }
+
+                            }
+                        } 
+                        //不管新增，还是修改数据，都要丢弃编辑
+                        $scope.templateEditTableMap[templateData.id] = null;
+                    };
+
+                    function doClearOpenTemplateData (templateData, $index) {
+                        var def = $.Deferred();
+                        var $openTemplate = $element.find('.paper.show');
+                        if($openTemplate.length==1) {
+                            // get the open template date
+                            $index = $openTemplate.data('index');
+                            templateData = $scope.templateArray[$index];
+                            doClearTableEdited(templateData, $index);
+
+                            var originalData = $scope.templateArrayOriginal.getItemById(templateData.id);
+                            originalData = angular.copy(originalData);
+
+                            data = angular.copy(templateData);
+                            if(!angular.equals(templateData, originalData)) {
+                                var d = new CloudDialog({
+                                    content: '是否要保存编辑的内容？',
+                                    width: 240,
+                                    fixed: true,
+                                    ok: function  () {
+                                        var _self = this;
+                                        _self.content('正在上传数据......');
+                                        Utils.api('/company/doupdate_report_template', {
+                                            method: "post",
+                                            data: {
+                                                temp_info: data
+                                            }
+                                        }).done(function  (rs) {
+
+                                            if(rs['status'] <= 0) {
+                                                return show_notify(rs['msg']);
+                                            }
+
+                                            _self.content('已保存!');
+
+                                            setTimeout(function  () {
+                                                _self.close();
+                                                def.resolve();
+                                            }, 800);
+                                            
+                                            // update array cache
+                                            $scope.templateArrayOriginal.updateById(data.id, data);
+                                            $(window).scrollTop($(window).scrollTop());
+
+                                        });
+                                         
+                                        return false;
+                                    },
+                                    cancel: function  () {
+                                        this.close();
+                                        templateData = angular.copy(templateData);
+                                        $scope.templateEditTableMap[templateData.id] = null;
+
+                                        var originalTemplateData = $scope.templateArrayOriginal.getItemById(templateData.id);
+
+                                        def.resolve();
+
+                                        if(angular.equals(templateData, originalTemplateData)) {
+                                            return
+                                        }
+
+                                        $scope.$apply(function  () {
+                                            $scope.templateArray[$index] = angular.copy(originalTemplateData);
+                                        });
+                                    },
+                                    okValue: '保存',
+                                    cancelValue: '不保存'
+                                });
+                                d.showModal();
+                            } else {
+                                // 没有任何改变
+                                $openTemplate.removeClass('show').find('.paper-header').removeClass('fixed');
+                                def.resolve();
+                            }
+                        } else {
+                            def.resolve();
+                        }
+                        return def.promise();
+                    }
+
+                    function makeTitleAutoWidth (el) {
+                        var $eles = $element.find('.paper-header input');
+                        if(el) {
+                            $eles = $(el);
+                        }
+                        setTimeout(function  () {
+                            $eles.autoGrowInput({minWidth: 30, maxWidth: 200, comfortZone: 0});
+                        }, 0);
+                    };
+
+
+                    loadPageData().done(function  (rs) {
+                            // remember all template data as cache
+                        $scope.templateArrayOriginal = new ArrayCache(angular.copy($scope.templateArray));
+
+                    });
 
                     $scope.makeTableSortable = {
                         handle: ".btn-drag",
@@ -275,30 +414,8 @@
                         }
                     };
 
-                    function makeTitleAutoWidth (el) {
-                        var $eles = $element.find('.paper-header input');
-                        if(el) {
-                            $eles = $(el);
-                        }
-                        $eles.autoGrowInput({minWidth: 30, maxWidth: 200, comfortZone: 0});
-                    };
-
-                    loadPageData().done(function  (rs) {
-                        setTimeout(function  () {
-                            makeTitleAutoWidth();
-
-                            // remember all template data as cache
-                            $scope.templateArrayOriginal = new ArrayCache(angular.copy($scope.templateArray));
-
-                        }, 100);
-                    });
-
                     // compute here
                     $scope.initTemplateItem = function  (templateData, $index) {
-                        // ui variable
-                        templateData['isShow'] = false;
-                        templateData['isHeaderFixed'] = false;
-
                         // data variable
                         // default use type
                         if(templateData['type'].length==0) {
@@ -325,91 +442,31 @@
 
                     // events here
                     $scope.onAccordionTemplate = function(templateData, $index, e) {
+                        makeTitleAutoWidth($element.find('.paper').eq($index).find('.paper-header input'));
+                        // 由于目前只能展开一个模版，所以只需要检测展开的那个模版就OK，处理完展开的模版的对话框，做好折叠工作
+                        // 在处理完成上述操作以后，检测是不是其它模版被点击折叠，是的话还要toggle template
+                        var $openTemplate = $element.find('.paper.show');
 
-                        // check if edition action is being
-                        var templateEditTable = $scope.templateEditTableMap[templateData.id];
-                        templateEditTable = angular.copy(templateEditTable);
+                        doClearOpenTemplateData(templateData, $index).done(function  () {
+                            var $targe = $(e.currentTarget);
+                            var $templateItem = $targe.parents('.paper');
+                            $templateItem.removeClass(_ON_TEMPLATE_ADD_ANIMATION_);
 
-                        if(templateEditTable) {
-                            var validator = TemplateValidator.getInvalidFieldTypeArray(templateEditTable.children);
-                            if(validator['invalidCount']>0) {
-                                return show_notify(validator.validatorArray[0].tip);
+                            if ($templateItem.hasClass('show')) {
+                                $templateItem.removeClass('show').find('.paper-header').removeClass('fixed');
+                            } else {
+                                var $templateSiblings = $templateItem.siblings().removeClass('show');
+                                $templateSiblings.find('.paper-header').removeClass('fixed');
+
+                                $templateItem.addClass('show').siblings().removeClass('show');
+
+                                var offset = $element.find('.paper').eq($index).offset();
+
+                                $('html, body').animate({
+                                    scrollTop: offset.top - 15
+                                });
                             }
-                        }
-                        var originalData = $scope.templateArrayOriginal.getItemById(templateData.id);
-                        originalData = angular.copy(originalData);
-                        if(!angular.equals(templateData, originalData)) {
-                            var d = new CloudDialog({
-                                content: '是否要保存编辑的内容？',
-                                width: 240,
-                                fixed: true,
-                                ok: function  () {
-                                    alert('保存')
-                                    var _self = this;
-                                    _self.content('正在上传数据......');
-                                    Utils.api('/company/doupdate_report_template', {
-                                        method: "post",
-                                        data: {
-                                            temp_info: data
-                                        }
-                                    }).done(function  (rs) {
-                                        if(rs['status'] <= 0) {
-                                            return show_notify(rs['msg']);
-                                        }
-                                        _self.content('已保存!');
-
-                                        $scope.$apply(function  () {
-                                            var _EDIT_STASH_ = templateEditTable['_EDIT_STASH_'];
-
-                                            if(_EDIT_STASH_ && _EDIT_STASH_['type'] == 'REVERT_UPDATE') {
-                                                $scope.templateArray[templateIndex].config.splice(_EDIT_STASH_.tableIndex, 0, templateEditTable);
-                                            } else {
-                                                $scope.templateArray[templateIndex].config.push(templateEditTable);
-                                            }
-
-                                            $scope.templateEditTableMap[templateData.id] = null;
-                                        })
-
-                                        setTimeout(function  () {
-                                            _self.close();
-                                        }, 1200);
-                                        
-                                        // update array cache
-                                        $scope.templateArrayOriginal.updateById(data.id, data);
-                                        $(window).scrollTop($(window).scrollTop());
-                                    });
-                                     
-                                    return false;
-                                },
-                                cancel: function  () {
-                                    alert('不保存')
-                                    this.close();
-                                },
-                                okValue: '保存',
-                                cancelValue: '不保存'
-                            });
-                            d.showModal();
-                            return;
-                        }
-
-                        var $targetEle = $(e.currentTarget);
-                        var $templateItem = $targetEle.parents('.paper');
-                        $templateItem.removeClass(_ON_TEMPLATE_ADD_ANIMATION_)
-
-                        if ($templateItem.hasClass('show')) {
-                            $templateItem.removeClass('show').find('.paper-header').removeClass('fixed');
-                        } else {
-                            var $templateSiblings = $templateItem.siblings().removeClass('show');
-                            $templateSiblings.find('.paper-header').removeClass('fixed');
-
-                            $templateItem.addClass('show').siblings().removeClass('show');
-
-                            var offset = $element.find('.paper').eq($index).offset();
-
-                            $('html, body').animate({
-                                scrollTop: offset.top - 15
-                            });
-                        }
+                        });
                     };
 
                     $scope.onPreviewTemplate = function  (argument) {
@@ -510,9 +567,6 @@
                             $scope.$apply(function () {
                                 $scope.templateArray.push(templateData);
                                 // angular do dom insert async
-                                setTimeout(function () {
-                                    makeTitleAutoWidth($element.find('.paper:last').find('.paper-header input'));
-                                }, 100);
                             });
 
                             var $paper = $element.find('.paper').eq($scope.templateArray.length -1);
@@ -669,35 +723,27 @@
                         $scope.templateEditTableMap[templateData.id] = null;
                     };
 
-                    $scope.onCancelTemplate = function  (data, e, $index) {
-                        data = angular.copy(data);
-                        $scope.templateEditTableMap[data.id] = null;
-                        var originalTemplateData = $scope.templateArrayOriginal.getItemById(data.id);
+                    $scope.onCancelTemplate = function  (templateData, e, $index) {
+                        templateData = angular.copy(templateData);
+                        $scope.templateEditTableMap[templateData.id] = null;
+                        var originalTemplateData = $scope.templateArrayOriginal.getItemById(templateData.id);
 
-                        if(angular.equals(data, originalTemplateData)) {
+                        if(angular.equals(templateData, originalTemplateData)) {
                             return show_notify('无任何更改');
                         }
-
-                        data.isShow = true;
-
-                        data.isHeaderFixed = $(e.currentTarget).parents('.paper').find('.paper-header').hasClass('fixed');
 
                         var d = new CloudDialog({
                             content: '确定要取消编辑的内容？',
                             fixed: true,
                             ok: function  () {
-                                data.isHeaderFixed = false;
                                 $scope.$apply(function  () {
-                                    $scope.templateArray[$index] = angular.copy(data);
-                                    setTimeout(function  () {
-                                        makeTitleAutoWidth($element.find('.paper').eq($index).find('.paper-header input'))
-                                    }, 0);
+                                    $scope.templateArray[$index] = angular.copy(originalTemplateData);
                                 });
                                 return true
                             },
                             cancel: null
                         });
-                        d.showModal()
+                        d.showModal();
                     };
 
                     $scope.onCancelColumnsEditConfig = function(templateData, e, templateIndex) {
@@ -729,8 +775,11 @@
                         return true;
                     };
 
-                    $scope.onEditTemplateTitle = function  (e) {
+                    $scope.onEditTemplateTitle = function  (templateData, e) {
                         var $target = $(e.currentTarget);
+                        if(!$(e.currentTarget).parents('.paper').hasClass('show')) {
+                            return;
+                        }
                         $target.find('input').attr('disabled', false).focus();
                     };
 

@@ -9,10 +9,10 @@
         <div class="header">
             <a href="javascript:void(0)" class="btn-add" ng-click="onAddTemplate($event)"></a>
         </div>
-        <div class="paper" ng-class="{show: templateItem.isShow}" ng-repeat="templateItem in templateArray" ng-init="initTemplateItem(templateItem, $index)" data-id="{{templateItem.id}}">
+        <div class="paper" ng-repeat="templateItem in templateArray" ng-init="initTemplateItem(templateItem, $index)" data-id="{{templateItem.id}}" data-index="{{$index}}">
             <div class="header-wrap">
-                <div class="paper-header" ng-class="{fixed: templateItem.isHeaderFixed}">
-                    <div class="name" ng-click="onEditTemplateTitle($event)">
+                <div class="paper-header">
+                    <div class="name" ng-click="onEditTemplateTitle(templateItem, $event)">
                         <input type="text" disabled ng-model="templateItem.name" ng-blur="onFocusOut(templateItem, $index, $event)">
                         <span class="icon"></span>
                     </div>
