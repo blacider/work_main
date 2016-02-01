@@ -376,7 +376,6 @@
                                 d.showModal();
                             } else {
                                 // 没有任何改变
-                                $openTemplate.removeClass('show').find('.paper-header').removeClass('fixed');
                                 def.resolve();
                             }
                         } else {
@@ -446,12 +445,10 @@
                         // 由于目前只能展开一个模版，所以只需要检测展开的那个模版就OK，处理完展开的模版的对话框，做好折叠工作
                         // 在处理完成上述操作以后，检测是不是其它模版被点击折叠，是的话还要toggle template
                         var $openTemplate = $element.find('.paper.show');
-
                         doClearOpenTemplateData(templateData, $index).done(function  () {
                             var $targe = $(e.currentTarget);
                             var $templateItem = $targe.parents('.paper');
                             $templateItem.removeClass(_ON_TEMPLATE_ADD_ANIMATION_);
-
                             if ($templateItem.hasClass('show')) {
                                 $templateItem.removeClass('show').find('.paper-header').removeClass('fixed');
                             } else {
@@ -549,30 +546,31 @@
                             return show_notify('可用模版不能超过' +_templateTotalLimit_+'个');
                         }
 
-                        Utils.api('/company/docreate_report_template', {
-                            method: 'post',
-                            data: {
-                                template_name: templateData['name'],
-                                type: templateData['type']
-                            }
-                        }).done(function  (rs) {
-                            // update arraycache
-                            $scope.templateArrayOriginal.updateById(templateData.id, templateData);
+                        doClearOpenTemplateData().done(function  () {
+                            Utils.api('/company/docreate_report_template', {
+                                method: 'post',
+                                data: {
+                                    template_name: templateData['name'],
+                                    type: templateData['type']
+                                }
+                            }).done(function  (rs) {
+                                // update arraycache
+                                $scope.templateArrayOriginal.updateById(templateData.id, templateData);
 
-                            if (rs['status'] <= 0) {
-                                // $scope.templateArray.pop();
-                                return show_notify(rs['msg']);
-                            }
+                                if (!rs['id'] || rs['id'] == -1) {
+                                    // $scope.templateArray.pop();
+                                    return show_notify(rs['msg'] || '模版创建失败');
+                                }
 
-                            $scope.$apply(function () {
-                                $scope.templateArray.push(templateData);
-                                // angular do dom insert async
+                                $scope.$apply(function () {
+                                    $scope.templateArray.push(templateData);
+                                    // angular do dom insert async
+                                });
+
+                                var $paper = $element.find('<div class="paper"></div>').eq($scope.templateArray.length -1);
+                                $paper.find('.btn-accordion').trigger('click');
                             });
-
-                            var $paper = $element.find('.paper').eq($scope.templateArray.length -1);
-                            $paper.find('.btn-accordion').trigger('click');
-                        });
-                  
+                        })
                     };
                     
                     $scope.onAddTableConfig = function (data, e, index) {
@@ -669,6 +667,9 @@
                         if(data.type.length == 0) {
                             return show_notify('请选择报销模版适用范围');
                         }
+                        if(angular.equals(data, angular.copy($scope.templateArrayOriginal.getItemById(data.id)))) {
+                            return show_notify('无任何更改');
+                        }
 
                         if(TemplateValidator.howManyTemplateUnNamed($scope.templateArray)>0) {
                             show_notify('检测到'+_defaultTemplateName_);
@@ -676,8 +677,11 @@
 
                         var loading = new CloudDialog({
                             content: '正在上传数据......',
-                            width: 200
+                            width: 200,
+                            ok: null,
+                            cancel: null
                         });
+
                         loading.showModal();
 
                         Utils.api('/company/doupdate_report_template', {
@@ -686,15 +690,17 @@
                                 temp_info: data
                             }
                         }).done(function  (rs) {
-                            loading.content('已保存!');
                             setTimeout(function  () {
-                                loading.close();
-                            }, 1200);
-                            if(rs['status'] <= 0) {
-                                return show_notify(rs['msg']);
-                            }
-                            // update array cache
-                            $scope.templateArrayOriginal.updateById(data.id, data);
+                                loading.content('已保存!');
+                                setTimeout(function  () {
+                                    loading.close();
+                                }, 1000);
+                                if(rs['status'] <= 0) {
+                                    return show_notify(rs['msg']);
+                                }
+                                // update array cache
+                                $scope.templateArrayOriginal.updateById(data.id, data);
+                            }, 600)
                         });
 
                     };
@@ -739,7 +745,10 @@
                                 $scope.$apply(function  () {
                                     $scope.templateArray[$index] = angular.copy(originalTemplateData);
                                 });
-                                return true
+                                var _self = this;
+                                setTimeout(function  () {
+                                    _self.close(true);
+                                }, 1000);
                             },
                             cancel: null
                         });
