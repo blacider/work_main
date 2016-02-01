@@ -7,7 +7,7 @@
 		'    <div class="cloud-bx-dialog">',
 		'        <div class="dialog-header">',
 		'            <p class="title"></p>',
-		'            <button tabindex="1" class="close transition" title="cancel">×</button>',
+		'            <button tabindex="1" class="close" title="cancel">×</button>',
 		'        </div>',
 		'        <div class="dialog-body">',
 		'        </div>',

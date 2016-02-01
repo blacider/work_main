@@ -94,7 +94,7 @@
                                         <input type="checkbox" class="hidden" ng-model="editColumnItem.required"  id="{{labelForEditColumnId}}_{{$index}}" ng-init="labelForEditColumnId = getUID()" ng-click="$event.stopPropagation();" ng-true-value="1" ng-false-value="0">
                                         <label for="{{labelForEditColumnId}}_{{$index}}">必填</label>
                                     </div>
-                                    <div class="button field table-cell" ng-if="templateEditTableMap[templateItem.id].children.length>1">
+                                    <div class="button field table-cell">
                                         <p class="btn-trash" ng-click="onRemoveColumnEditConfig(templateItem, $event, $index, $parent.$index)"></p>
                                     </div>
                                     <div class="field-radio-options" ng-if="editColumnItem.type == 2">

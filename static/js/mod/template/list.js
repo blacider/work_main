@@ -326,7 +326,7 @@
                                     fixed: true,
                                     ok: function  () {
                                         var _self = this;
-                                        _self.content('正在上传数据......');
+                                        
                                         Utils.api('/company/doupdate_report_template', {
                                             method: "post",
                                             data: {
@@ -338,11 +338,12 @@
                                                 return show_notify(rs['msg']);
                                             }
 
-                                            _self.content('已保存!');
-
+                                            // $openTemplate.removeClass('show').find('.paper-header').removeClass('fixed');
+                                            
                                             setTimeout(function  () {
                                                 _self.close();
                                                 def.resolve();
+                                                show_notify('保存成功！');
                                             }, 800);
                                             
                                             // update array cache
@@ -588,11 +589,6 @@
                         if($scope.templateEditTableMap[data.id].children.length > _fieldCountLimit_ - 1) {
                             return show_notify('字段不能超过' + _fieldCountLimit_ + ' 个');
                         }
-                        // 2. input check
-                        if(true) {
-                            show_notify('请输入字段要求')
-                        }
-
                         $scope.templateEditTableMap[data.id].children.push(angular.copy(_defaultColumnEditConfig_));
 
                     };
@@ -649,7 +645,7 @@
                     $scope.onRemoveColumnEditConfig = function(data, e, columnIndex, templateIndex) {
                         var table = $scope.templateEditTableMap[data.id];
                         if(table.children.length <=1) {
-                            return show_notify('至少拥有一个字段');
+                            return show_notify('至少有一个字段');
                         }
                         var $fields = $(e.currentTarget).parents('.fields');
                         $fields.addClass('animated fadeOut');
@@ -667,22 +663,6 @@
                         if(data.type.length == 0) {
                             return show_notify('请选择报销模版适用范围');
                         }
-                        if(angular.equals(data, angular.copy($scope.templateArrayOriginal.getItemById(data.id)))) {
-                            return show_notify('无任何更改');
-                        }
-
-                        if(TemplateValidator.howManyTemplateUnNamed($scope.templateArray)>0) {
-                            show_notify('检测到'+_defaultTemplateName_);
-                        }
-
-                        var loading = new CloudDialog({
-                            content: '正在上传数据......',
-                            width: 200,
-                            ok: null,
-                            cancel: null
-                        });
-
-                        loading.showModal();
 
                         Utils.api('/company/doupdate_report_template', {
                             method: "post",
@@ -690,17 +670,13 @@
                                 temp_info: data
                             }
                         }).done(function  (rs) {
-                            setTimeout(function  () {
-                                loading.content('已保存!');
-                                setTimeout(function  () {
-                                    loading.close();
-                                }, 1000);
-                                if(rs['status'] <= 0) {
-                                    return show_notify(rs['msg']);
-                                }
-                                // update array cache
-                                $scope.templateArrayOriginal.updateById(data.id, data);
-                            }, 600)
+
+                            if(rs['status'] <= 0) {
+                                return show_notify(rs['msg']);
+                            }
+                            // update array cache
+                            show_notify('保存成功！');
+                            $scope.templateArrayOriginal.updateById(data.id, data);
                         });
 
                     };
@@ -733,11 +709,6 @@
                         templateData = angular.copy(templateData);
                         $scope.templateEditTableMap[templateData.id] = null;
                         var originalTemplateData = $scope.templateArrayOriginal.getItemById(templateData.id);
-
-                        if(angular.equals(templateData, originalTemplateData)) {
-                            return show_notify('无任何更改');
-                        }
-
                         var d = new CloudDialog({
                             content: '确定要取消编辑的内容？',
                             fixed: true,

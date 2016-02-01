@@ -27,6 +27,9 @@
 }
 
 .mod-reim-template .paper {
+	margin-bottom: 30px;
+}
+.mod-reim-template .paper.show {
 	margin-bottom: 20px;
 }
 .mod-reim-template .paper .header-wrap {
