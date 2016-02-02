@@ -187,7 +187,7 @@
                                         valid: false,
                                         tip: '请填写字段名称',
                                         errorMsg: '空的字段名',
-                                        code: 'EMPTY_FIELD'
+                                        code: 'EMPTY_FIELD_NAME'
                                     }   
                                 }
 
@@ -223,8 +223,19 @@
                                     code: 'OK'
                                 }
                             },
-                            getFirstInvalidFieldFromArray: function  (columns, $table) {
+                            getTableValidator: function  (tableData, $table) {
                                 var validator = null;
+                                var columns = tableData.children;
+                                if(!tableData.name) {
+                                    $table.find('.field-group-title input').focus();
+                                    return {
+                                        valid: false,
+                                        errorMsg: '',
+                                        tip: '字段组名称不能为空',
+                                        code: 'EMPTY_FIELD_TITLE'
+                                    }
+                                }
+
                                 for(var i = 0; i <columns.length; i++) {
                                     var validator = this.isFieldTypeValid(columns[i]);
                                     if(!validator.valid) {
@@ -234,7 +245,7 @@
                                             case 'RADIO_FIELD_OPTIONS_ITEM_EMPTY_ERROR':
                                                 $table.find('.field-options').eq(i).find('.field-radio-options input').eq(validator.invalideInputIndex).focus();
                                                 break;
-                                            case 'EMPTY_FIELD':
+                                            case 'EMPTY_FIELD_NAME':
                                                 $table.find('.field-options').eq(i).find('.field-name input').focus();
                                                 break;
                                         }
@@ -286,13 +297,13 @@
                             if($editTable.length==1) {
                                 var tableIndex = $editTable.data('index');
                                 var tableData = templateData.config[tableIndex];
-                                var validator = TemplateValidator.getFirstInvalidFieldFromArray(tableData.children, $editTable);
+                                var validator = TemplateValidator.getTableValidator(tableData, $editTable);
                                 if(validator && !validator.valid) {
                                     show_notify(validator.tip);
                                     def.resolve(false);
                                     return def.promise();
                                 } else {
-                                    delete tableData['MODE'];
+                                    // delete tableData['MODE'];
                                 }
                             }
                             
@@ -680,7 +691,7 @@
                     $scope.onSaveColumnsEditConfig = function (templateData, tableIndex, e) {
                         var tableData = templateData.config[tableIndex];
                         var $table = $(e.currentTarget).parents('.field-group');
-                        var validator = TemplateValidator.getFirstInvalidFieldFromArray(tableData.children, $table);
+                        var validator = TemplateValidator.getTableValidator(tableData, $table);
 
                         if(validator && !validator.valid) {
                             return show_notify(validator.tip);
