@@ -375,7 +375,34 @@
                     };
 
                     loadPageData().done(function  (rs) {
-                            // remember all template data as cache
+                        
+                        // 如果没有新建，就默认为用户创建一个报销单
+                        if (rs['data'].length == 0 ) {
+                            var templateData = angular.copy(_defaultTemplateConfig_);
+                            Utils.api('/company/docreate_report_template', {
+                                method: 'post',
+                                data: {
+                                    template_name: templateData['name'],
+                                    type: templateData['type']
+                                }
+                            }).done(function  (rs) {
+                                // update arraycache
+
+                                if (!rs['id'] || rs['id'] == -1) {
+                                    return;
+                                }
+
+                                templateData['id'] = rs['id'];
+
+                                $scope.templateArrayOriginal.updateById(templateData.id, templateData);
+
+                                $scope.$apply(function () {
+                                    $scope.templateArray.push(templateData);
+                                });
+                            });
+                        }
+                        
+                        // remember all template data as cache
                         $scope.templateArrayOriginal = new ArrayCache($scope.templateArray);
 
                     });
