@@ -112,9 +112,8 @@
 
     return {
         initialize: function() {
-            angular.module('reimApp', ['ng-sortable']).controller('templateListController', ["$http", "$scope", "$element",
-                function($http, $scope, $element) {
-                    
+            angular.module('reimApp', ['ng-sortable']).controller('templateListController', ["$http", "$scope", "$element", "$timeout",
+                function($http, $scope, $element, $timeout) {
                     function loadPageData() {
                         return $.when(
                             Utils.api('/company/get_template_list'),
@@ -330,7 +329,7 @@
                                                 temp_info: data
                                             }
                                         }).done(function  (rs) {
-                                            if(typeof tableData != 'undefine') {
+                                            if(typeof tableData != 'undefined') {
                                                 delete tableData['MODE'];
                                             }
                                             if(rs['status'] <= 0) {
@@ -438,9 +437,7 @@
                         ghostClass: 'sortable-ghost',
                         chosenClass: "sortable-chosen",
                         scroll: true,
-                        onUpdate: function (e) {
-                            // 交换数组两个元素的位置
-                        }
+                        onUpdate: function (e) {}
                     };
 
                     // compute here
@@ -703,6 +700,11 @@
 
                         delete tableData['MODE'];
 
+                        // fix me
+                        $timeout(function() {
+                            templateData.config = angular.copy(templateData.config);
+                        }, 0);
+
                     };
 
                     $scope.onCancelTemplate = function  (templateData, e, $index) {
@@ -724,14 +726,18 @@
                         d.showModal();
                     };
 
-                    $scope.onCancelColumnsEditConfig = function(tableData, templateItem, tableIndex, templateIndex, e) {
-                        var templateDataOriginal = $scope.templateArrayOriginal.getItemById(templateItem.id);
+                    $scope.onCancelColumnsEditConfig = function(tableData, templateData, tableIndex) {
+                        var templateDataOriginal = $scope.templateArrayOriginal.getItemById(templateData.id);
                         var tableOriginal = templateDataOriginal.config[tableIndex];
                         if(tableOriginal) {
                             delete tableOriginal['MODE']
-                            templateItem.config[tableIndex] = tableOriginal;
+                            templateData.config[tableIndex] = tableOriginal;
+                            // fix me
+                            $timeout(function() {
+                                templateData.config = angular.copy(templateData.config);
+                            }, 0);
                         } else {
-                            templateItem.config.pop();
+                            templateData.config.pop();
                         }
                     };
 
@@ -751,8 +757,12 @@
                         return true;
                     };
 
-                    $scope.onEditTable = function (templateData, e, tableIndex) {
+                    $scope.onEditTable = function (templateData, e, tableIndex, templateIndex) {
                         templateData.config[tableIndex]['MODE'] = 'STATE_EDITING';
+                        // fix me
+                        $timeout(function() {
+                            templateData.config = angular.copy(templateData.config);
+                        }, 0);
                     };
 
                     $scope.onEditTemplateTitle = function  (templateData, e) {

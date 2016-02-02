@@ -29,12 +29,12 @@
                         内容设置
                     </div>
                     <div class="table-container" ng-sortable="makeTableSortable">
-                        <div class="field-table" ng-repeat-start="tableItem in templateItem.config track by $index" ng-if="tableItem.MODE != 'STATE_EDITING'">
+                        <div class="field-table" ng-repeat-start="tableItem in templateItem.config" ng-if="tableItem.MODE != 'STATE_EDITING'">
                             <div class="line"></div>
                             <h4 class="field-table-title">{{tableItem.name}}
                                 <p class="buttons">
                                     <span class="button btn-trash" ng-click="onRemoveTable(templateItem ,$event, $index)"></span>
-                                    <span class="button btn-edit" ng-click="onEditTable(templateItem, $event, $index)"></span>
+                                    <span class="button btn-edit" ng-click="onEditTable(templateItem, $event, $index, $parent.$parent.$index)"></span>
                                     <span class="button btn-drag transition" ng-click="onDragTable($event, $index, $parent.$index)"></span>
                                 </p>
                             </h4>
@@ -116,7 +116,7 @@
                             <div class="field-group-footer">
                                 <p class="buttons">
                                     <span class="button btn-add" ng-click="onAddColumnEditConfig(tableItem, $event, $index)">添加字段</span>
-                                    <span class="button btn-cancel" ng-click="onCancelColumnsEditConfig(tableItem, templateItem, $index, $parent.$parent.$index, $event)">取消</span>
+                                    <span class="button btn-cancel" ng-click="onCancelColumnsEditConfig(tableItem, templateItem, $index)">取消</span>
                                     <span class="button btn-save" ng-click="onSaveColumnsEditConfig(templateItem, $index, $event)">确定</span>
                                 </p>
                             </div>           
