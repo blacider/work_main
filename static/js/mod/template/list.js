@@ -290,9 +290,9 @@
                                 if(validator && !validator.valid) {
                                     show_notify(validator.tip);
                                     def.resolve(false);
+                                    return def.promise();
                                 } else {
                                     delete tableData['MODE'];
-                                    def.resolve(true);
                                 }
                             }
                             
@@ -636,6 +636,7 @@
                             }
                             // update array cache
                             show_notify('保存成功！');
+                            $(e.currentTarget).parents('.paper').removeClass('show').find('.paper-header').removeClass('fixed');
                             $scope.templateArrayOriginal.updateById(data.id, data);
                         });
                     };

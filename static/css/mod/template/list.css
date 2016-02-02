@@ -316,10 +316,16 @@
 .mod-reim-template .print-settings .field-table-title .btn-accordion {
 	width: 36px;
 	height: 36px;
-	background: url("/static/img/mod/template/36/btn-down.dark.png") center center no-repeat;
+	background: url("/static/img/mod/template/36/btn-down.gray.png") center center no-repeat;
+}
+.mod-reim-template .print-settings .field-table-title .btn-accordion.btn-up {
+	background-image: url("/static/img/mod/template/36/btn-up.gray.png");
 }
 
-.mod-reim-template .print-settings .field-table-title .btn-accordion.btn-up {
+.mod-reim-template .print-settings .field-table-title .btn-accordion:hover {
+	background-image: url("/static/img/mod/template/36/btn-down.dark.png");
+}
+.mod-reim-template .print-settings .field-table-title .btn-accordion.btn-up:hover {
 	background-image: url("/static/img/mod/template/36/btn-up.dark.png");
 }
 
