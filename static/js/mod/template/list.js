@@ -1,7 +1,7 @@
 (function() {
     
     var _fieldCountLimit_ = 6;
-    var _radioOptionsCountLimit_ = 6;
+    var _radioOptionsCountLimit_ = 100;
     var _templateNameLengthLimit_ = 10;
     var _templateTotalLimit_ = 10;
     var _templateTypes_ = null;
