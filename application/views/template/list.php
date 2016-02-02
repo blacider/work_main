@@ -33,8 +33,8 @@
                             <div class="line"></div>
                             <h4 class="field-table-title">{{tableItem.name}}
                                 <p class="buttons">
-                                    <span class="button btn-trash" ng-click="onRemoveTable($event, $index, $parent.$index)"></span>
-                                    <span class="button btn-edit" ng-click="onEditTable($event, $index, $parent.$parent.$index)"></span>
+                                    <span class="button btn-trash" ng-click="onRemoveTable(templateItem ,$event, $index)"></span>
+                                    <span class="button btn-edit" ng-click="onEditTable(templateItem, $event, $index)"></span>
                                     <span class="button btn-drag transition" ng-click="onDragTable($event, $index, $parent.$index)"></span>
                                 </p>
                             </h4>
@@ -64,7 +64,7 @@
                                 </div>               
                             </div>
                         </div>
-                        <div class="field-group" ng-repeat-end ng-if="tableItem.MODE == 'STATE_EDITING'">
+                        <div class="field-group" ng-repeat-end ng-if="tableItem.MODE == 'STATE_EDITING'" data-index="{{$index}}">
                             <h4 class="field-group-title">
                                 <div class="field-input">
                                     <input type="text" placeholder="字段组名称" ng-model="tableItem.name">
@@ -116,8 +116,8 @@
                             <div class="field-group-footer">
                                 <p class="buttons">
                                     <span class="button btn-add" ng-click="onAddColumnEditConfig(tableItem, $event, $index)">添加字段</span>
-                                    <span class="button btn-cancel" ng-click="onCancelColumnsEditConfig(tableItem, $event, $index, $parent.$parent.$index)">取消</span>
-                                    <span class="button btn-save" ng-click="onSaveColumnsEditConfig(templateItem, $event, $index, $parent.$parent.$index)">确定</span>
+                                    <span class="button btn-cancel" ng-click="onCancelColumnsEditConfig(tableItem, templateItem, $index, $parent.$parent.$index, $event)">取消</span>
+                                    <span class="button btn-save" ng-click="onSaveColumnsEditConfig(templateItem, $index, $event)">确定</span>
                                 </p>
                             </div>           
                         </div>
@@ -268,7 +268,7 @@
                         <div class="column-wrap table-layout">
                             <h4 class="field-table-label table-cell"> 适用范围 </h4>
                             <div class="table-cell field-table-content-multi-row">
-                                <div class="field-checkbox" ng-class="{checked: templateItem['type'].indexOf($index+'')!=-1}" style="{{$last?'margin-bottom: 0':''}}" ng-repeat="templateTypeItem in templateTypeArray" ng-click="toggleCheckbox($event, $index); updateTemplateType($event, $index, $parent.$index)">
+                                <div class="field-checkbox" ng-class="{checked: templateItem['type'].indexOf($index+'')!=-1}" style="{{$last?'margin-bottom: 0':''}}" ng-repeat="templateTypeItem in templateTypeArray" ng-click="toggleCheckbox($event, $index); updateTemplateType($event, templateItem, $index)">
                                     <input type="checkbox" class="hidden" ng-value="{{$index}}" ng-init="labelForUseTypeId = getUID()" id="{{labelForUseTypeId}}" ng-click="$event.stopPropagation();">
                                     <label for="{{labelForUseTypeId}}">{{templateTypeItem}}</label>
                                 </div>
@@ -317,7 +317,7 @@
                 <div class="paper-footer">
                     <a href="javascript:void(0)" class="btn-cancel" ng-click="onCancelTemplate(templateItem, $event, $index)"></a>
                     <a href="javascript:void(0)" class="btn-preview" ng-click="onPreviewTemplate($event, $index)"></a>
-                    <a href="javascript:void(0)" class="btn-save" ng-click="onSaveTemplate($event, $index)"></a>
+                    <a href="javascript:void(0)" class="btn-save" ng-click="onSaveTemplate(templateItem, $event, $index)"></a>
                 </div>
             </div>
         </div>

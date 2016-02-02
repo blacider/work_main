@@ -144,12 +144,12 @@
                             this.map = {};
                             for (var i = 0; i < list.length; i++) {
                                 var item = list[i];
-                                this.map[item.id] = item;
+                                this.map[item.id] = angular.copy(item);
                             }
                         };
                         $.extend(ArrayCache.prototype, {
                             updateById: function(id, data) {
-                                this.map[id] = data;
+                                this.map[id] = angular.copy(data);
                             },
                             removeById: function(id) {
                                 if (this.map[id]) {
@@ -178,7 +178,21 @@
                                 return count;
                             },
                             isFieldTypeValid: function (columnObject) {
+                                // 先验证非空，在验证完整性
+                                var isValid = !!columnObject['type'];
+
+                                if(!columnObject['name']) {
+                                    return {
+                                        valid: false,
+                                        tip: '请填写字段名称',
+                                        errorMsg: '空的字段名',
+                                        code: 'EMPTY_FIELD'
+                                    }   
+                                }
+
                                 if(columnObject['type'] == 2) {
+                                    // 单选的选项数目和选项内容不能为空，且不能重复
+                                    // fix me
                                     if(!columnObject.property || !columnObject.property.options || columnObject.property.options.length<=0) {
                                         return {
                                             valid: false,
@@ -189,33 +203,16 @@
                                     }
                                     var options = columnObject.property.options;
                                     for(var i=0;i<options.length;i++) {
-                                        if($.trim(options[i])=='') {
+                                        if($.trim(options[i])==='') {
                                             return {
                                                 valid: false,
-                                                code: 'OPTIONS_ITEM_EMPTY_ERROR',
-                                                tip: '请在文本框输入可用的选项',
+                                                code: 'RADIO_FIELD_OPTIONS_ITEM_EMPTY_ERROR',
+                                                tip: '请在输入选项',
+                                                invalideInputIndex: i,
                                                 errorMsg: '选项为空'
                                             }
                                         }
                                     }
-                                }
-                                var isValid = !!columnObject['type'];
-                                if(!isValid) {
-                                    return {
-                                        valid: isValid,
-                                        tip: '请选择字段类型',
-                                        errorMsg: '无效的类型',
-                                        code: 'INVALID_TYPE'
-                                    }
-                                }
-
-                                if(!columnObject['name']) {
-                                    return {
-                                        valid: false,
-                                        tip: '请填写字段名称',
-                                        errorMsg: '空的字段名',
-                                        code: 'EMPTY_FIELD_NAME'
-                                    }   
                                 }
 
                                 return {
@@ -225,20 +222,25 @@
                                     code: 'OK'
                                 }
                             },
-                            getInvalidFieldTypeArray: function  (columns) {
-                                var invalidCount = 0;
-                                var validatorArray = [];
+                            getFirstInvalidFieldFromArray: function  (columns, $table) {
+                                var validator = null;
                                 for(var i = 0; i <columns.length; i++) {
                                     var validator = this.isFieldTypeValid(columns[i]);
                                     if(!validator.valid) {
-                                        validatorArray.push(validator);
-                                        invalidCount++;
+                                        switch(validator['code']) {
+                                            case 'NO_OPTIONS_ERROR':
+                                                break;
+                                            case 'RADIO_FIELD_OPTIONS_ITEM_EMPTY_ERROR':
+                                                $table.find('.field-options').eq(i).find('.field-radio-options input').eq(validator.invalideInputIndex).focus();
+                                                break;
+                                            case 'EMPTY_FIELD':
+                                                $table.find('.field-options').eq(i).find('.field-name input').focus();
+                                                break;
+                                        }
+                                        break; //only get the first so go out the loop
                                     }
                                 }
-                                return {
-                                    invalidCount: invalidCount,
-                                    validatorArray: validatorArray
-                                };
+                                return validator;
                             },
                             tryGetEditingTemplateID: function  () {
                                 for (var id in $scope.templateUpdateTableMap) {
@@ -270,14 +272,29 @@
                     // 2. then try to ask the user is to save or not
                     // all editing work is in the open template, right? so get the open template and to find the editing table;
                     // 
-                    function doClearOpenTemplateData (templateData, $index) {
+                    function doClearOpenTemplateData () {
                         var def = $.Deferred();
                         var $openTemplate = $element.find('.paper.show');
+                        var templateIndex = $openTemplate.data('index');
+                        var templateData = $scope.templateArray[templateIndex];
                         if($openTemplate.length==1) {
                             // get the open template date
-                            $index = $openTemplate.data('index');
-                            templateData = $scope.templateArray[$index];
+                            // step 1
+                            var $editTable = $openTemplate.find('.table-container .field-group');
 
+                            if($editTable.length==1) {
+                                var tableIndex = $editTable.data('index');
+                                var tableData = templateData.config[tableIndex];
+                                var validator = TemplateValidator.getFirstInvalidFieldFromArray(tableData.children, $editTable);
+                                if(validator && !validator.valid) {
+                                    show_notify(validator.tip);
+                                    def.resolve(false);
+                                } else {
+                                    delete tableData['MODE'];
+                                    def.resolve(true);
+                                }
+                            }
+                            
                             var originalData = $scope.templateArrayOriginal.getItemById(templateData.id);
                             originalData = angular.copy(originalData);
 
@@ -305,7 +322,7 @@
 
                                             setTimeout(function  () {
                                                 _self.close();
-                                                def.resolve();
+                                                def.resolve(true);
                                                 show_notify('保存成功！');
                                             }, 800);
                                             
@@ -328,20 +345,20 @@
                                         }
 
                                         $scope.$apply(function  () {
-                                            $scope.templateArray[$index] = angular.copy(originalTemplateData);
+                                            $scope.templateArray[tableIndex] = angular.copy(originalTemplateData);
                                         });
 
-                                        def.resolve();
+                                        def.resolve(true);
                                     },
                                     okValue: '保存',
                                     cancelValue: '不保存'
                                 });
                                 d.showModal();
                             } else {
-                                def.resolve();
+                                def.resolve(true);
                             }
                         } else {
-                            def.resolve();
+                            def.resolve(true);
                         }
                         return def.promise();
                     };
@@ -358,7 +375,7 @@
 
                     loadPageData().done(function  (rs) {
                             // remember all template data as cache
-                        $scope.templateArrayOriginal = new ArrayCache(angular.copy($scope.templateArray));
+                        $scope.templateArrayOriginal = new ArrayCache($scope.templateArray);
 
                     });
 
@@ -414,7 +431,10 @@
                         // 由于目前只能展开一个模版，所以只需要检测展开的那个模版就OK，处理完展开的模版的对话框，做好折叠工作
                         // 在处理完成上述操作以后，检测是不是其它模版被点击折叠，是的话还要toggle template
                         var $openTemplate = $element.find('.paper.show');
-                        doClearOpenTemplateData(templateData, $index).done(function  () {
+                        doClearOpenTemplateData().done(function  (state) {
+                            if(!state) {
+                                return
+                            }
                             var $targe = $(e.currentTarget);
                             var $templateItem = $targe.parents('.paper');
                             $templateItem.removeClass(_ON_TEMPLATE_ADD_ANIMATION_);
@@ -464,15 +484,13 @@
                         }
                     };
 
-                    $scope.updateTemplateType = function(e, index, templateIndex) {
+                    $scope.updateTemplateType = function(e, templateData, $index) {
                         if($(e.currentTarget).hasClass('checked')) {
-
-                            $scope.templateArray[templateIndex].type.push(index + '');
-
+                            templateData.type.push($index + '');
                         } else {
-                            var idx = $scope.templateArray[templateIndex].type.indexOf(index + '');
+                            var idx = templateData.type.indexOf($index + '');
                             if(idx!=-1) {
-                                $scope.templateArray[templateIndex].type.splice(idx, 1);
+                                templateData.type.splice(idx, 1);
                             }
                         }
                     };
@@ -491,7 +509,7 @@
                             return show_notify('可用模版不能超过' +_templateTotalLimit_+'个');
                         }
 
-                        doClearOpenTemplateData().done(function  () {
+                        doClearOpenTemplateData().done(function(state) {
                             Utils.api('/company/docreate_report_template', {
                                 method: 'post',
                                 data: {
@@ -522,7 +540,7 @@
                         
                         var tableData = angular.copy(_defaultTableEditConfig_);
                         tableData['MODE'] = 'STATE_EDITING';
-                        $scope.templateArray[templateIndex].config.push(tableData);
+                        templateData.config.push(tableData);
                     };
                     
                     $scope.onAddColumnEditConfig = function (tableData, e, index) {
@@ -536,7 +554,7 @@
 
                     };
 
-                    $scope.onRemoveTemplate = function(item, $index, e) {
+                    $scope.onRemoveTemplate = function(templateData, $index, e) {
                         if($scope.templateArray.length<=1) {
                             return show_notify('至少保留一份报销单模版!');
                         }
@@ -547,7 +565,7 @@
                             ok: function  () {
                                 var _self = this;
                                 this.content('正在删除......');
-                                $http.post('/company/dodelete_report_template/' + item.id).success(function(rs) {
+                                $http.post('/company/dodelete_report_template/' + templateData.id).success(function(rs) {
                                     // $scope.templateArray = rs['data'];
                                     if (rs['status'] <= 0) {
                                         _self.content('确认要删除当前报销单模版?');
@@ -573,15 +591,14 @@
                             cancelValue: '取消'
                         });
                         d.showModal(e.currentTarget);
-                        
                     };
 
-                    $scope.onRemoveTable = function  (e, tableIndex, templateIndex) {
+                    $scope.onRemoveTable = function  (templateItem, e, tableIndex) {
                         var $table = $(e.currentTarget).parents('.field-table');
                         $table.addClass('animated fadeOut');
                         setTimeout(function  () {
                             $table.remove();
-                            $scope.templateArray[templateIndex].config.splice(tableIndex, 1);
+                            templateItem.config.splice(tableIndex, 1);
                         }, 1000);
                     };
 
@@ -598,10 +615,8 @@
                     };
 
                     // template event
-                    $scope.onSaveTemplate = function  (e, index) {
-                        var templateData = $scope.templateArray[index];
+                    $scope.onSaveTemplate = function  (templateData, e) {
                         var data = angular.copy(templateData);
-
                         if(data.type.length == 0) {
                             return show_notify('请选择报销模版适用范围');
                         }
@@ -620,15 +635,15 @@
                             show_notify('保存成功！');
                             $scope.templateArrayOriginal.updateById(data.id, data);
                         });
-
                     };
 
-                    $scope.onSaveColumnsEditConfig = function (templateData, e, tableIndex, templateIndex) {
+                    $scope.onSaveColumnsEditConfig = function (templateData, tableIndex, e) {
                         var tableData = templateData.config[tableIndex];
-                        var validator = TemplateValidator.getInvalidFieldTypeArray(tableData.children);
+                        var $table = $(e.currentTarget).parents('.field-group');
+                        var validator = TemplateValidator.getFirstInvalidFieldFromArray(tableData.children, $table);
 
-                        if(validator['invalidCount']>0) {
-                            return show_notify(validator.validatorArray[0].tip);
+                        if(validator && !validator.valid) {
+                            return show_notify(validator.tip);
                         }
 
                         delete tableData['MODE'];
@@ -654,8 +669,15 @@
                         d.showModal();
                     };
 
-                    $scope.onCancelColumnsEditConfig = function(tableData, e, templateIndex) {
-                        delete tableData['MODE'];
+                    $scope.onCancelColumnsEditConfig = function(tableData, templateItem, tableIndex, templateIndex, e) {
+                        var templateDataOriginal = $scope.templateArrayOriginal.getItemById(templateItem.id);
+                        var tableOriginal = templateDataOriginal.config[tableIndex];
+                        if(tableOriginal) {
+                            delete tableOriginal['MODE']
+                            templateItem.config[tableIndex] = tableOriginal;
+                        } else {
+                            templateItem.config.pop();
+                        }
                     };
 
                     $scope.onFocusOut = function  (templateData, $index, e) {
@@ -674,15 +696,8 @@
                         return true;
                     };
 
-                    $scope.onEditTable = function (e, tableIndex, templateIndex) {
-
-                        var templateData = $scope.templateArray[templateIndex];
-                        var tableData = angular.copy(templateData.config[tableIndex]);
-                        var originTableData = angular.copy(tableData);
-
-                        // 丢弃编辑项目，时候，回滚的位置的信息，并记录会滚信息
-                        $scope.templateArray[templateIndex].config[tableIndex]['MODE'] = 'STATE_EDITING'
-
+                    $scope.onEditTable = function (templateData, e, tableIndex) {
+                        templateData.config[tableIndex]['MODE'] = 'STATE_EDITING';
                     };
 
                     $scope.onEditTemplateTitle = function  (templateData, e) {
