@@ -23,7 +23,8 @@
         "name": _defaultTemplateName_,
         "type": ['0'],
         "config": [],
-        "disabled": "0"
+        "disabled": "0",
+        "is_category_by_group": true
     };
 
     var _defaultTableHeaderOptions_ = [
@@ -518,19 +519,21 @@
                                 }
                             }).done(function  (rs) {
                                 // update arraycache
-                                $scope.templateArrayOriginal.updateById(templateData.id, templateData);
 
                                 if (!rs['id'] || rs['id'] == -1) {
                                     // $scope.templateArray.pop();
                                     return show_notify(rs['msg'] || '模版创建失败');
                                 }
 
+                                templateData['id'] = rs['id'];
+                                $scope.templateArrayOriginal.updateById(templateData.id, templateData);
+
                                 $scope.$apply(function () {
                                     $scope.templateArray.push(templateData);
                                     // angular do dom insert async
                                 });
 
-                                var $paper = $element.find('<div class="paper"></div>').eq($scope.templateArray.length -1);
+                                var $paper = $element.find('.paper').eq($scope.templateArray.length -1);
                                 $paper.find('.btn-accordion').trigger('click');
                             });
                         })
