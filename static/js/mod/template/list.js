@@ -398,8 +398,17 @@
 
                                 $scope.$apply(function () {
                                     $scope.templateArray.push(templateData);
+                                    setTimeout(function  () {
+                                        $element.find('.paper').find('.paper-header .btn-accordion').trigger('click');
+                                    }, 100);
                                 });
                             });
+                        }
+
+                        if(rs['data'].length==1) {
+                            setTimeout(function  () {
+                                $element.find('.paper').find('.paper-header .btn-accordion').trigger('click');
+                            }, 100);
                         }
                         
                         // remember all template data as cache
