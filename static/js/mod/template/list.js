@@ -1,6 +1,7 @@
 (function() {
     
     var _fieldCountLimit_ = 6;
+    var _radioOptionsCountLimit_ = 6;
     var _templateNameLengthLimit_ = 10;
     var _templateTotalLimit_ = 10;
     var _templateTypes_ = null;
@@ -112,14 +113,6 @@
         initialize: function() {
             angular.module('reimApp', ['ng-sortable']).controller('templateListController', ["$http", "$scope", "$element",
                 function($http, $scope, $element) {
-                    // init edit config
-                    // templateEditTableMap = {
-                    //      '331313': { template id
-                    //             type: '1'
-                    //             children: [col_0,...col_n]
-                    //      }
-                    // }
-                    $scope.templateEditTableMap = {};
                     
                     function loadPageData() {
                         return $.when(
@@ -248,8 +241,8 @@
                                 };
                             },
                             tryGetEditingTemplateID: function  () {
-                                for (var id in $scope.templateEditTableMap) {
-                                    if($scope.templateEditTableMap[id]) {
+                                for (var id in $scope.templateUpdateTableMap) {
+                                    if($scope.templateUpdateTableMap[id]) {
                                         return id;
                                     }
                                 }
@@ -274,38 +267,9 @@
                     // ani action leads to save the template
                     // accordion temlate \add new template \save the template
                     // 1. first to make the the table-editing 'ensured'
-                    // 2. then try to ask the user is  to save or not
-                    function doClearTableEdited (templateData, templateIndex) {
-                        // check if edition action is being
-                        templateData = angular.copy(templateData);
-                        var templateEditTable = angular.copy($scope.templateEditTableMap[templateData.id]);
-                        
-                        // 先处理编辑的表格
-                        if(templateEditTable) {
-                            var validator = TemplateValidator.getInvalidFieldTypeArray(templateEditTable.children);
-                            if(validator['invalidCount']>0) {
-                                var _EDIT_STASH_ = templateEditTable['_EDIT_STASH_'];
-                                // 检测回滚类型，如果是修改已有的数据，回退到修改之前
-                                if(_EDIT_STASH_ && _EDIT_STASH_['type'] == 'REVERT_UPDATE') {
-                                    $scope.templateArray[templateIndex].config.splice(_EDIT_STASH_.tableIndex, 0, _EDIT_STASH_.originTableData);
-                                }
-                                
-                                
-                            } else {
-                                var _EDIT_STASH_ = templateEditTable['_EDIT_STASH_'];
-                                // 检测回滚类型，如果是修改已有的数据，直接更新
-                                if(_EDIT_STASH_ && _EDIT_STASH_['type'] == 'REVERT_UPDATE') {
-                                    $scope.templateArray[templateIndex].config.splice(_EDIT_STASH_.tableIndex, 0, templateEditTable);
-                                } else {
-                                    $scope.templateArray[templateIndex].config.push(templateEditTable);
-                                }
-
-                            }
-                        } 
-                        //不管新增，还是修改数据，都要丢弃编辑
-                        $scope.templateEditTableMap[templateData.id] = null;
-                    };
-
+                    // 2. then try to ask the user is to save or not
+                    // all editing work is in the open template, right? so get the open template and to find the editing table;
+                    // 
                     function doClearOpenTemplateData (templateData, $index) {
                         var def = $.Deferred();
                         var $openTemplate = $element.find('.paper.show');
@@ -313,13 +277,13 @@
                             // get the open template date
                             $index = $openTemplate.data('index');
                             templateData = $scope.templateArray[$index];
-                            doClearTableEdited(templateData, $index);
 
                             var originalData = $scope.templateArrayOriginal.getItemById(templateData.id);
                             originalData = angular.copy(originalData);
 
                             data = angular.copy(templateData);
-                            if(!angular.equals(templateData, originalData)) {
+
+                            if(!angular.equals(data, originalData)) {
                                 var d = new CloudDialog({
                                     content: '是否要保存编辑的内容？',
                                     width: 240,
@@ -335,11 +299,10 @@
                                         }).done(function  (rs) {
 
                                             if(rs['status'] <= 0) {
+                                                def.resolve();
                                                 return show_notify(rs['msg']);
                                             }
 
-                                            // $openTemplate.removeClass('show').find('.paper-header').removeClass('fixed');
-                                            
                                             setTimeout(function  () {
                                                 _self.close();
                                                 def.resolve();
@@ -357,33 +320,31 @@
                                     cancel: function  () {
                                         this.close();
                                         templateData = angular.copy(templateData);
-                                        $scope.templateEditTableMap[templateData.id] = null;
 
                                         var originalTemplateData = $scope.templateArrayOriginal.getItemById(templateData.id);
 
-                                        def.resolve();
-
                                         if(angular.equals(templateData, originalTemplateData)) {
-                                            return
+                                            return def.resolve();
                                         }
 
                                         $scope.$apply(function  () {
                                             $scope.templateArray[$index] = angular.copy(originalTemplateData);
                                         });
+
+                                        def.resolve();
                                     },
                                     okValue: '保存',
                                     cancelValue: '不保存'
                                 });
                                 d.showModal();
                             } else {
-                                // 没有任何改变
                                 def.resolve();
                             }
                         } else {
                             def.resolve();
                         }
                         return def.promise();
-                    }
+                    };
 
                     function makeTitleAutoWidth (el) {
                         var $eles = $element.find('.paper-header input');
@@ -394,7 +355,6 @@
                             $eles.autoGrowInput({minWidth: 30, maxWidth: 200, comfortZone: 0});
                         }, 0);
                     };
-
 
                     loadPageData().done(function  (rs) {
                             // remember all template data as cache
@@ -426,17 +386,25 @@
 
                     };
 
-                    $scope.onFieldTypeChange = function  (type, templateData, columnIndex) {
+                    $scope.onFieldTypeChange = function  (type, columnData) {
                         if(type==2) {
-                            $scope.templateEditTableMap[templateData.id].children[columnIndex]['property'] || ($scope.templateEditTableMap[templateData.id].children[columnIndex]['property'] = {options: ["", ""]});
+                            if(!columnData['property']) {
+                                columnData['property'] = {};
+                            }
+                            if(!columnData['property']['options']) {
+                                columnData['property']['options'] = ['', ''];
+                            }
                         }
                     };
 
-                    $scope.setOptionsForRadioGroup = function  (templateData, columnIndex, inputIndex, e) {
+                    $scope.setOptionsForRadioGroup = function  (e, tableData, inputIndex, columnIndex) {
                         if($(e.currentTarget).hasClass('btn-delete-input')) {
-                            $scope.templateEditTableMap[templateData.id].children[columnIndex]['property'].options.splice(inputIndex, 1);
+                            tableData.children[columnIndex]['property'].options.splice(inputIndex, 1);
                         } else {
-                            $scope.templateEditTableMap[templateData.id].children[columnIndex]['property'].options.push('');
+                            if(tableData.children.length >= _radioOptionsCountLimit_) {
+                                return show_notify('单选选项不能超过'+_radioOptionsCountLimit_);
+                            }
+                            tableData.children[columnIndex]['property'].options.push('');
                         }
                     };
 
@@ -514,34 +482,10 @@
                         $target.addClass('checked').siblings().removeClass('checked');
                     };
 
-                    $scope.onEditTable = function  (e, tableIndex, templateIndex) {
-
-                        var templateData = $scope.templateArray[templateIndex];
-                        var tableData = angular.copy(templateData.config[tableIndex]);
-                        var originTableData = angular.copy(tableData);
-                        // 检测是否已经有编辑项目了
-                        if($scope.templateEditTableMap[templateData.id]) {
-                            return show_notify('请”确定“或”取消“正在编辑的字段组');
-                        }
-
-                        // 丢弃编辑项目，时候，回滚的位置的信息，并记录会滚信息
-                        
-                        tableData['_EDIT_STASH_'] = {
-                            type: 'REVERT_UPDATE',
-                            templateIndex: templateIndex,
-                            tableIndex, tableIndex,
-                            originTableData: originTableData
-                        };
-
-                        $scope.templateArray[templateIndex].config.splice(tableIndex, 1);
-                        $scope.templateEditTableMap[templateData.id] = angular.copy(tableData);
-                    };
-
                     $scope.onAddTemplate = function(e) {
 
                         var templateData = angular.copy(_defaultTemplateConfig_);
 
-                        var unnamedTemplateCount = TemplateValidator.howManyTemplateUnNamed($scope.templateArray);
                         // 检测长度
                         if($scope.templateArray.length >=_templateTotalLimit_) {
                             return show_notify('可用模版不能超过' +_templateTotalLimit_+'个');
@@ -574,22 +518,21 @@
                         })
                     };
                     
-                    $scope.onAddTableConfig = function (data, e, index) {
-                        if($scope.templateEditTableMap[data.id]) {
-                            return show_notify('请”确定“或”取消“正在编辑的字段组');
-                        }
-                        if(!$scope.templateEditTableMap[data.id]) {
-                            $scope.templateEditTableMap[data.id] = angular.copy(_defaultTableEditConfig_);
-                        }
+                    $scope.onAddTableConfig = function (templateData, e, templateIndex) {
+                        
+                        var tableData = angular.copy(_defaultTableEditConfig_);
+                        tableData['MODE'] = 'STATE_EDITING';
+                        $scope.templateArray[templateIndex].config.push(tableData);
                     };
                     
-                    $scope.onAddColumnEditConfig = function (data, e, index) {
+                    $scope.onAddColumnEditConfig = function (tableData, e, index) {
 
                         // 1. length limit check
-                        if($scope.templateEditTableMap[data.id].children.length > _fieldCountLimit_ - 1) {
+                        if(tableData.children.length > _fieldCountLimit_ - 1) {
                             return show_notify('字段不能超过' + _fieldCountLimit_ + ' 个');
                         }
-                        $scope.templateEditTableMap[data.id].children.push(angular.copy(_defaultColumnEditConfig_));
+
+                        tableData.children.push(angular.copy(_defaultColumnEditConfig_));
 
                     };
 
@@ -642,16 +585,15 @@
                         }, 1000);
                     };
 
-                    $scope.onRemoveColumnEditConfig = function(data, e, columnIndex, templateIndex) {
-                        var table = $scope.templateEditTableMap[data.id];
-                        if(table.children.length <=1) {
+                    $scope.onRemoveColumnEditConfig = function(e, tableData, columnIndex) {
+                        if(tableData.children.length <=1) {
                             return show_notify('至少有一个字段');
                         }
                         var $fields = $(e.currentTarget).parents('.fields');
                         $fields.addClass('animated fadeOut');
                         setTimeout(function  () {
                             $fields.remove();
-                            table.children.splice(columnIndex, 1);                        
+                            tableData.children.splice(columnIndex, 1);                        
                         }, 1000);
                     };
 
@@ -681,33 +623,19 @@
 
                     };
 
-                    $scope.onSaveColumnsEditConfig = function (templateData, e, templateIndex) {
-                        // step 1. do check for field array 
-                        // step 2. if update then put back the table, else append the table
+                    $scope.onSaveColumnsEditConfig = function (templateData, e, tableIndex, templateIndex) {
+                        var tableData = templateData.config[tableIndex];
+                        var validator = TemplateValidator.getInvalidFieldTypeArray(tableData.children);
 
-                        // step 1
-                        var templateEditTable = $scope.templateEditTableMap[templateData.id];
-                        templateEditTable = angular.copy(templateEditTable);
-
-                        var validator = TemplateValidator.getInvalidFieldTypeArray(templateEditTable.children);
                         if(validator['invalidCount']>0) {
                             return show_notify(validator.validatorArray[0].tip);
                         }
 
-                        // step 2
-                        var _EDIT_STASH_ = templateEditTable['_EDIT_STASH_'];
-                        if(_EDIT_STASH_ && _EDIT_STASH_['type'] == 'REVERT_UPDATE') {
-                            $scope.templateArray[templateIndex].config.splice(_EDIT_STASH_.tableIndex, 0, templateEditTable);
-                        } else {
-                            $scope.templateArray[templateIndex].config.push(templateEditTable);
-                        }
+                        delete tableData['MODE'];
 
-                        $scope.templateEditTableMap[templateData.id] = null;
                     };
 
                     $scope.onCancelTemplate = function  (templateData, e, $index) {
-                        templateData = angular.copy(templateData);
-                        $scope.templateEditTableMap[templateData.id] = null;
                         var originalTemplateData = $scope.templateArrayOriginal.getItemById(templateData.id);
                         var d = new CloudDialog({
                             content: '确定要取消编辑的内容？',
@@ -726,17 +654,8 @@
                         d.showModal();
                     };
 
-                    $scope.onCancelColumnsEditConfig = function(templateData, e, templateIndex) {
-                        var tableData = $scope.templateEditTableMap[templateData.id];
-                        var _EDIT_STASH_ = tableData['_EDIT_STASH_'];
-                        // 检测回滚类型
-                        if(_EDIT_STASH_ && _EDIT_STASH_['type'] == 'REVERT_UPDATE') {
-
-                            $scope.templateArray[templateIndex].config.splice(_EDIT_STASH_.tableIndex, 0, _EDIT_STASH_.originTableData);
-
-                        }
-                        //丢弃编辑内容
-                        $scope.templateEditTableMap[templateData.id] = null;
+                    $scope.onCancelColumnsEditConfig = function(tableData, e, templateIndex) {
+                        delete tableData['MODE'];
                     };
 
                     $scope.onFocusOut = function  (templateData, $index, e) {
@@ -753,6 +672,17 @@
                         $scope.templateArray[$index].name = name;
 
                         return true;
+                    };
+
+                    $scope.onEditTable = function (e, tableIndex, templateIndex) {
+
+                        var templateData = $scope.templateArray[templateIndex];
+                        var tableData = angular.copy(templateData.config[tableIndex]);
+                        var originTableData = angular.copy(tableData);
+
+                        // 丢弃编辑项目，时候，回滚的位置的信息，并记录会滚信息
+                        $scope.templateArray[templateIndex].config[tableIndex]['MODE'] = 'STATE_EDITING'
+
                     };
 
                     $scope.onEditTemplateTitle = function  (templateData, e) {

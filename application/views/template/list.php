@@ -29,12 +29,12 @@
                         内容设置
                     </div>
                     <div class="table-container" ng-sortable="makeTableSortable">
-                        <div class="field-table" ng-repeat="tableItem in templateItem.config">
+                        <div class="field-table" ng-repeat-start="tableItem in templateItem.config track by $index" ng-if="tableItem.MODE != 'STATE_EDITING'">
                             <div class="line"></div>
                             <h4 class="field-table-title">{{tableItem.name}}
                                 <p class="buttons">
                                     <span class="button btn-trash" ng-click="onRemoveTable($event, $index, $parent.$index)"></span>
-                                    <span class="button btn-edit" ng-click="onEditTable($event, $index, $parent.$index)"></span>
+                                    <span class="button btn-edit" ng-click="onEditTable($event, $index, $parent.$parent.$index)"></span>
                                     <span class="button btn-drag transition" ng-click="onDragTable($event, $index, $parent.$index)"></span>
                                 </p>
                             </h4>
@@ -64,63 +64,63 @@
                                 </div>               
                             </div>
                         </div>
-                    </div>
-                    <div class="field-group" ng-if="templateEditTableMap[templateItem.id]">
-                        <h4 class="field-group-title">
-                            <div class="field-input">
-                                <input type="text" placeholder="字段组名称" ng-model="templateEditTableMap[templateItem.id].name">
-                            </div>
-                        </h4>
-                        <div class="column-wrap table-layout">
-                            <h4 class="field-group-label table-cell"> 字段组 </h4>
-                            <div class="field-group-rows table-cell">
-                                <div class="fields field-options table-layout" ng-repeat="editColumnItem in templateEditTableMap[templateItem.id].children">
-                                    <div class="table-cell field-name">
-                                        <div class="field-input field">
-                                            <input type="text" placeholder="字段名称" ng-model="editColumnItem.name">
-                                        </div>
-                                    </div>
-                                    <div class="table-cell field-type">
-                                        <div class="field-select field">
-                                            <select ng-model="editColumnItem.type" ng-change="onFieldTypeChange(editColumnItem.type, templateItem, $index, $parent.$index)">
-                                                <option value="1">文本框</option>
-                                                <option value="2">单选框</option>
-                                                <option value="3">日期时间</option>
-                                                <option value="4">银行账户</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="table-cell field-checkbox white" ng-class="{checked: editColumnItem.required == '1'}" ng-click="toggleCheckbox($event)">
-                                        <input type="checkbox" class="hidden" ng-model="editColumnItem.required"  id="{{labelForEditColumnId}}_{{$index}}" ng-init="labelForEditColumnId = getUID()" ng-click="$event.stopPropagation();" ng-true-value="1" ng-false-value="0">
-                                        <label for="{{labelForEditColumnId}}_{{$index}}">必填</label>
-                                    </div>
-                                    <div class="button field table-cell">
-                                        <p class="btn-trash" ng-click="onRemoveColumnEditConfig(templateItem, $event, $index, $parent.$index)"></p>
-                                    </div>
-                                    <div class="field-radio-options" ng-if="editColumnItem.type == 2">
-                                        <div class="field-radio-option" ng-repeat="inputItem in editColumnItem.property.options track by $index">
-                                            <div class="field-input">
-                                                <input type="text" ng-model="editColumnItem.property.options[$index]">
+                        <div class="field-group" ng-repeat-end ng-if="tableItem.MODE == 'STATE_EDITING'">
+                            <h4 class="field-group-title">
+                                <div class="field-input">
+                                    <input type="text" placeholder="字段组名称" ng-model="tableItem.name">
+                                </div>
+                            </h4>
+                            <div class="column-wrap table-layout">
+                                <h4 class="field-group-label table-cell"> 字段组 </h4>
+                                <div class="field-group-rows table-cell">
+                                    <div class="fields field-options table-layout" ng-repeat="editColumnItem in tableItem.children">
+                                        <div class="table-cell field-name">
+                                            <div class="field-input field">
+                                                <input type="text" placeholder="字段名称" ng-model="editColumnItem.name">
                                             </div>
-                                            <p class="btn-add-input transition" ng-class="{'btn-delete-input': $index < editColumnItem.property.options.length -1}" ng-click="setOptionsForRadioGroup(templateItem, $parent.$index, $index, $event)"></p>
                                         </div>
-                                    </div>
-                                    <div class="field-bank-options" ng-if="editColumnItem.type == 4">
-                                        <div class="field-checkbox white" ng-class="{checked: editColumnItem.property.bank_account_type}" ng-click="toggleCheckbox($event);">
-                                            <input type="checkbox" ng-model="editColumnItem.property.bank_account_type" class="hidden" ng-init="labelForBankOptionId = getUID()" id="{{labelForBankOptionId}}" ng-click="$event.stopPropagation();">
-                                            <label for="{{labelForBankOptionId}}">设为付款银行帐户</label>
+                                        <div class="table-cell field-type">
+                                            <div class="field-select field">
+                                                <select ng-model="editColumnItem.type" ng-change="onFieldTypeChange(editColumnItem.type, editColumnItem)">
+                                                    <option value="1">文本框</option>
+                                                    <option value="2">单选框</option>
+                                                    <option value="3">日期时间</option>
+                                                    <option value="4">银行账户</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="table-cell field-checkbox white" ng-class="{checked: editColumnItem.required == '1'}" ng-click="toggleCheckbox($event)">
+                                            <input type="checkbox" class="hidden" ng-model="editColumnItem.required"  id="{{labelForEditColumnId}}_{{$index}}" ng-init="labelForEditColumnId = getUID()" ng-click="$event.stopPropagation();" ng-true-value="1" ng-false-value="0">
+                                            <label for="{{labelForEditColumnId}}_{{$index}}">必填</label>
+                                        </div>
+                                        <div class="button field table-cell">
+                                            <p class="btn-trash" ng-click="onRemoveColumnEditConfig($event, tableItem, $index)"></p>
+                                        </div>
+                                        <div class="field-radio-options" ng-if="editColumnItem.type == 2">
+                                            <div class="field-radio-option" ng-repeat="inputItem in editColumnItem.property.options track by $index">
+                                                <div class="field-input">
+                                                    <input type="text" placeholder="选项" ng-model="editColumnItem.property.options[$index]">
+                                                </div>
+                                                <p class="btn-add-input transition" ng-class="{'btn-delete-input': $index < editColumnItem.property.options.length -1}" ng-click="setOptionsForRadioGroup($event, tableItem, $index, $parent.$index)"></p>
+                                            </div>
+                                        </div>
+                                        <div class="field-bank-options" ng-if="editColumnItem.type == 4">
+                                            <div class="field-checkbox white" ng-class="{checked: editColumnItem.property.bank_account_type}" ng-click="toggleCheckbox($event);">
+                                                <input type="checkbox" ng-model="editColumnItem.property.bank_account_type" class="hidden" ng-init="labelForBankOptionId = getUID()" id="{{labelForBankOptionId}}" ng-click="$event.stopPropagation();">
+                                                <label for="{{labelForBankOptionId}}">设为付款银行帐户</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="field-group-footer">
+                                <p class="buttons">
+                                    <span class="button btn-add" ng-click="onAddColumnEditConfig(tableItem, $event, $index)">添加字段</span>
+                                    <span class="button btn-cancel" ng-click="onCancelColumnsEditConfig(tableItem, $event, $index, $parent.$parent.$index)">取消</span>
+                                    <span class="button btn-save" ng-click="onSaveColumnsEditConfig(templateItem, $event, $index, $parent.$parent.$index)">确定</span>
+                                </p>
+                            </div>           
                         </div>
-                        <div class="field-group-footer">
-                            <p class="buttons">
-                                <span class="button btn-add" ng-click="onAddColumnEditConfig(templateItem, $event, $index)">添加字段</span>
-                                <span class="button btn-cancel" ng-click="onCancelColumnsEditConfig(templateItem, $event, $index)">取消</span>
-                                <span class="button btn-save" ng-click="onSaveColumnsEditConfig(templateItem, $event, $index)">确定</span>
-                            </p>
-                        </div>           
                     </div>
                     <div class="field-group row-group" style="padding-bottom: 0">
                         <div class="line"></div>
