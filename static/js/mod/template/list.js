@@ -302,8 +302,6 @@
                                     show_notify(validator.tip);
                                     def.resolve(false);
                                     return def.promise();
-                                } else {
-                                    // delete tableData['MODE'];
                                 }
                             }
                             
@@ -312,12 +310,18 @@
 
                             data = angular.copy(templateData);
 
+                            if($editTable.length==1) {
+                                delete data.config[tableIndex]['MODE'];
+                            }
+
                             if(!angular.equals(data, originalData)) {
+
                                 var d = new CloudDialog({
                                     content: '是否要保存编辑的内容？',
                                     width: 240,
                                     fixed: true,
                                     ok: function  () {
+
                                         var _self = this;
                                         
                                         Utils.api('/company/doupdate_report_template', {
@@ -326,7 +330,9 @@
                                                 temp_info: data
                                             }
                                         }).done(function  (rs) {
-
+                                            if(typeof tableData != 'undefine') {
+                                                delete tableData['MODE'];
+                                            }
                                             if(rs['status'] <= 0) {
                                                 def.resolve();
                                                 return show_notify(rs['msg']);
@@ -348,16 +354,11 @@
                                     },
                                     cancel: function  () {
                                         this.close();
-                                        templateData = angular.copy(templateData);
 
                                         var originalTemplateData = $scope.templateArrayOriginal.getItemById(templateData.id);
 
-                                        if(angular.equals(templateData, originalTemplateData)) {
-                                            return def.resolve();
-                                        }
-
                                         $scope.$apply(function  () {
-                                            $scope.templateArray[tableIndex] = angular.copy(originalTemplateData);
+                                            $scope.templateArray[templateIndex] = angular.copy(originalTemplateData);
                                         });
 
                                         def.resolve(true);
@@ -367,6 +368,9 @@
                                 });
                                 d.showModal();
                             } else {
+                                if($editTable.length==1) {
+                                    delete tableData['MODE'];
+                                }
                                 def.resolve(true);
                             }
                         } else {
