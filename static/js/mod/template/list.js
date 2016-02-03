@@ -676,6 +676,23 @@
                             return show_notify('请选择报销模版适用范围');
                         }
 
+                        // check and ensure start
+                        var tableData = null;
+                        for(var i=0;i<templateData.config.length;i++) {
+                            var tableData = templateData.config[i];
+                            if(tableData['MODE'] == 'STATE_EDITING') {
+                                var validator = TemplateValidator.getTableValidator(tableData, $(e.currentTarget).parents('.paper').find('.table-container .field-group'));
+                                break;
+                            }
+                        }
+
+                        if(validator && !validator.valid) {
+                            return show_notify(validator.tip);
+                        } else {
+                            tableData && (delete tableData['MODE']);
+                        }
+                        // checheck and ensureck end
+
                         Utils.api('/company/doupdate_report_template', {
                             method: "post",
                             data: {
@@ -686,6 +703,7 @@
                             if(rs['status'] <= 0) {
                                 return show_notify(rs['msg']);
                             }
+
                             // update array cache
                             show_notify('保存成功！');
                             $(e.currentTarget).parents('.paper').removeClass('show').find('.paper-header').removeClass('fixed');
@@ -781,7 +799,7 @@
 
                         // check if other edit-action is being
                         var validator = null;
-                        var tableData = null
+                        var tableData = null;
                         for(var i=0;i<templateData.config.length;i++) {
                             var tableData = templateData.config[i];
                             if(tableData['MODE'] == 'STATE_EDITING') {
