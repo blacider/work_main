@@ -321,6 +321,12 @@
                                 delete originalData['turnOpinion'];
                             })();
 
+                            if(!$.trim(data['name'])) {
+                                def.resolve(false);
+                                show_notify('报销单名称不能为空');
+                                return def.promise();
+                            }
+
                             if(!angular.equals(data, originalData)) {
 
                                 var d = new CloudDialog({
@@ -576,9 +582,11 @@
                         var templateData = angular.copy(_defaultTemplateConfig_);
 
                         doClearOpenTemplateData().done(function(state) {
+
                             if(!state) {
                                 return;
                             }
+
                             Utils.api('/company/docreate_report_template', {
                                 method: 'post',
                                 data: {
