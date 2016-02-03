@@ -602,7 +602,7 @@
                                 });
 
                                 var $paper = $element.find('.paper').eq($scope.templateArray.length -1);
-                                $paper.find('.btn-accordion').trigger('click');
+                                $paper.find('.paper-header .btn-accordion').trigger('click');
                             });
                         })
                     };
