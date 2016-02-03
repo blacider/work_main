@@ -758,6 +758,24 @@
                     };
 
                     $scope.onEditTable = function (templateData, e, tableIndex, templateIndex) {
+
+                        // check if other edit-action is being
+                        var validator = null;
+                        var tableData = null
+                        for(var i=0;i<templateData.config.length;i++) {
+                            var tableData = templateData.config[i];
+                            if(tableData['MODE'] == 'STATE_EDITING') {
+                                var validator = TemplateValidator.getTableValidator(tableData, $(e.currentTarget).parents('.paper').find('.table-container .field-group'));
+                                break;
+                            }
+                        }
+
+                        if(validator && !validator.valid) {
+                            return show_notify(validator.tip);
+                        } else {
+                            tableData && (delete tableData['MODE']);
+                        }
+
                         templateData.config[tableIndex]['MODE'] = 'STATE_EDITING';
                         // fix me
                         $timeout(function() {
