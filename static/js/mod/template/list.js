@@ -471,6 +471,14 @@
                                 columnData['property']['options'] = ['', ''];
                             }
                         }
+                        if(type==4) {
+                            if(!columnData['property']) {
+                                columnData['property'] = {};
+                            }
+                            if(!columnData['property']['bank_account_type']) {
+                                columnData['property']['bank_account_type'] = 0;
+                            }
+                        }
                     };
 
                     $scope.setOptionsForRadioGroup = function  (e, tableData, inputIndex, columnIndex) {
@@ -600,6 +608,23 @@
                     };
                     
                     $scope.onAddTableConfig = function (templateData, e, templateIndex) {
+
+                        // check if other edit-action is being
+                        var validator = null;
+                        var tableData = null;
+                        for(var i=0;i<templateData.config.length;i++) {
+                            var tableData = templateData.config[i];
+                            if(tableData['MODE'] == 'STATE_EDITING') {
+                                var validator = TemplateValidator.getTableValidator(tableData, $(e.currentTarget).parents('.paper').find('.table-container .field-group'));
+                                break;
+                            }
+                        }
+
+                        if(validator && !validator.valid) {
+                            return show_notify(validator.tip);
+                        } else {
+                            tableData && (delete tableData['MODE']);
+                        }
                         
                         var tableData = angular.copy(_defaultTableEditConfig_);
                         tableData['MODE'] = 'STATE_EDITING';
