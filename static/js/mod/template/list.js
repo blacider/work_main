@@ -313,6 +313,14 @@
                                 delete data.config[tableIndex]['MODE'];
                             }
 
+                            // clear ui variable
+                            (function() {
+                                delete data['customDetail'];
+                                delete originalData['customDetail'];
+                                delete data['turnOpinion'];
+                                delete originalData['turnOpinion'];
+                            })();
+
                             if(!angular.equals(data, originalData)) {
 
                                 var d = new CloudDialog({
