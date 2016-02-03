@@ -550,15 +550,17 @@
                     };
 
                     $scope.onAddTemplate = function(e) {
-
-                        var templateData = angular.copy(_defaultTemplateConfig_);
-
                         // 检测长度
                         if($scope.templateArray.length >=_templateTotalLimit_) {
                             return show_notify('可用模版不能超过' +_templateTotalLimit_+'个');
                         }
 
+                        var templateData = angular.copy(_defaultTemplateConfig_);
+
                         doClearOpenTemplateData().done(function(state) {
+                            if(!state) {
+                                return;
+                            }
                             Utils.api('/company/docreate_report_template', {
                                 method: 'post',
                                 data: {
