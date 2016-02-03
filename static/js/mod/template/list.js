@@ -384,7 +384,7 @@
                             $eles = $(el);
                         }
                         setTimeout(function  () {
-                            $eles.autoGrowInput({minWidth: 30, maxWidth: 200, comfortZone: 0});
+                            $eles.autoGrowInput({minWidth: 30, maxWidth: 300, comfortZone: 0});
                         }, 0);
                     };
 
@@ -427,6 +427,8 @@
                         
                         // remember all template data as cache
                         $scope.templateArrayOriginal = new ArrayCache($scope.templateArray);
+
+                        makeTitleAutoWidth();
 
                     });
 
@@ -743,20 +745,36 @@
                         }
                     };
 
-                    $scope.onFocusOut = function  (templateData, $index, e) {
-                        var $input = $(e.target);
+                    $scope.onTextLengthChange = _.debounce(function(templateData, e) {
+                        var name = templateData.name;
+                        if(name.length>=_templateNameLengthLimit_) {
+                            $timeout(function() {
+                                templateData.name = name.substr(0, _templateNameLengthLimit_)
+                                makeTitleAutoWidth(e.currentTarget);
+                            }, 50);
+                        }
+                    }, 100);
+
+                    $scope.onTextLengthChange2 = _.debounce(function(data, e) {
+                        var name = data.name;
+                        if(name.length>=_templateNameLengthLimit_) {
+                            $timeout(function() {
+                                data.name = name.substr(0, _templateNameLengthLimit_)
+                            }, 50);
+                        }
+                    }, 100);
+
+                    $scope.onFocusOut = function  (templateData, e) {
+                        var $input = $(e.currentTarget);
                         var name = $input.val();
                         name = $.trim(name) || '';
-                        $input.val(name);
                         if(name.length>_templateNameLengthLimit_) {
-                            $input.val(name.substr(0, _templateNameLengthLimit_));
-                            $input.trigger('autogrow')
-                            return false;
+                            templateData.name = name.substr(0, _templateNameLengthLimit_)
                         }
+                        setTimeout(function() {
+                            $input.trigger('autogrow');
+                        }, 100);
                         $input.attr('disabled', true);
-                        $scope.templateArray[$index].name = name;
-
-                        return true;
                     };
 
                     $scope.onEditTable = function (templateData, e, tableIndex, templateIndex) {

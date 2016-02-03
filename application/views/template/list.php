@@ -13,7 +13,7 @@
             <div class="header-wrap">
                 <div class="paper-header">
                     <div class="name" ng-click="onEditTemplateTitle(templateItem, $event)">
-                        <input type="text" disabled ng-model="templateItem.name" ng-blur="onFocusOut(templateItem, $index, $event)">
+                        <input type="text" disabled ng-model="templateItem.name" ng-blur="onFocusOut(templateItem, $event)" ng-keyup="onTextLengthChange(templateItem, $event)">
                         <span class="icon"></span>
                     </div>
                     <p class="buttons">
@@ -67,7 +67,7 @@
                         <div class="field-group" ng-repeat-end ng-if="tableItem.MODE == 'STATE_EDITING'" data-index="{{$index}}">
                             <h4 class="field-group-title">
                                 <div class="field-input">
-                                    <input type="text" placeholder="字段组名称" ng-model="tableItem.name">
+                                    <input type="text" placeholder="字段组名称" ng-model="tableItem.name" ng-keyup="onTextLengthChange2(tableItem, $event)">
                                 </div>
                             </h4>
                             <div class="column-wrap table-layout">
@@ -76,7 +76,7 @@
                                     <div class="fields field-options table-layout" ng-repeat="editColumnItem in tableItem.children">
                                         <div class="table-cell field-name">
                                             <div class="field-input field">
-                                                <input type="text" placeholder="字段名称" ng-model="editColumnItem.name">
+                                                <input type="text" placeholder="字段名称" ng-model="editColumnItem.name" ng-keyup="onTextLengthChange2(editColumnItem, $event)">
                                             </div>
                                         </div>
                                         <div class="table-cell field-type">
