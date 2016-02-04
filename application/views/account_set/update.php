@@ -33,7 +33,7 @@ if($last_error) {
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-rigtht">名称</label>
                             <div class="col-xs-3 col-sm-3">
-                                <input id="sob_name" type="text" class="form-controller col-xs-12" name="sob_name" placeholder="输入帐套名"></div>
+                                <input id="sob_name" maxlength="10" type="text" class="form-controller col-xs-12" name="sob_name" placeholder="输入帐套名"></div>
                         </div>
 
                         
