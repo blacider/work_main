@@ -1741,7 +1741,7 @@ class Reports extends REIM_Controller {
             foreach ($template_excel as $excel) {
                 $title = $excel['title'];
                 if (!empty($template_name))
-                    $title = $template_name . " - " . $name;
+                    $title = $template_name . " - " . $title;
 
                 array_push($data, array(
                     "title" => $title,
