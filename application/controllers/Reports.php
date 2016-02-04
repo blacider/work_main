@@ -1738,15 +1738,15 @@ class Reports extends REIM_Controller {
 
         $data = array();
         foreach ($excel as $template_name => $template_excel) {
-            foreach ($template_excel as $excel) {
-                $title = $excel['title'];
+            foreach ($template_excel as $_excel) {
+                $title = $_excel['title'];
                 if (!empty($template_name))
-                    $title = $template_name . " - " . $name;
+                    $title = $template_name . " - " . $title;
 
                 array_push($data, array(
                     "title" => $title,
-                    "data" => $excel['data'],
-                    "style" => $excel['style'],
+                    "data" => $_excel['data'],
+                    "style" => $_excel['style'],
                 ));
             }
         }
