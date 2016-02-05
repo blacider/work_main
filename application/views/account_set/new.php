@@ -28,7 +28,7 @@
                            <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-rigtht">帐套名</label>
                                 <div class="col-xs-4 col-sm-4">
-                                <input id="sob_name" type="text" class="form-controller col-xs-12" name="sob_name" placeholder="输入帐套名">
+                                <input id="sob_name" maxlength="10" type="text" class="form-controller col-xs-12" name="sob_name" placeholder="输入帐套名">
                                 </div>
                             </div>
 
