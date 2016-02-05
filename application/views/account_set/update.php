@@ -33,7 +33,7 @@ if($last_error) {
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-rigtht">名称</label>
                             <div class="col-xs-3 col-sm-3">
-                                <input id="sob_name" type="text" class="form-controller col-xs-12" name="sob_name" placeholder="输入帐套名"></div>
+                                <input id="sob_name" maxlength="10" type="text" class="form-controller col-xs-12" name="sob_name" placeholder="输入帐套名"></div>
                         </div>
 
                         
@@ -325,7 +325,7 @@ if($last_error) {
     <div class="modal-body">
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">名称</label>
-            <input type="text" maxlength="30" id='update_cate_name' name='name' data-placeholder="请输入名称"></div>
+            <input type="text" maxlength="10" id='update_cate_name' name='name' data-placeholder="请输入名称"></div>
         <div class="form-group">
             <label class="col-sm-2 control-label no-padding-rigtht">说明</label>
                             
@@ -415,7 +415,7 @@ if($last_error) {
     <div class="modal-body">
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">名称</label>
-            <input type="text" maxlength="30" id='create_cate_name' name='name' data-placeholder="请输入名称"></div>
+            <input type="text" maxlength="10" id='create_cate_name' name='name' data-placeholder="请输入名称"></div>
         <div class="form-group">
             <label class="col-sm-2 control-label no-padding-rigtht">说明</label>
                             
