@@ -7,7 +7,7 @@
             <div class="ui-loading-icon"></div>
         </div>
         <div class="header">
-            <a href="javascript:void(0)" class="btn-add" ng-click="onAddTemplate($event)"></a>
+            <a href="javascript:void(0)" class="btn-add ui-button" ng-click="onAddTemplate($event)"><img src="/static/img/mod/template/icon/plus@2x.png" alt="">添加模板</a>
         </div>
         <div class="paper" ng-repeat="templateItem in templateArray" ng-init="initTemplateItem(templateItem, $index)" data-id="{{templateItem.id}}" data-index="{{$index}}">
             <div class="header-wrap">
@@ -127,7 +127,7 @@
                         <div class="column-wrap table-layout">
                             <h4 class="field-group-label table-cell"> 字段组 </h4>
                             <div class="table-cell">
-                                <a href="javascript:void(0)" class="btn-add-field-group" ng-click="onAddTableConfig(templateItem, $event, $index)"></a>
+                                <a href="javascript:void(0)" class="btn-add-field-group ui-button" ng-click="onAddTableConfig(templateItem, $event, $index)"><img src="/static/img/mod/template/icon/plus@2x.png" alt="">添加</a>
                             </div>
                         </div>
                     </div>
@@ -142,8 +142,8 @@
                             <h4 class="field-table-label table-cell" style="margin: 0"> 字段组 </h4>
                             <div class="table-cell field-table-content-multi-row">
                                 <div class="field-checkbox" ng-class="{checked: templateItem.is_category_by_group}" style="margin-bottom: 0">
-                                    <input id="{{labelForCatetoryGroupId}}" type="checkbox" class="hidden" ng-model="templateItem.is_category_by_group" ng-click="$event.stopPropagation();" ng-init="labelForCatetoryGroupId = getUID()">
-                                    <label for="{{labelForCatetoryGroupId}}">消费按类目分类</label>
+                                    <span class="icon"></span>
+                                    <label ng-click="templateItem.is_category_by_group = !templateItem.is_category_by_group">消费按类目分类</label>
                                 </div>
                                 <div class="field-table-content" style="margin-top: 20px;" ng-show="templateItem.customDetail" ng-if="!templateItem.is_category_by_group">
                                     <table>
@@ -269,8 +269,8 @@
                             <h4 class="field-table-label table-cell"> 适用范围 </h4>
                             <div class="table-cell field-table-content-multi-row">
                                 <div class="field-checkbox" ng-class="{checked: templateItem['type'].indexOf($index+'')!=-1}" style="{{$last?'margin-bottom: 0':''}}" ng-repeat="templateTypeItem in templateTypeArray" ng-click="toggleCheckbox($event, $index); updateTemplateType($event, templateItem, $index)">
-                                    <input type="checkbox" class="hidden" ng-value="{{$index}}" ng-init="labelForUseTypeId = getUID()" id="{{labelForUseTypeId}}" ng-click="$event.stopPropagation();">
-                                    <label for="{{labelForUseTypeId}}">{{templateTypeItem}}</label>
+                                    <i class="icon"></i>
+                                    <label>{{templateTypeItem}}</label>
                                 </div>
                             </div>             
                         </div>
@@ -289,8 +289,8 @@
                             <h4 class="field-table-label table-cell"> 表头显示 </h4>
                             <div class="table-cell field-table-content-multi-row" ng-init="tableHeaderLabelId = getUID()">
                                 <div class="field-checkbox" style="{{$last?'margin-bottom:0':''}}" ng-class="{checked: tableHeaderOptionsItem.checked, disabled: tableHeaderOptionsItem.disabled}" ng-click="toggleCheckbox($event)" ng-repeat="tableHeaderOptionsItem in tableHeaderOptions">
-                                    <input type="checkbox" class="hidden" id="{{tableHeaderLabelId}}_{{$index}}" ng-click="$event.stopPropagation();">
-                                    <label for="{tableHeaderLabelId}}_{{$index}}" ng-click="onOptionItemChange(templateItem, tableHeaderOptionsItem, $event);">{{tableHeaderOptionsItem.text}}</label>
+                                    <i class="icon"></i>
+                                    <label ng-click="onOptionItemChange(templateItem, tableHeaderOptionsItem, $event);">{{tableHeaderOptionsItem.text}}</label>
                                 </div>
                             </div>             
                         </div>
@@ -298,8 +298,8 @@
                             <h4 class="field-table-label table-cell"> 页脚显示 </h4>
                             <div class="table-cell field-table-content-multi-row" ng-init="tableFooterLabelId = getUID()">
                                 <div class="field-checkbox checked" style="{{$last?'margin-bottom: 0':''}}" ng-click="toggleCheckbox($event)" ng-repeat="tableFooterOptionsItem in tableFooterOptions">
-                                    <input type="checkbox" class="hidden" id="{{tableFooterLabelId}}_{{$index}}" ng-click="$event.stopPropagation();">
-                                    <label for="{{tableFooterLabelId}}_{{$index}}" ng-click="onOptionItemChange(templateItem, tableFooterOptionsItem, $event);">{{tableFooterOptionsItem.text}}</label>
+                                    <i class="icon"></i>
+                                    <label ng-click="onOptionItemChange(templateItem, tableFooterOptionsItem, $event);">{{tableFooterOptionsItem.text}}</label>
                                 </div>
                             </div>             
                         </div>
@@ -307,7 +307,7 @@
                             <h4 class="field-table-label table-cell"> 打印模板 </h4>
                             <div class="table-cell field-table-content-multi-row" ng-init="paperSizeLabelId = getUID()">
                                 <div class="field-radio" ng-class="{checked: $first}" ng-click="onRadioGroupClick($event)" ng-repeat="paperSizeItem in paperAvailableSize">
-                                    <input type="radio" class="hidden" ng-model="templateItem.printPaperSize">
+                                    <i class="icon"></i>
                                     <label for="{{paperSizeLabelId}}_{{$index}}" ng-click="onOptionItemChange(templateItem, paperSizeItem, $event);">{{paperSizeItem.text}}</label>
                                 </div>
                             </div>             
@@ -315,9 +315,9 @@
                     </div>
                 </div>
                 <div class="paper-footer">
-                    <a href="javascript:void(0)" class="btn-cancel" ng-click="onCancelTemplate(templateItem, $event, $index)"></a>
-                    <a href="javascript:void(0)" class="btn-preview" ng-click="onPreviewTemplate($event, $index)"></a>
-                    <a href="javascript:void(0)" class="btn-save" ng-click="onSaveTemplate(templateItem, $event, $index)"></a>
+                    <a href="javascript:void(0)" class="btn-cancel ui-button" ng-click="onCancelTemplate(templateItem, $event, $index)"><img src="/static/img/mod/template/icon/cancel@2x.png" alt="">取消</a>
+                    <a href="javascript:void(0)" style="display: none;" class="btn-preview ui-button" ng-click="onPreviewTemplate($event, $index)"><img src="/static/img/mod/template/icon/eye@2x.png" alt="">预览</a>
+                    <a href="javascript:void(0)" class="btn-save ui-button" ng-click="onSaveTemplate(templateItem, $event, $index)"><img src="/static/img/mod/template/icon/yes@2x.png" alt="">保存</a>
                 </div>
             </div>
         </div>

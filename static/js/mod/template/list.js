@@ -361,6 +361,12 @@
                                 return def.promise();
                             }
 
+                            if(!$.trim(data['type'].length==0)) {
+                                def.resolve(false);
+                                show_notify('请选择报销单类型');
+                                return def.promise();
+                            }
+
                             if(!angular.equals(data, originalData)) {
 
                                 var d = new CloudDialog({
@@ -530,7 +536,7 @@
                         setTimeout(function() {
                             console.log($(e.currentTarget).parent().attr('class'));
                             if(optionItem['bind_key'] === 'paper_size') {
-                                return templateData['options'][paper_size] = optionItem['key'];
+                                return templateData['options']['paper_size'] = optionItem['key'];
                             }
                             if($(e.currentTarget).parent().hasClass('checked')) {
                                 templateData['options'][optionItem.bind_key] = 1;
@@ -842,9 +848,7 @@
                                     $scope.templateArray[$index] = angular.copy(originalTemplateData);
                                 });
                                 var _self = this;
-                                setTimeout(function  () {
-                                    _self.close(true);
-                                }, 1000);
+                                _self.close(true);
                             },
                             cancel: null
                         });

@@ -15,15 +15,11 @@
 	text-align: right;
 	border: none;
 }
-.mod-reim-template a {
+.mod-reim-template a.btn-add {
 	display: inline-block;
 	width: 130px;
 	height: 45px;
-	background: url("/static/img/mod/template/btn-add.png");
-}
-
-.mod-reim-template a:hover {
-	background-image: url("/static/img/mod/template/btn-add.active.png");
+	color: #fff;
 }
 
 .mod-reim-template .paper {
@@ -180,10 +176,7 @@
     display: inline-block;
     width: 100px;
     height: 45px;
-    background: url("/static/img/mod/template/btn-add-field-group.png") no-repeat;
-}
-.mod-reim-template .field-group .btn-add-field-group:hover {
-    background-image: url("/static/img/mod/template/btn-add-field-group.hover.png");
+	color: #fff;
 }
 
 .mod-reim-template .field-group.row-group .column-wrap {
@@ -230,27 +223,28 @@
 	height: 45px;
 	width: 100px;
 	margin: 30px 0 30px 10px;
+	display: inline-block;
+	background: #fff;
+	color: #273e52;
+	border: 1px solid #273e52;
+	border-radius: 6px;
 }
 .mod-reim-template .paper-footer .btn-cancel {
-	margin: 30px 200px 30px 150px;
 	margin-left: 20%;
-	background: url("/static/img/mod/template/btn-cancel.png") no-repeat;
 }
 
 .mod-reim-template .paper-footer .btn-preview {
-	background: url("/static/img/mod/template/btn-preview.png") no-repeat;
-	display: none;
 }
 
 .mod-reim-template .paper-footer .btn-save {
-	background: url("/static/img/mod/template/btn-save.png") no-repeat;
+	border: none;
 	float: right;
 	margin-right: 70px;
+	color: #fff;
+	background: #596774;
+	border-bottom: 2px solid #273e52;
 }
 
-.mod-reim-template .paper-footer .btn-save:hover {
-	background: url("/static/img/mod/template/btn-save.active.png") no-repeat;
-}
 .mod-reim-template .paper .wrap {
 	height: 0;
 	overflow: hidden;
@@ -351,7 +345,28 @@
 	border-bottom-width: 2px;
 	opacity: 1 !important;
 }
-/* field-table compoents */
+/* button components */
+.ui-button {
+	display: inline-block;
+	width: 130px;
+	height: 45px;
+	background: #ff575b;
+	border-radius: 6px;
+	color: #fff;
+	text-align: center;
+	line-height: 45px;
+	font-size: 14px;
+	border-bottom: 2px solid #D33E42;
+	text-decoration: none;
+}
+.ui-button img {
+	height: 21px;
+    margin-right: 9px;
+}
+.ui-button:hover {
+	border-bottom: 2px solid #ff575b;
+}
+/* field-table components */
 
 .field-table {
 	font-size: 14px;
@@ -618,24 +633,38 @@
 }
 
 .field-checkbox label {
-	padding-left: 24px;
-	background: url("/static/img/mod/template/18/input-checkbox.blue.png") no-repeat;
+	padding-left: 6px;
 	height: 18px;
 	white-space: nowrap;
 	line-height: 18px;
 	margin: 0;
+	display: inline-block;
 }
-.field-checkbox.white label {
-	background-image: url("/static/img/mod/template/18/input-checkbox.png");
+.field-checkbox .icon {
+	height: 18px;
+	width: 18px;
+	display: inline-block;
+	float: left;
+	border-radius: 2px;
+	background-color: #F2F6FA;
+	border: 1px solid #D3D9DF;
 }
-.field-checkbox.checked label {
-	background-image: url("/static/img/mod/template/18/input-checkbox.selected.png");
+.field-checkbox.white .icon {
+	background-color: #F2F6FA;
+	border: 1px solid #D3D9DF;
 }
-.field-checkbox.checked.disabled label {
-	background-image: url("/static/img/mod/template/18/input-checkbox.selected.disabled.png");
-	color: #929292;
+ 
+.field-checkbox.checked.disabled .icon {
+	opacity: 0.5;
+	filter:alpha(opacity=50);
+	-moz-opacity: 0.5;
+	-khtml-opacity: 0.5; 
 }
 
+.field-checkbox.checked .icon {
+	border: 1px solid #d33e42;
+	background: #ff575b url("/static/img/mod/template/icon/yes-checkbox.png") center center no-repeat;
+}
 
 .field-radio {
 	position: relative;
@@ -645,20 +674,26 @@
 .field-radio input[type="radio"] {
 	visibility: hidden;
 }
-
 .field-radio label {
-	padding-left: 24px;
-	background: url("/static/img/mod/template/18/input-radio.png") no-repeat;
+	padding-left: 6px;
 	height: 18px;
 	white-space: nowrap;
 	line-height: 18px;
 	margin: 0;
 
 }
-.field-radio.checked label {
-	background-image: url("/static/img/mod/template/18/input-radio.checked.png");
+.field-radio .icon {
+	float: left;
+	background-color: #F2F6FA;
+	border: 1px solid #D3D9DF;
+	height: 18px;
+	width: 18px;
+	border-radius: 50%;
 }
-
+.field-radio.checked .icon {
+	background-color: #ff575b;
+	border: 1px solid #d33e42;
+}
 /* end field-compoents */
 
 .none {
