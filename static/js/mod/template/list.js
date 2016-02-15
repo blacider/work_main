@@ -748,6 +748,11 @@
                             // update array cache
                             show_notify('保存成功！');
                             $(e.currentTarget).parents('.paper').removeClass('show').find('.paper-header').removeClass('fixed');
+
+                            //if mode is editing remove it
+                            if(data.config[i] && data.config[i]['MODE'] == 'STATE_EDITING') {
+                                delete data.config[i]['MODE'];
+                            }
                             $scope.templateArrayOriginal.updateById(data.id, data);
                         });
                     };
