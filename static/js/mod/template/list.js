@@ -24,7 +24,26 @@
         "type": ['0'],
         "config": [],
         "disabled": "0",
-        "is_category_by_group": true
+        "is_category_by_group": true,
+        "options": {
+            //header options
+            "has_title": 1,
+            "has_date_time": 1,
+            "has_money": 1,
+            "has_submitter_position": 0,
+            "has_submitter_dep": 0,
+            "has_submitter_name": 1,
+            "has_submitter_sup_dep": 0,
+            "has_submitter_id": 0,
+            "has_submitter_tel": 0,
+            "has_submitter_email": 0,
+            //footer options
+            "has_company_name": 1,
+            "has_dep_name": 1,
+            
+            //paper options
+            "paper_size": 'a4' ///a5|b5
+        },
     };
 
     var _defaultTableHeaderOptions_ = [
@@ -32,81 +51,96 @@
             disabled: true,
             text: '报销单名称',
             value: '',
-            checked: true
+            checked: true,
+            bind_key: "has_title"
         },
         {
             disabled: true,
             text: '提交时间',
             value: '',
-            checked: true
+            checked: true,
+            bind_key: "has_date_time"
         },
         {
             disabled: true,
             text: '提交者姓名',
             value: '',
-            checked: true
+            checked: true,
+            bind_key: "has_submitter_name"
         },
         {
             disabled: true,
             text: '金额',
             value: '',
-            checked: true
+            checked: true,
+            bind_key: "has_money"
         },
         {
             disabled: false,
             text: '提交者职位',
-            value: ''
+            value: '',
+            bind_key: "has_submitter_name"
         },
         {
             disabled: false,
             text: '提交者部门',
-            value: ''
+            value: '',
+            bind_key: "has_submitter_dep"
         },
         {
             disabled: false,
             text: '提交者上级部门',
-            value: ''
+            value: '',
+            bind_key: "has_submitter_sup_dep"
         },
         {
             disabled: false,
             text: '提交者ID',
-            value: ''
+            value: '',
+            bind_key: "has_submitter_id"
         },
         {
             disabled: false,
             text: '提交者电话',
-            value: ''
+            value: '',
+            bind_key: "has_submitter_tel"
         },
         {
             disabled: false,
             text: '提交者邮箱',
-            value: ''
+            value: '',
+            bind_key: "has_submitter_sup_department"
         }
     ];
 
     var _defaultTableFooterOptions_ = [
         {
             text: '公司名称',
-            value: ''
+            value: '',
+            bind_key: "has_company_name"
         },
         {
             text: '部门名称',
-            value: ''
+            value: '',
+            bind_key: "has_dep_name"
         }
     ];
 
     var _paperAvailableSize_ = [
         {
             text: 'A4模版',
-            key: 'a4'
+            key: 'a4',
+            bind_key: "paper_size"
         },
         {
             text: 'A5模版',
-            key: 'a5'
+            key: 'a5',
+            bind_key: "paper_size"
         },
         {
             text: 'B5模版',
-            key: 'b5'
+            key: 'b5',
+            bind_key: "paper_size"
         }
     ]
 
@@ -464,7 +498,12 @@
                             templateData['type'].push('0');
                         }
 
+                        if(!templateData['name']) {
+                            templateData['name'] = _defaultTemplateName_;
+                        }
+
                         templateData.is_category_by_group = true;
+                        templateData.options = angular.copy(_defaultTemplateConfig_['options']);
 
                     };
 
@@ -485,6 +524,20 @@
                                 columnData['property']['bank_account_type'] = 0;
                             }
                         }
+                    };
+
+                    $scope.onOptionItemChange = function (templateData, optionItem, e) {
+                        setTimeout(function() {
+                            console.log($(e.currentTarget).parent().attr('class'));
+                            if(optionItem['bind_key'] === 'paper_size') {
+                                return templateData['options'][paper_size] = optionItem['key'];
+                            }
+                            if($(e.currentTarget).parent().hasClass('checked')) {
+                                templateData['options'][optionItem.bind_key] = 1;
+                            } else {
+                                templateData['options'][optionItem.bind_key] = 0;
+                            }
+                        }, 10);
                     };
 
                     $scope.setOptionsForRadioGroup = function  (e, tableData, inputIndex, columnIndex) {

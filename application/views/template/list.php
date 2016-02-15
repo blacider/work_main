@@ -290,7 +290,7 @@
                             <div class="table-cell field-table-content-multi-row" ng-init="tableHeaderLabelId = getUID()">
                                 <div class="field-checkbox" style="{{$last?'margin-bottom:0':''}}" ng-class="{checked: tableHeaderOptionsItem.checked, disabled: tableHeaderOptionsItem.disabled}" ng-click="toggleCheckbox($event)" ng-repeat="tableHeaderOptionsItem in tableHeaderOptions">
                                     <input type="checkbox" class="hidden" id="{{tableHeaderLabelId}}_{{$index}}" ng-click="$event.stopPropagation();">
-                                    <label for="{tableHeaderLabelId}}_{{$index}}">{{tableHeaderOptionsItem.text}}</label>
+                                    <label for="{tableHeaderLabelId}}_{{$index}}" ng-click="onOptionItemChange(templateItem, tableHeaderOptionsItem, $event);">{{tableHeaderOptionsItem.text}}</label>
                                 </div>
                             </div>             
                         </div>
@@ -299,7 +299,7 @@
                             <div class="table-cell field-table-content-multi-row" ng-init="tableFooterLabelId = getUID()">
                                 <div class="field-checkbox checked" style="{{$last?'margin-bottom: 0':''}}" ng-click="toggleCheckbox($event)" ng-repeat="tableFooterOptionsItem in tableFooterOptions">
                                     <input type="checkbox" class="hidden" id="{{tableFooterLabelId}}_{{$index}}" ng-click="$event.stopPropagation();">
-                                    <label for="{{tableFooterLabelId}}_{{$index}}">{{tableFooterOptionsItem.text}}</label>
+                                    <label for="{{tableFooterLabelId}}_{{$index}}" ng-click="onOptionItemChange(templateItem, tableFooterOptionsItem, $event);">{{tableFooterOptionsItem.text}}</label>
                                 </div>
                             </div>             
                         </div>
@@ -308,7 +308,7 @@
                             <div class="table-cell field-table-content-multi-row" ng-init="paperSizeLabelId = getUID()">
                                 <div class="field-radio" ng-class="{checked: $first}" ng-click="onRadioGroupClick($event)" ng-repeat="paperSizeItem in paperAvailableSize">
                                     <input type="radio" class="hidden" ng-model="templateItem.printPaperSize">
-                                    <label for="{{paperSizeLabelId}}_{{$index}}">{{paperSizeItem.text}}</label>
+                                    <label for="{{paperSizeLabelId}}_{{$index}}" ng-click="onOptionItemChange(templateItem, paperSizeItem, $event);">{{paperSizeItem.text}}</label>
                                 </div>
                             </div>             
                         </div>
