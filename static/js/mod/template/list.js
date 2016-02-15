@@ -9,7 +9,7 @@
     var _defaultColumnEditConfig_ = {
         "explanation": "",
         "name": "",
-        "required": "0",
+        "required": 0,
         "type": "1"
     };
     var _defaultTableEditConfig_ = {
@@ -601,18 +601,6 @@
                         } else {
                             $groupContainer.addClass('none')
                             $target.removeClass('btn-up')
-                        }
-                    };
-
-                    $scope.toggleCheckbox = function  (e, index) {
-                        var $target = $(e.target).parent();
-                        if($target.hasClass('disabled')) {
-                            return
-                        }
-                        if($target.hasClass('checked')) {
-                            $target.removeClass('checked');
-                        } else {
-                            $target.addClass('checked');
                         }
                     };
 

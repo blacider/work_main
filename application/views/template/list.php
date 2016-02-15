@@ -89,9 +89,9 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="table-cell field-checkbox white" ng-class="{checked: editColumnItem.required == '1'}" ng-click="toggleCheckbox($event)">
-                                            <input type="checkbox" class="hidden" ng-model="editColumnItem.required"  id="{{labelForEditColumnId}}_{{$index}}" ng-init="labelForEditColumnId = getUID()" ng-click="$event.stopPropagation();" ng-true-value="1" ng-false-value="0">
-                                            <label for="{{labelForEditColumnId}}_{{$index}}">必填</label>
+                                        <div class="table-cell field-checkbox white" ng-class="{checked: editColumnItem.required != '0'}" ng-click="editColumnItem.required= 1 - editColumnItem.required">
+                                            <i class="icon"></i>
+                                            <label>必填</label>
                                         </div>
                                         <div class="button field table-cell">
                                             <p class="btn-trash" ng-click="onRemoveColumnEditConfig($event, tableItem, $index)"></p>

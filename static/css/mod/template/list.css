@@ -450,10 +450,10 @@
     line-height: 27px;
 }
 .field-group .field-checkbox {
-	padding-left: 52px;
+	padding-left: 32px;
 }
 .field-group .field-select {
-	width: 90px;
+	width: 70px;
 }
 .field-table .field-table-label, .field-group .field-group-label {
     text-align: left;
@@ -581,6 +581,7 @@
 }
 .fields .field-name {
 	padding: 0;
+	width: 300px;
 }
 .table-layout {
     display: table;
@@ -650,7 +651,7 @@
 	border: 1px solid #D3D9DF;
 }
 .field-checkbox.white .icon {
-	background-color: #F2F6FA;
+	background-color: #fff;
 	border: 1px solid #D3D9DF;
 }
  
