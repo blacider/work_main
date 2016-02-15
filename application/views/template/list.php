@@ -304,7 +304,7 @@
                             </div>             
                         </div>
                         <div class="column-wrap table-layout pager-size" style="border-bottom: 1px solid #f2f6fa;" ng-if="true">
-                            <h4 class="field-table-label table-cell"> 打印模版 </h4>
+                            <h4 class="field-table-label table-cell"> 打印模板 </h4>
                             <div class="table-cell field-table-content-multi-row" ng-init="paperSizeLabelId = getUID()">
                                 <div class="field-radio" ng-class="{checked: $first}" ng-click="onRadioGroupClick($event)" ng-repeat="paperSizeItem in paperAvailableSize">
                                     <input type="radio" class="hidden" ng-model="templateItem.printPaperSize">

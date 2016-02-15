@@ -128,17 +128,17 @@
 
     var _paperAvailableSize_ = [
         {
-            text: 'A4模版',
+            text: 'A4模板',
             key: 'a4',
             bind_key: "paper_size"
         },
         {
-            text: 'A5模版',
+            text: 'A5模板',
             key: 'a5',
             bind_key: "paper_size"
         },
         {
-            text: 'B5模版',
+            text: 'B5模板',
             key: 'b5',
             bind_key: "paper_size"
         }
@@ -554,8 +554,8 @@
                     // events here
                     $scope.onAccordionTemplate = function(templateData, $index, e) {
                         makeTitleAutoWidth($element.find('.paper').eq($index).find('.paper-header input'));
-                        // 由于目前只能展开一个模版，所以只需要检测展开的那个模版就OK，处理完展开的模版的对话框，做好折叠工作
-                        // 在处理完成上述操作以后，检测是不是其它模版被点击折叠，是的话还要toggle template
+                        // 由于目前只能展开一个模板，所以只需要检测展开的那个模板就OK，处理完展开的模板的对话框，做好折叠工作
+                        // 在处理完成上述操作以后，检测是不是其它模板被点击折叠，是的话还要toggle template
                         var $openTemplate = $element.find('.paper.show');
                         doClearOpenTemplateData().done(function  (state) {
                             if(!state) {
@@ -582,7 +582,7 @@
                     };
 
                     $scope.onPreviewTemplate = function  (argument) {
-                        alert('预览模版－功能开发中')
+                        alert('预览模板－功能开发中')
                         // body...
                     };
 
@@ -629,7 +629,7 @@
                     $scope.onAddTemplate = function(e) {
                         // 检测长度
                         if($scope.templateArray.length >=_templateTotalLimit_) {
-                            return show_notify('可用模版不能超过' +_templateTotalLimit_+'个');
+                            return show_notify('可用模板不能超过' +_templateTotalLimit_+'个');
                         }
 
                         var templateData = angular.copy(_defaultTemplateConfig_);
@@ -651,7 +651,7 @@
 
                                 if (!rs['id'] || rs['id'] == -1) {
                                     // $scope.templateArray.pop();
-                                    return show_notify(rs['msg'] || '模版创建失败');
+                                    return show_notify(rs['msg'] || '模板创建失败');
                                 }
 
                                 templateData['id'] = rs['id'];
@@ -705,10 +705,10 @@
 
                     $scope.onRemoveTemplate = function(templateData, $index, e) {
                         if($scope.templateArray.length<=1) {
-                            return show_notify('至少保留一份报销单模版!');
+                            return show_notify('至少保留一份报销单模板!');
                         }
                         var d = new CloudDialog({
-                            content: '确认要删除当前报销单模版?',
+                            content: '确认要删除当前报销单模板?',
                             width: 240,
                             align: 'bottom right',
                             ok: function  () {
@@ -717,7 +717,7 @@
                                 $http.post('/company/dodelete_report_template/' + templateData.id).success(function(rs) {
                                     // $scope.templateArray = rs['data'];
                                     if (rs['status'] <= 0) {
-                                        _self.content('确认要删除当前报销单模版?');
+                                        _self.content('确认要删除当前报销单模板?');
                                         return show_notify(rs['msg']);
                                     }
 
@@ -767,7 +767,7 @@
                     $scope.onSaveTemplate = function  (templateData, e) {
                         var data = angular.copy(templateData);
                         if(data.type.length == 0) {
-                            return show_notify('请选择报销模版适用范围');
+                            return show_notify('请选择报销模板适用范围');
                         }
 
                         if(!templateData['name']) {
@@ -965,4 +965,4 @@
     }
 })().initialize();
 
-//创建模版默认类型
+//创建模板默认类型
