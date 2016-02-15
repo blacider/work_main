@@ -141,9 +141,9 @@
                         <div class="column-wrap table-layout">
                             <h4 class="field-table-label table-cell" style="margin: 0"> 字段组 </h4>
                             <div class="table-cell field-table-content-multi-row">
-                                <div class="field-checkbox" ng-class="{checked: templateItem.is_category_by_group}" style="margin-bottom: 0">
+                                <div class="field-checkbox" ng-click="templateItem.is_category_by_group = !templateItem.is_category_by_group" ng-class="{checked: templateItem.is_category_by_group}" style="margin-bottom: 0">
                                     <span class="icon"></span>
-                                    <label ng-click="templateItem.is_category_by_group = !templateItem.is_category_by_group">消费按类目分类</label>
+                                    <label>消费按类目分类</label>
                                 </div>
                                 <div class="field-table-content" style="margin-top: 20px;" ng-show="templateItem.customDetail" ng-if="!templateItem.is_category_by_group">
                                     <table>
