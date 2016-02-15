@@ -770,6 +770,10 @@
                             return show_notify('请选择报销模版适用范围');
                         }
 
+                        if(!templateData['name']) {
+                            return show_notify('报销单名称不能为空');
+                        }
+
                         // check and ensure start
                         var tableData = null;
                         for(var i=0;i<templateData.config.length;i++) {
