@@ -328,11 +328,6 @@
                                 }
                                 return null;
                             },
-                            isTemplataChanged: function  (currentTemplateData) {
-                                var data = angular.copy(currentTemplateData);
-                                var originalData = angular.copy($scope.templateArrayOriginal.getItemById(templateData.id));
-                                return angular.equals(templateData, originalData);
-                            },
                             getTemplateByID: function  (id) {
                                 for (var i = $scope.templateArray.length - 1; i >= 0; i--) {
                                     if ($scope.templateArray[i]['id'] === id) {
@@ -815,9 +810,6 @@
                     // template event
                     $scope.onSaveTemplate = function  (templateData, e) {
                         var data = angular.copy(templateData);
-                        if(data.type.length == 0) {
-                            return show_notify('请选择报销单适用范围');
-                        }
 
                         if(!templateData['name']) {
                             return show_notify('报销单名称不能为空');
@@ -838,6 +830,11 @@
                         } else {
                             tableData && (delete tableData['MODE']);
                         }
+
+                        if(data.type.length == 0) {
+                            return show_notify('请选择报销单适用范围');
+                        }
+
                         // checheck and ensureck end
 
                         Utils.api('/company/doupdate_report_template', {
@@ -878,11 +875,17 @@
                         $timeout(function() {
                             templateData.config = angular.copy(templateData.config);
                         }, 0);
-
                     };
 
                     $scope.onCancelTemplate = function  (templateData, e, $index) {
                         var originalTemplateData = $scope.templateArrayOriginal.getItemById(templateData.id);
+                        var data = angular.copy(templateData);
+                        if(angular.equals(data, originalTemplateData)) {
+                            var $paper = $(e.currentTarget).parents('.paper');
+                            $paper.removeClass('show');
+                            $paper.find('.paper-header').removeClass('fixed');
+                            return
+                        }
                         var d = new CloudDialog({
                             content: '确定要取消编辑的内容？',
                             fixed: true,
