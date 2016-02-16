@@ -642,6 +642,18 @@
                         }
                     };
 
+                    $scope.toggleCheckbox = function  (e, index) {
+                        var $target = $(e.target).parent();
+                        if($target.hasClass('disabled')) {
+                            return
+                        }
+                        if($target.hasClass('checked')) {
+                            $target.removeClass('checked');
+                        } else {
+                            $target.addClass('checked');
+                        }
+                    };
+
                     $scope.updateTemplateType = function(e, templateData, $index) {
                         if($(e.currentTarget).hasClass('checked')) {
                             templateData.type.push($index + '');
