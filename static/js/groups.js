@@ -32,7 +32,7 @@ function bind_event(){
     });
 }
 
-var _cols = ['组名称','创建时间', '操作'];
+var _cols = ['部门名称','创建时间', '操作'];
 var _models = [
     {name:'name', index:'name', width:150,editable: false,editoptions:{size:"20",maxlength:"30"}},
     {name:'createdt',index:'admin', width:70, editable: false ,edittype:"select",editoptions: {value:"1:管理员;0:员工"},unformat: aceSwitch, search:false},
@@ -40,7 +40,7 @@ var _models = [
     ];
 try{
     if(_admin == 0) {
-        _cols = ['组名称','创建时间'];
+        _cols = ['部门名称','创建时间'];
 _models = [
     {name:'name', index:'name', width:150,editable: false,editoptions:{size:"20",maxlength:"30"}},
     {name:'createdt',index:'admin', width:70, editable: false ,edittype:"select",editoptions: {value:"1:管理员;0:员工"},unformat: aceSwitch},
