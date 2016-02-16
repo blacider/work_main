@@ -42,7 +42,7 @@
         "type": ['0'],
         "config": [],
         "disabled": "0",
-        "is_grouping_by_cate": true,
+        "is_grouping_by_cate": 1,
         "options": {
             //header options
             "has_title": 1,
@@ -565,7 +565,7 @@
                             templateData['name'] = _defaultTemplateName_;
                         }
 
-                        templateData.is_grouping_by_cate = true;
+                        templateData.is_grouping_by_cate = 1;
                         templateData.options = angular.copy(_defaultTemplateConfig_['options']);
 
                     };
