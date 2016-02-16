@@ -6,11 +6,29 @@
     var _templateTotalLimit_ = 10;
     var _templateTypes_ = null;
     var _ON_TEMPLATE_ADD_ANIMATION_ = 'animated flash';
+    var _fieldTypeArray_ = [
+        {
+            text: '文本',
+            value: 1
+        },
+        {
+            text: '单选',
+            value: 2
+        },
+        {
+            text: '日期时间',
+            value: 3
+        },
+        {
+            text: '银行账户',
+            value: 4
+        }
+    ];
     var _defaultColumnEditConfig_ = {
         "explanation": "",
         "name": "",
         "required": 0,
-        "type": "1"
+        "type": ""
     };
     var _defaultTableEditConfig_ = {
         "name": "",
@@ -24,7 +42,7 @@
         "type": ['0'],
         "config": [],
         "disabled": "0",
-        "is_category_by_group": true,
+        "is_grouping_by_cate": true,
         "options": {
             //header options
             "has_title": 1,
@@ -37,6 +55,7 @@
             "has_submitter_id": 0,
             "has_submitter_tel": 0,
             "has_submitter_email": 0,
+
             //footer options
             "has_company_name": 1,
             "has_dep_name": 1,
@@ -142,11 +161,11 @@
             key: 'b5',
             bind_key: "paper_size"
         }
-    ]
+    ];
 
     return {
         initialize: function() {
-            angular.module('reimApp', ['ng-sortable']).controller('templateListController', ["$http", "$scope", "$element", "$timeout",
+            angular.module('reimApp', ['ng-sortable', 'ng-dropdown']).controller('templateListController', ["$http", "$scope", "$element", "$timeout",
                 function($http, $scope, $element, $timeout) {
                     function loadPageData() {
                         return $.when(
@@ -213,7 +232,15 @@
                             },
                             isFieldTypeValid: function (columnObject) {
                                 // 先验证非空，在验证完整性
-                                var isValid = !!columnObject['type'];
+
+                                if(!columnObject['type']) {
+                                    return {
+                                        valid: false,
+                                        tip: '请选择字段类型',
+                                        errorMsg: '无效的类型',
+                                        code: 'EMPTY_FIELD_TYPE'
+                                    }   
+                                }
 
                                 if(!columnObject['name']) {
                                     return {
@@ -280,6 +307,9 @@
                                                 break;
                                             case 'EMPTY_FIELD_NAME':
                                                 $table.find('.field-options').eq(i).find('.field-name input').focus();
+                                                break;
+                                            case 'EMPTY_FIELD_TYPE':
+                                                $table.find('.field-options').eq(i).find('.field-select input').focus();
                                                 break;
                                         }
                                         break; //only get the first so go out the loop
@@ -486,6 +516,8 @@
 
                     });
 
+                    $scope.fieldTypeArray = _fieldTypeArray_;
+
                     $scope.makeTableSortable = {
                         handle: ".btn-drag",
                         draggable: '.field-table',
@@ -495,6 +527,31 @@
                         scroll: true,
                         onUpdate: function (e) {}
                     };
+
+                    $scope.makeDropdown = {
+                        onChange: function(oldValue, newValue, item, columnData) {
+                            $scope.$apply(function() {
+                                columnData['type'] = newValue;
+                                var type = columnData['type'];
+                                if(type==2) {
+                                    if(!columnData['property']) {
+                                        columnData['property'] = {};
+                                    }
+                                    if(!columnData['property']['options']) {
+                                        columnData['property']['options'] = ['', ''];
+                                    }
+                                }
+                                if(type==4) {
+                                    if(!columnData['property']) {
+                                        columnData['property'] = {};
+                                    }
+                                    if(!columnData['property']['bank_account_type']) {
+                                        columnData['property']['bank_account_type'] = 0;
+                                    }
+                                }
+                            })
+                        }
+                    }
 
                     // compute here
                     $scope.initTemplateItem = function  (templateData, $index) {
@@ -508,28 +565,9 @@
                             templateData['name'] = _defaultTemplateName_;
                         }
 
-                        templateData.is_category_by_group = true;
+                        templateData.is_grouping_by_cate = true;
                         templateData.options = angular.copy(_defaultTemplateConfig_['options']);
 
-                    };
-
-                    $scope.onFieldTypeChange = function  (type, columnData) {
-                        if(type==2) {
-                            if(!columnData['property']) {
-                                columnData['property'] = {};
-                            }
-                            if(!columnData['property']['options']) {
-                                columnData['property']['options'] = ['', ''];
-                            }
-                        }
-                        if(type==4) {
-                            if(!columnData['property']) {
-                                columnData['property'] = {};
-                            }
-                            if(!columnData['property']['bank_account_type']) {
-                                columnData['property']['bank_account_type'] = 0;
-                            }
-                        }
                     };
 
                     $scope.onOptionItemChange = function (templateData, optionItem, e) {
