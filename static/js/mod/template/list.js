@@ -393,7 +393,7 @@
 
                             if(!$.trim(data['type'].length==0)) {
                                 def.resolve(false);
-                                show_notify('请选择报销单类型');
+                                show_notify('请选择报销模板适用范围');
                                 return def.promise();
                             }
 
@@ -936,8 +936,11 @@
                         }
                         setTimeout(function() {
                             $input.trigger('autogrow');
-                        }, 100);
+                        }, 16);
                         $input.attr('disabled', true);
+                        if(!templateData['name']) {
+                            templateData['name'] = _defaultTemplateName_;
+                        }
                     };
 
                     $scope.onEditTable = function (templateData, e, tableIndex, templateIndex) {
@@ -972,6 +975,10 @@
                             return;
                         }
                         $target.find('input').attr('disabled', false).focus();
+                        if(templateData['name'] == _defaultTemplateName_) {
+                            templateData['name'] = '';
+                            makeTitleAutoWidth($(e.currentTarget).find('input'));
+                        }
                     };
 
                     $scope.getUID = function  () {
