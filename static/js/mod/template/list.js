@@ -946,7 +946,8 @@
                             $input.trigger('autogrow');
                         }, 16);
                         $input.attr('disabled', true);
-                        if(!templateData['name']) {
+                        var originalData = $scope.templateArrayOriginal.getItemById(templateData.id);
+                        if(!templateData['name'] && originalData['name'] == _defaultTemplateName_) {
                             templateData['name'] = _defaultTemplateName_;
                         }
                     };
