@@ -279,7 +279,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="field-table print-settings default-field-table">
+                <div class="field-table print-settings default-field-table" ng-if=0>
                     <div style="padding: 42px 0;">
                         <h4 class="field-table-title">打印设置
                             <p class="buttons">
