@@ -79,8 +79,8 @@
                                                 <i class="icon">
                                                     <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
                                                 </i>
-                                                <input class="" autocomplete="off" value="" placeholder="类型" editable="false">
-                                                <!-- <div class="text">单选</div> -->
+                                                <!-- <input class="" autocomplete="off" value="" placeholder="类型" editable="false"> -->
+                                                <div class="text font-placeholder">类型</div>
                                                 <div class="option-list none">
                                                     <div class="item" ng-repeat="item in fieldTypeArray" data-value="{{item.value}}">{{item.text}}</div>
                                                 </div> 

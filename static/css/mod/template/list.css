@@ -457,7 +457,7 @@
 .field-group .field-select select {
 	display: none;
 }
-.field-group .field-select input {
+.field-group .field-select input, .field-group .field-select .text {
 	display: block;
 	width: 100%;
 	height: 100%;
@@ -468,9 +468,14 @@
 	font-size: 14px;
 	cursor: default;
 }
-.field-group .field-select input:focus {
-	border-radius: 2px;
+.field-group .field-select .text {
+	line-height: 32px;
+}
+.field-group .field-select input:focus, .field-group .field-select .text.focus {
 	border: 1px solid #fe575c !important;
+}
+.font-placeholder {
+	color: #b9b9b9 !important;
 }
 .field-group .field-select .icon {
     float: right;
@@ -513,11 +518,13 @@
 	cursor: default;
 	font-size: 14px;
 }
-.field-group .field-select .option-list .item:hover {
+.field-group .field-select .option-list .item:hover,
+.field-group .field-select .option-list .item.active {
 	background: #ff575b;
 	color: #fff;
 }
-.field-table .field-table-label, .field-group .field-group-label {
+.field-table .field-table-label,
+.field-group .field-group-label {
     text-align: left;
     width: 20%;
     color: #b9b9b9;

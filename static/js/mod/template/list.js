@@ -309,7 +309,10 @@
                                                 $table.find('.field-options').eq(i).find('.field-name input').focus();
                                                 break;
                                             case 'EMPTY_FIELD_TYPE':
-                                                $table.find('.field-options').eq(i).find('.field-select input').focus();
+                                                setTimeout(function() {
+                                                    $table.find('.field-options').eq(i).find('.field-select .text').addClass('focus')
+                                                    $table.find('.field-options').eq(i).find('.field-select .option-list').removeClass('none')
+                                                }, 100);
                                                 break;
                                         }
                                         break; //only get the first so go out the loop
@@ -391,9 +394,9 @@
                                 return def.promise();
                             }
 
-                            if(!$.trim(data['type'].length==0)) {
+                            if(data['type'].length==0) {
                                 def.resolve(false);
-                                show_notify('请选择报销模板适用范围');
+                                show_notify('请选择报销单适用范围');
                                 return def.promise();
                             }
 
@@ -813,7 +816,7 @@
                     $scope.onSaveTemplate = function  (templateData, e) {
                         var data = angular.copy(templateData);
                         if(data.type.length == 0) {
-                            return show_notify('请选择报销模板适用范围');
+                            return show_notify('请选择报销单适用范围');
                         }
 
                         if(!templateData['name']) {
