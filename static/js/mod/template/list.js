@@ -532,6 +532,8 @@
                         onChange: function(oldValue, newValue, item, columnData) {
                             $scope.$apply(function() {
                                 columnData['type'] = newValue;
+                                columnData['name'] = '';
+                                delete columnData['id'];
                                 var type = columnData['type'];
                                 if(type==2) {
                                     if(!columnData['property']) {
