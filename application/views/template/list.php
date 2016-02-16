@@ -108,9 +108,9 @@
                                             </div>
                                         </div>
                                         <div class="field-bank-options" ng-if="editColumnItem.type == 4">
-                                            <div class="field-checkbox white" ng-class="{checked: editColumnItem.property.bank_account_type}" ng-click="toggleCheckbox($event);">
-                                                <input type="checkbox" ng-model="editColumnItem.property.bank_account_type" class="hidden" ng-init="labelForBankOptionId = getUID()" id="{{labelForBankOptionId}}" ng-click="$event.stopPropagation();">
-                                                <label for="{{labelForBankOptionId}}">设为付款银行帐户</label>
+                                            <div class="field-checkbox white" ng-class="{checked: editColumnItem.property.bank_account_type}" ng-click="editColumnItem.property.bank_account_type=1-editColumnItem.property.bank_account_type">
+                                                <i class="icon"></i>
+                                                <label>设为付款银行帐户</label>
                                             </div>
                                         </div>
                                     </div>
@@ -311,7 +311,7 @@
                             <div class="table-cell field-table-content-multi-row">
                                 <div class="field-radio" ng-class="{checked: $first}" ng-click="onRadioGroupClick($event)" ng-repeat="paperSizeItem in paperAvailableSize">
                                     <i class="icon"></i>
-                                    <label for="{{paperSizeLabelId}}_{{$index}}" ng-click="onOptionItemChange(templateItem, paperSizeItem, $event);">{{paperSizeItem.text}}</label>
+                                    <label ng-click="onOptionItemChange(templateItem, paperSizeItem, $event);">{{paperSizeItem.text}}</label>
                                 </div>
                             </div>             
                         </div>
