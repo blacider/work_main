@@ -144,11 +144,11 @@
                         <div class="column-wrap table-layout">
                             <h4 class="field-table-label table-cell" style="margin: 0"> 字段组 </h4>
                             <div class="table-cell field-table-content-multi-row">
-                                <div class="field-checkbox" ng-click="templateItem.is_grouping_by_cate = 1-templateItem.is_grouping_by_cate" ng-class="{checked: templateItem.is_grouping_by_cate}" style="margin-bottom: 0">
+                                <div class="field-checkbox" ng-click="templateItem.options.is_grouping_by_cate = 1-templateItem.options.is_grouping_by_cate" ng-class="{checked: templateItem.options.is_grouping_by_cate}" style="margin-bottom: 0">
                                     <span class="icon"></span>
                                     <label>消费按类目分类</label>
                                 </div>
-                                <div class="field-table-content" style="margin-top: 20px;" ng-show="templateItem.customDetail" ng-if="!templateItem.is_grouping_by_cate">
+                                <div class="field-table-content" style="margin-top: 20px;" ng-show="templateItem.customDetail" ng-if="!templateItem.options.is_grouping_by_cate">
                                     <table>
                                         <thead>
                                             <tr>
@@ -180,7 +180,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div ng-if="templateItem.is_grouping_by_cate" class="category-table" ng-show="templateItem.customDetail">
+                                <div ng-if="templateItem.options.is_grouping_by_cate" class="category-table" ng-show="templateItem.customDetail">
                                     <h4 class="title-category">类目A</h4>
                                     <div class="field-table-content">
                                         <table>
@@ -205,7 +205,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div ng-if="templateItem.is_grouping_by_cate" class="category-table" ng-show="templateItem.customDetail">
+                                <div ng-if="templateItem.options.is_grouping_by_cate" class="category-table" ng-show="templateItem.customDetail">
                                     <h4 class="title-category">类目B</h4>
                                     <div class="field-table-content">
                                         <table>

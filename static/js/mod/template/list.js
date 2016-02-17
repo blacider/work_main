@@ -42,8 +42,8 @@
         "type": ['0'],
         "config": [],
         "disabled": "0",
-        "is_grouping_by_cate": 1,
         "options": {
+            "is_grouping_by_cate": 1,
             //header options
             "has_title": 1,
             "has_date_time": 1,
@@ -435,7 +435,6 @@
                                     },
                                     cancel: function  () {
                                         this.close();
-
                                         var originalTemplateData = $scope.templateArrayOriginal.getItemById(templateData.id);
 
                                         $scope.$apply(function  () {
@@ -565,8 +564,7 @@
                             templateData['name'] = _defaultTemplateName_;
                         }
 
-                        templateData.is_grouping_by_cate = 1;
-                        templateData.options = angular.copy(_defaultTemplateConfig_['options']);
+                        // templateData.options = angular.copy(_defaultTemplateConfig_['options']);
 
                     };
 

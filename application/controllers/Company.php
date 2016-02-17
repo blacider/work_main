@@ -66,6 +66,7 @@ class Company extends REIM_Controller {
             $type = implode(',',$temp_info['type']);
         }
         $_config = array();
+        $options =  $temp_info['options'];
         if(array_key_exists('config',$temp_info))
         {
             $_config = $temp_info['config'];
@@ -111,7 +112,7 @@ class Company extends REIM_Controller {
         }
         
         log_message('debug','config:' . json_encode($config));
-        $buf = $this->reports->update_report_template($id,$template_name,$config,$type);
+        $buf = $this->reports->update_report_template($id, $template_name, $config, $type, $options);
         if($buf['status'] > 0)
         {
             $status = 1;
