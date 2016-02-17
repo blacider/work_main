@@ -61,7 +61,7 @@
             "has_dep_name": 1,
             
             //paper options
-            "paper_size": 'a4' ///a5|b5
+            "paper_size": 'A4' ///a5|b5
         },
     };
 
@@ -148,17 +148,17 @@
     var _paperAvailableSize_ = [
         {
             text: 'A4模板',
-            key: 'a4',
+            key: 'A4',
             bind_key: "paper_size"
         },
         {
             text: 'A5模板',
-            key: 'a5',
+            key: 'A5',
             bind_key: "paper_size"
         },
         {
             text: 'B5模板',
-            key: 'b5',
+            key: 'B5',
             bind_key: "paper_size"
         }
     ];
@@ -268,7 +268,7 @@
                                             return {
                                                 valid: false,
                                                 code: 'RADIO_FIELD_OPTIONS_ITEM_EMPTY_ERROR',
-                                                tip: '请在输入选项',
+                                                tip: '请输入选项',
                                                 invalideInputIndex: i,
                                                 errorMsg: '选项为空'
                                             }
@@ -735,7 +735,6 @@
                     };
                     
                     $scope.onAddColumnEditConfig = function (tableData, e, index) {
-
                         // 1. length limit check
                         if(tableData.children.length > _fieldCountLimit_ - 1) {
                             return show_notify('字段不能超过' + _fieldCountLimit_ + ' 个');
