@@ -631,14 +631,13 @@
 	background: url("/static/img/mod/template/24/btn-add-input.png") no-repeat center center;
 }
 .field-radio-options .btn-add-input:hover {
-	transform: rotate(360deg);
-	-webkit-transform: rotate(360deg);
-	-o-transform: rotate(360deg);
-	-moz-transform: rotate(360deg);
-	-ms-transform: rotate(360deg);
+	background-image: url("/static/img/mod/template/24/btn-add-input.dark.png");
 }
 .field-radio-options .btn-add-input.btn-delete-input {
 	background-image: url("/static/img/mod/template/24/btn-delete-input.png");
+}
+.field-radio-options .btn-add-input.btn-delete-input:hover {
+	background-image: url("/static/img/mod/template/24/btn-delete-input.dark.png");
 }
 .field-bank-options .field-checkbox {
 	padding-left: 0;
