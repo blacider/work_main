@@ -19,7 +19,7 @@
 
     <label class="col-sm-1 control-label no-padding-right"><?php echo $item_customization_value['title'];?></label>
     <div class="col-xs-6 col-sm-6">
-        <input data-title="<?php echo $item_customization_value['title'];?>" type="number" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type need_check" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="<?php echo htmlspecialchars($item_customization_value['description']);?>">
+        <input onkeyup="this.value=this.value.replace(/[^-.0-9eE]/g,'')"  onafterpaste="this.value=this.value.replace(/[^-.0-9eE]/g,'')" data-title="<?php echo $item_customization_value['title'];?>" type="text" data-id="<?php echo $item_customization_value['id'];?>" class="form-controller col-xs-12 customization_type need_check" id="<?php echo htmlspecialchars('customization_' . $item_customization_value['id']);?>" placeholder="<?php echo htmlspecialchars($item_customization_value['description']);?>">
     </div>
 </div>
 <?php
