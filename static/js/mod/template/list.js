@@ -878,6 +878,15 @@
                     $scope.onCancelTemplate = function  (templateData, e, $index) {
                         var originalTemplateData = $scope.templateArrayOriginal.getItemById(templateData.id);
                         var data = angular.copy(templateData);
+
+                        // clear ui variable
+                        (function() {
+                            delete data['customDetail'];
+                            delete originalTemplateData['customDetail'];
+                            delete data['turnOpinion'];
+                            delete originalTemplateData['turnOpinion'];
+                        })();
+
                         if(angular.equals(data, originalTemplateData)) {
                             var $paper = $(e.currentTarget).parents('.paper');
                             $paper.removeClass('show');
