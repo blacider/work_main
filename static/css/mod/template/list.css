@@ -518,10 +518,12 @@
 	cursor: default;
 	font-size: 14px;
 }
-.field-group .field-select .option-list .item:hover,
-.field-group .field-select .option-list .item.active {
+.field-group .field-select .option-list .item:hover {
 	background: #ff575b;
-	color: #fff;
+	color: #fff !important;
+}
+.field-group .field-select .option-list .item.active {
+	color: #ff575b;
 }
 .field-table .field-table-label,
 .field-group .field-group-label {

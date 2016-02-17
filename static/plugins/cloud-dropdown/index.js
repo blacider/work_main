@@ -55,9 +55,14 @@
 				template: '<div ng-transclude></div>',
 				link: function ($scope, element, attrs) {
 					var item = getItemByKey($scope.paramObject['type'], $scope.data);
+
 					// init
 					if(item['text']) {
 						$(element).find('.text').removeClass('font-placeholder');
+						//fix me
+						setTimeout(function () {
+							$(element).find('.option-list .item').eq(parseInt(item['value']-1)).addClass('active');
+						}, 1000);
 					}
 					item['text'] && $(element).find('.text').text(item['text']);
 
