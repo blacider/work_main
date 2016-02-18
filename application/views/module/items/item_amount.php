@@ -3,7 +3,7 @@
     <div class="col-xs-6 col-sm-6">
         <div class="input-group input-group">
             <span class="input-group-addon" id='coin_simbol'>￥</span>
-            <input type="number" class="form-controller col-xs-12 col-sm-12 default_custom" data-id="<?php echo $item_customization_value['id'];?>" name="amount" id="amount" placeholder="金额" required>
+            <input type="text" onkeyup="this.value=this.value.replace(/[^-.0-9eE]/g,'')"  onafterpaste="this.value=this.value.replace(/[^-.0-9eE]/g,'')" class="form-controller col-xs-12 col-sm-12 default_custom" data-id="<?php echo $item_customization_value['id'];?>" name="amount" id="amount" placeholder="金额" required>
             <span class="input-group-addon" id='rate_simbol'>￥0</span>
       
         </div>
