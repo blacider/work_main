@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="/static/ace/css/jquery-ui.min.css" />
         <link rel="stylesheet" href="/static/ace/css/datepicker.css" />
         <link rel="stylesheet" href="/static/ace/css/ui.jqgrid.css" />
+        <link rel="stylesheet" type="text/css" href="/static/css/base/mod.css" />
 
     <!-- text fonts -->
     <link rel="stylesheet" href="/static/ace/css/ace-fonts.css"/>
@@ -61,6 +62,11 @@ var __BASE = "<?php echo $base_url; ?>";
         window.jQuery || document.write("<script src='/static/ace/js/jquery1x.min.js'>" + "<" + "/script>");
     </script>
     <![endif]-->
+
+    <!--[if lt IE 9]>
+    <script src="/static/js/libs/html5.js"></script>
+    <![endif]-->
+
     <script type="text/javascript">
         if ('ontouchstart' in document.documentElement) document.write("<script src='/static/ace/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
         var __BASE = "<?php echo base_url(); ?>";
@@ -81,6 +87,7 @@ var __BASE = "<?php echo $base_url; ?>";
 <script src="/static/ace/js/ace/ace.onpage-help.js"></script>
 <script src="/static/third-party/jg/jquery.jgrowl.min.js"></script>
 <script src="/static/js/jquery.cookie.js"></script>
+<script src="/static/js/libs/utils.js"></script>
 
 <!--[if IE 6]>
 <script src="/static/js/DD_belatedPNG_0.0.8a-min.js"></script>
