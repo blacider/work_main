@@ -55,7 +55,7 @@ class Login extends REIM_Controller {
         log_message("debug", "UserName:" . $username);
         log_message("debug", "Password:" . $password);
         //die($username);
-        $body = $this->load->view('user/login', array(
+        $body = $this->load->view('user/login.new.php', array(
                         'errors' => $error
                         , 'title' => '登录'
                         , 'username' => $username

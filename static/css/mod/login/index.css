@@ -1,0 +1,118 @@
+body {
+    background: url('/static/img/hero_bg@2x.jpg') center 0 no-repeat fixed;
+    background-image: -webkit-image-set(url(/static/img/hero_bg.jpg') 1x,url(/static/img/hero_bg@2x.jpg) 2x);
+    background-image: -moz-image-set(url(/static/img/hero_bg.jpg') 1x,url(/static/img/hero_bg@2x.jpg) 2x);
+    background-image: -o-image-set(url(/static/img/hero_bg.jpg') 1x,url(/static/img/hero_bg@2x.jpg) 2x);
+    background-image: -ms-image-set(url(/static/img/hero_bg.jpg') 1x,url(/static/img/hero_bg@2x.jpg) 2x);
+    background-size: cover;
+}
+#header {
+    height: 60px;
+    width: 100%;
+    position: fixed;
+    background: rgba(44, 62, 80, 0.9);
+    left: 0;
+    top: 0;
+    z-index: 999;
+    -webkit-transform: translate3d(0,0,1px);
+    -moz-transform: translate3d(0,0,1px);
+    -o-transform: translate3d(0,0,1px);
+    -ms-transform: translate3d(0,0,1px);
+    transform: translate3d(0,0,1px);
+}
+#header .wrap-inner {
+    width: 1190px;
+    height: 100%;
+    margin: 0 auto;
+    position: relative;
+}
+#header a.logo {
+    position: relative;
+    top: 12px;
+}
+#header a.logo img {
+    width: 100px;
+}
+#header .menu {
+    position: absolute;
+    top: 23px;
+    right: 0;
+    white-space: nowrap;
+    height: 14px;
+}
+#header .menu li {
+    display: inline-block;
+    font-size: 0;
+    padding-left: 14px;
+}
+#header .menu li a {
+    color: #fff;
+    font-size: 14px;
+    line-height: 14px;
+    height: 14px;
+}
+#header .menu li a:hover {
+    font-weight: bold;
+}
+#header .menu li.register a {
+    padding: 6px 8px;
+    border: 1px solid #fff;
+    border-radius: 2px;
+}
+
+#main {
+    position: relative;
+    margin-top: 60px;
+    padding-top: 262px;
+    padding-bottom: 162px;
+    width: 1190px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#main .slogan {
+    color: #fff;
+    font-size: 52px;
+    font-weight: normal;
+}
+#main .login-box {
+    width: 450px;
+    margin: 0 auto;
+    height: 50px;
+    font-size: 0;
+}
+#main .login-box .account {
+    height: 50px;
+    line-height: 50px;
+    margin: 0;
+    padding: 0 12px;
+    border-radius: 2px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: #FF575B;
+    width: 296px;
+    float: left;
+}
+#main .login-box .login {
+    width: 120px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #ff575b;
+    color: #fff;
+    border-radius: 6px;
+    outline: none;
+    border: none;
+    font-size: 16px;
+    float: right;
+    border-bottom: 2px solid #D33E42
+}
+#main .login-box .login:hover,
+#main .login-box .login:active {
+    border-bottom: none;
+}
+
+
+
+
