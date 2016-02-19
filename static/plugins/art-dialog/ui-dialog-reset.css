@@ -1,0 +1,20 @@
+/*remove jquery dirty css*/
+.ui-dialog {
+	overflow: visible !important;
+}
+.ui-dialog-footer button.ui-dialog-autofocus {
+    color: #ffffff;
+    background-color: #ff575b;
+    border-color: #d33e42;
+}
+
+.ui-dialog-footer button.ui-dialog-autofocus:hover, .ui-dialog-footer button.ui-dialog-autofocus:focus, .ui-dialog-footer button.ui-dialog-autofocus:active {
+    color: #ffffff;
+    background-color: #ff575b;
+    border-color: #d33e42;
+    outline: none;
+}
+
+.text-align .ui-dialog-content {
+	text-align: center;
+}

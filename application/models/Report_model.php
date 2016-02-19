@@ -20,7 +20,7 @@ class Report_Model extends Reim_Model {
         return json_decode($buf,True);
     }
 
-    public function update_report_template($id,$name,$config,$type)
+    public function update_report_template($id, $name, $config, $type, $options)
     {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
@@ -29,7 +29,8 @@ class Report_Model extends Reim_Model {
             'id' => $id,
             'type' => $type,
             'name' => $name,
-            'config' => json_encode($config)
+            'config' => json_encode($config),
+            'options' => json_encode($options)
         );
         $buf = $this->do_Put($url,$data,$jwt);
         log_message('debug','report_template_url:'.$url);

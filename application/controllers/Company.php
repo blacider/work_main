@@ -66,6 +66,7 @@ class Company extends REIM_Controller {
             $type = implode(',',$temp_info['type']);
         }
         $_config = array();
+        $options =  $temp_info['options'];
         if(array_key_exists('config',$temp_info))
         {
             $_config = $temp_info['config'];
@@ -111,7 +112,7 @@ class Company extends REIM_Controller {
         }
         
         log_message('debug','config:' . json_encode($config));
-        $buf = $this->reports->update_report_template($id,$template_name,$config,$type);
+        $buf = $this->reports->update_report_template($id, $template_name, $config, $type, $options);
         if($buf['status'] > 0)
         {
             $status = 1;
@@ -129,9 +130,9 @@ class Company extends REIM_Controller {
     public function docreate_report_template()
     {
         $template_name = $this->input->post('template_name');
-//        $config = $this->input->post('config');
+        $type = $this->input->post('type');
         $config = json_encode(array());
-        $buf = $this->reports->create_report_template($template_name,$config);
+        $buf = $this->reports->create_report_template($template_name, $config, $type);
         $msg = '';
         $id = -1 ;
         if($buf['status'] > 0)
@@ -146,6 +147,12 @@ class Company extends REIM_Controller {
 
 //        return redirect(base_url('company/report_template_list'));
         die(json_encode(array('id'=>$id)));
+    }
+
+    public function get_template_types()
+    {
+        $item_type_dic = $this->reim_show->get_item_type_name();
+        die(json_encode($item_type_dic));
     }
 
     public function update_report_template($id)
@@ -201,7 +208,7 @@ class Company extends REIM_Controller {
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
 
-        $this->bsload('reports/report_template_list',
+        $this->bsload('template/list',
             array(
                 'template_list' => $report_template_list
                 ,'error' => $error
@@ -213,6 +220,12 @@ class Company extends REIM_Controller {
                 ),
             )
         );
+    }
+
+    public function get_template_list()
+    {
+        $_report_template_list = $this->reports->get_report_template();
+        die(json_encode($_report_template_list));
     }
 
     public function get_item_type_name()
