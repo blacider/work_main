@@ -154,5 +154,9 @@
                 </div>
             </div>
         </div>
+        <div class="ui-layer">
+            <span class="btn-back"></span>
+            <span class="btn-close"></span>
+        </div>
     </body>
 </html>

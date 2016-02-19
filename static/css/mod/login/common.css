@@ -472,6 +472,7 @@ form div input {
 	.block2 {
 	    height: 390px;
 	    overflow: hidden;
+        background-color: #fff;
 	}
 	.block2-left {
 	    margin-top: 45px;
@@ -719,6 +720,7 @@ form div input {
 	.block2 {
 	    height: 270px;
 	    overflow: hidden;
+        background: #fff;
 	}
 	.block2-left {
 	    margin-top: 105px;
