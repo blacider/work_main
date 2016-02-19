@@ -14,15 +14,45 @@
         <link rel="stylesheet" href="/static/css/reset.css">
         <link rel="stylesheet" href="/static/css/mod/login/index.css">
         <link rel="stylesheet" href="/static/css/mod/login/common.css">
+        <link rel="stylesheet" type="text/css" href="/static/ace/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="/static/ace/css/font-awesome.min.css" />
+        <script language="javascript" src="/static/ace/js/bootstrap.min.js"></script>
+        <script src="/static/css/mod/login/login.js"></script>
     </head>
     <body>
+    <!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="myModalLabel">
+               模态框（Modal）标题
+            </h4>
+         </div>
+         <div class="modal-body">
+            在这里添加一些文本
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" 
+               data-dismiss="modal">关闭
+            </button>
+            <button type="button" class="btn btn-primary">
+               提交更改
+            </button>
+         </div>
+      </div><!-- /.modal-content -->
+</div><!-- /.modal -->
         <div id="header">
             <div class="wrap-inner">
                 <a class="logo" href=""><img src="/static/img/mod/login/logo.png" alt=""></a>
                 <ul class="menu">
                     <li><a href="/">Blog</a></li>
                     <li><a href="/">直接体验</a></li>
-                    <li><a href="/">登录</a></li>
+                    <li><a href="#login" data-toggle="modal">登录</a></li>
                     <li class="register"><a href="/">企业注册</a></li>
                 </ul>
             </div>
