@@ -21,7 +21,7 @@ body {
     transform: translate3d(0,0,1px);
 }
 #header .wrap-inner {
-    width: 1190px;
+    width: 62.5%;
     height: 100%;
     margin: 0 auto;
     position: relative;
@@ -65,7 +65,6 @@ body {
     margin-top: 60px;
     padding-top: 262px;
     padding-bottom: 162px;
-    width: 1190px;
     margin: 0 auto;
     text-align: center;
 }
@@ -111,6 +110,23 @@ body {
 #main .login-box .login:hover,
 #main .login-box .login:active {
     border-bottom: none;
+}
+@media screen and (min-width: 950px) {
+    #header .wrap-inner {
+        min-width: 1080px;
+    }
+}
+@media screen and (max-width: 949px) and (min-width: 740px) {
+    #header .wrap-inner {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 739px) and (min-width: 1px) {
+    #header .wrap-inner {
+        
+    }
+    #header .wrap-inner {}
 }
 
 
