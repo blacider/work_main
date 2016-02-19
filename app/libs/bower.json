@@ -1,0 +1,14 @@
+{
+  "name": "reimbursement",
+  "authors": [
+    "zhangjie <jie.zhang@yunbaoxiao.com>"
+  ],
+  "description": "cloud reimbursement for the pc device",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "admin.cloudbaoxiao.com",
+  "dependencies": {
+    "angular": "1.2.29"
+  }
+}
