@@ -22,11 +22,34 @@ $(document).ready(function(){
     $(".rightd").attr("height","25");
     $(".rightd").css("top","0");
     $(".bottom-line").css("margin-top","60px");
-  }); 
-  $("#email-after").modal('show');
-  
+  });
+  $(".login-button").click(function() {
+    var userId = $("#login-text").val();
+    if (userId != null && userId != "") {
+        if (isEmail(userId)) {
+            $("#email-code").modal('show');
+        }
+        if (isPhone(userId)) {
+            $("#phone-code").modal('show');
+        }
+    }
+  });
 });
-
+function isPhone( s ){   
+    var regu =/^[1][3,4,5,7,8][0-9]{9}$/; 
+    var re = new RegExp(regu); 
+    if (re.test(s)) { 
+        return true; 
+    }else{ 
+        return false; 
+    } 
+}
+function isEmail( str ){  
+    str = trim(str);
+    var myReg = /^[-\._A-Za-z0-9]+@([-_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/; 
+    if(myReg.test(str)) return true; 
+    return false; 
+}
 function checkUser() {
     var user = $("#login input[name='user']").val();
     if (user != '') {
@@ -44,6 +67,9 @@ function changeVisibility(dom) {
         inputDom.attr('type', 'password');
         imgDom.attr('src', '/static/img/mod/login/eye.png');
     }
+}
+function trim(str) {
+　return str.replace(/(^\s*)|(\s*$)/g, "");
 }
 function checkPhone() {
 

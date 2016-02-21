@@ -45,7 +45,7 @@ function isNull(str){
     var regu = "^[ ]+$"; 
     var re = new RegExp(regu); 
     return re.test(str); 
-} 
+}
 function isEmail( str ){  
     str = trim(str);
     var myReg = /^[-\._A-Za-z0-9]+@([-_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/; 
@@ -60,4 +60,7 @@ function checkMobile( s ){
     }else{ 
         return false; 
     } 
+}
+function trim(str) {
+　return str.replace(/(^\s*)|(\s*$)/g, "");
 }

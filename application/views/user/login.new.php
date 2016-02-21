@@ -40,8 +40,8 @@
                 <img src="/static/img/mod/login/slogan.png" alt="">
             </p>
             <div class="login-box">
-                <input class="account" type="text" value="" placeholder="邮箱／手机号码">
-                <input class="login-button" type="button" value="创建公司">
+                <input class="account" id="login-text" type="text" value="" placeholder="邮箱／手机号码">
+                <input class="login-button login" type="button" value="创建公司">
             </div>
             
         </div>
@@ -247,7 +247,7 @@
                     <div class="modal-body" style="position: relative;">
                         <div class="pass_content" style="margin-top: 60px;">
                             <div class="form-line relative-10">
-                                <p class="text">验证码以发送至 <span class="phone-text">18659197052</span></p>
+                                <p class="text">验证码已发送至 <span class="phone-text">18659197052</span></p>
                             </div>
                             <div class="form-line" style="margin-top: 44px;">
                                 <span class="line-icon">
@@ -289,7 +289,7 @@
                     <div class="modal-body" style="position: relative;">
                         <div class="pass_content" style="margin-top: 60px;">
                             <div class="form-line relative-10">
-                                <p class="text">验证码以发送至 <span class="phone-text">niurenpeng@niurenpeng.com</span></p>
+                                <p class="text">验证码已发送至 <span class="phone-text">niurenpeng@niurenpeng.com</span></p>
                             </div>
                             <div class="form-line" style="margin-top: 44px;">
                                 <span class="line-icon">
