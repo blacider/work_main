@@ -13,12 +13,7 @@ body {
     background: rgba(44, 62, 80, 0.9);
     left: 0;
     top: 0;
-    z-index: 999;
-    -webkit-transform: translate3d(0,0,1px);
-    -moz-transform: translate3d(0,0,1px);
-    -o-transform: translate3d(0,0,1px);
-    -ms-transform: translate3d(0,0,1px);
-    transform: translate3d(0,0,1px);
+    z-index: 1;
 }
 #header .wrap-inner {
     width: 62.5%;

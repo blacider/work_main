@@ -1,0 +1,102 @@
+.login_content, .pass_content{
+    width: 350px;
+    height: auto;
+    margin: auto;
+    overflow: hidden;
+    position: relative;
+}
+.login_content {
+    top: 140px;
+}
+.pass_content {
+
+}
+img ,button{
+    outline: none;
+}
+.modal-header {
+    position: absolute;
+    right: 0;
+}
+.modal-dialog, .modal-content {
+    width: 100%;
+    margin:0;
+    height: 100%;
+}
+.modal-body {
+    min-width: 350px;
+    min-height: 380px;
+    position:relative;
+    top: 50%;
+    margin-top: -190px;
+}
+
+#login input, #password input ,#phone-code input, #email-code input, #phone-after input, #email-after input{
+    border: none;
+    font-size: 16px;
+    padding: 0;
+    margin:0;
+    width: 253px;
+    outline:none;
+}
+#phone-after .full-input, #email-after .full-input {
+    width: 287px;
+}
+.input-line {
+    padding-bottom: 3px;
+    float: right;
+    border-bottom: 1px #B9B9B9 solid;
+    width: 287px;
+}
+.action-icon {
+    cursor: pointer;
+    outline: none;
+    position: relative;
+}
+.bottom-line a {
+    color: red;
+    font-size: 13px;
+    text-decoration: underline;
+}
+.bottom-line {
+    width: 55px;
+    margin: 60px auto auto auto;
+}
+.next-step {
+    text-align: center;
+    margin-top: 45px;
+}
+.forget-pass{
+    width: 70px;
+}
+.user-pic {
+    width: 90px;
+    margin: 0 auto;
+    border-radius: 200px;
+}
+.user-name {
+    font-size: 16px;
+    text-align: center;
+    margin: 17px auto 70px;
+}
+.relative-10 {
+    position: relative;
+    left: 10px;
+}
+.phone-text {
+    color: red;
+    font-size: 15px;
+}
+.text {
+    font-size: 15px;
+    text-align: center;
+}
+.timer {
+    color: red;
+    font-size: 12px;
+    border: 1px #FF575B solid;
+    border-radius: 2px;
+    padding: 4px 2px 4px 3px;
+    position: relative;
+    top: -3px;
+}
