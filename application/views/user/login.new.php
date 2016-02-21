@@ -16,36 +16,13 @@
         <link rel="stylesheet" href="/static/css/mod/login/common.css">
         <link rel="stylesheet" type="text/css" href="/static/ace/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="/static/ace/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="/static/css/mod/login/login.css">
+        <script src="/static/ace/js/jquery.min.js"></script>
         <script language="javascript" src="/static/ace/js/bootstrap.min.js"></script>
         <script src="/static/css/mod/login/login.js"></script>
     </head>
     <body>
-    <!-- 模态框（Modal） -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" 
-               data-dismiss="modal" aria-hidden="true">
-                  &times;
-            </button>
-            <h4 class="modal-title" id="myModalLabel">
-               模态框（Modal）标题
-            </h4>
-         </div>
-         <div class="modal-body">
-            在这里添加一些文本
-         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-default" 
-               data-dismiss="modal">关闭
-            </button>
-            <button type="button" class="btn btn-primary">
-               提交更改
-            </button>
-         </div>
-      </div><!-- /.modal-content -->
-</div><!-- /.modal -->
+    
         <div id="header">
             <div class="wrap-inner">
                 <a class="logo" href=""><img src="/static/img/mod/login/logo.png" alt=""></a>
@@ -64,7 +41,7 @@
             </p>
             <div class="login-box">
                 <input class="account" type="text" value="" placeholder="邮箱／手机号码">
-                <input class="login" type="button" value="创建公司">
+                <input class="login-button" type="button" value="创建公司">
             </div>
             
         </div>
@@ -187,6 +164,271 @@
         <div class="ui-layer">
             <span class="btn-back"></span>
             <span class="btn-close"></span>
+        </div>
+
+        <div class="modal fade modal_align" id="login">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="border-bottom: none;">
+                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_close" style="position: relative;" width="22" src="/static/img/mod/login/close.png" alt="close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="login_content">
+                            <div class="form-line">
+                                <span class="line-icon">
+                                    <img width="28" src="/static/img/mod/login/icon_user.png" height="31" alt="user">
+                                </span>
+                                
+                                <span class="input-line">
+                                    <input name="user" type="text" placeholder="邮箱／手机号码">
+                                    <img class="action-icon" src="/static/img/mod/login/right.png" alt="right" height="26" width="28" onclick="checkUser()">
+                                </span>
+                            </div>
+                            <div class="form-line bottom-line relative-10">
+                                <a href="#">微信登陆</a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+
+        <div class="modal fade modal_align" style="display:none;" id="password">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="border-bottom: none;">
+                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_close" style="position: relative;" width="22" src="/static/img/mod/login/close.png" alt="close">
+                        </button>
+                    </div>
+                    <div class="modal-body" style="position: relative;">
+                        <div class="pass_content">
+                            <div class="form-line">
+                                <div class="user-pic relative-10">
+                                    <img src="/static/img/mod/login/pic.png" width="90" height="90" alt="pic">
+                                </div>
+                                <div class="user-name relative-10">
+                                    于海新
+                                </div>
+                            </div>
+                            <div class="form-line">
+                                <span class="line-icon">
+                                    <img width="28" src="/static/img/mod/login/pass_icon.png" height="31" alt="pass">
+                                </span>
+                                
+                                <span class="input-line">
+                                    <input name="pass" type="password" placeholder="输入密码">
+                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="19" width="30" onclick="changeVisibility($(this).parent())">
+                                </span>
+                            </div>
+                            <div class="form-line next-step relative-10">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="25" width="27" onclick="checkUser()">
+                            </div>
+                            <div class="form-line bottom-line forget-pass relative-10">
+                                <a href="#phone-code" data-toggle="modal">忘记密码？</a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+        <div class="modal fade modal_align" style="display:none;" id="phone-code">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="border-bottom: none;">
+                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_close" style="position: relative;" width="22" src="/static/img/mod/login/close.png" alt="close">
+                        </button>
+                    </div>
+                    <div class="modal-body" style="position: relative;">
+                        <div class="pass_content" style="margin-top: 60px;">
+                            <div class="form-line relative-10">
+                                <p class="text">验证码以发送至 <span class="phone-text">18659197052</span></p>
+                            </div>
+                            <div class="form-line" style="margin-top: 44px;">
+                                <span class="line-icon">
+                                    <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: -7px">
+                                </span>
+                                
+                                <span class="input-line">
+                                    <input style="width: 206px;" name="code" type="text" placeholder="手机验证码">
+                                    <span class="timer">59S后可重发</span>
+                                </span>
+                            </div>
+                            <div class="form-line" style="margin-top: 38px;">
+                                <span class="line-icon">
+                                    <img width="28" src="/static/img/mod/login/pass_icon.png" height="31" alt="pass" style="margin-top: -5px">
+                                </span>
+                                
+                                <span class="input-line">
+                                    <input name="pass" type="password" placeholder="输入密码">
+                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="19" width="30" onclick="changeVisibility($(this).parent())">
+                                </span>
+                            </div>
+                            <div class="form-line next-step relative-10">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="25" width="27" onclick="checkPhone()">
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+        
+        <div class="modal fade modal_align" style="display:none;" id="email-code">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="border-bottom: none;">
+                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_close" style="position: relative;" width="22" src="/static/img/mod/login/close.png" alt="close">
+                        </button>
+                    </div>
+                    <div class="modal-body" style="position: relative;">
+                        <div class="pass_content" style="margin-top: 60px;">
+                            <div class="form-line relative-10">
+                                <p class="text">验证码以发送至 <span class="phone-text">niurenpeng@niurenpeng.com</span></p>
+                            </div>
+                            <div class="form-line" style="margin-top: 44px;">
+                                <span class="line-icon">
+                                    <img width="27" src="/static/img/mod/login/email.png" height="22" alt="pass" style="margin-top: 4px">
+                                </span>
+                                
+                                <span class="input-line">
+                                    <input style="width: 206px;" name="code" type="text" placeholder="手机验证码">
+                                    <span class="timer">59S后可重发</span>
+                                </span>
+                            </div>
+                            <div class="form-line" style="margin-top: 38px;">
+                                <span class="line-icon">
+                                    <img width="28" src="/static/img/mod/login/pass_icon.png" height="31" alt="pass" style="margin-top: -5px">
+                                </span>
+                                
+                                <span class="input-line">
+                                    <input name="pass" type="password" placeholder="输入密码">
+                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="19" width="30" onclick="changeVisibility($(this).parent())">
+                                </span>
+                            </div>
+                            <div class="form-line next-step relative-10">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="25" width="27" onclick="checkEmail()">
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+        <div class="modal fade modal_align" style="display:none;" id="phone-after">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="border-bottom: none;">
+                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_close" style="position: relative;" width="22" src="/static/img/mod/login/close.png" alt="close">
+                        </button>
+                    </div>
+                    <div class="modal-body" style="position: relative;">
+                        <div class="pass_content">
+                            <div class="form-line" style="margin-top: 10px;">
+                                <span class="line-icon">
+                                    <img width="23" src="/static/img/mod/login/home.png" height="26" alt="pass" style="margin-top: 1px">
+                                </span>
+                                
+                                <span class="input-line">
+                                    <input name="" class="full-input" type="text" placeholder="公司名称">
+                                </span>
+                            </div>
+                            <div class="form-line" style="margin-top: 38px;">
+                                <span class="line-icon">
+                                    <img width="27" src="/static/img/mod/login/icon_user.png" height="30" alt="pass" style="margin-top: -3px">
+                                </span>
+                                
+                                <span class="input-line">
+                                    <input name="" class="full-input" type="text" placeholder="姓名">
+                                </span>
+                            </div>
+                            <div class="form-line" style="margin-top: 38px;">
+                                <span class="line-icon">
+                                    <img width="35" src="/static/img/mod/login/level.png" height="30" alt="pass" style="margin-top: -3px">
+                                </span>
+                                
+                                <span class="input-line">
+                                    <input name="" class="full-input" type="text" placeholder="职位">
+                                </span>
+                            </div>
+                            <div class="form-line" style="margin-top: 38px;">
+                                <span class="line-icon">
+                                    <img width="28" src="/static/img/mod/login/email.png" height="23" alt="pass" style="margin-top: 4px">
+                                </span>
+                                
+                                <span class="input-line">
+                                    <input name="" class="full-input" type="text" placeholder="邮箱">
+                                </span>
+                            </div>
+                            <div class="form-line next-step relative-10">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="25" width="27" onclick="checkAfterPhone()">
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+
+        <div class="modal fade modal_align" style="display:none;" id="email-after">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="border-bottom: none;">
+                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_close" style="position: relative;" width="22" src="/static/img/mod/login/close.png" alt="close">
+                        </button>
+                    </div>
+                    <div class="modal-body" style="position: relative;">
+                        <div class="pass_content">
+                            <div class="form-line" style="margin-top: 10px;">
+                                <span class="line-icon">
+                                    <img width="23" src="/static/img/mod/login/home.png" height="26" alt="pass" style="margin-top: 1px">
+                                </span>
+                                
+                                <span class="input-line">
+                                    <input name="" class="full-input" type="text" placeholder="公司名称">
+                                </span>
+                            </div>
+                            <div class="form-line" style="margin-top: 38px;">
+                                <span class="line-icon">
+                                    <img width="27" src="/static/img/mod/login/icon_user.png" height="30" alt="pass" style="margin-top: -3px">
+                                </span>
+                                
+                                <span class="input-line">
+                                    <input name="" class="full-input" type="text" placeholder="姓名">
+                                </span>
+                            </div>
+                            <div class="form-line" style="margin-top: 38px;">
+                                <span class="line-icon">
+                                    <img width="35" src="/static/img/mod/login/level.png" height="30" alt="pass" style="margin-top: -3px">
+                                </span>
+                                
+                                <span class="input-line">
+                                    <input name="" class="full-input" type="text" placeholder="职位">
+                                </span>
+                            </div>
+                            <div class="form-line" style="margin-top: 38px;">
+                                <span class="line-icon">
+                                    <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: -7px">
+                                </span>
+                                
+                                <span class="input-line">
+                                    <input name="" class="full-input" type="text" placeholder="手机">
+                                </span>
+                            </div>
+                            <div class="form-line next-step relative-10">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="25" width="27" onclick="checkAfterEmail()">
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
         </div>
     </body>
 </html>
