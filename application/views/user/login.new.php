@@ -171,7 +171,7 @@
                 <div class="modal-content">
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="22" src="/static/img/mod/login/close.png" alt="close">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-body">
@@ -183,11 +183,43 @@
                                 
                                 <span class="input-line">
                                     <input name="user" type="text" placeholder="邮箱／手机号码">
-                                    <img class="action-icon" src="/static/img/mod/login/right.png" alt="right" height="26" width="28" onclick="checkUser()">
+                                    <img class="action-icon" src="/static/img/mod/login/right-sm.png" alt="right" height="26" width="28" onclick="checkUser()">
                                 </span>
                             </div>
                             <div class="form-line bottom-line relative-10">
-                                <a href="#">微信登陆</a>
+                                <a href="#">微信登录</a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+        <div class="modal fade modal_align" style="display:none;" id="first-login">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="border-bottom: none;">
+                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        </button>
+                    </div>
+                    <div class="modal-body" style="position: relative;">
+                        <div class="first_content">
+                            <div class="form-line relative-10">
+                                <p class="first-text">初次登录请设置好密码</p>
+                            </div>
+                            <div class="form-line">
+                                <span class="line-icon">
+                                    <img width="28" style="margin-top: 8px;" src="/static/img/mod/login/pass_icon.png" height="31" alt="pass">
+                                </span>
+                                
+                                <span class="input-line">
+                                    <input name="pass" type="password" placeholder="输入密码">
+                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36" onclick="changeVisibility($(this).parent())">
+                                </span>
+                            </div>
+                            <div class="form-line next-step relative-10">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkFirstPass()">
                             </div>
                         </div>
                     </div>
@@ -201,7 +233,7 @@
                 <div class="modal-content">
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="22" src="/static/img/mod/login/close.png" alt="close">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -216,19 +248,19 @@
                             </div>
                             <div class="form-line">
                                 <span class="line-icon">
-                                    <img width="28" src="/static/img/mod/login/pass_icon.png" height="31" alt="pass">
+                                    <img width="28" style="margin-top: 8px;" src="/static/img/mod/login/pass_icon.png" height="31" alt="pass">
                                 </span>
                                 
                                 <span class="input-line">
                                     <input name="pass" type="password" placeholder="输入密码">
-                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="19" width="30" onclick="changeVisibility($(this).parent())">
+                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36" onclick="changeVisibility($(this).parent())">
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="25" width="27" onclick="checkUser()">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkUser()">
                             </div>
                             <div class="form-line bottom-line forget-pass relative-10">
-                                <a href="#phone-code" data-toggle="modal">忘记密码？</a>
+                                <a href="javascript:void(0)" onclick="forgetPass()">忘记密码？</a>
                             </div>
                         </div>
                     </div>
@@ -236,12 +268,88 @@
             </div><!-- /.modal -->
         </div>
 
+        <div class="modal fade modal_align" style="display:none;" id="first-phone">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header-left" style="border-bottom: none;">
+                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
+                        </button>
+                    </div>
+                    <div class="modal-header" style="border-bottom: none;">
+                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        </button>
+                    </div>
+                    <div class="modal-body" style="position: relative;">
+                        <div class="pass_content" style="margin-top: 120px;">
+                            <div class="form-line relative-10">
+                                <p class="text">验证码已发送至 <span class="phone-text">18659197052</span></p>
+                            </div>
+                            <div class="form-line" style="margin-top: 44px;">
+                                <span class="line-icon">
+                                    <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: -7px">
+                                </span>
+                                
+                                <span class="input-line">
+                                    <input style="width: 206px;" name="code" type="text" placeholder="手机验证码">
+                                    <button class="timer">59S后可重发</button>
+                                </span>
+                            </div>
+                            <div class="form-line next-step relative-10">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkFirstPhoneCode()">
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+        
+        <div class="modal fade modal_align" style="display:none;" id="first-email">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header-left" style="border-bottom: none;">
+                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
+                        </button>
+                    </div>
+                    <div class="modal-header" style="border-bottom: none;">
+                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        </button>
+                    </div>
+                    <div class="modal-body" style="position: relative;">
+                        <div class="pass_content" style="margin-top: 120px;">
+                            <div class="form-line relative-10">
+                                <p class="text">验证码已发送至 <span class="phone-text">niurenpeng@niurenpeng.com</span></p>
+                            </div>
+                            <div class="form-line" style="margin-top: 44px;">
+                                <span class="line-icon">
+                                    <img width="27" src="/static/img/mod/login/email.png" height="22" alt="pass" style="margin-top: 4px">
+                                </span>
+                                
+                                <span class="input-line">
+                                    <input style="width: 206px;" name="code" type="text" placeholder="手机验证码">
+                                    <button class="timer">59S后可重发</button>
+                                </span>
+                            </div>
+                            <div class="form-line next-step relative-10">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkFirstEmailCode()">
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+
+
         <div class="modal fade modal_align" style="display:none;" id="phone-code">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="22" src="/static/img/mod/login/close.png" alt="close">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -256,21 +364,21 @@
                                 
                                 <span class="input-line">
                                     <input style="width: 206px;" name="code" type="text" placeholder="手机验证码">
-                                    <span class="timer">59S后可重发</span>
+                                    <button class="timer">59S后可重发</button>
                                 </span>
                             </div>
                             <div class="form-line" style="margin-top: 38px;">
                                 <span class="line-icon">
-                                    <img width="28" src="/static/img/mod/login/pass_icon.png" height="31" alt="pass" style="margin-top: -5px">
+                                    <img width="28" src="/static/img/mod/login/pass_icon.png" height="31" alt="pass" style="margin-top: 9px">
                                 </span>
                                 
                                 <span class="input-line">
                                     <input name="pass" type="password" placeholder="输入密码">
-                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="19" width="30" onclick="changeVisibility($(this).parent())">
+                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36" onclick="changeVisibility($(this).parent())">
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="25" width="27" onclick="checkPhone()">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkPhone()">
                             </div>
                         </div>
                     </div>
@@ -283,7 +391,7 @@
                 <div class="modal-content">
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="22" src="/static/img/mod/login/close.png" alt="close">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -298,7 +406,7 @@
                                 
                                 <span class="input-line">
                                     <input style="width: 206px;" name="code" type="text" placeholder="手机验证码">
-                                    <span class="timer">59S后可重发</span>
+                                    <button class="timer">59S后可重发</button>
                                 </span>
                             </div>
                             <div class="form-line" style="margin-top: 38px;">
@@ -308,11 +416,11 @@
                                 
                                 <span class="input-line">
                                     <input name="pass" type="password" placeholder="输入密码">
-                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="19" width="30" onclick="changeVisibility($(this).parent())">
+                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36" onclick="changeVisibility($(this).parent())">
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="25" width="27" onclick="checkEmail()">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkEmail()">
                             </div>
                         </div>
                     </div>
@@ -323,9 +431,14 @@
         <div class="modal fade modal_align" style="display:none;" id="phone-after">
             <div class="modal-dialog">
                 <div class="modal-content">
+                    <div class="modal-header-left" style="border-bottom: none;">
+                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
+                        </button>
+                    </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="22" src="/static/img/mod/login/close.png" alt="close">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -367,7 +480,7 @@
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="25" width="27" onclick="checkAfterPhone()">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkAfterPhone()">
                             </div>
                         </div>
                     </div>
@@ -381,7 +494,7 @@
                 <div class="modal-content">
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="22" src="/static/img/mod/login/close.png" alt="close">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -423,7 +536,7 @@
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="25" width="27" onclick="checkAfterEmail()">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkAfterEmail()">
                             </div>
                         </div>
                     </div>
