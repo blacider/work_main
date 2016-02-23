@@ -290,3 +290,8 @@ a {
 	margin-top: 12px;
 
 }
+.ios-img,
+.android-img {
+	margin: 0 auto;
+}
+

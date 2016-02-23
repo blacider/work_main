@@ -2,6 +2,9 @@
 <html>
 <head>
 	<title>云报销 - 下载</title>
+  <script>
+  var _hmt = _hmt || [];
+  </script>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes">
   <link rel="shortcut icon" href="http://www.yunbaoxiao.com/favicon.ico">
@@ -73,6 +76,31 @@
     $(document).ready(function(){
         $('#block1').css({'height': document.body.scrollHeight + 'px', 'min-height' : document.body.scrollHeight + 'px'});
     });
+</script>
+<!-- 百度统计 -->
+<div style="display: none;">
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?f3b83c21deaa6cfaa74e7ade7c0418d0";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- 落地页渠道统计 -->
+<script>
+  function getParameterByName(name, url) {
+      if (!url) url = window.location.href;
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+  };
+  _hmt.push('_traceEvent', 'install_page_fr', getParameterByName('fr'));
+  _hmt.push(['_setCustomVar', 1, 'install_page_fr', getParameterByName('fr'), 1]);
 </script>
 </body>
 </html>

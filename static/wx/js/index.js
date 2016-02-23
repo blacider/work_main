@@ -81,8 +81,12 @@ function download() {
 	} else {
 		if(!isIos()) {
             window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/1.1.1/reim.apk';
+			_hmt.push('_traceEvent', 'install_page_download', getParameterByName('fr'), 'ios');
+			_hmt.push(['_setCustomVar', 2, 'install_page_ios_download', getParameterByName('fr'), 2]);
 		} else {
 			window.location.href = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.111.plist';
+			_hmt.push('_traceEvent', 'install_page_download', getParameterByName('fr'), 'android_other');
+			_hmt.push(['_setCustomVar', 2, 'install_page_android_other_download', getParameterByName('fr'), 2]);
 		}
 	}
 }
