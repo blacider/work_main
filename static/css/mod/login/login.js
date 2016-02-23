@@ -66,9 +66,15 @@ function isEmail( str ){
     return false; 
 }
 function checkUser() {
+    clearErrorLine();
     var user = $("#login input[name='user']").val();
     __UserId = user;
-    if (user != '') {
+    var userLine = $("#login").find('.user-line');
+    if (user == "") {
+        userLine.append(getErrorDom("请输入用户名"));
+    } else if (!isEmail(user) && !isPhone(user)) {
+        userLine.append(getErrorDom("请输入正确的邮箱/手机号码"));
+    } else {
         if (user == "18888888888" || user == "1@1.com") {
             $("#login").modal('hide');
             $("#first-login").modal('show');
@@ -142,4 +148,18 @@ function checkFirstEmailCode() {
 }
 function checkFirstPhoneCode() {
 
+}
+function getErrorDom(str) {
+    return '<div class="error-login">'+
+                '<div class="error-login-line">'+
+                    '<span class="error-text">'+
+                        str+
+                    '</span>'+
+                '<div class="error-right">'+
+                    '</div>'+
+                '</div>'+
+            '</div>';
+}
+function clearErrorLine() {
+    $('.error-login').remove();
 }

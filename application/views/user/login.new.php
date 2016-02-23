@@ -176,7 +176,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="login_content">
-                            <div class="form-line">
+                            <div class="form-line user-line">
                                 <span class="line-icon">
                                     <img width="28" src="/static/img/mod/login/icon_user.png" height="31" alt="user">
                                 </span>
@@ -187,13 +187,36 @@
                                 </span>
                             </div>
                             <div class="form-line bottom-line relative-10">
-                                <a href="#">微信登录</a>
+                                <a href="#weixin" data-toggle="modal">微信登录</a>
                             </div>
                         </div>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
+
+        <div class="modal fade modal_align" id="weixin">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="border-bottom: none;">
+                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="login_content" style="top: 40px;">
+                            <div class="form-line" style="text-align: center;">
+                                <img width="224" height="224" src="/static/img/mod/login/bitcode.png" alt="bitcode">
+                            </div>
+                            <div class="form-line bottom-line relative-10">
+                                <a href="javascript:void(0)">微信登录</a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
 
         <div class="modal fade modal_align" style="display:none;" id="first-login">
             <div class="modal-dialog">
@@ -208,7 +231,7 @@
                             <div class="form-line relative-10">
                                 <p class="first-text">初次登录请设置好密码</p>
                             </div>
-                            <div class="form-line">
+                            <div class="form-line pass-line">
                                 <span class="line-icon">
                                     <img width="28" style="margin-top: 8px;" src="/static/img/mod/login/pass_icon.png" height="31" alt="pass">
                                 </span>

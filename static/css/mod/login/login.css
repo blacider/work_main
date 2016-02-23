@@ -2,7 +2,9 @@
     width: 350px;
     height: auto;
     margin: auto;
-    overflow: hidden;
+    position: relative;
+}
+.form-line {
     position: relative;
 }
 .login_content {
@@ -128,3 +130,37 @@ img ,button{
 .time-disable:hover {
     border-bottom: 2px #ff575b solid;
 }
+.error-login {
+    position: absolute;
+    height: 35px;
+    font-size: 15px;
+    color: white;
+    left: -18px;
+    top: -5px;
+    border-radius: 4px;
+}
+.error-login-line {
+    position: relative;
+    left: -100%;
+}
+.error-text {
+    background-color: #FF575B;
+    font-size: 15px;
+    text-align: center;
+    color: white;
+    padding: 0;
+    float: left;
+    padding: 7px;
+    border-radius: 3px;
+}
+.error-right {
+    width: 0;
+    float: right;
+    height: 0;
+    border-top: 4px solid transparent;
+    border-left: 8px solid #FF575B;
+    position: relative;
+    top: 14px;
+    border-bottom: 4px solid transparent;
+}
+
