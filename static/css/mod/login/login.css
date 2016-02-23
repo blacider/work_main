@@ -1,4 +1,4 @@
-.login_content, .pass_content{
+.login_content, .pass_content, .first_content{
     width: 350px;
     height: auto;
     margin: auto;
@@ -8,8 +8,8 @@
 .login_content {
     top: 140px;
 }
-.pass_content {
-
+.first_content {
+    top:95px;
 }
 img ,button{
     outline: none;
@@ -17,6 +17,18 @@ img ,button{
 .modal-header {
     position: absolute;
     right: 0;
+    padding: 0;
+}
+.modal-header-left {
+    position: absolute;
+    left: 0;
+    padding: 0;
+}
+.first-text {
+    margin-bottom: 45px;
+    font-size: 16px;
+    text-align: center;
+    color: #4A4A4A;
 }
 .modal-dialog, .modal-content {
     width: 100%;
@@ -31,13 +43,16 @@ img ,button{
     margin-top: -190px;
 }
 
-#login input, #password input ,#phone-code input, #email-code input, #phone-after input, #email-after input{
+#login input, #first-email input, #first-phone input,#first-login input, #password input ,#phone-code input, #email-code input, #phone-after input, #email-after input{
     border: none;
     font-size: 16px;
     padding: 0;
     margin:0;
     width: 253px;
     outline:none;
+}
+#password input, #first-login input, #phone-code input, #email-code input {
+    width: 247px;
 }
 #phone-after .full-input, #email-after .full-input {
     width: 287px;
@@ -92,11 +107,24 @@ img ,button{
     text-align: center;
 }
 .timer {
-    color: red;
+    color: #ff575b;
     font-size: 12px;
     border: 1px #FF575B solid;
     border-radius: 2px;
     padding: 4px 2px 4px 3px;
     position: relative;
     top: -3px;
+    float: right;
+    background-color:transparent;
+}
+.time-disable {
+    background-color: #ff575b;
+    color: white;
+    border: none;
+    border-bottom: 2px #D33E42 solid;
+    width: 70px;
+    text-align: center;
+}
+.time-disable:hover {
+    border-bottom: 2px #ff575b solid;
 }

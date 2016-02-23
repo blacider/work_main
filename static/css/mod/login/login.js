@@ -1,40 +1,55 @@
 $(document).ready(function(){
   $(".icon_close").hover(function(){
     $(".icon_close").attr("src","/static/img/mod/login/closed.png");
-    $(".icon_close").attr("width","53");
-    $(".icon_close").css("right","-16px");
-    $(".icon_close").css("top","-13px");
     },function(){
     $(".icon_close").attr("src","/static/img/mod/login/close.png");
-    $(".icon_close").attr("width","22");
-    $(".icon_close").css("right","0px");
-    $(".icon_close").css("top","0px");
-  }); 
+  });
+  $(".icon_left").hover(function(){
+    $(".icon_left").attr("src","/static/img/mod/login/leftd.png");
+    },function(){
+    $(".icon_left").attr("src","/static/img/mod/login/left.png");
+  });
   $(".rightd").hover(function(){
     $(".rightd").attr("src","/static/img/mod/login/rightd.png");
-    $(".rightd").attr("width","53");
-    $(".rightd").attr("height","53");
-    $(".rightd").css("top","-14px");
-    $(".bottom-line").css("margin-top","32px");
     },function(){
     $(".rightd").attr("src","/static/img/mod/login/right.png");
-    $(".rightd").attr("width","27");
-    $(".rightd").attr("height","25");
-    $(".rightd").css("top","0");
-    $(".bottom-line").css("margin-top","60px");
   });
   $(".login-button").click(function() {
+    __IfForget = false;
     var userId = $("#login-text").val();
     if (userId != null && userId != "") {
         if (isEmail(userId)) {
             $("#email-code").modal('show');
+            $(".phone-text").text(userId);
+            time($("#email-code").find('.timer'), 60);
         }
         if (isPhone(userId)) {
             $("#phone-code").modal('show');
+            $(".phone-text").text(userId);
+            time($("#phone-code").find('.timer'), 60);
         }
     }
   });
+  $(".timer").click(function(event) {
+      time($(this), 60);
+  });
 });
+var __UserId, __IfForget = false;
+function time(dom, counter) {
+    if (counter == 0) {
+        dom.removeAttr("disabled");            
+        dom.text("重发");
+        dom.addClass('time-disable');
+    } else {
+        counter--;
+        dom.attr("disabled", true);  
+        dom.text(counter+"S后可重发");
+        dom.removeClass('time-disable');
+        setTimeout(function() {  
+            time(dom, counter);
+        }, 1000);
+    }
+}
 function isPhone( s ){   
     var regu =/^[1][3,4,5,7,8][0-9]{9}$/; 
     var re = new RegExp(regu); 
@@ -52,9 +67,29 @@ function isEmail( str ){
 }
 function checkUser() {
     var user = $("#login input[name='user']").val();
+    __UserId = user;
     if (user != '') {
-        $("#login").modal('hide');
-        $("#password").modal('show');
+        if (user == "18888888888" || user == "1@1.com") {
+            $("#login").modal('hide');
+            $("#first-login").modal('show');
+        } else {
+            $("#login").modal('hide');
+            $("#password").modal('show');
+        }
+    }
+}
+function forgetPass() {
+    __IfForget = true;
+    var userId = __UserId;
+    if (isEmail(userId)) {
+        $("#email-code").modal('show');
+        $(".phone-text").text(userId);
+        time($("#email-code").find('.timer'), 60);
+    }
+    if (isPhone(userId)) {
+        $("#phone-code").modal('show');
+        $(".phone-text").text(userId);
+        time($("#phone-code").find('.timer'), 60);
     }
 }
 function changeVisibility(dom) {
@@ -72,14 +107,39 @@ function trim(str) {
 　return str.replace(/(^\s*)|(\s*$)/g, "");
 }
 function checkPhone() {
+    if (!__IfForget) {
+        $("#phone-after").modal('show');
+    } else {
 
+    }
 }
 function checkEmail() {
-
+    if (!__IfForget) {
+        $("#email-after").modal('show');
+    } else {
+        
+    }
 }
 function checkAfterEmail() {
 
 }
 function checkAfterPhone() {
+
+}
+function checkFirstPass() {
+    var userId = __UserId;
+    if (isEmail(userId)) {
+            $("#first-email").modal('show');
+            time($("#first-email").find('.timer'), 60);
+        }
+        if (isPhone(userId)) {
+            $("#first-phone").modal('show');
+            time($("#first-phone").find('.timer'), 60);
+        }
+}
+function checkFirstEmailCode() {
+
+}
+function checkFirstPhoneCode() {
 
 }
