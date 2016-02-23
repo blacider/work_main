@@ -155,6 +155,7 @@ class Login extends REIM_Controller {
         $this->session->set_userdata("uid", $__uid);
         $this->session->set_userdata("groupname", $__g);
         $this->session->set_userdata("server_token", $server_token);
+        /*
         $goto = $this->session->userdata('last_url');
         // 获取一下组信息，然后设置一下
         if($this->startsWith($goto, 'members/singlegroup')){
@@ -165,6 +166,8 @@ class Login extends REIM_Controller {
             die('');
         }
         redirect(base_url($goto));
+        */
+        redirect(base_url('items'));
     }
 
     public function dologout()
