@@ -163,4 +163,22 @@ img ,button{
     top: 14px;
     border-bottom: 4px solid transparent;
 }
+#first-login .error-login {
+    top: 4px;
+}
+
+#first-phone .error-login, #first-email .error-login {
+    top: -7px;
+}
+#password .error-login {
+    top: 2px;
+}
+#phone-code .error-login {
+    top: -9px;
+}
+#phone-code-pass-line .error-login {
+    top: 5px;
+}
+
+
 

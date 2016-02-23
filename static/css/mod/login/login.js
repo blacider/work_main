@@ -113,13 +113,38 @@ function trim(str) {
 　return str.replace(/(^\s*)|(\s*$)/g, "");
 }
 function checkPhone() {
+    clearErrorLine();
+    var ifError = false;
+    var passLine = $("#phone-code").find('.pass-line');
+    var pass = $("#phone-code").find('input[name="pass"]').val();
+    var codeLine = $("#phone-code").find('.code-line');
+    var code = $("#phone-code").find('input[name="code"]').val();
+    if (pass == undefined || pass == "") {
+        passLine.append(getErrorDom("请输入密码"));
+        ifError = true;
+    }
+    if (code == undefined || code == "") {
+        codeLine.append(getErrorDom("请输入验证码"));
+        ifError = true;
+    }
+    if (ifError) {return;}
     if (!__IfForget) {
         $("#phone-after").modal('show');
     } else {
 
     }
 }
+function checkPass() {
+    clearErrorLine();
+    var codeLine = $("#password").find('.pass-line');
+    var code = $("#password").find('input[name="password"]').val();
+    if (code == undefined || code == "") {
+        codeLine.append(getErrorDom("请输入密码"));
+        return;
+    }
+}
 function checkEmail() {
+    clearErrorLine();
     if (!__IfForget) {
         $("#email-after").modal('show');
     } else {
@@ -127,13 +152,20 @@ function checkEmail() {
     }
 }
 function checkAfterEmail() {
-
+    clearErrorLine();
 }
 function checkAfterPhone() {
-
+    clearErrorLine();
 }
 function checkFirstPass() {
+    clearErrorLine();
     var userId = __UserId;
+    var passLine = $("#first-login").find('.pass-line');
+    var pass = $("#first-login").find('input[name="pass"]').val();
+    if (pass == undefined || pass == "") {
+        passLine.append(getErrorDom("请输入密码"));
+        return;
+    }
     if (isEmail(userId)) {
             $("#first-email").modal('show');
             time($("#first-email").find('.timer'), 60);
@@ -144,10 +176,22 @@ function checkFirstPass() {
         }
 }
 function checkFirstEmailCode() {
-
+    clearErrorLine();
+    var codeLine = $("#first-email").find('.code-line');
+    var code = $("#first-email").find('input[name="code"]').val();
+    if (code == undefined || code == "") {
+        codeLine.append(getErrorDom("请输入验证码"));
+        return;
+    }
 }
 function checkFirstPhoneCode() {
-
+    clearErrorLine();
+    var codeLine = $("#first-phone").find('.code-line');
+    var code = $("#first-phone").find('input[name="code"]').val();
+    if (code == undefined || code == "") {
+        codeLine.append(getErrorDom("请输入验证码"));
+        return;
+    }
 }
 function getErrorDom(str) {
     return '<div class="error-login">'+

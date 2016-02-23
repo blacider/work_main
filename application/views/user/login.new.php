@@ -274,13 +274,13 @@
                                     <img width="28" style="margin-top: 8px;" src="/static/img/mod/login/pass_icon.png" height="31" alt="pass">
                                 </span>
                                 
-                                <span class="input-line">
+                                <span class="input-line pass-line">
                                     <input name="pass" type="password" placeholder="输入密码">
                                     <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36" onclick="changeVisibility($(this).parent())">
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkUser()">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkPass()">
                             </div>
                             <div class="form-line bottom-line forget-pass relative-10">
                                 <a href="javascript:void(0)" onclick="forgetPass()">忘记密码？</a>
@@ -309,7 +309,7 @@
                             <div class="form-line relative-10">
                                 <p class="text">验证码已发送至 <span class="phone-text">18659197052</span></p>
                             </div>
-                            <div class="form-line" style="margin-top: 44px;">
+                            <div class="form-line code-line" style="margin-top: 44px;">
                                 <span class="line-icon">
                                     <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: -7px">
                                 </span>
@@ -346,7 +346,7 @@
                             <div class="form-line relative-10">
                                 <p class="text">验证码已发送至 <span class="phone-text">niurenpeng@niurenpeng.com</span></p>
                             </div>
-                            <div class="form-line" style="margin-top: 44px;">
+                            <div class="form-line code-line" style="margin-top: 44px;">
                                 <span class="line-icon">
                                     <img width="27" src="/static/img/mod/login/email.png" height="22" alt="pass" style="margin-top: 4px">
                                 </span>
@@ -380,7 +380,7 @@
                             <div class="form-line relative-10">
                                 <p class="text">验证码已发送至 <span class="phone-text">18659197052</span></p>
                             </div>
-                            <div class="form-line" style="margin-top: 44px;">
+                            <div class="form-line code-line" style="margin-top: 44px;">
                                 <span class="line-icon">
                                     <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: -7px">
                                 </span>
@@ -390,7 +390,7 @@
                                     <button class="timer">59S后可重发</button>
                                 </span>
                             </div>
-                            <div class="form-line" style="margin-top: 38px;">
+                            <div id="phone-code-pass-line" class="form-line pass-line" style="margin-top: 38px;">
                                 <span class="line-icon">
                                     <img width="28" src="/static/img/mod/login/pass_icon.png" height="31" alt="pass" style="margin-top: 9px">
                                 </span>
