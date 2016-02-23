@@ -373,7 +373,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         </li>
 
         <li class="hsub" id="cexport">
-        <a href="<?php echo base_url('category/cexport'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 导入帐套 </a>
+        <a href="<?php echo base_url('category/cexport'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 导入账套 </a>
         <b class="arrow"></b>
         </li>
 
