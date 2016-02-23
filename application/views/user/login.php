@@ -195,6 +195,18 @@
       </div>
     </div>
   </div>
+  <!-- 百度统计 -->
+  <div style="display: none;">
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?f3b83c21deaa6cfaa74e7ade7c0418d0";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+  </div>
 </body>
 </html>
 
