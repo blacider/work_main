@@ -14,6 +14,9 @@ $(document).ready(function(){
     },function(){
     $(".rightd").attr("src","/static/img/mod/login/right.png");
   });
+  $(".modal-header").find('button').click(function(event) {
+      $(".modal").modal("hide");
+  });
   $(".login-button").click(function() {
     __IfForget = false;
     var userId = $("#login-text").val();
