@@ -335,3 +335,6 @@ function getErrorDom(str) {
 function clearErrorLine() {
     $('.error-login').remove();
 }
+function toLoin() {
+    $("#main .login-box .account").focus();
+}

@@ -30,7 +30,7 @@
                     <li><a href="/">Blog</a></li>
                     <li><a href="/">直接体验</a></li>
                     <li><a href="#login" data-toggle="modal">登录</a></li>
-                    <li class="register"><a href="/">企业注册</a></li>
+                    <li class="register"><a href="javascript:void(0)" onclick="toLoin()">企业注册</a></li>
                 </ul>
             </div>
         </div>
