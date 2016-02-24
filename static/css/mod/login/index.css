@@ -48,6 +48,7 @@ body {
 }
 #header .menu li a:hover {
     font-weight: bold;
+    text-decoration:none;
 }
 #header .menu li.register a {
     padding: 6px 8px;

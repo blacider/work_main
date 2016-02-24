@@ -81,10 +81,8 @@ function checkUser() {
         userLine.append(getErrorDom("请输入正确的邮箱/手机号码"));
     } else {
         if (user == "18888888888" || user == "1@1.com") {
-            $("#login").modal('hide');
             $("#first-login").modal('show');
         } else {
-            $("#login").modal('hide');
             $("#password").modal('show');
         }
     }
