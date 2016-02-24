@@ -134,6 +134,9 @@ function isEmail( str ){
     if(myReg.test(str)) return true; 
     return false; 
 }
+function focusLine(line) {
+    line.find('input').focus();
+}
 function checkUser() {
     clearErrorLine();
     var user = $("#login input[name='user']").val();
@@ -141,8 +144,10 @@ function checkUser() {
     var userLine = $("#login").find('.user-line');
     if (user == "") {
         userLine.append(getErrorDom("请输入用户名"));
+        focusLine(userLine);
     } else if (!isEmail(user) && !isPhone(user)) {
         userLine.append(getErrorDom("请输入正确的邮箱/手机号码"));
+        focusLine(userLine);
     } else {
         if (user == "18888888888" || user == "1@1.com") {
             $("#first-login").modal('show');
@@ -189,9 +194,11 @@ function checkPhone() {
     var code = $("#phone-code").find('input[name="code"]').val();
     if (code == undefined || code == "") {
         codeLine.append(getErrorDom("请输入验证码"));
+        focusLine(codeLine);
         return;
     } else if (pass == undefined || pass == "") {
         passLine.append(getErrorDom("请输入密码"));
+        focusLine(passLine);
         return;
     }
     if (!__IfForget) {
@@ -206,14 +213,17 @@ function checkPass() {
     var pass = $("#password").find('input[name="password"]').val();
     if (pass == "") {
         passLine.append(getErrorDom("请输入密码"));
+        focusLine(passLine);
         return;
       } else if (pass.length < 8) {
         passLine.append(getErrorDom("设置密码规范错误"));
+        focusLine(passLine);
         return;
       } else {
         var reg = /^([a-zA-Z]+|[0-9]+)$/;
         if (reg.test(pass)) {
             passLine.append(getErrorDom("设置密码规范错误"));
+            focusLine(passLine);
             return;
         }
       }
@@ -226,9 +236,11 @@ function checkEmail() {
     var code = $("#email-code").find('input[name="code"]').val();
     if (code == undefined || code == "") {
         codeLine.append(getErrorDom("请输入验证码"));
+        focusLine(codeLine);
         return;
     } else if (pass == undefined || pass == "") {
         passLine.append(getErrorDom("请输入密码"));
+        focusLine(passLine);
         return;
     }
     if (!__IfForget) {
@@ -249,15 +261,19 @@ function checkAfterEmail() {
     var email = $("#email-after").find('input[name="phone"]').val();
     if (com == "") {
         comLine.append(getErrorDom("请输入公司"));
+        focusLine(comLine);
         return;
     } else if (name == "") {
         nameLine.append(getErrorDom("请输入姓名"));
+        focusLine(nameLine);
         return;
     } else if (level == "") {
         levelLine.append(getErrorDom("请输入职位"));
+        focusLine(levelLine);
         return;
     } else if (email == "") {
         emailLine.append(getErrorDom("请输入手机"));
+        focusLine(emailLine);
         return;
     }
 }
@@ -273,15 +289,19 @@ function checkAfterPhone() {
     var email = $("#phone-after").find('input[name="email"]').val();
     if (com == "") {
         comLine.append(getErrorDom("请输入公司"));
+        focusLine(comLine);
         return;
     } else if (name == "") {
         nameLine.append(getErrorDom("请输入姓名"));
+        focusLine(nameLine);
         return;
     } else if (level == "") {
         levelLine.append(getErrorDom("请输入职位"));
+        focusLine(levelLine);
         return;
     } else if (email == "") {
         emailLine.append(getErrorDom("请输入邮箱"));
+        focusLine(emailLine);
         return;
     }
 }
@@ -292,6 +312,7 @@ function checkFirstPass() {
     var pass = $("#first-login").find('input[name="password"]').val();
     if (pass == undefined || pass == "") {
         passLine.append(getErrorDom("请输入密码"));
+        focusLine(passLine);
         return;
     }
     if (isEmail(userId)) {
@@ -309,6 +330,7 @@ function checkFirstEmailCode() {
     var code = $("#first-email").find('input[name="code"]').val();
     if (code == undefined || code == "") {
         codeLine.append(getErrorDom("请输入验证码"));
+        focusLine(codeLine);
         return;
     }
 }
@@ -318,6 +340,7 @@ function checkFirstPhoneCode() {
     var code = $("#first-phone").find('input[name="code"]').val();
     if (code == undefined || code == "") {
         codeLine.append(getErrorDom("请输入验证码"));
+        focusLine(codeLine);
         return;
     }
 }
