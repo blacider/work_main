@@ -25,13 +25,13 @@ $(document).ready(function(){
             $("#email-code").modal('show');
             $(".phone-text").text(userId);
             time($("#email-code").find('.timer'), 60);
-            $("#email-code").find("input[name='pass']").attr('placeholder', '设置密码');
+            $("#email-code").find("input[name='password']").attr('placeholder', '设置密码');
         }
         if (isPhone(userId)) {
             $("#phone-code").modal('show');
             $(".phone-text").text(userId);
             time($("#phone-code").find('.timer'), 60);
-            $("#phone-code").find("input[name='pass']").attr('placeholder', '设置密码');
+            $("#phone-code").find("input[name='password']").attr('placeholder', '设置密码');
         }
     }
   });
@@ -89,20 +89,6 @@ $(document).ready(function(){
       var line = $(this).parent().parent();
       if (com == "") {
         line.append(getErrorDom("请输入手机"));
-      }
-  });
-  $(".modal input[name='pass']").blur(function(event) {
-      var pass = this.value;
-      var passLine = $(this).parent().parent();
-      if (pass == "") {
-        passLine.append(getErrorDom("请输入密码"));
-      } else if (pass.length < 8) {
-        passLine.append(getErrorDom("设置密码规范错误"));
-      } else {
-        var reg = /^([a-zA-Z]+|[0-9]+)$/;
-        if (reg.test(pass)) {
-            passLine.append(getErrorDom("设置密码规范错误"));
-        }
       }
   });
   $(".modal input[name='code']").blur(function(event) {
@@ -167,14 +153,14 @@ function forgetPass() {
     if (isEmail(userId)) {
         $("#email-code").modal('show');
         $(".phone-text").text(userId);
-        $("#email-code").find("input[name='pass']").attr('placeholder', '设置新密码');
+        $("#email-code").find("input[name='password']").attr('placeholder', '设置新密码');
         time($("#email-code").find('.timer'), 60);
     }
     if (isPhone(userId)) {
         $("#phone-code").modal('show');
         $(".phone-text").text(userId);
         time($("#phone-code").find('.timer'), 60);
-        $("#phone-code").find("input[name='pass']").attr('placeholder', '设置新密码');
+        $("#phone-code").find("input[name='password']").attr('placeholder', '设置新密码');
     }
 }
 function changeVisibility(dom) {
@@ -194,7 +180,7 @@ function trim(str) {
 function checkPhone() {
     clearErrorLine();
     var passLine = $("#phone-code").find('.pass-line');
-    var pass = $("#phone-code").find('input[name="pass"]').val();
+    var pass = $("#phone-code").find('input[name="password"]').val();
     var codeLine = $("#phone-code").find('.code-line');
     var code = $("#phone-code").find('input[name="code"]').val();
     if (code == undefined || code == "") {
@@ -222,7 +208,7 @@ function checkPass() {
 function checkEmail() {
     clearErrorLine();
     var passLine = $("#email-code").find('.pass-line');
-    var pass = $("#email-code").find('input[name="pass"]').val();
+    var pass = $("#email-code").find('input[name="password"]').val();
     var codeLine = $("#email-code").find('.code-line');
     var code = $("#email-code").find('input[name="code"]').val();
     if (code == undefined || code == "") {
@@ -290,7 +276,7 @@ function checkFirstPass() {
     clearErrorLine();
     var userId = __UserId;
     var passLine = $("#first-login").find('.pass-line');
-    var pass = $("#first-login").find('input[name="pass"]').val();
+    var pass = $("#first-login").find('input[name="password"]').val();
     if (pass == undefined || pass == "") {
         passLine.append(getErrorDom("请输入密码"));
         return;

@@ -13,6 +13,10 @@
 .first_content {
     top:95px;
 }
+.modal input {
+    z-index: 100;
+    position: relative;
+}
 img ,button{
     outline: none;
 }
