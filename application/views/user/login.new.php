@@ -396,7 +396,7 @@
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input name="pass" type="password" placeholder="输入密码">
+                                    <input name="pass" type="password" placeholder="设置密码">
                                     <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36" onclick="changeVisibility($(this).parent())">
                                 </span>
                             </div>
@@ -438,7 +438,7 @@
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input name="pass" type="password" placeholder="输入密码">
+                                    <input name="pass" type="password" placeholder="设置密码">
                                     <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36" onclick="changeVisibility($(this).parent())">
                                 </span>
                             </div>

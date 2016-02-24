@@ -22,11 +22,13 @@ $(document).ready(function(){
             $("#email-code").modal('show');
             $(".phone-text").text(userId);
             time($("#email-code").find('.timer'), 60);
+            $("#email-code").find("input[name='pass']").attr('placeholder', '设置密码');
         }
         if (isPhone(userId)) {
             $("#phone-code").modal('show');
             $(".phone-text").text(userId);
             time($("#phone-code").find('.timer'), 60);
+            $("#phone-code").find("input[name='pass']").attr('placeholder', '设置密码');
         }
     }
   });
@@ -90,12 +92,14 @@ function forgetPass() {
     if (isEmail(userId)) {
         $("#email-code").modal('show');
         $(".phone-text").text(userId);
+        $("#email-code").find("input[name='pass']").attr('placeholder', '设置新密码');
         time($("#email-code").find('.timer'), 60);
     }
     if (isPhone(userId)) {
         $("#phone-code").modal('show');
         $(".phone-text").text(userId);
         time($("#phone-code").find('.timer'), 60);
+        $("#phone-code").find("input[name='pass']").attr('placeholder', '设置新密码');
     }
 }
 function changeVisibility(dom) {
