@@ -104,7 +104,7 @@ body {
 }
 #main .login-box .login:hover,
 #main .login-box .login:active {
-    border-bottom: none;
+    border-bottom: 2px solid #ff575b;
 }
 @media screen and (min-width: 950px) {
     #header .wrap-inner {
