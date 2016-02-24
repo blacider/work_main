@@ -189,4 +189,6 @@ img ,button{
 #phone-after .error-login, #email-after .error-login {
     top: -9px;
 }
-
+#main .login-box .error-login {
+    top: 7px;
+}

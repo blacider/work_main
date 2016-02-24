@@ -18,6 +18,7 @@ $(document).ready(function(){
       $(".modal").modal("hide");
   });
   $(".login-button").click(function() {
+    clearErrorLine();
     __IfForget = false;
     var userId = $("#login-text").val();
     if (userId != null && userId != "") {
@@ -26,13 +27,16 @@ $(document).ready(function(){
             $(".phone-text").text(userId);
             time($("#email-code").find('.timer'), 60);
             $("#email-code").find("input[name='password']").attr('placeholder', '设置密码');
-        }
-        if (isPhone(userId)) {
+        } else if (isPhone(userId)) {
             $("#phone-code").modal('show');
             $(".phone-text").text(userId);
             time($("#phone-code").find('.timer'), 60);
             $("#phone-code").find("input[name='password']").attr('placeholder', '设置密码');
+        } else {
+            $(this).parent().append(getErrorDom("格式不正确"));
         }
+    } else {
+        $(this).parent().append(getErrorDom("请输入邮箱/手机号码"));
     }
   });
   $(".timer").click(function(event) {
