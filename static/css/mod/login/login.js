@@ -198,12 +198,21 @@ function checkPhone() {
 }
 function checkPass() {
     clearErrorLine();
-    var codeLine = $("#password").find('.pass-line');
-    var code = $("#password").find('input[name="password"]').val();
-    if (code == undefined || code == "") {
-        codeLine.append(getErrorDom("请输入密码"));
+    var passLine = $("#password").find('.pass-line');
+    var pass = $("#password").find('input[name="password"]').val();
+    if (pass == "") {
+        passLine.append(getErrorDom("请输入密码"));
         return;
-    }
+      } else if (pass.length < 8) {
+        passLine.append(getErrorDom("设置密码规范错误"));
+        return;
+      } else {
+        var reg = /^([a-zA-Z]+|[0-9]+)$/;
+        if (reg.test(pass)) {
+            passLine.append(getErrorDom("设置密码规范错误"));
+            return;
+        }
+      }
 }
 function checkEmail() {
     clearErrorLine();
