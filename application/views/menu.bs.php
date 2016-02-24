@@ -361,7 +361,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     <li class="hsub" id="category">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-tags"></i>
-        <span class="menu-text"> 账套和标签 </span>
+        <span class="menu-text"> 账套设置 </span>
 
         <b class="arrow fa fa-angle-down"></b>
     </a>
@@ -374,11 +374,6 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 
         <li class="hsub" id="cexport">
         <a href="<?php echo base_url('category/cexport'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 导入账套 </a>
-        <b class="arrow"></b>
-        </li>
-
-        <li class="hsub" id="show_expense">
-        <a href="<?php echo base_url('category/show_expense'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 费用承担对象管理</a>
         <b class="arrow"></b>
         </li>
 
