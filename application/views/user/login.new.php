@@ -183,7 +183,7 @@
                                 
                                 <span class="input-line">
                                     <input name="user" type="text" placeholder="邮箱／手机号码">
-                                    <img class="action-icon" src="/static/img/mod/login/right-sm.png" alt="right" height="26" width="28" onclick="checkUser()">
+                                    <img class="action-icon right-sm" src="/static/img/mod/login/right-sm.png" alt="right" height="26" width="28" onclick="checkUser()">
                                 </span>
                             </div>
                             <div class="form-line bottom-line relative-10">

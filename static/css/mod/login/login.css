@@ -192,3 +192,9 @@ img ,button{
 #main .login-box .error-login {
     top: 7px;
 }
+.right-sm {
+    transition: all 300ms ease;
+}
+.right-sm:hover {
+    transform: translateX(10px);
+}
