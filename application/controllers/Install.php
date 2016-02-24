@@ -15,13 +15,6 @@ class Install extends REIM_Controller {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return redirect('install');
         $invites = array();
-        /*
-        $_invites = $this->user->get_invites();
-        if($_invites['status'] > 0)
-        {
-            $invites = $_invites['data'];
-        }
-         */
         if ($this->agent->is_mobile('ipad'))
         {
             $info = $this->app_model->find_online(0);
@@ -50,16 +43,21 @@ class Install extends REIM_Controller {
 
     public function index(){
         $info = $this->app_model->find_online(0);
-        var_dump($info);
+        $platform = 'ios';
         if ($this->agent->is_mobile('ipad') || $this->agent->is_mobile('iphone'))
         {
             $url = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/pub/xreim';
+            $platform = 'ios';
         }
-        else if ($this->agent->is_mobile())
+        else if($this->agent->is_mobile('android'))
         {
             $url = "http://d.yunbaoxiao.com/android/" . $info['version'] . "/reim.apk";
+            $platform = 'android';
+        } else { //pc
+            $url = '';
+            $platform = 'pc';
         }
-        $this->load->view('install', array('url' => $url,'info' => $info);
+        $this->load->view('install', array('url' => $url, 'info' => $info, 'platform' => $platform));
     }
 
     public function wx(){

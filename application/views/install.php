@@ -13,16 +13,17 @@
     <link rel="stylesheet" type="text/css" href="/static/wx/css/index.css">
     <script type="text/javascript" src="/static/wx/js/jquery.min.js"></script>
     <script type="text/javascript" src="/static/wx/js/index.js"></script>
-<script language="javascript">
+<script>
     var __BASEURL = "<?php echo base_url(); ?>";
+    var platform = "<?php echo $platform; ?>";
 </script>
 </head>
 <body>
   <div id="winxin">
     <div class="triangle-up"></div>
     <div class="weixin-content">
-      <h2 class="ios safari">请在菜单中选择：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp使用Safari打开</h2>
-      <h2 class="android explore">请在菜单中选择:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp使用浏览器打开</h2>
+      <h2 class="ios safari">请在菜单中选择：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用Safari打开</h2>
+      <h2 class="android explore">请在菜单中选择: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用浏览器打开</h2>
     </div>
   </div>
   <div class="header">
@@ -34,24 +35,30 @@
   <div class="block1" style="min-height:500px;">
     <div class="main-block">
         <div style="width:100%">
-            <img style="width:100%" src="http://www.yunbaoxiao.com/img/text_title_42@2x.png">
+            <img style="width:100%" src="/static/img/text_title_42@2x.png">
         </div>
-      <div id="download" class="android" style="" onclick="download()">
+      <?php
+        if($platform == 'android') {
+      ?>
+      <a href="<?php echo $url ?>" id="download" class="android" style="" onclick="download()">
         <div class="content">
           <div class="android android-img">下载安装</div>
         </div>
-      </div>
-      <div id="download" class="ios" style="" onclick="download()">
+      </a>
+      <?php } else if($platform =='ios') { ?>
+      <a href="<?php echo $url ?>" id="download" class="ios" style="" onclick="download()">
         <div class="content">
           <div class="ios ios-img">App Store 下载</div>
         </div>
-      </div>
+      </a>
+      <?php } else { ?>
       <div id="download pc" style="" onclick="download()">
             <div class="pc">
                 <img src="/static/img/download.png" style="width:160px;height:160px;">
             <div class="">扫描即可下载 iOS、Android 客户端</div>
         </div>
       </div>
+      <?php } ?>
     </div>
   </div>
   <div class="footer">
