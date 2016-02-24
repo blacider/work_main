@@ -66,29 +66,9 @@ function isIos() {
 	var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 	if (isiOS) return true;
 	else return false;
-}
-function download() {
-	if(isWeixin()) {
-		    $('#winxin').css('display', 'block');
-		    setTimeout(function(){
-		    	$('.block1')[0].onclick = function() {
-		    	    $('#winxin').css('display', 'none');
-		    	    $('.block1')[0].onclick = function() {
-		    	    	return;
-		    	    }
-		        }
-		    },50);
-	} else {
-		if(!isIos()) {
-            window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/1.1.1/reim.apk';
-			_hmt.push('_traceEvent', 'install_page_download', getParameterByName('fr'), 'ios');
-			_hmt.push(['_setCustomVar', 2, 'install_page_ios_download', getParameterByName('fr'), 2]);
-		} else {
-			window.location.href = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.111.plist';
-			_hmt.push('_traceEvent', 'install_page_download', getParameterByName('fr'), 'android_other');
-			_hmt.push(['_setCustomVar', 2, 'install_page_android_other_download', getParameterByName('fr'), 2]);
-		}
-	}
+};
+function download(e) {
+	
 }
 $(document).ready(function() {
 	/* Act on the event */
@@ -116,4 +96,35 @@ $(document).ready(function() {
 		$('.pc').show();
     }
 	$('body').scrollTop(0);
+
+	$('#download').on('click', function (e) {
+		var href = $(e.currentTarget).data('href');
+		if(isWeixin()) {
+		    $('#winxin').css('display', 'block');
+		    setTimeout(function(){
+		    	$('.block1')[0].onclick = function() {
+		    	    $('#winxin').css('display', 'none');
+		    	    $('.block1')[0].onclick = function() {
+		    	    	return;
+		    	    }
+		        }
+		    },50);
+		} else {
+			if(isIos()) {
+	            setTimeout(function (argument) {
+					window.location.href = href;
+				}, 100)
+				_hmt.push('_traceEvent', 'install_page_download', getParameterByName('fr'), 'ios');
+				_hmt.push(['_setCustomVar', 2, 'install_page_ios_download', getParameterByName('fr'), 2]);
+			} else {
+				
+				_hmt.push('_traceEvent', 'install_page_download', getParameterByName('fr'), 'android_other');
+				_hmt.push(['_setCustomVar', 2, 'install_page_android_other_download', getParameterByName('fr'), 2]);
+				setTimeout(function (argument) {
+					window.location.href = href;
+				}, 100)
+			}
+		}
+	})
+
 });

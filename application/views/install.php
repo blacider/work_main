@@ -40,19 +40,19 @@
       <?php
         if($platform == 'android') {
       ?>
-      <a href="<?php echo $url ?>" id="download" class="android" style="" onclick="download()">
+      <a data-href="<?php echo $url ?>" id="download" class="android" >
         <div class="content">
           <div class="android android-img">下载安装</div>
         </div>
       </a>
       <?php } else if($platform =='ios') { ?>
-      <a href="<?php echo $url ?>" id="download" class="ios" style="" onclick="download()">
+      <a data-href="<?php echo $url ?>" id="download" class="ios" >
         <div class="content">
           <div class="ios ios-img">App Store 下载</div>
         </div>
       </a>
       <?php } else { ?>
-      <div id="download pc" style="" onclick="download()">
+      <div id="download pc">
             <div class="pc">
                 <img src="/static/img/download.png" style="width:160px;height:160px;">
             <div class="">扫描即可下载 iOS、Android 客户端</div>
