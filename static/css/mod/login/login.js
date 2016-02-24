@@ -38,6 +38,80 @@ $(document).ready(function(){
   $(".timer").click(function(event) {
       time($(this), 60);
   });
+
+  $(".modal input[name='user']").blur(function(event) {
+      checkUser();
+  });
+  $(".modal input[name='password']").blur(function(event) {
+      var pass = this.value;
+      var passLine = $(this).parent().parent();
+      if (pass == "") {
+        passLine.append(getErrorDom("请输入密码"));
+      } else if (pass.length < 8) {
+        passLine.append(getErrorDom("设置密码规范错误"));
+      } else {
+        var reg = /^([a-zA-Z]+|[0-9]+)$/;
+        if (reg.test(pass)) {
+            passLine.append(getErrorDom("设置密码规范错误"));
+        }
+      }
+  });
+  $(".modal input[name='com']").blur(function(event) {
+      var com = this.value;
+      var line = $(this).parent().parent();
+      if (com == "") {
+        line.append(getErrorDom("请输入公司名称"))；
+      }
+  });
+  $(".modal input[name='name']").blur(function(event) {
+      var com = this.value;
+      var line = $(this).parent().parent();
+      if (com == "") {
+        line.append(getErrorDom("请输入姓名"))；
+      }
+  });
+  $(".modal input[name='level']").blur(function(event) {
+      var com = this.value;
+      var line = $(this).parent().parent();
+      if (com == "") {
+        line.append(getErrorDom("请输入职位"))；
+      }
+  });
+  $(".modal input[name='email']").blur(function(event) {
+      var com = this.value;
+      var line = $(this).parent().parent();
+      if (com == "") {
+        line.append(getErrorDom("请输入邮箱"))；
+      }
+  });
+  $(".modal input[name='phone']").blur(function(event) {
+      var com = this.value;
+      var line = $(this).parent().parent();
+      if (com == "") {
+        line.append(getErrorDom("请输入手机"))；
+      }
+  });
+  $(".modal input[name='pass']").blur(function(event) {
+      var pass = this.value;
+      var passLine = $(this).parent().parent();
+      if (pass == "") {
+        passLine.append(getErrorDom("请输入密码"));
+      } else if (pass.length < 8) {
+        passLine.append(getErrorDom("设置密码规范错误"));
+      } else {
+        var reg = /^([a-zA-Z]+|[0-9]+)$/;
+        if (reg.test(pass)) {
+            passLine.append(getErrorDom("设置密码规范错误"));
+        }
+      }
+  });
+  $(".modal input[name='code']").blur(function(event) {
+      var code = this.value;
+      var codeLine = $(this).parent().parent();
+      if (code == "") {
+        codeLine.append(getErrorDom("请输入验证码"));
+      }
+  });
 });
 var __UserId, __IfForget = false;
 function time(dom, counter) {
