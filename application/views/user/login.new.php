@@ -422,7 +422,7 @@
                             <div class="form-line relative-10">
                                 <p class="text">验证码已发送至 <span class="phone-text">niurenpeng@niurenpeng.com</span></p>
                             </div>
-                            <div class="form-line" style="margin-top: 44px;">
+                            <div class="form-line code-line" style="margin-top: 44px;">
                                 <span class="line-icon">
                                     <img width="27" src="/static/img/mod/login/email.png" height="22" alt="pass" style="margin-top: 4px">
                                 </span>
@@ -432,9 +432,9 @@
                                     <button class="timer">59S后可重发</button>
                                 </span>
                             </div>
-                            <div class="form-line" style="margin-top: 38px;">
+                            <div id="email-code-pass-line" class="form-line pass-line" style="margin-top: 38px;">
                                 <span class="line-icon">
-                                    <img width="28" src="/static/img/mod/login/pass_icon.png" height="31" alt="pass" style="margin-top: -5px">
+                                    <img width="28" src="/static/img/mod/login/pass_icon.png" height="31" alt="pass" style="margin-top: 10px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -466,40 +466,40 @@
                     </div>
                     <div class="modal-body" style="position: relative;">
                         <div class="pass_content">
-                            <div class="form-line" style="margin-top: 10px;">
+                            <div class="form-line com-line" style="margin-top: 10px;">
                                 <span class="line-icon">
                                     <img width="23" src="/static/img/mod/login/home.png" height="26" alt="pass" style="margin-top: 1px">
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input name="" class="full-input" type="text" placeholder="公司名称">
+                                    <input name="com" class="full-input" type="text" placeholder="公司名称">
                                 </span>
                             </div>
-                            <div class="form-line" style="margin-top: 38px;">
+                            <div class="form-line name-line" style="margin-top: 38px;">
                                 <span class="line-icon">
                                     <img width="27" src="/static/img/mod/login/icon_user.png" height="30" alt="pass" style="margin-top: -3px">
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input name="" class="full-input" type="text" placeholder="姓名">
+                                    <input name="name" class="full-input" type="text" placeholder="姓名">
                                 </span>
                             </div>
-                            <div class="form-line" style="margin-top: 38px;">
+                            <div class="form-line level-line" style="margin-top: 38px;">
                                 <span class="line-icon">
                                     <img width="35" src="/static/img/mod/login/level.png" height="30" alt="pass" style="margin-top: -3px">
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input name="" class="full-input" type="text" placeholder="职位">
+                                    <input name="level" class="full-input" type="text" placeholder="职位">
                                 </span>
                             </div>
-                            <div class="form-line" style="margin-top: 38px;">
+                            <div class="form-line email-line" style="margin-top: 38px;">
                                 <span class="line-icon">
                                     <img width="28" src="/static/img/mod/login/email.png" height="23" alt="pass" style="margin-top: 4px">
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input name="" class="full-input" type="text" placeholder="邮箱">
+                                    <input name="email" class="full-input" type="text" placeholder="邮箱">
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
@@ -522,40 +522,40 @@
                     </div>
                     <div class="modal-body" style="position: relative;">
                         <div class="pass_content">
-                            <div class="form-line" style="margin-top: 10px;">
+                            <div class="form-line com-line" style="margin-top: 10px;">
                                 <span class="line-icon">
                                     <img width="23" src="/static/img/mod/login/home.png" height="26" alt="pass" style="margin-top: 1px">
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input name="" class="full-input" type="text" placeholder="公司名称">
+                                    <input name="com" class="full-input" type="text" placeholder="公司名称">
                                 </span>
                             </div>
-                            <div class="form-line" style="margin-top: 38px;">
+                            <div class="form-line name-line" style="margin-top: 38px;">
                                 <span class="line-icon">
                                     <img width="27" src="/static/img/mod/login/icon_user.png" height="30" alt="pass" style="margin-top: -3px">
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input name="" class="full-input" type="text" placeholder="姓名">
+                                    <input name="name" class="full-input" type="text" placeholder="姓名">
                                 </span>
                             </div>
-                            <div class="form-line" style="margin-top: 38px;">
+                            <div class="form-line level-line" style="margin-top: 38px;">
                                 <span class="line-icon">
                                     <img width="35" src="/static/img/mod/login/level.png" height="30" alt="pass" style="margin-top: -3px">
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input name="" class="full-input" type="text" placeholder="职位">
+                                    <input name="level" class="full-input" type="text" placeholder="职位">
                                 </span>
                             </div>
-                            <div class="form-line" style="margin-top: 38px;">
+                            <div class="form-line phone-line" style="margin-top: 38px;">
                                 <span class="line-icon">
                                     <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: -7px">
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input name="" class="full-input" type="text" placeholder="手机">
+                                    <input name="phone" class="full-input" type="text" placeholder="手机">
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">

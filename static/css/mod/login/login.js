@@ -145,6 +145,20 @@ function checkPass() {
 }
 function checkEmail() {
     clearErrorLine();
+    var ifError = false;
+    var passLine = $("#email-code").find('.pass-line');
+    var pass = $("#email-code").find('input[name="pass"]').val();
+    var codeLine = $("#email-code").find('.code-line');
+    var code = $("#email-code").find('input[name="code"]').val();
+    if (pass == undefined || pass == "") {
+        passLine.append(getErrorDom("请输入密码"));
+        ifError = true;
+    }
+    if (code == undefined || code == "") {
+        codeLine.append(getErrorDom("请输入验证码"));
+        ifError = true;
+    }
+    if (ifError) {return;}
     if (!__IfForget) {
         $("#email-after").modal('show');
     } else {
@@ -153,9 +167,61 @@ function checkEmail() {
 }
 function checkAfterEmail() {
     clearErrorLine();
+    var ifError = false;
+    var comLine = $("#email-after").find('.com-line');
+    var com = $("#email-after").find('input[name="com"]').val();
+    var nameLine = $("#email-after").find('.name-line');
+    var name = $("#email-after").find('input[name="name"]').val();
+    var levelLine = $("#email-after").find('.level-line');
+    var level = $("#email-after").find('input[name="level"]').val();
+    var emailLine = $("#email-after").find('.phone-line');
+    var email = $("#email-after").find('input[name="phone"]').val();
+    if (com == "") {
+        ifError = true;
+        comLine.append(getErrorDom("请输入公司"));
+    }
+    if (name == "") {
+        ifError = true;
+        nameLine.append(getErrorDom("请输入姓名"));
+    }
+    if (level == "") {
+        ifError = true;
+        levelLine.append(getErrorDom("请输入职位"));
+    }
+    if (email == "") {
+        ifError = true;
+        emailLine.append(getErrorDom("请输入手机"));
+    }
+    if (ifError) {return;}
 }
 function checkAfterPhone() {
     clearErrorLine();
+    var ifError = false;
+    var comLine = $("#phone-after").find('.com-line');
+    var com = $("#phone-after").find('input[name="com"]').val();
+    var nameLine = $("#phone-after").find('.name-line');
+    var name = $("#phone-after").find('input[name="name"]').val();
+    var levelLine = $("#phone-after").find('.level-line');
+    var level = $("#phone-after").find('input[name="level"]').val();
+    var emailLine = $("#phone-after").find('.email-line');
+    var email = $("#phone-after").find('input[name="email"]').val();
+    if (com == "") {
+        ifError = true;
+        comLine.append(getErrorDom("请输入公司"));
+    }
+    if (name == "") {
+        ifError = true;
+        nameLine.append(getErrorDom("请输入姓名"));
+    }
+    if (level == "") {
+        ifError = true;
+        levelLine.append(getErrorDom("请输入职位"));
+    }
+    if (email == "") {
+        ifError = true;
+        emailLine.append(getErrorDom("请输入邮箱"));
+    }
+    if (ifError) {return;}
 }
 function checkFirstPass() {
     clearErrorLine();

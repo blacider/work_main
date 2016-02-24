@@ -173,12 +173,14 @@ img ,button{
 #password .error-login {
     top: 2px;
 }
-#phone-code .error-login {
+#phone-code .error-login,#email-code .error-login {
     top: -9px;
 }
-#phone-code-pass-line .error-login {
+#phone-code-pass-line .error-login, #email-code-pass-line .error-login {
     top: 5px;
 }
 
-
+#phone-after .error-login, #email-after .error-login {
+    top: -9px;
+}
 
