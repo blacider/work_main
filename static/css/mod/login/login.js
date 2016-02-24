@@ -60,35 +60,35 @@ $(document).ready(function(){
       var com = this.value;
       var line = $(this).parent().parent();
       if (com == "") {
-        line.append(getErrorDom("请输入公司名称"))；
+        line.append(getErrorDom("请输入公司名称"));
       }
   });
   $(".modal input[name='name']").blur(function(event) {
       var com = this.value;
       var line = $(this).parent().parent();
       if (com == "") {
-        line.append(getErrorDom("请输入姓名"))；
+        line.append(getErrorDom("请输入姓名"));
       }
   });
   $(".modal input[name='level']").blur(function(event) {
       var com = this.value;
       var line = $(this).parent().parent();
       if (com == "") {
-        line.append(getErrorDom("请输入职位"))；
+        line.append(getErrorDom("请输入职位"));
       }
   });
   $(".modal input[name='email']").blur(function(event) {
       var com = this.value;
       var line = $(this).parent().parent();
       if (com == "") {
-        line.append(getErrorDom("请输入邮箱"))；
+        line.append(getErrorDom("请输入邮箱"));
       }
   });
   $(".modal input[name='phone']").blur(function(event) {
       var com = this.value;
       var line = $(this).parent().parent();
       if (com == "") {
-        line.append(getErrorDom("请输入手机"))；
+        line.append(getErrorDom("请输入手机"));
       }
   });
   $(".modal input[name='pass']").blur(function(event) {
