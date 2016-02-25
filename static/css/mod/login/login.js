@@ -23,11 +23,23 @@ $(document).ready(function(){
     var userId = $("#login-text").val();
     if (userId != null && userId != "") {
         if (isEmail(userId)) {
+            Utils.api('/register/getvcode/email', {
+                method: "post",
+                data: {
+                    email: userId
+                }
+            });
             $("#email-code").modal('show');
             $(".phone-text").text(userId);
             time($("#email-code").find('.timer'), 60);
             $("#email-code").find("input[name='password']").attr('placeholder', '设置密码');
         } else if (isPhone(userId)) {
+            Utils.api('/register/getvcode/phone', {
+                method: "post",
+                data: {
+                    phone: userId
+                }
+            });
             $("#phone-code").modal('show');
             $(".phone-text").text(userId);
             time($("#phone-code").find('.timer'), 60);
@@ -212,7 +224,7 @@ function checkPass() {
     var passLine = $("#password").find('.pass-line');
     var pass = $("#password").find('input[name="password"]').val();
     if (pass == "") {
-        passLine.append(getErrorDom("请输入密码"));
+        passLine.append( Dom("请输入密码"));
         focusLine(passLine);
         return;
       } else if (pass.length < 8) {
