@@ -195,11 +195,38 @@ function checkUser() {
         userLine.append(getErrorDom("请输入正确的邮箱/手机号码"));
         focusLine(userLine);
     } else {
-        if (user == "18888888888" || user == "1@1.com") {
-            $("#first-login").modal('show');
+        if (isEmail(user)) {
+            Utils.api('/login/check_user/email', {
+                method: "post",
+                data: {
+                    email:user
+                }
+            }).done(function (rs) {
+                console.log(rs);
+                if (rs["code"]) {
+                } else {
+                    userLine.append(getErrorDom("用户名错误"));
+                }
+            });
         } else {
-            $("#password").modal('show');
+            Utils.api('/login/check_user/phone', {
+                method: "post",
+                data: {
+                    phone:user
+                }
+            }).done(function (rs) {
+                console.log(rs);
+                if (rs["code"]) {
+                } else {
+                    userLine.append(getErrorDom("用户名错误"));
+                }
+            });
         }
+        //if (user == "18888888888" || user == "1@1.com") {
+          //  $("#first-login").modal('show');
+        //} else {
+          //  $("#password").modal('show');
+        //}
     }
 }
 function forgetPass() {
@@ -376,10 +403,10 @@ function checkAfterEmail() {
                 phone:email
         }
     }).done(function (rs) {
-        if (rs["code"]) {
+        if (rs["status"]) {
             registerSuccess();
         } else {
-            comLine.append(getErrorDom(rs["data"]["msg"]));
+            comLine.append(getErrorDom("错误"));
         }
     });
 }
@@ -425,10 +452,10 @@ function checkAfterPhone() {
                 email:email
         }
     }).done(function (rs) {
-        if (rs["code"]) {
+        if (rs["status"]) {
             registerSuccess();
         } else {
-            comLine.append(getErrorDom(re["data"]["msg"]));
+            comLine.append(getErrorDom("错误"));
         }
     });
 }
