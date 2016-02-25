@@ -9,6 +9,27 @@ class Login extends REIM_Controller {
         $this->load->library('reim_cipher');
     }
 
+    public function check_user($addr = 'email'){
+        if($addr == 'email'){
+            $user_addr = $this->input->post('email');
+        }
+        else if($addr == 'phone'){
+            $user_addr = $this->input->post('phone');
+        } else {
+            echo json_encode(array('status' => -1, 'msg' => '访问地址错误'));
+            return ;
+        }
+
+        $check_user_back = $this->users->check_user($addr,$user_addr);
+        if ($check_user_back['status'] > 0) {
+            echo json_encode($check_user_back); 
+            return ;
+        }else{
+            echo json_encode(array('status' => -1, 'msg' => '获取信息失败'));
+            return ;
+        } 
+    }
+
     public function join_company()
     {
         $company = $this->input->post('invites');

@@ -8,6 +8,18 @@ class User_Model extends Reim_Model {
         parent::__construct();
     }
 
+    public function check_user($addr = 'email', $user_addr = '')
+    {
+        $url = $this->get_url('register/user'); 
+        $data = array(
+            $addr => $user_addr
+        );
+        $buf = $this->do_Get($url,$data,'');
+        log_message("debug","check_user_back:" . $buf);
+
+        return json_decode($buf);
+    }
+
     public function my_get_jwt($username,$password)
     {
         $jwt = $this->get_jwt($username, $password);
