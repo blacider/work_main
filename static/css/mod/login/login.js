@@ -21,6 +21,7 @@ $(document).ready(function(){
     clearErrorLine();
     __IfForget = false;
     var userId = $("#login-text").val();
+    __UserId = userId;
     if (userId != null && userId != "") {
         if (isEmail(userId)) {
             Utils.api('/register/getvcode/email', {
@@ -52,7 +53,22 @@ $(document).ready(function(){
     }
   });
   $(".timer").click(function(event) {
-      time($(this), 60);
+        if (isEmail(userId)) {
+            Utils.api('/register/getvcode/email', {
+                method: "post",
+                data: {
+                    email: userId
+                }
+            });
+        } else if (isPhone(userId)) {
+            Utils.api('/register/getvcode/phone', {
+                method: "post",
+                data: {
+                    phone: userId
+                }
+            });
+        }
+        time($(this), 60);
   });
 
   $(".modal input[name='user']").blur(function(event) {
