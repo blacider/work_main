@@ -22,6 +22,7 @@ $(document).ready(function(){
     __IfForget = false;
     var userId = $("#login-text").val();
     __UserId = userId;
+    var userLine = $(this).parent();
     if (userId != null && userId != "") {
         if (isEmail(userId)) {
             Utils.api('/register/getvcode/email', {
@@ -29,22 +30,32 @@ $(document).ready(function(){
                 data: {
                     email: userId
                 }
+            }).done(function (rs) {
+                if (rs.code > 0) {
+                    $("#email-code").modal('show');
+                    $(".phone-text").text(userId);
+                    time($("#email-code").find('.timer'), 60);
+                    $("#email-code").find("input[name='password']").attr('placeholder', '设置密码');
+                } else {
+                    userLine.append(getErrorDom(rs['data']['msg']));
+                }
             });
-            $("#email-code").modal('show');
-            $(".phone-text").text(userId);
-            time($("#email-code").find('.timer'), 60);
-            $("#email-code").find("input[name='password']").attr('placeholder', '设置密码');
         } else if (isPhone(userId)) {
             Utils.api('/register/getvcode/phone', {
                 method: "post",
                 data: {
                     phone: userId
                 }
+            }).done(function (rs) {
+                if (rs.code > 0) {
+                    $("#email-code").modal('show');
+                    $(".phone-text").text(userId);
+                    time($("#email-code").find('.timer'), 60);
+                    $("#email-code").find("input[name='password']").attr('placeholder', '设置密码');
+                } else {
+                    userLine.append(getErrorDom(rs['data']['msg']));
+                }
             });
-            $("#phone-code").modal('show');
-            $(".phone-text").text(userId);
-            time($("#phone-code").find('.timer'), 60);
-            $("#phone-code").find("input[name='password']").attr('placeholder', '设置密码');
         } else {
             $(this).parent().append(getErrorDom("格式不正确"));
         }
@@ -53,6 +64,7 @@ $(document).ready(function(){
     }
   });
   $(".timer").click(function(event) {
+        var userId = __UserId;
         if (isEmail(userId)) {
             Utils.api('/register/getvcode/email', {
                 method: "post",
@@ -114,6 +126,8 @@ $(document).ready(function(){
       var line = $(this).parent().parent();
       if (com == "") {
         line.append(getErrorDom("请输入邮箱"));
+      } else if (!isEmail(com)) {
+        line.append(getErrorDom("邮箱格式错误"));
       }
   });
   $(".modal input[name='phone']").blur(function(event) {
@@ -121,7 +135,11 @@ $(document).ready(function(){
       var line = $(this).parent().parent();
       if (com == "") {
         line.append(getErrorDom("请输入手机"));
-      }
+      } if (!isPhone(com)) {
+        line.append(getErrorDom("手机格式错误"));
+        focusLine(line);
+        return;
+    }
   });
   $(".modal input[name='code']").blur(function(event) {
       var code = this.value;
@@ -131,7 +149,7 @@ $(document).ready(function(){
       }
   });
 });
-var __UserId, __IfForget = false;
+var __UserId, __IfForget = false, __vcode, __pass;
 function time(dom, counter) {
     if (counter == 0) {
         dom.removeAttr("disabled");            
@@ -230,7 +248,21 @@ function checkPhone() {
         return;
     }
     if (!__IfForget) {
-        $("#phone-after").modal('show');
+        Utils.api('/register/vcode_verify/phone', {
+                method: "post",
+                data: {
+                    vcode:code,
+                    phone: __UserId
+                }
+            }).done(function (rs) {
+                if (rs["data"]["valid"]) {
+                    $("#phone-after").modal('show');
+                    __vcode = code;
+                    __pass = pass;
+                } else {
+                    codeLine.append(getErrorDom("验证码错误"));
+                }
+            });
     } else {
 
     }
@@ -270,9 +302,34 @@ function checkEmail() {
         passLine.append(getErrorDom("请输入密码"));
         focusLine(passLine);
         return;
+    } else if (pass.length < 8) {
+        passLine.append(getErrorDom("设置密码规范错误"));
+        focusLine(passLine);
+        return;
+    } else {
+        var reg = /^([a-zA-Z]+|[0-9]+)$/;
+        if (reg.test(pass)) {
+            passLine.append(getErrorDom("设置密码规范错误"));
+            focusLine(passLine);
+            return;
+        }
     }
     if (!__IfForget) {
-        $("#email-after").modal('show');
+        Utils.api('/register/vcode_verify/email', {
+                method: "post",
+                data: {
+                    vcode:code,
+                    email: __UserId
+                }
+            }).done(function (rs) {
+                if (rs["data"]["valid"]) {
+                    $("#email-after").modal('show');
+                    __vcode = code;
+                    __pass = pass;
+                } else {
+                    codeLine.append(getErrorDom("验证码错误"));
+                }
+            });
     } else {
         
     }
@@ -303,7 +360,28 @@ function checkAfterEmail() {
         emailLine.append(getErrorDom("请输入手机"));
         focusLine(emailLine);
         return;
+    } else if (!isPhone(email)) {
+        emailLine.append(getErrorDom("手机格式错误"));
+        focusLine(emailLine);
+        return;
     }
+    Utils.api('/register/company_register/email', {
+            method: "post",
+            data: {
+                email:__vcode,
+                password: __pass,
+                company_name:com,
+                name:name,
+                position:level,
+                phone:email
+        }
+    }).done(function (rs) {
+        if (rs["code"]) {
+            registerSuccess();
+        } else {
+            comLine.append(getErrorDom(rs["data"]["msg"]));
+        }
+    });
 }
 function checkAfterPhone() {
     clearErrorLine();
@@ -331,7 +409,28 @@ function checkAfterPhone() {
         emailLine.append(getErrorDom("请输入邮箱"));
         focusLine(emailLine);
         return;
+    } else if (!isEmail(email)) {
+        emailLine.append(getErrorDom("邮箱格式不正确"));
+        focusLine(emailLine);
+        return;
     }
+    Utils.api('/register/company_register/phone', {
+            method: "post",
+            data: {
+                phone:__vcode,
+                password: __pass,
+                company_name:com,
+                name:name,
+                position:level,
+                email:email
+        }
+    }).done(function (rs) {
+        if (rs["code"]) {
+            registerSuccess();
+        } else {
+            comLine.append(getErrorDom(re["data"]["msg"]));
+        }
+    });
 }
 function checkFirstPass() {
     clearErrorLine();
@@ -388,4 +487,8 @@ function clearErrorLine() {
 }
 function toLoin() {
     $("#main .login-box .account").focus();
+}
+function registerSuccess() {
+    //do something
+    $(".modal").modal("hide");
 }
