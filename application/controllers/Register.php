@@ -12,6 +12,28 @@ class Register extends REIM_Controller {
         $this->load->library('user_agent');
     } 
 
+    public function vcode_verify($addr = 'email'){
+        if ($addr == 'email') {
+            $user_addr = $this->input->post('email');
+        } else if($addr == 'phone'){
+            $user_addr = $this->input->post('phone');
+        }else {
+            echo json_encode(array('status' => -1,'msg' => '访问地址错误'));
+            return;
+        }
+        $vcode = $this->input->post('vcode');
+
+        $vcode_verify_back = $this->Register_model->vcode_verify($addr, $user_addr, $vcode);         
+        if ($vcode_verify_back['status'] > 0) {
+            echo json_encode($vcode_verify_back); 
+            return ;
+        } else {
+            echo json_encode(array('status' => -1, 'msg' => '信息验证失败')); 
+            return ; 
+        }
+        
+    }
+
     public function getvcode($addr = 'email'){
         if($addr == 'email')
             $user_addr = $this->input->post('email');
