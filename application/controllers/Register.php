@@ -3,6 +3,7 @@ class Register extends REIM_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('user_model', 'users');
+        $this->load->model('Register_model');
         $this->load->helper('cookie');
         $this->cookie_register_name = 'register_cookie';
         $this->cookie_user = 'name';
@@ -11,6 +12,66 @@ class Register extends REIM_Controller {
         $this->load->library('user_agent');
     } 
 
+    public function getvcode($addr = 'email'){
+        if($addr == 'email')
+            $user_addr = $this->input->post('email');
+        else if($addr == 'phone')
+            $user_addr = $this->input->post('phone');
+        else
+        {
+            echo json_encode(array('status' => -1,'msg' => '访问地址错误'));
+            return;
+        }
+
+        if(!$user_addr)
+        {
+            echo json_encode(array('status' => -1,'msg' => '输入手机号或者email'));
+            return ;
+        }
+        $vcode_back = $this->Register_model->getvcode($addr,$user_addr);
+        if($vcode_back['status'] > 0)
+        {
+            echo json_encode(array('status' => 1,'msg' => '已发送验证码，请查收'));
+            return ;
+        }
+        else{
+            echo json_encode(array('status' => -1,'msg' => '验证码发送失败'));
+            return ;
+        }
+    }
+
+    public function company_register($addr = 'email'){
+        if($addr == 'email'){
+            $user_addr = $this->input->post('email');
+        }
+        else if($addr == 'phone'){
+            $user_addr = $this->input->post('phone');
+        }else{
+            echo json_encode(array('status' => -1,'msg' => '访问地址错误'));
+            return;
+        }
+        $password = $this->input->post('password');
+        $vcode = $this->input->post('vcode');
+        $company_name = $this->input->post('company_name');
+        $name = $this->input->post('name');
+        $position = $this->input->post('position');
+        $data = array();
+        $data[$addr] = $user_addr;
+        $data['vcode'] = $vcode;
+        $data['company_name'] = $company_name;
+        $data['password'] = $password;
+        $data['name'] = $name;
+        $data['position'] = $position;
+        $register_back = $this->Register_model->register($data);
+        if($register_back['status'] > 0)
+        {
+            echo json_encode(array('status' => 1,'msg' => '账号注册成功'));
+            return ;
+        }else{
+            echo json_encode(array('status' => -1,'msg' => '账号注册失败'));
+            return ;
+        }
+    }
 
     public function index($code = 0, $name = ''){
         $error = $this->session->userdata('last_error');
