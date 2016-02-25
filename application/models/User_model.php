@@ -14,7 +14,7 @@ class User_Model extends Reim_Model {
         $data = array(
             $addr => $user_addr
         );
-        $buf = $this->do_Get($url,$data,'');
+        $buf = $this->do_Post($url,$data,'');
         log_message("debug","check_user_back:" . $buf);
 
         return json_decode($buf);
