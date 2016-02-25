@@ -13,7 +13,7 @@
 .first_content {
     top:95px;
 }
-.modal input {
+.modal input , #main input{
     z-index: 100;
     position: relative;
 }
