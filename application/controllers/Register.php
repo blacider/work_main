@@ -24,14 +24,8 @@ class Register extends REIM_Controller {
         $vcode = $this->input->post('vcode');
 
         $vcode_verify_back = $this->Register_model->vcode_verify($addr, $user_addr, $vcode);         
-        if ($vcode_verify_back['status'] > 0) {
-            echo json_encode($vcode_verify_back); 
-            return ;
-        } else {
-            echo json_encode(array('status' => -1, 'msg' => '信息验证失败')); 
-            return ; 
-        }
-        
+        echo json_encode($vcode_verify_back); 
+        return ;
     }
 
     public function getvcode($addr = 'email'){
@@ -51,15 +45,8 @@ class Register extends REIM_Controller {
             return ;
         }
         $vcode_back = $this->Register_model->getvcode($addr,$user_addr);
-        if($vcode_back['status'] > 0)
-        {
-            echo json_encode(array('status' => 1,'msg' => '已发送验证码，请查收'));
-            return ;
-        }
-        else{
-            echo json_encode(array('status' => -1,'msg' => '验证码发送失败'));
-            return ;
-        }
+        echo json_encode($vcode_back);
+        return;
     }
 
     public function company_register($addr = 'email'){
@@ -85,14 +72,8 @@ class Register extends REIM_Controller {
         $data['name'] = $name;
         $data['position'] = $position;
         $register_back = $this->Register_model->register($data);
-        if($register_back['status'] > 0)
-        {
-            echo json_encode(array('status' => 1,'msg' => '账号注册成功'));
-            return ;
-        }else{
-            echo json_encode(array('status' => -1,'msg' => '账号注册失败'));
-            return ;
-        }
+        echo json_encode($register_back);
+        return ;
     }
 
     public function index($code = 0, $name = ''){
