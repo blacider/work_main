@@ -18,12 +18,13 @@ class Register extends REIM_Controller {
         } else if($addr == 'phone'){
             $user_addr = $this->input->post('phone');
         }else {
-            echo json_encode(array('status' => -1,'msg' => '访问地址错误'));
+            echo json_encode(array('status' => 1,'msg' => '访问地址错误'));
             return;
         }
         $vcode = $this->input->post('vcode');
 
         $vcode_verify_back = $this->Register_model->vcode_verify($addr, $user_addr, $vcode);         
+        $vcode_verify_back['status'] = 1;
         echo json_encode($vcode_verify_back); 
         return ;
     }
@@ -35,16 +36,17 @@ class Register extends REIM_Controller {
             $user_addr = $this->input->post('phone');
         else
         {
-            echo json_encode(array('status' => -1,'msg' => '访问地址错误'));
+            echo json_encode(array('status' => 1,'msg' => '访问地址错误'));
             return;
         }
 
         if(!$user_addr)
         {
-            echo json_encode(array('status' => -1,'msg' => '输入手机号或者email'));
+            echo json_encode(array('status' => 1,'msg' => '输入手机号或者email'));
             return ;
         }
         $vcode_back = $this->Register_model->getvcode($addr,$user_addr);
+        $vcode_back['status'] = 1;
         echo json_encode($vcode_back);
         return;
     }
@@ -72,6 +74,7 @@ class Register extends REIM_Controller {
         $data['name'] = $name;
         $data['position'] = $position;
         $register_back = $this->Register_model->register($data);
+        $register_back['status'] = 1;
         echo json_encode($register_back);
         return ;
     }
