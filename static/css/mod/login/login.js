@@ -664,6 +664,7 @@ function clearErrorLine() {
     $('.error-login').remove();
 }
 function toLoin() {
+    document.documentElement.scrollTop = document.body.scrollTop =0;
     $("#main .login-box .account").focus();
 }
 function weixinLogin() {
