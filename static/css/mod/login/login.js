@@ -374,7 +374,7 @@ function checkPass() {
                 if (rs['data'] != undefined) {
                     window.location.href=rs['data'];
                 } else {
-                    passLine.append(getErrorDom(rs['msg']));
+                    passLine.append(getErrorDom("密码错误"));
                 }
             });
 
