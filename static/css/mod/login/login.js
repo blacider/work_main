@@ -554,11 +554,25 @@ function checkFirstPass() {
         return;
     }
     if (isEmail(userId)) {
+            Utils.api('/register/getvcode/email/reset', {
+                method: "post",
+                data: {
+                    email: userId
+                }
+            });
             $("#first-email").modal('show');
+            __IfForget = true;
             time($("#first-email").find('.timer'), 60);
         }
         if (isPhone(userId)) {
+            Utils.api('/register/getvcode/phone/reset', {
+                method: "post",
+                data: {
+                    phone: userId
+                }
+            });
             $("#first-phone").modal('show');
+            __IfForget = true;
             time($("#first-phone").find('.timer'), 60);
         }
 }
@@ -571,6 +585,20 @@ function checkFirstEmailCode() {
         focusLine(codeLine);
         return;
     }
+    Utils.api('/login/reset_password/email', {
+                method: "post",
+                data: {
+                    vcode:code,
+                    password:pass,
+                    email:__UserId
+                }
+            }).done(function (rs) {
+                if (rs["code"] == 0) {
+                    registerSuccess();
+                } else {
+                    codeLine.append(getErrorDom("验证码错误"));
+                }
+            });
 }
 function checkFirstPhoneCode() {
     clearErrorLine();
@@ -583,6 +611,20 @@ function checkFirstPhoneCode() {
         focusLine(codeLine);
         return;
     }
+    Utils.api('/login/reset_password/phone', {
+                method: "post",
+                data: {
+                    vcode:code,
+                    password:pass,
+                    phone:__UserId
+                }
+            }).done(function (rs) {
+                if (rs["code"] == 0) {
+                    registerSuccess();
+                } else {
+                    codeLine.append(getErrorDom("验证码错误"));
+                }
+            });
 }
 function getErrorDom(str) {
     return '<div class="error-login">'+
