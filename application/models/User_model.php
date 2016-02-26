@@ -18,7 +18,7 @@ class User_Model extends Reim_Model {
 
     public function check_user($addr = 'email', $user_addr = '')
     {
-        if($addr = 'weixin') {
+        if($addr == 'weixin') {
             $data = $user_addr;
         }
         else {
@@ -27,6 +27,8 @@ class User_Model extends Reim_Model {
             );
         }
         $url = $this->get_url('register/user',$data); 
+        log_message("debug","url:" . $url);
+        log_message("debug","data:" . json_encode($data));
         $buf = $this->do_Get($url,'');
         log_message("debug","check_user_back:" . $buf);
 
