@@ -111,20 +111,31 @@ $(document).ready(function(){
       checkUser();
   });
   $(".modal input[name='password']").blur(function(event) {
+    clearErrorLine();
       var pass = this.value;
       var passLine = $(this).parent().parent();
       if (pass == "") {
         passLine.append(getErrorDom("请输入密码"));
       } else if (pass.length < 8) {
-        passLine.append(getErrorDom("设置密码规范错误"));
+        passLine.append(getErrorDom("密码规范错误"));
       } else {
         var reg = /^([a-zA-Z]+|[0-9]+)$/;
         if (reg.test(pass)) {
-            passLine.append(getErrorDom("设置密码规范错误"));
+            passLine.append(getErrorDom("密码规范错误"));
         }
       }
   });
+  $("#password input[name='password']").unbind();
+  $("#password input[name='password']").blur(function(event) {
+        clearErrorLine();
+      var pass = this.value;
+      var passLine = $(this).parent().parent();
+      if (pass == "") {
+        passLine.append(getErrorDom("请输入密码"));
+      }
+  });
   $(".modal input[name='com']").blur(function(event) {
+    clearErrorLine();
       var com = this.value;
       var line = $(this).parent().parent();
       if (com == "") {
@@ -132,6 +143,7 @@ $(document).ready(function(){
       }
   });
   $(".modal input[name='name']").blur(function(event) {
+    clearErrorLine();
       var com = this.value;
       var line = $(this).parent().parent();
       if (com == "") {
@@ -139,6 +151,7 @@ $(document).ready(function(){
       }
   });
   $(".modal input[name='level']").blur(function(event) {
+    clearErrorLine();
       var com = this.value;
       var line = $(this).parent().parent();
       if (com == "") {
@@ -146,6 +159,7 @@ $(document).ready(function(){
       }
   });
   $(".modal input[name='email']").blur(function(event) {
+    clearErrorLine();
       var com = this.value;
       var line = $(this).parent().parent();
       if (com == "") {
@@ -155,6 +169,7 @@ $(document).ready(function(){
       }
   });
   $(".modal input[name='phone']").blur(function(event) {
+    clearErrorLine();
       var com = this.value;
       var line = $(this).parent().parent();
       if (com == "") {
@@ -166,6 +181,7 @@ $(document).ready(function(){
     }
   });
   $(".modal input[name='code']").blur(function(event) {
+    clearErrorLine();
       var code = this.value;
       var codeLine = $(this).parent().parent();
       if (code == "") {
