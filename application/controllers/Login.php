@@ -15,6 +15,13 @@ class Login extends REIM_Controller {
         }
         else if($addr == 'phone'){
             $user_addr = $this->input->post('phone');
+        } else if($addr == 'weixin'){
+            $openid = $this->input->post('openid');
+            $access_token = $this->input->post('access_token');
+            $user_addr = array(
+                'openid' => $openid,
+                'access_token' => $access_token
+            );
         } else {
             echo json_encode(array('status' => 1, 'msg' => '访问地址错误'));
             return ;
