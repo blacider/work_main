@@ -363,12 +363,18 @@ function checkPass() {
         focusLine(passLine);
         return;
     }
-    Utils.api('/login/dologin', {
+    Utils.api('/login/do_login', {
                 method: "post",
                 data: {
                     u:__UserId,
                     p: pass,
                     is_r:"off"
+                }
+            }).done(function (rs) {
+                if (rs['data'] != undefined) {
+                    window.location.href=rs['data'];
+                } else {
+                    passLine.append(getErrorDom(rs['msg']));
                 }
             });
 
