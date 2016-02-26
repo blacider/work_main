@@ -64,6 +64,7 @@ $(document).ready(function(){
     }
   });
   $(".timer").click(function(event) {
+    if(!__IfForget) {
         var userId = __UserId;
         if (isEmail(userId)) {
             Utils.api('/register/getvcode/email', {
@@ -81,6 +82,26 @@ $(document).ready(function(){
             });
         }
         time($(this), 60);
+    } else {
+        var userId = __UserId;
+        if (isEmail(userId)) {
+            Utils.api('/register/getvcode/email/reset', {
+                method: "post",
+                data: {
+                    email: userId
+                }
+            });
+        } else if (isPhone(userId)) {
+            Utils.api('/register/getvcode/phone/reset', {
+                method: "post",
+                data: {
+                    phone: userId
+                }
+            });
+        }
+        time($(this), 60);
+    }
+        
   });
 
   $(".modal input[name='user']").blur(function(event) {
@@ -240,12 +261,24 @@ function forgetPass() {
     __IfForget = true;
     var userId = __UserId;
     if (isEmail(userId)) {
+        Utils.api('/register/getvcode/email/reset', {
+                method: "post",
+                data: {
+                    email: userId
+                }
+            });
         $("#email-code").modal('show');
         $(".phone-text").text(userId);
         $("#email-code").find("input[name='password']").attr('placeholder', '设置新密码');
         time($("#email-code").find('.timer'), 60);
     }
     if (isPhone(userId)) {
+        Utils.api('/register/getvcode/phone/reset', {
+                method: "post",
+                data: {
+                    phone: userId
+                }
+            });
         $("#phone-code").modal('show');
         $(".phone-text").text(userId);
         time($("#phone-code").find('.timer'), 60);
@@ -298,7 +331,20 @@ function checkPhone() {
                 }
             });
     } else {
-
+        Utils.api('/login/reset_password/phone', {
+                method: "post",
+                data: {
+                    vcode:code,
+                    password:pass,
+                    phone:__UserId
+                }
+            }).done(function (rs) {
+                if (rs["code"] == 0) {
+                    registerSuccess();
+                } else {
+                    codeLine.append(getErrorDom("验证码错误"));
+                }
+            });
     }
 }
 function checkPass() {
@@ -363,7 +409,20 @@ function checkEmail() {
                 }
             });
     } else {
-        
+        Utils.api('/login/reset_password/email', {
+                method: "post",
+                data: {
+                    vcode:code,
+                    password:pass,
+                    email:__UserId
+                }
+            }).done(function (rs) {
+                if (rs["code"] == 0) {
+                    registerSuccess();
+                } else {
+                    codeLine.append(getErrorDom("验证码错误"));
+                }
+            });
     }
 }
 function checkAfterEmail() {
@@ -488,6 +547,7 @@ function checkFirstPass() {
     var userId = __UserId;
     var passLine = $("#first-login").find('.pass-line');
     var pass = $("#first-login").find('input[name="password"]').val();
+    __pass = pass;
     if (pass == undefined || pass == "") {
         passLine.append(getErrorDom("请输入密码"));
         focusLine(passLine);
@@ -514,6 +574,8 @@ function checkFirstEmailCode() {
 }
 function checkFirstPhoneCode() {
     clearErrorLine();
+    var pass = __pass;
+    var phone = __UserId;
     var codeLine = $("#first-phone").find('.code-line');
     var code = $("#first-phone").find('input[name="code"]').val();
     if (code == undefined || code == "") {
