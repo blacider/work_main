@@ -202,10 +202,16 @@ function checkUser() {
                     email:user
                 }
             }).done(function (rs) {
-                console.log(rs);
-                if (rs["code"]) {
+                if (rs["data"]["exists"]) {
+                    if (rs['data']['user']['active'] == 1) {
+                        $("#password .user-pic").find('img').attr('src', rs['data']['user']['avatar_url']);
+                        $("#password .user-name").text(rs['data']['user']['nickname']);
+                        $("#password").modal('show');
+                    } else {
+                        $("#first-login").modal('show');
+                    }
                 } else {
-                    userLine.append(getErrorDom("用户名错误"));
+                    userLine.append(getErrorDom("用户名不存在"));
                 }
             });
         } else {
@@ -215,18 +221,19 @@ function checkUser() {
                     phone:user
                 }
             }).done(function (rs) {
-                console.log(rs);
-                if (rs["code"]) {
+                if (rs["data"]["exists"]) {
+                    if (rs['data']['user']['active'] == 1) {
+                        $("#password .user-pic").find('img').attr('src', rs['data']['user']['avatar_url']);
+                        $("#password .user-name").text(rs['data']['user']['nickname']);
+                        $("#password").modal('show');
+                    } else {
+                        $("#first-login").modal('show');
+                    }
                 } else {
-                    userLine.append(getErrorDom("用户名错误"));
+                    userLine.append(getErrorDom("用户名不存在"));
                 }
             });
         }
-        //if (user == "18888888888" || user == "1@1.com") {
-          //  $("#first-login").modal('show');
-        //} else {
-          //  $("#password").modal('show');
-        //}
     }
 }
 function forgetPass() {
