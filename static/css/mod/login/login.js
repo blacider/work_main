@@ -340,7 +340,7 @@ function checkPhone() {
                 }
             }).done(function (rs) {
                 if (rs["code"] == 0) {
-                    registerSuccess();
+                    registerSuccess("设置密码成功");
                 } else {
                     codeLine.append(getErrorDom("验证码错误"));
                 }
@@ -418,7 +418,7 @@ function checkEmail() {
                 }
             }).done(function (rs) {
                 if (rs["code"] == 0) {
-                    registerSuccess();
+                    registerSuccess("设置密码成功");
                 } else {
                     codeLine.append(getErrorDom("验证码错误"));
                 }
@@ -469,7 +469,7 @@ function checkAfterEmail() {
         }
     }).done(function (rs) {
         if (rs["code"] >= 0) {
-            registerSuccess();
+            registerSuccess("注册成功");
         } else {
             if (rs["data"]["msg"] == "公司名称已存在") {
                 comLine.append(getErrorDom(rs['data']['msg']));
@@ -528,7 +528,7 @@ function checkAfterPhone() {
         }
     }).done(function (rs) {
         if (rs["code"] >= 0) {
-            registerSuccess();
+            registerSuccess("注册成功");
         } else {
             if (rs["data"]["msg"] == "公司名称已存在") {
                 comLine.append(getErrorDom(rs['data']['msg']));
@@ -594,7 +594,7 @@ function checkFirstEmailCode() {
                 }
             }).done(function (rs) {
                 if (rs["code"] == 0) {
-                    registerSuccess();
+                    registerSuccess("设置密码成功");
                 } else {
                     codeLine.append(getErrorDom("验证码错误"));
                 }
@@ -620,7 +620,7 @@ function checkFirstPhoneCode() {
                 }
             }).done(function (rs) {
                 if (rs["code"] == 0) {
-                    registerSuccess();
+                    registerSuccess("设置密码成功");
                 } else {
                     codeLine.append(getErrorDom("验证码错误"));
                 }
@@ -650,7 +650,13 @@ function weixinLogin() {
     var httpurl = "https://open.weixin.qq.com/connect/qrconnect?appid=" + appid + "&redirect_uri=" + _target + "&response_type=code&scope=" + scope + "&state=xfjajfldaj#wechat_redirect";
     window.location.href = httpurl;
 }
-function registerSuccess() {
-    //do something
+function show_notify(msg, life){
+    if(!life || life ==undefined)
+        life = 3000;
+    $.jGrowl(msg, {'life' : life});
+}
+function registerSuccess(msg) {
+    if (msg == undefined) {msg = ""}
+    show_notify(msg);
     $(".modal").modal("hide");
 }

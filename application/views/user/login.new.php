@@ -16,10 +16,12 @@
         <link rel="stylesheet" href="/static/css/mod/login/common.css">
         <link rel="stylesheet" type="text/css" href="/static/ace/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="/static/ace/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="/static/third-party/jg/jquery.jgrowl.min.css"/>
         <link rel="stylesheet" href="/static/css/mod/login/login.css">
         <script src="/static/ace/js/jquery.min.js"></script>
         <script language="javascript" src="/static/ace/js/bootstrap.min.js"></script>
         <script src="/static/js/libs/utils.js"></script>
+        <script src="/static/third-party/jg/jquery.jgrowl.min.js"></script>
         <script src="/static/css/mod/login/login.js"></script>
     </head>
     <body>

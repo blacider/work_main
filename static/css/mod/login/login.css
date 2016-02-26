@@ -1,3 +1,6 @@
+.jGrowl-close {
+            line-height: 1em;
+}
 .login_content, .pass_content, .first_content{
     width: 350px;
     height: auto;
