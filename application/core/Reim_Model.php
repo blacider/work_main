@@ -17,7 +17,13 @@ class Reim_Model extends CI_Model {
         $this->api_url_base = $this->config->item('api_url_base');
     }
 
-    public function get_url($part){
+    public function get_url($part, $data = array()){
+        if(!empty($data)){
+            $part = $part . '?' ;
+            foreach($data as $k => $v){
+                $part = $part . $k . '=' . $v . '&';
+            }
+        }
         return $this->api_url_base . $part;
     }
 

@@ -10,11 +10,16 @@ class User_Model extends Reim_Model {
 
     public function check_user($addr = 'email', $user_addr = '')
     {
-        $url = $this->get_url('register/user'); 
-        $data = array(
-            $addr => $user_addr
-        );
-        $buf = $this->do_Get($url,$data,'');
+        if($addr = 'weixin') {
+            $data = $user_addr;
+        }
+        else {
+            $data = array(
+                $addr => $user_addr
+            );
+        }
+        $url = $this->get_url('register/user',$data); 
+        $buf = $this->do_Get($url,'');
         log_message("debug","check_user_back:" . $buf);
 
         return json_decode($buf);
