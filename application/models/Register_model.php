@@ -34,6 +34,6 @@ class Register_Model extends Reim_Model {
         $url = $this->get_url('register/company'); 
         $buf = $this->do_Post($url,$data,'');
         log_message("debug","register_back:" . $buf);
-        return json_decode($data,true);
+        return json_decode($buf,true);
     }
 }

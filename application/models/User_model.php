@@ -22,7 +22,16 @@ class User_Model extends Reim_Model {
         $buf = $this->do_Get($url,'');
         log_message("debug","check_user_back:" . $buf);
 
-        return json_decode($buf);
+        return json_decode($buf,true);
+    }
+
+    public function check_company($name = '')
+    {
+        $url = $this->get_url("register/user/" . $name);
+        $buf = $this->do_Get($url, '');
+        log_message("debug","check_company:" . $buf);
+
+        return json_decode($buf,true);
     }
 
     public function my_get_jwt($username,$password)
