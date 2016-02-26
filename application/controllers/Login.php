@@ -11,7 +11,7 @@ class Login extends REIM_Controller {
     }
 
     public function reset_password($addr = 'email'){
-        if($addr == 'eamil'){
+        if($addr == 'email'){
             $user_addr = $this->input->post('email');
         } else if($addr == 'phone') {
             $user_addr = $this->input->post('phone');
@@ -22,17 +22,19 @@ class Login extends REIM_Controller {
         $password = $this->input->post('password');
         $vcode = $this->input->post('vcode');
         
+        /*
         $vcode_verify_back = $this->Register_model->vcode_verify($addr,$user_addr,$vcode);
         if($vcode_verify_back['data']['validate'] == 0)
         {
             echo json_encode(array('status' => 1, 'msg' => '验证码错误'));
             return ;
         }
+*/
 
         $data[$addr] = $user_addr;
         $data['vcode'] = $vcode;
         $data['password'] = $password;
-        $reset_password_back = $this->Register_model->reset_password($data);
+        $reset_password_back = $this->users->reset_password($data);
 
         $reset_password_back['status'] = 1;
         echo json_encode($reset_password_back);

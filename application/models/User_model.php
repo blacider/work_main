@@ -10,6 +10,8 @@ class User_Model extends Reim_Model {
 
     public function reset_password($data = array()){
         $url = $this->get_url('resetpwd');
+        log_message("debug","url:" . $url);
+        log_message("debug","data:" . json_encode($data));
         $buf = $this->do_Put($url,$data,'');
 
         log_message("debug","reset_password_back:" . $buf);
