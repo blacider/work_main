@@ -53,13 +53,16 @@ $(document).ready(function(){
                     time($("#email-code").find('.timer'), 60);
                     $("#phone-code").find("input[name='password']").attr('placeholder', '设置密码');
                 } else {
+                    userLine.find('.account').focus();
                     userLine.append(getErrorDom(rs['data']['msg']));
                 }
             });
         } else {
+            userLine.find('.account').focus();
             $(this).parent().append(getErrorDom("格式不正确"));
         }
     } else {
+        userLine.find('.account').focus();
         $(this).parent().append(getErrorDom("请输入邮箱/手机号码"));
     }
   });
@@ -232,6 +235,7 @@ function checkUser() {
                         $("#first-login").modal('show');
                     }
                 } else {
+                    focusLine(userLine);
                     userLine.append(getErrorDom("用户名不存在"));
                 }
             });
@@ -251,6 +255,7 @@ function checkUser() {
                         $("#first-login").modal('show');
                     }
                 } else {
+                    focusLine(userLine);
                     userLine.append(getErrorDom("用户名不存在"));
                 }
             });
@@ -327,6 +332,7 @@ function checkPhone() {
                     __vcode = code;
                     __pass = pass;
                 } else {
+                    focusLine(codeLine);
                     codeLine.append(getErrorDom("验证码错误"));
                 }
             });
@@ -342,6 +348,7 @@ function checkPhone() {
                 if (rs["code"] == 0) {
                     registerSuccess("设置密码成功");
                 } else {
+                    focusLine(codeLine);
                     codeLine.append(getErrorDom("验证码错误"));
                 }
             });
@@ -405,6 +412,7 @@ function checkEmail() {
                     __vcode = code;
                     __pass = pass;
                 } else {
+                    focusLine(codeLine);
                     codeLine.append(getErrorDom("验证码错误"));
                 }
             });
@@ -420,6 +428,7 @@ function checkEmail() {
                 if (rs["code"] == 0) {
                     registerSuccess("设置密码成功");
                 } else {
+                    focusLine(codeLine);
                     codeLine.append(getErrorDom("验证码错误"));
                 }
             });
@@ -472,12 +481,15 @@ function checkAfterEmail() {
             registerSuccess("注册成功");
         } else {
             if (rs["data"]["msg"] == "公司名称已存在") {
+                focusLine(comLine);
                 comLine.append(getErrorDom(rs['data']['msg']));
             } else if (rs["data"]["msg"] == "手机号码已注册") {
+                focusLine(emailLine);
                 emailLine.append(getErrorDom(rs['data']['msg']));
             } else if (rs["data"]["msg"] == "验证码无效") {
                 alert("验证码无效");
             } else {
+                focusLine(comLine);
                 comLine.append(getErrorDom(rs['data']['msg']));
             }
             
@@ -531,12 +543,15 @@ function checkAfterPhone() {
             registerSuccess("注册成功");
         } else {
             if (rs["data"]["msg"] == "公司名称已存在") {
+                focusLine(comLine);
                 comLine.append(getErrorDom(rs['data']['msg']));
             } else if (rs["data"]["msg"] == "邮箱已注册") {
+                focusLine(emailLine);
                 emailLine.append(getErrorDom(rs['data']['msg']));
             } else if (rs["data"]["msg"] == "验证码无效") {
                 alert("验证码无效");
             } else {
+                focusLine(comLine);
                 comLine.append(getErrorDom(rs['data']['msg']));
             }
         }
@@ -596,6 +611,7 @@ function checkFirstEmailCode() {
                 if (rs["code"] == 0) {
                     registerSuccess("设置密码成功");
                 } else {
+                    focusLine(codeLine);
                     codeLine.append(getErrorDom("验证码错误"));
                 }
             });
@@ -622,6 +638,7 @@ function checkFirstPhoneCode() {
                 if (rs["code"] == 0) {
                     registerSuccess("设置密码成功");
                 } else {
+                    focusLine(codeLine);
                     codeLine.append(getErrorDom("验证码错误"));
                 }
             });
