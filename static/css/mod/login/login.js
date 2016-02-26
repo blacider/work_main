@@ -309,18 +309,16 @@ function checkPass() {
         passLine.append( Dom("请输入密码"));
         focusLine(passLine);
         return;
-      } else if (pass.length < 8) {
-        passLine.append(getErrorDom("设置密码规范错误"));
-        focusLine(passLine);
-        return;
-      } else {
-        var reg = /^([a-zA-Z]+|[0-9]+)$/;
-        if (reg.test(pass)) {
-            passLine.append(getErrorDom("设置密码规范错误"));
-            focusLine(passLine);
-            return;
-        }
-      }
+    }
+    Utils.api('/login/dologin', {
+                method: "post",
+                data: {
+                    u:__UserId,
+                    p: pass,
+                    is_r:0
+                }
+            });
+
 }
 function checkEmail() {
     clearErrorLine();
