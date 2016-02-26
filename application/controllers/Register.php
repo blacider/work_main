@@ -29,13 +29,11 @@ class Register extends REIM_Controller {
         return ;
     }
 
-    public function getvcode($addr = 'email'){
+    public function getvcode($addr = 'email',$scene = 'register'){
         if($addr == 'email')
             $user_addr = $this->input->post('email');
         else if($addr == 'phone')
             $user_addr = $this->input->post('phone');
-        else if($addr == 'reset')
-            $user_addr = $this->input->post('reset');
         else
         {
             echo json_encode(array('status' => 1,'msg' => '访问地址错误'));
@@ -56,7 +54,7 @@ class Register extends REIM_Controller {
                 return ;
             }
         }
-        $vcode_back = $this->Register_model->getvcode($addr,$user_addr,'register');
+        $vcode_back = $this->Register_model->getvcode($addr,$user_addr,$scene);
         $vcode_back['status'] = 1;
         echo json_encode($vcode_back);
         return;
