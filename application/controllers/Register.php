@@ -51,28 +51,24 @@ class Register extends REIM_Controller {
         return;
     }
 
-    public function company_register($addr = 'email'){
-        if($addr == 'email'){
-            $user_addr = $this->input->post('email');
-        }
-        else if($addr == 'phone'){
-            $user_addr = $this->input->post('phone');
-        }else{
-            echo json_encode(array('status' => -1,'msg' => '访问地址错误'));
-            return;
-        }
+    public function company_register(){
+        $email = $this->input->post('email');
+        $phone = $this->input->post('phone');
         $password = $this->input->post('password');
         $vcode = $this->input->post('vcode');
         $company_name = $this->input->post('company_name');
         $name = $this->input->post('name');
         $position = $this->input->post('position');
+
         $data = array();
-        $data[$addr] = $user_addr;
+        $data['email'] = $email;
+        $data['phone'] = $phone;
         $data['vcode'] = $vcode;
         $data['company_name'] = $company_name;
         $data['password'] = $password;
         $data['name'] = $name;
         $data['position'] = $position;
+
         $register_back = $this->Register_model->register($data);
         $register_back['status'] = 1;
         echo json_encode($register_back);
