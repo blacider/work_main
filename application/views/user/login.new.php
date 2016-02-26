@@ -188,7 +188,7 @@
                                 </span>
                             </div>
                             <div class="form-line bottom-line relative-10">
-                                <a href="#weixin" data-toggle="modal">微信登录</a>
+                                <a href="javascript:void(0)" onclick="weixinLogin()" >微信登录</a>
                             </div>
                         </div>
                     </div>

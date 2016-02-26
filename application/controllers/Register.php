@@ -83,7 +83,7 @@ class Register extends REIM_Controller {
         $check_company_back = $this->users->check_company($company_name);
         if($check_user_back['data']['exists'] == 1)
         {
-            echo json_encode(array('status' => 1,'msg' => '公司名已被注册'));
+            echo json_encode(array('status' => 1,'code' => -1,'msg' => '公司名已被注册'));
             return ;
         }
         $register_back = $this->Register_model->register($data);

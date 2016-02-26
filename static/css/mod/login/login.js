@@ -48,10 +48,10 @@ $(document).ready(function(){
                 }
             }).done(function (rs) {
                 if (rs.code > 0) {
-                    $("#email-code").modal('show');
+                    $("#phone-code").modal('show');
                     $(".phone-text").text(userId);
                     time($("#email-code").find('.timer'), 60);
-                    $("#email-code").find("input[name='password']").attr('placeholder', '设置密码');
+                    $("#phone-code").find("input[name='password']").attr('placeholder', '设置密码');
                 } else {
                     userLine.append(getErrorDom(rs['data']['msg']));
                 }
@@ -202,10 +202,16 @@ function checkUser() {
                     email:user
                 }
             }).done(function (rs) {
-                console.log(rs);
-                if (rs["code"]) {
+                if (rs["data"]["exists"]) {
+                    if (rs['data']['user']['active'] == 1) {
+                        $("#password .user-pic").find('img').attr('src', rs['data']['user']['avatar_url']);
+                        $("#password .user-name").text(rs['data']['user']['nickname']);
+                        $("#password").modal('show');
+                    } else {
+                        $("#first-login").modal('show');
+                    }
                 } else {
-                    userLine.append(getErrorDom("用户名错误"));
+                    userLine.append(getErrorDom("用户名不存在"));
                 }
             });
         } else {
@@ -215,18 +221,19 @@ function checkUser() {
                     phone:user
                 }
             }).done(function (rs) {
-                console.log(rs);
-                if (rs["code"]) {
+                if (rs["data"]["exists"]) {
+                    if (rs['data']['user']['active'] == 1) {
+                        $("#password .user-pic").find('img').attr('src', rs['data']['user']['avatar_url']);
+                        $("#password .user-name").text(rs['data']['user']['nickname']);
+                        $("#password").modal('show');
+                    } else {
+                        $("#first-login").modal('show');
+                    }
                 } else {
-                    userLine.append(getErrorDom("用户名错误"));
+                    userLine.append(getErrorDom("用户名不存在"));
                 }
             });
         }
-        //if (user == "18888888888" || user == "1@1.com") {
-          //  $("#first-login").modal('show');
-        //} else {
-          //  $("#password").modal('show');
-        //}
     }
 }
 function forgetPass() {
@@ -302,18 +309,16 @@ function checkPass() {
         passLine.append( Dom("请输入密码"));
         focusLine(passLine);
         return;
-      } else if (pass.length < 8) {
-        passLine.append(getErrorDom("设置密码规范错误"));
-        focusLine(passLine);
-        return;
-      } else {
-        var reg = /^([a-zA-Z]+|[0-9]+)$/;
-        if (reg.test(pass)) {
-            passLine.append(getErrorDom("设置密码规范错误"));
-            focusLine(passLine);
-            return;
-        }
-      }
+    }
+    Utils.api('/login/dologin', {
+                method: "post",
+                data: {
+                    u:__UserId,
+                    p: pass,
+                    is_r:"off"
+                }
+            });
+
 }
 function checkEmail() {
     clearErrorLine();
@@ -392,21 +397,31 @@ function checkAfterEmail() {
         focusLine(emailLine);
         return;
     }
-    Utils.api('/register/company_register/email', {
+    Utils.api('/register/company_register', {
             method: "post",
             data: {
-                email:__vcode,
+                email:__UserId,
                 password: __pass,
                 company_name:com,
                 name:name,
                 position:level,
-                phone:email
+                phone:email,
+                vcode:__vcode
         }
     }).done(function (rs) {
-        if (rs["status"]) {
+        if (rs["code"] >= 0) {
             registerSuccess();
         } else {
-            comLine.append(getErrorDom("错误"));
+            if (rs["data"]["msg"] == "公司名称已存在") {
+                comLine.append(getErrorDom(rs['data']['msg']));
+            } else if (rs["data"]["msg"] == "手机号码已注册") {
+                emailLine.append(getErrorDom(rs['data']['msg']));
+            } else if (rs["data"]["msg"] == "验证码无效") {
+                alert("验证码无效");
+            } else {
+                comLine.append(getErrorDom(rs['data']['msg']));
+            }
+            
         }
     });
 }
@@ -441,21 +456,30 @@ function checkAfterPhone() {
         focusLine(emailLine);
         return;
     }
-    Utils.api('/register/company_register/phone', {
+    Utils.api('/register/company_register', {
             method: "post",
             data: {
-                phone:__vcode,
+                phone:__UserId,
                 password: __pass,
                 company_name:com,
                 name:name,
                 position:level,
-                email:email
+                email:email,
+                vcode:__vcode
         }
     }).done(function (rs) {
-        if (rs["status"]) {
+        if (rs["code"] >= 0) {
             registerSuccess();
         } else {
-            comLine.append(getErrorDom("错误"));
+            if (rs["data"]["msg"] == "公司名称已存在") {
+                comLine.append(getErrorDom(rs['data']['msg']));
+            } else if (rs["data"]["msg"] == "邮箱已注册") {
+                emailLine.append(getErrorDom(rs['data']['msg']));
+            } else if (rs["data"]["msg"] == "验证码无效") {
+                alert("验证码无效");
+            } else {
+                comLine.append(getErrorDom(rs['data']['msg']));
+            }
         }
     });
 }
@@ -514,6 +538,13 @@ function clearErrorLine() {
 }
 function toLoin() {
     $("#main .login-box .account").focus();
+}
+function weixinLogin() {
+    var _target = encodeURIComponent('http://admin.cloudbaoxiao.com/login/wxlogin');
+    var appid = 'wxa718c52caef08633';
+    var scope = 'snsapi_login';
+    var httpurl = "https://open.weixin.qq.com/connect/qrconnect?appid=" + appid + "&redirect_uri=" + _target + "&response_type=code&scope=" + scope + "&state=xfjajfldaj#wechat_redirect";
+    window.location.href = httpurl;
 }
 function registerSuccess() {
     //do something
