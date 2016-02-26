@@ -17,9 +17,9 @@ class Register_Model extends Reim_Model {
         return json_decode($buf,true);
     }
 
-    public function getvcode($addr = 'email',$user_addr = '')    
+    public function getvcode($addr = 'email',$user_addr = '',$scene = 'register')    
     {
-        $url = $this->get_url('vcode/register');
+        $url = $this->get_url('vcode/' . $scene);
         $data = array(
             $addr => $user_addr
         ) ;

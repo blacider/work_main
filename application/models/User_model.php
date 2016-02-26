@@ -8,6 +8,14 @@ class User_Model extends Reim_Model {
         parent::__construct();
     }
 
+    public function reset_password($data = array()){
+        $url = $this->get_url('resetpwd');
+        $buf = $this->do_Put($url,$data,'');
+
+        log_message("debug","reset_password_back:" . $buf);
+        return json_decode($buf,true);
+    }
+
     public function check_user($addr = 'email', $user_addr = '')
     {
         if($addr = 'weixin') {

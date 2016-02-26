@@ -5,8 +5,38 @@ class Login extends REIM_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('user_model', 'users');
+        $this->load->model('Register_model');
         $this->load->helper('cookie');
         $this->load->library('reim_cipher');
+    }
+
+    public function reset_password($addr = 'email'){
+        if($addr == 'eamil'){
+            $user_addr = $this->input->post('email');
+        } else if($addr == 'phone') {
+            $user_addr = $this->input->post('phone');
+        } else {
+            echo json_encode(array('status' => 1, 'msg' => '访问地址错误'));
+        }
+
+        $password = $this->input->post('password');
+        $vcode = $this->input->post('vcode');
+        
+        $vcode_verify_back = $this->Register_model->vcode_verify($addr,$user_addr,$vcode);
+        if($vcode_verify_back['data']['validate'] == 0)
+        {
+            echo json_encode(array('status' => 1, 'msg' => '验证码错误'));
+            return ;
+        }
+
+        $data[$addr] = $user_addr;
+        $data['vcode'] = $vcode;
+        $data['password'] = $password;
+        $reset_password_back = $this->Register_model->reset_password($data);
+
+        $reset_password_back['status'] = 1;
+        echo json_encode($reset_password_back);
+        return ;
     }
 
     public function check_user($addr = 'email'){
