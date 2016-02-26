@@ -48,10 +48,10 @@ $(document).ready(function(){
                 }
             }).done(function (rs) {
                 if (rs.code > 0) {
-                    $("#email-code").modal('show');
+                    $("#phone-code").modal('show');
                     $(".phone-text").text(userId);
                     time($("#email-code").find('.timer'), 60);
-                    $("#email-code").find("input[name='password']").attr('placeholder', '设置密码');
+                    $("#phone-code").find("input[name='password']").attr('placeholder', '设置密码');
                 } else {
                     userLine.append(getErrorDom(rs['data']['msg']));
                 }
@@ -392,21 +392,31 @@ function checkAfterEmail() {
         focusLine(emailLine);
         return;
     }
-    Utils.api('/register/company_register/email', {
+    Utils.api('/register/company_register', {
             method: "post",
             data: {
-                email:__vcode,
+                email:__UserId,
                 password: __pass,
                 company_name:com,
                 name:name,
                 position:level,
-                phone:email
+                phone:email,
+                vcode:__vcode
         }
     }).done(function (rs) {
-        if (rs["status"]) {
+        if (rs["code"] >= 0) {
             registerSuccess();
         } else {
-            comLine.append(getErrorDom("错误"));
+            if (rs["data"]["msg"] == "公司名称已存在") {
+                comLine.append(getErrorDom(rs['data']['msg']));
+            } else if (rs["data"]["msg"] == "手机号码已注册") {
+                emailLine.append(getErrorDom(rs['data']['msg']));
+            } else if (rs["data"]["msg"] == "验证码无效") {
+                alert("验证码无效");
+            } else {
+                comLine.append(getErrorDom(rs['data']['msg']));
+            }
+            
         }
     });
 }
@@ -441,21 +451,30 @@ function checkAfterPhone() {
         focusLine(emailLine);
         return;
     }
-    Utils.api('/register/company_register/phone', {
+    Utils.api('/register/company_register', {
             method: "post",
             data: {
-                phone:__vcode,
+                phone:__UserId,
                 password: __pass,
                 company_name:com,
                 name:name,
                 position:level,
-                email:email
+                email:email,
+                vcode:__vcode
         }
     }).done(function (rs) {
-        if (rs["status"]) {
+        if (rs["code"] >= 0) {
             registerSuccess();
         } else {
-            comLine.append(getErrorDom("错误"));
+            if (rs["data"]["msg"] == "公司名称已存在") {
+                comLine.append(getErrorDom(rs['data']['msg']));
+            } else if (rs["data"]["msg"] == "邮箱已注册") {
+                emailLine.append(getErrorDom(rs['data']['msg']));
+            } else if (rs["data"]["msg"] == "验证码无效") {
+                alert("验证码无效");
+            } else {
+                comLine.append(getErrorDom(rs['data']['msg']));
+            }
         }
     });
 }
