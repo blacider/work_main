@@ -151,21 +151,25 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
     <b class="arrow"></b>
     <ul class="submenu nav-show" style="display: block;">
         <li class="hsub" id="newreport">
-
-<?php if(count($report_templates) > 0) { ?>
-        <a href="#"  class="dropdown-toggle">
-            <i class="menu-icon fa fa-caret-right"></i>
-            新建报销单 
-            <b class="arrow fa fa-angle-down"></b>
-        </a>
-<?php } else { ?>
-        <a href="<?php echo base_url('reports/newreport'); ?>" >
-            <i class="menu-icon fa fa-caret-right"></i>
-            新建报销单
-        </a>
-<?php } ?>
+            <?php if(count($report_templates) > 1) { ?>
+            <a href="javascript:void(0)"  class="dropdown-toggle">
+                <i class="menu-icon fa fa-caret-right"></i>
+                新建报销单 
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <?php } else if(count($report_templates) == 1) { ?>
+            <a href="<?php echo base_url('reports/report_template/' . $report_templates[0]['id']); ?>" >
+                <i class="menu-icon fa fa-caret-right"></i>
+                新建报销单
+            </a>
+            <?php } else { ?>
+            <a href="<?php echo base_url('reports/newreport'); ?>" >
+                <i class="menu-icon fa fa-caret-right"></i>
+                新建报销单
+            </a>
+            <?php } ?>
 <b class="arrow"></b>
-<?php if(count($report_templates) > 0) { ?>
+<?php if(count($report_templates) > 1) { ?>
 <ul class="submenu rushumenu">
 <?php foreach($report_templates as $r) { ?>
                                     <li class="" id="<?php echo 'report'.$r['id'];?>">
