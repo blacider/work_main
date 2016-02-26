@@ -289,13 +289,41 @@ class Pub extends REIM_Controller {
     }
 
     public function xreim(){
-        $file_path = APPPATH . "/views/pub/plist";
         $info = $this->app_model->find_online(0);
-        $buf = file_get_contents($file_path);
-        $content = str_replace("__VERSION", $info['version'], $buf);
-        die($content);
+        $url = "http://d.yunbaoxiao.com/iOS/{$info['version']}/reim.ipa";
+        return $this->ipa_plist($url);
     }
 
+    public function ios_pkg() {
+        $pkg = $this->input->get('p');
+        if (empty($pkg)) {
+            show_404();
+        }
+        $pkg = urlencode($pkg);
+        $plist_url = "https://admin.cloudbaoxiao.com/pub/ipa/$pkg/";
+        $this->load->view('pub/ios_pkg',
+            ['plist_url' => $plist_url,]
+        );
+    }
+
+    public function ipa($pkg){
+        if (strpos($pkg, '.ipa') === false) {
+            $pkg .= '.ipa';
+        }
+        $pkg_path = dirname(APPPATH) . "/static/pkg/$pkg";
+        if (!file_exists($pkg_path)) {
+            show_404();
+        }
+        $url = "https://admin.cloudbaoxiao.com/static/pkg/$pkg";
+        return $this->ipa_plist($url);
+    }
+
+    private function ipa_plist($url) {
+        $file_path = APPPATH . "/views/pub/plist";
+        $buf = file_get_contents($file_path);
+        $content = str_replace("__URL__", htmlspecialchars($url, ENT_XML1), $buf);
+        die($content);
+    }
 
 }
 
