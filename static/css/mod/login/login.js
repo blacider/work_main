@@ -182,7 +182,7 @@ function time(dom, counter) {
     } else {
         counter--;
         dom.attr("disabled", true);  
-        dom.text(counter+"S后可重发");
+        dom.text(counter+"秒后可重发");
         dom.removeClass('time-disable');
         setTimeout(function() {  
             time(dom, counter);
