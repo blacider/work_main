@@ -1,6 +1,37 @@
 .jGrowl-close {
             line-height: 1em;
 }
+.menu-left {
+    margin-bottom: auto;
+    margin-left: 45px;
+    float: left;
+    font-size: 16px;
+}
+.menu-left:hover {
+
+}
+.menu-left li{
+    float: left;
+    line-height: 60px;
+    margin: 0 4px;
+}
+.menu-left .active {
+    border-bottom: 5px solid #71889E;
+    color: white;
+}
+.menu-left li a {
+    padding: 0 12px;
+    color: #BDC3C7;
+    height: 58px;
+    display: block;
+}
+.menu-left li a:hover {
+    text-decoration:none;
+    color: white;
+}
+.menu-left li a:hover {
+    border-bottom: 5px solid #71889E;
+}
 .login_content, .pass_content, .first_content{
     width: 350px;
     height: auto;
