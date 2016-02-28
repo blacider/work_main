@@ -20,6 +20,7 @@ body {
     height: 100%;
     margin: 0 auto;
     position: relative;
+    min-width: 405px;
 }
 #header a.logo {
     position: relative;
