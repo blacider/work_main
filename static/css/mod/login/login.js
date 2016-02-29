@@ -37,7 +37,7 @@ $(document).ready(function(){
                     time($("#email-code").find('.timer'), 60);
                     $("#email-code").find("input[name='password']").attr('placeholder', '设置密码');
                 } else {
-                    userLine.append(getErrorDom(rs['data']['msg']));
+                    userLine.append(getErrorDom("账号已存在"));
                 }
             });
         } else if (isPhone(userId)) {
@@ -54,7 +54,7 @@ $(document).ready(function(){
                     $("#phone-code").find("input[name='password']").attr('placeholder', '设置密码');
                 } else {
                     userLine.find('.account').focus();
-                    userLine.append(getErrorDom(rs['data']['msg']));
+                    userLine.append(getErrorDom("账号已存在"));
                 }
             });
         } else {
