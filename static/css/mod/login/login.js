@@ -59,7 +59,7 @@ $(document).ready(function(){
             });
         } else {
             userLine.find('.account').focus();
-            $(this).parent().append(getErrorDom("格式不正确"));
+            $(this).parent().append(getErrorDom("帐号不存在"));
         }
     } else {
         userLine.find('.account').focus();
@@ -231,7 +231,7 @@ function checkUser() {
         userLine.append(getErrorDom("请输入用户名"));
         focusLine(userLine);
     } else if (!isEmail(user) && !isPhone(user)) {
-        userLine.append(getErrorDom("请输入正确的邮箱/手机号码"));
+        userLine.append(getErrorDom("帐号不存在"));
         focusLine(userLine);
     } else {
         if (isEmail(user)) {
