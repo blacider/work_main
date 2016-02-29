@@ -117,11 +117,11 @@ $(document).ready(function(){
       if (pass == "") {
         passLine.append(getErrorDom("请输入密码"));
       } else if (pass.length < 8) {
-        passLine.append(getErrorDom("密码规范错误"));
+        passLine.append(getErrorDom("密码长度至少为8位"));
       } else {
         var reg = /^([a-zA-Z]+|[0-9]+)$/;
         if (reg.test(pass)) {
-            passLine.append(getErrorDom("密码规范错误"));
+            passLine.append(getErrorDom("密码需同时含有字母和数字"));
         }
       }
   });
@@ -409,13 +409,13 @@ function checkEmail() {
         focusLine(passLine);
         return;
     } else if (pass.length < 8) {
-        passLine.append(getErrorDom("设置密码规范错误"));
+        passLine.append(getErrorDom("密码长度至少为8位"));
         focusLine(passLine);
         return;
     } else {
         var reg = /^([a-zA-Z]+|[0-9]+)$/;
         if (reg.test(pass)) {
-            passLine.append(getErrorDom("设置密码规范错误"));
+            passLine.append(getErrorDom("密码需同时含有字母和数字"));
             focusLine(passLine);
             return;
         }
