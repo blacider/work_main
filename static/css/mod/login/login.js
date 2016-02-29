@@ -688,7 +688,7 @@ function weixinLogin() {
     var appid = 'wxa718c52caef08633';
     var scope = 'snsapi_login';
     var httpurl = "https://open.weixin.qq.com/connect/qrconnect?appid=" + appid + "&redirect_uri=" + _target + "&response_type=code&scope=" + scope + "&state=xfjajfldaj#wechat_redirect";
-    window.location.href = httpurl;
+    window.open(httpurl);
 }
 function show_notify(msg, life){
     if(!life || life ==undefined)
