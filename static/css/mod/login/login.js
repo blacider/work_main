@@ -466,7 +466,7 @@ function checkAfterEmail() {
     var emailLine = $("#email-after").find('.phone-line');
     var email = $("#email-after").find('input[name="phone"]').val();
     if (com == "") {
-        comLine.append(getErrorDom("请输入公司"));
+        comLine.append(getErrorDom("请输入公司名称"));
         focusLine(comLine);
         return;
     } else if (name == "") {
@@ -528,7 +528,7 @@ function checkAfterPhone() {
     var emailLine = $("#phone-after").find('.email-line');
     var email = $("#phone-after").find('input[name="email"]').val();
     if (com == "") {
-        comLine.append(getErrorDom("请输入公司"));
+        comLine.append(getErrorDom("请输入公司名称"));
         focusLine(comLine);
         return;
     } else if (name == "") {
