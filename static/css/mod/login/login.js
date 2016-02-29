@@ -333,6 +333,17 @@ function checkPhone() {
         passLine.append(getErrorDom("请输入密码"));
         focusLine(passLine);
         return;
+    } else if (pass.length < 8) {
+        passLine.append(getErrorDom("密码长度至少为8位"));
+        focusLine(passLine);
+        return;
+    } else {
+        var reg = /^([a-zA-Z]+|[0-9]+)$/;
+        if (reg.test(pass)) {
+            passLine.append(getErrorDom("密码需同时含有字母和数字"));
+            focusLine(passLine);
+            return;
+        }
     }
     if (!__IfForget) {
         Utils.api('/register/vcode_verify/phone', {
