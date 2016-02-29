@@ -228,7 +228,7 @@ function checkUser() {
     __UserId = user;
     var userLine = $("#login").find('.user-line');
     if (user == "") {
-        userLine.append(getErrorDom("请输入用户名"));
+        userLine.append(getErrorDom("请输入帐号"));
         focusLine(userLine);
     } else if (!isEmail(user) && !isPhone(user)) {
         userLine.append(getErrorDom("帐号不存在"));
@@ -251,7 +251,7 @@ function checkUser() {
                     }
                 } else {
                     focusLine(userLine);
-                    userLine.append(getErrorDom("用户名不存在"));
+                    userLine.append(getErrorDom("账号不存在"));
                 }
             });
         } else {
@@ -271,7 +271,7 @@ function checkUser() {
                     }
                 } else {
                     focusLine(userLine);
-                    userLine.append(getErrorDom("用户名不存在"));
+                    userLine.append(getErrorDom("账号不存在"));
                 }
             });
         }
