@@ -374,7 +374,7 @@ function checkPass() {
     var passLine = $("#password").find('.pass-line');
     var pass = $("#password").find('input[name="password"]').val();
     if (pass == "") {
-        passLine.append( Dom("请输入密码"));
+        passLine.append(getErrorDom("请输入密码"));
         focusLine(passLine);
         return;
     }
