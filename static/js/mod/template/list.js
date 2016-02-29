@@ -710,8 +710,7 @@
                             };
 
                             var requestArray = [createRequest()];
-                            if($element.find('.paper').length==1 && !$element.find('.paper').data('id')) {
-                                debugger
+                            if($element.find('.paper').length==1 && !$element.find('.paper').eq(0).data('id')) {
                                 // 保存展示的模版
                                 requestArray.push(createRequest());
                             }
@@ -727,12 +726,12 @@
 
                                 templateData['id'] = rs['id'];
                                 $scope.templateArrayOriginal.updateById(templateData.id, templateData);
-
-                                $scope.$apply(function () {
-                                    $scope.templateArray[0].id = rsDefault['id'];
-                                    $scope.templateArray.push(templateData);
-                                    // angular do dom insert async
-                                });
+                                
+                                if(rsDefault && rsDefault['id']) {
+                                    $scope.templateArray[0]['id'] = rsDefault['id'];
+                                }
+                                $scope.templateArray.push(templateData);
+                                $scope.$apply();
 
                                 var $paper = $element.find('.paper').eq($scope.templateArray.length -1);
                                 $paper.find('.paper-header .btn-accordion').trigger('click');
