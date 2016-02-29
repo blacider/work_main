@@ -50,7 +50,7 @@ $(document).ready(function(){
                 if (rs.code > 0) {
                     $("#phone-code").modal('show');
                     $(".phone-text").text(userId);
-                    time($("#email-code").find('.timer'), 60);
+                    time($("#phone-code").find('.timer'), 60);
                     $("#phone-code").find("input[name='password']").attr('placeholder', '设置密码');
                 } else {
                     userLine.find('.account').focus();
