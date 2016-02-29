@@ -175,7 +175,7 @@ $(document).ready(function(){
       if (com == "") {
         line.append(getErrorDom("请输入手机"));
       } if (!isPhone(com)) {
-        line.append(getErrorDom("手机格式错误"));
+        line.append(getErrorDom("格式不正确"));
         return;
     }
   });
@@ -482,7 +482,7 @@ function checkAfterEmail() {
         focusLine(emailLine);
         return;
     } else if (!isPhone(email)) {
-        emailLine.append(getErrorDom("手机格式错误"));
+        emailLine.append(getErrorDom("格式不正确"));
         focusLine(emailLine);
         return;
     }
