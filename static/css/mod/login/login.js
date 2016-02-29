@@ -174,7 +174,7 @@ $(document).ready(function(){
       var line = $(this).parent().parent();
       if (com == "") {
         line.append(getErrorDom("请输入手机"));
-      } if (!isPhone(com)) {
+      } else if (!isPhone(com)) {
         line.append(getErrorDom("格式不正确"));
         return;
     }
