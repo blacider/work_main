@@ -176,7 +176,6 @@ $(document).ready(function(){
         line.append(getErrorDom("请输入手机"));
       } if (!isPhone(com)) {
         line.append(getErrorDom("手机格式错误"));
-        focusLine(line);
         return;
     }
   });
