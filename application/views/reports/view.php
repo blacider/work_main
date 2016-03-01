@@ -276,7 +276,7 @@ table td {
                 <table class="table table-bordered table-striped">
                   <tr>
                     <td>姓名</td>
-                    <td>留言</td>
+                    <td>时间</td>
                     <td>内容</td>
                     <!--
                     <td>操作</td>
