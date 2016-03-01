@@ -51,6 +51,7 @@ class Install extends REIM_Controller {
         }
         else if($this->agent->is_mobile('android'))
         {
+            $info = $this->app_model->find_online(1);
             $url = "http://d.yunbaoxiao.com/android/" . $info['version'] . "/reim.apk";
             $platform = 'android';
         } else { //pc
