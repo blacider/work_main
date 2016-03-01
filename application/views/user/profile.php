@@ -343,9 +343,9 @@ if(in_array($profile['admin'],[1,3,4])){
         <i class="ace-icon fa fa-angle-down icon-on-right"></i> 
     </button> 
     <ul class="dropdown-menu"> 
-        <li> <a href="javascript:void(0)" data-id="<?php echo $b['id']; ?>" data-bankname="<?php echo $b['bankname'];?>"  data-cardno="<?php echo $b['cardno'];?>" data-bankloc="<?php echo $b['bankloc'];?>" 
+        <li> <a href="javascript:void(0)" data-id="<?php echo $b['id']; ?>" data-cardtype="<?php echo $b['cardtype']; ?>" data-bankname="<?php echo $b['bankname'];?>"  data-cardno="<?php echo $b['cardno'];?>" data-bankloc="<?php echo $b['bankloc'];?>" 
                 data-account="<?php echo $b['account'];?>" data-subbranch="<?php echo $b['subbranch'];?>" data-default="<?php echo $member['credit_card'];?>" class="edit_bank">修改</a> </li>
-        <li> <a href="javascript:void(0)" data-id="<?php echo $b['id']; ?>" data-bankname="<?php echo $b['bankname'];?>"  data-cardno="<?php echo $b['cardno'];?>" data-bankloc="<?php echo $b['bankloc'];?>" 
+        <li> <a href="javascript:void(0)" data-id="<?php echo $b['id']; ?>" data-cardtype="<?php echo $b['cardtype']; ?>" data-bankname="<?php echo $b['bankname'];?>"  data-cardno="<?php echo $b['cardno'];?>" data-bankloc="<?php echo $b['bankloc'];?>" 
                 data-account="<?php echo $b['account'];?>" data-subbranch="<?php echo $b['subbranch'];?>" data-default="<?php echo $member['credit_card'];?>" class="show_bank">展示</a> </li> 
         <li class="divider"></li> 
         <li> 
@@ -580,7 +580,17 @@ if(in_array($profile['admin'],[1,3,4])){
                                     </select>
                                 </div>
                             </div>
-
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right">卡类型</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select id="bankCardType" name="cardtype" class="form-control" data-placeholder="请选择卡类型">
+                                        <option selected value="">请选择卡类型</option>
+                                        <option value="0">借记卡</option>
+                                        <option value="1">信用卡</option>
+                                        <option value="2">其它</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">开户地</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -748,7 +758,9 @@ if(in_array($profile['admin'],[1,3,4])){
             $('#cardbank').attr("disabled", false);
             $('#subbranch').attr("disabled",false);
             $('#is_default').attr("disabled",false);
+            $('#bankCardType').val('');
         }
+        title && $('#credit_model').find('.modal-title').text(title);
         $('.cancel').click(function(){
             $('#credit_model').modal('hide');
         });
@@ -780,6 +792,7 @@ if(in_array($profile['admin'],[1,3,4])){
         $('#cardloc').val($(node).data('bankloc'));
         $('#cardno').val($(node).data('cardno'));
         $('#subbranch').val($(node).data('subbranch'));
+        $('#bankCardType').val($(node).data('cardtype'));
         $('#default_id').val($(node).data('default'));
         var _is_default = $(node).data('default');
         if(_is_default == $(node).data('id'))
@@ -1002,14 +1015,16 @@ if(in_array($profile['admin'],[1,3,4])){
                         var _loc = _p + _c;//$('#cardloc').val();
                         var _id = $('#id').val();
                         var _subbranch = $('#subbranch').val();
+                        var _card_type = $('#bankCardType').val();
                         var _default_id = $('#default_id').val();
                         var _default = ($('#is_default').is(':checked') ? 1:0);
-                        if(_default == 1)
-                        {
+                        if(_card_type==='') {
+                            return show_notify('请选择卡类型');
+                        }
+                        if(_default == 1) {
                             _default_id = _id;
                         }
-                        else if(_default_id == _id)
-                        {
+                        else if(_default_id == _id) {
                                 _default_id = 0;
                         }
                         if (_account == "") {
@@ -1023,13 +1038,11 @@ if(in_array($profile['admin'],[1,3,4])){
                             return false;
                         };
                         
-                        
                         if (_bank == "" || _bank == null || _bank == undefined) {
                             show_notify('请选择银行卡开户行');
                             $('#cardbank').focus();
                             return false;
                         };
-                        
                         
                         $.ajax({
                             url : __BASE + "users/new_credit",
@@ -1040,6 +1053,7 @@ if(in_array($profile['admin'],[1,3,4])){
                                         ,'cardloc' :  _loc
                                         ,'id' :  _id
                                         ,'uid' : user_id
+                                        ,'cardtype' : _card_type
                                         ,'subbranch':_subbranch
                                         ,'default':_default
                                 },
@@ -1057,7 +1071,7 @@ if(in_array($profile['admin'],[1,3,4])){
                                             + _account 
                                             + '<i class="ace-icon fa fa-angle-down icon-on-right"></i> </button>'
                                             + '<ul class="dropdown-menu"> '
-                                            + '<li> <a href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" data-subbranch="' + _subbranch + '"' + ' data-default="' + _default_id + '"' +' class="edit_bank" >修改</a> </li>'
+                                            + '<li> <a href="javascript:void(0)" data-cardtype="' + _card_type +'"  data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" data-subbranch="' + _subbranch + '"' + ' data-default="' + _default_id + '"' +' class="edit_bank" >修改</a> </li>'
                                             + '<li> <a  href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" data-subbranch="' + _subbranch + '"' + ' data-default="' + _default_id + '"' +'  class="show_bank">展示</a> </li> '
                                             + '<li class="divider"></li> '
                                             + '<li> <a href="javascript:void(0)" data-uid="' + user_id + '" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="del_bank">删除</a> </li>'
