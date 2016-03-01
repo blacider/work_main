@@ -737,7 +737,7 @@ if(in_array($profile['admin'],[1,3,4])){
             $('#account').attr("disabled",  true);
             $('#cardloc').attr("disabled",  true);
             $('#cardno').attr("disabled",   true);
-            $('#cardbank').attr("disabled", true);
+            $('#cardbank').attr("disabled", true).trigger("chosen:updated");
             $('#subbranch').attr("disabled",true);
             $('#is_default').attr("disabled",true);
         } else {
@@ -776,7 +776,7 @@ if(in_array($profile['admin'],[1,3,4])){
         reset_bank(1, '修改银行卡');
         $('#id').val($(node).data('id'));
         $('#account').val($(node).data('account'));
-        $('#cardbank').val($(node).data('bankname'));
+        $('#cardbank').val($(node).data('bankname')).trigger("chosen:updated");
         $('#cardloc').val($(node).data('bankloc'));
         $('#cardno').val($(node).data('cardno'));
         $('#subbranch').val($(node).data('subbranch'));
