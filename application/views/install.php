@@ -106,7 +106,7 @@ var _hmt = _hmt || [];
       if (!results[2]) return '';
       return decodeURIComponent(results[2].replace(/\+/g, " "));
   };
-  _hmt.push('_traceEvent', 'install_page_fr', getParameterByName('fr'));
+  _hmt.push('_trackEvent', 'install_page_fr', getParameterByName('fr'));
   _hmt.push(['_setCustomVar', 1, 'install_page_fr', getParameterByName('fr'), 1]);
 </script>
 </body>
