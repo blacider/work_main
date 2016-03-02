@@ -635,7 +635,7 @@ function checkFirstEmailCode() {
                 method: "post",
                 data: {
                     vcode:code,
-                    password:pass,
+                    password:__pass,
                     email:__UserId
                 }
             }).done(function (rs) {
