@@ -737,7 +737,7 @@ if(in_array($profile['admin'],[1,3,4])){
             $('#account').attr("disabled",  true);
             $('#cardloc').attr("disabled",  true);
             $('#cardno').attr("disabled",   true);
-            $('#cardbank').attr("disabled", true).trigger("chosen:updated");
+            $('#cardbank').attr("disabled", true);
             $('#subbranch').attr("disabled",true);
             $('#is_default').attr("disabled",true);
         } else {
