@@ -362,7 +362,7 @@
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input style="width: 206px;" name="code" type="text" placeholder="手机验证码">
+                                    <input style="width: 206px;" name="code" type="text" placeholder="邮箱验证码">
                                     <button class="timer">59S后可重发</button>
                                 </span>
                             </div>
