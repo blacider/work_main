@@ -816,7 +816,7 @@ if(in_array($profile['admin'],[1,3,4])){
         reset_bank(0, '银行卡详情');
         $('#id').val($(node).data('id'));
         $('#account').val($(node).data('account'));
-        $('#cardbank').val($(node).data('bankname'));
+        $('#cardbank').val($(node).data('bankname')).trigger("chosen:updated");
         $('#cardloc').val($(node).data('bankloc'));
         $('#cardno').val($(node).data('cardno'));
         $('#subbranch').val($(node).data('subbranch'));
