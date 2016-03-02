@@ -647,7 +647,7 @@ function checkFirstEmailCode() {
                     u:__UserId,
                     p: __pass,
                     is_r:"off"
-                }
+                }});
                 } else {
                     focusLine(codeLine);
                     codeLine.append(getErrorDom("验证码错误"));
@@ -681,7 +681,7 @@ function checkFirstPhoneCode() {
                     u:__UserId,
                     p: pass,
                     is_r:"off"
-                }
+                }});
                 } else {
                     focusLine(codeLine);
                     codeLine.append(getErrorDom("验证码错误"));
