@@ -647,7 +647,12 @@ function checkFirstEmailCode() {
                     u:__UserId,
                     p: __pass,
                     is_r:"off"
-                }});
+                }
+            }).done(function (rs) {
+                if (rs['data'] != undefined) {
+                    window.location.href=rs['data'];
+                }
+            });
                 } else {
                     focusLine(codeLine);
                     codeLine.append(getErrorDom("验证码错误"));
@@ -679,9 +684,14 @@ function checkFirstPhoneCode() {
                 method: "post",
                 data: {
                     u:__UserId,
-                    p: pass,
+                    p: __pass,
                     is_r:"off"
-                }});
+                }
+            }).done(function (rs) {
+                if (rs['data'] != undefined) {
+                    window.location.href=rs['data'];
+                }
+            });
                 } else {
                     focusLine(codeLine);
                     codeLine.append(getErrorDom("验证码错误"));
