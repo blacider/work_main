@@ -226,6 +226,11 @@
         <div class="modal fade modal_align" style="display:none;" id="first-login">
             <div class="modal-dialog">
                 <div class="modal-content">
+                    <div class="modal-header-left" style="border-bottom: none;">
+                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
+                        </button>
+                    </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
                             <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
