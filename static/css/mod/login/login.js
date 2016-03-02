@@ -108,15 +108,20 @@ $(document).ready(function(){
   });
 
   $(".modal input[name='user']").blur(function(event) {
-      checkUser();
+      clearErrorLine();
+    var user = $("#login input[name='user']").val();
+    __UserId = user;
+    var userLine = $("#login").find('.user-line');
+    if (!isEmail(user) && !isPhone(user)) {
+        userLine.append(getErrorDom("帐号不存在"));
+        focusLine(userLine);
+    }
   });
   $(".modal input[name='password']").blur(function(event) {
     clearErrorLine();
       var pass = this.value;
       var passLine = $(this).parent().parent();
-      if (pass == "") {
-        passLine.append(getErrorDom("请输入密码"));
-      } else if (pass.length < 8) {
+      if (pass.length < 8) {
         passLine.append(getErrorDom("密码长度至少为8位"));
       } else {
         var reg = /^([a-zA-Z]+|[0-9]+)$/;
@@ -126,14 +131,6 @@ $(document).ready(function(){
       }
   });
   $("#password input[name='password']").unbind();
-  $("#password input[name='password']").blur(function(event) {
-        clearErrorLine();
-      var pass = this.value;
-      var passLine = $(this).parent().parent();
-      if (pass == "") {
-        passLine.append(getErrorDom("请输入密码"));
-      }
-  });
   $(".modal input[name='com']").blur(function(event) {
     clearErrorLine();
       var com = this.value;
@@ -142,29 +139,11 @@ $(document).ready(function(){
         line.append(getErrorDom("请输入公司名称"));
       }
   });
-  $(".modal input[name='name']").blur(function(event) {
-    clearErrorLine();
-      var com = this.value;
-      var line = $(this).parent().parent();
-      if (com == "") {
-        line.append(getErrorDom("请输入姓名"));
-      }
-  });
-  $(".modal input[name='level']").blur(function(event) {
-    clearErrorLine();
-      var com = this.value;
-      var line = $(this).parent().parent();
-      if (com == "") {
-        line.append(getErrorDom("请输入职位"));
-      }
-  });
   $(".modal input[name='email']").blur(function(event) {
     clearErrorLine();
       var com = this.value;
       var line = $(this).parent().parent();
-      if (com == "") {
-        line.append(getErrorDom("请输入邮箱"));
-      } else if (!isEmail(com)) {
+      if (!isEmail(com)) {
         line.append(getErrorDom("邮箱格式错误"));
       }
   });
@@ -172,20 +151,10 @@ $(document).ready(function(){
     clearErrorLine();
       var com = this.value;
       var line = $(this).parent().parent();
-      if (com == "") {
-        line.append(getErrorDom("请输入手机"));
-      } else if (!isPhone(com)) {
+      if (!isPhone(com)) {
         line.append(getErrorDom("格式不正确"));
         return;
     }
-  });
-  $(".modal input[name='code']").blur(function(event) {
-    clearErrorLine();
-      var code = this.value;
-      var codeLine = $(this).parent().parent();
-      if (code == "") {
-        codeLine.append(getErrorDom("请输入验证码"));
-      }
   });
 });
 var __UserId, __IfForget = false, __vcode, __pass;
