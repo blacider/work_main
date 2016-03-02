@@ -266,13 +266,22 @@ class Reports extends REIM_Controller {
         $_items = $this->_getitems();
         log_message('debug',json_encode($_items));
 
+        // 默认报销单模版的options['allow_no_items'] = 0;
+        // 
+        $template = array(
+            'options'=>array(
+                'allow_no_items'=>'0'
+            )
+        );
+
         $this->bsload('reports/new',
             array(
                 'title' => '新建报销单',
                 'members' => $_members,
                 'item_type_dic' => $item_type_dic,
-                'items' => $_items
-                ,'breadcrumbs' => array(
+                'items' => $_items,
+                'template'=>$template,
+                'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
                     ,array('url'  => '', 'name' => '新建报销单', 'class' => '')
@@ -363,11 +372,11 @@ class Reports extends REIM_Controller {
 
     public function create(){
         $items = $this->input->post('item');
-        if(''==$items)
-        {
-            $this->session->set_userdata('last_error','提交报销单不能为空');
-            return redirect(base_url('reports/index'));
+
+        if(!$items) {
+            $items = array();
         }
+        
         $title = $this->input->post('title');
         $receiver = $this->input->post('receiver');
         $cc = $this->input->post('cc');
@@ -476,18 +485,30 @@ class Reports extends REIM_Controller {
 
     public function edit($id = 0){
         $item_type_dic = $this->reim_show->get_item_type_name();
-        if($id == 0) return redirect(base_url('reports/index'));
+        if($id == 0) {
+            return redirect(base_url('reports/index'));
+        }
         $report = $this->reports->get_detail($id);
         if($report['status'] < 1){
             return redirect(base_url('reports/index'));
         }
         $report = $report['data'];
+
         $extra = array();
         if(array_key_exists('extras', $report) && $report['extras']) {
             $extra = json_decode($report['extras'], true);
         }
         $config = array();
         $banks = array();
+
+        // 获取template 
+        $template_id = $report['template_id'];
+        $template = $this->reports->get_report_template($template_id);
+        if($template['status']<=0) {
+            return redirect(base_url('reports/index'));
+        }
+        $template = $template['data'];
+
         if(!empty($extra)){
             $profile = array();
             $_common = $this->users->get_common();
@@ -570,12 +591,13 @@ class Reports extends REIM_Controller {
                 'banks' => $banks,
                 'extra_dic' => $extra_dic,
                 'item_type_dic' => $item_type_dic,
-                'report' => $report
-                ,'breadcrumbs' => array(
+                'report' => $report,
+                'template'=>$template,
+                'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
                     ,array('url'  => '', 'name' => '修改报销单', 'class' => '')
-                ),
+                )
             ),
             $template_views
             );
@@ -704,15 +726,23 @@ class Reports extends REIM_Controller {
 
     public function update(){
         $id = $this->input->post('id');
-        $items = $this->input->post('item');
-        if(''==$items || !$id)
-        {
-            $this->session->set_userdata('last_error','提交报销单不能为空');
-            return redirect(base_url('reports/index'));
-        }
         $title = $this->input->post('title');
+        
+        $items = $this->input->post('item');
+        if($items=='') {
+            $items = array();
+        }
+        
         $receiver = $this->input->post('receiver');
+        if($receiver=='') {
+            $receiver = array();
+        }
+
         $cc = $this->input->post('cc');
+        if($cc=='') {
+            $cc = array();
+        }
+
         $save = $this->input->post('renew');
         $force = $this->input->post('force');
         if(!$cc) $cc = array();
@@ -2013,10 +2043,8 @@ class Reports extends REIM_Controller {
 
     public function check_submit(){
         $items = $this->input->post('item');
-        if(''==$items)
-        {
-            $this->session->set_userdata('last_error','提交报销单不能为空');
-            return redirect(base_url('reports/index'));
+        if($items=='') {
+            $items = array();
         }
         $receiver = $this->input->post('receiver');
         if (empty($receiver)) {

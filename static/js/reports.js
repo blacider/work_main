@@ -1,3 +1,16 @@
+formatMoney = function(str, places, symbol, thousand, decimal) {
+    places = !isNaN(places = Math.abs(places)) ? places : 2;
+    symbol = symbol !== undefined ? symbol : "￥";
+    thousand = thousand || ",";
+    decimal = decimal || ".";
+    var number = parseFloat(str), 
+        negative = number < 0 ? "-" : "",
+        i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
+        j = (j = i.length) > 3 ? j % 3 : 0;
+    return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
+};
+
+
 
 function bind_event(){
     $('.tconfirm').each(function() {
@@ -68,7 +81,6 @@ function bind_event(){
         });
     });
 }
-var FLAG = 1;
 try{
     jQuery(grid_selector).jqGrid({
         url: __BASE + 'reports/listdata',
@@ -90,7 +102,13 @@ try{
         {name:'title', index:'title', width:50,editable: false,editoptions:{size:"30",maxlength:"50"},search:true},
         {name:'prove_ahead', index:'prove_ahead', width:40,editable: false,editoptions:{size:"20",maxlength:"50"},search:false},
         {name:'date_str', index:'date_str', width:50,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
-        {name:'amount',sorttype: myCustomSort,formatter:'currency', formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'}, index:'amount', width:50,editable: true,editoptions:{size:"20",maxlength:"30"},search:false},
+        {name:'amount',sorttype: myCustomSort,formatter: function(value, options, row) {
+            if(row['item_count'] == 0) {
+                return '无消费';
+            } else {
+                return formatMoney(value);
+            }
+        }, formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'}, index:'amount', width:50,editable: true,editoptions:{size:"20",maxlength:"30"},search:false},
         {name:'item_count', index:'item_count', width:40,editable: false,editoptions:{size:"20",maxlength:"40"},search:false},
         {name:'attachments',index:'attachments', width:19, editable: false,editoptions: {size:"15", maxlength : "20"},search:false},
         {name:'status_str',index:'status_str', width:40, editable: false,editoptions: {size:"20", maxlength : "30"}/*,unformat: aceSwitch*/,search:false},
@@ -114,10 +132,6 @@ try{
                 updateActionIcons(table);
                 updatePagerIcons(table);
                 enableTooltips(table);
-                if (FLAG) {
-                    doSearch();
-                    FLAG = 0;
-                }
 
             }, 0);
         },
@@ -243,11 +257,11 @@ function submit_check() {
             _ids.push($(this).data('id'));
         };
     });
-    if(_ids.length == 0) {
+    if(_ids.length == 0 && allow_no_items=='0') {
         show_notify('提交的报销单不能为空');
         return false;
     }
-
+    debugger
     $.ajax({
         type : 'POST',
         url : __BASE + "reports/check_submit", 

@@ -269,6 +269,18 @@
                     <div class="field-table default-field-table">
                         <div class="line" style="margin-bottom: 30px"></div>
                         <div class="column-wrap table-layout">
+                            <h4 class="field-table-label table-cell"> 消费设置 </h4>
+                            <div class="table-cell field-table-content-multi-row">
+                                <div class="field-checkbox" style="margin-bottom: 0" ng-click="templateItem.options.allow_no_items = 1-templateItem.options.allow_no_items" ng-class="{checked: templateItem.options.allow_no_items}">
+                                    <i class="icon"></i>
+                                    <label>允许不添加消费</label>
+                                </div>
+                            </div>             
+                        </div>
+                    </div>
+                    <div class="field-table default-field-table">
+                        <div class="line" style="margin-bottom: 30px"></div>
+                        <div class="column-wrap table-layout">
                             <h4 class="field-table-label table-cell"> 适用范围 </h4>
                             <div class="table-cell field-table-content-multi-row">
                                 <div class="field-checkbox" ng-class="{checked: templateItem['type'].indexOf($index+'')!=-1}" style="{{$last?'margin-bottom: 0':''}}" ng-repeat="templateTypeItem in templateTypeArray" ng-click="toggleCheckbox($event, $index); updateTemplateType($event, templateItem, $index)">

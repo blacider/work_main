@@ -12,8 +12,9 @@
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 <script  type="text/javascript" src="/static/ace/js/date-time/locale/zh-cn.js" charset="UTF-8"></script>
 <script src="/static/js/reports.js"></script>
-
-
+<script>
+    var allow_no_items = <?php echo $template['options']['allow_no_items'];?>;
+</script>
 
 <div class="page-content">
     <div class="page-content-area">

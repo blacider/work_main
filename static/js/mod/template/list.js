@@ -55,6 +55,7 @@
             "has_submitter_id": 0,
             "has_submitter_tel": 0,
             "has_submitter_email": 0,
+            "allow_no_items": 0,
 
             //footer options
             "has_company_name": 1,

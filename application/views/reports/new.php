@@ -221,9 +221,10 @@ foreach($items as $i){
 
 
 
-<script language="javascript">
+<script>
 update_tamount();
 var __BASE = "<?php echo $base_url; ?>";
+var allow_no_items = <?php echo $template['options']['allow_no_items'];?>;
 function toDecimal(x) {
     var f = parseFloat(x);
     if (isNaN(f)) {
@@ -295,6 +296,7 @@ function do_post(force) {
         return false;
     }
     if(_ids.length == 0) {
+        debugger
         show_notify('提交的报销单不能为空');
         return false;
     }
@@ -307,6 +309,7 @@ function do_post(force) {
 
 
     if(sum <= 0) {
+        debugger
         show_notify("报销单总额不能小于等于0");
         return false;
     }
