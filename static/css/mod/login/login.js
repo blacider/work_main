@@ -137,7 +137,7 @@ $(document).ready(function(){
       var com = this.value;
       var line = $(this).parent().parent();
       if (com != '' && !isEmail(com)) {
-        line.append(getErrorDom("邮箱格式错误"));
+        line.append(getErrorDom("格式不正确"));
       }
   });
   $(".modal input[name='phone']").blur(function(event) {
@@ -541,7 +541,7 @@ function checkAfterPhone() {
         focusLine(emailLine);
         return;
     } else if (!isEmail(email)) {
-        emailLine.append(getErrorDom("邮箱格式不正确"));
+        emailLine.append(getErrorDom("格式不正确"));
         focusLine(emailLine);
         return;
     }
