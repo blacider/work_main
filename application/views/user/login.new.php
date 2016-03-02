@@ -278,7 +278,7 @@
                         <div class="pass_content">
                             <div class="form-line">
                                 <div class="user-pic relative-10">
-                                    <img src="/static/img/mod/login/pic.png" width="90" height="90" alt="pic">
+                                    <img src="/static/img/mod/login/pic.png" height="90" alt="pic">
                                 </div>
                                 <div class="user-name relative-10">
                                     于海新
