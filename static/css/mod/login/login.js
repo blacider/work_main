@@ -59,7 +59,7 @@ $(document).ready(function(){
             });
         } else {
             userLine.find('.account').focus();
-            $(this).parent().append(getErrorDom("帐号不存在"));
+            $(this).parent().append(getErrorDom("格式不正确"));
         }
     } else {
         userLine.find('.account').focus();
@@ -108,15 +108,21 @@ $(document).ready(function(){
   });
 
   $(".modal input[name='user']").blur(function(event) {
-      checkUser();
+      clearErrorLine();
+    var user = $("#login input[name='user']").val();
+    __UserId = user;
+    var userLine = $("#login").find('.user-line');
+    if (user != '' && !isEmail(user) && !isPhone(user)) {
+        userLine.append(getErrorDom("帐号不存在"));
+        focusLine(userLine);
+    }
   });
   $(".modal input[name='password']").blur(function(event) {
     clearErrorLine();
       var pass = this.value;
       var passLine = $(this).parent().parent();
-      if (pass == "") {
-        passLine.append(getErrorDom("请输入密码"));
-      } else if (pass.length < 8) {
+      if (pass == '') {return;}
+      if (pass.length < 8) {
         passLine.append(getErrorDom("密码长度至少为8位"));
       } else {
         var reg = /^([a-zA-Z]+|[0-9]+)$/;
@@ -126,66 +132,22 @@ $(document).ready(function(){
       }
   });
   $("#password input[name='password']").unbind();
-  $("#password input[name='password']").blur(function(event) {
-        clearErrorLine();
-      var pass = this.value;
-      var passLine = $(this).parent().parent();
-      if (pass == "") {
-        passLine.append(getErrorDom("请输入密码"));
-      }
-  });
-  $(".modal input[name='com']").blur(function(event) {
-    clearErrorLine();
-      var com = this.value;
-      var line = $(this).parent().parent();
-      if (com == "") {
-        line.append(getErrorDom("请输入公司名称"));
-      }
-  });
-  $(".modal input[name='name']").blur(function(event) {
-    clearErrorLine();
-      var com = this.value;
-      var line = $(this).parent().parent();
-      if (com == "") {
-        line.append(getErrorDom("请输入姓名"));
-      }
-  });
-  $(".modal input[name='level']").blur(function(event) {
-    clearErrorLine();
-      var com = this.value;
-      var line = $(this).parent().parent();
-      if (com == "") {
-        line.append(getErrorDom("请输入职位"));
-      }
-  });
   $(".modal input[name='email']").blur(function(event) {
     clearErrorLine();
       var com = this.value;
       var line = $(this).parent().parent();
-      if (com == "") {
-        line.append(getErrorDom("请输入邮箱"));
-      } else if (!isEmail(com)) {
-        line.append(getErrorDom("邮箱格式错误"));
+      if (com != '' && !isEmail(com)) {
+        line.append(getErrorDom("格式不正确"));
       }
   });
   $(".modal input[name='phone']").blur(function(event) {
     clearErrorLine();
       var com = this.value;
       var line = $(this).parent().parent();
-      if (com == "") {
-        line.append(getErrorDom("请输入手机"));
-      } else if (!isPhone(com)) {
+      if (!isPhone(com) && com != '') {
         line.append(getErrorDom("格式不正确"));
         return;
     }
-  });
-  $(".modal input[name='code']").blur(function(event) {
-    clearErrorLine();
-      var code = this.value;
-      var codeLine = $(this).parent().parent();
-      if (code == "") {
-        codeLine.append(getErrorDom("请输入验证码"));
-      }
   });
 });
 var __UserId, __IfForget = false, __vcode, __pass;
@@ -373,6 +335,18 @@ function checkPhone() {
             }).done(function (rs) {
                 if (rs["code"] == 0) {
                     registerSuccess("设置密码成功");
+                    Utils.api('/login/do_login', {
+                method: "post",
+                data: {
+                    u:__UserId,
+                    p: pass,
+                    is_r:"off"
+                }
+            }).done(function (rs) {
+                if (rs['data'] != undefined) {
+                    window.location.href=rs['data'];
+                }
+            });
                 } else {
                     focusLine(codeLine);
                     codeLine.append(getErrorDom("验证码错误"));
@@ -459,6 +433,18 @@ function checkEmail() {
             }).done(function (rs) {
                 if (rs["code"] == 0) {
                     registerSuccess("设置密码成功");
+                    Utils.api('/login/do_login', {
+                method: "post",
+                data: {
+                    u:__UserId,
+                    p: pass,
+                    is_r:"off"
+                }
+            }).done(function (rs) {
+                if (rs['data'] != undefined) {
+                    window.location.href=rs['data'];
+                }
+            });
                 } else {
                     focusLine(codeLine);
                     codeLine.append(getErrorDom("验证码错误"));
@@ -555,7 +541,7 @@ function checkAfterPhone() {
         focusLine(emailLine);
         return;
     } else if (!isEmail(email)) {
-        emailLine.append(getErrorDom("邮箱格式不正确"));
+        emailLine.append(getErrorDom("格式不正确"));
         focusLine(emailLine);
         return;
     }
@@ -596,7 +582,7 @@ function checkFirstPass() {
     var pass = $("#first-login").find('input[name="password"]').val();
     __pass = pass;
     if (pass == undefined || pass == "") {
-        passLine.append(getErrorDom("请输入密码"));
+        passLine.append(getErrorDom("请设置密码"));
         focusLine(passLine);
         return;
     } else if (pass.length < 8) {
@@ -618,6 +604,7 @@ function checkFirstPass() {
                     email: userId
                 }
             });
+            $(".phone-text").text(userId);
             $("#first-email").modal('show');
             __IfForget = true;
             time($("#first-email").find('.timer'), 60);
@@ -629,6 +616,7 @@ function checkFirstPass() {
                     phone: userId
                 }
             });
+            $(".phone-text").text(userId);
             $("#first-phone").modal('show');
             __IfForget = true;
             time($("#first-phone").find('.timer'), 60);
@@ -647,12 +635,24 @@ function checkFirstEmailCode() {
                 method: "post",
                 data: {
                     vcode:code,
-                    password:pass,
+                    password:__pass,
                     email:__UserId
                 }
             }).done(function (rs) {
                 if (rs["code"] == 0) {
                     registerSuccess("设置密码成功");
+                    Utils.api('/login/do_login', {
+                method: "post",
+                data: {
+                    u:__UserId,
+                    p: __pass,
+                    is_r:"off"
+                }
+            }).done(function (rs) {
+                if (rs['data'] != undefined) {
+                    window.location.href=rs['data'];
+                }
+            });
                 } else {
                     focusLine(codeLine);
                     codeLine.append(getErrorDom("验证码错误"));
@@ -680,6 +680,18 @@ function checkFirstPhoneCode() {
             }).done(function (rs) {
                 if (rs["code"] == 0) {
                     registerSuccess("设置密码成功");
+                    Utils.api('/login/do_login', {
+                method: "post",
+                data: {
+                    u:__UserId,
+                    p: __pass,
+                    is_r:"off"
+                }
+            }).done(function (rs) {
+                if (rs['data'] != undefined) {
+                    window.location.href=rs['data'];
+                }
+            });
                 } else {
                     focusLine(codeLine);
                     codeLine.append(getErrorDom("验证码错误"));
@@ -687,6 +699,9 @@ function checkFirstPhoneCode() {
             });
 }
 function getErrorDom(str) {
+    setTimeout(function() {
+        clearErrorLine();
+    }, 3000);
     return '<div class="error-login">'+
                 '<div class="error-login-line">'+
                     '<span class="error-text">'+

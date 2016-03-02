@@ -226,6 +226,11 @@
         <div class="modal fade modal_align" style="display:none;" id="first-login">
             <div class="modal-dialog">
                 <div class="modal-content">
+                    <div class="modal-header-left" style="border-bottom: none;">
+                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
+                        </button>
+                    </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
                             <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
@@ -242,7 +247,7 @@
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input name="password" type="password" placeholder="输入密码">
+                                    <input name="password" type="password" placeholder="设置密码">
                                     <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36" onclick="changeVisibility($(this).parent())">
                                 </span>
                             </div>
@@ -273,7 +278,7 @@
                         <div class="pass_content">
                             <div class="form-line">
                                 <div class="user-pic relative-10">
-                                    <img src="/static/img/mod/login/pic.png" width="90" height="90" alt="pic">
+                                    <img src="/static/img/mod/login/pic.png" width="90" alt="pic">
                                 </div>
                                 <div class="user-name relative-10">
                                     于海新
@@ -362,7 +367,7 @@
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input style="width: 206px;" name="code" type="text" placeholder="手机验证码">
+                                    <input style="width: 206px;" name="code" type="text" placeholder="邮箱验证码">
                                     <button class="timer">59S后可重发</button>
                                 </span>
                             </div>

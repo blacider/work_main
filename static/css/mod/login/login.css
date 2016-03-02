@@ -128,8 +128,10 @@ img ,button{
 }
 .user-pic {
     width: 90px;
+    height: 90px;
     margin: 0 auto;
     border-radius: 200px;
+    overflow: hidden;
 }
 .user-name {
     font-size: 16px;
