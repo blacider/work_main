@@ -335,6 +335,18 @@ function checkPhone() {
             }).done(function (rs) {
                 if (rs["code"] == 0) {
                     registerSuccess("设置密码成功");
+                    Utils.api('/login/do_login', {
+                method: "post",
+                data: {
+                    u:__UserId,
+                    p: pass,
+                    is_r:"off"
+                }
+            }).done(function (rs) {
+                if (rs['data'] != undefined) {
+                    window.location.href=rs['data'];
+                }
+            });
                 } else {
                     focusLine(codeLine);
                     codeLine.append(getErrorDom("验证码错误"));
@@ -421,6 +433,18 @@ function checkEmail() {
             }).done(function (rs) {
                 if (rs["code"] == 0) {
                     registerSuccess("设置密码成功");
+                    Utils.api('/login/do_login', {
+                method: "post",
+                data: {
+                    u:__UserId,
+                    p: pass,
+                    is_r:"off"
+                }
+            }).done(function (rs) {
+                if (rs['data'] != undefined) {
+                    window.location.href=rs['data'];
+                }
+            });
                 } else {
                     focusLine(codeLine);
                     codeLine.append(getErrorDom("验证码错误"));
