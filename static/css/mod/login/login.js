@@ -59,7 +59,7 @@ $(document).ready(function(){
             });
         } else {
             userLine.find('.account').focus();
-            $(this).parent().append(getErrorDom("帐号已存在"));
+            $(this).parent().append(getErrorDom("格式不正确"));
         }
     } else {
         userLine.find('.account').focus();
