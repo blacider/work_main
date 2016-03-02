@@ -604,6 +604,7 @@ function checkFirstPass() {
                     email: userId
                 }
             });
+            $(".phone-text").text(userId);
             $("#first-email").modal('show');
             __IfForget = true;
             time($("#first-email").find('.timer'), 60);
@@ -615,6 +616,7 @@ function checkFirstPass() {
                     phone: userId
                 }
             });
+            $(".phone-text").text(userId);
             $("#first-phone").modal('show');
             __IfForget = true;
             time($("#first-phone").find('.timer'), 60);
