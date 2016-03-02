@@ -361,7 +361,17 @@ foreach($items as $i){
                                     </select>
                                 </div>
                             </div>
-
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right">卡类型</label>
+                                <div class="col-xs-6 col-sm-6">
+                                    <select id="bankCardType" name="cardtype" class="form-control" data-placeholder="请选择卡类型">
+                                        <option selected value="">请选择卡类型</option>
+                                        <option value="0">借记卡</option>
+                                        <option value="1">信用卡</option>
+                                        <option value="2">其它</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">开户地</label>
                                 <div class="col-xs-6 col-sm-6">
@@ -462,6 +472,7 @@ function reset_bank(disable, title,bank_field_id) {
             $('#cardbank').attr("disabled", false);
             $('#subbranch').attr("disabled",false);
         }
+        title && $('#credit_model').find('.modal-title').text(title);
         $('.cancel').click(function(){
             $('#credit_model').modal('hide');
         });
@@ -483,6 +494,7 @@ function reset_bank(disable, title,bank_field_id) {
         $('#cardbank').val($(node).data('bankname'));
         $('#cardloc').val($(node).data('bankloc'));
         $('#cardno').val($(node).data('cardno'));
+        $('#bankCardType').val($(node).data('cardtype'));
         $('#subbranch').val($(node).data('subbranch'));
         $('#credit_model').modal('show');
         var i = 1, loc = $(node).data('bankloc');
@@ -789,30 +801,29 @@ $(document).ready(function(){
         var _account = $('#account').val();
         var _bank = $('#cardbank').val();
         var _subbranch = $('#subbranch').val();
+        var _card_type = $('#bankCardType').val();
         var _no = $('#cardno').val();
         var _loc = _p + _c;//$('#cardloc').val();
         var value = {"account":_account,"bankname":_bank,"subbranch":_subbranch,"bankloc":_loc,"cardno":_no};
         var _value = JSON.stringify(value);
-                        if (_account == "") {
-                            show_notify('请输入户名');
-                            $('#account').focus();
-                            return false;
-                        };
-                        if (_no.length < 12) {
-                            show_notify('请输入正确银行卡号');
-                            $('#cardno').focus();
-                            return false;
-                        };
-
-
-                        if (_bank == "" || _bank == null || _bank == undefined) {
-                            show_notify('请选择银行卡开户行');
-                            $('#cardbank').focus();
-                            return false;
-                        };
-
-
-
+        if(_card_type==='') {
+            return show_notify('请选择卡类型');
+        }
+        if (_account == "") {
+            show_notify('请输入户名');
+            $('#account').focus();
+            return false;
+        };
+        if (_no.length < 12) {
+            show_notify('请输入正确银行卡号');
+            $('#cardno').focus();
+            return false;
+        };
+        if (_bank == "" || _bank == null || _bank == undefined) {
+            show_notify('请选择银行卡开户行');
+            $('#cardbank').focus();
+            return false;
+        };
         var buf = '<option selected value="'+ escapeHtml(_value) +'">'+ _account + '-' + _bank + '-' + _no +'</option>';
         $('#credit_model').modal('hide');
         $('#bank_select_' + _id).append(buf);
@@ -824,6 +835,7 @@ $(document).ready(function(){
                     ,'cardbank' : _bank
                     ,'cardno' : _no
                     ,'cardloc' :  _loc
+                    ,'cardtype' : _card_type
                     ,'subbranch':_subbranch
                     ,'default':0
             },
@@ -839,6 +851,7 @@ $(document).ready(function(){
                     $('#cardno'  ).val("");
                     $('#cardbank').val("");
                     $('#subbranch').val("");
+                    $('#bankCardType').val("");
                 }
             }
         });
