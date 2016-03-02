@@ -112,7 +112,7 @@ $(document).ready(function(){
     var user = $("#login input[name='user']").val();
     __UserId = user;
     var userLine = $("#login").find('.user-line');
-    if (!isEmail(user) && !isPhone(user)) {
+    if (user != '' && !isEmail(user) && !isPhone(user)) {
         userLine.append(getErrorDom("帐号不存在"));
         focusLine(userLine);
     }
@@ -121,6 +121,7 @@ $(document).ready(function(){
     clearErrorLine();
       var pass = this.value;
       var passLine = $(this).parent().parent();
+      if (pass == '') {return;}
       if (pass.length < 8) {
         passLine.append(getErrorDom("密码长度至少为8位"));
       } else {
@@ -131,19 +132,11 @@ $(document).ready(function(){
       }
   });
   $("#password input[name='password']").unbind();
-  $(".modal input[name='com']").blur(function(event) {
-    clearErrorLine();
-      var com = this.value;
-      var line = $(this).parent().parent();
-      if (com == "") {
-        line.append(getErrorDom("请输入公司名称"));
-      }
-  });
   $(".modal input[name='email']").blur(function(event) {
     clearErrorLine();
       var com = this.value;
       var line = $(this).parent().parent();
-      if (!isEmail(com)) {
+      if (com != '' && !isEmail(com)) {
         line.append(getErrorDom("邮箱格式错误"));
       }
   });
@@ -151,7 +144,7 @@ $(document).ready(function(){
     clearErrorLine();
       var com = this.value;
       var line = $(this).parent().parent();
-      if (!isPhone(com)) {
+      if (!isPhone(com) && com != '') {
         line.append(getErrorDom("格式不正确"));
         return;
     }
