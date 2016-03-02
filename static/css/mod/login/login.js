@@ -582,7 +582,7 @@ function checkFirstPass() {
     var pass = $("#first-login").find('input[name="password"]').val();
     __pass = pass;
     if (pass == undefined || pass == "") {
-        passLine.append(getErrorDom("请输入密码"));
+        passLine.append(getErrorDom("请设置密码"));
         focusLine(passLine);
         return;
     } else if (pass.length < 8) {
