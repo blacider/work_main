@@ -791,9 +791,9 @@ function checkFirstPhoneCode() {
             });
 }
 function getErrorDom(str) {
-    setTimeout(function() {
-        clearErrorLine();
-    }, 3000);
+    //setTimeout(function() {
+    //    clearErrorLine();
+    //}, 3000);
     return '<div class="error-login">'+
                 '<div class="error-login-line">'+
                     '<span class="error-text">'+
