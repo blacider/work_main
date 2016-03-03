@@ -81,7 +81,6 @@ body {
 }
 #main .login-box .account {
     height: 50px;
-    line-height: 50px;
     margin: 0;
     padding: 0 12px;
     border-radius: 2px;
@@ -91,12 +90,12 @@ body {
     width: 296px;
     float: left;
     opacity: 0.9;
-    border: solid 0.4px #929292;
-    border: solid 0.4px var(--warm-grey);
+    border: 1px solid #929292;
+    border: 1px solid var(--warm-grey);
 }
 #main .login-box .account:focus {
-    border: solid 0.4px #ff575b;
-    border: solid 0.4px var(--coral-pink);
+    border: 1px solid #ff575b;
+    border: 1px solid var(--coral-pink);
     opacity: 1;
 }
 #main .login-box .login {
