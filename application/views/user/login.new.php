@@ -40,10 +40,8 @@
             </div>
         </div>
         <div id="main">
-            <p class="slogan">
-                <h2 style="display: none">对报销的怨言，到此为止。</h2>
-                <img src="/static/img/mod/login/slogan.png" alt="">
-            </p>
+            <div class="block1-text1" style="margin: 0px auto 91px auto;">
+            </div>
             <div class="login-box">
                 <input class="account" id="login-text" type="text" value="" placeholder="邮箱／手机号码">
                 <input class="login-button login" type="button" value="创建公司">
