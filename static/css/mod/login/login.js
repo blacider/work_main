@@ -32,6 +32,56 @@ $(document).ready(function(){
   $(".modal-header").find('button').click(function(event) {
       $(".modal").modal("hide");
   });
+  $("#signin .right-sm").click(function() {
+    clearErrorLine();
+    __IfForget = false;
+    var userId = $("#signin input").val();
+    __UserId = userId;
+    $("#login").find("input").focus();
+    var userLine = $(this).parent().parent();
+    if (userId != null && userId != "") {
+        if (isEmail(userId)) {
+            Utils.api('/register/getvcode/email', {
+                method: "post",
+                data: {
+                    email: userId
+                }
+            }).done(function (rs) {
+                if (rs.code > 0) {
+                    $("#email-code").modal('show');
+                    $(".phone-text").text(userId);
+                    time($("#email-code").find('.timer'), 60);
+                    $("#email-code").find("input[name='password']").attr('placeholder', '设置密码');
+                } else {
+                    userLine.append(getErrorDom("账号已存在"));
+                }
+            });
+        } else if (isPhone(userId)) {
+            Utils.api('/register/getvcode/phone', {
+                method: "post",
+                data: {
+                    phone: userId
+                }
+            }).done(function (rs) {
+                if (rs.code > 0) {
+                    $("#phone-code").modal('show');
+                    $(".phone-text").text(userId);
+                    time($("#phone-code").find('.timer'), 60);
+                    $("#phone-code").find("input[name='password']").attr('placeholder', '设置密码');
+                } else {
+                    userLine.find('input').focus();
+                    userLine.append(getErrorDom("账号已存在"));
+                }
+            });
+        } else {
+            userLine.find('input').focus();
+            $(this).parent().append(getErrorDom("格式不正确"));
+        }
+    } else {
+        userLine.find('input').focus();
+        $(this).parent().append(getErrorDom("请输入邮箱/手机号码"));
+    }
+  });
   $(".login-button").click(function() {
     clearErrorLine();
     __IfForget = false;
@@ -759,7 +809,7 @@ function clearErrorLine() {
 }
 function toLoin() {
     document.documentElement.scrollTop = document.body.scrollTop =0;
-    $("#main .login-box .account").focus();
+    $("#signin").modal("show");
 }
 function weixinLogin() {
     var _target = encodeURIComponent('http://admin.cloudbaoxiao.com/login/wxlogin');

@@ -85,7 +85,7 @@ img ,button{
     margin-top: -190px;
 }
 
-#login input, #first-email input, #first-phone input,#first-login input, #password input ,#phone-code input, #email-code input, #phone-after input, #email-after input{
+#login input, #first-email input, #first-phone input,#first-login input, #password input ,#phone-code input, #email-code input, #phone-after input, #email-after input, #signin input{
     border: none;
     font-size: 16px;
     padding: 0;
