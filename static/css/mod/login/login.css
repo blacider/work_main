@@ -69,8 +69,9 @@ img ,button{
 .first-text {
     margin-bottom: 45px;
     font-size: 16px;
-    text-align: center;
+    text-align: left;
     color: #4A4A4A;
+    white-space: nowrap;
 }
 .modal-dialog, .modal-content {
     width: 100%;
@@ -148,8 +149,9 @@ img ,button{
     font-size: 15px;
 }
 .text {
+    white-space: nowrap;
     font-size: 15px;
-    text-align: center;
+    text-align: left;
 }
 .timer {
     color: #ff575b;

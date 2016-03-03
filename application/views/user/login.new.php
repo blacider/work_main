@@ -262,7 +262,7 @@
                     </div>
                     <div class="modal-body" style="position: relative;">
                         <div class="first_content">
-                            <div class="form-line relative-10">
+                            <div class="form-line relative-10" style="padding-left: 54px;">
                                 <p class="first-text">初次登录请设置好密码</p>
                             </div>
                             <div class="form-line pass-line">
@@ -345,7 +345,7 @@
                     </div>
                     <div class="modal-body" style="position: relative;">
                         <div class="pass_content" style="margin-top: 120px;">
-                            <div class="form-line relative-10">
+                            <div class="form-line relative-10" style="padding-left: 54px;">
                                 <p class="text">验证码已发送至 <span class="phone-text">18659197052</span></p>
                             </div>
                             <div class="form-line code-line" style="margin-top: 44px;">
@@ -354,7 +354,7 @@
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input style="width: 206px;" name="code" type="text" placeholder="手机验证码">
+                                    <input style="width: 196px;" name="code" type="text" placeholder="手机验证码">
                                     <button class="timer">59S后可重发</button>
                                 </span>
                             </div>
@@ -382,7 +382,7 @@
                     </div>
                     <div class="modal-body" style="position: relative;">
                         <div class="pass_content" style="margin-top: 120px;">
-                            <div class="form-line relative-10">
+                            <div class="form-line relative-10" style="padding-left: 54px;">
                                 <p class="text">验证码已发送至 <span class="phone-text">niurenpeng@niurenpeng.com</span></p>
                             </div>
                             <div class="form-line code-line" style="margin-top: 44px;">
@@ -421,7 +421,7 @@
                     </div>
                     <div class="modal-body" style="position: relative;">
                         <div class="pass_content" style="margin-top: 60px;">
-                            <div class="form-line relative-10">
+                            <div class="form-line relative-10" style="padding-left: 54px;">
                                 <p class="text">验证码已发送至 <span class="phone-text">18659197052</span></p>
                             </div>
                             <div class="form-line code-line" style="margin-top: 44px;">
@@ -430,7 +430,7 @@
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input style="width: 206px;" name="code" type="text" placeholder="手机验证码">
+                                    <input style="width: 196px;" name="code" type="text" placeholder="手机验证码">
                                     <button class="timer">59S后可重发</button>
                                 </span>
                             </div>
@@ -468,7 +468,7 @@
                     </div>
                     <div class="modal-body" style="position: relative;">
                         <div class="pass_content" style="margin-top: 60px;">
-                            <div class="form-line relative-10">
+                            <div class="form-line relative-10" style="padding-left: 54px;">
                                 <p class="text">验证码已发送至 <span class="phone-text">niurenpeng@niurenpeng.com</span></p>
                             </div>
                             <div class="form-line code-line" style="margin-top: 44px;">
