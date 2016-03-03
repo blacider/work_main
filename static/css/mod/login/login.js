@@ -1,15 +1,15 @@
-var __Modal = "#login";
 $(document).ready(function(){
     $("#login-m-a").click(function(event) {
         $("#login").modal('show');
-        __Modal = "#login";
     });
     $(document).keypress(function(e) {  
     // 回车键事件  
        if(e.which == 13) {
-            if ($(".in").length != 0) {
-                if ($(__Modal).find('.next-step img').click().length == 0) {
-                    $(__Modal).find('.right-sm').click();
+            var Modals = $(".in");
+            if (Modals.length != 0) {
+                var Modal = $(Modals[Modals.length/2-1]);
+                if (Modal.find('.rightd').click().length == 0) {
+                    Modal.find('.right-sm').click();
                 }
             }
        }  
@@ -37,6 +37,7 @@ $(document).ready(function(){
     __IfForget = false;
     var userId = $("#login-text").val();
     __UserId = userId;
+    $("#login").find("input").focus();
     var userLine = $(this).parent();
     if (userId != null && userId != "") {
         if (isEmail(userId)) {
@@ -48,7 +49,6 @@ $(document).ready(function(){
             }).done(function (rs) {
                 if (rs.code > 0) {
                     $("#email-code").modal('show');
-                    __Modal = "#email-code";
                     $(".phone-text").text(userId);
                     time($("#email-code").find('.timer'), 60);
                     $("#email-code").find("input[name='password']").attr('placeholder', '设置密码');
@@ -65,7 +65,6 @@ $(document).ready(function(){
             }).done(function (rs) {
                 if (rs.code > 0) {
                     $("#phone-code").modal('show');
-                    __Modal = "#phone-code";
                     $(".phone-text").text(userId);
                     time($("#phone-code").find('.timer'), 60);
                     $("#phone-code").find("input[name='password']").attr('placeholder', '设置密码');
@@ -225,10 +224,8 @@ function checkUser() {
                         $("#password .user-pic").find('img').attr('src', rs['data']['user']['avatar_url']);
                         $("#password .user-name").text(rs['data']['user']['nickname']);
                         $("#password").modal('show');
-                        __Modal = "#password";
                     } else {
                         $("#first-login").modal('show');
-                        __Modal = "#first-login";
                     }
                 } else {
                     focusLine(userLine);
@@ -247,10 +244,8 @@ function checkUser() {
                         $("#password .user-pic").find('img').attr('src', rs['data']['user']['avatar_url']);
                         $("#password .user-name").text(rs['data']['user']['nickname']);
                         $("#password").modal('show');
-                        __Modal = "#password";
                     } else {
                         $("#first-login").modal('show');
-                        __Modal = "#first-login";
                     }
                 } else {
                     focusLine(userLine);
@@ -271,7 +266,6 @@ function forgetPass() {
                 }
             });
         $("#email-code").modal('show');
-        __Modal = "#email-code";
         $(".phone-text").text(userId);
         $("#email-code").find("input[name='password']").attr('placeholder', '设置新密码');
         time($("#email-code").find('.timer'), 60);
@@ -284,7 +278,6 @@ function forgetPass() {
                 }
             });
         $("#phone-code").modal('show');
-        __Modal = "#phone-code";
         $(".phone-text").text(userId);
         time($("#phone-code").find('.timer'), 60);
         $("#phone-code").find("input[name='password']").attr('placeholder', '设置新密码');
@@ -341,7 +334,6 @@ function checkPhone() {
             }).done(function (rs) {
                 if (rs["data"]["valid"]) {
                     $("#phone-after").modal('show');
-                    __Modal = "#phone-after";
                     __vcode = code;
                     __pass = pass;
                 } else {
@@ -441,7 +433,6 @@ function checkEmail() {
             }).done(function (rs) {
                 if (rs["data"]["valid"]) {
                     $("#email-after").modal('show');
-                    __Modal = "#email-after";
                     __vcode = code;
                     __pass = pass;
                 } else {
@@ -657,7 +648,6 @@ function checkFirstPass() {
             });
             $(".phone-text").text(userId);
             $("#first-email").modal('show');
-            __Modal = "#first-email";
             __IfForget = true;
             time($("#first-email").find('.timer'), 60);
         }
@@ -670,7 +660,6 @@ function checkFirstPass() {
             });
             $(".phone-text").text(userId);
             $("#first-phone").modal('show');
-            __Modal = "#first-phone";
             __IfForget = true;
             time($("#first-phone").find('.timer'), 60);
         }
@@ -788,5 +777,4 @@ function registerSuccess(msg) {
     if (msg == undefined) {msg = ""}
     show_notify(msg);
     $(".modal").modal("hide");
-    __Modal = ""
 }
