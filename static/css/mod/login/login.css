@@ -33,7 +33,7 @@
     border-bottom: 5px solid #71889E;
 }
 .login_content, .pass_content, .first_content{
-    width: 350px;
+    width: 343px;
     height: auto;
     margin: auto;
     position: relative;
@@ -95,7 +95,7 @@ img ,button{
     letter-spacing: 1px;
 }
 #password input, #first-login input, #phone-code input, #email-code input {
-    width: 245px;
+    width: 235px;
 }
 #phone-after .full-input, #email-after .full-input {
     width: 285px;
@@ -104,7 +104,7 @@ img ,button{
     padding-bottom: 3px;
     float: right;
     border-bottom: 1px #B9B9B9 solid;
-    width: 287px;
+    width: 280px;
 }
 .action-icon {
     cursor: pointer;

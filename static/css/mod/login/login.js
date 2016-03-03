@@ -308,6 +308,7 @@ function checkPhone() {
     clearErrorLine();
     var passLine = $("#phone-code").find('.pass-line');
     var pass = $("#phone-code").find('input[name="password"]').val();
+    __pass = pass;
     var codeLine = $("#phone-code").find('.code-line');
     var code = $("#phone-code").find('input[name="code"]').val();
     if (code == undefined || code == "") {
@@ -407,6 +408,7 @@ function checkEmail() {
     clearErrorLine();
     var passLine = $("#email-code").find('.pass-line');
     var pass = $("#email-code").find('input[name="password"]').val();
+    __pass = pass;
     var codeLine = $("#email-code").find('.code-line');
     var code = $("#email-code").find('input[name="code"]').val();
     if (code == undefined || code == "") {
@@ -522,6 +524,18 @@ function checkAfterEmail() {
     }).done(function (rs) {
         if (rs["code"] >= 0) {
             registerSuccess("注册成功");
+            Utils.api('/login/do_login', {
+                method: "post",
+                data: {
+                    u:__UserId,
+                    p: __pass,
+                    is_r:"off"
+                }
+            }).done(function (rs) {
+                if (rs['data'] != undefined) {
+                    window.location.href=rs['data'];
+                }
+            });
         } else {
             if (rs["data"]["msg"] == "公司名称已存在") {
                 focusLine(comLine);
@@ -584,6 +598,18 @@ function checkAfterPhone() {
     }).done(function (rs) {
         if (rs["code"] >= 0) {
             registerSuccess("注册成功");
+            Utils.api('/login/do_login', {
+                method: "post",
+                data: {
+                    u:__UserId,
+                    p: __pass,
+                    is_r:"off"
+                }
+            }).done(function (rs) {
+                if (rs['data'] != undefined) {
+                    window.location.href=rs['data'];
+                }
+            });
         } else {
             if (rs["data"]["msg"] == "公司名称已存在") {
                 focusLine(comLine);
