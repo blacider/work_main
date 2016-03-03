@@ -24,7 +24,7 @@
         <script src="/static/third-party/jg/jquery.jgrowl.min.js"></script>
         <script src="/static/css/mod/login/login.js"></script>
     </head>
-    <body>
+    <body style="font-family: 'PingFang SC'">
     
         <div id="header">
             <div class="wrap-inner">
