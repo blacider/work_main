@@ -34,7 +34,7 @@
                     <li><a href="//www.yunbaoxiao.com/blog">BLOG</a></li>
                 </ul>
                 <ul class="menu">
-                    <li><a href="#login" data-toggle="modal">登录</a></li>
+                    <li><a id="login-m-a" href="javascript:void(0)">登录</a></li>
                     <li class="register"><a href="javascript:void(0)" onclick="toLoin()">企业注册</a></li>
                 </ul>
             </div>
@@ -385,6 +385,11 @@
         <div class="modal fade modal_align" style="display:none;" id="phone-code">
             <div class="modal-dialog">
                 <div class="modal-content">
+                    <div class="modal-header-left" style="border-bottom: none;">
+                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
+                        </button>
+                    </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
                             <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
@@ -427,6 +432,11 @@
         <div class="modal fade modal_align" style="display:none;" id="email-code">
             <div class="modal-dialog">
                 <div class="modal-content">
+                    <div class="modal-header-left" style="border-bottom: none;">
+                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
+                        </button>
+                    </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
                             <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
