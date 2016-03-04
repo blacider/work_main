@@ -196,6 +196,10 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         //curl_setopt($ch, CURLOPT_VERBOSE, true);
         $result = curl_exec($ch);
+        $err = curl_error($ch);
+        if (!empty($err)) {
+            log_message('error', "api call err: $err");
+        }
         return $result;
     }
 
