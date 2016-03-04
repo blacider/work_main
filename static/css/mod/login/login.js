@@ -32,13 +32,13 @@ $(document).ready(function() {
     $(".modal-header").find('button').click(function(event) {
         $(".modal").modal("hide");
     });
-    $("#signin .right-sm").click(function() {
+    $("#signin .rightd").click(function() {
         clearErrorLine();
         __IfForget = false;
         var userId = $("#signin input").val();
         __UserId = userId;
         $("#login").find("input").focus();
-        var userLine = $(this).parent().parent();
+        var userLine = $("#signin .user-line");
         if (userId != null && userId != "") {
             if (isEmail(userId)) {
                 Utils.api('/register/getvcode/email', {
@@ -75,11 +75,11 @@ $(document).ready(function() {
                 });
             } else {
                 userLine.find('input').focus();
-                $(this).parent().append(getErrorDom("格式不正确"));
+                userLine.append(getErrorDom("格式不正确"));
             }
         } else {
             userLine.find('input').focus();
-            $(this).parent().append(getErrorDom("请输入邮箱/手机号码"));
+            userLine.append(getErrorDom("请输入邮箱/手机号码"));
         }
     });
     $(".login-button").click(function() {

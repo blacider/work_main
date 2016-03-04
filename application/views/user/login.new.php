@@ -186,8 +186,10 @@
                                 
                                 <span class="input-line">
                                     <input name="user" type="text" placeholder="请使用手机或邮箱注册">
-                                    <img class="action-icon right-sm" src="/static/img/mod/login/right-sm.png" alt="right" height="26" width="28">
                                 </span>
+                            </div>
+                            <div class="form-line next-step relative-10">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
                             </div>
                         </div>
                     </div>
@@ -212,8 +214,10 @@
                                 
                                 <span class="input-line">
                                     <input name="user" type="text" placeholder="邮箱／手机号码">
-                                    <img class="action-icon right-sm" src="/static/img/mod/login/right-sm.png" alt="right" height="26" width="28" onclick="checkUser()">
                                 </span>
+                            </div>
+                            <div class="form-line next-step relative-10">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkUser()">
                             </div>
                             <div class="form-line bottom-line relative-10">
                                 <a href="javascript:void(0)" onclick="weixinLogin()" >微信登录</a>

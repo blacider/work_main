@@ -102,8 +102,11 @@ img ,button{
 #phone-after .full-input, #email-after .full-input {
     width: 285px;
 }
+#login input, #signin input {
+    width: 280px;
+}
 .input-line {
-    padding-bottom: 3px;
+    padding-bottom: 7px;
     float: right;
     border-bottom: 1px #B9B9B9 solid;
     width: 280px;
