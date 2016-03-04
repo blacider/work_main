@@ -25,7 +25,7 @@
         <script src="/static/js/mod/login/login.js"></script>
     </head>
     <body style="font-family: 'PingFangSC-Light'">
-    
+        
         <div id="header">
             <div class="main-block">
                 <a class="logo" href=""><img src="/static/img/mod/login/logo.png" alt=""></a>
@@ -170,13 +170,12 @@
             <span class="btn-back"></span>
             <span class="btn-close"></span>
         </div>
-
         <div class="modal fade modal_align" id="signin">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-body">
@@ -195,52 +194,52 @@
                             </div>
                         </div>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
+                </div>
+            </div>
         </div>
-
         <div class="modal fade modal_align" id="login">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="login_content">
-                            <div class="form-line user-line">
-                                <span class="line-icon">
-                                    <img width="28" src="/static/img/mod/login/icon_user.png" height="31" alt="user">
-                                </span>
-                                
-                                <span class="input-line">
-                                    <input name="user" type="text" placeholder="邮箱／手机号码">
-                                </span>
+                        <form>
+                            <div class="login_content">
+                                <div class="form-line user-line">
+                                    <span class="line-icon">
+                                        <img width="28" src="/static/img/mod/login/icon_user.png" height="31" alt="user">
+                                    </span>
+                                    
+                                    <span class="input-line">
+                                        <input name="user" type="text" placeholder="邮箱／手机号码">
+                                    </span>
+                                </div>
+                                <div class="form-line next-step relative-10">
+                                    <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
+                                </div>
+                                <div class="form-line bottom-line relative-10">
+                                    <a class="weixin" href="javascript:void(0)">微信登录</a>
+                                </div>
                             </div>
-                            <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
-                            </div>
-                            <div class="form-line bottom-line relative-10">
-                                <a class="weixin" href="javascript:void(0)">微信登录</a>
-                            </div>
-                        </div>
+                        </form>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
+                </div>
+            </div>
         </div>
-
         <div class="modal fade modal_align" style="display:none;" id="first-login">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header-left" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
+                        <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -263,22 +262,20 @@
                             </div>
                         </div>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
+                </div>
+            </div>
         </div>
-
-
         <div class="modal fade modal_align" style="display:none;" id="password">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header-left" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
+                        <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -309,21 +306,20 @@
                             </div>
                         </div>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
+                </div>
+            </div>
         </div>
-
         <div class="modal fade modal_align" style="display:none;" id="first-phone">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header-left" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
+                        <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -346,8 +342,8 @@
                             </div>
                         </div>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
+                </div>
+            </div>
         </div>
         
         <div class="modal fade modal_align" style="display:none;" id="first-email">
@@ -355,12 +351,12 @@
                 <div class="modal-content">
                     <div class="modal-header-left" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
+                        <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -383,23 +379,20 @@
                             </div>
                         </div>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
+                </div>
+            </div>
         </div>
-
-
-
         <div class="modal fade modal_align" style="display:none;" id="phone-code">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header-left" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
+                        <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -432,8 +425,8 @@
                             </div>
                         </div>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
+                </div>
+            </div>
         </div>
         
         <div class="modal fade modal_align" style="display:none;" id="email-code">
@@ -441,12 +434,12 @@
                 <div class="modal-content">
                     <div class="modal-header-left" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
+                        <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -479,21 +472,20 @@
                             </div>
                         </div>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
+                </div>
+            </div>
         </div>
-
         <div class="modal fade modal_align" style="display:none;" id="phone-after">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header-left" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
+                        <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -539,22 +531,20 @@
                             </div>
                         </div>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
+                </div>
+            </div>
         </div>
-
-
         <div class="modal fade modal_align" style="display:none;" id="email-after">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header-left" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
+                        <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -600,8 +590,8 @@
                             </div>
                         </div>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
+                </div>
+            </div>
         </div>
     </body>
 </html>
