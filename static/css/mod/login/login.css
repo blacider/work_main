@@ -16,7 +16,7 @@
     margin: 0 4px;
 }
 .menu-left .active {
-    border-bottom: 5px solid #71889E;
+    border-bottom: 1px solid #71889E;
     color: white;
 }
 .menu-left li a {
@@ -30,7 +30,7 @@
     color: white;
 }
 .menu-left li a:hover {
-    border-bottom: 5px solid #71889E;
+    border-bottom: 1px solid #71889E;
 }
 .login_content, .pass_content, .first_content{
     width: 343px;
