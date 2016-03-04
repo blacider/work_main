@@ -159,6 +159,7 @@ img ,button{
 }
 .timer {
     color: #ff575b;
+    width: 83px;
     font-size: 12px;
     border: 1px #FF575B solid;
     border-radius: 2px;
