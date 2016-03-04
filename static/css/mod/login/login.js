@@ -179,7 +179,7 @@ $(document).ready(function() {
         __UserId = user;
         var userLine = $("#login").find('.user-line');
         if (user != '' && !isEmail(user) && !isPhone(user)) {
-            userLine.append(getErrorDom("帐号不存在"));
+            userLine.append(getErrorDom("格式不正确"));
             focusLine(userLine);
         }
     });
