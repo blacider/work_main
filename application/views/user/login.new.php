@@ -185,7 +185,7 @@
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input name="user" type="text" placeholder="邮箱／手机号码">
+                                    <input name="user" type="text" placeholder="请使用手机或邮箱注册">
                                     <img class="action-icon right-sm" src="/static/img/mod/login/right-sm.png" alt="right" height="26" width="28">
                                 </span>
                             </div>
