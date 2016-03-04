@@ -168,19 +168,18 @@ img ,button{
     top: -3px;
     float: right;
     background-color:transparent;
-    line-height: 12px;
+    line-height: 18px;
 }
 .time-disable {
     background-color: #ff575b;
     color: white;
     border: none;
-    border-bottom: 2px #D33E42 solid;
-    width: 70px;
+    border-bottom: 1px #D33E42 solid;
     text-align: center;
-    border-top: 2px #ff575b solid;
+    border-top: 1px #ff575b solid;
 }
 .time-disable:hover {
-    border-bottom: 2px #ff575b solid;
+    border-bottom: 1px #ff575b solid;
 }
 .error-login {
     position: absolute;

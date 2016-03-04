@@ -219,14 +219,19 @@ $(document).ready(function() {
     });
 });
 var __UserId, __IfForget = false,
-    __vcode, __pass;
-
+    __vcode, __pass, __CodeLock = new Array();
+__CodeLock[0] = true;
+__CodeLock[1] = true;
+__CodeLock[2] = true;
+__CodeLock[3] = true;
 function time(dom, counter) {
     if (counter == 0) {
         dom.removeAttr("disabled");
         dom.text("重发验证码");
         dom.addClass('time-disable');
+        __CodeLock[dom.data('lock')] = true;
     } else {
+        __CodeLock[dom.data('lock')] = false;
         counter--;
         dom.attr("disabled", true);
         dom.text(counter + "秒后可重发");
