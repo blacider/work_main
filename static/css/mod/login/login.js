@@ -224,7 +224,7 @@ var __UserId, __IfForget = false,
 function time(dom, counter) {
     if (counter == 0) {
         dom.removeAttr("disabled");
-        dom.text("重发");
+        dom.text("重发验证码");
         dom.addClass('time-disable');
     } else {
         counter--;

@@ -164,6 +164,7 @@ img ,button{
     top: -3px;
     float: right;
     background-color:transparent;
+    line-height: 12px;
 }
 .time-disable {
     background-color: #ff575b;
@@ -172,6 +173,7 @@ img ,button{
     border-bottom: 2px #D33E42 solid;
     width: 70px;
     text-align: center;
+    border-top: 2px #ff575b solid;
 }
 .time-disable:hover {
     border-bottom: 2px #ff575b solid;
