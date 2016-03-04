@@ -225,6 +225,11 @@ __CodeLock[1] = true;
 __CodeLock[2] = true;
 __CodeLock[3] = true;
 function time(dom, counter) {
+    if (counter == 60) {
+        if (!__CodeLock[dom.data('lock')]) {
+            return;
+        }
+    }
     if (counter == 0) {
         dom.removeAttr("disabled");
         dom.text("重发验证码");
