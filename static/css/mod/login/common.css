@@ -426,6 +426,9 @@ form div input {
     color: #95a5a6;
 }
 @media screen and (max-width: 739px) and (min-width: 1px) {
+    .menu-left {
+        display: none;
+    }
 	.main-block {
 	    width:293px; 
 	}

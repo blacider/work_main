@@ -27,7 +27,7 @@
     <body style="font-family: 'PingFangSC-Light'">
     
         <div id="header">
-            <div class="wrap-inner">
+            <div class="main-block">
                 <a class="logo" href=""><img src="/static/img/mod/login/logo.png" alt=""></a>
                 <ul class="menu-left">
                     <li><a class="active" href="<?php echo base_url("");?>">首页</a></li>
