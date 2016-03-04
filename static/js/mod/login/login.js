@@ -55,7 +55,6 @@ $(document).ready(function() {
     function focusLine(line) {
         line.find('input').focus();
     }
-
     function checkUser() {
         clearErrorLine();
         var user = $("#login input[name='user']").val();
@@ -711,6 +710,46 @@ $(document).ready(function() {
     }
 
     function nextStepButtonClickEvent() {
+        $("#login .rightd").click(function(event) {
+            checkUser();
+        });
+        $("#login .weixin").click(function(event) {
+            weixinLogin();
+        });
+        $("#first-login .rightd").click(function(event) {
+            checkFirstPass();
+        });
+        $(".eye").click(function(event) {
+            changeVisibility($(this).parent());
+        });
+        $("#password .rightd").click(function(event) {
+            checkPass();
+        });
+        $("#password .forget-pass a").click(function(event) {
+            forgetPass();
+        });
+        $("#first-phone .rightd").click(function(event) {
+            checkFirstPhoneCode();
+        });
+        $("#first-email .rightd").click(function(event) {
+            checkFirstEmailCode();
+        });
+        $("#phone-code .rightd").click(function(event) {
+            checkPhone();
+        });
+        $("#email-code .rightd").click(function(event) {
+            checkEmail();
+        });
+        $("#phone-after .rightd").click(function(event) {
+            checkAfterPhone();
+        });
+        $("#email-after .rightd").click(function(event) {
+            checkAfterEmail();
+        });
+        $(".register").click(function(event) {
+            toLoin();
+        });
+        
         $("#signin .rightd").click(function() {
             clearErrorLine();
             _ifForget = false;

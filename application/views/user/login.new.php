@@ -37,7 +37,7 @@
                 -->
                 <ul class="menu">
                     <li><a id="login-m-a" href="javascript:void(0)">登录</a></li>
-                    <li class="register"><a href="javascript:void(0)" onclick="toLoin()">企业注册</a></li>
+                    <li class="register"><a href="javascript:void(0)">企业注册</a></li>
                 </ul>
             </div>
         </div>
@@ -219,39 +219,16 @@
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkUser()">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
                             </div>
                             <div class="form-line bottom-line relative-10">
-                                <a href="javascript:void(0)" onclick="weixinLogin()" >微信登录</a>
+                                <a class="weixin" href="javascript:void(0)">微信登录</a>
                             </div>
                         </div>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
-
-        <div class="modal fade modal_align" id="weixin">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header" style="border-bottom: none;">
-                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="login_content" style="top: 40px;">
-                            <div class="form-line" style="text-align: center;">
-                                <img width="224" height="224" src="/static/img/mod/login/bitcode.png" alt="bitcode">
-                            </div>
-                            <div class="form-line bottom-line relative-10">
-                                <a href="javascript:void(0)">微信登录</a>
-                            </div>
-                        </div>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
-        </div>
-
 
         <div class="modal fade modal_align" style="display:none;" id="first-login">
             <div class="modal-dialog">
@@ -278,11 +255,11 @@
                                 
                                 <span class="input-line">
                                     <input name="password" type="password" placeholder="设置密码">
-                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36" onclick="changeVisibility($(this).parent())">
+                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36">
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkFirstPass()">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
                             </div>
                         </div>
                     </div>
@@ -321,14 +298,14 @@
                                 
                                 <span class="input-line pass-line">
                                     <input name="password" type="password" placeholder="输入密码">
-                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36" onclick="changeVisibility($(this).parent())">
+                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36">
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkPass()">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
                             </div>
                             <div class="form-line bottom-line forget-pass relative-10">
-                                <a href="javascript:void(0)" onclick="forgetPass()">忘记密码？</a>
+                                <a href="javascript:void(0)">忘记密码？</a>
                             </div>
                         </div>
                     </div>
@@ -365,7 +342,7 @@
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkFirstPhoneCode()">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
                             </div>
                         </div>
                     </div>
@@ -402,7 +379,7 @@
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkFirstEmailCode()">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
                             </div>
                         </div>
                     </div>
@@ -447,11 +424,11 @@
                                 
                                 <span class="input-line">
                                     <input name="password" type="password" placeholder="设置密码">
-                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36" onclick="changeVisibility($(this).parent())">
+                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36">
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkPhone()">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
                             </div>
                         </div>
                     </div>
@@ -494,11 +471,11 @@
                                 
                                 <span class="input-line">
                                     <input name="password" type="password" placeholder="设置密码">
-                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36" onclick="changeVisibility($(this).parent())">
+                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36">
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkEmail()">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
                             </div>
                         </div>
                     </div>
@@ -558,7 +535,7 @@
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkAfterPhone()">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
                             </div>
                         </div>
                     </div>
@@ -619,7 +596,7 @@
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53" onclick="checkAfterEmail()">
+                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
                             </div>
                         </div>
                     </div>
