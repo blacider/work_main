@@ -267,7 +267,7 @@ function checkUser() {
         userLine.append(getErrorDom("请输入帐号"));
         focusLine(userLine);
     } else if (!isEmail(user) && !isPhone(user)) {
-        userLine.append(getErrorDom("帐号不存在"));
+        userLine.append(getErrorDom("格式不正确"));
         focusLine(userLine);
     } else {
         if (isEmail(user)) {
