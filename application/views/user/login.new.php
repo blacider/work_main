@@ -29,10 +29,12 @@
         <div id="header">
             <div class="main-block">
                 <a class="logo" href=""><img src="/static/img/mod/login/logo.png" alt=""></a>
+                <!--
                 <ul class="menu-left">
                     <li><a class="active" href="<?php echo base_url("");?>">首页</a></li>
                     <li><a href="//www.yunbaoxiao.com/blog">BLOG</a></li>
                 </ul>
+                -->
                 <ul class="menu">
                     <li><a id="login-m-a" href="javascript:void(0)">登录</a></li>
                     <li class="register"><a href="javascript:void(0)" onclick="toLoin()">企业注册</a></li>
