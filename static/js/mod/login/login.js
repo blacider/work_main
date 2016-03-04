@@ -681,6 +681,7 @@ $(document).ready(function() {
                 } else {
                     $(".login-button").click();
                 }
+                return false;
             }
         });
     }
@@ -749,7 +750,7 @@ $(document).ready(function() {
         $(".register").click(function(event) {
             toLoin();
         });
-        
+
         $("#signin .rightd").click(function() {
             clearErrorLine();
             _ifForget = false;

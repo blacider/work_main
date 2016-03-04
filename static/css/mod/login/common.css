@@ -378,18 +378,7 @@ input[type="text"] {
     src='img/apply_form_bg.jpg',
     sizingMethod='scale');
 }
-form {
-    width: 100%;
-}
-form div p {
-    color: #FFF;
-}
-form div input {
-    color: #606c78;
-    width: 100%;
-    padding: 0;
-    border:0;
-}
+
 /*---------------------footer-----------------------*/
 .footer {
     width: 100%;
@@ -631,32 +620,6 @@ form div input {
 	.block6 {
 	    height: 339px;
 	}
-	form {
-	    margin-top: 31px;
-	}
-	form div {
-	    height: auto;
-	}
-	form div p {
-	    font-size: 13px;
-	    margin: 0 auto 2px 0;
-	}
-	form div+div p {
-	    /*margin-top: 8px;*/
-	}
-	form div input {
-	    height: 35px;
-	    font-size: 13px;
-	}
-	.form-name , .form-phone{
-	    width: 200px;
-	}
-	.form-company {
-	    width: 280px;
-	}
-	.form-submit {
-	    width: 100%;
-	}
 	/*-------------footer----------------*/
 	.footer .main-block {
 	    margin-top: 26px;
@@ -867,34 +830,6 @@ form div input {
 	/*----------block6------------------*/
 	.block6 {
 	    height: 300px;
-	}
-	form {
-	    margin-top: 85px;
-	}
-	form div {
-	    float: left;
-	    height: auto;
-	}
-	form div + div {
-	    margin-left: 13px;
-	}
-	form div p {
-	    font-size: 13px;
-	    margin: 0 auto 13px 0;
-	}
-	form div input {
-	    height: 35px;
-	    font-size: 13px;
-	}
-	.form-name , .form-phone{
-	    width: 164px;
-	}
-	.form-company {
-	    width: 353px;
-	}
-	.form-submit {
-	    width: 100%;
-	    text-align: center;
 	}
 	/*-------------footer----------------*/
 	.footer .main-block {
@@ -1108,34 +1043,6 @@ form div input {
 	/*----------block6------------------*/
 	.block6 {
 	    height: 320px;
-	}
-	form {
-	    margin-top: 80px;
-	}
-	form div {
-	    float: left;
-	    height: auto;
-	}
-	form div + div {
-	    margin-left:30px;
-	}
-	form div p {
-	    font-size: 14px;
-	    margin: 0 auto 13px 0;
-	}
-	form div input {
-	    height: 40px;
-	    font-size: 14px;
-	}
-	.form-name , .form-phone{
-	    width: 203px;
-	}
-	.form-company {
-	    width: 446px;
-	}
-	.form-submit {
-	    width: 100%;
-	    text-align: center;
 	}
 	/*-------------footer----------------*/
 	.footer .main-block {
