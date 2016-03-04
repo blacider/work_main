@@ -22,7 +22,7 @@
         <script language="javascript" src="/static/ace/js/bootstrap.min.js"></script>
         <script src="/static/js/libs/utils.js"></script>
         <script src="/static/third-party/jg/jquery.jgrowl.min.js"></script>
-        <script src="/static/css/mod/login/login.js"></script>
+        <script src="/static/js/mod/login/login.js"></script>
     </head>
     <body style="font-family: 'PingFangSC-Light'">
     
