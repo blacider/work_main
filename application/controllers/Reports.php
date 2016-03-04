@@ -1832,6 +1832,8 @@ class Reports extends REIM_Controller {
         if(!$buf['status']) {
             $this->session->set_userdata('last_error', '操作失败');
             log_message("debug","**********:$buf");
+        } else {
+            $this->session->set_userdata('last_error', '已通过');
         }
         redirect(base_url('reports/audit_todo'));
     }
