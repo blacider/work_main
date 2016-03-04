@@ -776,10 +776,16 @@ function checkFirstPhoneCode() {
         }
     });
 }
-
+var __ClearErrorFuns = 0;
 function getErrorDom(str) {
+    __ClearErrorFuns++;
     setTimeout(function() {
-        clearErrorLine();
+        if (__ClearErrorFuns == 1) {
+            clearErrorLine();
+            __ClearErrorFuns--;
+        } else if (__ClearErrorFuns > 1) {
+            __ClearErrorFuns--;
+        }
     }, 3000);
     return '<div class="error-login">' +
         '<div class="error-login-line">' +
