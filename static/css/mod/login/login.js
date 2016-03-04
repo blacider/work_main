@@ -11,6 +11,8 @@ $(document).ready(function() {
                 if (Modal.find('.rightd').click().length == 0) {
                     Modal.find('.right-sm').click();
                 }
+            } else {
+                $(".login-button").click();
             }
         }
     });
