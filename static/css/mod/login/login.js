@@ -210,6 +210,14 @@ $(document).ready(function() {
             line.append(getErrorDom("格式不正确"));
         }
     });
+    $(".modal input[name='phone']").blur(function(event) {
+        clearErrorLine();
+        var com = this.value;
+        var line = $(this).parent().parent();
+        if (com != '' && !isPhone(com)) {
+            line.append(getErrorDom("格式不正确"));
+        }
+    });
 });
 var __UserId, __IfForget = false,
     __vcode, __pass, __CodeLock = new Array();
