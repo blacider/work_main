@@ -265,7 +265,7 @@ function checkUser() {
     __UserId = user;
     var userLine = $("#login").find('.user-line');
     if (user == "") {
-        userLine.append(getErrorDom("请输入帐号"));
+        userLine.append(getErrorDom("请输入账号"));
         focusLine(userLine);
     } else if (!isEmail(user) && !isPhone(user)) {
         userLine.append(getErrorDom("格式不正确"));
