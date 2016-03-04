@@ -175,16 +175,6 @@ $(document).ready(function() {
 
     });
 
-    $(".modal input[name='user']").blur(function(event) {
-        clearErrorLine();
-        var user = $("#login input[name='user']").val();
-        __UserId = user;
-        var userLine = $("#login").find('.user-line');
-        if (user != '' && !isEmail(user) && !isPhone(user)) {
-            userLine.append(getErrorDom("格式不正确"));
-            focusLine(userLine);
-        }
-    });
     $(".modal input[name='password']").blur(function(event) {
         clearErrorLine();
         var pass = this.value;
