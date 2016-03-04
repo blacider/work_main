@@ -174,40 +174,6 @@ $(document).ready(function() {
         }
 
     });
-
-    $(".modal input[name='password']").blur(function(event) {
-        clearErrorLine();
-        var pass = this.value;
-        var passLine = $(this).parent().parent();
-        if (pass == '') {
-            return;
-        }
-        if (pass.length < 8) {
-            passLine.append(getErrorDom("密码长度至少为8位"));
-        } else {
-            var reg = /^([a-zA-Z]+|[0-9]+)$/;
-            if (reg.test(pass)) {
-                passLine.append(getErrorDom("密码需同时含有字母和数字"));
-            }
-        }
-    });
-    $("#password input[name='password']").unbind();
-    $(".modal input[name='email']").blur(function(event) {
-        clearErrorLine();
-        var com = this.value;
-        var line = $(this).parent().parent();
-        if (com != '' && !isEmail(com)) {
-            line.append(getErrorDom("格式不正确"));
-        }
-    });
-    $(".modal input[name='phone']").blur(function(event) {
-        clearErrorLine();
-        var com = this.value;
-        var line = $(this).parent().parent();
-        if (com != '' && !isPhone(com)) {
-            line.append(getErrorDom("格式不正确"));
-        }
-    });
 });
 var __UserId, __IfForget = false,
     __vcode, __pass, __CodeLock = new Array();
