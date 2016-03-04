@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#login-m-a").click(function(event) {
-        $("#login").modal('show');
+        $("#login").modal('show').find('input').val("");
     });
     $(document).keypress(function(e) {
         // 回车键事件  
@@ -50,7 +50,7 @@ $(document).ready(function() {
                     }
                 }).done(function(rs) {
                     if (rs.code > 0) {
-                        $("#email-code").modal('show');
+                        $("#email-code").modal('show').find('input').val("");
                         $(".phone-text").text(userId);
                         time($("#email-code").find('.timer'), 60);
                         $("#email-code").find("input[name='password']").attr('placeholder', '设置密码');
@@ -66,7 +66,7 @@ $(document).ready(function() {
                     }
                 }).done(function(rs) {
                     if (rs.code > 0) {
-                        $("#phone-code").modal('show');
+                        $("#phone-code").modal('show').find('input').val("");
                         $(".phone-text").text(userId);
                         time($("#phone-code").find('.timer'), 60);
                         $("#phone-code").find("input[name='password']").attr('placeholder', '设置密码');
@@ -100,7 +100,7 @@ $(document).ready(function() {
                     }
                 }).done(function(rs) {
                     if (rs.code > 0) {
-                        $("#email-code").modal('show');
+                        $("#email-code").modal('show').find('input').val("");
                         $(".phone-text").text(userId);
                         time($("#email-code").find('.timer'), 60);
                         $("#email-code").find("input[name='password']").attr('placeholder', '设置密码');
@@ -116,7 +116,7 @@ $(document).ready(function() {
                     }
                 }).done(function(rs) {
                     if (rs.code > 0) {
-                        $("#phone-code").modal('show');
+                        $("#phone-code").modal('show').find('input').val("");
                         $(".phone-text").text(userId);
                         time($("#phone-code").find('.timer'), 60);
                         $("#phone-code").find("input[name='password']").attr('placeholder', '设置密码');
@@ -248,9 +248,9 @@ function checkUser() {
                     if (rs['data']['user']['active'] == 1) {
                         $("#password .user-pic").find('img').attr('src', rs['data']['user']['avatar_url']);
                         $("#password .user-name").text(rs['data']['user']['nickname']);
-                        $("#password").modal('show');
+                        $("#password").modal('show').find('input').val("");
                     } else {
-                        $("#first-login").modal('show');
+                        $("#first-login").modal('show').find('input').val("");
                     }
                 } else {
                     focusLine(userLine);
@@ -268,9 +268,9 @@ function checkUser() {
                     if (rs['data']['user']['active'] == 1) {
                         $("#password .user-pic").find('img').attr('src', rs['data']['user']['avatar_url']);
                         $("#password .user-name").text(rs['data']['user']['nickname']);
-                        $("#password").modal('show');
+                        $("#password").modal('show').find('input').val("");
                     } else {
-                        $("#first-login").modal('show');
+                        $("#first-login").modal('show').find('input').val("");
                     }
                 } else {
                     focusLine(userLine);
@@ -291,7 +291,7 @@ function forgetPass() {
                 email: userId
             }
         });
-        $("#email-code").modal('show');
+        $("#email-code").modal('show').find('input').val("");
         $(".phone-text").text(userId);
         $("#email-code").find("input[name='password']").attr('placeholder', '设置新密码');
         time($("#email-code").find('.timer'), 60);
@@ -303,7 +303,7 @@ function forgetPass() {
                 phone: userId
             }
         });
-        $("#phone-code").modal('show');
+        $("#phone-code").modal('show').find('input').val("");
         $(".phone-text").text(userId);
         time($("#phone-code").find('.timer'), 60);
         $("#phone-code").find("input[name='password']").attr('placeholder', '设置新密码');
@@ -362,7 +362,7 @@ function checkPhone() {
             }
         }).done(function(rs) {
             if (rs["data"]["valid"]) {
-                $("#phone-after").modal('show');
+                $("#phone-after").modal('show').find('input').val("");
                 __vcode = code;
                 __pass = pass;
             } else {
@@ -463,7 +463,7 @@ function checkEmail() {
             }
         }).done(function(rs) {
             if (rs["data"]["valid"]) {
-                $("#email-after").modal('show');
+                $("#email-after").modal('show').find('input').val("");
                 __vcode = code;
                 __pass = pass;
             } else {
@@ -681,7 +681,7 @@ function checkFirstPass() {
             }
         });
         $(".phone-text").text(userId);
-        $("#first-email").modal('show');
+        $("#first-email").modal('show').find('input').val("");
         __IfForget = true;
         time($("#first-email").find('.timer'), 60);
     }
@@ -693,7 +693,7 @@ function checkFirstPass() {
             }
         });
         $(".phone-text").text(userId);
-        $("#first-phone").modal('show');
+        $("#first-phone").modal('show').find('input').val("");
         __IfForget = true;
         time($("#first-phone").find('.timer'), 60);
     }
@@ -798,7 +798,7 @@ function clearErrorLine() {
 
 function toLoin() {
     document.documentElement.scrollTop = document.body.scrollTop = 0;
-    $("#signin").modal("show");
+    $("#signin").modal("show").find('input').val("");
 }
 
 function weixinLogin() {
