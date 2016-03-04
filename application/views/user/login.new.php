@@ -359,7 +359,7 @@
                                 
                                 <span class="input-line">
                                     <input style="width: 196px;" name="code" type="text" placeholder="手机验证码">
-                                    <button class="timer" data-lock="0">59S后可重发</button>
+                                    <button class="timer">59S后可重发</button>
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
@@ -396,7 +396,7 @@
                                 
                                 <span class="input-line">
                                     <input style="width: 197px;" name="code" type="text" placeholder="邮箱验证码">
-                                    <button class="timer" data-lock="1">59S后可重发</button>
+                                    <button class="timer">59S后可重发</button>
                                 </span>
                             </div>
                             <div class="form-line next-step relative-10">
@@ -435,7 +435,7 @@
                                 
                                 <span class="input-line">
                                     <input style="width: 196px;" name="code" type="text" placeholder="手机验证码">
-                                    <button class="timer" data-lock="2">59S后可重发</button>
+                                    <button class="timer">59S后可重发</button>
                                 </span>
                             </div>
                             <div id="phone-code-pass-line" class="form-line pass-line" style="margin-top: 38px;">
@@ -482,7 +482,7 @@
                                 
                                 <span class="input-line">
                                     <input style="width: 197px;" name="code" type="text" placeholder="邮箱验证码">
-                                    <button class="timer" data-lock="3">59S后可重发</button>
+                                    <button class="timer">59S后可重发</button>
                                 </span>
                             </div>
                             <div id="email-code-pass-line" class="form-line pass-line" style="margin-top: 38px;">
