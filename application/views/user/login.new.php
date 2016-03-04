@@ -206,8 +206,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="login_content">
+                        <div class="login_content">
+                            <form>
                                 <div class="form-line user-line">
                                     <span class="line-icon">
                                         <img width="28" src="/static/img/mod/login/icon_user.png" height="31" alt="user">
@@ -223,8 +223,8 @@
                                 <div class="form-line bottom-line relative-10">
                                     <a class="weixin" href="javascript:void(0)">微信登录</a>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
