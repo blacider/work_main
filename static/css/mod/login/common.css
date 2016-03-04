@@ -426,9 +426,6 @@ form div input {
     color: #95a5a6;
 }
 @media screen and (max-width: 739px) and (min-width: 1px) {
-    .block1 {
-	    height: 340px;
-	}
 	.main-block {
 	    width:293px; 
 	}
@@ -677,9 +674,6 @@ form div input {
 	}
 }
 @media screen and (max-width: 949px) and (min-width: 740px) {
-    .block1 {
-	    height: 420px;
-	}
 	.main-block {
 	    width:738px; 
 	}
@@ -918,9 +912,6 @@ form div input {
 	}
 }
 @media screen and (min-width: 950px) {
-	.block1 {
-	    height: 500px;
-	}
 	.main-block {
 	    width:945px; 
 	}

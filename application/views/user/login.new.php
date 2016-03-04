@@ -24,7 +24,7 @@
         <script src="/static/third-party/jg/jquery.jgrowl.min.js"></script>
         <script src="/static/css/mod/login/login.js"></script>
     </head>
-    <body style="font-family: 'PingFang SC'">
+    <body style="font-family: 'PingFangSC-Light'">
     
         <div id="header">
             <div class="wrap-inner">
@@ -39,7 +39,7 @@
                 </ul>
             </div>
         </div>
-        <div id="main">
+        <div id="main" class="block1 block">
             <div class="block1-text1" style="margin: 0px auto 91px auto;">
             </div>
             <div class="login-box">
