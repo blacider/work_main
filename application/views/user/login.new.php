@@ -20,6 +20,12 @@
         <link rel="stylesheet" href="/static/css/mod/login/login.css">
         <!--[if lt IE 9]>
         <script src="static/js/respond.min.js"></script>
+        <script src="/static/js/mod/login/placeholder.js"></script>
+        <script>
+            $(function() {
+                $('input').placeholder();
+            });
+        </script>
         <link rel="stylesheet" type="text/css" href="static/css/ie.css">
         <![endif]-->
         <!--[if gte IE 9]>
