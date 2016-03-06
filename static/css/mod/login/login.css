@@ -80,8 +80,8 @@ img ,button{
     white-space: nowrap;
 }
 .modal-dialog, .modal-content {
-    width: 100%;
-    margin:0;
+    width: 100% !important;
+    margin:0 !important;
     height: 100%;
 }
 .modal-body {
