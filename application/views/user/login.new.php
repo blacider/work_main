@@ -18,6 +18,16 @@
         <link rel="stylesheet" type="text/css" href="/static/ace/css/font-awesome.min.css" />
         <link rel="stylesheet" href="/static/third-party/jg/jquery.jgrowl.min.css"/>
         <link rel="stylesheet" href="/static/css/mod/login/login.css">
+        <!--[if lt IE 9]>
+        <script src="static/js/respond.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="static/css/ie.css">
+        <![endif]-->
+        <!--[if gte IE 9]>
+        <link rel="stylesheet" type="text/css" href="static/css/notie.css">
+        <![endif]-->
+        <!--[if !IE]><!-->
+        <link rel="stylesheet" type="text/css" href="static/css/notie.css">
+        <!--<![endif]-->
         <script src="/static/ace/js/jquery.min.js"></script>
         <script language="javascript" src="/static/ace/js/bootstrap.min.js"></script>
         <script src="/static/js/libs/utils.js"></script>
