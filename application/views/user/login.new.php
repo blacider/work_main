@@ -229,6 +229,50 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade modal_align" style="display:none;" id="password">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header-left" style="border-bottom: none;">
+                            <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
+                            </button>
+                        </div>
+                        <div class="modal-header" style="border-bottom: none;">
+                            <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                            </button>
+                        </div>
+                        <div class="modal-body" style="position: relative;">
+                            <div class="pass_content">
+                                <div class="form-line">
+                                    <div class="user-pic relative-10">
+                                        <img src="/static/img/mod/login/pic.png" width="90" alt="pic">
+                                    </div>
+                                    <div class="user-name relative-10">
+                                        于海新
+                                    </div>
+                                </div>
+                                <div class="form-line">
+                                    <span class="line-icon">
+                                        <img width="28" style="margin-top: 8px;" src="/static/img/mod/login/pass_icon.png" height="31" alt="pass">
+                                    </span>
+                                    
+                                    <span class="input-line pass-line">
+                                        <input name="password" type="password" placeholder="输入密码">
+                                        <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36">
+                                    </span>
+                                </div>
+                                <div class="form-line next-step relative-10">
+                                    <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
+                                </div>
+                                <div class="form-line bottom-line forget-pass relative-10">
+                                    <a href="javascript:void(0)">忘记密码？</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
         <div class="modal fade modal_align" style="display:none;" id="first-login">
             <div class="modal-dialog">
@@ -260,50 +304,6 @@
                             </div>
                             <div class="form-line next-step relative-10">
                                 <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade modal_align" style="display:none;" id="password">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header-left" style="border-bottom: none;">
-                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                        <img class="icon_left" style="position: relative;" width="53" src="/static/img/mod/login/left.png" alt="close">
-                        </button>
-                    </div>
-                    <div class="modal-header" style="border-bottom: none;">
-                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
-                        </button>
-                    </div>
-                    <div class="modal-body" style="position: relative;">
-                        <div class="pass_content">
-                            <div class="form-line">
-                                <div class="user-pic relative-10">
-                                    <img src="/static/img/mod/login/pic.png" width="90" alt="pic">
-                                </div>
-                                <div class="user-name relative-10">
-                                    于海新
-                                </div>
-                            </div>
-                            <div class="form-line">
-                                <span class="line-icon">
-                                    <img width="28" style="margin-top: 8px;" src="/static/img/mod/login/pass_icon.png" height="31" alt="pass">
-                                </span>
-                                
-                                <span class="input-line pass-line">
-                                    <input name="password" type="password" placeholder="输入密码">
-                                    <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36">
-                                </span>
-                            </div>
-                            <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
-                            </div>
-                            <div class="form-line bottom-line forget-pass relative-10">
-                                <a href="javascript:void(0)">忘记密码？</a>
                             </div>
                         </div>
                     </div>
