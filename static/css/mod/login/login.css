@@ -95,6 +95,7 @@ img ,button{
 #login input, #first-email input, #first-phone input,#first-login input, #password input ,#phone-code input, #email-code input, #phone-after input, #email-after input, #signin input{
     border: none;
     font-size: 16px;
+    line-height: 16px;
     padding: 0;
     margin:0;
     width: 244px;
