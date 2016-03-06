@@ -1,137 +1,103 @@
-/*! http://mths.be/placeholder v2.0.6 by @mathias */;
-(function (g, i, d) {
-    var a = 'placeholder' in i.createElement('input'),
-        e = 'placeholder' in i.createElement('textarea'),
-        j = d.fn,
-        c = d.valHooks,
-        l, k;
-    if (a && e) {
-        k = j.placeholder = function () {
-            return this
-        };
-        k.input = k.textarea = true
-    } else {
-        k = j.placeholder = function () {
-            var m = this;
-            m.filter((a ? 'textarea' : ':input') + '[placeholder]').not('.placeholder').bind({
-                'focus.placeholder': b,
-                'blur.placeholder': f
-            }).data('placeholder-enabled', true).trigger('blur.placeholder');
-            return m
-        };
-        k.input = a;
-        k.textarea = e;
-        l = {
-            get: function (n) {
-                var m = d(n);
-                return m.data('placeholder-enabled') && m.hasClass('placeholder') ? '' : n.value
-            },
-            set: function (n, o) {
-                var m = d(n);
-                if (!m.data('placeholder-enabled')) {
-                    return n.value = o
-                }
-                if (o == '') {
-                    n.value = o;
-                    if (n != i.activeElement) {
-                        f.call(n)
-                    }
-                } else {
-                    if (m.hasClass('placeholder')) {
-                        b.call(n, true, o) || (n.value = o)
-                    } else {
-                        n.value = o
-                    }
-                }
-                return m
-            }
-        };
-        a || (c.input = l);
-        e || (c.textarea = l);
-        d(function () {
-            d(i).delegate('form', 'submit.placeholder', function () {
-                var m = d('.placeholder', this).each(b);
-                setTimeout(function () {
-                    m.each(f)
-                }, 10)
-            })
-        });
-        d(g).bind('beforeunload.placeholder', function () {
-            d('.placeholder').each(function () {
-                this.value = ''
-            })
-        })
+(function($) {
+  /**
+   * 没有开花的树
+   * 2012/11/28 15:12
+   */
+  var placeholderfriend = {
+    focus: function(s) {
+      s = $(s).hide().prev().show().focus();
+      var idValue = s.attr("id");
+      if (idValue) {
+        s.attr("id", idValue.replace("placeholderfriend", ""));
+      }
+      var clsValue = s.attr("class");
+   if (clsValue) {
+        s.attr("class", clsValue.replace("placeholderfriend", ""));
+      }
     }
-
-    function h(n) {
-        var m = {}, o = /^jQuery\d+$/;
-        d.each(n.attributes, function (q, p) {
-            if (p.specified && !o.test(p.name)) {
-                m[p.name] = p.value
-            }
-        });
-        return m
-    }
-
-    function b(o, p) {
-        var n = this,
-            q = d(n),
-            m;
-        if (n.value == q.attr('placeholder') && q.hasClass('placeholder')) {
-            m = n == i.activeElement;
-            if (q.data('placeholder-password')) {
-                q = q.hide().next().show().attr('id', q.removeAttr('id').data('placeholder-id'));
-                if (o === true) {
-                    return q[0].value = p
-                }
-                q.focus()
-            } else {
-                n.value = '';
-                q.removeClass('placeholder')
-            }
-            m && n.select()
+  }
+  //判断是否支持placeholder
+  function isPlaceholer() {
+    var input = document.createElement('input');
+    return "placeholder" in input;
+  }
+  //不支持的代码
+  if (!isPlaceholer()) {
+    $(function() {
+      var form = $(this);
+      //遍历所有文本框，添加placeholder模拟事件
+      var elements = form.find("input[type='text'][placeholder]");
+      elements.each(function() {
+        var s = $(this);
+        var pValue = s.attr("placeholder");
+  var sValue = s.val();
+        if (pValue) {
+          if (sValue == '') {
+            s.val(pValue);
+          }
         }
-    }
-
-    function f() {
-        var r, m = this,
-            q = d(m),
-            n = q,
-            p = this.id;
-        if (m.value == '') {
-            if (m.type == 'password') {
-                
-                if (!q.data('placeholder-textinput')) {
-                    try {
-                        r = q.clone().attr({
-                            type: 'text'
-                        })
-                    } catch (o) {
-                        r = d('<input>').attr(d.extend(h(this), {
-                            type: 'text'
-                        }))
-                    }
-                    r.removeAttr('name').data({
-                        'placeholder-password': true,
-                        'placeholder-id': p
-                    }).bind('focus.placeholder', b);
-                    q.data({
-                        'placeholder-textinput': r,
-                        'placeholder-id': p
-                    }).before(r)
-                }
-                q = q.removeAttr('id').hide().prev().attr('id', p).show()
-            }
-            q.addClass('placeholder');
-            if (m.type == 'password') {
-                q[0].value = $(q[0]).attr("id");
-               
-            } else {
-                q[0].value = q.attr('placeholder');
-            }
-
-        } else {
-            q.removeClass('placeholder')
+      });
+      elements.focus(function() {
+        var s = $(this);
+        var pValue = s.attr("placeholder");
+  var sValue = s.val();
+        if (sValue && pValue) {
+          if (sValue == pValue) {
+            s.val('');
+          }
         }
-    }
-}(this, document, jQuery));
+      });
+      elements.blur(function() {
+        var s = $(this);
+        var pValue = s.attr("placeholder");
+  var sValue = s.val();
+        if (!sValue) {
+          s.val(pValue);
+        }
+      });
+      //遍历所有密码框，添加placeholder模拟事件
+      var elementsPass = form.find("input[type='password'][placeholder]");
+      elementsPass.each(function(i) {
+        var s = $(this);
+        var pValue = s.attr("placeholder");
+  var sValue = s.val();
+        if (pValue) {
+          if (sValue == '') {
+            //DOM不支持type的修改，需要复制密码框属性，生成新的DOM
+            var html = this.outerHTML || "";
+            html = html.replace(/\s*type=(['"])?password\1/gi, " type=text placeholderfriend")
+              .replace(/\s*(?:value|on[a-z]+|name)(=(['"])?\S*\1)?/gi, " ")
+              .replace(/\s*placeholderfriend/, " placeholderfriend value='" + pValue
+              + "' " + "onfocus='placeholderfriendfocus(this);' ");
+            var idValue = s.attr("id");
+            if (idValue) {
+              s.attr("id", idValue + "placeholderfriend");
+            }
+            var clsValue = s.attr("class");
+   if (clsValue) {
+              s.attr("class", clsValue + "placeholderfriend");
+            }
+            s.hide();
+            s.after(html);
+          }
+        }
+      });
+      elementsPass.blur(function() {
+        var s = $(this);
+        var sValue = s.val();
+        if (sValue == '') {
+          var idValue = s.attr("id");
+          if (idValue) {
+            s.attr("id", idValue + "placeholderfriend");
+          }
+          var clsValue = s.attr("class");
+    if (clsValue) {
+            s.attr("class", clsValue + "placeholderfriend");
+          }
+          s.hide().next().show();
+        }
+      });
+    });
+  }
+  window.placeholderfriendfocus = placeholderfriend.focus;
+})(jQuery);
