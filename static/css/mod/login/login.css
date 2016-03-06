@@ -1,3 +1,9 @@
+input:-webkit-autofill {
+    background-color: rgb(250, 255, 189);
+    background-image: none;
+    color: rgb(0, 0, 0);
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
 .jGrowl-close {
             line-height: 1em;
 }
