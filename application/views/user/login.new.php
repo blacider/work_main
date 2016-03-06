@@ -18,6 +18,10 @@
         <link rel="stylesheet" type="text/css" href="/static/ace/css/font-awesome.min.css" />
         <link rel="stylesheet" href="/static/third-party/jg/jquery.jgrowl.min.css"/>
         <link rel="stylesheet" href="/static/css/mod/login/login.css">
+        <script src="/static/js/jquery.min.js"></script>
+        <script language="javascript" src="/static/ace/js/bootstrap.min.js"></script>
+        <script src="/static/js/libs/utils.js"></script>
+        <script src="/static/third-party/jg/jquery.jgrowl.min.js"></script>
         <!--[if lt IE 9]>
         <script src="static/js/respond.min.js"></script>
         <script src="/static/js/mod/login/placeholder.js"></script>
@@ -34,10 +38,6 @@
         <!--[if !IE]><!-->
         <link rel="stylesheet" type="text/css" href="static/css/notie.css">
         <!--<![endif]-->
-        <script src="/static/js/jquery.min.js"></script>
-        <script language="javascript" src="/static/ace/js/bootstrap.min.js"></script>
-        <script src="/static/js/libs/utils.js"></script>
-        <script src="/static/third-party/jg/jquery.jgrowl.min.js"></script>
         <script src="/static/js/mod/login/login.js"></script>
     </head>
     <body style="font-family: 'PingFangSC-Light, arial'">
