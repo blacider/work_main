@@ -5,10 +5,10 @@ input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 .hidden-pass {
-    display: none;
+    display: none !important;
 }
 .active-pass {
-    direction: block;
+    direction: block !important;
 }
 .placeholder {
     color: #929292;
