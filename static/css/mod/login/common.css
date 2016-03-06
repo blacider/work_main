@@ -41,7 +41,7 @@ body {
     background-image: -ms-image-set(url('/static/img/mod/login/img/hero_bg.jpg') 1x,url('/static/img/mod/login/img/hero_bg@2x.jpg') 2x);
     background-size: cover;
     filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
-    src='img/hero_bg.jpg',
+    src='/static/img/mod/login/img/hero_bg.jpg',
     sizingMethod='scale');
 }
 .main-block {
@@ -183,7 +183,7 @@ a {
     background-image: -ms-image-set(url('/static/img/mod/login/img/fig1_anywhere.jpg') 1x,url('/static/img/mod/login/img/fig1_anywhere@2x.jpg') 2x);
     background-size: cover;
     filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
-    src='img/fig1_anywhere.jpg',
+    src='/static/img/mod/login/img/fig1_anywhere.jpg',
     sizingMethod='scale');
 }
 #black-phone {
@@ -194,7 +194,7 @@ a {
     background-image: -ms-image-set(url('/static/img/mod/login/img/fig2_realtime.jpg') 1x,url('/static/img/mod/login/img/fig2_realtime@2x.jpg') 2x);
     background-size: cover;
     filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
-    src='img/fig2_realtime.png',
+    src='/static/img/mod/login/img/fig2_realtime.png',
     sizingMethod='scale');
 }
 #white-pc {
@@ -205,7 +205,7 @@ a {
     background-image: -ms-image-set(url('/static/img/mod/login/img/fig3_intuitive.jpg') 1x,url('/static/img/mod/login/img/fig3_intuitive@2x.jpg') 2x);
     background-size: cover;
     filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
-    src='img/fig3_intuitive.jpg',
+    src='/static/img/mod/login/img/fig3_intuitive.jpg',
     sizingMethod='scale');
 }
 /*----------block4------------------*/
@@ -262,7 +262,7 @@ p.block4-text {
     background-image: -ms-image-set(url('/static/img/mod/login/img/head1.png') 1x,url('/static/img/mod/login/img/head1@2x.png') 2x);
     background-size: cover;
     filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
-    src='img/head1.png',
+    src='/static/img/mod/login/img/head1.png',
     sizingMethod='scale');
     float: left;
     margin-right: 12px;
@@ -275,7 +275,7 @@ p.block4-text {
     background-image: -ms-image-set(url('/static/img/mod/login/img/head2.png') 1x,url('/static/img/mod/login/img/head2@2x.png') 2x);
     background-size: cover;
     filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
-    src='img/head2.png',
+    src='/static/img/mod/login/img/head2.png',
     sizingMethod='scale');
     float: right;
     margin-left: 12px;
@@ -375,7 +375,7 @@ input[type="text"] {
     background-image: -ms-image-set(url('/static/img/mod/login/img/apply_form_bg.jpg') 1x,url('/static/img/mod/login/img/apply_form_bg@2x.jpg') 2x);
     background-size: cover;
     filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
-    src='img/apply_form_bg.jpg',
+    src='/static/img/mod/login/img/apply_form_bg.jpg',
     sizingMethod='scale');
 }
 
