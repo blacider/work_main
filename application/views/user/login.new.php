@@ -28,7 +28,7 @@
         <!--[if !IE]><!-->
         <link rel="stylesheet" type="text/css" href="static/css/notie.css">
         <!--<![endif]-->
-        <script src="/static/ace/js/jquery.min.js"></script>
+        <script src="/static/js/jquery.min.js"></script>
         <script language="javascript" src="/static/ace/js/bootstrap.min.js"></script>
         <script src="/static/js/libs/utils.js"></script>
         <script src="/static/third-party/jg/jquery.jgrowl.min.js"></script>
