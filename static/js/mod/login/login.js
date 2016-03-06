@@ -147,11 +147,11 @@ $(document).ready(function() {
         var imgDom = dom.find("img");
         if (inputDom.attr('type') == 'password') {
             inputDom.before("<input type='text' value=" + inputDom.val() +">");
-            inputDom.remove();
+            dom[0].removeChild(inputDom[0]);
             imgDom.attr('src', '/static/img/mod/login/eyed.png');
         } else {
             inputDom.before("<input type='password' value=" + inputDom.val() +">");
-            inputDom.remove();
+            dom[0].removeChild(inputDom[0]);
             imgDom.attr('src', '/static/img/mod/login/eye.png');
         }
     }
