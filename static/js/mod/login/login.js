@@ -146,10 +146,12 @@ $(document).ready(function() {
         var inputDom = dom.find('input');
         var imgDom = dom.find("img");
         if (inputDom.attr('type') == 'password') {
-            inputDom.attr('type', 'text');
+            inputDom.before("<input type='text' value=" + inputDom.val() +">");
+            inputDom.remove();
             imgDom.attr('src', '/static/img/mod/login/eyed.png');
         } else {
-            inputDom.attr('type', 'password');
+            inputDom.before("<input type='password' value=" + inputDom.val() +">");
+            inputDom.remove();
             imgDom.attr('src', '/static/img/mod/login/eye.png');
         }
     }
