@@ -4,6 +4,12 @@ input:-webkit-autofill {
     color: rgb(0, 0, 0);
     -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
+.hidden-pass {
+    display: none;
+}
+.active-pass {
+    direction: block;
+}
 .placeholder {
     color: #929292;
 }
