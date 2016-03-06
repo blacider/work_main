@@ -197,7 +197,7 @@
                 </div>
             </div>
         </div>
-        <form>
+        <form name="login" method="post" action="login">
             <div class="modal fade modal_align" id="login">
                 
                 <div class="modal-dialog">
