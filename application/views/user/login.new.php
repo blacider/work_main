@@ -25,11 +25,33 @@
         <!--[if lt IE 9]>
         <script src="static/js/respond.min.js"></script>
         <script src="/static/js/mod/login/placeholder.js"></script>
-        <script>
-            $(function() {
-                $('input').placeholder();
-            });
-        </script>
+        <script type="text/javascript">  
+  if( !('placeholder' in document.createElement('input')) ){  
+   
+    $('input[placeholder],textarea[placeholder]').each(function(){   
+      var that = $(this),   
+      text= that.attr('placeholder');   
+      if(that.val()===""){   
+        that.val(text).addClass('placeholder');   
+      }   
+      that.focus(function(){   
+        if(that.val()===text){   
+          that.val("").removeClass('placeholder');   
+        }   
+      })   
+      .blur(function(){   
+        if(that.val()===""){   
+          that.val(text).addClass('placeholder');   
+        }   
+      })   
+      .closest('form').submit(function(){   
+        if(that.val() === text){   
+          that.val('');   
+        }   
+      });   
+    });   
+  }  
+</script> 
         <link rel="stylesheet" type="text/css" href="static/css/ie.css">
         <![endif]-->
         <!--[if gte IE 9]>
