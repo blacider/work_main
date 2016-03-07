@@ -364,10 +364,12 @@ class Reports extends REIM_Controller {
     public function create(){
         $items = $this->input->post('item');
         if(''==$items)
-        {
+        {   
+            $items = array();
             $this->session->set_userdata('last_error','提交报销单不能为空');
             return redirect(base_url('reports/index'));
         }
+
         $title = $this->input->post('title');
         $receiver = $this->input->post('receiver');
         $cc = $this->input->post('cc');
@@ -376,6 +378,11 @@ class Reports extends REIM_Controller {
         $type = $this->input->post('type');
         log_message('debug','template_id:' . $template_id);
         $extra = array();
+
+        if($receiver=='') {
+            $receiver = array();
+        }
+
         if($template_id) {
             $extra = $this->input->post('extra');
             log_message('debug','extra:' . json_encode($extra));

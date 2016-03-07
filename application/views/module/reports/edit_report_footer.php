@@ -428,246 +428,314 @@ function reset_bank(disable, title,bank_field_id) {
 function trim(str){ //删除左右两端的空格
 　　 return str.replace(/(^\s*)|(\s*$)/g, "");
 }
-function do_post(force) {
 
+function canGetPostData(force) {
+    var def = $.Deferred();
     var _rid = $('#hrid').val();
     var s = $('#receiver').val();
     var title = $('#title').val();
-    if(title == "") {
+    if (title == "") {
         show_notify('请添加报销单名');
         $('#title').focus();
-        return false;
+        def.resolve(false)
+        return def.promise();
     }
-
-
-    var sum=0;
-
+    var sum = 0;
     var _ids = Array();
     var report_type = 0;
     var flag = 0;
-    var is_submit = 1;
-    $('.amount').each(function(){
-        if($(this).is(':checked')){
+    $('.amount').each(function() {
+        if ($(this).is(':checked')) {
             _ids.push($(this).data('id'));
             var amount = $(this).data('amount');
             var item_type = $(this).data('type');
-            if(flag == 0)
-            {
+            if (flag == 0) {
                 report_type = item_type;
                 flag = 1;
             }
-            if(report_type != item_type)
-            {
+            if (report_type != item_type) {
                 show_notify('同一报销单中不能包含不同的消费类型');
-                is_submit = 0;
-                return false;
+                def.resolve(false)
+                return def.promise();
             }
-
-            sum+=amount;
+            sum += amount;
         };
     });
-    if(_ids.length == 0) {
+    if (_ids.length == 0) {
         show_notify('提交的报销单不能为空');
-        return false;
+        def.resolve(false)
+        return def.promise();
     }
-
-    if(s == null){
-         show_notify('请选择审批人');
-         $('#receiver').focus();
-         return false;
+    if (s == null) {
+        show_notify('请选择审批人');
+        $('#receiver').focus();
+        def.resolve(false)
+        return def.promise();
     }
-
-
-    if(sum<= 0) {
+    if (sum <= 0) {
         show_notify("报销单总额不能小于等于0");
-        return false;
+        def.resolve(false)
+        return def.promise();
     }
-
-
     // 获取所有的 条目
     var _cc = $('#cc').val();
-    if(!_cc) _cc = Array();
-    if(force == 1) {
-
-    }
-
+    if (!_cc) _cc = Array();
     var _period_start = 0;
     var _period_end = 0;
-
-    var _location_from =  '';
-    var _location_to =  '';
-
+    var _location_from = '';
+    var _location_to = '';
     var _contract = 0;
     var _contract_note = '';
-
-
     var _account = 0;
     var _account_name = '';
     var _account_no = '';
     var _payment = -1;
-
-
     var _borrowing = 0;
     var _note = '';
-
-
     var _template_id = 0;
-
     try {
         _template_id = $('#template_id').val();
-    }catch(e){}
-
+    } catch (e) {}
     try {
         _account = $('#account').val();
         var s = $("#account option:selected");
         _account_name = $(s).data('name');
         _account_no = $(s).data('no');
-    } catch(e) {}
-
-
-
+    } catch (e) {}
     var extra = [];
-
-    $('.field_value').each(function(){
+    $('.field_value').each(function() {
         var field_value = $(this).val();
         var field_id = $(this).data('id');
         var field_type = $(this).data('type');
         var field_required = $(this).data('required');
-
-        if(field_type == 4)
-        {
+        if (field_type == 4) {
             var field_bank = $(this).data('bank');
             var bank_info = $('#bank_select_' + field_id).val();
-
             var field_account = '';
             var field_cardno = '';
             var field_bankname = '';
             var field_bankloc = '';
             var field_subbranch = '';
-
-            if(field_required == 1 && !bank_info)
-            {
+            if (field_required == 1 && !bank_info) {
                 show_notify('必填银行卡项目不能为空');
-                is_submit = 0;
-                return false;
+                def.resolve(false)
+                return def.promise();
             }
-            if(bank_info)
-            {
+            if (bank_info) {
                 var _bank_info = JSON.parse(bank_info);
-
                 var field_account = _bank_info['account'];
                 var field_cardno = _bank_info['cardno'];
                 var field_bankname = _bank_info['bankname'];
                 var field_bankloc = _bank_info['bankloc'];
                 var field_subbranch = _bank_info['subbranch'];
             }
-            extra.push({'id':field_id,'value':JSON.stringify({
-                                               'account':field_account,
-                                               'cardno':field_cardno,
-                                               'bankname':field_bankname,
-                                               'bankloc':field_bankloc,
-                                               'subbranch':field_subbranch,
-                                               'account_type':field_bank
-                                               })
-                                               ,'type':field_type} );
+            extra.push({
+                'id': field_id,
+                'value': JSON.stringify({
+                    'account': field_account,
+                    'cardno': field_cardno,
+                    'bankname': field_bankname,
+                    'bankloc': field_bankloc,
+                    'subbranch': field_subbranch,
+                    'account_type': field_bank
+                }),
+                'type': field_type
+            });
+        } else {
+            if (field_required == 1 && trim(field_value) == '') {
+                $(this).focus();
+                show_notify('必填项目不能为空');
+                def.resolve(false)
+                return def.promise();
+            }
+            extra.push({
+                'id': field_id,
+                'value': field_value,
+                'type': field_type
+            });
         }
-        else
-        {
-            if(field_required == 1 && trim(field_value)=='')
-            {
+    });
+
+    var _renew = $('#renew').val();
+
+    def.resolve({
+        'item': _ids,
+        'title': $('#title').val(),
+        'receiver': $('#receiver').val(),
+        'cc': _cc,
+        'template_id': _template_id,
+        'extra': extra,
+        'type': report_type,
+        'id': _rid,
+        'renew': _renew,
+        'force': force
+    });
+
+    return def.promise();
+}
+
+function do_post(force) {
+    var _rid = $('#hrid').val();
+    var s = $('#receiver').val();
+    var title = $('#title').val();
+    if (title == "") {
+        show_notify('请添加报销单名');
+        $('#title').focus();
+        return false;
+    }
+    var sum = 0;
+    var _ids = Array();
+    var report_type = 0;
+    var flag = 0;
+    var is_submit = 1;
+    $('.amount').each(function() {
+        if ($(this).is(':checked')) {
+            _ids.push($(this).data('id'));
+            var amount = $(this).data('amount');
+            var item_type = $(this).data('type');
+            if (flag == 0) {
+                report_type = item_type;
+                flag = 1;
+            }
+            if (report_type != item_type) {
+                show_notify('同一报销单中不能包含不同的消费类型');
+                is_submit = 0;
+                return false;
+            }
+            sum += amount;
+        };
+    });
+    if (_ids.length == 0) {
+        show_notify('提交的报销单不能为空');
+        return false;
+    }
+    if (s == null) {
+        show_notify('请选择审批人');
+        $('#receiver').focus();
+        return false;
+    }
+    if (sum <= 0) {
+        show_notify("报销单总额不能小于等于0");
+        return false;
+    }
+    // 获取所有的 条目
+    var _cc = $('#cc').val();
+    if (!_cc) _cc = Array();
+    if (force == 1) {}
+    var _period_start = 0;
+    var _period_end = 0;
+    var _location_from = '';
+    var _location_to = '';
+    var _contract = 0;
+    var _contract_note = '';
+    var _account = 0;
+    var _account_name = '';
+    var _account_no = '';
+    var _payment = -1;
+    var _borrowing = 0;
+    var _note = '';
+    var _template_id = 0;
+    try {
+        _template_id = $('#template_id').val();
+    } catch (e) {}
+    try {
+        _account = $('#account').val();
+        var s = $("#account option:selected");
+        _account_name = $(s).data('name');
+        _account_no = $(s).data('no');
+    } catch (e) {}
+    var extra = [];
+    $('.field_value').each(function() {
+        var field_value = $(this).val();
+        var field_id = $(this).data('id');
+        var field_type = $(this).data('type');
+        var field_required = $(this).data('required');
+        if (field_type == 4) {
+            var field_bank = $(this).data('bank');
+            var bank_info = $('#bank_select_' + field_id).val();
+            var field_account = '';
+            var field_cardno = '';
+            var field_bankname = '';
+            var field_bankloc = '';
+            var field_subbranch = '';
+            if (field_required == 1 && !bank_info) {
+                show_notify('必填银行卡项目不能为空');
+                is_submit = 0;
+                return false;
+            }
+            if (bank_info) {
+                var _bank_info = JSON.parse(bank_info);
+                var field_account = _bank_info['account'];
+                var field_cardno = _bank_info['cardno'];
+                var field_bankname = _bank_info['bankname'];
+                var field_bankloc = _bank_info['bankloc'];
+                var field_subbranch = _bank_info['subbranch'];
+            }
+            extra.push({
+                'id': field_id,
+                'value': JSON.stringify({
+                    'account': field_account,
+                    'cardno': field_cardno,
+                    'bankname': field_bankname,
+                    'bankloc': field_bankloc,
+                    'subbranch': field_subbranch,
+                    'account_type': field_bank
+                }),
+                'type': field_type
+            });
+        } else {
+            if (field_required == 1 && trim(field_value) == '') {
                 $(this).focus();
                 show_notify('必填项目不能为空');
                 is_submit = 0;
                 return false;
             }
-
-            extra.push({'id':field_id,'value':field_value,'type':field_type});
+            extra.push({
+                'id': field_id,
+                'value': field_value,
+                'type': field_type
+            });
         }
-
     });
-
-/*
-    try {
-        _note = $('#note').val();
-        if(!_note) _note = '';
-    } catch(e) {}
-
-
-    try {
-        _borrowing = $('#borrowing').val();
-        if(!_borrowing) _borrowing = 0;
-    } catch(e) {}
-
-    try {
-        _payment = $('input[name="payment"]:checked').val();
-        if(!_payment) _payment = -1;
-    }catch(e){}
-    try {
-        _contract = $('input[name="contract"]:checked').val();
-        if(!_contract) _contract = -1;
-    }catch(e){ }
-    if(_contract == 0) {
-        try{
-            _contract_note = $('#contract_note').val();
-        }catch(e){}
-    }
-
-
-    try {
-        _period_end = (new Date($("#period_end").val())).getTime() / 1000;
-        _period_start = (new Date($("#period_start").val())).getTime() / 1000;
-        if(!_period_start) _period_start = new Date().getTime() / 1000;
-        if(!_period_end) _period_end= new Date().getTime() / 1000;
-    }catch(e){}
-
-    try {
-        _location_from = $('#location_from').val();
-        _location_to = $('#location_to').val();
-        if(!_location_from) _location_from = '';
-        if(!_location_to) _location_to= '';
-    }catch(e){}
-*/
-
-
     var _renew = $('#renew').val();
-    if(is_submit)
-    {
+
+
+
+    if (is_submit) {
         $.ajax({
-            type : 'POST',
-                url : __BASE + "reports/update",
-                data : {
-                    'item' : _ids,
-                        'title' : $('#title').val(),
-                        'receiver' : $('#receiver').val(),
-                        'cc' : _cc,
-
-                        'template_id' : _template_id,
-                        'extra':extra,
-                        'type':report_type,
-
-                        'id' : _rid,
-                        'renew' : _renew,
-                        'force' : force
-                    },
-                    dataType: 'json',
-                    success : function(data){
-                        if(data.status > 0) {
-                            window.location.href = __BASE + 'reports/index';
-                            return false;
-                        }
-                        if(_renew && data.status == -71) {
-                            $('#error').html(data.msg);
-                            $('#force_submit').modal();
-                            return false;
-                        }
-                        if(data.status < 0 && data.status != -71) {
-                            show_notify(data.msg);
-                        }
-                        return false;
-                    }
-                });
+            type: 'POST',
+            url: __BASE + "reports/update",
+            data: {
+                'item': _ids,
+                'title': $('#title').val(),
+                'receiver': $('#receiver').val(),
+                'cc': _cc,
+                'template_id': _template_id,
+                'extra': extra,
+                'type': report_type,
+                'id': _rid,
+                'renew': _renew,
+                'force': force
+            },
+            dataType: 'json',
+            success: function(data) {
+                if (data.status > 0) {
+                    window.location.href = __BASE + 'reports/index';
+                    return false;
+                }
+                if (_renew && data.status == -71) {
+                    $('#error').html(data.msg);
+                    $('#force_submit').modal();
+                    return false;
+                }
+                if (data.status < 0 && data.status != -71) {
+                    show_notify(data.msg);
+                }
+                return false;
+            }
+        });
     }
-}
+};
 String.prototype.trim=function() {
     return this.replace(/(^\s*)(\s*$)/g, '');
 }
