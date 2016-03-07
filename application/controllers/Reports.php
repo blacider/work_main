@@ -2029,7 +2029,9 @@ class Reports extends REIM_Controller {
         if (empty($receiver)) {
             $receiver = [ ];
         }
-        $buf = $this->reports->submit_check(implode(',', $receiver), implode(',', $items));
+        $template_id = $this->input->post('template_id');
+        $extras = $this->input->post('extra');
+        $buf = $this->reports->submit_check(implode(',', $receiver), implode(',', $items), $template_id, $extras);
         die($buf);
     }
 }

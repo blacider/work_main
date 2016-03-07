@@ -300,11 +300,17 @@ class Report_Model extends Reim_Model {
         return $obj;
     }
     
-    public function submit_check($manager_ids, $iids){
+    public function submit_check($manager_ids, $iids, $template_id, $extras){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $url = $this->get_url("check_submit_flow");
-        $data = array('iids' => $iids, 'manager_ids' => $manager_ids);
+        $data = array(
+            'iids' => $iids,
+            'manager_ids' => $manager_ids,
+            'template_id' => $template_id,
+            'extras' => json_encode($extras),
+        );
+        log_message("error", "submit_check: " . json_encode($data));
         $buf = $this->do_Post($url, $data, $jwt);
         return $buf;
     }
