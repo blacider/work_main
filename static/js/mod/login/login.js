@@ -180,7 +180,7 @@ $(document).ready(function() {
             passLine.append(getErrorDom("密码长度至少为8位"));
             focusLine(passLine);
             return;
-        } else if (pass.indexOf(_userId) > 0) {
+        } else if (pass.indexOf(_userId.split("@")[0]) > 0) {
             passLine.append(getErrorDom("密码不能包含邮箱名"));
             focusLine(passLine);
             return;
@@ -285,7 +285,7 @@ $(document).ready(function() {
             passLine.append(getErrorDom("密码长度至少为8位"));
             focusLine(passLine);
             return;
-        } else if (pass.indexOf(_userId) > 0) {
+        } else if (pass.indexOf(_userId.split("@")[0]) > 0) {
             passLine.append(getErrorDom("密码不能包含邮箱名"));
             focusLine(passLine);
             return;
@@ -508,7 +508,7 @@ $(document).ready(function() {
             passLine.append(getErrorDom("密码长度至少为8位"));
             focusLine(passLine);
             return;
-        } else if (pass.indexOf(_userId) > 0) {
+        } else if (pass.indexOf(_userId.split("@")[0]) > 0) {
             passLine.append(getErrorDom("密码不能包含邮箱名"));
             focusLine(passLine);
             return;
