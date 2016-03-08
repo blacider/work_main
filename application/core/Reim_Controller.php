@@ -19,7 +19,7 @@ class REIM_Controller extends CI_Controller{
         {
             if(!$jwt)
             {
-                redirect(base_url('login'));
+                redirect(base_url('/#login'));
             }
         }
         $uri=$this->uri;
@@ -41,7 +41,7 @@ class REIM_Controller extends CI_Controller{
         $uri = $this->uri->uri_string();
         if($this->session->userdata('jwt') == "" && $this->session->userdata('uid') == ""){
             $flag = 1;
-            $prefixs = array('login', 'register', 'join', 'install', 'errors', 'resetpwd', 'pub', 'users', 'register');
+            $prefixs = array('', 'login', 'register', 'join', 'install', 'errors', 'resetpwd', 'pub', 'users', 'register');
             foreach($prefixs as $prefix){
                 if($this->startsWith($uri, $prefix)){
                     $flag = 0;
@@ -50,7 +50,7 @@ class REIM_Controller extends CI_Controller{
 
             if($flag == 1) {
                 $this->session->set_userdata('last_url', $uri);
-                redirect(base_url('login'));
+                redirect(base_url('/#login'));
                 die("");
             }
             return true;
