@@ -14,6 +14,11 @@
 <div class="row">
 <div class="col-xs-12 col-sm-12">
 <?php echo $html_company_config;?>
+
+<?php
+    echo get_html_container($error,'html_error',true);
+?>
+
 <?php
   if($page_type != 0)
   {
@@ -131,6 +136,13 @@ function add_show_listener(item_array,form_node,required_list)
 }
 
 $(document).ready(function(){
+    //错误提示
+    var error = $('#html_error').data('value');
+    if(error)
+    {
+        show_notify(error);
+    }
+
     $('.customization_form').each(function(){
         var customization_form_node = $(this);
         var customization_form_val = $(this).data('value');
