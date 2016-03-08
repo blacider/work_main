@@ -35,7 +35,7 @@
                 </ul>
                 -->
                 <ul class="menu">
-                    <li><a id="login-m-a" href="javascript:void(0)">登录</a></li>
+                    <li><a id="login-m-a" href="#login">登录</a></li>
                     <li class="register"><a href="javascript:void(0)">企业注册</a></li>
                 </ul>
             </div>
@@ -174,7 +174,9 @@
                 <div class="modal-content">
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <a href="/#">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        </a>
                         </button>
                     </div>
                     <div class="modal-body">
@@ -203,7 +205,9 @@
                     <div class="modal-content">
                         <div class="modal-header" style="border-bottom: none;">
                             <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                            <a href="/#">
+                                <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                            </a>
                             </button>
                         </div>
                         <div class="modal-body">
@@ -239,7 +243,9 @@
                     </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <a href="/#">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        </a>
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -275,7 +281,9 @@
                     </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <a href="/#">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        </a>
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -319,7 +327,9 @@
                     </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <a href="/#">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        </a>
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -356,7 +366,9 @@
                     </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <a href="/#">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        </a>
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -392,7 +404,9 @@
                     </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <a href="/#">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        </a>
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -439,7 +453,9 @@
                     </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <a href="/#">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        </a>
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -485,7 +501,9 @@
                     </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <a href="/#">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        </a>
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
@@ -544,7 +562,9 @@
                     </div>
                     <div class="modal-header" style="border-bottom: none;">
                         <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                        <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        <a href="/#">
+                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
+                        </a>
                         </button>
                     </div>
                     <div class="modal-body" style="position: relative;">
