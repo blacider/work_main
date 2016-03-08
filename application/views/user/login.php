@@ -270,7 +270,8 @@
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input name="password" type="password" placeholder="设置密码">
+                                    <input class="active-pass" name="password" type="password" placeholder="设置密码">
+                                    <input class="hidden-pass" name="password" type="text" placeholder="设置密码">
                                     <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36">
                                 </span>
                             </div>
@@ -313,7 +314,8 @@
                                 </span>
                                 
                                 <span class="input-line pass-line">
-                                    <input name="password" type="password" placeholder="输入密码">
+                                    <input class="active-pass" name="password" type="password" placeholder="输入密码">
+                                    <input class="hidden-pass" name="password" type="text" placeholder="输入密码">
                                     <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36">
                                 </span>
                             </div>
@@ -441,7 +443,8 @@
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input name="password" type="password" placeholder="设置密码">
+                                    <input class="active-pass" name="password" type="password" placeholder="设置密码">
+                                    <input class="hidden-pass" name="password" type="text" placeholder="设置密码">
                                     <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36">
                                 </span>
                             </div>
@@ -490,7 +493,8 @@
                                 </span>
                                 
                                 <span class="input-line">
-                                    <input name="password" type="password" placeholder="设置密码">
+                                    <input class="active-pass" name="password" type="password" placeholder="设置密码">
+                                    <input class="hidden-pass" name="password" type="text" placeholder="设置密码">
                                     <img class="action-icon eye" src="/static/img/mod/login/eye.png" alt="right" height="36" width="36">
                                 </span>
                             </div>
