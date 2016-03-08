@@ -1178,7 +1178,7 @@ function submit_check(force) {
                     var suggest = data.data.suggestion;
                     var _names = [];
                     $(suggest).each(function(idx, value) {
-                        $('#cc option').each(function(_idx, _val) {
+                        $('#receiver option').each(function(_idx, _val) {
                             var _value = $(_val).attr('value');
                             var desc = $(_val).html();
                             if(_value == value) {
