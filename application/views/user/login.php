@@ -166,9 +166,7 @@
                 </div>
                 <div class="footer-link">
                     <ul>
-                        <li><a href="contact.html">关于我们</a></li>
-                        <li><a href="help.html">帮助中心</a></li>
-                        <li><a href="joinus.html">加入我们</a></li>
+                        <li><a href="/static/html/contact.html">关于我们</a></li>
                     </ul>
                 </div>
                 <div class="record">
