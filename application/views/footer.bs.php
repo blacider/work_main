@@ -61,7 +61,6 @@ var _hmt = _hmt || [];
         s.parentNode.insertBefore(j, s);
     })(window, document, 'script', '//eco-api.meiqia.com/dist/meiqia.js', '_MEIQIA');
     _MEIQIA('entId', 7359);
-});
 </script>
 </body>
 </html>
