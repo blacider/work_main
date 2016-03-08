@@ -630,15 +630,17 @@ $(document).ready(function() {
                 _clearErrorFuns--;
             }
         }, 3000);
-        return '<div class="error-login">' +
-            '<div class="error-login-line">' +
-            '<span class="error-text">' +
-            str +
-            '</span>' +
-            '<div class="error-right">' +
-            '</div>' +
-            '</div>' +
-            '</div>';
+        return [
+            '<div class="error-login">',
+            '   <div class="error-login-line">',
+            '       <span class="error-text">',
+                    str,
+            '       </span>',
+            '       <div class="error-right">',
+            '       </div>',
+            '   </div>',
+            '</div>'
+        ].join('');
     }
 
     function clearErrorLine() {

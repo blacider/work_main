@@ -83,20 +83,6 @@ class Login extends REIM_Controller {
         }
     }
 
-    public function alogin()
-    {
-        $error = $this->session->userdata('login_error');
-        $this->session->unset_userdata('login_error');
-        $body = $this->load->view('user/login.old.php', array('errors' => $error, 'title' => '登录'));
-    }
-
-    public function index2()
-    {
-        $error = $this->session->userdata('login_error');
-        $this->session->unset_userdata('login_error');
-        $body = $this->load->view('user/login2', array('errors' => $error, 'title' => '登录'));
-    }
-
     public function index()
     {
         $this->load->library('user_agent');
@@ -111,25 +97,11 @@ class Login extends REIM_Controller {
         log_message("debug", "UserName:" . $username);
         log_message("debug", "Password:" . $password);
         //die($username);
-        $body = $this->load->view('user/login.new.php', array(
+        $body = $this->load->view('user/login.php', array(
                         'errors' => $error
                         , 'title' => '登录'
                         , 'username' => $username
                         , 'password' => $password));
-    }
-
-
-    public function backyard_login(){
-        $username = $this->input->post('u', TRUE);
-        $password = $this->input->post('p', TRUE);
-        $user = $this->users->get_user($username, $password);
-        if($user){
-            $this->session->set_userdata('user', $user);
-            $this->session->set_userdata('uid', $user->id);
-            redirect(base_url() . 'admin/release', 'refresh');
-        } else {
-            redirect(base_url('login/alogin'), 'refresh');
-        }
     }
 
 
@@ -283,6 +255,7 @@ class Login extends REIM_Controller {
         $this->session->set_userdata("uid", $__uid);
         $this->session->set_userdata("groupname", $__g);
         $this->session->set_userdata("server_token", $server_token);
+        /*
         $goto = $this->session->userdata('last_url');
         // 获取一下组信息，然后设置一下
         if($this->startsWith($goto, 'members/singlegroup')){
@@ -293,6 +266,8 @@ class Login extends REIM_Controller {
             die('');
         }
         redirect(base_url($goto));
+        */
+        redirect(base_url('items'));
     }
 
     public function dologout()
