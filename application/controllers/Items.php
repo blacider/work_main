@@ -681,6 +681,8 @@ class Items extends REIM_Controller {
     }
 
     public function edit_show($id = 0, $from_report = 0,$page_type = 1,$flow = array()) {
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         //获取消费类型字典
         $item_type_dic = $this->reim_show->get_item_type_name();
         log_message('debug','item_id' . $id);
@@ -858,6 +860,7 @@ class Items extends REIM_Controller {
         $this->bsload('module/items/item_header',
             array(
                 'title' => '修改消费'
+                ,'error' => $error
                 ,'editable' => $editable
                 ,'page_type' => $page_type
                 ,'flow' => $flow
