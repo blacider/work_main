@@ -513,3 +513,6 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 $config['static_base'] = '/data/www/';
+
+$config['sentry_dsn'] = '';
+

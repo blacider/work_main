@@ -8,6 +8,7 @@ class Reim_Model extends CI_Model {
     const APP_TABLE = "tbl_apps";
 
     private $curl_hanlder = null;
+    private $curl_timeout = 30;
     private $api_url_base = null;
 
     public function __construct(){
@@ -175,12 +176,17 @@ class Reim_Model extends CI_Model {
         return $this->curl_hanlder;
     }
 
+    protected function set_curl_timeout($timeout) {
+        assert(is_int($timeout));
+        $this->curl_timeout = $timeout;
+    }
+
     private function fire_api_call($method, $url, $fields, $extraheader = array()) {
         # TODO support query
         $method = strtoupper($method);
         $ch = $this->get_curl_handler();
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->curl_timeout);
         curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -196,6 +202,10 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         //curl_setopt($ch, CURLOPT_VERBOSE, true);
         $result = curl_exec($ch);
+        $err = curl_error($ch);
+        if (!empty($err)) {
+            log_message('error', "api call err: $err");
+        }
         return $result;
     }
 

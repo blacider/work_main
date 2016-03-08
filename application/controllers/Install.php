@@ -15,13 +15,6 @@ class Install extends REIM_Controller {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return redirect('install');
         $invites = array();
-        /*
-        $_invites = $this->user->get_invites();
-        if($_invites['status'] > 0)
-        {
-            $invites = $_invites['data'];
-        }
-         */
         if ($this->agent->is_mobile('ipad'))
         {
             $info = $this->app_model->find_online(0);
@@ -49,36 +42,23 @@ class Install extends REIM_Controller {
     }
 
     public function index(){
-        if ($this->agent->is_mobile('ipad'))
+        $info = $this->app_model->find_online(0);
+        $platform = 'ios';
+        if ($this->agent->is_mobile('ipad') || $this->agent->is_mobile('iphone'))
         {
-            $info = $this->app_model->find_online(0);
-            //$url = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.plist';
-            //$url = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.plist?t=' . urlencode(base64_encode(microtime()));
             $url = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/pub/xreim';
-            $this->load->view('install/iphone', array('url' => $url));
+            $platform = 'ios';
         }
-        else if ($this->agent->is_mobile('iphone'))
-        {
-            $info = $this->app_model->find_online(0);
-            //$url = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.plist';
-            //$url = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.plist?t=' . urlencode(base64_encode(microtime()));
-            $url = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/pub/xreim';
-            $this->load->view('install/iphone', array('url' => $url));
-        }
-        else if ($this->agent->is_mobile())
+        else if($this->agent->is_mobile('android'))
         {
             $info = $this->app_model->find_online(1);
             $url = "http://d.yunbaoxiao.com/android/" . $info['version'] . "/reim.apk";
-            //$url = "files.cloudbaoxiao.com/android/" . $info['version'] . "/reim.apk";
-            //$url = "https://admin.cloudbaoxiao.com/release/android/" . $info['version'] . "/reim.apk";
-            $this->load->view('install/android', array('url' => $url));
+            $platform = 'android';
+        } else { //pc
+            $url = '';
+            $platform = 'pc';
         }
-        else
-        {
-            $info = $this->app_model->find_online(1);
-            $url = "http://d.yunbaoxiao.com/android/" . $info['version'] . "/reim.apk";
-            $this->load->view('install/index', array('url' => $url));
-        }
+        $this->load->view('install', array('url' => $url, 'info' => $info, 'platform' => $platform));
     }
 
     public function wx(){

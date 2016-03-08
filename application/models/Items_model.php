@@ -66,7 +66,9 @@ class Items_Model extends Reim_Model {
             "filename" => $filename,
             "mime" => $mime,
         );
-        $buf = $this->do_Post($url,$data,$jwt);
+        // 自定义超时时间20分钟
+        $this->set_curl_timeout(1200);
+        $buf = $this->do_Post($url, $data, $jwt);
         log_message('debug','attachment_data:' . json_encode($data));
         log_message('debug','attachment_url:' . json_encode($url));
         log_message('debug','attachment_back:' . $buf);

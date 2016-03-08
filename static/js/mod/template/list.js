@@ -213,7 +213,7 @@
                                 }
                             },
                             getItemById: function (id) {
-                                return this.map[id];
+                                return this.map[id] || {};
                             }
                         });
                         return ArrayCache;
@@ -339,6 +339,33 @@
                         }
                     })();
 
+                    //check if data.id = is null
+                    function ensureShowingTemplate(data) {
+                        var def = $.Deferred();
+                        if(!data.id) {
+                            Utils.api('/company/docreate_report_template', {
+                                method: 'post',
+                                data: {
+                                    template_name: data['name'],
+                                    type: data['type']
+                                }
+                            }).done(function  (rs) {
+
+                                def.resolve(rs);
+                                
+                                // update array cache
+                                $scope.templateArrayOriginal.updateById(data.id, data);
+                                $scope.$apply(function() {
+                                    $scope.templateArray[0]['id'] = data.id;
+                                })
+
+                            });
+                        } else {
+                            def.resolve(null)
+                        }
+                        return def.promise();
+                    }
+
                     // ani action leads to save the template
                     // accordion temlate \add new template \save the template
                     // 1. first to make the the table-editing 'ensured'
@@ -404,31 +431,36 @@
                                     ok: function  () {
 
                                         var _self = this;
+                                        ensureShowingTemplate(data).done(function (rs) {
+                                            if(rs && rs.id) {
+                                                data.id = rs['id'];
+                                            }
                                         
-                                        Utils.api('/company/doupdate_report_template', {
-                                            method: "post",
-                                            data: {
-                                                temp_info: data
-                                            }
-                                        }).done(function  (rs) {
-                                            if(typeof tableData != 'undefined') {
-                                                delete tableData['MODE'];
-                                            }
-                                            if(rs['status'] <= 0) {
-                                                def.resolve();
-                                                return show_notify(rs['msg']);
-                                            }
+                                            Utils.api('/company/doupdate_report_template', {
+                                                method: "post",
+                                                data: {
+                                                    temp_info: data
+                                                }
+                                            }).done(function  (rs) {
+                                                if(typeof tableData != 'undefined') {
+                                                    delete tableData['MODE'];
+                                                }
+                                                if(rs['status'] <= 0) {
+                                                    def.resolve();
+                                                    return show_notify(rs['msg']);
+                                                }
 
-                                            setTimeout(function  () {
-                                                _self.close();
-                                                def.resolve(true);
-                                                show_notify('保存成功！');
-                                            }, 800);
-                                            
-                                            // update array cache
-                                            $scope.templateArrayOriginal.updateById(data.id, data);
-                                            $(window).scrollTop($(window).scrollTop());
+                                                setTimeout(function  () {
+                                                    _self.close();
+                                                    def.resolve(true);
+                                                    show_notify('保存成功！');
+                                                }, 800);
+                                                
+                                                // update array cache
+                                                $scope.templateArrayOriginal.updateById(data.id, data);
+                                                $(window).scrollTop($(window).scrollTop());
 
+                                            });
                                         });
                                          
                                         return false;
@@ -471,32 +503,18 @@
 
                     loadPageData().done(function  (rs) {
                         
-                        // 如果没有新建，就默认为用户创建一个报销单
+                        // 如果没有新建，就默认为用户展示（不是创建哦）一个报销单
+                        // Utils.api('/company/dodelete_report_template/' + 448)
                         if (rs['data'].length == 0 ) {
                             var templateData = angular.copy(_defaultTemplateConfig_);
-                            Utils.api('/company/docreate_report_template', {
-                                method: 'post',
-                                data: {
-                                    template_name: templateData['name'],
-                                    type: templateData['type']
-                                }
-                            }).done(function  (rs) {
-                                // update arraycache
 
-                                if (!rs['id'] || rs['id'] == -1) {
-                                    return;
-                                }
+                            // $scope.templateArrayOriginal.updateById(templateData.id, templateData);
 
-                                templateData['id'] = rs['id'];
-
-                                $scope.templateArrayOriginal.updateById(templateData.id, templateData);
-
-                                $scope.$apply(function () {
-                                    $scope.templateArray.push(templateData);
-                                    setTimeout(function  () {
-                                        $element.find('.paper').find('.paper-header .btn-accordion').trigger('click');
-                                    }, 100);
-                                });
+                            $scope.$apply(function () {
+                                $scope.templateArray.push(templateData);
+                                setTimeout(function  () {
+                                    $element.find('.paper').find('.paper-header .btn-accordion').trigger('click');
+                                }, 100);
                             });
                         }
 
@@ -681,14 +699,24 @@
                             if(!state) {
                                 return;
                             }
+                            function createRequest() {
+                                return Utils.api('/company/docreate_report_template', {
+                                    method: 'post',
+                                    data: {
+                                        template_name: templateData['name'],
+                                        type: templateData['type']
+                                    }
+                                });
+                            };
 
-                            Utils.api('/company/docreate_report_template', {
-                                method: 'post',
-                                data: {
-                                    template_name: templateData['name'],
-                                    type: templateData['type']
-                                }
-                            }).done(function  (rs) {
+                            var requestArray = [createRequest()];
+                            if($element.find('.paper').length==1 && !$element.find('.paper').eq(0).data('id')) {
+                                // 保存展示的模版
+                                requestArray.push(createRequest());
+                            }
+
+                            $.when.apply(null, requestArray)
+                            .done(function  (rs, rsDefault) {
                                 // update arraycache
 
                                 if (!rs['id'] || rs['id'] == -1) {
@@ -698,11 +726,12 @@
 
                                 templateData['id'] = rs['id'];
                                 $scope.templateArrayOriginal.updateById(templateData.id, templateData);
-
-                                $scope.$apply(function () {
-                                    $scope.templateArray.push(templateData);
-                                    // angular do dom insert async
-                                });
+                                
+                                if(rsDefault && rsDefault['id']) {
+                                    $scope.templateArray[0]['id'] = rsDefault['id'];
+                                }
+                                $scope.templateArray.push(templateData);
+                                $scope.$apply();
 
                                 var $paper = $element.find('.paper').eq($scope.templateArray.length -1);
                                 $paper.find('.paper-header .btn-accordion').trigger('click');
@@ -834,26 +863,31 @@
 
                         // checheck and ensureck end
 
-                        Utils.api('/company/doupdate_report_template', {
-                            method: "post",
-                            data: {
-                                temp_info: data
+                        ensureShowingTemplate(data).done(function (rs) {
+                            if(rs && rs.id) {
+                                data.id = rs['id'];
                             }
-                        }).done(function  (rs) {
+                            Utils.api('/company/doupdate_report_template', {
+                                method: "post",
+                                data: {
+                                    temp_info: data
+                                }
+                            }).done(function  (rs) {
 
-                            if(rs['status'] <= 0) {
-                                return show_notify(rs['msg']);
-                            }
+                                if(rs['status'] <= 0) {
+                                    return show_notify(rs['msg']);
+                                }
 
-                            // update array cache
-                            show_notify('保存成功！');
-                            $(e.currentTarget).parents('.paper').removeClass('show').find('.paper-header').removeClass('fixed');
+                                // update array cache
+                                show_notify('保存成功！');
+                                $(e.currentTarget).parents('.paper').removeClass('show').find('.paper-header').removeClass('fixed');
 
-                            //if mode is editing remove it
-                            if(data.config[i] && data.config[i]['MODE'] == 'STATE_EDITING') {
-                                delete data.config[i]['MODE'];
-                            }
-                            $scope.templateArrayOriginal.updateById(data.id, data);
+                                //if mode is editing remove it
+                                if(data.config[i] && data.config[i]['MODE'] == 'STATE_EDITING') {
+                                    delete data.config[i]['MODE'];
+                                }
+                                $scope.templateArrayOriginal.updateById(data.id, data);
+                            });
                         });
                     };
 

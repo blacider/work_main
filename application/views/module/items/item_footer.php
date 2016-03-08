@@ -129,7 +129,7 @@ $(document).ready(function(){
         }
     });
     $('.cancel').click(function(){
-        $('#reset').click();
+        window.history.go(-1);
     });
     //initUploader();
 });

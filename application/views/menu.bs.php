@@ -151,21 +151,25 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
     <b class="arrow"></b>
     <ul class="submenu nav-show" style="display: block;">
         <li class="hsub" id="newreport">
-
-<?php if(count($report_templates) > 0) { ?>
-        <a href="#"  class="dropdown-toggle">
-            <i class="menu-icon fa fa-caret-right"></i>
-            新建报销单 
-            <b class="arrow fa fa-angle-down"></b>
-        </a>
-<?php } else { ?>
-        <a href="<?php echo base_url('reports/newreport'); ?>" >
-            <i class="menu-icon fa fa-caret-right"></i>
-            新建报销单
-        </a>
-<?php } ?>
+            <?php if(count($report_templates) > 1) { ?>
+            <a href="javascript:void(0)"  class="dropdown-toggle">
+                <i class="menu-icon fa fa-caret-right"></i>
+                新建报销单 
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <?php } else if(count($report_templates) == 1) { ?>
+            <a href="<?php echo base_url('reports/report_template/' . $report_templates[0]['id']); ?>" >
+                <i class="menu-icon fa fa-caret-right"></i>
+                新建报销单
+            </a>
+            <?php } else { ?>
+            <a href="<?php echo base_url('reports/newreport'); ?>" >
+                <i class="menu-icon fa fa-caret-right"></i>
+                新建报销单
+            </a>
+            <?php } ?>
 <b class="arrow"></b>
-<?php if(count($report_templates) > 0) { ?>
+<?php if(count($report_templates) > 1) { ?>
 <ul class="submenu rushumenu">
 <?php foreach($report_templates as $r) { ?>
                                     <li class="" id="<?php echo 'report'.$r['id'];?>">
@@ -361,7 +365,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     <li class="hsub" id="category">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-tags"></i>
-        <span class="menu-text"> 账套和标签 </span>
+        <span class="menu-text"> 账套设置 </span>
 
         <b class="arrow fa fa-angle-down"></b>
     </a>
@@ -373,12 +377,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         </li>
 
         <li class="hsub" id="cexport">
-        <a href="<?php echo base_url('category/cexport'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 导入帐套 </a>
-        <b class="arrow"></b>
-        </li>
-
-        <li class="hsub" id="show_expense">
-        <a href="<?php echo base_url('category/show_expense'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 费用承担对象管理</a>
+        <a href="<?php echo base_url('category/cexport'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 导入账套 </a>
         <b class="arrow"></b>
         </li>
 
