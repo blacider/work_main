@@ -3,6 +3,7 @@
     width: 100%;
     position: fixed;
     background: rgba(44, 62, 80, 0.9);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#E52C3E50,endColorstr=#E52C3E50);
     left: 0;
     top: 0;
     z-index: 101;
@@ -73,6 +74,7 @@
 #main .login-box .account {
     height: 50px;
     margin: 0;
+    line-height: 50px;
     padding: 0 12px;
     border-radius: 2px;
     outline: none;
