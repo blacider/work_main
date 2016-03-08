@@ -20,12 +20,12 @@
 </div>
 <script type="text/javascript">
 jQuery(function($) {
-    $('#loading-btn').on(ace.click_event, function () {
+    $('#loading-btn').on('click', function () {
         var btn = $(this);
-        btn.button('loading')
-            setTimeout(function () {
-                btn.button('reset')
-            }, 2000)
+        btn.button('loading');
+        setTimeout(function () {
+            btn.button('reset')
+        }, 2000)
     });
 
     $('#id-button-borders').attr('checked' , 'checked').on('click', function(){
@@ -33,7 +33,6 @@ jQuery(function($) {
     });
 })
     </script>
-<script type="text/javascript" src="https://tajs.qq.com/stats?sId=50936285" charset="UTF-8"></script>
 
 <!-- 百度统计 -->
 <div style="display: none;">

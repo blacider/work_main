@@ -8,6 +8,44 @@ class User_Model extends Reim_Model {
         parent::__construct();
     }
 
+    public function reset_password($data = array()){
+        $url = $this->get_url('resetpwd');
+        log_message("debug","url:" . $url);
+        log_message("debug","data:" . json_encode($data));
+        $buf = $this->do_Put($url,$data,'');
+
+        log_message("debug","reset_password_back:" . $buf);
+        return json_decode($buf,true);
+    }
+
+    public function check_user($addr = 'email', $user_addr = '')
+    {
+        if($addr == 'weixin') {
+            $data = $user_addr;
+        }
+        else {
+            $data = array(
+                $addr => $user_addr
+            );
+        }
+        $url = $this->get_url('register/user',$data); 
+        log_message("debug","url:" . $url);
+        log_message("debug","data:" . json_encode($data));
+        $buf = $this->do_Get($url,'');
+        log_message("debug","check_user_back:" . $buf);
+
+        return json_decode($buf,true);
+    }
+
+    public function check_company($name = '')
+    {
+        $url = $this->get_url("register/user/" . $name);
+        $buf = $this->do_Get($url, '');
+        log_message("debug","check_company:" . $buf);
+
+        return json_decode($buf,true);
+    }
+
     public function my_get_jwt($username,$password)
     {
         $jwt = $this->get_jwt($username, $password);

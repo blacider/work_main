@@ -48,9 +48,6 @@
 .login-button-div input{
 	display: none;
 }
-input {
-	line-height: 30px;
-}
 .button-text {
 	line-height: 56px;
 	font-size: 24px;

@@ -1,0 +1,1064 @@
+body {
+    margin: 0;
+    min-width: 291px;
+    font-family: "PingFang SC", "Avenir-Light", "HelveticaNeue-Light", "Segoe UI Light", "Roboto-Light", "Lantinghei SC Extralight", "MicrosoftYaHeiLight" ,"STXihei", sans-serif;
+}
+.error {
+    color: #fe575c;
+    position: relative;
+    visibility: hidden;
+}
+.success {
+    visibility: hidden;
+    opacity: 0;
+    font-size: 18px;
+    color: #fff;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    margin-top: 108px;
+}
+.success img {
+    width: 23px;
+    margin-right: 5px;
+    position: relative;
+    top: 5px;
+}
+.header-link ul {
+    padding: 0;
+    height: 50px;
+    margin-top: 15px;
+}
+.block {
+    width: 100%;
+    overflow: hidden;
+}
+.block1 {
+    background-image: url('/static/img/mod/login/img/hero_bg.jpg'); 
+    background-image: -webkit-image-set(url('/static/img/mod/login/img/hero_bg.jpg') 1x,url('/static/img/mod/login/img/hero_bg@2x.jpg') 2x);
+    background-image: -moz-image-set(url('/static/img/mod/login/img/hero_bg.jpg') 1x,url('/static/img/mod/login/img/hero_bg@2x.jpg') 2x);
+    background-image: -o-image-set(url('/static/img/mod/login/img/hero_bg.jpg') 1x,url('/static/img/mod/login/img/hero_bg@2x.jpg') 2x);
+    background-image: -ms-image-set(url('/static/img/mod/login/img/hero_bg.jpg') 1x,url('/static/img/mod/login/img/hero_bg@2x.jpg') 2x);
+    background-size: cover;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
+    src='/static/img/mod/login/img/hero_bg.jpg',
+    sizingMethod='scale');
+}
+.main-block {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+.header {
+    height: 50px;
+    width: 100%;
+    background: rgba(44,62,80,0.9);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#E52C3E50,endColorstr=#E52C3E50);
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+.home-logo {
+    float: left;
+    background-image: url('/static/img/mod/login/img/icon_logo.png'); 
+    background-image: -webkit-image-set(url('/static/img/mod/login/img/icon_logo.png') 1x,url('/static/img/mod/login/img/icon_logo@2x.png') 2x);
+    background-image: -moz-image-set(url('/static/img/mod/login/img/icon_logo.png') 1x,url('/static/img/mod/login/img/icon_logo@2x.png') 2x);
+    background-image: -o-image-set(url('/static/img/mod/login/img/icon_logo.png') 1x,url('/static/img/mod/login/img/icon_logo@2x.png') 2x);
+    background-image: -ms-image-set(url('/static/img/mod/login/img/icon_logo.png') 1x,url('/static/img/mod/login/img/icon_logo@2x.png') 2x);
+    width: 101px;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 50px;
+}
+a {
+    text-decoration: none;
+}
+.header-link {
+    float: right;
+    width: auto;
+    height: 50px;
+}
+.header-link * {
+    color: #FFF;
+}
+.header-link ul li{
+    float: left;
+    list-style: none;
+    margin-right: 25px;
+}
+.header-link ul li :hover {
+    color: #FFF;
+    font-weight: bold;
+}
+.header-button {
+    border: 1px solid;
+    padding: 3px 11px;
+    margin-top: -3px;
+    border-radius: 13px;
+}
+/*----------block1------------------*/
+.block1-button {
+    font-size: 24px;
+    width: 220px;
+    height: 50px;
+    border-radius: 24px;
+    margin-top: 10px;
+}
+.block1-button a{
+    color: white;
+    margin: 0 auto auto auto;
+    width: 96px;
+    display: block;
+    line-height: 50px;
+}
+/*----------block2------------------*/
+.block2-left-img {
+    float: left;
+    width: 60px;
+    height: 60px;
+    background-image: url('/static/img/mod/login/img/icon_money_large.png'); 
+    background-image: -webkit-image-set(url('/static/img/mod/login/img/icon_money_large.png') 1x,url('/static/img/mod/login/img/icon_money_large@2x.png') 2x);
+    background-image: -moz-image-set(url('/static/img/mod/login/img/icon_money_large.png') 1x,url('/static/img/mod/login/img/icon_money_large@2x.png') 2x);
+    background-image: -o-image-set(url('/static/img/mod/login/img/icon_money_large.png') 1x,url('/static/img/mod/login/img/icon_money_large@2x.png') 2x);
+    background-image: -ms-image-set(url('/static/img/mod/login/img/icon_money_large.png') 1x,url('/static/img/mod/login/img/icon_money_large@2x.png') 2x);
+}
+.block2-left-text {
+    margin-left: 21px;
+    float: left;
+}
+.block2-left-text p {
+    color: #34495E;
+    margin:0;
+}
+.block2-right-content-img1 {
+    background-image: url('/static/img/mod/login/img/icon_all_devices.png'); 
+    background-image: -webkit-image-set(url('/static/img/mod/login/img/icon_all_devices.png') 1x,url('/static/img/mod/login/img/icon_all_devices@2x.png') 2x);
+    background-image: -moz-image-set(url('/static/img/mod/login/img/icon_all_devices.png') 1x,url('/static/img/mod/login/img/icon_all_devices@2x.png') 2x);
+    background-image: -o-image-set(url('/static/img/mod/login/img/icon_all_devices.png') 1x,url('/static/img/mod/login/img/icon_all_devices@2x.png') 2x);
+    background-image: -ms-image-set(url('/static/img/mod/login/img/icon_all_devices.png') 1x,url('/static/img/mod/login/img/icon_all_devices@2x.png') 2x);
+}
+.block2-right-content-img2 {
+    background-image: url('/static/img/mod/login/img/icon_cloud.png'); 
+    background-image: -webkit-image-set(url('/static/img/mod/login/img/icon_cloud.png') 1x,url('/static/img/mod/login/img/icon_cloud@2x.png') 2x);
+    background-image: -moz-image-set(url('/static/img/mod/login/img/icon_cloud.png') 1x,url('/static/img/mod/login/img/icon_cloud@2x.png') 2x);
+    background-image: -o-image-set(url('/static/img/mod/login/img/icon_cloud.png') 1x,url('/static/img/mod/login/img/icon_cloud@2x.png') 2x);
+    background-image: -ms-image-set(url('/static/img/mod/login/img/icon_cloud.png') 1x,url('/static/img/mod/login/img/icon_cloud@2x.png') 2x);
+}
+.block2-right-content-img3 {
+    background-image: url('/static/img/mod/login/img/icon_financial.png'); 
+    background-image: -webkit-image-set(url('/static/img/mod/login/img/icon_financial.png') 1x,url('/static/img/mod/login/img/icon_financial@2x.png') 2x);
+    background-image: -moz-image-set(url('/static/img/mod/login/img/icon_financial.png') 1x,url('/static/img/mod/login/img/icon_financial@2x.png') 2x);
+    background-image: -o-image-set(url('/static/img/mod/login/img/icon_financial.png') 1x,url('/static/img/mod/login/img/icon_financial@2x.png') 2x);
+    background-image: -ms-image-set(url('/static/img/mod/login/img/icon_financial.png') 1x,url('/static/img/mod/login/img/icon_financial@2x.png') 2x);
+}
+.icon {
+    float: left;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 1px solid #BDC3C7;
+    border-radius: 50%;
+   
+}
+.block2-right-content div p {
+    margin: 0;
+}
+/*----------block3------------------*/
+.block3 {
+    width: 100%;
+    background-color: #ECF0F1;
+    overflow: hidden;
+}
+.block3-title h1{
+    color: #34495E;
+    font-weight: normal;
+}
+.block3-main {
+    width: 100%;
+}
+#white-phone {
+    background-image: url('/static/img/mod/login/img/fig1_anywhere.jpg'); 
+    background-image: -webkit-image-set(url('/static/img/mod/login/img/fig1_anywhere.jpg') 1x,url('/static/img/mod/login/img/fig1_anywhere@2x.jpg') 2x);
+    background-image: -moz-image-set(url('/static/img/mod/login/img/fig1_anywhere.jpg') 1x,url('/static/img/mod/login/img/fig1_anywhere@2x.jpg') 2x);
+    background-image: -o-image-set(url('/static/img/mod/login/img/fig1_anywhere.jpg') 1x,url('/static/img/mod/login/img/fig1_anywhere@2x.jpg') 2x);
+    background-image: -ms-image-set(url('/static/img/mod/login/img/fig1_anywhere.jpg') 1x,url('/static/img/mod/login/img/fig1_anywhere@2x.jpg') 2x);
+    background-size: cover;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
+    src='/static/img/mod/login/img/fig1_anywhere.jpg',
+    sizingMethod='scale');
+}
+#black-phone {
+    background-image: url('/static/img/mod/login/img/fig2_realtime.jpg'); 
+    background-image: -webkit-image-set(url('/static/img/mod/login/img/fig2_realtime.jpg') 1x,url('/static/img/mod/login/img/fig2_realtime@2x.jpg') 2x);
+    background-image: -moz-image-set(url('/static/img/mod/login/img/fig2_realtime.jpg') 1x,url('/static/img/mod/login/img/fig2_realtime@2x.jpg') 2x);
+    background-image: -o-image-set(url('/static/img/mod/login/img/fig2_realtime.jpg') 1x,url('/static/img/mod/login/img/fig2_realtime@2x.jpg') 2x);
+    background-image: -ms-image-set(url('/static/img/mod/login/img/fig2_realtime.jpg') 1x,url('/static/img/mod/login/img/fig2_realtime@2x.jpg') 2x);
+    background-size: cover;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
+    src='/static/img/mod/login/img/fig2_realtime.png',
+    sizingMethod='scale');
+}
+#white-pc {
+    background-image: url('/static/img/mod/login/img/fig3_intuitive.jpg'); 
+    background-image: -webkit-image-set(url('/static/img/mod/login/img/fig3_intuitive.jpg') 1x,url('/static/img/mod/login/img/fig3_intuitive@2x.jpg') 2x);
+    background-image: -moz-image-set(url('/static/img/mod/login/img/fig3_intuitive.jpg') 1x,url('/static/img/mod/login/img/fig3_intuitive@2x.jpg') 2x);
+    background-image: -o-image-set(url('/static/img/mod/login/img/fig3_intuitive.jpg') 1x,url('/static/img/mod/login/img/fig3_intuitive@2x.jpg') 2x);
+    background-image: -ms-image-set(url('/static/img/mod/login/img/fig3_intuitive.jpg') 1x,url('/static/img/mod/login/img/fig3_intuitive@2x.jpg') 2x);
+    background-size: cover;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
+    src='/static/img/mod/login/img/fig3_intuitive.jpg',
+    sizingMethod='scale');
+}
+/*----------block4------------------*/
+.block4 {
+    width: 100%;
+    overflow: hidden;
+}
+.block4-title {
+    font-weight: normal;
+    color: #34495E;
+}
+table {
+    border: 1px solid #BDC3C7;
+}
+.right {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('/static/img/mod/login/img/icon_check.png'); 
+    background-image: -webkit-image-set(url('/static/img/mod/login/img/icon_check.png') 1x,url('/static/img/mod/login/img/icon_check@2x.png') 2x);
+    background-image: -moz-image-set(url('/static/img/mod/login/img/icon_check.png') 1x,url('/static/img/mod/login/img/icon_check@2x.png') 2x);
+    background-image: -o-image-set(url('/static/img/mod/login/img/icon_check.png') 1x,url('/static/img/mod/login/img/icon_check@2x.png') 2x);
+    background-image: -ms-image-set(url('/static/img/mod/login/img/icon_check.png') 1x,url('/static/img/mod/login/img/icon_check@2x.png') 2x);
+}
+.table-bg {
+    background-color: #f7f9f8;
+}
+table p {
+    margin:0;
+}
+th p+p {
+    color: #BDC3C7;
+}
+th:first-child {
+    color: #34495E;
+}
+td p + p {
+    color: #BDC3C7;
+}
+td :first-child {
+    color: #7F8C8D;
+}
+tr th + th, tr td + td {
+    border-left: 1px solid #bdc3c7;
+}
+p.block4-text {
+    color: #7F8C8D;
+}
+/*----------block5------------------*/
+.block5-img-1 {
+    background-image: url('/static/img/mod/login/img/head1.png'); 
+    background-image: -webkit-image-set(url('/static/img/mod/login/img/head1.png') 1x,url('/static/img/mod/login/img/head1@2x.png') 2x);
+    background-image: -moz-image-set(url('/static/img/mod/login/img/head1.png') 1x,url('/static/img/mod/login/img/head1@2x.png') 2x);
+    background-image: -o-image-set(url('/static/img/mod/login/img/head1.png') 1x,url('/static/img/mod/login/img/head1@2x.png') 2x);
+    background-image: -ms-image-set(url('/static/img/mod/login/img/head1.png') 1x,url('/static/img/mod/login/img/head1@2x.png') 2x);
+    background-size: cover;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
+    src='/static/img/mod/login/img/head1.png',
+    sizingMethod='scale');
+    float: left;
+    margin-right: 12px;
+}
+.block5-img-2 {
+    background-image: url('/static/img/mod/login/img/head2.png'); 
+    background-image: -webkit-image-set(url('/static/img/mod/login/img/head2.png') 1x,url('/static/img/mod/login/img/head2@2x.png') 2x);
+    background-image: -moz-image-set(url('/static/img/mod/login/img/head2.png') 1x,url('/static/img/mod/login/img/head2@2x.png') 2x);
+    background-image: -o-image-set(url('/static/img/mod/login/img/head2.png') 1x,url('/static/img/mod/login/img/head2@2x.png') 2x);
+    background-image: -ms-image-set(url('/static/img/mod/login/img/head2.png') 1x,url('/static/img/mod/login/img/head2@2x.png') 2x);
+    background-size: cover;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
+    src='/static/img/mod/login/img/head2.png',
+    sizingMethod='scale');
+    float: right;
+    margin-left: 12px;
+}
+.block5 {
+    background-color: #fff;
+    width: 100%;
+    overflow: hidden;
+}
+.block5-text {
+    background-color: #DFE4E8;
+    height: auto;
+    clear: both;
+}
+.block5-text p {
+    font-size: 13px;
+    color: #606c78;
+    line-height: 18px;
+}
+.block5-text p+p {
+    margin-top: 10px;
+}
+.block5-contact {
+    clear: both;
+    overflow: hidden;
+}
+.block5-contact-left {
+    margin:10px auto auto 0;
+}
+.block5-contact-right {
+    margin-top: auto 0 10px auto;
+}
+.block5-right .block5-contact {
+    float: right;
+    margin-bottom: 3px;
+    text-align: right;
+}
+.block5-left .block5-contact {
+    margin-top: 3px;
+}
+.block5-right .block5-contact .block5-contact-text {
+    float: right;
+}
+.block5-img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    
+}
+#triangle-bottomright {
+    width: 0;
+    height: 0;
+    border-bottom: 18px solid #DFE4E8;
+    border-left: 18px solid transparent;
+    clear: both;
+    float: right;
+    margin-right: 25px;
+}
+#triangle-topleft {
+    width: 0;
+    height: 0;
+    border-top: 18px solid #DFE4E8;
+    border-right: 18px solid transparent;
+    margin-left: 25px;
+}
+.block5-contact-text :first-child {
+    font-size: 14px;
+    color: #7F8C8D;
+    margin:8px 0 1px auto;
+}
+.block5-contact-text p+p {
+    font-size: 12px;
+    color: #BDC3C7;
+    margin-top: 0;
+}
+/*----------block6------------------*/
+input[type="submit"] {
+    width: 220px;
+    height: 50px;
+    font-size: 24px;
+    color: white;
+    border-width: 0;
+    margin-top: -4px;
+    border-radius: 24px;
+    margin-left: 0px;
+}
+input[type="text"] {
+    padding-left: 10px;
+}
+.block6 {
+    overflow: hidden;
+    width: 100%;
+    background-image: url('/static/img/mod/login/img/apply_form_bg.jpg'); 
+    background-image: -webkit-image-set(url('/static/img/mod/login/img/apply_form_bg.jpg') 1x,url('/static/img/mod/login/img/apply_form_bg@2x.jpg') 2x);
+    background-image: -moz-image-set(url('/static/img/mod/login/img/apply_form_bg.jpg') 1x,url('/static/img/mod/login/img/apply_form_bg@2x.jpg') 2x);
+    background-image: -o-image-set(url('/static/img/mod/login/img/apply_form_bg.jpg') 1x,url('/static/img/mod/login/img/apply_form_bg@2x.jpg') 2x);
+    background-image: -ms-image-set(url('/static/img/mod/login/img/apply_form_bg.jpg') 1x,url('/static/img/mod/login/img/apply_form_bg@2x.jpg') 2x);
+    background-size: cover;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
+    src='/static/img/mod/login/img/apply_form_bg.jpg',
+    sizingMethod='scale');
+}
+
+/*---------------------footer-----------------------*/
+.footer {
+    width: 100%;
+    background-color: #2C3E50;
+    overflow: hidden;
+}
+.copyright {
+    font-size: 14px;
+    color: #fff;
+    width: 344px;
+}
+.footer-text {
+    margin: 0;
+    padding:0;
+}
+.footer-link ul {
+    margin:0;
+}
+.footer-link li {
+    float: left;
+    margin-right: 25px;
+    list-style: none;
+}
+.footer-link li a {
+    font-size: 14px;
+    color: #ECF0F1;
+}
+.footer-link li a:hover {
+    color: #fff;
+    font-weight: bold;
+}
+.record p{
+    font-size: 13px;
+    color: #95a5a6;
+}
+@media screen and (max-width: 739px) and (min-width: 1px) {
+    .menu-left {
+        display: none;
+    }
+	.main-block {
+	    width:293px; 
+	}
+	.header-link * {
+	    font-size: 13px;
+	}
+	.header-button {
+	    display: none;
+	}
+	#min-margin {
+	    margin-right: 0;
+	}
+	/*---------------block1------------------*/
+
+	.block1-content {
+	    width: 248px;
+	    margin: 112px auto auto 0;
+	}
+	.block1-text1 {
+	    width: 277px;
+	    height: 125px;
+	    margin: 0 auto -3px 0;
+	    background-image: url('/static/img/mod/login/img/text_title_42.png'); 
+	    background-image: -webkit-image-set(url('/static/img/mod/login/img/text_title_42.png') 1x,url('/static/img/mod/login/img/text_title_42@2x.png') 2x);
+	    background-image: -moz-image-set(url('/static/img/mod/login/img/text_title_42.png') 1x,url('/static/img/mod/login/img/text_title_42@2x.png') 2x);
+	    background-image: -o-image-set(url('/static/img/mod/login/img/text_title_42.png') 1x,url('/static/img/mod/login/img/text_title_42@2x.png') 2x);
+	    background-image: -ms-image-set(url('/static/img/mod/login/img/text_title_42.png') 1x,url('/static/img/mod/login/img/text_title_42@2x.png') 2x);
+	}
+	.block1-text2 {
+	    width: 248px;
+	    height: 45px;
+	    margin: 0 auto 14px 0;
+	    background-image: url('/static/img/mod/login/img/text_slogan_20.png'); 
+	    background-image: -webkit-image-set(url('/static/img/mod/login/img/text_slogan_20.png') 1x,url('/static/img/mod/login/img/text_slogan_20@2x.png') 2x);
+	    background-image: -moz-image-set(url('/static/img/mod/login/img/text_slogan_20.png') 1x,url('/static/img/mod/login/img/text_slogan_20@2x.png') 2x);
+	    background-image: -o-image-set(url('/static/img/mod/login/img/text_slogan_20.png') 1x,url('/static/img/mod/login/img/text_slogan_20@2x.png') 2x);
+	    background-image: -ms-image-set(url('/static/img/mod/login/img/text_slogan_20.png') 1x,url('/static/img/mod/login/img/text_slogan_20@2x.png') 2x);
+	}
+	/*----------block2------------------*/
+	.block2 {
+	    height: 390px;
+	    overflow: hidden;
+        background-color: #fff;
+	}
+	.block2-left {
+	    margin-top: 45px;
+	    margin-left: 0;
+	    width: auto;
+	    height: 61px;
+	    width: 321px;
+	}
+	.block2-right {
+	    height: 260px;
+	    width: 291px;
+	    margin-top: 24px;
+	    margin-left: 5px;
+	}
+	.block2-left-text p {
+	    font-size: 18px;
+	    line-height: 29px;
+	}
+
+
+
+	.block2-right-content {
+	    margin-bottom: 15px;
+	    height: 50px;
+	}
+	.icon {
+	    width: 50px;
+	    height: 50px;
+	}
+	.block2-right-content-text {
+	    margin-left: 80px;
+	    height: 34px;
+	    position: relative;
+	    top: 6px;
+	}
+	.block2-right-text1 {
+	    font-size: 16px;
+	    color: #34495E;
+	}
+	.block2-right-text2 {
+	    font-size: 13px;
+	    margin-top: 8px;
+	    color: #7F8C8D;
+	}
+	/*----------block3------------------*/
+	.block3 {
+	    height: 570px;
+	}
+	.block3-title {
+	    margin: 35px auto 30px auto;
+	}
+	.block3-title h1{
+	    font-size: 30px;
+	}
+	.block3-content {
+	    width: 100%;
+	    margin-bottom: 20px;
+	    height: 130px;
+	}
+	.block3-content-img {
+	    width: 140px;
+	    height: 130px;
+	    float: left;
+	    margin-right: 20px;
+	}
+	.block3-text {
+	    float: left;
+	}
+	.block3-content-text1 {
+	    margin: 15px auto 6px 0;
+	    font-size: 20px;
+	    color: #34495E;
+	    width: auto;
+	}
+	.block3-content-text2 {
+	    margin-top: 0;
+	    font-size: 13px;
+	    color: #7F8C8D;
+	    line-height: 21px;
+	    width: auto;
+	}
+	/*----------block4------------------*/
+	.block4 {
+	    height: 760px;
+	}
+	.block4-title {
+	    font-size: 30px;
+	    margin: 35px auto 30px auto;
+	}
+	.block4-table {
+	    width: 293px;
+	    margin:auto;
+	}
+	thead tr {
+	    height: 80px;
+	}
+	tr > :first-child {
+	    width: 104px;
+	}
+	tr td + td {
+	    width: 60px;
+	}
+	tr th+th {
+	    width: 60px;
+	}
+	thead p {
+	    text-align: center;
+	}
+	tbody p {
+	    text-align: left;
+	}
+	th p+p {
+	    font-size: 10px;
+	}
+	th:first-child {
+	    font-size: 14px;
+	}
+	td p + p {
+	    font-size: 9px;
+	}
+	td :first-child {
+	    font-size: 12px;
+	}
+	tr td {
+	    padding: 9px 7px;
+	}
+	#table-foot {
+	    height: 55px;
+	}
+	.for-phone {
+	    display: block;
+	}
+	.for-phone2 {
+	    display: none;
+	}
+	p.block4-text {
+	    font-size: 12px;
+	    line-height: 21px;
+	    margin-top: 13px;
+	    margin-bottom: 24px;
+	    text-align: left;
+	}
+	/*----------block5------------------*/
+	.block5 {
+	    height: 760px;
+	}
+	.block5-left {
+	    margin-top: 68px;
+	}
+	.block5-text {
+	    padding: 12px 22px;
+	}
+	.block5-right {
+	    margin-top: 20px;
+	}
+	/*----------block6------------------*/
+	.block6 {
+	    height: 339px;
+	}
+	/*-------------footer----------------*/
+	.footer .main-block {
+	    margin-top: 26px;
+	}
+	.footer {
+	    height: 220px;
+	}
+	.footer-link {
+	    overflow: hidden;
+	    margin-top: 10px;
+	}
+	.footer-link ul {
+	    padding:0;
+	}
+	.record {
+	    margin-top: 52px;
+	}
+}
+@media screen and (max-width: 949px) and (min-width: 740px) {
+	.main-block {
+	    width:738px; 
+	}
+	.header-link * {
+	    font-size: 13px;
+	}
+
+	/*---------------block1------------------*/
+	.block1-button{
+	    margin: 0 auto auto auto;
+	}
+	.block1-content {
+	    width: 248px;
+	    margin: 160px auto auto auto;
+	}
+	.block1-text1 {
+	    width: 277px;
+	    height: 125px;
+	    margin: 0 auto 0 auto;
+	    background-image: url('/static/img/mod/login/img/text_title_42.png'); 
+	    background-image: -webkit-image-set(url('/static/img/mod/login/img/text_title_42.png') 1x,url('/static/img/mod/login/img/text_title_42@2x.png') 2x);
+	    background-image: -moz-image-set(url('/static/img/mod/login/img/text_title_42.png') 1x,url('/static/img/mod/login/img/text_title_42@2x.png') 2x);
+	    background-image: -o-image-set(url('/static/img/mod/login/img/text_title_42.png') 1x,url('/static/img/mod/login/img/text_title_42@2x.png') 2x);
+	    background-image: -ms-image-set(url('/static/img/mod/login/img/text_title_42.png') 1x,url('/static/img/mod/login/img/text_title_42@2x.png') 2x);
+	}
+	.block1-text2 {
+	    width: 248px;
+	    height: 45px;
+	    margin: 0 auto 1px auto;
+	    background-image: url('/static/img/mod/login/img/text_slogan_20.png'); 
+	    background-image: -webkit-image-set(url('/static/img/mod/login/img/text_slogan_20.png') 1x,url('/static/img/mod/login/img/text_slogan_20@2x.png') 2x);
+	    background-image: -moz-image-set(url('/static/img/mod/login/img/text_slogan_20.png') 1x,url('/static/img/mod/login/img/text_slogan_20@2x.png') 2x);
+	    background-image: -o-image-set(url('/static/img/mod/login/img/text_slogan_20.png') 1x,url('/static/img/mod/login/img/text_slogan_20@2x.png') 2x);
+	    background-image: -ms-image-set(url('/static/img/mod/login/img/text_slogan_20.png') 1x,url('/static/img/mod/login/img/text_slogan_20@2x.png') 2x);
+	}
+	/*----------block2------------------*/
+	.block2 {
+	    height: 270px;
+	    overflow: hidden;
+        background: #fff;
+	}
+	.block2-left {
+	    margin-top: 105px;
+	    margin-left: 63px;
+	    float: left;
+	    width: auto;
+	    height: auto;
+	}
+	.block2-right {
+	    height: 185px;
+	    width: 300px;
+	    float: right;
+	    margin-top: 45px;
+	}
+	.block2-left-text p {
+	    font-size: 20px;
+	    line-height: 29px;
+	}
+
+	.block2-right-content {
+	    margin-bottom: 15px;
+	    height: 48px;
+	}
+	.icon {
+	    width: 48px;
+	    height: 48px;
+	}
+	.block2-right-content-text {
+	    margin-left: 63px;
+	    height: 34px;
+	    position: relative;
+	    top: 6px;
+	}
+	.block2-right-text1 {
+	    font-size: 16px;
+	    color: #34495E;
+	}
+	.block2-right-text2 {
+	    font-size: 13px;
+	    margin-top: 8px;
+	    color: #7F8C8D;
+	}
+	/*----------block3------------------*/
+	.block3 {
+	    height: 500px;
+	}
+	.block3-title {
+	    text-align: center;
+	    height: auto;
+	    margin: 50px auto 35px auto;
+	}
+	.block3-title h1{
+	    font-size: 30px;
+	}
+	.block3-content {
+	    float: left;
+	}
+	.block3-content1, .block3-content2 {
+	    margin-right: 15px;
+	}
+	.block3-content-img {
+	    width: 236px;
+	    height: 190px;
+	}
+	.block3-content-text1 {
+	    margin: 30px auto 24px auto;
+	    font-size: 20px;
+	    color: #34495E;
+	    text-align: center;
+	}
+	.block3-content-text2 {
+	    font-size: 13px;
+	    color: #7F8C8D;
+	    line-height: 21px;
+	    text-align: center;
+	}
+	/*----------block4------------------*/
+	.block4 {
+	    height: 690px;
+	}
+	.block4-title {
+	    font-size: 30px;
+	    margin: 40px auto 25px auto;
+	    text-align: center;
+	}
+	.block4-table {
+	    width: 612px;
+	    margin:auto;
+	}
+	thead tr {
+	    height: 80px;
+	}
+	tr > :first-child {
+	    width: 237px;
+	}
+	tr td + td {
+	    width: 125px;
+	}
+	tr th+th {
+	    width: 125px;
+	}
+	table p {
+	    text-align: center;
+	}
+	th p+p {
+	    font-size: 13px;
+	}
+	th:first-child {
+	    font-size: 15px;
+	}
+	td p + p {
+	    font-size: 11px;
+	}
+	td :first-child {
+	    font-size: 13px;
+	}
+	tr td {
+	    padding: 10.3px 0 10.3px 0;
+	}
+	#table-foot {
+	    height: 55px;
+	}
+	p.block4-text {
+	    font-size: 13px;
+	    line-height: 21px;
+	    margin-top: 13px;
+	    margin-bottom: 24px;
+	    text-align: center;
+	}
+	.for-phone {
+	    display: none;
+	}
+	/*----------block5------------------*/
+	.block5 {
+	    height: 425px;
+	}
+	.block5-left {
+	    margin-top: 96px;
+	    float: left;
+	}
+	.block5-text {
+	    padding: 12px 24px;
+	    width: 315px;
+	}
+	.block5-right {
+	    margin-top: 96px;
+	    float: right;
+	}
+	/*----------block6------------------*/
+	.block6 {
+	    height: 300px;
+	}
+	/*-------------footer----------------*/
+	.footer .main-block {
+	    margin-top: 35px;
+	}
+	.footer {
+	    height: 225px;
+	}
+	.footer-link {
+	    float: right;
+	}
+	.record {
+	    clear: both;
+	}
+	.copyright {
+	    float: left;
+	}
+}
+@media screen and (min-width: 950px) {
+	.main-block {
+	    width:945px; 
+	}
+	.header-link * {
+	    font-size: 14px;
+	}
+
+	/*---------------block1------------------*/
+	.block1-button{
+	    margin: 30px auto auto auto;
+	}
+	.block1-content {
+	    width: 894px;
+	    margin: 210px auto auto auto;
+	}
+	.block1-text1 {
+	    text-align:center;
+	    width:590px;
+	    height: 63px;
+	    margin: 0 auto 0 auto;
+	    background-repeat: no-repeat;
+	    background-image: -webkit-image-set(url('/static/img/mod/login/img/text_title_50.png') 1x,url('/static/img/mod/login/img/text_title_50@2x.png') 2x);
+	    background-image: -moz-image-set(url('/static/img/mod/login/img/text_title_50.png') 1x,url('/static/img/mod/login/img/text_title_50@2x.png') 2x);
+	    background-image: -o-image-set(url('/static/img/mod/login/img/text_title_50.png') 1x,url('/static/img/mod/login/img/text_title_50@2x.png') 2x);
+	    background-image: -ms-image-set(url('/static/img/mod/login/img/text_title_50.png') 1x,url('/static/img/mod/login/img/text_title_50@2x.png') 2x);
+        background-image: url('/static/img/mod/login/img/text_title_50.png'); 
+	}
+	.block1-text2 {
+	    width: 418px;
+	    height: 50px;
+	    background-repeat: no-repeat;
+	    margin: 0 auto 30px auto;
+	    background-image: -webkit-image-set(url('/static/img/mod/login/img/text_slogan_24.png') 1x,url('/static/img/mod/login/img/text_slogan_24@2x.png') 2x);
+	    background-image: -moz-image-set(url('/static/img/mod/login/img/text_slogan_24.png') 1x,url('/static/img/mod/login/img/text_slogan_24@2x.png') 2x);
+	    background-image: -o-image-set(url('/static/img/mod/login/img/text_slogan_24.png') 1x,url('/static/img/mod/login/img/text_slogan_24@2x.png') 2x);
+	    background-image: -ms-image-set(url('/static/img/mod/login/img/text_slogan_24.png') 1x,url('/static/img/mod/login/img/text_slogan_24@2x.png') 2x);
+        background-image: url('/static/img/mod/login/img/text_slogan_24.png');
+	}
+	/*----------block2------------------*/
+	.block2 {
+		background-color: #fff;
+	    height: 290px;
+	    overflow: hidden;
+	}
+	.block2-left {
+	    margin-top: 113px;
+	    margin-left: 81px;
+	    float: left;
+	    width: auto;
+	    height: auto;
+	}
+	.block2-right {
+	    margin-top:45px;
+	    margin-left:  163px;
+	    float: left;
+	}
+	.block2-right-content {
+	    margin-bottom: 20px;
+	    height: 51px;
+	}
+	.block2-left-text p {
+	    font-size: 24px;
+	    line-height: 29px;
+	}
+	.icon {
+	    width: 51px;
+	    height: 51px;
+	}
+	.block2-right-content-text {
+	    margin-left: 80px;
+	    height: 40px;
+	    position: relative;
+	    top: 4px;
+	}
+	.block2-right-text1 {
+	    font-size: 18px;
+	    color: #34495E;
+	}
+	.block2-right-text2 {
+	    font-size: 14px;
+	    margin-top: 10px;
+	    color: #7F8C8D;
+	}
+	/*----------block3------------------*/
+	.block3 {
+	    height: 590px;
+	}
+	.block3-title {
+	    text-align: center;
+	    height: auto;
+	    margin: 60px auto 45px auto;
+	}
+	.block3-title h1{
+	    font-size: 36px;
+	}
+	.block3-content {
+	    float: left;
+	}
+	.block3-content1, .block3-content2 {
+	    margin-right: 30px;
+	}
+	.block3-content-img {
+	    width: 294px;
+	    height: 230px;
+	}
+	.block3-content-text1 {
+	    margin: 30px auto 24px auto;
+	    font-size: 22px;
+	    color: #34495E;
+	    text-align: center;
+	}
+	.block3-content-text2 {
+	    font-size: 14px;
+	    color: #7F8C8D;
+	    line-height: 21px;
+	    text-align: center;
+	}
+	/*----------block4------------------*/
+	.block4 {
+	    height: 700px;
+	}
+	.block4-title {
+	    font-size: 36px;
+	    margin: 40px auto 25px auto;
+	    text-align: center;
+	}
+	.block4-table {
+	    width: 680px;
+	    margin:auto;
+	}
+	thead tr {
+	    height: 80px;
+	}
+	tr > :first-child {
+	    width: 192px;
+	}
+	tr td + td {
+	    width: 162px;
+	}
+	tr th+th {
+	    width: 162px;
+	}
+	table p {
+	    text-align: center;
+	}
+	th p+p {
+	    font-size: 14px;
+	}
+	th:first-child {
+	    font-size: 18px;
+	}
+	td p + p {
+	    font-size: 12px;
+	}
+	td :first-child {
+	    font-size: 14px;
+	}
+	tr td {
+	    padding: 9px 0 9px 0;
+	}
+	#table-foot {
+	    height: 55px;
+	}
+	p.block4-text {
+	    font-size: 14px;
+	    line-height: 21px;
+	    margin-top: 13px;
+	    margin-bottom: 24px;
+	    text-align: center;
+	}
+	.for-phone {
+	    display: none;
+	}
+	/*----------block5------------------*/
+	.block5 {
+	    height: 460px;
+	}
+	.block5-left {
+	    margin-top: 96px;
+	    float: left;
+	    margin-left: 81px;
+	}
+	.block5-right {
+	    margin-top: 96px;
+	    float: right;
+	    margin-right: 81px;
+	}
+	.block5-text {
+	    padding: 12px 30px;
+	    width: 315px;
+	}
+	/*----------block6------------------*/
+	.block6 {
+	    height: 320px;
+	}
+	/*-------------footer----------------*/
+	.footer .main-block {
+	    margin-top: 40px;
+	}
+	.footer {
+	    height: 240px;
+	}
+	.footer-link {
+	    float: left;
+	    margin-left: 288px;
+	}
+	.record {
+	    clear: both;
+	}
+	.copyright {
+	    float: left;
+	}
+}

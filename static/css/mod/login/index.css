@@ -1,0 +1,143 @@
+#header {
+    height: 60px;
+    width: 100%;
+    position: fixed;
+    background: rgba(44, 62, 80, 0.9);
+    left: 0;
+    top: 0;
+    z-index: 101;
+}
+#header .wrap-inner {
+    width: 62.5%;
+    height: 100%;
+    margin: 0 auto;
+    position: relative;
+    min-width: 405px;
+}
+#header a.logo {
+    position: relative;
+    top: 16px;
+    float: left;
+}
+#header a.logo img {
+    width: 100px;
+}
+#header .menu {
+    position: absolute;
+    right: 0;
+    white-space: nowrap;
+    height: 14px;
+}
+#header .menu li {
+    display: inline-block;
+    font-size: 0;
+    padding-left: 14px;
+}
+#header .menu li a {
+    color: #fff;
+    font-size: 14px;
+    line-height: 60px;
+    height: 14px;
+}
+#header .menu li a:hover {
+    font-weight: bold;
+    text-decoration:none;
+}
+#header .menu li.register a {
+    padding: 6px 8px;
+    border: 1px solid #fff;
+    border-radius: 2px;
+}
+
+#main {
+    position: relative;
+    margin-top: 60px;
+    padding-top: 206px;
+    padding-bottom: 162px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#main .slogan {
+    color: #fff;
+    font-size: 52px;
+    font-weight: normal;
+}
+#main .login-box {
+    width: 451px;
+    margin: 0 auto;
+    height: 50px;
+    font-size: 0;
+    position: relative;
+}
+#main .login-box .account {
+    height: 50px;
+    margin: 0;
+    padding: 0 12px;
+    border-radius: 2px;
+    outline: none;
+    font-size: 16px;
+    color: #4a4a4a;
+    width: 320px;
+    float: left;
+    opacity: 0.9;
+    border: 1px solid #929292;
+    border: 1px solid var(--warm-grey);
+}
+#main .login-box .account:focus {
+    border: 1px solid #ff575b;
+    border: 1px solid var(--coral-pink);
+    opacity: 1;
+}
+#main .login-box .login {
+    width: 120px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #ff575b;
+    color: #fff;
+    border-radius: 6px;
+    outline: none;
+    border: none;
+    font-size: 16px;
+    float: right;
+    border-bottom: 2px solid #D33E42;
+}
+#main .login-box .login:hover,
+#main .login-box .login:active {
+    border-bottom: 2px solid #ff575b;
+}
+@media screen and (min-width: 950px) {
+    #header .wrap-inner {
+        min-width: 1080px;
+    }
+}
+@media screen and (max-width: 949px) and (min-width: 740px) {
+    #header .wrap-inner {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 739px) and (min-width: 1px) {
+    #header .wrap-inner {
+        
+    }
+    #header .wrap-inner {}
+}
+
+@media screen and (max-width: 739px) and (min-width: 1px) {
+    #main .login-box {
+        width: auto;
+    }
+    #main .login-box .account,
+    #main .login-box .login {
+        float: none;
+        display: block;
+        margin: 20px auto;
+        width: 280px;
+    }
+}
+
+
+
+

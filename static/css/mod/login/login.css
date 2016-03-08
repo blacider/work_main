@@ -1,0 +1,264 @@
+input:-webkit-autofill {
+    background-color: rgb(250, 255, 189);
+    background-image: none;
+    color: rgb(0, 0, 0);
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+.hidden-pass {
+    display: none !important;
+}
+.active-pass {
+    direction: block !important;
+}
+.placeholder {
+    color: #929292;
+}
+.jGrowl-close {
+    line-height: 1em;
+}
+.menu-left {
+    margin-bottom: auto;
+    margin-left: 45px;
+    float: left;
+    font-size: 16px;
+}
+.menu-left:hover {
+
+}
+.menu-left li{
+    float: left;
+    line-height: 60px;
+    margin: 0 4px;
+}
+.menu-left .active {
+    border-bottom: 1px solid #71889E;
+    color: white;
+}
+.menu-left li a {
+    padding: 0 12px;
+    color: #BDC3C7;
+    height: 58px;
+    display: block;
+}
+.menu-left li a:hover {
+    text-decoration:none;
+    color: white;
+}
+.menu-left li a:hover {
+    border-bottom: 1px solid #71889E;
+}
+.login_content, .pass_content, .first_content{
+    width: 343px;
+    height: auto;
+    margin: auto;
+    position: relative;
+}
+.form-line {
+    position: relative;
+}
+.login_content {
+    top: 140px;
+}
+.first_content {
+    top:95px;
+}
+.modal input , #main input{
+    z-index: 100;
+    position: relative;
+}
+img ,button{
+    outline: none;
+}
+.modal-header {
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    padding: 0;
+}
+.modal-header-left {
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    padding: 0;
+}
+.first-text {
+    margin-bottom: 45px;
+    font-size: 16px;
+    text-align: left;
+    color: #4A4A4A;
+    white-space: nowrap;
+}
+.modal-dialog, .modal-content {
+    width: 100% !important;
+    margin:0 !important;
+    height: 100%;
+}
+.modal-body {
+    min-width: 350px;
+    min-height: 380px;
+    position:relative;
+    top: 50%;
+    margin-top: -190px;
+}
+
+#login input, #first-email input, #first-phone input,#first-login input, #password input ,#phone-code input, #email-code input, #phone-after input, #email-after input, #signin input{
+    border: none;
+    font-size: 16px;
+    line-height: 16px;
+    padding: 0;
+    margin:0;
+    width: 244px;
+    outline:none;
+    letter-spacing: 1px;
+    color: #4a4a4a;
+}
+#password input, #first-login input, #phone-code input, #email-code input {
+    width: 235px;
+}
+#phone-after .full-input, #email-after .full-input {
+    width: 285px;
+}
+#login input, #signin input {
+    width: 280px;
+}
+.input-line {
+    padding-bottom: 7px;
+    float: right;
+    border-bottom: 1px #B9B9B9 solid;
+    width: 280px;
+}
+.action-icon {
+    cursor: pointer;
+    outline: none;
+    position: relative;
+}
+.bottom-line a {
+    color: red;
+    font-size: 13px;
+    text-decoration: underline;
+}
+.bottom-line {
+    width: 55px;
+    margin: 60px auto auto auto;
+}
+.next-step {
+    text-align: center;
+    margin-top: 31px;
+}
+.forget-pass{
+    width: 70px;
+}
+.user-pic {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto;
+    border-radius: 200px;
+    overflow: hidden;
+}
+.user-name {
+    font-size: 16px;
+    text-align: center;
+    margin: 17px auto 70px;
+}
+.relative-10 {
+    position: relative;
+    left: 10px;
+}
+.phone-text {
+    color: red;
+    font-size: 15px;
+}
+.text {
+    white-space: nowrap;
+    font-size: 15px;
+    text-align: left;
+}
+.timer {
+    color: #ff575b;
+    width: 83px;
+    font-size: 12px;
+    border: 1px #FF575B solid;
+    border-radius: 2px;
+    padding: 4px 2px 4px 3px;
+    position: relative;
+    top: -3px;
+    float: right;
+    background-color:transparent;
+    line-height: 18px;
+}
+.time-disable {
+    background-color: #ff575b;
+    color: white;
+    border: none;
+    border-bottom: 1px #D33E42 solid;
+    text-align: center;
+    border-top: 1px #ff575b solid;
+}
+.time-disable:hover {
+    border-bottom: 1px #ff575b solid;
+}
+.error-login {
+    position: absolute;
+    height: 35px;
+    font-size: 15px;
+    color: white;
+    left: -18px;
+    top: -1px;
+    border-radius: 4px;
+}
+.error-login-line {
+    position: relative;
+    left: -100%;
+}
+.error-text {
+    background-color: #FF575B;
+    font-size: 15px;
+    text-align: center;
+    color: white;
+    padding: 0;
+    float: left;
+    padding: 6px 8px 6px 8px;
+    border-radius: 3px;
+}
+#main .error-text {
+    padding: 8px 8px 7px 8px;
+}
+.error-right {
+    width: 0;
+    float: right;
+    height: 0;
+    border-top: 4px solid transparent;
+    border-left: 8px solid #FF575B;
+    position: relative;
+    top: 14px;
+    border-bottom: 4px solid transparent;
+}
+#first-login .error-login {
+    top: 4px;
+}
+
+#first-phone .error-login, #first-email .error-login {
+    top: -7px;
+}
+#password .error-login {
+    top: 2px;
+}
+#phone-code .error-login,#email-code .error-login {
+    top: -4px;
+}
+#phone-code-pass-line .error-login, #email-code-pass-line .error-login {
+    top: 5px;
+}
+
+#phone-after .error-login, #email-after .error-login {
+    top: -9px;
+}
+#main .login-box .error-login {
+    top: 7px;
+}
+.right-sm {
+    transition: all 300ms ease;
+}
+.right-sm:hover {
+    transform: translateX(10px);
+}
