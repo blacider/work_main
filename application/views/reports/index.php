@@ -78,15 +78,8 @@
         </div>
       </div><!-- PAGE CONTENT ENDS -->
 
-
-
-
     </div>
   </div>
-
-
-
-
 
 
   <!-- page specific plugin scripts -->
@@ -99,29 +92,12 @@
 
     $(document).ready(function(){
         if(_error) show_notify(_error);
-        //setTimeout(function(){$("#globalSearch").click();}, 1000);
     });
 
   </script>
   <script src="/static/js/base.js" ></script>
   <script src="/static/js/reports.js" ></script>
 
-    <!--<script type="text/javascript">
-$(function() {
-
-    $('#mysearch').filterGrid('#grid-table',{
-        enableSearch:true,
-        filterModel:[
-            {label: 'title', name: 'title', stype: 'text'}
-        ],
-        buttonclass:'search-submit',
-        tableclass:'search',
-        autosearch:false,
-        searchButton:'搜索'});
-    $('#mysearch label').css('display','none')
-    });
-
-</script>-->
 <script type="text/javascript">
   $grid = $('#grid-table');
   $("#globalSearch").click(function () {

@@ -279,7 +279,6 @@ foreach($items as $i){
 var __BASE = "<?php echo $base_url; ?>";
 var __SUM = 0;
 
-
 var __PROVINCE = Array();
 function get_province(){
     $.ajax({
@@ -461,7 +460,7 @@ function canGetPostData(force) {
             sum += amount;
         };
     });
-    if (_ids.length == 0) {
+    if(_ids.length == 0 && allow_no_items==='0') {
         show_notify('提交的报销单不能为空');
         def.resolve(false)
         return def.promise();
@@ -472,7 +471,7 @@ function canGetPostData(force) {
         def.resolve(false)
         return def.promise();
     }
-    if (sum <= 0) {
+    if(sum<= 0 && allow_no_items==='0') {
         show_notify("报销单总额不能小于等于0");
         def.resolve(false)
         return def.promise();
@@ -605,7 +604,7 @@ function do_post(force) {
             sum += amount;
         };
     });
-    if (_ids.length == 0) {
+    if(_ids.length == 0 && allow_no_items==='0') {
         show_notify('提交的报销单不能为空');
         return false;
     }
@@ -614,7 +613,7 @@ function do_post(force) {
         $('#receiver').focus();
         return false;
     }
-    if (sum <= 0) {
+    if(sum<= 0 && allow_no_items==='0') {
         show_notify("报销单总额不能小于等于0");
         return false;
     }
@@ -954,6 +953,7 @@ $('.tdetail').each(function(){
 
     $('.renew').click(function(){
         $('#renew').val($(this).data('renew'));
+        debugger
         submit_check();
     });
     $('.force_submit_btn').click(function() {
