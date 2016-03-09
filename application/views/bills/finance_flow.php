@@ -7,33 +7,39 @@
 <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
 <script type="text/javascript" src="/static/js/jqgrid_choseall.js"></script>
 <script src="/static/ace/js/date-time/moment.js"></script>
-<!--
+
 <script src="/static/ace/js/date-time/locale/zh-cn.js"></script>
--->
+
 
 <script src="/static/ace/js/jquery.colorbox-min.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
-
  <style type="text/css">
-    #globalSearchText{
+    #searchBox {
 position: absolute;
-  left: 80%;
-  top: 60px;
+  right: 20px;
+  top: 58px;
   z-index: 3;
   height: 30px;
   width: 12%;
-  border-style: ridge;
+  z-index: 9;
+  width: 198px;
+  background: #EFF4F9;
+    }
+    #searchBox input {
+      height: 31px;
+      line-height: 30px;
+      padding: 0 4px;
+      position: relative;
+      top: 2px;
     }
     #globalSearch {
   background-color: #fe575f;
-  position: absolute;
-  left: 93%;
-  top: 60px;
   border: 0;
   color: white;
   height: 30px;
   border-radius: 3px;   
   font-size: 12px;
+  z-index: 9999
    }
    #globalSearch:hover {
     background-color: #ff7075;
@@ -43,11 +49,13 @@ position: absolute;
 
   #userGroup{
   position: absolute;
-  left: 34%;
+  left: 460px;
   top: 60px;
   z-index: 2;
   height: 15px;
-  
+  min-width: 120px;
+  width: 120px !important;
+  white-space: nowrap;
     }
     #userGroupLab {
   background-color: #fe575f;
@@ -63,17 +71,54 @@ position: absolute;
    #userGroupLab:hover {
     background-color: #ff7075;
    }
-   #dataSelect {
+   #dataSelect, #dataSelect_  {
     position: absolute;
-    left: 52.6%;
+    left: 580px;
     z-index: 2;
-    top: 55px;
+    top: 60px;
+    width: 292px;
+    height: 30px;
+    padding: 1px;
+    font-size: 0px !important; 
+    background: #DADADA;
+   }
+   #dataSelect.hidden-button {
+    width: 262px;
+   }
+   #dataSelect.hidden-button  button{
+      display: none;
+   }
+   #dataSelect span, #dataSelect_  span {
+    font-size: 12px;
+    margin: 0 2px;
+    color: rgb(127, 140, 141);
+   }
+   #dataSelect button, #dataSelect_  button {
+    border-radius: 2px;
+    font-size: 10px;
+      border: none;
+      line-height: 28px;
+      outline: none;
+      padding: 0 4px;
+      float: right;
+      background: #ff575b;
+      color: #fff;
+      position: relative;
+   }
+   #dataSelect button:hover, #dataSelect_  button:hover {
+     background: #E63754 !important;
+   }
+   #dataSelect button[disabled], #dataSelect_  button[disabled],
+   #dataSelect button[disabled]:hover, #dataSelect_ button[disabled]:hover {
+    background: #B5B5B5 !important;
+   }
+   #dataSelect input,
+   #dataSelect_ input {
+    width: 120px;
+    height: 28px;
    }
   #dataSelect_ {
-    position: absolute;
-    left: 63.3%;
-    z-index: 3;
-    top: 55px;
+    left: 876px;
    }
    .dropdown_{
     background-color: transparent !important;
@@ -86,27 +131,39 @@ position: absolute;
     left: 66%;
     }
     <?php }?>
+
+    /*@media*/
+    @media screen and (max-width: 990px) {
+      #userGroup {
+        left: 196px
+      }
+      #dataSelect {
+        left: 318px;
+      }
+       #dataSelect_  {
+          left: 618px;
+       }
+    }
+    @media screen and (min-width: 990px) {
+      #userGroup {
+        left: 460px;
+      }
+      #dataSelect {
+        left: 580px;
+      }
+       #dataSelect_  {
+          left: 876;
+       }
+    }
+
 </style>
 <script type="text/javascript">
-  function changeDropText(str) {
-    $('#dropText').text(str);
-    return false;
-  }
-  function getDropText() {
-    return $('#dropText').text();
-  }
-  function changeDropText2(str) {
-    $('#dropText2').text(str);
-    return false;
-  }
-  function getDropText2() {
-    return $('#dropText2').text();
-  }
   <?php 
     $search_gid = "";
     $search_text = "";
     $search_time1 = "提交时间";
     $search_time2 = "审批时间";
+
 
     echo ' var s = "' . $search . '";' ;
     if ($search != "") {
@@ -121,98 +178,201 @@ position: absolute;
       }
     }
   ?>
+  
+  
   jQuery(document).ready(function($) {
-    $('#time-submit').click(function(event) {
-        var dateTime1 = $('#date-timepicker1').val();
-        var dateTime2 = $('#date-timepicker2').val();
-        if(dateTime1 == '' || dateTime2 == '')
-        {
-                show_notify('请填写时间');
-                return false;
-        }
-        if (dateTime2 < dateTime1) {
-          show_notify('请填写正确时间');
-          return false;
-        }
-        $("#dropText").text(dateTime1+ "至" +dateTime2);
-        $('#modal-table-time').modal('hide');
-    });
-    $('#time-submit2').click(function(event) {
-        var dateTime1 = $('#date-timepicker3').val();
-        var dateTime2 = $('#date-timepicker4').val();
-        if(dateTime1 == '' || dateTime2 == '')
-        {
-                show_notify('请填写时间');
-                return false;
-        }
-        if (dateTime2 < dateTime1) {
-          show_notify('请填写正确时间');
-          return false;
-        }
-        $("#dropText2").text(dateTime1+ "至" +dateTime2);
-        $('#modal-table-time2').modal('hide');
-    });
+    var days = 30 *24* 3600* 1000;
+
+    // init value from url
+    var _keyword = "<?php echo $query['keyword'] ?>";
+    var _dept = "<?php echo $query['dept'] ?>";
+    var _submit_startdate = "<?php echo $query['submit_startdate'] ?>";
+    var _submit_enddate = "<?php echo $query['submit_enddate'] ?>";
+    var _approval_enddate = "<?php echo $query['approval_enddate'] ?>";
+    var _approval_startdate = "<?php echo $query['approval_startdate'] ?>";
+
+    if(_submit_startdate && _submit_enddate) {
+      $('#dataSelect').find('button').attr('disabled', false)
+    }
+    if(_approval_startdate && _approval_enddate) {
+      $('#dataSelect_').find('button').attr('disabled', false)
+    }
+
+    function format(date) {
+      if(!(date instanceof Date)) {
+        date = new Date(date);
+      }
+      return date.Format('yyyy-MM-dd');
+    };
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
-            useCurrent: true,
-            format: 'YYYY-MM-DD',
-            linkField: "dt",
-            linkFormat: "YYYY-MM-DD",
-            sideBySide: true
-    }).next().on('dp.change', function(ev){
-    }).on(ace.click_event, function(){
-        $(this).prev().focus();
+        useCurrent: false,
+        format: 'YYYY-MM-DD',
+        // linkField: "dt",
+        linkFormat: "YYYY-MM-DD",
+        sideBySide: true,
+        pickDate: true,
+        pickTime: false,
+        // minDate: ,
+        // maxDate: ,
+        showToday: true,
+        collapse: true,
+        defaultDate: "",
+        disabledDates: false,
+        enabledDates: false,
+        icons: {},
+        useStrict: false,
+        direction: "auto",
+        sideBySide: false,
+        daysOfWeekDisabled: false
+    }).on('dp.change', function(e){
+        var d = e.date.toDate();
+        var d2 = $('#date-timepicker2').val();
+        if(d>+new Date(d2)) {
+          return $('#date-timepicker2').val(format(+d + days)).datetimepicker('update');
+        }
+        d = +d + days; 
+        if(!d2) {
+          $('#date-timepicker2').val(format(d)).datetimepicker('update');
+        } else {
+          d2 = new Date(d2);
+          if(+d2<d) {
+            $('#date-timepicker2').val(format(d2)).datetimepicker('update');
+          } else {
+            $('#date-timepicker2').val(format(d)).datetimepicker('update');
+          }
+        }
+        $(this).parent().find('button').attr('disabled', false);
     });
-
-        $('#date-timepicker2').datetimepicker({
+    $('#date-timepicker2').datetimepicker({
         language: 'zh-cn',
-            useCurrent: true,
-            format: 'YYYY-MM-DD',
-            linkField: "dt_end",
-            linkFormat: "YYYY-MM-DD",
-            sideBySide: true
-    }).next().on('dp.change', function(ev){
-    }).on(ace.click_event, function(){
-        $(this).prev().focus();
+        useCurrent: false,
+        format: 'YYYY-MM-DD',
+        pickDate: true,
+        pickTime: false,
+    }).on('dp.change', function(e){
+        var d = e.date.toDate();
+        var d2 = $('#date-timepicker1').val();
+        if(d<+new Date(d2)) {
+          return $('#date-timepicker1').val(format(+d - days)).datetimepicker('update');
+        }
+        d = +d - days; 
+        if(!d2) {
+          $('#date-timepicker1').val(format(d)).datetimepicker('update');
+        } else {
+          d2 = new Date(d2);
+          if(+d2>d) {
+            $('#date-timepicker1').val(format(d2)).datetimepicker('update');
+          } else {
+            $('#date-timepicker1').val(format(d)).datetimepicker('update');
+          }
+        }
+        $(this).parent().find('button').attr('disabled', false);
     });
     $('#date-timepicker3').datetimepicker({
         language: 'zh-cn',
-            useCurrent: true,
-            format: 'YYYY-MM-DD',
-            linkField: "dt",
-            linkFormat: "YYYY-MM-DD",
-            sideBySide: true
-    }).next().on('dp.change', function(ev){
-    }).on(ace.click_event, function(){
-        $(this).prev().focus();
+        useCurrent: false,
+        format: 'YYYY-MM-DD',
+        pickDate: true,
+        pickTime: false,
+    }).on('dp.change', function(e){
+        var d = e.date.toDate();
+        var d2 = $('#date-timepicker4').val();
+        if(d>+new Date(d2)) {
+          return $('#date-timepicker4').val(format(+d + days)).datetimepicker('update');
+        }
+        d = +d + days; 
+        if(!d2) {
+          $('#date-timepicker4').val(format(d)).datetimepicker('update');
+        } else {
+          d2 = new Date(d2);
+          if(+d2<d) {
+            $('#date-timepicker4').val(format(d2)).datetimepicker('update');
+          } else {
+            $('#date-timepicker4').val(format(d)).datetimepicker('update');
+          }
+        }
+        $(this).parent().find('button').attr('disabled', false);
     });
 
-        $('#date-timepicker4').datetimepicker({
-        language: 'zh-cn',
-            useCurrent: true,
-            format: 'YYYY-MM-DD',
-            linkField: "dt_end",
-            linkFormat: "YYYY-MM-DD",
-            sideBySide: true
-    }).next().on('dp.change', function(ev){
-    }).on(ace.click_event, function(){
-        $(this).prev().focus();
-    });
-     $("#globalSearch").click(function () {
-      if ("<?php echo $search_text;?>" != $("#globalSearchText").val() || "<?php echo $search_time1;?>" != $("#dropText").text()||"<?php echo $search_time2;?>" != $("#dropText2").text()|| "<?php echo $search_gid;?>" != $('select[name="gids"]').val()) {
-        var text = $("#globalSearchText").val();
-        var groupsId = $('select[name="gids"]').val();
-        var time = $('#dropText').text().replace(" ","");
-        var time2 = $('#dropText2').text().replace(" ","");
-        if (__STATUS == 2) {
-          window.location.href = "/bills/"+window.location.href.split('/')[4]+"/"+groupsId+"_"+time+"_"+time2+"_"+text;
+    $('#date-timepicker4').datetimepicker({
+      language: 'zh-cn',
+      useCurrent: false,
+      format: 'YYYY-MM-DD',
+      pickDate: true,
+      pickTime: false,
+    }).on('dp.change', function(e){
+        var d = e.date.toDate();
+        var d2 = $('#date-timepicker3').val();
+        if(d<+new Date(d2)) {
+          return $('#date-timepicker3').val(format(+d - days)).datetimepicker('update');
+        }
+        d = +d - days; 
+        if(!d2) {
+          $('#date-timepicker3').val(format(d)).datetimepicker('update');
         } else {
-          window.location.href = "/bills/"+window.location.href.split('/')[4]+"/"+groupsId+"_"+time+"_"+text;
+          d2 = new Date(d2);
+          if(+d2>d) {
+            $('#date-timepicker3').val(format(d2)).datetimepicker('update');
+          } else {
+            $('#date-timepicker3').val(format(d)).datetimepicker('update');
+          }
+        }
+        $(this).parent().find('button').attr('disabled', false);
+    });
+
+    $('#dataSelect, #dataSelect_').on('click', 'button', function function_name(e) {
+      if($(e.currentTarget).parent().attr('id') == 'dataSelect_') { 
+        if($('#dataSelect').find('input').eq(0).val() === '' && $('#dataSelect').find('input').eq(1).val() ==='') {
+          return show_notify('至少保留一个时间选项');
         }
       }
-  });
-     var _dt = new Date().Format('yyyy-MM-dd hh:mm:ss');
-  });
+
+      if($(e.currentTarget).parent().attr('id') == 'dataSelect') {
+        if($('#dataSelect_').length ==0 ) {
+          return show_notify('至少保留一个时间选项');
+        }
+        if($('#dataSelect_').find('input').eq(0).val() === '' && $('#dataSelect_').find('input').eq(1).val() ==='') {
+          return show_notify('至少保留一个时间选项');
+        }
+      }
+
+
+      $(this).parent().find('input').val('');
+      $(this).parent().find('button').attr('disabled', true);
+    });
+
+     $("#globalSearch").click(function () {
+        // $dept, $start_date, $end_date, $search
+        var keyword = $('#globalSearchText').val();
+        var dept = $('select[name=gids]').val();
+        var submit_startdate = $('#date-timepicker1').val();
+        var submit_enddate = $('#date-timepicker2').val();
+        var approval_startdate = $('#date-timepicker3').val();
+        var approval_enddate = $('#date-timepicker4').val();
+
+        var query = {
+          keyword: keyword,
+          dept: dept,
+          submit_startdate: submit_startdate,
+          submit_enddate: submit_enddate,
+          approval_startdate: approval_startdate,
+          approval_enddate: approval_enddate
+        }
+        if (__STATUS == 2) {
+          window.location.href = "/bills/finance_done?" + $.param(query);
+        } else {
+          window.location.href = "/bills/finance_flow?" + $.param(query);
+        }
+    });
+     $("#searchBox input").on('keyup', function (e) {
+       if(e.keyCode===13) {
+        $("#globalSearch").trigger('click')
+       }
+     })
+    // init query string
+    
+});
  
 Date.prototype.Format = function (fmt) { //author: meizz 
     var o = {
@@ -230,84 +390,14 @@ Date.prototype.Format = function (fmt) { //author: meizz
     return fmt;
 }
 </script>
-<div id="modal-table-time" class="modal" tabindex="-1">
-  <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="blue bigger"> 选择时间段 </h4>
-          </div>
-         <div class="modal-body">
-           <div class="container">
-              <div class="col-xs-12 col-sm-12">
-                <div class="row">
-                  <div class="form-group">
-                    <div class="col-sm-4">
-                      <input id="date-timepicker1" name = 'dt' type="text" class="form-control"/>
-                    </div>
-                    <label class="col-sm-1">至</label>
-                    <div class="col-sm-4">
-                      <input id="date-timepicker2" type="text" name = 'dt_end' class="form-control"/>
-                    </div>
-                  </div>   
-                </div>    <!-- row -->
-              </div>    <!-- col-xs-12 -->
-           </div> <!--- container -->
-         </div>
-         <div class="modal-footer">
-           <button class="btn btn-sm" data-dismiss="modal">
-             <i class="ace-icon fa fa-times"></i>
-             取消
-           </button>
-           <div type="button" id='time-submit' class="btn btn-sm btn-primary">确定</div>
-         </div>
-        </div>
-  </div>
-</div><!-- PAGE CONTENT ENDS -->
-
-<div id="modal-table-time2" class="modal" tabindex="-1">
-  <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="blue bigger"> 选择时间段 </h4>
-          </div>
-         <div class="modal-body">
-           <div class="container">
-              <div class="col-xs-12 col-sm-12">
-                <div class="row">
-                  <div class="form-group">
-                    <div class="col-sm-4">
-                      <input id="date-timepicker3" name = 'dt' type="text" class="form-control"/>
-                    </div>
-                    <label class="col-sm-1">至</label>
-                    <div class="col-sm-4">
-                      <input id="date-timepicker4" type="text" name = 'dt_end' class="form-control"/>
-                    </div>
-                  </div>   
-                </div>    <!-- row -->
-              </div>    <!-- col-xs-12 -->
-           </div> <!--- container -->
-         </div>
-         <div class="modal-footer">
-           <button class="btn btn-sm" data-dismiss="modal">
-             <i class="ace-icon fa fa-times"></i>
-             取消
-           </button>
-           <div type="button" id='time-submit2' class="btn btn-sm btn-primary">确定</div>
-         </div>
-        </div>
-  </div>
-</div><!-- PAGE CONTENT ENDS -->
-
 
 <!-- <label class="col-sm-2 control-label no-padding-right" id='userGroupLab'>适用范围</label> -->
 <div class="col-xs-2 col-sm-2" id="userGroup">
-  <select class="chosen-select tag-input-style "  name="gids"  data-placeholder="请选择部门" placeholder="请选择部门">
+  <select class="chosen-select tag-input-style" name="gids"  data-placeholder="请选择部门" placeholder="请选择部门">
     <option value='0'>公司</option>
     <?php 
     foreach($usergroups as $g){
-      if ($g['id'] != $search_gid){
+      if ($g['id'] != $query['dept']){
       ?>
       <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
       <?php
@@ -320,51 +410,35 @@ Date.prototype.Format = function (fmt) { //author: meizz
     ?> 
   </select>
 </div>
-<input name="key" placeholder="ID、报销单名或提交者" value="<?php echo $search_text;?>" type='text' id="globalSearchText" />
-<div class="col-sm-2 col-xs-2" id="dataSelect">
-  <ul class="nav nav-pills">
-    <li class="dropdown all-camera-dropdown active">
-           <a class="dropdown-toggle dropdown_" data-toggle="dropdown" href="javascript:void(0);">
-           <span id='dropText'><?php echo $search_time1;?></span>
-              <b class="caret"></b>
-           </a>
-    <ul class="dropdown-menu">
-            <li data-filter-camera-type="all"><a data-toggle="tab" onclick="changeDropText('提交时间')" href="#">所有时间</a></li>
-            <li data-filter-camera-type="Alpha"><a data-toggle="tab" href="#" onclick="changeDropText('一个月内')">一个月内</a></li>
-            <li data-filter-camera-type="Zed"><a data-toggle="tab" href="#" onclick="changeDropText('一年内')">一年内</a></li>
-            <li class="divider"></li>
-            <li data-filter-camera-type="Bravo"><a data-toggle="tab" onclick="$('#modal-table-time').modal('show');return false;" href="#">自定义时间</a></li>
-
-     </ul>
-    </li>
-  </ul>
+<?php
+  $isHideClearButton = '';
+  if($status=='1') {
+    $isHideClearButton = 'hidden-button';
+  }
+?>
+<div class="col-sm-2 col-xs-2 <?php echo $isHideClearButton ;?>" id="dataSelect">
+    <!-- <label>提交时间</label> -->
+    <input type="text" id="date-timepicker1" placeholder="提交开始时间" title="提交开始时间" value="<?php echo $query['submit_startdate'];?>"/>
+    <span>至</span>
+    <input type="text" id="date-timepicker2" placeholder="提交结束时间" title="提交结束时间" value="<?php echo $query['submit_enddate'];?>"/>
+    
+    <button disabled  title="清除">清除</button>
+    
 </div>
 
-<div class="col-sm-2 col-xs-2" id="dataSelect_" <?php if($status == 1) echo "style='display:none'";?>>
-  <ul class="nav nav-pills">
-    <li class="dropdown all-camera-dropdown active">
-           <a class="dropdown-toggle dropdown_" data-toggle="dropdown" href="javascript:void(0);">
-           <span id='dropText2'><?php 
-           if ($search_time2 == "所有时间") {
-            echo "审批时间";
-           } else {
-            echo $search_time2;
-           }
-           ?></span>
-              <b class="caret"></b>
-           </a>
-    <ul class="dropdown-menu">
-            <li data-filter-camera-type="all"><a data-toggle="tab" onclick="changeDropText2('审批时间')" href="#">所有时间</a></li>
-            <li data-filter-camera-type="Alpha"><a data-toggle="tab" href="#" onclick="changeDropText2('一个月内')">一个月内</a></li>
-            <li data-filter-camera-type="Zed"><a data-toggle="tab" href="#" onclick="changeDropText2('一年内')">一年内</a></li>
-            <li class="divider"></li>
-            <li data-filter-camera-type="Bravo"><a data-toggle="tab" onclick="$('#modal-table-time2').modal('show');return false;" href="#">自定义时间</a></li>
-
-     </ul>
-    </li>
-  </ul>
+<?php if($status=='2') { ?>
+<div class="col-sm-2 col-xs-2" id="dataSelect_">
+    <!-- <label>提交时间</label> -->
+   <input type="text" id="date-timepicker3" placeholder="审批开始时间" title="审批开始时间" value="<?php echo $query['approval_startdate'];?>"/>
+    <span>至</span>
+    <input type="text"id="date-timepicker4" placeholder="审批结束时间" title="审批结束时间" value="<?php echo $query['approval_enddate'];?>"/>
+    <button disabled title="清除">清除</button>
 </div>
-<button type="button" id="globalSearch" >搜索</button>
+<?php } ?>
+<div id="searchBox" >
+  <input name="key" placeholder="ID、报销单名或提交者" value="<?php echo $query['keyword'];?>" type='text' id="globalSearchText" />
+  <button type="button" id="globalSearch">搜索</button>
+</div>
 
 
 <div class="page-content">
@@ -644,120 +718,7 @@ function cancel_modal_next_()
 {
   $('#modal_next_').modal('hide');
 }
-
-  function doSearch() {
-    var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
-        colModel = $grid.jqGrid("getGridParam", "colModel"),
-        searchText = $("#globalSearchText").val(),
-        l = colModel.length;
-    var groupId = $('select[name="gids"]').val();
-    for (i = 0; i < l; i++) {
-        cm = colModel[i];
-        if (cm.search !== false && (cm.stype === undefined || cm.stype === "text")) {
-            rules.push({
-                field: cm.name,
-                op: "cn",
-                data: searchText
-            });
-        }
-    }
-    var search_time = "<?php echo $search_time1?>";
-    var search_time2 = "<?php echo $search_time2?>";
-    var time_groups = [{
-        groupOp:"AND",
-        rules:[],
-        groups:[{
-          groupOp: "OR",
-          rules: rules ,
-          groups:[]
-        }]
-      }];
-      var time_groups2 = [{
-        groupOp:"AND",
-        rules:[],
-        groups:time_groups
-      }];
-      var startTime = new Date();
-      var endTime = new Date();
-      var startTime2 = new Date();
-      var endTime2 = new Date();
-    if (search_time != "提交时间") {
-      switch(search_time) {
-        case "一个月内":
-          endTime = endTime.Format('yyyy-MM-dd');
-          startTime.setMonth(startTime.getMonth()-1);
-          startTime = startTime.Format('yyyy-MM-dd');
-          break;
-        case "一年内":
-          endTime = endTime.Format('yyyy-MM-dd');
-          startTime.setYear(startTime.getYear()-1);
-          startTime = startTime.Format('yyyy-MM-dd');
-          break;
-        default:
-          endTime = search_time.split('至')[1];
-          startTime = search_time.split('至')[0];
-      }
-      startTime += " 00:00:00";
-      endTime += " 24:60:60";
-      
-      time_groups = [{
-        groupOp:"AND",
-        rules:[{field:"date_str",op:"ge",data:startTime},{field:"date_str",op:"le",data:endTime}],
-        groups:[{
-          groupOp: "OR",
-          rules: rules ,
-          groups:[]
-        }]
-      }];
-      time_groups2 = [{
-        groupOp:"AND",
-        rules:[],
-        groups:time_groups
-      }];
-    }
-    if (search_time2 != "审批时间") {
-      switch(search_time2) {
-        case "一个月内":
-          endTime2 = endTime2.Format('yyyy-MM-dd');
-          startTime2.setMonth(startTime2.getMonth()-1);
-          startTime2 = startTime2.Format('yyyy-MM-dd');
-          break;
-        case "一年内":
-          endTime2 = endTime2.Format('yyyy-MM-dd');
-          startTime2.setYear(startTime2.getYear()-1);
-          startTime2 = startTime2.Format('yyyy-MM-dd');
-          break;
-        default:
-          endTime2 = search_time2.split('至')[1];
-          startTime2 = search_time2.split('至')[0];
-      }
-      startTime2 += " 00:00:00";
-      endTime2 += " 24:60:60";
-      
-      time_groups2 = [{
-        groupOp:"AND",
-        rules:[{field:"approvaldt_str",op:"ge",data:startTime2},{field:"approvaldt_str",op:"le",data:endTime2}],
-        groups:time_groups
-      }];
-    }
-    var groups_ = [{
-      groupOp:"AND",
-      rules:[{field:"ugs",op:"cn",data:groupId}],
-      groups:((__STATUS == 2)?(time_groups2):(time_groups))
-    }];
-    if (groupId == 0) {
-      groups_ = groups_[0].groups;
-    }
-    //postData.filters = JSON.stringify({
-    //    groupOp: "OR",
-    //    rules: rules ,
-    //    groups:groups_
-    //});
-    postData.filters = JSON.stringify(groups_[0]);
-    $grid.jqGrid("setGridParam", { search: true });
-    $grid.trigger("reloadGrid", [{page: 1}]);
-    return false;
-}
+ 
 </script>
 <script language="javascript" src="/static/js/base.js" ></script>
 <script language="javascript" src="/static/js/finance_flow.js" ></script>
