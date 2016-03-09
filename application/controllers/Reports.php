@@ -376,7 +376,7 @@ class Reports extends REIM_Controller {
         if(!$items) {
             $items = array();
         }
-        
+ 
         $title = $this->input->post('title');
         $receiver = $this->input->post('receiver');
         $cc = $this->input->post('cc');
@@ -385,6 +385,11 @@ class Reports extends REIM_Controller {
         $type = $this->input->post('type');
         log_message('debug','template_id:' . $template_id);
         $extra = array();
+
+        if($receiver=='') {
+            $receiver = array();
+        }
+
         if($template_id) {
             $extra = $this->input->post('extra');
             log_message('debug','extra:' . json_encode($extra));
@@ -2050,7 +2055,9 @@ class Reports extends REIM_Controller {
         if (empty($receiver)) {
             $receiver = [ ];
         }
-        $buf = $this->reports->submit_check(implode(',', $receiver), implode(',', $items));
+        $template_id = $this->input->post('template_id');
+        $extras = $this->input->post('extra');
+        $buf = $this->reports->submit_check(implode(',', $receiver), implode(',', $items), $template_id, $extras);
         die($buf);
     }
 }

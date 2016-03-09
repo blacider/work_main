@@ -92,26 +92,10 @@ function bind_event() {
 }
 var selectRows = [];
 var IF_SELECT_ALL = 0;
-
-var keyword = $('#globalSearchText').val();
-keyword = encodeURIComponent(keyword);
-var dept = $('select[name=gids]').val();
-var submit_startdate = $('#date-timepicker1').val();
-var submit_enddate = $('#date-timepicker2').val();
-var approval_startdate = $('#date-timepicker3').val();
-var approval_enddate = $('#date-timepicker4').val();
-
-var query = {
-  keyword: keyword,
-  dept: dept,
-  submit_startdate: submit_startdate,
-  submit_enddate: submit_enddate,
-  approval_startdate: approval_startdate,
-  approval_enddate: approval_enddate
-}
 try {
+	var FLAG = 1;
 	jQuery(grid_selector).jqGrid({
-		url: __BASE + 'bills/finance_by_status/' + __STATUS + '?' + $.param(query),
+		url: __BASE + 'bills/listfinance/' + __STATUS,
 		mtype: "GET",
 		datatype: "local",
 		height: 250,
@@ -263,7 +247,7 @@ try {
 				maxlength: "30"
 			},
 			hidden: true
-		}],
+		}, ],
 		loadComplete: function(data) {
 			if (data instanceof Array) {
 				var IF_TEMPLATE = false;
@@ -281,13 +265,18 @@ try {
 				$(".cbox")[index].checked = true;
 			});
 			bind_event();
+			var table = this;
 			this.p.lastSelected = lastSelected;
-			var table =  this;
 			setTimeout(function() {
 				//styleCheckbox(table);
 				updateActionIcons(table);
 				updatePagerIcons(table);
 				enableTooltips(table);
+				if (FLAG) {
+					doSearch();
+					//$("#globalSearch").click();
+					FLAG = 0;
+				}
 			}, 0);
 		},
 		onSelectAll: function(aRows, status) {
@@ -593,29 +582,3 @@ $(document).ready(function() {
 	$(grid_selector).jqGrid();
 	$('.ui-jqdialog').remove();
 });
-
-
-// new logic
-(function () {
-	$(window).on('resize', function () {
-		var width = window.innerWidth;
-		var respWidth = 1400
-		if($('#dataSelect_').length==0) {
-			respWidth = 900;
-		}
-		if(width<respWidth) {
-			$('#breadcrumbs').height(100);
-			$('#searchBox').css({
-				top: 100
-			})
-		} else {
-			$('#breadcrumbs').height(51);
-			$('#searchBox').css({
-				top: 58
-			})
-		}
-	});
-	setTimeout(function() {
-		$(window).trigger('resize');
-	}, 1000)
-})()

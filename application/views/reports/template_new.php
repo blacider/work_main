@@ -409,13 +409,43 @@ foreach($items as $i){
     </div>
 </div>
 
+<div class="modal fade" id="modal_next">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">根据公司规定，你的报销单需要提交给</h4>
+                <input type="hidden" name="rid" value="" id="rid">
+                <input type="hidden" name="status" value="2" id="status">
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="col-xs-9 col-sm-9" id="label_receiver">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-success submit_by_rule" value="按照公司规定发送报销单" />
+                <input type="submit" class="btn btn-primary my_submit" value="按照我的选择发送报销单" />
+                <div class="btn btn-primary" onclick="cancel_modal_next()">取消</div>
+            </div>
+                <script type="text/javascript">
+                  function cancel_modal_next() {
+                    $('#modal_next').modal('hide');
+                    return;
+                  }
+                </script>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <script src="/static/js/libs/underscore-min.js"></script> 
 <script src="/static/js/widgets/input-suggestion.js"></script>
 <script>
  
 update_tamount();
 var __BASE = "<?php echo $base_url; ?>";
-var allow_no_items = <?php echo $config['options']['allow_no_items']; ?>;
+var allow_no_items = '<?php echo $config['options']['allow_no_items']; ?>';
 var __PROVINCE = Array();
 function get_province(){
     $.ajax({
@@ -588,10 +618,154 @@ function toDecimal2(x) {
     return s;
 }
 
+function canGetPostData(force) {
+    var def = $.Deferred();
+    var s = $('#receiver').val();
+    var title = $('#title').val();
+    if (title == "") {
+        show_notify('请添加报销单名');
+        $('#title').focus();
+        def.resolve(false)
+        return def.promise();
+    }
+    var sum = 0;
+    var _ids = Array();
+    var report_type = 0;
+    var flag = 0;
+    $('.amount').each(function() {
+        if ($(this).is(':checked')) {
+            _ids.push($(this).data('id'));
+            var amount = $(this).data('amount');
+            var item_type = $(this).data('type');
+            if (flag == 0) {
+                report_type = item_type;
+                flag = 1;
+            }
+            if (report_type != item_type) {
+                show_notify('同一报销单中不能包含不同的消费类型');
+                def.resolve(false)
+                return def.promise();
+            }
+            sum += amount;
+        };
+    });
+    if(_ids.length == 0 && allow_no_items==='0') {
+        show_notify('提交的报销单不能为空');
+        def.resolve(false)
+        return def.promise();
+    }
+    var _period_start = 0;
+    var _period_end = 0;
+    var _location_from = '';
+    var _location_to = '';
+    var _contract = 0;
+    var _contract_note = '';
+    var _account = 0;
+    var _account_name = '';
+    var _account_no = '';
+    var _payment = 0;
+    var _borrowing = 0;
+    var _note = '';
+    var _template_id = 0;
+    try {
+        _template_id = $('#template_id').val();
+    } catch (e) {}
+    try {
+        _account = $('#account').val();
+        var s = $("#account option:selected");
+        _account_name = $(s).data('name');
+        _account_no = $(s).data('no');
+        if (!_account_name) _account_name = '';
+        if (!_account_no) _account_no = '';
+        if (!_account) _account = 0;
+    } catch (e) {}
+    var extra = [];
+    $('.field_value').each(function() {
+        var field_value = $(this).val();
+        var field_id = $(this).data('id');
+        var field_type = $(this).data('type');
+        var field_required = $(this).data('required');
+        if (field_type == 4) {
+            var field_bank = $(this).data('bank');
+            var bank_info = $('#bank_select_' + field_id).val();
+            var field_account = '';
+            var field_cardno = '';
+            var field_bankname = '';
+            var field_bankloc = '';
+            var field_subbranch = '';
+            if (field_required == 1 && !bank_info) {
+                show_notify('必填银行卡项目不能为空');
+                def.resolve(false)
+                return def.promise();
+            }
+            if (bank_info) {
+                var _bank_info = JSON.parse(bank_info);
+                var field_account = _bank_info['account'];
+                var field_cardno = _bank_info['cardno'];
+                var field_bankname = _bank_info['bankname'];
+                var field_bankloc = _bank_info['bankloc'];
+                var field_subbranch = _bank_info['subbranch'];
+            }
+            extra.push({
+                'id': field_id,
+                'value': JSON.stringify({
+                    'account': field_account,
+                    'cardno': field_cardno,
+                    'bankname': field_bankname,
+                    'bankloc': field_bankloc,
+                    'subbranch': field_subbranch,
+                    'account_type': field_bank
+                }),
+                'type': field_type
+            });
+        } else {
+            if (field_required == 1 && trim(field_value) == '') {
+                $(this).focus();
+                show_notify('必填项目不能为空');
+                def.resolve(false)
+                return def.promise();
+            }
+            extra.push({
+                'id': field_id,
+                'value': field_value,
+                'type': field_type
+            });
+        }
+    });
+    if (s == null) {
+        show_notify('请选择审批人');
+        $('#receiver').focus();
+        def.resolve(false)
+        return def.promise();
+    }
+    if(sum <= 0 && allow_no_items==='0') {
+        show_notify("报销单总额不能小于等于0");
+        def.resolve(false)
+        return def.promise();
+    }
+    // 转ajax,否则不能正确处理
+    var _renew = $('#renew').val();
+    if (_renew == 0) force = 1;
+    // 获取所有的 条目
+    var _cc = $('#cc').val();
+    if (!_cc) _cc = Array();
 
+    def.resolve({
+        'item': _ids,
+        'title': $('#title').val(),
+        'receiver': $('#receiver').val(),
+        'cc': _cc,
+        'template_id': _template_id,
+        'extra': extra,
+        'type': report_type,
+        'renew': _renew,
+        'force': force
+    });
+
+    return def.promise();
+}
 
 function do_post(force) {
-    // 囧
 
     var s = $('#receiver').val();
     var title = $('#title').val();
@@ -627,7 +801,7 @@ function do_post(force) {
             sum+=amount;
         };
     });
-    if(_ids.length == 0 && allow_no_items===0) {
+    if(_ids.length == 0 && allow_no_items==='0') {
         show_notify('提交的报销单不能为空');
         return false;
     }
@@ -734,7 +908,7 @@ function do_post(force) {
          return false;
     }
 
-    if(sum <= 0 && allow_no_items===0) {
+    if(sum <= 0 && allow_no_items==='0') {
         debugger
         show_notify("报销单总额不能小于等于0");
         return false;
@@ -967,12 +1141,11 @@ $(document).ready(function(){
 
     $('.renew').click(function(){
         $('#renew').val($(this).data('renew'));
-        /// 不强制
-        do_post(0);
+        submit_check(0)
     });
     $('.force_submit_btn').click(function() {
         $('#renew').val(1);
-        do_post(1);
+        submit_check(1)
     });
 
 
@@ -987,6 +1160,43 @@ $(document).ready(function(){
     });
 
 });
+
+function submit_check(force) {
+    canGetPostData(force).done(function (data) {
+        if(!data) {
+            return
+        }
+        $.ajax({
+            type : 'POST',
+            url : __BASE + "reports/check_submit",
+            data : data,
+            dataType: 'json',
+            success : function(data){
+                if(data.status > 0 && data.data.complete > 0) {
+                    do_post();
+                } else {
+                    var suggest = data.data.suggestion;
+                    var _names = [];
+                    $(suggest).each(function(idx, value) {
+                        $('#receiver option').each(function(_idx, _val) {
+                            var _value = $(_val).attr('value');
+                            var desc = $(_val).html();
+                            if(_value == value) {
+                                _names.push(desc);
+                            }
+                        });
+                    });
+                    $('#hidden_receiver').val(suggest.join(','));
+                    $('#label_receiver').html(_names.join(','));
+                    $('#modal_next').modal('show');
+                }
+                return false;
+            }
+        });
+    })
+    
+};
+
 function update_tamount(){
     var sum = 0;
     $('.amount').each(function(){
