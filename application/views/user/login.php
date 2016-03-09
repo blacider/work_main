@@ -35,7 +35,7 @@
         <!--<![endif]-->
         <script src="/static/js/mod/login/login.js"></script>
     </head>
-    <body style="font-family: 'PingFangSC-Light, arial'">
+    <body>
         <div id="header">
             <div class="main-block">
                 <a class="logo" href=""><img src="/static/img/mod/login/logo.png" alt=""></a>
