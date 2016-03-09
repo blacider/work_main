@@ -1,4 +1,15 @@
-//niu.splice(niu.indexOf(5),1)
+formatMoney = function(str, places, symbol, thousand, decimal) {
+    places = !isNaN(places = Math.abs(places)) ? places : 2;
+    symbol = symbol !== undefined ? symbol : "￥";
+    thousand = thousand || ",";
+    decimal = decimal || ".";
+    var number = parseFloat(str), 
+        negative = number < 0 ? "-" : "",
+        i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
+        j = (j = i.length) > 3 ? j % 3 : 0;
+    return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
+};
+
 function bind_event(){
     $('.tdetail').each(function() {
         $(this).click(function(){
@@ -84,7 +95,13 @@ jQuery(grid_selector).jqGrid({
     {name:'prove_ahead', index:'prove_ahead', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
     {name:'item_count', index:'item_count', width:30,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
     {name:'nickname', index:'nickname', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
-    {name:'amount',index:'amount', sorttype: myCustomSort,width:30, editable: false,editoptions: {size:"20",maxlength:"30"},formatter:'currency', formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'},unformat: aceSwitch,search:false},
+    {name:'amount',sorttype: myCustomSort,formatter: function(value, options, row) {
+        if(row['item_count'] == 0) {
+            return '无消费';
+        } else {
+            return formatMoney(value);
+        }
+    }, formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'}, index:'amount', width:50,editable: true,editoptions:{size:"20",maxlength:"30"},search:false},
     {name:'attachments',index:'attachments', width:22, editable: true,edittype:"select",editoptions: {size:"20",maxlength:"30",value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},
     {name:'status_str',index:'status_str', width:40, editable: true,edittype:"select",editoptions: {value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},
     {name:'options',index:'options', width:50, editable: true,edittype:"select",editoptions: {size:"20",maxlength:"50",value:"4:通过;3:拒绝"},unformat: aceSwitch,search:false},
