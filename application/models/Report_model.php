@@ -19,31 +19,6 @@ class Report_Model extends Reim_Model {
 
         return json_decode($buf,True);
     }
-    public function get_report_by_status_and_query(
-        $status, 
-        $keyword, 
-        $dept, 
-        $submit_startdate, 
-        $submit_enddate, 
-        $approval_startdate, 
-        $approval_enddate
-    ) {
-        $jwt = $this->session->userdata('jwt');
-        $data = array(
-            'keyword='. $keyword,
-            'dept='. $dept,
-            'submit_startdate='. $submit_startdate,
-            'submit_enddate='. $submit_enddate,
-            'approval_startdate='. $approval_startdate,
-            'approval_enddate='. $approval_enddate
-        );
-        $query = join('&', $data);
-        $url = $this->get_url('report_finance_flow/list/'.$status . '?' . $query);
-        log_message('debug', $url);
-        $buf = $this->do_Get($url, $jwt);
-        log_message('debug', $buf);
-        return json_decode($buf, true);
-    }
 
     public function update_report_template($id, $name, $config, $type, $options)
     {
@@ -178,26 +153,6 @@ class Report_Model extends Reim_Model {
         log_message("debug", "From Server [ $url ]:" . $buf);
         $obj = json_decode($buf, true);
         return $obj;
-    }
-
-    public function get_bills_by_status_and_query($status = 2, $keyword, $dept, $startdate, $enddate){
-        
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        
-        $data = array(
-            'keyword='. $keyword,
-            'dept='. $dept,
-            'startdate='. $startdate,
-            'enddate='. $enddate
-        );
-        $query = join('&', $data);
-
-        $url = $this->get_url('bills/'.$status . '?' . $query);
-
-        $buf = $this->do_Get($url, $jwt);
-
-        return json_decode($buf, true);
     }
 
     public function get_bills($status = -2){

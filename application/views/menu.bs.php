@@ -32,7 +32,7 @@
 					</a>
 				</div>
 
-				<div class="navbar-buttons navbar-header pull-right" role="navigation" style="position: relative;z-index: 999">
+				<div class="navbar-buttons navbar-header pull-right" role="navigation">
 					<ul class="nav ace-nav">
 
 <?php
