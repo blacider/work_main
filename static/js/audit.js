@@ -1,5 +1,17 @@
 var __MEMBER_DATA = null;
 
+function formatMoney(str, places, symbol, thousand, decimal) {
+    places = !isNaN(places = Math.abs(places)) ? places : 2;
+    symbol = symbol !== undefined ? symbol : "￥";
+    thousand = thousand || ",";
+    decimal = decimal || ".";
+    var number = parseFloat(str), 
+        negative = number < 0 ? "-" : "",
+        i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
+        j = (j = i.length) > 3 ? j % 3 : 0;
+    return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
+};
+
 function show_modal(){
             $('#modal_next').modal('show');
 }
@@ -127,7 +139,13 @@ jQuery(grid_selector).jqGrid({
     {name:'title', index:'title', width:40,editable: false,editoptions:{size:"20",maxlength:"50"}},
     {name:'prove_ahead', index:'prove_ahead', width:40,editable: false,editoptions:{size:"20",maxlength:"50"},search:false},
     {name:'date_str', index:'date_str', width:50,editable: false,editoptions:{size:"20",maxlength:"50"},search:false},
-    {name:'amount', index:'amount',sorttype: myCustomSort, width:50, formatter:'currency', formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'}, editable: true,editoptions:{size:"20",maxlength:"30"},search:false},
+    {name:'amount',sorttype: myCustomSort,formatter: function(value, options, row) {
+        if(row['item_count'] == 0) {
+            return '无消费';
+        } else {
+            return formatMoney(value);
+        }
+    }, formatoptions:{decimalPlaces: 2,thousandsSeparator:",",prefix:'￥'}, index:'amount', width:50,editable: true,editoptions:{size:"20",maxlength:"30"},search:false},
     {name:'item_count', index:'item_count', width:50,editable: false,editoptions:{size:"20",maxlength:"30"},search:false},
     {name:'author', index:'author', width:50,editable: false,editoptions:{size:"20",maxlength:"30"}},
     {name:'attachments', index:'attachments', width:18,editable: false,editoptions:{size:"15",maxlength:"20"}},
