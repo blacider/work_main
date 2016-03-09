@@ -1,7 +1,7 @@
 body {
     margin: 0;
     min-width: 291px;
-    font-family: "PingFang SC", "Avenir-Light", "HelveticaNeue-Light", "Segoe UI Light", "Roboto-Light", "Lantinghei SC Extralight", "MicrosoftYaHeiLight" ,"STXihei", sans-serif;
+    font-family: "PingFangSC-Light", "PingFang SC", "Avenir-Light", "HelveticaNeue-Light", "Segoe UI Light", "Roboto-Light", "Lantinghei SC Extralight", "MicrosoftYaHeiLight" ,"STXihei", sans-serif !important;
 }
 .error {
     color: #fe575c;
