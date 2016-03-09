@@ -234,49 +234,40 @@ $(document).ready(function () {
 
 });
 
-
-
 function submit_check() {
-    var _ids = Array();
-    $('.amount').each(function(){
-        if($(this).is(':checked')){
-            _ids.push($(this).data('id'));
-        };
-    });
-    if(_ids.length == 0) {
-        show_notify('提交的报销单不能为空');
-        return false;
-    }
-
-    $.ajax({
-        type : 'POST',
-        url : __BASE + "reports/check_submit", 
-        data : {'item' : _ids,
-            'receiver' : $('#receiver').val(),
-        },
-        dataType: 'json',
-        success : function(data){
-            if(data.status > 0 && data.data.complete > 0) {
-                do_post();
-            } else {
-                var suggest = data.data.suggestion;
-                var _names = [];
-                $(suggest).each(function(idx, value) {
-                    $('#cc option').each(function(_idx, _val) {
-                        var _value = $(_val).attr('value');
-                        var desc = $(_val).html();
-                        if(_value == value) {
-                            _names.push(desc);
-                        }
-                    });
-                });
-                $('#hidden_receiver').val(suggest.join(','));
-                $('#label_receiver').html(_names.join(','));
-                $('#modal_next').modal('show');
-            }
-            return false;
+    canGetPostData().done(function (data) {
+        if(!data) {
+            return
         }
-    });
+        $.ajax({
+            type : 'POST',
+            url : __BASE + "reports/check_submit",
+            data : data,
+            dataType: 'json',
+            success : function(data){
+                if(data.status > 0 && data.data.complete > 0) {
+                    do_post();
+                } else {
+                    var suggest = data.data.suggestion;
+                    var _names = [];
+                    $(suggest).each(function(idx, value) {
+                        $('#receiver option').each(function(_idx, _val) {
+                            var _value = $(_val).attr('value');
+                            var desc = $(_val).html();
+                            if(_value == value) {
+                                _names.push(desc);
+                            }
+                        });
+                    });
+                    $('#hidden_receiver').val(suggest.join(','));
+                    $('#label_receiver').html(_names.join(','));
+                    $('#modal_next').modal('show');
+                }
+                return false;
+            }
+        });
+    })
+    
 }
 
 
