@@ -240,11 +240,32 @@ class Bills extends REIM_Controller {
         die(json_encode(array('url' => $url)));
     }
 
-    public function _logic($status = 2, $search = ''){
+    public function _logic($status){
         $this->need_group_casher();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
         // 获取当前所属的组
+
+        $keyword = $this->input->get('keyword');
+        $dept = $this->input->get('dept');
+        $search = $keyword;
+        $startdate = $this->input->get('startdate');
+        $enddate = $this->input->get('enddate');
+
+        $startdate = $this->input->get('startdate');
+        if(!$startdate || !$enddate) {
+            $startdate = date("Y-m-d", strtotime("-30 day"));
+            $enddate = date('Y-m-d');
+        }
+
+        $query = array(
+            'keyword' => $this->input->get('keyword'),
+            'dept' => $this->input->get('dept'),
+            'search' => $keyword,
+            'startdate' => $startdate,
+            'enddate' => $enddate
+        );
+
         $usergroups = $this->ug->get_my_list();
         if($usergroups['status']>0) {
             $_usergroups=$usergroups['data']['group'];
@@ -268,6 +289,7 @@ class Bills extends REIM_Controller {
                     ,'status' => $status
                     ,'usergroups' => $_usergroups
                     ,'search' => urldecode($search)
+                    ,'query' => $query
                 )
             );
         }
@@ -287,6 +309,7 @@ class Bills extends REIM_Controller {
                     ,'status' => $status
                     ,'usergroups' => $_usergroups
                     ,'search' => urldecode($search)
+                    ,'query' => $query
                 )
             );
         }
@@ -306,6 +329,7 @@ class Bills extends REIM_Controller {
                     ,'status' => $status
                     ,'usergroups' => $_usergroups
                     ,'search' => urldecode($search)
+                    ,'query' => $query
                 )
             );
         }
@@ -325,34 +349,45 @@ class Bills extends REIM_Controller {
                     ,'status' => $status
                     ,'usergroups' => $_usergroups
                     ,'search' => urldecode($search)
+                    ,'query' => $query
                 )
             );
         }
     }
 
-    public function in_progress(){
+    public function all_reports($search = '')
+    {
+        return $this->_logic(0, $search);
+    }
+
+    public function in_progress() {
         return $this->_logic(1);
     }
 
-    public function index($search=''){
+    public function index($search='') {
         return $this->_logic(2,$search);
     }
 
     public function finished($search=''){
         return $this->_logic(4,$search);
     }
-    public function all_reports($search = '')
-
-    {
-        return $this->_logic(0,$search);
-    }
+    
     public function finance_flow($search = '')
     {
 
-        $status = 1;
         $this->need_group_casher();
+        $status = 1;
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
+
+        $submit_startdate = $this->input->get('submit_startdate');
+        $submit_enddate = $this->input->get('submit_enddate');
+
+        if(!$submit_startdate || !$submit_enddate) {
+            $submit_startdate = date("Y-m-d", strtotime("-30 day"));
+            $submit_enddate = date('Y-m-d');
+        }
+
         $this->session->unset_userdata('last_error');
         $_tags = $this->tags->get_list();
         $usergroups = $this->ug->get_my_list();
@@ -364,7 +399,7 @@ class Bills extends REIM_Controller {
         {
             $_usergroups = array();
         }
-        log_message('debug','usergroup:'.json_encode($usergroups));
+        // log_message('debug','usergroup:'.json_encode($usergroups));
         if($_tags && array_key_exists('tags', $_tags['data'])){
             $_tags = $_tags['data']['tags'];
         }
@@ -378,26 +413,124 @@ class Bills extends REIM_Controller {
             $gmember = $gmember ? $gmember : array();
         }
         $this->session->set_userdata("report_list_url", "bills/finance_flow");
-            $this->bsload('bills/finance_flow',
-                array(
-                    'title' => '待审批'
-                    ,'error' => $error
-                    ,'members' => $gmember
-                    , 'breadcrumbs' => array(
-                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                        ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
-                        ,array('url' => '','name' => '待审批','class' => '')
-                    )
-                    ,'status' => 1/*$status*/
-                    ,'category' => $_tags
-                    ,'search' => urldecode($search)
-                    ,'error' => $error
-                    ,'usergroups' => $_usergroups
+        $this->bsload('bills/finance_flow',
+            array(
+                'title' => '待审批'
+                ,'error' => $error
+                ,'members' => $gmember
+                , 'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
+                    ,array('url' => '','name' => '待审批','class' => '')
                 )
-            );
+                ,'status' => 1/*$status*/
+                ,'category' => $_tags
+                ,'search' => urldecode($search)
+                ,'error' => $error
+                ,'usergroups' => $_usergroups
+                ,'query' => array(
+                    'keyword' => $this->input->get('keyword'),
+                    'dept' => $this->input->get('dept'),
+                    'submit_startdate' => $submit_startdate,
+                    'submit_enddate' => $submit_enddate,
+                    'approval_startdate' => '',
+                    'approval_enddate' => ''
+                )
+            )
+        );
     }
 
-    public function finance_done($search = '') {
+    public function finance_by_status($status) {
+        $this->need_group_casher();
+
+        $keyword = $this->input->get('keyword');
+        $dept = $this->input->get('dept');
+        $submit_startdate = $this->input->get('submit_startdate');
+        $submit_enddate = $this->input->get('submit_enddate');
+        $approval_startdate = $this->input->get('approval_startdate');
+        $approval_enddate = $this->input->get('approval_enddate');
+
+        $bills = $this->reports->get_report_by_status_and_query(
+            $status, 
+            $keyword,
+            $dept,
+            $submit_startdate,
+            $submit_enddate,
+            $approval_startdate,
+            $approval_enddate
+        );
+
+        $item_type_dic = $this->reim_show->get_item_type_name();
+        $report_template_dic = $this->reim_show->get_report_template();
+
+        if($bills['status'] < 1) {
+            die(array());
+        }
+        $data = $bills['data']['data'];
+        $_data = array();
+        foreach($data as $d){
+            if(array_key_exists('has_attachment',$d) && $d['has_attachment'])
+            {
+                $url = base_url('reports/show/' . $d['id']);
+                $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
+            }
+
+            $prove_ahead = get_report_type_str($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
+            $d['prove_ahead'] = $prove_ahead;
+
+            if(array_key_exists('template_id',$d) && array_key_exists($d['template_id'],$report_template_dic))
+            {
+                $d['report_template'] = $report_template_dic[$d['template_id']];
+            }
+            $d['date_str'] = date('Y-m-d H:i:s', $d['submitdt']);
+            $d["approvaldt_str"] = "0000-00-00 00:00:00";
+            if (array_key_exists("approvaldt", $d)) {
+                $d["approvaldt_str"] = date('Y-m-d H:i:s', $d["approvaldt"]);
+            }
+            $d['amount'] =  sprintf("%.2f",$d['amount'] );
+            $d['status_str'] = get_report_status_str($d['status']);
+            $edit = '';
+            $extra = '';
+            if($d['status'] == 2) {
+                $edit = 'green';
+                $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span><span class="ui-icon ui-icon ace-icon fa fa-check tapprove green" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon ui-icon red ace-icon fa fa-times tdeny" data-id="' . $d['id'] . '"></span>';
+            }
+            if($d['status'] == 4 || $d['status'] == 7 || $d['status'] == 8) {
+                $edit = 'gray';
+                $extra = '<span class="ui-icon ui-icon grey ace-icon fa fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span>' ;
+            }
+            if($d['status'] == 1) {
+                $edit = 'blue';
+                $extra = '';
+            }
+            $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+                . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . ''. $extra
+                . '</div>';
+            array_push($_data, $d);
+        }
+        //log_message('debug','alvayang _data:' . json_encode($_data));
+        $bills['data'] = $_data;
+        die(json_encode($bills['data']));
+    }
+
+
+    public function finance_done() {
+        $approval_startdate = $this->input->get('approval_startdate');
+        $approval_enddate = $this->input->get('approval_enddate');
+
+        $submit_startdate = $this->input->get('submit_startdate');
+        $submit_enddate = $this->input->get('submit_enddate');
+
+        if(!$submit_startdate || !$submit_enddate) {
+            $submit_startdate = $submit_enddate = '';
+        }
+
+        if(!$approval_startdate) {
+            if(!$this->input->get('submit_startdate') && !$this->input->get('submit_enddate')) {
+                $approval_startdate = date("Y-m-d", strtotime("-30 day"));
+                $approval_enddate = date('Y-m-d');
+            }
+        }
         $status = 2;
         $this->need_group_casher();
         $error = $this->session->userdata('last_error');
@@ -428,7 +561,7 @@ class Bills extends REIM_Controller {
         $this->session->set_userdata("report_list_url", "bills/finance_done");
             $this->bsload('bills/finance_flow',
                 array(
-                    'title' => '待审批'
+                    'title' => '已审批'
                     ,'error' => $error
                     ,'members' => $gmember
                     , 'breadcrumbs' => array(
@@ -439,8 +572,16 @@ class Bills extends REIM_Controller {
                     ,'status' => $status
                     ,'category' => $_tags
                     ,'error' => $error
-                    ,'search' => urldecode($search)
+                    ,'search' => urldecode('')
                     ,'usergroups' => $_usergroups
+                    ,'query' => array(
+                        'keyword' => $this->input->get('keyword'),
+                        'dept' => $this->input->get('dept'),
+                        'submit_startdate' => $submit_startdate,
+                        'submit_enddate' => $submit_enddate,
+                        'approval_startdate' => $approval_startdate,
+                        'approval_enddate' => $approval_enddate
+                    )
                 )
             );
     }
@@ -506,20 +647,18 @@ class Bills extends REIM_Controller {
         die(json_encode($_data));
     }
 
-    public function listdata($type = 2){
+    public function listdata($status){
         $this->need_group_casher();
-        $page = $this->input->get('page');
-        $rows = $this->input->get('rows');
-        $sort = $this->input->get('sord');
-        $_status = -2;
-        if($type == 1) {
-            $_status = -3;
-        }
-        $bills = $this->reports->get_bills($_status);
 
+
+        $keyword =  $this->input->get('keyword');
+        $dept =  $this->input->get('dept');
+        $startdate =  $this->input->get('startdate');
+        $enddate =  $this->input->get('enddate');
+
+        $bills = $this->reports->get_bills_by_status_and_query($status, $keyword, $dept, $startdate, $enddate);
         $item_type_dic = $this->reim_show->get_item_type_name();
         $report_template_dic = $this->reim_show->get_report_template();
-
         if($bills['status'] < 1){
             die(json_encode(array()));
         }
@@ -527,12 +666,11 @@ class Bills extends REIM_Controller {
         $ugs = $bills['data']['ugs'];
         $_data = array();
         foreach($data as $d){
-            if(array_key_exists('has_attachment',$d) && $d['has_attachment'])
+            if(array_key_exists('has_attachment', $d) && $d['has_attachment'])
             {
                 $url = base_url('reports/show/' . $d['id']);
                 $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
             }
-            log_message("debug", "Bill: [ $type] $type: " . json_encode($d));
             $prove_ahead = get_report_type_str($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
             $d['prove_ahead'] = $prove_ahead;
 
@@ -541,17 +679,17 @@ class Bills extends REIM_Controller {
                 $d['report_template'] = $report_template_dic[$d['template_id']];
             }
 
-            if($type !=  1) {
-                if($type == 4 ) {
+            if($status !=  1) {
+                if($status == 4 ) {
                     if(!in_array(intval($d['status']), array(4, 7, 8))) {
                         continue;
                     } else {
                         $d['status'] = 4;
                     }
-                } else if($type != 0) {
+                } else if($status != 0) {
                     if($d['status'] < 1) continue;
                     log_message("debug", "xContinue...");
-                    if($d['status'] != $type) continue;
+                    if($d['status'] != $status) continue;
                 }
             }else {
                     if($d['status'] < 1) continue;
@@ -592,7 +730,6 @@ class Bills extends REIM_Controller {
                 . '</div>';
             array_push($_data, $d);
         }
-        log_message('debug','_data:' . json_encode($_data));
         die(json_encode($_data));
     }
 

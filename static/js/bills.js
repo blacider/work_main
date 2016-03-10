@@ -58,10 +58,22 @@ function bind_event(){
 var selectRows = [];    
 var IF_SELECT_ALL = 0;
 try{
-    var FLAG = 1;
+
+var keyword = $('#globalSearchText').val();
+keyword = encodeURIComponent(keyword);
+var dept = $('select[name=gids]').val();
+var startdate = $('#date-timepicker1').val();
+var enddate = $('#date-timepicker2').val();
+
+var query = {
+  keyword: keyword,
+  dept: dept,
+  startdate: startdate,
+  enddate: enddate
+}
     
 jQuery(grid_selector).jqGrid({
-    url: __BASE + 'bills/listdata/' + __STATUS,
+    url: __BASE + 'bills/listdata/' + __STATUS +'?'+ $.param(query),
     mtype: "GET",
     datatype: "local",
     height: 250,
@@ -123,10 +135,6 @@ jQuery(grid_selector).jqGrid({
             updateActionIcons(table);
             updatePagerIcons(table);
             enableTooltips(table);
-            if (FLAG) {
-                doSearch();
-                FLAG = 0;
-            }
         }, 0);
     },
     onSelectAll : function(aRows, status) {
@@ -325,6 +333,31 @@ $(document).ready(function () {
     $('.ui-jqdialog').remove();
 
 });
+
+// new logic
+(function () {
+    $(window).on('resize', function () {
+        var width = window.innerWidth;
+        var respWidth = 1400
+        if($('#dataSelect_').length==0) {
+            respWidth = 1200;
+        }
+        if(width<respWidth) {
+            $('#breadcrumbs').height(100);
+            $('#searchBox').css({
+                top: 100
+            })
+        } else {
+            $('#breadcrumbs').height(51);
+            $('#searchBox').css({
+                top: 58
+            })
+        }
+    });
+    setTimeout(function() {
+        $(window).trigger('resize');
+    }, 1000)
+})()
 
 
 

@@ -444,6 +444,9 @@ class REIM_Controller extends CI_Controller{
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         //curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
         $output = curl_exec($ch) ;
+        if ($output === FALSE) {
+            log_message('debug', curl_error($ch));
+        }
         curl_close($ch);
         return $output;
     }
