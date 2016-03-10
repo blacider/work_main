@@ -28,6 +28,7 @@
         height: 40px;
     }
 </style>
+
 <div class="page-content" style="overflow: hidden;">
     <div class="page-content-area">
         <div class="form-group">
@@ -36,33 +37,91 @@
                 <input type="text" class="form-controller col-xs-12" id="title" disabled name="title" value="<?php echo $snapshot['title'];?>">
             </div>
         </div>
+        <hr>
         <?php foreach($template['config'] as $fieldGroup) { ?>
         <?php $fields = $fieldGroup['children']; ?>
-        <div class="form-group">
-            <label class="col-sm-2 control-label no-padding-right"><span style="color: #478fca"><?php echo $fieldGroup['name'];?></span></label>
-        </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label no-padding-right"><span style="color: #478fca"><?php echo $fieldGroup['name'];?></span></label>
+            </div>
             <?php foreach($fields as $fieldItem) { ?>
             <?php
                 $fieldItemType = $fieldItem['type']; 
-                $fieldItemValue = $fieldMap[$fieldItem['id']]['value'];
+                $fieldItemObject =  $fieldMap[$fieldItem['id']];
+                $fieldItemValue = '';
+                if(!$fieldItemObject) {
+                    $fieldItemObject = array(
+                        'id' => $fieldItem['id'],
+                        'value' => $fieldItemType == '4'? "{}" :''
+                    );
+                }
+                $fieldItemValue = $fieldItemObject['value'];
+            ?>
+            <?php
                 if($fieldItemType == '4') {
                     $fieldItemValue = json_decode($fieldItemValue, true);
-                    $fieldItemValue  = $fieldItemValue['account'].'-'.$fieldItemValue['bankname'].'-'.$fieldItemValue['cardno'];
-                }
+                    if(empty($fieldItemValue)) {
+                        $fieldItemValue = array(
+                            'account'=>'',
+                            'cardno'=>'',
+                            'bankname'=>'',
+                            'bankloc'=>'',
+                            'subbranch'=>''
+                        );
+                    }
+                    $isFirst = true;
             ?>
+                <div class="field_value">
+                    <?php foreach ($fieldItemValue as $key => $value) { ?>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">
+                            <?php 
+                                if($isFirst) {
+                                    echo $fieldItem['name'];
+                                }
+
+                                $bankPlaceholder = '';
+                                switch($key) {
+                                    case 'account':
+                                        $bankPlaceholder = '户主名称';
+                                        break;
+                                    case 'cardno':
+                                        $bankPlaceholder = '银行账号';
+                                        break;
+                                    case 'bankname':
+                                        $bankPlaceholder = '银行名';
+                                        break;
+                                    case 'bankloc':
+                                        $bankPlaceholder = '开户地点';
+                                        break;
+                                    case 'subbranch':
+                                        $bankPlaceholder = '支行';
+                                        break;
+                                }
+                            ?>
+                        </label>
+                        <div class="col-xs-9 col-sm-9">
+                            <input type="text" placeholder="<?php echo $bankPlaceholder ;?>" class="form-controller col-xs-8 <?php echo $key ;?>" disabled name="title" value="<?php echo $fieldItemValue[$key] ;?>">
+                        </div>
+                    </div>
+                    <?php $isFirst = false; ?>
+                    <?php } ?>
+                </div>
+            <?php } else { ?>  
                 <div class="form-group">
                     <label class="col-sm-2 control-label no-padding-right"><?php echo $fieldItem['name'];?></label>
                     <div class="col-xs-9 col-sm-9">
-                        <input type="text" class="form-controller col-xs-12" id="title" disabled name="title" value="<?php echo $fieldItemValue ;?>">
+                        <input type="text" class="form-controller col-xs-8" id="title" disabled name="title" value="<?php echo $fieldItemValue ;?>">
                     </div>
                 </div>
             <?php } ?>
-        <?php } ?>
-
+            <?php } ?>
+            <hr>
+        <?php }  ?>
+        
         <div class="form-group">
             <label class="col-sm-2 control-label no-padding-right">总额</label>
             <div class="col-xs-9 col-sm-9">
-                <input type="text" class="form-controller col-xs-12" id="title" disabled name="title" value="￥<?php echo $snapshot['snapshot_amount'];?>.00">
+                ￥<?php echo $report['snapshot_amount'];?>.00
             </div>
         </div>
 

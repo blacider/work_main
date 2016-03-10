@@ -627,7 +627,13 @@ class Reports extends REIM_Controller {
 
         $template = array();
         $template = $this->reports->get_report_template($snapshot['template_id']);
-        // var_dump(json_encode($template));
+
+        $report = $this->reports->get_report_by_id($rid);
+        if($report['status']<=0) {
+            return redirect(base_url('reports/index'));
+        }
+        $report = $report['data'];
+        // var_dump(json_encode($report));
         if($template['status']<=0) {
             return redirect(base_url('reports/index'));
         }
@@ -638,6 +644,7 @@ class Reports extends REIM_Controller {
             'snapshot' => $snapshot,
             'template' => $template,
             'categories'=>$categories,
+            'report'=>$report,
             'template_types'=>$template_types,
             'breadcrumbs' => array(
                 array(
