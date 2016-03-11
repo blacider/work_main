@@ -9,6 +9,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="renderer" content="webkit">
 
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
     <meta name="description" content="云报销,报销,让报销简单一点儿">
     <meta name="keywords" content="云报销,报销,报销简单点">
     <script src="/static/js/jquery.min.js"></script>
@@ -18,17 +23,23 @@
 
 <body>
     <div class="login">
-        <img src="/static/logo.png" style="width: 65px; display: block; margin: 20px auto" alt="" />
+        <img src="/static/logo.png"  alt="" />
         
-            <input placeholder="用户名" type="text" id="uid" name="username" style="color: red"/>
-            <input placeholder="密码" type="password" id="pwd" name="password" />
-            <input type="submit" onclick="login();" value="登录" />
+            <input placeholder="用户名" type="text" id="uid" name="username" value="" />
+            <input placeholder="密码" type="password" id="pwd" name="password" value="" />
+            <div id="submit" onclick="login();">登录</div>
         
             <div class="msg"></div>
     </div>
     <!-- <script src="/static/js/libs/jquery/jquery.js"></script> -->
     <!-- <script src="/static/js/boost/utils.js"></script> -->
     <script>
+        var $uid = getById('uid');
+        var $pwd = getById('pwd');
+        setTimeout(function () {
+            uid.value = '';
+            pwd.value = '';
+        }, 1000)
         function getById(id) {
             return document.getElementById(id);
         };
@@ -41,17 +52,12 @@
 
         function login() {
 
-            var uid = getById('uid');
-            var pwd = getById('pwd');
-
-            uid = uid.value;
-            pwd = pwd.value;
+            var uid = $uid.value;
+            var pwd = $pwd.value;
 
             if(!uid || !pwd) {
                 return false;
             }
-
-            
 
             Utils.api('/login/do_login', {
                 method: "post",

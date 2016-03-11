@@ -93,7 +93,7 @@ textarea {
   box-sizing: border-box;
 }
 body {
-  background: #ff575b;
+  background: #fff;
 }
 input,
 button {
@@ -122,17 +122,35 @@ button {
 }
 .login input[type="text"],
 .login input[type="password"],
-.login input[type="submit"] {
+#submit {
   width: 100%;
   display: block;
   margin: 10px 0;
   font-size: 18px;
   font-weight: bold;
+  background: transparent !important;
+  border-bottom: 1px solid #eee;
+}
+#submit {
+  margin-top: 20px;
+  background: #ff575b !important;  
+  border: none;
+  height: 38px;
+  line-height: 38px;
+  color: #fff;
+  border-radius: 3px;
+  text-align: center;
 }
 
 .msg {
   text-align: center;
-  color: yellow;
+  color: red;
+}
+
+@media screen and (max-width: 500px) {
+  .login {
+    width: 80%;
+  }
 }
 
 
