@@ -1,6 +1,8 @@
 $(document).ready(function() {
     bindEvent();
 
+    var __fr__ = getParameterByName('fr') || 'null';
+
     (function checkHash() {
         if(location.hash.indexOf('login')!=-1) {
             $('#login-m-a').trigger('click')
@@ -33,16 +35,16 @@ $(document).ready(function() {
         if(ua['device']['type'] == "Desktop") {
             platform = 'web-pc:' + ua['os']['family'];
         } else {
-            platform = ua['os']['family'];
+            platform = 'web-mobile:' + ua['os']['family'];
         }
        return platform;
     }
 
     function logRegister() {
-        var fr = getParameterByName('fr') || 'null';
+        
         var platform = getPlatform();
-        _hmt.push('_trackEvent', 'log_register', fr);
-        _hmt.push(['_setCustomVar', 3, 'log_register', fr, 3]);
+        _hmt.push('_trackEvent', 'log_register', __fr__);
+        _hmt.push(['_setCustomVar', 3, 'log_register', __fr__, 3]);
     };
 
     var _userId, _ifForget = false,
@@ -427,8 +429,8 @@ $(document).ready(function() {
                 position: level,
                 phone: email,
                 vcode: _vcode,
-                _reg_from_: getParameterByName('fr'),
-                _platform_: getPlatform()
+                reg_from: __fr__,
+                platform: getPlatform()
             }
         }).done(function(rs) {
             if (rs["code"] >= 0) {
