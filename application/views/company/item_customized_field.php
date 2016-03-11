@@ -89,7 +89,7 @@
               <div class="clearfix"></div>
             </div>
             <div class="row">
-              <div class="chosen-container chosen-container-multi width-75 form-group-control tags-view">
+              <div class="chosen-container chosen-container-multi width-75 form-group-control tags-view" style="height: auto">
                 <ul class="chosen-choices" style="min-height: 34px">
                   <?php if (isset($field['extra']['options'])) { ?>
                   <?php     foreach ($field['extra']['options'] as $index => $opt) { ?>
@@ -234,3 +234,5 @@
   <div class="clearfix">
   </div>
 </div>
+<script type="text/javascript" src="/static/plugins/cloud-dialog/dialog.js"></script>
+<link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">
