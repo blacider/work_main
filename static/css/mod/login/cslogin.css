@@ -1,0 +1,138 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: #fff;
+  font-size: 13px;
+}
+h2,
+h4,
+p,
+ul,
+ol,
+li {
+  margin: 0;
+  padding: 0;
+}
+ul,
+ol {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+}
+img {
+  vertical-align: middle;
+}
+div {
+  box-sizing: border-box;
+}
+input[type=color]:hover,
+input[type=date]:hover,
+input[type=datetime-local]:hover,
+input[type=datetime]:hover,
+input[type=email]:hover,
+input[type=month]:hover,
+input[type=number]:hover,
+input[type=password]:hover,
+input[type=search]:hover,
+input[type=tel]:hover,
+input[type=text]:hover,
+input[type=time]:hover,
+input[type=url]:hover,
+input[type=week]:hover,
+textarea:hover {
+  border-color: #b5b5b5;
+}
+input[type=color],
+input[type=date],
+input[type=datetime-local],
+input[type=datetime],
+input[type=email],
+input[type=month],
+input[type=number],
+input[type=password],
+input[type=search],
+input[type=tel],
+input[type=text],
+input[type=time],
+input[type=url],
+input[type=week],
+textarea {
+  background-color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  -webkit-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+}
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  font: inherit;
+  margin: 0;
+}
+*,
+:after,
+:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+body {
+  background: #ff575b;
+}
+input,
+button {
+  border: none;
+  width: 240px;
+  display: block;
+  line-height: 32px;
+  font-size: 14px;
+  height: 36px;
+  border-radius: 3px;
+  background: #fff;
+  outline: none;
+  border: none;
+  padding: 4px 12px;
+  font-size: 16px;
+}
+
+.login {
+  width: 400px;
+  margin: 100px auto;
+}
+.login img {
+  display: block;
+  width: 80px;
+  margin: 0 auto;
+}
+.login input[type="text"],
+.login input[type="password"],
+.login input[type="submit"] {
+  width: 100%;
+  display: block;
+  margin: 10px 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.msg {
+  text-align: center;
+  color: yellow;
+}
+
+

@@ -104,6 +104,12 @@ class Login extends REIM_Controller {
                         , 'password' => $password));
     }
 
+    public function cslogin()
+    {
+        $this->load->library('user_agent');
+        $body = $this->load->view('user/cslogin.php', array());
+    }
+
 
     public function force_reset(){
         $user = $this->input->get('phone');

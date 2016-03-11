@@ -176,7 +176,7 @@ class User_Model extends Reim_Model {
         return $obj;
     }
 
-    public function reim_active_user($code){
+    public function reim_active_user($code) {
         $jwt = $this->get_jwt('', '');
         $url = $this->get_url('active/' . $code);
         $buf = $this->do_Get($url, $jwt);
