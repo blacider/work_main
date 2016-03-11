@@ -1034,6 +1034,17 @@ $(document).ready(function(){
 
     bind_event();
 
+    $('.submit_by_rule').click(function(){
+        var _receivers = ($('#hidden_receiver').val());
+        if(!_receivers) do_post();
+        _receivers = _receivers.split(",");
+        $('#receiver').val(_receivers).trigger("chosen:updated");
+        do_post();
+    });
+    $('.my_submit').click(function(){
+        do_post();
+    });
+
     $('#period_start').datetimepicker({
         language: 'zh-cn',
             //locale:  moment.locale('zh-cn'),
@@ -1144,6 +1155,7 @@ $(document).ready(function(){
         submit_check(0)
     });
     $('.force_submit_btn').click(function() {
+        debugger
         $('#renew').val(1);
         submit_check(1)
     });
