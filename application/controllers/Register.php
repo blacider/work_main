@@ -68,6 +68,8 @@ class Register extends REIM_Controller {
         $company_name = $this->input->post('company_name');
         $name = $this->input->post('name');
         $position = $this->input->post('position');
+        $platform = $this->input->post('platform');
+        $reg_from = $this->input->post('reg_from');
 
         $data = array();
         $data['email'] = $email;
@@ -77,6 +79,8 @@ class Register extends REIM_Controller {
         $data['password'] = $password;
         $data['name'] = $name;
         $data['position'] = $position;
+        $data['platform'] = $platform;
+        $data['reg_from'] = $reg_from;
 
         $check_company_back = $this->users->check_company($company_name);
         if($check_company_back['data']['exists'] == 1)

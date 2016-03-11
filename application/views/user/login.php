@@ -659,5 +659,6 @@
             })(window, document, 'script', '//eco-api.meiqia.com/dist/meiqia.js', '_MEIQIA');
             _MEIQIA('entId', 7359);
         </script>
+        <script src="/static/js/libs/detect.js"></script>
     </body>
 </html>

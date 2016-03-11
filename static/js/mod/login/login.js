@@ -1,6 +1,8 @@
 $(document).ready(function() {
     bindEvent();
 
+    var __fr__ = getParameterByName('fr') || 'null';
+
     (function checkHash() {
         if(location.hash.indexOf('login')!=-1) {
             $('#login-m-a').trigger('click')
@@ -15,7 +17,35 @@ $(document).ready(function() {
         iconWhenHoverEvent();
         nextStepButtonClickEvent();
         signinButtonClickEvent();
+    };
+
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    };
+
+    function getPlatform() {
+        var platform = 'web-pc';
+        var ua = detect.parse(navigator.userAgent);
+        if(ua['device']['type'] == "Desktop") {
+            platform = 'web-pc:' + ua['os']['family'];
+        } else {
+            platform = 'web-mobile:' + ua['os']['family'];
+        }
+       return platform;
     }
+
+    function logRegister() {
+        
+        var platform = getPlatform();
+        _hmt.push('_trackEvent', 'log_register', __fr__);
+        _hmt.push(['_setCustomVar', 3, 'log_register', __fr__, 3]);
+    };
 
     var _userId, _ifForget = false,
         _vcode, _pass, _codeCounter;
@@ -398,11 +428,14 @@ $(document).ready(function() {
                 name: name,
                 position: level,
                 phone: email,
-                vcode: _vcode
+                vcode: _vcode,
+                reg_from: __fr__,
+                platform: getPlatform()
             }
         }).done(function(rs) {
             if (rs["code"] >= 0) {
                 registerSuccess("注册成功");
+                logRegister()
                 Utils.api('/login/do_login', {
                     method: "post",
                     data: {
