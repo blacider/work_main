@@ -42,16 +42,24 @@ function hookTagAdd() {
 }
 
 function hookTagRemove() {
-    $('.search-choice-close').click(function() {
+    $(document.body).on('click', '.search-choice-close', function() {
         var _li = $(this).closest('li');
         var text = $(_li).find('span').text();
         var confirmed = confirm('确认删除标签⎡' + text + '⎦吗？');
-        if (!confirmed)
-            return;
-
-        $(_li).remove();
+        var d = new CloudDialog({
+            content: '确认删除标签⎡' + text + '⎦吗？',
+            width: 240,
+            fixed: true,
+            ok: function () {
+                $(_li).remove();
+            },
+            cancel: function () {
+                this.close();
+            }
+        });
+        d.showModal();
     });
-}
+};
 
 function hookTree() {
     // 必须录入tree默认隐藏所有
