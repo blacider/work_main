@@ -15,6 +15,7 @@ body ,.modal, #loading{
     background-color: #7F8C8D;
     z-index: 1050;
     opacity: 0.7;
+    position: fixed;
 }
 #loading img {
     top: 50%;
@@ -213,7 +214,7 @@ img ,button{
     border-radius: 2px;
     padding: 4px 2px 4px 3px;
     position: relative;
-    top: -3px;
+    top: 3px;
     float: right;
     background-color:transparent;
     line-height: 18px;

@@ -307,7 +307,7 @@
                             </div>
                             <div class="form-line code-line" style="margin-top: 44px;">
                                 <span class="line-icon">
-                                    <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: -7px">
+                                    <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: 4px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -384,7 +384,7 @@
                             </div>
                             <div class="form-line code-line" style="margin-top: 44px;">
                                 <span class="line-icon">
-                                    <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: -7px">
+                                    <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: 4px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -480,7 +480,7 @@
                         <div class="pass_content">
                             <div class="form-line com-line" style="margin-top: 10px;">
                                 <span class="line-icon">
-                                    <img width="23" src="/static/img/mod/login/home.png" height="26" alt="pass" style="margin-top: 1px">
+                                    <img width="23" src="/static/img/mod/login/home.png" height="26" alt="pass" style="margin-top: 11px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -489,7 +489,7 @@
                             </div>
                             <div class="form-line name-line" style="margin-top: 38px;">
                                 <span class="line-icon">
-                                    <img width="27" src="/static/img/mod/login/icon_user.png" height="30" alt="pass" style="margin-top: -3px">
+                                    <img width="27" src="/static/img/mod/login/icon_user.png" height="30" alt="pass" style="margin-top: 8px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -498,7 +498,7 @@
                             </div>
                             <div class="form-line level-line" style="margin-top: 38px;">
                                 <span class="line-icon">
-                                    <img width="35" src="/static/img/mod/login/level.png" height="30" alt="pass" style="margin-top: -3px">
+                                    <img width="35" src="/static/img/mod/login/level.png" height="30" alt="pass" style="margin-top: 8px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -507,7 +507,7 @@
                             </div>
                             <div class="form-line email-line" style="margin-top: 38px;">
                                 <span class="line-icon">
-                                    <img width="28" src="/static/img/mod/login/email.png" height="23" alt="pass" style="margin-top: 4px">
+                                    <img width="28" src="/static/img/mod/login/email.png" height="23" alt="pass" style="margin-top: 15px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -541,7 +541,7 @@
                         <div class="pass_content">
                             <div class="form-line com-line" style="margin-top: 10px;">
                                 <span class="line-icon">
-                                    <img width="23" src="/static/img/mod/login/home.png" height="26" alt="pass" style="margin-top: 1px">
+                                    <img width="23" src="/static/img/mod/login/home.png" height="26" alt="pass" style="margin-top: 11px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -550,7 +550,7 @@
                             </div>
                             <div class="form-line name-line" style="margin-top: 38px;">
                                 <span class="line-icon">
-                                    <img width="27" src="/static/img/mod/login/icon_user.png" height="30" alt="pass" style="margin-top: -3px">
+                                    <img width="27" src="/static/img/mod/login/icon_user.png" height="30" alt="pass" style="margin-top: 8px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -559,7 +559,7 @@
                             </div>
                             <div class="form-line level-line" style="margin-top: 38px;">
                                 <span class="line-icon">
-                                    <img width="35" src="/static/img/mod/login/level.png" height="30" alt="pass" style="margin-top: -3px">
+                                    <img width="35" src="/static/img/mod/login/level.png" height="30" alt="pass" style="margin-top: 15px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -568,7 +568,7 @@
                             </div>
                             <div class="form-line phone-line" style="margin-top: 38px;">
                                 <span class="line-icon">
-                                    <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: -7px">
+                                    <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: 4px">
                                 </span>
                                 
                                 <span class="input-line">
