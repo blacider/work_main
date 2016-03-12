@@ -721,7 +721,8 @@ $(document).ready(function() {
     }
     function exitButtonClickEvent() {
         $(".modal-header").find('button').click(function(event) {
-            $(".modal").modal("hide");
+            $(".modal").css('display', 'none');
+            $("#login-body").css('display', 'block');
         });
     }
 
