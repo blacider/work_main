@@ -85,7 +85,7 @@ $(document).ready(function() {
     }
 
     function focusLine(line) {
-        line.find('input').focus();
+        //line.find('input').focus();
     }
     function checkUser() {
         clearErrorLine();
