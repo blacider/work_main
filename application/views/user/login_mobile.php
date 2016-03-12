@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="/static/css/reset.css">
         <link rel="stylesheet" href="/static/css/normalize.css">
         <link rel="stylesheet" href="/static/css/mod/login/login_mobile.css">
-        <script src="/static/js/libs/zepto.min.js"></script>
+        <script src="/static/js/jquery.min.js"></script>
         <script src="/static/js/libs/utils.js"></script>
         <script src="/static/js/mod/login/login_mobile.js"></script>
     </head>
@@ -31,7 +31,7 @@
                 </ul>
                 -->
                 <ul class="menu">
-                    <li><a id="login-m-a" href="#login">登录(mobile)</a></li>
+                    <li><a id="login-m-a" href="#login">登录</a></li>
                     <li class="register"><a href="javascript:void(0)">企业注册</a></li>
                 </ul>
             </div>
@@ -178,7 +178,7 @@
                         <div class="login_content">
                             <div class="form-line user-line">
                                 <span class="line-icon">
-                                    <img width="28" src="/static/img/mod/login/icon_user.png" height="31" alt="user">
+                                    <img width="28" style="margin-top: 6px;" src="/static/img/mod/login/icon_user.png" height="31" alt="user">
                                 </span>
                                 
                                 <span class="input-line">
@@ -209,7 +209,7 @@
                             <div class="login_content">
                                 <div class="form-line user-line">
                                     <span class="line-icon">
-                                        <img width="28" src="/static/img/mod/login/icon_user.png" height="31" alt="user">
+                                        <img width="28" style="margin-top: 6px;" src="/static/img/mod/login/icon_user.png" height="31" alt="user">
                                     </span>
                                     
                                     <span class="input-line">
@@ -611,6 +611,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div id="loading">
+            
         </div>
         <!-- 百度统计 -->
         <div style="display: none;">

@@ -1,4 +1,25 @@
 $(document).ready(function() {
+    (function addJqModalFn() {
+        $.fn.modal = function(option) {
+            $(".modal").css('display', 'none');
+            if ('hide' == option) {
+                $(this).css('display', 'none');
+            } else if ('show' == option) {
+                $(this).css('display', 'block');
+            }
+            var ifModalExist = false;
+            $(".modal").each(function(index, el) {
+                if ($(this).css('display') != 'none') {
+                    ifModalExist = true;
+                }
+            });
+            if (ifModalExist) {
+                $("#login-body").css('display', 'none');
+            } else {
+                $("#login-body").css('display', 'block');
+            }
+        }
+    })();
     bindEvent();
 
     (function checkHash() {
@@ -6,7 +27,6 @@ $(document).ready(function() {
             $('#login-m-a').trigger('click')
         }
     })();
-    
     function bindEvent() {
         timerClickEvent();
         loginButtonClickEvent();

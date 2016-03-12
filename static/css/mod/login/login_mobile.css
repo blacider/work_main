@@ -11,7 +11,10 @@ body ,.modal{
     right: 0;
     bottom: 0;
 }
-#login-body {
+.eye {
+    float: right;
+}
+.modal {
     display:none;
 }
 input:-webkit-autofill {
@@ -121,12 +124,15 @@ img ,button{
     border: none;
     font-size: 16px;
     line-height: 16px;
-    padding: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 7px;
     margin:0;
     width: 244px;
     outline:none;
     letter-spacing: 1px;
     color: #4a4a4a;
+    line-height: normal;
 }
 #password input, #first-login input, #phone-code input, #email-code input {
     width: 235px;
@@ -138,7 +144,7 @@ img ,button{
     width: 280px;
 }
 .input-line {
-    padding-bottom: 7px;
+    padding-bottom: 2px;
     float: right;
     border-bottom: 1px #B9B9B9 solid;
     width: 280px;
