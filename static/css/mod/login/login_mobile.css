@@ -4,12 +4,21 @@ button.close {
     border: 0;
     -webkit-appearance: none;
 }
-body ,.modal{
+body ,.modal, #loading{
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+}
+#loading {
+    background-color: #7F8C8D;
+    z-index: 1050;
+}
+#loading img {
+    top: 50%;
+    left: 50%;
+    position: absolute;
 }
 .eye {
     float: right;

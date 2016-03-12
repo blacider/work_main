@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    $("#loading").css('display', 'none');
     (function addJqModalFn() {
         $.fn.modal = function(option) {
             $(".modal").css('display', 'none');
@@ -21,7 +22,12 @@ $(document).ready(function() {
         }
     })();
     bindEvent();
-
+    function showLoading() {
+        $("#loading").css('display', 'block');
+    }
+    function hideLoading() {
+        $("#loading").css('display', 'none');
+    }
     (function checkHash() {
         if(location.hash.indexOf('login')!=-1) {
             $('#login-m-a').trigger('click')
@@ -92,12 +98,14 @@ $(document).ready(function() {
             focusLine(userLine);
         } else {
             if (isEmail(user)) {
+                showLoading();
                 Utils.api('/login/check_user/email', {
                     method: "post",
                     data: {
                         email: user
                     }
                 }).done(function(rs) {
+                    hideLoading();
                     if (rs["data"]["exists"]) {
                         $("#login").find('input').val("");
                         if (rs['data']['user']['active'] == 1) {
@@ -113,12 +121,14 @@ $(document).ready(function() {
                     }
                 });
             } else {
+                showLoading();
                 Utils.api('/login/check_user/phone', {
                     method: "post",
                     data: {
                         phone: user
                     }
                 }).done(function(rs) {
+                    hideLoading();
                     if (rs["data"]["exists"]) {
                         $("#login").find('input').val("");
                         if (rs['data']['user']['active'] == 1) {
@@ -216,6 +226,7 @@ $(document).ready(function() {
             }
         }
         if (!_ifForget) {
+            showLoading();
             Utils.api('/register/vcode_verify/phone', {
                 method: "post",
                 data: {
@@ -223,6 +234,7 @@ $(document).ready(function() {
                     phone: _userId
                 }
             }).done(function(rs) {
+                hideLoading();
                 if (rs["data"]["valid"]) {
                     $("#phone-code").find('input').val("");
                     $("#phone-after").modal('show');
@@ -234,6 +246,7 @@ $(document).ready(function() {
                 }
             });
         } else {
+            showLoading();
             Utils.api('/login/reset_password/phone', {
                 method: "post",
                 data: {
@@ -242,9 +255,11 @@ $(document).ready(function() {
                     phone: _userId
                 }
             }).done(function(rs) {
+                hideLoading();
                 if (rs["code"] == 0) {
                     $("#phone-code").find('input').val("");
                     registerSuccess("设置密码成功");
+                    showLoading();
                     Utils.api('/login/do_login', {
                         method: "post",
                         data: {
@@ -253,6 +268,7 @@ $(document).ready(function() {
                             is_r: "off"
                         }
                     }).done(function(rs) {
+                        hideLoading();
                         if (rs['data'] != undefined) {
                             window.location.href = rs['data'];
                         }
@@ -274,6 +290,7 @@ $(document).ready(function() {
             focusLine(passLine);
             return;
         }
+        showLoading();
         Utils.api('/login/do_login', {
             method: "post",
             data: {
@@ -282,6 +299,7 @@ $(document).ready(function() {
                 is_r: "off"
             }
         }).done(function(rs) {
+            hideLoading();
             if (rs['data'] != undefined) {
                 $("#password").find('input').val("");
                 window.location.href = rs['data'];
@@ -328,6 +346,7 @@ $(document).ready(function() {
             }
         }
         if (!_ifForget) {
+            showLoading();
             Utils.api('/register/vcode_verify/email', {
                 method: "post",
                 data: {
@@ -335,6 +354,7 @@ $(document).ready(function() {
                     email: _userId
                 }
             }).done(function(rs) {
+                hideLoading();
                 if (rs["data"]["valid"]) {
                     $("#email-code").find('input').val("");
                     $("#email-after").modal('show');
@@ -346,6 +366,7 @@ $(document).ready(function() {
                 }
             });
         } else {
+            showLoading();
             Utils.api('/login/reset_password/email', {
                 method: "post",
                 data: {
@@ -354,9 +375,11 @@ $(document).ready(function() {
                     email: _userId
                 }
             }).done(function(rs) {
+                hideLoading();
                 if (rs["code"] == 0) {
                     $("#email-code").find('input').val("");
                     registerSuccess("设置密码成功");
+                    showLoading();
                     Utils.api('/login/do_login', {
                         method: "post",
                         data: {
@@ -365,6 +388,7 @@ $(document).ready(function() {
                             is_r: "off"
                         }
                     }).done(function(rs) {
+                        hideLoading();
                         if (rs['data'] != undefined) {
                             window.location.href = rs['data'];
                         }
@@ -408,6 +432,7 @@ $(document).ready(function() {
             focusLine(emailLine);
             return;
         }
+        showLoading();
         Utils.api('/register/company_register', {
             method: "post",
             data: {
@@ -420,8 +445,10 @@ $(document).ready(function() {
                 vcode: _vcode
             }
         }).done(function(rs) {
+            hideLoading();
             if (rs["code"] >= 0) {
                 registerSuccess("注册成功");
+                showLoading();
                 Utils.api('/login/do_login', {
                     method: "post",
                     data: {
@@ -430,6 +457,7 @@ $(document).ready(function() {
                         is_r: "off"
                     }
                 }).done(function(rs) {
+                    hideLoading();
                     if (rs['data'] != undefined) {
                         window.location.href = rs['data'];
                     }
@@ -483,6 +511,7 @@ $(document).ready(function() {
             focusLine(emailLine);
             return;
         }
+        showLoading();
         Utils.api('/register/company_register', {
             method: "post",
             data: {
@@ -495,8 +524,10 @@ $(document).ready(function() {
                 vcode: _vcode
             }
         }).done(function(rs) {
+            hideLoading();
             if (rs["code"] >= 0) {
                 registerSuccess("注册成功");
+                showLoading();
                 Utils.api('/login/do_login', {
                     method: "post",
                     data: {
@@ -505,6 +536,7 @@ $(document).ready(function() {
                         is_r: "off"
                     }
                 }).done(function(rs) {
+                    hideLoading();
                     if (rs['data'] != undefined) {
                         window.location.href = rs['data'];
                     }
@@ -588,6 +620,7 @@ $(document).ready(function() {
             focusLine(codeLine);
             return;
         }
+        showLoading();
         Utils.api('/login/reset_password/email', {
             method: "post",
             data: {
@@ -596,9 +629,11 @@ $(document).ready(function() {
                 email: _userId
             }
         }).done(function(rs) {
+            hideLoading();
             if (rs["code"] == 0) {
                 $("#first-email").find('input').val("");
                 registerSuccess("设置密码成功");
+                showLoading();
                 Utils.api('/login/do_login', {
                     method: "post",
                     data: {
@@ -607,6 +642,7 @@ $(document).ready(function() {
                         is_r: "off"
                     }
                 }).done(function(rs) {
+                    hideLoading();
                     if (rs['data'] != undefined) {
                         window.location.href = rs['data'];
                     }
@@ -629,6 +665,7 @@ $(document).ready(function() {
             focusLine(codeLine);
             return;
         }
+        showLoading();
         Utils.api('/login/reset_password/phone', {
             method: "post",
             data: {
@@ -637,9 +674,11 @@ $(document).ready(function() {
                 phone: _userId
             }
         }).done(function(rs) {
+            hideLoading();
             if (rs["code"] == 0) {
                 $("#first-phone").find('input').val("");
                 registerSuccess("设置密码成功");
+                showLoading();
                 Utils.api('/login/do_login', {
                     method: "post",
                     data: {
@@ -648,6 +687,7 @@ $(document).ready(function() {
                         is_r: "off"
                     }
                 }).done(function(rs) {
+                    hideLoading();
                     if (rs['data'] != undefined) {
                         window.location.href = rs['data'];
                     }
@@ -796,12 +836,14 @@ $(document).ready(function() {
             var userLine = $("#signin .user-line");
             if (userId != null && userId != "") {
                 if (isEmail(userId)) {
+                    showLoading();
                     Utils.api('/register/getvcode/email', {
                         method: "post",
                         data: {
                             email: userId
                         }
                     }).done(function(rs) {
+                        hideLoading();
                         if (rs.code > 0) {
                             $("#signin").find('input').val("");
                             $("#email-code").modal('show');
@@ -813,12 +855,14 @@ $(document).ready(function() {
                         }
                     });
                 } else if (isPhone(userId)) {
+                    showLoading();
                     Utils.api('/register/getvcode/phone', {
                         method: "post",
                         data: {
                             phone: userId
                         }
                     }).done(function(rs) {
+                        hideLoading();
                         if (rs.code > 0) {
                             $("#signin").find('input').val("");
                             $("#phone-code").modal('show');
@@ -851,12 +895,14 @@ $(document).ready(function() {
             var userLine = $(this).parent();
             if (userId != null && userId != "") {
                 if (isEmail(userId)) {
+                    showLoading();
                     Utils.api('/register/getvcode/email', {
                         method: "post",
                         data: {
                             email: userId
                         }
                     }).done(function(rs) {
+                        hideLoading();
                         if (rs.code > 0) {
                             $("#email-code").modal('show');
                             $(".phone-text").text(userId);
@@ -867,12 +913,14 @@ $(document).ready(function() {
                         }
                     });
                 } else if (isPhone(userId)) {
+                    showLoading();
                     Utils.api('/register/getvcode/phone', {
                         method: "post",
                         data: {
                             phone: userId
                         }
                     }).done(function(rs) {
+                        hideLoading();
                         if (rs.code > 0) {
                             $("#phone-code").modal('show');
                             $(".phone-text").text(userId);
