@@ -726,8 +726,8 @@ $(document).ready(function() {
     }
 
     function toLoin() {
-        document.documentElement.scrollTop = document.body.scrollTop = 0;
-        $("#signin").modal("show");
+        document.documentElement.scrollTop = document.body.scrollTop = 291;
+        $("#main .account").focus();
     }
 
     function weixinLogin() {
@@ -872,7 +872,6 @@ $(document).ready(function() {
             _ifForget = false;
             var userId = $("#login-text").val();
             _userId = userId;
-            $("#login").find("input").focus();
             var userLine = $(this).parent();
             if (userId != null && userId != "") {
                 if (isEmail(userId)) {
@@ -908,16 +907,13 @@ $(document).ready(function() {
                             time($("#phone-code").find('.timer'), 60);
                             $("#phone-code").find(".active-pass").attr('placeholder', '设置密码');
                         } else {
-                            userLine.find('.account').focus();
                             userLine.addError(getErrorDom("账号已存在"));
                         }
                     });
                 } else {
-                    userLine.find('.account').focus();
                     $(this).parent().addError(getErrorDom("格式不正确"));
                 }
             } else {
-                userLine.find('.account').focus();
                 $(this).parent().addError(getErrorDom("请输入邮箱/手机号码"));
             }
         });

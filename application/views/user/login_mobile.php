@@ -164,35 +164,6 @@
             <span class="btn-close"></span>
         </div>
         </div>
-        <div class="modal fade modal_align" id="signin">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header" style="border-bottom: none;">
-                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                        <a href="/#">
-                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
-                        </a>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="login_content">
-                            <div class="form-line user-line">
-                                <span class="line-icon">
-                                    <img width="28" style="margin-top: 6px;" src="/static/img/mod/login/icon_user.png" height="31" alt="user">
-                                </span>
-                                
-                                <span class="input-line">
-                                    <input name="user" type="text" placeholder="请使用手机或邮箱注册">
-                                </span>
-                            </div>
-                            <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <form>
             <div class="modal fade modal_align" id="login">
                 
