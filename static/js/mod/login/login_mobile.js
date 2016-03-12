@@ -452,19 +452,7 @@ $(document).ready(function() {
             if (rs["code"] >= 0) {
                 registerSuccess("注册成功");
                 showLoading();
-                Utils.api('/login/do_login', {
-                    method: "post",
-                    data: {
-                        u: _userId,
-                        p: _pass,
-                        is_r: "off"
-                    }
-                }).done(function(rs) {
-                    hideLoading();
-                    if (rs['data'] != undefined) {
-                        window.location.href = rs['data'];
-                    }
-                });
+                window.location.href = '/install';
             } else {
                 if (rs["data"]["msg"] == "公司名称已存在") {
                     focusLine(comLine);
@@ -531,19 +519,7 @@ $(document).ready(function() {
             if (rs["code"] >= 0) {
                 registerSuccess("注册成功");
                 showLoading();
-                Utils.api('/login/do_login', {
-                    method: "post",
-                    data: {
-                        u: _userId,
-                        p: _pass,
-                        is_r: "off"
-                    }
-                }).done(function(rs) {
-                    hideLoading();
-                    if (rs['data'] != undefined) {
-                        window.location.href = rs['data'];
-                    }
-                });
+                window.location.href = '/install';
             } else {
                 if (rs["data"]["msg"] == "公司名称已存在") {
                     focusLine(comLine);
