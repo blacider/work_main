@@ -346,7 +346,7 @@
                             </div>
                             <div class="form-line code-line" style="margin-top: 44px;">
                                 <span class="line-icon">
-                                    <img width="27" src="/static/img/mod/login/email.png" height="22" alt="pass" style="margin-top: 4px">
+                                    <img width="27" src="/static/img/mod/login/email.png" height="22" alt="pass" style="margin-top: 15px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -434,7 +434,7 @@
                             </div>
                             <div class="form-line code-line" style="margin-top: 44px;">
                                 <span class="line-icon">
-                                    <img width="27" src="/static/img/mod/login/email.png" height="22" alt="pass" style="margin-top: 4px">
+                                    <img width="27" src="/static/img/mod/login/email.png" height="22" alt="pass" style="margin-top: 15px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -559,7 +559,7 @@
                             </div>
                             <div class="form-line level-line" style="margin-top: 38px;">
                                 <span class="line-icon">
-                                    <img width="35" src="/static/img/mod/login/level.png" height="30" alt="pass" style="margin-top: 15px">
+                                    <img width="35" src="/static/img/mod/login/level.png" height="30" alt="pass" style="margin-top: 8px">
                                 </span>
                                 
                                 <span class="input-line">
