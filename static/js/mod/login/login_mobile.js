@@ -20,6 +20,9 @@ $(document).ready(function() {
                 $("#login-body").css('display', 'block');
             }
         }
+        $.fn.addError = function(dom) {
+            $('body').append(dom);
+        }
     })();
     bindEvent();
     function showLoading() {
@@ -36,7 +39,6 @@ $(document).ready(function() {
     function bindEvent() {
         timerClickEvent();
         loginButtonClickEvent();
-        enterPressEvent();
         exitButtonClickEvent();
         nextStepButtonClickEvent();
         signinButtonClickEvent();
@@ -91,10 +93,10 @@ $(document).ready(function() {
         _userId = user;
         var userLine = $("#login").find('.user-line');
         if (user == "") {
-            userLine.append(getErrorDom("请输入账号"));
+            userLine.addError(getErrorDom("请输入账号"));
             focusLine(userLine);
         } else if (!isEmail(user) && !isPhone(user)) {
-            userLine.append(getErrorDom("格式不正确"));
+            userLine.addError(getErrorDom("格式不正确"));
             focusLine(userLine);
         } else {
             if (isEmail(user)) {
@@ -117,7 +119,7 @@ $(document).ready(function() {
                         }
                     } else {
                         focusLine(userLine);
-                        userLine.append(getErrorDom("账号不存在"));
+                        userLine.addError(getErrorDom("账号不存在"));
                     }
                 });
             } else {
@@ -140,7 +142,7 @@ $(document).ready(function() {
                         }
                     } else {
                         focusLine(userLine);
-                        userLine.append(getErrorDom("账号不存在"));
+                        userLine.addError(getErrorDom("账号不存在"));
                     }
                 });
             }
@@ -202,25 +204,25 @@ $(document).ready(function() {
         var codeLine = $("#phone-code").find('.code-line');
         var code = $("#phone-code").find('input[name="code"]').val();
         if (code == undefined || code == "") {
-            codeLine.append(getErrorDom("请输入验证码"));
+            codeLine.addError(getErrorDom("请输入验证码"));
             focusLine(codeLine);
             return;
         } else if (pass == undefined || pass == "") {
-            passLine.append(getErrorDom("请输入密码"));
+            passLine.addError(getErrorDom("请输入密码"));
             focusLine(passLine);
             return;
         } else if (pass.length < 8) {
-            passLine.append(getErrorDom("密码长度至少为8位"));
+            passLine.addError(getErrorDom("密码长度至少为8位"));
             focusLine(passLine);
             return;
         } else if (ifIncludeUser(pass, _userId)) {
-            passLine.append(getErrorDom("密码不能包含邮箱名"));
+            passLine.addError(getErrorDom("密码不能包含邮箱名"));
             focusLine(passLine);
             return;
         } else {
             var reg = /^([a-zA-Z]+|[0-9]+)$/;
             if (reg.test(pass)) {
-                passLine.append(getErrorDom("密码需同时含有字母和数字"));
+                passLine.addError(getErrorDom("密码需同时含有字母和数字"));
                 focusLine(passLine);
                 return;
             }
@@ -242,7 +244,7 @@ $(document).ready(function() {
                     _pass = pass;
                 } else {
                     focusLine(codeLine);
-                    codeLine.append(getErrorDom("验证码错误"));
+                    codeLine.addError(getErrorDom("验证码错误"));
                 }
             });
         } else {
@@ -275,7 +277,7 @@ $(document).ready(function() {
                     });
                 } else {
                     focusLine(codeLine);
-                    codeLine.append(getErrorDom("验证码错误"));
+                    codeLine.addError(getErrorDom("验证码错误"));
                 }
             });
         }
@@ -286,7 +288,7 @@ $(document).ready(function() {
         var passLine = $("#password").find('.pass-line');
         var pass = $("#password").find('.active-pass').val();
         if (pass == "") {
-            passLine.append(getErrorDom("请输入密码"));
+            passLine.addError(getErrorDom("请输入密码"));
             focusLine(passLine);
             return;
         }
@@ -304,7 +306,7 @@ $(document).ready(function() {
                 $("#password").find('input').val("");
                 window.location.href = rs['data'];
             } else {
-                passLine.append(getErrorDom("密码错误"));
+                passLine.addError(getErrorDom("密码错误"));
             }
         });
 
@@ -322,25 +324,25 @@ $(document).ready(function() {
         var codeLine = $("#email-code").find('.code-line');
         var code = $("#email-code").find('input[name="code"]').val();
         if (code == undefined || code == "") {
-            codeLine.append(getErrorDom("请输入验证码"));
+            codeLine.addError(getErrorDom("请输入验证码"));
             focusLine(codeLine);
             return;
         } else if (pass == undefined || pass == "") {
-            passLine.append(getErrorDom("请输入密码"));
+            passLine.addError(getErrorDom("请输入密码"));
             focusLine(passLine);
             return;
         } else if (pass.length < 8) {
-            passLine.append(getErrorDom("密码长度至少为8位"));
+            passLine.addError(getErrorDom("密码长度至少为8位"));
             focusLine(passLine);
             return;
         } else if (ifIncludeUser(pass, _userId)) {
-            passLine.append(getErrorDom("密码不能包含邮箱名"));
+            passLine.addError(getErrorDom("密码不能包含邮箱名"));
             focusLine(passLine);
             return;
         } else {
             var reg = /^([a-zA-Z]+|[0-9]+)$/;
             if (reg.test(pass)) {
-                passLine.append(getErrorDom("密码需同时含有字母和数字"));
+                passLine.addError(getErrorDom("密码需同时含有字母和数字"));
                 focusLine(passLine);
                 return;
             }
@@ -362,7 +364,7 @@ $(document).ready(function() {
                     _pass = pass;
                 } else {
                     focusLine(codeLine);
-                    codeLine.append(getErrorDom("验证码错误"));
+                    codeLine.addError(getErrorDom("验证码错误"));
                 }
             });
         } else {
@@ -395,7 +397,7 @@ $(document).ready(function() {
                     });
                 } else {
                     focusLine(codeLine);
-                    codeLine.append(getErrorDom("验证码错误"));
+                    codeLine.addError(getErrorDom("验证码错误"));
                 }
             });
         }
@@ -412,23 +414,23 @@ $(document).ready(function() {
         var emailLine = $("#email-after").find('.phone-line');
         var email = $("#email-after").find('input[name="phone"]').val();
         if (com == "") {
-            comLine.append(getErrorDom("请输入公司名称"));
+            comLine.addError(getErrorDom("请输入公司名称"));
             focusLine(comLine);
             return;
         } else if (name == "") {
-            nameLine.append(getErrorDom("请输入姓名"));
+            nameLine.addError(getErrorDom("请输入姓名"));
             focusLine(nameLine);
             return;
         } else if (level == "") {
-            levelLine.append(getErrorDom("请输入职位"));
+            levelLine.addError(getErrorDom("请输入职位"));
             focusLine(levelLine);
             return;
         } else if (email == "") {
-            emailLine.append(getErrorDom("请输入手机"));
+            emailLine.addError(getErrorDom("请输入手机"));
             focusLine(emailLine);
             return;
         } else if (!isPhone(email)) {
-            emailLine.append(getErrorDom("格式不正确"));
+            emailLine.addError(getErrorDom("格式不正确"));
             focusLine(emailLine);
             return;
         }
@@ -465,15 +467,15 @@ $(document).ready(function() {
             } else {
                 if (rs["data"]["msg"] == "公司名称已存在") {
                     focusLine(comLine);
-                    comLine.append(getErrorDom(rs['data']['msg']));
+                    comLine.addError(getErrorDom(rs['data']['msg']));
                 } else if (rs["data"]["msg"] == "手机号码已注册") {
                     focusLine(emailLine);
-                    emailLine.append(getErrorDom(rs['data']['msg']));
+                    emailLine.addError(getErrorDom(rs['data']['msg']));
                 } else if (rs["data"]["msg"] == "验证码无效") {
                     alert("验证码无效");
                 } else {
                     focusLine(comLine);
-                    comLine.append(getErrorDom(rs['data']['msg']));
+                    comLine.addError(getErrorDom(rs['data']['msg']));
                 }
 
             }
@@ -491,23 +493,23 @@ $(document).ready(function() {
         var emailLine = $("#phone-after").find('.email-line');
         var email = $("#phone-after").find('input[name="email"]').val();
         if (com == "") {
-            comLine.append(getErrorDom("请输入公司名称"));
+            comLine.addError(getErrorDom("请输入公司名称"));
             focusLine(comLine);
             return;
         } else if (name == "") {
-            nameLine.append(getErrorDom("请输入姓名"));
+            nameLine.addError(getErrorDom("请输入姓名"));
             focusLine(nameLine);
             return;
         } else if (level == "") {
-            levelLine.append(getErrorDom("请输入职位"));
+            levelLine.addError(getErrorDom("请输入职位"));
             focusLine(levelLine);
             return;
         } else if (email == "") {
-            emailLine.append(getErrorDom("请输入邮箱"));
+            emailLine.addError(getErrorDom("请输入邮箱"));
             focusLine(emailLine);
             return;
         } else if (!isEmail(email)) {
-            emailLine.append(getErrorDom("格式不正确"));
+            emailLine.addError(getErrorDom("格式不正确"));
             focusLine(emailLine);
             return;
         }
@@ -544,15 +546,15 @@ $(document).ready(function() {
             } else {
                 if (rs["data"]["msg"] == "公司名称已存在") {
                     focusLine(comLine);
-                    comLine.append(getErrorDom(rs['data']['msg']));
+                    comLine.addError(getErrorDom(rs['data']['msg']));
                 } else if (rs["data"]["msg"] == "邮箱已注册") {
                     focusLine(emailLine);
-                    emailLine.append(getErrorDom(rs['data']['msg']));
+                    emailLine.addError(getErrorDom(rs['data']['msg']));
                 } else if (rs["data"]["msg"] == "验证码无效") {
                     alert("验证码无效");
                 } else {
                     focusLine(comLine);
-                    comLine.append(getErrorDom(rs['data']['msg']));
+                    comLine.addError(getErrorDom(rs['data']['msg']));
                 }
             }
         });
@@ -565,21 +567,21 @@ $(document).ready(function() {
         var pass = $("#first-login").find('.active-pass').val();
         _pass = pass;
         if (pass == undefined || pass == "") {
-            passLine.append(getErrorDom("请设置密码"));
+            passLine.addError(getErrorDom("请设置密码"));
             focusLine(passLine);
             return;
         } else if (pass.length < 8) {
-            passLine.append(getErrorDom("密码长度至少为8位"));
+            passLine.addError(getErrorDom("密码长度至少为8位"));
             focusLine(passLine);
             return;
         } else if (ifIncludeUser(pass, _userId)) {
-            passLine.append(getErrorDom("密码不能包含邮箱名"));
+            passLine.addError(getErrorDom("密码不能包含邮箱名"));
             focusLine(passLine);
             return;
         } else {
             var reg = /^([a-zA-Z]+|[0-9]+)$/;
             if (reg.test(pass)) {
-                passLine.append(getErrorDom("密码需同时含有字母和数字"));
+                passLine.addError(getErrorDom("密码需同时含有字母和数字"));
                 focusLine(passLine);
                 return;
             }
@@ -616,7 +618,7 @@ $(document).ready(function() {
         var codeLine = $("#first-email").find('.code-line');
         var code = $("#first-email").find('input[name="code"]').val();
         if (code == undefined || code == "") {
-            codeLine.append(getErrorDom("请输入验证码"));
+            codeLine.addError(getErrorDom("请输入验证码"));
             focusLine(codeLine);
             return;
         }
@@ -649,7 +651,7 @@ $(document).ready(function() {
                 });
             } else {
                 focusLine(codeLine);
-                codeLine.append(getErrorDom("验证码错误"));
+                codeLine.addError(getErrorDom("验证码错误"));
             }
         });
     }
@@ -661,7 +663,7 @@ $(document).ready(function() {
         var codeLine = $("#first-phone").find('.code-line');
         var code = $("#first-phone").find('input[name="code"]').val();
         if (code == undefined || code == "") {
-            codeLine.append(getErrorDom("请输入验证码"));
+            codeLine.addError(getErrorDom("请输入验证码"));
             focusLine(codeLine);
             return;
         }
@@ -694,7 +696,7 @@ $(document).ready(function() {
                 });
             } else {
                 focusLine(codeLine);
-                codeLine.append(getErrorDom("验证码错误"));
+                codeLine.addError(getErrorDom("验证码错误"));
             }
         });
     }
@@ -712,13 +714,9 @@ $(document).ready(function() {
         }, 3000);
         return [
             '<div class="error-login">',
-            '   <div class="error-login-line">',
             '       <span class="error-text">',
                     str,
             '       </span>',
-            '       <div class="error-right">',
-            '       </div>',
-            '   </div>',
             '</div>'
         ].join('');
     }
@@ -762,23 +760,6 @@ $(document).ready(function() {
         });
     }
 
-    function enterPressEvent() {
-        $(document).keypress(function(e) {
-            // 回车键事件  
-            if (e.which == 13) {
-                var Modals = $(".in");
-                if (Modals.length != 0) {
-                    var Modal = $(Modals[Modals.length / 2 - 1]);
-                    if (Modal.find('.rightd').click().length == 0) {
-                        Modal.find('.right-sm').click();
-                    }
-                } else {
-                    $(".login-button").click();
-                }
-                return false;
-            }
-        });
-    }
     function exitButtonClickEvent() {
         $(".modal-header").find('button').click(function(event) {
             $(".modal").css('display', 'none');
@@ -851,7 +832,7 @@ $(document).ready(function() {
                             time($("#email-code").find('.timer'), 60);
                             $("#email-code").find(".active-pass").attr('placeholder', '设置密码');
                         } else {
-                            userLine.append(getErrorDom("账号已存在"));
+                            userLine.addError(getErrorDom("账号已存在"));
                         }
                     });
                 } else if (isPhone(userId)) {
@@ -871,16 +852,16 @@ $(document).ready(function() {
                             $("#phone-code").find(".active-pass").attr('placeholder', '设置密码');
                         } else {
                             userLine.find('input').focus();
-                            userLine.append(getErrorDom("账号已存在"));
+                            userLine.addError(getErrorDom("账号已存在"));
                         }
                     });
                 } else {
                     userLine.find('input').focus();
-                    userLine.append(getErrorDom("格式不正确"));
+                    userLine.addError(getErrorDom("格式不正确"));
                 }
             } else {
                 userLine.find('input').focus();
-                userLine.append(getErrorDom("请输入邮箱/手机号码"));
+                userLine.addError(getErrorDom("请输入邮箱/手机号码"));
             }
         });
     }
@@ -909,7 +890,7 @@ $(document).ready(function() {
                             time($("#email-code").find('.timer'), 60);
                             $("#email-code").find(".active-pass").attr('placeholder', '设置密码');
                         } else {
-                            userLine.append(getErrorDom("账号已存在"));
+                            userLine.addError(getErrorDom("账号已存在"));
                         }
                     });
                 } else if (isPhone(userId)) {
@@ -928,16 +909,16 @@ $(document).ready(function() {
                             $("#phone-code").find(".active-pass").attr('placeholder', '设置密码');
                         } else {
                             userLine.find('.account').focus();
-                            userLine.append(getErrorDom("账号已存在"));
+                            userLine.addError(getErrorDom("账号已存在"));
                         }
                     });
                 } else {
                     userLine.find('.account').focus();
-                    $(this).parent().append(getErrorDom("格式不正确"));
+                    $(this).parent().addError(getErrorDom("格式不正确"));
                 }
             } else {
                 userLine.find('.account').focus();
-                $(this).parent().append(getErrorDom("请输入邮箱/手机号码"));
+                $(this).parent().addError(getErrorDom("请输入邮箱/手机号码"));
             }
         });
     }
