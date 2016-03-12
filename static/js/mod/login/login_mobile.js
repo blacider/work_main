@@ -37,6 +37,7 @@ $(document).ready(function() {
         }
     })();
     function bindEvent() {
+        leftButtonClickEvent();
         timerClickEvent();
         loginButtonClickEvent();
         exitButtonClickEvent();
@@ -764,6 +765,28 @@ $(document).ready(function() {
         $(".modal-header").find('button').click(function(event) {
             $(".modal").css('display', 'none');
             $("#login-body").css('display', 'block');
+        });
+    }
+    function leftButtonClickEvent() {
+        var leftDict = {
+            'password': '#login',
+            'first-login': '#login',
+            'first-phone': '#first-login',
+            'first-email': '#first-login',
+            'phone-code': '',
+            'email-code': '',
+            'phone-after': '#phone-code',
+            'email-after': '#email-code'
+        };
+        $(".modal-header-left").find('button').click(function(event) {
+            $(".modal").css('display', 'none');
+            var id = $(this).parents('.modal').attr("id")
+            $(leftDict[id]).modal('show');
+            if (_ifForget) {
+                if ('phone-code' == id || 'email-code' == id) {
+                    $('#password').modal('show');
+                }
+            }
         });
     }
 
