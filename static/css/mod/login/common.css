@@ -399,7 +399,6 @@ input[type="text"] {
 }
 .footer-link li {
     float: left;
-    margin-right: 25px;
     list-style: none;
 }
 .footer-link li a {
@@ -1052,8 +1051,7 @@ input[type="text"] {
 	    height: 240px;
 	}
 	.footer-link {
-	    float: left;
-	    margin-left: 288px;
+	    float: right;
 	}
 	.record {
 	    clear: both;
