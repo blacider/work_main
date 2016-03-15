@@ -21,6 +21,7 @@
         <script src="/static/js/jquery.min.js"></script>
         <script language="javascript" src="/static/ace/js/bootstrap.min.js"></script>
         <script src="/static/js/libs/utils.js"></script>
+        <script src="/static/js/jquery.cookie.js"></script>
         <script src="/static/third-party/jg/jquery.jgrowl.min.js"></script>
         <!--[if lt IE 9]>
         <script src="static/js/respond.min.js"></script>
