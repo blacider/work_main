@@ -24,19 +24,25 @@
 		fetchRemoteData: function (callback) {
 			var _self = this;
 			return $.ajax({
-				url: '/static/js/data/bank_db.js',
+				url: '/bank/get_banks/0',
 				dataType: 'json',
 				success: function (rs, opts) {
+					var data = {
+						'暂无可用银行信息': []
+					}
+					if(rs['status']>0) {
+						data = rs['data']['bank_dic'];
+					}
 					var tmpl = _self.options.itemTemplate
 					// _self.$el.empty()
-					for(var name in rs) {
-						var data = {};
-						data.prefix = rs[name].join(',');
-						data.text = name;
-						_self._renderItem_(tmpl, data);
+					for(var name in data) {
+						var item = {};
+						item.prefix = data[name].join(',');
+						item.text = name;
+						_self._renderItem_(tmpl, item);
 					}
 
-					_self.options.onDataLoaded.call(_self, rs);
+					_self.options.onDataLoaded.call(_self, data);
 				},
 				error: function  () {
 					// body...
