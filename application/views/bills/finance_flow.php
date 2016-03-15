@@ -22,7 +22,7 @@ position: absolute;
   height: 30px;
   width: 12%;
   z-index: 9;
-  width: 198px;
+  width: 220px;
   background: #EFF4F9;
     }
     #searchBox input {
