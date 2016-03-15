@@ -69,8 +69,6 @@
       <div class="footer-link">
         <ul>
         <li><a href="https://www.yunbaoxiao.com/contact.html">关于我们</a></li>
-        <li><a href="https://www.yunbaoxiao.com/help.html">帮助中心</a></li>
-        <li><a href="https://www.yunbaoxiao.com/joinus.html">加入我们</a></li>
       </ul>
       </div>
       <div class="record">
