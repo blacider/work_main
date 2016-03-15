@@ -33,7 +33,7 @@
         <!--[if !IE]><!-->
         <link rel="stylesheet" type="text/css" href="static/css/notie.css">
         <!--<![endif]-->
-        <script src="/static/js/mod/login/login.js"></script>
+        <script src="/static/js/mod/login/login.js?_r=20160315"></script>
     </head>
     <body>
         <div id="header">
