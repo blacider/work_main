@@ -209,6 +209,9 @@ if($profile['gid'] > 0){
 var __BASE = "<?php echo $base_url; ?>";
 var close_directly = "<?php echo $close_directly; ?>";
 $(document).ready(function(){
+    $("#permit_form .pass").click(function(event) {
+      return true;
+    });
     $('.new_card').click(function(){
         $('#form_discard').submit();
     });
@@ -298,6 +301,8 @@ $('#send').click(function(){
 </script>
 
 <script>
+var error = "<?php echo $error; ?>";
+if(error) show_notify(error);
 var filter = "<?=$filter?>";
 var can_export_excel = <?=$can_export_excel?>;
 </script>

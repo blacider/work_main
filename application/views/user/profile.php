@@ -714,6 +714,7 @@ if(in_array($profile['admin'],[1,3,4])){
 
 
     var __PROVINCE = Array();
+    var _ifCreateCard = true;
     function get_province(){
         $.ajax({
             url : __BASE + "static/province.json",
@@ -747,18 +748,19 @@ if(in_array($profile['admin'],[1,3,4])){
             $('#account').attr("disabled",  true);
             $('#cardloc').attr("disabled",  true);
             $('#cardno').attr("disabled",   true);
-            $('#cardbank').attr("disabled", true);
+            $('#cardbank').attr("disabled", true).trigger("chosen:updated");
             $('#subbranch').attr("disabled",true);
             $('#is_default').attr("disabled",true);
+            $('#bankCardType').attr('disabled', true);
         } else {
             $('.new_card').show();
             $('#account').attr("disabled",  false);
             $('#cardloc').attr("disabled",  false);
             $('#cardno').attr("disabled",   false);
-            $('#cardbank').attr("disabled", false);
+            $('#cardbank').attr("disabled", false).trigger("chosen:updated");
             $('#subbranch').attr("disabled",false);
             $('#is_default').attr("disabled",false);
-            $('#bankCardType').val('');
+            $('#bankCardType').attr('disabled', false);
         }
         title && $('#credit_model').find('.modal-title').text(title);
         $('.cancel').click(function(){
@@ -785,6 +787,7 @@ if(in_array($profile['admin'],[1,3,4])){
 
 
     function update_credit(node){
+        _ifCreateCard = false;
         reset_bank(1, '修改银行卡');
         $('#id').val($(node).data('id'));
         $('#account').val($(node).data('account'));
@@ -827,11 +830,13 @@ if(in_array($profile['admin'],[1,3,4])){
 
     function show_credit(node){
         reset_bank(0, '银行卡详情');
+        _ifCreateCard = false;
         $('#id').val($(node).data('id'));
         $('#account').val($(node).data('account'));
         $('#cardbank').val($(node).data('bankname')).trigger("chosen:updated");
         $('#cardloc').val($(node).data('bankloc'));
         $('#cardno').val($(node).data('cardno'));
+        $('#bankCardType').val($(node).data('cardtype'));
         $('#subbranch').val($(node).data('subbranch'));
         var _is_default = $(node).data('default');
         if(_is_default == $(node).data('id'))
@@ -1003,6 +1008,17 @@ if(in_array($profile['admin'],[1,3,4])){
                         });
                     });
                     $('.new_credit').click(function(){
+                        if (!_ifCreateCard) {
+                            $('#modal_title').val();
+                            $('#account' ).val("");
+                            $('#id' ).val("");
+                            $('#uid').val(user_id);
+                            $('#cardloc' ).val("");
+                            $('#cardno'  ).val("");
+                            $('#cardbank').val("").trigger("chosen:updated");
+                            $('#default_id').val("");
+                        }
+                        _ifCreateCard = true;
                         reset_bank(1, '添加新银行卡');
                         $('#credit_model').modal({keyborard: false});
                     });
@@ -1061,6 +1077,7 @@ if(in_array($profile['admin'],[1,3,4])){
                                 method : 'POST',
                                 success : function(data){
                                     if(data.status){
+                                        _ifCreateCard = false;
                                         var _id = data.data.id;
                                         $('#credit_model').modal('hide');
                                         if(_id > 0){
@@ -1072,7 +1089,7 @@ if(in_array($profile['admin'],[1,3,4])){
                                             + '<i class="ace-icon fa fa-angle-down icon-on-right"></i> </button>'
                                             + '<ul class="dropdown-menu"> '
                                             + '<li> <a href="javascript:void(0)" data-cardtype="' + _card_type +'"  data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" data-subbranch="' + _subbranch + '"' + ' data-default="' + _default_id + '"' +' class="edit_bank" >修改</a> </li>'
-                                            + '<li> <a  href="javascript:void(0)" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" data-subbranch="' + _subbranch + '"' + ' data-default="' + _default_id + '"' +'  class="show_bank">展示</a> </li> '
+                                            + '<li> <a  href="javascript:void(0)" data-cardtype="' + _card_type +'" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" data-subbranch="' + _subbranch + '"' + ' data-default="' + _default_id + '"' +'  class="show_bank">展示</a> </li> '
                                             + '<li class="divider"></li> '
                                             + '<li> <a href="javascript:void(0)" data-uid="' + user_id + '" data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" class="del_bank">删除</a> </li>'
                                             + ' </ul> </div>';
@@ -1085,7 +1102,7 @@ if(in_array($profile['admin'],[1,3,4])){
                                         $('#uid').val(user_id);
                                         $('#cardloc' ).val("");
                                         $('#cardno'  ).val("");
-                                        $('#cardbank').val("");
+                                        $('#cardbank').val("").trigger("chosen:updated");
                                         $('#default_id').val("");
                                     } else {
                                         show_notify(data.data.msg);
