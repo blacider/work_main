@@ -15,6 +15,15 @@ $.jgrid.from = function (source, initalQuery) {
 };
 
 function jqgrid_choseall_plus(grid) {
+    var postData = $(grid).jqGrid("getGridParam", "postData");
+    var rule = {
+        groupOp:"OR",
+        rules:[],
+        groups:[]
+    }
+    postData.filters = JSON.stringify(rule);
+    $(grid).jqGrid("setGridParam", { search: true });
+    $(grid).trigger("reloadGrid", [{page: $(grid).getGridParam('page')}]);
     var result = new Array();
     var data = $(grid).jqGrid('getGridParam', 'lastSelected');
     for (var i = data.length - 1; i >= 0; i--) {
