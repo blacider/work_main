@@ -2,14 +2,17 @@
 <?php
     function fieldArrayToMap($arr)
     {
+        if(!$arr) {
+            $arr = array();
+        }
         $map = array();
         foreach($arr as $item) {
             $map[$item['id']] = $item;
         }
         return $map;
     }
-    $fieldMap = fieldArrayToMap($snapshot['config']);
 
+    $fieldMap = fieldArrayToMap($snapshot['config']);
 
     function getCategoryItemById($category_array, $id) {
         foreach($category_array as $item) {
@@ -45,72 +48,88 @@
             </div>
             <?php foreach($fields as $fieldItem) { ?>
             <?php
+               
                 $fieldItemType = $fieldItem['type']; 
-                $fieldItemObject =  $fieldMap[$fieldItem['id']];
+                $fieldItemId = $fieldItem['id'];
+
+                $fieldItemObject =  array_key_exists($fieldItemId, $fieldMap);
+
+
                 $fieldItemValue = '';
                 if(!$fieldItemObject) {
-                    $fieldItemObject = array(
-                        'id' => $fieldItem['id'],
-                        'value' => $fieldItemType == '4'? "{}" :''
-                    );
+                    $fieldItemValue = '';
+                } else {
+                    $fieldItemValue = $fieldMap[$fieldItemId]['value'];
                 }
-                $fieldItemValue = $fieldItemObject['value'];
             ?>
             <?php
                 if($fieldItemType == '4') {
+
+                    $defaultItemObject = array(
+                        'account'=>'',
+                        'cardno'=>'',
+                        'bankname'=>'',
+                        'bankloc'=>'',
+                        'subbranch'=>''
+                    );
+
                     $fieldItemValue = json_decode($fieldItemValue, true);
-                    if(empty($fieldItemValue)) {
-                        $fieldItemValue = array(
-                            'account'=>'',
-                            'cardno'=>'',
-                            'bankname'=>'',
-                            'bankloc'=>'',
-                            'subbranch'=>''
-                        );
+
+                    if(!$fieldItemValue) {
+                        $fieldItemValue = array();
                     }
-                    $isFirst = true;
+
+                    $fieldItemValue = array_merge($defaultItemObject, $fieldItemValue);
+
             ?>
                 <div class="field_value">
-                    <?php foreach ($fieldItemValue as $key => $value) { ?>
                     <div class="form-group">
                         <label class="col-sm-2 control-label no-padding-right">
                             <?php 
-                                if($isFirst) {
                                     echo $fieldItem['name'];
-                                }
-
-                                $bankPlaceholder = '';
-                                switch($key) {
-                                    case 'account':
-                                        $bankPlaceholder = '户主名称';
-                                        break;
-                                    case 'cardno':
-                                        $bankPlaceholder = '银行账号';
-                                        break;
-                                    case 'bankname':
-                                        $bankPlaceholder = '银行名';
-                                        break;
-                                    case 'bankloc':
-                                        $bankPlaceholder = '开户地点';
-                                        break;
-                                    case 'subbranch':
-                                        $bankPlaceholder = '支行';
-                                        break;
-                                }
                             ?>
                         </label>
                         <div class="col-xs-9 col-sm-9">
-                            <input type="text" placeholder="<?php echo $bankPlaceholder ;?>" class="form-controller col-xs-8 <?php echo $key ;?>" disabled name="title" value="<?php echo $fieldItemValue[$key] ;?>">
+                            <input type="text" placeholder="银行户名" title="银行户名" class="form-controller col-xs-8" disabled value="<?php echo $fieldItemValue['account'] ;?>">
                         </div>
                     </div>
-                    <?php $isFirst = false; ?>
-                    <?php } ?>
                 </div>
-            <?php } else { ?>  
+                <div class="field_value">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right"></label>
+                        <div class="col-xs-9 col-sm-9">
+                            <input type="text" placeholder="银行账号" title="银行账号" class="form-controller col-xs-8 " disabled value="<?php echo $fieldItemValue['cardno'] ;?>" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right"></label>
+                        <div class="col-xs-9 col-sm-9">
+                            <input type="text" placeholder="开户行名" title="开户行名" class="form-controller col-xs-8 " disabled value="<?php echo $fieldItemValue['bankname'] ;?>" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right"></label>
+                        <div class="col-xs-9 col-sm-9">
+                            <input type="text" placeholder="开户地" title="开户地" class="form-controller col-xs-8 " disabled value="<?php echo $fieldItemValue['bankloc'] ;?>" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right"></label>
+                        <div class="col-xs-9 col-sm-9">
+                            <input type="text" placeholder="支行" title="支行" class="form-controller col-xs-8 " disabled value="<?php echo $fieldItemValue['subbranch'] ;?>" />
+                        </div>
+                    </div>
+                </div>
+            <?php } else { ?>
+                <?php
+                    if($fieldItemType == '3' && $fieldItemValue) {
+                        $fieldItemValue = strftime('%Y-%m-%d', $fieldItemValue);
+                    }
+                ?>
                 <div class="form-group">
                     <label class="col-sm-2 control-label no-padding-right"><?php echo $fieldItem['name'];?></label>
                     <div class="col-xs-9 col-sm-9">
-                        <input type="text" class="form-controller col-xs-8" id="title" disabled name="title" value="<?php echo $fieldItemValue ;?>">
+                        <input type="text" class="form-controller col-xs-8" disabled value="<?php echo $fieldItemValue ;?>">
                     </div>
                 </div>
             <?php } ?>

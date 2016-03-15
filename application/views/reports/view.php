@@ -159,7 +159,7 @@ table td {
                             </tr>
 
                             <tr>
-                                <td><?php echo $report['snapshot_amount']; ?></td>
+                                <td><?php echo $report['snapshot_title']; ?></td>
                                 <td><?php echo strftime('%Y-%m-%d %H:%M', $report['lastdt']); ?></td>
                                 <td>￥<?php echo $report['snapshot_amount']; ?>.00</td>
                                 <td>
