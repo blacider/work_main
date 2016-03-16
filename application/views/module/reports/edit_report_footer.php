@@ -39,6 +39,7 @@
         <?php if($is_other) { ?> 
         <a type="button" href="<?php echo base_url('items/newitem/' . $rid);?>" class="btn-add-consumption" ><img src="/static/img/mod/template/icon/plus@2x.png" alt="">添加消费</a>
         <?php } ?>
+        <input type="hidden" name="is_other" value="<?php echo $is_other;?>"/>
     </div>
 </div>
 <div class="form-group">
