@@ -125,7 +125,6 @@ $(document).ready(function() {
                     }
                 }).done(function(rs) {
                     if (rs["data"]["exists"]) {
-                        $("#login").find('input').val("");
                         if (rs['data']['user']['active'] == 1) {
                             $("#password .user-pic").find('img').attr('src', rs['data']['user']['avatar_url']);
                             $("#password .user-name").text(rs['data']['user']['nickname']);
@@ -146,7 +145,6 @@ $(document).ready(function() {
                     }
                 }).done(function(rs) {
                     if (rs["data"]["exists"]) {
-                        $("#login").find('input').val("");
                         if (rs['data']['user']['active'] == 1) {
                             $("#password .user-pic").find('img').attr('src', rs['data']['user']['avatar_url']);
                             $("#password .user-name").text(rs['data']['user']['nickname']);
@@ -250,7 +248,6 @@ $(document).ready(function() {
                 }
             }).done(function(rs) {
                 if (rs["data"]["valid"]) {
-                    $("#phone-code").find('input').val("");
                     $("#phone-after").modal('show');
                     _vcode = code;
                     _pass = pass;
@@ -269,7 +266,6 @@ $(document).ready(function() {
                 }
             }).done(function(rs) {
                 if (rs["code"] == 0) {
-                    $("#phone-code").find('input').val("");
                     registerSuccess("设置密码成功");
                     Utils.api('/login/do_login', {
                         method: "post",
@@ -309,7 +305,6 @@ $(document).ready(function() {
             }
         }).done(function(rs) {
             if (rs['data'] != undefined) {
-                $("#password").find('input').val("");
                 window.location.href = rs['data'];
             } else {
                 passLine.append(getErrorDom("密码错误"));
@@ -362,7 +357,6 @@ $(document).ready(function() {
                 }
             }).done(function(rs) {
                 if (rs["data"]["valid"]) {
-                    $("#email-code").find('input').val("");
                     $("#email-after").modal('show');
                     _vcode = code;
                     _pass = pass;
@@ -381,7 +375,6 @@ $(document).ready(function() {
                 }
             }).done(function(rs) {
                 if (rs["code"] == 0) {
-                    $("#email-code").find('input').val("");
                     registerSuccess("设置密码成功");
                     Utils.api('/login/do_login', {
                         method: "post",
@@ -581,7 +574,6 @@ $(document).ready(function() {
                 return;
             }
         }
-        $("#first-login").find('input').val("");
         if (isEmail(userId)) {
             Utils.api('/register/getvcode/email/reset', {
                 method: "post",
@@ -626,7 +618,6 @@ $(document).ready(function() {
             }
         }).done(function(rs) {
             if (rs["code"] == 0) {
-                $("#first-email").find('input').val("");
                 registerSuccess("设置密码成功");
                 Utils.api('/login/do_login', {
                     method: "post",
@@ -667,7 +658,6 @@ $(document).ready(function() {
             }
         }).done(function(rs) {
             if (rs["code"] == 0) {
-                $("#first-phone").find('input').val("");
                 registerSuccess("设置密码成功");
                 Utils.api('/login/do_login', {
                     method: "post",
@@ -850,7 +840,6 @@ $(document).ready(function() {
                         }
                     }).done(function(rs) {
                         if (rs.code > 0) {
-                            $("#signin").find('input').val("");
                             $("#email-code").modal('show');
                             $(".phone-text").text(userId);
                             time($("#email-code").find('.timer'), 60);
@@ -867,7 +856,6 @@ $(document).ready(function() {
                         }
                     }).done(function(rs) {
                         if (rs.code > 0) {
-                            $("#signin").find('input').val("");
                             $("#phone-code").modal('show');
                             $(".phone-text").text(userId);
                             time($("#phone-code").find('.timer'), 60);
