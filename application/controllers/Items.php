@@ -212,6 +212,14 @@ class Items extends REIM_Controller {
 
     public function newitem($rid = 0){
         //        $profile = $this->session->userdata('profile');
+        //如果rid>0时获取到报告所属人员
+        $uid = 0;
+        if($rid > 0){
+            $report = $this->report->get_detail($rid);
+            if($report['status'] > 0){
+                $uid = $report['data']['uid'];   
+            }
+        }
 
         //自定义消费字段信息
         $item_customization = array();
@@ -219,16 +227,20 @@ class Items extends REIM_Controller {
         //获取消费类型字典
         $item_type_dic = $this->reim_show->get_item_type_name();
 
-        $_profile = $this->user->reim_get_user();   
+        //$_profile = $this->user->reim_get_user();   
         $profile = array();
+        $_profile = json_decode($this->user->reim_get_info($uid),True);   
+        if($_profile['status'] > 0) {
+            $profile = $_profile['data'];
+        }
 
         $group_config = array();
         $item_configs = array();
         $item_config = array();
-        if($_profile && array_key_exists('profile',$_profile['data']))
-        {
-            $profile = $_profile['data']['profile'];
-        }
+        //if($_profile && array_key_exists('profile',$_profile['data']))
+        //{
+            //$profile = $_profile['data']['profile'];
+        //}
         
         $wanted_config = ['open_exchange','disable_borrow','disable_budget'];
         $company_config = $this->get_company_config($wanted_config,$profile);
