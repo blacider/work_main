@@ -673,13 +673,9 @@
                     };
 
                     $scope.updateTemplateType = function(e, templateData, $index) {
-                        if($(e.currentTarget).hasClass('checked')) {
-                            templateData.type.push($index + '');
-                        } else {
-                            var idx = templateData.type.indexOf($index + '');
-                            if(idx!=-1) {
-                                templateData.type.splice(idx, 1);
-                            }
+                        var selected = [$index+''];
+                        if(!$(e.currentTarget).hasClass('checked')) {
+                            templateData.type = selected;
                         }
                     };
 

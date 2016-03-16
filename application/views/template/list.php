@@ -283,7 +283,7 @@
                         <div class="column-wrap table-layout">
                             <h4 class="field-table-label table-cell"> 适用范围 </h4>
                             <div class="table-cell field-table-content-multi-row">
-                                <div class="field-checkbox" ng-class="{checked: templateItem['type'].indexOf($index+'')!=-1}" style="{{$last?'margin-bottom: 0':''}}" ng-repeat="templateTypeItem in templateTypeArray" ng-click="toggleCheckbox($event, $index); updateTemplateType($event, templateItem, $index)">
+                                <div class="field-radio" ng-class="{checked: templateItem['type'].indexOf($index+'')!=-1}" style="display: inline-block; margin: 0 40px 0 0" ng-repeat="templateTypeItem in templateTypeArray" ng-click="updateTemplateType($event, templateItem, $index)">
                                     <i class="icon"></i>
                                     <label>{{templateTypeItem}}</label>
                                 </div>
@@ -291,7 +291,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="field-table print-settings default-field-table" ng-if=0>
+                <div class="field-table print-settings default-field-table" ng-if=1>
                     <div style="padding: 42px 0;">
                         <h4 class="field-table-title">打印设置
                             <p class="buttons">

@@ -114,6 +114,7 @@
         }
     }
 
+<<<<<<< HEAD
 foreach($report['items'] as $i){
         $item_amount = '';
         if($i['currency'] != 'cny')
@@ -149,15 +150,16 @@ foreach($report['items'] as $i){
 if(!$is_other) {       
 foreach($items as $i){
     if($i['rid'] == 0 && in_array($i['prove_ahead'], $item_type) && in_array($i['prove_ahead'], $extra_item_type)){
+=======
+    foreach($report['items'] as $i) {
+>>>>>>> 1ab19e1... 删除编辑报销单里头的消费类型字段
         $item_amount = '';
-        if($i['currency'] != 'cny')
-        {
+        if($i['currency'] != 'cny') {
             $item_amount = round($i['amount']*$i['rate']/100,2);
-        }
-        else
-        {
+        } else {
             $item_amount = $i['amount'];
         }
+<<<<<<< HEAD
 
                                         ?>
                                         <tr>
@@ -182,6 +184,61 @@ foreach($items as $i){
                                     </table>
                                 </div>
                             </div>
+=======
+        ?>
+            <tr>
+                <td><input checked='true' name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>"
+                    data-id="<?php echo $i['id']; ?>" data-type="<?php echo $i['prove_ahead'];?>"></td>
+                <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
+                <td><?php echo $i['category_name']; ?></td>
+                <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
+                <td><?php echo $i['merchants']; ?></td>
+                <td><?php echo $i['note']?></td>
+                <td>
+                    <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
+                        <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="<?php echo $i['id']; ?>"></span>
+                        <span class="ui-icon green ui-icon-pencil tedit" data-id="<?php echo $i['id']; ?>"></span>
+                        <span class="ui-icon ui-icon-trash red  tdel" data-id="<?php echo $i['id']; ?>"></span>
+                    </div>
+                </td>
+            </tr>
+    <?php  } ?>
+    <?php
+    foreach($items as $i){
+        if($i['rid'] == 0 && in_array($i['prove_ahead'], $item_type) && in_array($i['prove_ahead'], $extra_item_type)){
+            $item_amount = '';
+            if($i['currency'] != 'cny')
+            {
+                $item_amount = round($i['amount']*$i['rate']/100,2);
+            }
+            else
+            {
+                $item_amount = $i['amount'];
+            }
+            ?>
+                <tr>
+                    <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>"
+                            data-id="<?php echo $i['id']; ?>" data-type="<?php echo $i['prove_ahead'];?>"></td>
+                    <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
+                    <td><?php echo $i['cate_str']; ?></td>
+
+                    <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
+                    <td><?php echo $i['merchants']; ?></td>
+                    <td><?php echo $i['note']?></td>
+                    <td>
+                        <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
+                            <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="<?php echo $i['id']; ?>"></span>
+                            <span class="ui-icon green ui-icon-pencil tedit" data-id="<?php echo $i['id']; ?>"></span>
+                            <span class="ui-icon ui-icon-trash red  tdel" data-id="<?php echo $i['id']; ?>"></span>
+                        </div>
+                    </td>
+                </tr>
+                <?php } ?>
+            <?php } ?>
+                </table>
+            </div>
+        </div>
+>>>>>>> 1ab19e1... 删除编辑报销单里头的消费类型字段
 
                             <input type="hidden" id="renew" value="0" name="renew">
                             <input type="reset" style="display:none;" id="reset">
@@ -206,9 +263,6 @@ foreach($items as $i){
     </div>
 </div>
 
-
-
-
 <div class="modal fade" id="force_submit">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -225,7 +279,6 @@ foreach($items as $i){
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 
 <div class="modal fade" id="modal_next">
     <div class="modal-dialog">

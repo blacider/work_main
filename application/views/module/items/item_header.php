@@ -239,8 +239,10 @@ $(document).ready(function(){
                     $load_data['item'] = $item;
                     $load_data['sob_id'] = $sob_id;
                 }
-                    
-                get_sub_widget($item_type_view_dic[$ic['type']],$load_data);
+                // var_dump(json_encode($ic));
+                if($ic['type'] != '10') {
+                    get_sub_widget($item_type_view_dic[$ic['type']],$load_data);
+                }
             }
         }
     }
