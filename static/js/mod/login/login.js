@@ -276,7 +276,7 @@ $(document).ready(function() {
                         data: {
                             u: _userId,
                             p: pass,
-                            is_r: "off"
+                            is_r: "on"
                         }
                     }).done(function(rs) {
                         if (rs['data'] != undefined) {
@@ -305,7 +305,7 @@ $(document).ready(function() {
             data: {
                 u: _userId,
                 p: pass,
-                is_r: "off"
+                is_r: "on"
             }
         }).done(function(rs) {
             if (rs['data'] != undefined) {
@@ -388,7 +388,7 @@ $(document).ready(function() {
                         data: {
                             u: _userId,
                             p: pass,
-                            is_r: "off"
+                            is_r: "on"
                         }
                     }).done(function(rs) {
                         if (rs['data'] != undefined) {
@@ -456,7 +456,7 @@ $(document).ready(function() {
                     data: {
                         u: _userId,
                         p: _pass,
-                        is_r: "off"
+                        is_r: "on"
                     }
                 }).done(function(rs) {
                     if (rs['data'] != undefined) {
@@ -531,7 +531,7 @@ $(document).ready(function() {
                     data: {
                         u: _userId,
                         p: _pass,
-                        is_r: "off"
+                        is_r: "on"
                     }
                 }).done(function(rs) {
                     if (rs['data'] != undefined) {
@@ -633,7 +633,7 @@ $(document).ready(function() {
                     data: {
                         u: _userId,
                         p: _pass,
-                        is_r: "off"
+                        is_r: "on"
                     }
                 }).done(function(rs) {
                     if (rs['data'] != undefined) {
@@ -674,7 +674,7 @@ $(document).ready(function() {
                     data: {
                         u: _userId,
                         p: _pass,
-                        is_r: "off"
+                        is_r: "on"
                     }
                 }).done(function(rs) {
                     if (rs['data'] != undefined) {
