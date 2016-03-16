@@ -1,30 +1,63 @@
-    <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">总额</label>
-                                <div class="col-xs-9 col-sm-9">
-                                    <span class="middle" id="tamount">0</span>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">选择消费</label>
-                                <?php if($is_other):?> 
-                                <a type="button" href="<?php echo base_url('items/newitem/' . $rid);?>" class="btn btn-primary add_item" >添加消费</a>
-                                <?php endif; ?>
-                                <div class="col-xs-9 col-sm-9">
-                                    <table class="table table-border">
-                                        <tr>
-                                            <thead>
-                                                <td>
-                                                   <input name="all_item" id="all_item" type="checkbox" class="form-controller all_item"> 全选</td>
-                                                <td>消费时间</td>
-                                                <td>类目</td>
-                                                <td>金额</td>
-                                                <td>类型</td>
-                                                <td>商家</td>
-                                                <td>备注</td>
-                                                <td>操作</td>
-                                            </thead>
-                                        </tr>
+<style>
+    .btn-add-consumption {
+        width: 130px;
+        height: 45px;
+        display: inline-block;
+        background: #ff575b;
+        border-radius: 6px;
+        color: #fff;
+        text-align: center;
+        line-height: 45px;
+        font-size: 14px;
+        border-bottom: 2px solid #D33E42;
+        text-decoration: none;
+        position: relative;
+        padding: 0;
+        margin-right: .1em;
+        cursor: pointer;
+        vertical-align: middle;
+        overflow: visible;
+    }
+    .btn-add-consumption:hover {
+        text-decoration: none;
+        color: #fff;
+    }
+    .btn-add-consumption img {
+        height: 21px;
+        margin-right: 9px;
+    }
+</style>
+<div class="form-group">
+    <label class="col-sm-1 control-label no-padding-right">总额</label>
+    <div class="col-xs-9 col-sm-9">
+        <span class="middle" id="tamount">0</span>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-1 control-label no-padding-right">选择消费</label>
+    <div class="col-xs-9 col-sm-9">
+        <?php if($is_other) { ?> 
+        <a type="button" href="<?php echo base_url('items/newitem/' . $rid);?>" class="btn-add-consumption" ><img src="/static/img/mod/template/icon/plus@2x.png" alt="">添加消费</a>
+        <?php } ?>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-1 control-label no-padding-right"></label>
+    <div class="col-xs-9 col-sm-9">
+        <table class="table table-border">
+            <tr>
+                <thead>
+                    <td>
+                       <input name="all_item" id="all_item" type="checkbox" class="form-controller all_item"> 全选</td>
+                    <td>消费时间</td>
+                    <td>类目</td>
+                    <td>金额</td>
+                    <td>类型</td>
+                    <td>商家</td>
+                    <td>备注</td>
+                    <td>操作</td>
+                </thead>
+            </tr>
 <?php
     $_config = '';
     if(array_key_exists('config',$profile['group']))
