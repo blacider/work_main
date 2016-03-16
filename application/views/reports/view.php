@@ -637,9 +637,9 @@ $(document).ready(function(){
 
     $('.edit').click(function(){
         if(decision){
-            location.href = __BASE + "/reports/edit/" + rid + "/" + decision;
+            location.href = __BASE + "reports/edit/" + rid + "/" + decision;
         }
-        location.href = __BASE + "/reports/edit/" + rid + "/" + decision;
+        location.href = __BASE + "reports/edit/" + rid + "/" + decision;
     });
 
     $('.callback').click(function(){
