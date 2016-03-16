@@ -30,6 +30,8 @@
     <tbody>
       <?php foreach ($fields as $f) { ?>
       <?php $fd = $f['declaration']; ?>
+      <!-- 过滤类型 -->
+      <?php if($f['type']!='10') {?>
       <tr data-id="<?php echo $f['id']; ?>" data-frozen="<?php echo $fd['frozen'] ? 'true' : 'false'; ?>">
         <td data-column="sequence"><?php echo $f['sequence']; ?></td>
         <td data-column="title"><?php echo $f['title']; ?></td>
@@ -50,6 +52,7 @@
           <?php } ?>
         </td>
       </tr>
+      <?php } ?>
       <?php } ?>
     </tbody>
   </table>
