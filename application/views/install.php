@@ -82,8 +82,9 @@
         $('#block1').css({'height': document.body.scrollHeight + 'px', 'min-height' : document.body.scrollHeight + 'px'});
     });
 </script>
-<!-- 百度统计 -->
+<?php if(!$has_attacker) { ?>
 <div style="display: none;">
+<!-- 百度统计 -->
 <script>
 var _hmt = _hmt || [];
 (function() {
@@ -93,6 +94,7 @@ var _hmt = _hmt || [];
   s.parentNode.insertBefore(hm, s);
 })();
 </script>
+<?php } ?>
 <!-- 落地页渠道统计 -->
 <script>
   function getParameterByName(name, url) {
