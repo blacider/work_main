@@ -9,6 +9,35 @@
 table td {
     vertical-align: middle !important;
 }
+
+.btn-add-consumption {
+    width: 130px;
+    height: 45px;
+    display: inline-block;
+    background: #ff575b;
+    border-radius: 6px;
+    color: #fff;
+    text-align: center;
+    line-height: 45px;
+    font-size: 14px;
+    border-bottom: 2px solid #D33E42;
+    text-decoration: none;
+    position: relative;
+    padding: 0;
+    margin-right: .1em;
+    cursor: pointer;
+    vertical-align: middle;
+    overflow: visible;
+}
+.btn-add-consumption:hover {
+    text-decoration: none;
+    color: #fff;
+}
+.btn-add-consumption img {
+    height: 21px;
+    margin-right: 9px;
+}
+
      
 </style>
 <div class="page-content" style="    overflow: hidden;">
@@ -161,9 +190,16 @@ table td {
                 <span class="middle" id="tamount">￥  <?php echo $amount; ?></span>
               </div>
             </div>
+
             <div class="form-group">
-              <label class="col-sm-1 control-label no-padding-right">消费列表</label>
-                <button value="新建消费"/>
+                <label class="col-sm-1 control-label no-padding-right">消费列表</label>
+                <div class="col-xs-9 col-sm-9">
+                    <a type="button" href="" class="btn-add-consumption" ><img src="/static/img/mod/template/icon/plus@2x.png" alt="">添加消费</a>
+                </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-1 control-label no-padding-right"></label>
               <div class="col-xs-10 col-sm-10">
                 <table class="table table-bordered table-striped">
                   <tr>
