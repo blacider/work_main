@@ -675,7 +675,7 @@ DataSourceTree.prototype.data = function(options, callback) {
 
 $(window).on('resize', function () {
     if($(document.body).width() != document.body.scrollWidth) {
-        $(document.body).width(document.body.scrollWidth);
+        $(document.body).width(document.body.scrollWidth + 36);
     } else {
         $(document.body).width('auto');
     }
