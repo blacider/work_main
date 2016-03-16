@@ -60,7 +60,7 @@
 				data: {},
 				onError: function(rs) {
 					var msg = rs['msg'] || JSON.stringify(rs);
-					alert(msg);
+					console.error(msg);
 				}
 			}, opts);
 			$.ajax({
@@ -78,7 +78,7 @@
 					def.resolve(rs);
 				},
 				error: function(e, opts) {
-					alert('request error')
+					console.error('request error');
 					def.resolve.apply(null, arguments);
 				}
 			});
