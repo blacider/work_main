@@ -341,7 +341,8 @@ class Items extends REIM_Controller {
                 'item_customization' => $item_customization,
                 'item_type_dic' => $item_type_dic,
                 'item_type_view_dic' => $item_type_view_dic,
-                'rid' => $rid
+                'rid' => $rid,
+                'profile' => $profile
             )
             //,$template_views
             );
