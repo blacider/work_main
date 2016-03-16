@@ -38,8 +38,36 @@
         clear: both;
    }
    .tree {
-        overflow-x: auto !important;;
+        overflow-x: auto !important;
    }
+
+    .col-1 {
+        min-width: 78px;
+    }
+    .col-2 {
+        min-width: 184px;
+    }
+    .col-3 {
+        min-width: 210px;
+    }
+    .col-4 {
+        min-width: 100px;
+    }
+    .col-5 {
+        min-width: 162px;
+    }
+    .col-6 {
+        min-width: 78px;
+    }
+    .col-7 {
+        min-width: 78px;
+    }
+    .col-8 {
+        min-width: 96px;
+    }
+    .col-9 {
+        min-width: 78px;
+    }
 </style>
 <script type="text/javascript">
     function searchSubmit(form) {
@@ -57,7 +85,7 @@
 <div class="page-content">
     <div class="page-content-area">
         <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-3" style="width: 210px;">
                 <div class="widget-box widget-color-blue" style="margin-top: 0;border-top-left-radius: 3px;border-top-right-radius: 3px;">
                     <div class="widget-header" style="height: 38px;min-height: 38px;background: #428bca;">
                         <div id="admin_groups_granted" data-gids="<?php echo htmlspecialchars(json_encode($admin_groups_granted))?>"></div>
@@ -70,8 +98,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-9">
-                <div class="panel panel-primary">
+            <div class="col-xs-9" style="margin-left: 12px;">
+                <div class="panel panel-primary" style="display: inline-block;">
                     <div class="panel-heading" style="padding: 10px 0 18px 0; height: 39px">
                         <h3 class="panel-title default col-sm-11 col-md-11" id="gname">人员信息[<?php echo count($members); ?>]</h3>
                         <p id="g_du"></p>
@@ -104,29 +132,29 @@
                                 }
                                 ?>
                                 <tr>
-                                    <td>
+                                    <td class="col-1">
                                         <?php echo $m['client_id']; ?>
                                     </td>
-                                    <td>
+                                    <td class="col-2">
                                         <?php echo $m['nickname']; ?> 
                                     </td>
-                                    <td>
+                                    <td class="col-3">
                                         <?php echo $m['email']; ?>
                                     </td>
-                                    <td>
+                                    <td class="col-4">
                                         <?php echo $m['phone']; ?>
                                     </td>
-                                    <td>
+                                    <td class="col-5">
                                         <?php echo $m['d']; ?>
                                     </td>
-                                    <td>
+                                    <td class="col-6">
                                         <?php if (array_key_exists($m['level_id'],$levels)) {?>
                                         <?php echo $levels[$m['level_id']]; }?>
                                     </td>
-                                    <td>
+                                    <td class="col-7">
                                         <?php echo $m['manager']; ?>
                                     </td>
-                                    <td>
+                                    <td class="col-8">
                                         <?php 
 
                                             $desc = '员工';
@@ -152,7 +180,7 @@
                                     </td>
 
                                     <?php if($profile['admin'] == 1 ||  $profile['admin'] == 3) { ?>
-                                    <td>
+                                    <td class="col-9">
                                     <a href="/members/editmember/<?php echo $m['id']; ?>">
                                         <i  style="margin-left:10px;" alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 fa fa-pencil"></i>
                                     </a>
@@ -644,5 +672,14 @@ DataSourceTree.prototype.data = function(options, callback) {
         });
     }, parseInt(Math.random() * 500) + 200);
 };
+
+$(window).on('resize', function () {
+    if($(document.body).width() != document.body.scrollWidth) {
+        $(document.body).width(document.body.scrollWidth);
+    } else {
+        $(document.body).width('auto');
+    }
+});
+$(window).trigger('resize');
 </script>
 
