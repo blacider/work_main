@@ -210,7 +210,7 @@ class Items extends REIM_Controller {
         return $company_config;
     }
 
-    public function newitem(){
+    public function newitem($rid = 0){
         //        $profile = $this->session->userdata('profile');
 
         //自定义消费字段信息
@@ -328,7 +328,8 @@ class Items extends REIM_Controller {
                 'is_burden' => $is_burden,
                 'item_customization' => $item_customization,
                 'item_type_dic' => $item_type_dic,
-                'item_type_view_dic' => $item_type_view_dic
+                'item_type_view_dic' => $item_type_view_dic,
+                'rid' => $rid
             )
             //,$template_views
             );
@@ -407,6 +408,11 @@ class Items extends REIM_Controller {
         }
         $attachments = $this->input->post('attachments');
 
+        $rid = intval($this->input->post('rid'));
+        if($rid > 0){
+            $data['rid'] = $rid;
+        }
+
         $data['uids'] = $uids;
         $data['afford_ids'] = $afford_ids;
         $data['amount'] = $amount;
@@ -431,6 +437,11 @@ class Items extends REIM_Controller {
         //$obj = $this->items->create($amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$end_dt,$uids, $afford_ids,$attachments, $currency,$customization);
         log_message('debug','create_item_back:' . json_encode($obj));
         // TODO: 提醒的Tips
+        //返回修改其他人的报告
+        if(array_key_exists('rid',$data)){
+            redirect(base_url('reports/edit/' . $data['rid']. '/1'));
+        }
+
         if($renew){
             redirect(base_url('items/newitem'));
         } else {

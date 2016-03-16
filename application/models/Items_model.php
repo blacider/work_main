@@ -188,6 +188,9 @@ class Items_Model extends Reim_Model {
             'currency' => $data['currency'],
             'customization' => $data['customization']
         );
+        if(array_key_exists('rid',$data)){
+            $s['rid'] = $data['rid'];
+        }
         array_push($items, $s);
         $data = array('items' => json_encode($items));
         $jwt = $this->session->userdata('jwt');
