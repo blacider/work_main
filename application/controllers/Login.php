@@ -85,6 +85,10 @@ class Login extends REIM_Controller {
 
     public function index()
     {
+        $jwt = $this->session->userdata('jwt');
+        if ($jwt) {
+            return redirect(base_url('items'));
+        }
         $this->load->library('user_agent');
         //$this->load->helper('user_agent', 'agent');
         $refer = $this->agent->referrer();
