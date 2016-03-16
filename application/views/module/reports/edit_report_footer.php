@@ -7,6 +7,9 @@
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">选择消费</label>
+                                <?php if($is_other):?> 
+                                <a type="button" href="<?php echo base_url('items/newitem/' . $rid);?>" class="btn btn-primary add_item" >添加消费</a>
+                                <?php endif; ?>
                                 <div class="col-xs-9 col-sm-9">
                                     <table class="table table-border">
                                         <tr>
