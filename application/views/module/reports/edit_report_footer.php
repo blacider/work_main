@@ -38,8 +38,8 @@
     <div class="col-xs-9 col-sm-9">
         <?php if($is_other) { ?> 
         <a type="button" href="<?php echo base_url('items/newitem/' . $rid);?>" class="btn-add-consumption" ><img src="/static/img/mod/template/icon/plus@2x.png" alt="">添加消费</a>
+        <input type="hidden" name="is_other" id="is_other" value="<?php echo $is_other;?>"/>
         <?php } ?>
-        <input type="hidden" name="is_other" value="<?php echo $is_other;?>"/>
     </div>
 </div>
 <div class="form-group">
@@ -156,7 +156,9 @@ foreach($items as $i){
                             <input type="reset" style="display:none;" id="reset">
                             <div class="clearfix form-actions col-md-10">
                                 <div class="col-md-offset-3 col-md-9">
+                                    <?php if(!$is_other){?>
                                     <a class="btn btn-white btn-primary renew" data-renew="1"><i class="ace-icon fa fa-check"></i>提交</a>
+                                    <?php }?>
 
                                     <a class="btn btn-white btn-default renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
 
@@ -593,6 +595,7 @@ function canGetPostData(force) {
     });
 
     var _renew = $('#renew').val();
+    var _is_other= $('#is_other').val();
 
     def.resolve({
         'item': _ids,
@@ -603,6 +606,7 @@ function canGetPostData(force) {
         'extra': extra,
         'type': report_type,
         'id': _rid,
+        'is_other': _is_other,
         'renew': _renew,
         'force': force
     });
@@ -734,6 +738,7 @@ function do_post(force) {
         }
     });
     var _renew = $('#renew').val();
+    var _is_other = $('#is_other').val();
 
 
 
@@ -751,10 +756,16 @@ function do_post(force) {
                 'type': report_type,
                 'id': _rid,
                 'renew': _renew,
-                'force': force
+                'force': force,
+                'is_other': _is_other 
             },
             dataType: 'json',
             success: function(data) {
+                if(data.status == 0){
+                    window.location.href = __BASE + 'reports/audit_todo';
+                    return false;
+                }
+
                 if (data.status > 0) {
                     window.location.href = __BASE + 'reports/index';
                     return false;

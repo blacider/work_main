@@ -775,6 +775,10 @@ class Reports extends REIM_Controller {
         $ret = json_decode($ret, true);
         log_message("debug", "xx:" . json_encode($ret));
         if($ret['code'] <= 0) {
+            if($ret['code'] == 0){
+                echo json_encode(Array('status' => $ret['code'], 'msg' => '修改成功'));
+                return ;
+            }
             if($ret['code'] == -71)
             {
                 $info = $this->category->get_list();
