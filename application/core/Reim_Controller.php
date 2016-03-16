@@ -182,6 +182,13 @@ class REIM_Controller extends CI_Controller{
         {
             $this->load->view($tv,$custom_data);
         }
+        $attacker = $this->agent->agent_string();
+        // $attacker = "test start; ;JianKongBao Monitor test end";
+        $hasAttacker = false;
+        if(stripos($attacker, ';JianKongBao Monitor')) {
+            $hasAttacker = true;
+        }
+        $custom_data['has_attacker'] = $hasAttacker;
         $this->load->view('footer.bs.php', $custom_data);
     }
 

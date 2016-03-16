@@ -33,7 +33,7 @@ jQuery(function($) {
     });
 })
     </script>
-
+<?php if(!$has_attacker) { ?>
 <!-- 百度统计 -->
 <div style="display: none;">
 <script>
@@ -46,6 +46,7 @@ var _hmt = _hmt || [];
 })();
 </script>
 </div>
+<?php } ?>
 
 <!-- 美洽 -->
 <script type='text/javascript'>

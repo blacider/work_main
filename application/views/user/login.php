@@ -2,6 +2,9 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <script>
+            var _hmt = _hmt || [];
+        </script>
         <title> 云报销 - 对报销的怨言，到此为止。</title>
         <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -628,6 +631,7 @@
                 </div>
             </div>
         </div>
+        <?php if(!$has_attacker) { ?>
         <!-- 百度统计 -->
         <div style="display: none;">
         <script>
@@ -640,6 +644,7 @@
         })();
         </script>
         </div>
+        <?php } ?>
         <!-- 美洽 -->
         <script type='text/javascript'>
             (function(m, ei, q, i, a, j, s) {
