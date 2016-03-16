@@ -190,14 +190,24 @@ foreach($members as $m) {
                                                 <div class="col-xs-12 col-sm-12 "  style="margin-left:0px !important;padding-left:0px !important;" >
                                                     <div class="btn-toolbar" id="<?php echo 'btns' . $field['id'];?>">
                                                         <div class="col-xs-8 col-sm-8">
+                                                        
+                                                            <select class="chosen-select tag-input-style col-xs-6 field_value bank_select" id="<?php echo 'bank_select_' . $field['id'];?>" data-type="4" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" data-placeholder="请选择" <?php if($field['required'] == 1){echo 'required';}?> >
+                                                                <!-- value 可能为空 -->
+                                                                <?php if(array_key_exists('value', $field)) { ?>
+                                                                    <option value='<?php echo json_encode($value);?>' >
+                                                                        <?php echo $value['account'] . '-' . $value['bankname'] . '-' . $value['cardno'];?>
+                                                                    </option>>
+                                                                <?php } else { ?>
+                                                                    <option value=''>
+                                                                        请选择银行卡
+                                                                    </option>>
+                                                                <?php } ?>
 
-                                                                <select class="chosen-select tag-input-style col-xs-6 field_value bank_select" id="<?php echo 'bank_select_' . $field['id'];?>" data-type="4" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" data-placeholder="请选择" <?php if($field['required'] == 1){echo 'required';}?>>
-                                                                            <option value='<?php echo json_encode($value);?>'><?php echo $value['account'] . '-' . $value['bankname'] . '-' . $value['cardno'];?></option>>
-                                                                    <?php foreach($banks as $b) { ?>
-                                                                            <option value='<?php echo json_encode($b); ?>'><?php echo $b['account']  . '-' . $b['bankname'] . '-' . $b['cardno']; ?></option>
-
-                                                                    <?php } ?>
-                                                                </select>
+                                                                <?php foreach($banks as $b) { ?>
+                                                                    <option value='<?php echo json_encode($b); ?>'>
+                                                                        <?php echo $b['account']  . '-' . $b['bankname'] . '-' . $b['cardno']; ?></option>
+                                                                <?php } ?>
+                                                            </select>
 
                                                         </div>
                                                         <div class="btn-group">
