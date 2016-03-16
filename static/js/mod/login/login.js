@@ -1,7 +1,22 @@
 $(document).ready(function() {
     bindEvent();
 
-    var __fr__ = getParameterByName('fr') || 'null';
+    var __fr__ = getParameterByName('fr') || '';
+
+    // set fr in cookie 30 minutes
+    function setFrCookie() {
+        __fr__ && $.cookie('reg_fr', __fr__, {
+            expires: 1/24/60 * 30
+        });
+    };
+
+    setFrCookie();
+
+    function getFrCookie() {
+        return $.cookie('reg_fr');
+    };
+
+    __fr__ = getFrCookie();
 
     (function checkHash() {
         if(location.hash.indexOf('login')!=-1) {
