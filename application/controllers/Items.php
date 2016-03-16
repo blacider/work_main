@@ -452,12 +452,17 @@ class Items extends REIM_Controller {
         // TODO: 提醒的Tips
         //返回修改其他人的报告
         if(array_key_exists('rid',$data)){
+            if($renew)
+            {
+                redirect(base_url('items/newitem/' . $data['rid']));
+            }
             redirect(base_url('reports/edit/' . $data['rid']. '/1'));
         }
 
-        if($renew){
+        if($renew)
+        {
             redirect(base_url('items/newitem'));
-        } else {
+        }else{
             redirect(base_url('items/index'));
         }
     }
