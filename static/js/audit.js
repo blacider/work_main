@@ -175,7 +175,6 @@ jQuery(grid_selector).jqGrid({
             });
         bind_event();
         var table = this;
-        this.p.lastSelected = lastSelected;
         setTimeout(function(){
             //styleCheckbox(table);
             updateActionIcons(table);

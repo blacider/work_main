@@ -281,7 +281,6 @@ try {
 				$(".cbox")[index].checked = true;
 			});
 			bind_event();
-			this.p.lastSelected = lastSelected;
 			var table =  this;
 			setTimeout(function() {
 				//styleCheckbox(table);
