@@ -945,7 +945,8 @@ class Items extends REIM_Controller {
         if($profile['id'] != $_uid){
             $item_update_in = 1;
         }
-
+        log_message("debug","uid:" . $_uid);
+        log_message("debug","item_update_in:" . $item_update_in);
         if($item_update_in != 0) {
             $input_data = array();
             $default_customization = array();
@@ -985,17 +986,19 @@ class Items extends REIM_Controller {
         if($renew)
         {
             if($item_update_in != 0){
-                redirect(base_url('items/newitem/' . $rid));
+                return redirect(base_url('items/newitem/' . $rid));
+            } else {
+                return redirect(base_url('items/newitem'));
             }
-            redirect(base_url('items/newitem'));
         }
         if(!$id) {
             return redirect(base_url('items/index'));
         } else {
             if($item_update_in != 0){
-                redirect(base_url("reports/edit/" . $rid . "/1"));
+                return redirect(base_url("reports/edit/" . $rid . "/1"));
+            }else{
+                return redirect(base_url("reports/edit/" . $rid));
             }
-            redirect(base_url("reports/edit/" . $rid));
         }
     }
 
