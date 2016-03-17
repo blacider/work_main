@@ -347,7 +347,7 @@ table td {
         <?php if($decision == 1) { ?>
         <a style="margin-left: 20px;" class="btn btn-white tpass" ><i class="ace-icon fa fa-check-square-o gray bigger-110"></i>通过</a>
         <a style="margin-left: 20px;" class="btn btn-white tdeny" ><i class="ace-icon  glyphicon glyphicon-remove gray bigger-110"></i>退回</a>
-        <a style="margin-left: 20px;" class="btn btn-white edit" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>修改</a>
+        <a style="margin-left: 20px;" class="btn btn-white edit" data-renew="-1"><i class="ace-icon fa fa-pencil gray bigger-110"></i>修改</a>
         <?php } else if(in_array($profile['admin'],[1,2]) && $report['status'] == 2) { ?>
         <a style="margin-left: 20px;" class="btn btn-white tapprove" ><i class="ace-icon fa fa-check-square-o gray bigger-110"></i>通过</a>
         <a style="margin-left: 20px;" class="btn btn-white finance_tdeny" ><i class="ace-icon  glyphicon glyphicon-remove gray bigger-110"></i>退回</a>
