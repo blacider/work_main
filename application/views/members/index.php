@@ -7,25 +7,25 @@
 
 <style type="text/css">
     #search{
-position: absolute;
-  left: 75%;
-  top: 64px;
-  z-index: 2;
-  height: 26px;
-  width: 12%;
-  border-style: ridge;
+        position: absolute;
+        left: 75%;
+        top: 64px;
+        z-index: 2;
+        height: 26px;
+        width: 12%;
+        border-style: ridge;
     }
     #search-submit {
-  background-color: #fe575f;
-  position: absolute;
-  left: 88%;
-  top: 64px;
-  z-index: 2;
-  border: 0;
-  color: white;
-  height: 25px;
-  border-radius: 3px;   
-  font-size: 12px;
+        background-color: #fe575f;
+        position: absolute;
+        left: 88%;
+        top: 64px;
+        z-index: 2;
+        border: 0;
+        color: white;
+        height: 25px;
+        border-radius: 3px;   
+        font-size: 12px;
    }
    .tree .tree-folder, .tree .tree-item {
         white-space: nowrap !important;
@@ -38,8 +38,36 @@ position: absolute;
         clear: both;
    }
    .tree {
-        overflow-x: auto !important;;
+        overflow-x: auto !important;
    }
+
+    .col-1 {
+        min-width: 78px;
+    }
+    .col-2 {
+        min-width: 184px;
+    }
+    .col-3 {
+        min-width: 210px;
+    }
+    .col-4 {
+        min-width: 100px;
+    }
+    .col-5 {
+        min-width: 162px;
+    }
+    .col-6 {
+        min-width: 78px;
+    }
+    .col-7 {
+        min-width: 78px;
+    }
+    .col-8 {
+        min-width: 96px;
+    }
+    .col-9 {
+        min-width: 78px;
+    }
 </style>
 <script type="text/javascript">
     function searchSubmit(form) {
@@ -55,25 +83,14 @@ position: absolute;
     <button type="submit" id="search-submit">搜索</button>
 </form>
 <div class="page-content">
-<div class="page-content-area">
-<div class="row">
-<!-- <div class="col-xs-3">
-    <div class="panel panel-primary">
-        <div class="panel-heading"><h3 class="panel-title default">组织架构</h3></div>
-        <div class="panel-body">
-            <div id="grouptree" class="tree"></div>
-        </div>
-    </div>
-</div> -->
-
-
-<div class="col-sm-3">
-        <div class="widget-box widget-color-blue" style="margin-top: 0;border-top-left-radius: 3px;border-top-right-radius: 3px;">
-                <div class="widget-header" style="height: 38px;min-height: 38px;background: #428bca;">
-                    <div id="admin_groups_granted" data-gids="<?php echo htmlspecialchars(json_encode($admin_groups_granted))?>"></div>
-                    <h4 class="widget-title lighter smaller" style="font-size: 16px;">组织结构</h4>
+    <div class="page-content-area">
+        <div class="row">
+            <div class="col-sm-3" style="width: 210px;">
+                <div class="widget-box widget-color-blue" style="margin-top: 0;border-top-left-radius: 3px;border-top-right-radius: 3px;">
+                    <div class="widget-header" style="height: 38px;min-height: 38px;background: #428bca;">
+                        <div id="admin_groups_granted" data-gids="<?php echo htmlspecialchars(json_encode($admin_groups_granted))?>"></div>
+                        <h4 class="widget-title lighter smaller" style="font-size: 16px;">组织结构</h4>
                     </div>
-
                     <div class="widget-body">
                         <div class="widget-main padding-8">
                             <div id="tree2" class="tree"></div>
@@ -81,113 +98,106 @@ position: absolute;
                     </div>
                 </div>
             </div>
+            <div class="col-xs-9" style="margin-left: 12px;">
+                <div class="panel panel-primary" style="display: inline-block;">
+                    <div class="panel-heading" style="padding: 10px 0 18px 0; height: 39px">
+                        <h3 class="panel-title default col-sm-11 col-md-11" id="gname">人员信息[<?php echo count($members); ?>]</h3>
+                        <p id="g_du"></p>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table" id="gtable">
+                            <tr>
+                                <th>ID</th>
+                                <th>名称</th>
+                                <th>邮箱</th>
+                                <th>手机</th>
+                                <th>部门</th>
+                                <th>职位</th>
+                                <th>默认审批人</th>
+                                <th>角色</th>
+                                <?php if($profile['admin'] == 1 || $profile['admin'] == 3) { ?>
+                                <th>操作</th>
+                                <?php } ?>
+                            </tr>
+                                <?php foreach($members as $m){ ?>
+                                <?php
+                                if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['d'],$search) + substr_count($m['email'],$search) + substr_count($m['phone'],$search) + substr_count($m['client_id'], $search)== 0) {
+                                    if (array_key_exists($m['level_id'],$levels)) {
+                                        if (substr_count($levels[$m['level_id']],$search) == 0) {
+                                            continue;
+                                        }
+                                    } else {
+                                        continue;
+                                    }
+                                }
+                                ?>
+                                <tr>
+                                    <td class="col-1">
+                                        <?php echo $m['client_id']; ?>
+                                    </td>
+                                    <td class="col-2">
+                                        <?php echo $m['nickname']; ?> 
+                                    </td>
+                                    <td class="col-3">
+                                        <?php echo $m['email']; ?>
+                                    </td>
+                                    <td class="col-4">
+                                        <?php echo $m['phone']; ?>
+                                    </td>
+                                    <td class="col-5">
+                                        <?php echo $m['d']; ?>
+                                    </td>
+                                    <td class="col-6">
+                                        <?php if (array_key_exists($m['level_id'],$levels)) {?>
+                                        <?php echo $levels[$m['level_id']]; }?>
+                                    </td>
+                                    <td class="col-7">
+                                        <?php echo $m['manager']; ?>
+                                    </td>
+                                    <td class="col-8">
+                                        <?php 
 
-<div class="col-xs-9">
-    <!--
-    <table id="grid-table"></table>
-    -->
-    <div class="panel panel-primary">
-    <div class="panel-heading" style="padding: 10px 0 18px 0; height: 39px"><h3 class="panel-title default col-sm-11 col-md-11" id="gname">人员信息[<?php echo count($members); ?>]</h3><p id="g_du"></p></div>
-        <div class="panel-body">
-            <table class="table" id="gtable">
-                <tr>
-                    <th>ID</th>
-                    <th>名称</th>
-                    <th>邮箱</th>
-                    <th>手机</th>
-                    <th>部门</th>
-                    <th>职位</th>
-                    <th>默认审批人</th>
-                    <th>角色</th>
-<?php
-if($profile['admin'] == 1 || $profile['admin'] == 3) {
-?>
-                    <th>操作</th>
-<?php } ?>
-                </tr>
-<?php 
-foreach($members as $m){
-?>
-<?php
-if($search != '' && substr_count($m['nickname'],$search) + substr_count($m['d'],$search) + substr_count($m['email'],$search) + substr_count($m['phone'],$search) + substr_count($m['client_id'], $search)== 0) {
-    if (array_key_exists($m['level_id'],$levels)) {
-        if (substr_count($levels[$m['level_id']],$search) == 0) {
-            continue;
-        }
-    } else {
-        continue;
-    }
-}
-?>
-<tr>
-    <td>
-        <?php /*echo $m['email'];*/ ?>
-        <?php echo $m['client_id']; ?>
-    </td>
-    <td>
-        <?php echo $m['nickname']; ?> 
-    </td>
-    <td>
-        <?php echo $m['email']; ?>
-    </td>
-    <td>
-        <?php echo $m['phone']; ?>
-    </td>
-    <td>
-        <?php echo $m['d']; ?>
-    </td>
-    <td>
-        <?php if (array_key_exists($m['level_id'],$levels)) {?>
-        <?php echo $levels[$m['level_id']]; }?>
-    </td>
-    <td>
-        <?php echo $m['manager']; ?>
-    </td>
-    <td>
-<?php 
-        $desc = '员工';
-        $color = '<span class="label label-info arrowed">员工</span>';
-    if($m['admin'] == 1){
-        $desc = '管理员';
-        $color = '<span class="label label-success arrowed">管理员</span>';
-    } else if ($m['admin'] == 2){
-        $desc = '出纳';
-        $color = '<span class="label label-warning arrowed">出纳</span>';
-    } else if ($m['admin'] == 3){
-        $desc = 'IT人员';
-        $color = '<span class="label label-purple arrowed">IT人员</span>';
-    } else if ($m['admin'] == 4){
-        $desc = '部门管理员';
-        $color = '<span class="label label-purple arrowed">部门管理员</span>';
-    }
-?>
-<a href="javascript:void(0)" title="<?php echo $desc; ?>" data-id="<?php echo $m['id']; ?>" ><?php echo $color; ?></a>
-    </td>
+                                            $desc = '员工';
+                                            $color = '<span class="label label-info arrowed">员工</span>';
 
-<?php
-if($profile['admin'] == 1 ||  $profile['admin'] == 3) {
-?>
-    <td>
-<a href="/members/editmember/<?php echo $m['id']; ?>"><i  style="margin-left:10px;" alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 fa fa-pencil"></i></a>
-<a href="javascript:void(0)" class="remove_user" data-id="<?php echo $m['id']; ?>"><i  style="margin-left:10px;" alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 red fa fa-trash-o"></i></a>
-</td>
-<?php 
-    }
-?>
-</tr>
-<?php 
-}
-?>
-            </table>
+                                            if($m['admin'] == 1){
+                                                $desc = '管理员';
+                                                $color = '<span class="label label-success arrowed">管理员</span>';
+                                            } else if ($m['admin'] == 2){
+                                                $desc = '出纳';
+                                                $color = '<span class="label label-warning arrowed">出纳</span>';
+                                            } else if ($m['admin'] == 3){
+                                                $desc = 'IT人员';
+                                                $color = '<span class="label label-purple arrowed">IT人员</span>';
+                                            } else if ($m['admin'] == 4){
+                                                $desc = '部门管理员';
+                                                $color = '<span class="label label-purple arrowed">部门管理员</span>';
+                                            }
+                                        ?>
+                                        <a href="javascript:void(0)" title="<?php echo $desc; ?>" data-id="<?php echo $m['id']; ?>" >
+                                            <?php echo $color; ?>
+                                        </a>
+                                    </td>
+
+                                    <?php if($profile['admin'] == 1 ||  $profile['admin'] == 3) { ?>
+                                    <td class="col-9">
+                                    <a href="/members/editmember/<?php echo $m['id']; ?>">
+                                        <i  style="margin-left:10px;" alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 fa fa-pencil"></i>
+                                    </a>
+                                    <a href="javascript:void(0)" class="remove_user" data-id="<?php echo $m['id']; ?>">
+                                        <i  style="margin-left:10px;" alt="<?php echo $desc; ?>" class="ace-icon align-top bigger-125 red fa fa-trash-o"></i>
+                                    </a>
+                                    </td>
+                                    <?php } ?>
+                                </tr>
+                                <?php } ?>
+                        </table>
+                    </div>
+                </div>
+                <div id="grid-pager"></div>
+            </div>
         </div>
     </div>
-
-
-<div id="grid-pager"></div>
-</div>
-</div>
-</div>
-
 </div>
 
 
@@ -464,100 +474,65 @@ function bind_remove_from_group() {
         }
     });
 }
-
-
-/*$(document).ready(function(){
-    bind_event();
-    $.ajax({
-        url: __BASE + "/members/listtreegroup",
-            method: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                var _data = Array();
-                var _root = Array();
-                $(data).each(function(idx, val){
-                    //_key = 'item' + idx;
-                    //_data[_key] = {name : val.name, type : 'item', additionalParameters : {id : val.id}};
-                    // $(_data).push({name : val.name, type : 'item', additionalParameters : {id : val.id}});
-                    _data.push({name : val.name, type : 'item', additionalParameters : {id : val.id}});
-
-                });
-                //_root = {'root' : {name : '全体员工', 'type' : 'folder', 'additionalParameters' : {id : -2, children : _data}}};
-                //var treeDataSource = new DataSource({data : _root});
-                var treeDataSource = new DataSource({data : _data});
-                $('#grouptree').ace_tree({
-                    dataSource: treeDataSource ,
-                        multiSelect:false,
-                        loadingHTML:'<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
-                        'open-icon' : 'ace-icon tree-minus',
-                        'close-icon' : 'ace-icon tree-plus',
-                        'selectable' : true,
-                        'selected-icon' : 'ace-icon fa fa-check',
-                        'unselected-icon' : 'ace-icon fa fa-times'
-                });
-                $('#grouptree').on('updated', function(e, result) {
-                })
-                    .on('selected', function(e, result) {
-                        var _data = result.info[0];
-                        var _gid  =  _data.additionalParameters.id;
-                        load_group(_gid);
-                    })
-                    .on('unselected', function(e) { })
-                    .on('opened', function(e) { })
-                    .on('closed', function(e) { });
-
-            }
-    });
-});*/
 </script>
 <script language="javascript">
-var __BASE = "<?php echo $base_url; ?>";
+    var __BASE = "<?php echo $base_url; ?>";
 </script>
 <script type="text/javascript">
-
-        Array.prototype.remove=function(obj){ 
-            for(var i =0;i <this.length;i++){ 
-                var temp = this[i]; 
-                if(!isNaN(obj)){ 
-                temp=i; 
-            } 
-            if(temp == obj){ 
-                for(var j = i;j <this.length;j++){ 
-                this[j]=this[j+1]; 
-            } 
-                this.length = this.length-1; 
-                } 
-            } 
-            } 
-    var scripts = [null,"/static/ace/js/fuelux/fuelux.tree.min.js", null]
+    Array.prototype.remove = function(obj) {
+        for (var i = 0; i < this.length; i++) {
+            var temp = this[i];
+            if (!isNaN(obj)) {
+                temp = i;
+            }
+            if (temp == obj) {
+                for (var j = i; j < this.length; j++) {
+                    this[j] = this[j + 1];
+                }
+                this.length = this.length - 1;
+            }
+        }
+    };
+    var scripts = [null, "/static/ace/js/fuelux/fuelux.tree.min.js", null];
     ace.load_ajax_scripts(scripts, function() {
-      //inline scripts related to this page
-      bind_event();
-         jQuery(function($){
-         $.ajax({
-            url:__BASE+ "/members/getgroups",
-            method:'GET',
-            dataType:'json',
-            success:function(data){
+        //inline scripts related to this page
+        bind_event();
+        jQuery(function($) {
+            $.ajax({
+                url: __BASE + "/members/getgroups",
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
                     var ace_icon = ace.vars['icon'];
                     var js_data = {};
                     var obj = new Array();
                     var unroot = new Array();
-                    js_data['0'] = {name: '全体员工', id:'-2' ,type: 'folder', 'icon-class':'red', additionalParameters : {children : []}}; 
+                    js_data['0'] = {
+                        name: '全体员工',
+                        id: '-2',
+                        type: 'folder',
+                        'icon-class': 'red',
+                        additionalParameters: {
+                            children: []
+                        }
+                    };
                     var _tree_structure = [];
                     var _all_node = [];
-                    $(data).each(function(idx, item){
+                    $(data).each(function(idx, item) {
                         var _id = item['id'];
                         var _pid = item['pid'];
-                        if(_all_node[_id] == undefined) {
+                        if (_all_node[_id] == undefined) {
                             _all_node[_id] = {};
                             _all_node[_id]['child'] = [];
                             _all_node[_id]['item'] = item;
                         }
-                        if(_all_node[_pid] == undefined) {
+                        if (_all_node[_pid] == undefined) {
                             _all_node[_pid] = {};
                             _all_node[_pid]['child'] = [];
-                            _all_node[_pid]['item'] = {'pid' : _pid, 'name' : ''};
+                            _all_node[_pid]['item'] = {
+                                'pid': _pid,
+                                'name': ''
+                            };
                             //_all_node[_pid]['item'] = {};
                         }
                         _all_node[_id]['item'] = item;
@@ -566,18 +541,18 @@ var __BASE = "<?php echo $base_url; ?>";
                     var _valid_node = [];
                     var _stop_flag = 1;
                     var _idx = 0;
-                    while(_stop_flag) {
-                        if(_idx > 3) {
+                    while (_stop_flag) {
+                        if (_idx > 3) {
                             _stop_flag = 0;
                             continue;
                         }
                         _idx += 1;
                         _stop_flag = 0;
-                        $(_all_node).each(function(idx, item){
-                            if(idx == 0) {
+                        $(_all_node).each(function(idx, item) {
+                            if (idx == 0) {
                                 return;
                             }
-                            if(item == undefined) return;
+                            if (item == undefined) return;
                             var _pid = item['item']['pid'];
                             var _id = item['item']['id'];
                             _all_node[_pid]['child'][_id] = item;
@@ -585,37 +560,42 @@ var __BASE = "<?php echo $base_url; ?>";
                             //    _all_node[_id]['child'] = [];
                         });
                         var _s_all_node = [];
-
                         $(_all_node).each(function(idx, item) {
-                            if(item == undefined) return;
-                            if(item['child'].length == 0) return;
-                            if(typeof item['pid'] == undefined) return;
+                            if (item == undefined) return;
+                            if (item['child'].length == 0) return;
+                            if (typeof item['pid'] == undefined) return;
                             //if(item['item']['pid'] == 0) return;
                             var _pid = item['item']['pid'];
                             var _id = item['item']['id'];
-                            if(_pid != 0 && _all_node[_pid]['child'][_id] != undefined) return;
+                            if (_pid != 0 && _all_node[_pid]['child'][_id] != undefined) return;
                             _s_all_node[idx] = item;
                             _stop_flag = 1;
-                            
                         });
                         _all_node = _s_all_node;
                         _stop_flag = 0;
                         // 如果都是顶级节点了，那么就可以退出了
                         _s_all_node = [];
-                        $(_all_node).each(function(idx, item){
-                            if(item == undefined) return;
-                            if(item['item']['name'] == "") _s_all_node[idx] = item;
-                            if(item['item']['pid'] == 0) return;
+                        $(_all_node).each(function(idx, item) {
+                            if (item == undefined) return;
+                            if (item['item']['name'] == "") _s_all_node[idx] = item;
+                            if (item['item']['pid'] == 0) return;
                             _stop_flag = 1;
                         });
                         _all_node = _s_all_node;
                     }
-                    
-                    var build_node = function(pid, item){
-                        var node = {name: item['item']['name'], id:item['item']['id'], additionalParameters : {children : []} ,type: 'folder', 'icon-class':'red'};   
-                        if(item['child'].length > 0) {
-                            $(item['child']).each(function(idx, _item){
-                                if(_item == undefined) return;
+                    var build_node = function(pid, item) {
+                        var node = {
+                            name: item['item']['name'],
+                            id: item['item']['id'],
+                            additionalParameters: {
+                                children: []
+                            },
+                            type: 'folder',
+                            'icon-class': 'red'
+                        };
+                        if (item['child'].length > 0) {
+                            $(item['child']).each(function(idx, _item) {
+                                if (_item == undefined) return;
                                 _child = build_node(_item['item']['id'], _item);
                                 node['additionalParameters']['children'].push(_child);
                             });
@@ -623,165 +603,83 @@ var __BASE = "<?php echo $base_url; ?>";
                         return node;
                     }
                     _sdata = [];
-                    if(_all_node[0] != undefined)  {
-                        $(_all_node[0]['child']).each(function(idx, item){
-                            if(item != undefined){
+                    if (_all_node[0] != undefined) {
+                        $(_all_node[0]['child']).each(function(idx, item) {
+                            if (item != undefined) {
                                 _sdata.push(item);
                             }
                         });
                     }
-
-                    $(_sdata).each(function(idx, item){
+                    $(_sdata).each(function(idx, item) {
                         _child = build_node(idx, item);
                         js_data[0]['additionalParameters']['children'].push(_child);
                     });
-                    
-                        /*
-                        // 存储所有的数据，构成一个一维的数组，其key为id
-                        if(item['pid'] == 0) {
-                            if(js_data[item['id']] == undefined){
-                                js_data[item['id']] = {name: item['name'], id:item['id'] ,type: 'folder', 'icon-class':'red', additionalParameters : {children : {}}};   
-                            } else {
-                                js_data[item['id']]['name'] = item['name'];
-                                js_data[item['id']]['type'] =  'folder'; 
-                                js_data[item['id']]['icon-class'] = 'red';
-                            }
-                        }
-                        else {
-                            if(item['id'] < 0) return;
-                            if(js_data[item['pid']] == undefined){
-                                js_data[item['pid']] = {name: item['name'], id:item['pid'] ,type: 'folder', 'icon-class':'red', additionalParameters : {children : {}}};   
-                            }
-                            js_data[item['pid']]['additionalParameters']['children'][item['id']] = {name: item['name'], id:item['id'] ,type: 'folder', 'icon-class':'pink', additionalParameters : {children : {}}};   
-
-                        }
-                         */
-                    //});
-
-                    js_data['已邀请'] = {name: '已邀请', id:'-1' ,type: 'folder', 'icon-class':'red'}; 
-                    /*
-                    for(var i = 0 ; i < data.length ; i++)
-                    {
-
-                        if(data[i]['pid'] == "0")
-                        {
-                            js_data[data[i]['id']] = {name: data[i]['name'], id:data[i]['id'] ,type: 'folder', 'icon-class':'red'};   
-                            var item = js_data[data[i]['id']];
-                            item['additionalParameters']={'children':{}};
-                            obj.push({id:data[i]['id'],'item':js_data[data[i]['id']]});
-
-                        }
-                        else if(data[i]['pid'] > 0)
-                        {
-                            unroot.push(data[i]);
-                        }
-                    }
-                    while(unroot.length!=0)
-                    {
-                        var tempobj = new Array();
-                        for(var num = 0; num < obj.length;num++)
-                        {
-                            for(var unum = 0 ; unum < unroot.length ; unum++)
-                            {
-                                if(unroot[unum]['pid'] == obj[num]['id'])
-                                {
-                                      obj[num]['item']['additionalParameters']['children'][unroot[unum]['id']]={name:unroot[unum]['name'],id:unroot[unum]['id'], type: 'folder', 'icon-class':'pink'};
-                                      var tempitem = obj[num]['item']['additionalParameters']['children'][unroot[unum]['id']];
-                                      tempitem['additionalParameters'] = {'children':{}};
-                                      tempobj.push({id:unroot[unum]['id'],'item':tempitem});
-                                      unroot.remove(unum);
-                                }
-                            }
-                        }
-
-                        obj = tempobj;
-                    } 
-
-                    js_data['已邀请'] = {name: '已邀请', id:'-1' ,type: 'folder', 'icon-class':'red'}; 
-
-                     */
-                    var treeDataSource = new DataSourceTree({data: js_data});
-
-                    $('#tree2').ace_tree({
-                        dataSource: treeDataSource ,
-                        loadingHTML:'<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
-                        'open-icon' : 'ace-icon fa fa-cog',
-                        'close-icon' : 'ace-icon fa fa-cogs',
-                        'selectable' : true,
-                        'selected-icon' : null,
-                        'unselected-icon' : null
+                    js_data['已邀请'] = {
+                        name: '已邀请',
+                        id: '-1',
+                        type: 'folder',
+                        'icon-class': 'red'
+                    };
+                    var treeDataSource = new DataSourceTree({
+                        data: js_data
                     });
-                    
-                    $('#tree2')
-                    .on('updated', function(e, result) {
-                    })
-                    .on('selected', function(e) {
-                    })
-                    .on('unselected', function(e) {
-                    })
-                    .on('opened', function(e,result) {
-                        if(result.id != undefined)
-                        {
+                    $('#tree2').ace_tree({
+                        dataSource: treeDataSource,
+                        loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+                        'open-icon': 'ace-icon fa fa-cog',
+                        'close-icon': 'ace-icon fa fa-cogs',
+                        'selectable': true,
+                        'selected-icon': null,
+                        'unselected-icon': null
+                    });
+                    $('#tree2').on('updated', function(e, result) {}).on('selected', function(e) {}).on('unselected', function(e) {}).on('opened', function(e, result) {
+                        if (result.id != undefined) {
                             var _gid = result.id;
                             load_group(_gid);
                         }
-                    })
-                    .on('closed', function(e,result) {
-                          var _gid = result.id;
-                            load_group(_gid);
+                    }).on('closed', function(e, result) {
+                        var _gid = result.id;
+                        load_group(_gid);
                     });
-
-            },
-            error:function(){
-            }
-
-    });
-
-        /**
-        $('#tree1').on('loaded', function (evt, data) {
+                },
+                error: function() {}
+            });
         });
-
-        $('#tree1').on('opened', function (evt, data) {
-        });
-
-        $('#tree1').on('closed', function (evt, data) {
-        });
-
-        $('#tree1').on('selected', function (evt, data) {
-        });
-        */
-});
     });
 </script>
 <script type="text/javascript">
-    
-    var DataSourceTree = function(options) {
-    this._data  = options.data;
+var DataSourceTree = function(options) {
+    this._data = options.data;
     this._delay = options.delay;
-}
-
+};
 DataSourceTree.prototype.data = function(options, callback) {
     var self = this;
     var $data = null;
-
-    if(!("name" in options) && !("type" in options)){
-        $data = this._data;//the root tree
-        callback({ data: $data });
+    if (!("name" in options) && !("type" in options)) {
+        $data = this._data; //the root tree
+        callback({
+            data: $data
+        });
         return;
+    } else if ("type" in options && options.type == "folder") {
+        if ("additionalParameters" in options && "children" in options.additionalParameters) $data = options.additionalParameters.children;
+        else $data = {} //no data
     }
-    else if("type" in options && options.type == "folder") {
-        if("additionalParameters" in options && "children" in options.additionalParameters)
-            $data = options.additionalParameters.children;
-        else $data = {}//no data
-    }
-    
-    if($data != null)//this setTimeout is only for mimicking some random delay
-        setTimeout(function(){callback({ data: $data });} , parseInt(Math.random() * 500) + 200);
-
-    //we have used static data here
-    //but you can retrieve your data dynamically from a server using ajax call
-    //checkout examples/treeview.html and examples/treeview.js for more info
+    if ($data != null) //this setTimeout is only for mimicking some random delay
+        setTimeout(function() {
+        callback({
+            data: $data
+        });
+    }, parseInt(Math.random() * 500) + 200);
 };
 
+$(window).on('resize', function () {
+    if($(document.body).width() != document.body.scrollWidth) {
+        $(document.body).width(document.body.scrollWidth + 36);
+    } else {
+        $(document.body).width('auto');
+    }
+});
+$(window).trigger('resize');
 </script>
 
