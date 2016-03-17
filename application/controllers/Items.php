@@ -712,11 +712,21 @@ class Items extends REIM_Controller {
     public function edit_show($id = 0, $from_report = 0,$page_type = 1,$flow = array()) {
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
+
+        $item = $this->items->get_by_id($id);
+        if($item['status'] < 1){
+            $this->session->set_userdata('last_error',$item['data']['msg']);
+            redirect(base_url('items'));
+        }
+        $item = $item['data'];
+
         //获取消费类型字典
         $item_type_dic = $this->reim_show->get_item_type_name();
         log_message('debug','item_id' . $id);
         if(0 === $id) redirect(base_url('items'));
-        $_profile = $this->user->reim_get_user();   
+
+        $uid = $item['uid'];
+        $_profile = json_decode($this->user->reim_get_info($uid),true);   
         $profile = array();
         $group_config = array();
         /*
@@ -725,7 +735,7 @@ class Items extends REIM_Controller {
         */
         if($_profile)
         {
-            $profile = $_profile['data']['profile'];
+            $profile = $_profile['data'];
         }
 
         $wanted_config = ['open_exchange','disable_borrow','disable_budget'];
@@ -743,13 +753,7 @@ class Items extends REIM_Controller {
             }
         }
 
-        $item = $this->items->get_by_id($id);
         $item_update_in = $this->session->userdata('item_update_in');
-        if($item['status'] < 1){
-            $this->session->set_userdata('last_error',$item['data']['msg']);
-            redirect(base_url('items'));
-        }
-        $item = $item['data'];
 
         //获得是否能修改消费
         $editable = 0;
@@ -915,6 +919,7 @@ class Items extends REIM_Controller {
                 ,'item_type_dic' => $item_type_dic
                 ,'item_type_view_dic' => $item_type_view_dic
                 ,'item_customization' => $item_customization
+                ,'profile' => $profile
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
@@ -979,16 +984,18 @@ class Items extends REIM_Controller {
 
         if($renew)
         {
+            if($item_update_in != 0){
+                redirect(base_url('items/newitem/' . $rid));
+            }
             redirect(base_url('items/newitem'));
         }
         if(!$id) {
             return redirect(base_url('items/index'));
         } else {
-            log_message("debug", "from report flag => " . $from_report);
-            if ($from_report)
-                return redirect(base_url("items/show/" . $id . "/1"));
-                                
-            return redirect(base_url('items/show/'. $id));
+            if($item_update_in != 0){
+                redirect(base_url("reports/edit/" . $rid . "/1"));
+            }
+            redirect(base_url("reports/edit/" . $rid));
         }
     }
 
