@@ -110,12 +110,15 @@ foreach($report['items'] as $i){
                                                 <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
                                                     <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="<?php echo $i['id']; ?>"></span>
                                                     <span class="ui-icon green ui-icon-pencil tedit" data-id="<?php echo $i['id']; ?>"></span>
+                                                    <?php if(!$is_other){?>
                                                     <span class="ui-icon ui-icon-trash red  tdel" data-id="<?php echo $i['id']; ?>"></span>
+                                                    <?php }?>
                                                 </div>
                                             </td>
                                         </tr>
                                         <?php  } ?>
 <?php
+if(!$is_other) {       
 foreach($items as $i){
     if($i['rid'] == 0 && in_array($i['prove_ahead'], $item_type) && in_array($i['prove_ahead'], $extra_item_type)){
         $item_amount = '';
@@ -147,7 +150,7 @@ foreach($items as $i){
                                                 </div>
                                             </td>
                                         </tr>
-                                        <?php } } ?>
+                                        <?php }} } ?>
                                     </table>
                                 </div>
                             </div>
