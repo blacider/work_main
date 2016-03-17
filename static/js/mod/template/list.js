@@ -3,6 +3,7 @@
     var _fieldCountLimit_ = 6;
     var _radioOptionsCountLimit_ = 100;
     var _templateNameLengthLimit_ = 10;
+    var _templateFieldLengthLimit_ = 8;
     var _templateTotalLimit_ = 10;
     var _templateTypes_ = null;
     var _ON_TEMPLATE_ADD_ANIMATION_ = 'animated flash';
@@ -969,9 +970,9 @@
 
                     $scope.onTextLengthChange2 = _.debounce(function(data, e) {
                         var name = data.name;
-                        if(name.length>=_templateNameLengthLimit_) {
+                        if(name.length>=_templateFieldLengthLimit_) {
                             $timeout(function() {
-                                data.name = name.substr(0, _templateNameLengthLimit_)
+                                data.name = name.substr(0, _templateFieldLengthLimit_)
                             }, 50);
                         }
                     }, 100);
