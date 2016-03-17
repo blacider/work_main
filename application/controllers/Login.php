@@ -85,6 +85,10 @@ class Login extends REIM_Controller {
 
     public function index()
     {
+        $jwt = $this->session->userdata('jwt');
+        if ($jwt) {
+            return redirect(base_url('items'));
+        }
         $this->load->library('user_agent');
         //$this->load->helper('user_agent', 'agent');
         $refer = $this->agent->referrer();
@@ -137,7 +141,7 @@ class Login extends REIM_Controller {
         $is_r = $this->input->post('is_r',TRUE);
         log_message("debug","is_r:".$is_r);
         // 设置自动存储1个月
-        $expire = 3600 * 24 * 30;
+        $expire = 3600 * 24 * 3;
 
         if($is_r == 'on')
         {
