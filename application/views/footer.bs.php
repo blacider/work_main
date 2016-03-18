@@ -1,8 +1,8 @@
 
 </div> <!-- eof main-content -->
 
-<div class="footer">
-    <div class="footer-inner">
+<div class="footer" style="width: 100%; border-top: none">
+    <div class="footer-inner" style="height: 51px; background: #fff">
         <!-- #section:basics/footer -->
         <div class="footer-content">
             <span class="bigger-120">

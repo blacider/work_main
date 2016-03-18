@@ -673,13 +673,16 @@ DataSourceTree.prototype.data = function(options, callback) {
     }, parseInt(Math.random() * 500) + 200);
 };
 
-$(window).on('resize', function () {
-    if($(document.body).width() != document.body.scrollWidth) {
-        $(document.body).width(document.body.scrollWidth + 36);
-    } else {
-        $(document.body).width('auto');
-    }
-});
-$(window).trigger('resize');
+setTimeout(function () {
+    $(window).on('resize', function () {
+        if($(document.body).width() != document.body.scrollWidth) {
+            $(document.body).width(document.body.scrollWidth + 36);
+            $('.footer-inner').width($('.footer-inner').parent().width()-268);
+        } else {
+            $(document.body).width('auto');
+        }
+    });
+    $(window).trigger('resize');
+}, 1000)
 </script>
 
