@@ -1004,8 +1004,12 @@ $('.tdetail').each(function(){
 
     $('.renew').click(function(){
         $('#renew').val($(this).data('renew'));
-        debugger
-        submit_check();
+        if($(this).data('renew') == 1)
+        {
+            submit_check();
+        } else {
+            do_post();
+        }
     });
     $('.force_submit_btn').click(function() {
         $('#renew').val(1);
