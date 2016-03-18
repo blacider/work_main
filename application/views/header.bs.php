@@ -4,6 +4,22 @@
         <script>
             var _hmt = _hmt || [];
         </script>
+        <!-- add growing io -->
+        <script type='text/javascript'>
+        var _vds = _vds || [];
+        window._vds = _vds;
+        (function() {
+            _vds.push(['setAccountId', 'c51af5ab801b549d51103ce73e4ccd6f']);
+            (function() {
+                var vds = document.createElement('script');
+                vds.type = 'text/javascript';
+                vds.async = true;
+                vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'dn-growing.qbox.me/vds.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(vds, s);
+            })();
+        })();
+        </script>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>云报销 - <?php echo $title; ?></title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
