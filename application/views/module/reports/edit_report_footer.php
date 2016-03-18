@@ -1,27 +1,54 @@
-    <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">总额</label>
-                                <div class="col-xs-9 col-sm-9">
-                                    <span class="middle" id="tamount">0</span>
-                                </div>
-                            </div>
+<?php if($report['has_snapshot']) { ?>
+<div class="form-group">
+    <label class="col-sm-1 control-label no-padding-right">申请历史</label>
+    <div class="col-xs-9 col-sm-9">
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr>
+                    <td>报销单名</td>
+                    <td>提交时间</td>
+                    <td>金额</td>
+                    <td>操作</td>
+                </tr>
 
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">选择消费</label>
-                                <div class="col-xs-9 col-sm-9">
-                                    <table class="table table-border">
-                                        <tr>
-                                            <thead>
-                                                <td>
-                                                   <input name="all_item" id="all_item" type="checkbox" class="form-controller all_item"> 全选</td>
-                                                <td>消费时间</td>
-                                                <td>类目</td>
-                                                <td>金额</td>
-                                                <td>类型</td>
-                                                <td>商家</td>
-                                                <td>备注</td>
-                                                <td>操作</td>
-                                            </thead>
-                                        </tr>
+                <tr>
+                    <td><?php echo $report['snapshot_title']; ?></td>
+                    <td><?php echo strftime('%Y-%m-%d %H:%M', $report['lastdt']); ?></td>
+                    <td>￥<?php echo $report['snapshot_amount']; ?>.00</td>
+                    <td>
+                        <a style="font-size: 18px; text-decoration: none" target="_blank" class="ui-icon ui-icon ace-icon fa fa-search-plus" href="/reports/snapshot/<?php echo $report['id']; ?>">
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<?php } ?>
+<div class="form-group">
+    <label class="col-sm-1 control-label no-padding-right">总额</label>
+    <div class="col-xs-9 col-sm-9">
+        <span class="middle" id="tamount">0</span>
+    </div>
+</div>
+</div>
+<div class="form-group">
+    <label class="col-sm-1 control-label no-padding-right">选择消费</label>
+    <div class="col-xs-9 col-sm-9">
+        <table class="table table-border">
+            <tr>
+                <thead>
+                    <td>
+                       <input name="all_item" id="all_item" type="checkbox" class="form-controller all_item"> 全选</td>
+                    <td>消费时间</td>
+                    <td>类目</td>
+                    <td>金额</td>
+                    <td>类型</td>
+                    <td>商家</td>
+                    <td>备注</td>
+                    <td>操作</td>
+                </thead>
+            </tr>
 <?php
     $_config = '';
     if(array_key_exists('config',$profile['group']))
