@@ -261,7 +261,7 @@ $(document).ready(function() {
                 hideLoading();
                 if (rs["code"] == 0) {
                     $("#phone-code").find('input').val("");
-                    registerSuccess("设置密码成功");
+                    codeLine.addError(getErrorDom("设置密码成功"));
                     showLoading();
                     Utils.api('/login/do_login', {
                         method: "post",
@@ -381,7 +381,7 @@ $(document).ready(function() {
                 hideLoading();
                 if (rs["code"] == 0) {
                     $("#email-code").find('input').val("");
-                    registerSuccess("设置密码成功");
+                    codeLine.addError(getErrorDom("设置密码成功"));
                     showLoading();
                     Utils.api('/login/do_login', {
                         method: "post",
@@ -450,7 +450,7 @@ $(document).ready(function() {
         }).done(function(rs) {
             hideLoading();
             if (rs["code"] >= 0) {
-                registerSuccess("注册成功");
+                comLine.addError(getErrorDom("注册成功"));
                 showLoading();
                 window.location.href = '/install';
             } else {
@@ -517,7 +517,7 @@ $(document).ready(function() {
         }).done(function(rs) {
             hideLoading();
             if (rs["code"] >= 0) {
-                registerSuccess("注册成功");
+                comLine.addError(getErrorDom("注册成功"));
                 showLoading();
                 window.location.href = '/install';
             } else {
@@ -611,7 +611,7 @@ $(document).ready(function() {
             hideLoading();
             if (rs["code"] == 0) {
                 $("#first-email").find('input').val("");
-                registerSuccess("设置密码成功");
+                codeLine.addError(getErrorDom("设置密码成功"));
                 showLoading();
                 Utils.api('/login/do_login', {
                     method: "post",
@@ -656,7 +656,7 @@ $(document).ready(function() {
             hideLoading();
             if (rs["code"] == 0) {
                 $("#first-phone").find('input').val("");
-                registerSuccess("设置密码成功");
+                codeLine.addError(getErrorDom("注册成功"));
                 showLoading();
                 Utils.api('/login/do_login', {
                     method: "post",
@@ -713,22 +713,6 @@ $(document).ready(function() {
         var scope = 'snsapi_login';
         var httpurl = "https://open.weixin.qq.com/connect/qrconnect?appid=" + appid + "&redirect_uri=" + _target + "&response_type=code&scope=" + scope + "&state=xfjajfldaj#wechat_redirect";
         window.open(httpurl);
-    }
-
-    function show_notify(msg, life) {
-        if (!life || life == undefined)
-            life = 3000;
-        $.jGrowl(msg, {
-            'life': life
-        });
-    }
-
-    function registerSuccess(msg) {
-        if (msg == undefined) {
-            msg = ""
-        }
-        show_notify(msg);
-        $(".modal").modal("hide");
     }
 
     function loginButtonClickEvent() {
