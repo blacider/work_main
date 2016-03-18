@@ -19,6 +19,14 @@ class Report_Model extends Reim_Model {
 
         return json_decode($buf,True);
     }
+
+    public function get_snapshot_by_report_id($id) {
+        $jwt = $this->session->userdata('jwt');
+        $url = $this->get_url('report/'.$id.'/snapshot');
+        $buf = $this->do_Get($url, $jwt);
+        return json_decode($buf, true);
+    }
+
     public function get_report_by_status_and_query(
         $status, 
         $keyword, 

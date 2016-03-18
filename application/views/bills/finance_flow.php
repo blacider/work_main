@@ -410,23 +410,14 @@ Date.prototype.Format = function (fmt) { //author: meizz
     ?> 
   </select>
 </div>
-<?php
-  $isHideClearButton = '';
-  if($status=='1') {
-    $isHideClearButton = 'hidden-button';
-  }
-?>
-<div class="col-sm-2 col-xs-2 <?php echo $isHideClearButton ;?>" id="dataSelect">
+<?php if($status=='2') { ?>
+<div class="col-sm-2 col-xs-2" id="dataSelect">
     <!-- <label>提交时间</label> -->
     <input type="text" id="date-timepicker1" placeholder="提交开始时间" title="提交开始时间" value="<?php echo $query['submit_startdate'];?>"/>
     <span>至</span>
     <input type="text" id="date-timepicker2" placeholder="提交结束时间" title="提交结束时间" value="<?php echo $query['submit_enddate'];?>"/>
-    
     <button disabled  title="清除">清除</button>
-    
 </div>
-
-<?php if($status=='2') { ?>
 <div class="col-sm-2 col-xs-2" id="dataSelect_">
     <!-- <label>提交时间</label> -->
    <input type="text" id="date-timepicker3" placeholder="审批开始时间" title="审批开始时间" value="<?php echo $query['approval_startdate'];?>"/>

@@ -578,6 +578,7 @@ class Reports extends REIM_Controller {
         $comments = $this->get_report_comments($report);
         //报告流信息
         $flow = $this->get_report_flow($id,$report);
+        // 获取快照 预算、预借历史report/$rid/snapshot
 
         $template_views = array();
         array_push($template_views,'module/reports/report_flow');
@@ -608,6 +609,63 @@ class Reports extends REIM_Controller {
             $template_views
             );
     }
+
+    public function snapshot($rid) {
+        $profile = $this->session->userdata('profile');
+
+        $common = $this->users->get_common();
+        $categories = $common['data']['categories'];
+
+        $template_types = $this->reim_show->get_item_type_name();
+        // var_dump($template_types);
+
+        $snapshot = $this->reports->get_snapshot_by_report_id($rid);
+        if($snapshot['status']<=0) {
+            return redirect(base_url('reports/index'));
+        }
+        $snapshot = $snapshot['data'];
+        $snapshot['config'] = json_decode($snapshot['extras'], true, 10);
+
+        $template = array();
+        $template = $this->reports->get_report_template($snapshot['template_id']);
+
+        $report = $this->reports->get_report_by_id($rid);
+        if($report['status']<=0) {
+            return redirect(base_url('reports/index'));
+        }
+        $report = $report['data'];
+        // var_dump(json_encode($report));
+        if($template['status']<=0) {
+            return redirect(base_url('reports/index'));
+        }
+        $template = $template['data'];
+
+        $this->bsload('reports/snapshot', array(
+            'title' => '申请历史',
+            'snapshot' => $snapshot,
+            'template' => $template,
+            'categories'=>$categories,
+            'report'=>$report,
+            'template_types'=>$template_types,
+            'breadcrumbs' => array(
+                array(
+                    'url'=> base_url(),
+                    'name' => '首页',
+                    'class' => 'ace-icon fa  home-icon'
+                )
+                ,array(
+                    'url'  => base_url('reports/index'),
+                    'name' => '报销单', 'class' => ''
+                )
+                ,array(
+                    'url'  => '',
+                    'name' => '查看报销单',
+                    'class' => ''
+                )
+            )
+        ));
+    }
+
     public function show($id = 0, $decision = 0){
         $item_type_dic = $this->reim_show->get_item_type_name();
         if($id == 0) return redirect(base_url('reports/index'));

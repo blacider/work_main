@@ -1,3 +1,30 @@
+<?php if($report['has_snapshot']) { ?>
+<div class="form-group">
+    <label class="col-sm-1 control-label no-padding-right">申请历史</label>
+    <div class="col-xs-9 col-sm-9">
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr>
+                    <td>报销单名</td>
+                    <td>提交时间</td>
+                    <td>金额</td>
+                    <td>操作</td>
+                </tr>
+
+                <tr>
+                    <td><?php echo $report['snapshot_title']; ?></td>
+                    <td><?php echo strftime('%Y-%m-%d %H:%M', $report['lastdt']); ?></td>
+                    <td>￥<?php echo $report['snapshot_amount']; ?>.00</td>
+                    <td>
+                        <a style="font-size: 18px; text-decoration: none" target="_blank" class="ui-icon ui-icon ace-icon fa fa-search-plus" href="/reports/snapshot/<?php echo $report['id']; ?>">
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<?php } ?>
 <style>
     .btn-add-consumption {
         width: 130px;
