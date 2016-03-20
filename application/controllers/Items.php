@@ -211,7 +211,8 @@ class Items extends REIM_Controller {
     }
 
     public function newitem(){
-        //        $profile = $this->session->userdata('profile');
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
 
         //自定义消费字段信息
         $item_customization = array();
@@ -313,6 +314,7 @@ class Items extends REIM_Controller {
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
                     ,array('url'  => '', 'name' => '新建消费', 'class' => '')
                 ),
+                'error' => $error,
                 'page_type' => $page_type,
                 'categories' => $categories,
                 'afford' => $afford,
