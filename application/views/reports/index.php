@@ -99,62 +99,33 @@
   <script src="/static/js/reports.js" ></script>
 
 <script type="text/javascript">
-  $grid = $('#grid-table');
-  $("#globalSearch").click(function () {
-      if ("<?php echo $search;?>" != $("#globalSearchText").val()) {
-        window.location.href = "/"+window.location.href.split('/')[3]+"/"+"index"+"/"+$("#globalSearchText").val();
-      }
+$grid = $('#grid-table');
+$("#globalSearch").click(function() {
+  if ("<?php echo $search;?>" != $("#globalSearchText").val()) {
+    window.location.href = "/" + window.location.href.split('/')[3] + "/" + "index" + "/" + $("#globalSearchText").val();
+  }
 });
-function doSearch() {
-    var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
-    colModel = $grid.jqGrid("getGridParam", "colModel"),
-    searchText = $("#globalSearchText").val(),
-    l = colModel.length;
-    for (i = 0; i < l; i++) {
-      cm = colModel[i];
-      if (cm.search !== false && (cm.stype === undefined || cm.stype === "text")) {
-        rules.push({
-          field: cm.name,
-          op: "cn",
-          data: searchText
-        });
+$('#send').click(function() {
+  $.ajax({
+    url: __BASE + 'reports/sendout',
+    method: "post",
+    dataType: "json",
+    data: {
+      report_id: $('#report_id').val(),
+      email: $('#email').val()
+    },
+    success: function(data) {
+      if (data.status == 1) {
+        $('#modal-table').modal('hide')
+        show_notify("pdf已经成功发送至您的邮箱");
+      } else {
+        if (data.data.msg != undefined) {
+          show_notify(data.data.msg);
+        } else {
+          show_notify("输入邮箱错误");
+        }
       }
     }
-    postData.filters = JSON.stringify({
-      groupOp: "OR",
-      rules: rules
-    });
-    $grid.jqGrid("setGridParam", { search: true });
-    $grid.trigger("reloadGrid", [{page: 1, current: true}]);
-    return false;
-}
-
-
-$('#send').click(function(){
-    $.ajax({
-      url:__BASE+'reports/sendout'
-      ,method:"post"
-      ,dataType:"json"
-      ,data:{report_id:$('#report_id').val(),email:$('#email').val()}
-      ,success:function(data){
-          if(data.status== 1)
-          {
-            $('#modal-table').modal('hide')
-            show_notify("pdf已经成功发送至您的邮箱");
-          }
-          else
-          {
-              if(data.data.msg != undefined)
-              {
-                show_notify(data.data.msg);
-              }
-              else
-              {
-                show_notify("输入邮箱错误");
-              }
-          }
-      }
-    });
-
+  });
 });
 </script>
