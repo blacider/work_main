@@ -101,10 +101,42 @@
 <script type="text/javascript">
 $grid = $('#grid-table');
 $("#globalSearch").click(function() {
+  var keywords = $("#globalSearchText").val();
+  if(!keywords) {
+    return window.location.href = "/reports/index/" + $("#globalSearchText").val();
+  }
   if ("<?php echo $search;?>" != $("#globalSearchText").val()) {
-    window.location.href = "/" + window.location.href.split('/')[3] + "/" + "index" + "/" + $("#globalSearchText").val();
+      var postdata = $grid.jqGrid('getGridParam', 'postData');
+       jQuery.extend(postdata, {
+           filters: JSON.stringify({
+               groupOp: "OR",
+               rules: [{
+                   field: "id",
+                   op: "cn",
+                   data: $("#globalSearchText").val()
+               }, {
+                   field: "title",
+                   op: "cn",
+                   data: $("#globalSearchText").val()
+               }]
+           })
+       });
+       $grid.jqGrid('setGridParam', {
+           search: true,
+           postData: postdata
+       });
+       $grid.trigger("reloadGrid", [{
+           page: 1
+       }]);
   }
 });
+
+$("#globalSearchText").on('keyup', function (e) {
+  if(e.keyCode ==13) {
+   $("#globalSearch").trigger('click');
+  }
+})
+
 $('#send').click(function() {
   $.ajax({
     url: __BASE + 'reports/sendout',
