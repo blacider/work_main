@@ -726,7 +726,8 @@
 	border: 1px solid #D3D9DF;
 }
  
-.field-checkbox.checked.disabled .icon {
+.field-checkbox.checked.disabled .icon,
+.field-radio.checked.disabled .icon {
 	opacity: 0.5;
 	filter:alpha(opacity=50);
 	-moz-opacity: 0.5;

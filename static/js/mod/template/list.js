@@ -673,6 +673,9 @@
                     };
 
                     $scope.updateTemplateType = function(e, templateData, $index) {
+                        if($(e.currentTarget).hasClass('disabled')) {
+                            return;
+                        }
                         var selected = [$index+''];
                         if(!$(e.currentTarget).hasClass('checked')) {
                             templateData.type = selected;
