@@ -584,7 +584,7 @@
             </div>
         </div>
         <div id="loading">
-            <img src="/static/assets/img/loading.gif" alt="loading">
+            <img src="/static/images/loading.gif" alt="loading">
         </div>
         <!-- 百度统计 -->
         <div style="display: none;">
