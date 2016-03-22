@@ -31,7 +31,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">发送至</label>
+                                <label class="col-sm-1 control-label no-padding-right">提交至</label>
                                 <div class="col-xs-9 col-sm-9">
                                     <input type="hidden" name="hidden_receiver" id="hidden_receiver" />
                                     <select class="chosen-select tag-input-style" name="receiver[]" multiple="multiple" data-placeholder="请选择审批人" id="receiver" <?php if($is_other){echo "disabled";}?>>

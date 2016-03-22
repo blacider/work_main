@@ -213,6 +213,8 @@ class Items extends REIM_Controller {
     public function newitem($rid = 0){
         //        $profile = $this->session->userdata('profile');
         //如果rid>0时获取到报告所属人员
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         $uid = 0;
         if($rid > 0){
             $report = $this->report->get_detail($rid);
@@ -325,6 +327,7 @@ class Items extends REIM_Controller {
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
                     ,array('url'  => '', 'name' => '新建消费', 'class' => '')
                 ),
+                'error' => $error,
                 'page_type' => $page_type,
                 'categories' => $categories,
                 'afford' => $afford,

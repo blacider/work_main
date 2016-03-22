@@ -290,9 +290,7 @@ class Reports extends REIM_Controller {
     }
 
     public function listdata(){
-        $page = $this->input->get('page');
-        $rows = $this->input->get('rows');
-        $sort = $this->input->get('sord');
+        
         $items = $this->items->get_suborinate();
         if(!$items['status']){
             die(json_encode(array()));

@@ -2,59 +2,25 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <script>
-            var _hmt = _hmt || [];
-        </script>
-        <script type='text/javascript'>
-        var _vds = _vds || [];
-        window._vds = _vds;
-        (function() {
-            _vds.push(['setAccountId', 'c51af5ab801b549d51103ce73e4ccd6f']);
-            (function() {
-                var vds = document.createElement('script');
-                vds.type = 'text/javascript';
-                vds.async = true;
-                vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'dn-growing.qbox.me/vds.js';
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(vds, s);
-            })();
-        })();
-        </script>
         <title> 云报销 - 对报销的怨言，到此为止。</title>
         <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <link rel="shortcut icon" href="favicon.ico" />
+        <meta content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1" name="viewport">
         <meta name="baidu-site-verification" content="74glnE71aV" />
         <meta name="description" content="最好用的财务报销审批系统。对报销的怨言，到此为止。">
         <meta name="keywords" content="云报销,报销,云报销,报销,财务审批,审批,财务,办公,发票,贴发票,贴票,成本,金额">
         <meta name="format-detection" content="telephone=no" />
         <meta property="wb:webmaster" content="a239efc5a51c65f0" />
         <link rel="stylesheet" href="/static/css/reset.css">
-        <link rel="stylesheet" href="/static/css/mod/login/index.css">
-        <link rel="stylesheet" href="/static/css/mod/login/common.css">
-        <link rel="stylesheet" type="text/css" href="/static/ace/css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="/static/ace/css/font-awesome.min.css" />
-        <link rel="stylesheet" href="/static/third-party/jg/jquery.jgrowl.min.css"/>
-        <link rel="stylesheet" href="/static/css/mod/login/login.css">
+        <link rel="stylesheet" href="/static/css/normalize.css">
+        <link rel="stylesheet" href="/static/css/mod/login/login_mobile.css">
         <script src="/static/js/jquery.min.js"></script>
-        <script language="javascript" src="/static/ace/js/bootstrap.min.js"></script>
         <script src="/static/js/libs/utils.js"></script>
-        <script src="/static/js/jquery.cookie.js"></script>
-        <script src="/static/third-party/jg/jquery.jgrowl.min.js"></script>
-        <!--[if lt IE 9]>
-        <script src="static/js/respond.min.js"></script>
-        <script src="/static/js/mod/login/placeholder.js"></script>
-        <link rel="stylesheet" type="text/css" href="static/css/ie.css">
-        <![endif]-->
-        <!--[if gte IE 9]>
-        <link rel="stylesheet" type="text/css" href="static/css/notie.css">
-        <![endif]-->
-        <!--[if !IE]><!-->
-        <link rel="stylesheet" type="text/css" href="static/css/notie.css">
-        <!--<![endif]-->
-        <script src="/static/js/mod/login/login.js?_r=20160315"></script>
+        <script src="/static/js/mod/login/login_mobile.js"></script>
     </head>
     <body>
+        <div id="login-body">
         <div id="header">
             <div class="main-block">
                 <a class="logo" href=""><img src="/static/img/mod/login/logo.png" alt=""></a>
@@ -65,7 +31,6 @@
                 </ul>
                 -->
                 <ul class="menu">
-                    <li><a href="/install">下载</a></li>
                     <li><a id="login-m-a" href="#login">登录</a></li>
                     <li class="register"><a href="javascript:void(0)">企业注册</a></li>
                 </ul>
@@ -198,34 +163,6 @@
             <span class="btn-back"></span>
             <span class="btn-close"></span>
         </div>
-        <div class="modal fade modal_align" id="signin">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header" style="border-bottom: none;">
-                        <button  type="button" style="opacity:1" class="close" data-dismiss="modal" aria-hidden="true">
-                        <a href="/#">
-                            <img class="icon_close" style="position: relative;" width="53" src="/static/img/mod/login/close.png" alt="close">
-                        </a>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="login_content">
-                            <div class="form-line user-line">
-                                <span class="line-icon">
-                                    <img width="28" src="/static/img/mod/login/icon_user.png" height="31" alt="user">
-                                </span>
-                                
-                                <span class="input-line">
-                                    <input name="user" type="text" placeholder="请使用手机或邮箱注册">
-                                </span>
-                            </div>
-                            <div class="form-line next-step relative-10">
-                                <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <form>
             <div class="modal fade modal_align" id="login">
@@ -243,7 +180,7 @@
                             <div class="login_content">
                                 <div class="form-line user-line">
                                     <span class="line-icon">
-                                        <img width="28" src="/static/img/mod/login/icon_user.png" height="31" alt="user">
+                                        <img width="28" style="margin-top: 6px;" src="/static/img/mod/login/icon_user.png" height="31" alt="user">
                                     </span>
                                     
                                     <span class="input-line">
@@ -370,7 +307,7 @@
                             </div>
                             <div class="form-line code-line" style="margin-top: 44px;">
                                 <span class="line-icon">
-                                    <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: -7px">
+                                    <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: 4px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -409,7 +346,7 @@
                             </div>
                             <div class="form-line code-line" style="margin-top: 44px;">
                                 <span class="line-icon">
-                                    <img width="27" src="/static/img/mod/login/email.png" height="22" alt="pass" style="margin-top: 4px">
+                                    <img width="27" src="/static/img/mod/login/email.png" height="22" alt="pass" style="margin-top: 15px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -447,7 +384,7 @@
                             </div>
                             <div class="form-line code-line" style="margin-top: 44px;">
                                 <span class="line-icon">
-                                    <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: -7px">
+                                    <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: 4px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -497,7 +434,7 @@
                             </div>
                             <div class="form-line code-line" style="margin-top: 44px;">
                                 <span class="line-icon">
-                                    <img width="27" src="/static/img/mod/login/email.png" height="22" alt="pass" style="margin-top: 4px">
+                                    <img width="27" src="/static/img/mod/login/email.png" height="22" alt="pass" style="margin-top: 15px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -543,7 +480,7 @@
                         <div class="pass_content">
                             <div class="form-line com-line" style="margin-top: 10px;">
                                 <span class="line-icon">
-                                    <img width="23" src="/static/img/mod/login/home.png" height="26" alt="pass" style="margin-top: 1px">
+                                    <img width="23" src="/static/img/mod/login/home.png" height="26" alt="pass" style="margin-top: 11px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -552,7 +489,7 @@
                             </div>
                             <div class="form-line name-line" style="margin-top: 38px;">
                                 <span class="line-icon">
-                                    <img width="27" src="/static/img/mod/login/icon_user.png" height="30" alt="pass" style="margin-top: -3px">
+                                    <img width="27" src="/static/img/mod/login/icon_user.png" height="30" alt="pass" style="margin-top: 8px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -561,7 +498,7 @@
                             </div>
                             <div class="form-line level-line" style="margin-top: 38px;">
                                 <span class="line-icon">
-                                    <img width="35" src="/static/img/mod/login/level.png" height="30" alt="pass" style="margin-top: -3px">
+                                    <img width="35" src="/static/img/mod/login/level.png" height="30" alt="pass" style="margin-top: 8px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -570,7 +507,7 @@
                             </div>
                             <div class="form-line email-line" style="margin-top: 38px;">
                                 <span class="line-icon">
-                                    <img width="28" src="/static/img/mod/login/email.png" height="23" alt="pass" style="margin-top: 4px">
+                                    <img width="28" src="/static/img/mod/login/email.png" height="23" alt="pass" style="margin-top: 15px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -604,7 +541,7 @@
                         <div class="pass_content">
                             <div class="form-line com-line" style="margin-top: 10px;">
                                 <span class="line-icon">
-                                    <img width="23" src="/static/img/mod/login/home.png" height="26" alt="pass" style="margin-top: 1px">
+                                    <img width="23" src="/static/img/mod/login/home.png" height="26" alt="pass" style="margin-top: 11px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -613,7 +550,7 @@
                             </div>
                             <div class="form-line name-line" style="margin-top: 38px;">
                                 <span class="line-icon">
-                                    <img width="27" src="/static/img/mod/login/icon_user.png" height="30" alt="pass" style="margin-top: -3px">
+                                    <img width="27" src="/static/img/mod/login/icon_user.png" height="30" alt="pass" style="margin-top: 8px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -622,7 +559,7 @@
                             </div>
                             <div class="form-line level-line" style="margin-top: 38px;">
                                 <span class="line-icon">
-                                    <img width="35" src="/static/img/mod/login/level.png" height="30" alt="pass" style="margin-top: -3px">
+                                    <img width="35" src="/static/img/mod/login/level.png" height="30" alt="pass" style="margin-top: 8px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -631,7 +568,7 @@
                             </div>
                             <div class="form-line phone-line" style="margin-top: 38px;">
                                 <span class="line-icon">
-                                    <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: -7px">
+                                    <img width="24" src="/static/img/mod/login/phone.png" height="34" alt="pass" style="margin-top: 4px">
                                 </span>
                                 
                                 <span class="input-line">
@@ -646,20 +583,27 @@
                 </div>
             </div>
         </div>
-        <?php if(!$has_attacker) { ?>
+        <div id="loading">
+            <img src="/static/images/loading.gif" alt="loading">
+        </div>
         <!-- 百度统计 -->
         <div style="display: none;">
         <script>
         var _hmt = _hmt || [];
+        var _domainID_ = (function (host) {
+            if(host.indexOf('yunbaoxiao.com')!=-1) {
+                return '777289b210223dd4e237d8e2089250fd'
+            }
+            return 'f3b83c21deaa6cfaa74e7ade7c0418d0'
+        })(location.hostname);
         (function() {
           var hm = document.createElement("script");
-          hm.src = "//hm.baidu.com/hm.js?777289b210223dd4e237d8e2089250fd";
+          hm.src = "//hm.baidu.com/hm.js?" + _domainID_;
           var s = document.getElementsByTagName("script")[0]; 
           s.parentNode.insertBefore(hm, s);
         })();
         </script>
         </div>
-        <?php } ?>
         <!-- 美洽 -->
         <script type='text/javascript'>
             (function(m, ei, q, i, a, j, s) {
@@ -675,6 +619,5 @@
             })(window, document, 'script', '//eco-api.meiqia.com/dist/meiqia.js', '_MEIQIA');
             _MEIQIA('entId', 7359);
         </script>
-        <script src="/static/js/libs/detect.js"></script>
     </body>
 </html>

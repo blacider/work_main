@@ -7,6 +7,7 @@ class Login extends REIM_Controller {
         $this->load->model('user_model', 'users');
         $this->load->model('Register_model');
         $this->load->helper('cookie');
+        $this->load->model('app_model');
         $this->load->library('reim_cipher');
     }
 
@@ -100,22 +101,30 @@ class Login extends REIM_Controller {
         $password = $this->reim_cipher->decode($this->input->cookie('password'));
         log_message("debug", "UserName:" . $username);
         log_message("debug", "Password:" . $password);
-
+        //die($username);
         $attacker = $this->agent->agent_string();
         // $attacker = "test start; ;JianKongBao Monitor test end";
         $hasAttacker = false;
         if(stripos($attacker, ';JianKongBao Monitor')) {
             $hasAttacker = true;
         }
-        $body = $this->load->view('user/login.php', 
-            array(
-                'errors' => $error,
-                'title' => '登录',
-                'username' => $username,
-                'password' => $password,
-                'has_attacker' => $hasAttacker
-            )
-        );
+        if ($this->agent->is_mobile('iphone') || $this->agent->is_mobile('android')) {
+            $body = $this->load->view('user/login_mobile.php', array(
+                        'errors' => $error
+                        ,'title' => '登录'
+                        ,'username' => $username
+                        ,'password' => $password
+                        ,'has_attacker' => $hasAttacker
+                    ));
+        } else {
+            $body = $this->load->view('user/login.php', array(
+                        'errors' => $error
+                        ,'title' => '登录'
+                        ,'username' => $username
+                        ,'password' => $password
+                        ,'has_attacker' => $hasAttacker
+                    ));
+        }
     }
 
     public function cslogin()
