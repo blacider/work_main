@@ -83,6 +83,7 @@ class Bills extends REIM_Controller {
         $profile = $this->user->reim_get_user();
         log_message('debug','#####'.json_encode($profile));
         $group = $profile['data']['profile']['group'];
+        $company_id = $profile['data']['profile']['gid'];
         if($profile){
             $config = $profile['data']['profile'];
             if(array_key_exists('group',$config))
@@ -154,9 +155,15 @@ class Bills extends REIM_Controller {
         // 1 -- 仅公司名称
         // 2 -- 仅部门名称
         // 3 -- 公司/部门
-        $url = "https://www.yunbaoxiao.com/report/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category . '&footer_format=' . $footer_format . "&hide_merchants=" . $hide_merchants;
-        //$url = "http://admin.cloudbaoxiao.com:12345/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category . '&footer_format=' . $footer_format . "&hide_merchants=" . $hide_merchants;
-        log_message('debug','hhh'. $url);
+
+        # 571 高瓴
+        if (in_array($company_id, ['571',])) {
+            $url_base = 'https://www.yunbaoxiao.com/report/rh';
+        } else {
+            $url_base = 'https://www.yunbaoxiao.com/report/report';
+        }
+
+        $url = "$url_base?pdf=1&rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category . '&footer_format=' . $footer_format . "&hide_merchants=" . $hide_merchants;
         die(json_encode(array('url' => $url)));
     }
     public function download_report()
@@ -166,6 +173,7 @@ class Bills extends REIM_Controller {
         $this->session->unset_userdata('login_error');
         // 重新获取
         $profile = $this->user->reim_get_user();
+        $company_id = $profile['data']['profile']['gid'];
         log_message('debug','#####'.json_encode($profile));
         $group = $profile['data']['profile']['group'];
         $_top_group = '';
@@ -235,7 +243,13 @@ class Bills extends REIM_Controller {
         }
 
         $archive = 1;
-        $url = "https://www.yunbaoxiao.com/report/report?rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category . '&footer_format=' . $footer_format . "&hide_merchants=" . $hide_merchants;
+        # 571 高瓴
+        if (in_array($company_id, ['571',])) {
+            $url_base = 'https://www.yunbaoxiao.com/report/rh';
+        } else {
+            $url_base = 'https://www.yunbaoxiao.com/report/report';
+        }
+        $url = "$url_base?pdf=1&rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category . '&footer_format=' . $footer_format . "&hide_merchants=" . $hide_merchants;
         log_message('debug','hhh'. $url);
         die(json_encode(array('url' => $url)));
     }
