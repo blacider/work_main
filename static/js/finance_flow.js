@@ -476,8 +476,8 @@ try {
 					return -(($(this).width() - $('#modal-table-flow').width) / 2);
 				}
 			});
-			_part = chosenids.join('/');
-			var _part_url = __BASE + 'bills/listdata_new/' + '2' + '/' + _part;
+			_part = chosenids.join('|');
+			var _part_url = __BASE + 'bills/get_finance_report_by_ids?ids=' + _part;
 			$(grid_selector_finish).jqGrid('GridUnload');
 			jQuery(grid_selector_finish).jqGrid({
 				url: _part_url,
