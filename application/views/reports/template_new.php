@@ -425,8 +425,8 @@ foreach($items as $i){
                 </div>
             </div>
             <div class="modal-footer">
-                <input type="submit" class="btn btn-success submit_by_rule" value="按照公司规定发送报销单" />
-                <input type="submit" class="btn btn-primary my_submit" value="按照我的选择发送报销单" />
+                <input type="submit" class="btn btn-success submit_by_rule" value="按照公司规定提交报销单" />
+                <input type="submit" class="btn btn-primary my_submit" value="按照我的选择提交报销单" />
                 <div class="btn btn-primary" onclick="cancel_modal_next()">取消</div>
             </div>
                 <script type="text/javascript">

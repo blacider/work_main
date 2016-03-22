@@ -179,7 +179,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">发送至</label>
+                                <label class="col-sm-1 control-label no-padding-right">提交至</label>
                                 <div class="col-xs-9 col-sm-9">
                                     <input type="hidden" name="hidden_receiver" id="hidden_receiver" />
                                     <select class="chosen-select tag-input-style" name="receiver[]" multiple="multiple" data-placeholder="请选择审批人" id="receiver">
@@ -331,8 +331,8 @@ foreach($items as $i){
                 </div>
             </div>
             <div class="modal-footer">
-                <input type="submit" class="btn btn-success submit_by_rule" value="按照公司规定发送报销单" />
-                <input type="submit" class="btn btn-primary my_submit" value="按照我的选择发送报销单" />
+                <input type="submit" class="btn btn-success submit_by_rule" value="按照公司规定提交报销单" />
+                <input type="submit" class="btn btn-primary my_submit" value="按照我的选择提交报销单" />
                 <div class="btn btn-primary" onclick="cancel_modal_next()">取消</div>
             </div>
                 <script type="text/javascript">
