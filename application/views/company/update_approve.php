@@ -520,6 +520,7 @@ function bind_event_level_sobs() {
         });
     }
 $(document).ready(function(){
+        bind_event_level_sobs()
         /*$.ajax({
         url:__BASE + "category/get_sob_category/"+s_id,
         dataType:'json',
