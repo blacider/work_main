@@ -193,6 +193,8 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
         if (!empty($fields)) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+        } elseif (in_array($method, [ 'POST', 'PATCH', 'PUT', 'DELETE' ])) {
+            $extraheader[] = 'Content-Length: 0';
         }
         if (!empty($extraheader)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
