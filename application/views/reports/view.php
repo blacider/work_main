@@ -198,7 +198,6 @@ table td {
                     <td>消费时间</td>
                     <td>类目</td>
                     <td>金额</td>
-                    <td>类型</td>
                     <td>商家</td>
                     <td>备注</td>
                     <td>附件</td>
@@ -250,7 +249,6 @@ table td {
                     }
                     ?>
                     <td><?php echo $i['currency_logo']; ?> &nbsp;<?php echo $i['amount']; ?> <?php echo  $update_amount . $_extra_amount; ?> </td>
-                    <td><?php echo $item_type_dic[$i['prove_ahead']]; ?></td>
                     <td><?php echo $i['merchants']; ?></td>
                     <td><?php echo $i['note'];?></td>
                     <td><?php echo $i['attachment']; ?>

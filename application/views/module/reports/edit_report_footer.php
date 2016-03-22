@@ -570,16 +570,6 @@ function canGetPostData(force) {
         if ($(this).is(':checked')) {
             _ids.push($(this).data('id'));
             var amount = $(this).data('amount');
-            var item_type = $(this).data('type');
-            if (flag == 0) {
-                report_type = item_type;
-                flag = 1;
-            }
-            if (report_type != item_type) {
-                show_notify('同一报销单中不能包含不同的消费类型');
-                def.resolve(false)
-                return def.promise();
-            }
             sum += amount;
         };
     });

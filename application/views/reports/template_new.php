@@ -217,7 +217,6 @@
                                                 <td style="width: 135px;">消费时间</td>
                                                 <td style="min-width:103px;">类目</td>
                                                 <td style="width: 60px;">金额</td>
-                                                <td style="width: 45px;">类型</td>
                                                 <td style="min-width: 100px;">商家</td>
                                                 <td>备注</td>
                                                 <td style="min-width: 86px;">操作</td>
@@ -250,7 +249,7 @@ if($__config)
     }
 }
 foreach($items as $i){
-    if($i['rid'] == 0 && in_array($i['prove_ahead'], $item_type) && in_array($i['prove_ahead'],$extra_item_type)){
+    if(!$i['rid']){
                                         $item_amount = '';
                                         if($i['currency'] != 'cny')
                                         {
@@ -272,7 +271,6 @@ foreach($items as $i){
                                             <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
                                             <td><?php echo $i['cate_str'];?></td>
                                             <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
-                                            <td><?php echo $item_type_dic[$i['prove_ahead']];?></td>
                                             <td><?php echo $i['merchants']; ?></td>
                                             <td><?php echo $i['note']; ?></td>
                                             <td>
@@ -636,16 +634,6 @@ function canGetPostData(force) {
         if ($(this).is(':checked')) {
             _ids.push($(this).data('id'));
             var amount = $(this).data('amount');
-            var item_type = $(this).data('type');
-            if (flag == 0) {
-                report_type = item_type;
-                flag = 1;
-            }
-            if (report_type != item_type) {
-                show_notify('同一报销单中不能包含不同的消费类型');
-                def.resolve(false)
-                return def.promise();
-            }
             sum += amount;
         };
     });
