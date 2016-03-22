@@ -299,9 +299,7 @@ try {
 					}
 				});
 			} else {
-				jQuery.each(aRows, function(index, rowid) {
-					selectRows.splice(jQuery.inArray(rowid, selectRows), 1);
-				});
+				selectRows = [];
 				IF_SELECT_ALL = 0;
 			}
 		},
