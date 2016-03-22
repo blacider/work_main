@@ -1,3 +1,4 @@
+<?php echo get_html_container($error,'html_error',true);?>
 <?php if($report['has_snapshot']) { ?>
 <div class="form-group">
     <label class="col-sm-1 control-label no-padding-right">申请历史</label>
@@ -845,6 +846,10 @@ Date.prototype.format = function(format) {
         return format;
 };
 $(document).ready(function(){
+    var error = $("#html_error").data('value');
+    if(error){
+        show_notify(error);
+    }
     get_province();
 
      $('.new_credit').each(function(){

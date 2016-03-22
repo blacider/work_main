@@ -487,6 +487,8 @@ class Reports extends REIM_Controller {
     }
 
     public function edit($id = 0,$is_other = 0){
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         $item_type_dic = $this->reim_show->get_item_type_name();
         if($id == 0) {
             return redirect(base_url('reports/index'));
@@ -598,6 +600,7 @@ class Reports extends REIM_Controller {
                 'report' => $report,
                 'template'=>$template,
                 'is_other'=>$is_other,
+                'error'=>$error,
                 'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
