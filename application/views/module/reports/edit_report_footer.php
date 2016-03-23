@@ -792,13 +792,8 @@ function do_post(force) {
             },
             dataType: 'json',
             success: function(data) {
-                if(data.status == 0){
-                    window.location.href = __BASE + 'reports/audit_todo';
-                    return false;
-                }
-
-                if (data.status > 0) {
-                    window.location.href = __BASE + 'reports/index';
+                if(data.status >= 0){
+                    window.history.back();
                     return false;
                 }
                 if (_renew && data.status == -71) {
