@@ -1,13 +1,32 @@
 $(document).ready(function() {
     bindEvent();
 
-    var __fr__ = getParameterByName('fr') || '';
+    // 百度统计指定广告跟踪的query 策略，如果有fr 也可用fr
+    var __fr__ = (function () {
+        return {
+            hmsr: getParameterByName('hmsr') || getParameterByName('fr') || '',
+            hmpl: getParameterByName('hmpl') || '',
+            hmcu: getParameterByName('hmcu') || '',
+            hmkw: getParameterByName('hmkw') || '',
+            hmci: getParameterByName('hmci') || ''
+        }
+    })();
 
-    // set fr in cookie 30 minutes
+    // set fr in cookie 30 minutes, 如果发现reg_fr 中hmsr 不同(不为空)则更新
     function setFrCookie() {
-        __fr__ && $.cookie('reg_fr', __fr__, {
-            expires: 1/24/60 * 30
-        });
+        var reg_fr_str = $.cookie('reg_fr');
+        var reg_fr_obj = {};
+        try {
+            reg_fr_obj = $.parseJSON(reg_fr_str);
+        } catch(e) {
+            console.log(e)
+        }
+
+        if(__fr__['hmsr']!==reg_fr_obj['hmsr'] && __fr__['hmsr']) {
+            $.cookie('reg_fr', JSON.stringify(__fr__), {
+                expires: 7
+            });   
+        }
     };
 
     setFrCookie();
@@ -23,7 +42,8 @@ $(document).ready(function() {
             $('#login-m-a').trigger('click')
         }
     })();
-    
+
+
     function bindEvent() {
         timerClickEvent();
         loginButtonClickEvent();
