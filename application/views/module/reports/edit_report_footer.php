@@ -1,3 +1,4 @@
+<?php echo get_html_container($error,'html_error',true);?>
 <?php if($report['has_snapshot']) { ?>
 <div class="form-group">
     <label class="col-sm-1 control-label no-padding-right">申请历史</label>
@@ -25,15 +26,52 @@
     </div>
 </div>
 <?php } ?>
+<style>
+    .btn-add-consumption {
+        width: 130px;
+        height: 45px;
+        display: inline-block;
+        background: #ff575b;
+        border-radius: 6px;
+        color: #fff;
+        text-align: center;
+        line-height: 45px;
+        font-size: 14px;
+        border-bottom: 2px solid #D33E42;
+        text-decoration: none;
+        position: relative;
+        padding: 0;
+        margin-right: .1em;
+        cursor: pointer;
+        vertical-align: middle;
+        overflow: visible;
+    }
+    .btn-add-consumption:hover {
+        text-decoration: none;
+        color: #fff;
+    }
+    .btn-add-consumption img {
+        height: 21px;
+        margin-right: 9px;
+    }
+</style>
 <div class="form-group">
     <label class="col-sm-1 control-label no-padding-right">总额</label>
     <div class="col-xs-9 col-sm-9">
         <span class="middle" id="tamount">0</span>
     </div>
 </div>
-</div>
 <div class="form-group">
     <label class="col-sm-1 control-label no-padding-right">选择消费</label>
+    <div class="col-xs-9 col-sm-9">
+        <?php if($is_other) { ?> 
+        <a type="button" href="<?php echo base_url('items/newitem/' . $rid);?>" class="btn-add-consumption" ><img src="/static/img/mod/template/icon/plus@2x.png" alt="">添加消费</a>
+        <input type="hidden" name="is_other" id="is_other" value="<?php echo $is_other;?>"/>
+        <?php } ?>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-1 control-label no-padding-right"></label>
     <div class="col-xs-9 col-sm-9">
         <table class="table table-border">
             <tr>
@@ -100,12 +138,15 @@ foreach($report['items'] as $i){
                                                 <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
                                                     <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="<?php echo $i['id']; ?>"></span>
                                                     <span class="ui-icon green ui-icon-pencil tedit" data-id="<?php echo $i['id']; ?>"></span>
+                                                    <?php if(!$is_other){?>
                                                     <span class="ui-icon ui-icon-trash red  tdel" data-id="<?php echo $i['id']; ?>"></span>
+                                                    <?php }?>
                                                 </div>
                                             </td>
                                         </tr>
                                         <?php  } ?>
 <?php
+if(!$is_other) {       
 foreach($items as $i){
     if($i['rid'] == 0 && in_array($i['prove_ahead'], $item_type) && in_array($i['prove_ahead'], $extra_item_type)){
         $item_amount = '';
@@ -137,7 +178,7 @@ foreach($items as $i){
                                                 </div>
                                             </td>
                                         </tr>
-                                        <?php } } ?>
+                                        <?php }} } ?>
                                     </table>
                                 </div>
                             </div>
@@ -146,7 +187,9 @@ foreach($items as $i){
                             <input type="reset" style="display:none;" id="reset">
                             <div class="clearfix form-actions col-md-10">
                                 <div class="col-md-offset-3 col-md-9">
+                                    <?php if(!$is_other){?>
                                     <a class="btn btn-white btn-primary renew" data-renew="1"><i class="ace-icon fa fa-check"></i>提交</a>
+                                    <?php }?>
 
                                     <a class="btn btn-white btn-default renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
 
@@ -583,6 +626,7 @@ function canGetPostData(force) {
     });
 
     var _renew = $('#renew').val();
+    var _is_other= $('#is_other').val();
 
     def.resolve({
         'item': _ids,
@@ -593,6 +637,7 @@ function canGetPostData(force) {
         'extra': extra,
         'type': report_type,
         'id': _rid,
+        'is_other': _is_other,
         'renew': _renew,
         'force': force
     });
@@ -724,6 +769,7 @@ function do_post(force) {
         }
     });
     var _renew = $('#renew').val();
+    var _is_other = $('#is_other').val();
 
 
 
@@ -741,10 +787,16 @@ function do_post(force) {
                 'type': report_type,
                 'id': _rid,
                 'renew': _renew,
-                'force': force
+                'force': force,
+                'is_other': _is_other 
             },
             dataType: 'json',
             success: function(data) {
+                if(data.status == 0){
+                    window.location.href = __BASE + 'reports/audit_todo';
+                    return false;
+                }
+
                 if (data.status > 0) {
                     window.location.href = __BASE + 'reports/index';
                     return false;
@@ -794,6 +846,10 @@ Date.prototype.format = function(format) {
         return format;
 };
 $(document).ready(function(){
+    var error = $("#html_error").data('value');
+    if(error){
+        show_notify(error);
+    }
     get_province();
 
      $('.new_credit').each(function(){
@@ -980,8 +1036,12 @@ $('.tdetail').each(function(){
 
     $('.renew').click(function(){
         $('#renew').val($(this).data('renew'));
-        debugger
-        submit_check();
+        if($(this).data('renew') == 1)
+        {
+            submit_check();
+        } else {
+            do_post();
+        }
     });
     $('.force_submit_btn').click(function() {
         $('#renew').val(1);

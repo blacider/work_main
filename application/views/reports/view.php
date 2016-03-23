@@ -9,7 +9,6 @@
 table td {
     vertical-align: middle !important;
 }
-     
 </style>
 <div class="page-content" style="    overflow: hidden;">
   <div class="page-content-area">
@@ -190,6 +189,7 @@ table td {
                 <span class="middle" id="tamount">￥  <?php echo $amount; ?></span>
               </div>
             </div>
+
             <div class="form-group">
               <label class="col-sm-1 control-label no-padding-right">消费列表</label>
               <div class="col-xs-10 col-sm-10">
@@ -376,6 +376,7 @@ table td {
         <?php if($decision == 1) { ?>
         <a style="margin-left: 20px;" class="btn btn-white tpass" ><i class="ace-icon fa fa-check-square-o gray bigger-110"></i>通过</a>
         <a style="margin-left: 20px;" class="btn btn-white tdeny" ><i class="ace-icon  glyphicon glyphicon-remove gray bigger-110"></i>退回</a>
+        <a style="margin-left: 20px;" class="btn btn-white edit" data-renew="-1"><i class="ace-icon fa fa-pencil gray bigger-110"></i>修改</a>
         <?php } else if(in_array($profile['admin'],[1,2]) && $report['status'] == 2) { ?>
         <a style="margin-left: 20px;" class="btn btn-white tapprove" ><i class="ace-icon fa fa-check-square-o gray bigger-110"></i>通过</a>
         <a style="margin-left: 20px;" class="btn btn-white finance_tdeny" ><i class="ace-icon  glyphicon glyphicon-remove gray bigger-110"></i>退回</a>
@@ -618,11 +619,19 @@ $(document).ready(function(){
 var __BASE = "<?php echo $base_url; ?>";
 var rid = "<?php echo $rid; ?>";
 var error = "<?php echo $error; ?>";
+var decision = "<?php echo $decision; ?>";
 
 $(document).ready(function(){
     if(error) show_notify(error);
     $('.cancel').click(function() {
         history.go(-1);
+    });
+
+    $('.edit').click(function(){
+        if(decision){
+            location.href = __BASE + "reports/edit/" + rid + "/" + decision;
+        }
+        location.href = __BASE + "reports/edit/" + rid + "/" + decision;
     });
 
     $('.callback').click(function(){

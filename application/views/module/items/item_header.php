@@ -16,7 +16,9 @@
 <?php echo $html_company_config;?>
 
 <?php
-    echo get_html_container($error,'html_error',true);
+    if(isset($error)){
+        echo get_html_container($error,'html_error',true);
+    }
 ?>
 
 <?php
@@ -33,6 +35,11 @@
 <input type="hidden" name="uid" value="<?php echo $item['uid']; ?>" />
 <input type="hidden" name="rid" value="<?php echo $item['rid']; ?>" />
 <input type="hidden" name="from_report" value="<?php echo $from_report; ?>" />
+<?php
+    //新建消费中传入rid
+  } else{
+?>
+<input type="hidden" name="rid" value="<?php echo $rid; ?>" />
 <?php
   }
 ?>

@@ -275,7 +275,7 @@ class Report_Model extends Reim_Model {
 
     }
 
-    public function update($id, $title, $receiver, $cc, $iids, $type = 0, $status = 1, $force = 0, $extra = array(),$template_id){
+    public function update($id, $title, $receiver, $cc, $iids, $type = 0, $status = 1, $force = 0, $extra = array(),$template_id,$is_other = 0){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $data = array(
@@ -292,6 +292,9 @@ class Report_Model extends Reim_Model {
         );
         log_message("debug", "Update:" . json_encode($data));
         $url = $this->get_url("report/$id");
+        if($is_other){
+            $url = $this->get_url("report/$id/modify");
+        }
         $buf = $this->do_Put($url, $data, $jwt);
         $obj = json_decode($buf, true);
         log_message("debug", "URL:" . $url);

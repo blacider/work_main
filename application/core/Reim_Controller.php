@@ -156,7 +156,9 @@ class REIM_Controller extends CI_Controller{
                 $report_template = $profile['report_setting']['templates'];
             }
             $this->session->set_userdata('user', $profile);
-            $custom_data['profile'] = $profile;
+            if(!array_key_exists('profile',$custom_data)){
+                $custom_data['profile'] = $profile;
+            }
             $admin_groups_granted = array();
             if(array_key_exists("admin_groups_granted_all", $profile) && $profile["admin_groups_granted_all"])
             {

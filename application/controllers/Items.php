@@ -210,9 +210,18 @@ class Items extends REIM_Controller {
         return $company_config;
     }
 
-    public function newitem(){
+    public function newitem($rid = 0){
+        //        $profile = $this->session->userdata('profile');
+        //如果rid>0时获取到报告所属人员
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
+        $uid = 0;
+        if($rid > 0){
+            $report = $this->report->get_detail($rid);
+            if($report['status'] > 0){
+                $uid = $report['data']['uid'];   
+            }
+        }
 
         //自定义消费字段信息
         $item_customization = array();
@@ -220,16 +229,20 @@ class Items extends REIM_Controller {
         //获取消费类型字典
         $item_type_dic = $this->reim_show->get_item_type_name();
 
-        $_profile = $this->user->reim_get_user();   
+        //$_profile = $this->user->reim_get_user();   
         $profile = array();
+        $_profile = json_decode($this->user->reim_get_info($uid),True);   
+        if($_profile['status'] > 0) {
+            $profile = $_profile['data'];
+        }
 
         $group_config = array();
         $item_configs = array();
         $item_config = array();
-        if($_profile && array_key_exists('profile',$_profile['data']))
-        {
-            $profile = $_profile['data']['profile'];
-        }
+        //if($_profile && array_key_exists('profile',$_profile['data']))
+        //{
+            //$profile = $_profile['data']['profile'];
+        //}
         
         $wanted_config = ['open_exchange','disable_borrow','disable_budget'];
         $company_config = $this->get_company_config($wanted_config,$profile);
@@ -330,7 +343,9 @@ class Items extends REIM_Controller {
                 'is_burden' => $is_burden,
                 'item_customization' => $item_customization,
                 'item_type_dic' => $item_type_dic,
-                'item_type_view_dic' => $item_type_view_dic
+                'item_type_view_dic' => $item_type_view_dic,
+                'rid' => $rid,
+                'profile' => $profile
             )
             //,$template_views
             );
@@ -409,6 +424,11 @@ class Items extends REIM_Controller {
         }
         $attachments = $this->input->post('attachments');
 
+        $rid = intval($this->input->post('rid'));
+        if($rid > 0){
+            $data['rid'] = $rid;
+        }
+
         $data['uids'] = $uids;
         $data['afford_ids'] = $afford_ids;
         $data['amount'] = $amount;
@@ -433,9 +453,19 @@ class Items extends REIM_Controller {
         //$obj = $this->items->create($amount, $category, implode(',',$tags), $timestamp, $merchant, $type, $note, $images,$end_dt,$uids, $afford_ids,$attachments, $currency,$customization);
         log_message('debug','create_item_back:' . json_encode($obj));
         // TODO: 提醒的Tips
-        if($renew){
+        //返回修改其他人的报告
+        if(array_key_exists('rid',$data)){
+            if($renew)
+            {
+                redirect(base_url('items/newitem/' . $data['rid']));
+            }
+            redirect(base_url('reports/edit/' . $data['rid']. '/1'));
+        }
+
+        if($renew)
+        {
             redirect(base_url('items/newitem'));
-        } else {
+        }else{
             redirect(base_url('items/index'));
         }
     }
@@ -685,11 +715,21 @@ class Items extends REIM_Controller {
     public function edit_show($id = 0, $from_report = 0,$page_type = 1,$flow = array()) {
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
+
+        $item = $this->items->get_by_id($id);
+        if($item['status'] < 1){
+            $this->session->set_userdata('last_error',$item['data']['msg']);
+            redirect(base_url('items'));
+        }
+        $item = $item['data'];
+
         //获取消费类型字典
         $item_type_dic = $this->reim_show->get_item_type_name();
         log_message('debug','item_id' . $id);
         if(0 === $id) redirect(base_url('items'));
-        $_profile = $this->user->reim_get_user();   
+
+        $uid = $item['uid'];
+        $_profile = json_decode($this->user->reim_get_info($uid),true);   
         $profile = array();
         $group_config = array();
         /*
@@ -698,7 +738,7 @@ class Items extends REIM_Controller {
         */
         if($_profile)
         {
-            $profile = $_profile['data']['profile'];
+            $profile = $_profile['data'];
         }
 
         $wanted_config = ['open_exchange','disable_borrow','disable_budget'];
@@ -716,13 +756,7 @@ class Items extends REIM_Controller {
             }
         }
 
-        $item = $this->items->get_by_id($id);
         $item_update_in = $this->session->userdata('item_update_in');
-        if($item['status'] < 1){
-            $this->session->set_userdata('last_error',$item['data']['msg']);
-            redirect(base_url('items'));
-        }
-        $item = $item['data'];
 
         //获得是否能修改消费
         $editable = 0;
@@ -888,6 +922,7 @@ class Items extends REIM_Controller {
                 ,'item_type_dic' => $item_type_dic
                 ,'item_type_view_dic' => $item_type_view_dic
                 ,'item_customization' => $item_customization
+                ,'profile' => $profile
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('items/index'), 'name' => '消费', 'class' => '')
@@ -913,7 +948,8 @@ class Items extends REIM_Controller {
         if($profile['id'] != $_uid){
             $item_update_in = 1;
         }
-
+        log_message("debug","uid:" . $_uid);
+        log_message("debug","item_update_in:" . $item_update_in);
         if($item_update_in != 0) {
             $input_data = array();
             $default_customization = array();
@@ -952,16 +988,20 @@ class Items extends REIM_Controller {
 
         if($renew)
         {
-            redirect(base_url('items/newitem'));
+            if($item_update_in != 0){
+                return redirect(base_url('items/newitem/' . $rid));
+            } else {
+                return redirect(base_url('items/newitem'));
+            }
         }
         if(!$id) {
             return redirect(base_url('items/index'));
         } else {
-            log_message("debug", "from report flag => " . $from_report);
-            if ($from_report)
-                return redirect(base_url("items/show/" . $id . "/1"));
-                                
-            return redirect(base_url('items/show/'. $id));
+            if($item_update_in != 0){
+                return redirect(base_url("reports/edit/" . $rid . "/1"));
+            }else{
+                return redirect(base_url("reports/edit/" . $rid));
+            }
         }
     }
 

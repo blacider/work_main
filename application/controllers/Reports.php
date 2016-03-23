@@ -486,7 +486,9 @@ class Reports extends REIM_Controller {
         return redirect(base_url('reports/index'));
     }
 
-    public function edit($id = 0){
+    public function edit($id = 0,$is_other = 0){
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         $item_type_dic = $this->reim_show->get_item_type_name();
         if($id == 0) {
             return redirect(base_url('reports/index'));
@@ -597,6 +599,8 @@ class Reports extends REIM_Controller {
                 'item_type_dic' => $item_type_dic,
                 'report' => $report,
                 'template'=>$template,
+                'is_other'=>$is_other,
+                'error'=>$error,
                 'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
@@ -825,10 +829,15 @@ class Reports extends REIM_Controller {
             }
 
         }
-        $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items), $type, $save, $force, $extra , $template_id);
+        $is_other = intval($this->input->post('is_other'));
+        $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items), $type, $save, $force, $extra , $template_id, $is_other);
         $ret = json_decode($ret, true);
         log_message("debug", "xx:" . json_encode($ret));
         if($ret['code'] <= 0) {
+            if($ret['code'] == 0){
+                echo json_encode(Array('status' => $ret['code'], 'msg' => '修改成功'));
+                return ;
+            }
             if($ret['code'] == -71)
             {
                 $info = $this->category->get_list();

@@ -189,10 +189,13 @@ class Items_Model extends Reim_Model {
             'customization' => $data['customization']
         );
         array_push($items, $s);
-        $data = array('items' => json_encode($items));
+        if(array_key_exists('rid',$data)){
+            $_data['rid'] = $data['rid'];
+        }
+        $_data['items'] = json_encode($items);
         $jwt = $this->session->userdata('jwt');
         $url = $this->get_url('item');
-        $buf = $this->do_Post($url, $data, $jwt, 1);
+        $buf = $this->do_Post($url, $_data, $jwt, 1);
         log_message('debug','item_create_data:' . json_encode($data));
         log_message('debug','item_create_url:' . json_encode($url));
         log_message('debug','item_create_back:' . json_encode($buf));
