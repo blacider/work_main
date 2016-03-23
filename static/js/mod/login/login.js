@@ -24,7 +24,7 @@ $(document).ready(function() {
 
         if(__fr__['hmsr']!==reg_fr_obj['hmsr'] && __fr__['hmsr']) {
             $.cookie('reg_fr', JSON.stringify(__fr__), {
-                expires: 1/24/60 * 30
+                expires: 7
             });   
         }
     };
