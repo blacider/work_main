@@ -747,37 +747,28 @@ class Bills extends REIM_Controller {
         die(json_encode($_data));
     }
 
-    public function listdata_new($type = 2){
+    public function get_finance_report_by_ids() {
         $this->need_group_casher();
-        $page = $this->input->get('page');
-        $rows = $this->input->get('rows');
-        $sort = $this->input->get('sord');
-        $bills = $this->reports->get_bills();
+        $chosenids = $this->input->get('ids');
+        $chosenids = array_values(array_filter(array_map('intval', explode('|', $chosenids))));
+        $bills = $this->reports->get_finance_report_by_ids($chosenids);
         if($bills['status'] < 1){
             die(json_encode(array()));
         }
         $data = $bills['data']['data'];
         $_data = array();
-        $chosenids = $_SERVER["REQUEST_URI"];
-        $chosenids = explode('/', $chosenids);
-        $chosenids = array_splice($chosenids, 4);
-        $chosenids[count($chosenids)-1] = explode('?', $chosenids[count($chosenids)-1])[0];
         foreach($data as $d){
-            if (in_array($d['id'], $chosenids)) {
-                log_message("debug", "Bill: $type: " . json_encode($d));
-                if($d['status'] != $type) continue;
-                $d['date_str'] = date('Y-m-d H:i:s', $d['createdt']);
-                //    $d['amount'] = '￥' . $d['amount'];
-                $d['amount'] =  sprintf("%.2f",$d['amount'] );
-                $d['status_str'] = $d['status'] == 2 ? '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>' : '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
-                $edit = $d['status'] != 2 ? 'gray' : 'green';
-                $extra = $d['status'] = '';
+            $d['date_str'] = date('Y-m-d H:i:s', $d['createdt']);
+            //    $d['amount'] = '￥' . $d['amount'];
+            $d['amount'] =  sprintf("%.2f",$d['amount'] );
+            $d['status_str'] = $d['status'] == 2 ? '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#42B698;background:#42B698 !important;">待结算</button>' : '<button class="btn  btn-minier disabled" style="opacity:1;border-color:#CFD1D2;background:#CFD1D2 !important;">已完成</button>';
+            $edit = $d['status'] != 2 ? 'gray' : 'green';
+            $extra = $d['status'] = '';
 
-                $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
-                    . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . $extra
-                    . '</div>';
-                array_push($_data, $d);
-            }
+            $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
+                          . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . $extra
+                          . '</div>';
+            array_push($_data, $d);
         }
         die(json_encode($_data));
     }

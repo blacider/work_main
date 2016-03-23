@@ -27,6 +27,17 @@ class Report_Model extends Reim_Model {
         return json_decode($buf, true);
     }
 
+    public function get_finance_report_by_ids($ids) {
+        $jwt = $this->session->userdata('jwt');
+
+        $query = 'ids=' . implode('|', $ids);
+        $url = $this->get_url('report_finance_flow/list/1?' . $query);
+        log_message('debug', $url);
+        $buf = $this->do_Get($url, $jwt);
+        log_message('debug', $buf);
+        return json_decode($buf, true);
+    }
+
     public function get_report_by_status_and_query(
         $status, 
         $keyword, 
