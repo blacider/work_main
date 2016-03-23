@@ -448,7 +448,13 @@
                                                     delete tableData['MODE'];
                                                 }
                                                 if(rs['status'] <= 0) {
+                                                    // -81 表示需要回滚适用类型
+                                                    if(rs['code'] == -81) {
+                                                        templateData['type'] = $scope.templateArrayOriginal.getItemById(templateData['id'])['type'];
+                                                        $scope.$apply();
+                                                    }
                                                     def.resolve();
+                                                    _self.close();
                                                     return show_notify(rs['msg']);
                                                 }
 
@@ -876,6 +882,11 @@
                             }).done(function  (rs) {
 
                                 if(rs['status'] <= 0) {
+                                    // -81 表示需要回滚适用类型
+                                    if(rs['code'] == -81) {
+                                        templateData['type'] = $scope.templateArrayOriginal.getItemById(templateData['id'])['type'];
+                                        $scope.$apply();
+                                    }
                                     return show_notify(rs['msg']);
                                 }
 
