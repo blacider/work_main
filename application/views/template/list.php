@@ -303,27 +303,27 @@
                         <div class="column-wrap table-layout">
                             <h4 class="field-table-label table-cell"> 表头显示 </h4>
                             <div class="table-cell field-table-content-multi-row">
-                                <div class="field-checkbox" style="{{$last?'margin-bottom:0':''}}" ng-class="{checked: tableHeaderOptionsItem.checked, disabled: tableHeaderOptionsItem.disabled}" ng-click="toggleCheckbox($event)" ng-repeat="tableHeaderOptionsItem in tableHeaderOptions">
+                                <div class="field-checkbox" style="{{$last?'margin-bottom:0':''}}" ng-class="{checked: templateItem.options[tableHeaderOptionsItem.bind_key], disabled: tableHeaderOptionsItem.disabled}"  ng-repeat="tableHeaderOptionsItem in tableHeaderOptions" ng-click="onChangeSettingItem($event, templateItem, tableHeaderOptionsItem)">
                                     <i class="icon"></i>
-                                    <label ng-click="onOptionItemChange(templateItem, tableHeaderOptionsItem, $event);">{{tableHeaderOptionsItem.text}}</label>
+                                    <label>{{tableHeaderOptionsItem.text}}</label>
                                 </div>
                             </div>             
                         </div>
                         <div class="column-wrap table-layout">
                             <h4 class="field-table-label table-cell"> 页脚显示 </h4>
                             <div class="table-cell field-table-content-multi-row">
-                                <div class="field-checkbox checked" style="{{$last?'margin-bottom: 0':''}}" ng-click="toggleCheckbox($event)" ng-repeat="tableFooterOptionsItem in tableFooterOptions">
+                                <div class="field-checkbox" ng-class="{checked: templateItem.options[tableFooterOptionsItem.bind_key]}"  style="{{$last?'margin-bottom: 0':''}}" ng-repeat="tableFooterOptionsItem in tableFooterOptions" ng-click="onChangeSettingItem($event, templateItem, tableFooterOptionsItem)">
                                     <i class="icon"></i>
-                                    <label ng-click="onOptionItemChange(templateItem, tableFooterOptionsItem, $event);">{{tableFooterOptionsItem.text}}</label>
+                                    <label>{{tableFooterOptionsItem.text}}</label>
                                 </div>
                             </div>             
                         </div>
-                        <div class="column-wrap table-layout pager-size" style="border-bottom: 1px solid #f2f6fa;" ng-if="true">
+                        <div class="column-wrap table-layout pager-size" style="border-bottom: 1px solid #f2f6fa;">
                             <h4 class="field-table-label table-cell"> 打印模板 </h4>
                             <div class="table-cell field-table-content-multi-row">
-                                <div class="field-radio" ng-class="{checked: $first}" ng-click="onRadioGroupClick($event)" ng-repeat="paperSizeItem in paperAvailableSize">
+                                <div class="field-radio" ng-class="{checked: paperSizeItem['key'] == templateItem['options']['paper_size']}" ng-repeat="paperSizeItem in paperAvailableSize" ng-click="onChangeSettingItem($event, templateItem, paperSizeItem)">
                                     <i class="icon"></i>
-                                    <label ng-click="onOptionItemChange(templateItem, paperSizeItem, $event);">{{paperSizeItem.text}}</label>
+                                    <label>{{paperSizeItem.text}}</label>
                                 </div>
                             </div>             
                         </div>
