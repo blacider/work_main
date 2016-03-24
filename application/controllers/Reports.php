@@ -321,7 +321,10 @@ class Reports extends REIM_Controller {
 
             if(in_array($d['status'],[0,3]))
             {
-                $d['options'] = $base_icon . $edit_icon . $trash_icon . $end_icon;
+                if ($d['pa_approval'] != 1)
+                    $d['options'] = $base_icon . $edit_icon . $trash_icon . $end_icon;
+                else
+                    $d['options'] = $base_icon . $edit_icon . $end_icon;
             }
             else if(in_array($d['status'],[1]))
             {
