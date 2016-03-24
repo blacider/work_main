@@ -134,7 +134,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="field-table default-field-table" ng-if=0>
+                    <div class="field-table default-field-table">
                         <div class="line"></div>
                         <h4 class="field-table-title">消费明细
                             <p class="buttons">
@@ -233,7 +233,7 @@
                             </div>             
                         </div>
                     </div>
-                    <div class="field-table default-field-table" ng-if=0>
+                    <div class="field-table default-field-table">
                         <div class="line" style="margin-bottom: 30px;"></div>
                         <div class="column-wrap table-layout">
                             <h4 class="field-table-label table-cell" style="margin: 0"> 字段组 </h4>
@@ -291,7 +291,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="field-table print-settings default-field-table" ng-if=0>
+                <div class="field-table print-settings default-field-table">
                     <div style="padding: 42px 0;">
                         <h4 class="field-table-title">打印设置
                             <p class="buttons">
