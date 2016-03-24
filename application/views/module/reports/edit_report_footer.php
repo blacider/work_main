@@ -793,7 +793,7 @@ function do_post(force) {
             dataType: 'json',
             success: function(data) {
                 if(data.status >= 0){
-                    window.history.back();
+                    window.location.href = '/reports/show/' + _rid +'/' + _is_other;
                     return false;
                 }
                 if (_renew && data.status == -71) {
