@@ -505,7 +505,11 @@ class Items extends REIM_Controller {
                 $s['createdt'] = strftime("%Y-%m-%d %H:%M", intval($s['createdt']));
                 $s['dt'] = strftime("%Y-%m-%d %H:%M", intval($s['dt']));
                 $_type = $item_type_dic[$s['type']];
-                $s['type'] = $_type;
+                if($s['rid']) {
+                    $s['type'] = $_type;
+                } else {
+                    $s['type'] = '';
+                }
 
                 if(array_key_exists($s['category'], $_cates)){
                     $s['cate_str'] = $_cates[$s['category']];
