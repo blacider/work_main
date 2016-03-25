@@ -81,7 +81,6 @@
                     <td>消费时间</td>
                     <td>类目</td>
                     <td>金额</td>
-                    <td>类型</td>
                     <td>商家</td>
                     <td>备注</td>
                     <td>操作</td>
@@ -129,7 +128,7 @@
                 <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
                 <td><?php echo $i['merchants']; ?></td>
                 <td><?php echo $i['note']?></td>
-                <td>
+                <td >
                     <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
                         <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="<?php echo $i['id']; ?>"></span>
                         <span class="ui-icon green ui-icon-pencil tedit" data-id="<?php echo $i['id']; ?>"></span>
@@ -140,7 +139,7 @@
     <?php  } ?>
     <?php
     foreach($items as $i){
-        if($i['rid'] == 0 && in_array($i['prove_ahead'], $item_type) && in_array($i['prove_ahead'], $extra_item_type)){
+        if(!$i['rid']){
             $item_amount = '';
             if($i['currency'] != 'cny')
             {
@@ -160,7 +159,7 @@
                     <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
                     <td><?php echo $i['merchants']; ?></td>
                     <td><?php echo $i['note']?></td>
-                    <td>
+                    <td style="width: 120px;">
                         <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
                             <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="<?php echo $i['id']; ?>"></span>
                             <span class="ui-icon green ui-icon-pencil tedit" data-id="<?php echo $i['id']; ?>"></span>

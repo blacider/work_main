@@ -52,13 +52,6 @@
             index: 'type',
             width: 50,
             editable: true,
-            formatter: function (value, model, row, action) {
-                if(row['rid'] == '0') {
-                    return ''
-                } else {
-                    return value;
-                }
-            },
             editoptions: {
                 size: "20",
                 maxlength: "30"
