@@ -322,9 +322,9 @@ class Reports extends REIM_Controller {
             if(in_array($d['status'],[0,3]))
             {
                 if ($d['pa_approval'] != 1)
-                    $d['options'] = $base_icon . $edit_icon . $trash_icon . $end_icon;
+                    $d['options'] = $base_icon . $edit_icon . $trash_icon . $download_icon . $end_icon;
                 else
-                    $d['options'] = $base_icon . $edit_icon . $end_icon;
+                    $d['options'] = $base_icon . $edit_icon . $download_icon . $end_icon;
             }
             else if(in_array($d['status'],[1]))
             {
@@ -344,7 +344,6 @@ class Reports extends REIM_Controller {
             }
 
             $d['status_str'] = get_report_status_str($d['status']);
-
 
             $prove_ahead = get_report_type_str($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
             $d['prove_ahead'] = $prove_ahead;
