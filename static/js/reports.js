@@ -84,7 +84,7 @@ try {
         mtype: "GET",
         datatype: "local",
         height: 250,
-        colNames: ['报销单ID', '报销单模板', '标题', '消费类型', '创建日期', '金额', '消费条目数', '附件', '状态', '操作'],
+        colNames:['报销单ID', '报销单模板', '标题', '类型',  '创建日期', '金额','消费条目数', '附件', '状态', '操作'],
         loadonce: true,
         caption: "报销单列表",
         editurl: __BASE + 'reports/save',

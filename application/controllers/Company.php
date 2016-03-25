@@ -124,7 +124,7 @@ class Company extends REIM_Controller {
             $msg = $buf['data']['msg'];
         }
 
-        die(json_encode(array('status' => $status,'msg' => $msg)));
+        die(json_encode(array('status' => $status,'msg' => $msg, 'code'=> $buf['code'])));
     }
 
     public function docreate_report_template()

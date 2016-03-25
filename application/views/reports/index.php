@@ -1,103 +1,90 @@
 <style type="text/css">
-  #globalSearchText{
-    position: absolute;
-    left: 75%;
-    top: 60px;
-    z-index: 2;
-    height: 26px;
-    width: 12%;
-    border-style: ridge;
-  }
-  #globalSearch {
-    background-color: #fe575f;
-    position: absolute;
-    left: 88%;
-    top: 60px;
-    border: 0;
-    color: white;
-    height: 25px;
-    border-radius: 3px;
-    font-size: 12px;
-  }
-  #globalSearch:hover {
-    background-color: #ff7075;
-  }
+	#globalSearchText{
+		position: absolute;
+		left: 75%;
+		top: 60px;
+		z-index: 2;
+		height: 26px;
+		width: 12%;
+		border-style: ridge;
+	}
+	#globalSearch {
+		background-color: #fe575f;
+		position: absolute;
+		left: 88%;
+		top: 60px;
+		border: 0;
+		color: white;
+		height: 25px;
+		border-radius: 3px;
+		font-size: 12px;
+	}
+	#globalSearch:hover {
+		background-color: #ff7075;
+	}
 </style>
 <input name="key" placeholder="ID或标题" value="<?php echo $search;?>" type='text' id="globalSearchText">
 <button type="button" id="globalSearch">搜索</button>
 <div id="mysearch"></div>
 <div class="page-content">
-  <div class="page-content-area">
-    <div class="row">
-      <div class="col-xs-12">
-        <table id="grid-table"></table>
-        <div id="grid-pager"></div>
-      </div>
-    </div>
+	<div class="page-content-area">
+		<div class="row">
+			<div class="col-xs-12">
+			<table id="grid-table"></table>
+			<div id="grid-pager"></div>
+		</div>
+	</div>
+	<div id="modal-table" class="modal" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="blue bigger"> 导出报销单 </h4>
+				</div>
+				<form method="post" >
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-xs-12 col-sm-12">
+								<div class="form-group">
+									<label for="form-field-username">请输入报销单发送的email地址:</label>
+									<div>
+										<input class=" col-xs-8 col-sm-8" type="text" id="email" name="email" class="form-control" value="<?php if(array_key_exists('email',$profile)){ echo $profile['email'];}?>">
+										<input type="hidden" id="report_id" name="report_id">
+									</div>
+								</div>
+								<br>
+								<br>
+								<br>
+								<br>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-sm" data-dismiss="modal">
+						<i class="ace-icon fa fa-times"></i>
+						取消
+						</button>
+						<input type="button" id='send' class="btn btn-sm btn-primary" value="发送">
+					</div>
+				</form>
+			</div>
+		</div>
+		</div><!-- PAGE CONTENT ENDS -->
+	</div>
+</div>
 
+<script src="/static/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="/static/ace/js/jqGrid/jquery.jqGrid.min.js"></script>
+<script>
+	var __BASE = "<?php echo $base_url; ?>";
+	var _error = "<?php echo $error; ?>";
 
-
-    <div id="modal-table" class="modal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="blue bigger"> 导出报销单 </h4>
-          </div>
-          <form method="post" >
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-xs-12 col-sm-12">
-
-
-                  <div class="form-group">
-                    <label for="form-field-username">请输入报销单发送的email地址:</label>
-                    <div>
-                      <input class=" col-xs-8 col-sm-8" type="text" id="email" name="email" class="form-control" value="<?php if(array_key_exists('email',$profile)){ echo $profile['email'];}?>">
-                      <input type="hidden" id="report_id" name="report_id">
-                    </div>
-
-                  </div>
-                       <br>
-                       <br>
-                       <br>
-                       <br>
-                </div>
-              </div>
-            </div>
-
-              <div class="modal-footer">
-                <button class="btn btn-sm" data-dismiss="modal">
-                  <i class="ace-icon fa fa-times"></i>
-                  取消
-                </button>
-                <input type="button" id='send' class="btn btn-sm btn-primary" value="发送">
-              </div>
-            </form>
-          </div>
-        </div>
-      </div><!-- PAGE CONTENT ENDS -->
-
-    </div>
-  </div>
-
-
-  <!-- page specific plugin scripts -->
-  <script src="/static/ace/js/date-time/bootstrap-datepicker.min.js"></script>
-  <script src="/static/ace/js/jqGrid/jquery.jqGrid.min.js"></script>
-
-  <script language="javascript">
-    var __BASE = "<?php echo $base_url; ?>";
-    var _error = "<?php echo $error; ?>";
-
-    $(document).ready(function(){
-        if(_error) show_notify(_error);
-    });
-
-  </script>
-  <script src="/static/js/base.js" ></script>
-  <script src="/static/js/reports.js" ></script>
-
+	$(document).ready(function(){
+		if(_error) show_notify(_error);
+	});
+</script>
+<script src="/static/js/base.js" ></script>
+<script src="/static/js/reports.js" ></script>
 <script type="text/javascript">
 $grid = $('#grid-table');
 $("#globalSearch").click(function() {

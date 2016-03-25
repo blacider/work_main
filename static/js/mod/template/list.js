@@ -448,7 +448,13 @@
                                                     delete tableData['MODE'];
                                                 }
                                                 if(rs['status'] <= 0) {
+                                                    // -81 表示需要回滚适用类型
+                                                    if(rs['code'] == -81) {
+                                                        templateData['type'] = $scope.templateArrayOriginal.getItemById(templateData['id'])['type'];
+                                                        $scope.$apply();
+                                                    }
                                                     def.resolve();
+                                                    _self.close();
                                                     return show_notify(rs['msg']);
                                                 }
 
@@ -673,13 +679,12 @@
                     };
 
                     $scope.updateTemplateType = function(e, templateData, $index) {
-                        if($(e.currentTarget).hasClass('checked')) {
-                            templateData.type.push($index + '');
-                        } else {
-                            var idx = templateData.type.indexOf($index + '');
-                            if(idx!=-1) {
-                                templateData.type.splice(idx, 1);
-                            }
+                        if($(e.currentTarget).hasClass('disabled')) {
+                            return;
+                        }
+                        var selected = [$index+''];
+                        if(!$(e.currentTarget).hasClass('checked')) {
+                            templateData.type = selected;
                         }
                     };
 
@@ -877,6 +882,11 @@
                             }).done(function  (rs) {
 
                                 if(rs['status'] <= 0) {
+                                    // -81 表示需要回滚适用类型
+                                    if(rs['code'] == -81) {
+                                        templateData['type'] = $scope.templateArrayOriginal.getItemById(templateData['id'])['type'];
+                                        $scope.$apply();
+                                    }
                                     return show_notify(rs['msg']);
                                 }
 

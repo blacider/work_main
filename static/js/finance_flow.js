@@ -117,7 +117,7 @@ try {
 		height: 250,
 		multiselect: true,
 		loadtext: '',
-		colNames: ['报销单ID', '报销单模板', '提交日期', '报销单名', '消费类型', '条目数', '提交者', '金额', '附件', '状态', '审批日期', '操作', '部门'],
+		colNames: ['报销单ID', '报销单模板', '提交日期', '报销单名', '类型', '条目数', '提交者', '金额', '附件', '状态', '审批日期', '操作', '部门'],
 		loadonce: true,
 		caption: "费用审计",
 		editurl: __BASE + 'bills/save',

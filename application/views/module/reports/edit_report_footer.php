@@ -1,4 +1,4 @@
-<?php echo get_html_container($error,'html_error',true);?>
+<?php echo get_html_container($error,'html_error',true); ?>
 <?php if($report['has_snapshot']) { ?>
 <div class="form-group">
     <label class="col-sm-1 control-label no-padding-right">申请历史</label>
@@ -113,76 +113,66 @@
             array_push($item_type,2);
         }
     }
-
-foreach($report['items'] as $i){
+    foreach($report['items'] as $i) {
         $item_amount = '';
-        if($i['currency'] != 'cny')
-        {
+        if($i['currency'] != 'cny') {
             $item_amount = round($i['amount']*$i['rate']/100,2);
-        }
-        else
-        {
+        } else {
             $item_amount = $i['amount'];
         }
-                                        ?>
-                                        <tr>
-                                            <td><input checked='true' name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>"
-                                                data-id="<?php echo $i['id']; ?>" data-type="<?php echo $i['prove_ahead'];?>"></td>
-                                            <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
-                                            <td><?php echo $i['category_name']; ?></td>
-                                            <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
-                                            <td><?php echo $item_type_dic[$i['prove_ahead']];?></td>
-                                            <td><?php echo $i['merchants']; ?></td>
-                                            <td><?php echo $i['note']?></td>
-                                            <td>
-                                                <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
-                                                    <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="<?php echo $i['id']; ?>"></span>
-                                                    <span class="ui-icon green ui-icon-pencil tedit" data-id="<?php echo $i['id']; ?>"></span>
-                                                    <?php if(!$is_other){?>
-                                                    <span class="ui-icon ui-icon-trash red  tdel" data-id="<?php echo $i['id']; ?>"></span>
-                                                    <?php }?>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <?php  } ?>
-<?php
-if(!$is_other) {       
-foreach($items as $i){
-    if($i['rid'] == 0 && in_array($i['prove_ahead'], $item_type) && in_array($i['prove_ahead'], $extra_item_type)){
-        $item_amount = '';
-        if($i['currency'] != 'cny')
-        {
-            $item_amount = round($i['amount']*$i['rate']/100,2);
-        }
-        else
-        {
-            $item_amount = $i['amount'];
-        }
+        ?>
+            <tr>
+                <td><input checked='true' name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>"
+                    data-id="<?php echo $i['id']; ?>" data-type="<?php echo $i['prove_ahead'];?>"></td>
+                <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
+                <td><?php echo $i['category_name']; ?></td>
+                <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
+                <td><?php echo $i['merchants']; ?></td>
+                <td><?php echo $i['note']?></td>
+                <td>
+                    <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
+                        <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="<?php echo $i['id']; ?>"></span>
+                        <span class="ui-icon green ui-icon-pencil tedit" data-id="<?php echo $i['id']; ?>"></span>
+                        <span class="ui-icon ui-icon-trash red  tdel" data-id="<?php echo $i['id']; ?>"></span>
+                    </div>
+                </td>
+            </tr>
+    <?php  } ?>
+    <?php
+    foreach($items as $i){
+        if($i['rid'] == 0 && in_array($i['prove_ahead'], $item_type) && in_array($i['prove_ahead'], $extra_item_type)){
+            $item_amount = '';
+            if($i['currency'] != 'cny')
+            {
+                $item_amount = round($i['amount']*$i['rate']/100,2);
+            }
+            else
+            {
+                $item_amount = $i['amount'];
+            }
+            ?>
+                <tr>
+                    <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>"
+                            data-id="<?php echo $i['id']; ?>" data-type="<?php echo $i['prove_ahead'];?>"></td>
+                    <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
+                    <td><?php echo $i['cate_str']; ?></td>
 
-                                        ?>
-                                        <tr>
-                                            <td><input name="item[]" value="<?php echo $i['id']; ?>" type="checkbox" class="form-controller amount" data-amount = "<?php echo $item_amount; ?>"
-                                                    data-id="<?php echo $i['id']; ?>" data-type="<?php echo $i['prove_ahead'];?>"></td>
-                                            <td><?php echo strftime('%Y-%m-%d %H:%M', $i['dt']); ?></td>
-                                            <td><?php echo $i['cate_str']; ?></td>
-
-                                            <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
-                                            <td><?php echo $item_type_dic[$i['prove_ahead']];?></td>
-                                            <td><?php echo $i['merchants']; ?></td>
-                                            <td><?php echo $i['note']?></td>
-                                            <td>
-                                                <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
-                                                    <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="<?php echo $i['id']; ?>"></span>
-                                                    <span class="ui-icon green ui-icon-pencil tedit" data-id="<?php echo $i['id']; ?>"></span>
-                                                    <span class="ui-icon ui-icon-trash red  tdel" data-id="<?php echo $i['id']; ?>"></span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <?php }} } ?>
-                                    </table>
-                                </div>
-                            </div>
-
+                    <td><?php echo $i['coin_symbol'] . $i['amount'];?></td>
+                    <td><?php echo $i['merchants']; ?></td>
+                    <td><?php echo $i['note']?></td>
+                    <td>
+                        <div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del">
+                            <span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="<?php echo $i['id']; ?>"></span>
+                            <span class="ui-icon green ui-icon-pencil tedit" data-id="<?php echo $i['id']; ?>"></span>
+                            <span class="ui-icon ui-icon-trash red  tdel" data-id="<?php echo $i['id']; ?>"></span>
+                        </div>
+                    </td>
+                </tr>
+                <?php } ?>
+            <?php } ?>
+                </table>
+            </div>
+        </div>
                             <input type="hidden" id="renew" value="0" name="renew">
                             <input type="reset" style="display:none;" id="reset">
                             <div class="clearfix form-actions col-md-10">
@@ -206,9 +196,6 @@ foreach($items as $i){
     </div>
 </div>
 
-
-
-
 <div class="modal fade" id="force_submit">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -225,7 +212,6 @@ foreach($items as $i){
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 
 <div class="modal fade" id="modal_next">
     <div class="modal-dialog">
@@ -517,16 +503,6 @@ function canGetPostData(force) {
         if ($(this).is(':checked')) {
             _ids.push($(this).data('id'));
             var amount = $(this).data('amount');
-            var item_type = $(this).data('type');
-            if (flag == 0) {
-                report_type = item_type;
-                flag = 1;
-            }
-            if (report_type != item_type) {
-                show_notify('同一报销单中不能包含不同的消费类型');
-                def.resolve(false)
-                return def.promise();
-            }
             sum += amount;
         };
     });
