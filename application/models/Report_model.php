@@ -84,14 +84,15 @@ class Report_Model extends Reim_Model {
         return json_decode($buf,True);
     }
 
-    public function create_report_template($name,$config)
+    public function create_report_template($name,$config, $type)
     {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
         $url = $this->get_url('report_template');
         $data = array(
             'name' => $name,
-            'config' => $config
+            'config' => $config,
+            'type' => implode(',', $type)
         );
         $buf = $this->do_Post($url,$data,$jwt);
         log_message('debug','report_template_url:'.$url);
