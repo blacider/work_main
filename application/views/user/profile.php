@@ -904,7 +904,11 @@ if(in_array($profile['admin'],[1,3,4])){
         });
 
         $('.renew').click(function(){
-            $('#profile_form').submit();
+            var form = $('#profile_form')[0];
+            if (form.rank.value == '0' && form.level.value == '0')
+                show_notify("请选择职位或职级")
+            else
+                $(form).submit();
         });
 
         var flag = 0;
