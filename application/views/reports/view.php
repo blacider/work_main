@@ -512,8 +512,8 @@ table td {
           return;
       }
       $(document).ready(function() {
-          $('#modal_next').find('input[type="submit"]').click(function(event) {
-              if ($('#modal_next').find('#modal_managers').val() != null) {
+          $('#finance_modal_next').find('input[type="submit"]').click(function(event) {
+              if ($('#finance_modal_next').find('#modal_managers').val() != null) {
                   return true;
               } else {
                   show_notify("请选择审批人");

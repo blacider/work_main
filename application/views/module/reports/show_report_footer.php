@@ -293,7 +293,16 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                     }
                     return;
                   }
-
+                  $(document).ready(function() {
+                      $('#finance_modal_next').find('input[type="submit"]').click(function(event) {
+                          if ($('#finance_modal_next').find('#modal_managers').val() != null) {
+                              return true;
+                          } else {
+                              show_notify("请选择审批人");
+                              return false;
+                          }
+                       });
+                  });
                 </script>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
