@@ -156,14 +156,11 @@ class Bills extends REIM_Controller {
         // 2 -- 仅部门名称
         // 3 -- 公司/部门
 
-        # 571 高瓴
-        if (in_array($company_id, ['571',])) {
-            $url_base = 'https://www.yunbaoxiao.com/report/rh';
+        if ($this->should_use_new_pdf($company_id)) {
+            $url = "https://www.yunbaoxiao.com/report/rh?pdf=1&rid=" . implode(',',$rid) . "&with_note=" . $with_note . "&hide_merchants=" . $hide_merchants;
         } else {
-            $url_base = 'https://www.yunbaoxiao.com/report/report';
+            $url = "https://www.yunbaoxiao.com/report/report?&rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category . '&footer_format=' . $footer_format . "&hide_merchants=" . $hide_merchants;
         }
-
-        $url = "$url_base?pdf=1&rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category . '&footer_format=' . $footer_format . "&hide_merchants=" . $hide_merchants;
         die(json_encode(array('url' => $url)));
     }
     public function download_report()
@@ -243,14 +240,11 @@ class Bills extends REIM_Controller {
         }
 
         $archive = 1;
-        # 571 高瓴
-        if (in_array($company_id, ['571',])) {
-            $url_base = 'https://www.yunbaoxiao.com/report/rh';
+        if ($this->should_use_new_pdf($company_id)) {
+            $url = "https://www.yunbaoxiao.com/report/rh?pdf=1&rid=" . implode(',',$rid) . "&with_note=" . $with_note . "&hide_merchants=" . $hide_merchants;
         } else {
-            $url_base = 'https://www.yunbaoxiao.com/report/report';
+            $url = "https://www.yunbaoxiao.com/report/report?&rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category . '&footer_format=' . $footer_format . "&hide_merchants=" . $hide_merchants;
         }
-        $url = "$url_base?pdf=1&rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category . '&footer_format=' . $footer_format . "&hide_merchants=" . $hide_merchants;
-        log_message('debug','hhh'. $url);
         die(json_encode(array('url' => $url)));
     }
 
@@ -385,7 +379,7 @@ class Bills extends REIM_Controller {
     public function finished($search=''){
         return $this->_logic(4,$search);
     }
-    
+
     public function finance_flow($search = '')
     {
 
@@ -465,7 +459,7 @@ class Bills extends REIM_Controller {
         $approval_enddate = $this->input->get('approval_enddate');
 
         $bills = $this->reports->get_report_by_status_and_query(
-            $status, 
+            $status,
             $keyword,
             $dept,
             $submit_startdate,
@@ -772,4 +766,18 @@ class Bills extends REIM_Controller {
         }
         die(json_encode($_data));
     }
+
+    private function should_use_new_pdf($company_id) {
+        $legacy_company_ids = [
+            333, # 人人车
+            431, # 酷表族
+            443, # 财加
+            478, # 戈壁
+        ];
+        if (in_array($company_id, $legacy_company_ids)) {
+            return false;
+        }
+        return true;
+    }
+
 }
