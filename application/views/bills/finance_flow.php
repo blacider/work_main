@@ -479,7 +479,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
                 <form action="<?php echo base_url('bills/report_finance_end'); ?>" method="post" class="form-horizontal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">报销单将提交至以下审批人，请确认</h4>
+                <h4 class="modal-title">报销单将提交至:</h4>
                 <input type="hidden" name="rid" value="" id="rid">
                 <input type="hidden" name="status" value="2" id="status">
             </div>
@@ -506,7 +506,16 @@ Date.prototype.Format = function (fmt) { //author: meizz
                     $('#modal_next').modal('hide');
                     return;
                   }
-
+                  $(document).ready(function() {
+                      $('#modal_next').find('input[type="submit"]').click(function(event) {
+                          if ($('#modal_next').find('#modal_managers').val() != null) {
+                            return true;
+                          } else {
+                            show_notify("请选择审批人");
+                            return false;
+                          }
+                      });
+                  });
                 </script>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

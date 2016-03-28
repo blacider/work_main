@@ -183,7 +183,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                 <form action="<?php echo base_url('reports/permit'); ?>" method="post" class="form-horizontal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">报销单将提交至以下审批人，请确认</h4>
+                <h4 class="modal-title">报销单将提交至:</h4>
                 <input type="hidden" name="rid" value="" id="rid">
                 <input type="hidden" name="status" value="2" id="status">
             </div>
@@ -209,6 +209,16 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                     $('#modal_next').modal('hide');
                     return;
                   }
+                  $(document).ready(function() {
+                      $('#modal_next').find('input[type="submit"]').click(function(event) {
+                          if ($('#modal_next').find('#modal_managers').val() != null) {
+                            return true;
+                          } else {
+                            show_notify("请选择审批人");
+                            return false;
+                          }
+                      });
+                  });
                 </script>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -249,7 +259,7 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                 <form action="<?php echo base_url('bills/report_finance_end'); ?>" method="post" class="form-horizontal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">报销单将提交至以下审批人，请确认</h4>
+                <h4 class="modal-title">报销单将提交至:</h4>
                 <input type="hidden" name="rid" value="<?php echo $rid;?>" id="rid">
                 <input type="hidden" name="status" value="2" id="status">
             </div>
@@ -283,7 +293,16 @@ if($i['ts'] != '0000-00-00 00:00:00') {
                     }
                     return;
                   }
-
+                  $(document).ready(function() {
+                      $('#finance_modal_next').find('input[type="submit"]').click(function(event) {
+                          if ($('#finance_modal_next').find('#modal_managers').val() != null) {
+                              return true;
+                          } else {
+                              show_notify("请选择审批人");
+                              return false;
+                          }
+                       });
+                  });
                 </script>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -435,7 +454,7 @@ $(document).ready(function(){
                 dataType: "json",
                 success: function(data){
                     if (data['status'] > 0) {
-                        getData = data['data'].suggestion;
+                        var getData = data['data'].suggestion;
                         if (data['data'].complete == 0) {
                             $('#rid').val(_id);
                             chose_others_zero_audit(getData);
@@ -472,7 +491,6 @@ $(document).ready(function(){
                 dataType: "json",
                 success: function(data){
                     if (data['status'] > 0) {
-                        getData = data['data'].suggestion;
                         if (data['data'].complete == 0) {
                             chose_others_zero(_id,data['data'].suggestion);
                         } else {
@@ -489,23 +507,9 @@ $(document).ready(function(){
         });
     });
 
-    function chose_others_zero(item,nextId) {
-    for (var item in getData) {
-        if (item != undefined) {
-            $($('.chosen-select','#finance_modal_next')[0]).val(item).trigger("chosen:updated");
-        }
-    }
-    $('#finance_modal_next').modal('show');
-    if(nextId.length)
-    {
-        $('#modal_managers','#finance_modal_next').val(nextId[0]).prop('selected',true);
-        $('#modal_managers','#finance_modal_next').trigger('chosen:updated');
-    }
-    else
-    {
-        $('#mypass','#finance_modal_next').attr('disabled',true).trigger('chosen:updated');
-    }
-    $('#modal_managers','#finance_modal_next').attr('disabled',true).trigger('chosen:updated');
+    function chose_others_zero(item,suggestion) {
+        $("#finance_modal_next").find('#modal_managers').val(suggestion).trigger("chosen:updated");
+        $('#finance_modal_next').modal('show');
     }
 
     function chose_others(_id) {

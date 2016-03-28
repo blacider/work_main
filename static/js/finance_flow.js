@@ -3,30 +3,9 @@ function show_modal() {
 	$('#modal_next').modal('show');
 }
 
-function chose_others_zero(item, nextId) {
-	//console.log(item);
-	for (var item in getData) {
-		if (item != undefined) {
-			//console.log(getData[item]);
-			$($('.chosen-select')[0]).find("option[value='" + getData[item] + "']").attr("selected", true);
-			$($('.chosen-select')[0]).trigger("chosen:updated");
-		}
-	}
+function chose_others_zero(item, suggestion) {
+	$("#modal_next").find('#modal_managers').val(suggestion).trigger("chosen:updated");
 	$('#modal_next').modal('show');
-	setTimeout(function  () {
-		$('#modal_managers_chosen').width(300);
-	}, 16);
-	console.log(nextId);
-	if (nextId.length) {
-		$('#modal_managers').val(nextId[0]).prop('selected', true);
-		$('#modal_managers').trigger('chosen:updated');
-	} else {
-		$('#mypass').attr('disabled', true).trigger('chosen:updated');
-	}
-	
-	$('#modal_managers').trigger('chosen:updated');
-	$('#modal_managers').trigger('change');
-	
 }
 
 function chose_others(_id) {
@@ -54,7 +33,6 @@ function bind_event() {
 				dataType: "json",
 				success: function(data) {
 					if (data['status'] > 0) {
-						getData = data['data'].suggestion;
 						if (data['data'].complete == 0) {
 							$('#rid').val(_id);
 							chose_others_zero(_id, data['data'].suggestion);
