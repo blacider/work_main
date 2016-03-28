@@ -29,7 +29,7 @@
         mtype: "GET",
         height: 250,
         loadtext: '',
-        colNames: ['消费时间', '类型', '金额', '类目', '商家', '备注', '状态', '附件', '操作'],
+        colNames: ['消费时间', '金额', '类目', '商家', '备注', '状态', '附件', '操作'],
         //rownumbers: true, 
         caption: "消费列表",
         editurl: __BASE + 'items/save',
@@ -42,15 +42,6 @@
             name: 'dt',
             index: 'dt',
             width: 120,
-            editable: true,
-            editoptions: {
-                size: "20",
-                maxlength: "30"
-            }
-        }, {
-            name: 'type',
-            index: 'type',
-            width: 50,
             editable: true,
             editoptions: {
                 size: "20",
