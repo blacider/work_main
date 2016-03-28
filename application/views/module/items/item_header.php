@@ -84,10 +84,12 @@ function is_show(item_array,form_node,category_id,category_parent_id)
     if(is_show_value)
     {
         form_node.prop('hidden',false);
+        form_node.css('display','block');
     }
     else
     {
         form_node.prop('hidden',true);
+        form_node.css('display','none');
     }
 
     var form_node_value = form_node.data('value');
@@ -97,10 +99,12 @@ function is_show(item_array,form_node,category_id,category_parent_id)
         if(form_node.prop('hidden') == true)
         {
             $('#time_form').prop('hidden',false);
+            $('#time_form').css('display','block');
         }
         else
         {
              $('#time_form').prop('hidden',true);
+             $('#time_form').css('display','none');
         }
     }
 }
