@@ -1,0 +1,130 @@
+.mod-add-report {
+	width: 900px;
+	margin: 0 auto;
+	height: auto;
+	padding: 0;
+	font-family: STHeitiSC-Light;
+}
+
+.mod-add-report .page-content-area {
+	padding-bottom: 100px;
+}
+ 
+.mod-add-report .report .report-header {
+	height: 60px;
+	background: url("/static/img/mod/template/bg-template-header.png") repeat-x;
+	border-radius: 3px 3px 0 0;
+	position: relative;
+	padding-left: 32px;
+	width: 900px;
+	z-index: 999;
+	font-family: PingFangSC-Medium;
+	font-size: 18px;
+	color: #ffffff;
+	line-height: 60px;
+}
+
+.mod-add-report .report {
+	margin-top: 30px;
+	background-color: #f8fafc;
+}
+
+.mod-add-report .report .report-body {
+	padding: 30px;
+    margin-bottom: -20px;
+}
+
+.mod-add-report .report .block-row {
+	display: table;
+	padding: 30px 65px;
+	background: #fff;
+	width: 100%;
+	border-radius: 2px;
+	margin-bottom: 20px;
+}
+.mod-add-report .report .block-row .fields-box {
+	margin-right: -77px;
+}
+.mod-add-report .report .block-row .fields-box .item {
+	float: left;
+	width: 50%;
+	padding-right: 77px;
+}
+.mod-add-report .report .block-row .fields-box .item .field-input {
+	width: 100%;
+	display: block;
+}
+.mod-add-report .report .block-row .fields-box .item input {
+	display: block;
+	margin-right: 40px;
+}
+
+.mod-add-report .report .block-row .field-label,
+.mod-add-report .report .block-row .field-input {
+	display: table-cell;
+}
+.mod-add-report .report .block-row .field-label {
+	width: 100px;
+	vertical-align: middle;
+}
+.mod-add-report .report .report-title .field-input input {
+	width: 100%;
+}
+
+.mod-add-report .report .btn-add-add-approvers {
+	background: #596774;
+}
+.mod-add-report .report .btn-add-add-approvers img {
+	height: 36px;
+	margin-right: 8px;
+}
+.mod-add-report .report-footer {
+	margin: 0 30px;
+	padding: 0 65px 30px 166px;
+	text-align: right;
+}
+
+.mod-add-report .report-footer .btn-cancel {
+	background: #fff;
+	color: #596774;
+	border-bottom: none;
+	width: 100px;
+	height: 45px;
+	border-radius: 6px;
+	background-color: #ffffff;
+	border: solid 0.8px #596774;
+	border: solid 0.8px var(--slate-grey);
+}
+
+.mod-add-report .report-footer .btn-save {
+	width: 100px;
+	height: 45px;
+	border-radius: 6px;
+	background-color: #ffffff;
+	border: solid 1px #596774;
+	color: #596774;
+}
+
+.mod-add-report .report-footer .btn-submit {
+	width: 100px;
+	height: 45px;
+	border-radius: 6px;
+	background-color: #ff575b;
+	border-bottom: solid 3px #e94b4f;
+}
+/* component reset */
+.field-label {
+	color: #4a4a4a;
+}
+.field-input {
+	height: 40px;
+}
+
+.ui-button:hover {
+	color: #fff;
+	border-bottom: 2px solid #273e52;
+}
+.ui-button {
+	background: #596774;
+	border-bottom: 2px solid #273e52;
+}

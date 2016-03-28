@@ -14,6 +14,32 @@ class Reports extends REIM_Controller {
         $this->load->helper('report_view_utils');
     }
 
+    public function add($template_id=0)
+    { 
+        $this->bsload('reports/add', array(
+                'title' => '新建报销单',
+                'error' => array(),
+                'type' => array(),
+                'breadcrumbs' => array(
+                    array(
+                        'url'  => base_url(), 
+                        'name' => '首页', 
+                        'class' => 'ace-icon fa home-icon'
+                    ),
+                    array(
+                        'url'  => base_url('reports/index'),
+                        'name' => '报销单', 'class' => ''
+                    ),
+                    array(
+                        'url'  => '', 
+                        'name' => '我的报销单', 
+                        'class' => ''
+                    )
+                ),
+            )
+        );
+    }
+
     public function get_report_comments($report)
     {
         $comments = array();
