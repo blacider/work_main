@@ -1024,7 +1024,7 @@ class Reports extends REIM_Controller {
 
             $download_icon = '<span class="ui-icon ace-icon fa fa-download ' . 'blue' . '  tdown" data-id="' . $d['id'] . '"></span>';
 
-            if (in_array($d['status'],[2,4,5,7,8]) or
+            if (in_array($d['status'],[1,2,4,5,7,8]) or
                 ($d['status'] == 0 and $d['pa_approval'])
             ) {
                 if($d['mdecision'] == 1 && !$d['cc_flag']){
