@@ -15,15 +15,8 @@ function formatMoney(str, places, symbol, thousand, decimal) {
 function show_modal(){
             $('#modal_next').modal('show');
 }
-function chose_others_zero(item) {
-    //console.log(item);
-    for (var item in getData) {
-        if (item != undefined) {
-            //console.log(getData[item]);
-            $($('.chosen-select')[0]).find("option[value='"+getData[item]+"']").attr("selected",true);
-            $($('.chosen-select')[0]).trigger("chosen:updated");
-        }
-    }
+function chose_others_zero(item, suggestion) {
+    $("#modal_next").find('#modal_managers').val(suggestion).trigger("chosen:updated");
     $('#modal_next').modal('show');
 }
 function chose_others(_id) {
@@ -31,7 +24,6 @@ function chose_others(_id) {
     $('#rid').val(_id);
     $('#modal_next').modal('show');
 }
-var getData = {};
 function bind_event(){
     $('.texport').each(function(){
         $(this).click(function(){
@@ -67,10 +59,10 @@ function bind_event(){
                 dataType: "json",
                 success: function(data){
                     if (data['status'] > 0) {
-                        getData = data['data'].suggestion;
+                        var getData = data['data'].suggestion;
                         if (data['data'].complete == 0) {
                             $('#rid').val(_id);
-                            chose_others_zero(_id);
+                            chose_others_zero(_id, getData);
                         } else {
                             $('#rid_').val(_id);
                             if(close_directly == 0) {
