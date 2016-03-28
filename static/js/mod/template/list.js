@@ -100,7 +100,7 @@
             disabled: false,
             text: '提交者职位',
             value: '',
-            bind_key: "has_submitter_name"
+            bind_key: "has_submitter_position"
         },
         {
             disabled: false,
@@ -130,7 +130,7 @@
             disabled: false,
             text: '提交者邮箱',
             value: '',
-            bind_key: "has_submitter_sup_department"
+            bind_key: "has_submitter_email"
         }
     ];
 
@@ -594,19 +594,12 @@
 
                     };
 
-                    $scope.onOptionItemChange = function (templateData, optionItem, e) {
-                        setTimeout(function() {
-                            console.log($(e.currentTarget).parent().attr('class'));
-                            if(optionItem['bind_key'] === 'paper_size') {
-                                return templateData['options']['paper_size'] = optionItem['key'];
-                            }
-                            if($(e.currentTarget).parent().hasClass('checked')) {
-                                templateData['options'][optionItem.bind_key] = 1;
-                            } else {
-                                templateData['options'][optionItem.bind_key] = 0;
-                            }
-                        }, 10);
-                    };
+                    $scope.onChangeSettingItem= function (e, templateData, optionsItem) {
+                        if(optionsItem.bind_key == 'paper_size') {
+                            return templateData['options'][optionsItem.bind_key] = optionsItem.key;
+                        }
+                        templateData['options'][optionsItem.bind_key] = 1- templateData['options'][optionsItem.bind_key];
+                    }
 
                     $scope.setOptionsForRadioGroup = function  (e, tableData, inputIndex, columnIndex) {
                         if($(e.currentTarget).hasClass('btn-delete-input')) {
