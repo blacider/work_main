@@ -43,7 +43,7 @@
   </div>
   <div class="header">
     <div class="main-block">
-      <div class="home-logo"></div>
+      <a href="/"><div class="home-logo"></div></a>
     </div>
   </div>
   <div class="contain">
@@ -83,7 +83,7 @@
       </div>
       <div class="footer-link">
         <ul>
-        <li><a href="https://www.yunbaoxiao.com/contact.html">关于我们</a></li>
+        <li><a href="https://www.yunbaoxiao.com/static/html/contact.html">关于我们</a></li>
       </ul>
       </div>
       <div class="record">
