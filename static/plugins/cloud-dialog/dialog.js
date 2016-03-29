@@ -23,7 +23,8 @@
 		this.options = $.extend({
 			title: '',
 			quickClose: false,
-			content: '确认要删除当前报销单模版?',
+			autoDestroy: true,
+			content: '',
 			width: 240,
 			offset: {
 				left: 0,
@@ -85,6 +86,11 @@
 
 			this._bindEvents();
 			this.addButtons()
+		},
+		setContentWithElement: function (el) {
+			var $content = this.$el.find('.dialog-body');
+			$content.empty();
+			$content.append(el);
 		},
 		addButtons: function () {
 			var buttons = this.options.buttons;
@@ -172,7 +178,11 @@
 				e.stopPropagation();
 			});
 			this.$el.on('click', '.close', function  (e) {
-				_self.close(true);
+				if(_self.options['autoDestroy']) {
+					_self.close(true);
+				} else {
+					_self.close();
+				}
 			});
 
 			this.$el.on('click', '.dialog-footer button', function  (e) {
@@ -187,7 +197,9 @@
 
 			// can quick close
 			this.$mask.on('click', function  (e) {
-				_self.options.quickClose && _self.close(true);
+				if(_self.options.quickClose) {
+					_self.$el.find('.close').trigger('click');
+				}
 			});
 
 			$(document).on('keyup', function  (e) {
