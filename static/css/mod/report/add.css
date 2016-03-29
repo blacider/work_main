@@ -45,16 +45,16 @@
 .mod-add-report .report .block-row .fields-box {
 	margin-right: -77px;
 }
-.mod-add-report .report .block-row .fields-box .item {
+.mod-add-report .report .block-row .fields-box .field-item {
 	float: left;
 	width: 50%;
 	padding-right: 77px;
 }
-.mod-add-report .report .block-row .fields-box .item .field-input {
+.mod-add-report .report .block-row .fields-box .field-item .field-input {
 	width: 100%;
 	display: block;
 }
-.mod-add-report .report .block-row .fields-box .item input {
+.mod-add-report .report .block-row .fields-box .field-item input {
 	display: block;
 	margin-right: 40px;
 }
@@ -66,6 +66,7 @@
 .mod-add-report .report .block-row .field-label {
 	width: 100px;
 	vertical-align: middle;
+	padding-right: 20px;
 }
 .mod-add-report .report .report-title .field-input input {
 	width: 100%;
@@ -103,6 +104,7 @@
 	background-color: #ffffff;
 	border: solid 1px #596774;
 	color: #596774;
+	margin-right: 10px;
 }
 
 .mod-add-report .report-footer .btn-submit {
@@ -128,3 +130,9 @@
 	background: #596774;
 	border-bottom: 2px solid #273e52;
 }
+
+.field-select .option-list {
+	margin-top: -6px
+}
+
+

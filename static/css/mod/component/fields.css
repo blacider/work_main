@@ -105,42 +105,45 @@
 .field-group .field-checkbox {
 	padding-left: 20px;
 }
-.field-group .field-select {
-	width: 90px;
+.field-input,
+.field-select {
 	border: none;
 	position: relative;
+	height: 40px;
 }
-.field-group .field-select select {
+
+.field-select select {
 	display: none;
 }
-.field-group .field-select input, .field-group .field-select .text {
+.field-select input, .field-select .text {
 	display: block;
 	width: 100%;
-	height: 100%;
-	border: 1px solid #d5d5d5;
+	height: 34px;
 	border-radius: 2px;
 	outline: none;
 	padding: 0 8px;
 	font-size: 14px;
 	cursor: default;
 	color: #4a4a4a;
+	border: 1px solid rgb(213, 213, 213);
 }
-.field-group .field-select .text {
+.field-select .text {
 	line-height: 32px;
 }
-.field-group .field-select input:focus, .field-group .field-select .text.focus {
+.field-select input:focus, .field-select .text.focus {
 	border: 1px solid #fe575c !important;
 }
 .font-placeholder {
 	color: #b9b9b9 !important;
 }
-.field-group .field-select .icon {
+.field-select .icon,
+.field-input .icon {
     float: right;
 }
-.field-group .field-select .text {
+.field-select .text {
     display: inline-block;
 }
-.field-group .field-select .option-list {
+.field-select .option-list {
 	padding: 10px 0;
 	margin: 0;
 	position: absolute;
@@ -160,14 +163,23 @@
 	transition: opacity .1s ease;
 	z-index: 11;
 	will-change: transform,opacity;
+	max-height: 280px;
+	overflow-y: auto;
 }
-.field-group .field-select img {
+.field-select .icon img,
+.field-input .icon img {
 	position: absolute;
 	right: 8px;
 	top: 11px;
 	width: 8px;
 }
-.field-group .field-select .option-list .item {
+
+.field-input .icon img {
+	width: 16px;
+	top: 8px;
+}
+
+.field-select .option-list .item {
 	height: 28px;
 	line-height: 28px;
 	padding: 0 10px;
@@ -175,28 +187,28 @@
 	cursor: default;
 	font-size: 14px;
 }
-.field-group .field-select .option-list .item:hover {
+.field-select .option-list .item:hover {
 	background: #ff575b;
 	color: #fff !important;
 }
-.field-group .field-select .option-list .item.active {
+.field-select .option-list .item.active {
 	color: #ff575b;
 }
 .field-table .field-table-label,
-.field-group .field-group-label {
+.field-group-label {
     text-align: left;
     width: 20%;
     color: #b9b9b9;
     font-size: 14px;
 }
 
-.field-group .field-group-rows {
+.field-group-rows {
     width: 80%;
 }
-.field-group .field-group-rows .field-options {
+.field-group-rows .field-options {
     margin-bottom: 10px;
 }
-.field-group .field-group-rows .btn-trash {
+.field-group-rows .btn-trash {
     width: 24px;
     height: 24px;
     background: url("/static/img/mod/template/24/btn-trash.png") no-repeat center center;
@@ -205,16 +217,16 @@
     display: inline-block;
     vertical-align: middle;
 }
-.field-group .field-group-rows .btn-trash:hover {
+.field-group-rows .btn-trash:hover {
 	background-image: url("/static/img/mod/template/24/btn-trash.dark.png");
 }
 
-.field-group .field-group-footer {
+.field-group-footer {
     position: relative;
     height: 42px;
 }
 
-.field-group .field-group-footer .buttons {
+.field-group-footer .buttons {
     padding: 12px 20px;
     float: right;
     height: 24px;
@@ -222,7 +234,7 @@
 
 }
 
-.field-group .field-group-footer .buttons .button {
+.field-group-footer .buttons .button {
 	cursor: default;
     padding-left: 28px;
     height: 24px;
@@ -233,26 +245,26 @@
     margin-left: 14px;
     background: url("/static/img/mod/template/24/btn-add.png") no-repeat 0 center;
 }
-.field-group .field-group-footer .buttons .button:hover {
+.field-group-footer .buttons .button:hover {
 	color: #273e52;
 }
 
-.field-group .field-group-footer .buttons .btn-save {
+.field-group-footer .buttons .btn-save {
     background-image: url("/static/img/mod/template/24/btn-save.png");
 }
-.field-group .field-group-footer .buttons .btn-cancel {
+.field-group-footer .buttons .btn-cancel {
     background-image: url("/static/img/mod/template/24/btn-cancel.png");
 }
 
-.field-group .field-group-footer .buttons .button.btn-add:hover {
+.field-group-footer .buttons .button.btn-add:hover {
 	background-image: url("/static/img/mod/template/24/btn-add.dark.png");
 }
 
-.field-group .field-group-footer .buttons .button.btn-save:hover {
+.field-group-footer .buttons .button.btn-save:hover {
 	background-image: url("/static/img/mod/template/24/btn-save.dark.png");
 }
 
-.field-group .field-group-footer .buttons .button.btn-cancel:hover {
+.field-group-footer .buttons .button.btn-cancel:hover {
 	background-image: url("/static/img/mod/template/24/btn-cancel.dark.png");
 }
 
@@ -337,13 +349,6 @@
 	border-radius: 2px !important;
 }
 
-.field-select {
-	width: 100%;
-	border: 1px solid rgb(213, 213, 213);
-	background: #fff;
-	border-radius: 2px !important;
-	height: 34px;
-} 
 .field-select select {
 	display: block;
 	width: 100%;
@@ -423,4 +428,8 @@
 	background-color: #ff575b;
 	border: 1px solid #d33e42;
 }
+.none {
+	display: none;
+}
 /* end field-compoents */
+

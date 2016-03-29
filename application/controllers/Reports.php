@@ -17,6 +17,7 @@ class Reports extends REIM_Controller {
     public function add($template_id=0)
     { 
         $this->bsload('reports/add', array(
+                'template_id' => $template_id,
                 'title' => '新建报销单',
                 'error' => array(),
                 'type' => array(),
@@ -2096,7 +2097,7 @@ class Reports extends REIM_Controller {
         ];
         self::render_to_download_2($filename, $data);
     }
-
+    
     public function report_template($id = 0){
         if($id == 0) return redirect(base_url('reports/newreport'));
         $profile = array();

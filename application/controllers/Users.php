@@ -379,6 +379,21 @@ class Users extends REIM_Controller
             die($buf);
         }
     }
+
+    public function get_current_user_banks() {
+        $common = $this->user->get_common();
+        $profile = array();
+        if($common['status'] > 0 && array_key_exists('profile', $common['data']))
+        {
+            $profile = $common['data']['profile'];
+        }
+        $banks = array();
+        if(array_key_exists('banks', $profile))
+        {
+            $banks = $profile['banks'];
+        }
+        die(json_encode($banks, true));
+    }
     
     public function new_credit() {
         $profile = $this->session->userdata('profile');

@@ -81,7 +81,7 @@
 						$(element).find('.text').removeClass('focus');
 
 						if(oldValue != newValue) {
-							options['onChange'](oldValue, newValue, $item[0], $scope.paramObject);
+							options['onChange'](oldValue, newValue, $item[0], angular.copy($scope.paramObject));
 						}
 						options['onSelect'](oldValue, newValue, $item[0]);
 
