@@ -31,6 +31,7 @@
                 </ul>
                 -->
                 <ul class="menu">
+                    <li><a href="/install">下载</a></li>
                     <li><a id="login-m-a" href="#login">登录</a></li>
                     <li class="register"><a href="javascript:void(0)">企业注册</a></li>
                 </ul>
