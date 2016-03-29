@@ -114,6 +114,204 @@
 	background-color: #ff575b;
 	border-bottom: solid 3px #e94b4f;
 }
+
+.approvers {
+	background: #f2f6fa;
+	width: 620px;
+	text-align: left;
+}
+
+.approvers.selected-members {
+	width: auto;
+	height: auto;
+	background: transparent;
+}
+
+.approvers.selected-members ul {
+	height: auto;
+	overflow: auto;
+}
+
+.approvers.selected-members ul li {
+	width: 170px;
+	height: 50px;
+	margin-right: 10px;
+}
+.approvers.selected-members ul li:hover {
+	background-color: #f2f6fa;
+}
+.approvers.selected-members ul li.btn-append {
+	display: table;
+	width: 100px;
+}
+.approvers.selected-members ul li.btn-append:hover {
+	background: transparent;
+}
+
+.approvers.selected-members ul li.btn-append:hover .name {
+	color: #4a4a4a;
+}
+.approvers.selected-members ul li.btn-append:hover .role {
+	color: #929292;
+}
+.approvers.selected-members ul li.btn-append img {
+	float: left;
+	width: 36px;
+	height: 36px;
+	margin: 5px 8px;
+}
+.approvers.selected-members ul li.btn-append a {
+	display: table-cell;
+	vertical-align: middle;
+    text-align: left;
+    height: 45px;
+}
+.approvers.selected-members ul li img {
+	width: 40px;
+	height: 40px;
+	margin-top: 5px;
+}
+.approvers .search-input {
+	display: table;
+	width: 100%;
+}
+.approvers .search-input .field-input {
+	width: 100%;
+	height: 40px;
+	display: table-cell;
+	vertical-align: middle;
+	height: 40px;
+}
+.approvers .search-input .field-input input {
+	height: 40px;
+}
+.approvers .search-input .btn-search {
+	width: 135px;
+	height: 40px;
+	margin-left: 10px;
+	line-height: 40px;
+	float: right;
+}
+
+.approvers ul {
+	width: 100%;
+	height: 342px;
+    margin: 0;
+    padding: 0;
+	overflow-x: auto;
+}
+
+.approvers ul li {
+	float: left;
+	display: table;
+	height: 70px;
+	width: 235px;
+	margin:0 55px 10px 0;
+	border-radius: 2px;
+}
+.approvers ul li img {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	border-radius: 100%;
+    margin: 10px 10px 0 15px;
+}
+
+.approvers ul li img, 
+.approvers ul li .info {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.approvers ul li .info {
+	height: 20px;
+	font-size: 14px;
+	color: #4a4a4a;
+	width: 180px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.approvers ul li .info p {
+	margin: 0;
+}
+.approvers ul li .info .role {
+	font-size: 14px;
+	color: #929292;
+}
+
+.approvers ul li:hover {
+	background: #465461
+}
+.approvers ul li:hover .info .name,
+.approvers ul li:hover .info .role {
+	color: #fff;
+}
+.approvers ul li.selected {
+	background: green;
+}
+
+.consumptions {
+	background-color: rgba(242, 246, 250, 0.2);
+}
+.consumptions .table-header {
+	height: 40px;
+	background: #7a8590;
+}
+.consumptions .table-content {
+	margin-top: -40px;
+	padding: 40px;
+	padding-top: 0;
+}
+.consumptions table {
+	padding: 20px;
+	width: 100%;
+	text-align: center;
+}
+.consumptions table td {
+	padding: 12px;
+}
+
+.consumptions table thead {
+	background: #7a8590;
+	height: 40px;
+	color: #fff;
+}
+
+.consumptions table thead td {
+	padding: 0;
+	line-height: 40px;
+	height: 40px;
+	text-align: center;
+}
+.consumptions table tr {
+	height: 30px;
+	border-radius: 2px;
+}
+
+table.border-radius-row tr.selected td {
+	background: green;
+}
+
+table.border-radius-row tr td:first-child { 
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+
+table.border-radius-row tr td:last-child { 
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+ 
+.consumptions table tr:hover td {
+	background-color: #596774;
+	color: #fff;
+	overflow: hidden;
+}
+
+.available-consumptions {
+
+}
+
 /* component reset */
 .field-label {
 	color: #4a4a4a;

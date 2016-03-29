@@ -13,21 +13,14 @@
         initialize: function() {
             angular.module('reimApp', ['ng-sortable', 'ng-dropdown']).controller('ReportController', ["$http", "$scope", "$element", "$timeout",
                 function($http, $scope, $element, $timeout) { 
-                    $scope.fieldTypeArray = [
-                        {value:1, text: 'djsjf的飞机开始 '},
-                        {value:1, text: 'djsjf的飞机开始 '},
-                        {value:1, text: 'djsjf的飞机开始 '},
-                        {value:1, text: 'djsjf的飞机开始 '}
-                    ];
-
                     function getReportData(id) {
-                        Utils.api('/template/get_template/'+id, {
+                        return Utils.api('/template/get_template/'+id, {
                             data: {
                                 id: id
                             }
                         }).done(function (rs) {
                             if(rs['status']<0) {
-                                return show_notifiy('找不到模版');
+                                return show_notify('找不到模版');
                             }
                             $scope.originalData = rs['data'];
 
@@ -36,6 +29,78 @@
 
                         });
                     };
+
+                    function getCurrentUserBanks() {
+                        return Utils.api('/users/get_current_user_banks', {}).done(function (rs) {
+                            if(rs['status']<0) {
+                                return show_notify('个人银行数据出错');
+                            }
+
+                            $scope.banks = rs['banks'];
+                            $scope.default_bank = findDefaultBank(rs['default_bank'], rs['banks']);
+                            $scope.$apply();
+
+                        });
+                    };
+
+                    function getAvailableConsumptions() {
+                        return Utils.api('/reports/get_available_consumptions', {}).done(function (rs) {
+                            $scope.consumptions = rs['data'] || [];
+                            $scope.$apply();
+                        });
+                    };
+
+                    function getMembers() {
+                        return Utils.api('/users/get_members', {}).done(function (rs) {
+                            var data = rs['data'];
+                            $scope.members = data['members'] || [];
+
+                            $scope.rankMap = arrayToMapWithKey('id', data['rankArray']);
+
+                            $scope.levelMap = arrayToMapWithKey('id', data['levelArray']);
+
+                            $scope.$apply();
+                        });
+                    };
+
+                    function arrayToMapWithKey(key, arr) {
+                        var rs = {};
+                        for (var i = arr.length - 1; i >= 0; i--) {
+                            var item = arr[i];
+                            rs[item[key]] = item;
+                        }
+                        return rs;
+                    };
+
+                    var dialogMemberSingleton = (function () {
+                        var instance;
+                     
+                        function createInstance() {
+                            var dialog = new CloudDialog({
+                                title: '选择审批人',
+                                ok: function () {
+                                    $scope.selectedMembers = $scope._selectedMembers;
+                                    $scope.$apply();
+                                    this.close();
+                                },
+                                cancel: function () {
+                                    this.close();
+                                }
+                            });
+
+                            dialog.setContentWithElement($($element.find('.available-members')));
+                            return dialog;
+                        }
+
+                        return {
+                            getInstance: function () {
+                                if (!instance) {
+                                    instance = createInstance();
+                                }
+                                return instance;
+                            }
+                        };
+                    })();
 
                     function initDatetimepicker(selector) {
                         $(selector).datetimepicker({
@@ -52,27 +117,11 @@
                             defaultDate: +new Date,
                             disabledDates: false,
                             enabledDates: false,
-                            icons: {
-                                1: '/static/img/mod/template/icon/triangle@2x.png'
-                            },
                             useStrict: false,
                             direction: "auto",
                             sideBySide: false,
                             daysOfWeekDisabled: false
                         }).on('dp.change', function(e){
-
-                        });
-                    };
-
-                    function getCurrentUserBanks() {
-                        Utils.api('/users/get_current_user_banks', {}).done(function (rs) {
-                            if(rs['status']<0) {
-                                return show_notifiy('个人银行数据出错');
-                            }
-
-                            $scope.banks = rs['banks'];
-                            $scope.default_bank = findDefaultBank(rs['default_bank'], rs['banks']);
-                            $scope.$apply();
 
                         });
                     };
@@ -91,9 +140,12 @@
                     function getPageData(callback) {
                         $.when(
                             getCurrentUserBanks(),
-                            getReportData($element.find('.report').data('id'))
+                            getReportData($element.find('.report').data('id')),
+                            getAvailableConsumptions(),
+                            getMembers()
                         ).done(function () {
                             callback();
+                            $scope.selectedMembers = [];
                         })
                     };
 
@@ -104,6 +156,19 @@
                         }, 1000);
                     });
 
+                    $scope.formatMember = function (m) {
+                        // {{levelMap[m.level_id]['name'] || '未知级别'}}－{{rankMap[m.rank_id]['name'] || '未知职位'}}
+                        var rankMap = $scope.rankMap;
+                        var rank = rankMap[m.rank_id] || {};
+                        // console.log(m.d , rankMap[m.rank_id]['name'])
+                        if(m.d && rank['name']) {
+                            return m.d + '-' + rankMap[m.rank_id]['name'];
+                        } else {
+                            var rank = rankMap[m.rank_id] || {};
+                            return m.d || rank['name'] || '';
+                        }
+                    };
+
 
                     $scope.makeBankDropdown = {
                         itemFormat: function (item) {
@@ -113,30 +178,65 @@
                             }
                         },
                         onChange: function(oldValue, newValue, item, columnData) {
-                            $scope.$apply(function() {
-                                columnData['type'] = newValue;
-                                columnData['name'] = '';
-                                delete columnData['id'];
-                                var type = columnData['type'];
-                                if(type==2) {
-                                    if(!columnData['property']) {
-                                        columnData['property'] = {};
-                                    }
-                                    if(!columnData['property']['options']) {
-                                        columnData['property']['options'] = ['', ''];
-                                    }
-                                }
-                                if(type==4) {
-                                    if(!columnData['property']) {
-                                        columnData['property'] = {};
-                                    }
-                                    if(!columnData['property']['bank_account_type']) {
-                                        columnData['property']['bank_account_type'] = 0;
-                                    }
-                                }
-                            })
+                           
                         }
-                    }
+                    };
+
+                    $scope.onAddApprovers = function (e) {
+                        if(!$scope.members) {
+                            return show_notify('正在加载数据......');
+                        }
+
+                        var dialog = dialogMemberSingleton.getInstance();
+
+                        dialog.showModal();
+                    };
+
+                    $scope.onSelectMember = function (item, e) {
+                        item.isSelected = !item.isSelected;
+                        $scope._selectedMembers || ($scope._selectedMembers=[]);
+                        if(item.isSelected) {
+                            $scope._selectedMembers.push(item);
+                        } else {
+                            for(var i=0;i<$scope._selectedMembers.length;i++) {
+                                var one = $scope._selectedMembers[i];
+                                if(one['id'] == item.id) {
+                                    $scope._selectedMembers.splice(i,1);
+                                }
+                            }
+                        }
+                    };
+
+                    $scope.onSelectConsumption = function (item, e) {
+                        item.isSelected = !item.isSelected;
+                        $scope._selectedConsumptions || ($scope._selectedConsumptions=[]);
+                        if(item.isSelected) {
+                            $scope._selectedConsumptions.push(item);
+                        } else {
+                            for(var i=0;i<$scope._selectedConsumptions.length;i++) {
+                                var one = $scope._selectedConsumptions[i];
+                                if(one['id'] == item.id) {
+                                    $scope._selectedConsumptions.splice(i,1);
+                                }
+                            }
+                        }
+                    };
+
+                    $scope.onAddConsumptions = function (e) {
+                        
+                    };
+
+                    $scope.onCancel = function (e) {
+                        // body...
+                    };
+
+                    $scope.onSave = function (e) {
+                        // body...
+                    };
+
+                    $scope.onSubmit = function (e) {
+                        // body...
+                    };
 
                 }
             ]);
