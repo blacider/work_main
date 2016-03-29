@@ -387,12 +387,25 @@ class Users extends REIM_Controller
         {
             $profile = $common['data']['profile'];
         }
+        // get banks
         $banks = array();
         if(array_key_exists('banks', $profile))
         {
             $banks = $profile['banks'];
         }
-        die(json_encode($banks, true));
+        // get default bank
+        $default_bank = null;
+        if(array_key_exists('credit_card', $profile))
+        {
+            $default_bank = $profile['credit_card'];
+        }
+
+        $data = array(
+            'default_bank' => $default_bank,
+            'banks' => $banks
+        );
+        
+        die(json_encode($data));
     }
     
     public function new_credit() {

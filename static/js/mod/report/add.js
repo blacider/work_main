@@ -62,8 +62,7 @@
                         }).on('dp.change', function(e){
 
                         });
-                    }
-
+                    };
 
                     function getCurrentUserBanks() {
                         Utils.api('/users/get_current_user_banks', {}).done(function (rs) {
@@ -71,19 +70,30 @@
                                 return show_notifiy('个人银行数据出错');
                             }
 
-                            $scope.banks = rs;
-
+                            $scope.banks = rs['banks'];
+                            $scope.default_bank = findDefaultBank(rs['default_bank'], rs['banks']);
                             $scope.$apply();
 
                         });
-                    }
+                    };
+
+                    function findDefaultBank(id, banks) {
+                        banks || (banks=[]);
+                        for(var i=0;i<banks.length; i++) {
+                            var b = banks[i];
+                            if(id == b['id']) {
+                                return b;
+                            }
+                        }
+                        return null;
+                    };
 
                     function getPageData(callback) {
                         $.when(
                             getCurrentUserBanks(),
                             getReportData($element.find('.report').data('id'))
                         ).done(function () {
-                            callback()
+                            callback();
                         })
                     };
 
@@ -95,7 +105,13 @@
                     });
 
 
-                    $scope.makeDropdown = {
+                    $scope.makeBankDropdown = {
+                        itemFormat: function (item) {
+                            return {
+                                value: item['id'],
+                                text: '尾号' + item.cardno.substr(-4)  + '-' + item.bankname || '--'
+                            }
+                        },
                         onChange: function(oldValue, newValue, item, columnData) {
                             $scope.$apply(function() {
                                 columnData['type'] = newValue;

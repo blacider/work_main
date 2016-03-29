@@ -31,7 +31,7 @@
                         </div>
                         <div  class="field-item" ng-repeat="fieldItem in tableItem.children" ng-if="fieldItem.type==2">
                             <label for="">{{fieldItem.name}}</label>
-                            <div class="field-select field" ng-dropdown="makeDropdown" param-object="{type:1}" data="fieldItem.property.options">
+                            <div class="field-select field" ng-dropdown="makeRadioDropdown" data="fieldItem.property.options">
                                 <i class="icon">
                                     <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
                                 </i>
@@ -52,13 +52,13 @@
                         </div>
                         <div  class="field-item" ng-repeat="fieldItem in tableItem.children" ng-if="fieldItem.type==4">
                             <label for="">{{fieldItem.name}}</label>
-                            <div class="field-select field" ng-dropdown="makeDropdown" param-object="{'type': 1}" data="tableItem.children">
+                            <div class="field-select field" ng-dropdown="makeBankDropdown" selected-item="default_bank"  default-item="{value:'', text: '请选择银行'}"  data="banks">
                                 <i class="icon">
                                     <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
                                 </i>
                                 <div class="text font-placeholder">请选择银行</div>
                                 <div class="option-list none">
-                                    <div class="item" ng-repeat="item in banks" data-value="{{item.id}}">{{item.bankname||'--'}}</div>
+                                    <div class="item" ng-repeat="item in banks" data-value="{{item.id}}">{{makeBankDropdown.itemFormat(item)['text']}}</div>
                                 </div> 
                             </div>
                         </div>
