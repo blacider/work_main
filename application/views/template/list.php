@@ -75,7 +75,8 @@
                                 <div class="field-group-rows table-cell">
                                     <div class="fields field-options table-layout" ng-repeat="editColumnItem in tableItem.children">
                                         <div class="table-cell field-type">
-                                            <div class="field-select field" ng-dropdown="makeDropdown" param-object="editColumnItem" data="fieldTypeArray">
+                                            <!-- type－1 ＝ index -->
+                                            <div class="field-select field" ng-dropdown="makeDropdown" param-extra="editColumnItem" default-item="{value: '', text: '类型'}" selected-item="fieldTypeArray[editColumnItem['type']-1]" data="fieldTypeArray">
                                                 <i class="icon">
                                                     <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
                                                 </i>
@@ -84,7 +85,6 @@
                                                 <div class="option-list none">
                                                     <div class="item" ng-repeat="item in fieldTypeArray" data-value="{{item.value}}">{{item.text}}</div>
                                                 </div> 
-                                                
                                             </div>
                                         </div>
                                         <div class="table-cell field-name">
