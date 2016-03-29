@@ -263,6 +263,49 @@ class Users extends REIM_Controller
             }
         }
     }
+
+    public function get_members()
+    {
+        $profile = $this->user->reim_get_user();
+        $rankArray = $this->reim_show->rank_level(1);
+        $levelArray = $this->reim_show->rank_level(0);
+        $groupArray = $this->groups->get_my_list();
+
+        if($rankArray['status']>0) {
+            $rankArray = $rankArray['data'];
+        } else {
+            $rankArray = array();
+        }
+
+        if($levelArray['status']>0) {
+            $levelArray = $levelArray['data'];
+        } else {
+            $levelArray = array();
+        }
+
+        $group = $this->groups->get_my_list();
+        
+        if ($groupArray) {
+            if (array_key_exists('gmember', $group['data'])) {
+                $groupArray = $group['data']['gmember'];
+            } else {
+                $groupArray = array();   
+            }
+        }
+
+        $members = $profile['data']['members'];
+        $data = array(
+            'status'=>$profile['status'],
+            'data' =>array(
+                'members'=>$members,
+                'rankArray'=>$rankArray,
+                'levelArray'=>$levelArray,
+                'groupArray'=>$groupArray
+            )
+        );
+        die(json_encode($data));
+    }
+
     public function update_password() {
         $profile = $this->user->reim_get_user();
         $profile_id = $profile['data']['profile']['id'];
@@ -404,7 +447,7 @@ class Users extends REIM_Controller
             'default_bank' => $default_bank,
             'banks' => $banks
         );
-        
+
         die(json_encode($data));
     }
     

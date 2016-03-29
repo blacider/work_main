@@ -212,6 +212,12 @@ class Reports extends REIM_Controller {
             ));
     }
 
+    public function get_available_consumptions()
+    {
+        $data = array('status'=>1, 'data'=>$this->_getitems());
+        die(json_encode($data));
+    }
+
     public function _getitems(){
         $items = $this->items->get_list();
         $category = $this->category->get_list();

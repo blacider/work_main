@@ -66,15 +66,15 @@ class Reim_Show_Model extends Reim_Model {
         log_message('debug','usergroup:' . json_encode($usergroups));
         return $usergroups;
         }
-    public function rank_level($rank = 1)
+    public function rank_level($type = 1)
     {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
 
-        $url = $this->get_url('rank/' . $rank);
-        $buf = $this->do_Get($url,$jwt);
+        $url = $this->get_url('rank/' . $type);
+        $buf = $this->do_Get($url, $jwt);
 
         log_message('debug','rank:' . json_encode($buf));
-        return json_decode($buf,True);
+        return json_decode($buf, True);
     }
 }
