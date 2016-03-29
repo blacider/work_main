@@ -13,6 +13,9 @@
         initialize: function() {
             angular.module('reimApp', ['ng-sortable', 'ng-dropdown']).controller('ReportController', ["$http", "$scope", "$element", "$timeout",
                 function($http, $scope, $element, $timeout) { 
+
+                    $scope.bankFieldMap = {};
+
                     function getReportData(id) {
                         return Utils.api('/template/get_template/'+id, {
                             data: {
@@ -37,7 +40,7 @@
                             }
 
                             $scope.banks = rs['banks'];
-                            $scope.default_bank = findDefaultBank(rs['default_bank'], rs['banks']);
+                            $scope.default_bank = findOneInBanks(rs['default_bank'], rs['banks']);
                             $scope.$apply();
 
                         });
@@ -126,7 +129,7 @@
                         });
                     };
 
-                    function findDefaultBank(id, banks) {
+                    function findOneInBanks(id, banks) {
                         banks || (banks=[]);
                         for(var i=0;i<banks.length; i++) {
                             var b = banks[i];
@@ -145,7 +148,15 @@
                             getMembers()
                         ).done(function () {
                             callback();
+
                             $scope.selectedMembers = [];
+                            $scope._selectedMembers = [];
+                            $scope.selectedConsumptions = [];
+                            $scope._selectedConsumptions = [];
+
+                            // 这种类型不好处理，在这里收集它们——当其改变的数值的时候
+                            
+
                         })
                     };
 
@@ -178,7 +189,12 @@
                             }
                         },
                         onChange: function(oldValue, newValue, item, columnData) {
-                           
+                            var id = newValue;
+                            $scope.bankFieldMap[id] = findOneInBanks(id, $scope.banks);
+                        },
+                        onInitValue: function (item) {
+                            var id = item.value;
+                            $scope.bankFieldMap[id] = findOneInBanks(id, $scope.banks);
                         }
                     };
 
@@ -231,7 +247,51 @@
                     };
 
                     $scope.onSave = function (e) {
-                        // body...
+                        var item_ids = $scope._selectedConsumptions.map(function (i) {
+                            return i[id];
+                        });
+                        var title = $scope.title;
+                        var receiver_ids = $scope._selectedMembers.map(function (i) {
+                            return i[id];
+                        });
+
+                        var cc = [];
+                        var template_id = $element.find('.report').data('id');
+
+                        // extra is fields content
+                        var extra = $element.find('.field-item').map(function (i, item) {
+                            var type = $(item).data('type');
+                            var id = $(item).data('id');
+                            var value = $(item).find('input').val();
+                            var data = {
+                                type: type,
+                                id: id,
+                                value: value
+                            };
+                            if(type+''=== '4') {
+                                var bank = $scope.bankFieldMap[id];
+                                data['value'] = JSON.stringify({
+                                    "account": bank['account'],
+                                    "cardno": bank['cardno'],
+                                    "bankname": bank['bankname'],
+                                    "bankloc": bank['bankloc'],
+                                    "subbranch": bank['subbranch']
+                                });
+                            }
+                            return data;
+                        });
+
+                        Utils.api('/reports/create', {
+                            data: {
+                                item_ids: item_ids,
+                                title: title,
+                                cc: cc,
+                                template_id: template_id,
+                                extra: extra,
+                            }
+                        }).done(function (rs) {
+                            
+                        })
                     };
 
                     $scope.onSubmit = function (e) {

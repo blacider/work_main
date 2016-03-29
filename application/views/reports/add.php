@@ -12,7 +12,7 @@
                 <div class="block-row report-title">
                     <div class="field-label">报销单名称</div>
                     <div class="field-input">
-                        <input type="text" placeholder="报销单" ng-model="report.title">
+                        <input type="text" placeholder="报销单" ng-model="title">
                     </div>
                 </div>
                 <div class="block-row">
@@ -37,13 +37,13 @@
                 <div class="block-row" ng-repeat="tableItem in report.config">
                     <div class="field-label">{{tableItem.name}}</div>
                     <div class="fields-box">
-                        <div  class="field-item" ng-repeat="fieldItem in tableItem.children" ng-if="fieldItem.type==1">
+                        <div  class="field-item" data-type="{{fieldItem.type}}" data-id="{{data.id}}" ng-repeat-start="fieldItem in tableItem.children" ng-if="fieldItem.type==1">
                             <label for="">{{fieldItem.name}}</label>
                             <div class="field-input">
                                 <input type="text" placeholder=""  ng-keyup="onTextLengthChange2(tableItem, $event)">
                             </div>
                         </div>
-                        <div  class="field-item" ng-repeat="fieldItem in tableItem.children" ng-if="fieldItem.type==2">
+                        <div  class="field-item" data-type="{{fieldItem.type}}" data-id="{{data.id}}" ng-if="fieldItem.type==2">
                             <label for="">{{fieldItem.name}}</label>
                             <div class="field-select field" ng-dropdown="makeRadioDropdown" data="fieldItem.property.options">
                                 <i class="icon">
@@ -55,7 +55,7 @@
                                 </div> 
                             </div>
                         </div>
-                        <div  class="field-item" ng-repeat="fieldItem in tableItem.children" ng-if="fieldItem.type==3">
+                        <div  class="field-item" data-type="{{fieldItem.type}}" data-id="{{data.id}}" ng-if="fieldItem.type==3">
                             <label for="">{{fieldItem.name}}日期类型</label>
                             <div class="field-input datatimepicker">
                                 <i class="icon">
@@ -64,7 +64,7 @@
                                 <input type="text" placeholder=""  ng-keyup="onTextLengthChange2(tableItem, $event)">
                             </div>
                         </div>
-                        <div  class="field-item" ng-repeat="fieldItem in tableItem.children" ng-if="fieldItem.type==4">
+                        <div  class="field-item" data-type="{{fieldItem.type}}" data-id="{{data.id}}" ng-repeat-end ng-if="fieldItem.type==4">
                             <label for="">{{fieldItem.name}}</label>
                             <div class="field-select field" ng-dropdown="makeBankDropdown" selected-item="default_bank"  default-item="{value:'', text: '请选择银行'}"  data="banks">
                                 <i class="icon">

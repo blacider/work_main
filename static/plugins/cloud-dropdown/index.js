@@ -34,6 +34,9 @@
 			},
 			itemFormat: function (item) {
 				return item;
+			},
+			onInitValue: function (value) {
+				
 			}
 		}) // const var 
 		.directive('ngDropdown', ['$parse', 'ngDropdownDefaultOptions', function ($parse, ngDropdownDefaultOptions) {
@@ -67,11 +70,14 @@
 					if(index!=-1) {
 						item = $scope.data[index];
 					}
+					item = item || defaultItem;
 					// init
 					if(item) {
 						item = options['itemFormat'](item);
 						$(element).find('.text').removeClass('font-placeholder');
 						$(element).find('.text').text(item['text']);
+
+						options['onInitValue'](item);
 						//fix me
 						setTimeout(function () {
 							$(element).find('.option-list .item').eq(index).addClass('active');
