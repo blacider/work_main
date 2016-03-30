@@ -37,13 +37,13 @@
                 <div class="block-row" ng-repeat="tableItem in template.config">
                     <div class="field-label">{{tableItem.name}}</div>
                     <div class="fields-box">
-                        <div  class="field-item" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-repeat-start="fieldItem in tableItem.children" ng-if="fieldItem.type==1">
+                        <div  class="field-item" data-required="{{fieldItem.required}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-repeat-start="fieldItem in tableItem.children" ng-if="fieldItem.type==1">
                             <label for="">{{fieldItem.name}}</label>
                             <div class="field-input">
-                                <input type="text" placeholder=""  ng-keyup="onTextLengthChange2($event)">
+                                <input type="text" placeholder="{{fieldItem.required==1?'必填':'选填'}}"  ng-keyup="onTextLengthChange2($event)">
                             </div>
                         </div>
-                        <div  class="field-item" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-if="fieldItem.type==2">
+                        <div  class="field-item" data-required="{{fieldItem.required}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-if="fieldItem.type==2">
                             <label for="">{{fieldItem.name}}</label>
                             <div class="field-select field" ng-dropdown="makeRadioDropdown" data="fieldItem.property.options">
                                 <i class="icon">
@@ -55,7 +55,7 @@
                                 </div> 
                             </div>
                         </div>
-                        <div  class="field-item" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-if="fieldItem.type==3">
+                        <div  class="field-item" data-required="{{fieldItem.required}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-if="fieldItem.type==3">
                             <label for="">{{fieldItem.name}}日期类型</label>
                             <div class="field-input datatimepicker">
                                 <i class="icon">
@@ -64,7 +64,7 @@
                                 <input type="text" placeholder="">
                             </div>
                         </div>
-                        <div  class="field-item" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-repeat-end ng-if="fieldItem.type==4">
+                        <div  class="field-item" data-required="{{fieldItem.required}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-repeat-end ng-if="fieldItem.type==4">
                             <label for="">{{fieldItem.name}}</label>
                             <div class="field-select field" ng-dropdown="makeBankDropdown" selected-item="default_bank"  default-item="{value:'', text: '请选择银行'}"  data="banks">
                                 <i class="icon">
@@ -108,7 +108,7 @@
                 </div>
                 <div class="block-row" ng-if="!selectedConsumptions || selectedConsumptions.length==0">
                     <div class="field-label">消费明细</div>
-                    <a href="javascript:void(0)" class="btn-add-add-approvers ui-button" ng-click="onAddConsumptions($event)"><img src="/static/img/mod/report/36/consumpution@2x.png" alt="">选择消费</a>
+                    <a href="javascript:void(0)" class="btn-add-add-approvers ui-button" ng-click="onAddConsumptions($event)"><img src="/static/img/mod/report/36/consumpution@2x.png" alt="">选择消费{{template['options']['allow_no_items']+''=='0'?'*':''}}</a>
                 </div>
             </div>
             <div class="report-footer">

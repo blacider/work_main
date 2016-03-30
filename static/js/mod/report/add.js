@@ -16,6 +16,11 @@
 
                     $scope.bankFieldMap = {};
                     $scope.originalReport = {};
+                    $scope.selectedMembers = [];
+                    $scope._selectedMembers = [];
+                    $scope.selectedConsumptions = [];
+                    $scope._selectedConsumptions = [];
+
 
                     function getReportData(id) {
                         return Utils.api('/template/get_template/'+id, {
@@ -189,11 +194,6 @@
                         ).done(function () {
                             callback();
 
-                            $scope.selectedMembers = [];
-                            $scope._selectedMembers = [];
-                            $scope.selectedConsumptions = [];
-                            $scope._selectedConsumptions = [];
-
                             // 这种类型不好处理，在这里收集它们——当其改变的数值的时候
                             
 
@@ -317,31 +317,64 @@
                         // body...
                     };
 
-                    $scope.onSave = function (e) {
+                    function readReportData() {
                         var title = $scope.title;
                         var template_id = $element.find('.report').data('tid');
                         var template_type = $element.find('.report').data('type');
 
+                        if(!title) {
+                            $element.find('.report-title input').focus();
+                            return show_notify('请添加报销单名');
+                        }
+
                         var receiver_ids = $scope._selectedMembers.map(function (i) {
                             return i['id'];
-                        }).join(',');
+                        });
+
+                        if(receiver_ids.length<=0) {
+                            show_notify('请选择审批人');
+                            return null;
+                        }
 
                         var item_ids = $scope._selectedConsumptions.map(function (i) {
                             return i['id'];
-                        }).join(',');
+                        });
+
+                        if(item_ids.length<=0) {
+                            if(~~$scope.template['options']['allow_no_items']==0) {
+                                show_notify('提交的报销单不能为空');
+                                return null;
+                            }
+                        }
 
                         // extra is fields content
+                        var inValidExtra = false;
                         var extra = $element.find('.field-item').map(function (i, item) {
                             var type = $(item).data('type');
                             var id = $(item).data('id');
                             var value = $(item).find('input').val() || $(item).find('.text').text();
+                            var isRequired = ~~$(item).data('required');
+
+                            if(isRequired && !value) {
+                                $(item).find('input').focus();
+                                $(item).find('.text').click();
+                                inValidExtra = true;
+                                return show_notify('请填写完整的信息');
+                            }
+
                             var data = {
                                 type: type,
                                 id: id,
                                 value: value
                             };
+
                             if(type+''=== '4') {
-                                var bank = $scope.bankFieldMap[id] || {};
+                                var bank = $scope.bankFieldMap[id];
+                                if(isRequired && !bank) {
+                                    inValidExtra = true;
+                                    show_notify('必填银行卡项目不能为空');
+                                    return null
+                                }
                                 data['value'] = JSON.stringify({
                                     "account": bank['account'],
                                     "cardno": bank['cardno'],
@@ -353,16 +386,30 @@
                             return data;
                         }).toArray();
 
+                        if(inValidExtra) {
+                            return null;
+                        }
+
+                        return {
+                            title: title,
+                            template_id: template_id,
+                            template_type: template_type,
+                            receiver_ids: receiver_ids.join(','),
+                            item_ids: item_ids.join(','),
+                            extra: extra
+                        }  
+                    };
+
+
+                    $scope.onSave = function (e) {
+                        var data = readReportData();
+                        if(!data) {
+                            return;
+                        }
+
                         Utils.api('/reports/create_v2', {
                             method: 'post',
-                            data: {
-                                title: title,
-                                template_id: template_id,
-                                template_type: template_type,
-                                receiver_ids: receiver_ids,
-                                item_ids: item_ids,
-                                extra: extra
-                            }
+                            data: data,
                         }).done(function (rs) {
                             if(rs['status']<=0) {
                                 return show_notify(rs['msg']);
