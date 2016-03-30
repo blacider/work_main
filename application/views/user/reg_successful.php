@@ -30,6 +30,7 @@
         <meta name="format-detection" content="telephone=no" />
         <meta property="wb:webmaster" content="a239efc5a51c65f0" />
         <link rel="stylesheet" href="/static/css/reset.css">
+        <link rel="stylesheet" href="/static/css/mod/login/index.css">
         <script src="/static/js/jquery.min.js"></script>
         <!--[if lt IE 9]>
         <script src="static/js/respond.min.js"></script>
@@ -43,16 +44,16 @@
         <link rel="stylesheet" type="text/css" href="static/css/notie.css">
         <!--<![endif]-->
         <style>
-        #main {
+        #mainContent {
         	text-align: center;
         	max-width: 480px;
         	margin: 100px auto;
         }
-        #main h1 {
+        #mainContent h1 {
         	color: #ff575b;
         }
-        #main .thanks {
-        	text-indent: 48px;
+        #mainContent .thanks {
+        	text-indent: 28px;
         	font-size: 14px;
         	color: #666;
         	display: inline-block;
@@ -61,46 +62,58 @@
 		    vertical-align: top;
 		    padding: 0 20px;
         }
-        #main .thanks span {
+        #mainContent .thanks span {
 			display: block;
 			margin: 5px 0;
 			vertical-align: baseline;
 			line-height: 15px;
         }
-        #main .thanks span a {
+        #mainContent .thanks span a {
 			text-indent: 48px;
 			text-decoration: none;
 			line-height: 20px;
 			color: #666;
+
         }
         img.logo {
         	border-radius: 100%;
+        	overflow: hidden;
         	width: 80px;
         }
 
+        img.action-icon{
+        	margin-top: 40px;
+        	border-radius: 100%;
+        	overflow: hidden;
+
+        }
+		img.action-icon:hover {
+			background: #F5F5F5;
+		}
         </style>
     </head>
     <body>
-		<div id="main">
+		<div id="mainContent">
 			<a href="/"><img class="logo" src="/static/logo.png" alt=""></a>
-			<h1>报销君，您已经注册完成！</h1>
-			<p>
-				<a href="/">点击进入站点</a>
-				<br>
-				<br>
-			</p>
+			<h1>注册完成！</h1>
+			
 			<p class="thanks">
 			<span>
 		       	<a>
 		       		感谢试用 『云报销』，试用期间您将免费使用产品的部分功能。
 				如果您希望进一步了解 云报销，请与我们的客服联系。
-				云报销，对报销的怨言到此为止！
+				<br>
 		       	</a>
 			</span>
 			</p>
+			<p style="text-align: center; margin-bottom: 20px">云报销，对报销的怨言到此为止！</p>
 			<div class="code">
-				<p>请使用手机扫码下载 云报销手机客户端</p>
-				<img src="/static/img/download.png" style="width:160px;height:160px; margin: 20px">
+				<p style="margin-bottom: -20px; position: relative; z-index: 99">请使用手机扫码下载 云报销手机客户端</p>
+				<img src="/static/img/download.png" style="width:266px; height:266px;">
+			</div>
+			<div>
+				<a href="/"><img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53"></a>
+				<a style="display: block;" href="/">进入云报销</a>
 			</div>
 		</div>
         <?php if(!$has_attacker) { ?>

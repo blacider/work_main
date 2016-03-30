@@ -29,7 +29,7 @@ class Register extends REIM_Controller {
         return ;
     }
 
-    public function successful()
+    public function ok()
     {
         $attacker = $this->agent->agent_string();
         // $attacker = "test start; ;JianKongBao Monitor test end";
