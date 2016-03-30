@@ -403,6 +403,32 @@ class Reports extends REIM_Controller {
         //return redirect(base_url('reports/index'));
     }
 
+    public function create_v2()
+    {
+        $title = $this->input->post('title');
+        $template_id = $this->input->post('template_id');
+        $template_type = $this->input->post('template_type');
+
+        $receiver_ids = $this->input->post('receiver_ids');
+        $item_ids = $this->input->post('item_ids');
+        $extra = $this->input->post('extra');
+
+
+        $report = array(
+            'title' => $title,
+            'template_id' => $template_id,
+            'type' => $template_type,
+            'manager_id' => $receiver_ids,
+            'iids' => $item_ids,
+            'extras' => json_encode($extra),
+            'status' => 0 //保存：0，提交：1，通过：2 等
+        );
+
+        $buf = $this->reports->create_v2($report);
+        
+        die(json_encode($buf));
+    }
+
     public function create(){
         $items = $this->input->post('item');
 

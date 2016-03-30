@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="/static/css/widgets/loading-default.css"/>
 <div class="mod mod-add-report" ng-app="reimApp">
     <div class="page-content-area" ng-controller="ReportController">
-        <div class="report" data-id="<?php echo $template_id;?>">
+        <div class="report" data-tid="<?php echo $template_id;?>" data-type="{{template.type.join(',')}}">
             <div class="report-header">
                 借款单
             </div>
@@ -12,7 +12,7 @@
                 <div class="block-row report-title">
                     <div class="field-label">报销单名称</div>
                     <div class="field-input">
-                        <input type="text" placeholder="报销单" ng-model="title">
+                        <input type="text" placeholder="报销单" ng-model="title" ng-keyup="onTextLengthChange($event)">
                     </div>
                 </div>
                 <div class="block-row">
@@ -20,7 +20,7 @@
                     <div class="approvers selected-members">
                         <ul>
                             <li ng-repeat='m in selectedMembers'>
-                                <img src="{{m.apath || '/static/img/mod/report/default-avatar.png'}}" alt="">
+                                <img ng-src="{{m.apath || '/static/img/mod/report/default-avatar.png'}}" alt="">
                                 <div class="info">
                                     <p class="name">{{m.nickname}}</p>
                                     <p class="role">{{formatMember(m)}}</p>
@@ -34,16 +34,16 @@
                     
                 </div>
 
-                <div class="block-row" ng-repeat="tableItem in report.config">
+                <div class="block-row" ng-repeat="tableItem in template.config">
                     <div class="field-label">{{tableItem.name}}</div>
                     <div class="fields-box">
-                        <div  class="field-item" data-type="{{fieldItem.type}}" data-id="{{data.id}}" ng-repeat-start="fieldItem in tableItem.children" ng-if="fieldItem.type==1">
+                        <div  class="field-item" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-repeat-start="fieldItem in tableItem.children" ng-if="fieldItem.type==1">
                             <label for="">{{fieldItem.name}}</label>
                             <div class="field-input">
-                                <input type="text" placeholder=""  ng-keyup="onTextLengthChange2(tableItem, $event)">
+                                <input type="text" placeholder=""  ng-keyup="onTextLengthChange2($event)">
                             </div>
                         </div>
-                        <div  class="field-item" data-type="{{fieldItem.type}}" data-id="{{data.id}}" ng-if="fieldItem.type==2">
+                        <div  class="field-item" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-if="fieldItem.type==2">
                             <label for="">{{fieldItem.name}}</label>
                             <div class="field-select field" ng-dropdown="makeRadioDropdown" data="fieldItem.property.options">
                                 <i class="icon">
@@ -55,16 +55,16 @@
                                 </div> 
                             </div>
                         </div>
-                        <div  class="field-item" data-type="{{fieldItem.type}}" data-id="{{data.id}}" ng-if="fieldItem.type==3">
+                        <div  class="field-item" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-if="fieldItem.type==3">
                             <label for="">{{fieldItem.name}}日期类型</label>
                             <div class="field-input datatimepicker">
                                 <i class="icon">
                                     <img src="/static/img/mod/report/36/icon-calender@2x.png" alt="" />
                                 </i>
-                                <input type="text" placeholder=""  ng-keyup="onTextLengthChange2(tableItem, $event)">
+                                <input type="text" placeholder="">
                             </div>
                         </div>
-                        <div  class="field-item" data-type="{{fieldItem.type}}" data-id="{{data.id}}" ng-repeat-end ng-if="fieldItem.type==4">
+                        <div  class="field-item" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-repeat-end ng-if="fieldItem.type==4">
                             <label for="">{{fieldItem.name}}</label>
                             <div class="field-select field" ng-dropdown="makeBankDropdown" selected-item="default_bank"  default-item="{value:'', text: '请选择银行'}"  data="banks">
                                 <i class="icon">
@@ -78,7 +78,35 @@
                         </div>
                     </div>
                 </div>
-                <div class="block-row">
+                <div class="block-row" ng-if="selectedConsumptions && selectedConsumptions.length>0">
+                    <div class="field-label">消费明细</div>
+                    <div class="table-field">
+                        <div style="text-align: right; padding-bottom: 20px;">
+                            <a href="javascript:void(0)" class="btn-edit-consumption ui-button" ng-click="onAddConsumptions($event)"><img src="/static/img/mod/report/24/btn-edit@2x.png" alt="">编辑</a>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>类目</th>
+                                    <th>时间</th>
+                                    <th>商家 </th>
+                                    <th>备注</th>
+                                    <th>金额</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-if="!c.rid" ng-repeat="c in selectedConsumptions" ng-class="{selected: c.isSelected}" ng-click="onSelectConsumption(c, $event)">
+                                    <td>{{c.category}} 报销单ID{{c.rid}}</td>
+                                    <td >{{c.dt}}</td>
+                                    <td>{{c.merchants}}</td>
+                                    <td>{{c.notes}}</td>
+                                    <td>{{c.amount}}</td>
+                                </tr> 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="block-row" ng-if="!selectedConsumptions || selectedConsumptions.length==0">
                     <div class="field-label">消费明细</div>
                     <a href="javascript:void(0)" class="btn-add-add-approvers ui-button" ng-click="onAddConsumptions($event)"><img src="/static/img/mod/report/36/consumpution@2x.png" alt="">选择消费</a>
                 </div>
@@ -104,7 +132,7 @@
                     </div>
                     <ul>
                         <li ng-repeat='m in members|filter:search' ng-init="m['show_info'] = formatMember(m)" ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m, $event)">
-                            <img src="{{m.apath || '/static/img/mod/report/default-avatar.png'}}" alt="">
+                            <img ng-src="{{m.apath || '/static/img/mod/report/default-avatar.png'}}" alt="">
                             <div class="info">
                                 <p class="name">{{m.nickname}}</p>
                                 <p class="role">{{formatMember(m)}}</p>
@@ -115,22 +143,32 @@
             </div>
 
             <!-- 接口太慢，预先加载消费，隐藏于此 -->
-            <!-- <div style="display: none;"> -->
-            <div style="display: block;">
+            <!-- /*<div style="display: none;">*/ -->
+            <div style="display: none;">
                 <div class="consumptions available-consumptions">
-                    <table class="border-radius-row">
+                    <table class="border-radius-row fixed-header">
                         <thead>
                             <tr>
-                                <td>类目</td>
-                                <td>时间</td>
-                                <td>商家</td>
-                                <td>备注</td>
-                                <td>金额</td>
+                                <th>
+                                    <div>类目</div>
+                                </th>
+                                <th>
+                                    <div>时间</div>
+                                </th>
+                                <th>
+                                    <div>商家</div>
+                                </th>
+                                <th>
+                                    <div>备注</div>
+                                </th>
+                                <th>
+                                    <div>金额</div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="c in consumptions" ng-class="{selected: c.isSelected}" ng-click="onSelectConsumption(c, $event)">
-                                <td>{{c.category}}</td>
+                            <tr ng-if="!c.rid" ng-repeat="c in consumptions" ng-class="{selected: c.isSelected}" ng-click="onSelectConsumption(c, $event)">
+                                <td>{{c.category}} 报销单ID{{c.rid}}</td>
                                 <td >{{c.dt}}</td>
                                 <td>{{c.merchants}}</td>
                                 <td>{{c.notes}}</td>
@@ -138,26 +176,23 @@
                             </tr> 
                         </tbody>
                     </table>
-            </div>
+                </div>
             </div>
         </div>  
     </div>
 </div>
-
-
-
 
 <script src="/static/ace/js/date-time/moment.js"></script>
 <script src="/static/ace/js/date-time/locale/zh-cn.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 
 <script src="/static/js/libs/jquery.auto-grow-input.min.js"></script>
+<script src="/static/js/libs/jquery.fixedheadertable.min.js"></script>
 <script src="/static/plugins/cloud-dialog/dialog.js"></script>
 <script src="/static/plugins/cloud-dropdown/index.js"></script>
 <script src="/static/js/libs/Sortable.min.js"></script>
 <script src="/static/js/libs/ng-sortable.js"></script>
 <script src="/static/js/libs/underscore-min.js"></script>
-
 
 <script src="/static/js/mod/report/add.js"></script>
 

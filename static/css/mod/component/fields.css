@@ -69,6 +69,8 @@
 	display: table;
 	background-color: transparent;
 	text-align: center;
+	border-radius: 2px; 
+	overflow: hidden;
 }
 .field-table .field-table-content table thead th {
 	background: rgba(89, 102, 116, 0.80);
@@ -81,7 +83,8 @@
 	height: 30px;
 	/*vertical-align: middle;*/
 }
-.field-table .field-table-content table td, th {
+.field-table .field-table-content table td, 
+.field-table .field-table-content table th {
     border-right: 1px solid #b9b9b9;
 	border-bottom: 1px solid #b9b9b9
 }

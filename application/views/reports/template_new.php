@@ -675,6 +675,7 @@ function canGetPostData(force) {
         if (!_account) _account = 0;
     } catch (e) {}
     var extra = [];
+    debugger
     $('.field_value').each(function() {
         var field_value = $(this).val();
         var field_id = $(this).data('id');
@@ -744,7 +745,7 @@ function canGetPostData(force) {
     // 获取所有的 条目
     var _cc = $('#cc').val();
     if (!_cc) _cc = Array();
-
+    debugger
     def.resolve({
         'item': _ids,
         'title': $('#title').val(),

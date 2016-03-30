@@ -251,47 +251,60 @@
 }
 
 .consumptions {
-	background-color: rgba(242, 246, 250, 0.2);
-}
-.consumptions .table-header {
-	height: 40px;
-	background: #7a8590;
-}
-.consumptions .table-content {
-	margin-top: -40px;
-	padding: 40px;
-	padding-top: 0;
+
 }
 .consumptions table {
-	padding: 20px;
 	width: 100%;
 	text-align: center;
 }
-.consumptions table td {
-	padding: 12px;
-}
-
+ 
 .consumptions table thead {
 	background: #7a8590;
-	height: 40px;
 	color: #fff;
 }
 
-.consumptions table thead td {
-	padding: 0;
-	line-height: 40px;
-	height: 40px;
+.available-consumptions {
+	height: 300px;
+	width: 600px;
+	overflow: auto;
+}
+.available-consumptions table {
+    width: 100%;
+    border-spacing: 0;
+}
+
+.available-consumptions tr.selected td {
+	background: green !important;
+}
+.available-consumptions table tr:hover td {
+	background-color: #596774;
+	color: #fff;
+	overflow: hidden;
+}
+
+.table-field table {
+	width: 100%;
 	text-align: center;
 }
-.consumptions table tr {
+.table-field table thead tr th {
 	height: 30px;
 	border-radius: 2px;
+	background-color: rgba(89, 102, 116, 0.8);
+	color: #fff;
+	text-align: center;
 }
+.table-field table tbody tr td {
+	height: 30px;
+	font-family: PingFangSC-Light;
+	font-size: 14px;
+	color: #929292;
+	border: solid 0.8px #b9b9b9;
 
-table.border-radius-row tr.selected td {
-	background: green;
 }
-
+.btn-edit-consumption {
+	background: none;
+	border: 1px solid gray;
+}
 table.border-radius-row tr td:first-child { 
 	border-top-left-radius: 10px;
 	border-bottom-left-radius: 10px;
@@ -301,17 +314,6 @@ table.border-radius-row tr td:last-child {
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
 }
- 
-.consumptions table tr:hover td {
-	background-color: #596774;
-	color: #fff;
-	overflow: hidden;
-}
-
-.available-consumptions {
-
-}
-
 /* component reset */
 .field-label {
 	color: #4a4a4a;

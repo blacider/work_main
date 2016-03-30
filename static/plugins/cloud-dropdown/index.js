@@ -77,7 +77,7 @@
 						$(element).find('.text').removeClass('font-placeholder');
 						$(element).find('.text').text(item['text']);
 
-						options['onInitValue'](item);
+						options['onInitValue'](item, element);
 						//fix me
 						setTimeout(function () {
 							$(element).find('.option-list .item').eq(index).addClass('active');
@@ -98,9 +98,9 @@
 						$(element).find('.text').removeClass('focus');
 
 						if(oldValue != newValue) {
-							options['onChange'](oldValue, newValue, $item[0], $scope.paramExtra);
+							options['onChange'](oldValue, newValue, $item[0], $scope.paramExtra, element);
 						}
-						options['onSelect'](oldValue, newValue, $item[0]);
+						options['onSelect'](oldValue, newValue, $item[0], element);
 
 						$item.addClass('active').siblings().removeClass('active');
 
