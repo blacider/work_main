@@ -6,26 +6,29 @@
 </script>
 
 <style type="text/css">
-    #search{
+    #search-form {
+        display: block;
         position: absolute;
-        left: 75%;
-        top: 64px;
+        left: 77%;
+        top: 62px;
+    }
+    #search{
         z-index: 2;
         height: 26px;
-        width: 12%;
+        float: left;
+        width: 159px;
         border-style: ridge;
     }
     #search-submit {
         background-color: #fe575f;
-        position: absolute;
-        left: 88%;
-        top: 64px;
+        float: left;
         z-index: 2;
         border: 0;
         color: white;
         height: 25px;
         border-radius: 3px;   
         font-size: 12px;
+        margin-left: 20px;
    }
    .tree .tree-folder, .tree .tree-item {
         white-space: nowrap !important;
@@ -78,8 +81,8 @@
         }
     }
 </script>
-<form action="<?php echo base_url('members/search') ?>" method="get" onsubmit="return searchSubmit(this)">
-    <input name="key" placeholder="请输入搜索的内容" value="<?php echo $search ?>" type='text' id="search">
+<form id="search-form" action="<?php echo base_url('members/search') ?>" method="get" onsubmit="return searchSubmit(this)">
+    <input name="key" placeholder="搜索员工姓名/手机/邮箱" value="<?php echo $search ?>" type='text' id="search">
     <button type="submit" id="search-submit">搜索</button>
 </form>
 <div class="page-content">
