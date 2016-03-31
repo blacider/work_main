@@ -473,7 +473,8 @@ $(document).ready(function() {
                     }
                 }).done(function(rs) {
                     if (rs['data'] != undefined) {
-                        window.location.href = rs['data'];
+                        window.location.href= '/register/ok';
+                        // window.location.href = rs['data'];
                     }
                 });
             } else {
@@ -548,7 +549,8 @@ $(document).ready(function() {
                     }
                 }).done(function(rs) {
                     if (rs['data'] != undefined) {
-                        window.location.href = rs['data'];
+                        window.location.href = '/register/ok';
+                        // window.location.href = rs['data'];
                     }
                 });
             } else {

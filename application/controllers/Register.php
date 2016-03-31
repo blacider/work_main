@@ -29,6 +29,18 @@ class Register extends REIM_Controller {
         return ;
     }
 
+    public function ok()
+    {
+        $attacker = $this->agent->agent_string();
+        // $attacker = "test start; ;JianKongBao Monitor test end";
+        $hasAttacker = false;
+        if(stripos($attacker, ';JianKongBao Monitor')) {
+            $hasAttacker = true;
+        }
+
+        $this->load->view('user/reg_successful', array('has_attacker'=>$hasAttacker));
+    }
+
     public function getvcode($addr = 'email',$scene = 'register'){
         if($addr == 'email')
             $user_addr = $this->input->post('email');
