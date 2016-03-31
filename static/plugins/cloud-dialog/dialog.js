@@ -64,7 +64,7 @@
 		this.$el = this.$mask.find('.cloud-bx-dialog');
 		this.$title = this.$el.find('.dialog-header .title');
 		this.$content = this.$el.find('.dialog-body');
-		this.$footer = this.$el.find('.dialog-footer');
+		this.$footer = this.$el.find('.dialog-footer').css('text-align', this.options['buttonAlign']);
 		this.init();
 	};
 
