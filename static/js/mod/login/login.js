@@ -462,7 +462,7 @@ $(document).ready(function() {
             }
         }).done(function(rs) {
             if (rs["code"] >= 0) {
-                registerSuccess("注册成功");
+                registerSuccess("注册成功", true);
                 logRegister()
                 Utils.api('/login/do_login', {
                     method: "post",
@@ -539,7 +539,7 @@ $(document).ready(function() {
             }
         }).done(function(rs) {
             if (rs["code"] >= 0) {
-                registerSuccess("注册成功");
+                registerSuccess("注册成功", true);
                 Utils.api('/login/do_login', {
                     method: "post",
                     data: {
@@ -749,11 +749,14 @@ $(document).ready(function() {
         });
     }
 
-    function registerSuccess(msg) {
+    function registerSuccess(msg, notHide) {
         if (msg == undefined) {
             msg = ""
         }
         show_notify(msg);
+        if(notHide) {
+            return;
+        }
         $(".modal").modal("hide");
     }
 
