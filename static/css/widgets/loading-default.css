@@ -2,11 +2,12 @@
 	position: absolute;
 	left: 0;
 	top: 0;
-	height: 100%;
 	width: 100%;
+	bottom: 100px;
 	background: #fff;
 	z-index: 9999;
 	min-height: 400px;
+
 }
 
 .ui-loading-icon {

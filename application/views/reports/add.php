@@ -7,7 +7,7 @@
         <div class="ui-loading-layer" ng-if="!isLoaded">
             <div class="ui-loading-icon"></div>
         </div>
-        <div class="report" data-tid="<?php echo $template_id;?>" data-type="{{template.type.join(',')}}">
+        <div class="report" data-tid="<?php echo $template_id;?>" data-type="{{template.type.join(',')}}" data-status="{{report_status}}">
             <div class="report-header">
                 借款单
             </div>
@@ -25,25 +25,24 @@
                             <li ng-repeat='m in selectedMembers'>
                                 <img ng-src="{{m.apath || '/static/img/mod/report/default-avatar.png'}}" alt="">
                                 <div class="info">
-                                    <p class="name">{{m.nickname}}</p>
-                                    <p class="role">{{formatMember(m)}}</p>
+                                    <div class="name">{{m.nickname}}</div>
+                                    <div class="role">{{formatMember(m)}}</div>
                                 </div>
+                                <p class="btn-remove" ng-click="onRemoveApprover(m, $event)"></p>
                             </li>
                             <li class="btn-append">
                                 <a href="javascript:void(0)" class="btn-add-add-approvers ui-button" ng-click="onAddApprovers($event)"><img src="/static/img/mod/report/36/btn-add-approvers@2x.png" alt="">选择</a>
                             </li>
                         </ul>
                     </div>
-                    
                 </div>
-
                 <div class="block-row field-item-list" ng-repeat="tableItem in template.config">
                     <div class="field-label">{{tableItem.name}}</div>
                     <div class="fields-box">
                         <div  class="field-item" data-required="{{fieldItem.required}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-repeat-start="fieldItem in tableItem.children" ng-if="fieldItem.type==1">
                             <label for="">{{fieldItem.name}}</label>
                             <div class="field-input">
-                                <input type="text" ng-model="fieldMap[fieldItem.id]" placeholder="{{fieldItem.required + ''=='1'?'必填':'选填'}}"  ng-keyup="onTextLengthChange2($event)">
+                                <input type="text" placeholder="{{fieldItem.required + ''=='1'?'必填':'选填'}}"  ng-keyup="onTextLengthChange2($event)">
                             </div>
                         </div>
                         <div  class="field-item" data-required="{{fieldItem.required}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-if="fieldItem.type==2">
@@ -64,7 +63,7 @@
                                 <i class="icon">
                                     <img src="/static/img/mod/report/36/icon-calender@2x.png" alt="" />
                                 </i>
-                                <input type="text" ng-model="fieldMap[fieldItem.id]" placeholder="{{fieldItem.required + ''=='1'?'必填':'选填'}}"  >
+                                <input type="text" placeholder="{{fieldItem.required + ''=='1'?'必填':'选填'}}">
                             </div>
                         </div>
                         <div  class="field-item" data-required="{{fieldItem.required}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-repeat-end ng-if="fieldItem.type==4">
@@ -94,26 +93,28 @@
                         <div style="text-align: right; padding-bottom: 20px;">
                             <a href="javascript:void(0)" class="btn-edit-consumption ui-button" ng-click="onAddConsumptions($event)"><img src="/static/img/mod/report/24/btn-edit@2x.png" alt="">编辑</a>
                         </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>类目</th>
-                                    <th>时间</th>
-                                    <th>商家 </th>
-                                    <th>备注</th>
-                                    <th>金额</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-if="!c.rid" ng-repeat="c in selectedConsumptions" ng-class="{selected: c.isSelected}" ng-click="onSelectConsumption(c, $event)">
-                                    <td>{{c.category}} 报销单ID{{c.rid}}</td>
-                                    <td >{{c.dt}}</td>
-                                    <td>{{c.merchants}}</td>
-                                    <td>{{c.notes}}</td>
-                                    <td>{{c.amount}}</td>
-                                </tr> 
-                            </tbody>
-                        </table>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>类目</th>
+                                        <th>时间</th>
+                                        <th>商家 </th>
+                                        <th>备注</th>
+                                        <th>金额</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="c in selectedConsumptions" ng-class="{selected: c.isSelected}" ng-click="onSelectConsumption(c, $event)">
+                                        <td>{{c.category}} 报销单ID{{c.rid}}</td>
+                                        <td >{{c.dt}}</td>
+                                        <td>{{c.merchants}}</td>
+                                        <td>{{c.notes}}</td>
+                                        <td>{{c.amount}}</td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div class="block-row" ng-if="!selectedConsumptions || selectedConsumptions.length==0">
@@ -136,7 +137,7 @@
                 <div class="approvers available-members">
                     <div class="search-input">
                         <div class="field-input">
-                            <input type="text" placeholder="姓名／手机／邮箱" ng-model="search.$" >
+                            <input type="text" placeholder="姓名／手机／邮箱" ng-model="search.$">
                         </div>
                         <a href="javascript:void(0)" class="btn-search ui-button" ng-click="">搜索</a>
                     </div>
@@ -258,7 +259,7 @@
 <script src="/static/ace/js/date-time/locale/zh-cn.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 
-<script src="/static/js/libs/jquery.auto-grow-input.min.js"></script>
+<script src="/static/js/libs/fecha.js"></script>
 <script src="/static/js/libs/jquery.fixedheadertable.min.js"></script>
 <script src="/static/plugins/cloud-dialog/dialog.js"></script>
 <script src="/static/plugins/cloud-dropdown/index.js"></script>

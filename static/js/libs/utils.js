@@ -84,30 +84,30 @@
 			});
 			return def.promise();
 		},
-		dateFormat: function(date, joint) {
-			if (!joint) {
-				joint = '-';
-			}
-			var d = new Date(date);
-			var str = [
-				d.getFullYear(),
-				utils.offsetNumber(d.getMonth() + 1),
-				utils.offsetNumber(d.getDate())
-			].join(joint);
-			return str;
+		// 判断一个对象是否包含全部的kv
+		isObjectContained: function (obj, kv) {
+		    for(pro in kv) {
+		        if(obj[pro] !== kv[pro]) {
+		            return false;
+		        }
+		    }
+		    return true;
 		},
-		dateTimeFormat: function(date) {
-			var d = new Date(date);
-			var dateStr = [
-				d.getFullYear(),
-				utils.offsetNumber(d.getMonth() + 1),
-				utils.offsetNumber(d.getDate())
-			].join('/');
-			var timeStr = [
-				utils.offsetNumber(d.getHours()),
-				utils.offsetNumber(d.getMinutes())
-			].join(':');
-			return dateStr + ' ' + timeStr;
+		//批量更新数组
+		updateArrayByQuery: function (arr, query, operation) {
+			var rs = [];
+		    for(var i=0;i<arr.length;i++) {
+		        var item = arr[i];
+		        if(Utils.isObjectContained(item, query)) {
+		        	rs.push(rs);
+		        	if(typeof operation=='function') {
+		        		$.extend(item, operation());
+		        	} else {
+		        		$.extend(item, operation);
+		        	}
+		        }
+		    }
+		    return rs;
 		}
 	}
 })(window);

@@ -253,12 +253,6 @@ class Report_Model extends Reim_Model {
     public function create_v2($report)
     {
         $jwt = $this->session->userdata('jwt');
-        if(!$jwt) {
-            return array(
-                'status'=> -1,
-                'msg'=>'登录失效'
-            );
-        }
         $url = $this->get_url("report");
         $buf = $this->do_Post($url, $report, $jwt);
         return json_decode($buf, true);
@@ -286,6 +280,19 @@ class Report_Model extends Reim_Model {
         log_message('debug','create_report_back:' . $buf);
         return $buf;
 
+    }
+
+    public function update_v2($report)
+    {
+        $id = $report['id'];
+
+        $jwt = $this->session->userdata('jwt');
+
+        $url = $this->get_url("report/$id");
+        
+        $buf = $this->do_Put($url, $report, $jwt);
+
+        return json_decode($buf, true);
     }
 
     public function update($id, $title, $receiver, $cc, $iids, $type = 0, $status = 1, $force = 0, $extra = array(),$template_id,$is_other = 0){
