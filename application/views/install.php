@@ -27,7 +27,18 @@
     <link rel="stylesheet" type="text/css" href="/static/wx/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="/static/wx/css/index.css">
     <script type="text/javascript" src="/static/wx/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/libs/detect.js"></script>
     <script type="text/javascript" src="/static/wx/js/index.js"></script>
+    <script>
+      var uaObject = detect.parse(navigator.userAgent);
+      var flag = false;
+      if(uaObject['os']['family']=='iOS' && uaObject['os']['major']<8) {
+        setTimeout(function () {
+          var tips = '需要iOS8.0或更高版本才能下载并使用 云报销APP，请尝试升级系统版本或与云报销客服联系。';
+          $('#download').replaceWith(tips);
+        }, 100)
+      }
+    </script>
 <script>
     var __BASEURL = "<?php echo base_url(); ?>";
     var platform = "<?php echo $platform; ?>";
