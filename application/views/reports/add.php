@@ -4,6 +4,9 @@
 <link rel="stylesheet" href="/static/css/widgets/loading-default.css"/>
 <div class="mod mod-add-report" ng-app="reimApp">
     <div class="page-content-area" ng-controller="ReportController">
+        <div class="ui-loading-layer" ng-if="!isLoaded">
+            <div class="ui-loading-icon"></div>
+        </div>
         <div class="report" data-tid="<?php echo $template_id;?>" data-type="{{template.type.join(',')}}">
             <div class="report-header">
                 借款单
@@ -34,13 +37,13 @@
                     
                 </div>
 
-                <div class="block-row" ng-repeat="tableItem in template.config">
+                <div class="block-row field-item-list" ng-repeat="tableItem in template.config">
                     <div class="field-label">{{tableItem.name}}</div>
                     <div class="fields-box">
                         <div  class="field-item" data-required="{{fieldItem.required}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-repeat-start="fieldItem in tableItem.children" ng-if="fieldItem.type==1">
                             <label for="">{{fieldItem.name}}</label>
                             <div class="field-input">
-                                <input type="text" placeholder="{{fieldItem.required==1?'必填':'选填'}}"  ng-keyup="onTextLengthChange2($event)">
+                                <input type="text" ng-model="fieldMap[fieldItem.id]" placeholder="{{fieldItem.required + ''=='1'?'必填':'选填'}}"  ng-keyup="onTextLengthChange2($event)">
                             </div>
                         </div>
                         <div  class="field-item" data-required="{{fieldItem.required}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-if="fieldItem.type==2">
@@ -56,24 +59,31 @@
                             </div>
                         </div>
                         <div  class="field-item" data-required="{{fieldItem.required}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-if="fieldItem.type==3">
-                            <label for="">{{fieldItem.name}}日期类型</label>
+                            <label for="">{{fieldItem.name}}</label>
                             <div class="field-input datatimepicker">
                                 <i class="icon">
                                     <img src="/static/img/mod/report/36/icon-calender@2x.png" alt="" />
                                 </i>
-                                <input type="text" placeholder="">
+                                <input type="text" ng-model="fieldMap[fieldItem.id]" placeholder="{{fieldItem.required + ''=='1'?'必填':'选填'}}"  >
                             </div>
                         </div>
                         <div  class="field-item" data-required="{{fieldItem.required}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-repeat-end ng-if="fieldItem.type==4">
                             <label for="">{{fieldItem.name}}</label>
-                            <div class="field-select field" ng-dropdown="makeBankDropdown" selected-item="default_bank"  default-item="{value:'', text: '请选择银行'}"  data="banks">
+                            <div class="field-select field" ng-dropdown="makeBankDropdown" selected-item="default_bank"  default-item="{cardno:'', bankname: '必填'}"  data="banks">
                                 <i class="icon">
                                     <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
                                 </i>
-                                <div class="text font-placeholder">请选择银行</div>
-                                <div class="option-list none">
-                                    <div class="item" ng-repeat="item in banks" data-value="{{item.id}}">{{makeBankDropdown.itemFormat(item)['text']}}</div>
-                                </div> 
+                                <div class="text font-placeholder"></div>
+                                <div class="option-list none option-list-extra">
+                                    <div class="option-list-wrap">
+                                        <div class="item" ng-repeat="item in banks" data-value="{{item.id}}">{{makeBankDropdown.itemFormat(item)['text']}}</div>
+                                    </div>
+                                    <p class="line" ng-if="banks.length<=0"><span>0张银行卡</span></p>
+                                    <a class="btn-add-bank" ng-click="onAddBankCard($event)">
+                                        <img src="/static/img/mod/report/36/icon-bank@2x.png" alt="" />
+                                        添加银行卡
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -178,6 +188,68 @@
                     </table>
                 </div>
             </div>
+
+            <div style="display: none">
+                <div class="bank-form" style="width: 500px">
+                    <div  class="field-item">
+                        <label for="">持卡人</label>
+                        <div class="field-input">
+                            <input name="account" type="text" placeholder="">
+                        </div>
+                    </div>
+                    <div  class="field-item">
+                        <label for="">帐号</label>
+                        <div class="field-input ">
+                            <input name="account" type="text" placeholder="">
+                        </div>
+                    </div>
+                    <div  class="field-item">
+                        <label for="">开户行</label>
+                        <div class="field-input ">
+                            <input type="text" placeholder="">
+                        </div>
+                    </div>
+                    <div  class="field-item">
+                        <label for="">卡类型</label>
+                        <div class="field-select ">
+                            <i class="icon">
+                                <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
+                            </i>
+                            <input type="text" placeholder="">
+                        </div>
+                    </div>
+                    <div class="field-item-wrap">
+                        <div  class="field-item inline-item">
+                            <label for="">开户地</label>
+                            <div class="field-select ">
+                                <i class="icon">
+                                    <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
+                                </i>
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div  class="field-item inline-item" style="padding-right: 0;padding-left: 5px;">
+                            <label for="" style="height: 20px"></label>
+                            <div class="field-select ">
+                                <i class="icon">
+                                    <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
+                                </i>
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div  class="field-item">
+                        <label for="">开户支行</label>
+                        <div class="field-select ">
+                            <i class="icon">
+                                <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
+                            </i>
+                            <input type="text" placeholder="">
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+            </div>
         </div>  
     </div>
 </div>
@@ -193,7 +265,7 @@
 <script src="/static/js/libs/Sortable.min.js"></script>
 <script src="/static/js/libs/ng-sortable.js"></script>
 <script src="/static/js/libs/underscore-min.js"></script>
-
+<script src="/static/js/libs/route-recognizer.js"></script>
 <script src="/static/js/mod/report/add.js"></script>
 
 <link rel="stylesheet" href="/static/css/base/animate.css">

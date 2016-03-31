@@ -15,19 +15,26 @@
                 function($http, $scope, $element, $timeout) { 
 
                     $scope.bankFieldMap = {};
-                    $scope.originalReport = {};
+
                     $scope.selectedMembers = [];
                     $scope._selectedMembers = [];
                     $scope.selectedConsumptions = [];
                     $scope._selectedConsumptions = [];
+                    $scope.banks = [];
+                    $scope.default_bank = null;
+                    $scope.template = null;
+                    $scope.fieldMap = {};
 
+                    $scope.originalReport = {
+                        data: {
+                            title: ''
+                        },
+                        selectedConsumptions: angular.copy($scope.selectedConsumptions),
+                        selectedMembers: angular.copy($scope.selectedMembers),
+                    };
 
-                    function getReportData(id) {
-                        return Utils.api('/template/get_template/'+id, {
-                            data: {
-                                id: id
-                            }
-                        }).done(function (rs) {
+                    function getTemplateData(id) {
+                        return Utils.api('/template/get_template/'+id, {}).done(function (rs) {
                             if(rs['status']<0) {
                                 return show_notify('找不到模版');
                             }
@@ -65,8 +72,13 @@
                                 return show_notify('个人银行数据出错');
                             }
 
-                            $scope.banks = rs['banks'];
+                            $scope.banks = rs['banks'] || [];
                             $scope.default_bank = findOneInBanks(rs['default_bank'], rs['banks']);
+                            if(!$scope.default_bank) {
+                                if($scope.banks.length>0) {
+                                    $scope.default_bank = $scope.banks[0];
+                                }
+                            }
                             $scope.$apply();
 
                         });
@@ -106,7 +118,7 @@
                     var dialogMemberSingleton = (function () {
                         var instance;
                      
-                        function createInstance(type) {
+                        function createInstance() {
                              
                             var dialog = new CloudDialog({
                                 title: '选择审批人',
@@ -140,7 +152,7 @@
                     var dialogConsumptionSingleton = (function () {
                         var instance;
                      
-                        function createInstance(type) {
+                        function createInstance() {
                              
                             var dialog = new CloudDialog({
                                 title: '选择消费',
@@ -172,6 +184,39 @@
                         };
                     })();
 
+                    var dialogAddBankSingleton = (function () {
+                        var instance;
+                     
+                        function createInstance() {
+                             
+                            var dialog = new CloudDialog({
+                                title: '添加银行卡',
+                                quickClose: true,
+                                autoDestroy: false,
+                                buttonAlign: 'right',
+                                ok: function () {
+                                    this.close();
+                                },
+                                cancel: function () {
+                                    this.close();
+                                }
+                            });
+
+                            dialog.setContentWithElement($($element.find('.bank-form')));
+                       
+                            return dialog;
+                        }
+
+                        return {
+                            getInstance: function () {
+                                if (!instance) {
+                                    instance = createInstance();
+                                }
+                                return instance;
+                            }
+                        };
+                    })();
+
                     function initDatetimepicker(selector) {
                         $(selector).datetimepicker({
                             language: 'zh-cn',
@@ -184,7 +229,6 @@
                             // minDate: ,
                             // maxDate: ,
                             showToday: true,
-                            defaultDate: +new Date,
                             disabledDates: false,
                             enabledDates: false,
                             useStrict: false,
@@ -192,8 +236,9 @@
                             sideBySide: false,
                             daysOfWeekDisabled: false
                         }).on('dp.change', function(e){
-
+                            $(selector).trigger('input');
                         });
+                        $(selector).trigger('input');
                     };
 
                     function findOneInBanks(id, banks) {
@@ -210,24 +255,47 @@
                     function getPageData(callback) {
                         $.when(
                             getCurrentUserBanks(),
-                            getReportData($element.find('.report').data('tid')),
+                            getTemplateData($element.find('.report').data('tid')),
                             getAvailableConsumptions(),
                             getMembers()
                         ).done(function () {
                             callback();
 
                             // 这种类型不好处理，在这里收集它们——当其改变的数值的时候
-                            
-
                         })
                     };
 
                     // main entry
                     getPageData(function () {
+                        $scope.isLoaded = true;
+                        $scope.$apply();
                         setTimeout(function () {
                             initDatetimepicker('.datatimepicker input');
-                        }, 1000);
+                        }, 100);
                     });
+
+                    $scope.onTextLengthChange2 = _.debounce(function(e) {
+                        var $input = $(e.currentTarget);
+                        var str = $input.val();
+                        if(str.length>=_templateTotalLimit_) {
+                            $timeout(function() {
+                                str = str.substr(0, _templateNameLengthLimit_)
+                                $input.val(str);
+                            }, 50);
+                        }
+                    }, 1000);
+
+                    $scope.onTextLengthChange = _.debounce(function(e) {
+                        var $input = $(e.currentTarget);
+                        var str = $input.val();
+                        if(str.length>=_templateNameLengthLimit_) {
+                            $timeout(function() {
+                                str = str.substr(0, _templateNameLengthLimit_)
+                                $scope.title = str
+                            }, 50);
+                        }
+                    }, 1000);
+
 
                     $scope.formatMember = function (m) {
                         // {{levelMap[m.level_id]['name'] || '未知级别'}}－{{rankMap[m.rank_id]['name'] || '未知职位'}}
@@ -245,6 +313,11 @@
 
                     $scope.makeBankDropdown = {
                         itemFormat: function (item) {
+                            if(!item.id) {
+                                return {
+                                    text: ''
+                                }
+                            }
                             return {
                                 value: item['id'],
                                 text: '尾号' + item.cardno.substr(-4)  + '-' + item.bankname || '--'
@@ -252,38 +325,26 @@
                         },
                         onChange: function(oldValue, newValue, item, columnData) {
                             var id = $(item).parents('.field-item').data('id');
-
-                            $scope.bankFieldMap[id] = findOneInBanks(newValue, $scope.banks);
+                            var bank = findOneInBanks(newValue, $scope.banks);
+                            $scope.bankFieldMap[id] = bank;
+                            $scope.fieldMap[id] = bank;
                         },
                         onInitValue: function (item, el) {
                             setTimeout(function () {
                                 var id = $(el).parents('.field-item').data('id');
-                                $scope.bankFieldMap[id] = findOneInBanks(item.value, $scope.banks);
+                                bank = findOneInBanks(item.value, $scope.banks);
+                                $scope.bankFieldMap[id] = bank;
+                                $scope.fieldMap[id] = bank;
                             }, 100);
                         }
                     };
 
-                    $scope.onTextLengthChange2 = _.debounce(function(e) {
-                        var $input = $(e.currentTarget);
-                        var str = $input.val();
-                        if(str.length>=_templateTotalLimit_) {
-                            $timeout(function() {
-                                str = str.substr(0, _templateNameLengthLimit_)
-                                $input.val(str);
-                            }, 50);
-                        }
-                    }, 100);
+                   
 
-                    $scope.onTextLengthChange = _.debounce(function(e) {
-                        var $input = $(e.currentTarget);
-                        var str = $input.val();
-                        if(str.length>=_templateNameLengthLimit_) {
-                            $timeout(function() {
-                                str = str.substr(0, _templateNameLengthLimit_)
-                                $scope.title = str
-                            }, 50);
-                        }
-                    }, 100);
+                    $scope.onAddBankCard = function (e) {
+                        var dialog = dialogAddBankSingleton.getInstance();
+                        dialog.showModal(); 
+                    };
 
                     $scope.onAddApprovers = function (e) {
                         if(!$scope.members) {
@@ -335,10 +396,6 @@
                         dialog.showModal();
                     };
 
-                    $scope.onCancel = function (e) {
-                        // body...
-                    };
-
                     function readReportData() {
                         var title = $scope.title;
                         var template_id = $element.find('.report').data('tid');
@@ -371,8 +428,8 @@
 
                         // extra is fields content
                         var inValidExtra = false;
-                        var extra = $element.find('.field-item').map(function (i, item) {
-                            var type = $(item).data('type');
+                        var extra = $element.find('.field-item-list .field-item').map(function (i, item) {
+                            var type = $(item).data('type') + '';
                             var id = $(item).data('id');
                             var value = $(item).find('input').val() || $(item).find('.text').text();
                             var isRequired = ~~$(item).data('required');
@@ -390,7 +447,11 @@
                                 value: value
                             };
 
-                            if(type+''=== '4') {
+                            if(type=='3') {
+                                data['value'] = (new Date()).getTime();
+                            }
+
+                            if(type=== '4') {
                                 var bank = $scope.bankFieldMap[id];
                                 if(isRequired && !bank) {
                                     inValidExtra = true;
@@ -422,12 +483,43 @@
                         }  
                     };
 
+                    function updatePageWithReportData() {
+                        $scope.title = $scope.originalReport['title'];
+                        $scope.selectedConsumptions = $scope.originalReport['selectedConsumptions'];
+                        $scope.selectedMembers = $scope.originalReport['selectedMembers'];
+                        $scope.fieldMap = (function (report) {
+                            var map = {};
+                            var extra = report.data.extra || [];
+                            for(var i=0;i<extra.length;i++) {
+                                var item = extra[i];
+                                var itemType = item.type+'';
+                                map[item.id] = item.value;
+                                // 更新DOM
+                                if(itemType=='2') {
+                                    $('.field-item[date-id="' +item.id+ '"]').find('.text').text(item.value);
+                                }
+                                if(itemType=='3') {
+                                    $('.field-item[date-id="' +item.id+ '"]').find('input').datetimepicker('update', item.value);
+                                }
+                                if(itemType=='4') {
+                                    $('.field-item[date-id="' +item.id+ '"]').find('.text').text($scope.makeBankDropdown.itemFormat(item));
+                                }
+                            }
+                        })($scope.originalReport);
+                    };
+
+                    $scope.onCancel = function (e) {
+                        updatePageWithReportData();
+                    };
 
                     $scope.onSave = function (e) {
                         var data = readReportData();
+
                         if(!data) {
                             return;
                         }
+
+                        data['status'] = 0;
 
                         Utils.api('/reports/create_v2', {
                             method: 'post',
@@ -436,12 +528,38 @@
                             if(rs['status']<=0) {
                                 return show_notify(rs['msg']);
                             }
-                            show_notify('创建成功')
+                            $scope.originalReport = {
+                                data: data,
+                                selectedConsumptions: angular.copy($scope.selectedConsumptions),
+                                selectedMembers: angular.copy($scope.selectedMembers),
+                            };
+                            show_notify('保存成功');
                         });
                     };
 
                     $scope.onSubmit = function (e) {
-                        // body...
+                        var data = readReportData();
+
+                        if(!data) {
+                            return;
+                        }
+
+                        data['status'] = 1;
+
+                        Utils.api('/reports/create_v2', {
+                            method: 'post',
+                            data: data,
+                        }).done(function (rs) {
+                            if(rs['status']<=0) {
+                                return show_notify(rs['msg']);
+                            }
+                            $scope.originalReport = {
+                                data: data,
+                                selectedConsumptions: angular.copy($scope.selectedConsumptions),
+                                selectedMembers: angular.copy($scope.selectedMembers),
+                            };
+                            show_notify('提交成功');
+                        });
                     };
 
                 }

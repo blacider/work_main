@@ -314,6 +314,49 @@ table.border-radius-row tr td:last-child {
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
 }
+
+.btn-add-bank {
+	height: 40px;
+	border-radius: 4px;
+	background-color: #596774;
+	line-height: 40px;
+	font-size: 14px;
+	color: #ffffff;
+	display: block;
+	margin: 10px 10px 0 10px;
+	text-align: center;
+	text-decoration: none;
+}
+.btn-add-bank:hover {
+	background-color: #273e52;
+	color: #fff;
+	text-decoration: none;
+}
+.btn-add-bank:active,
+.btn-add-bank:focus {
+	background-color: #273e52;	
+}
+.btn-add-bank img {
+	width: 36px;
+}
+
+.bank-form {
+	margin-right: -40px;
+}
+.bank-form .field-item,
+.bank-form .field-item-wrap {
+	float: left;
+	width: 50%;
+	text-align: left;
+	padding: 0 40px 30px 0;
+}
+
+.bank-form .field-item.inline-item {
+	width: 50%;
+	padding-right: 5px;
+}
+
+
 /* component reset */
 .field-label {
 	color: #4a4a4a;
@@ -331,8 +374,38 @@ table.border-radius-row tr td:last-child {
 	border-bottom: 2px solid #273e52;
 }
 
+.field-select .option-list-wrap {
+	position: relative;
+	max-height: 280px;
+	overflow: auto;
+}
 .field-select .option-list {
-	margin-top: -6px
+	max-height: auto;
+	overflow: hidden;
+}
+.field-select .option-list {
+	margin-top: -6px;
+}
+.field-select .option-list.option-list-extra {
+	overflow: visible;
+	max-height: auto !important;
+	max-height: none;
+	height: auto;
+}
+.field-select .option-list .line {
+	border-bottom: 1px solid #B9B9B9;
+	height: 10px;
+	text-align: center;
+	margin: 10px;
+	margin-bottom: 18px;
+}
+.field-select .option-list .line span {
+	font-size: 14px;
+	color: #b9b9b9;
+	margin-top: -10px;
+	display: inline-block;
+	background: #fff;
+	padding: 10px 23px 0 23px;
 }
 
 
