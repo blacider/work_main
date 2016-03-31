@@ -37,6 +37,28 @@
                         });
                     };
 
+                    function getReportData(id) {
+                        return Utils.api('/reports/detail/'+id, {}).done(function (rs) {
+                            if(rs['status']<0) {
+                                return show_notify('找不到数据');
+                            }
+
+                            $scope.$apply();
+                        });
+                    };
+
+                    (function tryMatchEdit() {
+                        var router = new RouteRecognizer();
+                        router.add([{path: "/reports/:type/:id"}]);
+                        var matchers = router.recognize(location.pathname);
+                        if(matchers.length>0) {
+                            var m = matchers[0];
+                            if(m.params['type']=='edit') {
+                                getReportData(m.params['id']);
+                            }
+                        }
+                    })();
+
                     function getCurrentUserBanks() {
                         return Utils.api('/users/get_current_user_banks', {}).done(function (rs) {
                             if(rs['status']<0) {

@@ -41,6 +41,35 @@ class Reports extends REIM_Controller {
         );
     }
 
+    // http://alex.baidu.com:9999/reports/edit/24040?tid=503
+    public function edit($id=0)
+    { 
+        $template_id = $this->input->get('tid');
+        $this->bsload('reports/add', array(
+                'template_id' => $template_id,
+                'title' => '修改报销单',
+                'error' => array(),
+                'type' => array(),
+                'breadcrumbs' => array(
+                    array(
+                        'url'  => base_url(), 
+                        'name' => '首页', 
+                        'class' => 'ace-icon fa home-icon'
+                    ),
+                    array(
+                        'url'  => base_url('reports/index'),
+                        'name' => '报销单', 'class' => ''
+                    ),
+                    array(
+                        'url'  => '', 
+                        'name' => '我的报销单', 
+                        'class' => ''
+                    )
+                ),
+            )
+        );
+    }
+
     public function get_report_comments($report)
     {
         $comments = array();
@@ -547,7 +576,7 @@ class Reports extends REIM_Controller {
         return redirect(base_url('reports/index'));
     }
 
-    public function edit($id = 0,$is_other = 0){
+    public function edit1($id = 0,$is_other = 0){
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
         $item_type_dic = $this->reim_show->get_item_type_name();
