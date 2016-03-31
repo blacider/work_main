@@ -21,7 +21,6 @@ $(document).ready(function() {
         } catch(e) {
             console.log(e)
         }
-
         if(__fr__['hmsr']!==reg_fr_obj['hmsr'] && __fr__['hmsr']) {
             $.cookie('reg_fr', JSON.stringify(__fr__), {
                 expires: 7
@@ -32,7 +31,7 @@ $(document).ready(function() {
     setFrCookie();
 
     function getFrCookie() {
-        return $.cookie('reg_fr');
+        return $.cookie('reg_fr') || '';
     };
 
     __fr__ = getFrCookie();
@@ -77,7 +76,6 @@ $(document).ready(function() {
 
     function logRegister() {
         
-        var platform = getPlatform();
         _hmt.push('_trackEvent', 'log_register', __fr__);
         _hmt.push(['_setCustomVar', 3, 'log_register', __fr__, 3]);
     };
@@ -462,7 +460,7 @@ $(document).ready(function() {
             }
         }).done(function(rs) {
             if (rs["code"] >= 0) {
-                registerSuccess("注册成功");
+                registerSuccess("注册成功", true);
                 logRegister()
                 Utils.api('/login/do_login', {
                     method: "post",
@@ -539,7 +537,7 @@ $(document).ready(function() {
             }
         }).done(function(rs) {
             if (rs["code"] >= 0) {
-                registerSuccess("注册成功");
+                registerSuccess("注册成功", true);
                 Utils.api('/login/do_login', {
                     method: "post",
                     data: {
@@ -749,11 +747,14 @@ $(document).ready(function() {
         });
     }
 
-    function registerSuccess(msg) {
+    function registerSuccess(msg, notHide) {
         if (msg == undefined) {
             msg = ""
         }
         show_notify(msg);
+        if(notHide) {
+            return;
+        }
         $(".modal").modal("hide");
     }
 
