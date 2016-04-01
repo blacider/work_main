@@ -75,8 +75,7 @@ $(document).ready(function() {
     }
 
     function logRegister() {
-        
-        _hmt.push('_trackEvent', 'log_register', __fr__);
+        _hmt.push('_trackEvent', 'log_register', 'register_success', __fr__);
         _hmt.push(['_setCustomVar', 3, 'log_register', __fr__, 3]);
     };
 
