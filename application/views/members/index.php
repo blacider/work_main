@@ -453,6 +453,10 @@ function load_group(gid){
                     $(_th).appendTo($('#gtable'));
 
                     });
+                    if (_member.length == 0) {
+                        var _th = '<tr><td colspan="9" align="center" style="font-size: 20px;color: #cfd0d1;padding-top: 20px;">无员工</td></tr>'
+                        $(_th).appendTo($('#gtable'));
+                    }
                 }
 
                 bind_event();
