@@ -342,7 +342,7 @@ function load_group(gid){
                     }
                     //show_notify('获取信息成功');
                     var _g_du = '<a href="' + __BASE + '/members/editgroup/' + gid + '"><button class="form-button form-button-right">编辑</button></a>' +
-                                '<a href="/members/newmember"><button style="margin: -3px 20px auto auto;" class="form-button">添加员工</button></a>';
+                                '<a href="/members/newmember/' + gid +'"><button style="margin: -3px 20px auto auto;" class="form-button">添加员工</button></a>';
                     if(_admin == 1 || _admin == 3 || is_under_control)
                     {
                         $('#g_du').html(_g_du);

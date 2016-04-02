@@ -195,6 +195,12 @@ foreach($gmember as $m){
 <script type="text/javascript">
     var error = "<?php echo $this->session->userdata('last_error');?>";
     var _admin = "<?php echo $profile['admin'];?>";
+    var groupId = "<?php echo $groupName; ?>";
+    $(document).ready(function() {
+        if (groupId != '') {
+            $("#ugroups").val(groupId).trigger("chosen:updated");
+        }
+    });
 </script>
 <script src="/static/js/libs/underscore-min.js"></script> 
 <script src="/static/js/widgets/input-suggestion.js"></script>
