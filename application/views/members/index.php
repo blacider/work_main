@@ -107,6 +107,7 @@
                     </div>
                     <div class="widget-body">
                         <div class="widget-main padding-8">
+                            <input id="search-group" type="text" style="font-size: 12px;width: 100%;margin-bottom: 20px;" placeholder="搜索部门">
                             <div id="tree2" class="tree"></div>
                         </div>
                     </div>
@@ -235,6 +236,43 @@ if(_levels_dic!='')
 
 
 $(document).ready(function(){
+    $("#search-group").keyup(function() {
+        var groups = [];
+        $.each(js_data[0]['additionalParameters']['children'], function(index, item) {
+            groups.push(item);
+        });
+        //遍历树所有节点
+        for (var i = 0; i < groups.length; i++)
+            $.each(groups[i]['additionalParameters']['children'], function(index, item) {
+                groups.push(item);
+            });
+        var results = [];
+        var treeData = {};
+        var str = this.value;
+        if (this.value != '') {
+            $.each(groups, function(index, item) {
+                 if (item['name'].indexOf(str) >= 0)
+                    results.push(item);
+            });
+            $.each(results, function(index, item) {
+                treeData[item['name']] = {
+                    name:item['name'],
+                    id:item['id'],
+                    additionalParameters: {
+                                children: []
+                            },
+                    type: 'folder',
+                    'icon-class': 'red'
+                }
+            });
+        } else {
+            treeData = js_data;
+        }
+        var treeDataSource = new DataSourceTree({
+            data: treeData
+        });
+        loadTreeByDataSource(treeDataSource);
+    });
     if(error)
     {
         show_notify(error);
@@ -523,7 +561,7 @@ function bind_remove_from_group() {
                 dataType: 'json',
                 success: function(data) {
                     var ace_icon = ace.vars['icon'];
-                    var js_data = {};
+                    js_data = {};
                     var obj = new Array();
                     var unroot = new Array();
                     js_data['0'] = {
@@ -636,24 +674,7 @@ function bind_remove_from_group() {
                     var treeDataSource = new DataSourceTree({
                         data: js_data
                     });
-                    $('#tree2').ace_tree({
-                        dataSource: treeDataSource,
-                        loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
-                        'open-icon': 'ace-icon fa fa-cog',
-                        'close-icon': 'ace-icon fa fa-cogs',
-                        'selectable': true,
-                        'selected-icon': null,
-                        'unselected-icon': null
-                    });
-                    $('#tree2').on('updated', function(e, result) {}).on('selected', function(e) {}).on('unselected', function(e) {}).on('opened', function(e, result) {
-                        if (result.id != undefined) {
-                            var _gid = result.id;
-                            load_group(_gid);
-                        }
-                    }).on('closed', function(e, result) {
-                        var _gid = result.id;
-                        load_group(_gid);
-                    });
+                    loadTreeByDataSource(treeDataSource);
                 },
                 error: function() {}
             });
@@ -661,6 +682,28 @@ function bind_remove_from_group() {
     });
 </script>
 <script type="text/javascript">
+function loadTreeByDataSource(data) {
+    $("#tree2").removeData("tree");
+    $("#tree2").unbind();
+    $('#tree2').ace_tree({
+        dataSource: data,
+        loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+        'open-icon': 'ace-icon fa fa-cog',
+        'close-icon': 'ace-icon fa fa-cogs',
+        'selectable': true,
+        'selected-icon': null,
+        'unselected-icon': null
+    });
+    $('#tree2').on('updated', function(e, result) {}).on('selected', function(e) {}).on('unselected', function(e) {}).on('opened', function(e, result) {
+        if (result.id != undefined) {
+            var _gid = result.id;
+            load_group(_gid);
+        }
+    }).on('closed', function(e, result) {
+        var _gid = result.id;
+        load_group(_gid);
+    });
+}
 var DataSourceTree = function(options) {
     this._data = options.data;
     this._delay = options.delay;
