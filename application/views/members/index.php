@@ -71,6 +71,20 @@
     .col-9 {
         min-width: 78px;
     }
+    .form-button {
+        background-color: white;
+        float: right;
+        border: 0;
+        color: #428bca;
+        height: 25px;
+        border-radius: 3px;
+        margin-top: 6px;
+        margin-right: 14px;
+        font-size: 12px;
+        padding: auto 34px auto 34px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 </style>
 <script type="text/javascript">
     function searchSubmit(form) {
@@ -93,6 +107,7 @@
                     <div class="widget-header" style="height: 38px;min-height: 38px;background: #428bca;">
                         <div id="admin_groups_granted" data-gids="<?php echo htmlspecialchars(json_encode($admin_groups_granted))?>"></div>
                         <h4 class="widget-title lighter smaller" style="font-size: 16px;">组织结构</h4>
+                        <a href="/members/add"><button class="form-button">添加部门</button></a>
                     </div>
                     <div class="widget-body">
                         <div class="widget-main padding-8">
@@ -217,7 +232,7 @@ var _levels_dic = '<?php echo json_encode($levels); ?>';
 var levels_dic = [];
 if(_levels_dic!='')
 {
-	levels_dic = JSON.parse(_levels_dic);
+    levels_dic = JSON.parse(_levels_dic);
 }
 
 
@@ -413,12 +428,12 @@ function load_group(gid){
             
                     }
 
-		var _level_id = item.level_id;
-		var _level = '';
-		if(levels_dic[_level_id]!=undefined)
-		{
-			_level = levels_dic[_level_id];
-		}
+        var _level_id = item.level_id;
+        var _level = '';
+        if(levels_dic[_level_id]!=undefined)
+        {
+            _level = levels_dic[_level_id];
+        }
                 _th = '<tr>'
                     + '<td>' + item.client_id + '</a></td>'
                     + '<td>' + item.nickname+ '</td>'
