@@ -85,6 +85,10 @@
         padding-left: 10px;
         padding-right: 10px;
     }
+    .form-button-right {
+        float: left;
+        margin: -4px auto auto 20px;
+    }
 </style>
 <script type="text/javascript">
     function searchSubmit(form) {
@@ -119,8 +123,10 @@
             <div class="col-xs-9">
                 <div class="panel panel-primary" style="display: inline-block;">
                     <div class="panel-heading" style="padding: 10px 0 18px 0; height: 39px">
-                        <h3 class="panel-title default col-sm-11 col-md-11" id="gname"><?php echo $groupname;?>[<?php echo count($members); ?>]</h3>
-                        <p id="g_du"></p>
+                        <h3 class="panel-title default" style="float: left;" id="gname"><?php echo $groupname;?>[<?php echo count($members); ?>]</h3>
+                        <span id="g_du">
+                        </span>
+                        <a href="/members/newmember"><button style="margin: -3px 20px auto auto;" class="form-button">添加员工</button></a>
                     </div>
                     <div class="panel-body">
                         <table class="table" id="gtable">
@@ -344,8 +350,7 @@ function load_group(gid){
                         is_under_control = 1;
                     }
                     //show_notify('获取信息成功');
-                    var _g_du = '<a href="' + __BASE + '/members/editgroup/' + gid + '"><i class="ace-icon align-top bigger-125 fa fa-pencil white" style="margin-left:10px;" ></i></a>'
-                                 +'<a href="javascript:void(0)" class="remove_group" data-id="' + gid + '"><i  style="margin-left:10px;"  class="ace-icon align-top bigger-125 white fa fa-trash-o"></i></a>';
+                    var _g_du = '<a href="' + __BASE + '/members/editgroup/' + gid + '"><button class="form-button form-button-right">编辑</button></a>';
                     if(_admin == 1 || _admin == 3 || is_under_control)
                     {
                         $('#g_du').html(_g_du);
