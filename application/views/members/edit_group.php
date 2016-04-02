@@ -51,13 +51,13 @@
                                         if($profile['admin'] == 4 && $pid <= 0)
                                         {
                                     ?>
-                                            <option value=0>顶级部门</option>
+                                            <option value=0>公司</option>
                                     <?php
                                         }
                                         else
                                         {
                                     ?>
-                                            <option value=0>顶级部门</option>
+                                            <option value=0>公司</option>
                                     <?php
                                         }
                                     ?>
