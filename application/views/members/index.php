@@ -346,7 +346,7 @@ function load_group(gid){
                     }
                     if(gid == -2){
                         var _member = data.data;
-                        var _gname = '全体员工 [ ' + _member.length + ' ]';
+                        var _gname = '<?php echo $groupname;?> [ ' + _member.length + ' ]';
                         $('#g_du').html('');
                     } else {
                         data = data.data;
@@ -511,7 +511,7 @@ function bind_remove_from_group() {
                     var obj = new Array();
                     var unroot = new Array();
                     js_data['0'] = {
-                        name: '全体员工',
+                        name: '<?php echo $groupname;?>',
                         id: '-2',
                         type: 'folder',
                         'icon-class': 'red',
