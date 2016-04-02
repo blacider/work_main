@@ -45,30 +45,24 @@
    }
 
     .col-1 {
-        min-width: 78px;
+        min-width: 73px;
     }
     .col-2 {
-        min-width: 184px;
+        min-width: 173px;
     }
     .col-3 {
         min-width: 210px;
     }
     .col-4 {
-        min-width: 100px;
+        min-width: 105px;
     }
-    .col-5 {
-        min-width: 162px;
-    }
-    .col-6 {
-        min-width: 78px;
+    .col-5,.col-6, .col-9{
+        min-width: 62px;
     }
     .col-7 {
-        min-width: 78px;
+        min-width: 173px;
     }
     .col-8 {
-        min-width: 96px;
-    }
-    .col-9 {
         min-width: 78px;
     }
     .form-button {
@@ -82,8 +76,6 @@
         margin-right: 14px;
         font-size: 12px;
         padding: auto 34px auto 34px;
-        padding-left: 10px;
-        padding-right: 10px;
     }
     .form-button-right {
         float: left;
@@ -123,24 +115,24 @@
             <div class="col-xs-9">
                 <div class="panel panel-primary" style="display: inline-block;">
                     <div class="panel-heading" style="padding: 10px 0 18px 0; height: 39px">
-                        <h3 class="panel-title default" style="float: left;" id="gname"><?php echo $groupname;?>[<?php echo count($members); ?>]</h3>
+                        <h3 class="panel-title default" style="float: left; margin-left: 20px" id="gname"><?php echo $groupname;?>[<?php echo count($members); ?>]</h3>
                         <span id="g_du">
                         </span>
                         <a href="/members/newmember"><button style="margin: -3px 20px auto auto;" class="form-button">添加员工</button></a>
                     </div>
                     <div class="panel-body">
-                        <table class="table" id="gtable">
+                        <table width="1040px" class="table" id="gtable">
                             <tr>
-                                <th>ID</th>
-                                <th>名称</th>
-                                <th>邮箱</th>
-                                <th>手机</th>
-                                <th>部门</th>
-                                <th>职位</th>
-                                <th>默认审批人</th>
-                                <th>角色</th>
+                                <th class="col-1">ID</th>
+                                <th class="col-2">名称</th>
+                                <th class="col-3">邮箱</th>
+                                <th class="col-4">手机</th>
+                                <th class="col-5">部门</th>
+                                <th class="col-6">职位</th>
+                                <th class="col-7">默认审批人</th>
+                                <th class="col-8">角色</th>
                                 <?php if($profile['admin'] == 1 || $profile['admin'] == 3) { ?>
-                                <th>操作</th>
+                                <th class="col-9">操作</th>
                                 <?php } ?>
                             </tr>
                                 <?php foreach($members as $m){ ?>
@@ -381,16 +373,16 @@ function load_group(gid){
                     $('#gtable').html("");
 
                 var _th = '<tr>'
-                    + '<th>ID</th>'
-                    + '<th>名称</th>'
-                    + '<th>邮箱</th>'
-                    + '<th>手机</th>'
-                    + '<th>部门</th>'
-                    + '<th>职位</th>'
-                    + '<th>默认审批人</th>'
-                    + '<th>角色</th>';
+                    + '<th class="col-1">ID</th>'
+                    + '<th class="col-2">名称</th>'
+                    + '<th class="col-3">邮箱</th>'
+                    + '<th class="col-4">手机</th>'
+                    + '<th class="col-5">部门</th>'
+                    + '<th class="col-6">职位</th>'
+                    + '<th class="col-7">默认审批人</th>'
+                    + '<th class="col-8">角色</th>';
                     if(_admin == 1 || _admin == 3){
-                        _th += '<th>操作</th>'
+                        _th += '<th class="col-9">操作</th>'
                     }
                     _th += '</tr>';
                     $(_th).appendTo($('#gtable'));
