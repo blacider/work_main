@@ -88,7 +88,7 @@
 <div class="page-content">
     <div class="page-content-area">
         <div class="row">
-            <div class="col-sm-3" style="width: 210px;">
+            <div class="col-sm-2">
                 <div class="widget-box widget-color-blue" style="margin-top: 0;border-top-left-radius: 3px;border-top-right-radius: 3px;">
                     <div class="widget-header" style="height: 38px;min-height: 38px;background: #428bca;">
                         <div id="admin_groups_granted" data-gids="<?php echo htmlspecialchars(json_encode($admin_groups_granted))?>"></div>
@@ -101,10 +101,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-9" style="margin-left: 12px;">
+            <div class="col-xs-9">
                 <div class="panel panel-primary" style="display: inline-block;">
                     <div class="panel-heading" style="padding: 10px 0 18px 0; height: 39px">
-                        <h3 class="panel-title default col-sm-11 col-md-11" id="gname">人员信息[<?php echo count($members); ?>]</h3>
+                        <h3 class="panel-title default col-sm-11 col-md-11" id="gname"><?php echo $groupname;?>[<?php echo count($members); ?>]</h3>
                         <p id="g_du"></p>
                     </div>
                     <div class="panel-body">
