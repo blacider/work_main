@@ -617,12 +617,6 @@ function bind_remove_from_group() {
                         _child = build_node(idx, item);
                         js_data[0]['additionalParameters']['children'].push(_child);
                     });
-                    js_data['已邀请'] = {
-                        name: '已邀请',
-                        id: '-1',
-                        type: 'folder',
-                        'icon-class': 'red'
-                    };
                     var treeDataSource = new DataSourceTree({
                         data: js_data
                     });
