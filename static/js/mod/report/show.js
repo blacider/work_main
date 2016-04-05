@@ -1,18 +1,21 @@
 // subl static/css/mod/report/add.css static/js/mod/report/add.js application/controllers/Reports.php:17 application/controllers/Reports.php
 (function() {
-    
-    var _fieldCountLimit_ = 6;
-    var _radioOptionsCountLimit_ = 100;
-    var _templateNameLengthLimit_ = 10;
-    var _templateFieldLengthLimit_ = 8;
-    var _templateTotalLimit_ = 10;
-    var _templateTypes_ = null;
-    var _ON_TEMPLATE_ADD_ANIMATION_ = 'animated flash';
-
     return {
         initialize: function() {
-            angular.module('reimApp', ['ng-sortable', 'ng-dropdown']).controller('ReportController', ["$http", "$scope", "$element", "$timeout",
+            angular.module('reimApp', []).controller('ReportController', ["$http", "$scope", "$element", "$timeout",
                 function($http, $scope, $element, $timeout) { 
+
+                	var report_id = (function() {
+                		var router = new RouteRecognizer();
+                    	router.add([{path: "/reports/show/:id"}]);
+                    	var matchers = router.recognize(location.pathname);
+                    	var id = 0;
+                    	if(matchers.length>0) {
+                    	    var match = matchers[0];
+                    	    id = match.params['id'];
+                    	}
+                    	return id;
+                	})();
 
                     $scope.bankFieldMap = {};
 
@@ -23,21 +26,12 @@
                     $scope.template = null;
                     $scope.report_status = 0;
 
-                    $scope.originalReport = {
-                        title: '',
-                        selectedConsumptions: [],
-                        selectedMembers: [],
-                        extras: '[]'
-                    };
-
-                    function getTemplateData(id) {
-                        return Utils.api('/template/get_template/'+id, {}).done(function (rs) {
+                    function getTemplateData() {
+                    	var query = Utils.queryString(location.search);
+                        return Utils.api('/template/get_template/'+query.tid, {}).done(function (rs) {
                             if(rs['status']<0) {
                                 return show_notify('找不到模版');
                             }
-                            $scope.template = angular.copy(rs['data']);
-                            $scope.$apply();
-
                         });
                     };
 
@@ -63,42 +57,22 @@
                             if(rs['status']<0) {
                                 return show_notify('找不到数据');
                             }
-
-                            var data = rs['data'];
-                            $scope.originalReport.title = data['title'];
-
-                            $scope.originalReport.selectedConsumptions = angular.copy(data['items']);
-                            $scope.originalReport.selectedMembers = angular.copy(data['receivers']['managers']);
-
-                            // fix me
-                            modifyArrayByAll($scope.originalReport.selectedMembers, $scope.members);
-
-
-                            $scope.originalReport.extras = JSON.parse(data['extras']);
-
-                            updatePageWithReportData()
-
-                            $scope.$apply();
                         });
                     };
 
-                    
+                    function getReportFlow(id) {
+                        return Utils.api('/reports/get_report_flow_v2/'+id, {}).done(function (rs) {
+                            if(rs['status']<0) {
+                                return show_notify('找不到数据');
+                            }
+                        });
+                    };
 
                     function getCurrentUserBanks() {
                         return Utils.api('/users/get_current_user_banks', {}).done(function (rs) {
                             if(rs['status']<0) {
                                 return show_notify('个人银行数据出错');
                             }
-
-                            $scope.banks = rs['banks'] || [];
-                            $scope.default_bank = findOneInBanks(rs['default_bank'], rs['banks']);
-                            if(!$scope.default_bank) {
-                                if($scope.banks.length>0) {
-                                    $scope.default_bank = $scope.banks[0];
-                                }
-                            }
-                            $scope.$apply();
-
                         });
                     };
 
@@ -133,167 +107,6 @@
                         return rs;
                     };
 
-                    var dialogMemberSingleton = (function () {
-                        var instance;
-                     
-                        function createInstance() {
-                             
-                            var dialog = new CloudDialog({
-                                title: '选择审批人',
-                                quickClose: true,
-                                autoDestroy: false,
-                                ok: function () {
-                                    var selectedMembers = _.where($scope.members, {
-                                        isSelected: true
-                                    });
-                                    $scope.selectedMembers = angular.copy(selectedMembers);
-                                    $scope.$apply();
-                                    this.close();
-                                },
-                                onShow: function () {
-                                    for(var i=0;i<$scope.members.length;i++) {
-                                        var item = $scope.members[i];
-                                        item.isSelected = false;
-                                    }
-                                    for(var i=0;i<$scope.selectedMembers.length;i++) {
-                                        var item = $scope.selectedMembers[i];
-                                        Utils.updateArrayByQuery($scope.members, {id: item.id+''}, {
-                                            isSelected: true
-                                        })
-                                    }
-                                }
-                            });
-
-                            dialog.setContentWithElement($($element.find('.available-members')));
-                       
-                            return dialog;
-                        }
-
-                        return {
-                            getInstance: function () {
-                                if (!instance) {
-                                    instance = createInstance();
-                                }
-                                return instance;
-                            }
-                        };
-                    })();
-
-                    var dialogConsumptionSingleton = (function () {
-                        var instance;
-                     
-                        function createInstance() {
-                             
-                            var dialog = new CloudDialog({
-                                title: '选择消费',
-                                quickClose: true,
-                                autoDestroy: false,
-                                width: 500,
-                                ok: function () {
-                                    var selectedConsumptions = _.where($scope.consumptions, {
-                                        isSelected: true
-                                    });
-                                    $scope.selectedConsumptions = angular.copy(selectedConsumptions);
-                                    $scope.$apply();
-                                    this.close();
-                                },
-                                onShow: function () {
-                                    for(var i=0;i<$scope.consumptions.length;i++) {
-                                        var item = $scope.consumptions[i];
-                                        item.isSelected = false;
-                                    }
-                                    for(var i=0;i<$scope.selectedConsumptions.length;i++) {
-                                        var item = $scope.selectedConsumptions[i];
-                                        Utils.updateArrayByQuery($scope.consumptions, {id: item.id+''}, {
-                                            isSelected: true
-                                        })
-                                    }
-
-                                    setTimeout(function() {
-                                        var $talbe = $('.available-consumptions table');
-                                        $talbe.fixedHeaderTable({
-                                            footer: false,
-                                            cloneHeadToFoot: false,
-                                            fixedColumn: false
-                                        });
-                                        $talbe.fixedHeaderTable('show');
-                                    }, 16);
-
-                                }
-                            });
-
-                            dialog.setContentWithElement($($element.find('.available-consumptions')));
-                       
-                            return dialog;
-                        }
-
-                        return {
-                            getInstance: function () {
-                                if (!instance) {
-                                    instance = createInstance();
-                                }
-                                return instance;
-                            }
-                        };
-                    })();
-
-                    var dialogAddBankSingleton = (function () {
-                        var instance;
-                     
-                        function createInstance() {
-                             
-                            var dialog = new CloudDialog({
-                                title: '添加银行卡',
-                                quickClose: true,
-                                autoDestroy: false,
-                                buttonAlign: 'right',
-                                ok: function () {
-                                    this.close();
-                                },
-                                cancel: function () {
-                                    this.close();
-                                }
-                            });
-
-                            dialog.setContentWithElement($($element.find('.bank-form')));
-                       
-                            return dialog;
-                        }
-
-                        return {
-                            getInstance: function () {
-                                if (!instance) {
-                                    instance = createInstance();
-                                }
-                                return instance;
-                            }
-                        };
-                    })();
-
-                    function initDatetimepicker(selector) {
-                        $(selector).datetimepicker({
-                            language: 'zh-cn',
-                            useCurrent: false,
-                            format: 'YYYY-MM-DD',
-                            // linkField: "dt",
-                            linkFormat: "YYYY-MM-DD",
-                            pickDate: true,
-                            pickTime: false,
-                            // minDate: ,
-                            // maxDate: ,
-                            showToday: true,
-                            disabledDates: false,
-                            enabledDates: false,
-                            useStrict: false,
-                            direction: "auto",
-                            sideBySide: false,
-                            daysOfWeekDisabled: false
-                        }).on('dp.change', function(e){
-                            $(selector).trigger('input');
-                        });
-                        $(selector).trigger('input');
-                    };
-
                     function findOneInBanks(id, banks, pro) {
                         banks || (banks=[]);
                         pro || (pro='id');
@@ -305,62 +118,91 @@
                         }
                         return null;
                     };
+
                     function getPageData(callback) {
                         $.when(
+                            getTemplateData(),
+                            getReportData(report_id),
                             getCurrentUserBanks(),
-                            getTemplateData($element.find('.report').data('tid')),
-                            getAvailableConsumptions(),
+                            getReportFlow(report_id),
                             getMembers()
                         ).done(function () {
-                            callback();
+                            callback.apply(null, arguments);
                             // 这种类型不好处理，在这里收集它们——当其改变的数值的时候
                         })
                     };
 
-                    // main entry
-                    getPageData(function () {
-                        $scope.isLoaded = true;
-                        $scope.$apply();
-                        setTimeout(function () {
-                            initDatetimepicker('.datatimepicker input');
-                        }, 100);
+                    function toMapByKey(arr, itemFormat, pro) {
+                    	var rs = {};
+                    	itemFormat || (itemFormat=function(i) {return i;});
+                    	pro || (pro='id');
+                    	for(var i=0;i<arr.length;i++) {
+                    		var item = arr[i];
+                    		rs[item[pro]] = itemFormat(item);
+                    	}
+                    	return rs;
+                    }
 
-                        (function tryMatchEdit() {
-                            var router = new RouteRecognizer();
-                            router.add([{path: "/reports/:type/:id"}]);
-                            var matchers = router.recognize(location.pathname);
-                            if(matchers.length>0) {
-                                var m = matchers[0];
-                                if(m.params['type']=='edit') {
-                                    $scope.__edit__ = true;
-                                    $scope.__report_id__ = m.params['id'];
-                                    getReportData(m.params['id']);
-                                }
+                    function bankItemFormat(item) {
+                        if(!item.id) {
+                            return {
+                                text: ''
                             }
-                        })();
+                        }
+                        return {
+                            value: item['id'],
+                            text: '尾号' + item.cardno.substr(-4)  + '-' + item.bankname || '--'
+                        }
+                    }
+                    // main entry
+                    getPageData(function (template, report, banks, flow, members) {
+                        $scope.isLoaded = true;
+
+                        if(report['status']<=0 || template['status']<=0 || banks['status']<=0) {
+                        	return;
+                        }
+
+                        var reportData = report['data'];
+                        var extras = toMapByKey(JSON.parse(reportData['extras']), function(item) {
+                        	var itemType = item.type + '';
+                        	if(itemType+''=='4') {
+                        		var bankData = JSON.parse(item.value);
+	                            bankData = findOneInBanks(bankData.cardno, banks.banks, 'cardno');
+	                            item.value = bankItemFormat(bankData)['text'];
+                        		return item;
+                        	}
+                        	if(itemType=='3') {
+                        		var date =  new Date(parseInt(item.value));
+                        		item.value = fecha.format(date, 'YYYY-MM-DD');
+                        	}
+                        	return item;
+                        });
+
+                        $scope.report = report['data'];
+
+                        $scope.selectedMembers = angular.copy(report['data']['receivers']['managers']);
+
+                        // fix me
+                        modifyArrayByAll($scope.selectedMembers, members.data.members);
+
+						$scope.template = angular.copy(template['data']);
+
+						$scope.extras = extras;
+						$scope.flow = _.groupBy(flow['data']['data'], function(item) {
+							if(['-1', '0'].indexOf(item['ticket_type'])>-1) {
+								return '业务阶段';
+							} else if(['1'].indexOf(item['ticket_type'])>-1) {
+								return '财务阶段';
+							}
+						});
+
+						$scope.submitter = _.where(members.data.members, {
+							id: report['data']['uid']
+						})[0];
+
+                        $scope.$apply();
+                       
                     });
-
-                    $scope.onTextLengthChange2 = _.debounce(function(e) {
-                        var $input = $(e.currentTarget);
-                        var str = $input.val();
-                        if(str.length>=_templateTotalLimit_) {
-                            $timeout(function() {
-                                str = str.substr(0, _templateNameLengthLimit_)
-                                $input.val(str);
-                            }, 50);
-                        }
-                    }, 1000);
-
-                    $scope.onTextLengthChange = _.debounce(function(e) {
-                        var $input = $(e.currentTarget);
-                        var str = $input.val();
-                        if(str.length>=_templateNameLengthLimit_) {
-                            $timeout(function() {
-                                str = str.substr(0, _templateNameLengthLimit_)
-                                $scope.title = str
-                            }, 50);
-                        }
-                    }, 1000);
 
 
                     $scope.formatMember = function (m) {
@@ -374,65 +216,6 @@
                             var rank = rankMap[m.rank_id] || {};
                             return m.d || rank['name'] || '';
                         }
-                    };
-
-
-                    $scope.makeBankDropdown = {
-                        itemFormat: function (item) {
-                            if(!item.id) {
-                                return {
-                                    text: ''
-                                }
-                            }
-                            return {
-                                value: item['id'],
-                                text: '尾号' + item.cardno.substr(-4)  + '-' + item.bankname || '--'
-                            }
-                        },
-                        onChange: function(oldValue, newValue, item, columnData) {
-                            var id = $(item).parents('.field-item').data('id');
-                            var bank = findOneInBanks(newValue, $scope.banks);
-                            $scope.bankFieldMap[id] = bank;
-                        },
-                        onInitValue: function (item, el) {
-                            setTimeout(function () {
-                                var id = $(el).parents('.field-item').data('id');
-                                bank = findOneInBanks(item.value, $scope.banks);
-                                $scope.bankFieldMap[id] = bank;
-                            }, 100);
-                        }
-                    };
-
-                    $scope.onAddBankCard = function (e) {
-                        var dialog = dialogAddBankSingleton.getInstance();
-                        dialog.showModal(); 
-                    };
-
-                    $scope.onAddApprovers = function (e) {
-                        if(!$scope.members) {
-                            return show_notify('正在加载数据......');
-                        }
-
-                        var dialog = dialogMemberSingleton.getInstance();
-
-                        dialog.showModal();
-                    };
-
-                    $scope.onRemoveApprover = function (item) {
-                        var index = _.findLastIndex($scope.selectedMembers, {
-                            id: item.id + ''
-                        });
-                        var item = $scope.selectedMembers[index];
-                        $scope.selectedMembers.splice(index, 1);
-                        Utils.updateArrayByQuery($scope.members, {id: item.id+''}, {isSelected: false});
-                    };
-
-                    $scope.onSelectMember = function (item, e) {
-                        item.isSelected = !item.isSelected;
-                    };
-
-                    $scope.onSelectConsumption = function (item, e) {
-                        item.isSelected = !item.isSelected;
                     };
 
                     $scope.onAddConsumptions = function (e) {
@@ -530,58 +313,6 @@
                             item_ids: item_ids.join(','),
                             extras: extras
                         }  
-                    };
-
-                    function updatePageWithReportData() {
-                        $scope.title = $scope.originalReport['title'];
-                        $scope.selectedConsumptions = angular.copy($scope.originalReport['selectedConsumptions']);
-                        $scope.selectedMembers = angular.copy($scope.originalReport['selectedMembers']);
-
-                        var oldConsumptions = angular.copy($scope.originalReport['selectedConsumptions']);
-                        for(var i=0;i<oldConsumptions.length;i++) {
-                            var item = oldConsumptions[i];
-                            item.isSelected = true;
-                            delete item.rid;
-                            $scope.consumptions.unshift(item);
-                        }
-
-                        for(var i=0;i<$scope.selectedMembers.length;i++) {
-
-                            var item = $scope.selectedMembers[i];
-                            var index = _.findLastIndex($scope.members, {
-                                id: item['id'] + ''
-                            });
-                            if(index>-1) {
-                                $scope.members[index].isSelected = true;
-                            }
-                        }
-                        (function (extras) {
-                            extras = extras || [];
-                            for(var i=0;i<extras.length;i++) {
-                                var item = extras[i];
-                                var itemType = item.type+'';
-                                var id = item.id;
-
-                                // 更新DOM
-                                var $input = $('.field-item[data-id="' +id+ '"]');
-                                if(itemType=='1') {
-                                    $input.find('input').val(item.value);
-                                }
-                                if(itemType=='2') {
-                                    $input.find('.text').text(item.value).removeClass('font-placeholder');
-                                }
-                                if(itemType=='3') {
-                                    var date =  new Date(parseInt(item.value));
-                                    $input.find('input').val(fecha.format(date, 'YYYY-MM-DD'));
-                                }
-                                if(itemType=='4') {
-                                    var bankData = JSON.parse(item.value);
-                                    bankData = findOneInBanks(bankData.cardno, $scope.banks, 'cardno');
-                                    $scope.bankFieldMap[id] = bankData;
-                                    $input.find('.text').text($scope.makeBankDropdown.itemFormat(bankData)['text']);
-                                }
-                            }
-                        })($scope.originalReport.extras);
                     };
 
                     $scope.onCancel = function (e) {

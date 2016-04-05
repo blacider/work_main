@@ -84,6 +84,12 @@ class Reports extends REIM_Controller {
         return $comments;
     }
 
+
+    public function get_report_flow_v2($id) {
+        $data = $this->reports->report_flow($id, 1);
+        die(json_encode($data));
+    }
+
     public function get_report_flow($id,$report)
     {
         $_flow = $this->reports->report_flow($id, 1);

@@ -179,8 +179,6 @@
 	display: none;
 }
 
-.approvers.selected-members ul li.btn-append {
-}
 
 .approvers.selected-members ul li.btn-append a {
 	float: left;
@@ -222,7 +220,6 @@
 }
 .approvers .search-input .field-input {
 	width: 100%;
-	height: 40px;
 	display: table-cell;
 	vertical-align: middle;
 	height: 40px;
