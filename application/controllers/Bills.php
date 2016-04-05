@@ -307,7 +307,6 @@ class Bills extends REIM_Controller {
 
         $item_type_dic = $this->reim_show->get_item_type_name();
         $report_template_dic = $this->reim_show->get_report_template();
-
         if($bills['status'] < 1) {
             die(array());
         }
@@ -358,8 +357,7 @@ class Bills extends REIM_Controller {
             array_push($_data, $d);
         }
         //log_message('debug','alvayang _data:' . json_encode($_data));
-        $bills['data'] = $_data;
-        die(json_encode($bills['data']));
+        die(json_encode($_data));
     }
 
 

@@ -1,72 +1,28 @@
-//niu.splice(niu.indexOf(5),1)
-function show_modal() {
-	$('#modal_next').modal('show');
-}
 
 function chose_others_zero(item, suggestion) {
 	$("#modal_next").find('#modal_managers').val(suggestion).trigger("chosen:updated");
 	$('#modal_next').modal('show');
 }
 
-function chose_others(_id) {
-	$('#modal_next_').modal('hide');
-	$('#rid').val(_id);
-	$('#modal_next').modal('show');
-}
-
-function bind_event() {
-	$('.tdetail').each(function() {
-		$(this).click(function() {
-			var _id = $(this).data('id');
-			location.href = __BASE + "reports/show/" + _id;
-		});
-	});
-	$('.tapprove').each(function() {
-		$(this).click(function() {
-			var _id = $(this).data('id');
-			$.ajax({
-				type: "GET",
-				url: __BASE + "bills/report_finance_permission/" + _id,
-				data: {
-					rid: _id
-				},
-				dataType: "json",
-				success: function(data) {
-					if (data['status'] > 0) {
-						$("#modal_next").find('#modal_managers').val(data['data'].suggestion).trigger("chosen:updated");
-						if (data['data'].complete == 0) {
-							$('#rid').val(_id);
-							chose_others_zero(_id, data['data'].suggestion);
-						} else {
-							$('#rid_').val(_id);
-							$('#modal_next_').modal('show');
-						}
-					}
+function approve_report(id) {
+	$.ajax({
+		type: "GET",
+		url:  "/bills/report_finance_permission/" + id,
+		data: {
+			rid: id
+		},
+		dataType: "json",
+		success: function(data) {
+			if (data['status'] > 0) {
+				if (data['data'].complete == 0) {
+					$('#rid').val(id);
+					chose_others_zero(id, data['data'].suggestion);
+				} else {
+					$('#rid_').val(id);
+					$('#modal_next_').modal('show');
 				}
-			});
-		});
-
-	});
-
-	$('.tdeny').each(function() {
-		$(this).click(function() {
-			var _id = $(this).data('id');
-			$('#div_id').val(_id);
-			$('#comment_dialog').modal('show');
-		});
-	});
-
-	$('.tedit').each(function() {
-		$(this).click(function() {
-			var _id = $(this).data('id');
-			location.href = __BASE + "reports/edit/" + _id;
-		});
-	});
-	$('.texport').each(function() {
-		$(this).click(function() {
-			var _id = $(this).data('id');
-			$('#report_id').val(_id);
-		});
+			}
+		}
 	});
 	$('.tdown').each(function() {
         $(this).click(function() {
@@ -89,6 +45,7 @@ function bind_event() {
         });
     });
 }
+
 var selectRows = [];
 var IF_SELECT_ALL = 0;
 
@@ -116,7 +73,7 @@ try {
 		height: 250,
 		multiselect: true,
 		loadtext: '',
-		colNames: ['报销单ID', '报销单模板', '提交日期', '报销单名', '类型', '条目数', '提交者', '金额', '附件', '状态', '审批日期', '操作', '部门'],
+		colNames: ['报销单ID', '报销单模板', '提交日期', '报销单名', '类型', '条目数', '提交者', '金额', '附件', '状态', '审批日期', '操作', '部门', '报销单模板ID'],
 		loadonce: true,
 		caption: "费用审计",
 		editurl: __BASE + 'bills/save',
@@ -262,6 +219,16 @@ try {
 				maxlength: "30"
 			},
 			hidden: true
+		}, {
+			name: 'template_id',
+			index: 'template_id',
+			width: 50,
+			editable: false,
+			editoptions: {
+				size: "20",
+				maxlength: "30"
+			},
+			hidden: true
 		}],
 		loadComplete: function(data) {
 			if (data instanceof Array) {
@@ -279,8 +246,8 @@ try {
 			if (IF_SELECT_ALL) $(".cbox").each(function(index, el) {
 				$(".cbox")[index].checked = true;
 			});
-			bind_event();
-			var table = this;
+
+			var table =  this;
 			setTimeout(function() {
 				//styleCheckbox(table);
 				updateActionIcons(table);
@@ -302,13 +269,40 @@ try {
 				IF_SELECT_ALL = 0;
 			}
 		},
-		onSelectRow: function(rowid, status) {
+		onSelectRow: function(rowId, status, e) {
+			var $target = $(e.target || e.toElement);
+			if($target.hasClass('tdetail')) {
+				var row = $(this).jqGrid ('getRowData', rowId);
+				var arr = $(this).jqGrid ('getGridParam', rowId);
+				return location.href = '/reports/show/' + row.id + '?tid='+row.template_id;
+			}
+
+			if($target.hasClass('tapprove')) {
+				approve_report(rowId);
+				return
+			}
+
+			if($target.hasClass('texport')) {
+				$('#report_id').val(rowId);
+				return
+			}
+
+			if($target.hasClass('tedit')) {
+				location.href = "/reports/edit/" + rowId;
+				return
+			}
+
+			if($target.hasClass('tdeny')) {
+				$('#div_id').val(rowId);
+				$('#comment_dialog').modal('show');
+			}
+
 			if (status) {
-				if (jQuery.inArray(rowid, selectRows) == -1) {
-					selectRows.push(rowid);
+				if (jQuery.inArray(rowId, selectRows) == -1) {
+					selectRows.push(rowId);
 				}
 			} else {
-				selectRows.splice(jQuery.inArray(rowid, selectRows), 1);
+				selectRows.splice(jQuery.inArray(rowId, selectRows), 1);
 			}
 		},
 		//page: 1,
@@ -572,20 +566,30 @@ try {
 							enableTooltips(table);
 						}, 0);
 					},
-					width: 780,
-					height: 380,
-					viewsortcols: [true, 'vertical', true],
-					rowNum: 10,
-					scrollPopUp: true,
-					scrollLeftOffset: "83%",
-					viewrecords: true,
-					scroll: 0, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
-					emptyrecords: '没有账单', // the message will be displayed at the bottom 
-				});
-				$(grid_selector_finish).jqGrid();
-			},
-			position: "last"
-		});
+					unformat: aceSwitch
+				}, ],
+				loadComplete: function() {
+					var table = this;
+					setTimeout(function() {
+						updateActionIcons(table);
+						updatePagerIcons(table);
+						enableTooltips(table);
+					}, 0);
+				},
+				width: 780,
+				height: 380,
+				viewsortcols: [true, 'vertical', true],
+				rowNum: 10,
+				scrollPopUp: true,
+				scrollLeftOffset: "83%",
+				viewrecords: true,
+				scroll: 0, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
+				emptyrecords: '没有账单', // the message will be displayed at the bottom 
+			});
+			$(grid_selector_finish).jqGrid();
+		},
+		position: "last"
+	});
 } catch (e) {
 	alert(e);
 }

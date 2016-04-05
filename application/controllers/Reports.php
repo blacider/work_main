@@ -758,7 +758,32 @@ class Reports extends REIM_Controller {
         ));
     }
 
-    public function show($id = 0, $decision = 0){
+    public function show($rid) {
+        // $template_id = $this->input->get('tid');
+        $template_id = 0;
+        $this->bsload('reports/show', array(
+            'title' => '查看',
+            'template_id'=>$template_id,
+            'breadcrumbs' => array(
+                array(
+                    'url'=> base_url(),
+                    'name' => '首页',
+                    'class' => 'ace-icon fa  home-icon'
+                ),
+                array(
+                    'url'  => base_url('reports/index'),
+                    'name' => '报销单', 'class' => ''
+                ),
+                array(
+                    'url'  => '',
+                    'name' => '查看报销单',
+                    'class' => ''
+                )
+            )
+        ));
+    }
+
+    public function show2($id = 0, $decision = 0){
         $item_type_dic = $this->reim_show->get_item_type_name();
         if($id == 0) return redirect(base_url('reports/index'));
         $error = $this->session->userdata('last_error');

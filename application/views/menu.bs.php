@@ -139,7 +139,6 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-file-text"></i>
         <span class="menu-text"> 报销单 </span>
-
         <b class="arrow fa fa-angle-down"></b>
     </a>
     <b class="arrow"></b>
@@ -152,12 +151,12 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
                 <b class="arrow fa fa-angle-down"></b>
             </a>
             <?php } else if(count($report_templates) == 1) { ?>
-            <a href="<?php echo base_url('reports/report_template/' . $report_templates[0]['id']); ?>" >
+            <a href="<?php echo base_url('reports/add/' . $report_templates[0]['id']); ?>" >
                 <i class="menu-icon fa fa-caret-right"></i>
                 新建报销单
             </a>
             <?php } else { ?>
-            <a href="<?php echo base_url('reports/newreport'); ?>" >
+            <a href="<?php echo base_url('reports/add/0'); ?>" >
                 <i class="menu-icon fa fa-caret-right"></i>
                 新建报销单
             </a>
@@ -165,16 +164,15 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
             <b class="arrow"></b>
             <?php if(count($report_templates) > 1) { ?>
             <ul class="submenu rushumenu">
-            <?php foreach($report_templates as $r) { ?>
-                <li class="" id="<?php echo 'report'.$r['id'];?>">
-                    <a href="<?php echo base_url('reports/report_template/' . $r['id']); ?>"> <?php echo $r['name']; ?> </a>
+            <?php foreach($report_templates as $t) { ?>
+                <li class="" id="<?php echo 'report'.$t['id'];?>">
+                    <a href="<?php echo base_url('reports/add/' . $t['id']); ?>"> <?php echo $t['name']; ?> </a>
                     <b class="arrow"></b>
                 </li>
             <?php } ?>
             </ul>
             <?php } ?>
         </li>
-
         <li class="hsub" id="index">
         <a href="<?php echo base_url('reports'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
