@@ -73,7 +73,7 @@
         height: 25px;
         border-radius: 3px;
         margin-top: 6px;
-        margin-right: 14px;
+        margin-right: 8px;
         font-size: 12px;
         padding: auto 34px auto 34px;
     }
@@ -102,7 +102,7 @@
                 <div class="widget-box widget-color-blue" style="margin-top: 0;border-top-left-radius: 3px;border-top-right-radius: 3px;">
                     <div class="widget-header" style="height: 38px;min-height: 38px;background: #428bca;">
                         <div id="admin_groups_granted" data-gids="<?php echo htmlspecialchars(json_encode($admin_groups_granted))?>"></div>
-                        <h4 class="widget-title lighter smaller" style="font-size: 16px;">组织结构</h4>
+                        <h4 class="widget-title lighter smaller" style="font-size: 16px;margin-left: -4px;">组织结构</h4>
                         <a href="/members/add"><button class="form-button">添加部门</button></a>
                     </div>
                     <div class="widget-body">
