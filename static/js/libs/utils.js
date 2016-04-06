@@ -54,6 +54,14 @@
 		},
 		api: function(url, opts) {
 			var def = $.Deferred();
+			var hostname = 'https://api.cloudbaoxiao.com';
+
+			var regSlashStart = /^\//;
+
+			if(regSlashStart.test(url)) {
+				url = url.replace(regSlashStart, '');
+			}
+
 			opts = $.extend({
 				method: 'get',
 				dataType: 'json',
@@ -63,10 +71,20 @@
 					console.error(msg);
 				}
 			}, opts);
+
+			if(opts['env']) {
+				url = [hostname, opts['env'], url].join('/');
+			} else {
+				url = '/' +  url;
+			}
+
 			$.ajax({
 				method: opts['method'],
 				dataType: opts['dataType'],
 				url: url,
+				headers: {
+					'X-REIM-JWT': window.__CBX_UTOKEN__
+				},
 				data: opts['data'],
 				success: function(rs, succ) {
 					if (opts['dataType'] == 'text') {

@@ -42,9 +42,11 @@
     <!-- text fonts -->
     <link rel="stylesheet" href="/static/css/rushu.css"/>
 
-<script language="javscript">
-var __BASE = "<?php echo $base_url; ?>";
-</script>
+    <script>
+        var __BASE = "<?php echo $base_url; ?>";
+        window.__CBX_UTOKEN__ = "<?php echo $CBX_UTOKEN['0']; ?>".replace('X-REIM-JWT: ', '');
+        window.__UID__ = "<?php echo $userId; ?>";
+    </script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 
     <!--[if lt IE 9]>
@@ -53,7 +55,7 @@ var __BASE = "<?php echo $base_url; ?>";
     <![endif]-->
 
     <!--[if !IE]> -->
-<script src='/static/ace/js/jquery.min.js'></script>
+    <script src='/static/ace/js/jquery.min.js'></script>
     <script type="text/javascript">
         window.jQuery || document.write("<script src='/static/ace/js/jquery.min.js'>" + "<" + "/script>");
     </script> 
