@@ -17,7 +17,7 @@
                     	return id;
                 	})();
 
-                    $scope.bankFieldMap = {};
+                    $scope.extrasMap = {};
 
                     $scope.selectedMembers = [];
                     $scope.selectedConsumptions = [];
@@ -132,17 +132,6 @@
                         })
                     };
 
-                    function toMapByKey(arr, itemFormat, pro) {
-                    	var rs = {};
-                    	itemFormat || (itemFormat=function(i) {return i;});
-                    	pro || (pro='id');
-                    	for(var i=0;i<arr.length;i++) {
-                    		var item = arr[i];
-                    		rs[item[pro]] = itemFormat(item);
-                    	}
-                    	return rs;
-                    }
-
                     function bankItemFormat(item) {
                         if(!item.id) {
                             return {
@@ -153,41 +142,64 @@
                             value: item['id'],
                             text: '尾号' + item.cardno.substr(-4)  + '-' + item.bankname || '--'
                         }
+                    };
+
+                    function formatFieldItemByExtrasMap(item, extrasMap) {
+                        var extrasItem = extrasMap[item.id];
+                        var itemType = item.type + '';
+                        item.type = itemType;
+                        if(!extrasItem) {
+                            return {value: '', type: itemType};
+                        }
+                        if(itemType == '4') {
+                            var bankData = JSON.parse(extrasItem.value);
+                            bankData = findOneInBanks(bankData.cardno, $scope.banks, 'cardno');
+                            item.value = angular.copy(bankData);
+                        }
+                        if(itemType == '3') {
+                            var date =  new Date(parseInt(extrasItem.value));
+                            item.value = fecha.format(date, 'YYYY-MM-DD');
+                        }
+                        return item;
+                    };
+
+                    function combineTemplateAndReport(template, report) {
+                        var config = template.config;
+                        for(var i=0;i<config.length;i++) {
+                            var tableItem = config[i];
+                            for(var j=0;j<tableItem.children.length;j++) {
+                                var col = tableItem.children[j];
+                                col._combine_data_ = formatFieldItemByExtrasMap(col, $scope.extrasMap);
+                                console.log(col._combine_data_);
+                            }
+                        }
                     }
                     // main entry
                     getPageData(function (template, report, banks, flow, members) {
                         $scope.isLoaded = true;
-
                         if(report['status']<=0 || template['status']<=0 || banks['status']<=0) {
                         	return;
                         }
 
                         var reportData = report['data'];
-                        var extras = toMapByKey(JSON.parse(reportData['extras']), function(item) {
-                        	var itemType = item.type + '';
-                        	if(itemType+''=='4') {
-                        		var bankData = JSON.parse(item.value);
-	                            bankData = findOneInBanks(bankData.cardno, banks.banks, 'cardno');
-	                            item.value = bankItemFormat(bankData)['text'];
-                        		return item;
-                        	}
-                        	if(itemType=='3') {
-                        		var date =  new Date(parseInt(item.value));
-                        		item.value = fecha.format(date, 'YYYY-MM-DD');
-                        	}
-                        	return item;
-                        });
+                        var extras = JSON.parse(reportData['extras']);
+                        
 
                         $scope.report = report['data'];
 
-                        $scope.selectedMembers = angular.copy(report['data']['receivers']['managers']);
+						$scope.template = template['data'];
+
+                        $scope.selectedMembers = report['data']['receivers']['managers'];
+
+                        $scope.banks = banks.banks;
 
                         // fix me
                         modifyArrayByAll($scope.selectedMembers, members.data.members);
 
-						$scope.template = angular.copy(template['data']);
+                        $scope.extrasMap = arrayToMapWithKey('id' ,extras);
 
-						$scope.extras = extras;
+						$scope.combineConfig = combineTemplateAndReport($scope.template, $scope.report)
+
 						$scope.flow = _.groupBy(flow['data']['data'], function(item) {
 							if(['-1', '0'].indexOf(item['ticket_type'])>-1) {
 								return '业务阶段';
@@ -228,92 +240,7 @@
                         dialog.showModal();
                     };
 
-                    function readReportData() {
-                        var title = $scope.title;
-                        var template_id = $element.find('.report').data('tid');
-                        var template_type = $element.find('.report').data('type');
-
-                        if(!title) {
-                            $element.find('.report-title input').focus();
-                            return show_notify('请添加报销单名');
-                        }
-
-                        var receiver_ids = $scope.selectedMembers.map(function (i) {
-                            return i['id'];
-                        });
-
-                        if(receiver_ids.length<=0) {
-                            show_notify('请选择审批人');
-                            return null;
-                        }
-
-                        var item_ids = $scope.selectedConsumptions.map(function (i) {
-                            return i['id'];
-                        });
-
-                        if(item_ids.length<=0) {
-                            if(~~$scope.template['options']['allow_no_items']==0) {
-                                show_notify('提交的报销单不能为空');
-                                return null;
-                            }
-                        }
-
-                        // extras is fields content
-                        var inValidExtras = false;
-                        var extras = $element.find('.field-item-list .field-item').map(function (i, item) {
-                            var type = $(item).data('type') + '';
-                            var id = $(item).data('id');
-                            var value = $(item).find('input').val() || $(item).find('.text').text();
-                            var isRequired = ~~$(item).data('required');
-
-                            if(isRequired && !value) {
-                                $(item).find('input').focus();
-                                $(item).find('.text').click();
-                                inValidExtras = true;
-                                return show_notify('请填写完整的信息');
-                            }
-
-                            var data = {
-                                type: type,
-                                id: id,
-                                value: value
-                            };
-
-                            if(type=='3') {
-                                data['value'] = +(new Date(value));
-                            }
-
-                            if(type=== '4') {
-                                var bank = $scope.bankFieldMap[id];
-                                if(isRequired && !bank) {
-                                    inValidExtras = true;
-                                    show_notify('必填银行卡项目不能为空');
-                                    return null
-                                }
-                                data['value'] = JSON.stringify({
-                                    "account": bank['account'],
-                                    "cardno": bank['cardno'],
-                                    "bankname": bank['bankname'],
-                                    "bankloc": bank['bankloc'],
-                                    "subbranch": bank['subbranch']
-                                });
-                            }
-                            return data;
-                        }).toArray();
-
-                        if(inValidExtras) {
-                            return null;
-                        }
-
-                        return {
-                            title: title,
-                            template_id: template_id,
-                            template_type: template_type,
-                            receiver_ids: receiver_ids.join(','),
-                            item_ids: item_ids.join(','),
-                            extras: extras
-                        }  
-                    };
+                     
 
                     $scope.onCancel = function (e) {
                         updatePageWithReportData();

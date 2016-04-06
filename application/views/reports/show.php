@@ -62,12 +62,29 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th ng-repeat="col in tableItem.children">{{col.name}}</th>
+                                        <th ng-repeat-start="col in tableItem.children" ng-if="col.type=='4'" colspan="4" >
+                                            {{col.name}}
+                                        </th>
+                                        <th ng-repeat-end ng-if="col.type!='4'">{{col.name}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td ng-repeat="col in tableItem.children">{{extras[col.id]['value']}}</td>
+                                        <td ng-repeat-start="col in tableItem.children" ng-if="col.type=='4'">
+                                            {{'alex'}}
+                                        </td>
+                                         <td ng-if="col.type=='4'">
+                                            {{col._combine_data_.value['account']}}
+                                        </td>
+                                        <td ng-if="col.type=='4'">
+                                            {{col._combine_data_.value['bankname']}}
+                                        </td>
+                                        <td ng-if="col.type=='4'">
+                                            {{col._combine_data_.value['bankloc']}}
+                                        </td>
+                                        <td ng-repeat-end ng-if="col.type=='3' || col.type=='2' || col.type=='1'">
+                                            {{col._combine_data_.value}}
+                                        </td>
                                     </tr> 
                                 </tbody>
                             </table>

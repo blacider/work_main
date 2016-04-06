@@ -348,13 +348,16 @@
 	height: 40px;
 }
 .msg-input .field-input input {
+	border-right: none;
 	padding: 8px 4px 9px 8px;
 }
 .msg-input .ui-button {
 	width: 100px;
 	height: 40px;
+	line-height: 40px;
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
+	margin-left: -1px;
 }
 .table-field table {
 	width: 100%;
