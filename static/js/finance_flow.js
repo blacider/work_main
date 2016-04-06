@@ -435,7 +435,11 @@ try {
 				error: function(a, b) {}
 			});
 		}
-	}).navButtonAdd(pager_selector, {
+	});
+	var pathName = window.location.pathname.split('/');
+	var method = pathName[2];
+	if (method == 'finance_flow')
+	jQuery(grid_selector).navButtonAdd(pager_selector, {
 		caption: "",
 		title: "结束选中报销单",
 		buttonicon: "ace-icon fa fa-check green",
