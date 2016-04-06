@@ -116,7 +116,7 @@
             <div class="col-xs-9">
                 <div class="panel panel-primary" style="display: inline-block;">
                     <div class="panel-heading" style="padding: 10px 0 18px 0; height: 39px">
-                        <h3 class="panel-title default" style="float: left; margin-left: 20px" id="gname"><?php echo $groupname;?>[<?php echo count($members); ?>]</h3>
+                        <h3 class="panel-title default" style="float: left; margin-left: 20px" id="gname"><?php echo $groupname;?> [ <?php echo count($members); ?> ]</h3>
                         <span id="g_du">
                         </span>
                     </div>
