@@ -1560,7 +1560,7 @@ class Members extends REIM_Controller {
         {
             $this->session->set_userdata('last_error',$info['data']['msg']);
         }
-        redirect(base_url('members/groups'));
+        redirect(base_url('members/index'));
     }
     // 管理员修改密码，自己修改自己的密码需要验证码，否则不需要
     // 1. 如何判断是管理员 admin = 1
