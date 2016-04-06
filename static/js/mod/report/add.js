@@ -73,8 +73,7 @@
                             // fix me
                             modifyArrayByAll($scope.originalReport.selectedMembers, $scope.members);
 
-
-                            $scope.originalReport.extras = JSON.parse(data['extras']);
+                            $scope.originalReport.extras = JSON.parse(data['extras'] || '[]');
 
                             updatePageWithReportData()
 

@@ -95,7 +95,7 @@
                     <div class="field-label">消费明细</div>
                     <div class="table-field">
                         <div class="table-container">
-                            <table>
+                            <table class="table-consumptions">
                                 <thead>
                                     <tr>
                                         <th>类目</th>
@@ -111,9 +111,17 @@
                                         <td >{{c.dt}}</td>
                                         <td>{{c.merchants}}</td>
                                         <td>{{c.notes}}</td>
-                                        <td>{{c.amount}}</td>
+                                        <td>{{c.amount}}¥ </td>
                                     </tr> 
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>合计</td>
+                                        <td colspan="4" class="sum">
+                                            {{report.amount}}¥ 
+                                        </td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -183,11 +191,25 @@
                 </a>
             </div>
 
-            <!--  -->
-            <div class="members">
-                <select data-placeholder="请选择接受人" style="width:350px;" multiple class="chosen-select">
-                    <option value="{{m.id}}" ng-repeat='m in members'>{{m.nickname}} - [{{m.email}}]</option>
-                </select>
+             <!-- 接口太慢，预先加载公司成员，隐藏于此 -->
+            <div style="display: none">
+                <div class="approvers available-members">
+                    <div class="search-input">
+                        <div class="field-input">
+                            <input type="text" placeholder="姓名／手机／邮箱" ng-model="search.$">
+                        </div>
+                        <a href="javascript:void(0)" class="btn-search ui-button" ng-click="">搜索</a>
+                    </div>
+                    <ul>
+                        <li ng-repeat='m in members|filter:search' ng-init="m['show_info'] = formatMember(m)" ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m, $event)">
+                            <img ng-src="{{m.apath || '/static/img/mod/report/default-avatar.png'}}" alt="">
+                            <div class="info">
+                                <p class="name">{{m.nickname}}</p>
+                                <p class="role">{{formatMember(m)}}</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>  
     </div>
@@ -201,7 +223,3 @@
 
 <script src="/static/plugins/cloud-dialog/dialog.js"></script>
 <link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">
-
-<link rel="stylesheet" href="/static/ace/css/chosen.css" />
-<link rel="stylesheet" href="/static/ace/css/ace.min.css" />
-<script src="/static/ace/js/chosen.jquery.min.js"></script>
