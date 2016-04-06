@@ -18,12 +18,12 @@
                     {{report.title}}
                     </div>
                 </div>
-                <div class="block-row" ng-if="submitter">
+                <div class="block-row detail-row" ng-if="submitter">
                     <div class="field-label">申请额</div>
                     <div class="field-input">
-                        <p>¥ 300720.00</p>
-                        <a href="javascript:void(0)" style="float: left" class="btn-cancel ui-button" ng-click="onCancel($event)">
-                            <img src="/static/img/mod/report/24/btn-cancel@2x.png" alt="">详情
+                        <p>¥ {{report.amount}}</p>
+                        <a href="javascript:void(0)" class="btn-detail">
+                            <img src="/static/img/mod/report/24/btn-eye@2x.png" alt="">详情
                         </a>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                                 <tbody>
                                     <tr>
                                         <td ng-repeat-start="col in tableItem.children" ng-if="col.type=='4'">
-                                            {{'alex'}}
+                                            {{userProfile['nickname']}}
                                         </td>
                                          <td ng-if="col.type=='4'">
                                             {{col._combine_data_.value['account']}}
@@ -148,7 +148,7 @@
                     <div class="field-label">留言</div>
                     <div class="field-input">
                         <div class="msg-item" ng-repeat="commentItem in commentArray">
-                            <img ng-src="{{commentItem.user['apath']}}" alt="">
+                            <img ng-src="{{commentItem.user['apath'] || default_avatar}}" alt="">
                             <div class="content">
                                 <div class="title">
                                     <div class="name">{{commentItem.nickname}}</div>
@@ -169,18 +169,25 @@
                 </div>
             </div>
             <div class="report-footer">
-                <a href="javascript:void(0)" style="float: left" class="btn-cancel ui-button" ng-click="onCancel($event)">
-                    <img src="/static/img/mod/report/24/btn-cancel@2x.png" alt="">返回列表
+                <a href="/reports/index" style="float: left" class="ui-button-border ui-button ui-button-hover btn-back-list">
+                    <img src="/static/img/mod/report/36/btn-back-list@2x.png" alt="">返回列表
                 </a>
-                <a href="javascript:void(0)" class="btn-cancel ui-button" ng-click="onCancel($event)">
-                    <img src="/static/img/mod/report/24/btn-cancel@2x.png" alt="">修改
+                <a href="/reports/edit/{{report.id}}?tid={{report.template_id}}" class="ui-button-border ui-button  ui-button-hover btn-update">
+                    <img src="/static/img/mod/report/24/btn-edit@2x.png" alt="">修改
                 </a>
-                <a href="javascript:void(0)"  class="btn-save ui-button" ng-click="onPassed($event)">
-                    <img src="/static/img/mod/report/24/btn-save@2x.png" alt="">退回
+                <a href="javascript:void(0)"  class="ui-button-border ui-button  ui-button-hover btn-reject" ng-click="onReject(report.id)">
+                    <img src="/static/img/mod/report/24/btn-reject@2x.png" alt="">退回
                 </a>
-                <a href="javascript:void(0)" class="btn-submit ui-button" ng-click="onDismissed($event)">
-                    <img src="/static/img/mod/report/24/btn-submit@2x.png" alt="">通过
+                <a href="javascript:void(0)" class="ui-button ui-button-hover btn-pass" ng-click="onPass(report.id)">
+                    <img src="/static/img/mod/report/24/btn-pass@2x.png" alt="">通过
                 </a>
+            </div>
+
+            <!--  -->
+            <div class="members">
+                <select data-placeholder="请选择接受人" style="width:350px;" multiple class="chosen-select">
+                    <option value="{{m.id}}" ng-repeat='m in members'>{{m.nickname}} - [{{m.email}}]</option>
+                </select>
             </div>
         </div>  
     </div>
@@ -191,3 +198,10 @@
 <script src="/static/js/mod/report/show.js"></script>
 <script src="/static/js/libs/route-recognizer.js"></script>
 <link rel="stylesheet" href="/static/css/base/scrollbar.css">
+
+<script src="/static/plugins/cloud-dialog/dialog.js"></script>
+<link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">
+
+<link rel="stylesheet" href="/static/ace/css/chosen.css" />
+<link rel="stylesheet" href="/static/ace/css/ace.min.css" />
+<script src="/static/ace/js/chosen.jquery.min.js"></script>

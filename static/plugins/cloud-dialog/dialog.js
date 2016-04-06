@@ -84,7 +84,7 @@
 			this.$mask.appendTo(document.body);
 			this.$el.attr('id', dialogIDPrefix+dialogCount++);
 
-			this._bindEvents();
+			this._bindEvents_();
 			this.addButtons()
 		},
 		setContentWithElement: function (el) {
@@ -172,7 +172,7 @@
 			}
 			return this;
 		},
-		_bindEvents: function  () {
+		_bindEvents_: function  () {
 			var _self = this;
 			this.$el.on('click', function  (e) {
 				e.stopPropagation();

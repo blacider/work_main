@@ -175,7 +175,58 @@
                                 console.log(col._combine_data_);
                             }
                         }
-                    }
+                    };
+
+                    var dialogMembersSingleton = (function () {
+                        var instance;
+                     
+                        function createInstance() {
+                             
+                            var dialog = new CloudDialog({
+                                title: '通过理由',
+                                quickClose: true,
+                                autoDestroy: false,
+                                width: 500,
+                                ok: function () {
+                                    var receivers = this.$el.find('select').val();
+                                    var _this = this;
+                                    // Utils.api('report_finance_flow/deny/' + id, {
+                                    Utils.api('report/' + report_id, {
+                                        method: 'put',
+                                        env: 'online',
+                                        data: {
+                                            status: 2,
+                                            comment: '',
+                                            manager_id: receivers
+                                        }
+                                    }).done(function (rs) {
+                                        if(rs['status']<=0) {
+                                            return show_notify('操作失败');
+                                        }
+                                        _this.close();
+                                        show_notify('已通过');
+                                    });
+                                },
+                                onShow: function () {
+                                    this.$el.find('select').chosen({}); 
+                                }
+                            });
+
+                            dialog.setContentWithElement($($element.find('.members')));
+                       
+                            return dialog;
+                        }
+
+                        return {
+                            getInstance: function () {
+                                if (!instance) {
+                                    instance = createInstance();
+                                }
+                                return instance;
+                            }
+                        };
+                    })();
+
                     // main entry
                     getPageData(function (template, report, banks, flow, members) {
                         $scope.isLoaded = true;
@@ -184,19 +235,32 @@
                         }
 
                         var reportData = report['data'];
-                        var extras = JSON.parse(reportData['extras']);
-                        
+                        var extras = JSON.parse(reportData['extras'] || "[]");
 
                         $scope.report = report['data'];
 
-						$scope.template = template['data'];
+                        $scope.template = template['data'];
+
+						$scope.members = members['data']['members'];
 
                         $scope.selectedMembers = report['data']['receivers']['managers'];
 
                         $scope.banks = banks.banks;
-
+                        
+                        $scope.userProfile = _.findWhere(members.data.members, {
+                            id: window.__UID__
+                        });
                         // fix me
                         modifyArrayByAll($scope.selectedMembers, members.data.members);
+
+                        // get amount
+                        var amount = 0;
+                        _.each($scope.report.items, function (item) {
+                            var a = parseFloat(item.amount);
+                            amount += a;
+                        });
+
+                        $scope.report.amount = amount.toFixed(2);
 
                         $scope.commentArray = _.map(reportData.comments.data, function (item, index) {
                             var one = _.findWhere($scope.members, {id: item.uid});
@@ -263,8 +327,9 @@
                         if(!comment) {
                             return show_notify('评论内容不允许为空');
                         }
-                        return Utils.api('/reports/add_comment_v2', {
-                            method: 'post',
+                        return Utils.api('/report/'+report_id, {
+                            method: 'put',
+                            env: 'online',
                             data: {
                                 rid: report_id,
                                 comment: comment
@@ -274,12 +339,11 @@
                                 return show_notify('评论失败')
                             }
                             $scope.commentArray || ($scope.commentArray=[]);
-                            var user = _.findWhere($scope.members, {
-                                id: $scope.report.uid
-                            });
+                           
                             $scope.commentArray.unshift({
-                                user: user,
-                                nickname: user['nickname'],
+                                user: $scope.userProfile,
+                                nickname: $scope.userProfile['nickname'],
+                                apath: $scope.userProfile['apath'],
                                 comment: comment,
                                 lastdt: new Date,
                             });
@@ -287,86 +351,45 @@
                             $scope.$apply();
                         });
                     };
-                     
 
-                    $scope.onCancel = function (e) {
-                        updatePageWithReportData();
+                    $scope.onReject = function (id) {
+                        var dialog = new CloudDialog({
+                            title: '退回理由',
+                            quickClose: true,
+                            content: '<div><textarea style="width: 500px;height: 200px;border-radius: 2px;" placeholder="写下你的退回理由…"></textarea></div>',
+                            ok: function () {
+                                var comment = this.$el.find('textarea').val();
+                                comment = $.trim(comment);
+                                if(!comment) {
+                                    return show_notify('理由不能为空');
+                                }
+                                
+                                var _this = this;
+                                // Utils.api('report_finance_flow/deny/' + id, {
+                                Utils.api('report/' + id, {
+                                    method: 'put',
+                                    env: 'online',
+                                    data: {
+                                        status: 3,
+                                        comment: this.$el.find('textarea').val(),
+                                        manager_id: ''
+                                    }
+                                }).done(function (rs) {
+                                    if(rs['status']<=0) {
+                                        return show_notify('退回失败');
+                                    }
+                                    _this.close();
+                                    show_notify('已退回');
+                                });
+                            }
+                        });
+                        dialog.showModal();
                     };
 
                     // 首次创建，其次保存
-                    $scope.onSave = function (e) {
-                        var data = readReportData();
-
-                        if(!data) {
-                            return;
-                        }
-
-                        data['status'] = 0;
-                        
-                        if($scope.__edit__ || $scope.__report_id__) {
-
-                            Utils.api('/reports/update_v2', {
-                                method: 'post',
-                                data: $.extend({}, data, {id: $scope.__report_id__})
-                            }).done(function (rs) {
-                                if(rs['status']<=0) {
-                                    return show_notify(rs['msg']);
-                                }
-                                show_notify('保存成功');
-                                $scope.report_status = 1;
-                                $scope.originalReport = angular.copy(data);
-                            });
-                            return
-                        }
-
-                        Utils.api('/reports/create_v2', {
-                            method: 'post',
-                            data: data
-                        }).done(function (rs) {
-                            if(rs['status']<=0) {
-                                return show_notify(rs['msg']);
-                            }
-                            show_notify('保存成功');
-                            $scope.__report_id__ = rs['data']['id'];
-                            $scope.originalReport = angular.copy(data);
-                        });
-                    };
-
-                    $scope.onSubmit = function (e) {
-                        var data = readReportData();
-
-                        if(!data) {
-                            return;
-                        }
-
-                        data['status'] = 1;
-                        
-                        if($scope.__edit__ || $scope.__report_id__) {
-
-                            Utils.api('/reports/update_v2', {
-                                method: 'post',
-                                data: $.extend({}, data, {id: $scope.__report_id__})
-                            }).done(function (rs) {
-                                if(rs['status']<=0) {
-                                    return show_notify(rs['msg']);
-                                }
-                                show_notify('保提交成功存成功');
-                                $scope.report_status = 1;
-                                $scope.originalReport = angular.copy(data);
-                            });
-                            return
-                        }
-
-                        Utils.api('/reports/create_v2', {
-                            method: 'post',
-                            data: data,
-                        }).done(function (rs) {
-                            if(rs['status']<=0) {
-                                return show_notify(rs['msg']);
-                            }
-                            show_notify('提交成功');
-                            $scope.originalReport = angular.copy(data);
-                        });
+                    $scope.onPass = function (id) {
+                        var dialog = dialogMembersSingleton.getInstance();
+                        dialog.showModal();
                     };
 
                 }

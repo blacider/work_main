@@ -41,6 +41,29 @@
 	border-radius: 2px;
 	margin-bottom: 20px;
 }
+
+.mod-show-report .detail-row .field-input {
+	position: relative;
+	height: 0;
+}
+.mod-show-report .detail-row p {
+	margin: 0;
+}
+.mod-show-report .detail-row .btn-detail {
+	position: absolute;
+	right: 0;
+	top: 0;
+	background: none;
+	height: 20px;
+	color: #7a8590;
+	text-decoration: none;
+}
+.mod-show-report .detail-row .btn-detail img {
+	width: 24px;
+	height: 24px;
+	margin-right: 5px;
+}
+
 .mod-show-report .report .block-row .fields-box {
 	margin-right: -77px;
 }
@@ -82,9 +105,10 @@
 	margin: 0 30px;
 	padding: 0 65px 30px 166px;
 	text-align: right;
+	font-size: 0;
 }
 
-.mod-show-report .report-footer .btn-cancel {
+.mod-show-report .report-footer .ui-button-border {
 	background: #fff;
 	color: #596774;
 	border-bottom: none;
@@ -92,26 +116,35 @@
 	height: 45px;
 	border-radius: 6px;
 	background-color: #ffffff;
-	border: solid 0.8px #596774;
-	border: solid 0.8px var(--slate-grey);
+	border: 1px solid #596774;
+
+}
+.mod-show-report .report-footer .ui-button-border.btn-back-list {
+	width: 130px;
+}
+.mod-show-report .report-footer .ui-button-border img {
+	width: 36px;
+	height: 36px;
 }
 
-.mod-show-report .report-footer .btn-save {
-	width: 100px;
-	height: 45px;
-	border-radius: 6px;
-	background-color: #ffffff;
-	border: solid 1px #596774;
-	color: #596774;
-	margin-right: 10px;
-}
-
-.mod-show-report .report-footer .btn-submit {
+.mod-show-report .report-footer .btn-pass {
 	width: 100px;
 	height: 45px;
 	border-radius: 6px;
 	background-color: #ff575b;
 	border-bottom: solid 3px #e94b4f;
+}
+
+.mod-show-report .report-footer .btn-update,
+.mod-show-report .report-footer .btn-reject,
+.mod-show-report .report-footer .btn-pass {
+	margin-left: 10px;
+}
+
+.mod-show-report .report-footer .btn-update img,
+.mod-show-report .report-footer .btn-reject img {
+	width: 24px;
+	height: 24px;
 }
 
 .approvers {
@@ -410,5 +443,21 @@ table.border-radius-row tr td:last-child {
 .ui-button {
 	background: #596774;
 	border-bottom: 2px solid #273e52;
+}
+
+/*animation*/
+.ui-button-hover {
+	transition: .1s ease-in all;
+	-webkit-transition: .1s ease-in all;
+	-o-transition: .1s ease-in all;
+	-moz-transition: .1s ease-in all;
+	-ms-transition: .1s ease-in all;
+}
+.ui-button-hover:hover {
+	-webkit-transform: scale3d(1.05, 1.05, 1);
+	-moz-transform: scale3d(1.05, 1.05, 1);
+	-o-transform: scale3d(1.05, 1.05, 1);
+	-ms-transform: scale3d(1.05, 1.05, 1);
+	transform: scale3d(1.05, 1.05, 1);
 }
  
