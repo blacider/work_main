@@ -26,6 +26,8 @@
                     $scope.template = null;
                     $scope.report_status = 0;
 
+                    $scope.default_avatar = '/static/img/mod/report/default-avatar.png';
+
                     function getTemplateData() {
                     	var query = Utils.queryString(location.search);
                         return Utils.api('/template/get_template/'+query.tid, {}).done(function (rs) {
@@ -98,6 +100,19 @@
                         });
                     };
 
+                    function getPageData(callback) {
+                        $.when(
+                            getTemplateData(),
+                            getReportData(report_id),
+                            getCurrentUserBanks(),
+                            getReportFlow(report_id),
+                            getMembers()
+                        ).done(function () {
+                            callback.apply(null, arguments);
+                            // 这种类型不好处理，在这里收集它们——当其改变的数值的时候
+                        })
+                    };
+
                     function arrayToMapWithKey(key, arr) {
                         var rs = {};
                         for (var i = arr.length - 1; i >= 0; i--) {
@@ -117,19 +132,6 @@
                             }
                         }
                         return null;
-                    };
-
-                    function getPageData(callback) {
-                        $.when(
-                            getTemplateData(),
-                            getReportData(report_id),
-                            getCurrentUserBanks(),
-                            getReportFlow(report_id),
-                            getMembers()
-                        ).done(function () {
-                            callback.apply(null, arguments);
-                            // 这种类型不好处理，在这里收集它们——当其改变的数值的时候
-                        })
                     };
 
                     function bankItemFormat(item) {
@@ -196,6 +198,12 @@
                         // fix me
                         modifyArrayByAll($scope.selectedMembers, members.data.members);
 
+                        $scope.commentArray = _.map(reportData.comments.data, function (item, index) {
+                            var one = _.findWhere($scope.members, {id: item.uid});
+                            item.user = one;
+                            return item;
+                        });
+
                         $scope.extrasMap = arrayToMapWithKey('id' ,extras);
 
 						$scope.combineConfig = combineTemplateAndReport($scope.template, $scope.report)
@@ -216,6 +224,15 @@
                        
                     });
 
+
+                    $scope.dateFormat = function (date, formatter) {
+                        formatter || (formatter = 'YYYY-MM-DD hh:mm:ss');
+                        if(date instanceof Date == false) {
+
+                            date = new Date(parseInt(date * 1000));
+                        }
+                        return fecha.format(date, formatter);
+                    }
 
                     $scope.formatMember = function (m) {
                         // {{levelMap[m.level_id]['name'] || '未知级别'}}－{{rankMap[m.rank_id]['name'] || '未知职位'}}
@@ -240,6 +257,36 @@
                         dialog.showModal();
                     };
 
+                    $scope.onAddCommentToReport = function () {
+                        var comment = $scope.txtCommentMessage;
+                        comment = $.trim(comment);
+                        if(!comment) {
+                            return show_notify('评论内容不允许为空');
+                        }
+                        return Utils.api('/reports/add_comment_v2', {
+                            method: 'post',
+                            data: {
+                                rid: report_id,
+                                comment: comment
+                            }
+                        }).done(function(rs) {
+                            if(rs['status']<=0)  {
+                                return show_notify('评论失败')
+                            }
+                            $scope.commentArray || ($scope.commentArray=[]);
+                            var user = _.findWhere($scope.members, {
+                                id: $scope.report.uid
+                            });
+                            $scope.commentArray.unshift({
+                                user: user,
+                                nickname: user['nickname'],
+                                comment: comment,
+                                lastdt: new Date,
+                            });
+                            $scope.txtCommentMessage = '';
+                            $scope.$apply();
+                        });
+                    };
                      
 
                     $scope.onCancel = function (e) {

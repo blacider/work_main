@@ -32,7 +32,7 @@
                     <div class="approvers selected-members">
                         <ul>
                             <li>
-                                <img ng-src="{{submitter.apath || '/static/img/mod/report/default-avatar.png'}}" alt="">
+                                <img ng-src="{{submitter.apath || default_avatar}}" alt="">
                                 <div class="info">
                                     <div class="name">{{submitter.nickname}}</div>
                                     <div class="role">{{formatMember(submitter)}}</div>
@@ -46,7 +46,7 @@
                     <div class="approvers selected-members">
                         <ul>
                             <li ng-repeat='m in selectedMembers'>
-                                <img ng-src="{{m.apath || '/static/img/mod/report/default-avatar.png'}}" alt="">
+                                <img ng-src="{{m.apath || default_avatar}}" alt="">
                                 <div class="info">
                                     <div class="name">{{m.nickname}}</div>
                                     <div class="role">{{formatMember(m)}}</div>
@@ -147,23 +147,23 @@
                 <div class="block-row flow">
                     <div class="field-label">留言</div>
                     <div class="field-input">
-                        <div class="msg-item">
-                            <img src="/static/img/mod/report/default-avatar.png" alt="">
+                        <div class="msg-item" ng-repeat="commentItem in commentArray">
+                            <img ng-src="{{commentItem.user['apath']}}" alt="">
                             <div class="content">
                                 <div class="title">
-                                    <div class="name">琳酱</div>
-                                    <div class="date-time">2016-03-27 14:23:01</div>
+                                    <div class="name">{{commentItem.nickname}}</div>
+                                    <div class="date-time">{{dateFormat(commentItem.lastdt)}}</div>
                                 </div>
                                 <div class="text">
-                                    看来发觉时代看来发觉时代看来发觉时代看来发觉时代看来发觉时代看来发觉时代看来发觉时代看来发觉时代看来发觉时代看来发觉时代
+                                    {{commentItem.comment}}
                                 </div>
                             </div>
                         </div>
                         <div class="msg-input">
                             <div class="field-input">
-                                <input type="text" placeholder="姓名／手机／邮箱" ng-model="search.$">
+                                <input type="text" placeholder="" ng-model="txtCommentMessage">
                             </div>
-                            <a href="javascript:void(0)" class="btn-search ui-button" ng-click="">提交留言</a>
+                            <a class="btn-search ui-button" ng-click="onAddCommentToReport()">提交留言</a>
                         </div>
                     </div>
                 </div>

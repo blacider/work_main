@@ -209,6 +209,14 @@ class Reports extends REIM_Controller {
         return $symbol;
     }
 
+    public function add_comment_v2() {
+        $rid=$this->input->post("rid");
+        $comment = $this->input->post("comment");
+        $buf = $this->reports->add_comment($rid, $comment);
+        $data = json_decode($buf, true);
+        die(json_encode($data));
+    }
+
     public function add_comment() {
         $rid=$this->input->post("rid");
         $comment = $this->input->post("comment");
