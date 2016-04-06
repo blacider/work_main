@@ -118,6 +118,7 @@
                     <div class="panel-heading" style="padding: 10px 0 18px 0; height: 39px">
                         <h3 class="panel-title default" style="float: left; margin-left: 20px" id="gname"><?php echo $groupname;?> [ <?php echo count($members); ?> ]</h3>
                         <span id="g_du">
+                            <a href="/members/newmember/"><button style="margin: -3px 20px auto auto;" class="form-button">添加员工</button></a>
                         </span>
                     </div>
                     <div class="panel-body">
@@ -397,7 +398,7 @@ function load_group(gid){
                     if(gid == -2){
                         var _member = data.data;
                         var _gname = '<?php echo $groupname;?> [ ' + _member.length + ' ]';
-                        $('#g_du').html('');
+                        $('#g_du').html('<a href="/members/newmember/"><button style="margin: -3px 20px auto auto;" class="form-button">添加员工</button></a>');
                     } else {
                         data = data.data;
                         var _group = data.group;
