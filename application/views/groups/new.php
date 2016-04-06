@@ -61,7 +61,7 @@
                                         else
                                         {
                                     ?>
-                                            <option value=0>公司</option>
+                                            <option value=0><?php echo $groupname;?></option>
                                             <?php 
                                             foreach($group as $g){
                                             ?>
