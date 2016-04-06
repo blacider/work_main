@@ -1236,13 +1236,13 @@ class Reports extends REIM_Controller {
             foreach ($profile['group']['item_type'] as $name)
                 $dict_item_type_names[$name['type']] = $name['name'];
 
-        // 转换自定义备注字段
-        $dict_customized_note_field = array();
-        if (array_key_exists('item_config', $profile['group'])) {
-            foreach ($profile['group']['item_config'] as $conf) {
-                if ($conf['cid'] == -1 && $conf['type'] == 1) {
-                    if ($conf['active'] && !$conf['disabled']) {
-                        $dict_customized_note_field[$conf['id']] = $conf['name'];
+        // 转换自定义消费字段
+        $dict_customized_field = array();
+        if (array_key_exists('item_customization', $profile['group'])) {
+            foreach ($profile['group']['item_customization'] as $field) {
+                if ($field['enabled']) {
+                    if ($field['type'] > 100 || $field['type'] == 9) {
+                        $dict_customized_field[$field['id']] = $field['title'];
                     }
                 }
             }
@@ -1723,9 +1723,6 @@ class Reports extends REIM_Controller {
                 $o['参与人员'] = implode(',', $__relates);
                 $o['承担部门'] = $_str_afford_dept;
                 $o['承担对象'] = $_str_afford_member;
-                if (array_key_exists("tag_names", $i)) {
-                    $o['标签'] = $i['tag_names'];
-                }
                 $o['一级会计科目'] = '';
                 $o['一级会计科目代码'] = '';
                 $o['二级会计科目'] = '';
@@ -1744,12 +1741,25 @@ class Reports extends REIM_Controller {
                     }
                 }
                 $o['报销审核人'] = $i['flow'];
-                foreach ($dict_customized_note_field as $fid => $fname) {
+
+                // 转换成自定义值字典
+                $dict_customized_value = array();
+                if (array_key_exists('customization', $i)) {
+                    $dict_customized_value = array_column($i['customization'], NULL, 'id');
+                }
+                // 每个字段必须都有
+                foreach ($dict_customized_field as $fid => $fname) {
                     $o[$fname] = '';
-                    if (!empty($i['extra'][$fid])) {
-                        $o[$fname] = $i['extra'][$fid]['value'];
+                    if (array_key_exists($fid, $dict_customized_value)) {
+                        $value = $dict_customized_value[$fid]['value'];
+                        // tag类型的字段value时id组合，需要自己从tags里取
+                        if (array_key_exists('tags', $dict_customized_value[$fid])) {
+                            $value = implode(',', array_column($dict_customized_value[$fid]['tags'], 'name'));
+                        }
+                        $o[$fname] = $value;
                     }
                 }
+
                 $o['备注'] = $i['note'];
                 $o['消费类型'] = $this->try_get_element($dict_item_type_names, $i['prove_ahead']);
                 $_rate = 1.0;
