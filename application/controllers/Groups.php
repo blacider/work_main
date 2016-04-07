@@ -34,7 +34,7 @@ class Groups extends REIM_Controller {
         {
             $this->session->set_userdata('last_error',$info['data']['msg']);
         }
-        redirect(base_url('members/groups'));
+        redirect(base_url('members/index'));
     }
 
     public function index(){
@@ -141,7 +141,7 @@ class Groups extends REIM_Controller {
         } else {
             $this->session->set_userdata('last_error', '创建失败');
         }
-        redirect(base_url('members/groups'));
+        redirect(base_url('members/index'));
     }
 
     public function show_exports(){

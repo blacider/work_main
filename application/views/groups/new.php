@@ -61,7 +61,7 @@
                                         else
                                         {
                                     ?>
-                                            <option value=0>顶级部门</option>
+                                            <option value=0><?php echo $groupname;?></option>
                                             <?php 
                                             foreach($group as $g){
                                             ?>

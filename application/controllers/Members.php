@@ -784,12 +784,13 @@ class Members extends REIM_Controller {
     }
 
 
-    public function newmember(){
+    public function newmember($gid = '0'){
         $this->need_group_agent();
         $group = $this->ug->get_my_list();
         $_group = $this->groups->get_my_list();
         $_ranks = $this->reim_show->rank_level(1);
         $_levels = $this->reim_show->rank_level(0);
+
 
         $ranks = array();
         $levels = array();
@@ -810,9 +811,19 @@ class Members extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
+        $groupName = '';
+        if ($gid != '0') {
+            foreach ($group['data']['group'] as $g) {
+                if ($g['id'] == $gid) {
+                    $groupName = $g['name'];
+                    break;
+                }
+            }
+        }
         $this->bsload('members/new',
             array(
                 'title' => '添加员工'
+                ,'groupName' => $groupName
                 ,'groups' => $group['data']
                 ,'gmember' => $gmember
                 ,'ranks' => $ranks
@@ -1549,7 +1560,7 @@ class Members extends REIM_Controller {
         {
             $this->session->set_userdata('last_error',$info['data']['msg']);
         }
-        redirect(base_url('members/groups'));
+        redirect(base_url('members/index'));
     }
     // 管理员修改密码，自己修改自己的密码需要验证码，否则不需要
     // 1. 如何判断是管理员 admin = 1

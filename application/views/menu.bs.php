@@ -273,77 +273,24 @@ if($open == 1) {
         </a>
         <b class="arrow"></b>
         </li>
-
-        <li class="rsmenu" id="groups">
-        <a href="<?php echo base_url('members/groups'); ?>">
-            <i class="menu-icon fa fa-caret-right"></i>
-            <span class="menu-text"> 公司部门 </span>
-        </a>
 <?php 
-if(in_array($profile['admin'],[1,3,4])){
-?>
-        <b class="arrow"></b>
-        </li>
-        <li class="hsub" id="add">
-        <a href="<?php echo base_url('members/add'); ?>" >
-            <i class="menu-icon fa fa-caret-right"></i>
-            添加部门
-        </a>
-        <b class="arrow"></b>
-        </li>
-       
-        <li class="hsub" id="newmember">
-        <a href="<?php echo base_url('members/newmember'); ?>" >
-            <i class="menu-icon fa fa-caret-right"></i>
-            添加员工
-        </a>
-
-        <b class="arrow"></b>
-
-        </li>
-<?php 
-}
 if($profile['admin'] == 1 || $profile['admin'] == 3){
 ?>
-        <li class="hsub" id="newrank">
-        <a href="<?php echo base_url('members/rank'); ?>" >
-            <i class="menu-icon fa fa-caret-right"></i>
-           职位设置 
-        </a>
-
-        <b class="arrow"></b>
-
-        </li>
-
-
-         <li class="hsub" id="delmembers">
-        <a href="<?php echo base_url('members/delmembers'); ?>" >
-            <i class="menu-icon fa fa-caret-right"></i>
-            删除员工
-        </a>
-
-        <b class="arrow"></b>
-
-        </li>
-
-
-
-        <li class="hsub" id="batch_del">
-        <a href="<?php echo base_url('members/batch_del'); ?>" >
-            <i class="menu-icon fa fa-caret-right"></i>
-            批量删除员工
-        </a>
-
-        <b class="arrow"></b>
-
-        </li>
-
-    
 
         <li class="hsub" id="export">
         <a href="<?php echo base_url('members/export'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
             导入/导出员工
+        </a>
+
+        <b class="arrow"></b>
+
+        </li>
+
+        <li class="hsub" id="newrank">
+        <a href="<?php echo base_url('members/rank'); ?>" >
+            <i class="menu-icon fa fa-caret-right"></i>
+           级别职位设置 
         </a>
 
         <b class="arrow"></b>

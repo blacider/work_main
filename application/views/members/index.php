@@ -6,26 +6,29 @@
 </script>
 
 <style type="text/css">
-    #search{
+    #search-form {
+        display: block;
         position: absolute;
-        left: 75%;
-        top: 64px;
+        left: 77%;
+        top: 62px;
+    }
+    #search{
         z-index: 2;
         height: 26px;
-        width: 12%;
+        float: left;
+        width: 159px;
         border-style: ridge;
     }
     #search-submit {
         background-color: #fe575f;
-        position: absolute;
-        left: 88%;
-        top: 64px;
+        float: left;
         z-index: 2;
         border: 0;
         color: white;
         height: 25px;
         border-radius: 3px;   
         font-size: 12px;
+        margin-left: 20px;
    }
    .tree .tree-folder, .tree .tree-item {
         white-space: nowrap !important;
@@ -42,31 +45,41 @@
    }
 
     .col-1 {
-        min-width: 78px;
+        min-width: 73px;
     }
     .col-2 {
-        min-width: 184px;
+        min-width: 173px;
     }
     .col-3 {
         min-width: 210px;
     }
     .col-4 {
-        min-width: 100px;
+        min-width: 105px;
     }
-    .col-5 {
-        min-width: 162px;
-    }
-    .col-6 {
-        min-width: 78px;
+    .col-5,.col-6, .col-9{
+        min-width: 62px;
     }
     .col-7 {
-        min-width: 78px;
+        min-width: 173px;
     }
     .col-8 {
-        min-width: 96px;
-    }
-    .col-9 {
         min-width: 78px;
+    }
+    .form-button {
+        background-color: white;
+        float: right;
+        border: 0;
+        color: #428bca;
+        height: 25px;
+        border-radius: 3px;
+        margin-top: 6px;
+        margin-right: 8px;
+        font-size: 12px;
+        padding: auto 34px auto 34px;
+    }
+    .form-button-right {
+        float: left;
+        margin: -4px auto auto 20px;
     }
 </style>
 <script type="text/javascript">
@@ -78,45 +91,49 @@
         }
     }
 </script>
-<form action="<?php echo base_url('members/search') ?>" method="get" onsubmit="return searchSubmit(this)">
-    <input name="key" placeholder="请输入搜索的内容" value="<?php echo $search ?>" type='text' id="search">
+<form id="search-form" action="<?php echo base_url('members/search') ?>" method="get" onsubmit="return searchSubmit(this)">
+    <input name="key" placeholder="搜索员工姓名/手机/邮箱" value="<?php echo $search ?>" type='text' id="search">
     <button type="submit" id="search-submit">搜索</button>
 </form>
 <div class="page-content">
     <div class="page-content-area">
         <div class="row">
-            <div class="col-sm-3" style="width: 210px;">
+            <div class="col-sm-2">
                 <div class="widget-box widget-color-blue" style="margin-top: 0;border-top-left-radius: 3px;border-top-right-radius: 3px;">
                     <div class="widget-header" style="height: 38px;min-height: 38px;background: #428bca;">
                         <div id="admin_groups_granted" data-gids="<?php echo htmlspecialchars(json_encode($admin_groups_granted))?>"></div>
-                        <h4 class="widget-title lighter smaller" style="font-size: 16px;">组织结构</h4>
+                        <h4 class="widget-title lighter smaller" style="font-size: 16px;margin-left: -4px;">组织结构</h4>
+                        <a href="/members/add"><button class="form-button">添加部门</button></a>
                     </div>
                     <div class="widget-body">
                         <div class="widget-main padding-8">
+                            <input id="search-group" type="text" style="font-size: 12px;width: 100%;margin-bottom: 20px;" placeholder="搜索部门">
                             <div id="tree2" class="tree"></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xs-9" style="margin-left: 12px;">
+            <div class="col-xs-9">
                 <div class="panel panel-primary" style="display: inline-block;">
                     <div class="panel-heading" style="padding: 10px 0 18px 0; height: 39px">
-                        <h3 class="panel-title default col-sm-11 col-md-11" id="gname">人员信息[<?php echo count($members); ?>]</h3>
-                        <p id="g_du"></p>
+                        <h3 class="panel-title default" style="float: left; margin-left: 20px" id="gname"><?php echo $groupname;?> [ <?php echo count($members); ?> ]</h3>
+                        <span id="g_du">
+                            <a href="/members/newmember/"><button style="margin: -3px 20px auto auto;" class="form-button">添加员工</button></a>
+                        </span>
                     </div>
                     <div class="panel-body">
-                        <table class="table" id="gtable">
+                        <table width="1040px" class="table" id="gtable">
                             <tr>
-                                <th>ID</th>
-                                <th>名称</th>
-                                <th>邮箱</th>
-                                <th>手机</th>
-                                <th>部门</th>
-                                <th>职位</th>
-                                <th>默认审批人</th>
-                                <th>角色</th>
+                                <th class="col-1">ID</th>
+                                <th class="col-2">名称</th>
+                                <th class="col-3">邮箱</th>
+                                <th class="col-4">手机</th>
+                                <th class="col-5">部门</th>
+                                <th class="col-6">职位</th>
+                                <th class="col-7">默认审批人</th>
+                                <th class="col-8">角色</th>
                                 <?php if($profile['admin'] == 1 || $profile['admin'] == 3) { ?>
-                                <th>操作</th>
+                                <th class="col-9">操作</th>
                                 <?php } ?>
                             </tr>
                                 <?php foreach($members as $m){ ?>
@@ -214,12 +231,49 @@ var _levels_dic = '<?php echo json_encode($levels); ?>';
 var levels_dic = [];
 if(_levels_dic!='')
 {
-	levels_dic = JSON.parse(_levels_dic);
+    levels_dic = JSON.parse(_levels_dic);
 }
 
 
 
 $(document).ready(function(){
+    $("#search-group").keyup(function() {
+        var groups = [];
+        $.each(js_data[0]['additionalParameters']['children'], function(index, item) {
+            groups.push(item);
+        });
+        //遍历树所有节点
+        for (var i = 0; i < groups.length; i++)
+            $.each(groups[i]['additionalParameters']['children'], function(index, item) {
+                groups.push(item);
+            });
+        var results = [];
+        var treeData = {};
+        var str = this.value;
+        if (this.value != '') {
+            $.each(groups, function(index, item) {
+                 if (item['name'].indexOf(str) >= 0)
+                    results.push(item);
+            });
+            $.each(results, function(index, item) {
+                treeData[item['name']] = {
+                    name:item['name'],
+                    id:item['id'],
+                    additionalParameters: {
+                                children: []
+                            },
+                    type: 'folder',
+                    'icon-class': 'red'
+                }
+            });
+        } else {
+            treeData = js_data;
+        }
+        var treeDataSource = new DataSourceTree({
+            data: treeData
+        });
+        loadTreeByDataSource(treeDataSource);
+    });
     if(error)
     {
         show_notify(error);
@@ -326,8 +380,8 @@ function load_group(gid){
                         is_under_control = 1;
                     }
                     //show_notify('获取信息成功');
-                    var _g_du = '<a href="' + __BASE + '/members/editgroup/' + gid + '"><i class="ace-icon align-top bigger-125 fa fa-pencil white" style="margin-left:10px;" ></i></a>'
-                                 +'<a href="javascript:void(0)" class="remove_group" data-id="' + gid + '"><i  style="margin-left:10px;"  class="ace-icon align-top bigger-125 white fa fa-trash-o"></i></a>';
+                    var _g_du = '<a href="' + __BASE + '/members/editgroup/' + gid + '"><button class="form-button form-button-right">编辑</button></a>' +
+                                '<a href="/members/newmember/' + gid +'"><button style="margin: -3px 20px auto auto;" class="form-button">添加员工</button></a>';
                     if(_admin == 1 || _admin == 3 || is_under_control)
                     {
                         $('#g_du').html(_g_du);
@@ -343,8 +397,8 @@ function load_group(gid){
                     }
                     if(gid == -2){
                         var _member = data.data;
-                        var _gname = '全体员工 [ ' + _member.length + ' ]';
-                        $('#g_du').html('');
+                        var _gname = '<?php echo $groupname;?> [ ' + _member.length + ' ]';
+                        $('#g_du').html('<a href="/members/newmember/"><button style="margin: -3px 20px auto auto;" class="form-button">添加员工</button></a>');
                     } else {
                         data = data.data;
                         var _group = data.group;
@@ -358,16 +412,16 @@ function load_group(gid){
                     $('#gtable').html("");
 
                 var _th = '<tr>'
-                    + '<th>ID</th>'
-                    + '<th>名称</th>'
-                    + '<th>邮箱</th>'
-                    + '<th>手机</th>'
-                    + '<th>部门</th>'
-                    + '<th>职位</th>'
-                    + '<th>默认审批人</th>'
-                    + '<th>角色</th>';
+                    + '<th class="col-1">ID</th>'
+                    + '<th class="col-2">名称</th>'
+                    + '<th class="col-3">邮箱</th>'
+                    + '<th class="col-4">手机</th>'
+                    + '<th class="col-5">部门</th>'
+                    + '<th class="col-6">职位</th>'
+                    + '<th class="col-7">默认审批人</th>'
+                    + '<th class="col-8">角色</th>';
                     if(_admin == 1 || _admin == 3){
-                        _th += '<th>操作</th>'
+                        _th += '<th class="col-9">操作</th>'
                     }
                     _th += '</tr>';
                     $(_th).appendTo($('#gtable'));
@@ -410,12 +464,12 @@ function load_group(gid){
             
                     }
 
-		var _level_id = item.level_id;
-		var _level = '';
-		if(levels_dic[_level_id]!=undefined)
-		{
-			_level = levels_dic[_level_id];
-		}
+        var _level_id = item.level_id;
+        var _level = '';
+        if(levels_dic[_level_id]!=undefined)
+        {
+            _level = levels_dic[_level_id];
+        }
                 _th = '<tr>'
                     + '<td>' + item.client_id + '</a></td>'
                     + '<td>' + item.nickname+ '</td>'
@@ -438,6 +492,10 @@ function load_group(gid){
                     $(_th).appendTo($('#gtable'));
 
                     });
+                    if (_member.length == 0) {
+                        var _th = '<tr><td colspan="9" align="center" style="font-size: 20px;color: #cfd0d1;padding-top: 20px;">无员工</td></tr>'
+                        $(_th).appendTo($('#gtable'));
+                    }
                 }
 
                 bind_event();
@@ -504,11 +562,11 @@ function bind_remove_from_group() {
                 dataType: 'json',
                 success: function(data) {
                     var ace_icon = ace.vars['icon'];
-                    var js_data = {};
+                    js_data = {};
                     var obj = new Array();
                     var unroot = new Array();
                     js_data['0'] = {
-                        name: '全体员工',
+                        name: '<?php echo $groupname;?>',
                         id: '-2',
                         type: 'folder',
                         'icon-class': 'red',
@@ -614,33 +672,10 @@ function bind_remove_from_group() {
                         _child = build_node(idx, item);
                         js_data[0]['additionalParameters']['children'].push(_child);
                     });
-                    js_data['已邀请'] = {
-                        name: '已邀请',
-                        id: '-1',
-                        type: 'folder',
-                        'icon-class': 'red'
-                    };
                     var treeDataSource = new DataSourceTree({
                         data: js_data
                     });
-                    $('#tree2').ace_tree({
-                        dataSource: treeDataSource,
-                        loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
-                        'open-icon': 'ace-icon fa fa-cog',
-                        'close-icon': 'ace-icon fa fa-cogs',
-                        'selectable': true,
-                        'selected-icon': null,
-                        'unselected-icon': null
-                    });
-                    $('#tree2').on('updated', function(e, result) {}).on('selected', function(e) {}).on('unselected', function(e) {}).on('opened', function(e, result) {
-                        if (result.id != undefined) {
-                            var _gid = result.id;
-                            load_group(_gid);
-                        }
-                    }).on('closed', function(e, result) {
-                        var _gid = result.id;
-                        load_group(_gid);
-                    });
+                    loadTreeByDataSource(treeDataSource);
                 },
                 error: function() {}
             });
@@ -648,6 +683,28 @@ function bind_remove_from_group() {
     });
 </script>
 <script type="text/javascript">
+function loadTreeByDataSource(data) {
+    $("#tree2").removeData("tree");
+    $("#tree2").unbind();
+    $('#tree2').ace_tree({
+        dataSource: data,
+        loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+        'open-icon': 'ace-icon fa fa-cog',
+        'close-icon': 'ace-icon fa fa-cogs',
+        'selectable': true,
+        'selected-icon': null,
+        'unselected-icon': null
+    });
+    $('#tree2').on('updated', function(e, result) {}).on('selected', function(e) {}).on('unselected', function(e) {}).on('opened', function(e, result) {
+        if (result.id != undefined) {
+            var _gid = result.id;
+            load_group(_gid);
+        }
+    }).on('closed', function(e, result) {
+        var _gid = result.id;
+        load_group(_gid);
+    });
+}
 var DataSourceTree = function(options) {
     this._data = options.data;
     this._delay = options.delay;
