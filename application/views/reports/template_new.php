@@ -418,6 +418,7 @@ foreach($items as $i){
             </div>
             <div class="modal-body">
                 <div class="form-group">
+                    <input type="text" class="hidden" id="hidden_receiver">
                     <div class="col-xs-9 col-sm-9" id="label_receiver">
                     </div>
                 </div>
