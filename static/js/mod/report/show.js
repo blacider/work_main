@@ -175,6 +175,7 @@
                                 title: '选择审批人',
                                 quickClose: true,
                                 autoDestroy: false,
+                                className: 'theme-grey',
                                 ok: function() {
                                     var receivers = this.$el.find('select').val();
                                     var _this = this;
@@ -274,6 +275,24 @@
 
                             // 是否是自己
                             var is_myself = window.__UID__ == $scope.report.uid;
+                            // 是否是审核人
+
+
+                            var is_approver = (function () {
+                                var receivers = $scope.receivers['managers'];
+                                for(var i=0;i<receivers.length;i++) {
+                                    var re = receivers[i];
+                                    if(window.__UID__ == re['id']) {
+                                        return true;
+                                    }
+                                }
+                                return false;
+                            })();
+
+                            // 如果自己是审批人，把自己当成审批人
+                            if(is_myself && is_approver) {
+                                is_myself = false;
+                            }
 
                             if(is_myself && ['0', '3'].indexOf(status)!=-1) {
                                 buttons['has_modify'] = true;
@@ -287,24 +306,11 @@
                                 buttons['has_affirm'] = true;
                             }
 
-                            // 是否是审核人
-                            var is_approver = (function () {
-                                var receivers = $scope.receivers['managers'];
-                                for(var i=0;i<receivers.length;i++) {
-                                    var re = receivers[i];
-                                    if(window.__UID__ == re['id']) {
-                                        return true;
-                                    }
-                                }
-                                return false;
-                            })();
-
                             if(is_approver && ['1'].indexOf(status)) {
                                 buttons['has_pass'] = true;
                                 buttons['has_reject'] = true;
                                 buttons['has_modify'] = true;
                             }
-
 
                         });
 
@@ -370,6 +376,7 @@
                             title: '退回理由',
                             quickClose: true,
                             content: '<div><textarea style="width: 500px;height: 200px;border-radius: 2px;" placeholder="写下你的退回理由…"></textarea></div>',
+                            className: 'theme-grey',
                             ok: function() {
                                 var comment = this.$el.find('textarea').val();
                                 comment = $.trim(comment);

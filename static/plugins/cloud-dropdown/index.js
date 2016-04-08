@@ -60,7 +60,7 @@
 				transclude: true,
 				template: '<div ng-transclude></div>',
 				link: function ($scope, element, attrs) {
-					var options = angular.extend(ngDropdownDefaultOptions, $scope.ngDropdown);
+					var options = angular.extend({}, ngDropdownDefaultOptions, $scope.ngDropdown);
 					// 有选中的，就用选中的项目展示（此项目必须在下拉列表中）
 					// 无选中的或者没有传🈯️，就用默认展示
 					var selectedItem = angular.copy($scope.selectedItem);

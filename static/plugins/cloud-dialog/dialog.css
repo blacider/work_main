@@ -138,3 +138,38 @@
 	-ms-transform: none;
 	transform: none;
 }
+
+.theme-grey.cloud-bx-dialog	{
+	padding: 0;
+	border-radius: 2px;
+}
+
+.theme-grey.cloud-bx-dialog	.dialog-header {
+	padding: 0;
+	height: 40px;
+	border-radius: 2px;
+	background-color: #f2f6fa; 	
+}
+.theme-grey.cloud-bx-dialog	.dialog-header .title {
+	font-size: 16px;
+	top: 10px;
+	color: #596774;
+	border-bottom: none;
+}
+
+.theme-grey.cloud-bx-dialog	.dialog-header .close {
+	top: 0;
+	right: 0;
+	color: #7a8590;
+}
+.theme-grey.cloud-bx-dialog .dialog-footer button {
+	background-color: #ffffff;
+	border: solid 1px #596774;
+	color: #596774;
+}
+.theme-grey.cloud-bx-dialog .dialog-footer button.last {
+	background-color: #596774;
+	border: none;
+	border-bottom: solid 2px #273e52;
+	color: #fff;
+}

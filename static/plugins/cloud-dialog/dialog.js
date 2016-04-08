@@ -24,6 +24,7 @@
 			title: '',
 			quickClose: false,
 			autoDestroy: true,
+			className: '',
 			content: '',
 			width: 240,
 			offset: {
@@ -83,6 +84,8 @@
 
 			this.$mask.appendTo(document.body);
 			this.$el.attr('id', dialogIDPrefix+dialogCount++);
+
+			this.$el.addClass(this.options.className);
 
 			this._bindEvents_();
 			this.addButtons()
