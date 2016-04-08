@@ -136,9 +136,11 @@
 			return this;
 		},
 		showModal: function  () {
-			this.$mask.addClass('animated fadeIn').show();
-			this.$el.addClass('animated zoomIn')
+			var _self = this;
+			this.$mask.show();
 			this.options.onShow.call(this);
+			_self.$mask.addClass('animated fadeIn')
+			_self.$el.addClass('animated zoomIn')
 			$(window).trigger('resize');
 			return this;
 		},
@@ -215,15 +217,17 @@
 			})
 
 			$(window).on('resize', function (e) {
-				var width = window.innerWidth || document.body.clientWidth;
-				var height = window.innerHeight || document.body.clientHeight;
-				_self.$mask.width(width);
-				_self.$mask.height(height);
+				setTimeout(function() {
+					var width = window.innerWidth || document.body.clientWidth;
+					var height = window.innerHeight || document.body.clientHeight;
+					_self.$mask.width(width);
+					_self.$mask.height(height);
 
-				_self.$el.css({
-					left: (width - _self.$el.width()) /2,
-					top: (height - _self.$el.height()) /2
-				})
+					_self.$el.css({
+						left: (width - _self.$el.width()) /2,
+						top: (height - _self.$el.height()) /2
+					})
+				}, 0);
 			});
 		}
 	});

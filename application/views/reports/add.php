@@ -91,7 +91,7 @@
                     <div class="field-label">消费明细</div>
                     <div class="table-field">
                         <div style="text-align: right; padding-bottom: 20px;">
-                            <a href="javascript:void(0)" class="btn-edit-consumption ui-button" ng-click="onAddConsumptions($event)"><img src="/static/img/mod/report/24/btn-edit@2x.png" alt="">编辑</a>
+                            <a href="javascript:void(0)" class="btn-edit-consumption" ng-click="onAddConsumptions($event)"><img src="/static/img/mod/report/24/btn-edit@2x.png" alt="">编辑</a>
                         </div>
                         <div class="table-container">
                             <table>
@@ -106,11 +106,11 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="c in selectedConsumptions" ng-class="{selected: c.isSelected}" ng-click="onSelectConsumption(c, $event)">
-                                        <td>{{c.category}} 报销单ID{{c.rid}}</td>
-                                        <td >{{c.dt}}</td>
-                                        <td>{{c.merchants}}</td>
-                                        <td>{{c.notes}}</td>
-                                        <td>{{c.amount}}</td>
+                                        <td>{{c.cate_str||'-'}}</td>
+                                        <td >{{c.createdt||'-'}}</td>
+                                        <td>{{c.merchants||'-'}}</td>
+                                        <td class="note">{{c.note||'-'}}</td>
+                                        <td>{{c.amount}}¥ </td>
                                     </tr> 
                                 </tbody>
                             </table>
@@ -157,36 +157,29 @@
             <!-- /*<div style="display: none;">*/ -->
             <div style="display: none;">
                 <div class="consumptions available-consumptions">
-                    <table class="border-radius-row fixed-header">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <div>类目</div>
-                                </th>
-                                <th>
-                                    <div>时间</div>
-                                </th>
-                                <th>
-                                    <div>商家</div>
-                                </th>
-                                <th>
-                                    <div>备注</div>
-                                </th>
-                                <th>
-                                    <div>金额</div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-if="!c.rid" ng-repeat="c in consumptions" ng-class="{selected: c.isSelected}" ng-click="onSelectConsumption(c, $event)">
-                                <td>{{c.category}} 报销单ID{{c.rid}}</td>
-                                <td >{{c.dt}}</td>
-                                <td>{{c.merchants}}</td>
-                                <td>{{c.notes}}</td>
-                                <td>{{c.amount}}</td>
-                            </tr> 
-                        </tbody>
-                    </table>
+                    <div class="moni-table">
+                        <div class="t-head">
+                            <div class="t-row">
+                                <div class="col">类目</div>
+                                <div class="col dt">时间</div>
+                                <div class="col">商家</div>
+                                <div class="col">备注</div>
+                                <div class="col">金额</div>
+                            </div>
+                        </div>
+                        <div class="t-body">
+                            <div class="t-row" ng-if="!c.rid" ng-repeat="c in consumptions" ng-class="{selected: c.isSelected}" ng-click="onSelectConsumption(c, $event)">
+                                <div class="col">{{c.cate_str||'-'}}</div>
+                                <div class="col dt">{{c.createdt||'-'}}</div>
+                                <div class="col">{{c.merchants||'-'}}</div>
+                                <div class="col note">{{c.note||'-'}}</div>
+                                <div class="col">{{c.amount}}¥</div>
+                                <div class="col btn-edit">
+                                    <a href="/items/edit/{{c.id}}"><img src="/static/img/mod/report/24/btn-edit@2x.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -260,7 +253,6 @@
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 
 <script src="/static/js/libs/fecha.js"></script>
-<script src="/static/js/libs/jquery.fixedheadertable.min.js"></script>
 <script src="/static/plugins/cloud-dialog/dialog.js"></script>
 <script src="/static/plugins/cloud-dropdown/index.js"></script>
 <script src="/static/js/libs/Sortable.min.js"></script>

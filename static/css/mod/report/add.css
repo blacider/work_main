@@ -215,6 +215,7 @@
 	padding: 0;
 	background: transparent;
 	border: none;
+	margin-top: 0;
 }
 
 .approvers.selected-members ul li {
@@ -306,8 +307,77 @@
 .approvers.available-members ul li.selected:hover .info .role {
 	color: #929292;
 }
- 
 
+/*start*/
+.moni-table {
+	font-size: 0;
+	width: 600px;
+}
+.moni-table .t-head .col {
+	height: 40px;
+	line-height: 40px;
+}
+.moni-table .t-head .t-row {
+	border: none;
+}
+.moni-table .col {
+	width: 100px;
+	line-height: 30px;
+	height: 30px;
+	text-align: center;
+	font-size: 14px;
+	display: inline-block;
+}
+.moni-table .col.dt {
+	width: 150px;
+}
+.moni-table .t-head {
+	background: #7a8590;
+	color: #fff;
+	border-radius: 2px;
+	height: 40px;
+}
+.moni-table .t-body {
+	overflow: auto;
+	height: 300px;
+}
+.moni-table .t-row {
+	margin: 25px 40px;
+	border-radius: 2px;
+	position: relative;
+	margin-right: 60px;
+	border: 1px solid #fff;
+}
+.moni-table .t-row .col {
+	display: table-cell;
+	vertical-align: middle;
+}
+.moni-table .t-row.selected  {
+	border: 1px solid #7a8590;
+	color: #929292;
+}
+.moni-table .t-row.selected:hover {
+	background: #fff;
+	color: #929292;
+}
+.moni-table  .t-row:hover {
+	background-color: #596774;
+	color: #fff;
+}
+.moni-table .t-row .btn-edit {
+	width: 24px;
+	height: 24px;
+	position: absolute;
+	right: -36px;
+	top: 50%;
+	margin-top: -12px;
+}
+.moni-table .t-row .btn-edit img {
+	width: 24px;
+	height: 24px;
+}
+
+/*end*/
 .consumptions {
 
 }
@@ -321,34 +391,13 @@
 	color: #fff;
 }
 
-.available-consumptions {
-	width: 600px;
+.consumptions table td {
+	height: 30px;
 }
-.available-consumptions .fht-tbody {
-	overflow: auto;
-	height: 200px;
+.consumptions table .note {
+	max-width: 130px;
 }
-.available-consumptions table {
-    width: 100%;
-    border-spacing: 0;
-    text-align: center;
-    height: 400px;
-    overflow: auto;
-}
-
-.available-consumptions th {
-	text-align: center;
-}
-
-.available-consumptions tr.selected td {
-	background: green !important;
-}
-.available-consumptions table tr:hover td {
-	background-color: #596774;
-	color: #fff;
-	overflow: hidden;
-}
-
+ 
 .table-field .table-container {
 	border-top: 1px solid #ABABAB;
 	border-radius: 3px;
@@ -375,9 +424,17 @@
 
 }
 .btn-edit-consumption {
-	background: none;
-	border: 1px solid gray;
+	color: #7a8590;
 }
+.btn-edit-consumption img {
+    width: 20px;
+    height: 20px;
+    margin-top: -2px;
+}
+.btn-edit-consumption:hover {
+	text-decoration: none;
+}
+
 table.border-radius-row tr td:first-child { 
 	border-top-left-radius: 10px;
 	border-bottom-left-radius: 10px;
