@@ -22,7 +22,7 @@
                     <div class="field-label">申请额</div>
                     <div class="field-input">
                         <p>¥ {{report.amount}}</p>
-                        <a href="javascript:void(0)" class="btn-detail">
+                        <a href="/reports/snapshot/{{report.id}}" class="btn-detail" ng-if="report.has_snapshot">
                             <img src="/static/img/mod/report/24/btn-eye@2x.png" alt="">详情
                         </a>
                     </div>
@@ -177,17 +177,23 @@
                 </div>
             </div>
             <div class="report-footer">
-                <a href="/reports/index" style="float: left" class="ui-button-border ui-button ui-button-hover btn-back-list">
+                <a href="{{document.referer}}" style="float: left" class="ui-button-border ui-button ui-button-hover btn-back-list">
                     <img src="/static/img/mod/report/36/btn-back-list@2x.png" alt="">返回列表
                 </a>
-                <a href="/reports/edit/{{report.id}}?tid={{report.template_id}}" class="ui-button-border ui-button  ui-button-hover btn-update">
+                <a ng-if="has_modify" href="/reports/edit/{{report.id}}?tid={{report.template_id}}" class="ui-button-border ui-button  ui-button-hover btn-update">
                     <img src="/static/img/mod/report/24/btn-edit@2x.png" alt="">修改
                 </a>
-                <a href="javascript:void(0)"  class="ui-button-border ui-button  ui-button-hover btn-reject" ng-click="onReject(report.id)">
+                <a ng-if="has_reject" href="javascript:void(0)"  class="ui-button-border ui-button  ui-button-hover btn-reject" ng-click="onReject(report.id)">
                     <img src="/static/img/mod/report/24/btn-reject@2x.png" alt="">退回
                 </a>
-                <a href="javascript:void(0)" class="ui-button ui-button-hover btn-pass" ng-click="onPass(report.id)">
+                <a ng-if="has_drop" href="javascript:void(0)"  class="ui-button-border ui-button  ui-button-hover btn-drop" ng-click="onDrop(report.id)">
+                    <img src="/static/img/mod/report/24/btn-reject@2x.png" alt="">撤回
+                </a>
+                <a ng-if="has_pass" href="javascript:void(0)" class="ui-button ui-button-hover btn-pass" ng-click="onPass(report.id)">
                     <img src="/static/img/mod/report/24/btn-pass@2x.png" alt="">通过
+                </a>
+                <a ng-if="has_affirm" href="javascript:void(0)" class="btn-affirm ui-button-hover ui-button" ng-click="onAffirm($event)">
+                    <img src="/static/img/mod/report/24/btn-pass@2x.png" alt="">完成确认
                 </a>
             </div>
 

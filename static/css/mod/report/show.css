@@ -106,6 +106,7 @@
 	padding: 0 65px 30px 166px;
 	text-align: right;
 	font-size: 0;
+	height: 75px;
 }
 
 .mod-show-report .report-footer .ui-button-border {
@@ -127,7 +128,8 @@
 	height: 36px;
 }
 
-.mod-show-report .report-footer .btn-pass {
+.mod-show-report .report-footer .btn-pass,
+.mod-show-report .report-footer .btn-affirm {
 	width: 100px;
 	height: 45px;
 	border-radius: 6px;
@@ -249,6 +251,7 @@
 	padding: 0;
 	background: transparent;
 	border: none;
+	margin-top: 0;
 }
 
 .approvers.selected-members ul li {
@@ -340,7 +343,6 @@
 .approvers.available-members ul li.selected:hover .info .role {
 	color: #929292;
 }
- 
 
 .table-consumptions tfoot {
 	border: solid 1px #b9b9b9;

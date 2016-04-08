@@ -253,6 +253,61 @@
                         $scope.submitter = _.where(members.data.members, {
                             id: report['data']['uid']
                         })[0];
+
+                        $scope.buttons = (function (rs) {
+
+                            var buttons = {
+                                has_reject: false,
+                                has_modify: false,
+                                has_pass: false,
+                                has_drop: false,
+                                has_affirm: false
+                            }
+                            // 0:  待提交
+                            // 1:  待审批
+                            // 2:  已通过
+                            // 3:  退回
+                            // 4:  已完成
+                            // 7:  完成待确认
+                            // 8:  完成已确认
+                            var status = $scope.report.status;
+
+                            // 是否是自己
+                            var is_myself = window.__UID__ == $scope.report.uid;
+
+                            if(is_myself && ['0', '3'].indexOf(status)!=-1) {
+                                buttons['has_modify'] = true;
+                            }
+
+                            if(is_myself && ['1', '2'].indexOf(status)!=-1) {
+                                buttons['has_drop'] = true;
+                            }
+
+                            if(is_myself && ['7'].indexOf(status)!=-1) {
+                                buttons['has_affirm'] = true;
+                            }
+
+                            // 是否是审核人
+                            var is_approver = (function () {
+                                var receivers = $scope.receivers['managers'];
+                                for(var i=0;i<receivers.length;i++) {
+                                    var re = receivers[i];
+                                    if(window.__UID__ == re['id']) {
+                                        return true;
+                                    }
+                                }
+                                return false;
+                            })();
+
+                            if(is_approver && ['1'].indexOf(status)) {
+                                buttons['has_pass'] = true;
+                                buttons['has_reject'] = true;
+                                buttons['has_modify'] = true;
+                            }
+
+
+                        });
+
                         $scope.$apply();
                     });
                     $scope.dateFormat = function(date, formatter) {
