@@ -86,8 +86,6 @@ class Login extends REIM_Controller {
 
     public function index()
     {
-        phpinfo();
-        die();
         $jwt = $this->session->userdata('jwt');
         if ($jwt) {
             return redirect(base_url('items'));
