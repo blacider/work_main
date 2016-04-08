@@ -99,6 +99,7 @@
                                 title: '选择审批人',
                                 quickClose: true,
                                 autoDestroy: false,
+                                className: 'theme-grey',
                                 ok: function () {
                                     var selectedMembers = _.where($scope.members, {
                                         isSelected: true
@@ -145,6 +146,7 @@
                                 title: '选择消费',
                                 quickClose: true,
                                 autoDestroy: false,
+                                className: 'theme-grey',
                                 width: 500,
                                 ok: function () {
                                     var selectedConsumptions = _.where($scope.consumptions, {
@@ -185,21 +187,95 @@
 
                     var dialogAddBankSingleton = (function () {
                         var instance;
-                     
+
                         function createInstance() {
                              
                             var dialog = new CloudDialog({
                                 title: '添加银行卡',
                                 quickClose: true,
                                 autoDestroy: false,
+                                className: 'theme-grey',
                                 buttonAlign: 'right',
                                 ok: function () {
-                                    this.close();
+
+                                    var account = this.$el.find('.account input').val();
+                                    var cardNumber = this.$el.find('.card-number input').val();
+                                    var subbranch = this.$el.find('.subbranch input').val();
+
+                                    if(!account) {
+                                        this.$el.find('.account input').focus();
+                                        return false;
+                                    }
+                                    if(!cardNumber) {
+                                        this.$el.find('.card-number input').focus();
+                                        return false;
+                                    }
+
+                                    if(!$scope.selected_bankName) {
+                                        this.$el.find('.bank-db-list .text').click();
+                                        return false;
+                                    }
+
+                                    if($scope.selected_cardType===undefined) {
+                                        this.$el.find('.card-type .text').click();
+                                        return false;
+                                    }
+
+                                    if(!$scope.selected_province) {
+                                        this.$el.find('.province .text').click();
+                                        return false;
+                                    }
+
+                                    if(!$scope.selected_city) {
+                                        this.$el.find('.city .text').click();
+                                        return false;
+                                    }
+                                    if(!subbranch) {
+                                        this.$el.find('.subbranch input').focus();
+                                        return false;
+                                    }
+
+                                    var data = {
+                                        bank_name: $scope.selected_bankName,
+                                        bank_location: $scope.selected_province + $scope.selected_city,
+                                        cardno: cardNumber,
+                                        cardtype: $scope.selected_cardType,
+                                        account: account,
+                                        uid: window.__UID__,
+                                        subbranch: subbranch,
+                                        default: 0
+                                    };
+
+                                    var _this = this;
+                                    Utils.api('/bank', {
+                                        env: 'online',
+                                        method: 'post',
+                                        data: data
+                                    }).done(function (rs) {
+                                        if(rs['status']<=0) {
+                                            return;
+                                        }
+                                        _this.close();
+                                    });
                                 },
                                 cancel: function () {
                                     this.close();
+                                },
+                                onHide: function () {
+                                    this.$el.find('.account input').val('');
+                                    this.$el.find('.card-number input').val('');
+                                    this.$el.find('.subbranch input').val('');
+
+                                    this.$el.find('.bank-db-list .text').text('请选择银行').addClass('font-placeholder');
+                                    this.$el.find('.card-type .text').text('请选择卡类型').addClass('font-placeholder');
+                                    this.$el.find('.province .text').text('请选择省').addClass('font-placeholder');
+                                    this.$el.find('.city .text').text('请选择市').addClass('font-placeholder');
+
                                 }
                             });
+
+                            getBankDB();
+                            getProvince();
 
                             dialog.setContentWithElement($($element.find('.bank-form')));
                        
@@ -346,7 +422,6 @@
                         }
                     }, 1000);
 
-
                     $scope.formatMember = function (m) {
                         // {{levelMap[m.level_id]['name'] || '未知级别'}}－{{rankMap[m.rank_id]['name'] || '未知职位'}}
                         var rankMap = $scope.rankMap;
@@ -359,7 +434,6 @@
                             return m.d || rank['name'] || '';
                         }
                     };
-
 
                     $scope.makeBankDropdown = {
                         itemFormat: function (item) {
@@ -385,6 +459,91 @@
                                 $scope.bankFieldMap[id] = bank;
                             }, 100);
                         }
+                    };
+
+                    function getProvince() {
+                        return Utils.api("/static/province.json", {
+                            dataType: 'json'
+                        }).done(function (rs) {
+                            $scope.__PROVINCE_WITH_CITIES__ = rs;
+                            $scope.$apply();
+                        });
+                    };
+
+                    $scope.makeDropDownProvince = {
+                        onChange: function(oldValue, newValue, item, columnData) {
+                            $scope.selected_province = newValue;
+
+                            var cities = _.findWhere($scope.__PROVINCE_WITH_CITIES__, {
+                                name: newValue
+                            });
+
+                            $scope.__CITIES__ = cities['city'];
+
+                            $('.bank-form .city').find('.text').text('请选择城市').addClass('font-placeholder');
+                            $('.bank-form .city').find('.option-list .item:contains(' +newValue+ ')').addClass('active').siblings().removeClass('active');
+
+                            $scope.$apply();
+                        }
+                    };
+
+                    $scope.makeDropDownCity = {
+                        onChange: function(oldValue, newValue, item, columnData) {
+                            $scope.selected_city = newValue;
+                        }
+                    }
+
+                    $scope.makeDropDownBankTypes = {
+                        onChange: function(oldValue, newValue, item, columnData) {
+                            $scope.selected_cardType = $(item).data('value');
+                        }
+                    }
+                                    
+                    $scope.makeDropDownBankDB = {
+                        onChange: function(oldValue, newValue, item, columnData) {
+                            $scope.selected_bankName = newValue
+                        }
+                    }
+
+                    function getBankDB() {
+                        return Utils.api('/bank/get_banks/0', {
+                            dataType: 'json'
+                        }).done(function (rs) {
+                            if(rs['status']<0) {
+                                return show_notify('找不到数据');
+                            }
+                            var data = rs['data']['bank_dic'];
+                            $scope.BAND_DB = data;
+                            $scope.PREFIX_BANK_CODE = (function changeBankDataToMap() {
+                                var bankMap = {};
+                                for (var name in data) {
+                                    var prefixArray = data[name];
+                                    for (var i = 0; i < prefixArray.length; i++) {
+                                        bankMap[prefixArray[i]] = name;
+                                    }
+                                }
+                                return bankMap;
+                            })(data);
+                            $scope.$apply()
+                        });
+                    };
+
+                    $scope.bankCardTypes = [
+                        {value: 0, text: '借记卡'},
+                        {value: 1, text: '信用卡'},
+                        {value: 2, text: '其它'}
+                    ];
+                            
+                    $scope.onBankNumberChange = function () {
+                        var value = $scope.formBankNumber;
+                        if (value.length < 6) {
+                            return;
+                        }
+                        value = value.substring(0, 6);
+                        var name = $scope.PREFIX_BANK_CODE[value];
+                        if (name) {
+                            $('.bank-form .bank-db-list').find('.text').text(name).removeClass('font-placeholder');
+                        };
                     };
 
                     $scope.onAddBankCard = function (e) {

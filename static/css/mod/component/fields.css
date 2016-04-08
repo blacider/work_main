@@ -145,6 +145,9 @@
 }
 .field-select .text {
     display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .field-select .option-list {
 	padding: 10px 0;
@@ -189,6 +192,7 @@
 	color: #929292;
 	cursor: default;
 	font-size: 14px;
+	white-space: nowrap;
 }
 .field-select .option-list .item:hover {
 	background: #ff575b;

@@ -187,57 +187,69 @@
                 <div class="bank-form" style="width: 500px">
                     <div  class="field-item">
                         <label for="">持卡人</label>
-                        <div class="field-input">
+                        <div class="field-input account">
                             <input name="account" type="text" placeholder="">
                         </div>
                     </div>
                     <div  class="field-item">
                         <label for="">帐号</label>
-                        <div class="field-input ">
-                            <input name="account" type="text" placeholder="">
+                        <div class="field-input card-number" ng-keyup="onBankNumberChange($event)">
+                            <input name="account" type="text" placeholder="" ng-model="formBankNumber">
                         </div>
                     </div>
                     <div  class="field-item">
                         <label for="">开户行</label>
-                        <div class="field-input ">
-                            <input type="text" placeholder="">
+                        <div class="field-select field bank-db-list" ng-dropdown="makeDropDownBankDB" data="[]">
+                            <i class="icon">
+                                <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
+                            </i>
+                            <div class="text font-placeholder">请选择开户行</div>
+                            <div class="option-list none" style="">
+                                <div class="item" ng-repeat="(name, item) in BAND_DB" data-value="{{name}}">{{name}}</div>
+                            </div> 
                         </div>
                     </div>
                     <div  class="field-item">
                         <label for="">卡类型</label>
-                        <div class="field-select ">
+                        <div class="field-select field card-type" ng-dropdown="makeDropDownBankTypes" data="bankCardTypes">
                             <i class="icon">
                                 <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
                             </i>
-                            <input type="text" placeholder="">
+                            <div class="text font-placeholder">请选择选项</div>
+                            <div class="option-list none">
+                                <div class="item" ng-repeat="item in bankCardTypes" data-value="{{item.value}}">{{item.text}}</div>
+                            </div> 
                         </div>
                     </div>
                     <div class="field-item-wrap">
                         <div  class="field-item inline-item">
                             <label for="">开户地</label>
-                            <div class="field-select ">
+                            <div class="field-select field province" ng-dropdown="makeDropDownProvince" data="[]">
                                 <i class="icon">
                                     <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
                                 </i>
-                                <input type="text" placeholder="">
+                                <div class="text font-placeholder">请选择省</div>
+                                <div class="option-list none">
+                                    <div class="item" ng-repeat="item in __PROVINCE_WITH_CITIES__" data-value="{{item.name}}">{{item.name}}</div>
+                                </div> 
                             </div>
                         </div>
                         <div  class="field-item inline-item" style="padding-right: 0;padding-left: 5px;">
                             <label for="" style="height: 20px"></label>
-                            <div class="field-select ">
+                            <div class="field-select field city" ng-dropdown="makeDropDownCity" data="[]">
                                 <i class="icon">
                                     <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
                                 </i>
-                                <input type="text" placeholder="">
+                                <div class="text font-placeholder">请选择市</div>
+                                <div class="option-list none">
+                                    <div class="item" ng-repeat="item in __CITIES__" data-value="{{item}}">{{item}}</div>
+                                </div> 
                             </div>
                         </div>
                     </div>
                     <div  class="field-item">
                         <label for="">开户支行</label>
-                        <div class="field-select ">
-                            <i class="icon">
-                                <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
-                            </i>
+                        <div class="field-input subbranch">
                             <input type="text" placeholder="">
                         </div>
                     </div>
