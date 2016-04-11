@@ -207,8 +207,16 @@
                         <a href="javascript:void(0)" class="btn-search ui-button" ng-click="">搜索</a>
                     </div>
                     <ul>
-                        <li ng-repeat='m in members|filter:search' ng-init="m['show_info'] = formatMember(m)" ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m, $event)">
-                            <img ng-src="{{m.apath || '/static/img/mod/report/default-avatar.png'}}" alt="">
+                        <li ng-repeat='s in suggestionMembers' ng-class="{selected: s.isSelected}"  ng-click="onSelectMember(s, $event)">
+                            <img ng-src="{{s.apath || default_avatar }}" alt="">
+                            <div class="info">
+                                <p class="name">{{s.nickname}}</p>
+                                <p class="role">{{formatMember(s)}}</p>
+                            </div>
+                        </li>
+                        <li ng-if="suggestionMembers" class="line"></li>
+                       <li ng-repeat='m in members|filter:search' ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m, $event)">
+                            <img ng-src="{{m.apath || default_avatar }}" alt="">
                             <div class="info">
                                 <p class="name">{{m.nickname}}</p>
                                 <p class="role">{{formatMember(m)}}</p>

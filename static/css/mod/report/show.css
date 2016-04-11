@@ -191,6 +191,22 @@
 	border: solid 1px #f2f6fa;
 }
 
+.approvers ul .line {
+    display: block;
+    float: none;
+    width: auto;
+    border-bottom: solid 1px #f2f6fa;
+    margin: 10px;
+    margin-right: 47px;
+    height: 0;
+    clear: both;
+}
+
+.approvers ul.suggstion-memebers {
+	border-bottom: 	1px solid 1px #f2f6fa;
+	height: auto;
+}
+
 .approvers ul li {
 	float: left;
 	display: table;

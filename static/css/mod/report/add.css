@@ -82,6 +82,8 @@
 	margin: 0 30px;
 	padding: 0 65px 30px 166px;
 	text-align: right;
+	font-size: 0;
+	height: 75px;
 }
 
 .mod-add-report .report-footer .btn-cancel {
@@ -129,9 +131,22 @@
 	display: table-cell;
 	vertical-align: middle;
 	height: 40px;
+	position: relative;
+}
+.approvers .search-input .icon {
+	position: absolute;
+	left: 20px;
+	top: 0;
+	width: 24px;
+	height: 24px;
+}
+.approvers .search-input .icon img {
+	width: 24px;
+	height: 24px;
 }
 .approvers .search-input .field-input input {
 	height: 40px;
+	padding-left: 42px;
 }
 .approvers .search-input .btn-search {
 	width: 135px;
@@ -152,6 +167,7 @@
 	border-radius: 2px;
 	background-color: rgba(242, 246, 250, 0.2);
 	border: solid 1px #f2f6fa;
+	position: relative;
 }
 
 .approvers ul li {
@@ -161,6 +177,27 @@
 	width: 235px;
 	margin:0 55px 10px 0;
 	border-radius: 2px;
+}
+
+.approvers ul .empty-result {
+	left: 50%;
+	top: 50%;
+	position: absolute;
+	float: none;
+	margin-top: -40px;
+    margin-left: -58px;
+	text-align: center;
+}
+.approvers ul .empty-result p {
+	font-size: 14px;
+	letter-spacing: 0.6px;
+	color: #929292;
+	margin-top: 25px;
+}
+
+.approvers ul .empty-result img {
+	width: 100px;
+	height: auto;
 }
 .approvers ul li img {
 	display: inline-block;

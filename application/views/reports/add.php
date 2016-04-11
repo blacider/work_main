@@ -23,7 +23,7 @@
                     <div class="approvers selected-members">
                         <ul>
                             <li ng-repeat='m in selectedMembers'>
-                                <img ng-src="{{m.apath || '/static/img/mod/report/default-avatar.png'}}" alt="">
+                                <img ng-src="{{m.apath || default_avatar}}" alt="">
                                 <div class="info">
                                     <div class="name">{{m.nickname}}</div>
                                     <div class="role">{{formatMember(m)}}</div>
@@ -137,18 +137,26 @@
                 <div class="approvers available-members">
                     <div class="search-input">
                         <div class="field-input">
+                            <i class="icon left">
+                                <img src="/static/img/mod/report/24/icon-search@2x.png" alt="">
+                            </i>
                             <input type="text" placeholder="姓名／手机／邮箱" ng-model="search.$">
                         </div>
                         <a href="javascript:void(0)" class="btn-search ui-button" ng-click="">搜索</a>
                     </div>
                     <ul>
-                        <li ng-repeat='m in members|filter:search' ng-init="m['show_info'] = formatMember(m)" ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m, $event)">
-                            <img ng-src="{{m.apath || '/static/img/mod/report/default-avatar.png'}}" alt="">
+                        <li ng-repeat='m in (filteredMembers = (members|filter:search))' ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m, $event)">
+                            <img ng-src="{{m.apath || default_avatar}}" alt="">
                             <div class="info">
                                 <p class="name">{{m.nickname}}</p>
                                 <p class="role">{{formatMember(m)}}</p>
                             </div>
                         </li>
+                        <div class="empty-result" ng-if="filteredMembers.length==0">
+                            <img src="/static/img/mod/report/icon-no-member-result.png" alt="">
+                            <p ng-if="members.length==0">没有可选员工</p>
+                            <p ng-if="filteredMembers.length==0">没有搜索结果</p>
+                        </div>
                     </ul>
                 </div>
             </div>
