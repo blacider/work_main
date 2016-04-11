@@ -48,7 +48,10 @@
         min-width: 73px;
     }
     .col-2 {
-        min-width: 173px;
+        max-width: 63px;
+        min-width: 63px;
+        word-wrap: break-word; 
+        word-break: normal; 
     }
     .col-3 {
         min-width: 210px;
@@ -238,6 +241,7 @@ if(_levels_dic!='')
 
 $(document).ready(function(){
     $("#search-group").keyup(function() {
+        var ifInputValueIsEmpty = false;
         var groups = [];
         $.each(js_data[0]['additionalParameters']['children'], function(index, item) {
             groups.push(item);
@@ -268,11 +272,19 @@ $(document).ready(function(){
             });
         } else {
             treeData = js_data;
+            ifInputValueIsEmpty = true;
         }
         var treeDataSource = new DataSourceTree({
             data: treeData
         });
         loadTreeByDataSource(treeDataSource);
+        if (ifInputValueIsEmpty) {
+            //为空的时候，展开公司 folder
+            (function openTheFirstFolderOfTree() {
+                $($("#tree2").find(".tree-folder-header")[1]).click();
+            })();
+        }
+
     });
     if(error)
     {
@@ -471,16 +483,16 @@ function load_group(gid){
             _level = levels_dic[_level_id];
         }
                 _th = '<tr>'
-                    + '<td>' + item.client_id + '</a></td>'
-                    + '<td>' + item.nickname+ '</td>'
-                    + '<td>' + item.email + '</td>'
-                    + '<td>' + item.phone + '</td>'
-                    + '<td>' + item.d + '</td>'
-                    + '<td>' + _level + '</td>'
-                    + '<td>' + item.manager + '</td>'
-                    + '<td><a href="javascript:void(0)">' + _color + '</a>';
+                    + '<td class="col-1">' + item.client_id + '</a></td>'
+                    + '<td class="col-2">' + item.nickname+ '</td>'
+                    + '<td class="col-3">' + item.email + '</td>'
+                    + '<td class="col-4">' + item.phone + '</td>'
+                    + '<td class="col-5">' + item.d + '</td>'
+                    + '<td class="col-6">' + _level + '</td>'
+                    + '<td class="col-7">' + item.manager + '</td>'
+                    + '<td class="col-8"><a href="javascript:void(0)">' + _color + '</a>';
                     if(_admin == 1 || _admin == 3 || is_under_control){
-                    _th += '<td><a href="' + __BASE + '/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a>'
+                    _th += '<td class="col-9"><a href="' + __BASE + '/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a>'
                     if(gid > 0)
                     {
                              _th += '<a href="javascript:void(0)" class="remove_from_group" data-gid="'+gid+'" data-id="' + item.id + '"><i  style="margin-left:10px;"  class="ace-icon align-top bigger-125 blue fa fa-sign-out"></i></a>';
@@ -676,6 +688,9 @@ function bind_remove_from_group() {
                         data: js_data
                     });
                     loadTreeByDataSource(treeDataSource);
+                    (function openTheFirstFolderOfTree() {
+                        $($("#tree2").find(".tree-folder-header")[1]).click();
+                    })();
                 },
                 error: function() {}
             });
