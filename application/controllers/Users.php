@@ -89,6 +89,25 @@ class Users extends REIM_Controller
         $this->session->unset_userdata('jwt');
         redirect(base_url('login'));
     }
+
+    public function get_profile_data_with_property()
+    {
+        $property = $this->input->get('property');
+        $profile = $this->session->userdata('profile');
+        if($property) {
+            $pro_arr = explode('.', $property);
+        }
+
+        $len =  count($pro_arr);
+        $i = 0;
+        $data = $profile;
+        while($i<$len) {
+            $data = $data[$pro_arr[$i]];
+            $i++;
+        }
+
+        die(json_encode($data));
+    }
     
     public function profile() {
         

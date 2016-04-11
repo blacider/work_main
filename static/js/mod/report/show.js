@@ -151,7 +151,9 @@
                         }
                         if (itemType == '3') {
                             var date = new Date(parseInt(extrasItem.value));
-                            item.value = fecha.format(date, 'YYYY-MM-DD');
+                            try {
+                                item.value = fecha.format(date, 'YYYY-MM-DD');
+                            } catch(e) {}
                         }
                         return item;
                     };
@@ -311,9 +313,9 @@
                                 buttons['has_reject'] = true;
                                 buttons['has_modify'] = true;
                             }
-
-                        });
-
+                            buttons['has_pass'] = true;
+                            return buttons;
+                        })();
                         $scope.$apply();
                     });
                     $scope.dateFormat = function(date, formatter) {
@@ -371,7 +373,14 @@
                             $scope.$apply();
                         });
                     };
+
+
+
                     $scope.onReject = function(id) {
+
+                        
+                        
+
                         var dialog = new CloudDialog({
                             title: '退回理由',
                             quickClose: true,
@@ -384,6 +393,7 @@
                                     return show_notify('理由不能为空');
                                 }
                                 var _this = this;
+                                // Utils.api('report_finance_flow/deny/' + id, {
                                 // Utils.api('report_finance_flow/deny/' + id, {
                                 Utils.api('report/' + id, {
                                     method: 'put',
@@ -406,6 +416,40 @@
                     };
                     // 首次创建，其次保存
                     $scope.onPass = function(id) {
+                        Utils.api("/users/get_profile_data_with_property", {
+                            data: {
+                                property: 'group.config'
+                            }
+                        }).done(function(rs) {
+                            var config = JSON.parse(rs || "{}");
+                            var isclose_directly = config['close_directly'];
+                        });
+
+                        Utils.api("reports/check_permission", {
+                            data: {
+                                rid:_id
+                            }
+                        }).done(function (rs) {
+                            if (rs['status'] <= 0) {
+                                return;
+                            }
+                            var data = rs['data'];
+                            if (data['data'].complete == 0) {
+                                chose_others_zero_audit(getData);
+                                // 将报销单提交给
+                            } else {
+                                $('#rid_').val(_id);
+                                $('#status_').val(2);
+                                if(close_directly == 0) {
+                                    $('#modal_next_').modal('show');
+                                    // 是否结束报销单
+                                } else {
+                                    // 是否结束
+                                    $('#permit_form').submit();
+                                }
+                            }
+                        })
+                        return
                         var dialog = dialogMemberSingleton.getInstance();
                         dialog.showModal();
                     };

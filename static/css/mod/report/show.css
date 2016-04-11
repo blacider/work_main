@@ -144,6 +144,7 @@
 }
 
 .mod-show-report .report-footer .btn-update img,
+.mod-show-report .report-footer .btn-drop img,
 .mod-show-report .report-footer .btn-reject img {
 	width: 24px;
 	height: 24px;
