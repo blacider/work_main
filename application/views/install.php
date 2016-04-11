@@ -39,10 +39,6 @@
         }, 100)
       }
     </script>
-<script>
-    var __BASEURL = "<?php echo base_url(); ?>";
-    var platform = "<?php echo $platform; ?>";
-</script>
 </head>
 <body>
   <div id="winxin">
@@ -63,28 +59,23 @@
         <div style="width:100%">
             <img style="width:100%" src="/static/img/text_title_42@2x.png">
         </div>
-      <?php
-        if($platform == 'android') {
-      ?>
-      <a data-href="<?php echo $url ?>" id="download" class="android" >
-        <div class="content">
-          <div class="android android-img">下载安装</div>
-        </div>
+      <!-- android -->
+      <a data-href="<?php echo $android_url ?>" id="download" class="android" >
+        下载安装
       </a>
-      <?php } else if($platform =='ios') { ?>
-      <a data-href="<?php echo $url ?>" id="download" class="ios" >
-        <div class="content">
-          <div class="ios ios-img">App Store 下载</div>
-        </div>
+
+      <!-- ios -->
+      <a data-href="<?php echo $ios_url ?>" id="download" class="ios">
+        App Store 下载
       </a>
-      <?php } else { ?>
+      
+      <!-- pc -->
       <div id="download pc">
-            <div class="pc">
-                <img src="/static/img/download.png" style="width:160px;height:160px;">
+          <div class="pc">
+            <img src="/static/img/download.png" style="width:160px;height:160px;">
             <div class="">扫描即可下载 iOS、Android 客户端</div>
         </div>
       </div>
-      <?php } ?>
     </div>
   </div>
   <div class="footer">
@@ -134,6 +125,9 @@ var _hmt = _hmt || [];
   };
   _hmt.push('_trackEvent', 'install_page_fr', getParameterByName('fr'));
   _hmt.push(['_setCustomVar', 1, 'install_page_fr', getParameterByName('fr'), 1]);
+</script>
+<script>
+  
 </script>
 </body>
 </html>

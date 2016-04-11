@@ -3,6 +3,12 @@ function isEmail( str ){
     if(myReg.test(str)) return true; 
     return false; 
 }
+
+function getPlatform() {
+	var ua =detect.parse(navigator.userAgent);
+	return ua['os']['family']
+}
+
 function check() {
 	var errorMsg = "";
 	var nameMsg = $('#name').val();
@@ -39,7 +45,7 @@ function ajaxSuccess() {
 	$('p')[0].innerHTML = "你已经申请加入";
 	$('p')[1].innerHTML = "请下载「云报销」，用当前的微信账号登录，以便及时获得申请结果。";
 	$('#download').css('display', 'block');
-	if (isIos()) {
+	if (getPlatform() == 'iOS') {
 		$('.android').css('display', 'none');
 		$('.ios').css('display', 'block');
 	}
@@ -53,47 +59,23 @@ function isWeixin(){
 		return false;
 	}
 }
-function isAndroid(){
-	var ua = navigator.userAgent.toLowerCase();
-	if(ua.match(/android/i)=="android") {
-		return true;
- 	} else {
-		return false;
-	}
-}
-function isIos() {
-	var u = navigator.userAgent, app = navigator.appVersion;
-	var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-	if (isiOS) return true;
-	else return false;
-};
-function download(e) {
-	
-}
+
 $(document).ready(function() {
 	/* Act on the event */
 	$('.contain').css('height', String(document.body.scrollHeight));
 	/*单页面所做的改变*/
-	if (isIos()) {
+	var platform = getPlatform();
+	if (platform == 'iOS') {
         //window.location.href = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/static/reim.111.plist';
-        $('.android').hide();
-		$('.pc').hide();
-		$('#download').css('display', 'block');
-        $('.ios').show();
+        $('.android, .pc').hide();
 		$('.ios').css('display', 'block');
-        $('.ios').show();
-	} else if(isAndroid()) {
-        //window.location.href = 'https://files-cloudbaoxiao-com.alikunlun.com/release/android/1.1.1/reim.apk';
-		$('#download ').css('display', 'block');
-        $('.android').show();
+        
+	} else if(platform == 'Android') {
+        $('.ios, .pc').hide();
 		$('.android').css('display', 'block');
-		$('.ios').css('display', 'none');
-		$('.pc').css('display', 'none');
     } else {
-        $('.download').hide();
-		$('.android').hide();
-		$('.ios').hide();
-		$('.pc').show();
+        $('.android, .ios').hide();
+		$('.pc').css('display', 'block');
     }
 	$('body').scrollTop(0);
 
@@ -110,7 +92,7 @@ $(document).ready(function() {
 		        }
 		    },50);
 		} else {
-			if(isIos()) {
+			if(getPlatform() == 'iOS') {
 	            setTimeout(function (argument) {
 					window.location.href = href;
 				}, 100)
