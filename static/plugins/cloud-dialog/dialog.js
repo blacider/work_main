@@ -56,6 +56,7 @@
 			onDestroy: function  (argument) {
 				
 			},
+			
 			okDisabled: false,
 			okValue: '确定',
 			cancelDisabled: false,
@@ -179,9 +180,7 @@
 		},
 		_bindEvents_: function  () {
 			var _self = this;
-			this.$el.on('click', function  (e) {
-				e.stopPropagation();
-			});
+
 			this.$el.on('click', '.close', function  (e) {
 				if(_self.options['autoDestroy']) {
 					_self.close(true);
@@ -202,6 +201,9 @@
 
 			// can quick close
 			this.$mask.on('click', function  (e) {
+				if(!$(e.target).hasClass('cloud-bx-dialog-mask')) {
+					return;
+				}
 				if(_self.options.quickClose) {
 					_self.$el.find('.close').trigger('click');
 				}
