@@ -13,22 +13,12 @@ class Install extends REIM_Controller {
 
 
     public function index(){
-        $info = $this->app_model->find_online(0);
-        $platform = 'ios';
-        if ($this->agent->is_mobile('ipad') || $this->agent->is_mobile('iphone'))
-        {
-            $url = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/pub/xreim';
-            $platform = 'ios';
-        }
-        else if($this->agent->is_mobile('android'))
-        {
-            $info = $this->app_model->find_online(1);
-            $url = "http://d.yunbaoxiao.com/android/" . $info['version'] . "/reim.apk";
-            $platform = 'android';
-        } else { //pc
-            $url = '';
-            $platform = 'pc';
-        }
+        
+        $ios_url = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/pub/xreim';
+        
+        $android_info = $this->app_model->find_online(1);
+        $android_url = "http://d.yunbaoxiao.com/android/" . $android_info['version'] . "/reim.apk";
+        
 
         $attacker = $this->agent->agent_string();
         // $attacker = "test start; ;JianKongBao Monitor test end";
@@ -38,9 +28,8 @@ class Install extends REIM_Controller {
         }
         $this->load->view('install', 
             array(
-                'url' => $url,
-                'info' => $info,
-                'platform' => $platform,
+                'ios_url' => $ios_url,
+                'android_url' => $android_url,
                 'has_attacker' => $hasAttacker
             )
         );

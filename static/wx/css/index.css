@@ -139,11 +139,10 @@ input[type="text"] {
 	cursor:pointer;
 	background-color:#ff7075;
 }
-.android-img {
+.android {
 	background-position: 31px;
 	position: relative;
 	text-align: center;
-	left: 20px;
 	font-size: 21px;
 	background-repeat: no-repeat;
 	background-image: url(../img/explore-app.png); 
@@ -154,6 +153,7 @@ input[type="text"] {
 }
 .pc {
 	text-align: center;
+	display: none;
 }
 .pc img {
 	display: block;
@@ -178,11 +178,10 @@ input[type="text"] {
     background-image: -ms-image-set(url(../img/download.png) 1x,url(../img/download@2x.png) 2x);
 
 }
-.ios-img {
+.ios {
     background-position: 18px;
 	text-align: center;
 	position: relative;
-	left: 18px;
 	font-size: 19px;
 	background-repeat: no-repeat;
 	background-image: url(../img/apple.png); 
@@ -193,7 +192,7 @@ input[type="text"] {
 
 }
 .android {
-	display: block;
+	display: none;
 }
 .ios {
 	display: none;
