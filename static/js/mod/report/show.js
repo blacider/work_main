@@ -174,21 +174,27 @@
 
                         function createInstance() {
                             var dialog = new CloudDialog({
-                                title: '选择审批人',
+                                title: '将报销单提交给',
                                 quickClose: true,
                                 autoDestroy: false,
                                 className: 'theme-grey',
                                 ok: function() {
-                                    var receivers = this.$el.find('select').val();
                                     var _this = this;
-                                    // Utils.api('report_finance_flow/deny/' + id, {
+                                    var receivers = _.where($scope.members, {
+                                        isSelected: true
+                                    });
+
+                                    var receivers_id = _.map(receivers, function(item) {
+                                        return item.id;
+                                    });
+                                    
                                     Utils.api('report/' + report_id, {
                                         method: 'put',
                                         env: 'online',
                                         data: {
                                             status: 2,
                                             comment: '',
-                                            manager_id: receivers
+                                            manager_id: receivers_id.join(',')
                                         }
                                     }).done(function(rs) {
                                         if (rs['status'] <= 0) {
@@ -374,13 +380,12 @@
                         });
                     };
 
+                    $scope.onSelectMember = function (item, e) {
+                        item.isSelected = !item.isSelected;
+                    };
 
 
                     $scope.onReject = function(id) {
-
-                        
-                        
-
                         var dialog = new CloudDialog({
                             title: '退回理由',
                             quickClose: true,
@@ -393,8 +398,6 @@
                                     return show_notify('理由不能为空');
                                 }
                                 var _this = this;
-                                // Utils.api('report_finance_flow/deny/' + id, {
-                                // Utils.api('report_finance_flow/deny/' + id, {
                                 Utils.api('report/' + id, {
                                     method: 'put',
                                     env: 'online',
@@ -414,44 +417,127 @@
                         });
                         dialog.showModal();
                     };
+
+                    $scope.onDrop = function(id) {
+                        var dialog = new CloudDialog({
+                            quickClose: true,
+                            content: '确认要撤回报销单吗？',
+                            className: 'theme-grey',
+                            ok: function() {
+                                Utils.api("/revoke/" + report_id, {
+                                    env: 'online'
+                                }).done(function(rs) {
+                                    if (rs['status'] <= 0) {
+                                        return show_notify('操作失败');
+                                    }
+                                    window.location.reload()
+                                });
+                            }
+                        });
+                        dialog.showModal();
+                    };
+
+                    $scope.onAffirm = function(id) {
+                        var dialog = new CloudDialog({
+                            quickClose: true,
+                            content: '确认已经收款?',
+                            ok: function() {
+                                Utils.api("/success", {
+                                    env: 'online',
+                                    data: {
+                                        act: confirm,
+                                        status: 2,
+                                        rids: [report_id]
+                                    }
+                                }).done(function(rs) {
+                                    if (rs['status'] <= 0) {
+                                        return show_notify('操作失败');
+                                    }
+                                    window.location.reload()
+                                });
+                            }
+                        });
+                        dialog.showModal();
+                    };
+
                     // 首次创建，其次保存
                     $scope.onPass = function(id) {
-                        Utils.api("/users/get_profile_data_with_property", {
-                            data: {
-                                property: 'group.config'
-                            }
-                        }).done(function(rs) {
-                            var config = JSON.parse(rs || "{}");
-                            var isclose_directly = config['close_directly'];
-                        });
-
-                        Utils.api("reports/check_permission", {
-                            data: {
-                                rid:_id
-                            }
-                        }).done(function (rs) {
+                        $.when(
+                            Utils.api("/users/get_profile_data_with_property", {
+                                data: {
+                                    property: 'group.config'
+                                }
+                            }),
+                            Utils.api("reports/check_permission", {
+                                data: {
+                                    rid: id
+                                }
+                            })
+                        ).done(function (config, rs) {
+                            
+                            var config = JSON.parse(config || "{}");
                             if (rs['status'] <= 0) {
                                 return;
                             }
                             var data = rs['data'];
-                            if (data['data'].complete == 0) {
-                                chose_others_zero_audit(getData);
+                            if (data.complete == 0) {
                                 // 将报销单提交给
+                                chose_others_zero_audit(getData);
                             } else {
-                                $('#rid_').val(_id);
-                                $('#status_').val(2);
-                                if(close_directly == 0) {
-                                    $('#modal_next_').modal('show');
+                                var canSelect = config['close_directly']== '0';
+                                if(canSelect) {
                                     // 是否结束报销单
+                                    var dialog = dialogMemberSingleton.getInstance();
+                                    dialog.showModal();
+
+                                    var suggestionMembers = _.filter($scope.members, function(item) {
+                                        return _.contains(data['suggestion'], ~~item.id);
+                                    });
+
+                                    _.each(suggestionMembers, function(item) {
+                                        item.isSelected = true;
+                                    });
+
+                                    $scope.suggestionMembers = suggestionMembers;
+
+                                    $scope.$apply();
+
                                 } else {
                                     // 是否结束
-                                    $('#permit_form').submit();
+                                    var dialog = new CloudDialog({
+                                        title: '是否结束报销单',
+                                        quickClose: true,
+                                        autoDestroy: false,
+                                        content: '按公司规定发送报销单',
+                                        okValue: '按公司规定发送报销单',
+                                        ok: function() {
+ 
+                                            
+                                            Utils.api('report/' + report_id, {
+                                                method: 'put',
+                                                env: 'online',
+                                                data: {
+                                                    status: 2,
+                                                    comment: '',
+                                                    manager_id: receivers_id.join(',')
+                                                }
+                                            }).done(function(rs) {
+                                                if (rs['status'] <= 0) {
+                                                    return show_notify('操作失败');
+                                                }
+                                                _this.close();
+                                                show_notify('已通过');
+                                            });
+                                        },
+                                        cancel: '按我的选择发送报销单',
+
+                                        onShow: function() {}
+                                    }); 
                                 }
                             }
                         })
                         return
-                        var dialog = dialogMemberSingleton.getInstance();
-                        dialog.showModal();
+                        
                     };
                 }
             ]);

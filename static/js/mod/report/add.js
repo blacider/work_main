@@ -22,8 +22,11 @@
                     $scope.default_bank = null;
                     $scope.template = null;
                     $scope.report_status = 0;
+                    $scope.default_avatar = '/static/img/mod/report/default-avatar.png';
 
-                    $scope.originalReport = {};
+                    $scope.originalReport = {
+                        receivers: {}
+                    }
 
                     function getTemplateData(id) {
                         return Utils.api('/template/get_template/'+id, {}).done(function (rs) {
@@ -444,7 +447,7 @@
                             }
                             return {
                                 value: item['id'],
-                                text: '尾号' + item.cardno.substr(-4)  + '-' + item.bankname || '--'
+                                text:  ['尾号' + item.cardno.substr(-4), '-', item.bankname].join('') || '--'
                             }
                         },
                         onChange: function(oldValue, newValue, item, columnData) {
@@ -674,12 +677,13 @@
                         }  
                     };
 
+                    // 特别注意当extras 为空的时候怎么同步数据
                     function syncDatatToView() {;
                         $scope.title = $scope.originalReport['title'];
-                        $scope.selectedConsumptions = angular.copy($scope.originalReport['items']);
-                        $scope.selectedMembers = angular.copy($scope.originalReport['receivers']['managers']);
+                        $scope.selectedConsumptions = angular.copy($scope.originalReport['items']) || [];
+                        $scope.selectedMembers = angular.copy($scope.originalReport['receivers']['managers']) || [];
 
-                        var oldConsumptions = angular.copy($scope.originalReport['receivers']['managers']);
+                        var oldConsumptions = angular.copy($scope.selectedMembers);
                         for(var i=0;i<oldConsumptions.length;i++) {
                             var item = oldConsumptions[i];
                             item.isSelected = true;
@@ -699,34 +703,52 @@
                         }
                         (function (extras) {
                             extras = JSON.parse(extras || '[]');
-                            for(var i=0;i<extras.length;i++) {
-                                var item = extras[i];
-                                var itemType = item.type+'';
-                                var id = item.id;
+                            // 通过 field来遍历
+                            var extrasMap = arrayToMapWithKey('id', extras);
+                            $element.find('.field-item-list .field-item').map(function (i, item) {
+                                var itemType = $(item).data('type')+'';
+                                var id = $(item).data('id');
+                                var itemData = extrasMap[id];
 
                                 // 更新DOM
                                 var $input = $('.field-item[data-id="' +id+ '"]');
                                 if(itemType=='1') {
-                                    $input.find('input').val(item.value);
+                                    if(!itemData) {
+                                        $input.find('input').val('');
+                                        return
+                                    }
+                                    $input.find('input').val(itemData.value);
                                 }
                                 if(itemType=='2') {
-                                    $input.find('.text').text(item.value).removeClass('font-placeholder');
+                                    if(!itemData) {
+                                        $input.find('.text').text('请选择').addClass('font-placeholder');
+                                        return
+                                    }
+                                    $input.find('.text').text(itemData.value).removeClass('font-placeholder');
                                 }
                                 if(itemType=='3') {
-                                    var date =  new Date(parseInt(item.value));
-                                    $input.find('input').val(fecha.format(date, 'YYYY-MM-DD'));
+                                    try {
+                                        var date =  new Date(parseInt(itemData.value));
+                                        $input.find('input').val(fecha.format(date, 'YYYY-MM-DD'));
+                                    } catch(e) {
+                                        $input.find('input').val('');
+                                    }
                                 }
                                 if(itemType=='4') {
-                                    var bankData = JSON.parse(item.value);
+                                    if(!itemData) {
+                                        $input.find('.text').text('请选择').addClass('font-placeholder');
+                                        return
+                                    }
+                                    var bankData = JSON.parse(itemData.value);
                                     bankData = findOneInBanks(bankData.cardno, $scope.banks, 'cardno');
                                     $scope.bankFieldMap[id] = bankData;
                                     $input.find('.text').text($scope.makeBankDropdown.itemFormat(bankData)['text']);
                                 }
-                            }
+                            });
                         })($scope.originalReport.extras);
                     };
 
-                    function syncDataModel(data) {
+                    function syncDataModel() {
                         getReportData($scope.__report_id__).done(function (rs) {
                             if(rs['status']<=0) {
                                 return ;
@@ -756,7 +778,7 @@
                                 data: $.extend({}, data, {id: $scope.__report_id__})
                             }).done(function (rs) {
                                 if(rs['status']<=0) {
-                                    return show_notify(rs['msg']);
+                                    return show_notify(rs['data']['msg']);
                                 }
                                 show_notify('保存成功');
                                 $scope.report_status = 1;
@@ -770,7 +792,7 @@
                             data: data
                         }).done(function (rs) {
                             if(rs['status']<=0) {
-                                return show_notify(rs['msg']);
+                                return show_notify(rs['data']['msg']);
                             }
                             show_notify('保存成功');
                             $scope.__report_id__ = rs['data']['id'];
@@ -794,11 +816,9 @@
                                 data: $.extend({}, data, {id: $scope.__report_id__})
                             }).done(function (rs) {
                                 if(rs['status']<=0) {
-                                    return show_notify(rs['msg']);
+                                    return show_notify(rs['data']['msg']);
                                 }
-                                show_notify('提交成功');
-                                $scope.report_status = 1;
-                                syncDataModel();
+                                window.location.href = "/reports";
 
                             });
                             return
@@ -809,10 +829,10 @@
                             data: data,
                         }).done(function (rs) {
                             if(rs['status']<=0) {
-                                return show_notify(rs['msg']);
+                                return show_notify(rs['data']['msg']);
                             }
                             show_notify('提交成功');
-                            syncDataModel();
+                            window.location.href = "/reports";
                         });
                     };
 
