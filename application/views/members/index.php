@@ -281,7 +281,7 @@ $(document).ready(function(){
         if (ifInputValueIsEmpty) {
             //为空的时候，展开公司 folder
             (function openTheFirstFolderOfTree() {
-                $($("#tree2").find(".tree-folder-header")[1]).click();
+                $("#tree2").find(".tree-folder-header").eq(1).click()
             })();
         }
 
@@ -688,9 +688,9 @@ function bind_remove_from_group() {
                         data: js_data
                     });
                     loadTreeByDataSource(treeDataSource);
-                    if ("<?php echo $search; ?>" == "") {
+                    if ($("#search").val() == "") {
                         (function openTheFirstFolderOfTree() {
-                            $($("#tree2").find(".tree-folder-header")[1]).click();
+                            $("#tree2").find(".tree-folder-header").eq(1).click();
                         })();
                     }
                 },
