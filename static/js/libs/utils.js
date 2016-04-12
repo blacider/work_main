@@ -67,8 +67,10 @@
 				dataType: 'json',
 				data: {},
 				onError: function(rs) {
-					var msg = rs['msg'] || JSON.stringify(rs);
-					console.error(msg);
+					try {
+						var msg = rs['data']['msg'] || JSON.stringify(rs);
+						console.error(msg);
+					} catch(e) {}
 				}
 			}, opts);
 

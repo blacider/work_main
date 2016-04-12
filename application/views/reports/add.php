@@ -22,6 +22,14 @@
                     <div class="field-label">审批人</div>
                     <div class="approvers selected-members">
                         <ul>
+                            <li ng-if='superior'>
+                                <img ng-src="{{superior.apath || default_avatar}}" alt="">
+                                <div class="info">
+                                    <div class="name">{{superior.nickname}}</div>
+                                    <div class="role">{{formatMember(superior)}}</div>
+                                </div>
+                                <p class="btn-remove" ng-click="onRemoveApprover(m, $event)"></p>
+                            </li>
                             <li ng-repeat='m in selectedMembers'>
                                 <img ng-src="{{m.apath || default_avatar}}" alt="">
                                 <div class="info">
@@ -31,7 +39,7 @@
                                 <p class="btn-remove" ng-click="onRemoveApprover(m, $event)"></p>
                             </li>
                             <li class="btn-append">
-                                <a href="javascript:void(0)" class="btn-add-add-approvers ui-button" ng-click="onAddApprovers($event)"><img src="/static/img/mod/report/36/btn-add-approvers@2x.png" alt="">选择</a>
+                                <a href="javascript:void(0)" class="btn-add-add-approvers ui-button" ng-click="onAddApprovers($event)"><img src="/static/img/mod/report/36/btn-add-approvers@2x.png" alt="">选择审批人</a>
                             </li>
                         </ul>
                     </div>
@@ -140,16 +148,15 @@
                             <i class="icon left">
                                 <img src="/static/img/mod/report/24/icon-search@2x.png" alt="">
                             </i>
-                            <input type="text" placeholder="姓名／手机／邮箱" ng-model="search.$">
+                            <input type="text" placeholder="姓名／手机／邮箱" ng-model="txtSearchText">
                         </div>
-                        <a href="javascript:void(0)" class="btn-search ui-button" ng-click="">搜索</a>
                     </div>
                     <ul>
-                        <li ng-repeat='m in (filteredMembers = (members|filter:search))' ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m, $event)">
+                        <li ng-repeat='m in (filteredMembers = (members|filter:searchImmediate(txtSearchText)))' ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m, $event)">
                             <img ng-src="{{m.apath || default_avatar}}" alt="">
                             <div class="info">
                                 <p class="name">{{m.nickname}}</p>
-                                <p class="role">{{formatMember(m)}}</p>
+                                <p class="role" ng-if="m.multi_property_matcher">{{m.multi_property_matcher}}</p>
                             </div>
                         </li>
                         <div class="empty-result" ng-if="filteredMembers.length==0">
@@ -165,6 +172,16 @@
             <!-- /*<div style="display: none;">*/ -->
             <div style="display: none;">
                 <div class="consumptions available-consumptions">
+                    <div class="head">
+                        <a class="btn-select" ng-click="onSelectAllConsumptions($event)" ng-if="has_select_consumption">
+                            <img src="/static/img/mod/report/24/btn-select@2x.png" alt="">
+                            全选
+                        </a>
+                        <a class="btn-select" ng-click="onDeselectAllConsumptions($event)" ng-if="has_deselect_consumption">
+                            <img src="/static/img/mod/report/24/btn-deselect@2x.png" alt="">
+                            取消选中
+                        </a>
+                    </div>
                     <div class="moni-table">
                         <div class="t-head">
                             <div class="t-row">

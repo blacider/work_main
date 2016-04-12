@@ -115,6 +115,9 @@
 	background-color: #ff575b;
 	border-bottom: solid 3px #e94b4f;
 }
+.mod-add-report .report-footer .btn-submit:hover {
+	background: #e94b4f;	
+}
 
 .approvers {
 	width: 700px;
@@ -228,6 +231,11 @@
 	color: #929292;
 }
 
+.approvers ul li .info .role span {
+	background: yellow;
+	color: gray;
+}
+
 .approvers ul li:hover {
 	background: #465461;
 }
@@ -307,7 +315,7 @@
 	float: left;
     text-align: left;
     height: 45px;
-    width: 100px;
+    width: 140px;
     margin-top: 3px;
 }
 .approvers.selected-members ul li:hover {
@@ -418,6 +426,27 @@
 .consumptions {
 
 }
+
+.consumptions .head {
+	text-align: right;
+}
+.consumptions .head .btn-select {
+	height: 24px;
+	line-height: 24px;
+	display: inline-block;
+	text-decoration: none;
+	color: #7a8590;
+	font-size: 14px;
+}
+.consumptions .head .btn-select:hover {
+	text-decoration: none;
+}
+.consumptions .head .btn-select img {
+	width: 24px;
+	height: 24px;
+	margin-top: -3px;
+}
+
 .consumptions table {
 	width: 100%;
 	text-align: center;

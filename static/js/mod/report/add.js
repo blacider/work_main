@@ -1,13 +1,7 @@
 // subl static/css/mod/report/add.css static/js/mod/report/add.js application/controllers/Reports.php:17 application/controllers/Reports.php
 (function() {
     
-    var _fieldCountLimit_ = 6;
-    var _radioOptionsCountLimit_ = 100;
     var _templateNameLengthLimit_ = 10;
-    var _templateFieldLengthLimit_ = 8;
-    var _templateTotalLimit_ = 10;
-    var _templateTypes_ = null;
-    var _ON_TEMPLATE_ADD_ANIMATION_ = 'animated flash';
 
     return {
         initialize: function() {
@@ -48,8 +42,20 @@
                         });
                     };
 
+                    function getSuperior() {
+                        return Utils.api('/users/get_profile_data_with_property/', {
+                            data: {
+                                property: 'manager_id'
+                            }
+                        }).done(function (rs) {
+                            if(rs['status']<0) {
+                                return show_notify('找不到数据');
+                            }
+                        });
+                    };
+
                     function getReportData(id) {
-                        return Utils.api('/reports/detail/'+id, {}).done(function (rs) {
+                        return Utils.api('/users/detail/'+id, {}).done(function (rs) {
                             if(rs['status']<0) {
                                 return show_notify('找不到数据');
                             }
@@ -114,6 +120,7 @@
                                 title: '选择审批人',
                                 quickClose: true,
                                 autoDestroy: false,
+                                buttonAlign: 'right',
                                 className: 'theme-grey',
                                 ok: function () {
                                     var selectedMembers = _.where($scope.members, {
@@ -134,7 +141,12 @@
                                             isSelected: true
                                         })
                                     }
-                                }
+                                },
+                                okIconUrl: '/static/img/mod/report/24/btn-ok@2x.png',
+                                cancel: function () {
+                                    this.close()
+                                },
+                                cancelIconUrl: '/static/img/mod/report/24/btn-cancel@2x.png',
                             });
 
                             dialog.setContentWithElement($($element.find('.available-members')));
@@ -161,6 +173,7 @@
                                 title: '选择消费',
                                 quickClose: true,
                                 autoDestroy: false,
+                                buttonAlign: 'right',
                                 className: 'theme-grey',
                                 width: 500,
                                 ok: function () {
@@ -182,7 +195,22 @@
                                             isSelected: true
                                         })
                                     }
-                                }
+                                },
+                                buttons: [
+                                    {
+                                        align: 'left',
+                                        text: '新建消费',
+                                        iconUrl: '/static/img/mod/report/24/btn-consumption@2x.png',
+                                        handler: function () {
+                                            window.location =  '/items/newitem';
+                                        }
+                                    }
+                                ],
+                                okIconUrl: '/static/img/mod/report/24/btn-ok@2x.png',
+                                cancel: function () {
+                                    this.close()
+                                },
+                                cancelIconUrl: '/static/img/mod/report/24/btn-cancel@2x.png',
                             });
 
                             dialog.setContentWithElement($($element.find('.available-consumptions')));
@@ -347,19 +375,22 @@
                             getTemplateData($element.find('.report').data('tid')),
                             getAvailableConsumptions(),
                             getMembers(),
-                            getCurrentUserBanks()
+                            getCurrentUserBanks(),
+                            getSuperior()
                         ).done(function () {
                             callback.apply(null, arguments);
                             // 这种类型不好处理，在这里收集它们——当其改变的数值的时候
                         });
                     };
                     // main entry
-                    getPageData(function (template, consumptions, members, banks) {
+                    getPageData(function (template, consumptions, members, banks, superior_id) {
                         $scope.isLoaded = true;
 
                         if (template['status'] <= 0 || banks['status'] <= 0 || consumptions['status']<=0 || members['status']<=0) {
                             return;
                         }
+
+                        
 
                         $scope.banks = banks['banks'] || [];
                         $scope.default_bank = findOneInBanks(banks['default_bank'], banks['banks']);
@@ -380,6 +411,11 @@
                         $scope.rankMap = arrayToMapWithKey('id', members['rankArray']);
 
                         $scope.levelMap = arrayToMapWithKey('id', members['levelArray']);
+
+                        $scope.superior = _.find($scope.members, {
+                            id: superior_id
+                        });
+
 
                         $scope.$apply();
                         
@@ -415,10 +451,36 @@
                         })();
                     });
 
+                    $scope.searchImmediate = function (keywords) {
+                        return function( item ) {
+
+                            delete item.multi_property_matcher;
+
+                            if(!keywords) {
+                                return true;
+                            }
+
+                            if(item.nickname.indexOf(keywords)>=0) {
+                                item.multi_property_matcher = 0
+                                return true;
+                            }
+                            if(item.phone.indexOf(keywords)>=0) {
+                                item.multi_property_matcher = item.phone
+                                return true;
+                            }
+                            if(item.email.indexOf(keywords)>=0) {
+                                item.multi_property_matcher = item.email
+                                return true;
+                            }
+
+                            return false;
+                        };
+                    };
+
                     $scope.onTextLengthChange2 = _.debounce(function(e) {
                         var $input = $(e.currentTarget);
                         var str = $input.val();
-                        if(str.length>=_templateTotalLimit_) {
+                        if(str.length>=_templateNameLengthLimit_) {
                             $timeout(function() {
                                 str = str.substr(0, _templateNameLengthLimit_)
                                 $input.val(str);
@@ -589,8 +651,21 @@
                         item.isSelected = !item.isSelected;
                     };
 
+                    $scope.has_select_consumption = true;
+                    $scope.has_deselect_consumption = true
+
                     $scope.onSelectConsumption = function (item, e) {
                         item.isSelected = !item.isSelected;
+                    };
+                    $scope.onSelectAllConsumptions = function (e) {
+                        _.each($scope.consumptions, function (item) {
+                            item.isSelected = true;
+                        });
+                    };
+                    $scope.onDeselectAllConsumptions = function (e) {
+                        _.each($scope.consumptions, function (item) {
+                            item.isSelected = false;
+                        });
                     };
 
                     $scope.onAddConsumptions = function (e) {

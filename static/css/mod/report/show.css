@@ -140,7 +140,10 @@
 	background-color: #ff575b;
 	border-bottom: solid 3px #e94b4f;
 }
-
+.mod-show-report .report-footer .btn-pass:hover,
+.mod-show-report .report-footer .btn-affirm:hover {
+	background: #e94b4f
+}
 .mod-show-report .report-footer .btn-update,
 .mod-show-report .report-footer .btn-reject,
 .mod-show-report .report-footer .btn-pass {
@@ -409,10 +412,14 @@
 
 .msg-item .content  .title .name {
 	float: left;
+	font-size: 14px;
+	color: #929292;
 }
 
 .msg-item .content  .title .date-time {
 	float: right;
+	font-size: 14px;
+	color: #b9b9b9;
 }
 
 .msg-item .content .text {

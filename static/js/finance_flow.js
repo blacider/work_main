@@ -556,18 +556,8 @@ try {
 							value: "4:通过;3:拒绝"
 						},
 						unformat: aceSwitch
-					}, ],
-					loadComplete: function() {
-						bind_event();
-						var table = this;
-						setTimeout(function() {
-							updateActionIcons(table);
-							updatePagerIcons(table);
-							enableTooltips(table);
-						}, 0);
-					},
-					unformat: aceSwitch
-				}, ],
+					}
+				],
 				loadComplete: function() {
 					var table = this;
 					setTimeout(function() {

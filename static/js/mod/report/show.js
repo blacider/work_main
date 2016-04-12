@@ -214,6 +214,7 @@
                             var dialog = new CloudDialog({
                                 title: '将报销单提交给',
                                 quickClose: true,
+                                buttonAlign: 'right',
                                 autoDestroy: false,
                                 className: 'theme-grey',
                                 ok: function() {
@@ -242,7 +243,11 @@
                                         show_notify('已通过');
                                     });
                                 },
-                                onShow: function() {}
+                                okIconUrl: '/static/img/mod/report/24/btn-ok@2x.png',
+                                cancel: function () {
+                                    this.close()
+                                },
+                                cancelIconUrl: '/static/img/mod/report/24/btn-cancel@2x.png',
                             });
                             dialog.setContentWithElement($($element.find('.available-members')));
                             return dialog;
@@ -458,7 +463,12 @@
                                     _this.close();
                                     show_notify('已退回');
                                 });
-                            }
+                            },
+                            okIconUrl: '/static/img/mod/report/24/btn-ok@2x.png',
+                            cancel: function () {
+                                this.close()
+                            },
+                            cancelIconUrl: '/static/img/mod/report/24/btn-cancel@2x.png'
                         });
                         dialog.showModal();
                     };
@@ -477,7 +487,12 @@
                                     }
                                     window.location.reload()
                                 });
-                            }
+                            },
+                            okIconUrl: '/static/img/mod/report/24/btn-ok@2x.png',
+                            cancel: function () {
+                                this.close()
+                            },
+                            cancelIconUrl: '/static/img/mod/report/24/btn-cancel@2x.png'
                         });
                         dialog.showModal();
                     };
@@ -500,7 +515,12 @@
                                     }
                                     window.location.reload()
                                 });
-                            }
+                            },
+                            okIconUrl: '/static/img/mod/report/24/btn-ok@2x.png',
+                            cancel: function () {
+                                this.close()
+                            },
+                            cancelIconUrl: '/static/img/mod/report/24/btn-cancel@2x.png'
                         });
                         dialog.showModal();
                     };
@@ -556,8 +576,6 @@
                                         content: '按公司规定发送报销单',
                                         okValue: '按公司规定发送报销单',
                                         ok: function() {
- 
-                                            
                                             Utils.api('report/' + report_id, {
                                                 method: 'put',
                                                 env: 'online',
@@ -574,15 +592,17 @@
                                                 show_notify('已通过');
                                             });
                                         },
-                                        cancel: '按我的选择发送报销单',
-
-                                        onShow: function() {}
-                                    }); 
+                                        okIconUrl: '/static/img/mod/report/24/btn-ok@2x.png',
+                                        cancel: function () {
+                                            this.close()
+                                        },
+                                        cancelIconUrl: '/static/img/mod/report/24/btn-cancel@2x.png',
+                                    });
+                                    dialog.showModal();
                                 }
                             }
                         })
                         return
-                        
                     };
                 }
             ]);

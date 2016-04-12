@@ -107,6 +107,12 @@
     -moz-transition: .1s ease-in all;
     -ms-transition: .1s ease-in all;
 }
+
+.cloud-bx-dialog .dialog-footer button img {
+	width: 24px;
+	height: 24px;
+	margin-right: 8px;
+}
 .cloud-bx-dialog .dialog-footer button:last-child, 
 .cloud-bx-dialog .dialog-footer button.last {
 	margin-right: 0;
@@ -144,6 +150,12 @@
 	border-radius: 2px;
 }
 
+.theme-grey.cloud-bx-dialog .dialog-body {
+	padding: 10px;
+	padding-top: 0;
+	margin-top: 30px;
+}
+
 .theme-grey.cloud-bx-dialog	.dialog-header {
 	padding: 0;
 	height: 40px;
@@ -155,6 +167,9 @@
 	top: 10px;
 	color: #596774;
 	border-bottom: none;
+}
+.theme-grey.cloud-bx-dialog	.dialog-footer {
+	padding: 5px 60px 30px;
 }
 
 .theme-grey.cloud-bx-dialog	.dialog-header .close {
@@ -172,4 +187,7 @@
 	border: none;
 	border-bottom: solid 2px #273e52;
 	color: #fff;
+}
+.theme-grey.cloud-bx-dialog .dialog-footer button.last:hover {
+	background-color: #273e52;
 }

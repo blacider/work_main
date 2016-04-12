@@ -19,7 +19,7 @@ $(document).ready(function() {
         try {
             reg_fr_obj = $.parseJSON(reg_fr_str);
         } catch(e) {
-            console.log(e)
+            // console.log(e)
         }
         if(__fr__['hmsr']!==reg_fr_obj['hmsr'] && __fr__['hmsr']) {
             $.cookie('reg_fr', JSON.stringify(__fr__), {

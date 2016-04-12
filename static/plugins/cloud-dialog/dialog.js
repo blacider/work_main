@@ -37,6 +37,8 @@
 				// {
 				// 	text: '1',
 				// 	disabled: false
+				// 	className: '',
+				// 	iconUrl: '',
 				// 	handler: function  () {
 				// 	}
 				// }
@@ -56,9 +58,13 @@
 			onDestroy: function  (argument) {
 				
 			},
-			
+			okIconUrl:'',
+			okClassName:'',
 			okDisabled: false,
 			okValue: '确定',
+
+			cancelIconUrl:'',
+			cancelClassName:'',
 			cancelDisabled: false,
 			cancelValue: '取消'
 		}, opts);
@@ -103,6 +109,8 @@
 				var cancelButton = {
 					text: this.options.cancelValue,
 					disabled: this.options.cancelDisabled,
+					iconUrl: this.options.cancelIconUrl,
+					className: this.options.cancelClassName,
 					handler: this.options.cancel
 				}
 				buttons.push(cancelButton);
@@ -113,7 +121,8 @@
 					text: this.options.okValue,
 					handler: this.options.ok,
 					disabled: this.options.okDisabled,
-					className: 'positive'
+					iconUrl: this.options.okIconUrl,
+					className: 'positive ' + this.options.okClassName
 				}
 				buttons.push(okButton);
 			}
@@ -122,13 +131,28 @@
 				var button = buttons[i];
 				var $button = $('<button>').text(button['text']);
 				$button.addClass(button.className || '');
+
 				if(button.disabled) {
 					$button.attr('disabled', true);
 					$button.attr('tabindex', i+2);
 				}
+
 				if(i==buttons.length-1) {
-					$button.addClass('last')
+					$button.addClass('last');
 				}
+
+				$button.addClass(button.className);
+
+				if(button.align) {
+					$button.css({
+						float: button.align
+					})
+				}
+
+				if(button.iconUrl) {
+					$button.prepend($('<img />').attr('src', button.iconUrl));
+				}
+
 				this.$footer.append($button);
 			}
 		},
