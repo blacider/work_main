@@ -688,9 +688,11 @@ function bind_remove_from_group() {
                         data: js_data
                     });
                     loadTreeByDataSource(treeDataSource);
-                    (function openTheFirstFolderOfTree() {
-                        $($("#tree2").find(".tree-folder-header")[1]).click();
-                    })();
+                    if ("<?php echo $search; ?>" == "") {
+                        (function openTheFirstFolderOfTree() {
+                            $($("#tree2").find(".tree-folder-header")[1]).click();
+                        })();
+                    }
                 },
                 error: function() {}
             });
