@@ -7,9 +7,9 @@
         <div class="ui-loading-layer" ng-if="!isLoaded">
             <div class="ui-loading-icon"></div>
         </div>
-        <div class="report" data-tid="<?php echo $template_id;?>" data-type="{{template.type.join(',')}}" data-status="{{report_status}}">
+        <div class="report" data-type="{{template.type.join(',')}}">
             <div class="report-header">
-                借款单
+                {{template.name}}
             </div>
             <div class="report-body">
                 <div class="block-row report-title">
@@ -22,7 +22,7 @@
                     <div class="field-label">申请额</div>
                     <div class="field-input">
                         <p>¥ {{report.amount}}</p>
-                        <a href="/reports/snapshot/{{report.id}}" class="btn-detail" ng-if="report.has_snapshot">
+                        <a href="/reports/snapshot/{{report.id}}?tid={{template.id}}" class="btn-detail" ng-if="report.has_snapshot && path_type!='snapshot'">
                             <img src="/static/img/mod/report/24/btn-eye@2x.png" alt="">详情
                         </a>
                     </div>
@@ -31,11 +31,15 @@
                     <div class="field-label">提交人</div>
                     <div class="approvers selected-members">
                         <ul>
-                            <li>
+                            <li style="width: 100%;">
                                 <img ng-src="{{submitter.apath || default_avatar}}" alt="">
-                                <div class="info">
+                                <div class="info" style="width: auto;">
                                     <div class="name">{{submitter.nickname}}</div>
-                                    <div class="role">{{formatMember(submitter)}}</div>
+                                    <div class="role">
+                                        <span>{{formatMember(submitter)}}</span>
+                                        <span>{{submitter.phone}}</span>
+                                        <span>{{submitter.email}}</span>
+                                    </div>
                                 </div>
                             </li>
                         </ul>
@@ -74,13 +78,13 @@
                                             {{userProfile['nickname']}}
                                         </td>
                                          <td ng-if="col.type=='4'">
-                                            {{col._combine_data_.value['account']}}
+                                            {{col._combine_data_.value['cardno']}}
                                         </td>
                                         <td ng-if="col.type=='4'">
                                             {{col._combine_data_.value['bankname']}}
                                         </td>
                                         <td ng-if="col.type=='4'">
-                                            {{col._combine_data_.value['bankloc']}}
+                                            {{col._combine_data_.value['subbranch']}}
                                         </td>
                                         <td ng-repeat-end ng-if="col.type=='3' || col.type=='2' || col.type=='1'">
                                             {{col._combine_data_.value}}
@@ -126,7 +130,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="block-row flow">
+                <div class="block-row flow" ng-if="path_type!='snapshot'">
                     <div class="field-label">流转意见</div>
                     <div class="table-field">
                         <div ng-repeat="(gName, fGroup) in flow">
@@ -152,7 +156,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="block-row flow">
+                <div class="block-row flow" ng-if="path_type!='snapshot'">
                     <div class="field-label">留言</div>
                     <div class="field-input">
                         <div class="msg-item" ng-repeat="commentItem in commentArray">
@@ -169,14 +173,14 @@
                         </div>
                         <div class="msg-input">
                             <div class="field-input">
-                                <input type="text" placeholder="" ng-model="txtCommentMessage">
+                                <input type="text" placeholder="" ng-model="comment_box.txtCommentMessage">
                             </div>
                             <a class="btn-search ui-button" ng-click="onAddCommentToReport()">提交留言</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="report-footer">
+            <div class="report-footer" ng-if="path_type!='snapshot'">
                 <a href="{{document.referer}}" style="float: left" class="ui-button-border ui-button ui-button-hover btn-back-list">
                     <img src="/static/img/mod/report/36/btn-back-list@2x.png" alt="">返回列表
                 </a>

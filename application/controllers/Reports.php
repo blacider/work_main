@@ -717,42 +717,9 @@ class Reports extends REIM_Controller {
     }
 
     public function snapshot($rid) {
-        $profile = $this->session->userdata('profile');
 
-        $common = $this->users->get_common();
-        $categories = $common['data']['categories'];
-
-        $template_types = $this->reim_show->get_item_type_name();
-        // var_dump($template_types);
-
-        $snapshot = $this->reports->get_snapshot_by_report_id($rid);
-        if($snapshot['status']<=0) {
-            return redirect(base_url('reports/index'));
-        }
-        $snapshot = $snapshot['data'];
-        $snapshot['config'] = json_decode($snapshot['extras'], true, 10);
-
-        $template = array();
-        $template = $this->reports->get_report_template($snapshot['template_id']);
-
-        $report = $this->reports->get_report_by_id($rid);
-        if($report['status']<=0) {
-            return redirect(base_url('reports/index'));
-        }
-        $report = $report['data'];
-        // var_dump(json_encode($report));
-        if($template['status']<=0) {
-            return redirect(base_url('reports/index'));
-        }
-        $template = $template['data'];
-
-        $this->bsload('reports/snapshot', array(
+        $this->bsload('reports/show', array(
             'title' => '申请历史',
-            'snapshot' => $snapshot,
-            'template' => $template,
-            'categories'=>$categories,
-            'report'=>$report,
-            'template_types'=>$template_types,
             'breadcrumbs' => array(
                 array(
                     'url'=> base_url(),
@@ -774,10 +741,8 @@ class Reports extends REIM_Controller {
 
     public function show($rid) {
         // $template_id = $this->input->get('tid');
-        $template_id = 0;
         $this->bsload('reports/show', array(
             'title' => '查看',
-            'template_id'=>$template_id,
             'breadcrumbs' => array(
                 array(
                     'url'=> base_url(),

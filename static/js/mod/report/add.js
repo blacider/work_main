@@ -21,7 +21,6 @@
                     $scope.banks = [];
                     $scope.default_bank = null;
                     $scope.template = null;
-                    $scope.report_status = 0;
                     $scope.default_avatar = '/static/img/mod/report/default-avatar.png';
 
                     $scope.originalReport = {
@@ -29,6 +28,19 @@
                     }
 
                     function getTemplateData(id) {
+
+                        if(!id) {
+                            var def = $.Deferred();
+                            def.resolve({
+                                status: 1,
+                                data: {
+                                    config: [],
+                                    type: [0]
+                                }
+                            });
+                            return def.promise();
+                        }
+
                         return Utils.api('/template/get_template/'+id, {}).done(function (rs) {
                             if(rs['status']<0) {
                                 return show_notify('找不到模版');
@@ -781,7 +793,6 @@
                                     return show_notify(rs['data']['msg']);
                                 }
                                 show_notify('保存成功');
-                                $scope.report_status = 1;
                                 syncDataModel();
                             });
                             return
@@ -819,7 +830,6 @@
                                     return show_notify(rs['data']['msg']);
                                 }
                                 window.location.href = "/reports";
-
                             });
                             return
                         }

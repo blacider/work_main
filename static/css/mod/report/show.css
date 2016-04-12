@@ -84,11 +84,15 @@
 .mod-show-report .report .block-row .field-label,
 .mod-show-report .report .block-row .field-input {
 	display: table-cell;
+	font-size: 14px;
+	color: #4a4a4a;
 }
 .mod-show-report .report .block-row .field-label {
 	width: 100px;
 	vertical-align: middle;
 	padding-right: 20px;
+	font-size: 14px;
+	color: #b9b9b9;
 }
 .mod-show-report .report .report-title .field-input input {
 	width: 100%;

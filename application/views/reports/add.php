@@ -7,9 +7,9 @@
         <div class="ui-loading-layer" ng-if="!isLoaded">
             <div class="ui-loading-icon"></div>
         </div>
-        <div class="report" data-tid="<?php echo $template_id;?>" data-type="{{template.type.join(',')}}" data-status="{{report_status}}">
+        <div class="report" data-tid="<?php echo $template_id; ?>" data-type="{{template.type.join(',')}}">
             <div class="report-header">
-                借款单
+                {{template.name}}
             </div>
             <div class="report-body">
                 <div class="block-row report-title">

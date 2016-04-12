@@ -4,31 +4,50 @@
         initialize: function() {
             angular.module('reimApp', []).controller('ReportController', ["$http", "$scope", "$element", "$timeout",
                 function($http, $scope, $element, $timeout) {
-                    var report_id = (function() {
+                    var routerObj = (function() {
                         var router = new RouteRecognizer();
                         router.add([{
-                            path: "/reports/show/:id"
+                            path: "/reports/:type/:id"
                         }]);
                         var matchers = router.recognize(location.pathname);
                         var id = 0;
                         if (matchers.length > 0) {
                             var match = matchers[0];
-                            id = match.params['id'];
+                            return match.params;
                         }
-                        return id;
+                        return {};
                     })();
+                    var report_id = routerObj['id'];
+                    var path_type = routerObj['type'];
+
+                    $scope.path_type = path_type;
                     $scope.extrasMap = {};
                     $scope.selectedMembers = [];
                     $scope.selectedConsumptions = [];
                     $scope.banks = [];
                     $scope.default_bank = null;
                     $scope.template = null;
-                    $scope.report_status = 0;
                     $scope.default_avatar = '/static/img/mod/report/default-avatar.png';
+                    $scope.comment_box = {
+                        txtCommentMessage: ''
+                    };
 
                     function getTemplateData() {
                         var query = Utils.queryString(location.search);
-                        return Utils.api('/template/get_template/' + query.tid, {}).done(function(rs) {
+                        var id = query.tid;
+                        if(!id || id=='0') {
+                            var def = $.Deferred();
+                            def.resolve({
+                                status: 1,
+                                data: {
+                                    config: [],
+                                    type: [0]
+                                }
+                            });
+                            return def.promise();
+                        }
+
+                        return Utils.api('/template/get_template/' + id, {}).done(function(rs) {
                             if (rs['status'] < 0) {
                                 return show_notify('找不到模版');
                             }
@@ -53,7 +72,22 @@
                     };
 
                     function getReportData(id) {
+
+                        if(path_type == 'snapshot') {
+                            return getReportSnapshotData(id);
+                        }
+
                         return Utils.api('/reports/detail/' + id, {}).done(function(rs) {
+                            if (rs['status'] < 0) {
+                                return show_notify('找不到数据');
+                            }
+                        });
+                    };
+
+                    function getReportSnapshotData(id) {
+                        return Utils.api('/report/'+id+'snapshot', {
+                            env: 'online'
+                        }).done(function(rs) {
                             if (rs['status'] < 0) {
                                 return show_notify('找不到数据');
                             }
@@ -146,11 +180,15 @@
                         }
                         if (itemType == '4') {
                             var bankData = JSON.parse(extrasItem.value);
-                            bankData = findOneInBanks(bankData.cardno, $scope.banks, 'cardno');
+                            if(!bankData.cardno) {
+                                bankData = $scope.default_bank;
+                            } else {
+                                bankData = findOneInBanks(bankData.cardno, $scope.banks, 'cardno');
+                            }
                             item.value = angular.copy(bankData);
                         }
                         if (itemType == '3') {
-                            var date = new Date(parseInt(extrasItem.value));
+                            var date = new Date(parseInt(extrasItem.value*1000));
                             try {
                                 item.value = fecha.format(date, 'YYYY-MM-DD');
                             } catch(e) {}
@@ -230,7 +268,14 @@
                         $scope.template = template['data'];
                         $scope.members = members['data']['members'];
                         $scope.selectedMembers = report['data']['receivers']['managers'];
-                        $scope.banks = banks.banks;
+
+                        $scope.default_bank = findOneInBanks(banks['default_bank'], banks['banks']);
+                        if(!$scope.default_bank) {
+                            if($scope.banks.length>0) {
+                                $scope.default_bank = $scope.banks[0];
+                            }
+                        }
+                        
                         $scope.userProfile = _.findWhere(members.data.members, {
                             id: window.__UID__
                         });
@@ -351,7 +396,7 @@
                         dialog.showModal();
                     };
                     $scope.onAddCommentToReport = function() {
-                        var comment = $scope.txtCommentMessage;
+                        var comment = $scope.comment_box.txtCommentMessage;
                         comment = $.trim(comment);
                         if (!comment) {
                             return show_notify('评论内容不允许为空');

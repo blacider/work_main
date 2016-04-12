@@ -18,12 +18,6 @@
 						<small>
                             <div>
                                 <div class="home-logo"></div>
-                                <!-- 
-                                <div style="
-                                    float:left;vertical-align:top;min-height:25px;margin-top:2px">
-                                    <img src="/static/images/logo_1.png" style="min-height:25px;height:25px;"/> 
-                                </div>
-                                -->
                                 <div style="float:right;margin-left:10px;margin-top:5px;font-size:14px;font-weight:normal">
                                     <?php if($groupname) { echo " · &nbsp;&nbsp;" . $groupname;} ?>
                                 </div>
