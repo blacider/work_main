@@ -137,9 +137,15 @@
                     };
 
                     // 通过报销单
-                    function doPass(data) {
-                        return Utils.api('report/' + report_id, {
-                            method: 'put',
+                    function doPass(data, type) {
+                        var url = '/report/' + report_id;
+                        var method = 'put';
+                        if(type == 'financial') {
+                            url = '/report_finance_flow/pass/' + report_id;
+                            method = 'post';
+                        }
+                        return Utils.api(url, {
+                            method: method,
                             env: 'online',
                             data: data
                         });
@@ -490,17 +496,23 @@
                                     return show_notify('理由不能为空');
                                 }
                                 var _this = this;
-                                Utils.api('report/' + id, {
+
+                                var url = '/report/' + id
+
+                                if($scope.report.status == '2') {
+                                    url = '/report_finance_flow/deny/' + id;
+                                }
+
+                                Utils.api(url, {
                                     method: 'put',
                                     env: 'online',
                                     data: {
                                         status: 3,
                                         comment: this.$el.find('textarea').val(),
-                                        manager_id: ''
                                     }
                                 }).done(function(rs) {
                                     if (rs['status'] <= 0) {
-                                        return show_notify('退回失败');
+                                        return show_notify(rs['data']['msg']);
                                     }
                                     _this.close();
                                     show_notify('已退回');
@@ -570,8 +582,13 @@
                     // 首次创建，其次保存
                     $scope.onPass = function(id) {
                         
-                        // 2:财务阶段，1:业务阶段
-                        Utils.api("/check_approval_permission/" + report_id, {
+                        // 0-1:业务阶段, 2:财务阶段
+                        var approve_type = '/check_approval_permission';
+                        if($scope.report.status == '2') {
+                            approve_type = '/report_finance_flow/check_permission'
+                        }
+                        
+                        Utils.api(approve_type + "/" + report_id, {
                             env: 'yuqi',
                             data: {
                                 rid: id
@@ -587,6 +604,60 @@
                             var can_complete = data.complete;
                             var has_suggestion_memebers = data.suggestion.length;
                             var canSelect = data['fixed'];
+
+                            // 财务阶段审批规则较短 status=2
+                            if($scope.report.status == '2') {
+                                if(can_complete) {
+                                    doPass({}, 'financial').done(function (rs) {
+                                        if(rs['status']<=0) {
+                                            return show_notify(rs['data']['msg']);
+                                        }
+                                        show_notify('已通过');
+                                        window.location = '/bills/finance_flow';
+                                    });
+                                } else {
+                                    var suggestionMembers = _.filter($scope.members, function(item) {
+                                        var list = data['suggestion'].join(',').split(',');
+                                        if(_.contains(list, item.id)) {
+                                            return true;
+                                        }
+                                        return false;
+                                    });
+
+                                    var tmpl = [
+                                        '<div class="suggestion-box">',
+                                        '   <div>你的报销单将提交给财务</div>',
+                                        '   <% for(var i =0;i<list.length;i++) {',
+                                        '           var item = list[i]; ',
+                                        '   %>',
+                                        '      <div class="receiver"><%= item.nickname %> - [<%= item.email %>]</div>',
+                                        '   <%}%>',
+                                        '</div>'
+                                    ].join('');
+
+                                    var dialog = new CloudDialog({
+                                        quickClose: true,
+                                        autoDestroy: false,
+                                        content: _.template(tmpl)({list: suggestionMembers}),
+                                        okValue: '按公司规定发送报销单',
+                                        ok: function() {
+                                            doPass({}, 'financial').done(function (rs) {
+                                                if(rs['status']<=0) {
+                                                    return show_notify(rs['data']['msg']);
+                                                }
+                                                show_notify('已通过');
+                                            });
+                                        },
+                                        cancelValue: '按我的选择发送报销单',
+                                        cancel: function () {
+                                            var dialog = dialogMemberSingleton.getInstance();
+                                            dialog.show();
+                                        }
+                                    });
+                                    dialog.showModal();
+                                }
+                                return
+                            }
 
                             if(can_complete) { //1
                                 if(canSelect) {
@@ -618,7 +689,7 @@
                                             doPass({
                                                 comment: '',
                                                 status: 2,
-                                                manager_id: ''
+                                                manager_id: list.join(',')
                                             }).done(function (rs) {
                                                 if(rs['status']<=0) {
                                                     return show_notify(rs['data']['msg']);
@@ -681,7 +752,7 @@
                                         doPass({
                                             comment: '',
                                             status: 2,
-                                            manager_id: ''
+                                            manager_id: list.join(',')
                                         }).done(function (rs) {
                                             if(rs['status']<=0) {
                                                 return show_notify(rs['data']['msg']);

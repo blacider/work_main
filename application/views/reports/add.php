@@ -156,6 +156,7 @@
                             <img ng-src="{{m.apath || default_avatar}}" alt="">
                             <div class="info">
                                 <p class="name">{{m.nickname}}</p>
+                                <p class="role" ng-if="!m.multi_property_matcher">{{m.d}}</p>
                                 <p class="role" ng-if="m.multi_property_matcher">{{m.multi_property_matcher}}</p>
                             </div>
                         </li>

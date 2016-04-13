@@ -288,7 +288,6 @@ class Users extends REIM_Controller
         $profile = $this->user->reim_get_user();
         $rankArray = $this->reim_show->rank_level(1);
         $levelArray = $this->reim_show->rank_level(0);
-        $groupArray = $this->groups->get_my_list();
 
         if($rankArray['status']>0) {
             $rankArray = $rankArray['data'];
@@ -302,24 +301,14 @@ class Users extends REIM_Controller
             $levelArray = array();
         }
 
-        $group = $this->groups->get_my_list();
-        
-        if ($groupArray) {
-            if (array_key_exists('gmember', $group['data'])) {
-                $groupArray = $group['data']['gmember'];
-            } else {
-                $groupArray = array();   
-            }
-        }
-
         $members = $profile['data']['members'];
+        
         $data = array(
             'status'=>$profile['status'],
             'data' =>array(
                 'members'=>$members,
                 'rankArray'=>$rankArray,
-                'levelArray'=>$levelArray,
-                'groupArray'=>$groupArray
+                'levelArray'=>$levelArray
             )
         );
         die(json_encode($data));
