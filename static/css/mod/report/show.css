@@ -157,25 +157,37 @@
 	height: 24px;
 }
 
-
 .approvers {
 	width: 700px;
 	text-align: left;
 }
 
 .approvers .search-input {
-	display: table;
-	width: 80%;
-	margin: 0 auto;
+	display: block;
+    margin: 0 50px 0 50px;
 }
+
+.approvers .search-input .icon {
+	position: absolute;
+	left: 20px;
+	top: 0;
+	width: 24px;
+	height: 24px;
+}
+.approvers .search-input .icon img {
+	width: 24px;
+	height: 24px;
+}
+
 .approvers .search-input .field-input {
 	width: 100%;
-	display: table-cell;
-	vertical-align: middle;
 	height: 40px;
+	position: relative;
 }
+
 .approvers .search-input .field-input input {
 	height: 40px;
+	padding-left: 42px;
 }
 .approvers .search-input .btn-search {
 	width: 135px;
@@ -183,6 +195,27 @@
 	margin-left: 10px;
 	line-height: 40px;
 	float: right;
+}
+
+.approvers ul .empty-result {
+	left: 50%;
+	top: 50%;
+	position: absolute;
+	float: none;
+	margin-top: -40px;
+    margin-left: -58px;
+	text-align: center;
+}
+.approvers ul .empty-result p {
+	font-size: 14px;
+	letter-spacing: 0.6px;
+	color: #929292;
+	margin-top: 25px;
+}
+
+.approvers ul .empty-result img {
+	width: 100px;
+	height: auto;
 }
 
 .approvers ul {
@@ -203,10 +236,10 @@
     float: none;
     width: auto;
     border-bottom: solid 1px #f2f6fa;
-    margin: 10px;
-    margin-right: 47px;
-    height: 0;
-    clear: both;
+	margin-right: 30px;
+	height: 0;
+	clear: both;
+	margin-left: -50px;
 }
 
 .approvers ul.suggstion-memebers {
@@ -488,7 +521,11 @@ table.border-radius-row tr td:last-child {
 	border-bottom-right-radius: 10px;
 }
  
-
+.suggestion-box {
+	font-size: 14px;
+	line-height: 2.1;
+	color: #273e52;
+}
 
 /* component reset */
 .field-label {

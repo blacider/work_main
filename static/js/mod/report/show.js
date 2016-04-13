@@ -1,5 +1,6 @@
 // subl static/css/mod/report/add.css static/js/mod/report/add.js application/controllers/Reports.php:17 application/controllers/Reports.php
 (function() {
+    var _defaultTemplateName_ ='未命名报销单模板';
     return {
         initialize: function() {
             angular.module('reimApp', []).controller('ReportController', ["$http", "$scope", "$element", "$timeout",
@@ -135,6 +136,15 @@
                         })
                     };
 
+                    // 通过报销单
+                    function doPass(data) {
+                        return Utils.api('report/' + report_id, {
+                            method: 'put',
+                            env: 'online',
+                            data: data
+                        });
+                    }
+
                     function arrayToMapWithKey(key, arr) {
                         var rs = {};
                         for (var i = arr.length - 1; i >= 0; i--) {
@@ -237,17 +247,20 @@
                                         }
                                     }).done(function(rs) {
                                         if (rs['status'] <= 0) {
-                                            return show_notify('操作失败');
+                                            return show_notify(rs['data']['msg']);
                                         }
                                         _this.close();
-                                        show_notify('已通过');
+                                        window.location.href = '/reports/audit_todo'
                                     });
                                 },
                                 okIconUrl: '/static/img/mod/report/24/btn-ok@2x.png',
                                 cancel: function () {
-                                    this.close()
+                                    this.close();
                                 },
                                 cancelIconUrl: '/static/img/mod/report/24/btn-cancel@2x.png',
+                                onHide: function () {
+                                    $scope.txtSearchText = '';
+                                }
                             });
                             dialog.setContentWithElement($($element.find('.available-members')));
                             return dialog;
@@ -271,6 +284,10 @@
                         var extras = JSON.parse(reportData['extras'] || "[]");
                         $scope.report = report['data'];
                         $scope.template = template['data'];
+                        if(!$scope.template.name) {
+                            $scope.template.name = _defaultTemplateName_;
+                        }
+
                         $scope.members = members['data']['members'];
                         $scope.selectedMembers = report['data']['receivers']['managers'];
 
@@ -434,6 +451,31 @@
                         item.isSelected = !item.isSelected;
                     };
 
+                    $scope.searchImmediate = function (keywords) {
+                        return function( item ) {
+
+                            delete item.multi_property_matcher;
+
+                            if(!keywords) {
+                                return true;
+                            }
+
+                            if(item.nickname.indexOf(keywords)>=0) {
+                                item.multi_property_matcher = 0
+                                return true;
+                            }
+                            if(item.phone.indexOf(keywords)>=0) {
+                                item.multi_property_matcher = item.phone
+                                return true;
+                            }
+                            if(item.email.indexOf(keywords)>=0) {
+                                item.multi_property_matcher = item.email
+                                return true;
+                            }
+
+                            return false;
+                        };
+                    };
 
                     $scope.onReject = function(id) {
                         var dialog = new CloudDialog({
@@ -527,36 +569,151 @@
 
                     // 首次创建，其次保存
                     $scope.onPass = function(id) {
-                        $.when(
-                            Utils.api("/users/get_profile_data_with_property", {
-                                data: {
-                                    property: 'group.config'
-                                }
-                            }),
-                            Utils.api("reports/check_permission", {
-                                data: {
-                                    rid: id
-                                }
-                            })
-                        ).done(function (config, rs) {
+                        
+                        // 2:财务阶段，1:业务阶段
+                        Utils.api("/check_approval_permission/" + report_id, {
+                            env: 'yuqi',
+                            data: {
+                                rid: id
+                            }
+                        }).done(function (rs) {
                             
-                            var config = JSON.parse(config || "{}");
                             if (rs['status'] <= 0) {
                                 return;
                             }
-                            var data = rs['data'];
-                            if (data.complete == 0) {
-                                // 将报销单提交给
-                                chose_others_zero_audit(getData);
-                            } else {
-                                var canSelect = config['close_directly']== '0';
-                                if(canSelect) {
-                                    // 是否结束报销单
-                                    var dialog = dialogMemberSingleton.getInstance();
-                                    dialog.showModal();
 
+                            var data = rs['data'];
+
+                            var can_complete = data.complete;
+                            var has_suggestion_memebers = data.suggestion.length;
+                            var canSelect = data['fixed'];
+
+                            if(can_complete) { //1
+                                if(canSelect) {
                                     var suggestionMembers = _.filter($scope.members, function(item) {
-                                        return _.contains(data['suggestion'], ~~item.id);
+                                        var list = data['financial_suggestion'].join(',').split(',');
+                                        if(_.contains(list, item.id)) {
+                                            return true;
+                                        }
+                                        return false;
+                                    });
+
+                                    var tmpl = [
+                                        '<div class="suggestion-box">',
+                                        '   <div>你的报销单将提交给</div>',
+                                        '   <% for(var i =0;i<list.length;i++) {',
+                                        '           var item = list[i]; ',
+                                        '   %>',
+                                        '      <div class="receiver"><%= item.nickname %> - [<%= item.email %>]</div>',
+                                        '   <%}%>',
+                                        '</div>'
+                                    ].join('');
+
+                                    var dialog = new CloudDialog({
+                                        quickClose: true,
+                                        autoDestroy: false,
+                                        content: _.template(tmpl)({list: suggestionMembers}),
+                                        okValue: '按公司规定发送报销单',
+                                        ok: function() {
+                                            doPass({
+                                                comment: '',
+                                                status: 2,
+                                                manager_id: ''
+                                            }).done(function (rs) {
+                                                if(rs['status']<=0) {
+                                                    return show_notify(rs['data']['msg']);
+                                                }
+                                                show_notify('已通过');
+                                            });
+                                        },
+                                        cancelValue: '按我的选择发送报销单',
+                                        cancel: function () {
+                                            var dialog = dialogMemberSingleton.getInstance();
+                                            dialog.show();
+                                        }
+                                    });
+                                    dialog.showModal();
+                                    return;
+                                }
+                                return doPass({
+                                    comment: '',
+                                    status: 2,
+                                    manager_id: data.suggestion.join(',')
+                                }).done(function (rs) {
+                                    if(rs['status']<=0) {
+                                        return show_notify(rs['data']['msg']);
+                                    }
+                                    show_notify('已通过');
+                                });
+                            }
+
+                            if(!can_complete && !has_suggestion_memebers) { //4
+                                var dialog = dialogMemberSingleton.getInstance();
+                                dialog.showModal();
+                                return
+                            }
+
+                            if(!can_complete && has_suggestion_memebers && !canSelect) { //2
+                                var suggestionMembers = _.filter($scope.members, function(item) {
+                                    var list = data['suggestion'].join(',').split(',');
+                                    if(_.contains(list, item.id)) {
+                                        return true;
+                                    }
+                                    return false;
+                                });
+
+                                var tmpl = [
+                                    '<div class="suggestion-box">',
+                                    '   <div>你的报销单将提交给</div>',
+                                    '   <% for(var i =0;i<list.length;i++) {',
+                                    '           var item = list[i]; ',
+                                    '   %>',
+                                    '      <div class="receiver"><%= item.nickname %> - [<%= item.email %>]</div>',
+                                    '   <%}%>',
+                                    '</div>'
+                                ].join('');
+
+                                var dialog = new CloudDialog({
+                                    quickClose: true,
+                                    autoDestroy: false,
+                                    content: _.template(tmpl)({list: suggestionMembers}),
+                                    ok: function() {
+                                        doPass({
+                                            comment: '',
+                                            status: 2,
+                                            manager_id: ''
+                                        }).done(function (rs) {
+                                            if(rs['status']<=0) {
+                                                return show_notify(rs['data']['msg']);
+                                            }
+                                            show_notify('已通过');
+                                        });
+                                    },
+                                    cancel: function () {
+                                        var dialog = dialogMemberSingleton.getInstance();
+                                        dialog.show();
+                                    }
+                                });
+                                dialog.showModal();
+                                return;
+                            }
+                            if(!can_complete && has_suggestion_memebers && canSelect) { //3
+                                var dialog = dialogMemberSingleton.getInstance();
+                                
+                                (function selectSuggestionMembes(argument) {
+                                    var suggestionMembers = _.filter($scope.members, function(item) {
+
+                                        // 当审批人在上方建议中，下方就无需出现了，设置标记隐藏之
+
+                                        delete item['_in_sug_'];
+
+                                        if(_.contains(data['suggestion'], item.id+'')) {
+                                            item['_in_sug_'] = true;
+                                            return true;
+                                        }
+
+                                        return false;
+
                                     });
 
                                     _.each(suggestionMembers, function(item) {
@@ -565,41 +722,10 @@
 
                                     $scope.suggestionMembers = suggestionMembers;
 
-                                    $scope.$apply();
+                                })();
 
-                                } else {
-                                    // 是否结束
-                                    var dialog = new CloudDialog({
-                                        title: '是否结束报销单',
-                                        quickClose: true,
-                                        autoDestroy: false,
-                                        content: '按公司规定发送报销单',
-                                        okValue: '按公司规定发送报销单',
-                                        ok: function() {
-                                            Utils.api('report/' + report_id, {
-                                                method: 'put',
-                                                env: 'online',
-                                                data: {
-                                                    status: 2,
-                                                    comment: '',
-                                                    manager_id: receivers_id.join(',')
-                                                }
-                                            }).done(function(rs) {
-                                                if (rs['status'] <= 0) {
-                                                    return show_notify('操作失败');
-                                                }
-                                                _this.close();
-                                                show_notify('已通过');
-                                            });
-                                        },
-                                        okIconUrl: '/static/img/mod/report/24/btn-ok@2x.png',
-                                        cancel: function () {
-                                            this.close()
-                                        },
-                                        cancelIconUrl: '/static/img/mod/report/24/btn-cancel@2x.png',
-                                    });
-                                    dialog.showModal();
-                                }
+                                dialog.showModal();
+                                return $scope.$apply();
                             }
                         })
                         return

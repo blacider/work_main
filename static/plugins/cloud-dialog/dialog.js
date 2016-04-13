@@ -188,7 +188,7 @@
 		},
 		title: function (title) {
 			if(title) {
-				this.$el.find('.dialog-header .title').html(this.options.title);
+				this.$el.find('.dialog-header .title').html(title);
 			} else {
 				return this.$el.find('.dialog-header .title').html();
 			}

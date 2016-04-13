@@ -152,7 +152,7 @@
                         </div>
                     </div>
                     <ul>
-                        <li ng-repeat='m in (filteredMembers = (members|filter:searchImmediate(txtSearchText)))' ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m, $event)">
+                        <li class="m_{{m.id}}" ng-repeat='m in (filteredMembers = (members|filter:searchImmediate(txtSearchText)))' ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m, $event)">
                             <img ng-src="{{m.apath || default_avatar}}" alt="">
                             <div class="info">
                                 <p class="name">{{m.nickname}}</p>

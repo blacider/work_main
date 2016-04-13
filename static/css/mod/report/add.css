@@ -125,14 +125,11 @@
 }
 
 .approvers .search-input {
-	display: table;
-	width: 80%;
-	margin: 0 auto;
+	display: block;
+    margin: 0 50px 0 50px;
 }
 .approvers .search-input .field-input {
 	width: 100%;
-	display: table-cell;
-	vertical-align: middle;
 	height: 40px;
 	position: relative;
 }

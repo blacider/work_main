@@ -3,6 +3,8 @@
     
     var _templateNameLengthLimit_ = 10;
 
+    var _defaultTemplateName_ ='未命名报销单模板';
+
     return {
         initialize: function() {
             angular.module('reimApp', ['ng-sortable', 'ng-dropdown']).controller('ReportController', ["$http", "$scope", "$element", "$timeout",
@@ -28,6 +30,7 @@
                             def.resolve({
                                 status: 1,
                                 data: {
+                                    name: _defaultTemplateName_,
                                     config: [],
                                     type: [0]
                                 }
@@ -55,7 +58,7 @@
                     };
 
                     function getReportData(id) {
-                        return Utils.api('/users/detail/'+id, {}).done(function (rs) {
+                        return Utils.api('/reports/detail/'+id, {}).done(function (rs) {
                             if(rs['status']<0) {
                                 return show_notify('找不到数据');
                             }
@@ -390,8 +393,6 @@
                             return;
                         }
 
-                        
-
                         $scope.banks = banks['banks'] || [];
                         $scope.default_bank = findOneInBanks(banks['default_bank'], banks['banks']);
                         if(!$scope.default_bank) {
@@ -401,6 +402,10 @@
                         }
 
                         $scope.template = angular.copy(template['data']);
+                        if(!$scope.template.name) {
+                            $scope.template.name = _defaultTemplateName_;
+                        }
+
 
                         $scope.consumptions = consumptions['data'] || [];
 
@@ -514,7 +519,7 @@
 
                     $scope.makeBankDropdown = {
                         itemFormat: function (item) {
-                            if(!item.id) {
+                            if(!item || !item.id) {
                                 return {
                                     text: ''
                                 }
@@ -738,6 +743,9 @@
                                     inValidExtras = true;
                                     show_notify('必填银行卡项目不能为空');
                                     return null
+                                }
+                                if(!bank) {
+                                    bank = {};
                                 }
                                 data['value'] = JSON.stringify({
                                     "account": bank['account'],

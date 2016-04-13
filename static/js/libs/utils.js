@@ -75,6 +75,10 @@
 			}, opts);
 
 			if(opts['env']) {
+				// 防止线上代码用错api分支，wow
+				if(location.host.indexOf('yunbaoxiao.com')>=0) {
+					opts['env'] = 'online';
+				}
 				url = [hostname, opts['env'], url].join('/');
 			} else {
 				url = '/' +  url;
