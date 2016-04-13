@@ -340,7 +340,7 @@ if($last_error) {
                 <div class="dropdown-toggle down-image" data-toggle="dropdown" id="dropdownMenuImg">
                     <span>
                         <input type="text" name="avatar" class="hidden" value="9">
-                        <img id="menuImg" class="img-select" src="/static/img/mod/icon/9.png" alt="png"></span>
+                        <img id="menuImg" class="img-select" src="/static/img/mod/cate_icon/9.png" alt="png"></span>
                     <span class="caret"></span>
                 </div>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuImg">
@@ -348,7 +348,7 @@ if($last_error) {
                     <li role="presentation">
                         <a href="#" onclick="changeImg(this)" role="menuitem" tabindex="-1">
                             <span>
-                                <img class="img-select" src="/static/img/mod/icon/<?php echo $i;?>.png" alt="<?php echo $i;?>"></span>
+                                <img class="img-select" src="/static/img/mod/cate_icon/<?php echo $i;?>.png" alt="<?php echo $i;?>"></span>
                         </a>
                     </li>
                     <?php } ?></ul>
@@ -428,7 +428,7 @@ if($last_error) {
                 <div class="dropdown-toggle down-image" data-toggle="dropdown" id="dropdownMenuImg_">
                     <span>
                         <input type="text" name="avatar" class="hidden" value="9">
-                        <img id="menuImg_" class="img-select" src="/static/img/mod/icon/9.png" alt="png">
+                        <img id="menuImg_" class="img-select" src="/static/img/mod/cate_icon/9.png" alt="png">
                     </span>
                     <span class="caret"></span>
                 </div>
@@ -437,7 +437,7 @@ if($last_error) {
                     <li role="presentation">
                         <a href="#" onclick="changeImg_(this)" role="menuitem" tabindex="-1">
                             <span>
-                                <img class="img-select" src="/static/img/mod/icon/<?php echo $i;?>.png" alt="<?php echo $i;?>"></span>
+                                <img class="img-select" src="/static/img/mod/cate_icon/<?php echo $i;?>.png" alt="<?php echo $i;?>"></span>
                         </a>
                     </li>
                     <?php } ?></ul>
