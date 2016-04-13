@@ -836,7 +836,7 @@ class Category extends REIM_Controller {
             if(!in_array($cate['sob_id'],$all_sob_keys)) continue;
 
             $all_categories[$cate['id']]=array();
-            $path = "https://api.cloudbaoxiao.com/online/static/" . $cate['avatar'] .".png";
+            $path = "/static/img/mod/cate_icon/" . $cate['avatar'] .".png";
             if($cate['sob_id'] == $gid && $cate['pid'] <= 0 )
             {
                 array_push($sob_keys,$cate['id']);
@@ -851,7 +851,7 @@ class Category extends REIM_Controller {
             }
         }
 
-            $path = "https://api.cloudbaoxiao.com/online/static/0.png";
+            $path = "/static/img/mod/cate_icon/0.png";
             $all_categories[0]=array('child'=>array(),'avatar_'=>0,'avatar'=>$path,'id'=>0,'pid'=>-1,'name'=>"顶级分类",'sob_code'=>0,'note'=>'','force_attach'=>0,'extra_type'=>0);
         foreach($categories as $cate)
         {

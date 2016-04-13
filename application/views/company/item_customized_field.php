@@ -188,7 +188,7 @@
                       <?php if (!empty($c['children'])) { ?>
                       <div class="indicator"></div>
                       <?php } else { ?>
-                      <img src="https://api.cloudbaoxiao.com/online/static/<?php echo $c['avatar']; ?>.png" />
+                      <img src="/static/img/mod/cate_icon/<?php echo $c['avatar']; ?>.png" />
                       <?php } ?>
                       <div class="checkstate unchecked"></div>
                       <span><?php echo $c['name']; ?></span>
@@ -196,7 +196,7 @@
                       <ul role="group">
                         <?php foreach ($c['children'] as $cc) { ?>
                         <li role="treeitem" data-id="<?php echo $cc['id']; ?>" aria-level="2">
-                          <img src="https://api.cloudbaoxiao.com/online/static/<?php echo $cc['avatar']; ?>.png" />
+                          <img src="/static/img/mod/cate_icon/<?php echo $cc['avatar']; ?>.png" />
                           <div class="checkstate unchecked"></div>
                           <span><?php echo $cc['name']; ?></span>
                         </li>
