@@ -162,6 +162,7 @@
                                                         <div class="col-xs-8 col-sm-8">
 
                                                                 <select class="chosen-select tag-input-style col-xs-6 field_value bank_select" id="<?php echo 'bank_select_' . $field['id'];?>" data-type="4" data-id="<?php echo $field['id'];?>" data-required="<?php echo $field['required'];?>" data-placeholder="请选择" <?php if($field['required'] == 1){echo 'required';}?>>
+                                                                    <option value=''>不选择银行账户</option>
                                                                     <?php foreach($banks as $b) { ?>
                                                                             <option value='<?php echo json_encode($b); ?>'><?php echo $b['account']  . '-' . $b['bankname'] . '-' . $b['cardno']; ?></option>
 
