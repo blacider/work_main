@@ -85,6 +85,17 @@ class Groups extends REIM_Controller {
 
 
     }
+    public function delete() {
+        $error = $this->session->userdata('last_error');
+        // 获取当前所属的组
+        $this->session->unset_userdata('last_error');
+        $id = $this->input->post('id');
+        $buf = $this->groups->delete_group($id);
+        if ($buf['status'] > 0) {
+            $this->session->set_userdata('last_error', '删除部门成功');
+        }
+        die(json_encode($buf));
+    }
 
     public function listdata(){
         $this->need_group_it();

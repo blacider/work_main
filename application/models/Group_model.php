@@ -237,6 +237,13 @@ class Group_Model extends Reim_Model {
         $obj = json_decode($buf, true);
         return $obj;
     }
-
+    public function delete_group($id) {
+        $jwt = $this->session->userdata('jwt');
+        $url = $this->get_url('user_group/' . $id);
+        $buf = $this->do_Delete($url, array(), $jwt);
+        log_message("debug", $buf);
+        $obj = json_decode($buf, true);
+        return $obj;
+    }
 }
 

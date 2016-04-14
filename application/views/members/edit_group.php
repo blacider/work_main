@@ -152,8 +152,9 @@
                             <input type="hidden" id="renew" name="renew" value="0" />
                             <input type="reset" style="display:none;" id="reset">
                             <div class="clearfix form-actions">
-                                <div class="col-md-offset-3 col-md-9">
-                                    <a class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
+                                <div class="col-md-9">
+                                    <a class="btn btn-white btn-danger" id="delete-group" data-renew="0"><i class="ace-icon fa fa-times red"></i>删除</a>
+                                    <a style="margin-left: 80px;" class="btn btn-white btn-primary renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
 
                                     <a style="margin-left: 80px;" class="btn btn-white cancel" data-renew="-1"><i class="ace-icon fa fa-undo gray bigger-110"></i>取消</a>
                                 </div>
@@ -174,6 +175,22 @@
 <script language="javascript">
 $(document).ready(function() {
     load_exists();
+    $("#delete-group").click(function(event) {
+        var id = $('input[name="gid"]').val();
+        if (confirm("确认删除部门？")) {
+            Utils.api('/groups/delete', {
+                method: "post",
+                data: {
+                    id: id
+                },
+                onError: function(rs) {
+                    show_notify(rs['data']['msg']);
+                }
+            }).done(function(rs) {
+                window.location.href = "/members/index";
+            });
+        }
+    });
 });
 var _image = '<?php if(array_key_exists('image',$group)){ echo $group["image"];} else {echo '';} ?> ';
 var _image_url = '<?php if(array_key_exists('image_url',$group)) { echo $group["image_url"];} else {echo '';} ?>';
