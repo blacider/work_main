@@ -79,7 +79,7 @@ $(document).ready(function() {
     }
 	$('body').scrollTop(0);
 
-	$('#download').on('click', function (e) {
+	$('.btn-download').on('click', function (e) {
 		var href = $(e.currentTarget).data('href');
 		if(isWeixin()) {
 		    $('#winxin').css('display', 'block');

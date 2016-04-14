@@ -35,7 +35,7 @@
       if(uaObject['os']['family']=='iOS' && uaObject['os']['major']<8) {
         setTimeout(function () {
           var tips = '需要iOS8.0或更高版本才能下载并使用 云报销APP，请尝试升级系统版本或与云报销客服联系。';
-          $('#download').replaceWith(tips);
+          $('.btn-download').replaceWith(tips);
         }, 100)
       }
     </script>
@@ -60,21 +60,19 @@
             <img style="width:100%" src="/static/img/text_title_42@2x.png">
         </div>
       <!-- android -->
-      <a data-href="<?php echo $android_url ?>" id="download" class="android" >
+      <a data-href="<?php echo $android_url ?>" class="android btn-download">
         下载安装
       </a>
 
       <!-- ios -->
-      <a data-href="<?php echo $ios_url ?>" id="download" class="ios">
+      <a data-href="<?php echo $ios_url ?>" class="ios btn-download">
         App Store 下载
       </a>
       
       <!-- pc -->
-      <div id="download pc">
-          <div class="pc">
+      <div class="pc">
             <img src="/static/img/download.png" style="width:160px;height:160px;">
             <div class="">扫描即可下载 iOS、Android 客户端</div>
-        </div>
       </div>
     </div>
   </div>
