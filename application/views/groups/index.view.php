@@ -90,38 +90,6 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<!--
-<div id="darkbg" style="display:none;"></div>
-<div id=""  style="display:none;" class="pop_creat pop_creat_1">
-    <div class="row">
-        <div class="container">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">销售总监</h3>
-            </div>
-            <div class="panel-body">
-                <ul>
-                    <li>有五年以上知名互联网公司的工作经验，学历本科以上，理科生优先</li>
-                    <li>正直诚实，热爱互联网行业，熟悉互联网产品</li>
-                    <li>有优秀的沟通能力和团队配合精神</li>
-                    <li>工作积极主动，有强烈的责任心，乐于接受挑战，能很好的承担压力</li>
-                    <li>善于思考，逻辑思维缜密，有很强的学习能力</li>
-                    <li>对数据敏感，有较强的数据分析能力，能熟练使用 Excel 等工具进行较复杂的数据分析</li>
-                    <li>有独立把控和协调重要项目的能力</li>
-                    <li>在移动互联网某一细分领域有出色的推广经验并有成功案例</li>
-                </ul>
-                如果您对此职位感兴趣，请将您的简历和在线作品集发送至 contact@cloudbaoxiao.com。
-                <br />
-            </div>
-        </div>
-        </div>
-    </div>
-</div>
-    -->
-
-
-
-
 <script language="javascript" src="/static/datatables/js/jquery.dataTables.js"></script>
 <script language="javascript" src="/static/js/bootstrap.min.js"></script>
 <script language="javascript" src="/static/datatables/TableTools/js/dataTables.tableTools.js"></script>
