@@ -44,8 +44,8 @@
   <div id="winxin">
     <div class="triangle-up"></div>
     <div class="weixin-content">
-      <h2 class="ios safari">请在菜单中选择：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用Safari打开</h2>
-      <h2 class="android explore">请在菜单中选择: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用浏览器打开</h2>
+      <h2 class="safari">请在菜单中选择：<img src="/static/wx/img/explorer-iOS.png" alt="">使用Safari打开</h2>
+      <h2 class="explore">请在菜单中选择: <img src="/static/wx/img/explorer-android.png" alt="">使用浏览器打开</h2>
     </div>
   </div>
   <div class="header">

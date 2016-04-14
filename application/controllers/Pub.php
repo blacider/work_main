@@ -279,7 +279,7 @@ class Pub extends REIM_Controller {
         $info = $this->app_model->find_all_online();
         foreach($info as &$i){
             if($i['platform'] == 0) {
-                $i['path'] = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/pub/xreim';
+                $i['path'] = 'https://itunes.apple.com/cn/app/yun-bao-xiao-dui-bao-xiao/id1030689407';
             } else {
                 $i['path'] = "http://d.yunbaoxiao.com/android/" . $i['version'] . "/reim.apk";
             }
