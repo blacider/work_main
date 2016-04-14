@@ -13,6 +13,19 @@ text-align:center;
 padding:7px 0 0 0;
 font:bold 11px Arial, Helvetica, sans-serif;
 }
+
+#weixin-wallet {
+    position: relative;
+}
+#weixin-wallet .logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 30px;
+    width: 30px;
+    margin-top: -15px;
+    margin-left: -15px;
+}
 </style>
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
@@ -361,6 +374,11 @@ if(in_array($profile['admin'],[1,3,4])){
                         </div>
                     </div>
 
+                    <!-- 微信绑定 -->
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label no-padding-right">微信钱包授权</label>
+                        <div class="col-xs-2 col-sm-2" id="weixin-wallet"></div>
+                    </div>
 
 <?php 
     if(in_array($profile['admin'], [1,2,3,4])){
@@ -689,6 +707,7 @@ if(in_array($profile['admin'],[1,3,4])){
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
+<script src="/static/js/libs/qrcodejs.min.js"></script>
 <script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script> 
 <script src="/static/js/libs/underscore-min.js"></script> 
 <script src="/static/js/widgets/input-suggestion.js"></script>
@@ -1175,9 +1194,36 @@ if(in_array($profile['admin'],[1,3,4])){
     });
 
     });
-    
 
+    // 添加二维码
+    // giro_auth/employee_wechat_info
+    Utils.api('giro_auth/employee_wxpub_payhead_info', {
+        env: 'miaiwu'
+    }).done(function (rs) {
+        if(rs['status']<=0) {
+            return $("#weixin-wallet").text('已授权');
+        }
+        var data = rs['data'];
+        if(!data['company_opened']) {  //企业未开通
+            $("#weixin-wallet").parent().remove();
+            console.log('企业未开通');
+            return
+        } else if(data['company_opened']) { //企业开通
+            if(data['employee_opened']) {
+                $("#weixin-wallet").text('已授权');
+            } else {
+                var qrcode = new QRCode(document.getElementById("weixin-wallet"), {
+                    // text: "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx068349d5d3a73855&redirect_uri=http%3A%2F%2Fdadmin.cloudbaoxiao.com%2Fmobile%2Fwallet&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect",
+                    text:data['auth_url'],
+                    width: 128,
+                    height: 128,
+                    colorDark : "#ff575b",
+                    colorLight : "#fff",
+                    correctLevel : QRCode.CorrectLevel.M
+                });
+            }
+        }
+    });
+    
 </script>
 <script src="<?= static_url("/static/js/mod/user/profile.js") ?>"></script>
-
-

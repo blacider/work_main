@@ -1,5 +1,4 @@
 (function(exports) {
-
 	// ie8 check
 	var CONST_LTE_IE8 = (function(userAgent) {
 	    if (/MSIE\s+(6|7|8)\.0/.test(userAgent)) {

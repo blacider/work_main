@@ -18,7 +18,7 @@ class REIM_Controller extends CI_Controller{
     {
         if (!$this->session->userdata('oauth2_ak')) {
             $controller = $this->uri->rsegment_array();
-            $white_list = ['', 'login', 'install', 'pub', 'users', 'register'];
+            $white_list = ['', 'login', 'install', 'pub', 'users', 'register', 'mobile'];
             if(!in_array($controller[1], $white_list)) {
                 redirect(base_url('/#login'));
             }
