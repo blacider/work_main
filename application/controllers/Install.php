@@ -14,7 +14,7 @@ class Install extends REIM_Controller {
 
     public function index(){
         
-        $ios_url = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/pub/xreim';
+        $ios_url = 'https://itunes.apple.com/cn/app/yun-bao-xiao-dui-bao-xiao/id1030689407';
         
         $android_info = $this->app_model->find_online(1);
         $android_url = "http://d.yunbaoxiao.com/android/" . $android_info['version'] . "/reim.apk";
