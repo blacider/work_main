@@ -13,13 +13,9 @@ class Install extends REIM_Controller {
 
 
     public function index(){
-        
-        $ios_url = 'https://itunes.apple.com/cn/app/yun-bao-xiao-dui-bao-xiao/id1030689407';
-        
         $android_info = $this->app_model->find_online(1);
         $android_url = "http://d.yunbaoxiao.com/android/" . $android_info['version'] . "/reim.apk";
         
-
         $attacker = $this->agent->agent_string();
         // $attacker = "test start; ;JianKongBao Monitor test end";
         $hasAttacker = false;
@@ -28,7 +24,6 @@ class Install extends REIM_Controller {
         }
         $this->load->view('install', 
             array(
-                'ios_url' => $ios_url,
                 'android_url' => $android_url,
                 'has_attacker' => $hasAttacker
             )
