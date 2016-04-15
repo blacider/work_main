@@ -81,8 +81,16 @@ $(document).ready(function() {
 
 	$('.btn-download').on('click', function (e) {
 		var href = $(e.currentTarget).data('href');
-		if(isWeixin()) {
+		var in_weixin = isWeixin();
+		if(in_weixin) {
 		    $('#winxin').css('display', 'block');
+		    if(getPlatform() == 'iOS') {
+		    	$('#winxin .safari').show();
+		    	$('#winxin .explore').hide();
+		    } else {
+		    	$('#winxin .safari').hide();
+		    	$('#winxin .explore').show();
+		    }
 		    setTimeout(function(){
 		    	$('.block1')[0].onclick = function() {
 		    	    $('#winxin').css('display', 'none');

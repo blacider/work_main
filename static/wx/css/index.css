@@ -218,33 +218,25 @@ input[type="text"] {
 	clear: both;
 	background-color: #FE575C;
 	font-size: 9px;
-	padding:0 15px;
+	padding: 8px 15px;
 	font-weight: normal;
 	color: white;
 	border-radius: 5px;
 }
-.safari {
+.weixin-content .safari,
+.weixin-content .explore {
+	padding: 0;
 	margin: 0;
-    line-height: 57px;
-    background-position: 111px;
-	background-repeat: no-repeat;
-	background-image: url(../img/explorer-iOS.png); 
-    background-image: -webkit-image-set(url(../img/explorer-iOS.png) 1x,url(../img/explorer-iOS@2x.png) 2x);
-    background-image: -moz-image-set(url(../img/explorer-iOS.png) 1x,url(../img/explorer-iOS@2x.png) 2x);
-    background-image: -o-image-set(url(../img/explorer-iOS.png) 1x,url(../img/explorer-iOS@2x.png) 2x);
-    background-image: -ms-image-set(url(../img/explorer-iOS.png) 1x,url(../img/explorer-iOS@2x.png) 2x);
 }
-.explore {
-	margin: 0;
-    line-height: 57px;
-    background-position: 105px;
-	background-repeat: no-repeat;
-	background-image: url(../img/explorer-android.png); 
-    background-image: -webkit-image-set(url(../img/explorer-android.png) 1x,url(../img/explorer-android@2x.png) 2x);
-    background-image: -moz-image-set(url(../img/explorer-android.png) 1x,url(../img/explorer-android@2x.png) 2x);
-    background-image: -o-image-set(url(../img/explorer-android.png) 1x,url(../img/explorer-android@2x.png) 2x);
-    background-image: -ms-image-set(url(../img/explorer-android.png) 1x,url(../img/explorer-android@2x.png) 2x);
+.weixin-content img {
+	height: 24px;
+	width: 24px;
+	position: relative;
+	top: 4px;
+	margin-right: 8px;
 }
+ 
+ 
 /*-----------footer*/
 .footer {
 	width: 100%;
