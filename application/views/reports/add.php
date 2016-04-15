@@ -15,7 +15,7 @@
                 <div class="block-row report-title">
                     <div class="field-label">报销单名称</div>
                     <div class="field-input">
-                        <input type="text" placeholder="报销单" ng-model="title" ng-keyup="onTextLengthChange($event)">
+                        <input type="text" ng-model="title" ng-keyup="onTextLengthChange($event)">
                     </div>
                 </div>
                 <div class="block-row">
@@ -26,15 +26,15 @@
                                 <img ng-src="{{superior.apath || default_avatar}}" alt="">
                                 <div class="info">
                                     <div class="name">{{superior.nickname}}</div>
-                                    <div class="role">{{formatMember(superior)}}</div>
+                                    <div class="role">{{superior.d}}</div>
                                 </div>
-                                <p class="btn-remove" ng-click="onRemoveApprover(m, $event)"></p>
+                                <p class="btn-remove" ng-click="onRemoveApprover(superior, $event)"></p>
                             </li>
                             <li ng-repeat='m in selectedMembers'>
                                 <img ng-src="{{m.apath || default_avatar}}" alt="">
                                 <div class="info">
                                     <div class="name">{{m.nickname}}</div>
-                                    <div class="role">{{formatMember(m)}}</div>
+                                    <div class="role">{{m.d}}</div>
                                 </div>
                                 <p class="btn-remove" ng-click="onRemoveApprover(m, $event)"></p>
                             </li>
@@ -114,11 +114,11 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="c in selectedConsumptions" ng-class="{selected: c.isSelected}" ng-click="onSelectConsumption(c, $event)">
-                                        <td>{{c.cate_str||'-'}}</td>
-                                        <td >{{c.createdt||'-'}}</td>
+                                        <td>{{categoryMap[c.category]['category_name']||'-'}}</td>
+                                        <td >{{dateFormat(c.createdt)||'-'}}</td>
                                         <td>{{c.merchants||'-'}}</td>
                                         <td class="note">{{c.note||'-'}}</td>
-                                        <td>{{c.amount}}¥ </td>
+                                        <td>¥{{c.amount}} </td>
                                     </tr> 
                                 </tbody>
                             </table>
@@ -151,7 +151,7 @@
                             <input type="text" placeholder="姓名／手机／邮箱" ng-model="txtSearchText">
                         </div>
                     </div>
-                    <ul>
+                    <ul class="stop-parent-scroll">
                         <li class="m_{{m.id}}" ng-repeat='m in (filteredMembers = (members|filter:searchImmediate(txtSearchText)))' ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m, $event)">
                             <img ng-src="{{m.apath || default_avatar}}" alt="">
                             <div class="info">
@@ -193,13 +193,13 @@
                                 <div class="col">金额</div>
                             </div>
                         </div>
-                        <div class="t-body">
-                            <div class="t-row" ng-if="!c.rid" ng-repeat="c in consumptions" ng-class="{selected: c.isSelected}" ng-click="onSelectConsumption(c, $event)">
-                                <div class="col">{{c.cate_str||'-'}}</div>
-                                <div class="col dt">{{c.createdt||'-'}}</div>
+                        <div class="t-body stop-parent-scroll">
+                            <div class="t-row" ng-if="!c.rid || c.rid==0" ng-repeat="c in consumptions" ng-class="{selected: c.isSelected}" ng-click="onSelectConsumption(c, $event)">
+                                <div class="col">{{categoryMap[c.category]['category_name']||'-'}}</div>
+                                <div class="col dt">{{dateFormat(c.createdt)||'-'}}</div>
                                 <div class="col">{{c.merchants||'-'}}</div>
                                 <div class="col note">{{c.note||'-'}}</div>
-                                <div class="col">{{c.amount}}¥</div>
+                                <div class="col">¥{{c.amount}}</div>
                                 <div class="col btn-edit">
                                     <a href="/items/edit/{{c.id}}"><img src="/static/img/mod/report/24/btn-edit@2x.png" alt=""></a>
                                 </div>

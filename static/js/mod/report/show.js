@@ -28,6 +28,9 @@
                     $scope.banks = [];
                     $scope.default_bank = null;
                     $scope.template = null;
+                    $scope.originalReport = {
+                        receivers: {}
+                    };
                     $scope.default_avatar = '/static/img/mod/report/default-avatar.png';
                     $scope.comment_box = {
                         txtCommentMessage: ''
@@ -53,23 +56,6 @@
                                 return show_notify('找不到模版');
                             }
                         });
-                    };
-
-                    function modifyArrayByAll(arr, all) {
-                        for (var i = 0; i < arr.length; i++) {
-                            var item = arr[i];
-                            var index = _.findLastIndex(all, {
-                                id: item.id + ''
-                            });
-                            if (index > -1) {
-                                var one = all[index];
-                                var cur = arr[i];
-                                cur['rank_id'] = one['rank_id'];
-                                cur['apath'] = one['apath'];
-                                cur['level_id'] = all['level_id'];
-                                cur['gid'] = all['gid'];
-                            }
-                        }
                     };
 
                     function getReportData(id) {
@@ -103,10 +89,12 @@
                         });
                     };
 
-                    function getCurrentUserBanks() {
-                        return Utils.api('/users/get_current_user_banks', {}).done(function(rs) {
-                            if (rs['status'] < 0) {
-                                return show_notify('个人银行数据出错');
+                    function getCategories() {
+                        return Utils.api('/common/0', {
+                            env: 'online'
+                        }).done(function (rs) {
+                            if(rs['status']<0) {
+                                return show_notify('数据出错');
                             }
                         });
                     };
@@ -123,14 +111,12 @@
                         return Utils.api('/users/get_members', {}).done(function(rs) {
                             var data = rs['data'];
                             $scope.members = data['members'] || [];
-                            $scope.rankMap = arrayToMapWithKey('id', data['rankArray']);
-                            $scope.levelMap = arrayToMapWithKey('id', data['levelArray']);
                             $scope.$apply();
                         });
                     };
 
                     function getPageData(callback) {
-                        $.when(getTemplateData(), getReportData(report_id), getCurrentUserBanks(), getReportFlow(report_id), getMembers()).done(function() {
+                        $.when(getTemplateData(), getReportData(report_id), getReportFlow(report_id), getMembers(), getCategories()).done(function() {
                             callback.apply(null, arguments);
                             // 这种类型不好处理，在这里收集它们——当其改变的数值的时候
                         })
@@ -173,7 +159,7 @@
                     };
 
                     function bankItemFormat(item) {
-                        if (!item.id) {
+                        if (!item || !item.id) {
                             return {
                                 text: ''
                             }
@@ -268,6 +254,15 @@
                                     $scope.txtSearchText = '';
                                 }
                             });
+
+                            $($element.find('.available-members .stop-parent-scroll')).on('mousewheel', function (e) {
+                                var event = e.originalEvent,
+                                d = event.wheelDelta || -event.detail;
+                                console.log(d);
+                                this.scrollTop += d *-1;
+                                e.preventDefault();
+                            });
+
                             dialog.setContentWithElement($($element.find('.available-members')));
                             return dialog;
                         }
@@ -281,9 +276,9 @@
                         };
                     })();
                     // main entry
-                    getPageData(function(template, report, banks, flow, members) {
+                    getPageData(function(template, report, flow, members, category) {
                         $scope.isLoaded = true;
-                        if (report['status'] <= 0 || template['status'] <= 0 || banks['status'] <= 0) {
+                        if (report['status'] <= 0 || template['status'] <= 0 || flow['rs']<=0) {
                             return;
                         }
                         var reportData = report['data'];
@@ -297,19 +292,13 @@
                         $scope.members = members['data']['members'];
                         $scope.selectedMembers = report['data']['receivers']['managers'];
 
-                        $scope.default_bank = findOneInBanks(banks['default_bank'], banks['banks']);
-                        if(!$scope.default_bank) {
-                            if($scope.banks.length>0) {
-                                $scope.default_bank = $scope.banks[0];
-                            }
-                        }
-                        
+                        var categoryArray = category['data']['categories'];
+
+                        $scope.categoryMap = arrayToMapWithKey('id', categoryArray);
+
                         $scope.userProfile = _.findWhere(members.data.members, {
                             id: window.__UID__
                         });
-                        // fix me
-                        modifyArrayByAll($scope.selectedMembers, members.data.members);
-                        // get amount
                         var amount = 0;
                         _.each($scope.report.items, function(item) {
                             var a = parseFloat(item.amount);
@@ -358,9 +347,8 @@
                             var is_myself = window.__UID__ == $scope.report.uid;
                             // 是否是审核人
 
-
                             var is_approver = (function () {
-                                var receivers = $scope.receivers['managers'];
+                                var receivers = $scope.selectedMembers;
                                 for(var i=0;i<receivers.length;i++) {
                                     var re = receivers[i];
                                     if(window.__UID__ == re['id']) {
@@ -387,12 +375,11 @@
                                 buttons['has_affirm'] = true;
                             }
 
-                            if(is_approver && ['1'].indexOf(status)) {
+                            if(is_approver && ['1'].indexOf(status)!=-1) {
                                 buttons['has_pass'] = true;
                                 buttons['has_reject'] = true;
                                 buttons['has_modify'] = true;
                             }
-                            buttons['has_pass'] = true;
                             return buttons;
                         })();
                         $scope.$apply();
@@ -404,18 +391,7 @@
                         }
                         return fecha.format(date, formatter);
                     }
-                    $scope.formatMember = function(m) {
-                        // {{levelMap[m.level_id]['name'] || '未知级别'}}－{{rankMap[m.rank_id]['name'] || '未知职位'}}
-                        var rankMap = $scope.rankMap;
-                        var rank = rankMap[m.rank_id] || {};
-                        // console.log(m.d , rankMap[m.rank_id]['name'])
-                        if (m.d && rank['name']) {
-                            return m.d + '-' + rankMap[m.rank_id]['name'];
-                        } else {
-                            var rank = rankMap[m.rank_id] || {};
-                            return m.d || rank['name'] || '';
-                        }
-                    };
+                    
                     $scope.onAddConsumptions = function(e) {
                         if (!$scope.consumptions) {
                             return show_notify('正在加载数据......');
@@ -423,7 +399,7 @@
                         var dialog = dialogConsumptionSingleton.getInstance();
                         dialog.showModal();
                     };
-                    $scope.onAddCommentToReport = function() {
+                    $scope.onAddCommentToReport = function(e) {
                         var comment = $scope.comment_box.txtCommentMessage;
                         comment = $.trim(comment);
                         if (!comment) {
@@ -438,7 +414,7 @@
                             }
                         }).done(function(rs) {
                             if (rs['status'] <= 0) {
-                                return show_notify('评论失败')
+                                return show_notify('评论失败');
                             }
                             $scope.commentArray || ($scope.commentArray = []);
                             $scope.commentArray.unshift({
@@ -446,9 +422,9 @@
                                 nickname: $scope.userProfile['nickname'],
                                 apath: $scope.userProfile['apath'],
                                 comment: comment,
-                                lastdt: new Date,
+                                lastdt: new Date
                             });
-                            $scope.txtCommentMessage = '';
+                            $scope.comment_box.txtCommentMessage = '';
                             $scope.$apply();
                         });
                     };

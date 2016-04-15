@@ -45,18 +45,6 @@
                         });
                     };
 
-                    function getSuperior() {
-                        return Utils.api('/users/get_profile_data_with_property/', {
-                            data: {
-                                property: 'manager_id'
-                            }
-                        }).done(function (rs) {
-                            if(rs['status']<0) {
-                                return show_notify('找不到数据');
-                            }
-                        });
-                    };
-
                     function getReportData(id) {
                         return Utils.api('/reports/detail/'+id, {}).done(function (rs) {
                             if(rs['status']<0) {
@@ -65,16 +53,20 @@
                         });
                     };
 
-                    function getCurrentUserBanks() {
-                        return Utils.api('/users/get_current_user_banks', {}).done(function (rs) {
+                    function getAvailableConsumptions(uid) {
+                        return Utils.api('/items/1/60/'+uid, {
+                            env: 'online'
+                        }).done(function (rs) {
                             if(rs['status']<0) {
-                                return show_notify('个人银行数据出错');
+                                return show_notify('数据出错');
                             }
                         });
                     };
 
-                    function getAvailableConsumptions() {
-                        return Utils.api('/reports/get_available_consumptions', {}).done(function (rs) {
+                    function getCategories() {
+                        return Utils.api('/common/0', {
+                            env: 'online'
+                        }).done(function (rs) {
                             if(rs['status']<0) {
                                 return show_notify('数据出错');
                             }
@@ -87,25 +79,16 @@
                                 return show_notify('数据出错');
                             }
                         });
-                    };
+                    }
 
-                    function modifyArrayByAll(arr, all) {
-                        for(var i=0;i<arr.length;i++) {
-                            var item = arr[i];
-                            var index = _.findLastIndex(all, {
-                                id: item.id + ''
-                            });
-                            if(index>-1) {
-                                var one = all[index];
-                                var cur = arr[i];
-                                cur['rank_id'] = one['rank_id'];
-                                cur['apath'] = one['apath'];
-                                cur['level_id'] = all['level_id'];
-                                cur['gid'] = all['gid'];
+                    function getReportUserProfile(uid) {
+                        return Utils.api('/users/get_user_profile/' + uid, {}).done(function (rs) {
+                            if(rs['status']<0) {
+                                return show_notify('数据出错');
                             }
-                        }
-                    };
-
+                        });
+                    }
+ 
                     function arrayToMapWithKey(key, arr) {
                         var rs = {};
                         for (var i = arr.length - 1; i >= 0; i--) {
@@ -150,6 +133,14 @@
                                     this.close()
                                 },
                                 cancelIconUrl: '/static/img/mod/report/24/btn-cancel@2x.png',
+                            });
+
+                            $($element.find('.available-members .stop-parent-scroll')).on('mousewheel', function (e) {
+                                var event = e.originalEvent,
+                                d = event.wheelDelta || -event.detail;
+                                console.log(d);
+                                this.scrollTop += d *-1;
+                                e.preventDefault();
                             });
 
                             dialog.setContentWithElement($($element.find('.available-members')));
@@ -216,8 +207,16 @@
                                 cancelIconUrl: '/static/img/mod/report/24/btn-cancel@2x.png',
                             });
 
-                            dialog.setContentWithElement($($element.find('.available-consumptions')));
+                            $($element.find('.available-consumptions .stop-parent-scroll')).on('mousewheel', function (e) {
+                                var event = e.originalEvent,
+                                d = event.wheelDelta || -event.detail;
+                                console.log(d);
+                                this.scrollTop += d *-1;
+                                e.preventDefault();
+                            });
                        
+                            dialog.setContentWithElement($($element.find('.available-consumptions')));
+                            
                             return dialog;
                         }
 
@@ -373,87 +372,143 @@
                         }
                         return null;
                     };
+
+                    function tryMatchEdit() {
+                        var router = new RouteRecognizer();
+                        router.add([{path: "/reports/:type/:id"}]);
+                        var matchers = router.recognize(location.pathname);
+                        if(matchers.length>0) {
+                            var m = matchers[0];
+                            if(m.params['type']=='edit') {
+
+                                $scope.__edit__ = true;
+                                $scope.__report_id__ = m.params['id'];
+                                return getReportData(m.params['id']).done(function (rs) {
+                                    if (rs['status']<=0){
+                                        return show_notify('获取数据失败');
+                                    }
+                                });
+                            }
+                        } 
+                        var def = $.Deferred();
+                        def.resolve();
+                        return def.promise();
+                    };
+
                     function getPageData(callback) {
-                        $.when(
-                            getTemplateData($element.find('.report').data('tid')),
-                            getAvailableConsumptions(),
-                            getMembers(),
-                            getCurrentUserBanks(),
-                            getSuperior()
-                        ).done(function () {
-                            callback.apply(null, arguments);
-                            // 这种类型不好处理，在这里收集它们——当其改变的数值的时候
-                        });
+                        // 1.如果是编辑报销单，当前用户可能是审批人，应该获取提交者的信息，而不是审批人的信息
+                        // 2.如果是添加报销单，就比较简单
+                        // 3.这里考虑一下先根据router type 获取报销单数据比较靠谱
+
+                        // if edit will get the page data;
+                        tryMatchEdit().done(function (rs) {
+                            var report_uid = window.__UID__;
+                            if($scope.__edit__) {
+                                if (rs['status']<=0) {
+                                    callback.call(null, rs);
+                                    return show_notify('获取数据失败');
+                                }
+                                $scope.originalReport = rs.data;
+
+                               
+                                var report_uid = rs['data']['uid'];
+                            }
+
+                            $.when(
+                                getTemplateData($element.find('.report').data('tid')),
+                                getAvailableConsumptions(report_uid),
+                                getMembers(),
+                                getReportUserProfile(report_uid),
+                                getCategories()
+                            ).done(function () {
+                                callback.apply(null, arguments);
+                                // 这种类型不好处理，在这里收集它们——当其改变的数值的时候
+                            });
+                        })
+
+                        
                     };
                     // main entry
-                    getPageData(function (template, consumptions, members, banks, superior_id) {
+                    // getPageData(function (template, consumptions, members, banks, superior_id) {
+                    getPageData(function (template, consumptions, members, profile, category) {
+
                         $scope.isLoaded = true;
 
-                        if (template['status'] <= 0 || banks['status'] <= 0 || consumptions['status']<=0 || members['status']<=0) {
+                        if (template['status'] <= 0 || profile['status'] <= 0 || consumptions['status']<=0) {
                             return;
                         }
 
-                        $scope.banks = banks['banks'] || [];
-                        $scope.default_bank = findOneInBanks(banks['default_bank'], banks['banks']);
+                        var profileData = profile['data'];
+
+                        $scope.banks = profileData['banks'] || [];
+
+                        $scope.default_bank = _.find($scope.banks, {
+                            id: profileData['credit_card']
+                        });
+
+
+                        var categoryArray = category['data']['categories'];
+
+                        $scope.categoryMap = arrayToMapWithKey('id', categoryArray);
+
+                        $scope.report_user_name = profileData['nickname'];
+
+                        _.each($scope.banks, function (item) {
+                            item.report_user_name =  $scope.report_user_name;
+                        });
+
                         if(!$scope.default_bank) {
                             if($scope.banks.length>0) {
                                 $scope.default_bank = $scope.banks[0];
                             }
                         }
+                        setTimeout(function () {
+
+                            $scope.banks.unshift({
+                                text: '无',
+                                id: -1
+                            });
+
+                            $scope.$apply();
+
+                        }, 100);
 
                         $scope.template = angular.copy(template['data']);
                         if(!$scope.template.name) {
                             $scope.template.name = _defaultTemplateName_;
                         }
 
+                        if(!$scope.__edit__) {
+                            // set breadca name
+                            $('.breadcrumb li:last').text('新建' + $scope.template.name);
+                        }
 
-                        $scope.consumptions = consumptions['data'] || [];
+                        $scope.consumptions = consumptions['data']['data'] || [];
 
                         var members = members['data'];
 
                         $scope.members = members['members'];
 
-                        $scope.rankMap = arrayToMapWithKey('id', members['rankArray']);
-
-                        $scope.levelMap = arrayToMapWithKey('id', members['levelArray']);
-
-                        $scope.superior = _.find($scope.members, {
-                            id: superior_id
+                        $scope.selectedMembers = _.map($scope.originalReport['receivers']['managers'], function (item) {
+                            return _.find($scope.members, {
+                                id: item.id + ''
+                            });
                         });
 
+
+                        $scope.superior = _.find($scope.members, {
+                            id: profileData['manager_id']
+                        });
+
+                        if($scope.__edit__) {
+                            syncDatatToView();
+                        }
 
                         $scope.$apply();
                         
                         setTimeout(function () {
                             initDatetimepicker('.datatimepicker input');
                         }, 100);
-
-                        // if edit will get the page data;
-                        (function tryMatchEdit() {
-                            var router = new RouteRecognizer();
-                            router.add([{path: "/reports/:type/:id"}]);
-                            var matchers = router.recognize(location.pathname);
-                            if(matchers.length>0) {
-                                var m = matchers[0];
-                                if(m.params['type']=='edit') {
-                                    $scope.__edit__ = true;
-                                    $scope.__report_id__ = m.params['id'];
-                                    getReportData(m.params['id']).done(function (rs) {
-                                        if (rs['status']<=0){
-                                            return show_notify('获取数据失败');
-                                        }
-                                        var data = rs['data'];
-                                        $scope.originalReport = angular.copy(data);
-
-                                        $scope.selectedConsumptions = data['items'];
-
-                                        syncDatatToView();
-
-                                        $scope.$apply();
-                                    });
-                                }
-                            }
-                        })();
                     });
 
                     $scope.searchImmediate = function (keywords) {
@@ -504,19 +559,6 @@
                         }
                     }, 1000);
 
-                    $scope.formatMember = function (m) {
-                        // {{levelMap[m.level_id]['name'] || '未知级别'}}－{{rankMap[m.rank_id]['name'] || '未知职位'}}
-                        var rankMap = $scope.rankMap;
-                        var rank = rankMap[m.rank_id] || {};
-                        // console.log(m.d , rankMap[m.rank_id]['name'])
-                        if(m.d && rank['name']) {
-                            return m.d + '-' + rankMap[m.rank_id]['name'];
-                        } else {
-                            var rank = rankMap[m.rank_id] || {};
-                            return m.d || rank['name'] || '';
-                        }
-                    };
-
                     $scope.makeBankDropdown = {
                         itemFormat: function (item) {
                             if(!item || !item.id) {
@@ -524,9 +566,16 @@
                                     text: ''
                                 }
                             }
+                            if(item.id==-1) {
+                                return {
+                                    value: -1,
+                                    text: '无'
+                                }
+                            }
+
                             return {
                                 value: item['id'],
-                                text:  ['尾号' + item.cardno.substr(-4), '-', item.bankname].join('') || '--'
+                                text:  [item.report_user_name, '-', '尾号' + item.cardno.substr(-4), '-', item.bankname].join('') || '--'
                             }
                         },
                         onChange: function(oldValue, newValue, item, columnData) {
@@ -649,7 +698,6 @@
                         });
                         var item = $scope.selectedMembers[index];
                         $scope.selectedMembers.splice(index, 1);
-                        Utils.updateArrayByQuery($scope.members, {id: item.id+''}, {isSelected: false});
                     };
 
                     $scope.onSelectMember = function (item, e) {
@@ -657,20 +705,33 @@
                     };
 
                     $scope.has_select_consumption = true;
-                    $scope.has_deselect_consumption = true
+                    $scope.has_deselect_consumption = false
 
                     $scope.onSelectConsumption = function (item, e) {
                         item.isSelected = !item.isSelected;
+                        var unSelectedItem = _.filter($scope.consumptions, function (item) {
+                            if(!item.isSelected) {
+                                return true;
+                            }
+                        });
+                        if(unSelectedItem.length>0) {
+                            $scope.has_select_consumption = true;
+                            $scope.has_deselect_consumption = false;
+                        }
                     };
                     $scope.onSelectAllConsumptions = function (e) {
                         _.each($scope.consumptions, function (item) {
                             item.isSelected = true;
                         });
+                        $scope.has_select_consumption = false;
+                        $scope.has_deselect_consumption = true;
                     };
                     $scope.onDeselectAllConsumptions = function (e) {
                         _.each($scope.consumptions, function (item) {
                             item.isSelected = false;
                         });
+                        $scope.has_select_consumption = true;
+                        $scope.has_deselect_consumption = false;
                     };
 
                     $scope.onAddConsumptions = function (e) {
@@ -778,7 +839,7 @@
                         $scope.selectedConsumptions = angular.copy($scope.originalReport['items']) || [];
                         $scope.selectedMembers = angular.copy($scope.originalReport['receivers']['managers']) || [];
 
-                        var oldConsumptions = angular.copy($scope.selectedMembers);
+                        var oldConsumptions = angular.copy($scope.selectedConsumptions);
                         for(var i=0;i<oldConsumptions.length;i++) {
                             var item = oldConsumptions[i];
                             item.isSelected = true;
@@ -852,8 +913,16 @@
                         });
                     };
 
+                    $scope.dateFormat = function(date, formatter) {
+                        formatter || (formatter = 'YYYY-MM-DD hh:mm:ss');
+                        if (date instanceof Date == false) {
+                            date = new Date(parseInt(date * 1000));
+                        }
+                        return fecha.format(date, formatter);
+                    }
+
                     $scope.onCancel = function (e) {
-                        syncDatatToView();
+                        return window.location.href = '/reports/index';
                     };
 
                     // 首次创建，其次保存
@@ -876,7 +945,7 @@
                                     return show_notify(rs['data']['msg']);
                                 }
                                 show_notify('保存成功');
-                                syncDataModel();
+                                return window.location.href = '/reports/index';
                             });
                             return
                         }
@@ -890,7 +959,7 @@
                             }
                             show_notify('保存成功');
                             $scope.__report_id__ = rs['data']['id'];
-                            syncDataModel();
+                            return window.location.href = '/reports/index';
                         });
                     };
 

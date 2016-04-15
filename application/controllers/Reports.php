@@ -33,7 +33,7 @@ class Reports extends REIM_Controller {
                     ),
                     array(
                         'url'  => '', 
-                        'name' => '我的报销单', 
+                        'name' => '新建', 
                         'class' => ''
                     )
                 ),
@@ -62,7 +62,7 @@ class Reports extends REIM_Controller {
                     ),
                     array(
                         'url'  => '', 
-                        'name' => '我的报销单', 
+                        'name' => '修改报销单', 
                         'class' => ''
                     )
                 ),

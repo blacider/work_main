@@ -283,32 +283,18 @@ class Users extends REIM_Controller
         }
     }
 
+     
+
     public function get_members()
     {
         $profile = $this->user->reim_get_user();
-        $rankArray = $this->reim_show->rank_level(1);
-        $levelArray = $this->reim_show->rank_level(0);
-
-        if($rankArray['status']>0) {
-            $rankArray = $rankArray['data'];
-        } else {
-            $rankArray = array();
-        }
-
-        if($levelArray['status']>0) {
-            $levelArray = $levelArray['data'];
-        } else {
-            $levelArray = array();
-        }
 
         $members = $profile['data']['members'];
         
         $data = array(
             'status'=>$profile['status'],
             'data' =>array(
-                'members'=>$members,
-                'rankArray'=>$rankArray,
-                'levelArray'=>$levelArray
+                'members'=>$members
             )
         );
         die(json_encode($data));
@@ -431,32 +417,9 @@ class Users extends REIM_Controller
         }
     }
 
-    public function get_current_user_banks() {
-        $common = $this->user->get_common();
-        $profile = array();
-        if($common['status'] > 0 && array_key_exists('profile', $common['data']))
-        {
-            $profile = $common['data']['profile'];
-        }
-        // get banks
-        $banks = array();
-        if(array_key_exists('banks', $profile))
-        {
-            $banks = $profile['banks'];
-        }
-        // get default bank
-        $default_bank = null;
-        if(array_key_exists('credit_card', $profile))
-        {
-            $default_bank = $profile['credit_card'];
-        }
-
-        $data = array(
-            'default_bank' => $default_bank,
-            'banks' => $banks
-        );
-
-        die(json_encode($data));
+    public function get_user_profile($uid) {
+        $profile = $this->user->reim_get_info($uid);
+        die($profile);
     }
     
     public function new_credit() {

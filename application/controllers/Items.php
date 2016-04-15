@@ -1003,7 +1003,11 @@ class Items extends REIM_Controller {
             if($item_update_in != 0){
                 return redirect(base_url("reports/edit/" . $rid . "/1"));
             }else{
-                return redirect(base_url("reports/edit/" . $rid));
+                if(!$rid) {
+                    return redirect(base_url("items/index"));
+                }
+                $template = $this->reports->get_report_template($rid);
+                return redirect(base_url("reports/edit/" . $rid + "?tid="+$template['id']));
             }
         }
     }

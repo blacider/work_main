@@ -94,8 +94,7 @@
 	height: 45px;
 	border-radius: 6px;
 	background-color: #ffffff;
-	border: solid 0.8px #596774;
-	border: solid 0.8px var(--slate-grey);
+	border: 1px solid  #596774;
 }
 
 .mod-add-report .report-footer .btn-save {
@@ -484,8 +483,13 @@
 	font-size: 14px;
 	color: #929292;
 	border: solid 1px #b9b9b9;
-
 }
+
+.table-field table tbody tr td.note {
+	max-width: 120px;
+	width: 120px;
+}
+
 .btn-edit-consumption {
 	color: #7a8590;
 }
@@ -535,6 +539,8 @@ table.border-radius-row tr td:last-child {
 
 .bank-form {
 	margin-right: -40px;
+	padding: 30px 50px;
+	width: 570px;
 }
 .bank-form .field-item,
 .bank-form .field-item-wrap {
@@ -548,7 +554,6 @@ table.border-radius-row tr td:last-child {
 	width: 50%;
 	padding-right: 5px;
 }
-
 
 /* component reset */
 .field-label {

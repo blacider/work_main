@@ -36,7 +36,7 @@
                                 <div class="info" style="width: auto;">
                                     <div class="name">{{submitter.nickname}}</div>
                                     <div class="role">
-                                        <span>{{formatMember(submitter)}}</span>
+                                        <span>{{submitter.d}}</span>
                                         <span>{{submitter.phone}}</span>
                                         <span>{{submitter.email}}</span>
                                     </div>
@@ -53,7 +53,7 @@
                                 <img ng-src="{{m.apath || default_avatar}}" alt="">
                                 <div class="info">
                                     <div class="name">{{m.nickname}}</div>
-                                    <div class="role">{{formatMember(m)}}</div>
+                                    <div class="role">{{m.d}}</div>
                                 </div>
                             </li>
                         </ul>
@@ -111,7 +111,7 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="c in report.items" ng-class="{selected: c.isSelected}">
-                                        <td>{{c.category}} 报销单ID{{c.rid}}</td>
+                                        <td>{{categoryMap[c.category]['category_name']||'-'}}</td>
                                         <td >{{c.dt}}</td>
                                         <td>{{c.merchants}}</td>
                                         <td>{{c.notes}}</td>
@@ -184,19 +184,19 @@
                 <a href="{{document.referer}}" style="float: left" class="ui-button-border ui-button ui-button-hover btn-back-list">
                     <img src="/static/img/mod/report/36/btn-back-list@2x.png" alt="">返回列表
                 </a>
-                <a ng-if="has_modify" href="/reports/edit/{{report.id}}?tid={{report.template_id}}" class="ui-button-border ui-button  ui-button-hover btn-update">
+                <a ng-if="buttons.has_modify" href="/reports/edit/{{report.id}}?tid={{report.template_id}}" class="ui-button-border ui-button  ui-button-hover btn-update">
                     <img src="/static/img/mod/report/24/btn-edit@2x.png" alt="">修改
                 </a>
-                <a ng-if="has_reject" href="javascript:void(0)"  class="ui-button-border ui-button  ui-button-hover btn-reject" ng-click="onReject(report.id)">
+                <a ng-if="buttons.has_reject" href="javascript:void(0)"  class="ui-button-border ui-button  ui-button-hover btn-reject" ng-click="onReject(report.id)">
                     <img src="/static/img/mod/report/24/btn-reject@2x.png" alt="">退回
                 </a>
-                <a ng-if="has_drop" href="javascript:void(0)"  class="ui-button-border ui-button  ui-button-hover btn-drop" ng-click="onDrop(report.id)">
+                <a ng-if="buttons.has_drop" href="javascript:void(0)"  class="ui-button-border ui-button  ui-button-hover btn-drop" ng-click="onDrop(report.id)">
                     <img src="/static/img/mod/report/24/btn-reject@2x.png" alt="">撤回
                 </a>
-                <a ng-if="has_pass" href="javascript:void(0)" class="ui-button ui-button-hover btn-pass" ng-click="onPass(report.id)">
+                <a ng-if="buttons.has_pass" href="javascript:void(0)" class="ui-button ui-button-hover btn-pass" ng-click="onPass(report.id)">
                     <img src="/static/img/mod/report/24/btn-pass@2x.png" alt="">通过
                 </a>
-                <a ng-if="has_affirm" href="javascript:void(0)" class="btn-affirm ui-button-hover ui-button" ng-click="onAffirm($event)">
+                <a ng-if="buttons.has_affirm" href="javascript:void(0)" class="btn-affirm ui-button-hover ui-button" ng-click="onAffirm($event)">
                     <img src="/static/img/mod/report/24/btn-pass@2x.png" alt="">完成确认
                 </a>
             </div>
@@ -212,12 +212,12 @@
                             <input type="text" placeholder="姓名／手机／邮箱" ng-model="txtSearchText">
                         </div>
                     </div>
-                    <ul>
+                    <ul class="stop-parent-scroll">
                         <li class="s_{{s.id}}" ng-repeat='s in suggestionMembers' ng-class="{selected: s.isSelected}"  ng-click="onSelectMember(s, $event)">
                             <img ng-src="{{s.apath || default_avatar }}" alt="">
                             <div class="info">
                                 <p class="name">{{s.nickname}}</p>
-                                <p class="role">{{formatMember(s)}}</p>
+                                <p class="role">{{s.d}}</p>
                             </div>
                         </li>
                         <li ng-if="suggestionMembers" class="line"></li>
