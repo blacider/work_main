@@ -128,7 +128,7 @@
     <!-- 渠道判断 -->
     <script>
         if(getParameterByName('channel') == 'inhouse') {
-            var inhouseUrl = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/pub/xreim';
+            var inhouseUrl = 'itms-services://?action=download-manifest&url=https://www.yunbaoxiao.com/pub/xreim';
             $('.ios').data('href', inhouseUrl);
         }
     </script>
