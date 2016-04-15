@@ -51,7 +51,7 @@
                     下载安装
                 </a>
                 <!-- ios -->
-                <a data-href="<?php echo $ios_url ?>" class="ios btn-download">
+                <a data-href="https://itunes.apple.com/cn/app/yun-bao-xiao-dui-bao-xiao/id1030689407" class="ios btn-download">
                     App Store 下载
                 </a>
                 
@@ -124,6 +124,13 @@
     };
     _hmt.push('_trackEvent', 'install_page_fr', getParameterByName('fr'));
     _hmt.push(['_setCustomVar', 1, 'install_page_fr', getParameterByName('fr'), 1]);
+    </script>
+    <!-- 渠道判断 -->
+    <script>
+        if(getParameterByName('channel') == 'inhouse') {
+            var inhouseUrl = 'itms-services://?action=download-manifest&url=https://admin.cloudbaoxiao.com/pub/xreim';
+            $('.ios').data('href', inhouseUrl);
+        }
     </script>
 </body>
 </html>
