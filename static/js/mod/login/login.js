@@ -594,7 +594,7 @@ $(document).ready(function() {
             }
         }
         if (isEmail(userId)) {
-            Utils.api('/register/getvcode/email/reset', {
+            Utils.api('/register/getvcode/email/verify', {
                 method: "post",
                 data: {
                     email: userId
@@ -606,7 +606,7 @@ $(document).ready(function() {
             time($("#first-email").find('.timer'), 60);
         }
         if (isPhone(userId)) {
-            Utils.api('/register/getvcode/phone/reset', {
+            Utils.api('/register/getvcode/phone/verify', {
                 method: "post",
                 data: {
                     phone: userId
