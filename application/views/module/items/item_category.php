@@ -105,8 +105,8 @@ function get_sobs(callback){
                 }   
             }
         }
-        var selectDom = this.parentNode.nextElementSibling.children[0]
-        $(selectDom).empty().append(_h).trigger("chosen:updated");
+        var selectDom = $(this).parent().next().find("select");
+        selectDom.empty().append(_h).trigger("chosen:updated");
         $('#sob_category').trigger('change');
         $('#sob_category').trigger('change:updated');
     });
