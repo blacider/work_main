@@ -27,7 +27,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="block-row" ng-if="submitter">
+                <div class="block-row" ng-if="submitter && path_type!='snapshot'">
                     <div class="field-label">提交人</div>
                     <div class="approvers selected-members">
                         <ul>
@@ -45,7 +45,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="block-row">
+                <div class="block-row" ng-if="path_type!='snapshot'">
                     <div class="field-label">审批人</div>
                     <div class="approvers selected-members">
                         <ul>
@@ -112,7 +112,7 @@
                                 <tbody>
                                     <tr ng-repeat="c in report.items" ng-class="{selected: c.isSelected}">
                                         <td>{{categoryMap[c.category]['category_name']||'-'}}</td>
-                                        <td >{{c.dt}}</td>
+                                        <td >{{dateFormat(c.dt)}}</td>
                                         <td>{{c.merchants}}</td>
                                         <td>{{c.notes}}</td>
                                         <td>¥{{c.amount}} </td>

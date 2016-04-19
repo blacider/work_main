@@ -473,10 +473,14 @@
 
                         $scope.banks = profileData['banks'] || [];
 
+                        $scope.banks.unshift({
+                            text: '无',
+                            id: -1
+                        });
+
                         $scope.default_bank = _.find($scope.banks, {
                             id: profileData['credit_card']
                         });
-
 
                         var categoryArray = category['data']['categories'];
 
@@ -489,20 +493,10 @@
                         });
 
                         if(!$scope.default_bank) {
-                            if($scope.banks.length>0) {
-                                $scope.default_bank = $scope.banks[0];
+                            if($scope.banks.length>1) {
+                                $scope.default_bank = $scope.banks[1];
                             }
                         }
-                        setTimeout(function () {
-
-                            $scope.banks.unshift({
-                                text: '无',
-                                id: -1
-                            });
-
-                            $scope.$apply();
-
-                        }, 100);
 
                         $scope.template = angular.copy(template['data']);
                         if(!$scope.template.name) {
@@ -571,7 +565,7 @@
                     };
                     $scope.filterComsumptions = function (item) {
                         if(!item.rid || item.rid==0) {
-                            return false;
+                            return true;
                         }
                         return false;
                     }
@@ -804,7 +798,8 @@
 
                         if(!title) {
                             $element.find('.report-title input').focus();
-                            return show_notify('请添加报销单名');
+                            show_notify('请添加报销单名');
+                            return null;
                         }
 
                         var receiver_ids = $scope.selectedMembers.map(function (i) {
@@ -857,13 +852,21 @@
 
                             if(type=== '4') {
                                 var bank = $scope.bankFieldMap[id];
-                                if(isRequired && !bank) {
-                                    inValidExtras = true;
-                                    show_notify('必填银行卡项目不能为空');
-                                    return null
+                                if(isRequired) {
+                                    if(!bank || bank.id==-1) {
+                                        inValidExtras = true;
+                                        show_notify('必填银行卡项目不能为空');
+                                        return null
+                                    }
                                 }
                                 if(!bank) {
-                                    bank = {};
+                                    bank = {
+                                        "account": '',
+                                        "cardno": '',
+                                        "bankname": '',
+                                        "bankloc": '',
+                                        "subbranch": ''
+                                    };
                                 }
                                 data['value'] = JSON.stringify({
                                     "account": bank['account'],
