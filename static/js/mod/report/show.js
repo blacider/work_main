@@ -290,7 +290,12 @@
                         }
 
                         $scope.members = members['data']['members'];
-                        $scope.selectedMembers = report['data']['receivers']['managers'];
+                        
+                        $scope.selectedMembers = _.map($scope.originalReport['receivers']['managers'], function (item) {
+                            return _.find($scope.members, {
+                                id: item.id + ''
+                            });
+                        });
 
                         var categoryArray = category['data']['categories'];
 
