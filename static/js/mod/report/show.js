@@ -291,7 +291,7 @@
 
                         $scope.members = members['data']['members'];
                         
-                        $scope.selectedMembers = _.map($scope.originalReport['receivers']['managers'], function (item) {
+                        $scope.selectedMembers = _.map(reportData['receivers']['managers'], function (item) {
                             return _.find($scope.members, {
                                 id: item.id + ''
                             });
