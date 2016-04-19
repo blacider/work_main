@@ -178,7 +178,7 @@
 	border-radius: 2px;
 }
 
-.approvers ul .empty-result {
+.empty-result {
 	left: 50%;
 	top: 50%;
 	position: absolute;
@@ -187,14 +187,14 @@
     margin-left: -58px;
 	text-align: center;
 }
-.approvers ul .empty-result p {
+.empty-result p {
 	font-size: 14px;
 	letter-spacing: 0.6px;
 	color: #929292;
 	margin-top: 25px;
 }
 
-.approvers ul .empty-result img {
+.empty-result img {
 	width: 100px;
 	height: auto;
 }

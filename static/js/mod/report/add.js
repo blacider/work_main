@@ -509,11 +509,6 @@
                             $scope.template.name = _defaultTemplateName_;
                         }
 
-                        if(!$scope.__edit__) {
-                            // set breadca name
-                            $('.breadcrumb li:last').text('新建' + $scope.template.name);
-                        }
-
                         $scope.consumptions = consumptions['data']['data'] || [];
 
                         var members = members['data'];
@@ -523,12 +518,22 @@
                         if($scope.__edit__) {
                             syncDatatToView();
                         } else {
+
+                            // 设置sitemap
+                            $('.breadcrumb li:last').text('新建' + $scope.template.name);
+
                             // 新建寻找上级
                             $scope.superior = _.find($scope.members, {
                                 id: profileData['manager_id']
                             });
                             if($scope.superior) {
                                 $scope.superior.tag_for_superior = true;
+                            }
+
+                            // 删除自己
+                            var selfIndex = _.findIndex($scope.members, {id: __UID__});
+                            if(selfIndex>=0) {
+                                $scope.members.splice(selfIndex, 1);
                             }
                         }
 
@@ -564,6 +569,12 @@
                             return false;
                         };
                     };
+                    $scope.filterComsumptions = function (item) {
+                        if(!item.rid || item.rid==0) {
+                            return false;
+                        }
+                        return false;
+                    }
 
                     $scope.onTextLengthChange2 = _.debounce(function(e) {
                         var $input = $(e.currentTarget);

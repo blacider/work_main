@@ -173,7 +173,7 @@
             <!-- /*<div style="display: none;">*/ -->
             <div style="display: none;">
                 <div class="consumptions available-consumptions">
-                    <div class="head">
+                    <div class="head" ng-if="filteredConsumptions.length!=0">
                         <a class="btn-select" ng-click="onSelectAllConsumptions($event)" ng-if="has_select_consumption">
                             <img src="/static/img/mod/report/24/btn-select@2x.png" alt="">
                             全选
@@ -184,7 +184,7 @@
                         </a>
                     </div>
                     <div class="moni-table">
-                        <div class="t-head">
+                        <div class="t-head" ng-if="filteredConsumptions.length!=0">
                             <div class="t-row">
                                 <div class="col">类目</div>
                                 <div class="col dt">时间</div>
@@ -194,7 +194,7 @@
                             </div>
                         </div>
                         <div class="t-body stop-parent-scroll">
-                            <div class="t-row" ng-if="!c.rid || c.rid==0" ng-repeat="c in consumptions" ng-class="{selected: c.isSelected}" ng-click="onSelectConsumption(c, $event)">
+                            <div class="t-row" ng-repeat="c in filteredConsumptions = (consumptions|filter:filterComsumptions)" ng-class="{selected: c.isSelected}" ng-click="onSelectConsumption(c, $event)">
                                 <div class="col">{{categoryMap[c.category]['category_name']||'-'}}</div>
                                 <div class="col dt">{{dateFormat(c.createdt)||'-'}}</div>
                                 <div class="col">{{c.merchants||'-'}}</div>
@@ -203,6 +203,10 @@
                                 <div class="col btn-edit">
                                     <a href="/items/edit/{{c.id}}"><img src="/static/img/mod/report/24/btn-edit@2x.png" alt=""></a>
                                 </div>
+                            </div>
+                            <div class="empty-result" ng-if="filteredConsumptions.length==0">
+                                <img src="/static/img/mod/report/icon-no-member-result.png" alt="">
+                                <p>当前没有可选择的消费</p>
                             </div>
                         </div>
                     </div>
