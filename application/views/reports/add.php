@@ -210,7 +210,7 @@
             </div>
 
             <div style="display: none">
-                <div class="bank-form" style="width: 500px">
+                <div class="bank-form">
                     <div  class="field-item">
                         <label for="">持卡人</label>
                         <div class="field-input account">

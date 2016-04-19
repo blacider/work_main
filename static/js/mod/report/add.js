@@ -258,37 +258,46 @@
                                 className: 'theme-grey',
                                 buttonAlign: 'right',
                                 ok: function () {
-
+                                    var _this = this;
                                     var account = this.$el.find('.account input').val();
                                     var cardNumber = this.$el.find('.card-number input').val();
                                     var subbranch = this.$el.find('.subbranch input').val();
 
                                     if(!account) {
                                         this.$el.find('.account input').focus();
+
                                         return false;
                                     }
-                                    if(!cardNumber) {
+                                    if(!cardNumber || cardNumber.length<=6) {
                                         this.$el.find('.card-number input').focus();
                                         return false;
                                     }
 
                                     if(!$scope.selected_bankName) {
-                                        this.$el.find('.bank-db-list .text').click();
+                                        setTimeout(function (e) {
+                                            _this.$el.find('.bank-db-list .text').click();
+                                        }, 70);
                                         return false;
                                     }
 
                                     if($scope.selected_cardType===undefined) {
-                                        this.$el.find('.card-type .text').click();
+                                        setTimeout(function (e) {
+                                            _this.$el.find('.card-type .text').click();
+                                        }, 70);
                                         return false;
                                     }
 
                                     if(!$scope.selected_province) {
-                                        this.$el.find('.province .text').click();
+                                        setTimeout(function (e) {
+                                            _this.$el.find('.province .text').click();
+                                        }, 70);
                                         return false;
                                     }
 
                                     if(!$scope.selected_city) {
-                                        this.$el.find('.city .text').click();
+                                        setTimeout(function (e) {
+                                            _this.$el.find('.city .text').click();
+                                        }, 70);
                                         return false;
                                     }
                                     if(!subbranch) {
@@ -628,12 +637,21 @@
                                 name: newValue
                             });
 
+                            $scope.selected_city = null;
+
                             $scope.__CITIES__ = cities['city'];
 
                             $('.bank-form .city').find('.text').text('请选择城市').addClass('font-placeholder');
-                            $('.bank-form .city').find('.option-list .item:contains(' +newValue+ ')').addClass('active').siblings().removeClass('active');
 
                             $scope.$apply();
+
+                            if($scope.__CITIES__.length==1) {
+                                var first_city = $scope.__CITIES__[0];
+                                $('.bank-form .city').find('.option-list .item:contains(' +first_city+ ')').addClass('active');
+                                $('.bank-form .city').find('.text').text(first_city).removeClass('font-placeholder');
+                                $scope.selected_city = first_city;
+                            }
+
                         }
                     };
 
