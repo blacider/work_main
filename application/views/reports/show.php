@@ -181,7 +181,7 @@
                 </div>
             </div>
             <div class="report-footer" ng-if="path_type!='snapshot'">
-                <a href="{{document.referer}}" style="float: left" class="ui-button-border ui-button ui-button-hover btn-back-list">
+                <a href="{{_CONST_REFERER_}}" style="float: left" class="ui-button-border ui-button ui-button-hover btn-back-list">
                     <img src="/static/img/mod/report/36/btn-back-list@2x.png" alt="">返回列表
                 </a>
                 <a ng-if="buttons.has_modify" href="/reports/edit/{{report.id}}?tid={{report.template_id}}" class="ui-button-border ui-button  ui-button-hover btn-update">

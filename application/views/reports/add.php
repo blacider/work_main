@@ -163,7 +163,7 @@
                         <div class="empty-result" ng-if="filteredMembers.length==0">
                             <img src="/static/img/mod/report/icon-no-member-result.png" alt="">
                             <p ng-if="members.length==0">没有可选员工</p>
-                            <p ng-if="filteredMembers.length==0">没有搜索结果</p>
+                            <p ng-if="members.length !=0 && filteredMembers.length==0">没有搜索结果</p>
                         </div>
                     </ul>
                 </div>

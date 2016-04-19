@@ -278,18 +278,26 @@
                     // main entry
                     getPageData(function(template, report, flow, members, category) {
                         $scope.isLoaded = true;
+
+                        $scope._CONST_REFERER_ = document.referrer;
+
                         if (report['status'] <= 0 || template['status'] <= 0 || flow['rs']<=0) {
                             return;
                         }
                         var reportData = report['data'];
                         var extras = JSON.parse(reportData['extras'] || "[]");
                         $scope.report = report['data'];
+
+                        // 申请阶段判断 pa_approval: "0" prove_ahead, to be done
+
+
                         $scope.template = template['data'];
                         if(!$scope.template.name) {
                             $scope.template.name = _defaultTemplateName_;
                         }
 
                         $scope.members = members['data']['members'];
+
                         
                         $scope.selectedMembers = _.map(reportData['receivers']['managers'], function (item) {
                             return _.find($scope.members, {

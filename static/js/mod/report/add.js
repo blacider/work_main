@@ -510,7 +510,10 @@
                         $scope.members = members['members'];
  
                         if($scope.__edit__) {
-                            syncDatatToView();
+                            setTimeout(function () {
+                                syncDatatToView();
+                                $scope.$apply()
+                            }, 100);
                         } else {
 
                             // 设置sitemap
