@@ -115,7 +115,10 @@
 							$(element).find('.text').removeClass('focus');
 						}, 60);
 					});
-					$(element).on('click', '.text', function(e) {
+					$(element).on('click', '.text, .icon', function(e) {
+						// fix bug
+						$('.option-list').prev().removeClass('focus');
+						$('.option-list').addClass('none');
 						$(element).find('.option-list').removeClass('none');
 						$(e.currentTarget).addClass('focus');
 						e.stopPropagation()

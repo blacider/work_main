@@ -21,7 +21,7 @@
                 <div class="block-row detail-row" ng-if="submitter">
                     <div class="field-label">申请额</div>
                     <div class="field-input">
-                        <p>¥ {{report.amount}}</p>
+                        <p>¥{{report.amount}}</p>
                         <a href="/reports/snapshot/{{report.id}}?tid={{template.id}}" class="btn-detail" ng-if="report.has_snapshot && path_type!='snapshot'">
                             <img src="/static/img/mod/report/24/btn-eye@2x.png" alt="">详情
                         </a>
@@ -115,14 +115,14 @@
                                         <td >{{c.dt}}</td>
                                         <td>{{c.merchants}}</td>
                                         <td>{{c.notes}}</td>
-                                        <td>{{c.amount}}¥ </td>
+                                        <td>¥{{c.amount}} </td>
                                     </tr> 
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <td>合计</td>
                                         <td colspan="4" class="sum">
-                                            {{report.amount}}¥ 
+                                            ¥{{report.amount}}
                                         </td>
                                     </tr>
                                 </tfoot>

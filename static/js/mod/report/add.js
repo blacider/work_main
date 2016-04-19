@@ -374,7 +374,13 @@
                         }).on('dp.change', function(e){
                             $(selector).trigger('input');
                         });
+
                         $(selector).trigger('input');
+
+                        $(selector).parent().find('.icon').click(function(e){
+                            $(e.currentTarget).parent().find('input').trigger('focus');
+                        });
+
                     };
 
                     function findOneInBanks(id, banks, pro) {

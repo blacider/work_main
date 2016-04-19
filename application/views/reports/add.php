@@ -127,7 +127,7 @@
                 </div>
                 <div class="block-row" ng-if="!selectedConsumptions || selectedConsumptions.length==0">
                     <div class="field-label">消费明细</div>
-                    <a href="javascript:void(0)" class="btn-add-add-approvers ui-button" ng-click="onAddConsumptions($event)"><img src="/static/img/mod/report/36/consumpution@2x.png" alt="">选择消费{{template['options']['allow_no_items']+''=='0'?'*':''}}</a>
+                    <a href="javascript:void(0)" class="btn-add-add-approvers ui-button" ng-click="onAddConsumptions($event)"><img src="/static/img/mod/report/36/consumpution@2x.png" alt="">选择消费</a>
                 </div>
             </div>
             <div class="report-footer">
