@@ -683,6 +683,7 @@ $(document).ready(function(){
                 success: function(data){
                     if (data['status'] > 0) {
                         var getData = data['data'].suggestion;
+                        $("#modal_next").find('#modal_managers').val(getData).trigger("chosen:updated");
                         if (data['data'].complete == 0) {
                             $('#rid').val(_id);
                             chose_others_zero_audit(getData);
@@ -720,6 +721,7 @@ $(document).ready(function(){
                 success: function(data){
                     if (data['status'] > 0) {
                         var getData = data['data'].suggestion;
+                        $("#modal_next").find('#modal_managers').val(getData).trigger("chosen:updated");
                         if (data['data'].complete == 0) {
                             chose_others_zero(_id,data['data'].suggestion);
                         } else {

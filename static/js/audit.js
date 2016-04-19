@@ -15,8 +15,7 @@ function formatMoney(str, places, symbol, thousand, decimal) {
 function show_modal(){
             $('#modal_next').modal('show');
 }
-function chose_others_zero(item, suggestion) {
-    $("#modal_next").find('#modal_managers').val(suggestion).trigger("chosen:updated");
+function chose_others_zero(item) {
     $('#modal_next').modal('show');
 }
 function chose_others(_id) {
@@ -60,9 +59,10 @@ function bind_event(){
                 success: function(data){
                     if (data['status'] > 0) {
                         var getData = data['data'].suggestion;
+                        $("#modal_next").find('#modal_managers').val(getData).trigger("chosen:updated");
                         if (data['data'].complete == 0) {
                             $('#rid').val(_id);
-                            chose_others_zero(_id, getData);
+                            chose_others_zero(_id);
                         } else {
                             $('#rid_').val(_id);
                             if(close_directly == 0) {
