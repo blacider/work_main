@@ -104,12 +104,12 @@ $(document).ready(function() {
 	            setTimeout(function (argument) {
 					window.location.href = href;
 				}, 100)
-				_hmt.push('_trackEvent', 'install_page_download', getParameterByName('fr'), 'ios');
-				_hmt.push(['_setCustomVar', 2, 'install_page_ios_download', getParameterByName('fr'), 2]);
+				_hmt.push('_trackEvent', 'install_page_download', _CONST_FR_, 'ios');
+				_hmt.push(['_setCustomVar', 2, 'install_page_ios_download', _CONST_FR_, 2]);
 			} else {
 				
-				_hmt.push('_trackEvent', 'install_page_download', getParameterByName('fr'), 'android_other');
-				_hmt.push(['_setCustomVar', 2, 'install_page_android_other_download', getParameterByName('fr'), 2]);
+				_hmt.push('_trackEvent', 'install_page_download', _CONST_FR_, 'android_other');
+				_hmt.push(['_setCustomVar', 2, 'install_page_android_other_download', _CONST_FR_, 2]);
 				setTimeout(function (argument) {
 					window.location.href = href;
 				}, 100)
