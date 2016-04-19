@@ -30,7 +30,7 @@
                                 </div>
                                 <p class="btn-remove" ng-click="onRemoveApprover(superior, $event)"></p>
                             </li>
-                            <li ng-repeat='m in selectedMembers'>
+                            <li ng-repeat='m in selectedMembers'>{{JSON.stringify(m)}}
                                 <img ng-src="{{m.apath || default_avatar}}" alt="">
                                 <div class="info">
                                     <div class="name">{{m.nickname}}</div>

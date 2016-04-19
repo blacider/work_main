@@ -113,6 +113,15 @@
                                         isSelected: true
                                     });
                                     $scope.selectedMembers = angular.copy(selectedMembers);
+
+                                    // 如果有superior 被选中，然后试图中也存在，就把selectedMembers中的干掉
+                                    if($scope.superior) {
+                                        var index = _.findIndex($scope.selectedMembers, {id: $scope.superior.id});
+                                        if(index>=0) {
+                                            $scope.selectedMembers.splice(index, 1);
+                                        }
+                                    }
+
                                     $scope.$apply();
                                     this.close();
                                 },
@@ -126,6 +135,13 @@
                                         Utils.updateArrayByQuery($scope.members, {id: item.id+''}, {
                                             isSelected: true
                                         })
+                                    }
+
+                                    if($scope.superior) {
+                                        var findSuperior = _.find($scope.members, {id: $scope.superior.id});
+                                        if(findSuperior) {
+                                            findSuperior.isSelected = true;
+                                        }   
                                     }
                                 },
                                 okIconUrl: '/static/img/mod/report/24/btn-ok@2x.png',
@@ -488,20 +504,17 @@
                         var members = members['data'];
 
                         $scope.members = members['members'];
-
-                        $scope.selectedMembers = _.map($scope.originalReport['receivers']['managers'], function (item) {
-                            return _.find($scope.members, {
-                                id: item.id + ''
-                            });
-                        });
-
-
-                        $scope.superior = _.find($scope.members, {
-                            id: profileData['manager_id']
-                        });
-
+ 
                         if($scope.__edit__) {
                             syncDatatToView();
+                        } else {
+                            // 新建寻找上级
+                            $scope.superior = _.find($scope.members, {
+                                id: profileData['manager_id']
+                            });
+                            if($scope.superior) {
+                                $scope.superior.tag_for_superior = true;
+                            }
                         }
 
                         $scope.$apply();
@@ -693,11 +706,16 @@
                     };
 
                     $scope.onRemoveApprover = function (item) {
-                        var index = _.findLastIndex($scope.selectedMembers, {
+                        if(item.tag_for_superior) {
+                            $scope.superior = null;
+                        }
+
+                        var index = _.findIndex($scope.selectedMembers, {
                             id: item.id + ''
                         });
-                        var item = $scope.selectedMembers[index];
-                        $scope.selectedMembers.splice(index, 1);
+                        if(index>=0) {
+                            $scope.selectedMembers.splice(index, 1);
+                        }
                     };
 
                     $scope.onSelectMember = function (item, e) {
@@ -757,6 +775,10 @@
                         var receiver_ids = $scope.selectedMembers.map(function (i) {
                             return i['id'];
                         });
+
+                        if($scope.superior) {
+                            receiver_ids.push($scope.superior.id);
+                        }
 
                         if(receiver_ids.length<=0) {
                             show_notify('请选择审批人');
@@ -836,10 +858,19 @@
                     // 特别注意当extras 为空的时候怎么同步数据
                     function syncDatatToView() {;
                         $scope.title = $scope.originalReport['title'];
+
                         $scope.selectedConsumptions = angular.copy($scope.originalReport['items']) || [];
-                        $scope.selectedMembers = angular.copy($scope.originalReport['receivers']['managers']) || [];
+                        
+                        // 寻找标准成员数据
+                        $scope.selectedMembers = _.map($scope.originalReport['receivers']['managers'], function (item) {
+                            return _.find($scope.members, {
+                                id: item.id + ''
+                            });
+                        });
+                        
 
                         var oldConsumptions = angular.copy($scope.selectedConsumptions);
+
                         for(var i=0;i<oldConsumptions.length;i++) {
                             var item = oldConsumptions[i];
                             item.isSelected = true;
