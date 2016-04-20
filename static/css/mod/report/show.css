@@ -402,9 +402,12 @@
 }
 
 .table-consumptions tfoot {
-	border: solid 1px #b9b9b9;
 	font-weight: border;
 	color: #4a4a4a;
+}
+
+.table-consumptions tfoot tr {
+	border: solid 1px #b9b9b9;
 }
 
 .table-consumptions tfoot td {

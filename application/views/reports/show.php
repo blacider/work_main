@@ -18,8 +18,9 @@
                     {{report.title}}
                     </div>
                 </div>
-                <div class="block-row detail-row" ng-if="submitter">
-                    <div class="field-label">申请额</div>
+                <div class="block-row detail-row" ng-if="report.prove_ahead==1||report.prove_ahead==2">
+                    <div class="field-label" ng-if="report.prove_ahead==1">申请额</div>
+                    <div class="field-label" ng-if="report.prove_ahead==2">应付</div>
                     <div class="field-input">
                         <p>¥{{report.amount}}</p>
                         <a href="/reports/snapshot/{{report.id}}?tid={{template.id}}" class="btn-detail" ng-if="report.has_snapshot && path_type!='snapshot'">
@@ -115,7 +116,7 @@
                                         <td >{{dateFormat(c.dt)}}</td>
                                         <td>{{c.merchants}}</td>
                                         <td>{{c.notes}}</td>
-                                        <td>¥{{c.amount}} </td>
+                                        <td>¥{{c.amount}}</td>
                                     </tr> 
                                 </tbody>
                                 <tfoot>
@@ -123,6 +124,24 @@
                                         <td>合计</td>
                                         <td colspan="4" class="sum">
                                             ¥{{report.amount}}
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="report.prove_ahead==1">
+                                        <td>申请额</td>
+                                        <td colspan="4" class="sum">
+                                            ¥{{apply_consumption_amount}}
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="report.prove_ahead==2">
+                                        <td>已付</td>
+                                        <td colspan="4" class="sum">
+                                            ¥{{report.amount}}
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="report.prove_ahead==2">
+                                        <td>应付</td>
+                                        <td colspan="4" class="sum">
+                                            ¥{{report.apply_consumption_amount}}
                                         </td>
                                     </tr>
                                 </tfoot>
