@@ -55,7 +55,7 @@
 
 			return {
 				restrict: 'EA',
-				scope: { ngDropdown: "=?", 'selectedItem': '=?', 'data': '=?', 'defaultItem': '=?', 'paramExtra': '=?'},
+				scope: { ngDropdown: "=?", 'selectedItem': '=?', 'data': '=?', 'defaultItem': '=?', 'paramExtra': '=?', 'canDeselect': '=?'},
 				replace: true,
 				transclude: true,
 				template: '<div ng-transclude></div>',
@@ -66,6 +66,7 @@
 					var selectedItem = angular.copy($scope.selectedItem);
 					var defaultItem = angular.copy($scope.defaultItem);
 					var index = findItemByKey(selectedItem, $scope.data);
+					var canDeselect = $scope.canDeselect;
 					var item = null;
 					if(index!=-1) {
 						item = $scope.data[index];
@@ -88,6 +89,8 @@
 
 					$(element).on('click', '.item', function(e) {
 
+
+
 						$(element).find('.text').removeClass('font-placeholder');
 
 						var $item = $(e.toElement);
@@ -96,6 +99,15 @@
 						$(element).find('.text').text(text);
 						$(element).find('.option-list').addClass('none');
 						$(element).find('.text').removeClass('focus');
+
+						if(canDeselect) {
+							if($item.hasClass('active')) {
+								$item.removeClass('active');
+								$(element).find('.text').text('');
+								return;
+							}
+						}
+
 
 						if(oldValue != newValue) {
 							options['onChange'](oldValue, newValue, $item[0], $scope.paramExtra, element);

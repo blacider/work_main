@@ -38,7 +38,7 @@
 				// 	text: '1',
 				// 	disabled: false
 				// 	className: '',
-				// 	iconUrl: '',
+				// 	icon: '',
 				// 	handler: function  () {
 				// 	}
 				// }
@@ -58,12 +58,12 @@
 			onDestroy: function  (argument) {
 				
 			},
-			okIconUrl:'',
+			okIcon:'',
 			okClassName:'',
 			okDisabled: false,
 			okValue: '确定',
 
-			cancelIconUrl:'',
+			cancelIcon:'',
 			cancelClassName:'',
 			cancelDisabled: false,
 			cancelValue: '取消'
@@ -109,8 +109,8 @@
 				var cancelButton = {
 					text: this.options.cancelValue,
 					disabled: this.options.cancelDisabled,
-					iconUrl: this.options.cancelIconUrl,
-					className: this.options.cancelClassName,
+					icon: this.options.cancelIcon,
+					className: this.options.cancelClassName || 'cancel',
 					handler: this.options.cancel
 				}
 				buttons.push(cancelButton);
@@ -121,8 +121,8 @@
 					text: this.options.okValue,
 					handler: this.options.ok,
 					disabled: this.options.okDisabled,
-					iconUrl: this.options.okIconUrl,
-					className: 'positive ' + this.options.okClassName
+					icon: this.options.okIcon,
+					className: 'positive ok ' + this.options.okClassName
 				}
 				buttons.push(okButton);
 			}
@@ -149,8 +149,8 @@
 					})
 				}
 
-				if(button.iconUrl) {
-					$button.prepend($('<img />').attr('src', button.iconUrl));
+				if(button.icon) {
+					$button.prepend('<i class="icon" />');
 				}
 
 				this.$footer.append($button);
@@ -161,11 +161,15 @@
 			this.$el.addClass('animated zoomIn')
 			this.options.onShow.call(this);
 			$(window).trigger('resize');
+
+			$('body').addClass('no-scroll');
+
 			return this;
 		},
 		showModal: function  () {
 			var _self = this;
 			this.$mask.show();
+			$('body').addClass('no-scroll');
 			this.options.onShow.call(this);
 			_self.$mask.addClass('animated fadeIn')
 			_self.$el.addClass('animated zoomIn')
@@ -175,6 +179,7 @@
 		close: function  (isDestroy) {
 			this.$mask.hide();
 			this.options.onHide.call(this);
+			$('body').removeClass('no-scroll');
 			if(isDestroy) {
 				this.$mask.remove()
 				this.options.onDestroy.call(this);
@@ -183,6 +188,7 @@
 		},
 		desotry: function  () {
 			this.$mask.remove()
+			$('body').removeClass('no-scroll');
 			this.options.onDestroy.call(this);
 			return this;
 		},
@@ -258,6 +264,7 @@
 					})
 				}, 0);
 			});
+
 		}
 	});
 

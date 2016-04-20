@@ -130,13 +130,6 @@ class Reports extends REIM_Controller {
         die(json_encode($data));
     }
 
-    public function add_comment() {
-        $rid=$this->input->post("rid");
-        $comment = $this->input->post("comment");
-        $buf = $this->reports->add_comment($rid,$comment);
-        redirect(base_url('reports/show/' . $rid . '/1'));
-    }
-
     public function revoke($id = 0) {
         $buf = $this->reports->revoke($id);
         return redirect('reports');
@@ -332,6 +325,7 @@ class Reports extends REIM_Controller {
         $template_type = $this->input->post('template_type');
 
         $receiver_ids = $this->input->post('receiver_ids');
+        $cc_ids = $this->input->post('cc_ids');
         $item_ids = $this->input->post('item_ids');
         $extras = $this->input->post('extras');
         $status = $this->input->post('status');
@@ -342,8 +336,9 @@ class Reports extends REIM_Controller {
             'template_id' => $template_id,
             'type' => $template_type,
             'manager_id' => $receiver_ids,
+            'cc' => $cc_ids,
             'iids' => $item_ids,
-            'extras' => json_encode($extras),
+            'extras' => $extras,
             'status' => $status //保存：0，提交：1，通过：2 等
         );
 
@@ -369,7 +364,7 @@ class Reports extends REIM_Controller {
     public function snapshot($rid) {
 
         $this->bsload('reports/show', array(
-            'title' => '申请历史',
+            'title' => '查看申请历史',
             'breadcrumbs' => array(
                 array(
                     'url'=> base_url(),
@@ -391,8 +386,10 @@ class Reports extends REIM_Controller {
 
     public function show($rid) {
         // $template_id = $this->input->get('tid');
+        $last_error = $this->session->userdata('last_error');
         $this->bsload('reports/show', array(
-            'title' => '查看',
+            'title' => '查看报销单',
+            'last_error' => $last_error,
             'breadcrumbs' => array(
                 array(
                     'url'=> base_url(),
@@ -420,6 +417,7 @@ class Reports extends REIM_Controller {
         $template_type = $this->input->post('template_type');
 
         $receiver_ids = $this->input->post('receiver_ids');
+        $cc_ids = $this->input->post('cc_ids');
         $item_ids = $this->input->post('item_ids');
         $extras = $this->input->post('extras');
         $status = $this->input->post('status');
@@ -430,8 +428,9 @@ class Reports extends REIM_Controller {
             'template_id' => $template_id,
             'type' => $template_type,
             'manager_id' => $receiver_ids,
+            'cc' => $cc_ids,
             'iids' => $item_ids,
-            'extras' => json_encode($extras),
+            'extras' => $extras,
             'status' => $status //保存：0，提交：1，通过：2 等
         );
 

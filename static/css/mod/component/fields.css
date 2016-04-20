@@ -1,4 +1,8 @@
 /* button components */
+button {
+	border: none;
+}
+
 .ui-button {
 	display: inline-block;
 	width: 130px;
@@ -194,6 +198,8 @@
 	cursor: default;
 	font-size: 14px;
 	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .field-select .option-list .item:hover {
 	background: #ff575b;
@@ -440,4 +446,26 @@
 	display: none;
 }
 /* end field-compoents */
+
+/*animation*/
+.ui-button-hover {
+	transition: .1s ease-in all;
+	-webkit-transition: .1s ease-in all;
+	-o-transition: .1s ease-in all;
+	-moz-transition: .1s ease-in all;
+	-ms-transition: .1s ease-in all;
+	
+	-webkit-backface-visibility: hidden;
+	-o-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+.ui-button-hover:hover {
+	-webkit-transform: translateZ(0) scale3d(1.05, 1.05, 1);
+	-moz-transform: translateZ(0) scale3d(1.05, 1.05, 1);
+	-o-transform: translateZ(0) scale3d(1.05, 1.05, 1);
+	-ms-transform: translateZ(0) scale3d(1.05, 1.05, 1);
+	transform: translateZ(0) scale3d(1.05, 1.05, 1);
+}
 

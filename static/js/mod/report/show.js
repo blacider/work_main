@@ -3,8 +3,8 @@
     var _defaultTemplateName_ ='未命名报销单模板';
     return {
         initialize: function() {
-            angular.module('reimApp', []).controller('ReportController', ["$http", "$scope", "$element", "$timeout",
-                function($http, $scope, $element, $timeout) {
+            angular.module('reimApp', []).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce",
+                function($http, $scope, $element, $timeout, $sce) {
                     var routerObj = (function() {
                         var router = new RouteRecognizer();
                         router.add([{
@@ -35,6 +35,41 @@
                     $scope.comment_box = {
                         txtCommentMessage: ''
                     };
+
+                    var historyMembersManager = (function() {
+                        var __prefix__ = 'history_members';
+                        var key = window.__UID__ + '_' + __prefix__;
+                        return {
+                            __prefix__: __prefix__,
+                            key: key,
+                            getArray: function (uid) {
+                                var str_ids = $.cookie(key) || '';
+                                var uids = str_ids.split(',');
+                                var members = [];
+                                for(var i=0;i<uids.length;i++) {
+                                    var id = uids[i];
+                                    var one = _.find($scope.members, {
+                                        id: id
+                                    });
+                                    if(one) {
+                                        one._in_sug_ = true;
+                                        members.push(one);
+                                    }
+                                }
+                                return members;
+                            },
+                            append: function (ids) {
+                                var ids = ids.split(',');
+                                var str_ids = $.cookie(key) || '';
+                                var uids = str_ids.split(',');
+                                uids = [].concat(ids, uids);
+                                uids = _.unique(uids);
+                                $.cookie(key, uids.join(','), {
+                                    expires: 60
+                                });
+                            }
+                        } 
+                    })();
 
                     function getTemplateData() {
                         var query = Utils.queryString(location.search);
@@ -89,16 +124,6 @@
                         });
                     };
 
-                    function getCategories() {
-                        return Utils.api('/common/0', {
-                            env: 'online'
-                        }).done(function (rs) {
-                            if(rs['status']<0) {
-                                return show_notify('数据出错');
-                            }
-                        });
-                    };
-
                     function getAvailableConsumptions() {
                         return Utils.api('/reports/get_available_consumptions', {}).done(function(rs) {
                             $scope.consumptions = rs['data'] || [];
@@ -107,23 +132,42 @@
                         });
                     };
 
-                    function getMembers() {
-                        return Utils.api('/users/get_members', {}).done(function(rs) {
-                            var data = rs['data'];
-                            $scope.members = data['members'] || [];
-                            $scope.$apply();
+                    function getReportUserProfile(uid) {
+                        return Utils.api('/users/get_user_profile/' + uid, {}).done(function (rs) {
+                            if(rs['status']<0) {
+                                return show_notify('数据出错');
+                            }
                         });
                     };
 
+                    function getMembers() {
+                        return Utils.api('/users/get_members', {}).done(function(rs) {
+                            var data = rs['data'];
+                            $scope.$apply();
+                        });
+                    };
                     function getPageData(callback) {
-                        $.when(getTemplateData(), getReportData(report_id), getReportFlow(report_id), getMembers(), getCategories()).done(function() {
-                            callback.apply(null, arguments);
-                            // 这种类型不好处理，在这里收集它们——当其改变的数值的时候
-                        })
+                        getReportData(report_id).done(function(rs) {
+
+                            if (rs['status']<=0) {
+                                callback.call(null, rs);
+                                return show_notify('获取数据失败');
+                            }
+                           
+                            var report_uid = rs['data']['uid'];
+
+                            $scope.report = rs['data'];
+
+                            $.when(getTemplateData(), getReportFlow(report_id), getMembers(), getReportUserProfile(report_uid)).done(function() {
+                                callback.apply(null, arguments);
+                                // 这种类型不好处理，在这里收集它们——当其改变的数值的时候
+                            })
+                        });
                     };
 
                     // 通过报销单
                     function doPass(data, type) {
+                        // data = {status, manager_id}
                         var url = '/report/' + report_id;
                         var method = 'put';
                         if(type == 'financial') {
@@ -134,8 +178,14 @@
                             method: method,
                             env: 'online',
                             data: data
+                        }).done(function (rs) {
+                            if(rs['status']>0) {
+                                if(data && data['manager_id']) {
+                                    historyMembersManager.append(data.manager_id);
+                                }
+                            }
                         });
-                    }
+                    };
 
                     function arrayToMapWithKey(key, arr) {
                         var rs = {};
@@ -174,28 +224,41 @@
                         var extrasItem = extrasMap[item.id];
                         var itemType = item.type + '';
                         item.type = itemType;
+
+                        var fieldResult = {
+                            id: item.id,
+                            value: '',
+                            type: itemType
+                        };
                         if (!extrasItem) {
-                            return {
-                                value: '',
-                                type: itemType
-                            };
+                            return fieldResult;
                         }
-                        if (itemType == '4') {
+                        if (itemType == 4) {
                             var bankData = JSON.parse(extrasItem.value);
-                            if(!bankData.cardno) {
-                                bankData = $scope.default_bank;
-                            } else {
-                                bankData = findOneInBanks(bankData.cardno, $scope.banks, 'cardno');
+                            if(!bankData || !bankData.cardno) {
+                                bankData = {};
                             }
-                            item.value = angular.copy(bankData);
+
+                            bankData = _.find($scope.banks, {cardno: bankData.cardno}) || {};
+
+                            fieldResult.value = angular.copy(bankData);
+                            return fieldResult; 
                         }
-                        if (itemType == '3') {
-                            var date = new Date(parseInt(extrasItem.value*1000));
+                        if (itemType == 3) {
+                            // android and ios 时间为秒
+                            var dt = extrasItem.value + '000';
+                            dt = dt.substr(0, 13);
+                            var date = new Date(parseInt(dt));
                             try {
-                                item.value = fecha.format(date, 'YYYY-MM-DD');
-                            } catch(e) {}
+                                fieldResult.value = fecha.format(date, 'YYYY-MM-DD');
+                            } catch(e) {
+
+                            }
+                            return fieldResult
                         }
-                        return item;
+
+                        fieldResult.value = extrasItem.value;
+                        return fieldResult;
                     };
 
                     function combineTemplateAndReport(template, report) {
@@ -214,7 +277,7 @@
 
                         function createInstance() {
                             var dialog = new CloudDialog({
-                                title: '将报销单提交给',
+                                title: '选择审批人',
                                 quickClose: true,
                                 buttonAlign: 'right',
                                 autoDestroy: false,
@@ -225,42 +288,59 @@
                                         isSelected: true
                                     });
 
+                                    var history = _.where($scope.suggestionMembers, {
+                                        isSelected: true
+                                    });
+
+                                    if(history) {
+                                        receivers = [].concat(receivers, history);
+                                    }
+
                                     var receivers_id = _.map(receivers, function(item) {
                                         return item.id;
                                     });
-                                    
-                                    Utils.api('report/' + report_id, {
-                                        method: 'put',
-                                        env: 'online',
-                                        data: {
+
+                                    receivers_id = _.unique(receivers_id);
+
+                                    if(this._OK_CONFIG_FN_) {
+                                        for(var f in this._OK_CONFIG_FN_) {
+                                            var fn = this._OK_CONFIG_FN_[f];
+                                            fn(receivers_id);
+                                        }
+                                        delete this._OK_CONFIG_FN_;
+                                        return 
+                                    }
+
+                                    // 财务还是业务
+                                    if(!this._APPROVE_TYPE_) {
+                                        doPass({
                                             status: 2,
-                                            comment: '',
                                             manager_id: receivers_id.join(',')
-                                        }
-                                    }).done(function(rs) {
-                                        if (rs['status'] <= 0) {
-                                            return show_notify(rs['data']['msg']);
-                                        }
-                                        _this.close();
-                                        window.location.href = '/reports/audit_todo'
-                                    });
+                                        }).done(function (rs) {
+                                            if(rs['status']<=0) {
+                                                return show_notify(rs['data']['msg']);
+                                            }
+                                            window.location.href = '/reports/audit_todo';    
+                                        });
+                                    } else {
+                                        doPass({}, 'financial').done(function (rs) {
+                                            if(rs['status']<=0) {
+                                                return show_notify(rs['data']['msg']);
+                                            }
+                                            window.location.href = '/bills/finance_flow/'
+                                        });
+                                    }
+                                    delete this._APPROVE_TYPE_;
+                                    return;
                                 },
-                                okIconUrl: '/static/img/mod/report/24/btn-ok@2x.png',
+                                okIcon: true,
                                 cancel: function () {
                                     this.close();
                                 },
-                                cancelIconUrl: '/static/img/mod/report/24/btn-cancel@2x.png',
+                                cancelIcon: true,
                                 onHide: function () {
                                     $scope.txtSearchText = '';
                                 }
-                            });
-
-                            $($element.find('.available-members .stop-parent-scroll')).on('mousewheel', function (e) {
-                                var event = e.originalEvent,
-                                d = event.wheelDelta || -event.detail;
-                                console.log(d);
-                                this.scrollTop += d *-1;
-                                e.preventDefault();
                             });
 
                             dialog.setContentWithElement($($element.find('.available-members')));
@@ -276,54 +356,69 @@
                         };
                     })();
                     // main entry
-                    getPageData(function(template, report, flow, members, category) {
+                    getPageData(function(template, flow, members, profile) {
                         $scope.isLoaded = true;
 
                         $scope._CONST_REFERER_ = document.referrer;
 
-                        if (report['status'] <= 0 || template['status'] <= 0 || flow['rs']<=0) {
+                        if (template['status'] <= 0) {
                             return;
                         }
-                        var reportData = report['data'];
+
+                        var reportData = $scope.report;
                         var extras = JSON.parse(reportData['extras'] || "[]");
-                        $scope.report = report['data'];
 
-                        // 申请阶段判断 pa_approval: "0" prove_ahead, to be done
-                        // 预算1 预借2
-                        $scope.apply_label_text = '申请额';
-                        if(reportData['prove_ahead'] == 2) {
-                            $scope.apply_label_text = '已付'
-                        }
-
-                        if(reportData['prove_ahead'] == 1 || reportData['prove_ahead'] == 2) {
-                            var sum = _.reduce(reportData.items, function (sum, item) {
-                                return sum + parseFloat(item.amount);
-                            }, 0);
-
-                            $scope.apply_consumption_amount = sum.toFixed(2);
-                        }
+                        var profileData = profile['data'];
+                        $scope.banks = profileData['banks'] || [];
 
                         $scope.template = template['data'];
                         if(!$scope.template.name) {
                             $scope.template.name = _defaultTemplateName_;
                         }
 
-                        $scope.members = members['data']['members'];
+                        members = members['data']['members'];
 
+                        //排序
+                        members.sort(function (a, b) {
+                            var c = a.nickname.localeCompare(b.nickname);
+                            if("".toUpperCase) {
+                                c = a.nickname.toUpperCase().localeCompare(b.nickname.toUpperCase());
+                            }
+                            return c;
+                        });
+
+                        $scope.members = members;
+                        $scope.originalMembers = angular.copy($scope.members);
                         
-                        $scope.selectedMembers = _.map(reportData['receivers']['managers'], function (item) {
-                            return _.find($scope.members, {
+                        // 寻找标准成员数据
+                        var selectedMembers = [];
+                        _.each(reportData['receivers']['managers'], function (item) {
+                            var one = _.find($scope.members, {
                                 id: item.id + ''
                             });
+                            if(one) {
+                                selectedMembers.push(one);
+                            }
                         });
 
-                        var categoryArray = category['data']['categories'];
+                        $scope.selectedMembers = selectedMembers;
 
-                        $scope.categoryMap = arrayToMapWithKey('id', categoryArray);
+                        $scope.suggestionMembers = historyMembersManager.getArray();
 
-                        $scope.userProfile = _.findWhere(members.data.members, {
-                            id: window.__UID__
+                        $scope.userProfile = _.findWhere(members, {
+                            id: $scope.report.uid
                         });
+
+                        $scope.submitter = _.where(members, {
+                            id: reportData['uid']
+                        })[0];
+
+                        // 删除自己
+                        var selfIndex = _.findIndex(members, {id: __UID__});
+                        if(selfIndex>=0) {
+                            members.splice(selfIndex, 1);
+                        }
+
                         var amount = 0;
                         _.each($scope.report.items, function(item) {
                             var a = parseFloat(item.amount);
@@ -337,18 +432,71 @@
                             item.user = one;
                             return item;
                         });
+
+                        // 申请阶段判断 pa_approval: "0" prove_ahead, to be done
+                        // 预算1 预借2
+                        if(reportData['pa_approval'] == 1 && (reportData['prove_ahead'] == 1 || reportData['prove_ahead'] == 2)) {
+                            var sum = _.reduce(reportData.items, function (sum, item) {
+                                return sum + parseFloat(item.amount);
+                            }, 0);
+
+                            var diff_consumption_amount = sum - parseFloat(reportData.amount);
+
+                            $scope.apply_consumption_amount = sum.toFixed(2);
+                            $scope.diff_consumption_amount = diff_consumption_amount.toFixed(2);
+                        }
+
                         $scope.extrasMap = arrayToMapWithKey('id', extras);
-                        $scope.combineConfig = combineTemplateAndReport($scope.template, $scope.report)
-                        $scope.flow = _.groupBy(flow['data']['data'], function(item) {
-                            if (['-1', '0'].indexOf(item['ticket_type']) > -1) {
-                                return '业务阶段';
-                            } else if (['1'].indexOf(item['ticket_type']) > -1) {
-                                return '财务阶段';
+                        $scope.combineConfig = combineTemplateAndReport($scope.template, $scope.report);
+
+                        // 修复站点路由的BUG，查看报销单的列表来源
+                        (function () {
+                            var referrer = document.referrer;
+                            $('.breadcrumb li').eq(1).find('a').attr('href', referrer);
+                        })();
+
+                        var flowMap = {};
+                        var flowData = flow['data']['data'];
+                        var counter = 0;
+                        _.each(flowData, function(item, index) {
+
+                            // 处理职位
+                            var user = _.find($scope.originalMembers, {
+                                id: item.uid
+                            });
+
+                            item.job = user.d; 
+
+                            var type = '';
+                            if (_.contains(['-1', '0'], item['ticket_type'])) {
+                                type = '业务阶段';
+                            } else if (item['ticket_type'] == '1') {
+                                type = '财务阶段';
+                            }
+                            var rowName = counter + type;
+                            if(!flowMap[rowName]) {
+                                flowMap[rowName] = [];
+                            }
+                            if(index==0) {
+                                flowMap[rowName].push(item);
+                                return;
+                            }
+                            // 当前和前一个属于同一个类别
+                            if(_.contains(['-1', '0'], item['ticket_type']) && _.contains(['-1', '0'], flowData[index-1]['ticket_type'])) {
+                                flowMap[rowName].push(item);
+                            } else {
+                                counter++;
+                                rowName = counter+type;
+                                if(!flowMap[rowName]) {
+                                    flowMap[rowName] = [];
+                                }
+                                flowMap[rowName].push(item);
                             }
                         });
-                        $scope.submitter = _.where(members.data.members, {
-                            id: report['data']['uid']
-                        })[0];
+                        $scope.cutFlowName = function (name) {
+                            return name.replace(/\d/, '');
+                        };
+                        $scope.flow = flowMap;
 
                         $scope.buttons = (function (rs) {
 
@@ -388,42 +536,40 @@
                                 is_myself = false;
                             }
 
-                            if(is_myself && ['0', '3'].indexOf(status)!=-1) {
+                            if(is_myself && _.contains(['0', '3'], status)) {
                                 buttons['has_modify'] = true;
                             }
 
-                            if(is_myself && ['1', '2'].indexOf(status)!=-1) {
+                            if(is_myself && _.contains(['1', '2'], status)!=-1) {
                                 buttons['has_drop'] = true;
                             }
 
-                            if(is_myself && ['7'].indexOf(status)!=-1) {
+                            if(is_myself && status == '7') {
                                 buttons['has_affirm'] = true;
                             }
-
-                            if(is_approver && ['1'].indexOf(status)!=-1) {
+                            //业务
+                            if(is_approver && status == '1') {
                                 buttons['has_pass'] = true;
                                 buttons['has_reject'] = true;
                                 buttons['has_modify'] = true;
+                            }
+                            //财务
+                            if(is_approver && status == '2') {
+                                buttons['has_pass'] = true;
+                                buttons['has_reject'] = true;
                             }
                             return buttons;
                         })();
                         $scope.$apply();
                     });
                     $scope.dateFormat = function(date, formatter) {
-                        formatter || (formatter = 'YYYY-MM-DD hh:mm:ss');
+                        formatter || (formatter = 'YYYY-MM-DD HH:mm:ss');
                         if (date instanceof Date == false) {
                             date = new Date(parseInt(date * 1000));
                         }
                         return fecha.format(date, formatter);
                     }
                     
-                    $scope.onAddConsumptions = function(e) {
-                        if (!$scope.consumptions) {
-                            return show_notify('正在加载数据......');
-                        }
-                        var dialog = dialogConsumptionSingleton.getInstance();
-                        dialog.showModal();
-                    };
                     $scope.onAddCommentToReport = function(e) {
                         var comment = $scope.comment_box.txtCommentMessage;
                         comment = $.trim(comment);
@@ -442,7 +588,7 @@
                                 return show_notify('评论失败');
                             }
                             $scope.commentArray || ($scope.commentArray = []);
-                            $scope.commentArray.unshift({
+                            $scope.commentArray.push({
                                 user: $scope.userProfile,
                                 nickname: $scope.userProfile['nickname'],
                                 apath: $scope.userProfile['apath'],
@@ -454,32 +600,60 @@
                         });
                     };
 
-                    $scope.onSelectMember = function (item, e) {
+                    $scope.onSelectMember = function (item, isHistory) {
                         item.isSelected = !item.isSelected;
                     };
 
                     $scope.searchImmediate = function (keywords) {
                         return function( item ) {
 
-                            delete item.multi_property_matcher;
+                            delete item.info_html;
+
+                            var tmpl = [
+                                // 1
+                                '<% if (!type) { %>',
+                                '<p class="name"><%= nickname %></p>',
+                                '<% } else { %>',
+                                // <!-- 2.1 -->
+                                    '<% if(type=="nickname") { %>',
+                                    '<p class="name"><%= foo %></p>',
+                                    '<% } else { %>',
+                                    // <!-- 2.2 -->
+                                    '<p class="name"><%= nickname %></p>',
+                                    '<p class="role"><%= foo %></p>',
+                                    '<% } %>',
+                                '<% } %>'
+                            ].join('');
 
                             if(!keywords) {
+                                item.info_html = $sce.trustAsHtml(_.template(tmpl)({
+                                    type: '',
+                                    nickname: item.nickname
+                                }));
                                 return true;
                             }
 
-                            if(item.nickname.indexOf(keywords)>=0) {
-                                item.multi_property_matcher = 0
-                                return true;
-                            }
-                            if(item.phone.indexOf(keywords)>=0) {
-                                item.multi_property_matcher = item.phone
-                                return true;
-                            }
-                            if(item.email.indexOf(keywords)>=0) {
-                                item.multi_property_matcher = item.email
-                                return true;
-                            }
+                            var reg = new RegExp(keywords, 'i');
 
+                            var proArray = ['nickname', 'phone', 'email'];
+                            for(var i in proArray) {
+                                var pro = proArray[i];
+                                if(!item[pro]) {
+                                    item[pro] = '';
+                                }
+                                var match = item[pro].match(reg);
+                                if(match) {
+                                    match = match.join('');
+                                    var m = item[pro].replace(reg, '<span>' + match + '</span>');
+                                    var multi_property_matcher = {
+                                        type: pro,
+                                        foo: m,
+                                        nickname: item.nickname
+                                    };
+                                    item.info_html = $sce.trustAsHtml(_.template(tmpl)(multi_property_matcher));
+                                    return true;
+                                }
+                            }
                             return false;
                         };
                     };
@@ -516,14 +690,14 @@
                                         return show_notify(rs['data']['msg']);
                                     }
                                     _this.close();
-                                    show_notify('已退回');
+                                    window.location.href = '/reports';
                                 });
                             },
-                            okIconUrl: '/static/img/mod/report/24/btn-ok@2x.png',
+                            okIcon: true,
                             cancel: function () {
                                 this.close()
                             },
-                            cancelIconUrl: '/static/img/mod/report/24/btn-cancel@2x.png'
+                            cancelIcon: true
                         });
                         dialog.showModal();
                     };
@@ -532,7 +706,6 @@
                         var dialog = new CloudDialog({
                             quickClose: true,
                             content: '确认要撤回报销单吗？',
-                            className: 'theme-grey',
                             ok: function() {
                                 Utils.api("/revoke/" + report_id, {
                                     env: 'online'
@@ -540,14 +713,14 @@
                                     if (rs['status'] <= 0) {
                                         return show_notify('操作失败');
                                     }
-                                    window.location.reload()
+                                    window.location.href = '/reports';
                                 });
                             },
-                            okIconUrl: '/static/img/mod/report/24/btn-ok@2x.png',
+                            okIcon: true,
                             cancel: function () {
                                 this.close()
                             },
-                            cancelIconUrl: '/static/img/mod/report/24/btn-cancel@2x.png'
+                            cancelIcon: true
                         });
                         dialog.showModal();
                     };
@@ -568,21 +741,67 @@
                                     if (rs['status'] <= 0) {
                                         return show_notify('操作失败');
                                     }
-                                    window.location.reload()
+                                    window.location.href = '/reports';
                                 });
                             },
-                            okIconUrl: '/static/img/mod/report/24/btn-ok@2x.png',
+                            okIcon: true,
                             cancel: function () {
                                 this.close()
                             },
-                            cancelIconUrl: '/static/img/mod/report/24/btn-cancel@2x.png'
+                            cancelIcon: true
                         });
                         dialog.showModal();
                     };
 
-                    // 首次创建，其次保存
+                    function showSuggestionDialog(sugData, hasSelectAgain, callback) {
+                        callback || (callback = function () {});
+                        var whom = sugData['canComplete']?'财务': '';
+                        var suggestionMembers = _.filter($scope.originalMembers, function(item) {
+                            var list = sugData['suggestion'].join(',').split(',');
+                            if(_.contains(list, item.id)) {
+                                return true;
+                            }
+                            return false;
+                        });
+
+                        var tmpl = [
+                            '<div class="suggestion-box">',
+                            '   <div>你的报销单将提交给'+whom+':</div>',
+                            '   <% for(var i =0;i<list.length;i++) {',
+                            '           var item = list[i]; ',
+                            '   %>',
+                            '      <div class="receiver"><%= item.nickname %> - [<%= item.email %>]</div>',
+                            '   <%}%>',
+                            '</div>'
+                        ].join('');
+
+                        var dialog = new CloudDialog({
+                            quickClose: true,
+                            autoDestroy: false,
+                            content: _.template(tmpl)({list: suggestionMembers}),
+                            ok: function() {
+                                doPass({
+                                    status: 2,
+                                    manager_id: sugData.suggestion.join(',')
+                                }).done(function (rs) {
+                                    if(rs['status']<=0) {
+                                        return show_notify(rs['data']['msg']);
+                                    }
+                                    callback('ok', rs);
+                                    window.location.href = '/reports/audit_todo';
+                                });
+                            },
+                            cancelValue: hasSelectAgain?'选择其他审批人':'取消',
+                            cancel: function () {
+                                callback('cancel', null);
+                                this.close();
+                            }
+                        });
+                        dialog.showModal();
+                        return dialog;
+                    }
+
                     $scope.onPass = function(id) {
-                        
                         // 0-1:业务阶段, 2:财务阶段
                         var approve_type = '/check_approval_permission';
                         if($scope.report.status == '2') {
@@ -590,7 +809,7 @@
                         }
                         
                         Utils.api(approve_type + "/" + report_id, {
-                            env: 'yuqi',
+                            env: 'online',
                             data: {
                                 rid: id
                             }
@@ -602,68 +821,33 @@
 
                             var data = rs['data'];
 
-                            var can_complete = data.complete;
+                            var canComplete = data.complete;
                             var has_suggestion_memebers = data.suggestion.length;
-                            var canSelect = data['fixed'];
+                            var fixed = data['fixed'];
 
                             // 财务阶段审批规则较短 status=2
                             if($scope.report.status == '2') {
-                                if(can_complete) {
-                                    doPass({}, 'financial').done(function (rs) {
-                                        if(rs['status']<=0) {
-                                            return show_notify(rs['data']['msg']);
-                                        }
-                                        show_notify('已通过');
-                                        window.location = '/bills/finance_flow';
-                                    });
-                                } else {
-                                    var suggestionMembers = _.filter($scope.members, function(item) {
-                                        var list = data['suggestion'].join(',').split(',');
-                                        if(_.contains(list, item.id)) {
-                                            return true;
-                                        }
-                                        return false;
-                                    });
-
-                                    var tmpl = [
-                                        '<div class="suggestion-box">',
-                                        '   <div>你的报销单将提交给财务</div>',
-                                        '   <% for(var i =0;i<list.length;i++) {',
-                                        '           var item = list[i]; ',
-                                        '   %>',
-                                        '      <div class="receiver"><%= item.nickname %> - [<%= item.email %>]</div>',
-                                        '   <%}%>',
-                                        '</div>'
-                                    ].join('');
-
+                                if(canComplete) {
                                     var dialog = new CloudDialog({
                                         quickClose: true,
                                         autoDestroy: false,
-                                        content: _.template(tmpl)({list: suggestionMembers}),
-                                        okValue: '按公司规定发送报销单',
+                                        content: '确定要通过报销单？',
                                         ok: function() {
                                             doPass({}, 'financial').done(function (rs) {
                                                 if(rs['status']<=0) {
                                                     return show_notify(rs['data']['msg']);
                                                 }
-                                                show_notify('已通过');
+                                                window.location.href= '/bills/finance_flow';
                                             });
                                         },
-                                        cancelValue: '按我的选择发送报销单',
                                         cancel: function () {
-                                            var dialog = dialogMemberSingleton.getInstance();
-                                            dialog.show();
+                                            this.close();
                                         }
                                     });
                                     dialog.showModal();
-                                }
-                                return
-                            }
-
-                            if(can_complete) { //1
-                                if(canSelect) {
+                                } else {
                                     var suggestionMembers = _.filter($scope.members, function(item) {
-                                        var list = data['financial_suggestion'].join(',').split(',');
+                                        var list = data['suggestion'].join(',').split(',');
                                         if(_.contains(list, item.id)) {
                                             return true;
                                         }
@@ -685,120 +869,89 @@
                                         quickClose: true,
                                         autoDestroy: false,
                                         content: _.template(tmpl)({list: suggestionMembers}),
-                                        okValue: '按公司规定发送报销单',
                                         ok: function() {
-                                            doPass({
-                                                comment: '',
-                                                status: 2,
-                                                manager_id: list.join(',')
-                                            }).done(function (rs) {
+                                            doPass({}, 'financial').done(function (rs) {
                                                 if(rs['status']<=0) {
                                                     return show_notify(rs['data']['msg']);
                                                 }
-                                                show_notify('已通过');
+                                                window.location.href= '/bills/finance_flow';
                                             });
                                         },
-                                        cancelValue: '按我的选择发送报销单',
                                         cancel: function () {
-                                            var dialog = dialogMemberSingleton.getInstance();
-                                            dialog.show();
+                                            this.close();
                                         }
                                     });
                                     dialog.showModal();
-                                    return;
                                 }
-                                return doPass({
-                                    comment: '',
-                                    status: 2,
-                                    manager_id: data.suggestion.join(',')
-                                }).done(function (rs) {
-                                    if(rs['status']<=0) {
-                                        return show_notify(rs['data']['msg']);
-                                    }
-                                    show_notify('已通过');
-                                });
-                            }
-
-                            if(!can_complete && !has_suggestion_memebers) { //4
-                                var dialog = dialogMemberSingleton.getInstance();
-                                dialog.showModal();
                                 return
                             }
-
-                            if(!can_complete && has_suggestion_memebers && !canSelect) { //2
-                                var suggestionMembers = _.filter($scope.members, function(item) {
-                                    var list = data['suggestion'].join(',').split(',');
-                                    if(_.contains(list, item.id)) {
-                                        return true;
-                                    }
-                                    return false;
-                                });
-
-                                var tmpl = [
-                                    '<div class="suggestion-box">',
-                                    '   <div>你的报销单将提交给</div>',
-                                    '   <% for(var i =0;i<list.length;i++) {',
-                                    '           var item = list[i]; ',
-                                    '   %>',
-                                    '      <div class="receiver"><%= item.nickname %> - [<%= item.email %>]</div>',
-                                    '   <%}%>',
-                                    '</div>'
-                                ].join('');
-
-                                var dialog = new CloudDialog({
-                                    quickClose: true,
-                                    autoDestroy: false,
-                                    content: _.template(tmpl)({list: suggestionMembers}),
-                                    ok: function() {
-                                        doPass({
-                                            comment: '',
-                                            status: 2,
-                                            manager_id: list.join(',')
-                                        }).done(function (rs) {
-                                            if(rs['status']<=0) {
-                                                return show_notify(rs['data']['msg']);
-                                            }
-                                            show_notify('已通过');
-                                        });
-                                    },
-                                    cancel: function () {
-                                        var dialog = dialogMemberSingleton.getInstance();
-                                        dialog.show();
-                                    }
-                                });
-                                dialog.showModal();
-                                return;
-                            }
-                            if(!can_complete && has_suggestion_memebers && canSelect) { //3
-                                var dialog = dialogMemberSingleton.getInstance();
-                                
-                                (function selectSuggestionMembes(argument) {
-                                    var suggestionMembers = _.filter($scope.members, function(item) {
-
-                                        // 当审批人在上方建议中，下方就无需出现了，设置标记隐藏之
-
-                                        delete item['_in_sug_'];
-
-                                        if(_.contains(data['suggestion'], item.id+'')) {
-                                            item['_in_sug_'] = true;
-                                            return true;
+                            //  restart 业务阶段
+                            console.log('canComplete=', canComplete, 'has_suggestion_memebers=', has_suggestion_memebers, 'fixed=', fixed);
+                            if(!canComplete) {
+                                if(!has_suggestion_memebers) {
+                                    var dialog = dialogMemberSingleton.getInstance();
+                                    dialog.showModal();
+                                    dialog._OK_CONFIG_FN_ = {
+                                        fn: function (receivers_id) {
+                                            dialog.close();
+                                            showSuggestionDialog({
+                                                suggestion: receivers_id
+                                            }, hasSelectAgain=false);
                                         }
-
-                                        return false;
-
+                                    };
+                                } else {
+                                    if(fixed==0) {
+                                         showSuggestionDialog(data, hasSelectAgain=true, function (buttonType, rs) {
+                                            // 选择其他审批人
+                                            if(buttonType=='cancel') {
+                                                var dialog = dialogMemberSingleton.getInstance();
+                                                dialog.showModal();
+                                                dialog._OK_CONFIG_FN_ = {
+                                                    fn: function (receivers_id) {
+                                                        dialog.close();
+                                                        showSuggestionDialog({
+                                                            suggestion: receivers_id
+                                                        }, hasSelectAgain=false);
+                                                    }
+                                                };
+                                            } else if(buttonType=='ok') {
+                                                // 已经默认处理
+                                            }
+                                         });
+                                    } else { //fixed = 1
+                                        showSuggestionDialog(data, hasSelectAgain=false);
+                                    }
+                                }
+                            } else { //canComplete = 1
+                                if(fixed == 1) {
+                                    showSuggestionDialog({
+                                        canComplete: canComplete,
+                                        suggestion: data['financial_suggestion']
+                                    }, hasSelectAgain=false);
+                                } else {
+                                    showSuggestionDialog({
+                                        canComplete: canComplete,
+                                        suggestion: data['financial_suggestion']
+                                    }, hasSelectAgain=true, function (buttonType, rs) {
+                                        // 选择其他审批人
+                                        if(buttonType=='cancel') {
+                                            var dialog = dialogMemberSingleton.getInstance();
+                                            dialog.showModal();
+                                            dialog._OK_CONFIG_FN_ = {
+                                                fn: function (receivers_id) {
+                                                    dialog.close();
+                                                    showSuggestionDialog({
+                                                        suggestion: receivers_id
+                                                    }, hasSelectAgain=false);
+                                                }
+                                            };
+                                        } else if(buttonType=='ok') {
+                                            
+                                        }
                                     });
-
-                                    _.each(suggestionMembers, function(item) {
-                                        item.isSelected = true;
-                                    });
-
-                                    $scope.suggestionMembers = suggestionMembers;
-
-                                })();
-
-                                dialog.showModal();
-                                return $scope.$apply();
+                                }
                             }
+                            return
                         })
                         return
                     };

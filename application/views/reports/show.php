@@ -2,6 +2,18 @@
 <link rel="stylesheet" href="/static/css/mod/component/fields.css"/>
 <link rel="stylesheet" href="/static/css/mod/report/show.css"/>
 <link rel="stylesheet" href="/static/css/widgets/loading-default.css"/>
+
+<script>
+(function () {
+    var error = '';
+    <?php if(isset($last_error)) { ?>
+        error = "<?php echo $last_error;?>";
+    <?php } ?>
+    if(error) {
+        show_notify(error);
+    }
+})();
+</script>
 <div class="mod mod-show-report" ng-app="reimApp">
     <div class="page-content-area" ng-controller="ReportController">
         <div class="ui-loading-layer" ng-if="!isLoaded">
@@ -9,7 +21,8 @@
         </div>
         <div class="report" data-type="{{template.type.join(',')}}">
             <div class="report-header">
-                {{template.name}}
+                <img src="/static/img/mod/report/titleBG-Line.png" alt="">
+                <span>{{template.name}}</span>
             </div>
             <div class="report-body">
                 <div class="block-row report-title">
@@ -18,9 +31,9 @@
                     {{report.title}}
                     </div>
                 </div>
-                <div class="block-row detail-row" ng-if="report.prove_ahead==1||report.prove_ahead==2">
-                    <div class="field-label" ng-if="report.prove_ahead==1">申请额</div>
-                    <div class="field-label" ng-if="report.prove_ahead==2">应付</div>
+                <div class="block-row detail-row" ng-if="path_type!='snapshot' &&report.pa_approval==1 && (report.prove_ahead==1||report.prove_ahead==2)">
+                    <div class="field-label" ng-if="report.pa_approval==1 && report.prove_ahead==1">申请额</div>
+                    <div class="field-label" ng-if="report.pa_approval==1 && report.prove_ahead==2">已付</div>
                     <div class="field-input">
                         <p>¥{{report.amount}}</p>
                         <a href="/reports/snapshot/{{report.id}}?tid={{template.id}}" class="btn-detail" ng-if="report.has_snapshot && path_type!='snapshot'">
@@ -67,27 +80,27 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th ng-repeat-start="col in tableItem.children" ng-if="col.type=='4'" colspan="4" >
+                                        <th ng-repeat-start="col in tableItem.children" ng-if="col.type==4" colspan="4" >
                                             {{col.name}}
                                         </th>
-                                        <th ng-repeat-end ng-if="col.type!='4'">{{col.name}}</th>
+                                        <th ng-repeat-end ng-if="col.type!=4">{{col.name}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td ng-repeat-start="col in tableItem.children" ng-if="col.type=='4'">
-                                            {{userProfile['nickname']}}
+                                        <td class="td-bank" ng-repeat-start="col in tableItem.children" ng-if="col.type==4">
+                                            {{col._combine_data_.value['account']}}
                                         </td>
-                                         <td ng-if="col.type=='4'">
-                                            {{col._combine_data_.value['cardno']}}
+                                        <td class="td-bank" ng-if="col.type==4">
+                                            {{col._combine_data_.value['cardno'] || '-'}}
                                         </td>
-                                        <td ng-if="col.type=='4'">
-                                            {{col._combine_data_.value['bankname']}}
+                                        <td class="td-bank" ng-if="col.type==4">
+                                            {{col._combine_data_.value['bankname'] || '-'}}
                                         </td>
-                                        <td ng-if="col.type=='4'">
-                                            {{col._combine_data_.value['subbranch']}}
+                                        <td class="td-bank" ng-if="col.type==4">
+                                            {{col._combine_data_.value['subbranch'] || '-'}}
                                         </td>
-                                        <td ng-repeat-end ng-if="col.type=='3' || col.type=='2' || col.type=='1'">
+                                        <td data-id="{{col.id}}" ng-repeat-end ng-if="col.type==3 || col.type==2 || col.type==1">
                                             {{col._combine_data_.value}}
                                         </td>
                                     </tr> 
@@ -112,10 +125,10 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="c in report.items" ng-class="{selected: c.isSelected}">
-                                        <td>{{categoryMap[c.category]['category_name']||'-'}}</td>
+                                        <td>{{c['category_name']||'-'}}</td>
                                         <td >{{dateFormat(c.dt)}}</td>
                                         <td>{{c.merchants}}</td>
-                                        <td>{{c.notes}}</td>
+                                        <td class="note">{{c.notes}}</td>
                                         <td>¥{{c.amount}}</td>
                                     </tr> 
                                 </tbody>
@@ -126,22 +139,22 @@
                                             ¥{{report.amount}}
                                         </td>
                                     </tr>
-                                    <tr ng-if="report.prove_ahead==1">
+                                    <tr ng-if="path_type!='snapshot' && report.pa_approval==1 && report.prove_ahead==1">
                                         <td>申请额</td>
                                         <td colspan="4" class="sum">
                                             ¥{{apply_consumption_amount}}
                                         </td>
                                     </tr>
-                                    <tr ng-if="report.prove_ahead==2">
+                                    <tr ng-if="path_type!='snapshot' && report.pa_approval==1 && report.prove_ahead==2">
                                         <td>已付</td>
                                         <td colspan="4" class="sum">
                                             ¥{{report.amount}}
                                         </td>
                                     </tr>
-                                    <tr ng-if="report.prove_ahead==2">
+                                    <tr ng-if="path_type!='snapshot' && report.pa_approval==1 && report.prove_ahead==2">
                                         <td>应付</td>
                                         <td colspan="4" class="sum">
-                                            ¥{{report.apply_consumption_amount}}
+                                            ¥{{diff_consumption_amount}}
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -152,13 +165,14 @@
                 <div class="block-row flow" ng-if="path_type!='snapshot'">
                     <div class="field-label">流转意见</div>
                     <div class="table-field">
-                        <div ng-repeat="(gName, fGroup) in flow">
-                            <h2 ng-class="{first: $first}">{{gName}}</h2>
+                        <div ng-repeat="(gName, fGroup) in flow" ng-if="fGroup.length>0">
+                            <h2 ng-class="{first: $first}">{{cutFlowName(gName)}}</h2>
                             <div class="table-container">
                                 <table>
                                     <thead>
                                         <tr>
                                             <th>人员</th>
+                                            <th>职位</th>
                                             <th>时间</th>
                                             <th>操作</th>
                                         </tr>
@@ -166,7 +180,8 @@
                                     <tbody>
                                         <tr ng-repeat="f in fGroup">
                                             <td>{{f.nickname}}</td>
-                                            <td>{{f.submitdt}}</td>
+                                            <td>{{f.job}}</td>
+                                            <td>{{f.udt!=0?f.approvaldt:''}}</td>
                                             <td>{{f.status_text}}</td>
                                         </tr> 
                                     </tbody>
@@ -194,7 +209,7 @@
                             <div class="field-input">
                                 <input type="text" placeholder="" ng-model="comment_box.txtCommentMessage">
                             </div>
-                            <a class="btn-search ui-button" ng-click="onAddCommentToReport()">提交留言</a>
+                            <button class="btn-search ui-button" ng-click="onAddCommentToReport()">提交留言</button>
                         </div>
                     </div>
                 </div>
@@ -206,18 +221,18 @@
                 <a ng-if="buttons.has_modify" href="/reports/edit/{{report.id}}?tid={{report.template_id}}" class="ui-button-border ui-button  ui-button-hover btn-update">
                     <img src="/static/img/mod/report/24/btn-edit@2x.png" alt="">修改
                 </a>
-                <a ng-if="buttons.has_reject" href="javascript:void(0)"  class="ui-button-border ui-button  ui-button-hover btn-reject" ng-click="onReject(report.id)">
+                <button ng-if="buttons.has_reject" class="ui-button-border ui-button  ui-button-hover btn-reject" ng-click="onReject(report.id)">
                     <img src="/static/img/mod/report/24/btn-reject@2x.png" alt="">退回
-                </a>
-                <a ng-if="buttons.has_drop" href="javascript:void(0)"  class="ui-button-border ui-button  ui-button-hover btn-drop" ng-click="onDrop(report.id)">
+                </button>
+                <button ng-if="buttons.has_drop" href="javascript:void(0)"  class="ui-button-border ui-button  ui-button-hover btn-drop" ng-click="onDrop(report.id)">
                     <img src="/static/img/mod/report/24/btn-reject@2x.png" alt="">撤回
-                </a>
-                <a ng-if="buttons.has_pass" href="javascript:void(0)" class="ui-button ui-button-hover btn-pass" ng-click="onPass(report.id)">
+                </button>
+                <button ng-if="buttons.has_pass" class="ui-button ui-button-hover btn-pass" ng-click="onPass(report.id)">
                     <img src="/static/img/mod/report/24/btn-pass@2x.png" alt="">通过
-                </a>
-                <a ng-if="buttons.has_affirm" href="javascript:void(0)" class="btn-affirm ui-button-hover ui-button" ng-click="onAffirm($event)">
+                </button>
+                <button ng-if="buttons.has_affirm" class="btn-affirm ui-button-hover ui-button" ng-click="onAffirm($event)">
                     <img src="/static/img/mod/report/24/btn-pass@2x.png" alt="">完成确认
-                </a>
+                </button>
             </div>
 
              <!-- 接口太慢，预先加载公司成员，隐藏于此 -->
@@ -232,7 +247,7 @@
                         </div>
                     </div>
                     <ul class="stop-parent-scroll">
-                        <li class="s_{{s.id}}" ng-repeat='s in suggestionMembers' ng-class="{selected: s.isSelected}"  ng-click="onSelectMember(s, $event)">
+                        <li class="s_{{s.id}}" ng-repeat='s in suggestionMembers' ng-class="{selected: s.isSelected}"  ng-click="onSelectMember(s)">
                             <img ng-src="{{s.apath || default_avatar }}" alt="">
                             <div class="info">
                                 <p class="name">{{s.nickname}}</p>
@@ -240,13 +255,9 @@
                             </div>
                         </li>
                         <li ng-if="suggestionMembers" class="line"></li>
-                        <li class="m_{{m.id}}" ng-repeat='m in (filteredMembers = (members|filter:searchImmediate(txtSearchText)))' ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m, $event)" ng-if="!m._in_sug_">
+                        <li class="m_{{m.id}}" ng-repeat='m in (filteredMembers = (members|filter:searchImmediate(txtSearchText)))' ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m)" ng-if="!m._in_sug_">
                             <img ng-src="{{m.apath || default_avatar}}" alt="">
-                            <div class="info">
-                                <p class="name">{{m.nickname}}</p>
-                                <p class="role" ng-if="!m.multi_property_matcher">{{m.d}}</p>
-                                <p class="role" ng-if="m.multi_property_matcher">{{m.multi_property_matcher}}</p>
-                            </div>
+                            <div class="info" ng-bind-html="m.info_html"> </div>
                         </li>
                         <div class="empty-result" ng-if="filteredMembers.length==0">
                             <img src="/static/img/mod/report/icon-no-member-result.png" alt="">
@@ -262,6 +273,7 @@
 
 <script src="/static/js/libs/fecha.js"></script>
 <script src="/static/js/libs/underscore-min.js"></script>
+<script src="/static/js/jquery.cookie.js"></script>
 <script src="/static/js/mod/report/show.js"></script>
 <script src="/static/js/libs/route-recognizer.js"></script>
 <link rel="stylesheet" href="/static/css/base/scrollbar.css">

@@ -988,7 +988,6 @@ class Items extends REIM_Controller {
             log_message('debug','status' . $obj['status']);
             log_message('debug','zz item_data:'.json_encode($obj));
         }
-
         if($renew)
         {
             if($item_update_in != 0){
@@ -1001,13 +1000,13 @@ class Items extends REIM_Controller {
             return redirect(base_url('items/index'));
         } else {
             if($item_update_in != 0){
-                return redirect(base_url("reports/edit/" . $rid . "/1"));
+                return redirect(base_url("reports/edit/" . $rid));
             }else{
                 if(!$rid) {
                     return redirect(base_url("items/index"));
                 }
-                $template = $this->reports->get_report_template($rid);
-                return redirect(base_url("reports/edit/" . $rid + "?tid="+$template['id']));
+                $report = $this->report->get_report_by_id($rid);
+                return redirect("/reports/edit/" . $rid + "?tid="+$report['template_id']);
             }
         }
     }
