@@ -133,6 +133,5 @@
             $('.ios').data('href', inhouseUrl);
         }
     </script>
-    <?php get_sub_widget('module/widgets/ie_lower_version'); ?>
 </body>
 </html>

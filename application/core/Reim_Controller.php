@@ -181,7 +181,7 @@ class REIM_Controller extends CI_Controller{
         $agent = $this->agent->agent_string();
         // ie
         $IS_IE_7 = false;
-        if(preg_match("/msie 7\.0/i", $agent)) {
+        if(preg_match("/msie 6|7\.0/i", $agent)) {
             $IS_IE_7 = true;
         }
         $custom_data['IS_IE_7'] = $IS_IE_7;
