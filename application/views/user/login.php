@@ -662,5 +662,6 @@
         <?php } ?>
         <script src="/static/js/libs/detect.js"></script>
         <?php get_sub_widget('module/widgets/meiqia'); ?> 
+        <?php get_sub_widget('module/widgets/ie_lower_version'); ?>
     </body>
 </html>

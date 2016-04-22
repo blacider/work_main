@@ -177,6 +177,15 @@ class REIM_Controller extends CI_Controller{
         $this->config->load('apps', TRUE);
         $custom_data['appname'] = $this->config->item('appname');
         $custom_data['base_url'] = base_url();
+
+        $agent = $this->agent->agent_string();
+        // ie
+        $IS_IE_7 = false;
+        if(preg_match("/msie 7\.0/i", $agent)) {
+            $IS_IE_7 = true;
+        }
+        $custom_data['IS_IE_7'] = $IS_IE_7;
+
         $this->load->view('header.bs.php', $custom_data);
         $this->load->view($menu_page, $custom_data);
         $this->load->view($view_name, $custom_data);
@@ -184,13 +193,13 @@ class REIM_Controller extends CI_Controller{
         {
             $this->load->view($tv,$custom_data);
         }
-        $attacker = $this->agent->agent_string();
-        // $attacker = "test start; ;JianKongBao Monitor test end";
+        
         $hasAttacker = false;
-        if(stripos($attacker, ';JianKongBao Monitor')) {
+        if(stripos($agent, ';JianKongBao Monitor')) {
             $hasAttacker = true;
         }
         $custom_data['has_attacker'] = $hasAttacker;
+        
         $this->load->view('footer.bs.php', $custom_data);
     }
 
