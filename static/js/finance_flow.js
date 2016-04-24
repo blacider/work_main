@@ -33,6 +33,7 @@ function bind_event() {
 				dataType: "json",
 				success: function(data) {
 					if (data['status'] > 0) {
+						$("#modal_next").find('#modal_managers').val(data['data'].suggestion).trigger("chosen:updated");
 						if (data['data'].complete == 0) {
 							$('#rid').val(_id);
 							chose_others_zero(_id, data['data'].suggestion);
