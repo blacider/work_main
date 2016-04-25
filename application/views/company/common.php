@@ -146,19 +146,6 @@
 
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">审批是否需要二次确认</label>
-                                <div class="col-xs-6 col-sm-6">
-                                        <label style="margin-top:8px;">
-                                            <input name="approval_confirmation" class="ace ace-switch btn-rotate" type="checkbox" id="approval_confirmation" style="margin-top:4px;" />
-                                            <span class="lbl"></span>
-                                        </label>
-
-                                   <!-- </div> -->
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">报销单页脚配置</label>
                                 <div class="col-xs-4 col-sm-4">
                                     <select id="footer_format" class="chosen-select tag-input-style" name="footer_format"  data-placeholder="请选择页脚的格式">

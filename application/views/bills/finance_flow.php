@@ -14,6 +14,10 @@
 <script src="/static/ace/js/jquery.colorbox-min.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
  <style type="text/css">
+ .chosen-container  {
+  min-width: 400px;
+  width: 400px;
+}
     #searchBox {
 position: absolute;
   right: 20px;
