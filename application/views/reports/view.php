@@ -160,7 +160,7 @@ table td {
                             <tr>
                                 <td><?php echo $report['snapshot_title']; ?></td>
                                 <td><?php echo strftime('%Y-%m-%d %H:%M', $report['lastdt']); ?></td>
-                                <td>￥<?php echo $report['snapshot_amount']; ?>.00</td>
+                                <td>￥<?php echo $report['snapshot_amount']; ?></td>
                                 <td>
                                     <a style="font-size: 18px; text-decoration: none" target="_blank" class="ui-icon ui-icon ace-icon fa fa-search-plus" href="/reports/snapshot/<?php echo $report['id']; ?>">
                                     </a>
@@ -601,13 +601,13 @@ $(document).ready(function(){
     $('.new_card').click(function(){
         $('#form_discard').submit();
     });
-    
+
     $('.finance_deny').click(function(){
         $('#form_discard','#finance_comment_dialog').submit();
     });
-    
+
     $('.chosen-select').chosen({allow_single_deselect:true});
-    
+
     $(window)
         .off('resize.chosen')
         .on('resize.chosen', function() {
@@ -617,7 +617,7 @@ $(document).ready(function(){
             })
         })
         .trigger('resize.chosen');
-    
+
     $('.pass').click(function(){
         $('#pass').val(1);
     });
