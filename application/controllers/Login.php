@@ -104,6 +104,7 @@ class Login extends REIM_Controller {
         //die($username);
         $attacker = $this->agent->agent_string();
         // $attacker = "test start; ;JianKongBao Monitor test end";
+        $browser_not_supported = false;
         $hasAttacker = false;
         if(stripos($attacker, ';JianKongBao Monitor')) {
             $hasAttacker = true;
@@ -115,14 +116,20 @@ class Login extends REIM_Controller {
                         ,'username' => $username
                         ,'password' => $password
                         ,'has_attacker' => $hasAttacker
+                        ,'browser_not_supported' => $browser_not_supported
                     ));
         } else {
+            // ie check
+            if ($this->agent->browser() == 'Internet Explorer' and $this->agent->version() < 8) {
+                $browser_not_supported = true;
+            }
             $body = $this->load->view('user/login.php', array(
                         'errors' => $error
                         ,'title' => '登录'
                         ,'username' => $username
                         ,'password' => $password
                         ,'has_attacker' => $hasAttacker
+                        ,'browser_not_supported' => $browser_not_supported
                     ));
         }
     }

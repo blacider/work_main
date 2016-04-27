@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="/static/css/widgets/ie_lower_version.css">
-<div id="IE-LOW-VERSION"  style="display: none">
+<div id="IE-LOW-VERSION">
     <div id="IE-LOW-VERSION-MASK">
     </div>
     <div id="IE-LOW-VERSION-CONTENT">
@@ -19,13 +19,3 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript" src="/static/js/libs/detect.js"></script>
-<script>
-    var ua = detect.parse(navigator.userAgent);
-    var browser = ua['browser'];
-    if(browser['family'] == 'IE' && browser['major']<=7) {
-        var IE_LOW_VERSION = document.getElementById('IE-LOW-VERSION');
-        IE_LOW_VERSION.style['display'] = 'block';
-    }
-</script>

@@ -98,10 +98,7 @@ var __BASE = "<?php echo $base_url; ?>";
 <script src="/static/ace/js/jqGrid/i18n/grid.locale-cn.js"></script>
 
 <script language="javascript" src="/static/ace/js/bootstrap.min.js"></script>
-<!-- ie7 干脆不加载 -->
-<?php if(!$IS_IE_7) {?>
 <script language="javascript" src="/static/ace/js/ace.min.js"></script>
-<?php } ?>
 <script language="javascript" src="/static/ace/js/ace-elements.min.js"></script>
 <link rel="stylesheet" href="/static/ace/css/ace.onpage-help.css">
 
@@ -128,6 +125,7 @@ DD_belatedPNG.fix('*');
             }
 </style>
     </head>
-    <!-- IE 7 下 上述ace.min.js 导致报错，此内js无法执行-->
+    <?php if($browser_not_supported) {?>
     <?php get_sub_widget('module/widgets/ie_lower_version'); ?>
+    <?php } ?>
     <body class="skin-0 no-skin" style="font-size: 14px;color: #7F8C8D;">
