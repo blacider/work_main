@@ -5,21 +5,6 @@
     <script>
     var _hmt = _hmt || [];
     </script>
-    <script type='text/javascript'>
-    var _vds = _vds || [];
-    window._vds = _vds;
-    (function() {
-        _vds.push(['setAccountId', 'c51af5ab801b549d51103ce73e4ccd6f']);
-        (function() {
-            var vds = document.createElement('script');
-            vds.type = 'text/javascript';
-            vds.async = true;
-            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'dn-growing.qbox.me/vds.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(vds, s);
-        })();
-    })();
-    </script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes">
     <link rel="shortcut icon" href="http://www.yunbaoxiao.com/favicon.ico">
