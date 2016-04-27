@@ -185,6 +185,12 @@ class REIM_Controller extends CI_Controller{
         }
         $custom_data['browser_not_supported'] = $browser_not_supported;
 
+        $lte_ie8 = false;
+        if ($this->agent->browser() == 'Internet Explorer' and $this->agent->version() <=8) {
+            $lte_ie8 = true;
+        }
+        $custom_data['lte_ie8'] = $lte_ie8;
+
         $this->load->view('header.bs.php', $custom_data);
         $this->load->view($menu_page, $custom_data);
         $this->load->view($view_name, $custom_data);

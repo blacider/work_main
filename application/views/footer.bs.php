@@ -47,7 +47,8 @@ var _hmt = _hmt || [];
 </script>
 </div>
 <?php } ?>
+<?php if(!$lte_ie8) {?>
 <?php get_sub_widget('module/widgets/meiqia'); ?> 
- 
+<?php } ?>
 </body>
 </html>
