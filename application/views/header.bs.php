@@ -6,6 +6,7 @@
         </script>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>云报销 - <?php echo $title; ?></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
         <meta name="renderer" content="webkit">
         <link rel="shortcut icon" href="/static/favicon.ico" />
@@ -93,6 +94,7 @@
 <script language="javascript" src="/static/ace/js/bootstrap.min.js"></script>
 <script language="javascript" src="/static/ace/js/ace.min.js"></script>
 <script language="javascript" src="/static/ace/js/ace-elements.min.js"></script>
+<script src="/static/js/libs/pollyfill/jquery.xdomainrequest.min.js"></script>
 <link rel="stylesheet" href="/static/ace/css/ace.onpage-help.css">
 
 <script type="text/javascript"> ace.vars['base'] = '..'; </script>

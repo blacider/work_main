@@ -1,4 +1,13 @@
 (function(exports) {
+
+	// ie8 check
+	var CONST_LTE_IE8 = (function(userAgent) {
+	    if (/MSIE\s+(6|7|8)\.0/.test(userAgent)) {
+	        return true;
+	    };
+	    return false;
+	})(navigator.userAgent);
+
     exports.Utils = {
         nextTick: function(fn, delay) {
             setTimeout(function() {
@@ -59,7 +68,12 @@
         },
         api: function(url, opts) {
             var def = $.Deferred();
-            var hostname = 'https://api.cloudbaoxiao.com';
+            var host = 'https://api.cloudbaoxiao.com';
+
+            // ie8 XDomainRequest CORS不支持 headers 和 get post 之外的方法
+            if(CONST_LTE_IE8) {
+            	host = location.origin;
+            }
 
             var regSlashStart = /^\//;
 
@@ -74,7 +88,7 @@
                 onError: function(rs) {
                     try {
                         var msg = rs['data']['msg'] || JSON.stringify(rs);
-                        console.error(msg);
+                        console.error(url, JSON.stringify(rs));
                     } catch(e) {}
                 }
             }, opts);
@@ -84,13 +98,19 @@
                 if(location.host.indexOf('yunbaoxiao.com')>=0) {
                     opts['env'] = 'online';
                 }
-                url = [hostname, opts['env'], url].join('/');
+
+                // ie8 XDomainRequest CORS不支持 headers 和 get post 之外的方法
+                if(CONST_LTE_IE8) {
+                	opts['env'] = 'apiproxy';
+                }
+
+                url = [host, opts['env'], url].join('/');
             } else {
                 url = '/' +  url;
             }
 
             $.ajax({
-                method: opts['method'],
+                type: opts['method'],
                 dataType: opts['dataType'],
                 url: url,
                 headers: {

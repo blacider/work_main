@@ -295,7 +295,7 @@
                                         account: account,
                                         uid: window.__UID__,
                                         subbranch: subbranch,
-                                        default: 0
+                                        'default': 0
                                     };
                                     Utils.api('/bank', {
                                         env: 'online',
