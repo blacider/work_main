@@ -565,6 +565,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         <button type="button" class="btn btn-primary" onclick="exportExel()">下载汇总报表</button>
         <button type="button" class="btn btn-primary" onclick="finish()">确认结束</button>
+        <button type="button" style="display: none;" class="btn btn-primary btn-pay">去支付</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -721,3 +722,4 @@ function cancel_modal_next_()
 </script>
 <script src="<?= static_url("/static/js/base.js") ?>" ></script>
 <script src="<?= static_url("/static/js/finance_flow.js") ?>" ></script>
+<script src="/static/js/mod/bills/finance.js"></script>

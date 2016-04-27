@@ -172,7 +172,7 @@
 					acrivate({
 						nonce: _PROFILE_['nonce'],
 						uid: _PROFILE_['uid'],
-						payhead_id: _PROFILE_['taoyuan_uid']
+						payhead_id: _PROFILE_['payhead_uid']
 					}).done(function (rs) {
 						if(rs['status']<=0) {
 							return $('.fail').show().text(rs['data']['msg']);
