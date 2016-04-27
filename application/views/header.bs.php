@@ -20,6 +20,7 @@
             })();
         })();
         </script>
+
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>云报销 - <?php echo $title; ?></title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
@@ -124,4 +125,7 @@ DD_belatedPNG.fix('*');
             }
 </style>
     </head>
+    <?php if($browser_not_supported) {?>
+    <?php get_sub_widget('module/widgets/ie_lower_version'); ?>
+    <?php } ?>
     <body class="skin-0 no-skin" style="font-size: 14px;color: #7F8C8D;">
