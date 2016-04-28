@@ -771,7 +771,6 @@ class Bills extends REIM_Controller {
         $legacy_company_ids = [
             333, # 人人车
             431, # 酷表族
-            443, # 财加
             478, # 戈壁
         ];
         if (in_array($company_id, $legacy_company_ids)) {
