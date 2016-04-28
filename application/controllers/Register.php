@@ -37,8 +37,16 @@ class Register extends REIM_Controller {
         if(stripos($attacker, ';JianKongBao Monitor')) {
             $hasAttacker = true;
         }
+        // check ie
+        $lte_ie8 = false;
+        if ($this->agent->browser() == 'Internet Explorer' and $this->agent->version() <=8) {
+            $lte_ie8 = true;
+        }
 
-        $this->load->view('user/reg_successful', array('has_attacker'=>$hasAttacker));
+        $this->load->view('user/reg_successful', array(
+            'has_attacker'=>$hasAttacker,
+            'lte_ie8'=>$lte_ie8
+        ));
     }
 
     public function getvcode($addr = 'email',$scene = 'register'){

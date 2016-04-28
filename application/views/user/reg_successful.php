@@ -115,6 +115,8 @@
         </script>
         </div>
         <?php } ?>
-        <?php get_sub_widget('module/widgets/meiqia'); ?>
+        <?php if(!$lte_ie8) {?>
+        <?php get_sub_widget('module/widgets/meiqia'); ?> 
+        <?php } ?>
     </body>
 </html>
