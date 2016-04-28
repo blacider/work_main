@@ -30,6 +30,12 @@ function bind_event() {
             }
         });
     });
+    $('.twithdraw').click(function(){
+        if(confirm('确认要撤回报销单吗?')){
+            var _id = $(this).data('id');
+            location.href = __BASE + "/reports/revoke/" + _id;
+        }
+    });
     $('.tdetail').each(function() {
         $(this).click(function() {
             var _id = $(this).data('id');
