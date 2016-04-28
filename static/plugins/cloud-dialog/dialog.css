@@ -8,8 +8,12 @@ body.no-scroll {
 	left: 0;
 	height: 100%;
 	width: 100%;
-	background: rgba(0,0,0, 0.7);
 	z-index: 9999;
+	background: #000;
+	opacity: 0.7;
+	-webkit-user-select: none;
+	overflow: hidden;
+	filter: alpha(opacity: 70);
 	display: none;
 }
 .cloud-bx-dialog-mask.none {
@@ -72,6 +76,11 @@ body.no-scroll {
 	-ms-transform: rotate(180deg) scale3d(1.1, 1.1, 1);
 	transform: rotate(180deg) scale3d(1.1, 1.1, 1);
 }
+.cloud-bx-dialog .dialog-header .close:active,
+.cloud-bx-dialog .dialog-header .close:focus {
+	color: #e94b4f;
+}
+
 
 .cloud-bx-dialog .dialog-body {
 	padding: 20px;

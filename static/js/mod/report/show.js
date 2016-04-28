@@ -3,8 +3,8 @@
     var _defaultTemplateName_ ='未命名报销单模板';
     return {
         initialize: function() {
-            angular.module('reimApp', []).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce",
-                function($http, $scope, $element, $timeout, $sce) {
+            angular.module('reimApp', ['historyMembers']).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce", "historyMembersManagerService",
+                function($http, $scope, $element, $timeout, $sce, historyMembersManager) {
                     var routerObj = (function() {
                         var router = new RouteRecognizer();
                         router.add([{
@@ -35,41 +35,6 @@
                     $scope.comment_box = {
                         txtCommentMessage: ''
                     };
-
-                    var historyMembersManager = (function() {
-                        var __prefix__ = 'history_members';
-                        var key = window.__UID__ + '_' + __prefix__;
-                        return {
-                            __prefix__: __prefix__,
-                            key: key,
-                            getArray: function (uid) {
-                                var str_ids = $.cookie(key) || '';
-                                var uids = str_ids.split(',');
-                                var members = [];
-                                for(var i=0;i<uids.length;i++) {
-                                    var id = uids[i];
-                                    var one = _.find($scope.members, {
-                                        id: id
-                                    });
-                                    if(one) {
-                                        one._in_sug_ = true;
-                                        members.push(one);
-                                    }
-                                }
-                                return members;
-                            },
-                            append: function (ids) {
-                                var ids = ids.split(',');
-                                var str_ids = $.cookie(key) || '';
-                                var uids = str_ids.split(',');
-                                uids = [].concat(ids, uids);
-                                uids = _.unique(uids);
-                                $.cookie(key, uids.join(','), {
-                                    expires: 60
-                                });
-                            }
-                        } 
-                    })();
 
                     function getTemplateData() {
                         var query = Utils.queryString(location.search);
@@ -272,6 +237,7 @@
                             }
                         }
                     };
+                    window.scope = $scope;
                     var dialogMemberSingleton = (function() {
                         var instance;
 
@@ -293,7 +259,7 @@
                                     });
 
                                     if(history) {
-                                        receivers = [].concat(receivers, history);
+                                        receivers = [].concat(history, receivers);
                                     }
 
                                     var receivers_id = _.map(receivers, function(item) {
@@ -403,7 +369,7 @@
 
                         $scope.selectedMembers = selectedMembers;
 
-                        $scope.suggestionMembers = historyMembersManager.getArray();
+                        $scope.suggestionMembers = historyMembersManager.getArray($scope.members);
 
                         $scope.userProfile = _.findWhere(members, {
                             id: $scope.report.uid
@@ -612,15 +578,15 @@
                             var tmpl = [
                                 // 1
                                 '<% if (!type) { %>',
-                                '<p class="name"><%= nickname %></p>',
+                                '<div class="name"><%= nickname %></div>',
                                 '<% } else { %>',
                                 // <!-- 2.1 -->
                                     '<% if(type=="nickname") { %>',
-                                    '<p class="name"><%= foo %></p>',
+                                    '<div class="name"><%= foo %></div>',
                                     '<% } else { %>',
                                     // <!-- 2.2 -->
-                                    '<p class="name"><%= nickname %></p>',
-                                    '<p class="role"><%= foo %></p>',
+                                    '<div class="name"><%= nickname %></div>',
+                                    '<div class="role"><%= foo %></div>',
                                     '<% } %>',
                                 '<% } %>'
                             ].join('');

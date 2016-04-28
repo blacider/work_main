@@ -445,6 +445,10 @@ button {
 .none {
 	display: none;
 }
+
+
+
+
 /* end field-compoents */
 
 /*animation*/
@@ -468,4 +472,6 @@ button {
 	-ms-transform: translateZ(0) scale3d(1.05, 1.05, 1);
 	transform: translateZ(0) scale3d(1.05, 1.05, 1);
 }
+
+
 

@@ -163,7 +163,7 @@
 			this.$mask.addClass('none').show();
 			this.$el.show().addClass(animateClass);
 			this.options.onShow.call(this);
-			
+
 			$(window).trigger('resize');
 
 			$('body').addClass('no-scroll');
@@ -172,7 +172,7 @@
 		},
 		showModal: function  () {
 			$('body').addClass('no-scroll');
-			this.$mask.removeClass('none').show().addClass(animateClass);
+			this.$mask.removeClass('none').show();
 			this.$el.show().addClass(animateClass);
 			this.options.onShow.call(this);
 			$(window).trigger('resize');
@@ -183,7 +183,6 @@
 			this.$el.hide();
 			this.options.onHide.call(this);
 
-			this.$mask.removeClass(animateClass);
 			this.$el.removeClass(animateClass);
 
 			$('body').removeClass('no-scroll');

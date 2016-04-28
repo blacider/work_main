@@ -292,13 +292,6 @@
 	color: #4a4a4a;
 }
 
-.approvers ul li:hover {
-	background: #465461 !important;
-}
-.approvers ul li:hover .info .name,
-.approvers ul li:hover .info .role {
-	color: #fff !important;
-}
 .approvers ul li.selected {
 	background: transparent;
 	border: 1px solid #596774;
@@ -373,40 +366,6 @@
     height: 45px;
     width: 100px;
     margin-top: 3px;
-}
-.approvers.selected-members ul li:hover {
-	background-color: #f2f6fa;
-}
-
-.approvers.selected-members ul li:hover .info .name {
-	color: #4a4a4a;
-
-}
-.approvers.selected-members ul li:hover .info .role {
-	color: #929292;
-}
-
-.approvers.selected-members ul li:hover .info .role {
-	color: #929292;
-}
-.approvers.selected-members ul li:hover .btn-remove {
-	display: inline-block;
-}
-
-.approvers.selected-members ul li .btn-remove:hover {
-	background-image: url('/static/img/mod/report/24/btn-remove.dark.png');
-}
-
-.approvers.selected-members ul li.btn-append:hover {
-	background: transparent !important;
-}
-
-.approvers.available-members ul li.selected:hover .info .name {
-	color: #4a4a4a;
-}
-
-.approvers.available-members ul li.selected:hover .info .role {
-	color: #929292;
 }
 
 .table-consumptions tfoot {
@@ -517,7 +476,7 @@
 .table-field table thead tr th {
 	height: 30px;
 	border-radius: 2px;
-	background-color: rgba(89, 102, 116, 0.8);
+	background-color: #7A8590;
 	color: #fff;
 	text-align: center;
 	border-right: solid 1px #b9b9b9;
@@ -526,8 +485,8 @@
 	height: 30px;
 	font-size: 14px;
 	color: #929292;
-	border-top: 1px solid rgba(185, 185, 185, .3);
-	border-right: 1px solid rgb(185, 185, 185);
+	border-top: 1px solid #EEEEEE;
+	border-right: 1px solid #C7C7C7;
 }
 .table-field table tbody tr td.note {
 	max-width: 120px;
@@ -554,6 +513,93 @@ table.border-radius-row tr td:last-child {
 	color: #273e52;
 }
 
+.ui-button .icon {
+	width: 24px;
+	height: 24px;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 6px;
+	position: relative;
+	top: -1px;
+}
+
+.btn-reject.ui-button .icon,
+.btn-drop.ui-button .icon {
+    /*ie 8*/
+    background: url('/static/img/mod/report/24/btn-reject@1x.png') no-repeat;
+
+	background-image: -webkit-image-set(url('/static/img/mod/report/24/btn-reject@1x.png') 1x, url('/static/img/mod/report/24/btn-reject@2x.png') 2x);
+	background-image: -moz-image-set(url('/static/img/mod/report/24/btn-reject@1x.png') 1x, url('/static/img/mod/report/24/btn-reject@2x.png') 2x);
+	background-image: -ms-image-set(url('/static/img/mod/report/24/btn-reject@1x.png') 1x, url('/static/img/mod/report/24/btn-reject@2x.png') 2x);
+	background-image: -o-image-set(url('/static/img/mod/report/24/btn-reject@1x.png') 1x, url('/static/img/mod/report/24/btn-reject@2x.png') 2x);
+}
+
+.btn-reject.ui-button:active .icon,
+.btn-reject.ui-button:focus .icon,
+.btn-drop.ui-button:active .icon,
+.btn-drop.ui-button:focus .icon {
+    /*ie 8*/
+    background: url('/static/img/mod/report/24/btn-reject.dark@1x.png') no-repeat;
+
+	background-image: -webkit-image-set(url('/static/img/mod/report/24/btn-reject.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-reject.dark@2x.png') 2x);
+	background-image: -moz-image-set(url('/static/img/mod/report/24/btn-reject.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-reject.dark@2x.png') 2x);
+	background-image: -ms-image-set(url('/static/img/mod/report/24/btn-reject.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-reject.dark@2x.png') 2x);
+	background-image: -o-image-set(url('/static/img/mod/report/24/btn-reject.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-reject.dark@2x.png') 2x);
+}
+
+
+.btn-modify.ui-button .icon {
+    /*ie 8*/
+    background: url('/static/img/mod/report/24/btn-edit@1x.png') no-repeat;
+
+	background-image: -webkit-image-set(url('/static/img/mod/report/24/btn-edit@1x.png') 1x, url('/static/img/mod/report/24/btn-edit@2x.png') 2x);
+	background-image: -moz-image-set(url('/static/img/mod/report/24/btn-edit@1x.png') 1x, url('/static/img/mod/report/24/btn-edit@2x.png') 2x);
+	background-image: -ms-image-set(url('/static/img/mod/report/24/btn-edit@1x.png') 1x, url('/static/img/mod/report/24/btn-edit@2x.png') 2x);
+	background-image: -o-image-set(url('/static/img/mod/report/24/btn-edit@1x.png') 1x, url('/static/img/mod/report/24/btn-edit@2x.png') 2x);
+}
+
+.btn-modify.ui-button:active .icon,
+.btn-modify.ui-button:focus .icon {
+    /*ie 8*/
+    background: url('/static/img/mod/report/24/btn-edit.dark@1x.png') no-repeat;
+
+	background-image: -webkit-image-set(url('/static/img/mod/report/24/btn-edit.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-edit.dark@2x.png') 2x);
+	background-image: -moz-image-set(url('/static/img/mod/report/24/btn-edit.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-edit.dark@2x.png') 2x);
+	background-image: -ms-image-set(url('/static/img/mod/report/24/btn-edit.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-edit.dark@2x.png') 2x);
+	background-image: -o-image-set(url('/static/img/mod/report/24/btn-edit.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-edit.dark@2x.png') 2x);
+}
+
+.btn-back-list.ui-button .icon {
+    /*ie 8*/
+    background: url('/static/img/mod/report/24/btn-edit@1x.png') no-repeat;
+
+	background-image: -webkit-image-set(url('/static/img/mod/report/24/btn-back-list@1x.png') 1x, url('/static/img/mod/report/24/btn-back-list@2x.png') 2x);
+	background-image: -moz-image-set(url('/static/img/mod/report/24/btn-back-list@1x.png') 1x, url('/static/img/mod/report/24/btn-back-list@2x.png') 2x);
+	background-image: -ms-image-set(url('/static/img/mod/report/24/btn-back-list@1x.png') 1x, url('/static/img/mod/report/24/btn-back-list@2x.png') 2x);
+	background-image: -o-image-set(url('/static/img/mod/report/24/btn-back-list@1x.png') 1x, url('/static/img/mod/report/24/btn-back-list@2x.png') 2x);
+}
+
+.btn-back-list.ui-button:active .icon,
+.btn-back-list.ui-button:focus .icon {
+    /*ie 8*/
+    background: url('/static/img/mod/report/24/btn-back-list.dark@1x.png') no-repeat;
+
+	background-image: -webkit-image-set(url('/static/img/mod/report/24/btn-back-list.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-back-list.dark@2x.png') 2x);
+	background-image: -moz-image-set(url('/static/img/mod/report/24/btn-back-list.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-back-list.dark@2x.png') 2x);
+	background-image: -ms-image-set(url('/static/img/mod/report/24/btn-back-list.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-back-list.dark@2x.png') 2x);
+	background-image: -o-image-set(url('/static/img/mod/report/24/btn-back-list.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-back-list.dark@2x.png') 2x);
+}
+
+.btn-pass.ui-button .icon {
+    /*ie 8*/
+    background: url('/static/img/mod/report/24/btn-edit@1x.png') no-repeat;
+
+	background-image: -webkit-image-set(url('/static/img/mod/report/24/btn-pass@1x.png') 1x, url('/static/img/mod/report/24/btn-pass@2x.png') 2x);
+	background-image: -moz-image-set(url('/static/img/mod/report/24/btn-pass@1x.png') 1x, url('/static/img/mod/report/24/btn-pass@2x.png') 2x);
+	background-image: -ms-image-set(url('/static/img/mod/report/24/btn-pass@1x.png') 1x, url('/static/img/mod/report/24/btn-pass@2x.png') 2x);
+	background-image: -o-image-set(url('/static/img/mod/report/24/btn-pass@1x.png') 1x, url('/static/img/mod/report/24/btn-pass@2x.png') 2x);
+}
+
 /* component reset */
 .field-label {
 	color: #4a4a4a;
@@ -564,11 +610,11 @@ table.border-radius-row tr td:last-child {
 
 .ui-button:hover {
 	color: #fff;
-	border-bottom: 2px solid rgba(39, 62, 82, .5);
+	border-bottom: 2px solid #405363;
 }
-.ui-button {
+.mod-show-report .ui-button {
 	background: #596774;
-	border-bottom: 2px solid rgba(39, 62, 82, .5);
+	border-bottom: 2px solid #405363;
 }
 
 

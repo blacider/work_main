@@ -93,7 +93,7 @@
 
 						$(element).find('.text').removeClass('font-placeholder');
 
-						var $item = $(e.toElement);
+						var $item = $(this);
 						var text = $item.text();
 						var newValue = $item.data('value');
 						$(element).find('.text').text(text);

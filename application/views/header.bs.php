@@ -94,7 +94,7 @@
 <script language="javascript" src="/static/ace/js/bootstrap.min.js"></script>
 <script language="javascript" src="/static/ace/js/ace.min.js"></script>
 <script language="javascript" src="/static/ace/js/ace-elements.min.js"></script>
-<script src="/static/js/libs/pollyfill/jquery.xdomainrequest.min.js"></script>
+<script src="/static/js/libs/pollyfill/ie8.es5.pollyfill.js"></script>
 <link rel="stylesheet" href="/static/ace/css/ace.onpage-help.css">
 
 <script type="text/javascript"> ace.vars['base'] = '..'; </script>

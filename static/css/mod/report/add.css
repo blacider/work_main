@@ -3,7 +3,6 @@
 	margin: 0 auto;
 	height: auto;
 	padding: 0;
-	font-family: STHeitiSC-Light;
 }
 
 .mod-add-report .page-content-area {
@@ -209,12 +208,27 @@
 
 .approvers ul li {
 	float: left;
-	display: table;
 	height: 70px;
 	width: 235px;
 	margin:0 55px 10px 0;
 	border-radius: 2px;
+	white-space: nowrap;
 	border: 1px solid transparent;
+	list-style: none;
+}
+
+.approvers ul .line {
+    display: block;
+    float: none;
+    width: auto;
+    border-bottom: solid 1px #f2f6fa;
+	margin-right: 30px;
+	height: 0;
+	clear: both;
+	margin-left: -50px;
+}
+.approvers ul .line:hover {
+	background: transparent !important;
 }
 
 .empty-result {
@@ -238,17 +252,11 @@
 	height: auto;
 }
 .approvers ul li img {
-	display: inline-block;
+	float: left;
 	width: 50px;
 	height: 50px;
 	border-radius: 100%;
     margin: 10px 10px 0 15px;
-}
-
-.approvers ul li img, 
-.approvers ul li .info {
-	display: table-cell;
-	vertical-align: middle;
 }
 
 .approvers ul li .info {
@@ -257,6 +265,9 @@
 	width: 180px;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	display: table-cell;
+	vertical-align: middle;
+	height: 70px;
 }
 .approvers ul li .info p {
 	margin: 0;
@@ -313,11 +324,6 @@
 	position: relative;
 }
 
-.approvers.selected-members ul li img,
-.approvers.selected-members ul li .info {
-	float: left;
-}
-
 .approvers.selected-members ul li img {
 	width: 40px;
 	height: 40px;
@@ -327,12 +333,15 @@
 }
 
 .approvers.selected-members ul li .info {
-	float: left;
-	width: 80px;
-	overflow: ellipsis;
+	max-width: 70px;
+	width: 70px;
 	overflow: hidden;
-	height: 40px;
+	text-overflow: ellipsis;
+	height: 50px;
 	margin-top: 5px;
+	display: table-cell;
+	vertical-align: middle;
+
 }
 .approvers.selected-members ul li .info .name,
 .approvers.selected-members ul li .info .role {
@@ -587,7 +596,9 @@
 	text-align: center;
 }
  
-.consumptions table thead {
+.consumptions table thead,
+.consumptions table thead tr,
+.consumptions table thead tr th {
 	background: #7a8590;
 	color: #fff;
 }
@@ -738,16 +749,77 @@ table.border-radius-row tr td:last-child {
 .field-input {
 	height: 40px;
 }
-
 .ui-button:hover {
 	color: #fff;
-	border-bottom: 2px solid rgba(39, 62, 82, .5);
+	border-bottom: 2px solid #405363;
 }
-.ui-button {
+.mod-add-report .ui-button {
 	background: #596774;
-	border-bottom: 2px solid rgba(39, 62, 82, .5);
+	border-bottom: 2px solid #405363;
 }
 
+.ui-button .icon {
+	width: 24px;
+	height: 24px;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 6px;
+	position: relative;
+	top: -1px;
+}
+
+.btn-cancel.ui-button .icon {
+    /*ie 8*/
+    background: url('/static/img/mod/report/24/btn-cancel@1x.png') no-repeat;
+
+	background-image: -webkit-image-set(url('/static/img/mod/report/24/btn-cancel@1x.png') 1x, url('/static/img/mod/report/24/btn-cancel@2x.png') 2x);
+	background-image: -moz-image-set(url('/static/img/mod/report/24/btn-cancel@1x.png') 1x, url('/static/img/mod/report/24/btn-cancel@2x.png') 2x);
+	background-image: -ms-image-set(url('/static/img/mod/report/24/btn-cancel@1x.png') 1x, url('/static/img/mod/report/24/btn-cancel@2x.png') 2x);
+	background-image: -o-image-set(url('/static/img/mod/report/24/btn-cancel@1x.png') 1x, url('/static/img/mod/report/24/btn-cancel@2x.png') 2x);
+}
+
+.btn-cancel.ui-button:active .icon,
+.btn-cancel.ui-button:focus .icon {
+    /*ie 8*/
+    background: url('/static/img/mod/report/24/btn-cancel.dark@1x.png') no-repeat;
+
+	background-image: -webkit-image-set(url('/static/img/mod/report/24/btn-cancel.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-cancel.dark@2x.png') 2x);
+	background-image: -moz-image-set(url('/static/img/mod/report/24/btn-cancel.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-cancel.dark@2x.png') 2x);
+	background-image: -ms-image-set(url('/static/img/mod/report/24/btn-cancel.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-cancel.dark@2x.png') 2x);
+	background-image: -o-image-set(url('/static/img/mod/report/24/btn-cancel.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-cancel.dark@2x.png') 2x);
+}
+
+
+.btn-save.ui-button .icon {
+    /*ie 8*/
+    background: url('/static/img/mod/report/24/btn-save@1x.png') no-repeat;
+
+	background-image: -webkit-image-set(url('/static/img/mod/report/24/btn-save@1x.png') 1x, url('/static/img/mod/report/24/btn-save@2x.png') 2x);
+	background-image: -moz-image-set(url('/static/img/mod/report/24/btn-save@1x.png') 1x, url('/static/img/mod/report/24/btn-save@2x.png') 2x);
+	background-image: -ms-image-set(url('/static/img/mod/report/24/btn-save@1x.png') 1x, url('/static/img/mod/report/24/btn-save@2x.png') 2x);
+	background-image: -o-image-set(url('/static/img/mod/report/24/btn-save@1x.png') 1x, url('/static/img/mod/report/24/btn-save@2x.png') 2x);
+}
+
+.btn-save.ui-button:active .icon,
+.btn-save.ui-button:focus .icon {
+    /*ie 8*/
+    background: url('/static/img/mod/report/24/btn-save.dark@1x.png') no-repeat;
+
+	background-image: -webkit-image-set(url('/static/img/mod/report/24/btn-save.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-save.dark@2x.png') 2x);
+	background-image: -moz-image-set(url('/static/img/mod/report/24/btn-save.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-save.dark@2x.png') 2x);
+	background-image: -ms-image-set(url('/static/img/mod/report/24/btn-save.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-save.dark@2x.png') 2x);
+	background-image: -o-image-set(url('/static/img/mod/report/24/btn-save.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-save.dark@2x.png') 2x);
+}
+
+.btn-submit.ui-button .icon {
+    /*ie 8*/
+    background: url('/static/img/mod/report/24/btn-submit@1x.png') no-repeat;
+
+	background-image: -webkit-image-set(url('/static/img/mod/report/24/btn-submit@1x.png') 1x, url('/static/img/mod/report/24/btn-submit@2x.png') 2x);
+	background-image: -moz-image-set(url('/static/img/mod/report/24/btn-submit@1x.png') 1x, url('/static/img/mod/report/24/btn-submit@2x.png') 2x);
+	background-image: -ms-image-set(url('/static/img/mod/report/24/btn-submit@1x.png') 1x, url('/static/img/mod/report/24/btn-submit@2x.png') 2x);
+	background-image: -o-image-set(url('/static/img/mod/report/24/btn-submit@1x.png') 1x, url('/static/img/mod/report/24/btn-submit@2x.png') 2x);
+}
 
 
 .field-select .option-list-wrap {
@@ -785,22 +857,61 @@ table.border-radius-row tr td:last-child {
 }
 
 /*reset  datepicker*/
-.datepicker table tr td.active,
-.datepicker table tr td.active:hover {
-	width: 29px;
-	height: 29px;
-	border-radius: 2px;
-	background-color: #ff575b !important;
+/*prev next*/
+
+.datetimepicker .prev,
+.datetimepicker .next {
+	position: relative;
+}
+.datetimepicker .prev:before,
+.datetimepicker .next:before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    content: "<";
+    line-height: 30px;
+    color: #929292;
+}
+.datetimepicker .next:before {
+	content: ">";
 }
 
-.bootstrap-datetimepicker-widget td.today:before {
+.datetimepicker-days table {
+	width: 256px;
+}
+.datetimepicker-days table tr td.day.active,
+.datetimepicker-days table tr td.day.active:hover {
+	background: #ff575b !important;
+	color: #fff !important;
+}
+.datetimepicker-days table.td.day.today {
     content: '';
     display: inline-block;
     border-left: 7px solid transparent;
     border-bottom: 7px solid #ff575b !important;
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+}
+
+.datetimepicker-days table.td.day.today:before {
+    content: '';
+    display: inline-block;
+    border-left: 7px solid transparent;
+    border-bottom: 7px solid #ff575b;
     border-top-color: rgba(0, 0, 0, 0.2);
     position: absolute;
     bottom: 4px;
     right: 4px;
 }
 
+.datetimepicker table tr td.day {
+	color: #929292 !important;
+}
+
+.datetimepicker table tr td.today, .datetimepicker table tr td.today:hover, .datetimepicker table tr td.today.disabled, .datetimepicker table tr td.today.disabled:hover {
+    background: #ff575b !important;
+    color: #fff !important;
+}

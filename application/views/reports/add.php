@@ -59,7 +59,7 @@
                     <div class="field-label">抄送</div>
                     <div class="approvers selected-members">
                         <ul>
-                            <li ng-repeat='m in selectedMembersCC'>
+                            <li ng-repeat='m in selectedMembersCC track by $index'>
                                 <img ng-src="{{m.apath || default_avatar}}" alt="">
                                 <div class="info">
                                     <div class="name">{{m.nickname}}</div>
@@ -163,12 +163,16 @@
             </div>
             <div class="report-footer">
                 <button style="float: left" class="btn-cancel ui-button ui-button-hover" ng-click="onCancel($event)">
-                    <img src="/static/img/mod/report/24/btn-cancel@2x.png" alt="">取消
+                    <i class="icon"></i>取消
                 </button>
                 
-                <button  class="btn-save ui-button ui-button-hover" ng-click="onSave($event)"><img src="/static/img/mod/report/24/btn-save@2x.png" alt="">保存</button>
+                <button  class="btn-save ui-button ui-button-hover" ng-click="onSave($event)">
+                    <i class="icon"></i>保存
+                </button>
 
-                <button class="btn-submit ui-button ui-button-hover" ng-click="onSubmit($event)"><img src="/static/img/mod/report/24/btn-submit@2x.png" alt="">提交</button>
+                <button class="btn-submit ui-button ui-button-hover" ng-click="onSubmit($event)">
+                    <i class="icon"></i>提交
+                </button>
 
             </div>
             <!-- 接口太慢，预先加载公司成员，隐藏于此 -->
@@ -182,8 +186,16 @@
                             <input type="text" placeholder="姓名／手机／邮箱" ng-model="txtSearchText">
                         </div>
                     </div>
-                    <ul class="stop-parent-scroll">
-                        <li class="m_{{m.id}}" ng-repeat='m in (filteredMembers = (members|filter:searchImmediate(txtSearchText)))' ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m, $event)">
+                    <ul>
+                        <li class="s_{{s.id}}" ng-repeat='s in suggestionMembers' ng-class="{selected: s.isSelected}"  ng-click="onSelectMember(s)" ng-dblclick="onRemoveHistory(s)">
+                            <img ng-src="{{s.apath || default_avatar }}" alt="">
+                            <div class="info">
+                                <div class="name">{{s.nickname}}</div>
+                                <div class="role">{{s.d}}</div>
+                            </div>
+                        </li>
+                        <li ng-if="suggestionMembers.length>0" class="line"></li>
+                        <li ng-if="!m._IN_SUG_" class="m_{{m.id}}" ng-repeat='m in (filteredMembers = (members|filter:searchImmediate(txtSearchText)))' ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m, $event)">
                             <img ng-src="{{m.apath || default_avatar}}" alt="">
                             <div class="info" ng-bind-html="m.info_html"> </div>
                         </li>
@@ -319,10 +331,8 @@
     </div>
 </div>
 
-<script src="/static/ace/js/date-time/moment.js"></script>
-<script src="/static/ace/js/date-time/locale/zh-cn.js"></script>
-<script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
-
+<script src="/static/plugins/bootstrap-datepicker/js/bootstrap-datetimepicker.js"></script>
+<script src="/static/plugins/bootstrap-datepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 <script src="/static/js/libs/fecha.js"></script>
 <script src="/static/plugins/cloud-dialog/dialog.js"></script>
 <script src="/static/plugins/cloud-dropdown/index.js"></script>
@@ -330,9 +340,11 @@
 <script src="/static/js/libs/ng-sortable.js"></script>
 <script src="/static/js/libs/underscore-min.js"></script>
 <script src="/static/js/libs/route-recognizer.js"></script>
+<script src="/static/js/jquery.cookie.js"></script>
+<script src="/static/js/shared/services/historyMembers.js"></script>
 <script src="/static/js/mod/report/add.js"></script>
 
 <link rel="stylesheet" href="/static/css/base/animate.css">
 <link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">
-<link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="/static/css/base/scrollbar.css">
+<link rel="stylesheet" href="/static/plugins/bootstrap-datepicker/css/bootstrap-datetimepicker.css">

@@ -216,22 +216,22 @@
             </div>
             <div class="report-footer" ng-if="path_type!='snapshot'">
                 <a href="{{_CONST_REFERER_}}" style="float: left" class="ui-button-border ui-button ui-button-hover btn-back-list">
-                    <img src="/static/img/mod/report/36/btn-back-list@2x.png" alt="">返回列表
+                    <i class="icon"></i>返回列表
                 </a>
-                <a ng-if="buttons.has_modify" href="/reports/edit/{{report.id}}?tid={{report.template_id}}" class="ui-button-border ui-button  ui-button-hover btn-update">
-                    <img src="/static/img/mod/report/24/btn-edit@2x.png" alt="">修改
+                <a ng-if="buttons.has_modify" href="/reports/edit/{{report.id}}?tid={{report.template_id}}" class="ui-button-border ui-button  ui-button-hover btn-modify">
+                    <i class="icon"></i>修改
                 </a>
                 <button ng-if="buttons.has_reject" class="ui-button-border ui-button  ui-button-hover btn-reject" ng-click="onReject(report.id)">
-                    <img src="/static/img/mod/report/24/btn-reject@2x.png" alt="">退回
+                    <i class="icon"></i>退回
                 </button>
-                <button ng-if="buttons.has_drop" href="javascript:void(0)"  class="ui-button-border ui-button  ui-button-hover btn-drop" ng-click="onDrop(report.id)">
-                    <img src="/static/img/mod/report/24/btn-reject@2x.png" alt="">撤回
+                <button ng-if="buttons.has_drop"  class="ui-button-border ui-button  ui-button-hover btn-drop" ng-click="onDrop(report.id)">
+                    <i class="icon"></i>撤回
                 </button>
                 <button ng-if="buttons.has_pass" class="ui-button ui-button-hover btn-pass" ng-click="onPass(report.id)">
-                    <img src="/static/img/mod/report/24/btn-pass@2x.png" alt="">通过
+                    <i class="icon"></i>通过
                 </button>
                 <button ng-if="buttons.has_affirm" class="btn-affirm ui-button-hover ui-button" ng-click="onAffirm($event)">
-                    <img src="/static/img/mod/report/24/btn-pass@2x.png" alt="">完成确认
+                    <i class="icon"></i>完成确认
                 </button>
             </div>
 
@@ -246,15 +246,15 @@
                             <input type="text" placeholder="姓名／手机／邮箱" ng-model="txtSearchText">
                         </div>
                     </div>
-                    <ul class="stop-parent-scroll">
+                    <ul>
                         <li class="s_{{s.id}}" ng-repeat='s in suggestionMembers' ng-class="{selected: s.isSelected}"  ng-click="onSelectMember(s)">
                             <img ng-src="{{s.apath || default_avatar }}" alt="">
                             <div class="info">
-                                <p class="name">{{s.nickname}}</p>
-                                <p class="role">{{s.d}}</p>
+                                <div class="name">{{s.nickname}}</div>
+                                <div class="role">{{s.d}}</div>
                             </div>
                         </li>
-                        <li ng-if="suggestionMembers" class="line"></li>
+                        <li ng-if="suggestionMembers.length>0" class="line"></li>
                         <li class="m_{{m.id}}" ng-repeat='m in (filteredMembers = (members|filter:searchImmediate(txtSearchText)))' ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m)" ng-if="!m._in_sug_">
                             <img ng-src="{{m.apath || default_avatar}}" alt="">
                             <div class="info" ng-bind-html="m.info_html"> </div>
@@ -274,9 +274,11 @@
 <script src="/static/js/libs/fecha.js"></script>
 <script src="/static/js/libs/underscore-min.js"></script>
 <script src="/static/js/jquery.cookie.js"></script>
-<script src="/static/js/mod/report/show.js"></script>
-<script src="/static/js/libs/route-recognizer.js"></script>
-<link rel="stylesheet" href="/static/css/base/scrollbar.css">
 
+<script src="/static/js/libs/route-recognizer.js"></script>
+<script src="/static/js/shared/services/historyMembers.js"></script>
+<script src="/static/js/mod/report/show.js"></script>
+
+<link rel="stylesheet" href="/static/css/base/scrollbar.css">
 <script src="/static/plugins/cloud-dialog/dialog.js"></script>
 <link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">

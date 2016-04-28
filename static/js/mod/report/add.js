@@ -3,8 +3,8 @@
     var _defaultTemplateName_ = '未命名报销单模板';
     return {
         initialize: function() {
-            angular.module('reimApp', ['ng-sortable', 'ng-dropdown']).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce",
-                function($http, $scope, $element, $timeout, $sce) {
+            angular.module('reimApp', ['ng-sortable', 'ng-dropdown', 'historyMembers']).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce", "historyMembersManagerService",
+                function($http, $scope, $element, $timeout, $sce, historyMembersManager) {
                     $scope.bankFieldMap = {};
                     $scope.selectedMembers = [];
                     $scope.selectedMembersCC = [];
@@ -112,6 +112,15 @@
                                     var selectedMembers = _.where($scope.members, {
                                         isSelected: true
                                     });
+
+                                    var history = _.where($scope.suggestionMembers, {
+                                        isSelected: true
+                                    });
+
+                                    if(history) {
+                                        selectedMembers = [].concat(history, selectedMembers);
+                                    }
+
                                     // 这个_CONFIG_就说明要用选抄送的或者别的逻辑，其实就是区别抄送和审核人
                                     if (this._CONFIG_ && this._CONFIG_['ok']) {
                                         this._CONFIG_['ok'](selectedMembers);
@@ -136,18 +145,40 @@
                                     if (this._CONFIG_ && this._CONFIG_['selectedMembers']) {
                                         selectedMembers = this._CONFIG_['selectedMembers'];
                                     }
+
+                                    // 不在members 中展示history members
+                                    // 重置顺便过滤
                                     for (var i = 0; i < $scope.members.length; i++) {
                                         var item = $scope.members[i];
                                         item.isSelected = false;
+                                        delete item['_IN_SUG_'];
+                                        var one = _.find($scope.suggestionMembers, {
+                                            id: item.id
+                                        });
+                                        if(one) {
+                                            item['_IN_SUG_'] = true;
+                                        }
                                     }
+
+                                    for (i = 0; i < $scope.suggestionMembers.length; i++) {
+                                        item = $scope.suggestionMembers[i];
+                                        item.isSelected = false;
+                                    }
+
                                     for (var i = 0; i < selectedMembers.length; i++) {
                                         var item = selectedMembers[i];
                                         Utils.updateArrayByQuery($scope.members, {
                                             id: item.id + ''
                                         }, {
                                             isSelected: true
+                                        });
+                                        Utils.updateArrayByQuery($scope.suggestionMembers, {
+                                            id: item.id + ''
+                                        }, {
+                                            isSelected: true
                                         })
                                     }
+
                                     if ($scope.superior && !this._CONFIG_) {
                                         var one = _.find($scope.members, {
                                             id: $scope.superior.id + ''
@@ -337,27 +368,28 @@
                     })();
 
                     function initDatetimepicker(selector) {
+
+                        // $.fn.datetimepicker.dates['en'] = {
+                        //     days: ["日", "一", "二", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                        //     daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                        //     daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
+                        //     months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                        //     monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                        //     today: "Today"
+                        // };
+
                         $(selector).datetimepicker({
-                            language: 'zh-cn',
-                            useCurrent: false,
-                            format: 'YYYY-MM-DD',
-                            // linkField: "dt",
-                            linkFormat: "YYYY-MM-DD",
-                            pickDate: true,
-                            pickTime: false,
-                            // minDate: ,
-                            // maxDate: ,
-                            showToday: true,
-                            disabledDates: false,
-                            enabledDates: false,
-                            useStrict: false,
-                            direction: "auto",
-                            sideBySide: false,
-                            daysOfWeekDisabled: false
-                        }).on('dp.change', function(e) {
-                            $(selector).trigger('input');
+                            language: 'zh-CN',
+                            format: 'yyyy-mm-dd',
+                            minView: 'month',
+                            maxView: 'month',
+                            todayBtn: true,
+                            todayHighlight: true,
+                            autoclose: true
+                        }).on('changeDate', function(e) {
+                            var date = e.date;
+                            $(this).val(fecha.format(date, 'YYYY-MM-DD'));
                         });
-                        $(selector).trigger('input');
                         $(selector).parent().find('.icon').click(function(e) {
                             $(e.currentTarget).parent().find('input').trigger('focus');
                         });
@@ -458,6 +490,7 @@
                         $scope.consumptions = consumptions['data']['data'] || [];
                         var members = members['data'];
                         $scope.members = members['members'];
+                        $scope.suggestionMembers = historyMembersManager.getArray($scope.members);
                         $scope.originalMembers = angular.copy($scope.members);
                         if ($scope.__edit__) {
                             // 编辑无上级寻找上级
@@ -469,10 +502,6 @@
                                     $scope.superior.tag_for_superior = true;
                                 }
                             }
-                            setTimeout(function() {
-                                syncDatatToView();
-                                $scope.$apply()
-                            }, 100);
                             $scope.hasCC = true;
                             // 计算报销额
                             var amount = 0;
@@ -500,6 +529,7 @@
                                     $scope._disable_modify_approver_ = true;
                                 }
                             })();
+                            syncDatatToView();
                         } else {
                             // 设置sitemap
                             $('.breadcrumb li:last').text('新建' + $scope.template.name);
@@ -529,11 +559,18 @@
                             delete item.info_html;
                             var tmpl = [
                                 // 1
-                                '<% if (!type) { %>', '<p class="name"><%= nickname %></p>', '<% } else { %>',
+                                '<% if (!type) { %>',
+                                '<div class="name"><%= nickname %></div>',
+                                '<% } else { %>',
                                 // <!-- 2.1 -->
-                                '<% if(type=="nickname") { %>', '<p class="name"><%= foo %></p>', '<% } else { %>',
-                                // <!-- 2.2 -->
-                                '<p class="name"><%= nickname %></p>', '<p class="role"><%= foo %></p>', '<% } %>', '<% } %>'
+                                    '<% if(type=="nickname") { %>',
+                                    '<div class="name"><%= foo %></div>',
+                                    '<% } else { %>',
+                                    // <!-- 2.2 -->
+                                    '<div class="name"><%= nickname %></div>',
+                                    '<div class="role"><%= foo %></div>',
+                                    '<% } %>',
+                                '<% } %>'
                             ].join('');
                             if (!keywords) {
                                 item.info_html = $sce.trustAsHtml(_.template(tmpl)({
@@ -745,6 +782,18 @@
                             selectedMembers.splice(index, 1);
                         }
                     };
+
+                    $scope.onRemoveHistory =  function (item) {
+                        var index = _.findIndex($scope.suggestionMembers, {
+                            id: item.id
+                        });
+                        
+                        if(index>=0) {
+                            $scope.suggestionMembers.splice(index, 1);
+                            historyMembersManager.removeById(item.id);
+                        }
+                    };
+
                     $scope.onSelectMember = function(item, e) {
                         item.isSelected = !item.isSelected;
                     };
@@ -1021,6 +1070,9 @@
                                 if (rs['status'] <= 0) {
                                     show_notify(rs['data']['msg']);
                                 }
+
+                                historyMembersManager.append([data.receiver_ids, data.cc_ids].join(','));
+
                                 window.location.href = "/reports";
                             });
                             return;
@@ -1032,6 +1084,7 @@
                             if (rs['status'] <= 0) {
                                 show_notify(rs['data']['msg']);
                             }
+                            historyMembersManager.append([data.receiver_ids, data.cc_ids].join(','));
                             window.location.href = "/reports";
                         });
                     };
