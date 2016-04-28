@@ -1,22 +1,23 @@
 (function  () {
 	var dialogIDPrefix = 'cloud-bx-dialog-';
 	var dialogCount = 0;
+	var animateClass = 'animated fadeIn';
+	var dialogMaskTemplate = [
+		'<div id="" class="cloud-bx-dialog-mask">',
+		'</div>'
+	].join('');
 
 	var dialogTemplate = [
-		'<div id="" class="cloud-bx-dialog-mask">',
-		'    <div class="cloud-bx-dialog">',
-		'        <div class="dialog-header">',
-		'            <p class="title"></p>',
-		'            <button tabindex="1" class="close" title="cancel">×</button>',
-		'        </div>',
-		'        <div class="dialog-body">',
-		'        </div>',
-		'        <div class="dialog-footer">',
-		// '            <button>取消</button>',
-		// '            <button class="positive">确定</button>',
-		'        </div>',
+		'<div class="cloud-bx-dialog">',
+		'    <div class="dialog-header">',
+		'        <p class="title"></p>',
+		'        <button tabindex="1" class="close" title="cancel">×</button>',
 		'    </div>',
-		'</div>',
+		'    <div class="dialog-body">',
+		'    </div>',
+		'    <div class="dialog-footer">',
+		'    </div>',
+		'</div>'
 	].join('');
 
 	function Dialog (opts) {
@@ -68,8 +69,8 @@
 			cancelDisabled: false,
 			cancelValue: '取消'
 		}, opts);
-		this.$mask = $(dialogTemplate);
-		this.$el = this.$mask.find('.cloud-bx-dialog');
+		this.$mask = $(dialogMaskTemplate);
+		this.$el = $(dialogTemplate);
 		this.$title = this.$el.find('.dialog-header .title');
 		this.$content = this.$el.find('.dialog-body');
 		this.$footer = this.$el.find('.dialog-footer').css('text-align', this.options['buttonAlign']);
@@ -90,6 +91,8 @@
 			this.content(this.options.content);
 
 			this.$mask.appendTo(document.body);
+			this.$el.appendTo(document.body);
+
 			this.$el.attr('id', dialogIDPrefix+dialogCount++);
 
 			this.$el.addClass(this.options.className);
@@ -158,8 +161,9 @@
 		},
 		show: function  () {
 			this.$mask.addClass('none').show();
-			this.$el.addClass('animated zoomIn')
+			this.$el.show().addClass(animateClass);
 			this.options.onShow.call(this);
+			
 			$(window).trigger('resize');
 
 			$('body').addClass('no-scroll');
@@ -167,18 +171,21 @@
 			return this;
 		},
 		showModal: function  () {
-			var _self = this;
-			this.$mask.show();
 			$('body').addClass('no-scroll');
+			this.$mask.removeClass('none').show().addClass(animateClass);
+			this.$el.show().addClass(animateClass);
 			this.options.onShow.call(this);
-			_self.$mask.addClass('animated fadeIn')
-			_self.$el.addClass('animated zoomIn')
 			$(window).trigger('resize');
 			return this;
 		},
 		close: function  (isDestroy) {
 			this.$mask.hide();
+			this.$el.hide();
 			this.options.onHide.call(this);
+
+			this.$mask.removeClass(animateClass);
+			this.$el.removeClass(animateClass);
+
 			$('body').removeClass('no-scroll');
 			if(isDestroy) {
 				this.$mask.remove()
@@ -187,7 +194,8 @@
 			return this;
 		},
 		desotry: function  () {
-			this.$mask.remove()
+			this.$mask.remove();
+			this.$el.remove();
 			$('body').removeClass('no-scroll');
 			this.options.onDestroy.call(this);
 			return this;
@@ -253,8 +261,8 @@
 
 			$(window).on('resize', function (e) {
 				setTimeout(function() {
-					var width = window.innerWidth || document.body.clientWidth;
-					var height = window.innerHeight || document.body.clientHeight;
+					var width = $(window).width();
+					var height = $(window).height();
 					_self.$mask.width(width);
 					_self.$mask.height(height);
 

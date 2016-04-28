@@ -16,7 +16,7 @@ body.no-scroll {
 	background: transparent;
 }
 
-.cloud-bx-dialog-mask .cloud-bx-dialog {
+.cloud-bx-dialog {
 	-webkit-animation-duration: 0.3s;
 	-o-animation-duration: 0.3s;
 	-ms-animation-duration: 0.3s;
