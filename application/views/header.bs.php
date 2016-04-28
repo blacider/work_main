@@ -10,8 +10,8 @@
         <meta name="renderer" content="webkit">
         <link rel="shortcut icon" href="/static/favicon.ico" />
         <meta charset="utf-8"/>
-        <meta name="description" content="云报销,报销,让报销简单一点儿">
-        <meta name="keywords" content="云报销,报销,报销简单点">
+        <meta name="description" content="云报销 - 对报销的怨言，到此为止。云报销是一款支持手机端和web端的报销工具，支持安卓报销 、苹果端报销和Web报销，支持审批和费控的管理。员工、财务人员和经理均可使用，轻松代替纸质单据和 Excel 表格，优化整个公司的费用体系和财务流程，帮助企业提高办公效率">
+        <meta name="keywords" content="云报销,简单报销,易报销,快报销,快速报销,闪电报销,指尖报销,审批,移动审批,在线审批,医保报销,生育报销,各种报销,费用报销,企业报销,财务,财务审批,财务软件,财务系统,财务报销,报销,填报销,差旅,报销单,电子报销单,报销软件,报销系统,报销管理,在线报销,网上报销,手机报销,发票,贴发票,电子发票,云发票,ERP">
         <link rel="icon" href="/static/favicon.ico" />
 
         <link rel="stylesheet" type="text/css" href="/static/ace/css/bootstrap.min.css" />
