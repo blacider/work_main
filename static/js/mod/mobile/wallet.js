@@ -1,5 +1,6 @@
 (function () {
 	var query = Utils.queryString(location.search);
+	var _CONST_DELAY_ = 55;
 
 	var debugConsole = new DebugConsole({
 	    debug: 1
@@ -17,10 +18,13 @@
 				'wx_params': $.param({code: query['code'], state: query['state']})
 			}
 		}).done(function (rs) {
+
 			debugConsole.row('profile', JSON.stringify(rs));
 
 			if(rs['status']<=0) {
-				return
+				$('.input-wrap').empty().append('<h2 class="succ" style="display: block">' + rs['data'
+					]['msg']+ '</h2>');
+				return;
 			}
 
 			_PROFILE_ = rs['data'];
@@ -134,16 +138,14 @@
 					if(rs['status']<=0) {
 						return
 					}
-					ticker(15, function (num) {
+					ticker(_CONST_DELAY_, function (num) {
 						$('.btn-send-code').text(num + '秒后重发');
 					}, function () {
-						$('.btn-send-code').text('发送验证码').removeClass('waiting');
+						$('.btn-send-code').text('重新发送').removeClass('waiting');
 					});
 				});
 			});
 		});
-
-
 
 		$('.btn-submit').on('click', function (rs) {
 			var code = $('input.code').val();
@@ -193,6 +195,13 @@
 		init: function () {
 			getProfileByCodeAndState(query).done(function (rs) {
 				_bindEvents_();
+				(function autoSendIfCan() {
+					setTimeout(function () {
+						$('.btn-send-code').trigger('click');
+					}, 100);
+				})();
+				
+
 			});
 		}
 	};

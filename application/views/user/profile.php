@@ -16,6 +16,7 @@ font:bold 11px Arial, Helvetica, sans-serif;
 
 #weixin-wallet {
     position: relative;
+    line-height: 34px;
 }
 #weixin-wallet .logo {
     position: absolute;
@@ -377,7 +378,20 @@ if(in_array($profile['admin'],[1,3,4])){
                     <!-- 微信绑定 -->
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">微信钱包授权</label>
-                        <div class="col-xs-2 col-sm-2" id="weixin-wallet"></div>
+                        <div class="col-xs-6 col-sm-6">
+                            <h2 class="weixin-wallet-tip" style="margin: 0;     margin-bottom: 15px; font-size: 11px; line-height: 34px;">支持财务人员将报销费用转账到您的微信钱包</h2>
+                            <div id="weixin-wallet">
+                                
+                                <div style="display: none;" class="weixin-wallet-authorized">
+                                    <span class="who"></span>，您已经授权 <a href="javascript:void()">取消授权</a>
+                                </div>
+                            </div>
+                            <p class="weixin-wallet-tip" style="margin: 10px 0; font-size: 11px;">
+                                请使用微信扫一扫进行扫码
+                                <br>
+                                <span style="color: red">＊请确认为本人操作</span>
+                            </p> 
+                            </div>
                     </div>
 
 <?php 
@@ -711,6 +725,8 @@ if(in_array($profile['admin'],[1,3,4])){
 <script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script> 
 <script src="/static/js/libs/underscore-min.js"></script> 
 <script src="/static/js/widgets/input-suggestion.js"></script>
+<script src="/static/plugins/cloud-dialog/dialog.js"></script>
+<link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">
 <script>
     var __BASE = "<?php echo $base_url; ?>";
     var flag = 0;
@@ -1195,13 +1211,26 @@ if(in_array($profile['admin'],[1,3,4])){
 
     });
 
+    function unbindWeixinPay() {
+        return Utils.api('giro_auth/rescind_wxauth', {
+            method: 'post',
+            env: 'miaiwu',
+        }).done(function (rs) {
+            if(rs['status']<=0) {
+                return
+            }
+            window.location.reload();
+        });
+    };
+
+
     // 添加二维码
     // giro_auth/employee_wechat_info
     Utils.api('giro_auth/employee_wxpub_payhead_info', {
         env: 'miaiwu'
     }).done(function (rs) {
         if(rs['status']<=0) {
-            return $("#weixin-wallet").text('已授权');
+            return $("#weixin-wallet").text(rs['data']['msg']);
         }
         var data = rs['data'];
         if(!data['company_opened']) {  //企业未开通
@@ -1210,7 +1239,18 @@ if(in_array($profile['admin'],[1,3,4])){
             return
         } else if(data['company_opened']) { //企业开通
             if(data['employee_opened']) {
-                $("#weixin-wallet").text('已授权');
+                $("#weixin-wallet .who").text(data['wx_nickname']);
+                $(".weixin-wallet-authorized").show();
+                $('.weixin-wallet-tip').hide();
+                $(".weixin-wallet-authorized a").on('click', function  (e) {
+                    var dialog = new CloudDialog({
+                        content: "确认取消授权？",
+                        ok: function () {
+                            unbindWeixinPay();
+                        }
+                    });
+                    dialog.showModal();
+                });
             } else {
                 var qrcode = new QRCode(document.getElementById("weixin-wallet"), {
                     // text: "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx068349d5d3a73855&redirect_uri=http%3A%2F%2Fdadmin.cloudbaoxiao.com%2Fmobile%2Fwallet&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect",

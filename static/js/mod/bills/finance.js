@@ -51,9 +51,15 @@
 	};
 
 	function doPayOneByOne(index, list, opts) {
+
+		if(index>=list.length) {
+			opts['completeHandler'](list, index);
+			return;
+		}
+
 		var item = list[index];
 		var itemData = {
-			report_id: item.id,
+			report_id: item,
 			company_payhead_id: _COMPANY_PAYHEAD_['wechat_pub']['payhead_uid'],
 			payway: 'wechat_pub',
 			description: '批量进行企业向员工微信钱包支付（串行）'
@@ -64,12 +70,11 @@
 				opts['interruptHandler'](index, list);
 				return show_notify(rs['data']['msg']);
 			}
-			if(index<list.length-1) {
-				opts['eachHandler'](index, list);
-				doPayOneByOne(index++, list);
-			} else {
-				opts['completeHandler'](list, index);
-			}
+
+			opts['eachHandler'](index, list);
+
+			doPayOneByOne(index++, list);	
+			
 		});
 	}
 
@@ -88,7 +93,9 @@
 				var map = rs['data'];
 				var rs = [];
 				for(var id in map) {
-					rs.push(id);
+					if(map[id]) {
+						rs.push(id);
+					}
 				}
 
 				doPayOneByOne(0, rs, {

@@ -59,7 +59,7 @@
 		</div>
 		<div class="input-wrap">
 			<div class="for-phone">
-				向您的<span class="mode"></span>：<span class="receiver"></span>
+				已向您的<span class="mode"></span>：<span class="receiver"></span>
 			</div>
 			<div class="code-input">
 				<div class="input">
@@ -82,7 +82,7 @@
 	</script>
 	<script src="/static/js/libs/utils.js"></script>
 	<script src="/static/js/libs/debug-console.js"></script>
-	<script src="/static/js/mod/mobile/wallet.js"></script>
+	<script src="/static/js/mod/mobile/wallet.js?_r=12312"></script>
 	
 </body>
 </html>
