@@ -290,11 +290,27 @@ class Users extends REIM_Controller
         $profile = $this->user->reim_get_user();
 
         $members = $profile['data']['members'];
+
+        $_ranks = $this->reim_show->rank_level(1);
+        $ranks =array();
+        $_levels = $this->reim_show->rank_level(0);
+        $levels = array();
+
+        if($_ranks['status']>0)
+        {
+            $ranks = $_ranks['data'];
+        }
+        if($_levels['status']>0)
+        {
+            $levels = $_levels['data'];
+        }
         
         $data = array(
             'status'=>$profile['status'],
             'data' =>array(
-                'members'=>$members
+                'members'=>$members,
+                'levels'=>$levels,
+                'ranks'=>$ranks
             )
         );
         die(json_encode($data));

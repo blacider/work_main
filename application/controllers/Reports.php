@@ -16,10 +16,13 @@ class Reports extends REIM_Controller {
 
     public function add($template_id=0)
     { 
+        // $template_id = $this->input->get('tid');
+        $last_error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         $this->bsload('reports/add', array(
                 'template_id' => $template_id,
                 'title' => '新建报销单',
-                'error' => array(),
+                'last_error' => $last_error,
                 'type' => array(),
                 'breadcrumbs' => array(
                     array(
@@ -45,10 +48,12 @@ class Reports extends REIM_Controller {
     public function edit($id=0)
     { 
         $template_id = $this->input->get('tid');
+        $last_error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         $this->bsload('reports/add', array(
                 'template_id' => $template_id,
                 'title' => '修改报销单',
-                'error' => array(),
+                'last_error' => $last_error,
                 'type' => array(),
                 'breadcrumbs' => array(
                     array(
@@ -362,7 +367,6 @@ class Reports extends REIM_Controller {
     }
 
     public function snapshot($rid) {
-
         $this->bsload('reports/show', array(
             'title' => '查看申请历史',
             'breadcrumbs' => array(
@@ -387,6 +391,7 @@ class Reports extends REIM_Controller {
     public function show($rid) {
         // $template_id = $this->input->get('tid');
         $last_error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
         $this->bsload('reports/show', array(
             'title' => '查看报销单',
             'last_error' => $last_error,

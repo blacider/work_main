@@ -417,6 +417,7 @@
 }
 
 
+
 /*start*/
 .moni-table {
 	font-size: 0;
@@ -644,6 +645,25 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+
+.table-field table tfoot {
+	font-weight: border;
+	color: #4a4a4a;
+}
+
+.table-field table tfoot tr {
+	border-top: solid 1px #b9b9b9;
+    border-right: solid 1px #b9b9b9;
+}
+
+.table-field table tfoot td {
+	height: 30px;
+}
+.table-field table tfoot td.sum {
+	text-align: right;
+	padding: 0 12px;
 }
 
 .btn-edit-consumption {

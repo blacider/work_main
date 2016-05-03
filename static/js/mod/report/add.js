@@ -422,6 +422,9 @@
                                     if (rs['status'] <= 0) {
                                         return show_notify('获取数据失败');
                                     }
+
+                                    $scope.report = rs['data'];
+
                                 });
                             }
                         }
@@ -510,6 +513,23 @@
                                 amount += a;
                             });
                             $scope.report.amount = amount.toFixed(2);
+
+
+                            // 申请阶段判断 pa_approval: "0" prove_ahead, to be done
+                            // 预算1 预借2
+                            var reportData = $scope.report;
+                            if(reportData['pa_approval'] == 1 && (reportData['prove_ahead'] == 1 || reportData['prove_ahead'] == 2)) {
+                                var sum = _.reduce(reportData.items, function (sum, item) {
+                                    return sum + parseFloat(item.amount);
+                                }, 0);
+
+                                var diff_consumption_amount = sum - parseFloat(reportData.amount);
+
+                                $scope.apply_consumption_amount = sum.toFixed(2);
+                                $scope.diff_consumption_amount = diff_consumption_amount.toFixed(2);
+                            }
+
+
                             // 判断身份
                             (function() {
                                 // 是否是自己

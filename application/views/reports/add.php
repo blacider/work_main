@@ -2,6 +2,17 @@
 <link rel="stylesheet" href="/static/css/mod/component/fields.css"/>
 <link rel="stylesheet" href="/static/css/mod/report/add.css"/>
 <link rel="stylesheet" href="/static/css/widgets/loading-default.css"/>
+<script>
+(function () {
+    var error = '';
+    <?php if(isset($last_error)) { ?>
+        error = "<?php echo $last_error;?>";
+    <?php } ?>
+    if(error) {
+        show_notify(error);
+    }
+})();
+</script>
 <div class="mod mod-add-report" ng-app="reimApp">
     <div class="page-content-area" ng-controller="ReportController">
         <div class="ui-loading-layer" ng-if="!isLoaded">
@@ -152,6 +163,32 @@
                                         <td>¥{{c.amount}} </td>
                                     </tr> 
                                 </tbody>
+                                <tfoot>
+                                    <tr ng-if="report.status==0 && report.pa_approval==1 && report.prove_ahead==1">
+                                        <td>合计</td>
+                                        <td colspan="4" class="sum">
+                                            ¥{{report.amount}}
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="report.status==0 && report.pa_approval==1 && report.prove_ahead==1">
+                                        <td>申请额</td>
+                                        <td colspan="4" class="sum">
+                                            ¥{{apply_consumption_amount}}
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="report.status==0 && report.pa_approval==1 && report.prove_ahead==2">
+                                        <td>已付</td>
+                                        <td colspan="4" class="sum">
+                                            ¥{{report.amount}}
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="report.status==0 && report.pa_approval==1 && report.prove_ahead==2">
+                                        <td>应付</td>
+                                        <td colspan="4" class="sum">
+                                            ¥{{diff_consumption_amount}}
+                                        </td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>

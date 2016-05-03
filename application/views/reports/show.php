@@ -2,7 +2,6 @@
 <link rel="stylesheet" href="/static/css/mod/component/fields.css"/>
 <link rel="stylesheet" href="/static/css/mod/report/show.css"/>
 <link rel="stylesheet" href="/static/css/widgets/loading-default.css"/>
-
 <script>
 (function () {
     var error = '';
@@ -130,7 +129,7 @@
                                         <td>{{c.merchants}}</td>
                                         <td class="note">{{c.notes}}</td>
                                         <td>¥{{c.amount}}</td>
-                                    </tr> 
+                                    </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>

@@ -321,6 +321,27 @@
                             }
                         };
                     })();
+
+                    $scope.getJobByUID = function (id) {
+                        var one = _.find($scope.originalMembers, {
+                            id: id + ''
+                        });
+                        if(one) {
+                            return $scope.getLevelNameById(one.level_id);
+                        }
+                        return '';
+                    };
+
+                    $scope.getLevelNameById = function (id) {
+                        var one = _.find($scope.levels, {
+                            id: id
+                        });
+                        if(one) {
+                            return one.name;
+                        }
+                        return '';
+                    };
+
                     // main entry
                     getPageData(function(template, flow, members, profile) {
                         $scope.isLoaded = true;
@@ -342,7 +363,11 @@
                             $scope.template.name = _defaultTemplateName_;
                         }
 
-                        members = members['data']['members'];
+                        var membersData = members['data'];
+                        members = membersData['members'];
+
+                        $scope.levels = membersData['levels'];
+                        $scope.ranks = membersData['ranks'];
 
                         //排序
                         members.sort(function (a, b) {
@@ -426,13 +451,25 @@
                         var counter = 0;
                         _.each(flowData, function(item, index) {
 
+                            // 有可能是2个或多个人
+                            var ids = item.uid.split(',');
+                            
                             // 处理职位
                             var user = _.find($scope.originalMembers, {
-                                id: item.uid
+                                id: ids[0]
                             });
-
-                            item.job = user.d; 
-
+ 
+                            // 有可能是2个或多个人
+                            var job = [];
+                            _.each(ids, function (id, index) {
+                                var one = _.find($scope.originalMembers, {
+                                    id: id
+                                });
+                                job.push($scope.getJobByUID(one.id));
+                            });
+                            item.job = job.join('／');
+                            item.nickname = item.nickname.split(',').join('／');
+                            
                             var type = '';
                             if (_.contains(['-1', '0'], item['ticket_type'])) {
                                 type = '业务阶段';
@@ -459,9 +496,11 @@
                                 flowMap[rowName].push(item);
                             }
                         });
+
                         $scope.cutFlowName = function (name) {
                             return name.replace(/\d/, '');
                         };
+
                         $scope.flow = flowMap;
 
                         $scope.buttons = (function (rs) {
@@ -741,15 +780,24 @@
                             '</div>'
                         ].join('');
 
+                        // 预算 fix
+                        if(sugData['canComplete'] && suggestionMembers.length == 0 && sugData['prove_ahead'] == 1) {
+                            tmpl = '<div class="suggestion-box">确定要通过报销单？</div>';
+                        }
+
                         var dialog = new CloudDialog({
                             quickClose: true,
                             autoDestroy: false,
                             content: _.template(tmpl)({list: suggestionMembers}),
                             ok: function() {
-                                doPass({
+                                var data = {
                                     status: 2,
                                     manager_id: sugData.suggestion.join(',')
-                                }).done(function (rs) {
+                                };
+                                if(sugData['without_financial']) {
+                                    delete data['manager_id'];
+                                }
+                                doPass(data).done(function (rs) {
                                     if(rs['status']<=0) {
                                         return show_notify(rs['data']['msg']);
                                     }
@@ -892,12 +940,16 @@
                                 if(fixed == 1) {
                                     showSuggestionDialog({
                                         canComplete: canComplete,
-                                        suggestion: data['financial_suggestion']
+                                        suggestion: data['financial_suggestion'],
+                                        without_financial: true,
+                                        prove_ahead: $scope.report.prove_ahead
                                     }, hasSelectAgain=false);
                                 } else {
                                     showSuggestionDialog({
                                         canComplete: canComplete,
-                                        suggestion: data['financial_suggestion']
+                                        suggestion: data['financial_suggestion'],
+                                        without_financial: true,
+                                        prove_ahead: $scope.report.prove_ahead
                                     }, hasSelectAgain=true, function (buttonType, rs) {
                                         // 选择其他审批人
                                         if(buttonType=='cancel') {
