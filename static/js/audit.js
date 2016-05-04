@@ -5,7 +5,7 @@ function formatMoney(str, places, symbol, thousand, decimal) {
     symbol = symbol !== undefined ? symbol : "￥";
     thousand = thousand || ",";
     decimal = decimal || ".";
-    var number = parseFloat(str), 
+    var number = parseFloat(str),
         negative = number < 0 ? "-" : "",
         i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
         j = (j = i.length) > 3 ? j % 3 : 0;
@@ -161,7 +161,7 @@ jQuery(grid_selector).jqGrid({
         jQuery.each(selectRows,function(index,row){
             jQuery(grid_selector).jqGrid('setSelection',row);
         });
-        if (IF_SELECT_ALL) 
+        if (IF_SELECT_ALL)
             $(".cbox").each(function(index, el) {
                 $(".cbox")[index].checked = true;
             });
