@@ -17,13 +17,14 @@ class Members extends REIM_Controller {
         $_images = $this->input->post('images');
         if($_images)
         {
-            $images = $_images;
+            $images = trim($_images);
         }
 
         $info = $this->com->update_data($name, $images);
         log_message("debug","@@@@@@@@@".json_encode($info));
         if($info['status'] > 0){
             $this->session->set_userdata('last_error','修改成功');
+            $this->session->set_userdata('groupname',$name);
         }
         else
         {
