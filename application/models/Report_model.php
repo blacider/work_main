@@ -154,19 +154,17 @@ class Report_Model extends Reim_Model {
 
         return $buf;
     }
-    public function sendout($rid,$email)
-    {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $url = $this->get_url('exports');
+
+    public function sendout($rid, $email) {
         $data = array(
-            'rid' => $rid
-            ,'email' => $email
+            'rid' => $rid,
+            'email' => $email
         );
-        $buf = $this->do_Post($url,$data,$jwt);
-        log_message("debug","send_report".json_encode($buf));
+        $buf = $this->api_post('exports', $data);
+        log_message("debug", "send_report".json_encode($buf));
         return $buf;
     }
+
     public function get_permission($rid) {
         $jwt = $this->session->userdata('jwt');
         log_message("debug", $rid);

@@ -240,7 +240,7 @@ class Reim_Model extends CI_Model {
         return '';
     }
 
-    private function api_call($method, $url, $params=null, $data=null, $headers=[]) {
+    private function api_call($method, $url, $data=null, $params=null, $headers=[]) {
         if (!empty($params)) {
             if (false === strpos($url, '?')) {
                 $url = $url . '?';
