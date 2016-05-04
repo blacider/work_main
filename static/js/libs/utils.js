@@ -114,7 +114,8 @@
                 dataType: opts['dataType'],
                 url: url,
                 headers: {
-                    'X-REIM-JWT': window.__CBX_UTOKEN__
+                    'X-REIM-JWT': window.__CBX_UTOKEN__,
+                    'X-admin-api': 1
                 },
                 data: opts['data'],
                 success: function(rs, succ) {

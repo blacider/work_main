@@ -6,6 +6,7 @@
             angular.module('reimApp', ['ng-sortable', 'ng-dropdown', 'historyMembers']).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce", "historyMembersManagerService",
                 function($http, $scope, $element, $timeout, $sce, historyMembersManager) {
                     $scope.bankFieldMap = {};
+                    $scope.radioFieldMap = {};
                     $scope.selectedMembers = [];
                     $scope.selectedMembersCC = [];
                     $scope.selectedConsumptions = [];
@@ -38,15 +39,41 @@
                     };
 
                     function getReportData(id) {
-                        return Utils.api('/reports/detail/' + id, {}).done(function(rs) {
+
+                        var def = $.Deferred();
+                        Utils.api('/reports/detail/' + id, {}).done(function(rs) {
+                            if (rs['status'] < 0) {
+                                def.resolve(rs);
+                                return  show_notify('找不到数据');
+                            }
+                            if(rs['data'].has_snapshot) {
+                                getReportSnapshotData(id).done(function (sn) {
+
+                                    $scope.snapshot = sn['data'];
+                                    $scope.$apply();
+
+                                    def.resolve(rs, sn);
+
+                                });
+                            } else {
+                                return def.resolve(rs);
+                            }
+                        });
+                        return def.promise();
+                    };
+
+                    function getReportSnapshotData(id) {
+                        return Utils.api('/report/'+id+'/snapshot', {
+                            env: 'online'
+                        }).done(function(rs) {
                             if (rs['status'] < 0) {
                                 return show_notify('找不到数据');
                             }
                         });
                     };
 
-                    function getAvailableConsumptions(uid) {
-                        return Utils.api('/items/1/200/' + uid, {
+                    function getAvailableConsumptions() {
+                        return Utils.api('/sync/0', {
                             env: 'online'
                         }).done(function(rs) {
                             if (rs['status'] < 0) {
@@ -118,7 +145,15 @@
                                     });
 
                                     if(history) {
-                                        selectedMembers = [].concat(history, selectedMembers);
+                                        // 去重复
+                                        _.each(history, function (item, index) {
+                                            var one = _.find(selectedMembers, {
+                                                id: item.id
+                                            });
+                                            if(!one) {
+                                                selectedMembers.unshift(one);
+                                            }
+                                        })
                                     }
 
                                     // 这个_CONFIG_就说明要用选抄送的或者别的逻辑，其实就是区别抄送和审核人
@@ -211,12 +246,15 @@
                         var instance;
 
                         function createInstance() {
+
+
+
                             var dialog = new CloudDialog({
                                 title: '选择消费',
                                 quickClose: true,
                                 autoDestroy: false,
                                 buttonAlign: 'right',
-                                className: 'theme-grey',
+                                className: 'theme-grey dialog-consumption',
                                 width: 500,
                                 ok: function() {
                                     var selectedConsumptions = _.where($scope.consumptions, {
@@ -233,12 +271,16 @@
                                     }
                                     for (i = 0; i < $scope.selectedConsumptions.length; i++) {
                                         var item = $scope.selectedConsumptions[i];
-                                        Utils.updateArrayByQuery($scope.consumptions, {
-                                            id: item.id + ''
-                                        }, {
-                                            isSelected: true
-                                        })
+                                        var one = _.find($scope.consumptions, {
+                                            id: item.id
+                                        });
+                                        if(one) {
+                                            one.isSelected = true;
+                                        }
                                     }
+                                    setTimeout(function () {
+                                        $(window).trigger('resize');
+                                    })
                                 },
                                 buttons: [{
                                     align: 'left',
@@ -255,6 +297,11 @@
                                 },
                                 cancelIcon: true
                             });
+
+                            if($scope.is_approver) {
+                                dialog.removeButtonByIndex(0);
+                            }
+
                             dialog.setContentWithElement($($element.find('.available-consumptions')));
                             return dialog;
                         }
@@ -302,22 +349,6 @@
                                         }, 70);
                                         return false;
                                     }
-                                    if (!$scope.selected_province) {
-                                        setTimeout(function(e) {
-                                            _this.$el.find('.province .text').click();
-                                        }, 70);
-                                        return false;
-                                    }
-                                    if (!$scope.selected_city) {
-                                        setTimeout(function(e) {
-                                            _this.$el.find('.city .text').click();
-                                        }, 70);
-                                        return false;
-                                    }
-                                    if (!subbranch) {
-                                        this.$el.find('.subbranch input').focus();
-                                        return false;
-                                    }
                                     var data = {
                                         bank_name: $scope.selected_bankName,
                                         bank_location: $scope.selected_province + $scope.selected_city,
@@ -333,9 +364,24 @@
                                         method: 'post',
                                         data: data
                                     }).done(function(rs) {
+                                        
                                         if (rs['status'] <= 0) {
                                             return;
                                         }
+
+                                        var b = {
+                                            'account': data['account'],
+                                            'bankloc': data['bank_location'],
+                                            'bankname': data['bank_name'],
+                                            'cardno': data['cardno'],
+                                            'cardtype': data['cardtype'],
+                                            'id': rs['data']['id'],
+                                            'subbranch': data['subbranch'],
+                                            'uid': data['uid']
+                                        };
+                                        
+                                        $scope.banks.push(b);
+                                        $scope.$apply();
                                         _this.close();
                                     });
                                 },
@@ -433,6 +479,17 @@
                         return def.promise();
                     };
 
+                    $scope.getItemsAmount = function (arr) {
+                        var amount = 0;
+                        _.each(arr, function(item) {
+                            var a = parseFloat(item.amount);
+                            amount += a;
+                        });
+                        amount = amount.toFixed(2);
+                        return amount;
+                    };
+                    
+
                     function getPageData(callback) {
                         // 1.如果是编辑报销单，当前用户可能是审批人，应该获取提交者的信息，而不是审批人的信息
                         // 2.如果是添加报销单，就比较简单
@@ -477,20 +534,14 @@
                         $scope.default_bank = _.find($scope.banks, {
                             id: profileData['credit_card']
                         });
-                        $scope.report_user_name = profileData['nickname'];
-                        _.each($scope.banks, function(item) {
-                            item.report_user_name = $scope.report_user_name;
-                        });
-                        if (!$scope.default_bank) {
-                            if ($scope.banks.length > 1) {
-                                $scope.default_bank = $scope.banks[1];
-                            }
-                        }
+                       
                         $scope.template = angular.copy(template['data']);
                         if (!$scope.template.name) {
                             $scope.template.name = _defaultTemplateName_;
                         }
-                        $scope.consumptions = consumptions['data']['data'] || [];
+
+                        $scope.consumptions = consumptions['data']['items'] || [];
+
                         var members = members['data'];
                         $scope.members = members['members'];
                         $scope.suggestionMembers = historyMembersManager.getArray($scope.members);
@@ -505,31 +556,9 @@
                                     $scope.superior.tag_for_superior = true;
                                 }
                             }
+
                             $scope.hasCC = true;
-                            // 计算报销额
-                            var amount = 0;
-                            _.each($scope.report.items, function(item) {
-                                var a = parseFloat(item.amount);
-                                amount += a;
-                            });
-                            $scope.report.amount = amount.toFixed(2);
-
-
-                            // 申请阶段判断 pa_approval: "0" prove_ahead, to be done
-                            // 预算1 预借2
-                            var reportData = $scope.report;
-                            if(reportData['pa_approval'] == 1 && (reportData['prove_ahead'] == 1 || reportData['prove_ahead'] == 2)) {
-                                var sum = _.reduce(reportData.items, function (sum, item) {
-                                    return sum + parseFloat(item.amount);
-                                }, 0);
-
-                                var diff_consumption_amount = sum - parseFloat(reportData.amount);
-
-                                $scope.apply_consumption_amount = sum.toFixed(2);
-                                $scope.diff_consumption_amount = diff_consumption_amount.toFixed(2);
-                            }
-
-
+                             
                             // 判断身份
                             (function() {
                                 // 是否是自己
@@ -545,11 +574,34 @@
                                     }
                                     return false;
                                 })();
+
                                 if (is_approver) {
                                     $scope._disable_modify_approver_ = true;
                                 }
+
+                                $scope.is_myself = is_myself;
+                                $scope.is_approver = is_approver;
+
                             })();
-                            syncDatatToView();
+
+                            // 如果是审批人消费就用提交者选中的消费
+                            if($scope.is_approver) {
+                                $scope.consumptions = $scope.report.items;
+                            }
+
+                            $scope.availableConsumptions = (function () {
+                                return _.filter($scope.consumptions, function (item) {
+                                    if (item.rid == $scope.__report_id__ || item.rid == 0) {
+                                        return true;
+                                    }
+                                    return false;
+                                });
+                            })();
+
+                            $timeout(function () {
+                                syncDatatToView();
+                            }, 1000/16);
+                            
                         } else {
                             // 设置sitemap
                             $('.breadcrumb li:last').text('新建' + $scope.template.name);
@@ -574,6 +626,19 @@
                             initDatetimepicker('.datatimepicker input');
                         }, 100);
                     });
+                    
+                    $scope.formatOptions = function (fieldItem) {
+                        var options = fieldItem.property.options;
+                        var rs = [];
+                        for(var i= 0;i<options.length;i++) {
+                            rs.push({
+                                id: i,
+                                text: options[i]
+                            });
+                        }
+                        return rs;
+                    };
+
                     $scope.searchImmediate = function(keywords) {
                         return function(item) {
                             delete item.info_html;
@@ -622,12 +687,7 @@
                             return false;
                         };
                     };
-                    $scope.filterComsumptions = function(item) {
-                        if (!item.rid || item.rid == 0) {
-                            return true;
-                        }
-                        return false;
-                    };
+                     
                     $scope.onTextLengthChange2 = _.debounce(function(e) {
                         var $input = $(e.currentTarget);
                         var str = $input.val();
@@ -666,6 +726,10 @@
                                 text: [item.account, '-', '尾号' + item.cardno.substr(-4), '-', item.bankname].join('') || '--'
                             }
                         },
+                        onDeselect: function (oldValue, el) {
+                            var id = $(el).parents('.field-item').data('id');
+                            delete $scope.bankFieldMap[id]
+                        },
                         onChange: function(oldValue, newValue, item, columnData) {
                             var id = $(item).parents('.field-item').data('id');
                             var bank = findOneInBanks(newValue, $scope.banks);
@@ -688,6 +752,21 @@
                             $scope.$apply();
                         });
                     };
+
+                    $scope.makeRadioDropDown = {
+                        itemFormat: function (item) {
+                            return item;
+                        },
+                        onChange: function(oldValue, newValue, item, columnData) {
+                            var id = $(item).parents('.field-item').data('id');
+                            $scope.radioFieldMap[id] = newValue;
+                        },
+                        onDeselect: function (oldValue, item) {
+                            var id = $(item).parents('.field-item').data('id');
+                            delete $scope.radioFieldMap[id]
+                        }
+                    };
+
                     $scope.makeDropDownProvince = {
                         onChange: function(oldValue, newValue, item, columnData) {
                             $scope.selected_province = newValue;
@@ -765,6 +844,7 @@
                         var name = $scope.PREFIX_BANK_CODE[value];
                         if (name) {
                             $('.bank-form .bank-db-list').find('.text').text(name).removeClass('font-placeholder');
+                            $scope.selected_bankName = name;
                         };
                     };
                     $scope.onAddBankCard = function(e) {
@@ -820,6 +900,11 @@
                     $scope.has_select_consumption = true;
                     $scope.has_deselect_consumption = false
                     $scope.onSelectConsumption = function(item, e) {
+                        // 如果是审批人，就不能选择
+                        if($scope.is_approver) {
+                            return;
+                        }
+
                         item.isSelected = !item.isSelected;
                         var unSelectedItem = _.filter($scope.consumptions, function(item) {
                             if (!item.isSelected) {
@@ -833,7 +918,9 @@
                     };
                     $scope.onSelectAllConsumptions = function(e) {
                         _.each($scope.consumptions, function(item) {
-                            item.isSelected = true;
+                            if(item.rid==0 || item.rid == $scope.__report_id__) {
+                                item.isSelected = true;
+                            }
                         });
                         $scope.has_select_consumption = false;
                         $scope.has_deselect_consumption = true;
@@ -873,6 +960,7 @@
                         }
                         if (receiver_ids.length <= 0) {
                             show_notify('请选择审批人');
+                            $element.find('.btn-append button').eq(0).focus();
                             return null;
                         }
                         var item_ids = $scope.selectedConsumptions.map(function(i) {
@@ -880,20 +968,23 @@
                         });
                         if (item_ids.length <= 0) {
                             if (~~$scope.template['options']['allow_no_items'] == 0) {
-                                show_notify('提交的报销单不能为空');
+                                $element.find('.btn-add-consumptions').focus();
+                                show_notify('提交的报销单消费不能为空');
                                 return null;
                             }
                         }
                         // extras is fields content
                         var inValidExtras = false;
                         var extras = $element.find('.field-item-list .field-item').map(function(i, item) {
-                            var type = $(item).data('type') + '';
+                            var type = $(item).data('type');
                             var id = $(item).data('id');
                             var value = $(item).find('input').val() || $(item).find('.text').text();
                             var isRequired = ~~$(item).data('required');
                             if (isRequired && !value) {
                                 $(item).find('input').focus();
-                                $(item).find('.text').click();
+                                setTimeout(function () {
+                                    $(item).find('.text').click();
+                                }, 100);
                                 inValidExtras = true;
                                 return show_notify('请填写完整的信息');
                             }
@@ -902,16 +993,40 @@
                                 id: id,
                                 value: value
                             };
-                            if (type == '3') {
+
+                            if(type==2) {
+                                var field = $scope.radioFieldMap[id];
+                                if(isRequired) {
+                                    if(!field) {
+                                        inValidExtras = true;
+                                        setTimeout(function () {
+                                            $(item).find('.text').trigger('click');
+                                        }, 100);
+                                        return show_notify('请填写完整的信息');
+                                    }
+                                    data.value = field.text;
+                                } else {
+                                    if(!field) {
+                                        data.value = '';
+                                    } else {
+                                        data.value = field.text;
+                                    }
+                                }
+                            }
+
+                            if (type == 3) {
                                 // 与android ios 保持一致
                                 var dt = +(new Date(value));
                                 data['value'] = (dt + '').substr(0, 10);
                             }
-                            if (type === '4') {
+                            if (type == 4) {
                                 var bank = $scope.bankFieldMap[id];
                                 if (isRequired) {
-                                    if (!bank || bank.id == -1) {
+                                    if (!bank) {
                                         inValidExtras = true;
+                                        setTimeout(function () {
+                                            $(item).find('.text').click();
+                                        }, 100);
                                         show_notify('必填银行卡项目不能为空');
                                         return null
                                     }
@@ -968,12 +1083,7 @@
                         });
                         $scope.selectedMembersCC = selectedMembersCC;
                         var oldConsumptions = angular.copy($scope.selectedConsumptions);
-                        for (var i = 0; i < oldConsumptions.length; i++) {
-                            var item = oldConsumptions[i];
-                            item.isSelected = true;
-                            delete item.rid;
-                            $scope.consumptions.unshift(item);
-                        }
+ 
                         for (var i = 0; i < $scope.selectedMembers.length; i++) {
                             var item = $scope.selectedMembers[i];
                             var index = _.findIndex($scope.members, {
@@ -988,26 +1098,36 @@
                             // 通过 field来遍历
                             var extrasMap = arrayToMapWithKey('id', extras);
                             $element.find('.field-item-list .field-item').map(function(i, item) {
-                                var itemType = $(item).data('type') + '';
+                                var itemType = $(item).data('type');
                                 var id = $(item).data('id');
                                 var itemData = extrasMap[id];
                                 // 更新DOM
                                 var $input = $('.field-item[data-id="' + id + '"]');
-                                if (itemType == '1') {
+                                if (itemType == 1) {
                                     if (!itemData) {
                                         $input.find('input').val('');
                                         return
                                     }
                                     $input.find('input').val(itemData.value);
                                 }
-                                if (itemType == '2') {
+                                if (itemType == 2) {
                                     if (!itemData) {
-                                        $input.find('.text').text('请选择').addClass('font-placeholder');
+                                        $input.find('.text').addClass('font-placeholder');
                                         return
                                     }
-                                    $input.find('.text').text(itemData.value).removeClass('font-placeholder');
+                                    if(itemData.value) {
+                                        // 有就需要选中
+                                        $input.find('.option-list .item').each(function (index, item) {
+                                            if($(item).text() == itemData.value) {
+                                                $input.find('.text').text(itemData.value).removeClass('font-placeholder');
+                                                $(item).addClass('active');
+                                                $scope.radioFieldMap[id] = {text: itemData.value};
+                                                return false;
+                                            }
+                                        })
+                                    } 
                                 }
-                                if (itemType == '3') {
+                                if (itemType == 3) {
                                     try {
                                         var dt = itemData.value + '000';
                                         dt = dt.substr(0, 13);
@@ -1017,26 +1137,46 @@
                                         $input.find('input').val('');
                                     }
                                 }
-                                if (itemType == '4') {
+                                if (itemType == 4) {
                                     if (!itemData) {
-                                        $input.find('.text').text('请选择').addClass('font-placeholder');
                                         return
                                     }
                                     var bankData = JSON.parse(itemData.value);
-                                    bankData = findOneInBanks(bankData.cardno, $scope.banks, 'cardno');
+
+                                    var index = 0
+
+                                    if(bankData.id==-1) {
+                                        bankData = $scope.banks[0];
+                                    } else {
+                                        var index = _.findIndex($scope.banks, {
+                                            cardno: bankData.cardno
+                                        });
+                                        bankData = $scope.banks[index];    
+                                    }
+
                                     $scope.bankFieldMap[id] = bankData;
-                                    $input.find('.text').text($scope.makeBankDropdown.itemFormat(bankData)['text']);
+                                     
+                                    if(bankData) {
+                                        $input.find('.text').text($scope.makeBankDropdown.itemFormat(bankData)['text']).removeClass('font-placeholder');
+                                        // 避免选中default 的
+                                        setTimeout(function () {
+                                            // body...
+                                            $input.find('.option-list .item').removeClass('active').eq(index).addClass('active');
+                                        }, 1000)
+                                    }
                                 }
                             });
                         })($scope.originalReport.extras);
                     };
+
                     $scope.dateFormat = function(date, formatter) {
                         formatter || (formatter = 'YYYY-MM-DD HH:mm:ss');
                         if (date instanceof Date == false) {
                             date = new Date(parseInt(date * 1000));
                         }
                         return fecha.format(date, formatter);
-                    }
+                    };
+
                     $scope.onCancel = function(e) {
                         return window.location.href = '/reports/index';
                     };
@@ -1092,8 +1232,13 @@
                                 }
 
                                 historyMembersManager.append([data.receiver_ids, data.cc_ids].join(','));
+                                
+                                if($scope.is_approver) {
+                                    window.location.href = "/reports/show/" + rs.data.id + '?tid=' + data.template_id;
+                                } else {
+                                    window.location.href = "/reports";
+                                }
 
-                                window.location.href = "/reports";
                             });
                             return;
                         }
@@ -1104,16 +1249,23 @@
                             if (rs['status'] <= 0) {
                                 show_notify(rs['data']['msg']);
                             }
+
                             historyMembersManager.append([data.receiver_ids, data.cc_ids].join(','));
+
                             window.location.href = "/reports";
+
                         });
                     };
+                    window.$scope =$scope;
                     // 首次创建，其次保存
                     $scope.onSave = $scope.onSubmit = function(e) {
                         var data = readReportData();
                         var isSubmitted = 1;
                         if ($(e.currentTarget).hasClass('btn-save')) {
                             isSubmitted = 0;
+                            if($scope.is_approver) {
+                                data['is_approver'] = true;
+                            }
                         }
                         if (!data) {
                             return;
@@ -1122,22 +1274,28 @@
                         //     manager_ids
                         //     template_id
                         //     extras
-                        checkSubmit({
-                            iids: data['item_ids'],
-                            manager_ids: data['receiver_ids'],
-                            template_id: data['template_id'],
-                            extras: data['extras']
-                        }).done(function(rs) {
-                            if (rs['status'] <= 0) {
-                                return;
-                            }
-                            var sugData = rs['data'];
-                            if (sugData.complete > 0) {
-                                return doPostReport(data, isSubmitted);
-                            }
-                            var dialog = getSuggestionDialog(sugData, isSubmitted);
-                            dialog.showModal();
-                        });
+
+                        if(!$scope.__edit__) {
+                            checkSubmit({
+                                iids: data['item_ids'],
+                                manager_ids: data['receiver_ids'],
+                                template_id: data['template_id'],
+                                extras: data['extras']
+                            }).done(function(rs) {
+                                if (rs['status'] <= 0) {
+                                    return;
+                                }
+                                var sugData = rs['data'];
+                                if (sugData.complete > 0) {
+                                    return doPostReport(data, isSubmitted);
+                                }
+                                var dialog = getSuggestionDialog(sugData, isSubmitted);
+                                dialog.showModal();
+                            });
+                        } else {
+                            doPostReport(data, isSubmitted);   
+                        }
+                        
                     }
                 }
             ]);

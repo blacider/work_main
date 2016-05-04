@@ -34,7 +34,7 @@
                     <div class="field-label" ng-if="report.pa_approval==1 && report.prove_ahead==1">申请额</div>
                     <div class="field-label" ng-if="report.pa_approval==1 && report.prove_ahead==2">已付</div>
                     <div class="field-input">
-                        <p>¥{{report.amount}}</p>
+                        <p>¥{{getItemsAmount(snapshot.items)}}</p>
                         <a href="/reports/snapshot/{{report.id}}?tid={{template.id}}" class="btn-detail" ng-if="report.has_snapshot && path_type!='snapshot'">
                             <img src="/static/img/mod/report/24/btn-eye@2x.png" alt="">详情
                         </a>
@@ -52,7 +52,7 @@
                                 </div>
                                 <p ng-if="!_disable_modify_approver_" class="btn-remove" ng-click="onRemoveApprover(superior)"></p>
                             </li>
-                            <li ng-repeat='m in selectedMembers'>
+                            <li ng-repeat='m in selectedMembers track by $index'>
                                 <img ng-src="{{m.apath || default_avatar}}" alt="">
                                 <div class="info">
                                     <div class="name">{{m.nickname}}</div>
@@ -87,36 +87,37 @@
                 <div class="block-row field-item-list" ng-repeat="tableItem in template.config">
                     <div class="field-label">{{tableItem.name}}</div>
                     <div class="fields-box">
-                        <div  class="field-item" data-required="{{fieldItem.required}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-repeat-start="fieldItem in tableItem.children" ng-if="fieldItem.type==1">
+                        <div  class="field-item" data-required="{{fieldItem.required==1}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-repeat-start="fieldItem in tableItem.children" ng-if="fieldItem.type==1">
                             <label for="">{{fieldItem.name}}</label>
                             <div class="field-input">
-                                <input type="text" placeholder="{{fieldItem.required + ''=='1'?'必填':'选填'}}"  ng-keyup="onTextLengthChange2($event)">
+                                <input type="text" placeholder="{{fieldItem.required==1?'必填':'选填'}}"  ng-keyup="onTextLengthChange2($event)">
                             </div>
                         </div>
-                        <div  class="field-item" data-required="{{fieldItem.required}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-if="fieldItem.type==2">
+                        <div  class="field-item" data-required="{{fieldItem.required==1}}" ng-init="fieldItem._options_=formatOptions(fieldItem)" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-if="fieldItem.type==2">
                             <label for="">{{fieldItem.name}}</label>
-                            <div class="field-select field" ng-dropdown="makeRadioDropdown" can-deselect="fieldItem.required" data="fieldItem.property.options">
+                            <div class="field-select field" ng-dropdown="makeRadioDropDown" default-item="{text: fieldItem.required==1?'必填':'选填'}" can-deselect="1" data="fieldItem._options_">
                                 <i class="icon">
                                     <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
                                 </i>
-                                <div class="text font-placeholder">请选择选项</div>
+                                <div class="text font-placeholder"></div>
                                 <div class="option-list none">
-                                    <div class="item" ng-repeat="item in fieldItem.property.options" data-value="{{item}}">{{item}}</div>
+                                    <div class="item" ng-repeat="item in fieldItem._options_" data-value="{{item}}">{{makeRadioDropDown.itemFormat(item)['text']}}</div>
                                 </div> 
                             </div>
                         </div>
-                        <div  class="field-item" data-required="{{fieldItem.required}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-if="fieldItem.type==3">
+                        <div  class="field-item" data-required="{{fieldItem.required==1}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-if="fieldItem.type==3">
                             <label for="">{{fieldItem.name}}</label>
                             <div class="field-input datatimepicker">
                                 <i class="icon">
                                     <img src="/static/img/mod/report/36/icon-calender@2x.png" alt="" />
                                 </i>
-                                <input type="text" placeholder="{{fieldItem.required + ''=='1'?'必填':'选填'}}">
+                                <input type="text" placeholder="{{fieldItem.required==1?'必填':'选填'}}">
                             </div>
                         </div>
-                        <div  class="field-item" data-required="{{fieldItem.required}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-repeat-end ng-if="fieldItem.type==4">
+                         <!-- 非必填，下拉可反选！ -->
+                        <div  class="field-item" data-required="{{fieldItem.required==1}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-repeat-end ng-if="fieldItem.type==4">
                             <label for="">{{fieldItem.name}}</label>
-                            <div class="field-select field" ng-dropdown="makeBankDropdown" can-deselect="fieldItem.required" selected-item="default_bank"  default-item="{cardno:'', bankname: '必填'}"  data="banks">
+                            <div class="field-select field" ng-dropdown="makeBankDropdown" can-deselect="1" selected-item="default_bank" default-item="{text: fieldItem.required==1?'必填':'选填'}" data="banks">
                                 <i class="icon">
                                     <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
                                 </i>
@@ -164,28 +165,28 @@
                                     </tr> 
                                 </tbody>
                                 <tfoot>
-                                    <tr ng-if="report.status==0 && report.pa_approval==1 && report.prove_ahead==1">
+                                    <tr ng-if="report.pa_approval==1 && report.prove_ahead==1">
                                         <td>合计</td>
                                         <td colspan="4" class="sum">
-                                            ¥{{report.amount}}
+                                            ¥{{getItemsAmount(selectedConsumptions)}}
                                         </td>
                                     </tr>
-                                    <tr ng-if="report.status==0 && report.pa_approval==1 && report.prove_ahead==1">
+                                    <tr ng-if="report.pa_approval==1 && report.prove_ahead==1">
                                         <td>申请额</td>
                                         <td colspan="4" class="sum">
-                                            ¥{{apply_consumption_amount}}
+                                            ¥{{getItemsAmount(snapshot.items)}}
                                         </td>
                                     </tr>
-                                    <tr ng-if="report.status==0 && report.pa_approval==1 && report.prove_ahead==2">
+                                    <tr ng-if="report.pa_approval==1 && report.prove_ahead==2">
                                         <td>已付</td>
                                         <td colspan="4" class="sum">
-                                            ¥{{report.amount}}
+                                            ¥{{getItemsAmount(snapshot.items)}}
                                         </td>
                                     </tr>
-                                    <tr ng-if="report.status==0 && report.pa_approval==1 && report.prove_ahead==2">
+                                    <tr ng-if="report.pa_approval==1 && report.prove_ahead==2">
                                         <td>应付</td>
                                         <td colspan="4" class="sum">
-                                            ¥{{diff_consumption_amount}}
+                                            ¥{{(getItemsAmount(selectedConsumptions) - getItemsAmount(snapshot.items)).toFixed(2)}}
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -195,7 +196,7 @@
                 </div>
                 <div class="block-row" ng-if="!selectedConsumptions || selectedConsumptions.length==0">
                     <div class="field-label">消费明细</div>
-                    <button class="button-gray ui-button" ng-click="onAddConsumptions($event)"><img style="margin-right: -2px" src="/static/img/mod/report/36/consumpution@2x.png" alt="">选择消费</button>
+                    <button class="button-gray ui-button btn-add-consumptions" ng-click="onAddConsumptions($event)"><img style="margin-right: -2px" src="/static/img/mod/report/36/consumpution@2x.png" alt="">选择消费</button>
                 </div>
             </div>
             <div class="report-footer">
@@ -207,7 +208,7 @@
                     <i class="icon"></i>保存
                 </button>
 
-                <button class="btn-submit ui-button ui-button-hover" ng-click="onSubmit($event)">
+                <button ng-if="!is_approver" class="btn-submit ui-button ui-button-hover" ng-click="onSubmit($event)">
                     <i class="icon"></i>提交
                 </button>
 
@@ -224,14 +225,14 @@
                         </div>
                     </div>
                     <ul>
-                        <li class="s_{{s.id}}" ng-repeat='s in suggestionMembers' ng-class="{selected: s.isSelected}"  ng-click="onSelectMember(s)" ng-dblclick="onRemoveHistory(s)">
+                        <li class="s_{{s.id}}" ng-repeat='s in (filteredSugMembers = (suggestionMembers|filter:searchImmediate(txtSearchText)))' ng-class="{selected: s.isSelected}"  ng-click="onSelectMember(s)" ng-dblclick="onRemoveHistory(s)">
                             <img ng-src="{{s.apath || default_avatar }}" alt="">
                             <div class="info">
                                 <div class="name">{{s.nickname}}</div>
                                 <div class="role">{{s.d}}</div>
                             </div>
                         </li>
-                        <li ng-if="suggestionMembers.length>0" class="line"></li>
+                        <li ng-if="filteredSugMembers.length>0" class="line"></li>
                         <li ng-if="!m._IN_SUG_" class="m_{{m.id}}" ng-repeat='m in (filteredMembers = (members|filter:searchImmediate(txtSearchText)))' ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m, $event)">
                             <img ng-src="{{m.apath || default_avatar}}" alt="">
                             <div class="info" ng-bind-html="m.info_html"> </div>
@@ -250,7 +251,7 @@
             <!-- /*<div style="display: none;">*/ -->
             <div style="display: none;">
                 <div class="consumptions available-consumptions">
-                    <div class="head" ng-if="filteredConsumptions.length!=0">
+                    <div class="head" ng-if="filteredConsumptions.length!=0" style="visibility: {{is_approver? 'hidden': ''}};">
                         <a class="btn-select" ng-click="onSelectAllConsumptions($event)" ng-if="has_select_consumption">
                             <i class="icon"></i>
                             全选
@@ -261,7 +262,7 @@
                         </a>
                     </div>
                     <div class="moni-table">
-                        <div class="t-head" ng-if="filteredConsumptions.length!=0">
+                        <div class="t-head" ng-if="availableConsumptions.length!=0">
                             <div class="t-row">
                                 <div class="col">类目</div>
                                 <div class="col dt">日期</div>
@@ -270,9 +271,9 @@
                                 <div class="col">金额</div>
                             </div>
                         </div>
-                        <div class="t-body stop-parent-scroll">
-                            <div class="t-row" ng-repeat="c in filteredConsumptions = (consumptions|filter:filterComsumptions)" ng-class="{selected: c.isSelected}" ng-click="onSelectConsumption(c, $event)">
-                                <div class="col" ng-init="c.category_name = categoryMap[c.category]['category_name']">{{c['category_name']||'-'}}</div>
+                        <div class="t-body">
+                            <div class="t-row c_{{c.id}}_rid{{c.rid}}" ng-if="c.rid==0 || c.rid == __report_id__" ng-repeat="c in consumptions" ng-class="{selected: c.isSelected}"   ng-click="onSelectConsumption(c, $event)">
+                                <div class="col">{{c['category_name']||'-'}}</div>
                                 <div class="col dt">{{dateFormat(c.dt)||'-'}}</div>
                                 <div class="col">{{c.merchants||'-'}}</div>
                                 <div class="col note">{{c.note||'-'}}</div>
@@ -282,7 +283,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="empty-result" ng-if="filteredConsumptions.length==0">
+                            <div class="empty-result" ng-if="availableConsumptions.length==0">
                                 <img src="/static/img/mod/report/icon-no-member-result.png" alt="">
                                 <p>当前没有可选择的消费</p>
                             </div>

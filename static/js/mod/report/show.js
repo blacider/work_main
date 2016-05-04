@@ -58,21 +58,37 @@
                         });
                     };
 
+
                     function getReportData(id) {
 
                         if(path_type == 'snapshot') {
                             return getReportSnapshotData(id);
                         }
 
-                        return Utils.api('/reports/detail/' + id, {}).done(function(rs) {
+                        var def = $.Deferred();
+                        Utils.api('/reports/detail/' + id, {}).done(function(rs) {
                             if (rs['status'] < 0) {
-                                return show_notify('找不到数据');
+                                def.resolve(rs);
+                                return  show_notify('找不到数据');
+                            }
+                            if(rs['data'].has_snapshot) {
+                                getReportSnapshotData(id).done(function (sn) {
+
+                                    $scope.snapshot = sn['data'];
+                                    $scope.$apply();
+
+                                    def.resolve(rs, sn);
+
+                                });
+                            } else {
+                                return def.resolve(rs);
                             }
                         });
+                        return def.promise();
                     };
 
                     function getReportSnapshotData(id) {
-                        return Utils.api('/report/'+id+'snapshot', {
+                        return Utils.api('/report/'+id+'/snapshot', {
                             env: 'online'
                         }).done(function(rs) {
                             if (rs['status'] < 0) {
@@ -200,13 +216,20 @@
                         }
                         if (itemType == 4) {
                             var bankData = JSON.parse(extrasItem.value);
-                            if(!bankData || !bankData.cardno) {
+                            var tempData = bankData;
+
+                            if(!bankData) {
                                 bankData = {};
                             }
 
                             bankData = _.find($scope.banks, {cardno: bankData.cardno}) || {};
 
                             fieldResult.value = angular.copy(bankData);
+                           
+                            if(tempData.id==-1) {
+                                fieldResult.value = tempData;
+                            }
+
                             return fieldResult; 
                         }
                         if (itemType == 3) {
@@ -342,6 +365,16 @@
                         return '';
                     };
 
+                    $scope.getItemsAmount = function (arr) {
+                        var amount = 0;
+                        _.each(arr, function(item) {
+                            var a = parseFloat(item.amount);
+                            amount += a;
+                        });
+                        amount = amount.toFixed(2);
+                        return amount;
+                    };
+
                     // main entry
                     getPageData(function(template, flow, members, profile) {
                         $scope.isLoaded = true;
@@ -395,11 +428,7 @@
                         $scope.selectedMembers = selectedMembers;
 
                         $scope.suggestionMembers = historyMembersManager.getArray($scope.members);
-
-                        $scope.userProfile = _.findWhere(members, {
-                            id: $scope.report.uid
-                        });
-
+                        
                         $scope.submitter = _.where(members, {
                             id: reportData['uid']
                         })[0];
@@ -410,32 +439,13 @@
                             members.splice(selfIndex, 1);
                         }
 
-                        var amount = 0;
-                        _.each($scope.report.items, function(item) {
-                            var a = parseFloat(item.amount);
-                            amount += a;
-                        });
-                        $scope.report.amount = amount.toFixed(2);
                         $scope.commentArray = _.map(reportData.comments.data, function(item, index) {
-                            var one = _.findWhere($scope.members, {
+                            var one = _.findWhere($scope.originalMembers, {
                                 id: item.uid
                             });
                             item.user = one;
                             return item;
                         });
-
-                        // 申请阶段判断 pa_approval: "0" prove_ahead, to be done
-                        // 预算1 预借2
-                        if(reportData['pa_approval'] == 1 && (reportData['prove_ahead'] == 1 || reportData['prove_ahead'] == 2)) {
-                            var sum = _.reduce(reportData.items, function (sum, item) {
-                                return sum + parseFloat(item.amount);
-                            }, 0);
-
-                            var diff_consumption_amount = sum - parseFloat(reportData.amount);
-
-                            $scope.apply_consumption_amount = sum.toFixed(2);
-                            $scope.diff_consumption_amount = diff_consumption_amount.toFixed(2);
-                        }
 
                         $scope.extrasMap = arrayToMapWithKey('id', extras);
                         $scope.combineConfig = combineTemplateAndReport($scope.template, $scope.report);
@@ -593,10 +603,15 @@
                                 return show_notify('评论失败');
                             }
                             $scope.commentArray || ($scope.commentArray = []);
+
+                            var userProfile = _.findWhere($scope.originalMembers, {
+                                id: __UID__
+                            });
+
                             $scope.commentArray.push({
-                                user: $scope.userProfile,
-                                nickname: $scope.userProfile['nickname'],
-                                apath: $scope.userProfile['apath'],
+                                user: userProfile,
+                                nickname: userProfile['nickname'],
+                                apath: userProfile['apath'],
                                 comment: comment,
                                 lastdt: new Date
                             });
@@ -667,7 +682,7 @@
                         var dialog = new CloudDialog({
                             title: '退回理由',
                             quickClose: true,
-                            content: '<div><textarea style="width: 500px;height: 200px;border-radius: 2px;" placeholder="写下你的退回理由…"></textarea></div>',
+                            content: '<div style="padding: 77px 50px 113px"><textarea style="min-width: 520px;max-width: 520px;min-height: 200px;max-height: 200px;border-radius: 2px;" placeholder="写下你的退回理由…"></textarea></div>',
                             className: 'theme-grey',
                             ok: function() {
                                 var comment = this.$el.find('textarea').val();
@@ -761,14 +776,21 @@
                     function showSuggestionDialog(sugData, hasSelectAgain, callback) {
                         callback || (callback = function () {});
                         var whom = sugData['canComplete']?'财务': '';
-                        var suggestionMembers = _.filter($scope.originalMembers, function(item) {
-                            var list = sugData['suggestion'].join(',').split(',');
-                            if(_.contains(list, item.id)) {
-                                return true;
-                            }
-                            return false;
-                        });
 
+                        var suggestionMembers = [];
+
+                        var arr = sugData['suggestion'].join(',').split(',');
+
+                        for(var i =0;i<arr.length;i++) {
+                            var id = arr[i];
+                            var one = _.find($scope.originalMembers, {
+                                id: id
+                            });
+
+                            if(one) {
+                                suggestionMembers.push(one);
+                            }
+                        }
                         var tmpl = [
                             '<div class="suggestion-box">',
                             '   <div>你的报销单将提交给'+whom+':</div>',

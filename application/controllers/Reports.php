@@ -426,6 +426,8 @@ class Reports extends REIM_Controller {
         $item_ids = $this->input->post('item_ids');
         $extras = $this->input->post('extras');
         $status = $this->input->post('status');
+        // 标示审核人操作
+        $is_approver = $this->input->post('is_approver');
 
         $report = array(
             'id' => $id,
@@ -436,7 +438,8 @@ class Reports extends REIM_Controller {
             'cc' => $cc_ids,
             'iids' => $item_ids,
             'extras' => $extras,
-            'status' => $status //保存：0，提交：1，通过：2 等
+            'status' => $status, //保存：0，提交：1，通过：2 等
+            'is_approver' => $is_approver //保存：0，提交：1，通过：2 等
         );
 
         $buf = $this->reports->update_v2($report);

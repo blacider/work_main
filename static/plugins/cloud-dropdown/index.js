@@ -32,6 +32,9 @@
 			},
 			onSelect: function (oldValue, newValue, item) {
 			},
+			onDeselect: function(oldValue) {
+			
+			},
 			itemFormat: function (item) {
 				return item;
 			},
@@ -71,8 +74,7 @@
 					if(index!=-1) {
 						item = $scope.data[index];
 					}
-					item = item || defaultItem;
-					// init
+
 					if(item) {
 						item = options['itemFormat'](item);
 						$(element).find('.text').removeClass('font-placeholder');
@@ -83,13 +85,14 @@
 						setTimeout(function () {
 							$(element).find('.option-list .item').eq(index).addClass('active');
 						}, 1000);
+					} else if(defaultItem) {
+						$(element).find('.text').addClass('font-placeholder');
+						$(element).find('.text').text(defaultItem['text']);
 					}
-					
+
 					var oldValue = item && item['value'];
 
 					$(element).on('click', '.item', function(e) {
-
-
 
 						$(element).find('.text').removeClass('font-placeholder');
 
@@ -103,11 +106,12 @@
 						if(canDeselect) {
 							if($item.hasClass('active')) {
 								$item.removeClass('active');
-								$(element).find('.text').text('');
+								$(element).find('.text').text(defaultItem['text']).addClass('font-placeholder');
+								options['onDeselect'](oldValue, element);
+								oldValue = null;
 								return;
 							}
 						}
-
 
 						if(oldValue != newValue) {
 							options['onChange'](oldValue, newValue, $item[0], $scope.paramExtra, element);

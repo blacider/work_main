@@ -34,7 +34,7 @@
                     <div class="field-label" ng-if="report.pa_approval==1 && report.prove_ahead==1">申请额</div>
                     <div class="field-label" ng-if="report.pa_approval==1 && report.prove_ahead==2">已付</div>
                     <div class="field-input">
-                        <p>¥{{report.amount}}</p>
+                        <p>¥{{getItemsAmount(snapshot.items)}}</p>
                         <a href="/reports/snapshot/{{report.id}}?tid={{template.id}}" class="btn-detail" ng-if="report.has_snapshot && path_type!='snapshot'">
                             <img src="/static/img/mod/report/24/btn-eye@2x.png" alt="">详情
                         </a>
@@ -42,11 +42,11 @@
                 </div>
                 <div class="block-row" ng-if="submitter && path_type!='snapshot'">
                     <div class="field-label">提交人</div>
-                    <div class="approvers selected-members">
+                    <div class="approvers selected-members submitter">
                         <ul>
                             <li style="width: 100%;">
                                 <img ng-src="{{submitter.apath || default_avatar}}" alt="">
-                                <div class="info" style="width: auto;">
+                                <div class="info">
                                     <div class="name">{{submitter.nickname}}</div>
                                     <div class="role">
                                         <span>{{submitter.d}}</span>
@@ -60,7 +60,7 @@
                 </div>
                 <div class="block-row" ng-if="path_type!='snapshot'">
                     <div class="field-label">审批人</div>
-                    <div class="approvers selected-members">
+                    <div class="approvers selected-members available-members-cc">
                         <ul>
                             <li ng-repeat='m in selectedMembers'>
                                 <img ng-src="{{m.apath || default_avatar}}" alt="">
@@ -88,7 +88,7 @@
                                 <tbody>
                                     <tr>
                                         <td class="td-bank" ng-repeat-start="col in tableItem.children" ng-if="col.type==4">
-                                            {{col._combine_data_.value['account']}}
+                                            {{col._combine_data_.value['account'] || '-'}}
                                         </td>
                                         <td class="td-bank" ng-if="col.type==4">
                                             {{col._combine_data_.value['cardno'] || '-'}}
@@ -132,28 +132,28 @@
                                     </tr>
                                 </tbody>
                                 <tfoot>
-                                    <tr>
+                                    <tr ng-if="report.pa_approval==1 && report.prove_ahead==1">
                                         <td>合计</td>
                                         <td colspan="4" class="sum">
-                                            ¥{{report.amount}}
+                                            ¥{{getItemsAmount(report.items)}}
                                         </td>
                                     </tr>
-                                    <tr ng-if="path_type!='snapshot' && report.pa_approval==1 && report.prove_ahead==1">
+                                    <tr ng-if="report.pa_approval==1 && report.prove_ahead==1">
                                         <td>申请额</td>
                                         <td colspan="4" class="sum">
-                                            ¥{{apply_consumption_amount}}
+                                            ¥{{getItemsAmount(snapshot.items)}}
                                         </td>
                                     </tr>
-                                    <tr ng-if="path_type!='snapshot' && report.pa_approval==1 && report.prove_ahead==2">
+                                    <tr ng-if="report.pa_approval==1 && report.prove_ahead==2">
                                         <td>已付</td>
                                         <td colspan="4" class="sum">
-                                            ¥{{report.amount}}
+                                            ¥{{getItemsAmount(snapshot.items)}}
                                         </td>
                                     </tr>
-                                    <tr ng-if="path_type!='snapshot' && report.pa_approval==1 && report.prove_ahead==2">
+                                    <tr ng-if="report.pa_approval==1 && report.prove_ahead==2">
                                         <td>应付</td>
                                         <td colspan="4" class="sum">
-                                            ¥{{diff_consumption_amount}}
+                                            ¥{{getItemsAmount(report.items) - getItemsAmount(snapshot.items)}}
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -246,14 +246,14 @@
                         </div>
                     </div>
                     <ul>
-                        <li class="s_{{s.id}}" ng-repeat='s in suggestionMembers' ng-class="{selected: s.isSelected}"  ng-click="onSelectMember(s)">
+                        <li class="s_{{s.id}}" ng-repeat='s in (filtereSugMembers = (suggestionMembers|filter:searchImmediate(txtSearchText)))' ng-class="{selected: s.isSelected}"  ng-click="onSelectMember(s)">
                             <img ng-src="{{s.apath || default_avatar }}" alt="">
                             <div class="info">
                                 <div class="name">{{s.nickname}}</div>
                                 <div class="role">{{s.d}}</div>
                             </div>
                         </li>
-                        <li ng-if="suggestionMembers.length>0" class="line"></li>
+                        <li ng-if="filtereSugMembers.length>0" class="line"></li>
                         <li class="m_{{m.id}}" ng-repeat='m in (filteredMembers = (members|filter:searchImmediate(txtSearchText)))' ng-class="{selected: m.isSelected}" ng-click="onSelectMember(m)" ng-if="!m._in_sug_">
                             <img ng-src="{{m.apath || default_avatar}}" alt="">
                             <div class="info" ng-bind-html="m.info_html"> </div>

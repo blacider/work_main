@@ -163,13 +163,14 @@
 }
 
 .approvers {
-	width: 700px;
+	width: 620px;
 	text-align: left;
 }
 
 .approvers .search-input {
 	display: block;
     margin: 0 50px 0 50px;
+    margin-top: -2px;
 }
 .approvers .search-input .field-input {
 	width: 100%;
@@ -209,12 +210,13 @@
 .approvers ul li {
 	float: left;
 	height: 70px;
-	width: 235px;
+	width: 212px;
 	margin:0 55px 10px 0;
 	border-radius: 2px;
 	white-space: nowrap;
 	border: 1px solid transparent;
 	list-style: none;
+	cursor: pointer;
 }
 
 .approvers ul .line {
@@ -223,9 +225,10 @@
     width: auto;
     border-bottom: solid 1px #f2f6fa;
 	margin-right: 30px;
-	height: 0;
+	height: 10px;
 	clear: both;
 	margin-left: -50px;
+	margin-bottom: 15px;
 }
 .approvers ul .line:hover {
 	background: transparent !important;
@@ -262,7 +265,8 @@
 .approvers ul li .info {
 	font-size: 14px;
 	color: #929292;
-	width: 180px;
+	width: 128px;
+	max-width: 128px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: table-cell;
@@ -275,12 +279,18 @@
 .approvers ul li .info .role {
 	font-size: 14px;
 	color: #929292;
+	width: 100%;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 
 .approvers ul li .info span {
 	color: #4a4a4a;
 }
 
+.available-members.approvers ul {
+	margin-top: 10px;
+}
 .available-members.approvers ul li.selected {
 	background: transparent;
 	border: 1px solid #596774;
@@ -357,8 +367,6 @@
 	top: 13px;
 	right: 14px;
 	display: none;
-	background: url('/static/img/mod/report/24/btn-remove@1x.png') no-repeat;
-
     /*ie 8*/
     background: url('/static/img/mod/report/24/btn-remove@1x.png') no-repeat;
 
@@ -366,23 +374,20 @@
 	background-image: -moz-image-set(url('/static/img/mod/report/24/btn-remove@1x.png') 1x, url('/static/img/mod/report/24/btn-remove@2x.png') 2x);
 	background-image: -ms-image-set(url('/static/img/mod/report/24/btn-remove@1x.png') 1x, url('/static/img/mod/report/24/btn-remove@2x.png') 2x);
 	background-image: -o-image-set(url('/static/img/mod/report/24/btn-remove@1x.png') 1x, url('/static/img/mod/report/24/btn-remove@2x.png') 2x);
-
-	background-size: 24px;
 }
 
 .approvers.selected-members ul li:hover .btn-remove {
-	display: inline-block;
-    /*ie 8*/
-    background: url('/static/img/mod/report/24/btn-remove@1x.png') no-repeat;
-
-	background-image: -webkit-image-set(url('/static/img/mod/report/24/btn-remove@1x.png') 1x, url('/static/img/mod/report/24/btn-remove@2x.png') 2x);
-	background-image: -moz-image-set(url('/static/img/mod/report/24/btn-remove@1x.png') 1x, url('/static/img/mod/report/24/btn-remove@2x.png') 2x);
-	background-image: -ms-image-set(url('/static/img/mod/report/24/btn-remove@1x.png') 1x, url('/static/img/mod/report/24/btn-remove@2x.png') 2x);
-	background-image: -o-image-set(url('/static/img/mod/report/24/btn-remove@1x.png') 1x, url('/static/img/mod/report/24/btn-remove@2x.png') 2x);
+	display: block;
 }
 
 .approvers.selected-members ul li .btn-remove:hover {
-	background-image: url('/static/img/mod/report/24/btn-remove.dark.png');
+	    /*ie 8*/
+	    background: url('/static/img/mod/report/24/btn-remove.dark@1x.png') no-repeat;
+
+		background-image: -webkit-image-set(url('/static/img/mod/report/24/btn-remove.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-remove.dark@2x.png') 2x);
+		background-image: -moz-image-set(url('/static/img/mod/report/24/btn-remove.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-remove.dark@2x.png') 2x);
+		background-image: -ms-image-set(url('/static/img/mod/report/24/btn-remove.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-remove.dark@2x.png') 2x);
+		background-image: -o-image-set(url('/static/img/mod/report/24/btn-remove.dark@1x.png') 1x, url('/static/img/mod/report/24/btn-remove.dark@2x.png') 2x);
 }
 
 .approvers.selected-members ul li.btn-append a {
@@ -421,7 +426,7 @@
 /*start*/
 .moni-table {
 	font-size: 0;
-	width: 600px;
+	width: 620px;
 }
 .moni-table .t-head .col {
 	height: 40px;
@@ -457,6 +462,7 @@
 	position: relative;
 	margin-right: 60px;
 	border: 1px solid #fff;
+	cursor: pointer;
 }
 .moni-table .t-row .col {
 	display: table-cell;
@@ -530,6 +536,7 @@
 	display: inline-block;
 	text-decoration: none;
 	color: #7a8590;
+	cursor: pointer;
 	font-size: 14px;
 }
 
@@ -635,8 +642,8 @@
 	height: 30px;
 	font-size: 14px;
 	color: #929292;
-	border-top: 1px solid rgba(185, 185, 185, .3);
-	border-right: 1px solid rgb(185, 185, 185);
+	border-top: 1px solid #EEEEEE;
+	border-right: 1px solid #b9b9b9;
 }
 
 .table-field table tbody tr td.note {
@@ -727,6 +734,7 @@ table.border-radius-row tr td:last-child {
 	text-align: center;
 	width: 92%;
 	text-decoration: none;
+	position: relative;
 }
 .btn-add-bank:hover {
 	color: #fff;
@@ -901,37 +909,29 @@ table.border-radius-row tr td:last-child {
 .datetimepicker-days table {
 	width: 256px;
 }
-.datetimepicker-days table tr td.day.active,
+
+.datetimepicker table tr td.day {
+	color: #929292 !important;
+	background: transparent !important;
+	text-shadow: none !important;
+}
+
+.datetimepicker-days table tr td.day.active {
+	background: transparent !important;
+	color: #ff575b !important;
+}
+
+.datetimepicker-days table tr td.day:hover,
 .datetimepicker-days table tr td.day.active:hover {
 	background: #ff575b !important;
 	color: #fff !important;
 }
-.datetimepicker-days table.td.day.today {
-    content: '';
-    display: inline-block;
-    border-left: 7px solid transparent;
-    border-bottom: 7px solid #ff575b !important;
-    position: absolute;
-    bottom: 4px;
-    right: 4px;
-}
 
-.datetimepicker-days table.td.day.today:before {
-    content: '';
-    display: inline-block;
-    border-left: 7px solid transparent;
-    border-bottom: 7px solid #ff575b;
-    border-top-color: rgba(0, 0, 0, 0.2);
-    position: absolute;
-    bottom: 4px;
-    right: 4px;
-}
 
-.datetimepicker table tr td.day {
-	color: #929292 !important;
+/*dialog*/
+.dialog-consumption.theme-grey.cloud-bx-dialog .dialog-body {
+    margin-top: 12px;
 }
-
-.datetimepicker table tr td.today, .datetimepicker table tr td.today:hover, .datetimepicker table tr td.today.disabled, .datetimepicker table tr td.today.disabled:hover {
-    background: #ff575b !important;
-    color: #fff !important;
+.dialog-consumption.theme-grey.cloud-bx-dialog .dialog-body .head {
+	height: 6px
 }

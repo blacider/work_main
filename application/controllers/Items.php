@@ -997,16 +997,19 @@ class Items extends REIM_Controller {
             }
         }
         if(!$id) {
-            return redirect(base_url('items/index'));
+            return redirect('/items/index');
         } else {
             if($item_update_in != 0){
-                return redirect(base_url("reports/edit/" . $rid));
+                $report = $this->report->get_report_by_id($rid);
+                $report = $report['data'];
+                return redirect("/reports/edit/" . $rid . "?tid=" . $report['template_id']);
             }else{
                 if(!$rid) {
-                    return redirect(base_url("items/index"));
+                    return redirect("/items/index");
                 }
                 $report = $this->report->get_report_by_id($rid);
-                return redirect("/reports/edit/" . $rid + "?tid="+$report['template_id']);
+                $report = $report['data'];
+                return redirect("/reports/edit/" . $rid . "?tid=" . $report['template_id']);
             }
         }
     }

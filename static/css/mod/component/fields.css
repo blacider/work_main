@@ -141,7 +141,7 @@ button {
 	border: 1px solid #fe575c !important;
 }
 .font-placeholder {
-	color: #b9b9b9 !important;
+	color: #ddd !important;
 }
 .field-select .icon,
 .field-input .icon {
@@ -199,6 +199,7 @@ button {
 	font-size: 14px;
 	white-space: nowrap;
 	overflow: hidden;
+	cursor: pointer;
 	text-overflow: ellipsis;
 }
 .field-select .option-list .item:hover {

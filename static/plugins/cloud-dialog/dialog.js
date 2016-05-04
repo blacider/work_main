@@ -105,6 +105,9 @@
 			$content.empty();
 			$content.append(el);
 		},
+		removeButtonByIndex: function (index) {
+			this.$footer.find('button').eq(index).hide();
+		},
 		addButtons: function () {
 			var buttons = this.options.buttons;
 
