@@ -311,7 +311,7 @@ class Reports extends REIM_Controller {
             $export = ($d['status'] === 1)   ? 'gray' : 'grey';
 
             $base_icon = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">';
-            $withdraw_icon = '<span class="ui-icon ui-icon ace-icon fa fa-undo red twithdraw" data-id="' . $d['id'] . '"></span>';
+            
             $show_icon = '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>';
             $edit_icon = '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>';
             $export_icon = '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>';
@@ -329,7 +329,7 @@ class Reports extends REIM_Controller {
             }
             else if(in_array($d['status'],[1]))
             {
-                $d['options'] = $base_icon . $show_icon .  $export_icon . $withdraw_icon .$download_icon . $end_icon;
+                $d['options'] = $base_icon . $show_icon .  $export_icon .$download_icon . $end_icon;
             }
             else if(in_array($d['status'],[2]))
             {
