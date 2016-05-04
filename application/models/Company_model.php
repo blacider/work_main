@@ -2,6 +2,11 @@
 
 class Company_Model extends Reim_Model {
 
+   // const MIN_UID = 100000;
+    public function __construct(){
+        parent::__construct();
+    }
+
     public function get_company_config()
     {
         return $this->api_get('company_config');

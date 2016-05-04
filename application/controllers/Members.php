@@ -8,22 +8,42 @@ class Members extends REIM_Controller {
         $this->load->model('user_model', 'users');
         $this->load->model('group_model', 'groups');
         $this->load->model('reim_show_model','reim_show');
+        $this->load->model('company_model','com');
     }
     public function updatecompany() {
-        
+        $profile = $this->session->userdata('profile');
+        $name = $this->input->post('gname');
+        $images = '';
+        $_images = $this->input->post('images');
+        if($_images)
+        {
+            $images = $_images;
+        }
+
+        $info = $this->com->update_data($name, $images);
+        log_message("debug","@@@@@@@@@".json_encode($info));
+        if($info['status'] > 0){
+            $this->session->set_userdata('last_error','修改成功');
+        }
+        else
+        {
+            $this->session->set_userdata('last_error',$info['data']['msg']);
+        }
+        redirect(base_url('members/index'));
     }
     public function editcompany(){
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
         $profile = $this->session->userdata('profile');
         $groups = $profile['group'];
-        
+        $info = $this->com->get_data()['data'];
         $this->bsload('members/editcompany',
             array(
                 'title' => '编辑公司'
                 ,'error' => $error
-                ,'image' => ''
-                ,'image_url' => ''
+                ,'name' => $info['group_name']
+                ,'image' => $info['logo_id']
+                ,'image_url' => $info['logo_url']
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '组织结构', 'class' => '')
@@ -1186,6 +1206,9 @@ class Members extends REIM_Controller {
         if($info['status'] > 0){
             $info = $info['data'];
             $group = $info['group'];
+            if ($group["image_url"] == '') {
+                $group["image_url"] = $group["inherited_image_url"];
+            }
             $member = $info['member'];
             $mid = array();
             foreach($member as $m){

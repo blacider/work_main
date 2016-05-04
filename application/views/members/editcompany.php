@@ -9,24 +9,22 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">公司名称</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <input type="text" placeholder="公司名称" class="col-xs-12" required="required" id="gname" name="gname" value="<?php echo $groupname;?>">
+                                    <input type="text" placeholder="公司名称" class="col-xs-12" required="required" id="gname" name="gname" value="<?php echo $name;?>">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">LOGO</label>
                                 <div class="col-xs-6 col-sm-6">
-                                    <div class="col-xs-12 col-sm-12">
                                       <div id="group_logo_container" class="ace-thumbnails clearfix" style="position:relative;float:left;display: none">
                                         <img id="group_logo" class="thumbnail" style="min-height: 150px; max-height: 300px; min-width: 150px; max-width: 300px;width:150px">
                                         <div href="#" class="red del-button" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;">
                                           <i class="glyphicon glyphicon-trash"></i>
                                         </div>
                                       </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-12">
-                                        <a id="filePicker" >选择图片</a>
-                                    </div>
+                                      <div style="clear: both;">
+                                          <a id="filePicker" >选择图片</a>
+                                      </div>
                                     </div>
                             </div>
                             <input type="hidden" name="images" id="images"  value="<?php echo $image; ?>">
@@ -179,7 +177,14 @@ function load_exists(){
 var __BASE = "<?php echo $base_url; ?>";
 $(document).ready(function(){
     $('.renew').click(function(){
-        
+        var gname = $('#gname').val();
+        if(gname.replace(/(^\s*)|(\s*$)/g,"") == "")
+        {
+            show_notify("请输入公司名称");
+            $('#gname').focus();
+            return false;
+        }
+        $('#mainform').submit();
     });
     $('.cancel').click(function(){
         history.go(-1);
