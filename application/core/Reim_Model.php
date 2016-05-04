@@ -182,7 +182,6 @@ class Reim_Model extends CI_Model {
     }
 
     private function fire_api_call($method, $url, $fields, $extraheader = array()) {
-        # TODO support query
         $method = strtoupper($method);
         $ch = $this->get_curl_handler();
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
@@ -239,6 +238,29 @@ class Reim_Model extends CI_Model {
             return '@' . realpath($file_path);
         }
         return '';
+    }
+
+    private function api_call($method, $url, $params=null, $data=null, $headers=[]) {
+        if (!empty($params)) {
+            if (false === strpos($url, '?')) {
+                $url = $url . '?';
+            }
+            $url = $url . http_build_query($params);
+        }
+        $url = $this->api_url_base . $url;
+        $jwt_header = $this->session->userdata('jwt');
+        $headers = array_merge($jwt_header, $headers);
+        return $this->fire_api_call($method, $url, $data, $headers);
+    }
+
+    public function __call($name, $args) {
+        $magic_api_methods = ['api_get', 'api_post', 'api_put', 'api_delete'];
+        if (!in_array($name, $magic_api_methods)) {
+            throw new Exception("called unknown method: $name");
+        }
+        $http_method = strtoupper(explode('_', $name)[1]);
+        array_unshift($args, $http_method);
+        return call_user_func_array([$this, 'api_call'], $args);
     }
 
 }
