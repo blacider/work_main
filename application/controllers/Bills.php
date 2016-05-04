@@ -146,23 +146,10 @@ class Bills extends REIM_Controller {
                 $template = $config['template'];
             }
         }
-
-        $archive = 1;
-
-        log_message('debug','profile'.json_encode($profile['data']['profile']['group']));
-        // 需要获取部门信息
-        // 0 -- 无
-        // 1 -- 仅公司名称
-        // 2 -- 仅部门名称
-        // 3 -- 公司/部门
-
-        if ($this->should_use_new_pdf($company_id)) {
-            $url = "https://www.yunbaoxiao.com/report/rh?pdf=1&rid=" . implode(',',$rid) . "&with_note=" . $with_note . "&hide_merchants=" . $hide_merchants;
-        } else {
-            $url = "https://www.yunbaoxiao.com/report/report?&rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category . '&footer_format=' . $footer_format . "&hide_merchants=" . $hide_merchants;
-        }
+        $url = "https://www.yunbaoxiao.com/report/rh?pdf=1&rid=" . implode(',',$rid) . "&with_note=" . $with_note . "&hide_merchants=" . $hide_merchants;
         die(json_encode(array('url' => $url)));
     }
+
     public function download_report()
     {
         $this->need_group_casher();
@@ -238,13 +225,7 @@ class Bills extends REIM_Controller {
                 $template = $config['template'];
             }
         }
-
-        $archive = 1;
-        if ($this->should_use_new_pdf($company_id)) {
-            $url = "https://www.yunbaoxiao.com/report/rh?pdf=1&rid=" . implode(',',$rid) . "&with_note=" . $with_note . "&hide_merchants=" . $hide_merchants;
-        } else {
-            $url = "https://www.yunbaoxiao.com/report/report?&rid=" . implode(',',$rid) . "&with_note=" . $with_note ."&company=" . $company ."&template=" . $template . "&archive=1&catetable=" . $_splite_by_category . '&footer_format=' . $footer_format . "&hide_merchants=" . $hide_merchants;
-        }
+        $url = "https://www.yunbaoxiao.com/report/rh?pdf=1&rid=" . implode(',',$rid) . "&with_note=" . $with_note . "&hide_merchants=" . $hide_merchants;
         die(json_encode(array('url' => $url)));
     }
 
@@ -767,16 +748,5 @@ class Bills extends REIM_Controller {
         die(json_encode($_data));
     }
 
-    private function should_use_new_pdf($company_id) {
-        $legacy_company_ids = [
-            333, # 人人车
-            431, # 酷表族
-            478, # 戈壁
-        ];
-        if (in_array($company_id, $legacy_company_ids)) {
-            return false;
-        }
-        return true;
-    }
 
 }
