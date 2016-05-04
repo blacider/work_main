@@ -75,84 +75,8 @@ class Bills extends REIM_Controller {
         log_message('debug','permission:' . json_encode($buf));
         die(json_encode($buf));
     }
-    public function download_single_report()
-    {
-        $error = $this->session->userdata('login_error');
-        $this->session->unset_userdata('login_error');
-        // 重新获取
-        $profile = $this->user->reim_get_user();
-        log_message('debug','#####'.json_encode($profile));
-        $group = $profile['data']['profile']['group'];
-        $company_id = $profile['data']['profile']['gid'];
-        if($profile){
-            $config = $profile['data']['profile'];
-            if(array_key_exists('group',$config))
-            {
-                if(array_key_exists('config',$profile['data']['profile']['group']))
-                {
-                    $config = $profile['data']['profile']['group']['config'];
-                }
-            }
-            else
-            {
-                $config ='';
-            }
-        }
-        $with_note = 1;
-        $footer_format = 0;
-        $template = 'a4.yaml';
-        $_splite_by_category = 0;
-        $_rid = $this->input->post('chosenids');
-        $_rid = $this->input->post('chosenids');
-        $rid = array();
-        foreach($_rid as $r)
-        {
-            array_push($rid,$this->reim_cipher->encode($r));
-        }
-        $company = urlencode($group['group_name']);
-        $hide_merchants = 0;
-        if($config) {
-            $config = json_decode($config,True);
-            $with_no_note = 0;
-            if(($config) && (array_key_exists('export_no_note', $config)) && ($config['export_no_note']))
-            {
-                $with_no_note = $config['export_no_note'];
-            }
-            if(($config) && (array_key_exists('hide_merchants', $config)) && ($config['hide_merchants']))
-            {
-                $hide_merchants = $config['hide_merchants'];
-            }
-            $_splite_by_category = 0;
-            if(($config) && (array_key_exists('footer_format', $config)) && ($config['footer_format']))
-            {
-                $footer_format = $config['footer_format'];
-            }
-            if(($config) && (array_key_exists('same_category_pdf', $config)) && ($config['same_category_pdf']))
-            {
-                $_splite_by_category = $config['same_category_pdf'];
-            }
-            //log_message('debug','note:'.$with_no_note);
 
-            if(intval($with_no_note) == 1)
-            {
-                $with_note = 0;
-            }
-            else
-            {
-                $with_note = 1;
-            }
-            if(($config) && (array_key_exists('template', $config)) && ($config['template']))
-            {
-                $template = $config['template'];
-            }
-        }
-        $url = "https://www.yunbaoxiao.com/report/rh?pdf=1&rid=" . implode(',',$rid) . "&with_note=" . $with_note . "&hide_merchants=" . $hide_merchants;
-        die(json_encode(array('url' => $url)));
-    }
-
-    public function download_report()
-    {
-        $this->need_group_casher();
+    public function download_report() {
         $error = $this->session->userdata('login_error');
         $this->session->unset_userdata('login_error');
         // 重新获取
