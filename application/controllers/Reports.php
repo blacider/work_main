@@ -310,6 +310,7 @@ class Reports extends REIM_Controller {
             $export = ($d['status'] === 1)   ? 'gray' : 'grey';
 
             $base_icon = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">';
+            
             $show_icon = '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>';
             $edit_icon = '<span class="ui-icon ' . $edit . ' ui-icon-pencil tedit" data-id="' . $d['id'] . '"></span>';
             $export_icon = '<span class="ui-icon ' . $export . '  fa-sign-in texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>';
@@ -321,13 +322,13 @@ class Reports extends REIM_Controller {
             if(in_array($d['status'],[0,3]))
             {
                 if ($d['pa_approval'] != 1)
-                    $d['options'] = $base_icon . $edit_icon . $trash_icon . $download_icon . $end_icon;
+                    $d['options'] = $base_icon . $edit_icon . $trash_icon . $export_icon . $download_icon . $end_icon;
                 else
-                    $d['options'] = $base_icon . $edit_icon . $download_icon . $end_icon;
+                    $d['options'] = $base_icon . $edit_icon . $download_icon . $export_icon . $end_icon;
             }
             else if(in_array($d['status'],[1]))
             {
-                $d['options'] = $base_icon . $show_icon .  $export_icon . $download_icon . $end_icon;
+                $d['options'] = $base_icon . $show_icon .  $export_icon .$download_icon . $end_icon;
             }
             else if(in_array($d['status'],[2]))
             {
@@ -1037,7 +1038,7 @@ class Reports extends REIM_Controller {
                 if($d['mdecision'] == 1 && !$d['cc_flag']){
                     $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-decision="1"  data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-decision="1" data-id="' . $d['id'] . '"></span><span class="ui-icon ' . $edit . ' fa fa-check tpass" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  ui-icon-closethick ' . $trash . '  fa fa-times tdeny" data-id="' . $d['id'] . '"></span></div>';
                 } else {
-                    $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span></div>';
+                    $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in ' . $exports . '  fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table" data-toggle="modal"></span>' . $download_icon  . '</div>';
                 }
             }
             $d['date_str'] = date('Y年m月d日', $d['createdt']);

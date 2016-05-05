@@ -68,6 +68,26 @@ function bind_event() {
 			$('#report_id').val(_id);
 		});
 	});
+	$('.tdown').each(function() {
+        $(this).click(function() {
+            var _id = $(this).data('id');
+            var chosen_id = [];
+            chosen_id.push(_id);
+            $.ajax({
+                url: __BASE + "/bills/download_report",
+                method: "post",
+                dataType: "json",
+                //data:{"chosenids":chosenids},
+                data: {
+                    "chosenids": chosen_id
+                },
+                success: function(data) {
+                    location.href = data['url'];
+                },
+                error: function(a, b) {}
+            });
+        });
+    });
 }
 var selectRows = [];
 var IF_SELECT_ALL = 0;

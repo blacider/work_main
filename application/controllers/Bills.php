@@ -351,6 +351,10 @@ class Bills extends REIM_Controller {
             $d['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">'
                 . '<span class="ui-icon ui-icon ace-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . ''. $extra
                 . '</div>';
+            if ($status == 2) {
+                $download_icon = '<span class="ui-icon ace-icon fa fa-download ' . 'blue' . '  tdown" data-id="' . $d['id'] . '"></span>';
+                $d['options'] = '<div class="action-buttons ui-pg-div ui-inline-del" data-id="' . $d['id'] . '">' . '<span class="ui-icon fa fa-search-plus tdetail" data-id="' . $d['id'] . '"></span>' . '<span class="ui-icon  fa-sign-in grey fa fa-times texport" data-id="' . $d['id'] . '" href="#modal-table1" data-toggle="modal"></span>' . $download_icon  . '</div>';
+            }
             array_push($_data, $d);
         }
         //log_message('debug','alvayang _data:' . json_encode($_data));
