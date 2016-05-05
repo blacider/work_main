@@ -1207,9 +1207,6 @@ class Members extends REIM_Controller {
         if($info['status'] > 0){
             $info = $info['data'];
             $group = $info['group'];
-            if ($group["image_url"] == '') {
-                $group["image_url"] = $group["inherited_image_url"];
-            }
             $member = $info['member'];
             $mid = array();
             foreach($member as $m){
