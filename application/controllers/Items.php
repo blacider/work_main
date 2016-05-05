@@ -970,7 +970,6 @@ class Items extends REIM_Controller {
 
             log_message('debug','default_customization:' . json_encode($default_customization));
             $item_data = $this->items->get_by_id($id);
-//            $obj = $this->items->update_item($id, $amount, $category, $tags, $timestamp, $merchant, $type, $note, $images,$__extra,'',$currency,$rate);
             $obj = $this->items->update_item($id,$default_customization);
 
             if(!$obj['status']) {
@@ -978,8 +977,8 @@ class Items extends REIM_Controller {
             }
 
         }
-        else
-        {
+
+        else {
             $obj = $this->items->update($common_item_input);
             if($obj && array_key_exists('data',$obj) && array_key_exists('status',$obj['data'][0]) && $obj['data'][0]['status'] <= 0)
             {

@@ -56,7 +56,7 @@ function bind_event() {
             var chosen_id = [];
             chosen_id.push(_id);
             $.ajax({
-                url: __BASE + "/bills/download_single_report",
+                url: __BASE + "/bills/download_report",
                 method: "post",
                 dataType: "json",
                 //data:{"chosenids":chosenids},
@@ -235,7 +235,7 @@ try {
         scrollLeftOffset: "83%",
         viewrecords: true,
         //scroll: 1, // set the scroll property to 1 to enable paging with scrollbar - virtual loading of records
-        emptyrecords: '没有数据', // the message will be displayed at the bottom 
+        emptyrecords: '没有数据', // the message will be displayed at the bottom
         pager: pager_selector,
         //viewsortcols: [true,'vertical',false],
         viewsortcols: [true, 'vertical', true]

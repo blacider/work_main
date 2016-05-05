@@ -90,16 +90,12 @@ class Items_Model extends Reim_Model {
         log_message('debug','update_item_back:'.$buf);
         return $obj;
     }
-    public function get_list(){
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $url = $this->get_url('sync/0');
-        $buf = $this->do_Get($url, $jwt);
-        log_message("debug", $buf);
-        $obj = json_decode($buf, true);
-        return $obj;
-    }
 
+    public function get_list(){
+        $buf = $this->api_get('sync/0');
+        //log_message("debug", $buf);
+        return json_decode($buf, true);
+    }
 
     public function get_exports($id, $mail){
         $jwt = $this->session->userdata('jwt');
@@ -193,11 +189,8 @@ class Items_Model extends Reim_Model {
             $_data['rid'] = $data['rid'];
         }
         $_data['items'] = json_encode($items);
-        $jwt = $this->session->userdata('jwt');
-        $url = $this->get_url('item');
-        $buf = $this->do_Post($url, $_data, $jwt, 1);
+        $buf = $this->api_post('item', $_data);
         log_message('debug','item_create_data:' . json_encode($data));
-        log_message('debug','item_create_url:' . json_encode($url));
         log_message('debug','item_create_back:' . json_encode($buf));
         $obj = json_decode($buf, true);
         return $obj;
@@ -205,10 +198,7 @@ class Items_Model extends Reim_Model {
 
     public function remove($id = 0){
         if($id == 0) return false;
-        $jwt = $this->session->userdata('jwt');
-        $url = $this->get_url('item/'. $id);
-        $data = array();
-        $buf = $this->do_Delete($url, $data, $jwt);
+        $buf = $this->api_delete('item/'. $id);
         $obj = json_decode($buf, true);
         return $obj;
     }
@@ -231,7 +221,6 @@ class Items_Model extends Reim_Model {
         $s = array(
             'id' => $data['id'],
             'local_id' => 1,
-//<<<<<<< HEAD
             'category' => $data['category'],
             'amount' => $data['amount'],
             'uids' => $data['uids'],
@@ -254,11 +243,8 @@ class Items_Model extends Reim_Model {
         );
         array_push($items, $s);
         $data = array('items' => json_encode($items));
-        $jwt = $this->session->userdata('jwt');
-        $url = $this->get_url('item');
-        $buf = $this->do_Put($url, $data, $jwt, 1);
+        $buf = $this->api_put('item', $data);
         log_message('debug','update_item_data:' . json_encode($data));
-        log_message('debug','update_item_url:' . json_encode($url));
         log_message('debug','update_item_back:' . json_encode($buf));
         $obj = json_decode($buf, true);
         return $obj;

@@ -39,12 +39,12 @@ class Report_Model extends Reim_Model {
     }
 
     public function get_report_by_status_and_query(
-        $status, 
-        $keyword, 
-        $dept, 
-        $submit_startdate, 
-        $submit_enddate, 
-        $approval_startdate, 
+        $status,
+        $keyword,
+        $dept,
+        $submit_startdate,
+        $submit_enddate,
+        $approval_startdate,
         $approval_enddate
     ) {
         $jwt = $this->session->userdata('jwt');
@@ -154,19 +154,17 @@ class Report_Model extends Reim_Model {
 
         return $buf;
     }
-    public function sendout($rid,$email)
-    {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $url = $this->get_url('exports');
+
+    public function export_pdf($rids, $email=null) {
         $data = array(
-            'rid' => $rid
-            ,'email' => $email
+            'rid' => $rids,
+            'email' => $email,
         );
-        $buf = $this->do_Post($url,$data,$jwt);
-        log_message("debug","send_report".json_encode($buf));
+        $buf = $this->api_post('exports', $data);
+        log_message("debug", "send_report: ".json_encode($buf));
         return $buf;
     }
+
     public function get_permission($rid) {
         $jwt = $this->session->userdata('jwt');
         log_message("debug", $rid);
@@ -201,10 +199,10 @@ class Report_Model extends Reim_Model {
     }
 
     public function get_bills_by_status_and_query($status = 2, $keyword, $dept, $startdate, $enddate){
-        
+
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-        
+
         $data = array(
             'keyword='. $keyword,
             'dept='. $dept,
@@ -357,7 +355,7 @@ class Report_Model extends Reim_Model {
     public function multi_report_flow($rids) {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-        
+
         $url = $this->get_url("report_flow");
         $data = array(
             'rids' => implode(',', $rids),
@@ -367,7 +365,7 @@ class Report_Model extends Reim_Model {
         $obj = json_decode($buf, true);
         return $obj;
     }
-    
+
     public function submit_check($manager_ids, $iids, $template_id, $extras){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;

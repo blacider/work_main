@@ -162,9 +162,8 @@ class Reports extends REIM_Controller {
     public function sendout() {
         $rid = $this->input->post('report_id');
         $email = $this->input->post('email');
-        $buf = $this->reports->sendout($rid,$email);
-        log_message("debug","###".json_encode($buf));
-        die($buf);
+        $buf = $this->reports->export_pdf($rid, $email);
+        echo $buf;
     }
 
     public function index($search='',$type = 1) {
