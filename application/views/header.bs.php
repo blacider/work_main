@@ -63,6 +63,14 @@ var __BASE = "<?php echo $base_url; ?>";
     <!--[if IE]>
     <script type="text/javascript">
         window.jQuery || document.write("<script src='/static/ace/js/jquery1x.min.js'>" + "<" + "/script>");
+
+        if (!window.console || !console.firebug){
+            var names = ["log", "debug", "info", "warn", "error", "assert", "dir", "dirxml", "group", "groupEnd", "time", "timeEnd", "count", "trace", "profile", "profileEnd"];
+
+            window.console = {};
+            for (var i = 0; i < names.length; ++i)
+                window.console[names[i]] = function() {}
+        }
     </script>
     <![endif]-->
 
@@ -91,13 +99,6 @@ var __BASE = "<?php echo $base_url; ?>";
 <script src="/static/third-party/jg/jquery.jgrowl.min.js"></script>
 <script src="/static/js/jquery.cookie.js"></script>
 <script src="/static/js/libs/utils.js"></script>
-
-<!--[if IE 6]>
-<script src="/static/js/DD_belatedPNG_0.0.8a-min.js"></script>
-<script>
-DD_belatedPNG.fix('*');
-</script>
-<![endif]-->
 
 <style type="text/css">
     .jGrowl-close {
