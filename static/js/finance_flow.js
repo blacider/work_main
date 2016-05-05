@@ -74,7 +74,7 @@ function bind_event() {
             var chosen_id = [];
             chosen_id.push(_id);
             $.ajax({
-                url: __BASE + "/bills/download_single_report",
+                url: __BASE + "/bills/download_report",
                 method: "post",
                 dataType: "json",
                 //data:{"chosenids":chosenids},
