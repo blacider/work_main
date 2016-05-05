@@ -91,12 +91,45 @@
 				}
 
 				var map = rs['data'];
-				var rs = [];
+				var canPayArray = [];
+				var otherPayArray = [];
+
 				for(var id in map) {
 					if(map[id]) {
-						rs.push(id);
+						canPayArray.push(id);
+					} else {
+						otherPayArray.push(id);
 					}
 				}
+
+				if(canPayArray.length==0) {
+					var dialog = new CloudDialog({
+						title: '12',
+						content: '当前无可微信支付的报销单',
+						ok: function (e) {
+							this.close();
+						}
+					});
+					dialog.showModal();
+					return
+				}
+
+				var str = '去支付报销单';
+				if(otherPayArray.length != ids.length && otherPayArray.length>0) {
+					str = '有'+otherPayArray.length + '条报销单不支持转账，是否继续？' ;
+				}
+
+				var dialog = new CloudDialog({
+					content: str,
+					ok: function (e) {
+						window.open('/')
+						this.close();
+					}
+				});
+				dialog.showModal();
+
+				return
+
 
 				doPayOneByOne(0, rs, {
 					interruptHandler: function (index, list) {

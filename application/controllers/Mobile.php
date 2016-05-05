@@ -6,10 +6,9 @@ class Mobile extends Reim_Controller {
 	}
 
     public function weixin_wallet(){
-    	// $profile = $this->session->userdata('profile');
-    	$profile = array(
-    		'nickname'=> 'dasdf'
-		);
-   		$this->load->view('mobile/wallet', $profile);
+   		$this->load->view('mobile/wallet', array());
     }
+
+    
+
 }

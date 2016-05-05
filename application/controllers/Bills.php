@@ -12,6 +12,13 @@ class Bills extends REIM_Controller {
         $this->load->helper('report_view_utils');
     }
 
+    // 微信支付新开页面
+    public function paylist()
+    {
+        $ids = $this->$input('ids');
+        $ids = explode(',', $ids);
+    }
+
     public function report_finance_deny()
     {
            $rid = $this->input->post('rid');
