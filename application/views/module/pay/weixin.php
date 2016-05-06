@@ -18,7 +18,10 @@
         <div class="ui-loading-layer" ng-if="!isLoaded">
             <div class="ui-loading-icon"></div>
         </div>
-
+        <div class="company">
+        	
+        </div>
+	</div>
 	<!-- basic js resource here -->
 
 	<script src="/app/libs/angular/angular.min.js"></script>
