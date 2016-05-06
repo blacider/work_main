@@ -986,8 +986,8 @@ if(in_array($profile['admin'],[1,3,4])){
                         $('#cropper-img').cropper({
                           aspectRatio: 1,
                           viewMode: 1,
-                          crop: function (data) {
-                          }
+                          checkCrossOrigin:false,
+                          checkOrientation:false,
                         });
                     }
                     avtive = true;
