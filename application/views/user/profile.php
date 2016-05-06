@@ -39,7 +39,7 @@
                 <div class="col-xs-12 col-sm-12">
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">头像</label>
-                        <div class="col-xs-6 col-sm-6 filePicker">
+                        <div class="col-xs-6 col-sm-6">
                             <?php $user = $member; ?>
                             <?php $disabled = $self == 1 ? '' : 'disabled'; ?>
                             <a id="btn_cimg" class="filePicker"  style="height:144px;width:155px" class="btn btn-primary btn-white">
@@ -948,6 +948,11 @@ if(in_array($profile['admin'],[1,3,4])){
 
     $(document).ready(function(){
         if(is_other == 0) {
+            (function bindCroppClickEvent() {
+                $("#avatar-modal .btn-upload").click(function(event) {
+                    uploader.reset();
+                });
+            })();
             var active = false;
             var uploader = WebUploader.create({
                 // 选完文件后，是否自动上传。
@@ -989,12 +994,12 @@ if(in_array($profile['admin'],[1,3,4])){
                           checkCrossOrigin:false,
                           checkOrientation:false,
                         });
+                        $("#avatar-modal").modal({backdrop: 'static', keyboard: false});
                     }
                     avtive = true;
                     $("#avatar-modal").modal('show');
                 }
             });
-            $('#cropper-img').cropper('getData');
         }
         get_province();
         if(__error) show_notify(__error);
