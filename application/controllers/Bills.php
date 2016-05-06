@@ -15,8 +15,11 @@ class Bills extends REIM_Controller {
     // 微信支付新开页面
     public function paylist()
     {
-        $ids = $this->$input('ids');
-        $ids = explode(',', $ids);
+        $custom_data = array();
+        $custom_data['CBX_UTOKEN'] = $this->session->userdata('jwt');
+        $custom_data['CBX_UTOKEN'] =
+
+        $this->load->view('module/pay/weixin', $custom_data);
     }
 
     public function report_finance_deny()

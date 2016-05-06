@@ -122,7 +122,7 @@
 				var dialog = new CloudDialog({
 					content: str,
 					ok: function (e) {
-						window.open('/')
+						window.open('/bills/paylist?rids=' + canPayArray.join(','));
 						this.close();
 					}
 				});
