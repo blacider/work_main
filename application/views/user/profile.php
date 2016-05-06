@@ -705,39 +705,29 @@ if(in_array($profile['admin'],[1,3,4])){
 </div>
 <div class="modal fade" id="avatar-modal" aria-hidden="false" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 640px;margin: 0 auto;">
             <form class="avatar-form" action="crop.php" enctype="multipart/form-data" method="post">
-                <div class="modal-header">
+                <div class="modal-header" style="background-color: #F2F6FA;">
                     <button class="close" data-dismiss="modal" type="button">&times;</button>
-                    <h4 class="modal-title" id="avatar-modal-label">更换头像</h4>
+                    <h4 class="modal-title" id="avatar-modal-label">编辑头像</h4>
                 </div>
                 <div class="modal-body">
                     <div class="avatar-body">
 
                         <!-- Upload image and data -->
                         <div class="avatar-upload">
-                            <input class="avatar-src" name="avatar_src" type="hidden"/>
+                            <input class="avatar-src" name="avatar_imageId" type="hidden"/>
                             <input class="avatar-data" name="avatar_data" type="hidden"/>
-                            <label for="avatarInput">头像上传</label>
-                            <input class="avatar-input" id="avatarInput" name="avatar_file" type="file"/>
                         </div>
 
                         <!-- Crop and preview -->
-                        <div class="row">
-                            <div class="col-md-9">
-                                <div class="avatar-wrapper"></div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="avatar-preview preview-lg"></div>
-                                <div class="avatar-preview preview-md"></div>
-                                <div class="avatar-preview preview-sm"></div>
-                            </div>
+                        <div class="cropper-content">
+                            <img id="cropper-img" src="" alt="">
                         </div>
-                        <div class="row">
-                            <div class="col-md-offset-3 col-md-9">
-                                <a href="javascript:void(0)" class="btn-cancel ui-button"><img src="/static/img/mod/template/icon/cancel@2x.png" alt="">取消</a>
-                                <a href="javascript:void(0)" class="btn-save ui-button"><img src="/static/img/mod/template/icon/yes@2x.png" alt="">保存</a>
-                            </div>
+                        <div class="cropper-footer">
+                            <a class="btn-upload ui-button"><img src="/static/img/mod/template/icon/cancel@2x.png" alt="">重新上传</a>
+                            <a href="javascript:void(0)" class="btn-save ui-button"><img src="/static/img/mod/template/icon/yes@2x.png" alt="">保存</a>
+                            <a href="javascript:void(0)" class="btn-cancel ui-button"><img src="/static/img/mod/template/icon/cancel@2x.png" alt="">取消</a>
                         </div>
                     </div>
                 </div>
@@ -788,42 +778,6 @@ if(in_array($profile['admin'],[1,3,4])){
         $('#loading').hide();
         //$.nmTop().close();
     }
-    if(is_other == 0) {
-        var uploader = WebUploader.create({
-            // 选完文件后，是否自动上传。
-            auto: true,
-                // swf文件路径
-                swf: '/static/third-party/webUploader/Uploader.swf',
-                // 文件接收服务端。
-                server: '<?php echo base_url('items/images'); ?>',
-                // 选择文件的按钮。可选。
-                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-                pick: '.filePicker',
-                // 只允许选择图片文件。
-                accept: {
-                    title: 'Images',
-                        extensions: 'gif,jpg,jpeg,bmp,png',
-                        mimeTypes: 'image/*'
-                }
-
-        });
-
-        uploader.on( 'uploadProgress', function( file, percentage ) {
-            show_loading();
-        });
-        uploader.on( 'uploadSuccess', function( file, resp ) {
-            close_loading();
-            if(resp.status > 0) {
-                var _id = resp['data']['id'];
-                var _src = resp['data']['url'];
-                $('#avatar').val(_id);
-                $('#avatar_src').attr( 'src', _src);
-            }
-        });
-    }
-
-
-
     var __PROVINCE = Array();
     var _ifCreateCard = true;
     function get_province(){
@@ -993,6 +947,55 @@ if(in_array($profile['admin'],[1,3,4])){
 
 
     $(document).ready(function(){
+        if(is_other == 0) {
+            var active = false;
+            var uploader = WebUploader.create({
+                // 选完文件后，是否自动上传。
+                auto: true,
+                    // swf文件路径
+                    swf: '/static/third-party/webUploader/Uploader.swf',
+                    // 文件接收服务端。
+                    server: '<?php echo base_url('items/images'); ?>',
+                    // 选择文件的按钮。可选。
+                    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                    pick: '.filePicker',
+                    // 只允许选择图片文件。
+                    accept: {
+                        title: 'Images',
+                            extensions: 'gif,jpg,jpeg,bmp,png',
+                            mimeTypes: 'image/*'
+                    }
+
+            });
+
+            uploader.on( 'uploadProgress', function( file, percentage ) {
+                show_loading();
+            });
+            uploader.on( 'uploadSuccess', function( file, resp ) {
+                close_loading();
+                if(resp.status > 0) {
+                    var _id = resp['data']['id'];
+                    var _src = resp['data']['url'];
+                    $('#avatar').val(_id);
+                    $('#avatar-src').val(_id);
+                    //$('#avatar_src').attr( 'src', _src);
+                    if (active) {
+                        $('#cropper-img').cropper('replace', _src);
+                    } else {
+                        $('#cropper-img').parent().empty().append('<img id = "cropper-img" src="' + _src + '">');
+                        $('#cropper-img').cropper({
+                          aspectRatio: 1,
+                          viewMode: 1,
+                          crop: function (data) {
+                          }
+                        });
+                    }
+                    avtive = true;
+                    $("#avatar-modal").modal('show');
+                }
+            });
+            $('#cropper-img').cropper('getData');
+        }
         get_province();
         if(__error) show_notify(__error);
         $('.chosen-select').each(function(){

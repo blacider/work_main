@@ -15,7 +15,6 @@ font:bold 11px Arial, Helvetica, sans-serif;
 #avatar-modal a {
     height: 45px;
     width: 100px;
-    margin: 30px 0 0 10px;
     display: inline-block;
     background: #fff;
     color: #273e52;
@@ -25,10 +24,13 @@ font:bold 11px Arial, Helvetica, sans-serif;
 #avatar-modal a.btn-save {
     border: none;
     float: right;
-    margin-right: 70px;
     color: #fff;
     background: #596774;
     border-bottom: 2px solid #273e52;
+}
+.btn-cancel {
+    float: right;
+    margin-right: 20px;
 }
 .ui-button {
     display: inline-block;
@@ -46,4 +48,26 @@ font:bold 11px Arial, Helvetica, sans-serif;
 .ui-button img {
     height: 21px;
     margin-right: 9px;
+}
+#cropper-img {
+    max-width: 100%;
+}
+.cropper-footer {
+    padding: 15px 25px;
+}
+.cropper-content {
+    width: 380px;
+    height: 380px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+#avatarInput {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
 }
