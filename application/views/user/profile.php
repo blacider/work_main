@@ -1,19 +1,17 @@
 <style>
 .webuploader-pick  {
-background:#fff !important;
-
+    background:#fff !important;
 }
 #loading{
-position:absolute;
-width:300px;
-top:0px;
-left:50%;
-margin-left:-150px;
-text-align:center;
-padding:7px 0 0 0;
-font:bold 11px Arial, Helvetica, sans-serif;
+    position:absolute;
+    width:300px;
+    top:0px;
+    left:50%;
+    margin-left:-150px;
+    text-align:center;
+    padding:7px 0 0 0;
+    font:bold 11px Arial, Helvetica, sans-serif;
 }
-
 #weixin-wallet {
     position: relative;
     line-height: 34px;
@@ -705,6 +703,51 @@ if(in_array($profile['admin'],[1,3,4])){
         </div>
     </div>
 </div>
+<div class="modal fade" id="avatar-modal" aria-hidden="false" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form class="avatar-form" action="crop.php" enctype="multipart/form-data" method="post">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal" type="button">&times;</button>
+                    <h4 class="modal-title" id="avatar-modal-label">更换头像</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="avatar-body">
+
+                        <!-- Upload image and data -->
+                        <div class="avatar-upload">
+                            <input class="avatar-src" name="avatar_src" type="hidden"/>
+                            <input class="avatar-data" name="avatar_data" type="hidden"/>
+                            <label for="avatarInput">头像上传</label>
+                            <input class="avatar-input" id="avatarInput" name="avatar_file" type="file"/>
+                        </div>
+
+                        <!-- Crop and preview -->
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="avatar-wrapper"></div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="avatar-preview preview-lg"></div>
+                                <div class="avatar-preview preview-md"></div>
+                                <div class="avatar-preview preview-sm"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                <a href="javascript:void(0)" class="btn-cancel ui-button"><img src="/static/img/mod/template/icon/cancel@2x.png" alt="">取消</a>
+                                <a href="javascript:void(0)" class="btn-save ui-button"><img src="/static/img/mod/template/icon/yes@2x.png" alt="">保存</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="modal-footer">
+                  <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                </div> -->
+            </form>
+        </div>
+    </div>
+</div><!-- /.modal -->
 <div id="loading">
                     <img src="/static/images/loading.gif">
 </div>
@@ -713,7 +756,7 @@ if(in_array($profile['admin'],[1,3,4])){
 <!--  <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
 <!-- <script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script> -->
 <link rel="stylesheet" type="text/css" href="/static/third-party/webUploader/webuploader.css">
-
+<link rel="stylesheet" href="/static/third-party/cropper/cropper.min.css">
 <!--引入JS-->
 <script type="text/javascript" src="/static/third-party/webUploader/webuploader.js"></script>
 
@@ -729,6 +772,8 @@ if(in_array($profile['admin'],[1,3,4])){
 <script src="/static/js/widgets/input-suggestion.js"></script>
 <script src="/static/plugins/cloud-dialog/dialog.js"></script>
 <link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">
+<script src="/static/third-party/cropper/cropper.min.js"></script>
+<link rel="stylesheet" href="/static/css/profile.css">
 <script>
     var __BASE = "<?php echo $base_url; ?>";
     var flag = 0;
