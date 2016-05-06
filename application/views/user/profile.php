@@ -951,6 +951,13 @@ if(in_array($profile['admin'],[1,3,4])){
             (function bindCroppClickEvent() {
                 $("#avatar-modal .btn-upload").click(function(event) {
                     uploader.reset();
+                    $(".webuploader-element-invisible").click()
+                });
+                $("#avatar-modal .btn-cancel").click(function(event) {
+                    $("#avatar-modal").modal("hide");
+                });
+                $("#avatar-modal .btn-save").click(function(event) {
+                    
                 });
             })();
             var active = false;
