@@ -1,12 +1,6 @@
 (function () {
 	var rids = Utils.queryString(location.search)['rids'].split(',');
 
-
-
-	// $query = 'ids=' . implode('|', $ids);
-	// $url = $this->get_url('report_finance_flow/list/1?' . $query);
-	// log_message('debug', $url);
-
 	function getReportArray(rids) {
 		return Utils.api('/report_finance_flow/list/1', {
 			env: 'miaiwu',
@@ -25,21 +19,52 @@
 		});
 	};
 
+	function getCode(data) {
+		// data: {
+		// 	email: ''
+		// 	phone:''
+		// }
+		return Utils.api('/vcode/wxpay_auth', {
+			method: 'post',
+			env: 'miaiwu',
+			data: data
+		}).done(function (rs) {
+			if(rs['status']<=0) {
+				return
+			}
+		});
+	};
+
 	return {
 		init: function () {
 			angular.module('reimApp', []).controller('PayListController', ["$scope", function ($scope) {
-				// body...
-				$scope.a = 12;
+
 				// $scope.isLoaded = true;
 
 				getReportArray(rids).done(function (rs) {
+
 					if (rs['status'] < 0) {
 					    return show_notify('找不到模版');
 					}
 
-					$scope.reportsArray = rs['data'];
+					$scope.reportArray = rs['data']['data'];
+
+					$scope.isLoaded = true;
+
+					$scope.$apply();
 
 				});
+
+				// $scope handler here
+				$scope.onRemoveItem = function (item) {
+					var index = _.findIndex($scope.reportArray, {
+						id: item.id
+					});
+
+					if(index>=0) {
+						$scope.reportArray.splice(index, 1);
+					}
+				};
 
 			}]);
 		}

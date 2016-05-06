@@ -3,3 +3,33 @@
 	margin: 0 auto;
 	height: 2000px;
 }
+
+.mod-reim-paylist .sub-mod {
+	border: 1px solid #67727D;
+	border-radius: 3px;
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+
+.mod-reim-paylist .sub-mod .head {
+	background: #67727D;
+	color: #fff;
+	padding: 8px 12px;
+}
+
+.mod-reim-paylist .sub-mod .content {
+	padding: 12px;
+
+}
+table {
+	display: block;
+	width: 100%;
+}
+table td {
+	width: 200px;
+	text-align: center;
+}
+table thead {
+	background: #67727D;
+	color: #fff;
+}
