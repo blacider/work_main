@@ -38,45 +38,7 @@
 		});
 	};
 
-	function doPayItem(data) {
-		// report_id 类型 - string, 描述 - 需处理的报销单ID。
-		// company_payhead_id 类型 - string, 描述 - 指定的公司支付户头ID。
-		// payway 类型 - string, 描述 - 指定的支付方式。
-		// description 类型 - string, 描述 - 支付描述信息。
-		return Utils.api('giro_transaction/pay_report', {
-			method: 'post',
-			env: 'miaiwu',
-			data: data
-		});
-	};
-
-	function doPayOneByOne(index, list, opts) {
-
-		if(index>=list.length) {
-			opts['completeHandler'](list, index);
-			return;
-		}
-
-		var item = list[index];
-		var itemData = {
-			report_id: item,
-			company_payhead_id: _COMPANY_PAYHEAD_['wechat_pub']['payhead_uid'],
-			payway: 'wechat_pub',
-			description: '批量进行企业向员工微信钱包支付（串行）'
-		}
-
-		doPayItem(itemData).done(function (rs) {
-			if(rs['status']<=0) {
-				opts['interruptHandler'](index, list);
-				return show_notify(rs['data']['msg']);
-			}
-
-			opts['eachHandler'](index, list);
-
-			doPayOneByOne(index++, list);	
-			
-		});
-	}
+	
 
 	function onPay() {
 		$('.btn-pay').on('click', function (e) {
@@ -111,7 +73,7 @@
 						}
 					});
 					dialog.showModal();
-					return
+					return;
 				}
 
 				var str = '去支付报销单';
@@ -127,22 +89,6 @@
 					}
 				});
 				dialog.showModal();
-
-				return
-
-
-				doPayOneByOne(0, rs, {
-					interruptHandler: function (index, list) {
-						show_notify(index + ' is not ok');
-					},
-					eachHandler: function (index, list) {
-						show_notify(index + ' is ok and next will be done');
-					},
-					completeHandler: function (index, list) {
-						show_notify('success');	
-					}
-				})
-				
 			});
 		});
 	};

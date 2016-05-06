@@ -17,7 +17,8 @@ class Bills extends REIM_Controller {
     {
         $custom_data = array();
         $custom_data['CBX_UTOKEN'] = $this->session->userdata('jwt');
-        $custom_data['CBX_UTOKEN'] =
+        $profile = $this->session->userdata('profile');
+        $custom_data['UID'] = $profile['id'];
 
         $this->load->view('module/pay/weixin', $custom_data);
     }
