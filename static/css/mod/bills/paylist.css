@@ -95,6 +95,11 @@ textarea {
 	color: #666;
 }
 
+.btn-remove:hover {
+	text-decoration: underline;
+	color: blue;
+}
+
 .pay-done {
 	background: #ff575b;
 	padding: 4px;
