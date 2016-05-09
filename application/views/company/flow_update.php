@@ -198,6 +198,13 @@
                 show_notify("请添加人员");
                 return false;
             }
+            if (Number(step[step.length-1]['quota']) != -1) {
+                if (confirm("最后一个审批人额度有限，无法完成审批，将自动更改为无限额并保存，是否继续？")) {
+                    step[step.length-1]['quota'] = "-1.00";
+                } else {
+                    return false;
+                }
+            }
                   $.ajax({
                 type:"post",
                 url:__BASE+"company/flow_finance_update/"+id,
@@ -208,8 +215,10 @@
                 },
                 dataType:'json',
                 success:function(data){
-                        if(data.status == 1)
+                        if(data.status == 1) {
                             show_notify('保存成功');
+                            history.go(0);
+                        }
                         else
                             show_notify('保存失败');
                       // window.location.href=__BASE+"category/account_set";
