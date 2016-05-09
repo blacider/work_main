@@ -217,7 +217,7 @@
                 success:function(data){
                         if(data.status == 1) {
                             show_notify('保存成功');
-                            history.go(0);
+                            window.location.href = "/company/approval_flow";
                         }
                         else
                             show_notify('保存失败');
