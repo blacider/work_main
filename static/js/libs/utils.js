@@ -68,8 +68,7 @@
         },
         api: function(url, opts) {
             var def = $.Deferred();
-            var host = 'https://api.cloudbaoxiao.com';
-
+            var host = window._CONST_API_DOMAIN_;
             // ie8 XDomainRequest CORS不支持 headers 和 get post 之外的方法
             if(CONST_LTE_IE8) {
             	host = location.origin;
@@ -93,18 +92,17 @@
                 }
             }, opts);
 
-            if(opts['env']) {
-                // 防止线上代码用错api分支，wow
-                if(location.host.indexOf('yunbaoxiao.com')>=0) {
-                    opts['env'] = 'online';
-                }
-
+            if(opts['env']) { //true of false
                 // ie8 XDomainRequest CORS不支持 headers 和 get post 之外的方法
-                if(CONST_LTE_IE8) {
-                	opts['env'] = 'apiproxy';
+                if(!host) {
+                	return console.error(new Error('no api host is config'));
                 }
-
-                url = [host, opts['env'], url].join('/');
+                if(CONST_LTE_IE8) {
+	                url = [host, 'apiproxy', url].join('/');
+                } else {
+                	url = host + url;
+                	console.log('env', opts.env, url);
+                }
             } else {
                 url = '/' +  url;
             }

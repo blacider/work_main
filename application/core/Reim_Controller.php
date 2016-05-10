@@ -195,6 +195,8 @@ class REIM_Controller extends CI_Controller{
         }
         $custom_data['lte_ie8'] = $lte_ie8;
 
+        $api_url_base = $this->config->item('api_url_base');
+        $custom_data['api_url_base'] = $api_url_base;
         $this->load->view('header.bs.php', $custom_data);
         $this->load->view($menu_page, $custom_data);
         $this->load->view($view_name, $custom_data);

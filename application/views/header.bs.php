@@ -84,6 +84,7 @@
     <script type="text/javascript">
         if ('ontouchstart' in document.documentElement) document.write("<script src='/static/ace/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
         var __BASE = "<?php echo base_url(); ?>";
+        var _CONST_API_DOMAIN_ = "<?php echo $api_url_base; ?>";
     </script>
 
 <!-- page specific plugin scripts -->
