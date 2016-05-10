@@ -502,7 +502,7 @@
                                     callback.call(null, rs);
                                     return show_notify('获取数据失败');
                                 }
-                                $scope.originalReport = rs.data;
+                                $scope.originalReport = angular.copy(rs.data);
                                 $scope.report = rs.data;
                                 // 已经提交了的
                                 if ($scope.report.status == 1) {
@@ -544,8 +544,17 @@
 
                         var members = members['data'];
                         $scope.members = members['members'];
-                        $scope.suggestionMembers = historyMembersManager.getArray($scope.members);
                         $scope.originalMembers = angular.copy($scope.members);
+
+                        // 删除自己——新建报销单不能选择自己
+                        var selfIndex = _.findIndex($scope.members, {
+                            id: __UID__
+                        });
+                        if (selfIndex >= 0) {
+                            $scope.members.splice(selfIndex, 1);
+                        }
+
+                        $scope.suggestionMembers = historyMembersManager.getArray($scope.members);
                         if ($scope.__edit__) {
                             // 编辑无上级寻找上级
                             if ($scope.originalReport['receivers']['managers'].length == 0) {
@@ -612,13 +621,7 @@
                             if ($scope.superior) {
                                 $scope.superior.tag_for_superior = true;
                             }
-                            // 删除自己——新建报销单不能选择自己
-                            var selfIndex = _.findIndex($scope.members, {
-                                id: __UID__
-                            });
-                            if (selfIndex >= 0) {
-                                $scope.members.splice(selfIndex, 1);
-                            }
+                            
                             $scope.hasCC = JSON.parse(profileData['group']['config'] || '{}')['enable_report_cc'];
                         }
                         $scope.$apply();
@@ -1064,7 +1067,7 @@
                         // 寻找标准成员数据
                         var selectedMembers = [];
                         _.each($scope.originalReport['receivers']['managers'], function(item) {
-                            var one = _.find($scope.members, {
+                            var one = _.find($scope.originalMembers, {
                                 id: item.id + ''
                             });
                             if (one) {
@@ -1074,7 +1077,7 @@
                         $scope.selectedMembers = selectedMembers;
                         var selectedMembersCC = [];
                         _.each($scope.originalReport['receivers']['cc'], function(item) {
-                            var one = _.find($scope.members, {
+                            var one = _.find($scope.originalMembers, {
                                 id: item.id + ''
                             });
                             if (one) {
@@ -1178,7 +1181,11 @@
                     };
 
                     $scope.onCancel = function(e) {
-                        return window.location.href = '/reports/index';
+                        if($scope.is_approver) {
+                            window.location.href = "/reports/show/" + $scope.__report_id__ + '?tid=' + $scope.report.template_id;
+                        } else {
+                            window.location.href = "/reports";
+                        }
                     };
 
                     function getSuggestionDialog(data, isSubmitted) {
