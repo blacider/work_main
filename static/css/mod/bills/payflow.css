@@ -1,0 +1,67 @@
+.mod-pay-flow {
+
+
+}
+.mod-pay-flow .row {
+	height: 50px;
+}
+
+.mod-pay-flow .col-md-2 {
+	text-align: right;
+}
+
+
+
+.table-container {
+	border-top: 1px solid #ABABAB;
+	border: 1px solid #ABABAB;
+	border-radius: 3px;
+	border-right: none;
+	overflow: hidden;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	text-align: center;
+}
+table thead tr th {
+	height: 30px;
+	background-color: rgba(89, 102, 116, 0.8);
+	color: #fff;
+	text-align: center;
+	border-right: solid 1px #b9b9b9;
+}
+table tbody tr td {
+	height: 30px;
+	font-size: 14px;
+	color: #929292;
+	border-top: 1px solid #EEEEEE;
+	border-right: 1px solid #b9b9b9;
+}
+
+table tbody tr td.note {
+	max-width: 120px;
+	width: 120px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+table tfoot {
+	font-weight: border;
+	color: #4a4a4a;
+}
+
+.table-field table tfoot tr {
+	border-top: solid 1px #b9b9b9;
+    border-right: solid 1px #b9b9b9;
+}
+
+.table-field table tfoot td {
+	height: 30px;
+}
+.table-field table tfoot td.sum {
+	text-align: right;
+	padding: 0 12px;
+}
