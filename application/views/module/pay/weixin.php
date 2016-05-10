@@ -15,9 +15,17 @@
 
 </head>
 <body ng-app="reimApp">
+    <div class="cloud-layer">
+        <button class="close">╳</button>
+        <div class="cloud-layer-text"></div>
+        <div class="cloud-layer-icon"></div>
+        <div class="cloud-layer-content"></div>
+    </div>
+
     <div class="mod mod-reim-paylist" ng-controller="PayListController">
-        <div class="ui-loading-layer" ng-if="!isLoaded">
-            <div class="ui-loading-icon"></div>
+        <div class="ui-loading-layer" ng-if="false">
+            <div class="ui-loading-icon">
+            </div>
         </div>
         <div class="company sub-mod">
             <div class="head">企业信息</div>
@@ -28,8 +36,9 @@
 
         <div class="sub-mod">
             <div class="head">转账报销单</div>
-            <div class="content" ng-if="reportArray.length">
-                <div class="table-container">
+            <div class="content">
+                <div ng-if="reportArray.length==0">当前报销单已处理完成</div>
+                <div class="table-container" ng-if="reportArray.length">
                     <table>
                         <thead>
                             <tr>
@@ -39,7 +48,7 @@
                                 <th>提交人</th>
                                 <th>提交日期</th>
                                 <th>金额</th>
-                                <th>操作</th>
+                                <th>操作/状态</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,22 +60,21 @@
                                 <td>{{item.submitdt}}</td>
                                 <td>￥{{item.amount}}</td>
                                 <td>
-                                    <a class="btn-remove" ng-if="!item.__PAY_DONE__" ng-click="onRemoveItem(item)" href="">移除</a>
-                                    <a class="pay-done" ng-if="item.__PAY_DONE__" ng-click="onRemoveItem(item)">完成</a>
-
+                                    <a class="btn-remove" ng-if="!item.__PAY_DONE__" ng-click="onRemoveItem(item)" href="">移除</a>／
+                                    <a class="pay-done" ng-if="item.__PAY_DONE__">完成</a>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="description" ng-init="forTextAreaId = 'textareaDesc'">
+                <div class="description" ng-init="forTextAreaId = 'textareaDesc'" ng-if="reportArray.length">
                     <label for="{{textareaDesc}}">付款说明</label>
                     <textarea name="" ng-model="payDesc" id="{{textareaDesc}}" cols="30" rows="10"></textarea>
                 </div>
             </div>
         </div>
 
-        <div class="sub-mod">
+        <div class="sub-mod" ng-if="reportArray.length">
             <div class="head">付款信息</div>
             <div class="content">
                 <p>已开启用户姓名校验</p>
@@ -93,8 +101,7 @@
     <script src="/static/js/libs/utils.js"></script>
     <script src="/static/js/mod/bills/paylist.js"></script>
 
-    <script src="/static/plugins/cloud-dialog/dialog.js"></script>
-    <link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">
-    
+   
+
 </body>
 </html>

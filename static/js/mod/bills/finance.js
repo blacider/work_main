@@ -66,7 +66,6 @@
 
 				if(canPayArray.length==0) {
 					var dialog = new CloudDialog({
-						title: '12',
 						content: '当前无可微信支付的报销单',
 						ok: function (e) {
 							this.close();
@@ -84,6 +83,9 @@
 				var dialog = new CloudDialog({
 					content: str,
 					ok: function (e) {
+						var layer = new CloudLayer();
+						layer.show();
+
 						window.open('/bills/paylist?rids=' + canPayArray.join(','));
 						this.close();
 					}

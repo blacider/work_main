@@ -253,7 +253,7 @@
 							}
 						},
 						done: function (index, list) {
-							show_notify('success');	
+							// show_notify('success');	
 						}
 					})
 					

@@ -1,6 +1,10 @@
+body {
+	margin: 0;
+	padding: 0;
+}
 .mod-reim-paylist {
 	width: 960px;
-	margin: 0 auto;
+	margin: 12px auto;
 	color: #929292;
 }
 
