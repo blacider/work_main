@@ -38,8 +38,6 @@
 		});
 	};
 
-	
-
 	function onPay() {
 		$('.btn-pay').on('click', function (e) {
 			var ids = selectRows;
@@ -64,6 +62,8 @@
 					}
 				}
 
+				$('#modal-table-finish').modal('hide')
+
 				if(canPayArray.length==0) {
 					var dialog = new CloudDialog({
 						content: '当前无可微信支付的报销单',
@@ -75,22 +75,23 @@
 					return;
 				}
 
-				var str = '去支付报销单';
 				if(otherPayArray.length != ids.length && otherPayArray.length>0) {
-					str = '有'+otherPayArray.length + '条报销单不支持转账，是否继续？' ;
+					var str = '有'+otherPayArray.length + '条报销单不支持转账，是否继续？' ;
+					var dialog = new CloudDialog({
+						content: str,
+						ok: function (e) {
+							this.close();
+							var layer = new CloudLayer();
+							layer.show();
+							layer.content('<iframe src="' + '/bills/paylist?rids=' + canPayArray.join(',') + '"></iframe>')
+						}
+					});
+					dialog.showModal();
+				} else {
+					var layer = new CloudLayer();
+					layer.show();
+					layer.content('<iframe src="' + '/bills/paylist?rids=' + canPayArray.join(',') + '"></iframe>')
 				}
-
-				var dialog = new CloudDialog({
-					content: str,
-					ok: function (e) {
-						var layer = new CloudLayer();
-						layer.show();
-
-						window.open('/bills/paylist?rids=' + canPayArray.join(','));
-						this.close();
-					}
-				});
-				dialog.showModal();
 			});
 		});
 	};

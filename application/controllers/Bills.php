@@ -20,7 +20,7 @@ class Bills extends REIM_Controller {
         $profile = $this->session->userdata('profile');
         $custom_data['UID'] = $profile['id'];
 
-        $this->load->view('module/pay/weixin', $custom_data);
+        $this->load->view('module/pay/paylist', $custom_data);
     }
 
     public function report_finance_deny()

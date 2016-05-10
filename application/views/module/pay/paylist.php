@@ -15,15 +15,8 @@
 
 </head>
 <body ng-app="reimApp">
-    <div class="cloud-layer">
-        <button class="close">╳</button>
-        <div class="cloud-layer-text"></div>
-        <div class="cloud-layer-icon"></div>
-        <div class="cloud-layer-content"></div>
-    </div>
-
     <div class="mod mod-reim-paylist" ng-controller="PayListController">
-        <div class="ui-loading-layer" ng-if="false">
+        <div class="ui-loading-layer" ng-if="!isLoaded" style="position:  fixed;">
             <div class="ui-loading-icon">
             </div>
         </div>
@@ -60,8 +53,7 @@
                                 <td>{{item.submitdt}}</td>
                                 <td>￥{{item.amount}}</td>
                                 <td>
-                                    <a class="btn-remove" ng-if="!item.__PAY_DONE__" ng-click="onRemoveItem(item)" href="">移除</a>／
-                                    <a class="pay-done" ng-if="item.__PAY_DONE__">完成</a>
+                                    <a class="btn-remove" ng-click="onRemoveItem(item)" href="">移除</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -69,7 +61,7 @@
                 </div>
                 <div class="description" ng-init="forTextAreaId = 'textareaDesc'" ng-if="reportArray.length">
                     <label for="{{textareaDesc}}">付款说明</label>
-                    <textarea name="" ng-model="payDesc" id="{{textareaDesc}}" cols="30" rows="10"></textarea>
+                    <textarea name="" ng-model="desc" id="{{textareaDesc}}" cols="30" rows="10"></textarea>
                 </div>
             </div>
         </div>
@@ -80,7 +72,7 @@
                 <p>已开启用户姓名校验</p>
                 <div class="one-time-password">动态口令</div>
                 <div class="field-input">
-                    <input type="text" ng-model="vcode">
+                    <input class="btn-vcode" placeholder="请输入验证码" type="text" ng-model="vcode">
                 </div>
                 <button class="btn-send-code" ng-class="{'waiting': isWaiting}" ng-click="onSendCode()">短信获取口令</button>
                 <p>
@@ -88,20 +80,23 @@
                 </p>
             </div>
             <div class="footer">
-                <button class="btn-submit" ng-click="onSubmit()">提交</button>
+                <button class="btn-submit" ng-click="onSubmit(vcode, desc)">提交</button>
             </div>
         </div>
-        
     </div>
-    <!-- basic js resource here -->
 
+    <!-- basic js resource here -->
     <script src="/app/libs/angular/angular.min.js"></script>
     <script src="/static/js/libs/jquery/jquery.min.js"></script>
     <script src="/static/js/libs/underscore.js"></script>
     <script src="/static/js/libs/utils.js"></script>
     <script src="/static/js/mod/bills/paylist.js"></script>
+    
+    <script src="/static/plugins/cloud-dialog/dialog.js"></script>
+    <link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">
 
-   
+    <script src="/static/plugins/cloud-layer/layer.js"></script>
+    <link rel="stylesheet" href="/static/plugins/cloud-layer/layer.css">
 
 </body>
 </html>

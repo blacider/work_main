@@ -413,6 +413,11 @@ if($user['admin'] == 1 || $user['admin'] == 2) {
 
         <b class="arrow"></b>
         </li>
+        <!-- 财务查询微信支付 -->
+        <li>
+            <a href="/bills/finance_pay" >流水查询</a>
+            <b class="arrow"></b>
+        </li>
     </ul>
     </li>
 
