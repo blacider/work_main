@@ -1481,25 +1481,20 @@ class Category extends REIM_Controller {
         log_message('debug','data' . json_encode($data));
         die(json_encode($data));
     }
-    public function get_my_sob_category($uid=0)
+    public function get_my_sob_category()
     {
-        if($uid > 0)
+        $uid = $this->session->userdata('uid');
+        $__profile = $this->users->reim_get_info($uid);
+        $_profile = json_decode($__profile,True);
+        if($_profile['status'] < 0)
         {
-            $__profile = $this->users->reim_get_info($uid);
-            $_profile = json_decode($__profile,True);
-            if($_profile['status'] < 0)
-            {
-                die(json_encode(array('msg'=>'返回值错误')));
-            }
-
-            $profile = $_profile['data'];
-
-            log_message('debug','user_info:'.json_encode($_profile));
+            die(json_encode(array('msg'=>'返回值错误')));
         }
-        else
-        {
-            $profile = $this->session->userdata('profile');
-        }
+
+        $profile = $_profile['data'];
+
+        log_message('debug','user_info:'.json_encode($_profile));
+
         $sobs = $profile['sob'];
         $_sob_id = array();
         //$_my_sobs = array();
