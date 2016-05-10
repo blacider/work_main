@@ -694,7 +694,7 @@
 
                                 var url = '/report/' + id
 
-                                if($scope.report.status == '2') {
+                                if($scope.report.status == 2) {
                                     url = '/report_finance_flow/deny/' + id;
                                 }
 
@@ -710,7 +710,11 @@
                                         return show_notify(rs['data']['msg']);
                                     }
                                     _this.close();
-                                    window.location.href = '/reports';
+                                    if($scope.report.status==2) {
+                                        window.location.href = '/bills/finance_flow';
+                                    } else {
+                                        window.location.href = '/reports/audit_todo';
+                                    }
                                 });
                             },
                             okIcon: true,
