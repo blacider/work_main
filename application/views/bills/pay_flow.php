@@ -47,7 +47,7 @@
 				<div class="row">
 					<div class="col-md-2"></div>
 					<div class="col-md-8">
-						<button type="button" class="btn btn-default">查询</button>
+						<button type="button" ng-click="onQuery()" class="btn btn-default">查询</button>
 					</div>
 				</div>
 
@@ -58,9 +58,9 @@
 				            <thead>
 				                <tr>
 				                    <th>付款单号</th>
+				                    <th>报销单号</th>
 				                    <th>报销单名字</th>
 				                    <th>付款方式</th>
-				                    <th>报销单号</th>
 				                    <th>收款人</th>
 				                    <th>付款金额</th>
 				                    <th>付款状态</th>
@@ -71,18 +71,19 @@
 				                <tr ng-repeat="item in payList">
 				                    <td>{{item.local_bill_no}}</td>
 				                    <td>{{item.carrier_id}}</td>
-				                    <td>{{item.payway}}</td>
-				                    <td>{{item.carrier_id}}</td>
-				                    <td>{{item.uid}}</td>
+				                    <td>{{item.carrier_name}}</td>
+				                    <td data-type="{{item.payway}}">微信支付</td>
+				                    <td>{{item.employee_name}}</td>
 				                    <td>￥{{item.amount}}</td>
 				                    <td>{{item.status}}</td>
 				                    <td>
-				                        <a class="btn-remove" ng-href="/pay/detail/{{item.id}}">查看</a>
+				                        <a class="btn-remove" ng-click="onPreviewItem(item)">查看</a>
 				                    </td>
 				                </tr>
 				            </tbody>
 				        </table>
 				    </div>
+
 				</div>
 			</div>
 		</div>
@@ -96,3 +97,6 @@
 <script src="/static/js/libs/utils.js"></script>
 
 <script src="/static/js/mod/bills/payflow.js"></script>
+
+<script src="/static/plugins/cloud-dialog/dialog.js"></script>
+<link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">

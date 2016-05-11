@@ -11,7 +11,16 @@
 }
 
 
+.item-detail {
+	width: 720px;
+} 
 
+.item-detail .desc {
+	white-space: nowrap;
+	overflow: hidden;
+	max-width: 200px;
+	text-overflow: ellipsis;
+}
 .table-container {
 	border-top: 1px solid #ABABAB;
 	border: 1px solid #ABABAB;
@@ -33,11 +42,22 @@ table thead tr th {
 	border-right: solid 1px #b9b9b9;
 }
 table tbody tr td {
+	padding: 8px;
 	height: 30px;
 	font-size: 14px;
 	color: #929292;
 	border-top: 1px solid #EEEEEE;
 	border-right: 1px solid #b9b9b9;
+}
+
+table tbody tr:first-child td {
+	border-top: none;
+}
+
+table tbody tr td.col-label {
+	background: #596774;
+	color: #fff;
+	border-right: none;
 }
 
 table tbody tr td.note {
