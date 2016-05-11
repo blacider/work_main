@@ -381,6 +381,11 @@
 
                         $scope._CONST_REFERER_ = document.referrer;
 
+                        // 从编辑页面回来的
+                        if(document.referrer.indexOf('edit')>=0) {
+                            $scope._CONST_REFERER_ = $.cookie(__UID__+'_url');
+                        }
+
                         if (template['status'] <= 0) {
                             return;
                         }
@@ -839,7 +844,17 @@
                         });
                         dialog.showModal();
                         return dialog;
-                    }
+                    };
+
+                    $scope.onModify= function () {
+                        // body...
+                        // 编辑的时候先记住进入当前编辑的referer，这样编辑完成后，返回列表就可以回到；
+                        $.cookie(__UID__+'_url', document.referrer, {
+                            expires: 30
+                        });
+
+                        window.location.href= "/reports/edit/" + $scope.report.id+ '?tid=' + $scope.report.template_id;
+                    };
 
                     $scope.onPass = function(id) {
                         // 0-1:业务阶段, 2:财务阶段

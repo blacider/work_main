@@ -217,7 +217,7 @@
                 <a href="{{_CONST_REFERER_}}" style="float: left" class="ui-button-border ui-button ui-button-hover btn-back-list">
                     <i class="icon"></i>返回列表
                 </a>
-                <a ng-if="buttons.has_modify" href="/reports/edit/{{report.id}}?tid={{report.template_id}}" class="ui-button-border ui-button  ui-button-hover btn-modify">
+                <a ng-if="buttons.has_modify" ng-click="onModify($event)" class="ui-button-border ui-button  ui-button-hover btn-modify">
                     <i class="icon"></i>修改
                 </a>
                 <button ng-if="buttons.has_reject" class="ui-button-border ui-button  ui-button-hover btn-reject" ng-click="onReject(report.id)">
