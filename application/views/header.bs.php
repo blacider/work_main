@@ -6,6 +6,7 @@
         </script>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>云报销 - <?php echo $title; ?></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
         <meta name="renderer" content="webkit">
         <link rel="shortcut icon" href="/static/favicon.ico" />
@@ -42,9 +43,11 @@
     <!-- text fonts -->
     <link rel="stylesheet" href="/static/css/rushu.css"/>
 
-<script language="javscript">
-var __BASE = "<?php echo $base_url; ?>";
-</script>
+    <script>
+        var __BASE = "<?php echo $base_url; ?>";
+        window.__CBX_UTOKEN__ = "<?php echo $CBX_UTOKEN['0']; ?>".replace('X-REIM-JWT: ', '');
+        window.__UID__ = "<?php echo $userId; ?>";
+    </script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 
     <!--[if lt IE 9]>
@@ -53,7 +56,7 @@ var __BASE = "<?php echo $base_url; ?>";
     <![endif]-->
 
     <!--[if !IE]> -->
-<script src='/static/ace/js/jquery.min.js'></script>
+    <script src='/static/ace/js/jquery.min.js'></script>
     <script type="text/javascript">
         window.jQuery || document.write("<script src='/static/ace/js/jquery.min.js'>" + "<" + "/script>");
     </script> 
@@ -81,6 +84,7 @@ var __BASE = "<?php echo $base_url; ?>";
     <script type="text/javascript">
         if ('ontouchstart' in document.documentElement) document.write("<script src='/static/ace/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
         var __BASE = "<?php echo base_url(); ?>";
+        var _CONST_API_DOMAIN_ = "<?php echo $api_url_base; ?>";
     </script>
 
 <!-- page specific plugin scripts -->
@@ -91,6 +95,7 @@ var __BASE = "<?php echo $base_url; ?>";
 <script language="javascript" src="/static/ace/js/bootstrap.min.js"></script>
 <script language="javascript" src="/static/ace/js/ace.min.js"></script>
 <script language="javascript" src="/static/ace/js/ace-elements.min.js"></script>
+<script src="/static/js/libs/pollyfill/ie8.es5.pollyfill.js"></script>
 <link rel="stylesheet" href="/static/ace/css/ace.onpage-help.css">
 
 <script type="text/javascript"> ace.vars['base'] = '..'; </script>

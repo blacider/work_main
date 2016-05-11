@@ -150,7 +150,7 @@ class REIM_Controller extends CI_Controller{
             $custom_data['tip'] = $this->module_tip_model->get_tip($custom_data['uid']);
             $custom_data['description'] =  '';
         } else {
-//            if(array_key_exists('templates', $profile)) {
+
             if(array_key_exists('report_setting', $profile)) {
                 if(array_key_exists('templates',$profile['report_setting']))
                 $report_template = $profile['report_setting']['templates'];
@@ -176,6 +176,10 @@ class REIM_Controller extends CI_Controller{
         log_message("debug", "Get From Cache =====================");
         $this->config->load('apps', TRUE);
         $custom_data['appname'] = $this->config->item('appname');
+
+        $custom_data['CBX_UTOKEN'] = $this->session->userdata('jwt');
+        $custom_data['userId'] = $uid;
+
         $custom_data['base_url'] = base_url();
 
         // ie check
@@ -191,6 +195,8 @@ class REIM_Controller extends CI_Controller{
         }
         $custom_data['lte_ie8'] = $lte_ie8;
 
+        $api_url_base = $this->config->item('api_url_base');
+        $custom_data['api_url_base'] = $api_url_base;
         $this->load->view('header.bs.php', $custom_data);
         $this->load->view($menu_page, $custom_data);
         $this->load->view($view_name, $custom_data);

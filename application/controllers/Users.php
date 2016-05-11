@@ -89,6 +89,25 @@ class Users extends REIM_Controller
         $this->session->unset_userdata('jwt');
         redirect(base_url('login'));
     }
+
+    public function get_profile_data_with_property()
+    {
+        $property = $this->input->get('property');
+        $profile = $this->session->userdata('profile');
+        if($property) {
+            $pro_arr = explode('.', $property);
+        }
+
+        $len =  count($pro_arr);
+        $i = 0;
+        $data = $profile;
+        while($i<$len) {
+            $data = $data[$pro_arr[$i]];
+            $i++;
+        }
+
+        die(json_encode($data));
+    }
     
     public function profile() {
         
@@ -263,6 +282,40 @@ class Users extends REIM_Controller
             }
         }
     }
+
+     
+
+    public function get_members()
+    {
+        $profile = $this->user->reim_get_user();
+
+        $members = $profile['data']['members'];
+
+        $_ranks = $this->reim_show->rank_level(1);
+        $ranks =array();
+        $_levels = $this->reim_show->rank_level(0);
+        $levels = array();
+
+        if($_ranks['status']>0)
+        {
+            $ranks = $_ranks['data'];
+        }
+        if($_levels['status']>0)
+        {
+            $levels = $_levels['data'];
+        }
+        
+        $data = array(
+            'status'=>$profile['status'],
+            'data' =>array(
+                'members'=>$members,
+                'levels'=>$levels,
+                'ranks'=>$ranks
+            )
+        );
+        die(json_encode($data));
+    }
+
     public function update_password() {
         $profile = $this->user->reim_get_user();
         $profile_id = $profile['data']['profile']['id'];
@@ -378,6 +431,11 @@ class Users extends REIM_Controller
             $buf = $this->user->bind_phone($phone, $vcode, $uid);
             die($buf);
         }
+    }
+
+    public function get_user_profile($uid) {
+        $profile = $this->user->reim_get_info($uid);
+        die($profile);
     }
     
     public function new_credit() {

@@ -250,59 +250,31 @@ class Report_Model extends Reim_Model {
         return $obj;
     }
 
-    public function create($title, $receiver, $cc, $iids, $type = 0, $status = 1, $force = 0, $extra = array(),$template_id){
-        $data = array(
-            'manager_id' => $receiver
-            ,'cc' => $cc
-            ,'type' => $type
-            ,'status' => $status
-            ,'title' => $title
-            ,'iids' => $iids
-            ,'createdt' => time()
-            ,'force_submit' => $force
-            ,'extras' => json_encode($extra)
-            ,'template_id' => $template_id
-        );
+    public function create_v2($report)
+    {
         $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
         $url = $this->get_url("report");
-        $buf = $this->do_Post($url, $data, $jwt);
-        log_message('debug','create_report_data:' . json_encode($data));
-        log_message('debug','create_report_url:' . $url);
-        log_message('debug','create_report_back:' . $buf);
-        return $buf;
-
+        $buf = $this->do_Post($url, $report, $jwt);
+        return json_decode($buf, true);
     }
 
-    public function update($id, $title, $receiver, $cc, $iids, $type = 0, $status = 1, $force = 0, $extra = array(),$template_id,$is_other = 0){
+    public function update_v2($report)
+    {
+        $id = $report['id'];
+
         $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $data = array(
-            'manager_id' => $receiver
-            ,'cc' => $cc
-            ,'type' => $type
-            ,'status' => $status
-            ,'title' => $title
-            ,'iids' => $iids
-            ,'createdt' => time()
-            ,'force_submit' => $force
-            ,'extras' => json_encode($extra)
-            ,'template_id' => $template_id
-        );
-        log_message("debug", "Update:" . json_encode($data));
+
         $url = $this->get_url("report/$id");
-        if($is_other){
-            $url = $this->get_url("report/$id/modify");
+
+        if($report['is_approver']) {
+           $url = $this->get_url("report/$id/modify"); 
         }
-        $buf = $this->do_Put($url, $data, $jwt);
-        $obj = json_decode($buf, true);
-        log_message("debug", "URL:" . $url);
-        log_message("debug", "update_report_data:" . json_encode($data));
-        log_message("debug", "update_report_back:" . $buf);
-        return $buf;
 
+        $buf = $this->do_Put($url, $report, $jwt);
+
+        return json_decode($buf, true);
     }
-
+ 
     public function get_report_by_id($id) {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;

@@ -31,20 +31,7 @@ function bind_event(){
             $('#report_id').val(_id);
         });
     });
-    $('.tdetail').each(function() {
-        $(this).click(function(){
-            var _id = $(this).data('id');
-            var _decision = $(this).data('decision');
-            if(_decision != undefined)
-            {
-                location.href = __BASE + "reports/show/" + _id + "/" + _decision;
-            }
-            else
-            {
-                location.href = __BASE + "reports/show/" + _id;
-            }
-        });
-    });
+    
     $('.tpass').each(function() {
         $(this).click(function(){
             var _id = $(this).data('id');
@@ -115,7 +102,7 @@ jQuery(grid_selector).jqGrid({
     datatype: "local",
     multiselect: can_export_excel,
     height: 250,
-    colNames:['报销单ID', '报销单模板', '标题', '类型', '创建日期', '金额','消费条目数','发起人', '附件', '状态', '操作', ''],
+    colNames:['报销单ID', '报销单模板', '标题', '类型', '创建日期', '金额','消费条目数','发起人', '附件', '状态', '操作', '', ''],
     loadonce: true,
     //rownumbers: true, // show row numbers
     caption: "报销单列表",
@@ -143,7 +130,8 @@ jQuery(grid_selector).jqGrid({
     {name:'attachments', index:'attachments', width:18,editable: false,editoptions:{size:"15",maxlength:"20"}},
     {name:'status_str',index:'status_str', width:40, editable: false,editoptions: {size:"20", maxlength : "40",search:false}/*,unformat: aceSwitch*/},
     {name:'options',index:'options', width:40, editable: false,editoptions: {size:"20", maxlength : "50"},unformat: aceSwitch,search:false},
-    { name : 'lastdt', index : 'lastdt', hidden:true , sortable : true,search:false}
+    { name : 'lastdt', index : 'lastdt', hidden:true , sortable : true,search:false},
+    { name : 'template_id', index : 'template_id', hidden:true , sortable : true,search:false}
     ],
     sortorder: "desc",
     sortorder: "desc",
@@ -192,7 +180,16 @@ jQuery(grid_selector).jqGrid({
             IF_SELECT_ALL = 0;
         }
     },
-    onSelectRow : function(rowid, status) {
+    onSelectRow: function(rowId, status, e) {
+        
+        var $target = $(e.target || e.toElement);
+        var row = $(this).jqGrid ('getRowData', rowId);
+        var arr = $(this).jqGrid ('getGridParam', rowId);
+        
+        if($target.hasClass('tdetail')) {
+            return location.href = '/reports/show/' + row.id + '?tid='+row.template_id;
+        }
+       
         if (status) {
             if (jQuery.inArray(rowid,selectRows) == -1) {
                 selectRows.push(rowid);

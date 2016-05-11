@@ -988,7 +988,6 @@ class Items extends REIM_Controller {
             log_message('debug','status' . $obj['status']);
             log_message('debug','zz item_data:'.json_encode($obj));
         }
-
         if($renew)
         {
             if($item_update_in != 0){
@@ -998,12 +997,19 @@ class Items extends REIM_Controller {
             }
         }
         if(!$id) {
-            return redirect(base_url('items/index'));
+            return redirect('/items/index');
         } else {
             if($item_update_in != 0){
-                return redirect(base_url("reports/edit/" . $rid . "/1"));
+                $report = $this->report->get_report_by_id($rid);
+                $report = $report['data'];
+                return redirect("/reports/edit/" . $rid . "?tid=" . $report['template_id']);
             }else{
-                return redirect(base_url("reports/edit/" . $rid));
+                if(!$rid) {
+                    return redirect("/items/index");
+                }
+                $report = $this->report->get_report_by_id($rid);
+                $report = $report['data'];
+                return redirect("/reports/edit/" . $rid . "?tid=" . $report['template_id']);
             }
         }
     }

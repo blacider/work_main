@@ -546,9 +546,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
             <div class="modal-footer">
                 <input type="hidden" id="pass" name="pass" value="0">
                 <input type="submit" class="btn btn-primary pass" value="确认结束">
-              <!--  <div class="btn btn-primary" onclick="deny_end_report()">拒绝</div> -->
                 <div class="btn btn-primary" onclick="cancel_modal_next_()">取消</div>
-                <!--<div class="btn btn-primary repass" onClick="chose_others(this.parentNode.parentNode.rid.value)">取消</div> -->
             </div>
                 </form>
         </div><!-- /.modal-content -->

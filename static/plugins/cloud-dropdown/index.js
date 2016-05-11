@@ -31,59 +31,92 @@
 			onChange: function (oldValue, newValue, item) {
 			},
 			onSelect: function (oldValue, newValue, item) {
+			},
+			onDeselect: function(oldValue) {
+			
+			},
+			itemFormat: function (item) {
+				return item;
+			},
+			onInitValue: function (value) {
+				
 			}
 		}) // const var 
 		.directive('ngDropdown', ['$parse', 'ngDropdownDefaultOptions', function ($parse, ngDropdownDefaultOptions) {
 
 			// Export
 
-			var getItemByKey = function(key, ls) {
+			var findItemByKey = function(item, ls) {
 				for(var i=0;i<ls.length;i++) {
-					var item = ls[i];
-					if(key == item['value']) {
-						return item
+					var one = ls[i];
+					if(angular.equals(item, one)) {
+						return i;
 					}
 				}
-				return {text: '', value: ''};
+				return -1;
 			};
 
 			return {
 				restrict: 'EA',
-				scope: { ngDropdown: "=?", 'paramObject': '=?', 'data': '=?'},
+				scope: { ngDropdown: "=?", 'selectedItem': '=?', 'data': '=?', 'defaultItem': '=?', 'paramExtra': '=?', 'canDeselect': '=?'},
 				replace: true,
 				transclude: true,
 				template: '<div ng-transclude></div>',
 				link: function ($scope, element, attrs) {
-					var item = getItemByKey($scope.paramObject['type'], $scope.data);
+					var options = angular.extend({}, ngDropdownDefaultOptions, $scope.ngDropdown);
+					// 有选中的，就用选中的项目展示（此项目必须在下拉列表中）
+					// 无选中的或者没有传🈯️，就用默认展示
+					var selectedItem = angular.copy($scope.selectedItem);
+					var defaultItem = angular.copy($scope.defaultItem);
+					var index = findItemByKey(selectedItem, $scope.data);
+					var canDeselect = $scope.canDeselect;
+					var item = null;
+					if(index!=-1) {
+						item = $scope.data[index];
+					}
 
-					// init
-					if(item['text']) {
+					if(item) {
+						item = options['itemFormat'](item);
 						$(element).find('.text').removeClass('font-placeholder');
+						$(element).find('.text').text(item['text']);
+
+						options['onInitValue'](item, element);
 						//fix me
 						setTimeout(function () {
-							$(element).find('.option-list .item').eq(parseInt(item['value']-1)).addClass('active');
+							$(element).find('.option-list .item').eq(index).addClass('active');
 						}, 1000);
+					} else if(defaultItem) {
+						$(element).find('.text').addClass('font-placeholder');
+						$(element).find('.text').text(defaultItem['text']);
 					}
-					item['text'] && $(element).find('.text').text(item['text']);
 
-					var oldValue = item['value'];
-					var options = angular.extend(ngDropdownDefaultOptions, $scope.ngDropdown);
+					var oldValue = item && item['value'];
 
 					$(element).on('click', '.item', function(e) {
 
 						$(element).find('.text').removeClass('font-placeholder');
 
-						var $item = $(e.toElement);
+						var $item = $(this);
 						var text = $item.text();
 						var newValue = $item.data('value');
 						$(element).find('.text').text(text);
 						$(element).find('.option-list').addClass('none');
 						$(element).find('.text').removeClass('focus');
 
-						if(oldValue != newValue) {
-							options['onChange'](oldValue, newValue, $item[0], $scope.paramObject);
+						if(canDeselect) {
+							if($item.hasClass('active')) {
+								$item.removeClass('active');
+								$(element).find('.text').text(defaultItem['text']).addClass('font-placeholder');
+								options['onDeselect'](oldValue, element);
+								oldValue = null;
+								return;
+							}
 						}
-						options['onSelect'](oldValue, newValue, $item[0]);
+
+						if(oldValue != newValue) {
+							options['onChange'](oldValue, newValue, $item[0], $scope.paramExtra, element);
+						}
+						options['onSelect'](oldValue, newValue, $item[0], element);
 
 						$item.addClass('active').siblings().removeClass('active');
 
@@ -98,7 +131,10 @@
 							$(element).find('.text').removeClass('focus');
 						}, 60);
 					});
-					$(element).on('click', '.text', function(e) {
+					$(element).on('click', '.text, .icon', function(e) {
+						// fix bug
+						$('.option-list').prev().removeClass('focus');
+						$('.option-list').addClass('none');
 						$(element).find('.option-list').removeClass('none');
 						$(e.currentTarget).addClass('focus');
 						e.stopPropagation()

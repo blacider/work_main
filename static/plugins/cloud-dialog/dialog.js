@@ -1,29 +1,32 @@
 (function  () {
 	var dialogIDPrefix = 'cloud-bx-dialog-';
 	var dialogCount = 0;
+	var animateClass = 'animated fadeIn';
+	var dialogMaskTemplate = [
+		'<div id="" class="cloud-bx-dialog-mask">',
+		'</div>'
+	].join('');
 
 	var dialogTemplate = [
-		'<div id="" class="cloud-bx-dialog-mask">',
-		'    <div class="cloud-bx-dialog">',
-		'        <div class="dialog-header">',
-		'            <p class="title"></p>',
-		'            <button tabindex="1" class="close" title="cancel">×</button>',
-		'        </div>',
-		'        <div class="dialog-body">',
-		'        </div>',
-		'        <div class="dialog-footer">',
-		// '            <button>取消</button>',
-		// '            <button class="positive">确定</button>',
-		'        </div>',
+		'<div class="cloud-bx-dialog">',
+		'    <div class="dialog-header">',
+		'        <p class="title"></p>',
+		'        <button tabindex="1" class="close" title="cancel">×</button>',
 		'    </div>',
-		'</div>',
+		'    <div class="dialog-body">',
+		'    </div>',
+		'    <div class="dialog-footer">',
+		'    </div>',
+		'</div>'
 	].join('');
 
 	function Dialog (opts) {
 		this.options = $.extend({
 			title: '',
 			quickClose: false,
-			content: '确认要删除当前报销单模版?',
+			autoDestroy: true,
+			className: '',
+			content: '',
 			width: 240,
 			offset: {
 				left: 0,
@@ -35,6 +38,8 @@
 				// {
 				// 	text: '1',
 				// 	disabled: false
+				// 	className: '',
+				// 	icon: '',
 				// 	handler: function  () {
 				// 	}
 				// }
@@ -54,16 +59,21 @@
 			onDestroy: function  (argument) {
 				
 			},
+			okIcon:'',
+			okClassName:'',
 			okDisabled: false,
 			okValue: '确定',
+
+			cancelIcon:'',
+			cancelClassName:'',
 			cancelDisabled: false,
 			cancelValue: '取消'
 		}, opts);
-		this.$mask = $(dialogTemplate);
-		this.$el = this.$mask.find('.cloud-bx-dialog');
+		this.$mask = $(dialogMaskTemplate);
+		this.$el = $(dialogTemplate);
 		this.$title = this.$el.find('.dialog-header .title');
 		this.$content = this.$el.find('.dialog-body');
-		this.$footer = this.$el.find('.dialog-footer');
+		this.$footer = this.$el.find('.dialog-footer').css('text-align', this.options['buttonAlign']);
 		this.init();
 	};
 
@@ -81,10 +91,22 @@
 			this.content(this.options.content);
 
 			this.$mask.appendTo(document.body);
+			this.$el.appendTo(document.body);
+
 			this.$el.attr('id', dialogIDPrefix+dialogCount++);
 
-			this._bindEvents();
+			this.$el.addClass(this.options.className);
+
+			this._bindEvents_();
 			this.addButtons()
+		},
+		setContentWithElement: function (el) {
+			var $content = this.$el.find('.dialog-body');
+			$content.empty();
+			$content.append(el);
+		},
+		removeButtonByIndex: function (index) {
+			this.$footer.find('button').eq(index).hide();
 		},
 		addButtons: function () {
 			var buttons = this.options.buttons;
@@ -93,6 +115,8 @@
 				var cancelButton = {
 					text: this.options.cancelValue,
 					disabled: this.options.cancelDisabled,
+					icon: this.options.cancelIcon,
+					className: this.options.cancelClassName || 'cancel',
 					handler: this.options.cancel
 				}
 				buttons.push(cancelButton);
@@ -103,7 +127,8 @@
 					text: this.options.okValue,
 					handler: this.options.ok,
 					disabled: this.options.okDisabled,
-					className: 'positive'
+					icon: this.options.okIcon,
+					className: 'positive ok ' + this.options.okClassName
 				}
 				buttons.push(okButton);
 			}
@@ -112,33 +137,58 @@
 				var button = buttons[i];
 				var $button = $('<button>').text(button['text']);
 				$button.addClass(button.className || '');
+
 				if(button.disabled) {
 					$button.attr('disabled', true);
 					$button.attr('tabindex', i+2);
 				}
+
 				if(i==buttons.length-1) {
-					$button.addClass('last')
+					$button.addClass('last');
 				}
+
+				$button.addClass(button.className);
+
+				if(button.align) {
+					$button.css({
+						float: button.align
+					})
+				}
+
+				if(button.icon) {
+					$button.prepend('<i class="icon" />');
+				}
+
 				this.$footer.append($button);
 			}
 		},
 		show: function  () {
 			this.$mask.addClass('none').show();
-			this.$el.addClass('animated zoomIn')
+			this.$el.show().addClass(animateClass);
 			this.options.onShow.call(this);
+
 			$(window).trigger('resize');
+
+			$('body').addClass('no-scroll');
+
 			return this;
 		},
 		showModal: function  () {
-			this.$mask.addClass('animated fadeIn').show();
-			this.$el.addClass('animated zoomIn')
+			$('body').addClass('no-scroll');
+			this.$mask.removeClass('none').show();
+			this.$el.show().addClass(animateClass);
 			this.options.onShow.call(this);
 			$(window).trigger('resize');
 			return this;
 		},
 		close: function  (isDestroy) {
 			this.$mask.hide();
+			this.$el.hide();
 			this.options.onHide.call(this);
+
+			this.$el.removeClass(animateClass);
+
+			$('body').removeClass('no-scroll');
 			if(isDestroy) {
 				this.$mask.remove()
 				this.options.onDestroy.call(this);
@@ -146,13 +196,15 @@
 			return this;
 		},
 		desotry: function  () {
-			this.$mask.remove()
+			this.$mask.remove();
+			this.$el.remove();
+			$('body').removeClass('no-scroll');
 			this.options.onDestroy.call(this);
 			return this;
 		},
 		title: function (title) {
 			if(title) {
-				this.$el.find('.dialog-header .title').html(this.options.title);
+				this.$el.find('.dialog-header .title').html(title);
 			} else {
 				return this.$el.find('.dialog-header .title').html();
 			}
@@ -166,13 +218,15 @@
 			}
 			return this;
 		},
-		_bindEvents: function  () {
+		_bindEvents_: function  () {
 			var _self = this;
-			this.$el.on('click', function  (e) {
-				e.stopPropagation();
-			});
+
 			this.$el.on('click', '.close', function  (e) {
-				_self.close(true);
+				if(_self.options['autoDestroy']) {
+					_self.close(true);
+				} else {
+					_self.close();
+				}
 			});
 
 			this.$el.on('click', '.dialog-footer button', function  (e) {
@@ -187,7 +241,12 @@
 
 			// can quick close
 			this.$mask.on('click', function  (e) {
-				_self.options.quickClose && _self.close(true);
+				if(!$(e.target).hasClass('cloud-bx-dialog-mask')) {
+					return;
+				}
+				if(_self.options.quickClose) {
+					_self.$el.find('.close').trigger('click');
+				}
 			});
 
 			$(document).on('keyup', function  (e) {
@@ -203,16 +262,19 @@
 			})
 
 			$(window).on('resize', function (e) {
-				var width = window.innerWidth || document.body.clientWidth;
-				var height = window.innerHeight || document.body.clientHeight;
-				_self.$mask.width(width);
-				_self.$mask.height(height);
+				setTimeout(function() {
+					var width = $(window).width();
+					var height = $(window).height();
+					_self.$mask.width(width);
+					_self.$mask.height(height);
 
-				_self.$el.css({
-					left: (width - _self.$el.width()) /2,
-					top: (height - _self.$el.height()) /2
-				})
+					_self.$el.css({
+						left: (width - _self.$el.width()) /2,
+						top: (height - _self.$el.height()) /2
+					})
+				}, 0);
 			});
+
 		}
 	});
 

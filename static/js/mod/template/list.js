@@ -980,6 +980,15 @@
                         }
                     }, 100);
 
+                    $scope.onTextLengthChange2 = _.debounce(function(data, e) {
+                        var name = data.name;
+                        if(name.length>=_templateFieldLengthLimit_) {
+                            $timeout(function() {
+                                data.name = name.substr(0, _templateFieldLengthLimit_)
+                            }, 50);
+                        }
+                    }, 100);
+
                     $scope.onFocusOut = function  (templateData, e) {
                         var $input = $(e.currentTarget);
                         var name = $input.val();

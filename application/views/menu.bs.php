@@ -18,12 +18,6 @@
 						<small>
                             <div>
                                 <div class="home-logo"></div>
-                                <!-- 
-                                <div style="
-                                    float:left;vertical-align:top;min-height:25px;margin-top:2px">
-                                    <img src="/static/images/logo_1.png" style="min-height:25px;height:25px;"/> 
-                                </div>
-                                -->
                                 <div style="float:right;margin-left:10px;margin-top:5px;font-size:14px;font-weight:normal">
                                     <?php if($groupname) { echo " · &nbsp;&nbsp;" . $groupname;} ?>
                                 </div>
@@ -34,29 +28,27 @@
 
 				<div class="navbar-buttons navbar-header pull-right" role="navigation" style="position: relative;z-index: 999">
 					<ul class="nav ace-nav">
-
-<?php
-$user = $this->session->userdata('user');
-$pid = $this->session->userdata('uid');
-#print_r($user);
-if(!$user) redirect(base_url('login'));
-$_security = 0;
-if(array_key_exists('risk', $user) && $user['risk'] == 1) {
-    $_security = 1;
-}
-if(is_array($user)){
-    $username = $user['email'];
-    if($user['nickname']){
-        $username = $user['nickname'];
-    }
-} else {
-    $username = $user->username;
-    if($user->nickname){
-        $username = $user->nickname;
-    }
-}
-?>
-
+                        <?php
+                        $user = $this->session->userdata('user');
+                        $pid = $this->session->userdata('uid');
+                        #print_r($user);
+                        if(!$user) redirect(base_url('login'));
+                        $_security = 0;
+                        if(array_key_exists('risk', $user) && $user['risk'] == 1) {
+                            $_security = 1;
+                        }
+                        if(is_array($user)){
+                            $username = $user['email'];
+                            if($user['nickname']){
+                                $username = $user['nickname'];
+                            }
+                        } else {
+                            $username = $user->username;
+                            if($user->nickname){
+                                $username = $user->nickname;
+                            }
+                        }
+                        ?>
 						<!-- #section:basics/navbar.user_menu -->
 						<li class="light-blue" style="background:#2C3E50">
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle" style="background:#2C3E50">
@@ -137,15 +129,10 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
         </li>
     </ul>
     </li>
-
-
-
-
     <li class="hsub" id="reports">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-file-text"></i>
         <span class="menu-text"> 报销单 </span>
-
         <b class="arrow fa fa-angle-down"></b>
     </a>
     <b class="arrow"></b>
@@ -158,33 +145,28 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
                 <b class="arrow fa fa-angle-down"></b>
             </a>
             <?php } else if(count($report_templates) == 1) { ?>
-            <a href="<?php echo base_url('reports/report_template/' . $report_templates[0]['id']); ?>" >
+            <a href="<?php echo base_url('reports/add/' . $report_templates[0]['id']); ?>" >
                 <i class="menu-icon fa fa-caret-right"></i>
                 新建报销单
             </a>
             <?php } else { ?>
-            <a href="<?php echo base_url('reports/newreport'); ?>" >
+            <a href="<?php echo base_url('reports/add/0'); ?>" >
                 <i class="menu-icon fa fa-caret-right"></i>
                 新建报销单
             </a>
             <?php } ?>
-<b class="arrow"></b>
-<?php if(count($report_templates) > 1) { ?>
-<ul class="submenu rushumenu">
-<?php foreach($report_templates as $r) { ?>
-                                    <li class="" id="<?php echo 'report'.$r['id'];?>">
-                                        <a href="<?php echo base_url('reports/report_template/' . $r['id']); ?>">
-<?php echo $r['name']; ?>
-                                        </a>
-
-                                        <b class="arrow"></b>
-                                    </li>
-<?php } ?>
-</ul>
-
-<?php } ?>
+            <b class="arrow"></b>
+            <?php if(count($report_templates) > 1) { ?>
+            <ul class="submenu rushumenu">
+            <?php foreach($report_templates as $t) { ?>
+                <li class="" id="<?php echo 'report'.$t['id'];?>">
+                    <a href="<?php echo base_url('reports/add/' . $t['id']); ?>"> <?php echo $t['name']; ?> </a>
+                    <b class="arrow"></b>
+                </li>
+            <?php } ?>
+            </ul>
+            <?php } ?>
         </li>
-
         <li class="hsub" id="index">
         <a href="<?php echo base_url('reports'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
@@ -228,12 +210,6 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 
     </ul>
     </li>
-
-
-
-
-
-
 <?php
 $open = 1;
 $close_directly = 0;

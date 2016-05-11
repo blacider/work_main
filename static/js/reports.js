@@ -9,85 +9,17 @@ formatMoney = function(str, places, symbol, thousand, decimal) {
         j = (j = i.length) > 3 ? j % 3 : 0;
     return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
 };
-
-function bind_event() {
-    $('.tconfirm').each(function() {
-        $(this).click(function() {
-            var _id = $(this).data('id');
-            if (confirm('确认已收款？')) {
-                $.ajax({
-                    url: __BASE + "/reports/confirm_success",
-                    method: 'post',
-                    dataType: 'json',
-                    data: {
-                        'rid': _id
-                    },
-                    success: function(data) {
-                        location.href = __BASE + "/reports";
-                    },
-                    error: function(a, b, c) {}
-                });
-            }
-        });
-    });
-    $('.tdetail').each(function() {
-        $(this).click(function() {
-            var _id = $(this).data('id');
-            location.href = __BASE + "reports/show/" + _id;
-        });
-    });
-    $('.tdel').each(function() {
-        $(this).click(function() {
-            if (confirm('是否确认删除此报销单？')) {
-                var _id = $(this).data('id');
-                location.href = __BASE + "reports/del/" + _id;
-            }
-        });
-    });
-    $('.tedit').each(function() {
-        $(this).click(function() {
-            var _id = $(this).data('id');
-            location.href = __BASE + "reports/edit/" + _id;
-        });
-    });
-    $('.tdown').each(function() {
-        $(this).click(function() {
-            var _id = $(this).data('id');
-            var chosen_id = [];
-            chosen_id.push(_id);
-            $.ajax({
-                url: __BASE + "/bills/download_report",
-                method: "post",
-                dataType: "json",
-                //data:{"chosenids":chosenids},
-                data: {
-                    "chosenids": chosen_id
-                },
-                success: function(data) {
-                    location.href = data['url'];
-                },
-                error: function(a, b) {}
-            });
-        });
-    });
-    $('.texport').each(function() {
-        $(this).click(function() {
-            var _id = $(this).data('id');
-            $('#report_id').val(_id);
-        });
-    });
-}
 try {
     jQuery(grid_selector).jqGrid({
-        url: __BASE + 'reports/listdata',
+        url: '/reports/listdata',
         multiselect: false,
         mtype: "GET",
         datatype: "local",
         height: 250,
-        colNames:['报销单ID', '报销单模板', '标题', '类型',  '创建日期', '金额','消费条目数', '附件', '状态', '操作'],
+        colNames:['报销单ID', '报销单模板', '标题', '类型',  '创建日期', '金额','消费条目数', '附件', '状态', '操作', '报销单模板ID'],
         loadonce: true,
         caption: "报销单列表",
-        editurl: __BASE + 'reports/save',
+        editurl: '/reports/save',
         datatype: "json",
         viewsortcols: [true, 'vertical', true],
         autowidth: true,
@@ -204,7 +136,11 @@ try {
             },
             unformat: aceSwitch,
             search: false
-        }, ],
+        }, {
+            name: 'template_id',
+            index: 'template_id',
+            hidden: true
+        }],
         loadComplete: function(data) {
             if (data instanceof Array) {
                 var IF_TEMPLATE = false;
@@ -215,7 +151,6 @@ try {
                     $(window).resize();
                 }
             }
-            bind_event();
             var table = this;
             setTimeout(function() {
                 //styleCheckbox(table);
@@ -227,7 +162,76 @@ try {
         searchoptions: {
             sopt: ["eq", "ne", "lt", "le", "gt", "ge", "nu", "nn", "in", "ni"]
         },
-        //page: 1,
+
+        onSelectRow: function(rowId, status, e) {
+            var $target = $(e.target || e.toElement);
+            var row = $(this).jqGrid ('getRowData', rowId);
+            var arr = $(this).jqGrid ('getGridParam', rowId);
+            if($target.hasClass('tdetail')) {
+                return location.href = '/reports/show/' + row.id + '?tid='+row.template_id;
+            }
+
+            if($target.hasClass('tapprove')) {
+                approve_report(rowId);
+                return
+            }
+
+            if($target.hasClass('texport')) {
+                $('#report_id').val(rowId);
+                return
+            }
+
+            if($target.hasClass('tedit')) {
+                location.href = "/reports/edit/" + rowId  + '?tid='+row.template_id;
+                return
+            }
+
+            if($target.hasClass('tdeny')) {
+                $('#div_id').val(rowId);
+                $('#comment_dialog').modal('show');
+            }
+
+            if($target.hasClass('tdel')) {
+                if (confirm('是否确认删除此报销单？')) {
+                    var _id = $(this).data('id');
+                    location.href =  "/reports/del/" + rowId;
+                }
+            }
+
+            if($target.hasClass('tconfirm')) {
+                if (confirm('是否确认删除此报销单？')) {
+                    if (confirm('确认已收款？')) {
+                        $.ajax({
+                            url: "/reports/confirm_success",
+                            method: 'post',
+                            dataType: 'json',
+                            data: {
+                                'rid': rowId
+                            },
+                            success: function(data) {
+                                location.href = __BASE + "/reports";
+                            },
+                            error: function(a, b, c) {}
+                        });
+                    }
+                }
+            }
+
+            if($target.hasClass('tdown')) {
+                $.ajax({
+                    url: __BASE + "/bills/download_single_report",
+                    method: "post",
+                    dataType: "json",
+                    data: {
+                        "chosenids": [rowId]
+                    },
+                    success: function(data) {
+                        location.href = data['url'];
+                    },
+                    error: function(a, b) {}
+                });
+            }
+        },
         width: 780,
         height: 380,
         rowNum: 10,

@@ -14,6 +14,67 @@ class Reports extends REIM_Controller {
         $this->load->helper('report_view_utils');
     }
 
+    public function add($template_id=0)
+    { 
+        // $template_id = $this->input->get('tid');
+        $last_error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+        $this->bsload('reports/add', array(
+                'template_id' => $template_id,
+                'title' => '新建报销单',
+                'last_error' => $last_error,
+                'type' => array(),
+                'breadcrumbs' => array(
+                    array(
+                        'url'  => base_url(), 
+                        'name' => '首页', 
+                        'class' => 'ace-icon fa home-icon'
+                    ),
+                    array(
+                        'url'  => base_url('reports/index'),
+                        'name' => '报销单', 'class' => ''
+                    ),
+                    array(
+                        'url'  => '', 
+                        'name' => '新建', 
+                        'class' => ''
+                    )
+                ),
+            )
+        );
+    }
+
+    // http://alex.baidu.com:9999/reports/edit/24040?tid=503
+    public function edit($id=0)
+    { 
+        $template_id = $this->input->get('tid');
+        $last_error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+        $this->bsload('reports/add', array(
+                'template_id' => $template_id,
+                'title' => '修改报销单',
+                'last_error' => $last_error,
+                'type' => array(),
+                'breadcrumbs' => array(
+                    array(
+                        'url'  => base_url(), 
+                        'name' => '首页', 
+                        'class' => 'ace-icon fa home-icon'
+                    ),
+                    array(
+                        'url'  => base_url('reports/index'),
+                        'name' => '报销单', 'class' => ''
+                    ),
+                    array(
+                        'url'  => '', 
+                        'name' => '修改报销单', 
+                        'class' => ''
+                    )
+                ),
+            )
+        );
+    }
+
     public function get_report_comments($report)
     {
         $comments = array();
@@ -28,93 +89,12 @@ class Reports extends REIM_Controller {
         return $comments;
     }
 
-    public function get_report_flow($id,$report)
-    {
-        $_flow = $this->reports->report_flow($id, 1);
 
-        $_ts = '';
-        log_message("debug", "Rreport" . json_encode($report));
-        if($report['createdt'] > 0) {
-            $_ts = date('Y-m-d H:i:s', $report['createdt']);
-        }
-
-        //获取全体员工
-        $group = $this->groups->get_my_list();
-        $ginfo = array();
-        $gmember = array();
-        if($group) {
-            if(array_key_exists('ginfo', $group['data'])){
-                $ginfo = $group['data']['ginfo'];
-            }
-            if(array_key_exists('gmember', $group['data'])){
-                $gmember = $group['data']['gmember'];
-            }
-            $gmember = $gmember ? $gmember : array();
-        }
-        $members_dic = array();
-        foreach($gmember as $mem)
-        {
-            $members_dic[$mem['id']] = $mem['nickname'];
-        }
-        log_message("debug","all_members:" . json_encode($members_dic));
-        // 先找到提交的信息
-        // 昵称，审核意见，时间，step
-        log_message("debug", 'flow data:' . json_encode($_flow));
-        
-        $sliced_flow = array();
-        if($_flow['status'] == 1) {
-            // 分组
-            $last_group = null;
-            $last_slice = array();
-
-            $_flows = $_flow['data']['data'];
-            // step 升序
-            usort($_flows, function($a, $b) { return $a['step'] - $b['step']; });
-
-            foreach($_flows as $s) {
-                $group = 0;
-                if ($s['ticket_type'] == 1) {
-                    $group = 1;
-                }
-
-                if (is_null($last_group)) {
-                    $last_group = $group;
-                } else if ($last_group !== $group) {
-                    array_push($sliced_flow, $last_slice);
-                    $last_group = $group;
-                    $last_slice = array();
-                }
-
-                $_ts = '';
-                if($s['udt'] != '0') {
-                    $_ts = date('Y-m-d H:i:s', $s['udt']);
-                }
-
-                $s['wingman_name'] = '';
-                log_message("debug","wingman:" . $s['wingman']);
-                if(array_key_exists('wingman',$s)) {
-                    if(array_key_exists($s['wingman'],$members_dic)) {
-                       $s['wingman_name'] = $members_dic[$s['wingman']];
-                    }
-                }
-
-                array_push($last_slice, array(
-                    'group' => $group,
-                    'status' => $s['status_text'],
-                    'nickname' => $s['nickname'],
-                    'ts' => $_ts,
-                    'step' => $s['step'],
-                    'wingman' => $s['wingman_name'],
-                    'ticket_type' => $s['ticket_type'],
-                ));
-            }
-
-            if (!empty($last_slice)) {
-                array_push($sliced_flow, $last_slice);
-            }
-        }
-        return $sliced_flow;
+    public function get_report_flow_v2($id) {
+        $data = $this->reports->report_flow($id, 1);
+        die(json_encode($data));
     }
+ 
     public function confirm_success()
     {
         $rid = $this->input->post('rid');
@@ -147,11 +127,12 @@ class Reports extends REIM_Controller {
         return $symbol;
     }
 
-    public function add_comment() {
+    public function add_comment_v2() {
         $rid=$this->input->post("rid");
         $comment = $this->input->post("comment");
-        $buf = $this->reports->add_comment($rid,$comment);
-        redirect(base_url('reports/show/' . $rid . '/1'));
+        $buf = $this->reports->add_comment($rid, $comment);
+        $data = json_decode($buf, true);
+        die(json_encode($data));
     }
 
     public function revoke($id = 0) {
@@ -183,6 +164,12 @@ class Reports extends REIM_Controller {
                     ,array('url'  => '', 'name' => '我的报销单', 'class' => '')
                 ),
             ));
+    }
+
+    public function get_available_consumptions()
+    {
+        $data = array('status'=>1, 'data'=>$this->_getitems());
+        die(json_encode($data));
     }
 
     public function _getitems(){
@@ -252,40 +239,6 @@ class Reports extends REIM_Controller {
             }
         }
         return $_items;
-    }
-
-    public function newreport() {
-        $item_type_dic = $this->reim_show->get_item_type_name();
-        $_members = array();
-        $members = $this->users->reim_get_user();
-        if($members['status'] > 0){
-            $_members = $members['data']['members'];
-        }
-
-        $_items = $this->_getitems();
-        log_message('debug',json_encode($_items));
-
-        // 默认报销单模版的options['allow_no_items'] = 0;
-        // 
-        $template = array(
-            'options'=>array(
-                'allow_no_items'=>'0'
-            )
-        );
-
-        $this->bsload('reports/new',
-            array(
-                'title' => '新建报销单',
-                'members' => $_members,
-                'item_type_dic' => $item_type_dic,
-                'items' => $_items,
-                'template'=>$template,
-                'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
-                    ,array('url'  => '', 'name' => '新建报销单', 'class' => '')
-                ),
-            ));
     }
 
     public function listdata(){
@@ -370,108 +323,33 @@ class Reports extends REIM_Controller {
         //return redirect(base_url('reports/index'));
     }
 
-    public function create(){
-        $items = $this->input->post('item');
-
-        if(!$items) {
-            $items = array();
-        }
- 
+    public function create_v2()
+    {
         $title = $this->input->post('title');
-        $receiver = $this->input->post('receiver');
-        $cc = $this->input->post('cc');
-        $force = $this->input->post('force');
         $template_id = $this->input->post('template_id');
-        $type = $this->input->post('type');
-        log_message('debug','template_id:' . $template_id);
-        $extra = array();
+        $template_type = $this->input->post('template_type');
 
-        if($receiver=='') {
-            $receiver = array();
-        }
+        $receiver_ids = $this->input->post('receiver_ids');
+        $cc_ids = $this->input->post('cc_ids');
+        $item_ids = $this->input->post('item_ids');
+        $extras = $this->input->post('extras');
+        $status = $this->input->post('status');
 
-        if($template_id) {
-            $extra = $this->input->post('extra');
-            log_message('debug','extra:' . json_encode($extra));
-            if (!is_array($extra)) {
-                $extra = [];
-            }
-            foreach($extra as &$ex) {
-                if($ex['type'] != 3) continue;
 
-                $ex['value'] = strtotime($ex['value']);
-                log_message('debug','time:' . $ex['value']);
-            }
-        }
-        if(!$cc) $cc = array();
-        if(!$force) $force = 0;
-        $save = $this->input->post('renew');
-        $ret = $this->reports->create($title, implode(',', $receiver), implode(',', $cc), implode(',', $items), $type, $save, $force, $extra , $template_id);
-        $ret = json_decode($ret, true);
-        if($ret['code'] <= 0) {
-            log_message("debug", "Cates:" . $ret['code']);
-            if($ret['code'] == -71)
-            {
-                log_message("debug", "Cates:" . json_encode(-71));
-                $quota = $ret['data']['quota'];
-                $str = '';
-                $info = $this->category->get_list();
-                if($info['status'] > 0)
-                {
-                    $_categories = $info['data']['categories'];
-                }
-                else
-                {
-                    $_categories = array();
-                }
-                $categories = array();
+        $report = array(
+            'title' => $title,
+            'template_id' => $template_id,
+            'type' => $template_type,
+            'manager_id' => $receiver_ids,
+            'cc' => $cc_ids,
+            'iids' => $item_ids,
+            'extras' => $extras,
+            'status' => $status //保存：0，提交：1，通过：2 等
+        );
 
-                foreach($_categories as $cate)
-                {
-                    $categories[$cate['id']] = $cate['category_name'];
-                }
-                foreach($quota as $key => $q)
-                {
-                    $str = $str . $categories[$key] . ' ';
-                }
-                $this->session->set_userdata('last_error', $str . '金额超出公司月度限额，是否仍要提交');
-            } elseif($ret['code'] == -63) {
-                $info = $this->category->get_list();
-                if($info['status'] > 0) {
-                    $_categories = $info['data']['categories'];
-                } else {
-                    $_categories = array();
-                }
-                $categories = array();
-
-                foreach($_categories as $cate)
-                {
-                    $categories[$cate['id']] = $cate['category_name'];
-                }
-                $quota = $ret['data']['quota'];
-                $str = '';
-                foreach($quota as $key => $q)
-                {
-                    if($q < 0)
-                    {
-                        $str = $str . $categories[$key] . ' ';
-                        log_message('debug','value:' . $str);
-                    }
-                }
-                $this->session->set_userdata('last_error', '你的 ' . $str .'提交次数已经超出公司规定');
-            } else {
-                log_message("debug", "alvayang:" . json_encode($ret));
-                $this->session->set_userdata('last_error', $ret['data']['msg']);
-            }
-        }
-
-        $_error = '成功';
-        if($this->session->userdata('last_error')) {
-            $_error = $this->session->userdata('last_error');
-            $this->session->unset_userdata('last_error');
-        }
-        die(json_encode(Array('status' => $ret['code'], 'msg' => $_error)));
-        //return redirect(base_url('reports'));
+        $buf = $this->reports->create_v2($report);
+        
+        die(json_encode($buf));
     }
 
     public function del($id = 0){
@@ -488,168 +366,9 @@ class Reports extends REIM_Controller {
         return redirect(base_url('reports/index'));
     }
 
-    public function edit($id = 0,$is_other = 0){
-        $error = $this->session->userdata('last_error');
-        $this->session->unset_userdata('last_error');
-        $item_type_dic = $this->reim_show->get_item_type_name();
-        if($id == 0) {
-            return redirect(base_url('reports/index'));
-        }
-        $report = $this->reports->get_detail($id);
-        if($report['status'] < 1){
-            return redirect(base_url('reports/index'));
-        }
-        $report = $report['data'];
-
-        $extra = array();
-        if(array_key_exists('extras', $report) && $report['extras']) {
-            $extra = json_decode($report['extras'], true);
-        }
-        $config = array();
-        $banks = array();
-
-        // 获取template 
-        $template_id = $report['template_id'];
-        $template = $this->reports->get_report_template($template_id);
-        if($template['status']<=0) {
-            return redirect(base_url('reports/index'));
-        }
-        $template = $template['data'];
-
-        if(!empty($extra)){
-            $profile = array();
-            $_common = $this->users->get_common();
-            if($_common['status'] > 0 && array_key_exists('profile',$_common['data']))
-            {
-                $profile = $_common['data']['profile'];
-            }
-            $config = array();
-            if($profile && array_key_exists('report_setting',$profile)  && array_key_exists('templates', $profile['report_setting'])) {
-                $report_template = $profile['report_setting']['templates'];
-                foreach($report_template as $r) {
-                    if($r['id'] == $report['template_id']) {
-                        $config = $r;
-                        break;
-                    }
-                }
-            }
-            $banks = array();
-            if(array_key_exists('banks',$profile))
-            {
-                $banks = $profile['banks'];
-            }
-        }
-
-        $_members = array();
-        $members = $this->users->reim_get_user();
-        if($members['status'] > 0){
-            $_members = $members['data']['members'];
-        }
-
-        $_managers = array();
-        foreach($report['receivers']['managers'] as $m){
-            array_push($_managers, $m['id']);
-        }
-        $_ccs = array();
-        foreach($report['receivers']['cc'] as $m){
-            array_push($_ccs, $m['id']);
-        }
-
-        $report['receivers']['managers'] = $_managers;
-        $report['receivers']['cc'] = $_ccs;
-        $_items = $this->_getitems();
-
-        foreach($report['items'] as &$rt)
-        {
-            $rt['coin_symbol'] = $this->get_coin_symbol($rt['currency']);
-        }
-
-        $extra_dic = array();
-        foreach($extra as $ex)
-        {
-            if(is_array($ex) && array_key_exists('id',$ex))
-            {
-                $extra_dic[$ex['id']] = $ex;
-            }
-        }
-        log_message('debug','report:' . json_encode($report));
-        log_message('debug','extra:' . json_encode($extra));
-        log_message('debug','config:' . json_encode($config));
-
-        //评论模块数据
-        $comments = $this->get_report_comments($report);
-        //报告流信息
-        $flow = $this->get_report_flow($id,$report);
-        // 获取快照 预算、预借历史report/$rid/snapshot
-
-        $template_views = array();
-        array_push($template_views,'module/reports/report_flow');
-        array_push($template_views,'module/reports/comments');
-        array_push($template_views,'module/reports/edit_report_footer');
-        $this->bsload('reports/edit',
-            array(
-                'title' => '修改报销单',
-                'members' => $_members,
-                'flow' => $flow,
-                'rid' => $id,
-                'items' => $_items,
-                'comments' => $comments,
-                'config' => $config,
-                'extra' => $extra,
-                'banks' => $banks,
-                'extra_dic' => $extra_dic,
-                'item_type_dic' => $item_type_dic,
-                'report' => $report,
-                'template'=>$template,
-                'is_other'=>$is_other,
-                'error'=>$error,
-                'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
-                    ,array('url'  => '', 'name' => '修改报销单', 'class' => '')
-                )
-            ),
-            $template_views
-            );
-    }
-
     public function snapshot($rid) {
-        $profile = $this->session->userdata('profile');
-
-        $common = $this->users->get_common();
-        $categories = $common['data']['categories'];
-
-        $template_types = $this->reim_show->get_item_type_name();
-        // var_dump($template_types);
-
-        $snapshot = $this->reports->get_snapshot_by_report_id($rid);
-        if($snapshot['status']<=0) {
-            return redirect(base_url('reports/index'));
-        }
-        $snapshot = $snapshot['data'];
-        $snapshot['config'] = json_decode($snapshot['extras'], true, 10);
-
-        $template = array();
-        $template = $this->reports->get_report_template($snapshot['template_id']);
-
-        $report = $this->reports->get_report_by_id($rid);
-        if($report['status']<=0) {
-            return redirect(base_url('reports/index'));
-        }
-        $report = $report['data'];
-        // var_dump(json_encode($report));
-        if($template['status']<=0) {
-            return redirect(base_url('reports/index'));
-        }
-        $template = $template['data'];
-
-        $this->bsload('reports/snapshot', array(
-            'title' => '申请历史',
-            'snapshot' => $snapshot,
-            'template' => $template,
-            'categories'=>$categories,
-            'report'=>$report,
-            'template_types'=>$template_types,
+        $this->bsload('reports/show', array(
+            'title' => '查看申请历史',
             'breadcrumbs' => array(
                 array(
                     'url'=> base_url(),
@@ -669,244 +388,63 @@ class Reports extends REIM_Controller {
         ));
     }
 
-    public function show($id = 0, $decision = 0){
-        $item_type_dic = $this->reim_show->get_item_type_name();
-        if($id == 0) return redirect(base_url('reports/index'));
-        $error = $this->session->userdata('last_error');
+    public function show($rid) {
+        // $template_id = $this->input->get('tid');
+        $last_error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-
-        $report = $this->reports->get_detail($id);
-        if($report['status'] <= 0){
-            return redirect(base_url('reports/index'));
-        }
-        $report = $report['data'];
-
-        //报告评论模块
-        $comments = $this->get_report_comments($report);
-
-        $_managers = array();
-        foreach($report['receivers']['managers'] as $m){
-            array_push($_managers, $m['nickname']);
-        }
-        $_ccs = array();
-        foreach($report['receivers']['cc'] as $m){
-            array_push($_ccs, $m['nickname']);
-        }
-        $_msg = '公司管理员';
-        if(count($_managers) > 0) {
-            $report['receivers']['managers'] = implode(',', $_managers);
-        } else {
-            $report['receivers']['managers'] = $_msg;
-            if($report['status'] == 0) {
-            $report['receivers']['managers'] = '<待提交>';
-            }
-        }
-        if(count($_ccs) > 0){
-            $report['receivers']['cc'] = implode(',', $_ccs);
-        } else {
-            $report['receivers']['cc'] = ' ';
-        }
-        $sliced_flow = $this->get_report_flow($id,$report);
-        log_message("debug","*********:".json_encode($report));
-        $_type= get_report_type_str($item_type_dic,$report['prove_ahead'],$report['pa_approval']);
-        $report['prove_ahead'] =  $_type;
-        $_members = array();
-        $members = $this->users->reim_get_user();
-        if($members['status'] > 0){
-            $_members = $members['data']['members'];
-        }
-        $extra = array();
-        if(array_key_exists('extras', $report) && $report['extras']) {
-            $extra = json_decode($report['extras'], true);
-        }
-        $config = array();
-        if(!empty($extra)){
-            $profile = array();
-            $_common = $this->users->get_common();
-            if($_common['status'] > 0 && array_key_exists('profile',$_common['data']))
-            {
-                $profile = $_common['data']['profile'];
-            }
-            $config = array();
-            if($profile && array_key_exists('report_setting', $profile) && array_key_exists('templates', $profile['report_setting'])) {
-                $report_template = $profile['report_setting']['templates'];
-                foreach($report_template as $r) {
-                    if($r['id'] == $report['template_id']) {
-                        $config = $r;
-                        break;
-                    }
-                }
-            }
-        }
-
-        $url = $this->session->userdata("report_list_url");
-        if ($url) {
-            $url = base_url($url);
-        }
-        log_message("debug", "found report list page => " . $url);
-        $extra_dic = array();
-        foreach($extra as $ex)
-        {
-            if(is_array($ex) && array_key_exists('id',$ex))
-            {
-                $extra_dic[$ex['id']] = $ex;
-            }
-        }
-
-        if(array_key_exists('items',$report))
-        {
-            foreach($report['items'] as &$item)
-            {
-                //将货币符号加入
-                $item['pa_currency_logo'] = $this->get_coin_symbol($item['pa_currency']);
-                if(array_key_exists('attachments',$item))
-                {
-                    show_attachments($item);
-                }
-            }
-        }
-        
-
-        $this->bsload('reports/view',
-            array(
-                'title' => '查看报销单',
-                'report' => $report,
-                'error' => $error,
-                'flow' => $sliced_flow
-                ,'rid' => $id
-                ,'config' => $config
-                ,'extra' => $extra
-                ,'extra_dic' => $extra_dic
-                ,'item_type_dic' => $item_type_dic
-                ,'comments' => $comments
-                ,'members' => $_members
-                ,'decision' => $decision
-                ,"report_list_url" => $url
-                ,'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
-                    ,array('url'  => '', 'name' => '查看报销单', 'class' => '')
+        $this->bsload('reports/show', array(
+            'title' => '查看报销单',
+            'last_error' => $last_error,
+            'breadcrumbs' => array(
+                array(
+                    'url'=> base_url(),
+                    'name' => '首页',
+                    'class' => 'ace-icon fa  home-icon'
                 ),
+                array(
+                    'url'  => base_url('reports/index'),
+                    'name' => '报销单', 'class' => ''
+                ),
+                array(
+                    'url'  => '',
+                    'name' => '查看报销单',
+                    'class' => ''
+                )
             )
-            );
+        ));
     }
 
-    public function update(){
+    public function update_v2()
+    {
         $id = $this->input->post('id');
         $title = $this->input->post('title');
-        
-        $items = $this->input->post('item');
-        if($items=='') {
-            $items = array();
-        }
-        
-        $receiver = $this->input->post('receiver');
-        if($receiver=='') {
-            $receiver = array();
-        }
-
-        $cc = $this->input->post('cc');
-        if($cc=='') {
-            $cc = array();
-        }
-
-        $save = $this->input->post('renew');
-        $force = $this->input->post('force');
-        if(!$cc) $cc = array();
         $template_id = $this->input->post('template_id');
-        $type = $this->input->post('type');
-        $extra = array();
-        if($template_id) {
-            $extra = $this->input->post('extra');
-            log_message('debug','extra:' . json_encode($extra));
-            if (!is_array($extra)) {
-                $extra = [];
-            }
-            foreach($extra as &$ex)
-            {
-                if($ex['type'] != 3) continue;
+        $template_type = $this->input->post('template_type');
 
-                $ex['value'] = strtotime($ex['value']);
-                log_message('debug','time:' . $ex['value']);
-            }
+        $receiver_ids = $this->input->post('receiver_ids');
+        $cc_ids = $this->input->post('cc_ids');
+        $item_ids = $this->input->post('item_ids');
+        $extras = $this->input->post('extras');
+        $status = $this->input->post('status');
+        // 标示审核人操作
+        $is_approver = $this->input->post('is_approver');
 
-        }
-        $is_other = intval($this->input->post('is_other'));
-        $ret = $this->reports->update($id, $title, implode(',', $receiver), implode(',', $cc), implode(',', $items), $type, $save, $force, $extra , $template_id, $is_other);
-        $ret = json_decode($ret, true);
-        log_message("debug", "xx:" . json_encode($ret));
-        if($ret['code'] <= 0) {
-            if($ret['code'] == 0){
-                echo json_encode(Array('status' => $ret['code'], 'msg' => '修改成功'));
-                return ;
-            }
-            if($ret['code'] == -71)
-            {
-                $info = $this->category->get_list();
-                if($info['status'] > 0)
-                {
-                    $_categories = $info['data']['categories'];
-                }
-                else
-                {
-                    $_categories = array();
-                }
-                $categories = array();
-                foreach($_categories as $cate)
-                {
-                    $categories[$cate['id']] = $cate['category_name'];
-                }
-                log_message("debug", "Cates:" . json_encode($categories));
-                $quota = $ret['data']['quota'];
-                $str = '';
-                foreach($quota as $key => $q)
-                {
-                    $str = $str . $categories[$key] . ' ';
-                }
-                if($str)
-                    $this->session->set_userdata('last_error', $str . '金额超出公司月度限额，是否仍要提交');
-            }
-            else if($ret['code'] == -63)
-            {
-                $info = $this->category->get_list();
-                if($info['status'] > 0)
-                {
-                    $_categories = $info['data']['categories'];
-                }
-                else
-                {
-                    $_categories = array();
-                }
-                $categories = array();
+        $report = array(
+            'id' => $id,
+            'title' => $title,
+            'template_id' => $template_id,
+            'type' => $template_type,
+            'manager_id' => $receiver_ids,
+            'cc' => $cc_ids,
+            'iids' => $item_ids,
+            'extras' => $extras,
+            'status' => $status, //保存：0，提交：1，通过：2 等
+            'is_approver' => $is_approver //保存：0，提交：1，通过：2 等
+        );
 
-                foreach($_categories as $cate)
-                {
-                    //  array_push($categories,array($cate['id'] => $cate['category_name']));
-                    $categories[$cate['id']] = $cate['category_name'];
-                }
-                $quota = $ret['data']['quota'];
-                $str = '';
-                foreach($quota as $key => $q)
-                {
-                    if($q < 0)
-                    {
-                        $str = $str . $categories[$key] . ' ';
-                        log_message('debug','value:' . $str);
-                    }
-                }
-                $this->session->set_userdata('last_error', '你的 ' . $str .'提交次数已经超出公司规定');
-            } else {
-                log_message("debug", "alvayang:" . json_encode($ret));
-                $this->session->set_userdata('last_error', $ret['data']['msg']);
-            }
-        }
-
-        $_error = '成功';
-        if($this->session->userdata('last_error')) {
-            $_error = $this->session->userdata('last_error');
-            $this->session->unset_userdata('last_error');
-        }
-        die(json_encode(Array('status' => $ret['code'], 'msg' => $_error)));
+        $buf = $this->reports->update_v2($report);
+        
+        die(json_encode($buf));
     }
 
     public function check_permission() {
@@ -2070,61 +1608,7 @@ class Reports extends REIM_Controller {
         ];
         self::render_to_download_2($filename, $data);
     }
-
-    public function report_template($id = 0){
-        if($id == 0) return redirect(base_url('reports/newreport'));
-        $profile = array();
-        $_common = $this->users->get_common();
-        if($_common['status'] > 0 && array_key_exists('profile',$_common['data']))
-        {
-            $profile = $_common['data']['profile'];
-        }
-        $item_type_dic = $this->reim_show->get_item_type_name();
-        $config = array();
-        if($profile && array_key_exists('report_setting',$profile) && array_key_exists('templates', $profile['report_setting'])) {
-            $report_template = $profile['report_setting']['templates'];
-            foreach($report_template as $r) {
-                if($r['id'] == $id) {
-                    $config = $r;
-                }
-            }
-            if(!empty($config)){
-                $_members = array();
-                $members = $this->users->reim_get_user();
-                if($members['status'] > 0){
-                    $_members = $members['data']['members'];
-                }
-
-                $_items = $this->_getitems();
-                log_message('debug',json_encode($_items));
-                log_message('debug','config:' . json_encode($config));
-                log_message('debug','profile:' . json_encode($profile));
-
-                $banks = array();
-                if(array_key_exists('banks',$profile))
-                {
-                    $banks = $profile['banks'];
-                }
-                return $this->bsload('reports/template_new',
-                    array(
-                        'title' => '新建[' . $config['name'] . '] 报销单',
-                        'members' => $_members,
-                        'config' => $config,
-                        'banks' => $banks,
-                        'item_type_dic' => $item_type_dic,
-                        'items' => $_items
-                        ,'breadcrumbs' => array(
-                            array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                            ,array('url'  => base_url('reports/index'), 'name' => '报销单', 'class' => '')
-                            ,array('url'  => '', 'name' => '新建' . $config['name'] . '', 'class' => '')
-                        ),
-            ));
-            }
-        }
-        return redirect(base_url('reports/newreport'));
-    }
-
-
+    
     public function check_submit(){
         $items = $this->input->post('item');
         if($items=='') {
