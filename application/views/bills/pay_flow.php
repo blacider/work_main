@@ -4,19 +4,23 @@
 <div class="main-content">
 	<div class="page-content">
 		<div class="page-content-area" ng-app="reimApp">
+			<div class="ui-loading-layer" ng-if="!isLoaded">
+			    <div class="ui-loading-icon">
+			    </div>
+			</div>
 			<div class="mod-pay-flow" ng-controller="PayFlowController">
 				<div class="row">
 					<div class="col-md-2">付款时间</div>
 					<div class="col-md-4">
 						<div class="input-group">
-					    	<div class="input-group-addon">开始时间</div>
+					    	<div class="input-group-addon btn-start-time">开始时间</div>
 					    	<input type="text" class="form-control">
 					    </div>
 					</div>
 					<div class="col-md-4">
 				    	<div class="input-group">
 				        	<div class="input-group-addon">结束时间</div>
-				        	<input type="text" class="form-control">
+				        	<input type="text" class="form-control btn-end-time">
 				        </div>
 					</div>
 				</div>
@@ -24,7 +28,7 @@
 					<div class="col-md-2">付款状态</div>
 					<div class="col-md-8">
 						<select class="form-control">
-							<option>1</option>
+							<option ng-repeat="statusItem in payStatusArray">{{statusItem.text}}</option>
 						</select>
 					</div>
 				</div>
