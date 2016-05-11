@@ -1,10 +1,11 @@
 <!-- basic css resource here -->
+<link rel="stylesheet" href="/static/css/widgets/loading-default.css"/>
 <link rel="stylesheet" href="/static/css/mod/bills/payflow.css">
 
 <div class="main-content">
 	<div class="page-content">
 		<div class="page-content-area" ng-app="reimApp">
-			<div class="ui-loading-layer" ng-if="!isLoaded">
+			<div class="ui-loading-layer" ng-if="isLoaded">
 			    <div class="ui-loading-icon">
 			    </div>
 			</div>
@@ -13,22 +14,22 @@
 					<div class="col-md-2">付款时间</div>
 					<div class="col-md-4">
 						<div class="input-group">
-					    	<div class="input-group-addon btn-start-time">开始时间</div>
-					    	<input type="text" class="form-control">
+					    	<div class="input-group-addon">开始时间</div>
+					    	<input type="text" class="form-control btn-start-time" ng-model="startTime" placeholder="开始时间">
 					    </div>
 					</div>
 					<div class="col-md-4">
 				    	<div class="input-group">
 				        	<div class="input-group-addon">结束时间</div>
-				        	<input type="text" class="form-control btn-end-time">
+				        	<input type="text" class="form-control btn-end-time" ng-model="endTime" placeholder="结束时间">
 				        </div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-2">付款状态</div>
 					<div class="col-md-8">
-						<select class="form-control">
-							<option ng-repeat="statusItem in payStatusArray">{{statusItem.text}}</option>
+						<select class="form-control" ng-model="payStatus">
+							<option ng-repeat="statusItem in payStatusArray" value="statusItem.value">{{statusItem.text}}</option>
 						</select>
 					</div>
 				</div>
@@ -36,22 +37,22 @@
 					<div class="col-md-2">付款金额</div>
 					<div class="col-md-6">
 						<div class="input-group">
-					    	<input type="text" class="form-control" placeholder="最小金额">
+					    	<input type="text" class="form-control min-amount"  ng-model="minAmount" placeholder="最小金额">
 					    	<div class="input-group-addon">至</div>
-					    	<input type="text" class="form-control" placeholder="最大金额">
+					    	<input type="text" class="form-control max-amount" ng-model="maxAmount" placeholder="最大金额">
 					    </div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-2">付款单号</div>
 					<div class="col-md-8">
-						<input type="text" class="form-control" placeholder="">
+						<input type="text" class="form-control btn-pay-no" ng-model="payNo" placeholder="">
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-2"></div>
 					<div class="col-md-8">
-						<button type="button" ng-click="onQuery()" class="btn btn-default">查询</button>
+						<button type="button" ng-click="onQuery({startTime: startTime, endTime: endTime, minAmont: minAmont, maxAmount: maxAmount, payNo: payNo, payStatus: payStatus})" class="btn btn-default">查询</button>
 					</div>
 				</div>
 
@@ -72,6 +73,11 @@
 				                </tr>
 				            </thead>
 				            <tbody>
+					            <tr ng-if="payList.length==0">
+					            	<td colspan="8">
+							            <div>当前报销单已处理完成</div>
+					            	</td>
+					            </tr>
 				                <tr ng-repeat="item in payList">
 				                    <td>{{item.local_bill_no}}</td>
 				                    <td>{{item.carrier_id}}</td>

@@ -33,9 +33,9 @@ body {
 	background: #ff575b;
 	color: #fff;
 	border-radius: 3px;
+	width: 96px;
 	border: none;
 }
-
 
 .footer {
 	text-align: center;
@@ -185,6 +185,13 @@ table tfoot {
 .table-field table tfoot td.sum {
 	text-align: right;
 	padding: 0 12px;
+}
+
+
+.cloud-bx-dialog .dialog-header .close {
+	background: transparent;
+	border: none;
+	font-size: 24px;
 }
 
 

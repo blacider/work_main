@@ -9,9 +9,10 @@
 
     return {
         init: function() {
-            angular.module('reimApp', []).controller('PayFlowController', ["$scope",
-                function($scope) {
+            angular.module('reimApp', []).controller('PayFlowController', ["$scope", "$element",
+                function($scope, $element) {
 
+                    $scope.isLoaded = false;
                     // get page data
                     getFlowWithQuery({}).done(function (rs) {
                         if (rs['status'] <= 0) {
@@ -30,7 +31,7 @@
                     ];
                     // events handler here
 
-                    $scope.onQuery = function () {
+                    $scope.onQuery = function (query) {
                         // carrier_type: 类型 - string, 描述 - 支付载体类型（目前只有报销单可以支付，此处应为报销单类型 - exr， 也可不填，目前默认为exr）
                         // carrier_id: 类型 - string, 描述 - 支付载体ID（目前为报销单ID）
                         // operator_id: 类型 - string, 描述 - 支付操作人ID
@@ -41,11 +42,11 @@
                         // max_amount: 类型 -
 
                         var carrier_type = 'exr';
-                        var carrier_id = '';
-                        var start_time = '2016-5-1';
-                        var end_time = '2016-5-11';
-                        var min_amount = '';
-                        var max_amount = '';
+                        var carrier_id = $element.find('.btn-start-time');
+                        var start_time = $element.find('.btn-start-time');
+                        var end_time = $element.find('.btn-end-time');
+                        var min_amount = $element.find('.min-amount');
+                        var max_amount = $element.find('.max-amount');
 
                         var data = {
                             carrier_type: carrier_type,
@@ -56,14 +57,16 @@
                             max_amount: max_amount
                         };
 
-                        getFlowWithQuery(data).done(function (rs) {
+                        $scope.isLoaded = false;
+
+                        getFlowWithQuery(query).done(function (rs) {
                             if (rs['status'] <= 0) {
                                 return show_notify(rs['data']['msg']);
                             }
                             $scope.payList = rs['data'];
                             $scope.$apply();
                             $scope.isLoaded = true;
-                        })
+                        });
 
                     };
 

@@ -90,7 +90,7 @@
     <script src="/static/js/libs/jquery/jquery.min.js"></script>
     <script src="/static/js/libs/underscore.js"></script>
     <script src="/static/js/libs/utils.js"></script>
-    <script src="/static/js/mod/bills/paylist.js"></script>
+    <script src="/static/js/mod/bills/paylist.js?_r=12312"></script>
     
     <script src="/static/plugins/cloud-dialog/dialog.js"></script>
     <link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">

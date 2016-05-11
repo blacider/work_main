@@ -113,9 +113,10 @@
     };
 
     function doPayOneByOne(index, data, opts) {
+    	// opts ={done,next,error}
         var list = data['list'];
         if (index >= list.length) {
-            opts['done'](list, index);
+            opts['done'](index, list);
             return;
         }
         var item = list[index];
@@ -128,19 +129,13 @@
             payway: 'wechat_pub'
         }
         doPayItem(itemData).done(function(rs) {
-            // -82 TAOYUAN_PAYMENT_CONTINUABLE_ERR
-            // -83 TAOYUAN_PAYMENT_UNCONTINUABLE_ERR
-            if (rs['status'] <= 0) {
-                if (rs['code'] == -82) {
-                    opts['one'](rs, index, list);
-                } else {
-                    opts['error'](rs, index, list);
-                    return opts['done'](list, index);
-                }
-            }
-            opts['one'](rs, index, list);
-            index++;
-            doPayOneByOne(index, data, opts);
+        	// next返回当前条目处理结果，返回true可以继续下去，否则不可以
+        	if(opts.next(rs, index, data)) {
+	            index++;
+	            doPayOneByOne(index, data, opts);
+        	} else {
+        		opts.error(index, data, opts);
+        	}
         });
     };
     return {
@@ -208,7 +203,7 @@
                             idArr.push(item.id);
                         });
 
-                        var statis_ok = 0, statis_continue = 0, statis_error = 0;
+                        var statis_ok = 0, statis_next = 0, statis_error = 0, statis_check=0;
                         var errorMsg = '';
                         doPayOneByOne(0, {
                             list: idArr,
@@ -217,64 +212,66 @@
                             desc: desc
                         }, {
                             error: function(rs, index, list) {
-                               statis_error++;
-                               errorMsg = rs['data']['msg'];
+                               
                             },
-                            one: function(rs, index, list) {
-                                if (rs['status'] <= 0) {
+                            next: function(rs, index, list) {
+                            	// -100 ~ -119: 可继续错误
+                            	// 其中：-101：用户造成的错误（如用户姓名校验失败等）
+                            	 
+                            	// -120~ -139：不可继续的错误
+                            	// 其中： -121：公司造成的错误（如余额不足等）
+                            	 
+                            	// -100:普通可继续错误
+                            	// -120：普通不可继续错误
+                            	var code = rs['code'];
+                            	if(rs['status']>0) {
+                            		statis_ok++;
+                            		return true;
+                            	} else if (code <= -100 && code >= -119) {
                                 	show_notify(rs['data']['msg']);
-                                	statis_continue++;
-                                } else {
-                                	statis_ok++;
+                                	statis_next++;
+                                	if(code==-101) {
+                                		statis_check++;
+                                	}
+                                	return true;
+                                } else if(code<=-120 && code>= -139) {
+                            		statis_error++;
+                            		errorMsg = rs['data']['msg'];
+                            		show_notify(errorMsg);
+                                	if(code == -121) {
+                                		errorMsg = '余额不足';
+                                	}
+                                	return false;
                                 }
                             },
                             done: function(index, list) {
-                            	var type = '';
-                            	// 有一条错误，其余全部continue
-                            	// 
-                            	if(statis_error) {
-                            		if(statis_continue) {
-                            			type = 'continue_and_error';
-                            		} else {
-                            			type = 'error';
-                            		}
-                            	} else {
-                            		if(statis_continue) {
-                            			if(ok) {
-                            				type = 'continue_ok';
-                            			} else {
-                            				type = 'continue';
-                            			}
-                            		} else {
-                            			type = 'ok';
-                            		}
+                            	var str = '';
+                            	// ok
+                            	if(statis_ok == list.length) {
+                            		str =  '已成功发起微信转账，预计24小时内到账。<br />请到［企业支付查询］中查看转账记录。' ;
+                            	} else if(statis_next) {
+                            		str = '系统错误，' + statis_next + '笔支付失败。<br />请稍后重试，或联系<a href="">云报销客服</a>';
+                            			// '<%= statis_check  %>笔支付实名校验失败失败',
+                            	} else if(statis_check) {
+                            		str = '系统错误，' + statis_check + '笔支付实名校验失败失败。<br />请核实员工，或联系<a href="">云报销客服</a>';
+                            	} else if(statis_error) {
+                            		str = errorMsg + '，'  + (list.length - statis_ok) + '笔支付失败。<br />请充值后重试。<a href="">了解如何充值</a>';
                             	}
-
-                            	var tmpl = [
-                            		'<div class="row">',
-                            		'	<div>系统错误，<%= statis_continue  %></div>',
-                            		'	<div>请稍后重试，或联系<a href="">云报销客服</a></div>',
-                            		'</div>',
-                            	].join('');
-
+ 
                             	var dialog = new CloudDialog({
-                            		content: _.template(tmpl)({
-                            			statis_continue: statis_continue,
-                            			statis_ok: statis_ok,
-                            			errorMsg: errorMsg
-                            		}),
+                            		content: str,
                             		cancelValue: '确认',
                             		cancel: function () {
-                            			this.close()
+                            			this.close();
                             		},
                             		okValue: '查看转账记录',
                             		ok: function () {
-                            			window.location = 'http://www.baidu.com';
+                            			window.location = '/bills/payflow';
                             			this.close();
                             		}
                             	});
 
-                            	dialog.showModel();
+                            	dialog.showModal();
                             }
                         })
                     };
