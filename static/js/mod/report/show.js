@@ -697,14 +697,16 @@
                                 }
                                 var _this = this;
 
-                                var url = '/report/' + id
+                                var url = '/report/' + id;
+                                var method = 'put';
 
                                 if($scope.report.status == 2) {
                                     url = '/report_finance_flow/deny/' + id;
+                                    method = 'post';
                                 }
 
                                 Utils.api(url, {
-                                    method: 'put',
+                                    method: method,
                                     env: 'online',
                                     data: {
                                         status: 3,
