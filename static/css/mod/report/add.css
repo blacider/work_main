@@ -770,6 +770,64 @@ table.border-radius-row tr td:last-child {
 	padding-right: 5px;
 }
 
+.msg-item {
+	margin-bottom: 30px;
+}
+.msg-item img {
+	float: left;
+	width: 40px;
+	height: 40px;
+	border-radius: 100%;
+}
+
+.msg-item .content {
+	margin-left: 50px;
+}
+
+.msg-item .content .title {
+	height: 20px;
+    line-height: 20px;
+}
+
+.msg-item .content  .title .name {
+	float: left;
+	font-size: 14px;
+	color: #929292;
+}
+
+.msg-item .content  .title .date-time {
+	float: right;
+	font-size: 14px;
+	color: #b9b9b9;
+}
+
+.msg-item .content .text {
+	font-size: 14px;
+	color: #4a4a4a;
+    line-height: 21px;
+}
+.msg-input {
+	display: table;
+}
+.msg-input .field-input {
+	width: 100%;
+	display: table-cell;
+	vertical-align: middle;
+	height: 40px;
+}
+.msg-input .field-input input {
+	border-right: none;
+	padding: 8px 4px 9px 8px;
+}
+.msg-input .ui-button {
+	width: 100px;
+	height: 40px;
+	line-height: 40px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	margin-left: -1px;
+}
+
 /* component reset */
 .field-label {
 	color: #4a4a4a;

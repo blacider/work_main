@@ -198,7 +198,31 @@
                     <div class="field-label">消费明细</div>
                     <button class="button-gray ui-button btn-add-consumptions" ng-click="onAddConsumptions($event)"><img style="margin-right: -2px" src="/static/img/mod/report/36/consumpution@2x.png" alt="">选择消费</button>
                 </div>
+                <div class="block-row flow" ng-if="__edit__">
+                    <div class="field-label">留言</div>
+                    <div class="field-input">
+                        <div class="msg-item" ng-repeat="commentItem in commentArray">
+                            <img ng-src="{{commentItem.user['apath'] || default_avatar}}" alt="">
+                            <div class="content">
+                                <div class="title">
+                                    <div class="name">{{commentItem.nickname}}</div>
+                                    <div class="date-time">{{dateFormat(commentItem.lastdt)}}</div>
+                                </div>
+                                <div class="text">
+                                    {{commentItem.comment}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="msg-input">
+                            <div class="field-input">
+                                <input type="text" placeholder="" ng-model="comment_box.txtCommentMessage">
+                            </div>
+                            <button class="btn-search ui-button" ng-click="onAddCommentToReport()">提交留言</button>
+                        </div>
+                    </div>
+                </div>
             </div>
+
             <div class="report-footer">
                 <button style="float: left" class="btn-cancel ui-button ui-button-hover" ng-click="onCancel($event)">
                     <i class="icon"></i>取消

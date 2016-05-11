@@ -18,6 +18,10 @@
                         receivers: {}
                     };
 
+                    $scope.comment_box = {
+                        txtCommentMessage: ''
+                    };
+
                     function getTemplateData(id) {
                         if (!id) {
                             var def = $.Deferred();
@@ -565,6 +569,14 @@
                                     $scope.superior.tag_for_superior = true;
                                 }
                             }
+
+                            $scope.commentArray = _.map($scope.report.comments.data, function(item, index) {
+                                var one = _.findWhere($scope.originalMembers, {
+                                    id: item.uid
+                                });
+                                item.user = one;
+                                return item;
+                            });
 
                             $scope.hasCC = true;
                              
@@ -1263,7 +1275,41 @@
 
                         });
                     };
-                    window.$scope =$scope;
+                    $scope.onAddCommentToReport = function(e) {
+                        var report_id = $scope.report.id;
+                        var comment = $scope.comment_box.txtCommentMessage;
+                        comment = $.trim(comment);
+                        if (!comment) {
+                            return show_notify('评论内容不允许为空');
+                        }
+                        return Utils.api('/report/' + report_id, {
+                            method: 'put',
+                            env: 'online',
+                            data: {
+                                rid: report_id,
+                                comment: comment
+                            }
+                        }).done(function(rs) {
+                            if (rs['status'] <= 0) {
+                                return show_notify('评论失败');
+                            }
+                            $scope.commentArray || ($scope.commentArray = []);
+
+                            var userProfile = _.findWhere($scope.originalMembers, {
+                                id: __UID__
+                            });
+
+                            $scope.commentArray.push({
+                                user: userProfile,
+                                nickname: userProfile['nickname'],
+                                apath: userProfile['apath'],
+                                comment: comment,
+                                lastdt: new Date
+                            });
+                            $scope.comment_box.txtCommentMessage = '';
+                            $scope.$apply();
+                        });
+                    };
                     // 首次创建，其次保存
                     $scope.onSave = $scope.onSubmit = function(e) {
                         var data = readReportData();
