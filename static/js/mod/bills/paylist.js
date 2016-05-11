@@ -143,26 +143,7 @@
             angular.module('reimApp', []).controller('PayListController', ["$scope",
                 function($scope) {
                     // variable here
-                    // 支付验证码
-                    setTimeout(function() {
-                        $scope.vcode = '';
-                        $scope.$apply();
-                    }, 100)
-                    // $scope.isLoaded = true;
-                    getPageData().done(function(rs, profile, phone, payHeads) {
-                        $scope.isLoaded = true;
-                        if (rs['status'] < 0) {
-                            return show_notify('找不到模版');
-                        }
-                        $scope.reportArray = rs['data']['data'];
-                        $scope.profile = profile['data'];
-                        $scope.phone = phone['data']['phone'];
-                        $scope.$apply();
-                        // last fetch get group data
-                        // getGroup($scope.profile.gid).done(function (rs) {
-                        // 	debugger
-                        // });
-                    });
+
                     // $scope event handler here
                     $scope.onRemoveItem = function(item) {
                         var index = _.findIndex($scope.reportArray, {
@@ -255,7 +236,7 @@
                             	} else if(statis_check) {
                             		str = '系统错误，' + statis_check + '笔支付实名校验失败失败。<br />请核实员工，或联系<a href="">云报销客服</a>';
                             	} else if(statis_error) {
-                            		str = errorMsg + '，'  + (list.length - statis_ok) + '笔支付失败。<br />请充值后重试。<a href="">了解如何充值</a>';
+                            		str = errorMsg + '，'  + (list.length - statis_ok) + '笔支付失败。<br />请充值后重试。<a target="_blank" href="http://kf.qq.com/faq/140225MveaUz150107fqeQBj.html?pass_ticket=mczQUvfhw2FPVPPVvwW68vP%2B98vdiRQ5LHDNWWTpkQiSKarE3GQ51K0KPyT888Rs">了解如何充值</a>';
                             	}
  
                             	var dialog = new CloudDialog({

@@ -27,7 +27,19 @@
 	border-radius: 3px;
 	border-right: none;
 	overflow: hidden;
+	max-width: 900px;
+	margin: 0 auto;
 }
+
+.btn-query {
+	background: #ff575b !important;
+	border: none;
+	border-radius: 3px;
+	padding: 8px 28px;
+	color: #fff;
+}
+
+
 
 table {
 	width: 100%;
@@ -84,4 +96,24 @@ table tfoot {
 .table-field table tfoot td.sum {
 	text-align: right;
 	padding: 0 12px;
+}
+
+.pay-no {
+	max-width: 224px;
+	width: 224px;
+}
+.success, .failure, .paying {
+	background: #5cb85c;
+	color: #fff;
+	padding: 3px 8px;
+	border-radius: 3px;
+	font-size: 12px;
+}
+
+.failure {
+	background: red;
+}
+
+.paying {
+	background: #f0ad4e;
 }

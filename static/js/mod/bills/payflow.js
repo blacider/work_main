@@ -7,21 +7,92 @@
         });
     };
 
+    function pageMaker(option) {
+        var current, ender, i, it, j, k, leftWind, list, next, pathname, prev, query, queryString, ref, ref1, ref2, ref3, rightWind, starter, totalPage, v, wing;
+        current = parseInt(option['current']);
+        totalPage = parseInt(option['totalPage']);
+        wing = option['wing'] || 4;
+        pathname = option['pathname'];
+        query = option['query'];
+        starter = current - wing <= 0 ? 1 : current - wing;
+        ender = current + wing < totalPage ? current + wing : totalPage;
+        leftWind = [];
+        rightWind = [];
+        for (it = i = ref = starter, ref1 = current; i <= ref1; it = i += 1) {
+            leftWind.push(it);
+        }
+        for (it = j = ref2 = current + 1, ref3 = ender; j <= ref3; it = j += 1) {
+            rightWind.push(it);
+        }
+        prev = leftWind.length <= 1 ? null : current - 1;
+        next = rightWind.length <= 1 ? null : current + 1;
+
+        list = [];
+        list.push.apply(list, leftWind);
+        list.push.apply(list, rightWind);
+        queryString = [];
+        for (k in query) {
+            v = query[k];
+            queryString.push(k + '=' + v);
+        }
+        return {
+            start: 1,
+            end: totalPage,
+            prev: prev,
+            list: list,
+            next: next,
+            current: current,
+            totalPage: totalPage,
+            pathname: pathname || '/',
+            queryString: queryString.join('&'),
+            query: query
+        };
+    };
+
+    var _const_limit_ = 10;
+    var _current_page_ = 0;
+
     return {
         init: function() {
             angular.module('reimApp', []).controller('PayFlowController', ["$scope", "$element",
                 function($scope, $element) {
 
                     $scope.isLoaded = false;
+                    // $scope function here
+                    $scope.getTextByStatus = function (status) {
+                        var m = {
+                            'success': '成功',
+                            'failure': '失败',
+                            'paying': '支付中'
+                        };
+                        return m[status];
+                    };
+
                     // get page data
-                    getFlowWithQuery({}).done(function (rs) {
-                        if (rs['status'] <= 0) {
-                            return show_notify(rs['data']['msg']);
-                        }
-                        $scope.payList = rs['data'];
-                        $scope.$apply();
-                        $scope.isLoaded = true;
-                    });
+                    function doPageAction(current, query) {
+                        getFlowWithQuery(query).done(function (rs) {
+                            if (rs['status'] <= 0) {
+                                return show_notify(rs['data']['msg']);
+                            }
+                            $scope.payList = rs['data']['items'];
+
+                            $scope.isLoaded = true;
+
+                            var totalPage = Math.ceil(rs['data']['count'] / _const_limit_);
+
+                            $scope.pageNaviData = pageMaker({
+                                current: current,
+                                pathname: '',
+                                totalPage: totalPage,
+                                wing: 5,
+                                query: query
+                            });
+
+                            $scope.$apply();
+                        });
+                    }
+
+                    doPageAction(0, {limit: _const_limit_, offset: 0});
 
                     $scope.payStatusArray = [
                         {text: '全部', value:''},
@@ -29,8 +100,8 @@
                         {text: '付款成功', value:'success'},
                         {text: '付款失败', value:'failure'}
                     ];
-                    // events handler here
 
+                    // events handler here
                     $scope.onQuery = function (query) {
                         // carrier_type: 类型 - string, 描述 - 支付载体类型（目前只有报销单可以支付，此处应为报销单类型 - exr， 也可不填，目前默认为exr）
                         // carrier_id: 类型 - string, 描述 - 支付载体ID（目前为报销单ID）
@@ -42,11 +113,12 @@
                         // max_amount: 类型 -
 
                         var carrier_type = 'exr';
-                        var carrier_id = $element.find('.btn-start-time');
-                        var start_time = $element.find('.btn-start-time');
-                        var end_time = $element.find('.btn-end-time');
-                        var min_amount = $element.find('.min-amount');
-                        var max_amount = $element.find('.max-amount');
+                        var carrier_id = $element.find('.pay-no').val();
+                        var start_time = $element.find('.start-time').val();
+                        var end_time = $element.find('.end-time').val();
+                        var min_amount = $element.find('.min-amount').val();
+                        var max_amount = $element.find('.max-amount').val();
+                        var pay_status = $element.find('.pay-status').val();
 
                         var data = {
                             carrier_type: carrier_type,
@@ -54,20 +126,19 @@
                             start_time: start_time,
                             end_time: end_time,
                             min_amount: min_amount,
-                            max_amount: max_amount
+                            max_amount: max_amount,
+                            limit: _const_limit_,
+                            offset: 1
                         };
 
+                        doPageAction(0, data);
+                    };
+
+                    $scope.onPage = function (num, pageNaviData) {
+                        var query = pageNaviData.query;
+                        query.offset = num;
                         $scope.isLoaded = false;
-
-                        getFlowWithQuery(query).done(function (rs) {
-                            if (rs['status'] <= 0) {
-                                return show_notify(rs['data']['msg']);
-                            }
-                            $scope.payList = rs['data'];
-                            $scope.$apply();
-                            $scope.isLoaded = true;
-                        });
-
+                        doPageAction(num, query);
                     };
 
                     $scope.onPreviewItem = function (item) {
