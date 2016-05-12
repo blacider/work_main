@@ -127,7 +127,7 @@
                                         <td>{{c['category_name']||'-'}}</td>
                                         <td >{{dateFormat(c.dt)}}</td>
                                         <td>{{c.merchants}}</td>
-                                        <td class="note">{{c.notes}}</td>
+                                        <td class="note">{{c.note}}</td>
                                         <td>¥{{c.amount}}</td>
                                     </tr>
                                 </tbody>
