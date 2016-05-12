@@ -3,8 +3,8 @@
     var _defaultTemplateName_ = '未命名报销单模板';
     return {
         initialize: function() {
-            angular.module('reimApp', ['ng-sortable', 'ng-dropdown', 'historyMembers']).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce", "historyMembersManagerService",
-                function($http, $scope, $element, $timeout, $sce, historyMembersManager) {
+            angular.module('reimApp', ['ng-sortable', 'ng-dropdown', 'historyMembers', 'exchangeRate']).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce", "historyMembersManagerService", "exchangeRateService",
+                function($http, $scope, $element, $timeout, $sce, historyMembersManager, exchangeRate) {
                     $scope.bankFieldMap = {};
                     $scope.radioFieldMap = {};
                     $scope.selectedMembers = [];
@@ -21,6 +21,8 @@
                     $scope.comment_box = {
                         txtCommentMessage: ''
                     };
+
+                    $scope.exchangeRateMap = exchangeRate.rateMap;
 
                     function getTemplateData(id) {
                         if (!id) {
@@ -487,7 +489,11 @@
                         var amount = 0;
                         _.each(arr, function(item) {
                             var a = parseFloat(item.amount);
-                            amount += a;
+                            var rate = 1;
+                            if(item.currency!='cny') {
+                                rate = parseFloat(item.rate)/100;
+                            }
+                            amount += a * rate ;
                         });
                         amount = amount.toFixed(2);
                         return amount;

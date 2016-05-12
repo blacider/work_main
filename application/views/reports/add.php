@@ -161,7 +161,7 @@
                                         <td >{{dateFormat(c.dt)||'-'}}</td>
                                         <td>{{c.merchants||'-'}}</td>
                                         <td class="note">{{c.note||'-'}}</td>
-                                        <td>¥{{c.amount}} </td>
+                                        <td>{{exchangeRateMap[c.currency]}}{{c.amount}} </td>
                                     </tr> 
                                 </tbody>
                                 <tfoot>
@@ -301,7 +301,7 @@
                                 <div class="col dt">{{dateFormat(c.dt)||'-'}}</div>
                                 <div class="col">{{c.merchants||'-'}}</div>
                                 <div class="col note">{{c.note||'-'}}</div>
-                                <div class="col">¥{{c.amount}}</div>
+                                <div class="col">{{exchangeRateMap[c.currency]}}{{c.amount}}</div>
                                 <div class="col btn-edit">
                                     <a class="icon" href="/items/edit/{{c.id}}">
                                     </a>
@@ -404,6 +404,7 @@
 <script src="/static/js/libs/route-recognizer.js"></script>
 <script src="/static/js/jquery.cookie.js"></script>
 <script src="/static/js/shared/services/historyMembers.js"></script>
+<script src="/static/js/shared/services/exchangeRate.js"></script>
 <script src="/static/js/mod/report/add.js"></script>
 
 <link rel="stylesheet" href="/static/css/base/animate.css">
