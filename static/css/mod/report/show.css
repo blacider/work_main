@@ -280,6 +280,9 @@
 .approvers ul li .info {
 	display: table-cell;
 	vertical-align: middle;
+	/*fix IE*/
+	margin-top/*\**/: 12px\9;
+	float/*\**/: left\9;
 }
 
 .approvers ul li .info {
@@ -375,6 +378,32 @@
     width: 100px;
     margin-top: 3px;
 }
+
+.available-members.approvers ul {
+	margin-top: 10px;
+	
+	/*修复IE8*/
+	width/*\**/: 630px\9;
+}
+.available-members.approvers ul li.selected {
+	background: transparent;
+	border: 1px solid #596774;
+}
+
+.available-members.approvers ul li:hover,
+.available-members.approvers ul li.selected:hover {
+	background: #465461;
+}
+.available-members.approvers ul li:hover .info .name,
+.available-members.approvers ul li:hover .info .role,
+.available-members.approvers ul li.selected:hover .info .role,
+.available-members.approvers ul li.selected:hover .info .name {
+	color: #fff;
+}
+.available-members.approvers ul li:hover .info span {
+	color: yellow;
+}
+
 .table-consumptions tbody tr:hover {
 	cursor: pointer	
 } 
