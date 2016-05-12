@@ -66,8 +66,9 @@
                         </ul>
                     </div>
                 </div>
-                <div class="block-row" ng-if="(__edit__&&selectedMembersCC.length>0) || (!__edit__ && hasCC)">
-                    <div class="field-label">抄送</div>
+                <!-- 1.是自己，就展示抄送，2.是审批人，抄送列表为空不展示 -->
+                <div class="block-row" ng-if="hasCC && !is_approver ||is_approver && selectedMembersCC.length>0">
+                    <div class="field-label">抄送至</div>
                     <div class="approvers selected-members">
                         <ul>
                             <li ng-repeat='m in selectedMembersCC track by $index'>

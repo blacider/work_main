@@ -427,7 +427,7 @@
                         // 寻找标准成员数据
                         var selectedMembers = [];
                         _.each(reportData['receivers']['managers'], function (item) {
-                            var one = _.find($scope.members, {
+                            var one = _.find($scope.originalMembers, {
                                 id: item.id + ''
                             });
                             if(one) {
