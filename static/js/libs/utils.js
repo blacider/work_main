@@ -71,7 +71,7 @@
             var host = window._CONST_API_DOMAIN_;
             // ie8 XDomainRequest CORS不支持 headers 和 get post 之外的方法
             if(CONST_LTE_IE8) {
-            	host = location.origin;
+            	host = location.protocol + '//' +  location.host;
             }
 
             var regSlashStart = /^\//;
