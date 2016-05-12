@@ -272,6 +272,10 @@
 	display: table-cell;
 	vertical-align: middle;
 	height: 70px;
+
+	/*fix IE*/
+	margin-top/*\**/: 12px\9;
+	float/*\**/: left\9;
 }
 .approvers ul li .info p {
 	margin: 0;
@@ -290,6 +294,9 @@
 
 .available-members.approvers ul {
 	margin-top: 10px;
+
+	/*修复IE8*/
+	width/*\**/: 630px\9;
 }
 .available-members.approvers ul li.selected {
 	background: transparent;
@@ -633,7 +640,7 @@
 .table-field table thead tr th {
 	height: 30px;
 	border-radius: 2px;
-	background-color: rgba(89, 102, 116, 0.8);
+	background-color: #7A8590;
 	color: #fff;
 	text-align: center;
 	border-right: solid 1px #b9b9b9;
