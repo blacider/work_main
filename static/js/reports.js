@@ -219,7 +219,7 @@ try {
 
             if($target.hasClass('tdown')) {
                 $.ajax({
-                    url: __BASE + "/bills/download_single_report",
+                    url: "/bills/download_report",
                     method: "post",
                     dataType: "json",
                     data: {

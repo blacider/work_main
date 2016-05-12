@@ -123,7 +123,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="c in report.items" ng-class="{selected: c.isSelected}">
+                                    <tr ng-click="onPreviewConsuptionItem(c)" ng-repeat="c in report.items" ng-class="{selected: c.isSelected}">
                                         <td>{{c['category_name']||'-'}}</td>
                                         <td >{{dateFormat(c.dt)}}</td>
                                         <td>{{c.merchants}}</td>
