@@ -87,10 +87,10 @@
                 <div class="block-row field-item-list" ng-repeat="tableItem in template.config">
                     <div class="field-label">{{tableItem.name}}</div>
                     <div class="fields-box">
-                        <div  class="field-item" data-required="{{fieldItem.required==1}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-repeat-start="fieldItem in tableItem.children" ng-if="fieldItem.type==1">
+                        <div class="field-item" data-required="{{fieldItem.required==1}}" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-repeat-start="fieldItem in tableItem.children" ng-if="fieldItem.type==1">
                             <label for="">{{fieldItem.name}}</label>
                             <div class="field-input">
-                                <input type="text" placeholder="{{fieldItem.required==1?'必填':'选填'}}"  ng-keyup="onTextLengthChange2($event)">
+                                <input type="text" placeholder="{{fieldItem.required==1?'必填':'选填'}}">
                             </div>
                         </div>
                         <div  class="field-item" data-required="{{fieldItem.required==1}}" ng-init="fieldItem._options_=formatOptions(fieldItem)" data-type="{{fieldItem.type}}" data-id="{{fieldItem.id}}" ng-if="fieldItem.type==2">
