@@ -132,7 +132,7 @@
                                     </tr>
                                 </tbody>
                                 <tfoot>
-                                    <tr ng-if="report.pa_approval==1 && report.prove_ahead==1">
+                                    <tr>
                                         <td>合计</td>
                                         <td colspan="4" class="sum">
                                             ¥{{getItemsAmount(report.items)}}

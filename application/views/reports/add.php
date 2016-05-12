@@ -27,7 +27,7 @@
                 <div class="block-row report-title">
                     <div class="field-label">报销单名称</div>
                     <div class="field-input">
-                        <input type="text" ng-model="title" ng-keyup="onTextLengthChange($event)">
+                        <input type="text" ng-model="title">
                     </div>
                 </div>
                 <div class="block-row detail-row" ng-if="__edit__ && report.pa_approval==1 && (report.prove_ahead==1||report.prove_ahead==2)">
