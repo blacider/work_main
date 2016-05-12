@@ -375,7 +375,9 @@
     width: 100px;
     margin-top: 3px;
 }
-
+.table-consumptions tbody tr:hover {
+	cursor: pointer	
+} 
 .table-consumptions tfoot {
 	font-weight: border;
 	color: #4a4a4a;

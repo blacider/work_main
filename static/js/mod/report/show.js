@@ -625,6 +625,10 @@
                         });
                     };
 
+                    $scope.onPreviewConsuptionItem = function (item) {
+                        window.location = '/items/show/' + item.id + '/1';
+                    };
+
                     $scope.onSelectMember = function (item, isHistory) {
                         item.isSelected = !item.isSelected;
                     };
