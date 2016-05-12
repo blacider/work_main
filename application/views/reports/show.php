@@ -72,6 +72,21 @@
                         </ul>
                     </div>
                 </div>
+                <div class="block-row" ng-if="selectedMembersCC.length>0">
+                    <div class="field-label">抄送至</div>
+                    <div class="approvers selected-members">
+                        <ul>
+                            <li ng-repeat='m in selectedMembersCC track by $index'>
+                                <img ng-src="{{m.apath || default_avatar}}" alt="">
+                                <div class="info">
+                                    <div class="name">{{m.nickname}}</div>
+                                    <div class="role">{{m.d}}</div>
+                                </div>
+                                <p class="btn-remove" ng-click="onRemoveApprover(m, 'cc')" ng-if="!_disable_modify_approver_"></p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <div class="block-row" ng-repeat="tableItem in template.config">
                     <div class="field-label">{{tableItem.name}}</div>
                     <div class="table-field">
@@ -120,6 +135,7 @@
                                         <th>商家 </th>
                                         <th>备注</th>
                                         <th>金额</th>
+                                        <th>详情</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -128,31 +144,32 @@
                                         <td >{{dateFormat(c.dt)}}</td>
                                         <td>{{c.merchants}}</td>
                                         <td class="note">{{c.note}}</td>
-                                        <td>¥{{c.amount}}</td>
+                                        <td>{{exchangeRateMap[c.currency]}}{{c.amount}}</td>
+                                        <td><a ng-href="/items/show/{{c.id}}/1">详情</a></td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <td>合计</td>
-                                        <td colspan="4" class="sum">
+                                        <td colspan="5" class="sum">
                                             ¥{{getItemsAmount(report.items)}}
                                         </td>
                                     </tr>
                                     <tr ng-if="report.pa_approval==1 && report.prove_ahead==1">
                                         <td>申请额</td>
-                                        <td colspan="4" class="sum">
+                                        <td colspan="5" class="sum">
                                             ¥{{getItemsAmount(snapshot.items)}}
                                         </td>
                                     </tr>
                                     <tr ng-if="report.pa_approval==1 && report.prove_ahead==2">
                                         <td>已付</td>
-                                        <td colspan="4" class="sum">
+                                        <td colspan="5" class="sum">
                                             ¥{{getItemsAmount(snapshot.items)}}
                                         </td>
                                     </tr>
                                     <tr ng-if="report.pa_approval==1 && report.prove_ahead==2">
                                         <td>应付</td>
-                                        <td colspan="4" class="sum">
+                                        <td colspan="5" class="sum">
                                             ¥{{getItemsAmount(report.items) - getItemsAmount(snapshot.items)}}
                                         </td>
                                     </tr>
@@ -276,6 +293,7 @@
 
 <script src="/static/js/libs/route-recognizer.js"></script>
 <script src="/static/js/shared/services/historyMembers.js"></script>
+<script src="/static/js/shared/services/exchangeRate.js"></script>
 <script src="/static/js/mod/report/show.js"></script>
 
 <link rel="stylesheet" href="/static/css/base/scrollbar.css">
