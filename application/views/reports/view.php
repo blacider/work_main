@@ -580,7 +580,7 @@ table td {
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<script src="/static/js/base.js" ></script>
+<script src="<?= static_url("/static/js/base.js") ?>" ></script>
 <?php
 $close_directly = 0;
 if($profile['gid'] > 0){

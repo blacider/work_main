@@ -1,19 +1,16 @@
- <script src="/static/ace/js/chosen.jquery.min.js"></script>
- <link rel="stylesheet" href="/static/ace/css/chosen.css" />
+<script src="/static/ace/js/chosen.jquery.min.js"></script>
+<link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 
 
 <link rel="stylesheet" href="/static/ace/css/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="/static/ace/css/colorbox.css" />
-<script type="text/javascript" src="/static/js/jqgrid_choseall.js"></script>
+<script src="/static/js/jqgrid_choseall.js"></script>
 <script src="/static/ace/js/date-time/moment.js"></script>
-
 <script src="/static/ace/js/date-time/locale/zh-cn.js"></script>
-
-
 <script src="/static/ace/js/jquery.colorbox-min.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
- <style type="text/css">
+<style type="text/css">
  .chosen-container  {
   min-width: 400px;
   width: 400px;
@@ -41,7 +38,7 @@ position: absolute;
   border: 0;
   color: white;
   height: 30px;
-  border-radius: 3px;   
+  border-radius: 3px;
   font-size: 12px;
   z-index: 9999
    }
@@ -69,7 +66,7 @@ position: absolute;
   border: 0;
   color: white;
   height: 30px;
-  border-radius: 3px;   
+  border-radius: 3px;
   font-size: 12px;
    }
    #userGroupLab:hover {
@@ -83,7 +80,7 @@ position: absolute;
     width: 292px;
     height: 30px;
     padding: 1px;
-    font-size: 0px !important; 
+    font-size: 0px !important;
     background: #DADADA;
    }
    #dataSelect.hidden-button {
@@ -162,7 +159,7 @@ position: absolute;
 
 </style>
 <script type="text/javascript">
-  <?php 
+  <?php
     $search_gid = "";
     $search_text = "";
     $search_time1 = "提交时间";
@@ -182,8 +179,8 @@ position: absolute;
       }
     }
   ?>
-  
-  
+
+
   jQuery(document).ready(function($) {
     var days = 30 *24* 3600* 1000;
 
@@ -235,7 +232,7 @@ position: absolute;
         if(d>+new Date(d2)) {
           return $('#date-timepicker2').val(format(+d + days)).datetimepicker('update');
         }
-        d = +d + days; 
+        d = +d + days;
         if(!d2) {
           $('#date-timepicker2').val(format(d)).datetimepicker('update');
         } else {
@@ -260,7 +257,7 @@ position: absolute;
         if(d<+new Date(d2)) {
           return $('#date-timepicker1').val(format(+d - days)).datetimepicker('update');
         }
-        d = +d - days; 
+        d = +d - days;
         if(!d2) {
           $('#date-timepicker1').val(format(d)).datetimepicker('update');
         } else {
@@ -285,7 +282,7 @@ position: absolute;
         if(d>+new Date(d2)) {
           return $('#date-timepicker4').val(format(+d + days)).datetimepicker('update');
         }
-        d = +d + days; 
+        d = +d + days;
         if(!d2) {
           $('#date-timepicker4').val(format(d)).datetimepicker('update');
         } else {
@@ -311,7 +308,7 @@ position: absolute;
         if(d<+new Date(d2)) {
           return $('#date-timepicker3').val(format(+d - days)).datetimepicker('update');
         }
-        d = +d - days; 
+        d = +d - days;
         if(!d2) {
           $('#date-timepicker3').val(format(d)).datetimepicker('update');
         } else {
@@ -326,7 +323,7 @@ position: absolute;
     });
 
     $('#dataSelect, #dataSelect_').on('click', 'button', function function_name(e) {
-      if($(e.currentTarget).parent().attr('id') == 'dataSelect_') { 
+      if($(e.currentTarget).parent().attr('id') == 'dataSelect_') {
         if($('#dataSelect').find('input').eq(0).val() === '' && $('#dataSelect').find('input').eq(1).val() ==='') {
           return show_notify('至少保留一个时间选项');
         }
@@ -375,18 +372,18 @@ position: absolute;
        }
      })
     // init query string
-    
+
 });
- 
-Date.prototype.Format = function (fmt) { //author: meizz 
+
+Date.prototype.Format = function (fmt) { //author: meizz
     var o = {
-        "M+": this.getMonth() + 1, //月份 
-        "d+": this.getDate(), //日 
-        "h+": this.getHours(), //小时 
-        "m+": this.getMinutes(), //分 
-        "s+": this.getSeconds(), //秒 
-        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
-        "S": this.getMilliseconds() //毫秒 
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
     };
     if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
     for (var k in o)
@@ -399,7 +396,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
 <div class="col-xs-2 col-sm-2" id="userGroup">
   <select class="chosen-select tag-input-style" name="gids"  data-placeholder="请选择部门" placeholder="请选择部门">
     <option value='0'>公司</option>
-    <?php 
+    <?php
     foreach($usergroups as $g){
       if ($g['id'] != $query['dept']){
       ?>
@@ -411,7 +408,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
         <?php
       }
     }
-    ?> 
+    ?>
   </select>
 </div>
 <?php if($status=='2') { ?>
@@ -562,7 +559,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
         <h4 class="modal-title">结束以下报销单</h4>
       </div>
       <div class="modal-body">
-        <table id="grid-table-finish"></table> 
+        <table id="grid-table-finish"></table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -590,7 +587,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
                         <input class="col-xs-4 col-sm-4" type="text" id="email" name="email" class="form-control" value="<?php if(array_key_exists('email',$profile)){ echo $profile['email'];}?>"/>
                         <input type="hidden" id="report_id" name="report_id" />
                       </div>
-                  </div>   
+                  </div>
                 </div>    <!-- row -->
               </div>    <!-- col-xs-12 -->
            </div> <!--- container -->
@@ -614,7 +611,7 @@ var __STATUS = "<?php echo $status; ?>";
 <?php
     $config = '';
     if(array_key_exists('config', $profile['group'])){
-        $config = $profile["group"]["config"]; 
+        $config = $profile["group"]["config"];
     }
 ?>
 var __CONFIG = '<?php echo $config; ?>';
@@ -641,7 +638,7 @@ $(document).ready(function(){
         } else {
           $('#mypass').attr('disabled', false);
         }
-    }); 
+    });
     $(window)
         .off('resize.chosen')
         .on('resize.chosen', function() {
@@ -706,21 +703,21 @@ $('.new_card').click(function(){
 function deny_report()
 {
   var report_id = $('#rid').val();
-  location.href = __BASE + 'bills/report_finance_deny/' + report_id; 
+  location.href = __BASE + 'bills/report_finance_deny/' + report_id;
 }
 
 function deny_end_report()
 {
   var report_id = $('#rid_').val();
   alert(report_id);
-  location.href = __BASE + 'bills/report_finance_deny/' + report_id; 
+  location.href = __BASE + 'bills/report_finance_deny/' + report_id;
 }
 
 function cancel_modal_next_()
 {
   $('#modal_next_').modal('hide');
 }
- 
+
 </script>
-<script language="javascript" src="/static/js/base.js" ></script>
-<script language="javascript" src="/static/js/finance_flow.js?_r=20160512" ></script>
+<script src="<?= static_url("/static/js/base.js") ?>" ></script>
+<script src="<?= static_url("/static/js/finance_flow.js") ?>" ></script>

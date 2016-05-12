@@ -61,7 +61,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>               
+                                </div>
                             </div>
                         </div>
                         <div class="field-group" ng-repeat-end ng-if="tableItem.MODE == 'STATE_EDITING'" data-index="{{$index}}">
@@ -84,7 +84,7 @@
                                                 <div class="text font-placeholder">类型</div>
                                                 <div class="option-list none">
                                                     <div class="item" ng-repeat="item in fieldTypeArray" data-value="{{item.value}}">{{item.text}}</div>
-                                                </div> 
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="table-cell field-name">
@@ -122,7 +122,7 @@
                                     <span class="button btn-cancel" ng-click="onCancelColumnsEditConfig(tableItem, templateItem, $index)">取消</span>
                                     <span class="button btn-save" ng-click="onSaveColumnsEditConfig(templateItem, $index, $event)">确定</span>
                                 </p>
-                            </div>           
+                            </div>
                         </div>
                     </div>
                     <div class="field-group row-group" style="padding-bottom: 0">
@@ -228,9 +228,9 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </div> 
-                                </div> 
-                            </div>             
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="field-table default-field-table">
@@ -262,8 +262,8 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>  
-                            </div>             
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="field-table default-field-table">
@@ -275,7 +275,7 @@
                                     <i class="icon"></i>
                                     <label>允许不添加消费</label>
                                 </div>
-                            </div>             
+                            </div>
                         </div>
                     </div>
                     <div class="field-table default-field-table">
@@ -287,7 +287,7 @@
                                     <i class="icon"></i>
                                     <label>{{templateTypeItem}}</label>
                                 </div>
-                            </div>             
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -307,7 +307,7 @@
                                     <i class="icon"></i>
                                     <label>{{tableHeaderOptionsItem.text}}</label>
                                 </div>
-                            </div>             
+                            </div>
                         </div>
                         <div class="column-wrap table-layout">
                             <h4 class="field-table-label table-cell"> 页脚显示 </h4>
@@ -316,7 +316,7 @@
                                     <i class="icon"></i>
                                     <label>{{tableFooterOptionsItem.text}}</label>
                                 </div>
-                            </div>             
+                            </div>
                         </div>
                         <div class="column-wrap table-layout pager-size" style="border-bottom: 1px solid #f2f6fa;">
                             <h4 class="field-table-label table-cell"> 打印模板 </h4>
@@ -325,7 +325,7 @@
                                     <i class="icon"></i>
                                     <label>{{paperSizeItem.text}}</label>
                                 </div>
-                            </div>             
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -344,9 +344,9 @@
 <script src="/static/plugins/cloud-dropdown/index.js"></script>
 <script src="/static/js/libs/Sortable.min.js"></script>
 <script src="/static/js/libs/ng-sortable.js"></script>
-
-<script src="/static/js/mod/template/list.js"></script>
 <script src="/static/js/libs/underscore-min.js"></script>
+
+<script src="<?= static_url("/static/js/mod/template/list.js") ?>"></script>
 
 <link rel="stylesheet" href="/static/css/base/animate.css">
 <link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">

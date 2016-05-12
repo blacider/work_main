@@ -22,7 +22,7 @@
         <link rel="stylesheet" href="/static/third-party/jg/jquery.jgrowl.min.css"/>
         <link rel="stylesheet" href="/static/css/mod/login/login.css">
         <script src="/static/js/jquery.min.js"></script>
-        <script language="javascript" src="/static/ace/js/bootstrap.min.js"></script>
+        <script src="/static/ace/js/bootstrap.min.js"></script>
         <script src="/static/js/libs/utils.js"></script>
         <script src="/static/js/jquery.cookie.js"></script>
         <script src="/static/third-party/jg/jquery.jgrowl.min.js"></script>
@@ -37,18 +37,12 @@
         <!--[if !IE]><!-->
         <link rel="stylesheet" type="text/css" href="static/css/notie.css">
         <!--<![endif]-->
-        <script src="/static/js/mod/login/login.js?_r=20160315"></script>
+        <script src="<?= static_url("/static/js/mod/login/login.js") ?>"></script>
     </head>
     <body>
         <div id="header">
             <div class="main-block">
                 <a class="logo" href=""><img src="/static/img/mod/login/logo.png" alt=""></a>
-                <!--
-                <ul class="menu-left">
-                    <li><a class="active" href="<?php echo base_url("");?>">首页</a></li>
-                    <li><a href="//www.yunbaoxiao.com/blog">BLOG</a></li>
-                </ul>
-                -->
                 <ul class="menu">
                     <li><a href="/install">下载</a></li>
                     <li><a id="login-m-a" href="#login">登录</a></li>

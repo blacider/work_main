@@ -83,8 +83,8 @@
 		if(_error) show_notify(_error);
 	});
 </script>
-<script src="/static/js/base.js" ></script>
-<script src="/static/js/reports.js?_r=20160512" ></script>
+<script src="<?= static_url("/static/js/base.js") ?>" ></script>
+<script src="<?= static_url("/static/js/reports.js") ?>" ></script>
 <script type="text/javascript">
 $grid = $('#grid-table');
 $("#globalSearch").click(function() {
