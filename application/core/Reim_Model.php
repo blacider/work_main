@@ -4,7 +4,6 @@ define("PUBKEY", "1NDgzZGY1OWViOWRmNjI5ZT");
 
 class Reim_Model extends CI_Model {
 
-    const USER_TABLE = "tbl_user";
     const APP_TABLE = "tbl_apps";
 
     private $curl_hanlder = null;
@@ -195,15 +194,13 @@ class Reim_Model extends CI_Model {
         } elseif (in_array($method, [ 'POST', 'PATCH', 'PUT', 'DELETE' ])) {
             $extraheader[] = 'Content-Length: 0';
         }
-        $extraheader[] = 'X-Forwarded-For: ' . $this->input->ip_address();
         $extraheader[] = 'X-Client-IP: ' . $this->input->ip_address();
         curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
         curl_setopt($ch, CURLOPT_ENCODING, '');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_VERBOSE, true);
+        //curl_setopt($ch, CURLOPT_VERBOSE, true);
         $result = curl_exec($ch);
-
         $err = curl_error($ch);
         if (!empty($err)) {
             log_message('error', "api call err: $err");
