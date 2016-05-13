@@ -20,6 +20,9 @@ class Bills extends REIM_Controller {
         $profile = $this->session->userdata('profile');
         $custom_data['UID'] = $profile['id'];
 
+        $api_url_base = $this->config->item('api_url_base');
+        $custom_data['api_url_base'] = $api_url_base;
+
         $this->load->view('/bills/paylist', $custom_data);
     }
 
