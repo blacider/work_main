@@ -496,7 +496,9 @@
                                 var one = _.find($scope.originalMembers, {
                                     id: id
                                 });
-                                job.push($scope.getJobByUID(one.id));
+                                if(one) {
+                                    job.push($scope.getJobByUID(one.id));
+                                }
                             });
                             item.job = job.join('／');
                             item.nickname = item.nickname.split(',').join('／');
