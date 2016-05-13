@@ -273,7 +273,7 @@
                             			this.close();
                             		},
                             		ok: function () {
-                            			window.location = '/bills/payflow';
+                            			window.top.location = '/bills/payflow';
                             			window.top._PAY_LAYER_.close();
                             			this.close();
                             		}

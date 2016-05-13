@@ -2,7 +2,7 @@
 <html lang="en" style="font-size: 16px;">
 <head>
 	<meta charset="UTF-8">
-	<title>云报销－微信钱包绑定</title>
+	<title>云报销－微信钱包授权</title>
 	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
 	<meta name="format-detection" content="telephone=no">
 	<meta name="apple-mobile-web-app-status-bar-style" content="white">
