@@ -119,8 +119,7 @@ class REIM_Controller extends CI_Controller{
         }
     }
 
-
-    public function  bsload($view_name, $custom_data,$template_views = array()){
+    public function bsload($view_name, $custom_data,$template_views = array()){
         $menu_page = 'menu.bs.php'; 
         $this->load->model('user_model');
         $this->load->model('module_tip_model');
@@ -215,37 +214,6 @@ class REIM_Controller extends CI_Controller{
         $this->load->view('footer.bs.php', $custom_data);
     }
 
-
-    public function aeload($view_name, $custom_data){
-        $this->load->model('user_model');
-        $this->load->model('module_tip_model');
-        $uid = $this->session->userdata('uid');
-        $profile = $this->session->userdata('profile');
-        if(!($profile || $uid)){
-            log_message("debug","Nothing ");
-            redirect(base_url('login'), 'refresh');
-        }
-
-        if(!$profile){
-            $custom_data['opt_error'] = $this->session->userdata('last_error');
-            $custom_data['username'] = $this->session->userdata('username');
-            $custom_data['uid'] = $this->session->userdata('uid');
-            $custom_data['tip'] = $this->module_tip_model->get_tip($custom_data['uid']);
-            $custom_data['menu'] = $this->user_model->get_menu($custom_data['uid']);
-            $custom_data['description'] =  '';
-        } else {
-            $this->session->set_userdata('user', $profile);
-            $custom_data['menu'] = $this->user_model->get_menu(0, 1);
-            $custom_data['profile'] = $profile;
-        }
-
-        $this->config->load('apps', TRUE);
-        $custom_data['appname'] = $this->config->item('appname');
-        $this->load->view('header.old.php', $custom_data);
-        $this->load->view('menu.old.php', $custom_data);
-        $this->load->view($view_name, $custom_data);
-        $this->load->view('footer.old.php', $custom_data);
-    }
 
     public function render_to_download_2($filename, $data) {
         if($this->agent->is_browser('Internet Explorer')) {
