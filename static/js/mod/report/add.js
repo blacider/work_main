@@ -224,7 +224,9 @@
                                         var one = _.find($scope.members, {
                                             id: $scope.superior.id + ''
                                         });
-                                        one.isSelected = true;
+                                        if(one) {
+                                            one.isSelected = true;
+                                        }
                                     }
                                 },
                                 onHide: function() {
