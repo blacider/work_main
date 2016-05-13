@@ -49,15 +49,35 @@
         };
     };
 
+    function initDatetimepicker(selector) {
+        $(selector).datetimepicker({
+            language: 'zh-CN',
+            format: 'yyyy-mm-dd',
+            minView: 'month',
+            maxView: 'month',
+            todayBtn: true,
+            todayHighlight: true,
+            autoclose: true
+        });
+    };
+
     var _const_limit_ = 10;
     var _current_page_ = 0;
 
     return {
         init: function() {
-            angular.module('reimApp', []).controller('PayFlowController', ["$scope", "$element",
+            angular.module('reimApp', ['ng-dropdown']).controller('PayFlowController', ["$scope", "$element",
                 function($scope, $element) {
 
+                    initDatetimepicker($('.datepicker'));
+
                     $scope.isLoaded = false;
+
+                    $scope.makeStatusDropdown = {
+                        onChange: function (oldValue, newValue) {
+                            $scope.selectedStatus = newValue;
+                        }
+                    }
                     // $scope function here
                     $scope.getTextByStatus = function (status) {
                         var m = {
@@ -69,7 +89,8 @@
                     };
 
                     // get page data
-                    function doPageAction(current, query) {
+                    function doPageAction(query) {
+                        $scope.isLoaded = false;
                         getFlowWithQuery(query).done(function (rs) {
                             if (rs['status'] <= 0) {
                                 return show_notify(rs['data']['msg']);
@@ -81,7 +102,7 @@
                             var totalPage = Math.ceil(rs['data']['count'] / _const_limit_);
 
                             $scope.pageNaviData = pageMaker({
-                                current: current,
+                                current: query.offset,
                                 pathname: '',
                                 totalPage: totalPage,
                                 wing: 5,
@@ -92,7 +113,7 @@
                         });
                     }
 
-                    doPageAction(0, {limit: _const_limit_, offset: 0});
+                    doPageAction({limit: _const_limit_, offset: 0});
 
                     $scope.payStatusArray = [
                         {text: '全部', value:''},
@@ -118,7 +139,7 @@
                         var end_time = $element.find('.end-time').val();
                         var min_amount = $element.find('.min-amount').val();
                         var max_amount = $element.find('.max-amount').val();
-                        var pay_status = $element.find('.pay-status').val();
+                        var pay_status = $scope.selectedStatus;
 
                         var data = {
                             carrier_type: carrier_type,
@@ -127,18 +148,18 @@
                             end_time: end_time,
                             min_amount: min_amount,
                             max_amount: max_amount,
+                            status: pay_status,
                             limit: _const_limit_,
-                            offset: 1
+                            offset: 0
                         };
 
-                        doPageAction(0, data);
+                        doPageAction(data);
                     };
 
                     $scope.onPage = function (num, pageNaviData) {
                         var query = pageNaviData.query;
                         query.offset = num;
-                        $scope.isLoaded = false;
-                        doPageAction(num, query);
+                        doPageAction(query);
                     };
 
                     $scope.onPreviewItem = function (item) {

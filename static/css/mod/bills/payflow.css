@@ -27,7 +27,6 @@
 	border-radius: 3px;
 	border-right: none;
 	overflow: hidden;
-	max-width: 900px;
 	margin: 0 auto;
 }
 
@@ -41,19 +40,22 @@
 
 
 
-table {
+.mod-pay-flow table,
+.cloud-bx-dialog table {
 	width: 100%;
 	border-collapse: collapse;
 	text-align: center;
 }
-table thead tr th {
+.mod-pay-flow table thead tr th,
+.cloud-bx-dialog table thead tr td {
 	height: 30px;
 	background-color: rgba(89, 102, 116, 0.8);
 	color: #fff;
 	text-align: center;
 	border-right: solid 1px #b9b9b9;
 }
-table tbody tr td {
+.mod-pay-flow table tbody tr td,
+.cloud-bx-dialog table tbody tr td {
 	padding: 8px;
 	height: 30px;
 	font-size: 14px;
@@ -62,17 +64,20 @@ table tbody tr td {
 	border-right: 1px solid #b9b9b9;
 }
 
-table tbody tr:first-child td {
+.mod-pay-flow table tbody tr:first-child td,
+.cloud-bx-dialog table tbody tr:first-child td {
 	border-top: none;
 }
 
-table tbody tr td.col-label {
+.mod-pay-flow table tbody tr td.col-label,
+.cloud-bx-dialog table tbody tr td.col-label {
 	background: #596774;
 	color: #fff;
 	border-right: none;
 }
 
-table tbody tr td.note {
+.mod-pay-flow table tbody tr td.note,
+.cloud-bx-dialog table tbody tr td.note {
 	max-width: 120px;
 	width: 120px;
 	white-space: nowrap;
@@ -80,20 +85,24 @@ table tbody tr td.note {
 	text-overflow: ellipsis;
 }
 
-table tfoot {
+.mod-pay-flow table tfoot,
+.cloud-bx-dialog table tfoot {
 	font-weight: border;
 	color: #4a4a4a;
 }
 
-.table-field table tfoot tr {
+.table-field table tfoot tr,
+.cloud-bx-dialogtable tfoot tr {
 	border-top: solid 1px #b9b9b9;
     border-right: solid 1px #b9b9b9;
 }
 
-.table-field table tfoot td {
+.table-field table tfoot td,
+.cloud-bx-dialogtable tfoot td {
 	height: 30px;
 }
-.table-field table tfoot td.sum {
+.table-field table tfoot td.sum,
+.cloud-bx-dialogtable tfoot td.sum {
 	text-align: right;
 	padding: 0 12px;
 }
@@ -117,3 +126,53 @@ table tfoot {
 .paying {
 	background: #f0ad4e;
 }
+
+/*reset  datepicker*/
+/*prev next*/
+
+.datetimepicker .prev,
+.datetimepicker .next {
+	position: relative;
+}
+.datetimepicker .prev:before,
+.datetimepicker .next:before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    content: "";
+    line-height: 30px;
+    color: #929292;
+}
+.datetimepicker .next:before {
+	content: "";
+}
+
+.datetimepicker-days table {
+	width: 236px;
+}
+
+.datetimepicker-days table td,
+.datetimepicker-days table th {
+	text-align: center !important;
+	cursor: pointer !important;
+}
+
+.datetimepicker table tr td.day {
+	color: #929292 !important;
+	background: transparent !important;
+	text-shadow: none !important;
+}
+
+.datetimepicker-days table tr td.day.active {
+	background: transparent !important;
+	color: #ff575b !important;
+}
+
+.datetimepicker-days table tr td.day:hover,
+.datetimepicker-days table tr td.day.active:hover {
+	background: #ff575b !important;
+	color: #fff !important;
+}
+
