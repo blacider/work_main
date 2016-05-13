@@ -24,6 +24,10 @@
         });
     };
 
+    function openMeiQia() {
+    	window.top.$('#MEIQIA-PANEL-HOLDER-MASK')[0].click();
+    };
+
     function getReportArray(rids) {
         return Utils.api('/report_finance_flow/list/1', {
             env: 'miaiwu',
@@ -130,6 +134,7 @@
         }
         doPayItem(itemData).done(function(rs) {
         	// next返回当前条目处理结果，返回true可以继续下去，否则不可以
+        	// rs.status =1
         	if(opts.next(rs, index, data)) {
 	            index++;
 	            doPayOneByOne(index, data, opts);
@@ -246,23 +251,30 @@
                             	if(statis_ok == list.length) {
                             		str =  '已成功发起微信转账，预计24小时内到账。<br />请到［企业支付查询］中查看转账记录。' ;
                             	} else if(statis_next) {
-                            		str = '系统错误，' + statis_next + '笔支付失败。<br />请稍后重试，或联系<a href="">云报销客服</a>';
+                            		str = '系统错误，' + statis_next + '笔支付失败。<br />请稍后重试，或联系<a class="btn-open-meiqia" href="javascript:void(0);">云报销客服</a>';
                             			// '<%= statis_check  %>笔支付实名校验失败失败',
                             	} else if(statis_check) {
-                            		str = '系统错误，' + statis_check + '笔支付实名校验失败失败。<br />请核实员工，或联系<a href="">云报销客服</a>';
+                            		str = '系统错误，' + statis_check + '笔支付实名校验失败失败。<br />请核实员工，或联系<a class="btn-open-meiqia" href="javascript:void(0);">云报销客服</a>';
                             	} else if(statis_error) {
                             		str = errorMsg + '，'  + (list.length - statis_ok) + '笔支付失败。<br />请充值后重试。<a target="_blank" href="http://kf.qq.com/faq/140225MveaUz150107fqeQBj.html?pass_ticket=mczQUvfhw2FPVPPVvwW68vP%2B98vdiRQ5LHDNWWTpkQiSKarE3GQ51K0KPyT888Rs">了解如何充值</a>';
                             	}
- 
+ 								// str = '系统错误，' + statis_next + '笔支付失败。<br />请稍后重试，或联系<a class="btn-open-meiqia" href="javascript:void(0);" >云报销客服</a>';
                             	var dialog = new CloudDialog({
                             		content: str,
                             		cancelValue: '确认',
-                            		cancel: function () {
-                            			this.close();
+                            		onShow: function (argument) {
+                            			this.$el.on('click', '.btn-open-meiqia', function (e) {
+                            				openMeiQia();
+                            			});
                             		},
                             		okValue: '查看转账记录',
+                            		cancel: function (argument) {
+                            			window.top._PAY_LAYER_.close();
+                            			this.close();
+                            		},
                             		ok: function () {
                             			window.location = '/bills/payflow';
+                            			window.top._PAY_LAYER_.close();
                             			this.close();
                             		}
                             	});

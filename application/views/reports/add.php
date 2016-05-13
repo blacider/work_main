@@ -406,5 +406,4 @@
 
 <link rel="stylesheet" href="/static/css/base/animate.css">
 <link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">
-<link rel="stylesheet" href="/static/css/base/scrollbar.css">
 <link rel="stylesheet" href="/static/plugins/bootstrap-datepicker/css/bootstrap-datetimepicker.css">

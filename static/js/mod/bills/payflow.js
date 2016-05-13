@@ -134,7 +134,7 @@
                         // max_amount: 类型 -
 
                         var carrier_type = 'exr';
-                        var carrier_id = $element.find('.pay-no').val();
+                        var local_bill_no = $element.find('.pay-no').val();
                         var start_time = $element.find('.start-time').val();
                         var end_time = $element.find('.end-time').val();
                         var min_amount = $element.find('.min-amount').val();
@@ -143,7 +143,7 @@
 
                         var data = {
                             carrier_type: carrier_type,
-                            carrier_id: carrier_id,
+                            local_bill_no: local_bill_no,
                             start_time: start_time,
                             end_time: end_time,
                             min_amount: min_amount,

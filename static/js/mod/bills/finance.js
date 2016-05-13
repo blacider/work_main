@@ -91,6 +91,7 @@
 					var layer = new CloudLayer();
 					layer.show();
 					layer.content('<iframe src="' + '/bills/paylist?rids=' + canPayArray.join(',') + '"></iframe>')
+					window._PAY_LAYER_ = layer;
 				}
 			});
 		});

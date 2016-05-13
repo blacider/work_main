@@ -50,5 +50,8 @@ var _hmt = _hmt || [];
 <?php if(!$lte_ie8) {?>
 <?php get_sub_widget('module/widgets/meiqia'); ?> 
 <?php } ?>
+
+<!-- optional css -->
+<link rel="stylesheet" href="/static/css/base/scrollbar.css">
 </body>
 </html>

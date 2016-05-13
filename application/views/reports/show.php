@@ -296,6 +296,5 @@
 <script src="/static/js/shared/services/exchangeRate.js"></script>
 <script src="<?= static_url("/static/js/mod/report/show.js") ?>"></script>
 
-<link rel="stylesheet" href="/static/css/base/scrollbar.css">
 <script src="/static/plugins/cloud-dialog/dialog.js"></script>
 <link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">

@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="col-md-2">付款状态</div>
                     <div class="col-md-8">
-                        <div ng-dropdown="makeStatusDropDown" class="field-select field" default-item="payStatusArray[0]" data="payStatusArray">
+                        <div ng-dropdown="makeStatusDropdown" class="field-select field" default-item="payStatusArray[0]" data="payStatusArray">
                             <i class="icon">
                                 <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
                             </i>
