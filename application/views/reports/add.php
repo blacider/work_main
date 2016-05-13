@@ -406,7 +406,7 @@
 <script src="/static/js/jquery.cookie.js"></script>
 <script src="/static/js/shared/services/historyMembers.js"></script>
 <script src="/static/js/shared/services/exchangeRate.js"></script>
-<script src="/static/js/mod/report/add.js"></script>
+<script src="/static/js/mod/report/add.js?_r=20160513"></script>
 
 <link rel="stylesheet" href="/static/css/base/animate.css">
 <link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">

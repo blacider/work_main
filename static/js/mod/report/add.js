@@ -970,10 +970,10 @@
                             show_notify('请添加报销单名');
                             return null;
                         }
-                        var receiver_ids = $scope.selectedMembers.map(function(i) {
+                        var receiver_ids = _.map($scope.selectedMembers, function(i) {
                             return i['id'];
                         });
-                        var cc_ids = $scope.selectedMembersCC.map(function(i) {
+                        var cc_ids = _.map($scope.selectedMembersCC, function(i) {
                             return i['id'];
                         });
                         if ($scope.superior) {
@@ -984,7 +984,7 @@
                             $element.find('.btn-append button').eq(0).focus();
                             return null;
                         }
-                        var item_ids = $scope.selectedConsumptions.map(function(i) {
+                        var item_ids = _.map($scope.selectedConsumptions, function(i) {
                             return i['id'];
                         });
                         if (item_ids.length <= 0) {
