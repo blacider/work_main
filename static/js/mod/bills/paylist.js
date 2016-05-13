@@ -143,6 +143,21 @@
             angular.module('reimApp', []).controller('PayListController', ["$scope",
                 function($scope) {
                     // variable here
+                    // $scope.isLoaded = true;
+                    getPageData().done(function(rs, profile, phone, payHeads) {
+                        $scope.isLoaded = true;
+                        if (rs['status'] < 0) {
+                            return show_notify('找不到模版');
+                        }
+                        $scope.reportArray = rs['data']['data'];
+                        $scope.profile = profile['data'];
+                        $scope.phone = phone['data']['phone'];
+                        $scope.$apply();
+                        // last fetch get group data
+                        // getGroup($scope.profile.gid).done(function (rs) {
+                        // 	debugger
+                        // });
+                    });
 
                     // $scope event handler here
                     $scope.onRemoveItem = function(item) {
