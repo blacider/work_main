@@ -414,7 +414,7 @@ if($user['admin'] == 1 || $user['admin'] == 2) {
         <b class="arrow"></b>
         </li>
         <!-- 财务查询微信支付 -->
-        <li>
+        <li class="hsub" id="payflow">
             <a href="/bills/payflow" >流水查询</a>
             <b class="arrow"></b>
         </li>
@@ -745,6 +745,10 @@ $(document).ready(function(){
     if(_controller == "bills" && _method == "finance_flow"){
     	_controller = "finance";
 	}
+    if(_controller == "bills" && _method == "payflow"){
+        _controller = "finance";
+    }
+
     if(_controller == "category" && _method == "sob_update")
     {
         _method = "account_set";
