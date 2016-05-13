@@ -195,9 +195,9 @@ class Reim_Model extends CI_Model {
         } elseif (in_array($method, [ 'POST', 'PATCH', 'PUT', 'DELETE' ])) {
             $extraheader[] = 'Content-Length: 0';
         }
-        if (!empty($extraheader)) {
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
-        }
+        $extraheader[] = 'X-Forwarded-For: ' . $this->input->ip_address();
+        $extraheader[] = 'X-Client-IP: ' . $this->input->ip_address();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
         curl_setopt($ch, CURLOPT_ENCODING, '');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
