@@ -3,8 +3,8 @@
     var _defaultTemplateName_ = '未命名报销单模板';
     return {
         initialize: function() {
-            angular.module('reimApp', ['ng-sortable', 'ng-dropdown', 'historyMembers']).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce", "historyMembersManagerService",
-                function($http, $scope, $element, $timeout, $sce, historyMembersManager) {
+            angular.module('reimApp', ['ng-sortable', 'ng-dropdown', 'historyMembers', 'exchangeRate']).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce", "historyMembersManagerService", "exchangeRateService",
+                function($http, $scope, $element, $timeout, $sce, historyMembersManager, exchangeRate) {
                     $scope.bankFieldMap = {};
                     $scope.radioFieldMap = {};
                     $scope.selectedMembers = [];
@@ -21,6 +21,8 @@
                     $scope.comment_box = {
                         txtCommentMessage: ''
                     };
+
+                    $scope.exchangeRateMap = exchangeRate.rateMap;
 
                     function getTemplateData(id) {
                         if (!id) {
@@ -487,7 +489,11 @@
                         var amount = 0;
                         _.each(arr, function(item) {
                             var a = parseFloat(item.amount);
-                            amount += a;
+                            var rate = 1;
+                            if(item.currency!='cny') {
+                                rate = parseFloat(item.rate)/100;
+                            }
+                            amount += a * rate ;
                         });
                         amount = amount.toFixed(2);
                         return amount;
@@ -964,10 +970,10 @@
                             show_notify('请添加报销单名');
                             return null;
                         }
-                        var receiver_ids = $scope.selectedMembers.map(function(i) {
+                        var receiver_ids = _.map($scope.selectedMembers, function(i) {
                             return i['id'];
                         });
-                        var cc_ids = $scope.selectedMembersCC.map(function(i) {
+                        var cc_ids = _.map($scope.selectedMembersCC, function(i) {
                             return i['id'];
                         });
                         if ($scope.superior) {
@@ -978,7 +984,7 @@
                             $element.find('.btn-append button').eq(0).focus();
                             return null;
                         }
-                        var item_ids = $scope.selectedConsumptions.map(function(i) {
+                        var item_ids = _.map($scope.selectedConsumptions, function(i) {
                             return i['id'];
                         });
                         if (item_ids.length <= 0) {

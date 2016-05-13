@@ -3,8 +3,8 @@
     var _defaultTemplateName_ ='未命名报销单模板';
     return {
         initialize: function() {
-            angular.module('reimApp', ['historyMembers']).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce", "historyMembersManagerService",
-                function($http, $scope, $element, $timeout, $sce, historyMembersManager) {
+            angular.module('reimApp', ['historyMembers', 'exchangeRate']).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce", "historyMembersManagerService", "exchangeRateService",
+                function($http, $scope, $element, $timeout, $sce, historyMembersManager, exchangeRate) {
                     var routerObj = (function() {
                         var router = new RouteRecognizer();
                         router.add([{
@@ -35,6 +35,7 @@
                     $scope.comment_box = {
                         txtCommentMessage: ''
                     };
+                    $scope.exchangeRateMap = exchangeRate.rateMap;
 
                     function getTemplateData() {
                         var query = Utils.queryString(location.search);
@@ -369,7 +370,11 @@
                         var amount = 0;
                         _.each(arr, function(item) {
                             var a = parseFloat(item.amount);
-                            amount += a;
+                            var rate = 1;
+                            if(item.currency!='cny') {
+                                rate = parseFloat(item.rate)/100;
+                            }
+                            amount += a * rate ;
                         });
                         amount = amount.toFixed(2);
                         return amount;
@@ -422,7 +427,7 @@
                         // 寻找标准成员数据
                         var selectedMembers = [];
                         _.each(reportData['receivers']['managers'], function (item) {
-                            var one = _.find($scope.members, {
+                            var one = _.find($scope.originalMembers, {
                                 id: item.id + ''
                             });
                             if(one) {
@@ -432,7 +437,18 @@
 
                         $scope.selectedMembers = selectedMembers;
 
-                        $scope.suggestionMembers = historyMembersManager.getArray($scope.members);
+                        var selectedMembersCC = [];
+                        _.each(reportData['receivers']['cc'], function(item) {
+                            var one = _.find($scope.originalMembers, {
+                                id: item.id + ''
+                            });
+                            if (one) {
+                                selectedMembersCC.push(one);
+                            }
+                        });
+                        $scope.selectedMembersCC = selectedMembersCC;
+
+                        $scope.suggestionMembers = historyMembersManager.getArray($scope.originalMembers);
                         
                         $scope.submitter = _.where(members, {
                             id: reportData['uid']
