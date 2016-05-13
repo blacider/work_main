@@ -9,29 +9,8 @@ class Users extends REIM_Controller
         $this->load->model('user_model', 'user');
         $this->load->model('group_model', 'groups');
         $this->load->model('reim_show_model', 'reim_show');
-        
-        //$this->load->model('users/customer_model', 'cmodel');
-        
-        
     }
     
-    public function join_company() {
-        $this->need_group_it();
-        $gid = $this->input->post('invites');
-        
-        $_buf = $this->user->join_company($gid);
-        
-        $data = array();
-        if ($_buf['status'] > 0) {
-            $data = $_buf['data'];
-            $this->session->set_userdata('last_error', '成功加入公司');
-            return redirect(base_url());
-        } 
-        else {
-            $this->session->set_userdata('last_error', '加入公司失败');
-            return redirect(base_url('install/newcomer'));
-        }
-    }
     public function get_invites() {
         $buf = $this->user->get_invites();
         $invites = array();
@@ -40,27 +19,6 @@ class Users extends REIM_Controller
         }
         
         die(json_encode(array('data' => $invites)));
-    }
-    
-    public function raise_invites() {
-        $this->need_group_it();
-        $groupname = $this->session->userdata('groupname');
-        $_guests = $this->input->post('guests');
-        $guests = '';
-        if ($_guests) {
-            $guests = implode(',', $_guests);
-        }
-        
-        $buf = $this->user->raise_invites($groupname, $guests);
-        
-        if ($buf['status'] > 0) {
-            $data = $buf['data'];
-        } 
-        else {
-            $data = array('msg', $buf['data']['msg']);
-        }
-        
-        die(json_encode($data));
     }
     
     public function update_nickname() {

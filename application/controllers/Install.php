@@ -7,10 +7,10 @@ class Install extends REIM_Controller {
         $this->load->library('user_agent');
         $this->load->model('user_model','user');
     }
+
     public function stage(){
         $this->load->view('stage');
     }
-
 
     public function index(){
         $android_info = $this->app_model->find_online(1);

@@ -22,15 +22,6 @@ class Login extends REIM_Controller {
 
         $password = $this->input->post('password');
         $vcode = $this->input->post('vcode');
-        
-        /*
-        $vcode_verify_back = $this->Register_model->vcode_verify($addr,$user_addr,$vcode);
-        if($vcode_verify_back['data']['validate'] == 0)
-        {
-            echo json_encode(array('status' => 1, 'msg' => '验证码错误'));
-            return ;
-        }
-*/
 
         $data[$addr] = $user_addr;
         $data['vcode'] = $vcode;
@@ -64,24 +55,6 @@ class Login extends REIM_Controller {
         $check_user_back['status'] = 1;
         echo json_encode($check_user_back);
         return ;
-    }
-
-    public function join_company()
-    {
-        $company = $this->input->post('invites');
-        $buf = $this->users->join_company($company);
-
-        if($buf['status'] > 0)
-        {
-            $this->session->set_userdata('last_error','加入成功');
-            return redirect(base_url());
-        }
-        else
-        {
-
-            $this->session->set_userdata('last_error','加入成功');
-            return redirect(base_url());
-        }
     }
 
     public function index()
