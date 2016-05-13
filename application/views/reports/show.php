@@ -294,7 +294,7 @@
 <script src="/static/js/libs/route-recognizer.js"></script>
 <script src="/static/js/shared/services/historyMembers.js"></script>
 <script src="/static/js/shared/services/exchangeRate.js"></script>
-<script src="/static/js/mod/report/show.js"></script>
+<script src="/static/js/mod/report/show.js_r=20160513"></script>
 
 <link rel="stylesheet" href="/static/css/base/scrollbar.css">
 <script src="/static/plugins/cloud-dialog/dialog.js"></script>
