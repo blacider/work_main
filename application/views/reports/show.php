@@ -1,4 +1,4 @@
-<script src="/app/libs/angular/angular.js"></script>
+<script src="<?= static_url("/app/libs/angular/angular.js") ?>"></script>
 <link rel="stylesheet" href="/static/css/mod/component/fields.css"/>
 <link rel="stylesheet" href="/static/css/mod/report/show.css"/>
 <link rel="stylesheet" href="/static/css/widgets/loading-default.css"/>
@@ -117,7 +117,7 @@
                                         <td data-id="{{col.id}}" ng-repeat-end ng-if="col.type==3 || col.type==2 || col.type==1">
                                             {{col._combine_data_.value}}
                                         </td>
-                                    </tr> 
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -199,7 +199,7 @@
                                             <td>{{f.job}}</td>
                                             <td>{{f.udt!=0?f.approvaldt:''}}</td>
                                             <td>{{f.status_text}}</td>
-                                        </tr> 
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -283,7 +283,7 @@
                     </ul>
                 </div>
             </div>
-        </div>  
+        </div>
     </div>
 </div>
 
@@ -294,7 +294,7 @@
 <script src="/static/js/libs/route-recognizer.js"></script>
 <script src="/static/js/shared/services/historyMembers.js"></script>
 <script src="/static/js/shared/services/exchangeRate.js"></script>
-<script src="/static/js/mod/report/show.js_r=20160513"></script>
+<script src="<?= static_url("/static/js/mod/report/show.js") ?>"></script>
 
 <link rel="stylesheet" href="/static/css/base/scrollbar.css">
 <script src="/static/plugins/cloud-dialog/dialog.js"></script>

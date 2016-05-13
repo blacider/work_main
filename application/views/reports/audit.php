@@ -241,7 +241,7 @@ $(document).ready(function(){
 });
 </script>
 
-<script src="/static/js/base.js" ></script>
+<script src="<?= static_url("/static/js/base.js") ?>" ></script>
 <script type="text/javascript">
 $grid = $('#grid-table');
 $("#globalSearch").click(function () {
@@ -319,5 +319,5 @@ var can_export_excel = <?=$can_export_excel?>;
 </script>
 
 <script type="text/javascript" src="/static/js/jqgrid_choseall.js"></script>
-<script src="/static/js/audit.js?_r=20160512" ></script>
+<script src="<?= static_url("/static/js/audit.js") ?>" ></script>
 
