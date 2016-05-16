@@ -18,7 +18,7 @@
             <div class="cbx-table-container">
                 <table>
                     <thead>
-                        <tr>
+                        <tr >
                             <th>ID</th>
                             <th>姓名</th>
                             <th>邮箱</th>
@@ -31,7 +31,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in members" >
+                        <tr ng-repeat="item in members" data-id="{{item.status}}">
                             <td>
                                 {{item.nickname}}
                             </td>
@@ -80,7 +80,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in members" >
+                        <tr ng-repeat="item in members" data-id="{{item.status}}">
                             <td>
                                 {{item.nickname}}
                             </td>
@@ -129,7 +129,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in members" >
+                        <tr ng-repeat="item in members" data-id="{{item.status}}">
                             <td>
                                 {{item.nickname}}
                             </td>

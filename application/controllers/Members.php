@@ -1126,18 +1126,28 @@ class Members extends REIM_Controller {
         log_message('debug','no_levels:' . json_encode($no_levels));
         log_message('debug','no_groups:' . json_encode($no_groups));
 
+        $rs = $this->groups->reim_imports(
+            array(
+                'quiet' => 1,
+                'members' => json_encode($data)
+            )
+        );
+        
+        var_dump($rs);
+
         $this->bsload('members/imports_stash',
             array(
                 'title' => '确认导入',
-                'members' => $data
-                ,'no_ranks' => $no_ranks
-                ,'no_levels' => $no_levels
-                ,'no_groups' => $no_groups
-                ,'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
-                    ,array('url'  => base_url('members/export'), 'name' => '导入/导出员工', 'class' => '')
-                    ,array('url'  => '', 'name' => '确认导入', 'class' => '')
+                'members' => $data,
+                'rs'=> $rs,
+                'no_ranks' => $no_ranks,
+                'no_levels' => $no_levels,
+                'no_groups' => $no_groups,
+                'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon'),
+                    array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => ''),
+                    array('url'  => base_url('members/export'), 'name' => '导入/导出员工', 'class' => ''),
+                    array('url'  => '', 'name' => '确认导入', 'class' => '')
                 ),
             )
         );
