@@ -50,9 +50,10 @@
 			<div class="row three">
 				<div class="col">姓名：<span class="nickname"></span></div>
 				<div class="col line"></div>
-				<div class="col">公司：<span class="company"></span></div>
-				<div class="col line"></div>
 				<div class="col">职位：<span class="job"></span></div>
+			</div>
+			<div class="row ">
+				<div class="col">公司：<span class="company"></span></div>
 			</div>
 		</div>
 		<div class="input-wrap">

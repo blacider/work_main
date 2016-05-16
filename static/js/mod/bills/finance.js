@@ -16,7 +16,7 @@
 
 			_COMPANY_PAYHEAD_ = rs['data'];
 
-			if(_COMPANY_PAYHEAD_['wechat_pub']['payhead_uid']) {
+			if(_COMPANY_PAYHEAD_['wechat_pub']['payhead_id']) {
 				$('.btn-pay').show();
 			}
 		});

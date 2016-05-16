@@ -163,7 +163,7 @@
 				if(rs['status']<=0) {
 					return $('.fail').show().text(rs['data']['msg']);
 				}
-				
+
 				var data = {
 					vcode: code
 				};
@@ -173,6 +173,9 @@
 				doVerifyCode(data).done(function (rs) {
 					if(rs['status']<=0) {
 						return $('.fail').show().text(rs['data']['msg']);
+					}
+					if(rs['data']['valid'] !=1)  {
+						return $('.fail').show().text('验证码错误');
 					}
 					acrivate({
 						nonce: _PROFILE_['nonce'],

@@ -31,7 +31,9 @@ font:bold 11px Arial, Helvetica, sans-serif;
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
-
+<script>
+    var _is_self_ = <?php  if($self) {echo "1";} else {echo '0';}?>;
+</script>
 <div class="page-content">
     <div class="page-content-area">
         <form id="profile_form" class="form-horizontal" role="form" method="post" action="<?php echo base_url('users/update_profile'); ?>/<?php echo $isOther ?>/">
@@ -376,7 +378,7 @@ if(in_array($profile['admin'],[1,3,4])){
                     </div>
 
                     <!-- 微信绑定 -->
-                    <div class="form-group">
+                    <div class="form-group weixin-row">
                         <label class="col-sm-1 control-label no-padding-right">微信钱包授权</label>
                         <div class="col-xs-6 col-sm-6">
                             <h2 class="weixin-wallet-tip" style="margin: 0;     margin-bottom: 15px; font-size: 11px; line-height: 34px;">支持财务人员将报销费用转账到您的微信钱包</h2>
@@ -530,7 +532,7 @@ if(in_array($profile['admin'],[1,3,4])){
 
                                 if(isset($user_type) == false) {
                                     $updateWithoutVCode = false;
-                                } else if($user_type == 1 && !$is_self) {
+                                } else if($user_type == 1 && !$self) {
                                     $updateWithoutVCode = true;
                                 }
                                 $visibilityStyle = '';
@@ -1226,7 +1228,7 @@ if(in_array($profile['admin'],[1,3,4])){
 
     // 添加二维码
     // giro_auth/employee_wechat_info
-    Utils.api('giro_auth/employee_wxpub_payhead_info', {
+    Utils.api('giro_payhead/employee_wxpub_payhead', {
         env: 'miaiwu'
     }).done(function (rs) {
         if(rs['status']<=0) {
@@ -1235,7 +1237,6 @@ if(in_array($profile['admin'],[1,3,4])){
         var data = rs['data'];
         if(!data['company_opened']) {  //企业未开通
             $("#weixin-wallet").parent().remove();
-            console.log('企业未开通');
             return
         } else if(data['company_opened']) { //企业开通
             if(data['employee_opened']) {
@@ -1252,6 +1253,10 @@ if(in_array($profile['admin'],[1,3,4])){
                     dialog.showModal();
                 });
             } else {
+                if(!_is_self_) {
+                    alert('员工是否开通接口开发中')
+                    return $('.weixin-row').remove();
+                }
                 var qrcode = new QRCode(document.getElementById("weixin-wallet"), {
                     // text: "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx068349d5d3a73855&redirect_uri=http%3A%2F%2Fdadmin.cloudbaoxiao.com%2Fmobile%2Fwallet&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect",
                     text:data['auth_url'],

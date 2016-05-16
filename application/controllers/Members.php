@@ -1278,7 +1278,6 @@ class Members extends REIM_Controller {
         }
         log_message('debug','@@@@manger_id:'.$manager_id);
 
-        //print_r($info);
         $this->bsload('user/profile',
             array(
                 'title' => '修改资料'
@@ -1286,7 +1285,7 @@ class Members extends REIM_Controller {
                 ,'self' => 0
                 , 'user_type' => $profile['admin']
                 , 'uid' => $profile['id']
-                , 'is_self'=> $profile['id'] == $id
+                , 'self'=> $profile['id'] == $id
                 ,'error' => $error
                 ,'last_error' => $last_error
                 ,'isOther' => 1
