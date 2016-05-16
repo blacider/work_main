@@ -241,11 +241,11 @@ try {
                 $('#comment_dialog').modal('show');
             }
             if (status) {
-                if (jQuery.inArray(rowid, selectRows) == -1) {
-                    selectRows.push(rowid);
+                if (jQuery.inArray(rowId, selectRows) == -1) {
+                    selectRows.push(rowId);
                 }
             } else {
-                selectRows.splice(jQuery.inArray(rowid, selectRows), 1);
+                selectRows.splice(jQuery.inArray(rowId, selectRows), 1);
             }
         },
         //page: 1,
@@ -340,9 +340,6 @@ try {
             form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
             style_delete_form(form);
             form.data('styled', true);
-        },
-        onClick: function(e) {
-            alert(1);
         }
     }, {
         //search form
@@ -372,10 +369,8 @@ try {
         title: "下载选中报销单",
         buttonicon: "ace-icon fa fa-download blue",
         onClickButton: function() {
-            //TODO
-            //         chosenids = $(grid_selector).jqGrid('getGridParam','selarrrow');
-            // if (chosenids.length == 0) {
-            if (selectRows.length == 0) {
+            var chosenids = $(grid_selector).jqGrid('getGridParam', 'selarrrow');
+            if (chosenids.length == 0) {
                 alert("请选择报销单!");
                 return;
             }
@@ -383,9 +378,8 @@ try {
                 url: __BASE + "/bills/download_report",
                 method: "post",
                 dataType: "json",
-                //data:{"chosenids":chosenids},
                 data: {
-                    "chosenids": selectRows
+                    "chosenids": chosenids
                 },
                 success: function(data) {
                     location.href = data['url'];
