@@ -163,8 +163,11 @@
 				if(rs['status']<=0) {
 					return $('.fail').show().text(rs['data']['msg']);
 				}
+				
+				var data = {
+					vcode: code
+				};
 
-				var data = {};
 				data[_PROFILE_['check_mode']] = _PROFILE_['check_receiver'];
 
 				doVerifyCode(data).done(function (rs) {
@@ -174,7 +177,7 @@
 					acrivate({
 						nonce: _PROFILE_['nonce'],
 						uid: _PROFILE_['uid'],
-						payhead_id: _PROFILE_['payhead_uid']
+						payhead_id: _PROFILE_['payhead_id']
 					}).done(function (rs) {
 						if(rs['status']<=0) {
 							return $('.fail').show().text(rs['data']['msg']);
