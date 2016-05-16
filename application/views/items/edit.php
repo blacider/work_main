@@ -436,7 +436,7 @@ $(document).ready(function() {
             var $li = $(
             '<div id="FILE_' + file.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' +
                 '<img style="width:128px">' +
-                '<p style="text-align: center;margin: 0;max-width: 128px;">'+file.filename+'</p>'+
+                '<p style="text-align: center;margin: 0;max-width: 128px;">'+decodeURIComponent(file.filename)+'</p>'+
                 '<div class="glyphicon glyphicon-trash red del-button_" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' +
                 '<div class="ui-icon ace-icon fa fa-download blue download-button_" style="  position: absolute;right: 10px;bottom: 10px;cursor: pointer;"></div>' +
             '</div>'
