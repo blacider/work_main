@@ -58,36 +58,6 @@ class REIM_Controller extends CI_Controller{
         return false;
     }
 
-    public function _upload($uid, $name){
-        if($name == "") $name = 'package';
-        $this->load->helper('file');
-        $user_prefix = md5($uid);
-        $s = substr($user_prefix, 0, 2) . "/" . substr($user_prefix, 2, 2);
-        $prefix = 'statics/' . 'users_data/' . $s . "/" . $uid . "/" . date('Y/m');
-        $config['upload_path'] = $this->config->item('static_base') . $prefix;
-        $relate_file = $config['upload_path'];
-        if(!file_exists($config['upload_path'])){
-            //echo $config['upload_path'];
-            $mkres = mkdir($config['upload_path'], 0777, true);
-            if(!$mkres){
-                log_message("debug", "mkdir error: " . $config['upload_path']);
-                return array('status' => false, 'msg' => '创建目录失败');
-            }
-        }
-        $config['allowed_types'] = '*';
-        $config['max_size'] = '50000000';
-        $config['encrypt_name'] = True;
-        $this->load->library('upload', $config);
-        if(!$this->upload->do_upload($name))
-        {
-            return array('status' => false, 'msg' => '图片上传失败', 'detail' => $this->upload->display_errors());
-        }
-        else
-        {
-            return array('status' => true, 'data' => $this->upload->data(), 'prefix' => $prefix);
-        }
-    }
-
     public function bsload($view_name, $custom_data,$template_views = array()){
         $menu_page = 'menu.bs.php'; 
         $this->load->model('user_model');
