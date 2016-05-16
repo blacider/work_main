@@ -1259,7 +1259,7 @@
                                 })
                             }).done(function(rs) {
                                 if (rs['status'] <= 0) {
-                                    show_notify(rs['data']['msg']);
+                                    return show_notify(rs['data']['msg']);
                                 }
 
                                 historyMembersManager.append([data.receiver_ids, data.cc_ids].join(','));
@@ -1269,7 +1269,6 @@
                                 } else {
                                     window.location.href = "/reports";
                                 }
-
                             });
                             return;
                         }
@@ -1278,7 +1277,7 @@
                             data: data
                         }).done(function(rs) {
                             if (rs['status'] <= 0) {
-                                show_notify(rs['data']['msg']);
+                                return show_notify(rs['data']['msg']);
                             }
 
                             historyMembersManager.append([data.receiver_ids, data.cc_ids].join(','));
