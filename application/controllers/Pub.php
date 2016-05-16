@@ -183,8 +183,6 @@ class Pub extends REIM_Controller {
                         // TODO @abjkl, 看看出错了怎么搞
                         $this->session->set_userdata('login_error', '用户名或者密码错误');
                         log_message("debug", "Exists without GID ");
-                        //$this->load->view('wx/apply', array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
-                        //redirect(base_url('login'));
                         $gname = '';
                         $msg = '';
                         $this->load->view('wx/success', array('msg' => $msg, 'gname' => $gname));
