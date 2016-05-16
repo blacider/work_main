@@ -90,7 +90,7 @@
 
 	function doVerifyCode(data) {
 		return Utils.api('/vcode/verify', {
-			method: 'post',
+			method: 'get',
 			env: 'miaiwu',
 			data: data
 		}).done(function (rs) {
