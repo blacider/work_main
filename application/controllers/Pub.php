@@ -217,60 +217,15 @@ class Pub extends REIM_Controller {
                 } else {
                     log_message("debug", "------> Same Group:" );
                     $this->load->view('wx/apply', array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
-                   // redirect(base_url('install/wx/').'?'.'gname='.$gname);
-                   /* if ($this->agent->is_mobile('iphone'))
-                        {
-                            $this->load->view('wx/iphone',array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
-                        }
-                        else if ($this->agent->is_mobile())
-                        {
-                            $this->load->view('wx/adroid',array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
-                        }
-                        else
-                        {
-                            $this->load->view('wx/index',array('gname' => $gname, 'invitor' => $nickname, 'gid' => $gid, 'uid' => $user['id']));
-                        }*/
                 }
             }
         }
     }
 
-    public function d(){
-        $this->load->config('reim');
-        $appid = $this->config->item('appid');
-        $appsec = $this->config->item('appsec');
-        $params = base64_encode(json_encode(array('nickname' => '老杨', 'gid' => '123', 'gname' => '我家娃还没起CODENAME')));
-        $ruri = urlencode(base_url('pub/oauth/' . $params));
-        $scope = 'snsapi_userinfo';
-        $uri = sprintf('https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=reim_debug#wechat_redirect', $appid, $ruri, $scope);
-        echo $uri;
-    }
-
-    public function dojoin(){
-        $name = $this->input->post('name');
-        $gid = $this->input->post('gid');
-        $uid = $this->input->post('uid');
-        if(!$uid) die(json_encode(array('status' => false, 'msg' => '参数错误')));
-        if(!$gid) die(json_encode(array('status' => false, 'msg' => '参数错误')));
-        if(!$name) die(json_encode(array('status' => false, 'msg' => '参数错误')));
-
-        // 修改昵称
-        $info = $this->users->reim_update_profile("", "", $name, "");
-
-        $info = json_decode($info, True);
-        if(!$info['status']) die(json_encode(array('status' => false, 'msg' => '修改参数失败')));
-        // 提交申请
-        $info = $this->users->doapply($gid);
-
-        redirect(base_url('pub/success/' . $name));
-
-    }
-
     public function success($gname = ''){
-            log_message("debug", "----------- ***************** ------> Not Micro :" );
+        log_message("debug", "----------- ***************** ------> Not Micro :" );
         $msg = '';
-        //$this->load->view('wx/success', array('msg' => $gname, 'gname' => $gname));
-       redirect(base_url('install'));
+        redirect(base_url('install'));
     }
 
     public function version(){
