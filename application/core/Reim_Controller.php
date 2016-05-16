@@ -60,7 +60,6 @@ class REIM_Controller extends CI_Controller{
 
     public function eload($view_name, $custom_data, $menu_page = 'menu.php'){
         $this->load->model('user_model');
-        $this->load->model('module_tip_model');
         $uid = $this->session->userdata('uid');
         $profile = $this->session->userdata('profile');
         if(!($profile || $uid)){
@@ -73,7 +72,6 @@ class REIM_Controller extends CI_Controller{
             $custom_data['opt_error'] = $this->session->userdata('last_error');
             $custom_data['username'] = $this->session->userdata('username');
             $custom_data['uid'] = $this->session->userdata('uid');
-            $custom_data['tip'] = $this->module_tip_model->get_tip($custom_data['uid']);
             $custom_data['description'] =  '';
         } else {
             $this->session->set_userdata('user', $profile);
@@ -122,7 +120,6 @@ class REIM_Controller extends CI_Controller{
     public function bsload($view_name, $custom_data,$template_views = array()){
         $menu_page = 'menu.bs.php'; 
         $this->load->model('user_model');
-        $this->load->model('module_tip_model');
         $uid = $this->session->userdata('uid');
         $profile = array();
         $common = array();
@@ -146,7 +143,6 @@ class REIM_Controller extends CI_Controller{
             $custom_data['opt_error'] = $this->session->userdata('last_error');
             $custom_data['username'] = $this->session->userdata('username');
             $custom_data['uid'] = $this->session->userdata('uid');
-            $custom_data['tip'] = $this->module_tip_model->get_tip($custom_data['uid']);
             $custom_data['description'] =  '';
         } else {
 
