@@ -40,7 +40,13 @@
 
 	function onPay() {
 		$('.btn-pay').on('click', function (e) {
+
 			var ids = selectRows;
+
+			if($(e.currentTarget).hasClass('one')) {
+				ids = [$('#rid_').val()];
+			}
+
 			canPayable({
 				report_ids: ids,
 				company_payhead_id: _COMPANY_PAYHEAD_['wechat_pub']['payhead_uid'],
@@ -62,7 +68,7 @@
 					}
 				}
 
-				$('#modal-table-finish').modal('hide')
+				$('.modal').modal('hide')
 
 				if(canPayArray.length==0) {
 					var dialog = new CloudDialog({
