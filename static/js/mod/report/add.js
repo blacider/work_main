@@ -744,9 +744,13 @@
                                     text: '其它'
                                 }
                             }
+                            var account = item.account;
+                            if(account.length>6) {
+                                account = account.substr(0, 6) + '...';
+                            }
                             return {
                                 value: item['id'],
-                                text: [item.account, '-', '尾号' + item.cardno.substr(-4), '-', item.bankname].join('') || '--'
+                                text: [account, '-', '尾号' + item.cardno.substr(-4), '-', item.bankname].join('') || '--'
                             }
                         },
                         onDeselect: function (oldValue, el) {
