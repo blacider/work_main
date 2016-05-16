@@ -14,9 +14,7 @@
 	<link rel="stylesheet" href="/static/css/mod/mobile/wallet.css">
 	<script>
 
-	function __uri(str) {
-		return str;
-	};
+	var _CONST_API_DOMAIN_ = "<?php echo $api_url_base; ?>";
 
 	window['_weixin_data_'] = {
 		title: "", // 分享标题

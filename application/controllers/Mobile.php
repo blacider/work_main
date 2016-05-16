@@ -6,9 +6,10 @@ class Mobile extends Reim_Controller {
 	}
 
     public function weixin_wallet(){
-   		$this->load->view('mobile/wallet', array());
+    	$this->load->config('api');
+    	$api_url_base = $this->config->item('api_url_base');
+   		$this->load->view('mobile/wallet', array(
+   			'api_url_base' => $api_url_base
+		));
     }
-
-    
-
 }
