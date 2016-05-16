@@ -58,35 +58,6 @@ class REIM_Controller extends CI_Controller{
         return false;
     }
 
-    public function eload($view_name, $custom_data, $menu_page = 'menu.php'){
-        $this->load->model('user_model');
-        $uid = $this->session->userdata('uid');
-        $profile = $this->session->userdata('profile');
-        if(!($profile || $uid)){
-            // 重定向到登陆
-            log_message("debug","Nothing ");
-            redirect(base_url('login'), 'refresh');
-        }
-
-        if(!$profile){
-            $custom_data['opt_error'] = $this->session->userdata('last_error');
-            $custom_data['username'] = $this->session->userdata('username');
-            $custom_data['uid'] = $this->session->userdata('uid');
-            $custom_data['description'] =  '';
-        } else {
-            $this->session->set_userdata('user', $profile);
-            $custom_data['profile'] = $profile;
-        }
-
-        $this->config->load('apps', TRUE);
-        $custom_data['appname'] = $this->config->item('appname');
-        $custom_data['base_url'] = base_url();
-        $this->load->view('header', $custom_data);
-        $this->load->view($menu_page, $custom_data);
-        $this->load->view($view_name, $custom_data);
-        $this->load->view('footer', $custom_data);
-    }
-
     public function _upload($uid, $name){
         if($name == "") $name = 'package';
         $this->load->helper('file');
