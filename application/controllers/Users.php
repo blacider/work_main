@@ -207,11 +207,6 @@ class Users extends REIM_Controller
         else redirect(base_url('users/profile'));
     }
     
-    public function password() {
-        $profile = $this->session->userdata('profile');
-        $this->eload('user/password', array('title' => '修改密码', 'profile' => $profile));
-    }
-    
     public function force_update_password() {
         $profile = $this->user->reim_get_user();
         $profile_id = $profile['data']['profile']['id'];
