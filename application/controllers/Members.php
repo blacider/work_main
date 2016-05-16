@@ -1126,7 +1126,7 @@ class Members extends REIM_Controller {
         log_message('debug','no_levels:' . json_encode($no_levels));
         log_message('debug','no_groups:' . json_encode($no_groups));
 
-        $this->bsload('members/imports',
+        $this->bsload('members/imports_stash',
             array(
                 'title' => '确认导入',
                 'members' => $data
