@@ -50,7 +50,7 @@
 			var data = {
 				email: email
 			}
-			if(__self == 1) {
+			if(__UID__ == $('input[name=uid]').val()) {
 				var vcode = $(this).parents('.modal-content').find('input.vcode').val();
 				if(!vcode) {
 					return show_notify('请输入验证码');

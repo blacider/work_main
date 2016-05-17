@@ -549,21 +549,21 @@ if(in_array($profile['admin'],[1,3,4])){
                     <div class="col-sm-6">
                         <input type="text" class="form-control email" placeholder="新邮箱">
                     </div>
-                    <?php if($self) { ?>
-                    <div class="col-sm-2 align-right">
+                    
+                    <div class="col-sm-2 align-right" style="<?php echo $visibilityStyle; ?>">
                         <button class="btn-get-email-code btn btn-primary btn-sm" type="submit">发送验证码</button>
                     </div>
-                    <?php } ?>
+                    
                 </div>
                 <br>
-                <?php if($self) { ?>
-                <div class="row">
+                
+                <div class="row" style="<?php echo $visibilityStyle; ?>">
                     <label class="col-sm-2 control-label align-right">验证码</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control vcode" placeholder="验证码">
                     </div>
                 </div>
-                <?php } ?>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
