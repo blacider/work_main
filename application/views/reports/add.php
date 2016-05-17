@@ -44,14 +44,6 @@
                     <div class="field-label">审批人</div>
                     <div class="approvers selected-members">
                         <ul>
-                            <li ng-if='superior'>
-                                <img ng-src="{{superior.apath || default_avatar}}" alt="">
-                                <div class="info">
-                                    <div class="name">{{superior.nickname}}</div>
-                                    <div class="role">{{superior.d}}</div>
-                                </div>
-                                <p ng-if="!_disable_modify_approver_" class="btn-remove" ng-click="onRemoveApprover(superior)"></p>
-                            </li>
                             <li ng-repeat='m in selectedMembers track by $index'>
                                 <img ng-src="{{m.apath || default_avatar}}" alt="">
                                 <div class="info">
