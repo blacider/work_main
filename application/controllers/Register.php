@@ -165,22 +165,6 @@ class Register extends REIM_Controller {
         }
     }
 
-    public function success($code = 0, $name = ''){
-        $this->load->view('user/active_succ', array('name' => array(),'code'=>$code, 'msg' => '恭喜，你的账号已经注册成功，请点击<a href="https://admin.cloudbaoxiao.com">这里</a>登录。'));
-
-        /*
-        $name = urldecode($name);
-        $args = array('name' => '');
-        if($name){
-            $args = json_decode($name, True);
-        }
-        $this->input->set_cookie($this->cookie_user, $args['name'], $this->cookie_life);
-
-        $body = $this->load->view('user/register_success', array('name' => $args['name']), True);
-        $this->load->view('default', array('nav' => '', 'body' => $body, 'title' => '登录'));
-         */
-    }
-
 
 
 }
