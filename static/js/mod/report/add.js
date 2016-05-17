@@ -3,7 +3,7 @@
     var _defaultTemplateName_ = '未命名报销单模板';
     return {
         initialize: function() {
-            angular.module('reimApp', ['ng-sortable', 'ng-dropdown', 'historyMembers', 'exchangeRate']).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce", "historyMembersManagerService", "exchangeRateService",
+            angular.module('reimApp', ['ng-dropdown', 'historyMembers', 'exchangeRate']).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce", "historyMembersManagerService", "exchangeRateService",
                 function($http, $scope, $element, $timeout, $sce, historyMembersManager, exchangeRate) {
                     $scope.bankFieldMap = {};
                     $scope.radioFieldMap = {};
@@ -400,6 +400,7 @@
                                     this.$el.find('.account input').val('');
                                     this.$el.find('.card-number input').val('');
                                     this.$el.find('.subbranch input').val('');
+                                    this.$el.find('.bank-db-list .item').removeClass('active');
                                     this.$el.find('.bank-db-list .text').text('请选择银行').addClass('font-placeholder');
                                     this.$el.find('.card-type .text').text('请选择卡类型').addClass('font-placeholder');
                                     this.$el.find('.province .text').text('请选择省').addClass('font-placeholder');
@@ -859,18 +860,13 @@
                         });
                     };
 
-                    $scope.filterBANK_DB = function (txt) {
-                        return function (item) {
-                            if(!txt) {
-                                return true;
-                            }
-                            var reg = new RegExp(txt, 'img');
-                            if(reg.test(item)) {
-                                return true;
-                            }
-                            return false;
-                        } 
-                    };
+                    $scope.onSearchEnd = _.debounce(function () {
+                        var name = $('.bank-form .bank-db-list .text').text();
+                        if(!name) {
+                            return;
+                        }
+                        $('.bank-form .bank-db-list').find('.item:contains(' +name+ ')').addClass('active');
+                    }, 100);
 
                     $scope.bankCardTypes = [{
                         value: 0,
@@ -891,6 +887,8 @@
                         var name = $scope.PREFIX_BANK_CODE[value];
                         if (name) {
                             $('.bank-form .bank-db-list').find('.text').text(name).removeClass('font-placeholder');
+                            $('.bank-form .bank-db-list .item').removeClass('active');
+                            $('.bank-form .bank-db-list').find('.item:contains(' +name+ ')').addClass('active');
                             $scope.selected_bankName = name;
                         };
                     };
