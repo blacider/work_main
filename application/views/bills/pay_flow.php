@@ -73,6 +73,7 @@
                                 <tr>
                                     <th>付款单号</th>
                                     <th>报销单号</th>
+                                    <th>提交时间</th>
                                     <th>报销单名字</th>
                                     <th>付款方式</th>
                                     <th>收款人</th>
@@ -90,6 +91,7 @@
                                 <tr ng-repeat="item in payList">
                                     <td class="pay-no">{{item.local_bill_no}}</td>
                                     <td>{{item.carrier_id}}</td>
+                                    <td>{{item.submitdt}}</td>
                                     <td>{{item.carrier_name}}</td>
                                     <td data-type="{{item.payway}}">微信支付</td>
                                     <td>{{item.employee_name}}</td>

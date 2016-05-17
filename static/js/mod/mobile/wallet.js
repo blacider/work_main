@@ -3,7 +3,7 @@
 	var _CONST_DELAY_ = 55;
 
 	var debugConsole = new DebugConsole({
-	    debug: 1
+	    debug: 0
 	});
 
 	var _PROFILE_ = {};
