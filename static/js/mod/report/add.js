@@ -838,7 +838,13 @@
                                 return show_notify('找不到数据');
                             }
                             var data = rs['data']['bank_dic'];
-                            $scope.BAND_DB = data;
+                            $scope.BANK_DB = data;
+
+                            var bank_db_array = [];
+                            for(var pro in $scope.BANK_DB) {
+                                bank_db_array.push(pro);
+                            }
+                            $scope.BANK_DB_ARRAY = bank_db_array;
                             $scope.PREFIX_BANK_CODE = (function changeBankDataToMap() {
                                 var bankMap = {};
                                 for (var name in data) {
@@ -852,6 +858,20 @@
                             $scope.$apply()
                         });
                     };
+
+                    $scope.filterBANK_DB = function (txt) {
+                        return function (item) {
+                            if(!txt) {
+                                return true;
+                            }
+                            var reg = new RegExp(txt, 'img');
+                            if(reg.test(item)) {
+                                return true;
+                            }
+                            return false;
+                        } 
+                    };
+
                     $scope.bankCardTypes = [{
                         value: 0,
                         text: '借记卡'

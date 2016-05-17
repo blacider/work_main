@@ -123,7 +123,9 @@
                                     <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
                                 </i>
                                 <div class="text font-placeholder"></div>
+                                <!-- <input type="text" class="text font-placeholder" ng-model="txtBankInput.$"> -->
                                 <div class="option-list none option-list-extra">
+                                    
                                     <div class="option-list-wrap">
                                         <div class="item" ng-repeat="item in banks" data-value="{{item.id}}">{{makeBankDropdown.itemFormat(item)['text']}}</div>
                                     </div>
@@ -338,8 +340,13 @@
                                 <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
                             </i>
                             <div class="text font-placeholder"></div>
-                            <div class="option-list none" style="">
-                                <div class="item" ng-repeat="(name, item) in BAND_DB" data-value="{{name}}">{{name}}</div>
+                            <div class="option-list none">
+                                <div class="input-search-helper">
+                                    <input type="text" ng-model="txtBankInput">
+                                </div>
+                                <div class="option-list-wrap" style="width: auto;">
+                                    <div class="item" ng-repeat="name in (filteredBANK_DB=(BANK_DB_ARRAY|filter:filterBANK_DB(txtBankInput)))" data-value="{{name}}">{{name}}</div>
+                                </div>
                             </div> 
                         </div>
                     </div>
