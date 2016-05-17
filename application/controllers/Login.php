@@ -5,9 +5,7 @@ class Login extends REIM_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('user_model', 'users');
-        $this->load->model('Register_model');
         $this->load->helper('cookie');
-        $this->load->model('app_model');
         $this->load->library('reim_cipher');
     }
 
