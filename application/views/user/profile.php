@@ -28,9 +28,7 @@ font:bold 11px Arial, Helvetica, sans-serif;
                         <div class="col-xs-6 col-sm-6 filePicker">
                             <?php $user = $member; ?>
                             <?php $disabled = $self == 1 ? '' : 'disabled'; ?>
-
-<!--avatar_container <a id="btn_cimg" style="height:140px;width:140px" href="javascript:void(0)" class="avatar thumbnail"> btn btn-primary btn-white-->
-                          <a id="btn_cimg" class="filePicker"  style="height:144px;width:155px" class="btn btn-primary btn-white">
+                            <a id="btn_cimg" class="filePicker"  style="height:144px;width:155px" class="btn btn-primary btn-white">
                             <input type="hidden" id="avatar" name="avatar" value="<?php echo $user['avatar']; ?>" />
                             <img src="<?php echo $user['avatar_url'];?>" style="height:130px;width:130px" id="avatar_src" /> </a>
                         </div>
@@ -39,17 +37,13 @@ font:bold 11px Arial, Helvetica, sans-serif;
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">邮箱</label>
                         <div class="col-xs-6 col-sm-6">
-<?php
-if($self != 1) {
-?>
-<input type='hidden' id="uid" name='uid' value="<?php echo $user['id']; ?>">
-<?php
-}
-?>
-                            <!-- <input type="hidden" name="email" value="<?php echo $user['email']; ?>"> -->
-                            <!-- <input type="text" class="col-xs-6 col-sm-6 form-control" value="<?php echo $user['email']; ?>" /> -->
-                <input type="text" name="email" class="col-xs-6 col-sm-6 form-control" value="<?php echo $user['email']; ?>">
-                <!-- <label class="control-label"><?php echo $user['email']; ?></label> -->
+                            <?php if($self != 1) { ?>
+                                <input type='hidden' id="uid" name='uid' value="<?php echo $user['id']; ?>">
+                            <?php } ?>
+                            <div class="col-xs-12 col-sm-12 "  style="margin-left:0px !important;padding-left:0px !important;" >
+                                <input type="text" name="email" class="col-xs-10 col-sm-10" value="<?php echo $user['email']; ?>" disabled>
+                                <a href="javascript:void(0)" style="margin-left:5px;" class="btn btn-danger btn-sm change_email" >修改</a>
+                            </div>
                         </div>
                     </div>
 
@@ -540,6 +534,45 @@ if(in_array($profile['admin'],[1,3,4])){
         </div>
     </div>
 </div>
+
+<!-- update user email start-->
+<div class="modal fade" id="modalUpdateEmail">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">修改邮箱</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <label class="col-sm-2 control-label align-right">新邮箱</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control email" placeholder="新邮箱">
+                    </div>
+                    <?php if($self) { ?>
+                    <div class="col-sm-2 align-right">
+                        <button class="btn-get-email-code btn btn-primary btn-sm" type="submit">发送验证码</button>
+                    </div>
+                    <?php } ?>
+                </div>
+                <br>
+                <?php if($self) { ?>
+                <div class="row">
+                    <label class="col-sm-2 control-label align-right">验证码</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control vcode" placeholder="验证码">
+                    </div>
+                </div>
+                <?php } ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn-bind-email btn btn-primary">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- update user email end -->
 
 <div class="modal fade" id="credit_model">
     <div class="modal-dialog">
@@ -1148,6 +1181,6 @@ if(in_array($profile['admin'],[1,3,4])){
     
 
 </script>
-
+<script src="/static/js/mod/user/profile.js"></script>
 
 
