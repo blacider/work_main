@@ -137,8 +137,10 @@ button {
 .field-select .text {
 	line-height: 32px;
 }
-.field-select input:focus, .field-select .text.focus {
+.field-select input:focus,
+.field-select .text.focus {
 	border: 1px solid #fe575c !important;
+	/*color: #4a4a4a !important;*/
 }
 .font-placeholder {
 	color: #ddd !important;
@@ -153,6 +155,26 @@ button {
     overflow: hidden;
     text-overflow: ellipsis;
 	padding-right: 20px;
+}
+
+.field-select .input-search-helper {
+	margin: 10px;
+	position: relative;
+}
+.field-select .input-search-helper input {
+	padding-right: 40px; 
+	width: 100%;
+}
+.field-select .input-search-helper::after {
+	position: absolute;
+	content: '';
+	display: block;
+	width: 24px;
+	height: 24px;
+	right: 5px;
+	top: 5px;
+	background: url('/static/img/mod/report/24/icon-search@2x.png');
+	background-size: 100%;
 }
 .field-select .option-list {
 	padding: 10px 0;

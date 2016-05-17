@@ -922,14 +922,13 @@ table.border-radius-row tr td:last-child {
 	width: 266px
 }
 .field-select .option-list {
-	max-height: auto;
+	max-height: none;
 }
 .field-select .option-list {
 	margin-top: -6px;
 }
 .field-select .option-list.option-list-extra {
 	overflow: visible;
-	max-height: auto !important;
 	max-height: none;
 	height: auto;
 }

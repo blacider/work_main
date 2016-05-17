@@ -126,6 +126,9 @@
 					});
 					
 					$(document.body).on('click', function(e) {
+						if($(e.target || e.srcElement)[0].nodeName == 'INPUT') {
+							return false;
+						}
 						setTimeout(function() {
 							$(element).find('.option-list').addClass('none');
 							$(element).find('.text').removeClass('focus');

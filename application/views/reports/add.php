@@ -124,6 +124,7 @@
                                 </i>
                                 <div class="text font-placeholder"></div>
                                 <div class="option-list none option-list-extra">
+                                    
                                     <div class="option-list-wrap">
                                         <div class="item" ng-repeat="item in banks" data-value="{{item.id}}">{{makeBankDropdown.itemFormat(item)['text']}}</div>
                                     </div>
@@ -338,8 +339,13 @@
                                 <img src="/static/img/mod/template/icon/triangle@2x.png" alt="" />
                             </i>
                             <div class="text font-placeholder"></div>
-                            <div class="option-list none" style="">
-                                <div class="item" ng-repeat="(name, item) in BAND_DB" data-value="{{name}}">{{name}}</div>
+                            <div class="option-list none">
+                                <div class="input-search-helper">
+                                    <input type="text" ng-model="txtBankInput" ng-keyup="onSearchEnd($event)">
+                                </div>
+                                <div class="option-list-wrap" style="width: auto;">
+                                    <div class="item" ng-repeat="name in (filteredBANK_DB=(BANK_DB_ARRAY|filter:txtBankInput))" data-value="{{name}}">{{name}}</div>
+                                </div>
                             </div> 
                         </div>
                     </div>
@@ -399,14 +405,12 @@
 <script src="/static/js/libs/fecha.js"></script>
 <script src="/static/plugins/cloud-dialog/dialog.js"></script>
 <script src="/static/plugins/cloud-dropdown/index.js"></script>
-<script src="/static/js/libs/Sortable.min.js"></script>
-<script src="/static/js/libs/ng-sortable.js"></script>
 <script src="/static/js/libs/underscore-min.js"></script>
 <script src="/static/js/libs/route-recognizer.js"></script>
 <script src="/static/js/jquery.cookie.js"></script>
 <script src="/static/js/shared/services/historyMembers.js"></script>
 <script src="/static/js/shared/services/exchangeRate.js"></script>
-<script src="/static/js/mod/report/add.js?_r=20160513.15"></script>
+<script src="<?= static_url("/static/js/mod/report/add.js") ?>"></script>
 
 <link rel="stylesheet" href="/static/css/base/animate.css">
 <link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">

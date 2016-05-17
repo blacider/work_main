@@ -3,7 +3,7 @@
     var _defaultTemplateName_ = '未命名报销单模板';
     return {
         initialize: function() {
-            angular.module('reimApp', ['ng-sortable', 'ng-dropdown', 'historyMembers', 'exchangeRate']).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce", "historyMembersManagerService", "exchangeRateService",
+            angular.module('reimApp', ['ng-dropdown', 'historyMembers', 'exchangeRate']).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce", "historyMembersManagerService", "exchangeRateService",
                 function($http, $scope, $element, $timeout, $sce, historyMembersManager, exchangeRate) {
                     $scope.bankFieldMap = {};
                     $scope.radioFieldMap = {};
@@ -400,6 +400,7 @@
                                     this.$el.find('.account input').val('');
                                     this.$el.find('.card-number input').val('');
                                     this.$el.find('.subbranch input').val('');
+                                    this.$el.find('.bank-db-list .item').removeClass('active');
                                     this.$el.find('.bank-db-list .text').text('请选择银行').addClass('font-placeholder');
                                     this.$el.find('.card-type .text').text('请选择卡类型').addClass('font-placeholder');
                                     this.$el.find('.province .text').text('请选择省').addClass('font-placeholder');
@@ -838,7 +839,13 @@
                                 return show_notify('找不到数据');
                             }
                             var data = rs['data']['bank_dic'];
-                            $scope.BAND_DB = data;
+                            $scope.BANK_DB = data;
+
+                            var bank_db_array = [];
+                            for(var pro in $scope.BANK_DB) {
+                                bank_db_array.push(pro);
+                            }
+                            $scope.BANK_DB_ARRAY = bank_db_array;
                             $scope.PREFIX_BANK_CODE = (function changeBankDataToMap() {
                                 var bankMap = {};
                                 for (var name in data) {
@@ -852,6 +859,15 @@
                             $scope.$apply()
                         });
                     };
+
+                    $scope.onSearchEnd = _.debounce(function () {
+                        var name = $('.bank-form .bank-db-list .text').text();
+                        if(!name) {
+                            return;
+                        }
+                        $('.bank-form .bank-db-list').find('.item:contains(' +name+ ')').addClass('active');
+                    }, 100);
+
                     $scope.bankCardTypes = [{
                         value: 0,
                         text: '借记卡'
@@ -871,6 +887,8 @@
                         var name = $scope.PREFIX_BANK_CODE[value];
                         if (name) {
                             $('.bank-form .bank-db-list').find('.text').text(name).removeClass('font-placeholder');
+                            $('.bank-form .bank-db-list .item').removeClass('active');
+                            $('.bank-form .bank-db-list').find('.item:contains(' +name+ ')').addClass('active');
                             $scope.selected_bankName = name;
                         };
                     };
