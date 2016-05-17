@@ -530,11 +530,9 @@ if(in_array($profile['admin'],[1,3,4])){
 
                             <div class="clearfix form-actions">
                                 <div class="col-md-offset-3 col-md-9">
-                                    <a data-nocode="<?php echo $updateWithoutVCode; ?>" class="btn btn-white btn-primary update_phone" data-renew="0"><i class="ace-icon fa fa-save "></i>修改<?php if(!$updateWithoutVCode) {echo "并登出";} ;?></a>
+                                    <a data-nocode="<?php echo $updateWithoutVCode; ?>" class="btn btn-white btn-primary update_phone" data-renew="0"><i class="ace-icon fa fa-save "></i>修改</a>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </form>
@@ -542,8 +540,6 @@ if(in_array($profile['admin'],[1,3,4])){
         </div>
     </div>
 </div>
-
-
 
 <div class="modal fade" id="credit_model">
     <div class="modal-dialog">
@@ -960,19 +956,9 @@ if(in_array($profile['admin'],[1,3,4])){
                                     if(data.status==0 || data.status=='false')
                                     {
                                         show_notify(data.data.msg);
+                                    } else if(data.status == 1) {
+                                        return window.location.reload();
                                     }
-                                    else if(data.status == 1)
-                                    {
-                                        $('#phone_modal').modal('hide');
-                                        if(!$(_self).data('nocode')) {
-                                            show_notify("手机绑定成功,1秒之后跳转至登陆页面");
-                                            setTimeout(function(){window.location.href="/login"}, 1000);
-                                        } else {
-                                            show_notify("手机绑定成功");
-                                        }
-                                    }
-
-                                    // $('#phone_modal').modal('hide');
                                 }
                         });
                     });
