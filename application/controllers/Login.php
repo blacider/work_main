@@ -119,17 +119,6 @@ class Login extends REIM_Controller {
         $body = $this->load->view('user/cslogin.php', array());
     }
 
-
-    public function force_reset(){
-        $user = $this->input->get('phone');
-        $username = $this->reim_cipher->decode($this->input->cookie('username'));
-        $this->load->view('user/forcelogin', array(
-            'errors' => '您的口令存在风险，请修改密码'
-            ,'name' => $username
-            , 'title' => '重置密码'
-        ));
-    }
-
     public function do_login(){
         $username = trim($this->input->post('u', TRUE));
         $password = $this->input->post('p', TRUE);
@@ -202,88 +191,6 @@ class Login extends REIM_Controller {
         echo json_encode(array('status' => 1, 'data' => base_url('items')));
         return ;
     }
-    public function dologin(){
-        $username = trim($this->input->post('u', TRUE));
-        $password = $this->input->post('p', TRUE);
-        $is_r = $this->input->post('is_r',TRUE);
-        log_message("debug","is_r:".$is_r);
-        // 设置自动存储1个月
-        $expire = 3600 * 24 * 30;
-
-        if($is_r == 'on')
-        {
-            $_username = $this->reim_cipher->encode($username);
-            $_password = $this->reim_cipher->encode($password);
-            log_message('debug','_username:'.$_username);
-            log_message('debug','_password:'.$_password);
-            $cookie = array(
-                'name'   => 'username',
-                'value'  => $_username,
-                'expire' => $expire,
-                'domain' => '.cloudbaoxiao.com',
-                'path'   => '/',
-                'prefix' => '',
-                'secure' => TRUE
-            );
-            $this->input->set_cookie($cookie);
-            $cookie['name'] = 'password';
-            $cookie['value'] = $_password;
-            $this->input->set_cookie($cookie);
-        }
-        else
-        {
-            $this->input->set_cookie("username",$username);
-            delete_cookie('password','.cloudbaoxiao.com','/','');
-        }
-        if(!$username){
-            $this->session->set_userdata('login_error', '请输入邮箱或者手机');
-            return redirect(base_url('login'));
-        }
-        if(!$password){
-            $this->session->set_userdata('login_error', '请输入密码');
-            return redirect(base_url('login'));
-        }
-        $user = $this->users->reim_get_user($username, $password);
-        $this->session->set_userdata('email', $username);
-        $this->session->set_userdata('password', $password);
-        log_message('debug', "Login:" . json_encode($user));
-        if(!$user['status']) {
-            //if($user['code'] == -75) {
-            //    return redirect(base_url('login/force_reset'));
-            //}
-            $this->session->set_userdata('login_error', '用户名或者密码错误');
-            redirect(base_url('login'));
-            die();
-        }
-        $server_token = $user['server_token'];
-        $data = $user['data']['profile'];
-
-        log_message('debug', "profile:" . json_encode($data));
-        $__g = '';
-        if(array_key_exists('group_name', $data)){
-            $__g = $data['group_name'];
-        }
-        $__uid = '';
-        if(array_key_exists('id', $data)){
-            $__uid = $data['id'];
-        }
-        $this->session->set_userdata("uid", $__uid);
-        $this->session->set_userdata("groupname", $__g);
-        $this->session->set_userdata("server_token", $server_token);
-        /*
-        $goto = $this->session->userdata('last_url');
-        // 获取一下组信息，然后设置一下
-        if($this->startsWith($goto, 'members/singlegroup')){
-            $goto = 'items';
-        }
-        if(!$goto) {
-            redirect(base_url('items'));
-            die('');
-        }
-        redirect(base_url($goto));
-        */
-        redirect(base_url('items'));
-    }
 
     public function dologout()
     {
@@ -323,6 +230,5 @@ class Login extends REIM_Controller {
             redirect(base_url('items'));
         }
     }
-
 
 }
