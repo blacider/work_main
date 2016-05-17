@@ -76,6 +76,7 @@ class Items_Model extends Reim_Model {
         $obj = json_decode($buf, true);
         return $obj;
     }
+
     public function update_item($id,$opts){
         $items = array();
         $data = array(
@@ -111,29 +112,6 @@ class Items_Model extends Reim_Model {
         return $obj;
     }
 
-    public function admin_list($email = ''){
-        if($email == "") return array();
-        $jwt = $this->get_admin_jwt();
-        if(!$jwt) return false;
-        $url = $this->get_url('admin/invoice');
-        $buf = $this->do_Post($url, array('name' => $email), $jwt);
-        log_message("debug", $buf);
-        return $buf;
-        //$obj = json_decode($buf, true);
-        //return $obj;
-    }
-
-    public function admin_detail($id = 0){
-        if($id == 0) return array();
-        $jwt = $this->get_admin_jwt();
-        if(!$jwt) return false;
-        $url = $this->get_url('admin/invoice/' . $id);
-        $buf = $this->do_Get($url, $jwt);
-        log_message("debug", $buf);
-        return $buf;
-    }
-
-
     public function get_suborinate($me = 0, $filter='all'){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
@@ -158,7 +136,6 @@ class Items_Model extends Reim_Model {
         return $obj;
     }
 
-
     public function create($data)
     {
         $items = array();
@@ -170,11 +147,11 @@ class Items_Model extends Reim_Model {
             'prove_ahead' => $data['type'],
             'afford_ids' => $data['afford_ids'],
             'image_id' => $data['images'],
-            'dt' => $data['dt'], 
-            'end_dt' => $data['end_dt'], 
+            'dt' => $data['dt'],
+            'end_dt' => $data['end_dt'],
             'note' => $data['note'],
             'reimbursed' => 1,
-            'tags' => $data['tags'], 
+            'tags' => $data['tags'],
             'location' => '',
             'latitude' => 0,
             'longitude' => 0,
@@ -227,11 +204,11 @@ class Items_Model extends Reim_Model {
             'prove_ahead' => $data['type'],
             'afford_ids' => $data['afford_ids'],
             'image_id' => $data['images'],
-            'dt' => $data['dt'], 
-            'end_dt' => $data['end_dt'], 
+            'dt' => $data['dt'],
+            'end_dt' => $data['end_dt'],
             'note' => $data['note'],
             'reimbursed' => 1,
-            'tags' => $data['tags'], 
+            'tags' => $data['tags'],
             'location' => '',
             'latitude' => 0,
             'longitude' => 0,

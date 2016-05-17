@@ -28,7 +28,7 @@ class User_Model extends Reim_Model {
                 $addr => $user_addr
             );
         }
-        $url = $this->get_url('register/user',$data); 
+        $url = $this->get_url('register/user',$data);
         log_message("debug","url:" . $url);
         log_message("debug","data:" . json_encode($data));
         $buf = $this->do_Get($url,'');
@@ -52,20 +52,6 @@ class User_Model extends Reim_Model {
         return $jwt;
     }
 
-    public function join_company($gid,$version=0) {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return base_url();
-
-        $url = $this->get_url('apply');
-        $data = array(
-            'gid' => $gid,
-            'version' => $version
-        );
-        $buf = $this->do_Post($url,$data,$jwt);
-
-        return json_decode($buf,True);
-    }
-
     public function get_invites()
     {
             $jwt = $this->session->userdata('jwt');
@@ -74,21 +60,6 @@ class User_Model extends Reim_Model {
 
             log_message('debug','get_invites:' . $buf);
             return json_decode($buf,True);
-    }
-
-    public function raise_invites($groupname,$guests)
-    {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt)  return false;
-
-        $url = $this->get_url('invites');
-        $data = array(
-            'name' => $groupname
-            ,'invites' => $guests
-        );
-        $buf = $this->do_Post($url,$data,$jwt);
-
-        return json_decode($buf,True);
     }
 
     public function get_common()
@@ -116,8 +87,6 @@ class User_Model extends Reim_Model {
         log_message('debug','del_email:' . $buf);
         return json_decode($buf,True);
     }
-
-
 
     public function reim_oauth($unionid = '', $openid = '', $token = '', $check = 1){
         $jwt = $this->get_jwt($unionid, "");
@@ -165,23 +134,6 @@ class User_Model extends Reim_Model {
         $this->session->unset_userdata('jwt');
         $this->session->unset_userdata('email');
         $this->session->unset_userdata('password');
-    }
-
-    public function reim_joingroup($code) {
-        $jwt = $this->get_jwt('', '');
-        //$this->session->set_userdata('jwt', $jwt);
-        $url = $this->get_url('invite/' . $code);
-        $buf = $this->do_Get($url, $jwt);
-        $obj = json_decode($buf, true);
-        return $obj;
-    }
-
-    public function reim_active_user($code) {
-        $jwt = $this->get_jwt('', '');
-        $url = $this->get_url('active/' . $code);
-        $buf = $this->do_Get($url, $jwt);
-        $obj = json_decode($buf, true);
-        return $obj;
     }
 
     public function reim_get_info($uid){
@@ -349,13 +301,6 @@ class User_Model extends Reim_Model {
         $url = $this->get_url('bank/' . $id . '/' . $uid);
         $jwt = $this->session->userdata('jwt');
         $buf = $this->do_Delete($url, array(), $jwt);
-        return $buf;
-    }
-
-    public function doapply($gid){
-        $url = $this->get_url('apply');
-        $jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Post($url, array('gid' => $gid), $jwt);
         return $buf;
     }
 
