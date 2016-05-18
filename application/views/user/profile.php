@@ -972,11 +972,8 @@ if(in_array($profile['admin'],[1,3,4])){
                         var _phone = $('#phone').val();
                         var _vcode = $('#vcode').val();
                         var _self = this;
-                        if(_phone.length!=11) {
-                            return show_notify('请输入11位手机号码');
-                        }
 
-                        if(!/^(1)[0-9]{10,10}/.test(_phone)) {
+                        if(!/^1\d{10}$/.test(_phone)) {
                             return show_notify('请输入合法的手机号');
                         }
 
