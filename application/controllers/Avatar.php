@@ -53,7 +53,7 @@ class Avatar extends Reim_Controller {
         }
 
         $imagetype = $info[2];
-        $exif = exif_read_data($source);
+        $exif = @exif_read_data($source);
 
         $image = $this->_image_create_from($source, $imagetype);
         $rotated_image = $this->_image_exif_rotate($image, $exif);
