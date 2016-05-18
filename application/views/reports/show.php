@@ -155,19 +155,19 @@
                                             ¥{{getItemsAmount(report.items)}}
                                         </td>
                                     </tr>
-                                    <tr ng-if="report.pa_approval==1 && report.prove_ahead==1">
+                                    <tr ng-if="report.pa_approval==1 && report.prove_ahead==1 && path_type!='snapshot'">
                                         <td>申请额</td>
                                         <td colspan="5" class="sum">
                                             ¥{{getItemsAmount(snapshot.items)}}
                                         </td>
                                     </tr>
-                                    <tr ng-if="report.pa_approval==1 && report.prove_ahead==2">
+                                    <tr ng-if="report.pa_approval==1 && report.prove_ahead==2 && path_type!='snapshot'">
                                         <td>已付</td>
                                         <td colspan="5" class="sum">
                                             ¥{{getItemsAmount(snapshot.items)}}
                                         </td>
                                     </tr>
-                                    <tr ng-if="report.pa_approval==1 && report.prove_ahead==2">
+                                    <tr ng-if="report.pa_approval==1 && report.prove_ahead==2 && path_type!='snapshot'">
                                         <td>应付</td>
                                         <td colspan="5" class="sum">
                                             ¥{{getItemsAmount(report.items) - getItemsAmount(snapshot.items)}}

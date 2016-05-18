@@ -28,9 +28,7 @@ font:bold 11px Arial, Helvetica, sans-serif;
                         <div class="col-xs-6 col-sm-6 filePicker">
                             <?php $user = $member; ?>
                             <?php $disabled = $self == 1 ? '' : 'disabled'; ?>
-
-<!--avatar_container <a id="btn_cimg" style="height:140px;width:140px" href="javascript:void(0)" class="avatar thumbnail"> btn btn-primary btn-white-->
-                          <a id="btn_cimg" class="filePicker"  style="height:144px;width:155px" class="btn btn-primary btn-white">
+                            <a id="btn_cimg" class="filePicker"  style="height:144px;width:155px" class="btn btn-primary btn-white">
                             <input type="hidden" id="avatar" name="avatar" value="<?php echo $user['avatar']; ?>" />
                             <img src="<?php echo $user['avatar_url'];?>" style="height:130px;width:130px" id="avatar_src" /> </a>
                         </div>
@@ -39,17 +37,13 @@ font:bold 11px Arial, Helvetica, sans-serif;
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">邮箱</label>
                         <div class="col-xs-6 col-sm-6">
-<?php
-if($self != 1) {
-?>
-<input type='hidden' id="uid" name='uid' value="<?php echo $user['id']; ?>">
-<?php
-}
-?>
-                            <!-- <input type="hidden" name="email" value="<?php echo $user['email']; ?>"> -->
-                            <!-- <input type="text" class="col-xs-6 col-sm-6 form-control" value="<?php echo $user['email']; ?>" /> -->
-                <input type="text" name="email" class="col-xs-6 col-sm-6 form-control" value="<?php echo $user['email']; ?>">
-                <!-- <label class="control-label"><?php echo $user['email']; ?></label> -->
+                            <?php if($self != 1) { ?>
+                                <input type='hidden' id="uid" name='uid' value="<?php echo $user['id']; ?>">
+                            <?php } ?>
+                            <div class="col-xs-12 col-sm-12 "  style="margin-left:0px !important;padding-left:0px !important;" >
+                                <input type="text" name="email" class="col-xs-10 col-sm-10" value="<?php echo $user['email']; ?>" disabled>
+                                <a href="javascript:void(0)" style="margin-left:5px;" class="btn btn-danger btn-sm change_email" >修改</a>
+                            </div>
                         </div>
                     </div>
 
@@ -530,11 +524,9 @@ if(in_array($profile['admin'],[1,3,4])){
 
                             <div class="clearfix form-actions">
                                 <div class="col-md-offset-3 col-md-9">
-                                    <a data-nocode="<?php echo $updateWithoutVCode; ?>" class="btn btn-white btn-primary update_phone" data-renew="0"><i class="ace-icon fa fa-save "></i>修改<?php if(!$updateWithoutVCode) {echo "并登出";} ;?></a>
+                                    <a data-nocode="<?php echo $updateWithoutVCode; ?>" class="btn btn-white btn-primary update_phone" data-renew="0"><i class="ace-icon fa fa-save "></i>修改</a>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </form>
@@ -543,7 +535,44 @@ if(in_array($profile['admin'],[1,3,4])){
     </div>
 </div>
 
-
+<!-- update user email start-->
+<div class="modal fade" id="modalUpdateEmail">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">修改邮箱</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <label class="col-sm-2 control-label align-right">新邮箱</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control email" placeholder="新邮箱">
+                    </div>
+                    
+                    <div class="col-sm-2 align-right" style="<?php echo $visibilityStyle; ?>">
+                        <button class="btn-get-email-code btn btn-primary btn-sm" type="submit">发送验证码</button>
+                    </div>
+                    
+                </div>
+                <br>
+                
+                <div class="row" style="<?php echo $visibilityStyle; ?>">
+                    <label class="col-sm-2 control-label align-right">验证码</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control vcode" placeholder="验证码">
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn-bind-email btn btn-primary">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- update user email end -->
 
 <div class="modal fade" id="credit_model">
     <div class="modal-dialog">
@@ -943,11 +972,8 @@ if(in_array($profile['admin'],[1,3,4])){
                         var _phone = $('#phone').val();
                         var _vcode = $('#vcode').val();
                         var _self = this;
-                        if(_phone.length!=11) {
-                            return show_notify('请输入11位手机号码');
-                        }
 
-                        if(!/^(1)[0-9]{10,10}/.test(_phone)) {
+                        if(!/^1\d{10}$/.test(_phone)) {
                             return show_notify('请输入合法的手机号');
                         }
 
@@ -960,19 +986,9 @@ if(in_array($profile['admin'],[1,3,4])){
                                     if(data.status==0 || data.status=='false')
                                     {
                                         show_notify(data.data.msg);
+                                    } else if(data.status == 1) {
+                                        return window.location.reload();
                                     }
-                                    else if(data.status == 1)
-                                    {
-                                        $('#phone_modal').modal('hide');
-                                        if(!$(_self).data('nocode')) {
-                                            show_notify("手机绑定成功,1秒之后跳转至登陆页面");
-                                            setTimeout(function(){window.location.href="/login"}, 1000);
-                                        } else {
-                                            show_notify("手机绑定成功");
-                                        }
-                                    }
-
-                                    // $('#phone_modal').modal('hide');
                                 }
                         });
                     });
@@ -1162,6 +1178,6 @@ if(in_array($profile['admin'],[1,3,4])){
     
 
 </script>
-
+<script src="<?= static_url("/static/js/mod/user/profile.js") ?>"></script>
 
 

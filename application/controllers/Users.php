@@ -195,16 +195,20 @@ class Users extends REIM_Controller
                 $client_id = '';
             }
         }
+
+
         $data = $this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin, $manager_id, $max_report, $rank, $level, $client_id, $avatar, $admin_groups_granted);
         $info = json_decode($data, true);
         if ($info['status'] > 0) {
             $this->session->set_userdata('last_error', '信息修改成功');
-        } 
-        else {
+        } else {
             $this->session->set_userdata('last_error', $info['data']['msg']);
         }
-        if ($isOther == 1) redirect(base_url('members/index'));
-        else redirect(base_url('users/profile'));
+        if ($isOther == 1) {
+            redirect('/members/index');
+        } else {
+            redirect('/users/profile');
+        }
     }
     
     public function force_update_password() {
@@ -377,6 +381,11 @@ class Users extends REIM_Controller
         $phone = $this->input->post('phone');
         $vcode = $this->input->post('vcode');
         $uid = $this->input->post('uid');
+        // 如果是自己就不用传递UID
+        $profile = $this->session->userdata('profile');
+        if($profile['id'] == $uid) {
+            $uid = '';
+        }
         if (!$phone) {
             die(json_encode(array('status' => false, 'data' => array('msg' => '参数错误'))));
         } 

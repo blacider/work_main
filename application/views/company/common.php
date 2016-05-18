@@ -105,20 +105,6 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">报销单是否包含公司</label>
-                                <div class="col-xs-6 col-sm-6">
-                                 <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
-                                   <!-- <div class="col-xs-12 col-sm-12 col-md-12"> -->
-                                        <label style="margin-top:8px;">
-                                            <input name="export_no_company" class="ace ace-switch btn-rotate" type="checkbox" id="export_no_company" style="margin-top:4px;" />
-                                            <span class="lbl"></span>
-                                        </label>
-
-                                   <!-- </div> -->
-                                </div>
-                            </div>
-
-                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">在Excel中增加类目金额汇总</label>
                                 <div class="col-xs-6 col-sm-6">
                                  <!--   <input type="text" placeholder="组名称" class="col-xs-12" required="required" name="gname"> -->
@@ -131,44 +117,7 @@
                                    <!-- </div> -->
                                 </div>
                             </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">报告按照类目分类</label>
-                                <div class="col-xs-6 col-sm-6">
-                                        <label style="margin-top:8px;">
-                                            <input name="same_category_pdf" class="ace ace-switch btn-rotate" type="checkbox" id="same_category_pdf" style="margin-top:4px;" />
-                                            <span class="lbl"></span>
-                                        </label>
-
-                                   <!-- </div> -->
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">报销单页脚配置</label>
-                                <div class="col-xs-4 col-sm-4">
-                                    <select id="footer_format" class="chosen-select tag-input-style" name="footer_format"  data-placeholder="请选择页脚的格式">
-                                    <option value="0">无</option>
-                                    <option value="1">仅公司名称</option>
-                                    <option value="2">仅部门名称</option>
-                                    <option value="3">公司/部门名称</option>
-                                </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-rigtht">报销单打印模板设置</label>
-                                <div class="col-xs-4 col-sm-4">
-                                    <select id="template" class="chosen-select tag-input-style" name="template"  data-placeholder="请选择模板">
-                                    <option value="a4.yaml">A4模板</option>
-                                    <option value="a5.yaml">A5模板</option>
-                                    <option value="b5.yaml">B5模板</option>
-                                    <option value="disanshi.yaml">A4 表头有金额</option>
-                                
-                                </select>
-                                </div>
-                            </div>
-
+                            
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-rigtht">员工在此金额下无需确认收款</label>
                                 <div class="col-xs-2 col-sm-2">

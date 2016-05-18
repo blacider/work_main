@@ -71,14 +71,14 @@ $(document).ready(function() {
     }
 
     function isPhone(s) {
-        var regu = /^[1][3,4,5,7,8][0-9]{9}$/;
+        var regu = /^1\d{10}$/;
         var re = new RegExp(regu);
         if (re.test(s)) {
             return true;
         } else {
             return false;
         }
-    }
+    };
 
     function isEmail(email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

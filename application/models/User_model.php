@@ -164,7 +164,7 @@ class User_Model extends Reim_Model {
     }
 
     public function reim_update_profile($email, $phone, $nickname, $credit_card,$usergroups, $uid = 0, $admin = 0, $manager_id = 0, $max_report = 0, $rank = 0, $level = 0, $client_id = '', $avatar = 0, $admin_groups_granted = ''){
-        if($uid > 0) {
+        if($uid) {
             $data['uid'] = $uid;
         }
         if(!empty($nickname)) {

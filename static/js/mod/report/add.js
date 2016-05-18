@@ -169,15 +169,7 @@
                                         return
                                     }
                                     $scope.selectedMembers = angular.copy(selectedMembers);
-                                    // 如果有members 中选中了superior 被选中，然后视图中也存在，就把selectedMembers中的干掉
-                                    if ($scope.superior) {
-                                        var index = _.findIndex($scope.selectedMembers, {
-                                            id: $scope.superior.id
-                                        });
-                                        if (index >= 0) {
-                                            $scope.selectedMembers.splice(index, 1);
-                                        }
-                                    }
+                                     
                                     $scope.$apply();
                                     this.close();
                                 },
@@ -218,15 +210,6 @@
                                         }, {
                                             isSelected: true
                                         })
-                                    }
-
-                                    if ($scope.superior && !this._CONFIG_) {
-                                        var one = _.find($scope.members, {
-                                            id: $scope.superior.id + ''
-                                        });
-                                        if(one) {
-                                            one.isSelected = true;
-                                        }
                                     }
                                 },
                                 onHide: function() {
@@ -567,15 +550,16 @@
                             $scope.members.splice(selfIndex, 1);
                         }
 
+                        var superior = _.find($scope.members, {
+                            id: profileData['manager_id']
+                        });
+                      
                         $scope.suggestionMembers = historyMembersManager.getArray($scope.members);
                         if ($scope.__edit__) {
                             // 编辑无上级寻找上级
                             if ($scope.originalReport['receivers']['managers'].length == 0) {
-                                $scope.superior = _.find($scope.members, {
-                                    id: profileData['manager_id']
-                                });
-                                if ($scope.superior) {
-                                    $scope.superior.tag_for_superior = true;
+                                if(superior) {
+                                    $scope.selectedMembers = [superior];
                                 }
                             }
 
@@ -635,12 +619,9 @@
                         } else {
                             // 设置sitemap
                             $('.breadcrumb li:last').text('新建' + $scope.template.name);
-                            // 新建寻找上级
-                            $scope.superior = _.find($scope.members, {
-                                id: profileData['manager_id']
-                            });
-                            if ($scope.superior) {
-                                $scope.superior.tag_for_superior = true;
+                            // 新建寻找上级，并放到审批人一栏
+                            if(superior) {
+                                $scope.selectedMembers = [superior];
                             }
                             
                             $scope.hasCC = JSON.parse(profileData['group']['config'] || '{}')['enable_report_cc'];
@@ -913,9 +894,6 @@
                         dialog.showModal();
                     };
                     $scope.onRemoveApprover = function(item, isCC) {
-                        if (item.tag_for_superior) {
-                            $scope.superior = null;
-                        }
                         var selectedMembers = $scope.selectedMembers;
                         if (isCC) {
                             selectedMembers = $scope.selectedMembersCC;
@@ -1000,9 +978,6 @@
                         var cc_ids = _.map($scope.selectedMembersCC, function(i) {
                             return i['id'];
                         });
-                        if ($scope.superior) {
-                            receiver_ids.push($scope.superior.id);
-                        }
                         if (receiver_ids.length <= 0) {
                             show_notify('请选择审批人');
                             $element.find('.btn-append button').eq(0).focus();

@@ -392,7 +392,7 @@ function load_group(gid){
                         is_under_control = 1;
                     }
                     //show_notify('获取信息成功');
-                    var _g_du = '<a href="' + __BASE + '/members/editgroup/' + gid + '"><button class="form-button form-button-right">编辑</button></a>' +
+                    var _g_du = '<a href="/members/editgroup/' + gid + '"><button class="form-button form-button-right">编辑</button></a>' +
                                 '<a href="/members/newmember/' + gid +'"><button style="margin: -3px 20px auto auto;" class="form-button">添加员工</button></a>';
                     if(_admin == 1 || _admin == 3 || is_under_control)
                     {
@@ -492,7 +492,7 @@ function load_group(gid){
                     + '<td class="col-7">' + item.manager + '</td>'
                     + '<td class="col-8"><a href="javascript:void(0)">' + _color + '</a>';
                     if(_admin == 1 || _admin == 3 || is_under_control){
-                    _th += '<td class="col-9"><a href="' + __BASE + '/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a>'
+                    _th += '<td class="col-9"><a href="/members/editmember/' + item.id + '"><i class="ace-icon align-top bigger-125 fa fa-pencil " style="margin-left:10px;" ></i></a>'
                     if(gid > 0)
                     {
                              _th += '<a href="javascript:void(0)" class="remove_from_group" data-gid="'+gid+'" data-id="' + item.id + '"><i  style="margin-left:10px;"  class="ace-icon align-top bigger-125 blue fa fa-sign-out"></i></a>';
