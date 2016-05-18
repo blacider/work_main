@@ -1,6 +1,6 @@
 <div class="page-content">
     <div class="page-content-area">
-        <form action="<?php echo base_url('members/imports'); ?>" method="post" enctype="multipart/form-data" id="imports" >
+        <form action="<?php echo base_url('members/new_imports'); ?>" method="post" enctype="multipart/form-data" id="imports" >
             <div class="row">
                 <div class="col-xs-12 col-sm-12">
                     <div class="form-group">

@@ -874,6 +874,58 @@ class Members extends REIM_Controller {
         );
     }
 
+    public function new_imports()
+    {
+        if(!array_key_exists('members', $_FILES)){
+            redirect(base_url('members'));
+        }
+
+        $tmp_file = $_FILES['members']['tmp_name'];
+
+        try {
+            $reader = IOFactory::createReader('Excel5');
+            $PHPExcel = $reader->load($tmp_file);
+            $sheet = $PHPExcel->getSheet(0); // 读取第一個工作表
+            $highestRow = $sheet->getHighestRow(); // 取得总行数
+            $highestColumm = $sheet->getHighestColumn(); // 取得总列数
+        } catch(Exception $e) {
+            $this->session->set_userdata('last_error', '暂不支持当前的文件类型');
+            return redirect(base_url('members/export'));
+        }
+
+        // 读取数据
+        var_dump($highestRow);
+        $data = array();
+        for ($row = 3; $row <= $highestRow; $row++) { //行数是以第1行开始
+            $obj = Array();
+            $obj["id"] =  trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 员工编号,
+            $obj["nickname"] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue()); // 用户姓名,
+            $obj["email"] = trim($sheet->getCellByColumnAndRow(2, $row)->getValue()); // 邮箱,
+            $obj["phone"] = trim($sheet->getCellByColumnAndRow(3, $row)->getValue()); // 手机号码,
+
+            $obj["cardno"] = trim($sheet->getCellByColumnAndRow(4, $row)->getValue()); // 银行卡号,
+            // $obj["account"] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 银行账户,
+            // $obj["cardtype"] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 卡类型,
+            // $obj["bank"] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 银行名称,
+            $obj["subbranch"] = trim($sheet->getCellByColumnAndRow(5, $row)->getValue()); // 支行名称,
+            // $obj["cardloc"] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 银行位置
+
+            $obj["gids"] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue()); // 所属部门名称（多部门用逗号分隔）,
+            $obj["level"] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue()); // 员工级别,
+            $obj["rank"] = trim($sheet->getCellByColumnAndRow(8, $row)->getValue()); // 员工职位,
+            
+            $obj["manager_id"] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue()); // 0,
+            // $obj["display_manager_id"] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 0,
+            array_push($data, $obj);
+        }
+
+        $rs = $this->groups->reim_imports(array(
+            'quiet' => 1,
+            'members' => $data
+        ));
+        var_dump(json_encode($rs));
+    }
+
     public function imports(){
         if(!array_key_exists('members', $_FILES)){
             redirect(base_url('members'));
@@ -936,7 +988,7 @@ class Members extends REIM_Controller {
 
         $data = array();
         /** 循环读取每个单元格的数据 */
-        for ($row = 4; $row <= $highestRow; $row++){//行数是以第1行开始
+        for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
             $obj = Array();
             $obj['id'] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue());
             $obj['name'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue());
