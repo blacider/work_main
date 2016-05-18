@@ -894,10 +894,10 @@ class Members extends REIM_Controller {
         }
 
         // 读取数据
-        var_dump($highestRow);
         $data = array();
-        for ($row = 3; $row <= $highestRow; $row++) { //行数是以第1行开始
+        for ($index=0,$row = 3; $row <= $highestRow; $row++,$index++) { //行数是以第1行开始
             $obj = Array();
+            $obj['uuid'] = "index_" . $index;
             $obj["id"] =  trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 员工编号,
             $obj["nickname"] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue()); // 用户姓名,
             $obj["email"] = trim($sheet->getCellByColumnAndRow(2, $row)->getValue()); // 邮箱,
@@ -919,11 +919,23 @@ class Members extends REIM_Controller {
             array_push($data, $obj);
         }
 
-        $rs = $this->groups->reim_imports(array(
-            'quiet' => 1,
-            'members' => $data
-        ));
-        var_dump(json_encode($rs));
+        $this->bsload('members/imports_stash',
+            array(
+                'title' => '确认导入',
+                'locale_file_members'=>$data,
+                'server_members' => $this->groups->get_my_list(),
+                // 'no_ranks' => $no_ranks,
+                // 'no_levels' => $no_levels,
+                // 'no_groups' => $no_groups,
+                'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon'),
+                    array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => ''),
+                    array('url'  => base_url('members/export'), 'name' => '导入/导出员工', 'class' => ''),
+                    array('url'  => '', 'name' => '确认导入', 'class' => '')
+                ),
+            )
+        );
+
     }
 
     public function imports(){
@@ -1033,6 +1045,7 @@ class Members extends REIM_Controller {
             $obj['fourth'] = trim($sheet->getCellByColumnAndRow(15, $row)->getValue());
             $obj['fifth'] = trim($sheet->getCellByColumnAndRow(16, $row)->getValue());
             $obj['display_manager_id'] = "";
+
             if($obj['email']) {
                 $email_id_matrix[$obj['email']] = $obj['id'];
             }
