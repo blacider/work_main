@@ -42,7 +42,6 @@ class User_Model extends Reim_Model {
         $url = $this->get_url("register/user/" . $name);
         $buf = $this->do_Get($url, '');
         log_message("debug","check_company:" . $buf);
-
         return json_decode($buf,true);
     }
 
@@ -50,16 +49,6 @@ class User_Model extends Reim_Model {
     {
         $jwt = $this->get_jwt($username, $password);
         return $jwt;
-    }
-
-    public function get_invites()
-    {
-            $jwt = $this->session->userdata('jwt');
-            $url = $this->get_url('/messages/list');
-            $buf = $this->do_Get($url,$jwt);
-
-            log_message('debug','get_invites:' . $buf);
-            return json_decode($buf,True);
     }
 
     public function get_common()
@@ -145,15 +134,6 @@ class User_Model extends Reim_Model {
         return json_encode($obj);
     }
 
-    public function reim_update_manager($id, $manager_id) {
-        $data = array('manager_id' => $manager_id, 'uid' => $id);
-        $url = $this->get_url('users');
-        $jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Put($url, $data, $jwt);
-        log_message("debug", $buf);
-        return $buf;
-    }
-
     public function reim_update_password($old_password, $new_password, $pid){
         $data = array('new_password' => $new_password, 'old_password' => $old_password, 'uid' => $pid);
         $jwt = $this->session->userdata('jwt');
@@ -214,32 +194,6 @@ class User_Model extends Reim_Model {
         $buf = $this->do_Post($url, $data, $jwt);
         return $buf;
     }
-
-
-    public function reset_pwd($pass, $code) {
-        $url = $this->get_url('password');
-        $data = array(
-            'password' => $pass,
-            'code' => $code,
-        );
-        $jwt = array();
-        //$jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Put($url, $data, $jwt);
-        return $buf;
-    }
-
-    public function forget($type, $name, $code = 0) {
-        $url = $this->get_url('password');
-        $data = array(
-            'type' => $type,
-            'name' => $name,
-            'vcode' => $code,
-        );
-        $jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Post($url, $data, $jwt);
-        return $buf;
-    }
-
 
     public function getvcode($phone){
         $url = $this->get_url('vcode');
