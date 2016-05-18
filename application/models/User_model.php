@@ -2,10 +2,32 @@
 
 class User_Model extends Reim_Model {
 
-    const MIN_UID = 100000;
 
     public function __construct(){
         parent::__construct();
+    }
+
+    public function oauth2_auth($username, $password){
+        $client_id = 'w2Dl7oc0CimMq1yFtLDcdFVBKWEeIjwTr1wRLngd';
+        $client_secret = 'nWx8llO9LmZdxek2g8K7nc6mnWC9rmW1dOEoQ5An';
+        $ret = $this->api_post('/oauth2', [
+            'grant_type' => 'password',
+            'username' => $username,
+            'password' => $password,
+            'client_id' => $client_id,
+            'client_secret' => $client_secret,
+        ]);
+        log_message('debug', 'oauth2 ret: ' . $ret);
+        $ret = json_decode($ret, true);
+        # TODO deal with status
+        if ($ret['status'] > 0) {
+            $d = $ret['data'];
+            $this->session->set_userdata("oauth2_ak", $d['access_token']);
+            $this->session->set_userdata("oauth2_expires_in", $d['expires_in']);
+            $this->session->set_userdata('email', $username);
+            $this->session->set_userdata("jwt", ['X-REIM-JWT: placebo']);
+        }
+        return;
     }
 
     public function reset_password($data = array()){
@@ -90,24 +112,18 @@ class User_Model extends Reim_Model {
         return $obj;
     }
 
-    public function reim_get_user($username = '', $password = ''){
+    public function reim_get_user(){
         log_message("debug", "Reim Get User");
-        if('' !== $username && '' !== $password) {
-            $jwt = $this->get_jwt($username, $password);
-            $this->session->set_userdata('jwt', $jwt);
-            log_message("debug", "login set jwt:" . json_encode($jwt));
-        } else {
-            $jwt = $this->session->userdata('jwt');
-        }
+        $jwt = $this->session->userdata('jwt');
         $url = $this->get_url('common/0');
         $buf = $this->do_Get($url, $jwt);
+        log_message('debug', 'common ret: ' . $buf);
         $obj = json_decode($buf, true);
         $profile = array();
         if($obj['status']){
             $profile = &$obj['data']['profile'];
             $this->session->set_userdata('profile', $profile);
         }
-        log_message('debug','dologin_back:' . json_encode($obj));
         return $obj;
     }
 

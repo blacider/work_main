@@ -117,15 +117,12 @@ class Login extends REIM_Controller {
             echo json_encode(array('status' => 1, 'msg' => '请输入密码'));
             return;
         }
-        $user = $this->users->reim_get_user($username, $password);
-        $this->session->set_userdata('email', $username);
+        # FIXME
+        $this->users->oauth2_auth($username, $password);
+        log_message('info', 'login ok');
+        $user = $this->users->reim_get_user();
         log_message('debug', "Login:" . json_encode($user));
-        if(!$user['status']) {
-            echo json_encode(array('status' => 1, 'msg' => '用户名或者密码错误'));
-            return;
-        }
         $data = $user['data']['profile'];
-
         log_message('debug', "profile:" . json_encode($data));
         $__g = '';
         if(array_key_exists('group_name', $data)){
@@ -137,7 +134,6 @@ class Login extends REIM_Controller {
         }
         $this->session->set_userdata("uid", $__uid);
         $this->session->set_userdata("groupname", $__g);
-        $goto = $this->session->userdata('last_url');
         echo json_encode(array('status' => 1, 'data' => base_url('items')));
         return ;
     }

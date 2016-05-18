@@ -17,6 +17,7 @@ class REIM_Controller extends CI_Controller{
         $method_set = ['login', 'install', 'pub','users', 'register' ,'resetpwd'];
         if(!in_array($controller[1],$method_set))
         {
+            # FIXME
             if(!$jwt)
             {
                 redirect(base_url('/#login'));

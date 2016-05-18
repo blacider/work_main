@@ -130,8 +130,9 @@ class Reim_Model extends CI_Model {
         $browser = $this->getBrowser();
 
         $mail = $this->session->userdata("email");
-        if (!$mail)
+        if (!$mail) {
             $mail = "none";
+        }
 
         $name = $browser["name"];
         $version = $browser["version"];
@@ -183,19 +184,19 @@ class Reim_Model extends CI_Model {
     }
 
     public function do_Post($url, $fields, $extraheader = array(), $force_bin = 0){
-        return $this->fire_api_call('POST', $url, $fields, $extraheader);
+        return $this->api_call('POST', $url, $fields, null, $extraheader);
     }
 
     public function do_Get($url, $extraheader=array()) {
-        return $this->fire_api_call('GET', $url, [], $extraheader);
+        return $this->api_call('GET', $url, null, null, $extraheader);
     }
 
     public function do_Put($url, $fields, $extraheader = array()){
-        return $this->fire_api_call('PUT', $url, $fields, $extraheader);
+        return $this->api_call('PUT', $url, $fields, null, $extraheader);
     }
 
     public function do_Delete($url, $fields, $extraheader = array()){
-        return $this->fire_api_call('DELETE', $url, $fields, $extraheader);
+        return $this->api_call('DELETE', $url, $fields, $extraheader);
     }
 
     public function get_curl_upload_field($file_path  = '') {
@@ -218,9 +219,16 @@ class Reim_Model extends CI_Model {
             }
             $url = $url . http_build_query($params);
         }
-        $url = $this->api_url_base . $url;
-        $jwt_header = $this->session->userdata('jwt');
-        $headers = array_merge($jwt_header, $headers);
+        if (0 !== strpos($url, 'http')) {
+            $url = $this->api_url_base . $url;
+        }
+        $access_token = $this->session->userdata('oauth2_ak');
+        if (!empty($access_token)) {
+            $auth_header = "Authorization: Bearer $access_token";
+            $headers[] = $auth_header;
+        }
+        $headers[] = 'X-ADMIN-API: 1';
+        # FIXME unset $headers['jwt']
         return $this->fire_api_call($method, $url, $data, $headers);
     }
 
