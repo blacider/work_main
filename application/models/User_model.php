@@ -42,7 +42,6 @@ class User_Model extends Reim_Model {
         $url = $this->get_url("register/user/" . $name);
         $buf = $this->do_Get($url, '');
         log_message("debug","check_company:" . $buf);
-
         return json_decode($buf,true);
     }
 
@@ -50,16 +49,6 @@ class User_Model extends Reim_Model {
     {
         $jwt = $this->get_jwt($username, $password);
         return $jwt;
-    }
-
-    public function get_invites()
-    {
-            $jwt = $this->session->userdata('jwt');
-            $url = $this->get_url('/messages/list');
-            $buf = $this->do_Get($url,$jwt);
-
-            log_message('debug','get_invites:' . $buf);
-            return json_decode($buf,True);
     }
 
     public function get_common()
