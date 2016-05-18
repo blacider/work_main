@@ -112,7 +112,7 @@
                 dataType: opts['dataType'],
                 url: url,
                 headers: {
-                    'X-REIM-JWT': window.__CBX_UTOKEN__,
+                    'Authorization': 'Bearer ' + window.__USER_ACCESS_TOKEN__,
                     'X-admin-api': 1
                 },
                 data: opts['data'],

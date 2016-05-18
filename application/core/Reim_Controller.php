@@ -114,7 +114,7 @@ class REIM_Controller extends CI_Controller{
         $this->config->load('apps', TRUE);
         $custom_data['appname'] = $this->config->item('appname');
 
-        $custom_data['CBX_UTOKEN'] = $this->session->userdata('jwt');
+        $custom_data['user_access_token'] = $this->session->userdata('oauth2_ak');
         $custom_data['userId'] = $uid;
 
         $custom_data['base_url'] = base_url();
