@@ -1,14 +1,14 @@
 <?php
 
-class Group_Model extends Reim_Model { 
-   
+class Group_Model extends Reim_Model {
+
     public function batch_del($members)
     {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
 
         $url = $this->get_url('load');
-        
+
         $data = array('members' => $members);
 
         $buf = $this->do_Delete($url,$data,$jwt);
@@ -29,12 +29,12 @@ class Group_Model extends Reim_Model {
         foreach($persons as $p){
             array_push($data, $p);
         }
-        
+
         $data = array('relations' => json_encode($data));
-    
+
         //log_message('debug','xxx set_managers:' . json_encode($data));
         $buf = $this->do_Put($url,$data,$jwt);
-    
+
         log_message('debug','set_managers_data:' . json_encode($data));
         log_message('debug','set_managers:' . $buf);
         return json_decode($buf,True);
@@ -79,7 +79,7 @@ class Group_Model extends Reim_Model {
         $buf = $this->do_Delete($url,array(),$jwt);
 
         log_message('debug','delete_rank:' . json_encode($buf));
-        
+
         return json_decode($buf,True);
     }
     public function get_rank_level($rank)
@@ -98,7 +98,7 @@ class Group_Model extends Reim_Model {
     {
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
-    
+
         $url = $this->get_url('rank');
         $data = array
         (
@@ -107,7 +107,7 @@ class Group_Model extends Reim_Model {
         );
         $buf = $this->do_Post($url,$data,$jwt);
         log_message('debug','create_rank_level : ' . json_encode($buf));
-    
+
         return json_decode($buf,True);
     }
 
@@ -170,18 +170,6 @@ class Group_Model extends Reim_Model {
         log_message("debug", "model:" . $buf);
         $obj = json_decode($buf, true);
         return $obj;
-    }
-
-
-    public function change_group_name($name){
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $data = array('name' => $name);
-        $url = $this->get_url('groups');
-        $buf = $this->do_Put($url, $data, $jwt);
-        log_message("debug", "model:" . $buf);
-        //$obj = json_decode($buf, true);
-        return $buf;
     }
 
     public function setadmin($uid, $_type){

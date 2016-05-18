@@ -11,49 +11,7 @@ class Users extends REIM_Controller
         $this->load->model('reim_show_model', 'reim_show');
     }
 
-    public function update_nickname() {
-        $uid = $this->input->post('uid');
-        $nickname = $this->input->post('nickname');
-        log_message("debug", "update nickname: " . $nickname);
-        log_message("debug", "update uid: " . $uid);
-        if ($uid == 0) {
-            $info = $this->groups->change_group_name($nickname);
-        }
-        else {
-            $info = $this->user->update_nickname($uid, $nickname);
-        }
-        die($info);
-    }
-
-    public function update_manager() {
-        $uid = $this->input->post('uid');
-        $manager = $this->input->post('manager_id');
-        log_message("debug", "update manager: " . $manager);
-        log_message("debug", "update uid: " . $uid);
-        return $this->user->reim_update_manager($uid, $manager);
-    }
-
-    public function get_profile_data_with_property()
-    {
-        $property = $this->input->get('property');
-        $profile = $this->session->userdata('profile');
-        if($property) {
-            $pro_arr = explode('.', $property);
-        }
-
-        $len =  count($pro_arr);
-        $i = 0;
-        $data = $profile;
-        while($i<$len) {
-            $data = $data[$pro_arr[$i]];
-            $i++;
-        }
-
-        die(json_encode($data));
-    }
-
     public function profile() {
-
         // 重新获取
         $profile = $this->user->reim_get_user();
         if (empty($profile) or empty($profile['data']['profile'])) {
@@ -119,21 +77,6 @@ class Users extends REIM_Controller
             $gmember = $gmember ? $gmember : array();
         }
         $this->bsload('user/profile', array('title' => '个人管理', 'member' => $profile, 'self' => 1, 'error' => $error, 'isOther' => 0, 'manager_id' => $manager_id, 'gmember' => $gmember, 'pid' => $uid, 'pro' => $pro, 'ug' => $ug, 'ranks' => $ranks, 'levels' => $levels, 'breadcrumbs' => array(array('url' => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon'), array('url' => '', 'name' => '修改资料', 'class' => '')),));
-    }
-
-    public function validate_pwd() {
-        $pwd = $this->input->post('password');
-        log_message("debug", "password:" . $pwd);
-        $profile = $this->session->userdata('profile');
-        log_message("debug", "profile:" . json_encode($profile));
-        if (!$profile) {
-            $user = $this->session->userdata('user');
-        }
-        else {
-            $user = $this->user->get_user($profile['email'], $pwd);
-        }
-
-        die(json_encode($user));
     }
 
     public function update_profile($isOther) {
@@ -225,8 +168,6 @@ class Users extends REIM_Controller
         }
     }
 
-
-
     public function get_members()
     {
         $profile = $this->user->reim_get_user();
@@ -313,45 +254,6 @@ class Users extends REIM_Controller
         }
     }
 
-    private function createRandomCode($length) {
-        $randomCode = "";
-        $randomChars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        for ($i = 0; $i < $length; $i++) {
-            $randomCode.= $randomChars{mt_rand(0, 35) };
-        }
-        return $randomCode;
-    }
-
-    public function info($uid = 0) {
-        if (!$uid) return die(json_encode(array('code' => - 1)));
-        die($this->user->reim_get_info($uid));
-    }
-
-    public function detail($id = 0) {
-        if ($id == 0) {
-            die(json_encode(array('status' => false)));
-        }
-
-        $obj = $this->user->reim_get_info($id);
-        die(json_encode(array('status' => true, 'data' => $obj)));
-    }
-
-    public function forget() {
-        $type = $this->input->post('type');
-        $name = $this->input->post('name');
-        $code = $this->input->post('code');
-
-        //if(!$code) die(json_encode(array('status' => 0, 'data' => array('msg' => '请输入验证码'))));
-        die($this->user->forget($type, $name, $code));
-    }
-
-    public function reset() {
-        $pass = $this->input->post('pass');
-        $code = $this->input->post('code');
-        if (!$code) die(json_encode(array('status' => 0, 'data' => array('msg' => '请输入验证码'))));
-        die($this->user->reset_pwd($pass, $code));
-    }
-
     public function getvcode() {
         $phone = $this->input->post('phone');
         if (!$phone) {
@@ -415,7 +317,5 @@ class Users extends REIM_Controller
         die($buf);
     }
 
-    public function dumps() {
-    }
 }
 

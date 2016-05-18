@@ -134,15 +134,6 @@ class User_Model extends Reim_Model {
         return json_encode($obj);
     }
 
-    public function reim_update_manager($id, $manager_id) {
-        $data = array('manager_id' => $manager_id, 'uid' => $id);
-        $url = $this->get_url('users');
-        $jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Put($url, $data, $jwt);
-        log_message("debug", $buf);
-        return $buf;
-    }
-
     public function reim_update_password($old_password, $new_password, $pid){
         $data = array('new_password' => $new_password, 'old_password' => $old_password, 'uid' => $pid);
         $jwt = $this->session->userdata('jwt');
@@ -203,32 +194,6 @@ class User_Model extends Reim_Model {
         $buf = $this->do_Post($url, $data, $jwt);
         return $buf;
     }
-
-
-    public function reset_pwd($pass, $code) {
-        $url = $this->get_url('password');
-        $data = array(
-            'password' => $pass,
-            'code' => $code,
-        );
-        $jwt = array();
-        //$jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Put($url, $data, $jwt);
-        return $buf;
-    }
-
-    public function forget($type, $name, $code = 0) {
-        $url = $this->get_url('password');
-        $data = array(
-            'type' => $type,
-            'name' => $name,
-            'vcode' => $code,
-        );
-        $jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Post($url, $data, $jwt);
-        return $buf;
-    }
-
 
     public function getvcode($phone){
         $url = $this->get_url('vcode');
