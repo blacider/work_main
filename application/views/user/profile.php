@@ -716,8 +716,11 @@ if(in_array($profile['admin'],[1,3,4])){
 
                         <!-- Upload image and data -->
                         <div class="avatar-upload">
-                            <input class="avatar-src" name="avatar_imageId" type="hidden"/>
-                            <input class="avatar-data" name="avatar_data" type="hidden"/>
+                            <input id="avatar-src" name="key" type="hidden"/>
+                            <input type="text" name="x" hidden>
+                            <input type="text" name="y" hidden>
+                            <input type="text" name="width" hidden>
+                            <input type="text" name="height" hidden>
                         </div>
 
                         <!-- Crop and preview -->
@@ -951,13 +954,31 @@ if(in_array($profile['admin'],[1,3,4])){
             (function bindCroppClickEvent() {
                 $("#avatar-modal .btn-upload").click(function(event) {
                     uploader.reset();
-                    $(".webuploader-element-invisible").click()
+                    $(".webuploader-element-invisible").click();
                 });
                 $("#avatar-modal .btn-cancel").click(function(event) {
                     $("#avatar-modal").modal("hide");
                 });
                 $("#avatar-modal .btn-save").click(function(event) {
-                    
+                    var key = $('#avatar-src').val();
+                    var data = $('#cropper-img').closest("form").serialize();
+                    $.ajax({
+                        url: '/avatar/crop/' + key,
+                        type: 'POST',
+                        dataType: 'json',
+                        data: data,
+                    })
+                    .done(function(res) {
+                        if (+res.status) {
+                            var url = res['data']['url'];
+                            var id = res['data']['id'];
+                            $('#avatar').val(id);
+                            $('#avatar_src').attr( 'src', url);
+                            $("#avatar-modal").modal('hide');
+                            show_notify("保存成功");
+                            uploader.reset();
+                        }
+                    });
                 });
             })();
             var active = false;
@@ -967,7 +988,7 @@ if(in_array($profile['admin'],[1,3,4])){
                     // swf文件路径
                     swf: '/static/third-party/webUploader/Uploader.swf',
                     // 文件接收服务端。
-                    server: '<?php echo base_url('items/images'); ?>',
+                    server: '<?php echo base_url('/avatar/upload'); ?>',
                     // 选择文件的按钮。可选。
                     // 内部根据当前运行是创建，可能是input元素，也可能是flash.
                     pick: '.filePicker',
@@ -985,27 +1006,31 @@ if(in_array($profile['admin'],[1,3,4])){
             });
             uploader.on( 'uploadSuccess', function( file, resp ) {
                 close_loading();
-                if(resp.status > 0) {
-                    var _id = resp['data']['id'];
-                    var _src = resp['data']['url'];
-                    $('#avatar').val(_id);
-                    $('#avatar-src').val(_id);
-                    //$('#avatar_src').attr( 'src', _src);
-                    if (active) {
-                        $('#cropper-img').cropper('replace', _src);
-                    } else {
-                        $('#cropper-img').parent().empty().append('<img id = "cropper-img" src="' + _src + '">');
-                        $('#cropper-img').cropper({
-                          aspectRatio: 1,
-                          viewMode: 1,
-                          checkCrossOrigin:false,
-                          checkOrientation:false,
-                        });
-                        $("#avatar-modal").modal({backdrop: 'static', keyboard: false});
-                    }
-                    avtive = true;
-                    $("#avatar-modal").modal('show');
+                var _src = resp['url'];
+                var _id = _src.split("/")[3];
+                $('#avatar').val(_id);
+                $('#avatar-src').val(_id);
+                //$('#avatar_src').attr( 'src', _src);
+                if (active) {
+                    $('#cropper-img').cropper('replace', _src);
+                } else {
+                    $('#cropper-img').parent().empty().append('<img id = "cropper-img" src="' + _src + '">');
+                    $('#cropper-img').cropper({
+                      aspectRatio: 1,
+                      viewMode: 1,
+                      checkCrossOrigin:false,
+                      checkOrientation:false,
+                      crop:function(e) {
+                        $("input[name='x']").val(e.x);
+                        $("input[name='height']").val(e.height);
+                        $("input[name='y']").val(e.y);
+                        $("input[name='width']").val(e.width);
+                      }
+                    });
+                    $("#avatar-modal").modal({backdrop: 'static', keyboard: false});
                 }
+                avtive = true;
+                $("#avatar-modal").modal('show');
             });
         }
         get_province();
