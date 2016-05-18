@@ -10,7 +10,6 @@ class Bills extends REIM_Controller {
         $this->load->model('user_model','user');
         $this->load->model('company_model','company');
         $this->load->model('reim_show_model','reim_show');
-        $this->load->library('reim_cipher');
         $this->load->helper('report_view_utils');
     }
 
