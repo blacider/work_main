@@ -124,7 +124,6 @@ class Login extends REIM_Controller {
             echo json_encode(array('status' => 1, 'msg' => '用户名或者密码错误'));
             return;
         }
-        $server_token = $user['server_token'];
         $data = $user['data']['profile'];
 
         log_message('debug', "profile:" . json_encode($data));
@@ -138,7 +137,6 @@ class Login extends REIM_Controller {
         }
         $this->session->set_userdata("uid", $__uid);
         $this->session->set_userdata("groupname", $__g);
-        $this->session->set_userdata("server_token", $server_token);
         $goto = $this->session->userdata('last_url');
         echo json_encode(array('status' => 1, 'data' => base_url('items')));
         return ;
@@ -176,7 +174,6 @@ class Login extends REIM_Controller {
                 $__g = $data['group_name'];
             }
             $this->session->set_userdata("email", $unionid);
-            $this->session->set_userdata("server_token", $user['server_token']);
             $this->session->set_userdata("groupname", $__g);
             // 获取一下组信息，然后设置一下
             redirect(base_url('items'));

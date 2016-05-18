@@ -27,35 +27,16 @@ class Reim_Model extends CI_Model {
         return $this->api_url_base . $part;
     }
 
-    public function get_jwt($username, $password, $server_token = '', $device_type = 'admin'){
-        if("" === $server_token){
-            $server_token = $this->session->userdata('server_token');
-        }
-        $users  = array(
+    public function get_jwt($username, $password){
+        $d = array(
             'email' => $username,
             'password' => $password,
-            'device_type' => $device_type,
-            'device_token' => '',
-            'server_token' => $server_token
+            'device_type' => 'pc',
         );
-        log_message("debug", "Header:" . json_encode($users));
-        return $this->get_header($users, $device_type != "admin");
+        log_message("debug", "Header:" . json_encode($d));
+        return array('X-REIM-JWT: ' . JWT::encode($d, PUBKEY), 'X-ADMIN-API: 1');
     }
 
-    public function get_admin_jwt(){
-        $config = array(
-            'device_type' => 'invoice'
-        );
-        return array('X-REIM-JWT: ' . JWT::encode($config, PUBKEY), 'X-ADMINUI-API: 1');
-    }
-
-    private function get_header($config, $without_admin = 0){
-        if($without_admin) {
-            return array('X-REIM-JWT: ' . JWT::encode($config, PUBKEY));
-        } else {
-            return array('X-REIM-JWT: ' . JWT::encode($config, PUBKEY), 'X-ADMIN-API: 1');
-        }
-    }
 
     private function getBrowser()
     {

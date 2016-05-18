@@ -45,12 +45,6 @@ class User_Model extends Reim_Model {
         return json_decode($buf,true);
     }
 
-    public function my_get_jwt($username,$password)
-    {
-        $jwt = $this->get_jwt($username, $password);
-        return $jwt;
-    }
-
     public function get_common()
     {
         $jwt = $this->session->userdata('jwt');
@@ -85,7 +79,7 @@ class User_Model extends Reim_Model {
         $buf = $this->do_Post($url, $data, $jwt);
 
         $obj = json_decode($buf, true);
-        $jwt = $this->get_jwt($unionid, "", $obj['server_token'], 'pc');
+        $jwt = $this->get_jwt($unionid, "");
         $this->session->set_userdata('jwt', $jwt);
         log_message("debug", "Reim Oauth - save jwt:" . json_encode($jwt));
         $profile = array();
@@ -189,7 +183,7 @@ class User_Model extends Reim_Model {
             'code' => $code,
         );
 
-        $jwt = $this->get_jwt($email, $pass, '', 'admin');
+        $jwt = $this->get_jwt($email, $pass);
         $buf = $this->do_Post($url, $data, $jwt);
         return $buf;
     }
