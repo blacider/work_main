@@ -119,7 +119,6 @@ class Login extends REIM_Controller {
         }
         $user = $this->users->reim_get_user($username, $password);
         $this->session->set_userdata('email', $username);
-        $this->session->set_userdata('password', $password);
         log_message('debug', "Login:" . json_encode($user));
         if(!$user['status']) {
             echo json_encode(array('status' => 1, 'msg' => '用户名或者密码错误'));

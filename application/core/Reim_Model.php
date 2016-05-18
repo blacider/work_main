@@ -27,23 +27,16 @@ class Reim_Model extends CI_Model {
         return $this->api_url_base . $part;
     }
 
-    public function get_jwt($username, $password, $server_token = '',$device_type = 'admin'){
-        if(!$username){
-            $username = $this->session->userdata('email');
-            $password = $this->session->userdata('password');
-        } else {
-            $this->session->set_userdata('email', $username);
-            $this->session->set_userdata('password', $password);
-        }
+    public function get_jwt($username, $password, $server_token = '', $device_type = 'admin'){
         if("" === $server_token){
             $server_token = $this->session->userdata('server_token');
         }
         $users  = array(
-            'email' => $username
-            ,'password' => $password
-            ,'device_type' => $device_type
-            ,'device_token' => ''
-            ,'server_token' => $server_token
+            'email' => $username,
+            'password' => $password,
+            'device_type' => $device_type,
+            'device_token' => '',
+            'server_token' => $server_token
         );
         log_message("debug", "Header:" . json_encode($users));
         return $this->get_header($users, $device_type != "admin");

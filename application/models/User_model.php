@@ -122,7 +122,6 @@ class User_Model extends Reim_Model {
         $this->session->unset_userdata('user');
         $this->session->unset_userdata('jwt');
         $this->session->unset_userdata('email');
-        $this->session->unset_userdata('password');
     }
 
     public function reim_get_info($uid){
