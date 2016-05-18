@@ -23,7 +23,10 @@ class Avatar extends Reim_Controller {
         $key = sha1($imgfile);
         $this->session->set_userdata($key, $imgfile);
 
-        $this->output->set_output(json_encode([ 'url' => "/avatar/preview/$key", ]));
+        $this->output->set_output(json_encode([
+            'key' => $key,
+            'url' => "/avatar/preview/$key",
+        ]));
     }
 
     private function _get_upload_file($name = 'file') {
