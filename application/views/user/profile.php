@@ -1178,6 +1178,6 @@ if(in_array($profile['admin'],[1,3,4])){
     
 
 </script>
-<script src="/static/js/mod/user/profile.js"></script>
+<script src="<?= static_url("/static/js/mod/user/profile.js") ?>"></script>
 
 
