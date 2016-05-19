@@ -34,7 +34,7 @@
                     <div class="field-label" ng-if="report.pa_approval==1 && report.prove_ahead==1">申请额</div>
                     <div class="field-label" ng-if="report.pa_approval==1 && report.prove_ahead==2">已付</div>
                     <div class="field-input">
-                        <p>¥{{getItemsAmount(snapshot.items)}}</p>
+                        <p>¥{{_first_turn_amount_}}</p>
                         <a href="/reports/snapshot/{{report.id}}?tid={{template.id}}" class="btn-detail" ng-if="report.has_snapshot && path_type!='snapshot'">
                             <img src="/static/img/mod/report/24/btn-eye@2x.png" alt="">详情
                         </a>
@@ -168,19 +168,19 @@
                                     <tr ng-if="report.pa_approval==1 && report.prove_ahead==1">
                                         <td>申请额</td>
                                         <td colspan="4" class="sum">
-                                            ¥{{getItemsAmount(snapshot.items)}}
+                                            ¥{{_first_turn_amount_}}
                                         </td>
                                     </tr>
                                     <tr ng-if="report.pa_approval==1 && report.prove_ahead==2">
                                         <td>已付</td>
                                         <td colspan="4" class="sum">
-                                            ¥{{getItemsAmount(snapshot.items)}}
+                                            ¥{{_first_turn_amount_}}
                                         </td>
                                     </tr>
                                     <tr ng-if="report.pa_approval==1 && report.prove_ahead==2">
                                         <td>应付</td>
                                         <td colspan="4" class="sum">
-                                            ¥{{(getItemsAmount(selectedConsumptions) - getItemsAmount(snapshot.items)).toFixed(2)}}
+                                            ¥{{(getItemsAmount(selectedConsumptions) - _first_turn_amount_).toFixed(2)}}
                                         </td>
                                     </tr>
                                 </tfoot>
