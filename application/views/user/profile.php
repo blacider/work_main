@@ -1274,8 +1274,12 @@ if(in_array($profile['admin'],[1,3,4])){
                 employee_id: $('input[name=uid]').val()
             }
         }).done(function (rs) {
-            if(rs['data']['opened']) {
-                $("#weixin-wallet .who").text('员工已授权');
+            if(rs['data']['company_opened']) {
+                var info = '员工已授权';
+                if(rs['data']['employee_opened']) {
+                    info = '员工未授权';
+                }
+                $("#weixin-wallet .who").text(info);
                 $(".btn-cancel-weixin-auth").remove();
                 $(".weixin-wallet-authorized").show();
                 $('.weixin-wallet-tip').hide();
