@@ -23,11 +23,16 @@ class User_Model extends Reim_Model {
         if ($ret['status'] > 0) {
             $d = $ret['data'];
             $this->session->set_userdata("oauth2_ak", $d['access_token']);
-            $this->session->set_userdata("oauth2_expires_in", $d['expires_in']);
+            //$this->session->set_userdata("oauth2_expires_in", $d['expires_in']);
             $this->session->set_userdata('email', $username);
             $this->session->set_userdata("jwt", ['X-REIM-JWT: placebo']);
         }
         return;
+    }
+
+    public function logout() {
+        $this->session->sess_destroy();
+        $ret = $this->api_get('/logout');
     }
 
     public function reset_password($data = array()){
@@ -125,13 +130,6 @@ class User_Model extends Reim_Model {
             $this->session->set_userdata('profile', $profile);
         }
         return $obj;
-    }
-
-    public function logout() {
-        $this->session->unset_userdata('profile');
-        $this->session->unset_userdata('user');
-        $this->session->unset_userdata('jwt');
-        $this->session->unset_userdata('email');
     }
 
     public function reim_get_info($uid){
