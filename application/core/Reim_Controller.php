@@ -8,60 +8,30 @@ class REIM_Controller extends CI_Controller{
     const IT = 3;
     const GROUP_MANAGER = 4;
 
-    public function _remap($method,$params)
-    {
-        $this->load->library('user_agent');
-        $refer = $this->agent->referrer();
-        $jwt = $this->session->userdata('jwt');
-        $controller = $this->uri->rsegment_array();
-        $method_set = ['login', 'install', 'pub','users', 'register' ,'resetpwd'];
-        if(!in_array($controller[1],$method_set))
-        {
-            # FIXME
-            if(!$jwt)
-            {
-                redirect(base_url('/#login'));
-            }
-        }
-        $uri=$this->uri;
-        call_user_func_array(array($this,$method),$params);
-    }
-
-    public function startsWith($haystack, $needle)
-    {
-        return $needle === "" || strpos($haystack, $needle) === 0;
-    }
-
     public function __construct(){
         parent::__construct();
-        $this->load->library('PHPExcel');
         $this->load->library('user_agent');
-        $refer = $this->agent->referrer();
-        //log_message("debug", "construct:" . $refer);
+        $this->load->library('PHPExcel');
         $this->load->library('PHPExcel/IOFactory');
-        $uri = $this->uri->uri_string();
-        if($this->session->userdata('jwt') == "" && $this->session->userdata('uid') == ""){
-            $flag = 1;
-            $prefixs = array('', 'login', 'register', 'join', 'install', 'errors', 'resetpwd', 'pub', 'users', 'register');
-            foreach($prefixs as $prefix){
-                if($this->startsWith($uri, $prefix)){
-                    $flag = 0;
-                }
-            }
-
-            if($flag == 1) {
-                $this->session->set_userdata('last_url', $uri);
-                redirect(base_url('/#login'));
-                die("");
-            }
-            return true;
-        }
-        return false;
+        $this->load->model('user_model');
     }
 
-    public function bsload($view_name, $custom_data,$template_views = array()){
-        $menu_page = 'menu.bs.php'; 
+    public function _remap($method,$params)
+    {
+        $jwt = $this->session->userdata('jwt');
+        if(empty($jwt)) {
+            $controller = $this->uri->rsegment_array();
+            $white_list = ['', 'login', 'install', 'pub', 'users', 'register'];
+            if(!in_array($controller[1], $white_list)) {
+                redirect(base_url('/#login'));
+            }
+        }
+        call_user_func_array(array($this, $method), $params);
+    }
+
+    public function bsload($view_name, $custom_data, $template_views=array()){
         $this->load->model('user_model');
+        $menu_page = 'menu.bs.php';
         $uid = $this->session->userdata('uid');
         $profile = array();
         $common = array();
@@ -87,7 +57,6 @@ class REIM_Controller extends CI_Controller{
             $custom_data['uid'] = $this->session->userdata('uid');
             $custom_data['description'] =  '';
         } else {
-
             if(array_key_exists('report_setting', $profile)) {
                 if(array_key_exists('templates',$profile['report_setting']))
                 $report_template = $profile['report_setting']['templates'];
@@ -108,16 +77,14 @@ class REIM_Controller extends CI_Controller{
         }
         $custom_data['groupname'] = $this->session->userdata('groupname');
         $custom_data['report_templates'] = $report_template;
-        log_message("debug", "Get From Cache =====================");
-        log_message("debug", $custom_data['groupname']);
-        log_message("debug", "Get From Cache =====================");
-        $this->config->load('apps', TRUE);
-        $custom_data['appname'] = $this->config->item('appname');
 
         $custom_data['user_access_token'] = $this->session->userdata('oauth2_ak');
         $custom_data['userId'] = $uid;
 
         $custom_data['base_url'] = base_url();
+
+        $api_url_base = $this->config->item('api_url_base');
+        $custom_data['api_url_base'] = $api_url_base;
 
         // ie check
         $browser_not_supported = false;
@@ -132,8 +99,6 @@ class REIM_Controller extends CI_Controller{
         }
         $custom_data['lte_ie8'] = $lte_ie8;
 
-        $api_url_base = $this->config->item('api_url_base');
-        $custom_data['api_url_base'] = $api_url_base;
         $this->load->view('header.bs.php', $custom_data);
         $this->load->view($menu_page, $custom_data);
         $this->load->view($view_name, $custom_data);
@@ -141,17 +106,16 @@ class REIM_Controller extends CI_Controller{
         {
             $this->load->view($tv,$custom_data);
         }
-        
+
         $agent = $this->agent->agent_string();
         $hasAttacker = false;
         if(stripos($agent, ';JianKongBao Monitor')) {
             $hasAttacker = true;
         }
         $custom_data['has_attacker'] = $hasAttacker;
-        
+
         $this->load->view('footer.bs.php', $custom_data);
     }
-
 
     public function render_to_download_2($filename, $data) {
         if($this->agent->is_browser('Internet Explorer')) {
@@ -369,21 +333,6 @@ class REIM_Controller extends CI_Controller{
         return PHPExcel_Cell::stringFromColumnIndex($num);
     }
 
-    public function do_Get($url, $extraheader = array()){
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url ) ;
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        //curl_setopt($ch, CURLOPT_VERBOSE, true) ; // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
-        $output = curl_exec($ch) ;
-        if ($output === FALSE) {
-            log_message('debug', curl_error($ch));
-        }
-        curl_close($ch);
-        return $output;
-    }
-
     private function get_privilege(){
         $profile = $this->session->userdata('profile');
         if(!($profile)){
@@ -413,12 +362,12 @@ class REIM_Controller extends CI_Controller{
         $this->session->set_userdata("last_error", "权限不足");
         return redirect(base_url('items'), 'refresh');
     }
+
     public function need_group_casher(){
         $admin = $this->get_privilege();
         if($admin == self::ADMIN || $admin == self::CASHIER || $admin == self::GROUP_MANAGER) return true;;
         $this->session->set_userdata("last_error", "权限不足");
         return redirect(base_url('items'), 'refresh');
     }
-
 
 }
