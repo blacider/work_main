@@ -162,6 +162,13 @@
                         doPageAction(query);
                     };
 
+                    $scope.onRePay = function (item) {
+                        var layer = new CloudLayer();
+                        layer.show();
+                        layer.content('<iframe src="' + '/bills/paylist?rids=' + item.carrier_id + '"></iframe>')
+                        window._PAY_LAYER_ = layer;
+                    };
+
                     $scope.onPreviewItem = function (item) {
                         var dialog = new CloudDialog({
                             title: '支付详情',
@@ -169,24 +176,7 @@
                             cancel: null
                         });
                         dialog.showModal();
-                        // carrier_id: "1474"
-                        // carrier_name: "123"
-                        // carrier_type: "exr"
-                        // created_at: "2016-05-09 18:26:21"
-                        // currency: "cny"
-                        // description: "批量进行企业向员工微信钱包支付（串行）"
-                        // employee_name: "张无忌"
-                        // failure_msg: null
-                        // finished_at: "2016-05-09T18:26:22+00:00"
-                        // force_check_name: true
-                        // local_bill_no: "20160509182621010000821019"
-                        // mode: "b2c"
-                        // operator_name: "我是财务70d"
-                        // payway: "wechat_pub"
-                        // status: "success"
-                        // uid: "40"
-                        // updated_at: "2016-05-09 18:26:22"
-                        // wechat_bill_no: "
+                        
                         var tmpl = [
                             '<div class="item-detail table-container">',
                             '    <table>',

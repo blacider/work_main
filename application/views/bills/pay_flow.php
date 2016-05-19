@@ -95,6 +95,9 @@
                                     <td><span>{{item.status}}</span></td>
                                     <td>
                                         <a class="btn-preview" ng-click="onPreviewItem(item)">查看</a>
+                                        <div ng-if="item.status=='支付失败'">
+                                            <a class="btn-repay" ng-click="onRePay(item)">重新支付</a>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -118,7 +121,6 @@
 
 <!-- basic js resource here -->
 <script src="/app/libs/angular/angular.min.js"></script>
-<script src="/static/js/libs/jquery/jquery.min.js"></script>
 <script src="/static/js/libs/underscore.js"></script>
 <script src="/static/js/libs/utils.js"></script>
 
@@ -128,8 +130,11 @@
 <script src="/static/plugins/bootstrap-datepicker/js/bootstrap-datetimepicker.js"></script>
 <script src="/static/plugins/bootstrap-datepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 
-<script src="/static/js/mod/bills/payflow.js"></script>
+<script src="<?= static_url("/static/js/mod/bills/payflow.js") ?>"></script>
 
 <script src="/static/plugins/cloud-dialog/dialog.js"></script>
 <link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">
+
+<script src="/static/plugins/cloud-layer/layer.js"></script>
+<link rel="stylesheet" href="/static/plugins/cloud-layer/layer.css">
 

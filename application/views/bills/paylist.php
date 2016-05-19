@@ -37,7 +37,7 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>报销单号</th>
+                                <th>报销单ID</th>
                                 <th>报销单名</th>
                                 <th>条目数</th>
                                 <th>提交人</th>
@@ -52,17 +52,17 @@
                                 <td>{{item.title}}</td>
                                 <td>{{item.item_count}}</td>
                                 <td>{{item.nickname}}</td>
-                                <td>{{item.submitdt +'000'|date:'yyyy-M-d'}}</td>
+                                <td>{{item.createdt +'000'|date:'yyyy-M-d'}}</td>
                                 <td>￥{{moneyFormat(item.amount)}}</td>
                                 <td>
-                                    <a href="javascript:void(0)" class="btn-remove" ng-click="onRemoveItem(item)" href="">移除</a>
+                                    <a href="javascript:void(0)" class="btn-remove" ng-click="onRemoveItem(item)">移除</a>
                                 </td>
                             </tr>
                         </tbody>
                          
                     </table>
                 </div>
-                <div style="text-align: right">总额：￥{{getReportArrayAmount(reportArray)}}</div>
+                <div style="text-align: right" ng-if="reportArray.length">总额：￥{{getReportArrayAmount(reportArray)}}</div>
                 <div class="description" ng-init="forTextAreaId = 'textareaDesc'" ng-if="reportArray.length">
                     <label for="{{textareaDesc}}">付款说明</label>
                     <textarea name="" ng-model="desc" id="{{textareaDesc}}" cols="30" rows="10"></textarea>

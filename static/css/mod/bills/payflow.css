@@ -38,13 +38,11 @@
 	color: #fff;
 }
 
-.btn-preview {
-	cursor: pointer;
-}
+.btn-preview,
+.btn-repay,
 .page-bar {
 	cursor: pointer;
 }
-
 
 .mod-pay-flow table,
 .cloud-bx-dialog table {

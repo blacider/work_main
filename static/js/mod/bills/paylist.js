@@ -29,10 +29,11 @@
     };
 
     function getReportArray(rids) {
-        return Utils.api('/report_finance_flow/list/1', {
+        return Utils.api('/reports', {
+            method: 'post',
             env: 'miaiwu',
             data: {
-                ids: rids.join('|')
+                ids: rids.join(',')
             }
         });
     };
@@ -93,6 +94,14 @@
         });
     };
 
+    function reportMapToArray(m) {
+        var rs = [];
+        for(var id in m) {
+            rs.push(m[id]);
+        }
+        return rs;
+    }
+
     function ticker(count, tick, done) {
         function handler() {
             count--;
@@ -151,7 +160,7 @@
                         var sum = 0;
                         for(var i=0;i<reportArray.length;i++) {
                             var r = reportArray[i];
-                            sum += parseFloat(r.amount);
+                            sum += parseFloat(r.amount||0);
                         }
                         return sum.toFixed(2);
                     };
@@ -166,15 +175,10 @@
                         if (rs['status'] < 0) {
                             return show_notify('找不到模版');
                         }
-                        $scope.reportArray = rs['data']['data'];
+                        $scope.reportArray = reportMapToArray(rs['data']['report']);
                         $scope.profile = profile['data'];
                         $scope.phone = phone['data']['phone'];
                         $scope.$apply();
-                        debugger
-                        // last fetch get group data
-                        // getGroup($scope.profile.gid).done(function (rs) {
-                        // 	debugger
-                        // });
                     });
 
                     // $scope event handler here
@@ -206,7 +210,7 @@
                             $scope.$apply();
                         });
                     };
-                    $scope.onSubmit = function(vcode, desc) {
+                    $scope.onSubmit = function(vcode) {
                         if (!vcode) {
                             $('.btn-vcode').focus();
                             return show_notify('请输入验证码');
@@ -220,6 +224,7 @@
 
                         var statis_ok = 0, statis_next = 0, statis_error = 0, statis_check=0;
                         var errorMsg = '';
+                        var desc = $('textarea').val();
                         doPayOneByOne(0, {
                             list: idArr,
                             vcode: vcode,
@@ -263,7 +268,7 @@
                             	var str = '';
                             	// ok
                             	if(statis_ok == list.length) {
-                            		str =  '已成功发起微信转账，预计24小时内到账。<br />请到［企业支付查询］中查看转账记录。' ;
+                            		str =  '已成功发起微信转账，预计2小时内到账。<br />请到［流水查询］中查看转账记录。' ;
                             	} else if(statis_next) {
                             		str = '系统错误，' + statis_next + '笔支付失败。<br />请稍后重试，或联系<a class="btn-open-meiqia" href="javascript:void(0);">云报销客服</a>';
                             			// '<%= statis_check  %>笔支付实名校验失败失败',
@@ -281,6 +286,10 @@
                             				openMeiQia();
                             			});
                             		},
+                                    onHide: function () {
+                                        window.top._PAY_LAYER_.close();
+                                        this.close();
+                                    },
                             		okValue: '查看转账记录',
                             		cancel: function (argument) {
                             			window.top._PAY_LAYER_.close();
