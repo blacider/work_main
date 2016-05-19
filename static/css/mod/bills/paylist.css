@@ -98,7 +98,6 @@ textarea:focus {
 .btn-remove {
 	text-decoration: none;
 	position: relative;
-	color: #666;
 }
 
 .btn-remove:hover {
@@ -194,4 +193,9 @@ table tfoot {
 	font-size: 24px;
 }
 
+
+.table-cell {
+	display: table-cell;
+	vertical-align: middle;
+}
 

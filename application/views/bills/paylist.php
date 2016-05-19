@@ -32,7 +32,7 @@
         <div class="sub-mod">
             <div class="head">转账报销单</div>
             <div class="content">
-                <div ng-if="reportArray.length==0">当前报销单已处理完成</div>
+                <div ng-if="reportArray.length==0">当前无处理的报销单</div>
                 <div class="table-container" ng-if="reportArray.length">
                     <table>
                         <thead>
@@ -43,7 +43,7 @@
                                 <th>提交人</th>
                                 <th>提交日期</th>
                                 <th>金额</th>
-                                <th>操作/状态</th>
+                                <th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,16 +51,18 @@
                                 <td>{{item.id}}</td>
                                 <td>{{item.title}}</td>
                                 <td>{{item.item_count}}</td>
-                                <td>{{item.uid}}</td>
-                                <td>{{item.submitdt}}</td>
-                                <td>￥{{item.amount}}</td>
+                                <td>{{item.nickname}}</td>
+                                <td>{{item.submitdt +'000'|date:'yyyy-M-d'}}</td>
+                                <td>￥{{moneyFormat(item.amount)}}</td>
                                 <td>
-                                    <a class="btn-remove" ng-click="onRemoveItem(item)" href="">移除</a>
+                                    <a href="javascript:void(0)" class="btn-remove" ng-click="onRemoveItem(item)" href="">移除</a>
                                 </td>
                             </tr>
                         </tbody>
+                         
                     </table>
                 </div>
+                <div style="text-align: right">总额：￥{{getReportArrayAmount(reportArray)}}</div>
                 <div class="description" ng-init="forTextAreaId = 'textareaDesc'" ng-if="reportArray.length">
                     <label for="{{textareaDesc}}">付款说明</label>
                     <textarea name="" ng-model="desc" id="{{textareaDesc}}" cols="30" rows="10"></textarea>
@@ -72,13 +74,16 @@
             <div class="head">付款信息</div>
             <div class="content">
                 <p>已开启用户姓名校验</p>
-                <div class="one-time-password">动态口令</div>
-                <div class="field-input">
-                    <input class="btn-vcode" placeholder="请输入验证码" type="text" ng-model="vcode">
+                <div class="row" style="display: table">
+                    <label for="" class="table-cell" style="padding-right: 16px;"><span style="color: #ff575b">*</span>动态口令</label>
+                    <div class="field-input table-cell">
+                        <input class="btn-vcode" placeholder="请输入验证码" type="text" ng-model="vcode">
+                    </div>
+                    <button class="btn-send-code table-cell" ng-class="{'waiting': isWaiting}" ng-click="onSendCode()">短信获取口令
+                    </button>
                 </div>
-                <button class="btn-send-code" ng-class="{'waiting': isWaiting}" ng-click="onSendCode()">短信获取口令</button>
                 <p>
-                    将向您的手机<span style="color: #ff575b">{{phone}}</span>发送动态口令，如果手机有修改或发生异常，请联系客服修改，请在个人信息中，绑定手机号后，使用该功能，或联系云报销客服
+                    将向您的手机<span style="color: #ff575b">{{phoneStars(phone)}}</span>发送动态口令，如果手机有修改或发生异常，请联系客服修改
                 </p>
             </div>
             <div class="footer">
@@ -99,6 +104,6 @@
 
     <script src="/static/plugins/cloud-layer/layer.js"></script>
     <link rel="stylesheet" href="/static/plugins/cloud-layer/layer.css">
-
+    
 </body>
 </html>

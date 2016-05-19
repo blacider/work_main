@@ -18,7 +18,7 @@
                 return;
             }
             _COMPANY_PAYHEAD_ = rs['data'];
-            if (_COMPANY_PAYHEAD_['wechat_pub']['payhead_uid']) {
+            if (_COMPANY_PAYHEAD_['wechat_pub']['payhead_id']) {
                 $('.btn-pay').show();
             }
         });
@@ -43,18 +43,9 @@
         });
     };
 
-    function getCompanyProflie() {
-        return Utils.api('/report_finance_flow/list/1', {
-            env: 'miaiwu',
-            data: {
-                ids: rids.join('|')
-            }
-        });
-    };
-
     function getCurrentUserProflie(uid) {
-        return Utils.api('/users/info/' + uid, {}).done(function(rs) {
-            if (rs['status'] < 0) {
+        return Utils.api('/users/get_user_profile/' + uid, {}).done(function (rs) {
+            if(rs['status']<0) {
                 return show_notify('数据出错');
             }
         });
@@ -129,7 +120,7 @@
             vcode: data.vcode,
             phone: data.phone,
             description: data.desc || '批量进行企业向员工微信钱包支付（串行）',
-            company_payhead_id: _COMPANY_PAYHEAD_['wechat_pub']['payhead_uid'],
+            company_payhead_id: _COMPANY_PAYHEAD_['wechat_pub']['payhead_id'],
             payway: 'wechat_pub'
         }
         doPayItem(itemData).done(function(rs) {
@@ -149,6 +140,27 @@
                 function($scope) {
                     // variable here
                     // $scope.isLoaded = true;
+                    $scope.moneyFormat = function (str) {
+                        var num = parseFloat(str);
+                        return num.toFixed(2);
+                    };
+
+                    $scope.reportArray = [];
+
+                    $scope.getReportArrayAmount= function (reportArray) {
+                        var sum = 0;
+                        for(var i=0;i<reportArray.length;i++) {
+                            var r = reportArray[i];
+                            sum += parseFloat(r.amount);
+                        }
+                        return sum.toFixed(2);
+                    };
+
+                    $scope.phoneStars = function (phone) {
+                        var a = phone.slice(3, 7);
+                        return phone.replace(a, '****');
+                    };
+
                     getPageData().done(function(rs, profile, phone, payHeads) {
                         $scope.isLoaded = true;
                         if (rs['status'] < 0) {
@@ -158,6 +170,7 @@
                         $scope.profile = profile['data'];
                         $scope.phone = phone['data']['phone'];
                         $scope.$apply();
+                        debugger
                         // last fetch get group data
                         // getGroup($scope.profile.gid).done(function (rs) {
                         // 	debugger
@@ -173,6 +186,7 @@
                             $scope.reportArray.splice(index, 1);
                         }
                     };
+
                     $scope.onSendCode = function() {
                         if ($scope.isWaiting) {
                             return show_notify('验证码正在发送，请耐心等待');

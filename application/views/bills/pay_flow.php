@@ -71,11 +71,9 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>付款单号</th>
-                                    <th>报销单号</th>
                                     <th>提交时间</th>
-                                    <th>报销单名字</th>
-                                    <th>付款方式</th>
+                                    <th>付款单号</th>
+                                    <th>报销单ID</th>
                                     <th>收款人</th>
                                     <th>付款金额</th>
                                     <th>付款状态</th>
@@ -89,16 +87,14 @@
                                     </td>
                                 </tr>
                                 <tr ng-repeat="item in payList">
+                                    <td>{{item.created_at}}</td>
                                     <td class="pay-no">{{item.local_bill_no}}</td>
                                     <td>{{item.carrier_id}}</td>
-                                    <td>{{item.submitdt}}</td>
-                                    <td>{{item.carrier_name}}</td>
-                                    <td data-type="{{item.payway}}">微信支付</td>
                                     <td>{{item.employee_name}}</td>
                                     <td>￥{{item.amount}}</td>
                                     <td><span>{{item.status}}</span></td>
                                     <td>
-                                        <a class="btn-remove" ng-click="onPreviewItem(item)">查看</a>
+                                        <a class="btn-preview" ng-click="onPreviewItem(item)">查看</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -106,11 +102,11 @@
                     </div>
                     <div style="text-align: center;">
                         <ul ng-if="pageNaviData.totalPage>1" class="pagination">
-                            <li ng-if="pageNaviData.current+1!=1"><a ng-click="onPage(pageNaviData.start-1, pageNaviData)">首页</a></li>
-                            <li ng-if="pageNaviData.prev"><a ng-click="onPage(pageNaviData.prev, pageNaviData)"><</a></li>
-                            <li ng-class="{active: a-1==pageNaviData.current}" ng-repeat="a in pageNaviData.list"><a ng-click="onPage(a-1, pageNaviData)">{{a}}</a></li>
-                            <li ng-if="pageNaviData.next"><a ng-click="onPage(pageNaviData.next, pageNaviData)">></a></li>
-                            <li ng-if="pageNaviData.totalPage!=pageNaviData.current+1"><a ng-click="onPage(pageNaviData.end, pageNaviData)">尾页</a></li>
+                            <li class="page-bar" ng-if="pageNaviData.current+1!=1"><a ng-click="onPage(pageNaviData.start-1, pageNaviData)">首页</a></li>
+                            <li  class="page-bar" ng-if="pageNaviData.prev"><a ng-click="onPage(pageNaviData.prev, pageNaviData)"><</a></li>
+                            <li  class="page-bar" ng-class="{active: a-1==pageNaviData.current}" ng-repeat="a in pageNaviData.list"><a ng-click="onPage(a-1, pageNaviData)">{{a}}</a></li>
+                            <li  class="page-bar" ng-if="pageNaviData.next"><a ng-click="onPage(pageNaviData.next, pageNaviData)">></a></li>
+                            <li  class="page-bar" ng-if="pageNaviData.totalPage!=pageNaviData.current+1"><a ng-click="onPage(pageNaviData.end, pageNaviData)">尾页</a></li>
                             <li><a>共{{pageNaviData.totalPage}}页</a></li>
                         </ul>
                     </div>

@@ -49,7 +49,7 @@
 
 			canPayable({
 				report_ids: ids,
-				company_payhead_id: _COMPANY_PAYHEAD_['wechat_pub']['payhead_uid'],
+				company_payhead_id: _COMPANY_PAYHEAD_['wechat_pub']['payhead_id'],
 				payway: 'wechat_pub'
 			}).done(function (rs) {
 				if(rs['status']<=0) {
@@ -85,6 +85,7 @@
 					var str = '有'+otherPayArray.length + '条报销单不支持转账，是否继续？' ;
 					var dialog = new CloudDialog({
 						content: str,
+						okValue: '继续',
 						ok: function (e) {
 							this.close();
 							var layer = new CloudLayer();

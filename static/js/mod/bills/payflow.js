@@ -117,9 +117,9 @@
 
                     $scope.payStatusArray = [
                         {text: '全部', value:''},
-                        {text: '付款中', value:'paying'},
-                        {text: '付款成功', value:'success'},
-                        {text: '付款失败', value:'failure'}
+                        {text: '支付中', value:'paying'},
+                        {text: '支付成功', value:'success'},
+                        {text: '支付失败', value:'failure'}
                     ];
 
                     // events handler here
@@ -165,7 +165,7 @@
                     $scope.onPreviewItem = function (item) {
                         var dialog = new CloudDialog({
                             title: '支付详情',
-                            okValue: '关闭',
+                            okValue: '返回列表',
                             cancel: null
                         });
                         dialog.showModal();
@@ -192,8 +192,8 @@
                             '    <table>',
                             '        <tbody>',
                             '            <tr>',
-                            '                <td class="col-label">付款单号</td>',
-                            '                <td><%= local_bill_no %></td>',
+                             '               <td class="col-label">提交时间</td>',
+                            '                <td><%= created_at %></td>',
                             '                <td class="col-label">支付渠道单号</td>',
                             '                <td><%= wechat_bill_no %></td>',
                             '            </tr>',
@@ -205,15 +205,15 @@
                             '            </tr>',
                             '            <tr>',
                             '                <td class="col-label">部门</td>',
-                            '                <td><%= uid %></td>',
+                            '                <td><%= employee_depts %></td>',
                             '                <td class="col-label">付款金额</td>',
                             '                <td><%= amount %></td>',
                             '            </tr>',
                             '            <tr>',
                             '                <td class="col-label">提交人员（出纳）</td>',
                             '                <td><%= operator_name %></td>',
-                            '                <td class="col-label">提交时间</td>',
-                            '                <td><%= created_at %></td>',
+                            '                <td class="col-label">付款单号</td>',
+                            '                <td><%= local_bill_no %></td>',
                             '            </tr>',
                             '            <tr>',
                             '                <td class="col-label">付款状态</td>',
@@ -225,12 +225,12 @@
                             '                <td class="col-label">付款说明</td>',
                             '                <td class="desc"><%= description %></td>',
                             '                <td class="col-label">报销单</td>',
-                            '                <td><a target="_blank" href="/reports/show/<%= carrier_id %>"><%= carrier_name %></a></td>',
+                            '                <td><a target="_blank" href="/reports/show/<%= carrier_id %>?tid=<%= carrier_template_id%>">详情</a></td>',
                             '            </tr>',
                             '        </tbody>',
                             '    </table>',
                             '</div>'
-                        ].join('')
+                        ].join('');
 
                         dialog.content(_.template(tmpl)(item));
 

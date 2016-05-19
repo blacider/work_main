@@ -38,6 +38,12 @@
 	color: #fff;
 }
 
+.btn-preview {
+	cursor: pointer;
+}
+.page-bar {
+	cursor: pointer;
+}
 
 
 .mod-pay-flow table,
@@ -71,7 +77,7 @@
 
 .mod-pay-flow table tbody tr td.col-label,
 .cloud-bx-dialog table tbody tr td.col-label {
-	background: #596774;
+	background: rgba(89, 102, 116, 0.80);
 	color: #fff;
 	border-right: none;
 }

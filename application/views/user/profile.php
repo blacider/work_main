@@ -1264,6 +1264,32 @@ if(in_array($profile['admin'],[1,3,4])){
                         correctLevel : QRCode.CorrectLevel.M
                     });
                     $("#weixin-wallet").removeAttr('title');
+
+                    // 轮训用户是否扫描，扫描后，重新载入页面
+                    function checkIfBind() {
+                        Utils.api('giro_payhead/employee_wxpub_payhead', {
+                            env: 'miaiwu',
+                            data: {
+                                ignore_auth_url: true
+                            }
+                        }).done(function (rs) {
+
+                            // 服务器出错就不用扫描了
+                            if(rs['status']<=0) {
+                                return
+                            }
+
+                            var data = rs['data'];
+                            if(data['employee_opened']) {
+                                window.location.reload();
+                            } else {
+                                setTimeout(function (argument) {
+                                    checkIfBind();
+                                }, 1000 * 6);
+                            }
+                        });
+                    };
+                    checkIfBind();
                 }
             }
         });
@@ -1275,9 +1301,9 @@ if(in_array($profile['admin'],[1,3,4])){
             }
         }).done(function (rs) {
             if(rs['data']['company_opened']) {
-                var info = '员工已授权';
+                var info = '员工未授权';
                 if(rs['data']['employee_opened']) {
-                    info = '员工未授权';
+                    info = '员工已授权';
                 }
                 $("#weixin-wallet .who").text(info);
                 $(".btn-cancel-weixin-auth").remove();
