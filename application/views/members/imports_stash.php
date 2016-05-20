@@ -32,12 +32,12 @@ var _SERVER_MEMBERS_ = <?php echo json_encode($server_members)?>;
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in errorArray">
+                        <tr ng-repeat="item in errorArray" ng-init="scanItem(item)">
                             <td>
-                                <input type="text" value="{{item.id}}">
+                                {{item.id}}
                             </td>
                             <td title="" ng-class="{error: 1}">
-                                {{item.nickname}}
+                                {{item.$$hashKey}}-{{item.nickname}}
                             </td>
                             <td>
                             {{item.email}}
@@ -75,6 +75,7 @@ var _SERVER_MEMBERS_ = <?php echo json_encode($server_members)?>;
                             <th>ID</th>
                             <th>姓名</th>
                             <th>邮箱</th>
+                            <th>手机号</th>
                             <th>银行卡号</th>
                             <th>部门</th>
                             <th>职位</th>
@@ -84,15 +85,18 @@ var _SERVER_MEMBERS_ = <?php echo json_encode($server_members)?>;
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in appenderArray">
+                        <tr ng-repeat="item in appenderArray" ng-init="scanItem(item)">
                             <td>
                                 {{item.id}}
                             </td>
                             <td>
-                                {{item.nickname}}
+                                {{item.$$hashKey}}-{{item.nickname}}
                             </td>
                             <td>
                             {{item.email}}
+                            </td>
+                            <td>
+                            {{item.phone}}
                             </td>
                             <td>
                                 {{item.cardno}}
@@ -124,6 +128,7 @@ var _SERVER_MEMBERS_ = <?php echo json_encode($server_members)?>;
                             <th>ID</th>
                             <th>姓名</th>
                             <th>邮箱</th>
+                            <th>手机号</th>
                             <th>银行卡号</th>
                             <th>部门</th>
                             <th>职位</th>
@@ -133,15 +138,18 @@ var _SERVER_MEMBERS_ = <?php echo json_encode($server_members)?>;
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in modifierArray">
+                        <tr ng-repeat="item in modifierArray" ng-init="scanItem(item)">
                             <td>
                                 {{item.id}}
                             </td>
                             <td>
-                                {{item.nickname}}
+                                {{item.$$hashKey}}-{{item.nickname}}
                             </td>
                             <td>
                             {{item.email}}
+                            </td>
+                            <td>
+                            {{item.phone}}
                             </td>
                             <td>
                                 {{item.cardno}}
