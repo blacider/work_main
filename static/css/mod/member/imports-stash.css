@@ -6,3 +6,63 @@
 	font-size: 14px;
 }
 
+
+.mod-imports-stash td {
+	position: relative;
+}
+
+/*
+components css
+ */
+.field-error {
+	background: #D23925;
+	color: #fff !important;
+}
+
+.field-warn {
+	background: #1D478E;
+	color: #fff !important;
+}
+
+.field-modified {
+	background: #1D478E;
+	color: #fff !important;
+}
+.field-error input,
+.field-modified input {
+	position: absolute;
+	color: #333 !important;
+	border: none;
+	outline: none;
+	margin: 0;
+	padding: 2px;
+	width: 100px;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	top: 0;
+}
+.field-error,
+.field-modified {
+	padding-right: 20px;
+}
+
+.field-tip {
+	height: 12px;
+	width: 12px;
+	display: inline-block;
+	text-align: center;
+	font: 10px/10px normal;
+	background: yellow;
+	color: #333;
+	border-radius: 100%;
+	float: right;
+	top: 8px;
+	right: 4px;
+	position: absolute;
+	cursor: pointer;
+}
+
+.field-value {
+	display: inline-block;
+}

@@ -895,9 +895,11 @@ class Members extends REIM_Controller {
 
         // 读取数据
         $data = array();
-        for ($index=0,$row = 3; $row <= $highestRow; $row++,$index++) { //行数是以第1行开始
+        $index = 0;
+        for ($row = 3; $row <= $highestRow; $row++) { //行数是以第1行开始
+            $index++;
             $obj = Array();
-            $obj['uuid'] = "index_" . $index;
+            // $obj['uuid'] = "index_" . $index;
             $obj["id"] =  trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 员工编号,
             $obj["nickname"] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue()); // 用户姓名,
             $obj["email"] = trim($sheet->getCellByColumnAndRow(2, $row)->getValue()); // 邮箱,
