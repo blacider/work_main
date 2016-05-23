@@ -303,11 +303,10 @@ $(document).ready(function() {
             }
         }).done(function(rs) {
             hideLoading();
-            if (rs['data'] != undefined) {
-                $("#password").find('input').val("");
-                window.location.href = rs['data'];
+            if (rs['status'] > 0) {
+                window.location.href = rs['url'];
             } else {
-                passLine.addError(getErrorDom("密码错误"));
+                passLine.append(getErrorDom(rs['msg']));
             }
         });
 

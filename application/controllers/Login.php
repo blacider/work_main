@@ -4,7 +4,7 @@ class Login extends REIM_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('user_model', 'users');
+        $this->load->model('user_model');
     }
 
     public function index()
@@ -61,73 +61,41 @@ class Login extends REIM_Controller {
     public function do_login(){
         $username = trim($this->input->post('u'));
         $password = $this->input->post('p');
-
-        $this->input->set_cookie("username", $username);
-        if(!$username){
-            echo json_encode(array('status' => 1, 'msg' => '请输入用户名'));
+        if(!$username or !$password){
+            echo json_encode(array('status' => 1, 'msg' => '需要用户名密码'));
             return;
         }
-        if(!$password){
-            echo json_encode(array('status' => 1, 'msg' => '请输入密码'));
+        $ret = $this->user_model->oauth2_auth_pwd($username, $password);
+        if ($ret !== true) {
+            echo json_encode(['status' => -1, 'msg' => $ret]);
             return;
         }
-        # FIXME
-        $this->users->oauth2_auth($username, $password);
         log_message('info', 'login ok');
-        $user = $this->users->reim_get_user();
-        log_message('debug', "Login:" . json_encode($user));
-        $data = $user['data']['profile'];
-        log_message('debug', "profile:" . json_encode($data));
-        $__g = '';
-        if(array_key_exists('group_name', $data)){
-            $__g = $data['group_name'];
-        }
-        $__uid = '';
-        if(array_key_exists('id', $data)){
-            $__uid = $data['id'];
-        }
-        $this->session->set_userdata("uid", $__uid);
-        $this->session->set_userdata("groupname", $__g);
-        echo json_encode(array('status' => 1, 'data' => base_url('items')));
-        return ;
+        $this->user_model->refresh_session();
+        echo json_encode(['status' => 1, 'url' => base_url('items')]);
     }
 
     public function dologout()
     {
-        $this->users->logout();
+        $this->user_model->logout();
         redirect(base_url());
     }
 
     public function wxlogin(){
-        //
-        $_code = $this->input->get('code');
-        $appid = 'wxa718c52caef08633';
-        $appsec = '02c3df9637d1210a84447524f3606dc1';
-        $auth_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=$appid&secret=$appsec&code=$_code&grant_type=authorization_code";
-        $buf = $this->do_Get($auth_url);
-        $obj = json_decode($buf, True);
-        if(array_key_exists('errcode', $obj)) {
-            //TODO:
-        } else {
-            $openid  = $obj['openid'];
-            $token = $obj['access_token'];
-            $unionid = $obj['unionid'];
-            $user = $this->users->reim_oauth($unionid, $openid, $token);
-            if(!$user['status']) {
-                $this->session->set_userdata('login_error', '用户名或者密码错误');
-                redirect(base_url('login'));
-                die();
-            }
-            $data = $user['data']['profile'];
-            $__g = '';
-            if(array_key_exists('group_name', $data)){
-                $__g = $data['group_name'];
-            }
-            $this->session->set_userdata("email", $unionid);
-            $this->session->set_userdata("groupname", $__g);
-            // 获取一下组信息，然后设置一下
-            redirect(base_url('items'));
+        $code = $this->input->get('code');
+        $ret = $this->user_model->exchange_weixin_token($code);
+        if(array_key_exists('errcode', $ret)) {
+            $this->session->set_userdata('login_error', '微信返回错误');  # FIXME
+            redirect(base_url('/#login'));
         }
+        $ret = $this->user_model->oauth2_auth_weixin($ret['openid'], $ret['access_token']);
+        if ($ret !== true) {
+            $this->session->set_userdata('login_error', $ret);
+            redirect(base_url('#login'));
+        }
+        log_message('info', 'login by weixin ok');
+        $this->user_model->refresh_session();
+        redirect(base_url('items'));
     }
 
     public function reset_password($addr = 'email'){
@@ -145,7 +113,7 @@ class Login extends REIM_Controller {
         $data[$addr] = $user_addr;
         $data['vcode'] = $vcode;
         $data['password'] = $password;
-        $reset_password_back = $this->users->reset_password($data);
+        $reset_password_back = $this->user_model->reset_password($data);
 
         $reset_password_back['status'] = 1;
         echo json_encode($reset_password_back);
@@ -170,7 +138,7 @@ class Login extends REIM_Controller {
             return ;
         }
 
-        $check_user_back = $this->users->check_user($addr, $user_addr);
+        $check_user_back = $this->user_model->check_user($addr, $user_addr);
         $check_user_back['status'] = 1;
         echo json_encode($check_user_back);
         return ;

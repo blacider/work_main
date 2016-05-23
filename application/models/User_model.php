@@ -7,32 +7,52 @@ class User_Model extends Reim_Model {
         parent::__construct();
     }
 
-    public function oauth2_auth($username, $password){
-        $client_id = 'w2Dl7oc0CimMq1yFtLDcdFVBKWEeIjwTr1wRLngd';
-        $client_secret = 'nWx8llO9LmZdxek2g8K7nc6mnWC9rmW1dOEoQ5An';
-        $ret = $this->api_post('/oauth2', [
+    public function oauth2_auth_pwd($username, $password) {
+        return $this->oauth2_auth([
             'grant_type' => 'password',
             'username' => $username,
             'password' => $password,
+        ]);
+    }
+
+    public function oauth2_auth_weixin($wx_openid, $wx_access_token) {
+        return $this->oauth2_auth([
+            'grant_type' => 'weixin',
+            'openid' => $wx_openid,
+            'access_token' => $wx_access_token,
+        ]);
+    }
+
+    private function oauth2_auth($parms) {
+        $client_id = 'w2Dl7oc0CimMq1yFtLDcdFVBKWEeIjwTr1wRLngd';
+        $client_secret = 'nWx8llO9LmZdxek2g8K7nc6mnWC9rmW1dOEoQ5An';
+        $parms = array_merge($parms, [
             'client_id' => $client_id,
             'client_secret' => $client_secret,
         ]);
+        $ret = $this->api_post('/oauth2', $parms);
         log_message('debug', 'oauth2 ret: ' . $ret);
         $ret = json_decode($ret, true);
-        # TODO deal with status
-        if ($ret['status'] > 0) {
-            $d = $ret['data'];
-            $this->session->set_userdata("oauth2_ak", $d['access_token']);
-            //$this->session->set_userdata("oauth2_expires_in", $d['expires_in']);
-            $this->session->set_userdata('email', $username);
-            $this->session->set_userdata("jwt", ['X-REIM-JWT: placebo']);
+        if ($ret['status'] <= 0) {
+            return $ret['data']['msg'];
         }
-        return;
+        $d = $ret['data'];
+        $this->session->set_userdata("oauth2_ak", $d['access_token']);
+        $this->session->set_userdata("jwt", ['X-REIM-JWT: placebo']);
+        //$this->session->set_userdata("oauth2_expires_in", $d['expires_in']);
+        return true;
     }
 
     public function logout() {
         $this->session->sess_destroy();
         $ret = $this->api_get('/logout');
+    }
+
+    public function refresh_session() {
+        $user = $this->reim_get_user();
+        $data = $user['data']['profile'];
+        $uid = $data['id'];
+        $this->session->set_userdata("uid", $uid);
     }
 
     public function reset_password($data = array()){
@@ -94,25 +114,6 @@ class User_Model extends Reim_Model {
         $buf = $this->do_Post($url,$data,$jwt);
         log_message('debug','del_email:' . $buf);
         return json_decode($buf,True);
-    }
-
-    public function reim_oauth($unionid = '', $openid = '', $token = '', $check = 1){
-        $jwt = $this->get_jwt($unionid, "");
-        $this->session->set_userdata('jwt', $jwt);
-        $url = $this->get_url('oauth');
-        $data = array('openid' => $openid, 'unionid' => $unionid, 'token' => $token, 'check' => $check);
-        $buf = $this->do_Post($url, $data, $jwt);
-
-        $obj = json_decode($buf, true);
-        $jwt = $this->get_jwt($unionid, "");
-        $this->session->set_userdata('jwt', $jwt);
-        log_message("debug", "Reim Oauth - save jwt:" . json_encode($jwt));
-        $profile = array();
-        if($obj['status']){
-            $profile = $obj['data']['profile'];
-            $this->session->set_userdata('profile', $profile);
-        }
-        return $obj;
     }
 
     public function reim_get_user(){
@@ -246,6 +247,24 @@ class User_Model extends Reim_Model {
         $jwt = $this->session->userdata('jwt');
         $buf = $this->do_Delete($url, array(), $jwt);
         return $buf;
+    }
+
+    public function exchange_weixin_token($code) {
+        $appid = 'wxa718c52caef08633';
+        $appsec = '02c3df9637d1210a84447524f3606dc1';
+        $qs = http_build_query([
+            'appid' => $appid,
+            'secret' => $appsec,
+            'code' => $code,
+            'grant_type' => 'authorization_code',
+        ]);
+        $auth_url = 'https://api.weixin.qq.com/sns/oauth2/access_token?' . $qs;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $auth_url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $buf = curl_exec($ch);
+        log_message('debug', "weixin oauth2 ret: $buf");
+        return json_decode($buf, True);
     }
 
 }

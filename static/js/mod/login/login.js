@@ -24,7 +24,7 @@ $(document).ready(function() {
         if(__fr__['hmsr']!==reg_fr_obj['hmsr'] && __fr__['hmsr']) {
             $.cookie('reg_fr', JSON.stringify(__fr__), {
                 expires: 7
-            });   
+            });
         }
     };
 
@@ -321,10 +321,10 @@ $(document).ready(function() {
                 is_r: "on"
             }
         }).done(function(rs) {
-            if (rs['data'] != undefined) {
-                window.location.href = rs['data'];
+            if (rs['status'] > 0) {
+                window.location.href = rs['url'];
             } else {
-                passLine.append(getErrorDom("密码错误"));
+                passLine.append(getErrorDom(rs['msg']));
             }
         });
 
@@ -765,7 +765,7 @@ $(document).ready(function() {
 
     function enterPressEvent() {
         $(document).keypress(function(e) {
-            // 回车键事件  
+            // 回车键事件
             if (e.which == 13) {
                 var Modals = $(".in");
                 if (Modals.length != 0) {

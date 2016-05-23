@@ -129,15 +129,15 @@ class Reim_Model extends CI_Model {
     private function get_user_agent() {
         $browser = $this->getBrowser();
 
-        $mail = $this->session->userdata("email");
-        if (!$mail) {
-            $mail = "none";
+        $uid = $this->session->userdata("uid");
+        if (!$uid) {
+            $uid = "none";
         }
 
         $name = $browser["name"];
         $version = $browser["version"];
 
-        $result = "Admin,PC,1.0," . $mail . "," . $name . "," . $version . ",Ethernet";
+        $result = "Admin,PC,1.0," . $uid . "," . $name . "," . $version . ",Ethernet";
         log_message("debug", $result);
 
         return $result;

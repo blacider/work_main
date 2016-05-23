@@ -229,7 +229,6 @@ class Items extends REIM_Controller {
         //获取消费类型字典
         $item_type_dic = $this->reim_show->get_item_type_name();
 
-        //$_profile = $this->user->reim_get_user();   
         $profile = array();
         $_profile = json_decode($this->user->reim_get_info($uid),True);   
         if($_profile['status'] > 0) {
