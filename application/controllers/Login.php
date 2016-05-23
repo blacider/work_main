@@ -7,52 +7,6 @@ class Login extends REIM_Controller {
         $this->load->model('user_model', 'users');
     }
 
-    public function reset_password($addr = 'email'){
-        if($addr == 'email'){
-            $user_addr = $this->input->post('email');
-        } else if($addr == 'phone') {
-            $user_addr = $this->input->post('phone');
-        } else {
-            echo json_encode(array('status' => 1, 'msg' => '访问地址错误'));
-        }
-
-        $password = $this->input->post('password');
-        $vcode = $this->input->post('vcode');
-
-        $data[$addr] = $user_addr;
-        $data['vcode'] = $vcode;
-        $data['password'] = $password;
-        $reset_password_back = $this->users->reset_password($data);
-
-        $reset_password_back['status'] = 1;
-        echo json_encode($reset_password_back);
-        return ;
-    }
-
-    public function check_user($addr = 'email'){
-        if($addr == 'email'){
-            $user_addr = $this->input->post('email');
-        }
-        else if($addr == 'phone'){
-            $user_addr = $this->input->post('phone');
-        } else if($addr == 'weixin'){
-            $openid = $this->input->post('openid');
-            $access_token = $this->input->post('access_token');
-            $user_addr = array(
-                'openid' => $openid,
-                'access_token' => $access_token
-            );
-        } else {
-            echo json_encode(array('status' => 1, 'msg' => '访问地址错误'));
-            return ;
-        }
-
-        $check_user_back = $this->users->check_user($addr,$user_addr);
-        $check_user_back['status'] = 1;
-        echo json_encode($check_user_back);
-        return ;
-    }
-
     public function index()
     {
         $jwt = $this->session->userdata('jwt');
@@ -175,5 +129,52 @@ class Login extends REIM_Controller {
             redirect(base_url('items'));
         }
     }
+
+    public function reset_password($addr = 'email'){
+        if($addr == 'email'){
+            $user_addr = $this->input->post('email');
+        } else if($addr == 'phone') {
+            $user_addr = $this->input->post('phone');
+        } else {
+            echo json_encode(array('status' => 1, 'msg' => '访问地址错误'));
+        }
+
+        $password = $this->input->post('password');
+        $vcode = $this->input->post('vcode');
+
+        $data[$addr] = $user_addr;
+        $data['vcode'] = $vcode;
+        $data['password'] = $password;
+        $reset_password_back = $this->users->reset_password($data);
+
+        $reset_password_back['status'] = 1;
+        echo json_encode($reset_password_back);
+        return ;
+    }
+
+    public function check_user($addr = 'email'){
+        if($addr == 'email'){
+            $user_addr = $this->input->post('email');
+        }
+        else if($addr == 'phone'){
+            $user_addr = $this->input->post('phone');
+        } else if($addr == 'weixin'){
+            $openid = $this->input->post('openid');
+            $access_token = $this->input->post('access_token');
+            $user_addr = array(
+                'openid' => $openid,
+                'access_token' => $access_token
+            );
+        } else {
+            echo json_encode(array('status' => 1, 'msg' => '访问地址错误'));
+            return ;
+        }
+
+        $check_user_back = $this->users->check_user($addr, $user_addr);
+        $check_user_back['status'] = 1;
+        echo json_encode($check_user_back);
+        return ;
+    }
+
 
 }
