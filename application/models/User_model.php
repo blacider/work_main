@@ -97,15 +97,8 @@ class User_Model extends Reim_Model {
 
     public function del_email($email)
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt)  return false;
-
-        $url = $this->get_url('staff');
         $data = array('emails' => $email);
-
-        $buf = $this->do_Post($url,$data,$jwt);
-        log_message('debug','del_email:' . $buf);
-        return json_decode($buf,True);
+        return $this->api_post('staff', $data);
     }
 
     public function reim_get_user(){
@@ -129,7 +122,7 @@ class User_Model extends Reim_Model {
         return $this->api_put('users', $data);
     }
 
-    public function reim_update_profile($email, $phone, $nickname, $credit_card,$usergroups, $uid = 0, $admin = 0, $manager_id = 0, $max_report = 0, $rank = 0, $level = 0, $client_id = '', $avatar = 0, $admin_groups_granted = ''){
+    public function reim_update_profile($email, $phone, $nickname, $credit_card,$usergroups, $uid = 0, $admin = 0, $manager_id = 0, $max_report = 0, $rank = 0, $level = 0, $client_id = '', $avatar = 0, $admin_groups_granted = '') {
         if($uid) {
             $data['uid'] = $uid;
         }
@@ -157,40 +150,28 @@ class User_Model extends Reim_Model {
         $data['level'] = $level;
         $data['client_id'] = $client_id;
         $data['avatar'] = $avatar;
-        $url = $this->get_url('users');
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt)  return false;
-        log_message("debug",'profile_data:' . json_encode($data));
-        $buf = $this->do_Put($url, $data, $jwt);
-        log_message("debug", 'profile:' . $buf);
-        return $buf;
+        log_message("debug", 'profile_data: ' . json_encode($data));
+        return $this->api_put('users', $data);
     }
 
     public function getvcode($phone){
-        $url = $this->get_url('vcode');
         $data = array(
             'phone' => $phone,
             'reset' => 0,
         );
-        $jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Post($url, $data, $jwt);
-        return $buf;
+        return $this->api_post('vcode', $data);
     }
 
     public function bind_phone($phone, $vcode, $uid){
-        $url = $this->get_url('users');
         $data = array(
             'phone' => $phone,
             'vcode' => $vcode,
             'uid' => $uid
         );
-        $jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Put($url, $data, $jwt);
-        return $buf;
+        return $this->api_put('users', $data);
     }
 
     public function update_credit($id, $account, $cardno, $cardbank, $cardloc , $uid, $subbranch, $default) {
-        $url = $this->get_url('bank/' . $id);
         $data = array(
             'bank_name' => $cardbank,
             'bank_location' => $cardloc,
@@ -200,14 +181,11 @@ class User_Model extends Reim_Model {
             'subbranch' => $subbranch,
             'default' => $default,
         );
-        $jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Put($url, $data, $jwt);
-        return $buf;
+        return $this->api_put('bank/' . $id, $data);
     }
 
 
     public function new_credit($account, $cardno, $cardbank, $cardloc , $uid, $subbranch, $default) {
-        $url = $this->get_url('bank');
         $data = array(
             'bank_name' => $cardbank
             ,'bank_location' => $cardloc
@@ -217,16 +195,11 @@ class User_Model extends Reim_Model {
             ,'subbranch' => $subbranch
             ,'default' => $default
         );
-        $jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Post($url, $data, $jwt);
-        return $buf;
+        return $this->api_post('bank', $data);
     }
 
-    public function del_credit($id,$uid){
-        $url = $this->get_url('bank/' . $id . '/' . $uid);
-        $jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Delete($url, array(), $jwt);
-        return $buf;
+    public function del_credit($id, $uid){
+        return $this->api_delete('bank/' . $id);
     }
 
     public function exchange_weixin_token($code) {

@@ -124,9 +124,7 @@ class Users extends REIM_Controller
             }
         }
 
-
-        $data = $this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin, $manager_id, $max_report, $rank, $level, $client_id, $avatar, $admin_groups_granted);
-        $info = json_decode($data, true);
+        $info = $this->user->reim_update_profile($email, $phone, $nickname, $credit_card, $usergroups, $uid, $admin, $manager_id, $max_report, $rank, $level, $client_id, $avatar, $admin_groups_granted);
         if ($info['status'] > 0) {
             $this->session->set_userdata('last_error', '信息修改成功');
         } else {
@@ -260,7 +258,7 @@ class Users extends REIM_Controller
             die(json_encode(array('status' => false, 'msg' => '参数错误')));
         }
         else {
-            die($this->user->getvcode($phone));
+            die(json_encode($this->user->getvcode($phone)));
         }
     }
 
@@ -275,10 +273,8 @@ class Users extends REIM_Controller
         }
         if (!$phone) {
             die(json_encode(array('status' => false, 'data' => array('msg' => '参数错误'))));
-        }
-        else {
-            $buf = $this->user->bind_phone($phone, $vcode, $uid);
-            die($buf);
+        } else {
+            die(json_encode($this->user->bind_phone($phone, $vcode, $uid)));
         }
     }
 
@@ -309,13 +305,12 @@ class Users extends REIM_Controller
         else {
             $buf = $this->user->new_credit($account, $cardno, $cardbank, $cardloc, $uid, $subbranch, $default);
         }
-        log_message('debug', 'uid:' . $uid);
-        die($buf);
+        die(json_encode($buf));
     }
 
     public function del_credit($id = 0, $uid) {
         $buf = $this->user->del_credit($id, $uid);
-        die($buf);
+        die(json_encode($buf));
     }
 
 }

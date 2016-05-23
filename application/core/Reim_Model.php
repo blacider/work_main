@@ -231,6 +231,7 @@ class Reim_Model extends CI_Model {
         # FIXME unset $headers['jwt']
         $ret = $this->fire_api_call($method, $url, $data, $headers);
         $json_ret = json_decode($ret, true);
+        # TODO check auth status
         if ($decode_json) {
             return $json_ret;
         }
