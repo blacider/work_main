@@ -144,7 +144,7 @@ class Reports extends REIM_Controller {
         $rid = $this->input->post('report_id');
         $email = $this->input->post('email');
         $buf = $this->reports->export_pdf($rid, $email);
-        echo $buf;
+        echo json_encode($buf);
     }
 
     public function index($search='',$type = 1) {

@@ -160,9 +160,7 @@ class Report_Model extends Reim_Model {
             'rid' => $rids,
             'email' => $email,
         );
-        $buf = $this->api_post('exports', $data);
-        log_message("debug", "send_report: ".json_encode($buf));
-        return $buf;
+        return $this->api_post('exports', $data);
     }
 
     public function get_permission($rid) {

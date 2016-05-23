@@ -31,8 +31,7 @@ class User_Model extends Reim_Model {
             'client_secret' => $client_secret,
         ]);
         $ret = $this->api_post('/oauth2', $parms);
-        log_message('debug', 'oauth2 ret: ' . $ret);
-        $ret = json_decode($ret, true);
+        log_message('debug', 'oauth2 ret: ' . json_encode($ret));
         if ($ret['status'] <= 0) {
             return $ret['data']['msg'];
         }
@@ -45,7 +44,7 @@ class User_Model extends Reim_Model {
 
     public function logout() {
         $this->session->sess_destroy();
-        $ret = $this->api_get('/logout');
+        $this->api_get('/logout');
     }
 
     public function refresh_session() {
@@ -75,19 +74,12 @@ class User_Model extends Reim_Model {
                 $addr => $user_addr
             );
         }
-        $url = $this->get_url('register/user',$data);
-        log_message("debug","data:" . json_encode($data));
-        $buf = $this->do_Get($url,'');
-        log_message("debug","check_user_back:" . $buf);
-        return json_decode($buf,true);
+        return $this->api_get('register/user', null, $data);
     }
 
-    public function check_company($name = '')
+    public function check_company($name='')
     {
-        $url = $this->get_url("register/user/" . $name);
-        $buf = $this->do_Get($url, '');
-        log_message("debug","check_company:" . $buf);
-        return json_decode($buf,true);
+        return $this->api_get("register/user/" . $name);
     }
 
     public function get_common()
@@ -117,14 +109,9 @@ class User_Model extends Reim_Model {
     }
 
     public function reim_get_user(){
-        log_message("debug", "Reim Get User");
-        $jwt = $this->session->userdata('jwt');
-        $url = $this->get_url('common/0');
-        $buf = $this->do_Get($url, $jwt);
-        log_message('debug', 'common ret: ' . $buf);
-        $obj = json_decode($buf, true);
-        $profile = array();
-        if($obj['status']){
+        $obj = $this->api_get('common/0');
+        log_message('debug', 'common ret: ' . json_encode($obj));
+        if ($obj['status']) {
             $profile = &$obj['data']['profile'];
             $this->session->set_userdata('profile', $profile);
         }

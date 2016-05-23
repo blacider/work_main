@@ -184,19 +184,19 @@ class Reim_Model extends CI_Model {
     }
 
     public function do_Post($url, $fields, $extraheader = array(), $force_bin = 0){
-        return $this->api_call('POST', $url, $fields, null, $extraheader);
+        return $this->api_call('POST', $url, $fields, null, $extraheader, false);
     }
 
     public function do_Get($url, $extraheader=array()) {
-        return $this->api_call('GET', $url, null, null, $extraheader);
+        return $this->api_call('GET', $url, null, null, $extraheader, false);
     }
 
     public function do_Put($url, $fields, $extraheader = array()){
-        return $this->api_call('PUT', $url, $fields, null, $extraheader);
+        return $this->api_call('PUT', $url, $fields, null, $extraheader, false);
     }
 
     public function do_Delete($url, $fields, $extraheader = array()){
-        return $this->api_call('DELETE', $url, $fields, $extraheader);
+        return $this->api_call('DELETE', $url, $fields, $extraheader, false);
     }
 
     public function get_curl_upload_field($file_path  = '') {
@@ -212,7 +212,7 @@ class Reim_Model extends CI_Model {
         return '';
     }
 
-    private function api_call($method, $url, $data=null, $params=null, $headers=[]) {
+    private function api_call($method, $url, $data=null, $params=null, $headers=[], $decode_json=true) {
         if (!empty($params)) {
             if (false === strpos($url, '?')) {
                 $url = $url . '?';
@@ -229,7 +229,12 @@ class Reim_Model extends CI_Model {
         }
         $headers[] = 'X-ADMIN-API: 1';
         # FIXME unset $headers['jwt']
-        return $this->fire_api_call($method, $url, $data, $headers);
+        $ret = $this->fire_api_call($method, $url, $data, $headers);
+        $json_ret = json_decode($ret, true);
+        if ($decode_json) {
+            return $json_ret;
+        }
+        return $ret;
     }
 
     public function __call($name, $args) {

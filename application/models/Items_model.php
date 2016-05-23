@@ -93,9 +93,7 @@ class Items_Model extends Reim_Model {
     }
 
     public function get_list(){
-        $buf = $this->api_get('sync/0');
-        //log_message("debug", $buf);
-        return json_decode($buf, true);
+        return $this->api_get('sync/0');
     }
 
     public function get_exports($id, $mail){
@@ -166,17 +164,13 @@ class Items_Model extends Reim_Model {
             $_data['rid'] = $data['rid'];
         }
         $_data['items'] = json_encode($items);
-        $buf = $this->api_post('item', $_data);
-        log_message('debug','item_create_data:' . json_encode($data));
-        log_message('debug','item_create_back:' . json_encode($buf));
-        $obj = json_decode($buf, true);
+        $obj = $this->api_post('item', $_data);
         return $obj;
     }
 
     public function remove($id = 0){
         if($id == 0) return false;
-        $buf = $this->api_delete('item/'. $id);
-        $obj = json_decode($buf, true);
+        return $this->api_delete('item/'. $id);
         return $obj;
     }
 
@@ -220,10 +214,9 @@ class Items_Model extends Reim_Model {
         );
         array_push($items, $s);
         $data = array('items' => json_encode($items));
-        $buf = $this->api_put('item', $data);
         log_message('debug','update_item_data:' . json_encode($data));
-        log_message('debug','update_item_back:' . json_encode($buf));
-        $obj = json_decode($buf, true);
+        $obj = $this->api_put('item', $data);
+        log_message('debug','update_item_back:' . json_encode($obj));
         return $obj;
     }
 
