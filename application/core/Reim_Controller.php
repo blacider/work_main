@@ -18,15 +18,19 @@ class REIM_Controller extends CI_Controller{
 
     public function _remap($method,$params)
     {
-        $jwt = $this->session->userdata('jwt');
-        if(empty($jwt)) {
+        if (!$this->session->userdata('oauth2_ak')) {
             $controller = $this->uri->rsegment_array();
             $white_list = ['', 'login', 'install', 'pub', 'users', 'register'];
             if(!in_array($controller[1], $white_list)) {
                 redirect(base_url('/#login'));
             }
         }
-        call_user_func_array(array($this, $method), $params);
+        try {
+            call_user_func_array(array($this, $method), $params);
+        }
+        catch (RequireLoginError $e) {
+            redirect(base_url('/#login'));
+        }
     }
 
     public function bsload($view_name, $custom_data, $template_views=array()){

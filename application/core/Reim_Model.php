@@ -2,6 +2,8 @@
 
 define("PUBKEY", "1NDgzZGY1OWViOWRmNjI5ZT");
 
+define ('USER_AUTH_ERROR', -14);
+
 class Reim_Model extends CI_Model {
 
     const APP_TABLE = "tbl_apps";
@@ -228,10 +230,16 @@ class Reim_Model extends CI_Model {
             $headers[] = $auth_header;
         }
         $headers[] = 'X-ADMIN-API: 1';
-        # FIXME unset $headers['jwt']
         $ret = $this->fire_api_call($method, $url, $data, $headers);
         $json_ret = json_decode($ret, true);
-        # TODO check auth status
+        if (is_array($json_ret) and
+            array_key_exists('code', $json_ret) and
+            $json_ret['code'] == USER_AUTH_ERROR
+        ) {
+            log_message('error', "api auth error while: $method $url");
+            $this->session->sess_destroy();
+            throw new RequireLoginError();
+        }
         if ($decode_json) {
             return $json_ret;
         }
@@ -249,4 +257,9 @@ class Reim_Model extends CI_Model {
     }
 
 }
+
+
+class BaseException extends Exception {}
+
+class RequireLoginError extends BaseException {}
 

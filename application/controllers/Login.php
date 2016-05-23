@@ -9,8 +9,7 @@ class Login extends REIM_Controller {
 
     public function index()
     {
-        $jwt = $this->session->userdata('jwt');
-        if ($jwt) {
+        if ($this->session->userdata('oauth2_ak')) {
             return redirect(base_url('items'));
         }
         $this->load->library('user_agent');

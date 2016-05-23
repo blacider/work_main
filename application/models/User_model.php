@@ -43,8 +43,8 @@ class User_Model extends Reim_Model {
     }
 
     public function logout() {
-        $this->session->sess_destroy();
         $this->api_get('/logout');
+        $this->session->sess_destroy();
     }
 
     public function refresh_session() {
