@@ -119,21 +119,14 @@ class User_Model extends Reim_Model {
     }
 
     public function reim_get_info($uid){
-        $jwt = $this->session->userdata('jwt');
-        $url = $this->get_url('users/' . $uid);
-        $buf = $this->do_Get($url, $jwt);
-        $obj = json_decode($buf, true);
-        log_message("debug", "Get:" . $buf . ",JWT: " . json_encode($jwt));
-        return json_encode($obj);
+        $obj = $this->api_get('users/' . $uid);
+        //log_message("debug", "Get: " . json_encode($obj));
+        return $obj;
     }
 
     public function reim_update_password($old_password, $new_password, $pid){
         $data = array('new_password' => $new_password, 'old_password' => $old_password, 'uid' => $pid);
-        $jwt = $this->session->userdata('jwt');
-        $url = $this->get_url('users');
-        $buf = $this->do_Put($url, $data, $jwt);
-        log_message("debug", $buf);
-        return $buf;
+        return $this->api_put('users', $data);
     }
 
     public function reim_update_profile($email, $phone, $nickname, $credit_card,$usergroups, $uid = 0, $admin = 0, $manager_id = 0, $max_report = 0, $rank = 0, $level = 0, $client_id = '', $avatar = 0, $admin_groups_granted = ''){

@@ -63,7 +63,7 @@ class Users extends REIM_Controller
         }
 
         $uid = $profile['id'];
-        $profile = json_decode($this->user->reim_get_info($uid), True);
+        $profile = $this->user->reim_get_info($uid);
         $profile = $profile['data'];
         $manager_id = $profile['manager_id'];
 
@@ -150,7 +150,7 @@ class Users extends REIM_Controller
         if ($re_password != $new_password) {
             $this->session->set_userdata('last_error', '新密码不相同');
         }
-        $info = json_decode($this->user->reim_update_password($old_password, $new_password, $pid), true);
+        $info = $this->user->reim_update_password($old_password, $new_password, $pid);
         log_message('debug', 'info:' . json_encode($info));
         if ($info['status'] > 0) {
             die(json_encode(array('status' => 1, 'msg' => '密码修改成功')));
@@ -225,7 +225,7 @@ class Users extends REIM_Controller
                 redirect(base_url('members/editmember/' . $pid));
             }
         }
-        $info = json_decode($this->user->reim_update_password($old_password, $new_password, $pid), true);
+        $info = $this->user->reim_update_password($old_password, $new_password, $pid);
         if ($info['status'] > 0) {
             if ($pid == $profile_id) {
                 $this->session->unset_userdata('jwt');
@@ -283,8 +283,9 @@ class Users extends REIM_Controller
     }
 
     public function get_user_profile($uid) {
+        # XXX
         $profile = $this->user->reim_get_info($uid);
-        die($profile);
+        echo json_encode($profile);
     }
 
     public function new_credit() {

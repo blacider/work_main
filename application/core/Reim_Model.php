@@ -196,7 +196,7 @@ class Reim_Model extends CI_Model {
     }
 
     public function do_Delete($url, $fields, $extraheader = array()){
-        return $this->api_call('DELETE', $url, $fields, $extraheader, false);
+        return $this->api_call('DELETE', $url, $fields, null, $extraheader, false);
     }
 
     public function get_curl_upload_field($file_path  = '') {

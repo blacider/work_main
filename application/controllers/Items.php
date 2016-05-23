@@ -13,7 +13,7 @@ class Items extends REIM_Controller {
         $this->load->model('reim_show_model', 'reim_show');
         $this->load->helper('report_view_utils');
     }
-    
+
     public function get_item_type_view_dic()
     {
         $prefix = 'module/items/';
@@ -55,7 +55,7 @@ class Items extends REIM_Controller {
             $template_views = ['item_amount','item_category','item_time','item_affiliated_person','item_fee_afford','item_seller','item_tags','item_custom_types','item_notes','item_picture','item_attachments','item_footer'];
             foreach($template_views as &$tv)
             {
-                $tv = $prefix . $tv; 
+                $tv = $prefix . $tv;
             }
             return $template_views;
         }
@@ -86,19 +86,19 @@ class Items extends REIM_Controller {
                 array_push($template_views,$view_name);
             }
         }
-            
+
         array_push($template_views,'item_footer');
         foreach($template_views as &$tv)
         {
-            $tv = $prefix . $tv; 
+            $tv = $prefix . $tv;
         }
         return $template_views;
     }
 
     public function attachment() {
-        if(empty($_FILES)) 
-            die(''); 
-        
+        if(empty($_FILES))
+            die('');
+
         // 默认是item
         //$type = $this->input->post('type');
         //if(!$type) $type = 0;
@@ -106,7 +106,7 @@ class Items extends REIM_Controller {
         $mime = $_FILES['file']['type'];
         $filename = $_FILES['file']['name'];
 
-        if(!is_uploaded_file($_FILES['file']['tmp_name'])) 
+        if(!is_uploaded_file($_FILES['file']['tmp_name']))
             die('');
         $buf = $this->items->attachment($_FILES['file']['tmp_name'],$filename,$mime);
 
@@ -123,14 +123,14 @@ class Items extends REIM_Controller {
     public function get_coin_symbol($key = 'cny')
     {
         $symbol = '?';
-        $coin_symbol_dic = array( 
+        $coin_symbol_dic = array(
                             'cny'=>'￥','usd'=>'$','eur'=>'€','hkd'=>'$','mop'=>'$','twd'=>'$','jpy'=>'￥','ker'=>'₩',
                             'gbp'=>'£','rub'=>'₽','sgd'=>'$','php'=>'₱','idr'=>'Rps','myr'=>'$','thb'=>'฿','cad'=>'$',
                             'aud'=>'$','nzd'=>'$','chf'=>'₣','dkk'=>'Kr','nok'=>'Kr','sek'=>'Kr','brl'=>'$'
-                            );                           
+                            );
         if(array_key_exists($key,$coin_symbol_dic))
         {
-            $symbol = $coin_symbol_dic[$key]; 
+            $symbol = $coin_symbol_dic[$key];
         }
 
         return $symbol;
@@ -147,7 +147,7 @@ class Items extends REIM_Controller {
         {
             die(json_encode($info));
         }
-            
+
     }
 
     public function get_typed_currency()
@@ -193,15 +193,15 @@ class Items extends REIM_Controller {
 
         if($profile && array_key_exists('group',$profile) && array_key_exists('config',$profile['group']))
         {
-            $company_config = json_decode($profile['group']['config'],True); 
+            $company_config = json_decode($profile['group']['config'],True);
         }
-        
+
         if(!$wanted)
             return $company_config;
 
         foreach($wanted as $w)
         {
-            if(!array_key_exists($w,$company_config)) 
+            if(!array_key_exists($w,$company_config))
             {
                 $company_config[$w] = "0";
             }
@@ -219,7 +219,7 @@ class Items extends REIM_Controller {
         if($rid > 0){
             $report = $this->report->get_detail($rid);
             if($report['status'] > 0){
-                $uid = $report['data']['uid'];   
+                $uid = $report['data']['uid'];
             }
         }
 
@@ -230,7 +230,7 @@ class Items extends REIM_Controller {
         $item_type_dic = $this->reim_show->get_item_type_name();
 
         $profile = array();
-        $_profile = json_decode($this->user->reim_get_info($uid),True);   
+        $_profile = $this->user->reim_get_info($uid);
         if($_profile['status'] > 0) {
             $profile = $_profile['data'];
         }
@@ -242,7 +242,7 @@ class Items extends REIM_Controller {
         //{
             //$profile = $_profile['data']['profile'];
         //}
-        
+
         $wanted_config = ['open_exchange','disable_borrow','disable_budget'];
         $company_config = $this->get_company_config($wanted_config,$profile);
 
@@ -252,7 +252,7 @@ class Items extends REIM_Controller {
             //获取自定义消费字段
             if(array_key_exists('item_customization',$group_config))
             {
-                $item_customization = $group_config['item_customization']; 
+                $item_customization = $group_config['item_customization'];
             }
         }
         $afford = array();
@@ -304,9 +304,9 @@ class Items extends REIM_Controller {
         $is_burden = true;
         if(!$afford)
         {
-           $is_burden = false; 
+           $is_burden = false;
         }
-        
+
         //获取html标签包含的内容
         $html_company_config = get_html_container($company_config,'company_config',true);
         $html_item_config = get_html_container($item_config,'item_config',true);
@@ -473,7 +473,7 @@ class Items extends REIM_Controller {
     public function listdata(){
         //获取消费类型字典
         $item_type_dic = $this->reim_show->get_item_type_name();
-       
+
         $items = $this->items->get_list();
         $category = $this->category->get_list();
         $categories = array();
@@ -566,10 +566,10 @@ class Items extends REIM_Controller {
             $msg = $obj['data']['msg'];
             $this->session->set_userdata('last_error', $msg);
         }
-        if ($flag == 1) 
+        if ($flag == 1)
         {
            // redirect(base_url('reports/newreport'));
-           die(json_encode(array('data'=>'success'))); 
+           die(json_encode(array('data'=>'success')));
         }
         else redirect(base_url('items'));
     }
@@ -671,7 +671,7 @@ class Items extends REIM_Controller {
             }
             $arr = $ret;
             $i = 0;
-            for (; $i < count($arr); $i++) { 
+            for (; $i < count($arr); $i++) {
                 if (preg_match("/^[\x{4e00}-\x{9fa5}]+$/u",$arr[$i])) {
                     break;
                 }
@@ -683,7 +683,7 @@ class Items extends REIM_Controller {
                     array_push($name, $arr[$j]);
                 } else {
                     array_push($opt, $arr[$j]);
-                }   
+                }
             }
             $name = join($name);
             $opt = join($opt);
@@ -732,7 +732,7 @@ class Items extends REIM_Controller {
         if(0 === $id) redirect(base_url('items'));
 
         $uid = $item['uid'];
-        $_profile = json_decode($this->user->reim_get_info($uid),true);   
+        $_profile = $this->user->reim_get_info($uid);
         $profile = array();
         $group_config = array();
         /*
@@ -749,7 +749,7 @@ class Items extends REIM_Controller {
 
         //自定义消费字段信息
         $item_customization = array();
-        
+
         if(array_key_exists('group',$profile))
         {
             $group_config = $profile['group'];
@@ -778,7 +778,7 @@ class Items extends REIM_Controller {
         {
             $fee_afford_ids = explode(',',$item['afford_ids']);
         }
-        
+
         $afford = array();
         if(array_key_exists('fee_afford', $profile)){
             $afford = $profile['fee_afford'];
@@ -800,11 +800,11 @@ class Items extends REIM_Controller {
                     {
                             array_push($afford_dic[$af['id']],$a['id']);
                     }
-                }   
+                }
             }
         }
         log_message('debug','afford_dic:' . json_encode($afford_dic));
-        
+
         $afford_type = -1 ;
         if($fee_afford_ids){
             foreach($afford_dic as $key => $it){
@@ -881,7 +881,7 @@ class Items extends REIM_Controller {
         $is_burden = true;
         if(!$afford)
         {
-           $is_burden = false; 
+           $is_burden = false;
         }
 
         //获取html标签包含的内容
@@ -959,7 +959,7 @@ class Items extends REIM_Controller {
             $_default_customization = $this->input->post('default_customization');
             if($_default_customization)
             {
-                $default_customization = json_decode($_default_customization,true); 
+                $default_customization = json_decode($_default_customization,true);
             }
 
             foreach(json_decode($common_item_input['customization'],true) as $cii)
@@ -981,7 +981,7 @@ class Items extends REIM_Controller {
             $obj = $this->items->update($common_item_input);
             if($obj && array_key_exists('data',$obj) && array_key_exists('status',$obj['data'][0]) && $obj['data'][0]['status'] <= 0)
             {
-                
+
                 $this->session->set_userdata('last_error',$obj['data'][0]['msg']);
             }
             log_message('debug','status' . $obj['status']);

@@ -1593,11 +1593,11 @@ class Members extends REIM_Controller {
             $levels = $_levels['data'];
         }
 
-        $info = json_decode($this->users->reim_get_info($id), True);
+        $info = $this->users->reim_get_info($id);
         if(!$info['status']) return redirect('members/index');
         $info =  $info['data'];
         $manager_id = $info['manager_id'];
-        $m_info = json_decode($this->users->reim_get_info($manager_id),True);
+        $m_info = $this->users->reim_get_info($manager_id);
         $pro = $info;
         $ug = $this->reim_show->usergroups();
         //log_message('debug','m_info:' . json_encode($m_info['data']));
