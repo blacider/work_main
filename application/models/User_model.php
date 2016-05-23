@@ -203,8 +203,8 @@ class User_Model extends Reim_Model {
     }
 
     public function exchange_weixin_token($code) {
-        $appid = 'wxa718c52caef08633';
-        $appsec = '02c3df9637d1210a84447524f3606dc1';
+        $appid = $this->config->item('weixin_appid');
+        $appsec = $this->config->item('weixin_appsec');
         $qs = http_build_query([
             'appid' => $appid,
             'secret' => $appsec,
