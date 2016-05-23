@@ -2,9 +2,9 @@
 
 class User_Model extends Reim_Model {
 
-
     public function __construct(){
         parent::__construct();
+        $this->config->load('auth');
     }
 
     public function oauth2_auth_pwd($username, $password) {
@@ -24,8 +24,9 @@ class User_Model extends Reim_Model {
     }
 
     private function oauth2_auth($parms) {
-        $client_id = 'w2Dl7oc0CimMq1yFtLDcdFVBKWEeIjwTr1wRLngd';
-        $client_secret = 'nWx8llO9LmZdxek2g8K7nc6mnWC9rmW1dOEoQ5An';
+        $client_id = $this->config->item('api_client_id');
+        $client_secret = $this->config->item('api_client_secret');
+        $appsec = $this->config->item('weixin_appsec');
         $parms = array_merge($parms, [
             'client_id' => $client_id,
             'client_secret' => $client_secret,
