@@ -18,14 +18,8 @@ class Reim_Model extends CI_Model {
         $this->api_url_base = $this->config->item('api_url_base');
     }
 
-    public function get_url($part, $data = array()){
-        if(!empty($data)){
-            $part = $part . '?' ;
-            foreach($data as $k => $v){
-                $part = $part . $k . '=' . $v . '&';
-            }
-        }
-        return $this->api_url_base . $part;
+    public function get_url($part){
+        return $part;
     }
 
     private function getBrowser()
@@ -145,7 +139,7 @@ class Reim_Model extends CI_Model {
         $this->curl_timeout = $timeout;
     }
 
-    private function fire_api_call($method, $url, $fields, $extraheader = array()) {
+    private function fire_api_call($method, $url, $fields, $headers=array()) {
         $method = strtoupper($method);
         $ch = $this->get_curl_handler();
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
@@ -157,10 +151,10 @@ class Reim_Model extends CI_Model {
         if (!empty($fields)) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         } elseif (in_array($method, [ 'POST', 'PATCH', 'PUT', 'DELETE' ])) {
-            $extraheader[] = 'Content-Length: 0';
+            $headers[] = 'Content-Length: 0';
         }
-        $extraheader[] = 'X-Client-IP: ' . $this->input->ip_address();
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $extraheader);
+        $headers[] = 'X-Client-IP: ' . $this->input->ip_address();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_ENCODING, '');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -209,9 +203,7 @@ class Reim_Model extends CI_Model {
             }
             $url = $url . http_build_query($params);
         }
-        if (0 !== strpos($url, 'http')) {
-            $url = $this->api_url_base . $url;
-        }
+        $url = $this->api_url_base . $url;
         $access_token = $this->session->userdata('oauth2_ak');
         if (!empty($access_token)) {
             $auth_header = "Authorization: Bearer $access_token";

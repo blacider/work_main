@@ -4,17 +4,11 @@
 class Register_Model extends Reim_Model {
 
     public function vcode_verify($addr = 'email', $user_addr = '', $vcode = ''){
-        $data = array(
+        $parms = array(
             $addr => $user_addr,
             'vcode' => $vcode
         ); 
-
-        log_message("debug","data:" . json_encode($data));
-        $url = $this->get_url('vcode/verify',$data);
-        $buf = $this->do_Get($url,'');
-        log_message("debug","vcode_verify_back:" . $buf);
-
-        return json_decode($buf,true);
+        return $this->api_get('vcode/verify', null, $parms);
     }
 
     public function getvcode($addr = 'email',$user_addr = '',$scene = 'register')    
