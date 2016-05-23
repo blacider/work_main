@@ -185,21 +185,6 @@ class User_Model extends Reim_Model {
         return $buf;
     }
 
-
-    public function register($email, $pass, $phone, $code){
-        $url = $this->get_url('users');
-        $data = array(
-            'email' => $email,
-            'password' => $pass,
-            'phone' => $phone,
-            'code' => $code,
-        );
-
-        $jwt = $this->get_jwt($email, $pass);
-        $buf = $this->do_Post($url, $data, $jwt);
-        return $buf;
-    }
-
     public function getvcode($phone){
         $url = $this->get_url('vcode');
         $data = array(
