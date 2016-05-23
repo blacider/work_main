@@ -14,7 +14,6 @@ class Reim_Model extends CI_Model {
 
     public function __construct(){
         parent::__construct();
-        $this->load->library('JWT', 'jwt');
         $this->config->load('api');
         $this->api_url_base = $this->config->item('api_url_base');
     }
@@ -28,17 +27,6 @@ class Reim_Model extends CI_Model {
         }
         return $this->api_url_base . $part;
     }
-
-    public function get_jwt($username, $password){
-        $d = array(
-            'email' => $username,
-            'password' => $password,
-            'device_type' => 'pc',
-        );
-        log_message("debug", "Header:" . json_encode($d));
-        return array('X-REIM-JWT: ' . JWT::encode($d, PUBKEY), 'X-ADMIN-API: 1');
-    }
-
 
     private function getBrowser()
     {
