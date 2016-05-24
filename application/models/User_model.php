@@ -51,8 +51,9 @@ class User_Model extends Reim_Model {
     public function refresh_session() {
         $user = $this->reim_get_user();
         $data = $user['data']['profile'];
-        $uid = $data['id'];
-        $this->session->set_userdata("uid", $uid);
+        # FIXME check `common` ret valid
+        $this->session->set_userdata("uid", $data['id']);
+        $this->session->set_userdata("groupname", $data['group_name']);
     }
 
     public function reset_password($data = array()){

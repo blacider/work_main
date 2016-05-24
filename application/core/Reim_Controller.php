@@ -35,7 +35,6 @@ class REIM_Controller extends CI_Controller{
 
     public function bsload($view_name, $custom_data, $template_views=array()){
         $this->load->model('user_model');
-        $menu_page = 'menu.bs.php';
         $uid = $this->session->userdata('uid');
         $profile = array();
         $common = array();
@@ -104,7 +103,7 @@ class REIM_Controller extends CI_Controller{
         $custom_data['lte_ie8'] = $lte_ie8;
 
         $this->load->view('header.bs.php', $custom_data);
-        $this->load->view($menu_page, $custom_data);
+        $this->load->view('menu.bs.php', $custom_data);
         $this->load->view($view_name, $custom_data);
         foreach($template_views as $tv)
         {

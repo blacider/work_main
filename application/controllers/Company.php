@@ -52,7 +52,6 @@ class Company extends REIM_Controller {
         {
             log_message('debug','has no id');
             $msg = '没有模板信息,更新失败';
-            $this->session->set_userdata('debug','没有模板信息,更新失败');
         }
         $id = $temp_info['id'];
         $template_name = '';
@@ -117,7 +116,6 @@ class Company extends REIM_Controller {
         {
             $status = 1;
             $msg = '更新成功';
-            $this->session->set_userdata('debug','更新成功');
         }
         else
         {

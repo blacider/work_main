@@ -1464,19 +1464,10 @@ class Reports extends REIM_Controller {
             //return redirect(base_url('reports/index'));
         }
         $user = $this->session->userdata('user');
-        $username = '';
-        if(is_array($user)){
-            $username = $user['email'];
-            if($user['nickname']){
-                $username = $user['nickname'];
-            }
-        } else {
-            $username = $user->username;
-            if($user->nickname){
-                $username = $user->nickname;
-            }
+        $username = $user['email'];
+        if($user['nickname']){
+            $username = $user['nickname'];
         }
-        $_maker = $username;
         $data = $this->reports->get_reports_by_ids($ids);
         if ($data['status'] <= 0) {
             return;
@@ -1494,7 +1485,7 @@ class Reports extends REIM_Controller {
             '制单日期' => date('Y-m-d'),
             '凭证类别' => '转',
             '凭证号' => 0,
-            '制单人' => $_maker,
+            '制单人' => $username,
             '所附单据数' => '',
             '备注1' => '',
             '备注2' => '',
