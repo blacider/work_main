@@ -1463,7 +1463,7 @@ class Reports extends REIM_Controller {
             die("<script language='javascript'>history.go(-1); </script>");
             //return redirect(base_url('reports/index'));
         }
-        $user = $this->session->userdata('user');
+        $user = $this->session->userdata('profile');
         $username = $user['email'];
         if($user['nickname']){
             $username = $user['nickname'];

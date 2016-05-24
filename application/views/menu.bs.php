@@ -29,7 +29,7 @@
 				<div class="navbar-buttons navbar-header pull-right" role="navigation" style="position: relative;z-index: 999">
 					<ul class="nav ace-nav">
                         <?php
-                        $user = $this->session->userdata('user');
+                        $user = $this->session->userdata('profile');
                         $pid = $this->session->userdata('uid');
                         #print_r($user);
                         if(!$user) redirect(base_url('login'));

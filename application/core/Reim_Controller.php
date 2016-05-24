@@ -34,50 +34,30 @@ class REIM_Controller extends CI_Controller{
     }
 
     public function bsload($view_name, $custom_data, $template_views=array()){
-        $this->load->model('user_model');
         $uid = $this->session->userdata('uid');
-        $profile = array();
-        $common = array();
-        $_common = $this->user_model->get_common();
-        if($_common['status'] > 0)
-        {
-            $common = $_common['data'];
-        }
-        if(array_key_exists('profile',$common))
-        {
-            $profile = $common['profile'];
-        }
-        if(!($profile || $uid)){
-            // 重定向到登陆
-            redirect(base_url('login'), 'refresh');
-        }
-        $report_template = array();
+        # TODO trigger refresh profile
+        $profile = $this->session->userdata('profile');
+        assert($profile);
 
+        $report_template = array();
         $custom_data['company_config'] = array();
-        if(!$profile){
-            $custom_data['opt_error'] = $this->session->userdata('last_error');
-            $custom_data['username'] = $this->session->userdata('username');
-            $custom_data['uid'] = $this->session->userdata('uid');
-            $custom_data['description'] =  '';
-        } else {
-            if(array_key_exists('report_setting', $profile)) {
-                if(array_key_exists('templates',$profile['report_setting']))
-                $report_template = $profile['report_setting']['templates'];
-            }
-            $this->session->set_userdata('user', $profile);
-            if(!array_key_exists('profile',$custom_data)){
-                $custom_data['profile'] = $profile;
-            }
-            $admin_groups_granted = array();
-            if(array_key_exists("admin_groups_granted_all", $profile) && $profile["admin_groups_granted_all"])
-            {
-                $admin_groups_granted = $profile["admin_groups_granted_all"];
-            }
-            $custom_data['admin_groups_granted'] = $admin_groups_granted;
-            if (isset($profile['group']['config'])) {
-                $custom_data['company_config'] = json_decode($profile['group']['config'], TRUE);
-            }
+        if(array_key_exists('report_setting', $profile)) {
+            if(array_key_exists('templates',$profile['report_setting']))
+            $report_template = $profile['report_setting']['templates'];
         }
+        if(!array_key_exists('profile', $custom_data)){
+            $custom_data['profile'] = $profile;
+        }
+        $admin_groups_granted = array();
+        if(array_key_exists("admin_groups_granted_all", $profile) && $profile["admin_groups_granted_all"])
+        {
+            $admin_groups_granted = $profile["admin_groups_granted_all"];
+        }
+        $custom_data['admin_groups_granted'] = $admin_groups_granted;
+        if (isset($profile['group']['config'])) {
+            $custom_data['company_config'] = json_decode($profile['group']['config'], TRUE);
+        }
+
         $custom_data['groupname'] = $this->session->userdata('groupname');
         $custom_data['report_templates'] = $report_template;
 

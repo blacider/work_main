@@ -84,19 +84,6 @@ class User_Model extends Reim_Model {
         return $this->api_get("register/user/" . $name);
     }
 
-    public function get_common()
-    {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt)  return false;
-
-        $url = $this->get_url('common');
-        $buf = $this->do_Get($url,$jwt);
-
-        //log_message('debug','common:' . $buf);
-
-        return json_decode($buf,True);
-    }
-
     public function del_email($email)
     {
         $data = array('emails' => $email);
@@ -106,6 +93,7 @@ class User_Model extends Reim_Model {
     public function reim_get_user(){
         $obj = $this->api_get('common/0');
         log_message('debug', 'common ret: ' . json_encode($obj));
+        # XXX
         if ($obj['status']) {
             $profile = &$obj['data']['profile'];
             $this->session->set_userdata('profile', $profile);

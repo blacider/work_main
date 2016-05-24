@@ -153,7 +153,7 @@ class Members extends REIM_Controller {
     }
     public function update_rank_level($rank)
     {
-        $this->need_group_it();	
+        $this->need_group_it();
 
         $name = $this->input->post('name');
         $id = $this->input->post('rank_level_id');
@@ -272,7 +272,7 @@ class Members extends REIM_Controller {
         $this->need_group_it();
         $group = json_decode($this->ug->get_single_group($gid),True);
         if($group['status'] > 0) {
-            $data = $group['data'];		
+            $data = $group['data'];
         }
         else {
             $this->session->set_userdata('last_error','部门信息获取错误');
@@ -282,8 +282,8 @@ class Members extends REIM_Controller {
         $members = array();
         $g_info = array();
         if(array_key_exists('member',$data)) {
-            $members = $data['member'];	
-        }	
+            $members = $data['member'];
+        }
         if(array_key_exists('group',$data)) {
             $g_info = $data['group'];
         }
@@ -336,11 +336,11 @@ class Members extends REIM_Controller {
                 log_message("debug", "Profile admin $close :" . $profile['admin']);
                 if($close == 1 && $profile['admin'] < 1) {
                     return redirect(base_url('items/index'));
-                } 
+                }
             }
         }
         //log_message('debug', 'Profile:' . json_encode($groups['config']));
-        //$config = 
+        //$config =
         //log_message('debug', 'Profile:' . json_encode($profile));
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
@@ -417,11 +417,11 @@ class Members extends REIM_Controller {
                 log_message("debug", "Profile admin $close :" . $profile['admin']);
                 if($close == 1 && $profile['admin'] < 1) {
                     return redirect(base_url('items/index'));
-                } 
+                }
             }
         }
         //log_message('debug', 'Profile:' . json_encode($groups['config']));
-        //$config = 
+        //$config =
         //log_message('debug', 'Profile:' . json_encode($profile));
         // 获取当前所属的组
         $_ranks = $this->reim_show->rank_level(1);
@@ -504,7 +504,7 @@ class Members extends REIM_Controller {
                 log_message("debug", "Profile admin $close :" . $profile['admin']);
                 if($close == 1 && $profile['admin'] < 1) {
                     return redirect(base_url('items/index'));
-                } 
+                }
             }
         }
         $group = $this->groups->get_my_list();
@@ -610,9 +610,9 @@ class Members extends REIM_Controller {
         //$ids = $this->input->post('data');
 
         if($type == 0){
-            $type = 2; 
+            $type = 2;
         } else {
-            $type = 1; 
+            $type = 1;
         }
         $_ids = implode(',', array($uid));
         //$_type = $this->input->post('type');
@@ -642,7 +642,7 @@ class Members extends REIM_Controller {
     public function show() {
         $this->bsload('groups/show',
             array(
-                'title' => '添加部门' 
+                'title' => '添加部门'
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
@@ -733,56 +733,37 @@ class Members extends REIM_Controller {
         $rows = $this->input->get('rows');
         $sort = $this->input->get('sord');
         $group = $this->ug->get_my_list();
+        assert ($group['status']);
         $profile = $this->session->userdata('profile');
-        $_common = $this->users->get_common();
-        if($_common['status'] > 0)
-        {
-            $common = $_common['data'];
-        }
-        if(array_key_exists('profile',$common))
-        {
-            $profile = $common['profile'];
-        }
         $admin_groups_granted = array();
         if(array_key_exists('admin_groups_granted_all',$profile) && $profile['admin_groups_granted_all'])
         {
-            $admin_groups_granted = $profile['admin_groups_granted_all']; 
+            $admin_groups_granted = $profile['admin_groups_granted_all'];
         }
-        /// 结构好奇怪啊
-        //
-        if($group['status']){
-            $_data = array();
-            //die(json_encode(array('data' => $group['data'])));
-            foreach($group['data']['group'] as &$s){
-                $editable = 0;
-                if(in_array($profile['admin'],[1,3]))
-                {
-                    $editable = 1;
-                }
-                if(!$editable && in_array($s['id'],$admin_groups_granted))
-                {
-                    $editable = 1; 
-                }
-                $s['type'] = 'item';
-                $s['options'] = '';
-                if($editable)
-                {
-                    $s['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
-                        . '<span class="ui-icon ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>'
-                        . '<span class="ui-icon ui-icon-trash tdel" data-id="' . $s['id'] . '"></span></div>';
-                }
+        $_data = array();
+        foreach($group['data']['group'] as &$s){
+            $editable = 0;
+            if(in_array($profile['admin'],[1,3]))
+            {
+                $editable = 1;
             }
-            /*
-            array_push($group['data']['group'], array('option' => '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="-1">' . '<span class="ui-icon ui-icon-pencil tedit" data-id="-1"></span>' . '<span class="ui-icon ui-icon-trash tdel" data-id="-1"></span></div>', 'name' => '已邀请', 'id' => "-1"));
-            //$group['data']['group'] = array('name' => '全体员工', 'id' => "-2", "additionalParameters" => array('children' => $group['data']['group']), 'type' => 'folder');
-            array_push($group['data']['group'], array('name' => '全体员工', 'id' => "-2", "additionalParameters" => array('children' => $group['data']['group']), 'type' => 'folder'));
-             */
-            log_message('debug','groupscount:'.json_encode($group['data']['group']));
-            log_message('debug','groups_granted:'.json_encode($admin_groups_granted));
-            die(json_encode($group['data']['group']));
+            if(!$editable && in_array($s['id'],$admin_groups_granted))
+            {
+                $editable = 1;
+            }
+            $s['type'] = 'item';
+            $s['options'] = '';
+            if($editable)
+            {
+                $s['options'] = '<div class="hidden-sm hidden-xs action-buttons ui-pg-div ui-inline-del" data-id="' . $s['id'] . '">'
+                    . '<span class="ui-icon ui-icon-pencil tedit" data-id="' . $s['id'] . '"></span>'
+                    . '<span class="ui-icon ui-icon-trash tdel" data-id="' . $s['id'] . '"></span></div>';
+            }
         }
+        log_message('debug','groupscount:'.json_encode($group['data']['group']));
+        log_message('debug','groups_granted:'.json_encode($admin_groups_granted));
+        die(json_encode($group['data']['group']));
     }
-
 
     public function newmember($gid = '0'){
         $this->need_group_agent();
@@ -790,7 +771,6 @@ class Members extends REIM_Controller {
         $_group = $this->groups->get_my_list();
         $_ranks = $this->reim_show->rank_level(1);
         $_levels = $this->reim_show->rank_level(0);
-
 
         $ranks = array();
         $levels = array();
@@ -896,7 +876,7 @@ class Members extends REIM_Controller {
         if(count($manager) == 2)
         {
             $data['manager_id'] = $manager[0];
-            $data['manager'] = $manager[1]; 
+            $data['manager'] = $manager[1];
         }
         $data['cardloc'] = $cardloc;
         $input = array();
@@ -915,7 +895,7 @@ class Members extends REIM_Controller {
             $this->session->set_userdata('last_error', '添加失败');
             return redirect(base_url('members/newmember'));
         }
-        
+
         if($renew == 0)
         {
             return redirect(base_url('members/index'));
@@ -1151,14 +1131,14 @@ class Members extends REIM_Controller {
         $email_id_matrix = array();
         foreach($gmember as $g){
 
-            $__email = $g['email']; 
-            $__phone = $g['phone']; 
+            $__email = $g['email'];
+            $__phone = $g['phone'];
             $__name = $g['nickname'];
             if(!in_array($__name,$_names))
             {
-                $names[$__name]['count'] = 1;		
+                $names[$__name]['count'] = 1;
                 $names[$__name]['ids']=array();
-                array_push($names[$__name]['ids'],$g['id']);	
+                array_push($names[$__name]['ids'],$g['id']);
             }
             else
             {
@@ -1205,7 +1185,7 @@ class Members extends REIM_Controller {
                 $obj['accounts'] = '';
                 $obj['account'] = '';
                 $obj['cardbank'] = '';
-                $obj['bank'] = '';	
+                $obj['bank'] = '';
             }
             $obj['cardloc'] = '';
             $obj['group_name'] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue());
@@ -1300,7 +1280,7 @@ class Members extends REIM_Controller {
             log_message("debug", "Check Exists:" . json_encode($_e));
             log_message("debug", "Check Exists:" . json_encode($_de));
             log_message("debug", "Check Exists:" . json_encode($d));
-            
+
             if(array_key_exists($_de,$email_id_matrix))
             {
                 $d['display_manager_id'] = $email_id_matrix[$_de];
@@ -1311,10 +1291,10 @@ class Members extends REIM_Controller {
             }
 
             if(array_key_exists($_e, $email_id_matrix)){
-                $d['status'] += 0;	
+                $d['status'] += 0;
                 $d['manager_id'] = $email_id_matrix[$_e];
             } else {
-                $d['status'] += 4;	
+                $d['status'] += 4;
             }
             //log_message('debug','isEq:' . in_array($d['name'],$_names));
 
@@ -1437,7 +1417,7 @@ class Members extends REIM_Controller {
         {
             $this->session->set_userdata('last_error','部门id错误');
             echo json_encode(array());
-            return; 
+            return;
         }
         $info = $this->ug->delete_group($id);
         if($info['status'] > 0)
@@ -1622,7 +1602,7 @@ class Members extends REIM_Controller {
                 , 'user_type' => $profile['admin']
                 , 'uid' => $profile['id']
                 , 'is_self'=> $profile['id'] == $id
-                ,'error' => $error 
+                ,'error' => $error
                 ,'last_error' => $last_error
                 ,'isOther' => 1
                 ,'gmember' => $gmember
@@ -1657,7 +1637,7 @@ class Members extends REIM_Controller {
         $data = array();
         if($info['status'] > 0)
         {
-            $data = $info['data'];	
+            $data = $info['data'];
         }
         log_message('debug','batch_load:' . json_encode($info));
         //        die(json_encode(array('msg'=>"it works")));
