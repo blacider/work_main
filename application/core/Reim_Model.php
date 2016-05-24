@@ -154,6 +154,10 @@ class Reim_Model extends CI_Model {
             $headers[] = 'Content-Length: 0';
         }
         $headers[] = 'X-Client-IP: ' . $this->input->ip_address();
+        $current_url = current_url();
+        if ($current_url) {
+            $headers[] = 'Referer: ' . current_url();
+        }
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_ENCODING, '');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
