@@ -16,7 +16,7 @@ class Category extends REIM_Controller {
 
     public function get_ug_members($gid)
     {
-        $info = json_decode($this->ug->get_single_group($gid), True);
+        $info = $this->ug->get_single_group($gid);
         if($info['status'] > 0){
             $info = $info['data'];
             $group = $info['group'];

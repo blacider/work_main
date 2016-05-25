@@ -270,7 +270,7 @@ class Members extends REIM_Controller {
     public function remove_from_group($gid,$uid)
     {
         $this->need_group_it();
-        $group = json_decode($this->ug->get_single_group($gid),True);
+        $group = $this->ug->get_single_group($gid);
         if($group['status'] > 0) {
             $data = $group['data'];
         }
@@ -1453,7 +1453,7 @@ class Members extends REIM_Controller {
             die(json_encode(array('status' => 1, 'data' => $gmember)));
         }
         $info = $this->ug->get_single_group($gid);
-        die($info);
+        die(json_encode($info));
     }
 
     public function editgroup($id = 0){
@@ -1472,7 +1472,7 @@ class Members extends REIM_Controller {
             }
         }
 
-        $info = json_decode($this->ug->get_single_group($id), True);
+        $info = $this->ug->get_single_group($id);
         if($info['status'] > 0){
             $info = $info['data'];
             $group = $info['group'];
