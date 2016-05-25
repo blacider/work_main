@@ -489,10 +489,8 @@ class Reports extends REIM_Controller {
             $item_data = $data['data'];
         }
         $_members = array();
-        $members = $this->users->reim_get_user();
-        if($members['status'] > 0){
-            $_members = $members['data']['members'];
-        }
+        $common = $this->users->get_common();
+        $_members = $common['data']['members'];
         $_error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
         $this->session->set_userdata("report_list_url", "reports/audit");
@@ -526,11 +524,8 @@ class Reports extends REIM_Controller {
         if(!$items['status']){
             die(json_encode(array()));
         }
-        $_members = array();
-        $members = $this->users->reim_get_user();
-        if($members['status'] > 0){
-            $_members = $members['data']['members'];
-        }
+        $common = $this->users->get_common();
+        $_members = $common['data']['members'];
         $__members = array();
         foreach($_members as $m){
             $__members[$m['id']] = $m;
@@ -574,14 +569,6 @@ class Reports extends REIM_Controller {
             $d['date_str'] = date('Y年m月d日', $d['createdt']);
             $d['status_str'] = get_report_status_str($d['status']);
 
-            /*
-            $prove_ahead = '报销';
-            switch($d['prove_ahead']){
-            case 0: {$prove_ahead = '<font color="black">' . $item_type_dic[0]  . '</font>';};break;
-            case 1: {$prove_ahead = '<font color="green">' . $item_type_dic[1]  . '</font>';};break;
-            case 2: {$prove_ahead = '<font color="red">' . $item_type_dic[2]  . '</font>';};break;
-            }
-            */
             $prove_ahead = get_report_type_str($item_type_dic,$d['prove_ahead'],$d['pa_approval']);
             $d['prove_ahead'] = $prove_ahead;
 

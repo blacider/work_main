@@ -31,22 +31,13 @@
                         <?php
                         $user = $this->session->userdata('profile');
                         $pid = $this->session->userdata('uid');
-                        #print_r($user);
-                        if(!$user) redirect(base_url('login'));
                         $_security = 0;
                         if(array_key_exists('risk', $user) && $user['risk'] == 1) {
                             $_security = 1;
                         }
-                        if(is_array($user)){
-                            $username = $user['email'];
-                            if($user['nickname']){
-                                $username = $user['nickname'];
-                            }
-                        } else {
-                            $username = $user->username;
-                            if($user->nickname){
-                                $username = $user->nickname;
-                            }
+                        $username = $user['email'];
+                        if($user['nickname']){
+                            $username = $user['nickname'];
                         }
                         ?>
 						<!-- #section:basics/navbar.user_menu -->

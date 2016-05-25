@@ -1,14 +1,13 @@
 <?php
 class Tags_Model extends Reim_Model {
 
+    public function __construct() {
+        parent::__construct();
+        $this->load->model('user_model');
+    }
+
     public function get_list(){
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-		$url = $this->get_url('common/0');
-		$buf = $this->do_Get($url, $jwt);
-        log_message("debug", $buf);
-		$obj = json_decode($buf, true);
-        return $obj;
+        return $this->user_model->get_common();
     }
 
     public function create($name) {

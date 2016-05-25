@@ -12,12 +12,8 @@ class Users extends REIM_Controller
     }
 
     public function profile() {
-        // 重新获取
-        $profile = $this->user->reim_get_user();
-        if (empty($profile) or empty($profile['data']['profile'])) {
-            $this->user->logout();
-            return redirect(base_url('login'));
-        }
+        $this->user->refresh_session();
+        $profile = $this->session->userdata('profile');
 
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
@@ -35,17 +31,6 @@ class Users extends REIM_Controller
             $levels = $_levels['data'];
         }
 
-        $pro = $profile['data']['profile'];
-        $config = $profile['data']['profile'];
-        if (array_key_exists('group', $config)) {
-            if (array_key_exists('config', $profile['data']['profile']['group'])) {
-                $config = $profile['data']['profile']['group']['config'];
-            }
-        }
-        else {
-            $config = array();
-        }
-        $profile = $profile['data']['profile'];
         $sobs = array();
         $usergroups = array();
         $audits = array();
@@ -76,7 +61,7 @@ class Users extends REIM_Controller
             }
             $gmember = $gmember ? $gmember : array();
         }
-        $this->bsload('user/profile', array('title' => '个人管理', 'member' => $profile, 'self' => 1, 'error' => $error, 'isOther' => 0, 'manager_id' => $manager_id, 'gmember' => $gmember, 'pid' => $uid, 'pro' => $pro, 'ug' => $ug, 'ranks' => $ranks, 'levels' => $levels, 'breadcrumbs' => array(array('url' => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon'), array('url' => '', 'name' => '修改资料', 'class' => '')),));
+        $this->bsload('user/profile', array('title' => '个人管理', 'member' => $profile, 'self' => 1, 'error' => $error, 'isOther' => 0, 'manager_id' => $manager_id, 'gmember' => $gmember, 'pid' => $uid, 'pro' => $profile, 'ug' => $ug, 'ranks' => $ranks, 'levels' => $levels, 'breadcrumbs' => array(array('url' => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon'), array('url' => '', 'name' => '修改资料', 'class' => '')),));
     }
 
     public function update_profile($isOther) {
@@ -138,8 +123,7 @@ class Users extends REIM_Controller
     }
 
     public function force_update_password() {
-        $profile = $this->user->reim_get_user();
-        $profile_id = $profile['data']['profile']['id'];
+        $profile = $this->session->userdata('profile');
         $old_password = $this->input->post('old_password');
         $new_password = $this->input->post('password');
         $re_password = $this->input->post('repassword');
@@ -168,9 +152,9 @@ class Users extends REIM_Controller
 
     public function get_members()
     {
-        $profile = $this->user->reim_get_user();
+        $common = $this->user->get_common();
 
-        $members = $profile['data']['members'];
+        $members = $common['data']['members'];
 
         $_ranks = $this->reim_show->rank_level(1);
         $ranks =array();
@@ -187,7 +171,7 @@ class Users extends REIM_Controller
         }
 
         $data = array(
-            'status'=>$profile['status'],
+            'status' => 1,
             'data' =>array(
                 'members'=>$members,
                 'levels'=>$levels,
@@ -198,8 +182,8 @@ class Users extends REIM_Controller
     }
 
     public function update_password() {
-        $profile = $this->user->reim_get_user();
-        $profile_id = $profile['data']['profile']['id'];
+        $profile = $this->session->userdata('profile');
+        $profile_id = $profile['id'];
         $old_password = $this->input->post('old_password');
         $new_password = $this->input->post('password');
         $re_password = $this->input->post('repassword');
@@ -217,7 +201,7 @@ class Users extends REIM_Controller
         if ($re_password != $new_password) {
             $this->session->set_userdata('last_error', '新密码不相同');
             if ($pid == $profile_id) {
-                return redirect('users/profile');
+                return redirect(base_url('users/profile'));
             }
             else {
                 redirect(base_url('members/editmember/' . $pid));
@@ -279,7 +263,6 @@ class Users extends REIM_Controller
     }
 
     public function get_user_profile($uid) {
-        # XXX
         $profile = $this->user->reim_get_info($uid);
         echo json_encode($profile);
     }

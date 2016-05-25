@@ -48,12 +48,29 @@ class User_Model extends Reim_Model {
         $this->session->sess_destroy();
     }
 
-    public function refresh_session() {
-        $user = $this->reim_get_user();
-        $data = $user['data']['profile'];
-        # FIXME check `common` ret valid
-        $this->session->set_userdata("uid", $data['id']);
-        $this->session->set_userdata("groupname", $data['group_name']);
+    public function get_common() {
+        $data = $this->fetch_common();
+        $this->refresh_session($data);
+        return $data;
+    }
+
+    public function refresh_session($data=null) {
+        if (empty($data)) {
+            $data = $this->fetch_common();
+        }
+        $profile = $data['data']['profile'];
+        $this->session->set_userdata('profile', $profile);
+        $this->session->set_userdata("uid", $profile['id']);
+        $this->session->set_userdata("groupname", $profile['group_name']);
+    }
+
+    private function fetch_common() {
+        $obj = $this->api_get('common/0');
+        log_message('debug', 'common ret: ' . json_encode($obj));
+        if (empty($obj['status']) or empty($obj['data'])) {
+            throw Exception('invalid common data');
+        }
+        return $obj;
     }
 
     public function reset_password($data = array()){
@@ -88,17 +105,6 @@ class User_Model extends Reim_Model {
     {
         $data = array('emails' => $email);
         return $this->api_post('staff', $data);
-    }
-
-    public function reim_get_user(){
-        $obj = $this->api_get('common/0');
-        log_message('debug', 'common ret: ' . json_encode($obj));
-        # XXX
-        if ($obj['status']) {
-            $profile = &$obj['data']['profile'];
-            $this->session->set_userdata('profile', $profile);
-        }
-        return $obj;
     }
 
     public function reim_get_info($uid){

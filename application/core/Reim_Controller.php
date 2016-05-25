@@ -34,10 +34,10 @@ class REIM_Controller extends CI_Controller{
     }
 
     public function bsload($view_name, $custom_data, $template_views=array()){
-        $uid = $this->session->userdata('uid');
-        # TODO trigger refresh profile
+        $this->user_model->refresh_session();
         $profile = $this->session->userdata('profile');
-        assert($profile);
+        $uid = $this->session->userdata('uid');
+        assert($profile and $uid);
 
         $report_template = array();
         $custom_data['company_config'] = array();
