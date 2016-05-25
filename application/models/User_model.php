@@ -98,7 +98,7 @@ class User_Model extends Reim_Model {
 
     public function check_company($name='')
     {
-        return $this->api_get("register/user/" . $name);
+        return $this->api_get("register/company/", null, ['name' => $name]);
     }
 
     public function del_email($email)
