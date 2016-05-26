@@ -214,6 +214,13 @@
                             $(this.node).prev().on('click', function (e) {
                                 _this.close();
                             });
+
+                            $(this.node).on('keyup', 'input', function (e) {
+                                if(e.keyCode==13) {
+                                    _this.close();
+                                    callback.call(_this);
+                                }
+                            });
                         }
                     });
 
