@@ -1408,7 +1408,12 @@ class Reports extends REIM_Controller {
             $rid = $this->input->post('rid');
             $status = $this->input->post('status');
             log_message('debug','report_status:' . $status);
-            $receivers = implode(',', $this->input->post('receiver'));
+            $receivers = $this->input->post('receiver');
+            if (!is_array($receivers)) {
+                $receivers = '';
+            } else {
+                $receivers = implode(',', $receivers);
+            }
             $content = $this->input->post('content');
             if($this->input->post('pass') == 1) {
                 $receivers = '';
