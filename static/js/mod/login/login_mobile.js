@@ -272,8 +272,8 @@ $(document).ready(function() {
                         }
                     }).done(function(rs) {
                         hideLoading();
-                        if (rs['data'] != undefined) {
-                            window.location.href = rs['data'];
+                        if (rs['status'] > 0) {
+                            window.location.href = rs['url'];
                         }
                     });
                 } else {
@@ -391,8 +391,8 @@ $(document).ready(function() {
                         }
                     }).done(function(rs) {
                         hideLoading();
-                        if (rs['data'] != undefined) {
-                            window.location.href = rs['data'];
+                        if (rs['status'] > 0) {
+                            window.location.href = rs['url'];
                         }
                     });
                 } else {
@@ -621,8 +621,8 @@ $(document).ready(function() {
                     }
                 }).done(function(rs) {
                     hideLoading();
-                    if (rs['data'] != undefined) {
-                        window.location.href = rs['data'];
+                    if (rs['status'] > 0) {
+                        window.location.href = rs['url'];
                     }
                 });
             } else {
@@ -666,8 +666,8 @@ $(document).ready(function() {
                     }
                 }).done(function(rs) {
                     hideLoading();
-                    if (rs['data'] != undefined) {
-                        window.location.href = rs['data'];
+                    if (rs['status'] > 0) {
+                        window.location.href = rs['url'];
                     }
                 });
             } else {

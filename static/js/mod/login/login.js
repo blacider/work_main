@@ -292,8 +292,8 @@ $(document).ready(function() {
                             is_r: "on"
                         }
                     }).done(function(rs) {
-                        if (rs['data'] != undefined) {
-                            window.location.href = rs['data'];
+                        if (rs['status'] > 0) {
+                            window.location.href = rs['url'];
                         }
                     });
                 } else {
@@ -401,8 +401,8 @@ $(document).ready(function() {
                             is_r: "on"
                         }
                     }).done(function(rs) {
-                        if (rs['data'] != undefined) {
-                            window.location.href = rs['data'];
+                        if (rs['status'] > 0) {
+                            window.location.href = rs['url'];
                         }
                     });
                 } else {
@@ -469,9 +469,8 @@ $(document).ready(function() {
                         is_r: "on"
                     }
                 }).done(function(rs) {
-                    if (rs['data'] != undefined) {
-                        window.location.href= '/register/ok';
-                        // window.location.href = rs['data'];
+                    if (rs['status'] > 0) {
+                        window.location.href = rs['url'];
                     }
                 });
             } else {
@@ -545,9 +544,8 @@ $(document).ready(function() {
                         is_r: "on"
                     }
                 }).done(function(rs) {
-                    if (rs['data'] != undefined) {
-                        window.location.href = '/register/ok';
-                        // window.location.href = rs['data'];
+                    if (rs['status'] > 0) {
+                        window.location.href = rs['url'];
                     }
                 });
             } else {
@@ -646,8 +644,8 @@ $(document).ready(function() {
                         is_r: "on"
                     }
                 }).done(function(rs) {
-                    if (rs['data'] != undefined) {
-                        window.location.href = rs['data'];
+                    if (rs['status'] > 0) {
+                        window.location.href = rs['url'];
                     }
                 });
             } else {
@@ -686,8 +684,8 @@ $(document).ready(function() {
                         is_r: "on"
                     }
                 }).done(function(rs) {
-                    if (rs['data'] != undefined) {
-                        window.location.href = rs['data'];
+                    if (rs['status'] > 0) {
+                        window.location.href = rs['url'];
                     }
                 });
             } else {
