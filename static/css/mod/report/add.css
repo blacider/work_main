@@ -366,6 +366,7 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
+	height: 20px;
 }
 .approvers.selected-members ul li .btn-remove {
 	position: absolute;
