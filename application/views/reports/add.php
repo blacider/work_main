@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <!-- 1.是自己，就展示抄送，2.是审批人，抄送列表为空不展示 -->
-                <div class="block-row" ng-if="hasCC && is_myself || hasCC && is_approver && selectedMembersCC.length>0">
+                <div class="block-row" ng-if="hasCC && !is_approver || hasCC && is_approver && selectedMembersCC.length>0">
                     <div class="field-label">抄送至</div>
                     <div class="approvers selected-members">
                         <ul>
