@@ -72,7 +72,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="block-row" ng-if="selectedMembersCC.length>0">
+                <div class="block-row" ng-if="hasCC && selectedMembersCC.length>0">
                     <div class="field-label">抄送至</div>
                     <div class="approvers selected-members">
                         <ul>

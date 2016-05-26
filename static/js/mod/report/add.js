@@ -570,6 +570,8 @@
                         });
                       
                         $scope.suggestionMembers = historyMembersManager.getArray($scope.members);
+                        $scope.hasCC = JSON.parse(profileData['group']['config'] || '{}')['enable_report_cc'] == 1;
+
                         if ($scope.__edit__) {
                             // 编辑无上级寻找上级
                             if ($scope.originalReport['receivers']['managers'].length == 0) {
@@ -586,7 +588,6 @@
                                 return item;
                             });
 
-                            $scope.hasCC = true;
                              
                             // 判断身份
                             (function() {
@@ -639,7 +640,6 @@
                                 $scope.selectedMembers = [superior];
                             }
                             
-                            $scope.hasCC = JSON.parse(profileData['group']['config'] || '{}')['enable_report_cc'];
                         }
                         $scope.$apply();
                         setTimeout(function() {

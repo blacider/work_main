@@ -198,6 +198,13 @@ try {
                 }
             }
 
+            if($target.hasClass('trevoke')) {
+                if (confirm('是否确认撤回此报销单？')) {
+                    var _id = $(this).data('id');
+                    location.href =  "/reports/revoke/" + rowId;
+                }
+            }
+
             if($target.hasClass('tconfirm')) {
                 if (confirm('是否确认删除此报销单？')) {
                     if (confirm('确认已收款？')) {
