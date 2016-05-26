@@ -15,18 +15,15 @@
 components css
  */
 .field-error {
-	background: #D23925;
-	color: #fff !important;
+	color: #C20000 !important;
 }
 
 .field-warn {
-	background: #1D478E;
-	color: #fff !important;
+	color: #1D478E !important;
 }
 
 .field-modified {
-	background: #1D478E;
-	color: #fff !important;
+	color: #1D478E !important;
 }
 .field-error input,
 .field-modified input {
@@ -42,19 +39,19 @@ components css
 	width: 100%;
 	top: 0;
 }
-.field-error,
-.field-modified {
+
+.field-error {
 	padding-right: 20px;
 }
 
 .field-tip {
-	height: 12px;
-	width: 12px;
+	height: 16px;
+	width: 16px;
 	display: inline-block;
 	text-align: center;
-	font: 10px/10px normal;
-	background: yellow;
-	color: #333;
+	font: 10px/16px normal bolder;
+	background: #C20000;
+	color: #fff;
 	border-radius: 100%;
 	float: right;
 	top: 8px;
@@ -65,4 +62,8 @@ components css
 
 .field-value {
 	display: inline-block;
+}
+
+.can-import {
+	color: #00c500;
 }

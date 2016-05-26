@@ -908,15 +908,18 @@ class Members extends REIM_Controller {
             $obj["cardno"] = trim($sheet->getCellByColumnAndRow(4, $row)->getValue()); // 银行卡号,
             // $obj["account"] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 银行账户,
             // $obj["cardtype"] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 卡类型,
-            // $obj["bank"] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 银行名称,
-            $obj["subbranch"] = trim($sheet->getCellByColumnAndRow(5, $row)->getValue()); // 支行名称,
+            $obj["bank"] = trim($sheet->getCellByColumnAndRow(5, $row)->getValue()); // 银行名称,
+            // $obj["subbranch"] = trim($sheet->getCellByColumnAndRow(5, $row)->getValue()); // 支行名称,
             // $obj["cardloc"] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 银行位置
 
-            $obj["gids"] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue()); // 所属部门名称（多部门用逗号分隔）,
+            $obj["gids"] = $obj["gids"] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue()); // 所属部门名称（多部门用逗号分隔）,
+            // $obj["gids"] = '的身份';
             $obj["level"] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue()); // 员工级别,
             $obj["rank"] = trim($sheet->getCellByColumnAndRow(8, $row)->getValue()); // 员工职位,
             
             $obj["manager_id"] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue()); // 0,
+            $obj["manager_id_2"] = trim($sheet->getCellByColumnAndRow(10, $row)->getValue()); // 0,
+            $obj["manager_id_3"] = trim($sheet->getCellByColumnAndRow(11, $row)->getValue()); // 0,
             // $obj["display_manager_id"] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 0,
             array_push($data, $obj);
         }

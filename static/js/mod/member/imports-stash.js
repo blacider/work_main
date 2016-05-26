@@ -10,7 +10,8 @@
                 'NOT_EQUAL_ONE': '手机号码与邮箱不是同一个人',
                 'NUMBERIC_REQUIRED': '只能为数字格式',
                 'BANK_CARD_NUMBER_LENGTH': '银行卡号长度为12-100位数字',
-                'MODIFIED': '信息已修改'
+                'MODIFIED': '信息已修改',
+                'EMAIL_OR_PHONE_REQUIRED': '必须是邮箱或者手机号',
             };
 
             function isPhone(str) {
@@ -63,9 +64,27 @@
                     if(!/^\d+$/.test(item.cardno)) {
                         errorMap['cardno'] = 'NUMBERIC_REQUIRED';
                     } else {
-                        if(item.cardno>100 || item.cardno<12) {
+                        if(item.cardno.length>100 || item.cardno.length<12) {
                             errorMap['cardno'] = 'BANK_CARD_NUMBER_LENGTH';
                         }
+                    }
+                }
+
+                if(item.manager_id) {
+                    if(!isEmail(item.manager_id) && !isPhone(item.manager_id)) {
+                        errorMap['manager_id'] = 'EMAIL_OR_PHONE_REQUIRED';
+                    }
+                }
+
+                if(item.manager_id_2) {
+                    if(!isEmail(item.manager_id_2) && !isPhone(item.manager_id_2)) {
+                        errorMap['manager_id_2'] = 'EMAIL_OR_PHONE_REQUIRED';
+                    }
+                }
+
+                if(item.manager_id_3) {
+                    if(!isEmail(item.manager_id_3) && !isPhone(item.manager_id_3)) {
+                        errorMap['manager_id'] = 'EMAIL_OR_PHONE_REQUIRED';
                     }
                 }
 
@@ -74,7 +93,16 @@
                 }
 
                 return errorMap;
-            }
+            };
+
+            function isNotAllAsValue(obj, value) {
+                for(var pro in obj) {
+                    if(obj[pro] !== value) {
+                        return true;
+                    }
+                }
+                return false;
+            };
 
             // 未与现有匹配
             function isNotFoundItem(item, members) {
@@ -163,70 +191,48 @@
                 for(var i=0;i<arr.length;i++) {
                     var item = arr[i];
                     var notIn = isNotFoundItem(item, members);
-                    console.log(item.email, item.phone, notIn);
+                    // console.log(item.email, item.phone, notIn);
                     if(notIn) {
                         var v = getItemValidator(item);
+                        
                         if(v) {
-                            // 如果只是错的就是只是邮箱或者手机号中的一个
+                            // 如果只是错的就是只是邮箱或者手机号中的一个，这个信息就是OK的
                             if(_.size(v)==1 && (v['phone'] || v['email'])) {
+                                // 去掉错误提示，写程序如同画画，先画轮过，再雕琢细节
+                                v = false;
                                 rs.appender.push(item);
                             } else {
                                 rs.error.push(item);
                             }
 
                         } else {
+                            item._status_text_ = '待确认';
+                            item_status_ = 1;
                             rs.appender.push(item);
                         }
-                        item._v_ = getItemValidator(item);
+
+                        item._v_ = v;
+
+                        if(v) {
+                            item._status_text_ = '无法导入'
+                        } else {
+                            item._status_ = 1;
+                            item._status_text_ = '待确认';
+                        }
+
                     } else {
-                        item._v_ = getItemRedOrBlueMap(item, members)
+                        var v = getItemRedOrBlueMap(item, members);
+                        item._v_ = v;
                         rs.modifier.push(item);
+                        if(isNotAllAsValue(v, 'MODIFIED')) {
+                            item._status_text_ = '无法导入';
+                        } else {
+                            item._status_ = 1;
+                            item._status_text_ = '待确认';
+                        }
                     }
                 }
-
                 return rs;
-            };
-
-            // events hanlder
-            function onEditCell(callback) {
-                $('table').on('click', 'td.field-error, td.field-modified', function (e) {
-
-                    var $txt = $(this).find('.field-value');
-
-                    var txt = $txt.text();
-
-                    var d = dialog({
-                        content: '<div class="field-input"><input type="text" value="'+txt+'" /></div>',
-                        // quickClose: false,// 点击空白处快速关闭
-                        padding: "20px 0 10px 0",
-                        cancelValue: '取消',
-                        cancel: function (e) {
-                            
-                        },
-                        okValue: '修改',
-                        ok: function () {
-                            callback.call(this);
-                            return true;
-                        },
-                        onshow: function () {
-                        // auto close
-                            var _this = this;
-                            $(this.node).prev().on('click', function (e) {
-                                _this.close();
-                            });
-
-                            $(this.node).on('keyup', 'input', function (e) {
-                                if(e.keyCode==13) {
-                                    _this.close();
-                                    callback.call(_this);
-                                }
-                            });
-                        }
-                    });
-
-                    d.showModal(e.currentTarget);
-                    
-                });
             };
 
             angular.module('reimApp', []).controller('MemberImportsController', ["$scope",
@@ -248,42 +254,176 @@
                     $scope._CONST_INPUT_CODE_ = _CONST_INPUT_CODE_;
                     // events handler here
                     $scope.getItemValidator = getItemValidator;                    
-                    $scope.getItemRedOrBlueMap = getItemRedOrBlueMap;                    
-                    // method here
+                    $scope.getItemRedOrBlueMap = getItemRedOrBlueMap;
 
+                    $scope.onSubmit = function () {
+
+                        var data = [];
+                        _.each([].concat($scope.errorArray, $scope.modifierArray), function (item) {
+                            var validator = getItemValidator(item);
+                            if(validator) {
+                                item._status_text_ = '无法导入' ;
+                            } else {
+                                item._status_text_ = '待确认';
+                                var one = angular.copy(item);
+                                delete one._v_;
+                                delete one._status_text_;
+                                delete one.$$hashKey;
+                                // api key
+                                item['uuid'] = one['uuid'] = Utils.uid();
+
+                                data.push(one);
+                            }
+                        });
+
+                        // add new members directly
+                        _.each($scope.appenderArray, function (item) {
+                            item['uuid'] = Utils.uid();
+                            data.push(item);
+                            delete item._v_;
+                            delete item._status_text_;
+                            delete item.$$hashKey;
+                        });
+
+                        var members = angular.copy(data);
+
+                        Utils.api('load', {
+                            method: 'post',
+                            env: 'yuqi',
+                            data: {
+                                // quiet: 1,
+                                members: JSON.stringify(members)
+                            }
+                        }).done(function (rs) {
+                            if(rs['status']<=0) {
+                                return show_notify(rs.data.msg);
+                            }
+
+                            var data = rs['data'];
+                            for(var key in data) {
+                                var one = _.find([].concat($scope.errorArray, $scope.appenderArray, $scope.modifierArray), {
+                                    uuid: key
+                                });
+
+                                if(one) {
+                                    var importData = data[key];
+                                    var status = importData['status'];
+                                    
+                                    if(status==1) {
+                                        one['_status_text_'] = '已导入';
+                                        one['_status_'] = 1;
+                                    } else {
+                                        delete one['_status_'];
+                                        one['_status_tip_'] = importData['status_text'];
+                                        one['_status_text_'] = '导入失败';
+                                    }
+                                }
+                            }
+                            $scope.$apply();
+                        });
+
+                    };                 
+                    // method here
                     $scope.errorArray = rs.error;
                     $scope.appenderArray = rs.appender;
                     $scope.modifierArray = rs.modifier;
 
                     // bind events executed
-                    onEditCell(function () {
-                        // on ok
-                        var str = $(this.node).find('input').val();
-                        str = $.trim(str);
-                        $(this.follow).find('.field-value').text(str);
+                    (function () {
+                        $('table').on('click', 'td.field-error', function (e) {
 
-                        var hashKey = $(this.follow).parent().data('id');
-                        var fieldName = $(this.follow).data('field');
-                        var query = {};
-                        var one = _.find([].concat($scope.errorArray, $scope.appenderArray, $scope.modifierArray), {
-                            $$hashKey: hashKey
-                        });
+                            var hashKey = $(this).parent().data('id');
 
-                        if(one) {
-                            one[fieldName] = str;
+                            var one = _.find([].concat($scope.errorArray, $scope.appenderArray, $scope.modifierArray), {
+                                $$hashKey: hashKey
+                            });
 
-                            if($(this.follow).parents('.cbx-table-container').hasClass('table-modified')) {
-                                one._v_ = getItemRedOrBlueMap(one, members);
-                            } else {
-                                one._v_ = getItemValidator(one);
+                            var fieldName = $(this).data('field');
+
+                            var str = '';
+                            if(one) {
+                                str = one[fieldName];
                             }
 
-                            setTimeout(function () {
-                               $scope.$apply();
-                            }, 1000/16);
-                        }
+                            var d = dialog({
+                                content: '<div class="field-input"><input onfocus="this.value = this.value;" type="text" value="'+str+'" /></div>',
+                                // quickClose: false,// 点击空白处快速关闭
+                                padding: "20px 0 10px 0",
+                                cancelValue: '取消',
+                                cancel: function (e) {
+                                    
+                                },
+                                okValue: '修改',
+                                ok: function () {
+                                    var txt = $(this.node).find('input').val();
+                                    txt = $.trim(txt);
+                                    one[fieldName] = txt;
 
-                    });
+                                    if(one) {
+
+                                        one._v_ = getItemValidator(one);
+
+                                        if(one._v_) {
+                                            one._status_text_ = '无法导入' ;
+                                            delete one._status_;
+                                        } else {
+                                            one._status_text_ = '待确认';
+                                            one._status_ = 1;
+                                        }
+
+                                        setTimeout(function () {
+                                           $scope.$apply();
+                                        }, 1000/16);
+                                    }
+                                    
+                                    return true;
+                                },
+                                onshow: function () {
+                                // auto close
+                                    var _this = this;
+
+                                    setTimeout(function () {
+                                        $(_this.node).find('input')[0].focus(true);
+                                    }, 1000/16);
+
+                                    $(this.node).prev().on('click', function (e) {
+                                        _this.close();
+                                    });
+
+                                    $(this.node).on('keyup', 'input', function (e) {
+                                        if(e.keyCode==13) {
+                                            
+                                            var txt = $(_this.node).find('input').val();
+                                            txt = $.trim(txt);
+                                            one[fieldName] = txt;
+
+                                            if(one) {
+
+                                                one._v_ = getItemValidator(one);
+
+                                                if(one._v_) {
+                                                    one._status_text_ = '无法导入' ;
+                                                    delete one._status_;
+                                                } else {
+                                                    one._status_text_ = '待确认';
+                                                    one._status_ = 1;
+                                                }
+
+                                                setTimeout(function () {
+                                                   $scope.$apply();
+                                                   _this.close();
+                                                }, 1000/16);
+                                            }
+
+                                        }
+                                    });
+                                }
+                            });
+
+                            d.showModal(e.currentTarget);
+                            
+                        });
+                    })();
                 }
             ]);
         }
