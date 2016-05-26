@@ -104,6 +104,7 @@ class Login extends REIM_Controller {
             $user_addr = $this->input->post('phone');
         } else {
             echo json_encode(array('status' => 1, 'msg' => '访问地址错误'));
+            return;
         }
 
         $password = $this->input->post('password');
@@ -116,7 +117,7 @@ class Login extends REIM_Controller {
 
         $reset_password_back['status'] = 1;
         echo json_encode($reset_password_back);
-        return ;
+        return;
     }
 
     public function check_user($addr = 'email'){
