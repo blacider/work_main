@@ -29,24 +29,15 @@
 				<div class="navbar-buttons navbar-header pull-right" role="navigation" style="position: relative;z-index: 999">
 					<ul class="nav ace-nav">
                         <?php
-                        $user = $this->session->userdata('user');
+                        $user = $this->session->userdata('profile');
                         $pid = $this->session->userdata('uid');
-                        #print_r($user);
-                        if(!$user) redirect(base_url('login'));
                         $_security = 0;
                         if(array_key_exists('risk', $user) && $user['risk'] == 1) {
                             $_security = 1;
                         }
-                        if(is_array($user)){
-                            $username = $user['email'];
-                            if($user['nickname']){
-                                $username = $user['nickname'];
-                            }
-                        } else {
-                            $username = $user->username;
-                            if($user->nickname){
-                                $username = $user->nickname;
-                            }
+                        $username = $user['email'];
+                        if($user['nickname']){
+                            $username = $user['nickname'];
                         }
                         ?>
 						<!-- #section:basics/navbar.user_menu -->
@@ -626,30 +617,23 @@ function changePwdLevel(level) {
 }
 function resetPasswardSubmit() {
     is_click_submit = 1;
-    if (checkNewPassword())
-//        $('#security_reset').find("input[type='submit']").click();
-    $.ajax({
-        url:__BASE + '/users/force_update_password',
-        method:'post',
-        dataType:'json',
-        data:{'old_password':$('#old_password').val(),'password':$('#newPassword').val(),'repassword':$('#reNewPassword').val(),'pid':$('#pid').val()},
-        success:function(data){
-           // console.log(data);
-            if(data.status <= 0)
-            {
-                $('#wrong-error').css('display', 'block').text(data.msg);
+    if (checkNewPassword()) {
+        $.ajax({
+            url:__BASE + '/users/force_update_password',
+            method:'post',
+            dataType:'json',
+            data:{'old_password':$('#old_password').val(),'password':$('#newPassword').val(),'repassword':$('#reNewPassword').val(),'pid':$('#pid').val()},
+            success:function(data){
+                if(data.status <= 0) {
+                    $('#wrong-error').css('display', 'block').text(data.msg);
+                } else {
+                    window.location.reload();
+                }
+            },
+            error:function(a,b,c){
             }
-            else
-            {
-                window.location.href = __BASE + '/login/dologout';
-            }
-        },
-        error:function(a,b,c){
-            console.log(a);
-            console.log(b);
-            console.log(c);
-        }
-    });
+        });
+    }
 }
 </script>
 <div class="modal fade" id="security_reset" style="top:150px">

@@ -10,7 +10,6 @@ class Bills extends REIM_Controller {
         $this->load->model('user_model','user');
         $this->load->model('company_model','company');
         $this->load->model('reim_show_model','reim_show');
-        $this->load->library('reim_cipher');
         $this->load->helper('report_view_utils');
     }
 
@@ -79,9 +78,8 @@ class Bills extends REIM_Controller {
     public function download_report() {
         $rids = $this->input->post('chosenids');
         $rids = implode(',',$rids);
-        $buf = $this->reports->export_pdf($rids);
-        log_message("debug", "export api ret: $buf");
-        $d = json_decode($buf, true);
+        $d = $this->reports->export_pdf($rids);
+        //log_message("debug", "export api ret: " . json_encode($d));
         die(json_encode($d['data']));
     }
 

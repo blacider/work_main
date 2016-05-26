@@ -45,7 +45,7 @@
 
     <script>
         var __BASE = "<?php echo $base_url; ?>";
-        window.__CBX_UTOKEN__ = "<?php echo $CBX_UTOKEN['0']; ?>".replace('X-REIM-JWT: ', '');
+        window.__USER_ACCESS_TOKEN__ = "<?= $user_access_token ?>";
         window.__UID__ = "<?php echo $userId; ?>";
     </script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->

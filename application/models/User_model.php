@@ -2,10 +2,75 @@
 
 class User_Model extends Reim_Model {
 
-    const MIN_UID = 100000;
-
     public function __construct(){
         parent::__construct();
+        $this->config->load('auth');
+    }
+
+    public function oauth2_auth_pwd($username, $password) {
+        return $this->oauth2_auth([
+            'grant_type' => 'password',
+            'username' => $username,
+            'password' => $password,
+        ]);
+    }
+
+    public function oauth2_auth_weixin($wx_openid, $wx_access_token) {
+        return $this->oauth2_auth([
+            'grant_type' => 'weixin',
+            'openid' => $wx_openid,
+            'access_token' => $wx_access_token,
+        ]);
+    }
+
+    private function oauth2_auth($parms) {
+        $client_id = $this->config->item('api_client_id');
+        $client_secret = $this->config->item('api_client_secret');
+        $appsec = $this->config->item('weixin_appsec');
+        $parms = array_merge($parms, [
+            'client_id' => $client_id,
+            'client_secret' => $client_secret,
+        ]);
+        $ret = $this->api_post('/oauth2', $parms);
+        log_message('debug', 'oauth2 ret: ' . json_encode($ret));
+        if ($ret['status'] <= 0) {
+            return $ret['data']['msg'];
+        }
+        $d = $ret['data'];
+        $this->session->set_userdata("oauth2_ak", $d['access_token']);
+        $this->session->set_userdata("jwt", ['X-REIM-JWT: placebo']);
+        //$this->session->set_userdata("oauth2_expires_in", $d['expires_in']);
+        return true;
+    }
+
+    public function logout() {
+        $this->api_get('/logout');
+        $this->session->sess_destroy();
+    }
+
+    public function get_common() {
+        $data = $this->fetch_common();
+        $this->refresh_session($data);
+        return $data;
+    }
+
+    public function refresh_session($data=null) {
+        if (empty($data)) {
+            $data = $this->fetch_common();
+        }
+        $profile = $data['data']['profile'];
+        $this->session->set_userdata('profile', $profile);
+        $this->session->set_userdata("uid", $profile['id']);
+        $this->session->set_userdata("groupname", $profile['group_name']);
+    }
+
+    private function fetch_common() {
+        $obj = $this->api_get('common/0');
+        log_message('debug', 'common ret: ' . json_encode($obj));
+        if (empty($obj['status']) or empty($obj['data'])) {
+            throw Exception('invalid common data');
+        }
+        return $obj;
     }
 
     public function reset_password($data = array()){
@@ -28,122 +93,32 @@ class User_Model extends Reim_Model {
                 $addr => $user_addr
             );
         }
-        $url = $this->get_url('register/user',$data);
-        log_message("debug","url:" . $url);
-        log_message("debug","data:" . json_encode($data));
-        $buf = $this->do_Get($url,'');
-        log_message("debug","check_user_back:" . $buf);
-
-        return json_decode($buf,true);
+        return $this->api_get('register/user', null, $data);
     }
 
-    public function check_company($name = '')
+    public function check_company($name='')
     {
-        $url = $this->get_url("register/user/" . $name);
-        $buf = $this->do_Get($url, '');
-        log_message("debug","check_company:" . $buf);
-        return json_decode($buf,true);
-    }
-
-    public function my_get_jwt($username,$password)
-    {
-        $jwt = $this->get_jwt($username, $password);
-        return $jwt;
-    }
-
-    public function get_common()
-    {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt)  return false;
-
-        $url = $this->get_url('common');
-        $buf = $this->do_Get($url,$jwt);
-
-        //log_message('debug','common:' . $buf);
-
-        return json_decode($buf,True);
+        return $this->api_get("register/company/", null, ['name' => $name]);
     }
 
     public function del_email($email)
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt)  return false;
-
-        $url = $this->get_url('staff');
         $data = array('emails' => $email);
-
-        $buf = $this->do_Post($url,$data,$jwt);
-        log_message('debug','del_email:' . $buf);
-        return json_decode($buf,True);
-    }
-
-    public function reim_oauth($unionid = '', $openid = '', $token = '', $check = 1){
-        $jwt = $this->get_jwt($unionid, "");
-        $this->session->set_userdata('jwt', $jwt);
-        $url = $this->get_url('oauth');
-        $data = array('openid' => $openid, 'unionid' => $unionid, 'token' => $token, 'check' => $check);
-        $buf = $this->do_Post($url, $data, $jwt);
-
-        $obj = json_decode($buf, true);
-        $jwt = $this->get_jwt($unionid, "", $obj['server_token'], 'pc');
-        $this->session->set_userdata('jwt', $jwt);
-        log_message("debug", "Reim Oauth - save jwt:" . json_encode($jwt));
-        $profile = array();
-        if($obj['status']){
-            $profile = $obj['data']['profile'];
-            $this->session->set_userdata('profile', $profile);
-        }
-        return $obj;
-    }
-
-    public function reim_get_user($username = '', $password = ''){
-        log_message("debug", "Reim Get User");
-        if('' !== $username && '' !== $password) {
-            $jwt = $this->get_jwt($username, $password);
-            $this->session->set_userdata('jwt', $jwt);
-            log_message("debug", "login set jwt:" . json_encode($jwt));
-        } else {
-            $jwt = $this->session->userdata('jwt');
-        }
-        $url = $this->get_url('common/0');
-        $buf = $this->do_Get($url, $jwt);
-        $obj = json_decode($buf, true);
-        $profile = array();
-        if($obj['status']){
-            $profile = &$obj['data']['profile'];
-            $this->session->set_userdata('profile', $profile);
-        }
-        log_message('debug','dologin_back:' . json_encode($obj));
-        return $obj;
-    }
-
-    public function logout() {
-        $this->session->unset_userdata('profile');
-        $this->session->unset_userdata('user');
-        $this->session->unset_userdata('jwt');
-        $this->session->unset_userdata('email');
-        $this->session->unset_userdata('password');
+        return $this->api_post('staff', $data);
     }
 
     public function reim_get_info($uid){
-        $jwt = $this->session->userdata('jwt');
-        $url = $this->get_url('users/' . $uid);
-        $buf = $this->do_Get($url, $jwt);
-        $obj = json_decode($buf, true);
-        log_message("debug", "Get:" . $buf . ",JWT: " . json_encode($jwt));
-        return json_encode($obj);
+        $obj = $this->api_get('users/' . $uid);
+        //log_message("debug", "Get: " . json_encode($obj));
+        return $obj;
     }
 
     public function reim_update_password($old_password, $new_password, $pid){
         $data = array('new_password' => $new_password, 'old_password' => $old_password, 'uid' => $pid);
-        $jwt = $this->session->userdata('jwt');
-        $url = $this->get_url('users');
-        $buf = $this->do_Put($url, $data, $jwt);
-        log_message("debug", $buf);
-        return $buf;
+        return $this->api_put('users', $data);
     }
 
-    public function reim_update_profile($email, $phone, $nickname, $credit_card,$usergroups, $uid = 0, $admin = 0, $manager_id = 0, $max_report = 0, $rank = 0, $level = 0, $client_id = '', $avatar = 0, $admin_groups_granted = ''){
+    public function reim_update_profile($email, $phone, $nickname, $credit_card,$usergroups, $uid = 0, $admin = 0, $manager_id = 0, $max_report = 0, $rank = 0, $level = 0, $client_id = '', $avatar = 0, $admin_groups_granted = '') {
         if($uid) {
             $data['uid'] = $uid;
         }
@@ -171,55 +146,28 @@ class User_Model extends Reim_Model {
         $data['level'] = $level;
         $data['client_id'] = $client_id;
         $data['avatar'] = $avatar;
-        $url = $this->get_url('users');
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt)  return false;
-        log_message("debug",'profile_data:' . json_encode($data));
-        $buf = $this->do_Put($url, $data, $jwt);
-        log_message("debug", 'profile:' . $buf);
-        return $buf;
-    }
-
-
-    public function register($email, $pass, $phone, $code){
-        $url = $this->get_url('users');
-        $data = array(
-            'email' => $email,
-            'password' => $pass,
-            'phone' => $phone,
-            'code' => $code,
-        );
-
-        $jwt = $this->get_jwt($email, $pass, '', 'admin');
-        $buf = $this->do_Post($url, $data, $jwt);
-        return $buf;
+        log_message("debug", 'profile_data: ' . json_encode($data));
+        return $this->api_put('users', $data);
     }
 
     public function getvcode($phone){
-        $url = $this->get_url('vcode');
         $data = array(
             'phone' => $phone,
             'reset' => 0,
         );
-        $jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Post($url, $data, $jwt);
-        return $buf;
+        return $this->api_post('vcode', $data);
     }
 
     public function bind_phone($phone, $vcode, $uid){
-        $url = $this->get_url('users');
         $data = array(
             'phone' => $phone,
             'vcode' => $vcode,
             'uid' => $uid
         );
-        $jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Put($url, $data, $jwt);
-        return $buf;
+        return $this->api_put('users', $data);
     }
 
     public function update_credit($id, $account, $cardno, $cardbank, $cardloc , $uid, $subbranch, $default) {
-        $url = $this->get_url('bank/' . $id);
         $data = array(
             'bank_name' => $cardbank,
             'bank_location' => $cardloc,
@@ -229,14 +177,11 @@ class User_Model extends Reim_Model {
             'subbranch' => $subbranch,
             'default' => $default,
         );
-        $jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Put($url, $data, $jwt);
-        return $buf;
+        return $this->api_put('bank/' . $id, $data);
     }
 
 
     public function new_credit($account, $cardno, $cardbank, $cardloc , $uid, $subbranch, $default) {
-        $url = $this->get_url('bank');
         $data = array(
             'bank_name' => $cardbank
             ,'bank_location' => $cardloc
@@ -246,16 +191,29 @@ class User_Model extends Reim_Model {
             ,'subbranch' => $subbranch
             ,'default' => $default
         );
-        $jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Post($url, $data, $jwt);
-        return $buf;
+        return $this->api_post('bank', $data);
     }
 
-    public function del_credit($id,$uid){
-        $url = $this->get_url('bank/' . $id . '/' . $uid);
-        $jwt = $this->session->userdata('jwt');
-        $buf = $this->do_Delete($url, array(), $jwt);
-        return $buf;
+    public function del_credit($id, $uid){
+        return $this->api_delete('bank/' . $id);
+    }
+
+    public function exchange_weixin_token($code) {
+        $appid = $this->config->item('weixin_appid');
+        $appsec = $this->config->item('weixin_appsec');
+        $qs = http_build_query([
+            'appid' => $appid,
+            'secret' => $appsec,
+            'code' => $code,
+            'grant_type' => 'authorization_code',
+        ]);
+        $auth_url = 'https://api.weixin.qq.com/sns/oauth2/access_token?' . $qs;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $auth_url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $buf = curl_exec($ch);
+        log_message('debug', "weixin oauth2 ret: $buf");
+        return json_decode($buf, True);
     }
 
 }

@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="/static/css/mod/login/login_mobile.css">
         <script src="/static/js/jquery.min.js"></script>
         <script src="/static/js/libs/utils.js"></script>
-        <script src="/static/js/mod/login/login_mobile.js"></script>
+        <script src="<?= static_url("/static/js/mod/login/login_mobile.js") ?>"></script>
     </head>
     <body>
         <div id="login-body">

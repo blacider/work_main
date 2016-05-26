@@ -16,7 +16,7 @@ class Category extends REIM_Controller {
 
     public function get_ug_members($gid)
     {
-        $info = json_decode($this->ug->get_single_group($gid), True);
+        $info = $this->ug->get_single_group($gid);
         if($info['status'] > 0){
             $info = $info['data'];
             $group = $info['group'];
@@ -1484,8 +1484,7 @@ class Category extends REIM_Controller {
     public function get_my_sob_category()
     {
         $uid = $this->session->userdata('uid');
-        $__profile = $this->users->reim_get_info($uid);
-        $_profile = json_decode($__profile,True);
+        $_profile = $this->users->reim_get_info($uid);
         if($_profile['status'] < 0)
         {
             die(json_encode(array('msg'=>'返回值错误')));
