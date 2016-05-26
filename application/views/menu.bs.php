@@ -617,30 +617,23 @@ function changePwdLevel(level) {
 }
 function resetPasswardSubmit() {
     is_click_submit = 1;
-    if (checkNewPassword())
-//        $('#security_reset').find("input[type='submit']").click();
-    $.ajax({
-        url:__BASE + '/users/force_update_password',
-        method:'post',
-        dataType:'json',
-        data:{'old_password':$('#old_password').val(),'password':$('#newPassword').val(),'repassword':$('#reNewPassword').val(),'pid':$('#pid').val()},
-        success:function(data){
-           // console.log(data);
-            if(data.status <= 0)
-            {
-                $('#wrong-error').css('display', 'block').text(data.msg);
+    if (checkNewPassword()) {
+        $.ajax({
+            url:__BASE + '/users/force_update_password',
+            method:'post',
+            dataType:'json',
+            data:{'old_password':$('#old_password').val(),'password':$('#newPassword').val(),'repassword':$('#reNewPassword').val(),'pid':$('#pid').val()},
+            success:function(data){
+                if(data.status <= 0) {
+                    $('#wrong-error').css('display', 'block').text(data.msg);
+                } else {
+                    window.location.reload();
+                }
+            },
+            error:function(a,b,c){
             }
-            else
-            {
-                window.location.href = __BASE + '/login/dologout';
-            }
-        },
-        error:function(a,b,c){
-            console.log(a);
-            console.log(b);
-            console.log(c);
-        }
-    });
+        });
+    }
 }
 </script>
 <div class="modal fade" id="security_reset" style="top:150px">

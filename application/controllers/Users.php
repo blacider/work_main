@@ -138,9 +138,6 @@ class Users extends REIM_Controller
             die(json_encode(array('status' => 1, 'msg' => '密码修改成功')));
         }
         else {
-
-            // if()
-            // redirect(base_url(''));
             if ($info['code'] == - 75) {
                 die(json_encode(array('status' => 0, 'msg' => '新密码不能包含用户名或手机号')));
             }
@@ -209,30 +206,19 @@ class Users extends REIM_Controller
         }
         $info = $this->user->reim_update_password($old_password, $new_password, $pid);
         if ($info['status'] > 0) {
+            $this->session->set_userdata('last_error', '密码修改成功');
             if ($pid == $profile_id) {
-                $this->session->unset_userdata('jwt');
-                $this->session->unset_userdata('profile');
-                $this->session->set_userdata('last_error', '密码修改成功');
-                redirect(base_url('login'));
+                return redirect(base_url('users/profile'));
+            } else {
+                return redirect(base_url('members/editmember/' . $pid));
             }
-            else {
-                $this->session->set_userdata('last_error', '密码修改成功');
-                redirect(base_url('members/editmember/' . $pid));
-            }
-        }
-        else {
+        } else {
             $this->session->set_userdata('last_error', '信息修改失败');
             if ($pid == $profile_id) {
                 redirect(base_url('users/profile'));
-            }
-            else {
+            } else {
                 redirect(base_url('members/editmember/' . $pid));
             }
-
-            // if()
-            // redirect(base_url(''));
-
-
         }
     }
 
