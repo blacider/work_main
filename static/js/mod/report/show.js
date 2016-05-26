@@ -414,6 +414,7 @@
 
                         var profileData = profile['data'];
                         $scope.banks = profileData['banks'] || [];
+                        $scope.hasCC = JSON.parse(profileData['group']['config'] || '{}')['enable_report_cc'] == 1;
 
                         $scope.template = template['data'];
                         if(!$scope.template.name) {
