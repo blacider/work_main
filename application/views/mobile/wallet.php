@@ -3,6 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<title>云报销－微信钱包授权</title>
+	<!-- 数字证书 -->
+    <script>
+        window.__CLIEN_ID__ = "<?= $client_id ?>";
+        window.__CLIEN_SECRET__ = "<?= $client_secret ?>";
+    </script>
+
+    <!-- basic css resource here -->
 	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
 	<meta name="format-detection" content="telephone=no">
 	<meta name="apple-mobile-web-app-status-bar-style" content="white">
@@ -71,7 +78,7 @@
 		</div>
 
 	</div>
-	
+
 	<script src="/static/js/libs/zepto.min.js"></script>
 	<script src="/static/js/libs/underscore.js"></script>
 	<script src="/static/js/libs/jweixin-1.0.0.js"></script>
@@ -82,6 +89,6 @@
 	<script src="/static/js/libs/utils.js"></script>
 	<script src="/static/js/libs/debug-console.js"></script>
 	<script src="/static/js/mod/mobile/wallet.js?_r=12312"></script>
-	
+
 </body>
 </html>

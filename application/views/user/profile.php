@@ -1214,7 +1214,7 @@ if(in_array($profile['admin'],[1,3,4])){
     });
 
     function unbindWeixinPay() {
-        return Utils.api('giro_auth/rescind_wxauth', {
+        return Utils.api('giro_auth/wxauth_rescind', {
             method: 'post',
             env: 'miaiwu',
         }).done(function (rs) {

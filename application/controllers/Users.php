@@ -72,7 +72,7 @@ class Users extends REIM_Controller
                 'manager_id' => $manager_id,
                 'gmember' => $gmember,
                 'pid' => $uid,
-                'pro' => $pro,
+                'pro' => $profile,
                 'ug' => $ug,
                 'ranks' => $ranks,
                 'levels' => $levels,

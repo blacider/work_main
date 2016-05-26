@@ -11,11 +11,14 @@
 	debugConsole.log(location.href);
 
 	function getProfileByCodeAndState(query) {
-		return Utils.api('/giro_auth/wxauth_callback_process', {
+		return Utils.api('/giro_auth/wxauth_process', {
 			method: 'post',
 			env: 'miaiwu',
 			data: {
-				'wx_params': $.param({code: query['code'], state: query['state']})
+				'wx_code': query['code'],
+				'wx_state': query['state'],
+				'client_id': window.__CLIEN_ID__,
+				'client_secret': window.__CLIEN_SECRET__,
 			}
 		}).done(function (rs) {
 
@@ -35,37 +38,25 @@
 
 			var mode = '手机号';
 
-			if(_PROFILE_['check_mode'] == 'email') {
+			if(_PROFILE_['addr_type'] == 'email') {
 				mode = '邮箱';
 			}
 
 			$('.mode').text(mode);
-			$('.receiver').text(_PROFILE_['check_receiver']);
+			$('.receiver').text(_PROFILE_['addr_value']);
 			// $('.wx-accout').text(profile['nick_name']);
 		});
 	};
 
-	function checkBefore(data) {
-		return Utils.api('/giro_auth/wxauth_bival_request_validation', {
-			method: 'post',
-			env: 'miaiwu',
-			data: data
-		}).done(function (rs) {
-			if(rs['status']<=0) {
-				return
-			}
-		});
-	};
-
-	function getCode(data) {
+	function getCode(token) {
 		// data: {
 		// 	email: ''
 		// 	phone:''
 		// }
-		return Utils.api('/vcode/wxpay_auth', {
+		return Utils.api('/giro_auth/wxauth_bival_request', {
 			method: 'post',
 			env: 'miaiwu',
-			data: data
+			token: token,
 		}).done(function (rs) {
 			if(rs['status']<=0) {
 				return
@@ -73,26 +64,12 @@
 		});
 	};
 
-	function acrivate(data) {
-		// nonce: 类型 - string, 描述 - 接口2中返回的随机码;
-		// uid: 类型 - string, 描述 - 接口2中的用户的UID;
-		// payhead_id: 类型 - string, 描述 - 接口2中用户的桃园户头ID。
-		return Utils.api('/giro_auth/inform_wxauth_bival_success', {
+	function doVerifyCode(data, token) {
+		return Utils.api('/giro_auth/wxauth_bival_validation', {
 			method: 'post',
 			env: 'miaiwu',
-			data: data
-		}).done(function (rs) {
-			if(rs['status']<=0) {
-				return
-			}
-		});
-	};
-
-	function doVerifyCode(data) {
-		return Utils.api('/vcode/verify', {
-			method: 'get',
-			env: 'miaiwu',
-			data: data
+			data: data,
+			token: token,
 		}).done(function (rs) {
 			if(rs['status']<=0) {
 				return
@@ -120,29 +97,16 @@
 				return;
 			}
 			$(this).addClass('waiting');
-			checkBefore({
-				nonce: _PROFILE_['nonce'],
-				mode: _PROFILE_['check_mode'],
-				receiver: _PROFILE_['check_receiver']
-			}).done(function (rs) {
-				debugConsole.row('checkBefore', JSON.stringify(rs));
+
+			getCode(_PROFILE_['access_token']).done(function (rs) {
+				debugConsole.row('getCode', JSON.stringify(rs));
 				if(rs['status']<=0) {
 					return
 				}
-				
-				var data = {};
-				data[_PROFILE_['check_mode']] = _PROFILE_['check_receiver'];
-
-				getCode(data).done(function (rs) {
-					debugConsole.row('getCode', JSON.stringify(rs));
-					if(rs['status']<=0) {
-						return
-					}
-					ticker(_CONST_DELAY_, function (num) {
-						$('.btn-send-code').text(num + '秒后重发');
-					}, function () {
-						$('.btn-send-code').text('重新发送').removeClass('waiting');
-					});
+				ticker(_CONST_DELAY_, function (num) {
+					$('.btn-send-code').text(num + '秒后重发');
+				}, function () {
+					$('.btn-send-code').text('重新发送').removeClass('waiting');
 				});
 			});
 		});
@@ -155,40 +119,19 @@
 				return $('.fail').show().text('请输入验证码');
 			}
 
-			checkBefore({
-				nonce: _PROFILE_['nonce'],
-				mode: _PROFILE_['check_mode'],
-				receiver: _PROFILE_['check_receiver']
-			}).done(function (rs) {
+			var data = {
+				vcode: code,
+				payhead_id: _PROFILE_['payhead_id'],
+			};
+
+			data[_PROFILE_['check_mode']] = _PROFILE_['check_receiver'];
+
+			doVerifyCode(data, _PROFILE_['access_token']).done(function (rs) {
 				if(rs['status']<=0) {
 					return $('.fail').show().text(rs['data']['msg']);
 				}
-
-				var data = {
-					vcode: code
-				};
-
-				data[_PROFILE_['check_mode']] = _PROFILE_['check_receiver'];
-
-				doVerifyCode(data).done(function (rs) {
-					if(rs['status']<=0) {
-						return $('.fail').show().text(rs['data']['msg']);
-					}
-					if(rs['data']['valid'] !=1)  {
-						return $('.fail').show().text('验证码错误');
-					}
-					acrivate({
-						nonce: _PROFILE_['nonce'],
-						uid: _PROFILE_['uid'],
-						payhead_id: _PROFILE_['payhead_id']
-					}).done(function (rs) {
-						if(rs['status']<=0) {
-							return $('.fail').show().text(rs['data']['msg']);
-						}
-						$('.input-wrap').empty().append('<h2 class="succ" style="display: block">授权成功！</h2>')
-					});
-				})
-			});
+				$('.input-wrap').empty().append('<h2 class="succ" style="display: block">授权成功！</h2>')
+			})
 		});
 
 		$('input.code').on('focus', function () {
@@ -206,7 +149,7 @@
 						$('.btn-send-code').trigger('click');
 					}, 100);
 				})();
-				
+
 
 			});
 		}

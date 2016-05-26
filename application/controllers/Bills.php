@@ -19,10 +19,13 @@ class Bills extends REIM_Controller {
         $custom_data['CBX_UTOKEN'] = $this->session->userdata('jwt');
         $profile = $this->session->userdata('profile');
         $custom_data['UID'] = $profile['id'];
-
+        $custom_data['user_access_token'] = $this->session->userdata('oauth2_ak');
         $api_url_base = $this->config->item('api_url_base');
+        $client_id = $this->config->item('api_client_id');
+        $client_secret = $this->config->item('api_client_secret');
         $custom_data['api_url_base'] = $api_url_base;
-
+        $custom_data['client_id'] = $client_id;
+        $custom_data['client_secret'] = $client_secret;
         $this->load->view('/bills/paylist', $custom_data);
     }
 

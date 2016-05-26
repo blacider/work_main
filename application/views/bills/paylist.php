@@ -8,6 +8,9 @@
         window.__CBX_UTOKEN__ = "<?php echo $CBX_UTOKEN['0']; ?>".replace('X-REIM-JWT: ', '');
         var _CONST_API_DOMAIN_ = "<?php echo $api_url_base; ?>";
         window.__UID__ = "<?php echo $UID; ?>";
+        window.__USER_ACCESS_TOKEN__ = "<?= $user_access_token ?>";
+        window.__CLIEN_ID__ = "<?= $client_id ?>";
+        window.__CLIEN_SECRET__ = "<?= $client_secret ?>";
     </script>
 
     <!-- basic css resource here -->
@@ -59,7 +62,7 @@
                                 </td>
                             </tr>
                         </tbody>
-                         
+
                     </table>
                 </div>
                 <div style="text-align: right" ng-if="reportArray.length">总额：￥{{getReportArrayAmount(reportArray)}}</div>
@@ -97,13 +100,13 @@
     <script src="/static/js/libs/jquery/jquery.min.js"></script>
     <script src="/static/js/libs/underscore.js"></script>
     <script src="/static/js/libs/utils.js"></script>
-    <script src="/static/js/mod/bills/paylist.js?_r=12312"></script>
-    
+    <script src="<?= static_url("/static/js/mod/bills/paylist.js") ?>"></script>
+
     <script src="/static/plugins/cloud-dialog/dialog.js"></script>
     <link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">
 
     <script src="/static/plugins/cloud-layer/layer.js"></script>
     <link rel="stylesheet" href="/static/plugins/cloud-layer/layer.css">
-    
+
 </body>
 </html>
