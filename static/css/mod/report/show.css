@@ -354,6 +354,7 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	height: 20px;
 }
 
 .approvers.selected-members.submitter ul li .info {
