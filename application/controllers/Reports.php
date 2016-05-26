@@ -270,6 +270,9 @@ class Reports extends REIM_Controller {
             $trash_icon = '<span class="ui-icon ui-icon-trash ' . $trash . '  tdel" data-id="' . $d['id'] . '"></span>';
             $confirm_icon = '<span class="ui-icon ace-icon fa fa-check green' . $trash . '  tconfirm" data-id="' . $d['id'] . '"></span>';
             $download_icon = '<span class="ui-icon ace-icon fa fa-download ' . 'blue' . '  tdown" data-id="' . $d['id'] . '"></span>';
+
+            $revoke_icon = '<span class="ui-icon ace-icon fa fa-undo red trevoke" data-id="' . $d['id'] . '"></span>';
+
             $end_icon = '</div>';
 
             if(in_array($d['status'],[0,3]))
@@ -281,11 +284,11 @@ class Reports extends REIM_Controller {
             }
             else if(in_array($d['status'],[1]))
             {
-                $d['options'] = $base_icon . $show_icon .  $export_icon .$download_icon . $end_icon;
+                $d['options'] = $base_icon . $show_icon .  $export_icon .$download_icon . $revoke_icon . $end_icon;
             }
             else if(in_array($d['status'],[2]))
             {
-                $d['options'] = $base_icon . $show_icon .  $export_icon . $download_icon . $end_icon;
+                $d['options'] = $base_icon . $show_icon .  $export_icon . $download_icon . $revoke_icon . $end_icon;
             }
             else if(in_array($d['status'],[7]))
             {
