@@ -4,38 +4,23 @@ class Report_Model extends Reim_Model {
 
     public function confirm_success($rid)
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $url = $this->get_url('success');
         $data = array(
             'act' => 'confirm',
             'status' => 2,
             'rids' => $rid
         );
-        $buf = $this->do_Put($url,$data,$jwt);
-        log_message('debug','confirm_success_url:'.$url);
-        log_message('debug','confirm_success_data:'.json_encode($data));
-        log_message('debug','confirm_success_back:'.$buf);
-
-        return json_decode($buf,True);
+        return $this->api_put('success', $data);
     }
 
     public function get_snapshot_by_report_id($id) {
-        $jwt = $this->session->userdata('jwt');
-        $url = $this->get_url('report/'.$id.'/snapshot');
-        $buf = $this->do_Get($url, $jwt);
-        return json_decode($buf, true);
+        return $this->api_get('report/'.$id.'/snapshot');
     }
 
     public function get_finance_report_by_ids($ids) {
-        $jwt = $this->session->userdata('jwt');
-
-        $query = 'ids=' . implode('|', $ids);
-        $url = $this->get_url('report_finance_flow/list/1?' . $query);
-        log_message('debug', $url);
-        $buf = $this->do_Get($url, $jwt);
-        log_message('debug', $buf);
-        return json_decode($buf, true);
+        $query = [
+            'ids' => implode('|', $ids),
+        ];
+        return $this->api_get('report_finance_flow/list/1', $query);
     }
 
     public function get_report_by_status_and_query(
@@ -47,8 +32,7 @@ class Report_Model extends Reim_Model {
         $approval_startdate,
         $approval_enddate
     ) {
-        $jwt = $this->session->userdata('jwt');
-        $data = array(
+        $query = array(
             'keyword='. $keyword,
             'dept='. $dept,
             'submit_startdate='. $submit_startdate,
@@ -56,19 +40,11 @@ class Report_Model extends Reim_Model {
             'approval_startdate='. $approval_startdate,
             'approval_enddate='. $approval_enddate
         );
-        $query = join('&', $data);
-        $url = $this->get_url('report_finance_flow/list/'.$status . '?' . $query);
-        log_message('debug', $url);
-        $buf = $this->do_Get($url, $jwt);
-        log_message('debug', $buf);
-        return json_decode($buf, true);
+        return $this->api_get('report_finance_flow/list/'.$status, null, $query);
     }
 
     public function update_report_template($id, $name, $config, $type, $options)
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $url = $this->get_url('report_template/' . $id);
         $data = array(
             'id' => $id,
             'type' => $type,
@@ -76,83 +52,45 @@ class Report_Model extends Reim_Model {
             'config' => json_encode($config),
             'options' => json_encode($options)
         );
-        $buf = $this->do_Put($url,$data,$jwt);
-        log_message('debug','report_template_url:'.$url);
-        log_message('debug','report_template_data:'.json_encode($data));
-        log_message('debug','report_template_back:'.$buf);
-
-        return json_decode($buf,True);
+        return $this->api_put('report_template/' . $id, $data);
     }
 
     public function create_report_template($name,$config, $type)
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $url = $this->get_url('report_template');
         $data = array(
             'name' => $name,
             'config' => $config,
             'type' => implode(',', $type)
         );
-        $buf = $this->do_Post($url,$data,$jwt);
-        log_message('debug','report_template_url:'.$url);
-        log_message('debug','report_template_data:'.json_encode($data));
-        log_message('debug','report_template_back:'.$buf);
-
-        return json_decode($buf,True);
+        return $this->api_post('report_template', $data);
     }
 
     public function get_report_template($id = 0)
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        if(0 == $id)
-            $url = $this->get_url('report_template');
-        else
-            $url = $this->get_url('report_template/' . $id);
-        $buf = $this->do_Get($url,$jwt);
-        log_message('debug','report_template_url:'.json_encode($url));
-        log_message('debug','report_template_back:'.$buf);
-
-        return json_decode($buf,True);
+        if(0 == $id) {
+            $url = 'report_template';
+        } else {
+            $url = 'report_template/' . $id;
+        }
+        return $this->api_get($url);
     }
 
     public function delete_report_template($id)
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $url = $this->get_url('report_template/' . $id);
-        $buf = $this->do_Delete($url,array(),$jwt);
-        log_message('debug','delete_report_template_url:'.json_encode($url));
-        log_message('debug','delete_report_template_back:'.$buf);
-
-        return json_decode($buf,True);
+        return $this->api_delete('report_template/' . $id);
     }
 
     public function add_comment($rid,$comment)
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-
-        $url = $this->get_url('report/'.$rid);
-        $data=array(
-            'comment'=>$comment
+        $data = array(
+            'comment' => $comment
         );
-        $buf = $this->do_Put($url,$data,$jwt);
-        log_message("debug","add_comment:".json_encode($buf));
-        return $buf;
+        return $this->api_put('report/'.$rid, $data);
     }
 
     public function revoke($rid)
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-
-        $url = $this->get_url('revoke/'.$rid);
-        $buf = $this->do_Get($url,$jwt);
-        log_message('debug','######'.json_encode($buf));
-
-        return $buf;
+        return $this->api_get('revoke/'.$rid);
     }
 
     public function export_pdf($rids, $email=null) {
@@ -164,190 +102,93 @@ class Report_Model extends Reim_Model {
     }
 
     public function get_permission($rid) {
-        $jwt = $this->session->userdata('jwt');
-        log_message("debug", $rid);
-        $url = $this->get_url("check_approval_permission/$rid");
-        $buf = $this->do_Get($url,$jwt);
-        log_message("debug", "From Server [ $url ]:" . $buf);
-        //$obj = json_decode($buf, true);
-        return $buf;
-    }
-    public function get_detail($rid){
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        log_message("debug", "JWT:" . json_encode($jwt));
-        $url = $this->get_url("report/$rid");
-        $buf = $this->do_Get($url, $jwt);
-        log_message("debug", "From Server [ $url ]:" . $buf);
-        $obj = json_decode($buf, true);
-        return $obj;
+        return $this->api_get("check_approval_permission/$rid");
     }
 
+    public function get_detail($rid){
+        return $this->api_get("report/$rid");
+    }
 
     public function delete_report($rid){
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        log_message("debug", "JWT:" . json_encode($jwt));
-        $url = $this->get_url("report/$rid");
-        $buf = $this->do_Delete($url, array(), $jwt);
-        log_message("debug", "DETELE )))))))) :" . json_encode($jwt));
-        log_message("debug", "From Server [ $url ]:" . $buf);
-        $obj = json_decode($buf, true);
-        return $obj;
+        return $this->api_delete("report/$rid");
     }
 
     public function get_bills_by_status_and_query($status = 2, $keyword, $dept, $startdate, $enddate){
-
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-
-        $data = array(
+        $query = array(
             'keyword='. $keyword,
             'dept='. $dept,
             'startdate='. $startdate,
             'enddate='. $enddate
         );
-        $query = join('&', $data);
 
-        $url = $this->get_url('bills/'.$status . '?' . $query);
-
-        $buf = $this->do_Get($url, $jwt);
-
-        return json_decode($buf, true);
+        return $this->api_get('bills/'.$status, null, $query);
     }
 
     public function get_bills($status = -2){
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        log_message("debug", "JWT:" . json_encode($jwt));
-        $url = $this->get_url("bills/" . $status);
-        $buf = $this->do_Get($url, $jwt);
-        log_message("debug", "From Server [ $url ]:" . $buf);
-        $obj = json_decode($buf, true);
-        return $obj;
+        return $this->api_get("bills/" . $status);
     }
 
     public function get_finance($status = 1){
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        //log_message("debug", "JWT:" . json_encode($jwt));
-        $url = $this->get_url("report_finance_flow/list/" . $status);
-        $buf = $this->do_Get($url, $jwt);
-        //log_message("debug", "report_finance_flow:" . $buf);
-        $obj = json_decode($buf, true);
-        return $obj;
+        return $this->api_get("report_finance_flow/list/" . $status);
     }
+
     public function get_all_bills(){
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        log_message("debug", "JWT:" . json_encode($jwt));
-        $url = $this->get_url("bills/2");
-        $buf = $this->do_Get($url, $jwt);
-        log_message("debug", "From Server [ $url ]:" . $buf);
-        $obj = json_decode($buf, true);
-        return $obj;
+        return $this->api_get("bills/2");
     }
 
     public function create_v2($report)
     {
-        $jwt = $this->session->userdata('jwt');
-        $url = $this->get_url("report");
-        $buf = $this->do_Post($url, $report, $jwt);
-        return json_decode($buf, true);
+        return $this->api_post("report", $report);
     }
 
     public function update_v2($report)
     {
         $id = $report['id'];
-
-        $jwt = $this->session->userdata('jwt');
-
-        $url = $this->get_url("report/$id");
-
+        $url = "report/$id";
         if($report['is_approver']) {
-           $url = $this->get_url("report/$id/modify"); 
+           $url = "report/$id/modify";
         }
-
-        $buf = $this->do_Put($url, $report, $jwt);
-
-        return json_decode($buf, true);
+        return $this->api_put($url, $report);
     }
- 
+
     public function get_report_by_id($id) {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        //log_message("debug", "Update:" . json_encode($data));
-        $url = $this->get_url("report/$id");
-        $buf = $this->do_Get($url, $jwt);
-        $obj = json_decode($buf, true);
-        return $obj;
+        return $this->api_get("report/$id");
     }
 
     public function get_reports_by_ids($ids) {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
         $data = array(
             'ids' => $ids
         );
-        log_message("debug", "Update:" . json_encode($data));
-        $url = $this->get_url("reports");
-        $buf = $this->do_Post($url, $data, $jwt);
-        $obj = json_decode($buf, true);
-        return $obj;
+        return $this->api_post("reports", $data);
     }
 
-
     public function audit_report($rid, $status, $receivers, $content = '') {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
         $data = array(
-            'status' => $status
-            ,'manager_id' => $receivers
-            ,'comment' => $content
+            'status' => $status,
+            'manager_id' => $receivers,
+            'comment' => $content
         );
-        log_message("debug", "Update:" . json_encode($data));
-        $url = $this->get_url("report/$rid");
-        $buf = $this->do_Put($url, $data, $jwt);
-        $obj = json_decode($buf, true);
-        return $obj;
+        return $this->api_put("report/$rid", $data);
     }
 
     public function report_flow($rid, $grouping = 0) {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $url = $this->get_url("report_flow/$rid/1/$grouping");
-        $buf = $this->do_Get($url, $jwt);
-        log_message("debug","report_flow:" . $buf);
-        $obj = json_decode($buf, true);
-        return $obj;
+        return $this->api_get("report_flow/$rid/1/$grouping");
     }
 
     public function multi_report_flow($rids) {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-
-        $url = $this->get_url("report_flow");
         $data = array(
             'rids' => implode(',', $rids),
         );
-        $buf = $this->do_Post($url, $data, $jwt);
-        log_message("debug","report_flow:" . $buf);
-        $obj = json_decode($buf, true);
-        return $obj;
+        return $this->api_post("report_flow", $data);
     }
 
     public function submit_check($manager_ids, $iids, $template_id, $extras){
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $url = $this->get_url("check_submit_flow");
         $data = array(
             'iids' => $iids,
             'manager_ids' => $manager_ids,
             'template_id' => $template_id,
             'extras' => json_encode($extras),
         );
-        log_message("error", "submit_check: " . json_encode($data));
-        $buf = $this->do_Post($url, $data, $jwt);
-        return $buf;
+        return $this->api_post("check_submit_flow", $data);
     }
 }

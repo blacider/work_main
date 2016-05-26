@@ -130,13 +130,12 @@ class Reports extends REIM_Controller {
     public function add_comment_v2() {
         $rid=$this->input->post("rid");
         $comment = $this->input->post("comment");
-        $buf = $this->reports->add_comment($rid, $comment);
-        $data = json_decode($buf, true);
+        $data = $this->reports->add_comment($rid, $comment);
         die(json_encode($data));
     }
 
     public function revoke($id = 0) {
-        $buf = $this->reports->revoke($id);
+        $this->reports->revoke($id);
         return redirect('reports');
     }
 
@@ -323,7 +322,6 @@ class Reports extends REIM_Controller {
         }
         $obj = $this->reports->get_detail($id);
         die(json_encode($obj));
-        //return redirect(base_url('reports/index'));
     }
 
     public function create_v2()
@@ -451,11 +449,9 @@ class Reports extends REIM_Controller {
     }
 
     public function check_permission() {
-        //{'complete' => 0/1, 'suggestion' => array($uid1, $uid2, $uid3)}
         $rid = $this->input->get('rid');
         $rep = $this->reports->get_permission($rid);
-        die($rep);
-        //niu
+        die(json_encode($rep));
     }
 
     public function audit_cc($search=''){
