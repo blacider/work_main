@@ -204,8 +204,8 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 <?php
 $open = 1;
 $close_directly = 0;
-if($profile['gid'] > 0){
-    $_config = $profile['group']['config'];
+if($user['gid'] > 0){
+    $_config = $user['group']['config'];
     if($_config) {
         $config = json_decode($_config, True);
 
@@ -217,7 +217,7 @@ if($profile['gid'] > 0){
         }
     }
 }
-if($open == 0 && $profile['admin'] > 0){ 
+if($open == 0 && $user['admin'] > 0){
     $open = 1;
 }
 if($open == 1) {
@@ -240,8 +240,8 @@ if($open == 1) {
         </a>
         <b class="arrow"></b>
         </li>
-<?php 
-if($profile['admin'] == 1 || $profile['admin'] == 3){
+<?php
+if($user['admin'] == 1 || $user['admin'] == 3){
 ?>
 
         <li class="hsub" id="export">
@@ -257,7 +257,7 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
         <li class="hsub" id="newrank">
         <a href="<?php echo base_url('members/rank'); ?>" >
             <i class="menu-icon fa fa-caret-right"></i>
-           级别职位设置 
+           级别职位设置
         </a>
 
         <b class="arrow"></b>
@@ -271,9 +271,9 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
 }
 ?>
 
-<?php 
-if($profile['admin'] > 0){
-if($profile['admin'] == 1 || $profile['admin'] == 3){
+<?php
+if($user['admin'] > 0){
+if($user['admin'] == 1 || $user['admin'] == 3){
 ?>
 
     <li class="hsub" id="category">
@@ -346,8 +346,8 @@ if($profile['admin'] == 1 || $profile['admin'] == 3){
     </ul>
     </li>
 
-<?php  } 
-if(in_array($profile['admin'], [1,2,4])) {
+<?php  }
+if(in_array($user['admin'], [1,2,4])) {
 ?>
 
     <li class="hsub" id="bills">
@@ -387,9 +387,9 @@ if(in_array($profile['admin'], [1,2,4])) {
     </ul>
     </li>
 
-<?php  } 
+<?php  }
 
-if($profile['admin'] == 1 || $profile['admin'] == 2) {
+if($user['admin'] == 1 || $user['admin'] == 2) {
 ?>
 
     <li class="hsub" id="finance">
