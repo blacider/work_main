@@ -413,7 +413,7 @@ class Category extends REIM_Controller {
         }
         if(!$sobs) die(json_encode(array('status' => false)));
         $data = $this->account_set->update_batch($sid, $sobs);
-        die($data);
+        die(json_encode($data));
     }
 
     public function batch_create_account() {
@@ -425,8 +425,7 @@ class Category extends REIM_Controller {
         log_message("debug", "SOB:" . json_encode($sobs));
         if(!$sobs) die(json_encode(array('status' => false)));
         $data = $this->account_set->insert_batch($sobs);
-        die($data);
-
+        die(json_encode($data));
     }
 
  public function exports(){
@@ -708,8 +707,7 @@ class Category extends REIM_Controller {
         $cp_name = $this->input->post('cp_name');
         $sob_id = $this->input->post('sob_id');
 
-        $_buf = $this->account_set->copy_sob($cp_name,$sob_id);
-        $buf = json_decode($_buf,True);
+        $buf = $this->account_set->copy_sob($cp_name, $sob_id);
 
         log_message('debug','cp_name:' . $cp_name);
         log_message('debug','sob_id:' . $sob_id);
@@ -732,7 +730,7 @@ class Category extends REIM_Controller {
         // 获取当前所属的组
         $this->session->unset_userdata('last_error');
         $sobs = $this->account_set->delete_account_set($sid);
-        log_message("debug","#######delete:$sobs");
+        log_message("debug","#######delete: ". json_encode($sobs));
         return redirect(base_url('category/account_set'));
     }
 
@@ -826,7 +824,7 @@ class Category extends REIM_Controller {
         {
             $categories = $_categories['data']['categories'];
         }
-        log_message('debug','***category:' . json_encode($_categories));
+        //log_message('debug','***category:' . json_encode($_categories));
         $sob_categories = array();
         $all_categories = array();
         $sob_keys =array();
@@ -864,38 +862,16 @@ class Category extends REIM_Controller {
                 }
             }
         }
-    /*
-        $_sobs = $sobs['data'];
-        $data = array();
-        foreach($_sobs as $sob)
-        {
-            if(array_key_exists($sob['sob_id'],$data))
-            {
-                $group=$data[$sob['sob_id']]['groups'];
-                array_push($data[$sob['sob_id']]['groups'],array('group_id'=>$sob['group_id'],'group_name'=>$sob['group_name']));
-            }
-            else
-            {
-                $data[$sob['sob_id']]=array();
-                $data[$sob['sob_id']]['sob_name']=$sob['sob_name'];
-                $data[$sob['sob_id']]['groups'] = array();
-                $groups = $data[$sob['sob_id']]['groups'];
-                array_push($data[$sob['sob_id']]['groups'],array('group_id'=>$sob['group_id'],'group_name'=>$sob['group_name']));
-            }
-        }
-    */
 
         $ugroups = $this->ug->get_my_list();
-        log_message('debug','all_categories:' . json_encode($all_categories));
-        log_message('debug','sobs:' . json_encode($_sobs));
-        log_message('debug','sobs_keys:' . json_encode($sob_keys));
-        log_message('debug','all_sobs_keys:' . json_encode($all_sob_keys));
+        //log_message('debug','all_categories:' . json_encode($all_categories));
+        //log_message('debug','sobs:' . json_encode($_sobs));
+        //log_message('debug','sobs_keys:' . json_encode($sob_keys));
+        //log_message('debug','all_sobs_keys:' . json_encode($all_sob_keys));
         $this->bsload('account_set/update',
             array(
                 'last_error' => $error,
                 'title' => '修改帐套'
-                //  ,'acc_sets' => $acc_sets
-                //  ,'acc_sets' => $acc_sets
                 ,'ugroups' => $ugroups['data']['group']
                 ,'sob_data' => $sob_groups
                 ,'sob_id' => $gid
