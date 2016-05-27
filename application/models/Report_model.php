@@ -33,12 +33,12 @@ class Report_Model extends Reim_Model {
         $approval_enddate
     ) {
         $query = array(
-            'keyword='. $keyword,
-            'dept='. $dept,
-            'submit_startdate='. $submit_startdate,
-            'submit_enddate='. $submit_enddate,
-            'approval_startdate='. $approval_startdate,
-            'approval_enddate='. $approval_enddate
+            'keyword' => $keyword,
+            'dept' => $dept,
+            'submit_startdate' => $submit_startdate,
+            'submit_enddate' => $submit_enddate,
+            'approval_startdate' => $approval_startdate,
+            'approval_enddate' => $approval_enddate,
         );
         return $this->api_get('report_finance_flow/list/'.$status, null, $query);
     }
