@@ -50,7 +50,6 @@ var selectRows = [];
 var IF_SELECT_ALL = 0;
 
 var keyword = $('#globalSearchText').val();
-keyword = encodeURIComponent(keyword);
 var dept = $('select[name=gids]').val();
 var submit_startdate = $('#date-timepicker1').val();
 var submit_enddate = $('#date-timepicker2').val();
