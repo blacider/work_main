@@ -8,9 +8,11 @@ function static_url ($path) {
     $file_path = BASEDIR . $path;
     $file_mtime = filemtime($file_path);
     if (false === strpos($path, '?')) {
-        $path = $path . '?';
+        $path .= '?';
+    } else {
+        $path .= '&';
     }
-    $path = $path . '_m=' . intval($file_mtime);
+    $path .= '_m=' . intval($file_mtime);
     return $path;
 }
 
