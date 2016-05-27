@@ -727,10 +727,9 @@ class Category extends REIM_Controller {
     {
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
-        // 获取当前所属的组
         $this->session->unset_userdata('last_error');
         $sobs = $this->account_set->delete_account_set($sid);
-        log_message("debug","#######delete: ". json_encode($sobs));
+        //log_message("debug","#######delete: ". json_encode($sobs));
         return redirect(base_url('category/account_set'));
     }
 
@@ -1043,7 +1042,6 @@ class Category extends REIM_Controller {
             }
 
         }
-            //$save = $this->input->post('renew');
         log_message('debug','groups:' . $groups);
         $ret = $this->account_set->update_account_set($sid,$sob_name,$groups,$ranks,$levels,$members);
         $re = json_encode($ret);
