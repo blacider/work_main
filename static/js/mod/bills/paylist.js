@@ -159,6 +159,8 @@
                 function($scope) {
                     // variable here
                     // $scope.isLoaded = true;
+                    // $scope.isSubmitWaiting = true;
+
                     $scope.moneyFormat = function(str) {
                         var num = parseFloat(str);
                         return num.toFixed(2);
@@ -219,10 +221,15 @@
                         });
                     };
                     $scope.onSubmit = function(vcode) {
+                        if($scope.isSubmitWaiting) {
+                            return;
+                        }
                         if (!vcode) {
                             $('.btn-vcode').focus();
                             return show_notify('请输入验证码');
                         }
+
+                        $scope.isSubmitWaiting = true;
                         // 获取显示的列表
                         var idArr = [];
 
@@ -238,6 +245,8 @@
                         var desc = $('textarea').val();
                         getPayToken(vcode).done(function(rs) {
                             if (rs['status'] <= 0) {
+                                $scope.isSubmitWaiting = false;
+                                $scope.$apply();
                                 return show_notify(rs['data']['msg']);
                             }
                             var pay_token = rs['data']['pay_token'];
@@ -305,21 +314,26 @@
                                         },
                                         onHide: function() {
                                             window.top._PAY_LAYER_.close();
-                                            this.close();
+                                            window.top.location.reload();
                                         },
                                         okValue: '查看转账记录',
                                         cancel: function(argument) {
-                                            window.top._PAY_LAYER_.close();
                                             this.close();
+                                            window.top._PAY_LAYER_.close();
+                                            window.top.location.reload();
                                         },
                                         ok: function() {
-                                            window.top.location = '/bills/payflow';
-                                            window.top._PAY_LAYER_.close();
                                             this.close();
+                                            window.top._PAY_LAYER_.close();
+                                            window.top.location = '/bills/payflow';
                                         }
                                     });
 
                                     dialog.showModal();
+
+                                    $scope.isSubmitWaiting = false;
+                                    $scope.$apply();
+
                                 }
                             });
                         });

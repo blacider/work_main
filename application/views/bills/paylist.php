@@ -93,6 +93,13 @@
                 <button class="btn-submit" ng-click="onSubmit(vcode, desc)">提交</button>
             </div>
         </div>
+        <!-- loading -->
+        <div class="cloud-bx-waiting" ng-if="isSubmitWaiting">
+            <div class="text">
+            <img class="animated pulse infinite" src="/static/img/loading.png" alt="">
+                提交中......
+            </div>
+        </div>
     </div>
 
     <!-- basic js resource here -->
@@ -107,6 +114,7 @@
 
     <script src="/static/plugins/cloud-layer/layer.js"></script>
     <link rel="stylesheet" href="/static/plugins/cloud-layer/layer.css">
-
+    
+    <link rel="stylesheet" href="/static/css/base/animate.css">
 </body>
 </html>
