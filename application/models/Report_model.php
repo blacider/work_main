@@ -20,7 +20,7 @@ class Report_Model extends Reim_Model {
         $query = [
             'ids' => implode('|', $ids),
         ];
-        return $this->api_get('report_finance_flow/list/1', $query);
+        return $this->api_get('report_finance_flow/list/1', null, $query);
     }
 
     public function get_report_by_status_and_query(
@@ -33,12 +33,12 @@ class Report_Model extends Reim_Model {
         $approval_enddate
     ) {
         $query = array(
-            'keyword='. $keyword,
-            'dept='. $dept,
-            'submit_startdate='. $submit_startdate,
-            'submit_enddate='. $submit_enddate,
-            'approval_startdate='. $approval_startdate,
-            'approval_enddate='. $approval_enddate
+            'keyword' => $keyword,
+            'dept' => $dept,
+            'submit_startdate' => $submit_startdate,
+            'submit_enddate' => $submit_enddate,
+            'approval_startdate' => $approval_startdate,
+            'approval_enddate' => $approval_enddate,
         );
         return $this->api_get('report_finance_flow/list/'.$status, null, $query);
     }
