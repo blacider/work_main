@@ -7,12 +7,7 @@ function static_url ($path) {
     }
     $file_path = BASEDIR . $path;
     $file_mtime = filemtime($file_path);
-    if (false === strpos($path, '?')) {
-        $path .= '?';
-    } else {
-        $path .= '&';
-    }
-    $path .= '_m=' . intval($file_mtime);
-    return $path;
+    $url = build_url($path, ['_m' => intval($file_mtime)]);
+    return $url;
 }
 

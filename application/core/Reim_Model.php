@@ -107,13 +107,7 @@ class Reim_Model extends CI_Model {
     }
 
     private function api_call($method, $url, $data=null, $params=null, $headers=[], $decode_json=true) {
-        if (!empty($params)) {
-            if (false === strpos($url, '?')) {
-                $url = $url . '?';
-            }
-            $url = $url . http_build_query($params);
-        }
-        $url = $this->api_url_base . $url;
+        $url = $this->api_url_base . build_url($url, $params);
         $access_token = $this->session->userdata('oauth2_ak');
         if (!empty($access_token)) {
             $auth_header = "Authorization: Bearer $access_token";
