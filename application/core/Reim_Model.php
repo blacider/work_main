@@ -55,9 +55,10 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
         if (!empty($fields)) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-        } elseif (in_array($method, [ 'POST', 'PATCH', 'PUT', 'DELETE' ])) {
-            $headers[] = 'Content-Length: 0';
+        } else {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, null);
         }
+
         $headers[] = 'X-Client-IP: ' . $this->input->ip_address();
         $current_url = current_url();
         if ($current_url) {
