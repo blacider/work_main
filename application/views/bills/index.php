@@ -449,4 +449,4 @@ Date.prototype.Format = function (fmt) { //author: meizz
 </script>
 
 <script language="javascript" src="/static/js/base.js"></script>
-<script language="javascript" src="<?= static_url("/static/js/bills.js") >?"></script>
+<script language="javascript" src="<?= static_url("/static/js/bills.js") ?>"></script>
