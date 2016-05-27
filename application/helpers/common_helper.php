@@ -13,3 +13,13 @@ function build_url ($url, $params) {
     return $url;
 }
 
+
+function array_get($array, $key, $default=null) {
+    assert(is_array($array));
+    if (array_key_exists($key, $array)) {
+        return $array[$key];
+    } else {
+        return $default;
+    }
+}
+
