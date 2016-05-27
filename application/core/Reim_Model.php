@@ -107,13 +107,7 @@ class Reim_Model extends CI_Model {
     }
 
     private function api_call($method, $url, $data=null, $params=null, $headers=[], $decode_json=true) {
-        if (!empty($params)) {
-            if (false === strpos($url, '?')) {
-                $url = $url . '?';
-            }
-            $url = $url . http_build_query($params);
-        }
-        $url = $this->api_url_base . $url;
+        $url = $this->api_url_base . build_url($url, $params);
         $access_token = $this->session->userdata('oauth2_ak');
         if (!empty($access_token)) {
             $auth_header = "Authorization: Bearer $access_token";
@@ -123,10 +117,11 @@ class Reim_Model extends CI_Model {
         $ret = $this->fire_api_call($method, $url, $data, $headers);
         $json_ret = json_decode($ret, true);
         if (is_array($json_ret) and
-            array_key_exists('code', $json_ret) and
-            $json_ret['code'] == USER_AUTH_ERROR
+            intval(array_get($json_ret, 'status', 0)) <= 0 and
+            intval(array_get($json_ret, 'code', 0)) === USER_AUTH_ERROR
         ) {
             log_message('error', "api auth error while: $method $url");
+            //log_message('debug', "ret: $ret");
             $this->session->sess_destroy();
             throw new RequireLoginError();
         }

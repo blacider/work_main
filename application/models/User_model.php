@@ -66,9 +66,9 @@ class User_Model extends Reim_Model {
 
     private function fetch_common() {
         $obj = $this->api_get('common/0');
-        log_message('debug', 'common ret: ' . json_encode($obj));
+        //log_message('debug', 'common ret: ' . json_encode($obj));
         if (empty($obj['status']) or empty($obj['data'])) {
-            throw Exception('invalid common data');
+            throw new Exception('invalid common data');
         }
         return $obj;
     }

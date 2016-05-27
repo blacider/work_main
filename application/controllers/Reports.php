@@ -533,7 +533,7 @@ class Reports extends REIM_Controller {
                 $url = base_url('reports/show/' . $d['id']);
                 $d['attachments'] = '<a href=' . htmlspecialchars($url) . '><img style="width:25px;height:25px" src="/static/images/default.png"></a>';
             }
-            log_message("debug", "xxx audit data:" . json_encode($d));
+            //log_message("debug", "xxx audit data:" . json_encode($d));
             $trash = $d['status'] === 1 ? 'grey' : 'red';
             $edit = ($d['status'] === 1)   ? 'grey' : 'green';
             $exports = ($d['status'] === 1) ? 'grey' : 'grey';
@@ -541,7 +541,7 @@ class Reports extends REIM_Controller {
             if(array_key_exists($d['uid'], $__members)){
                 $d['author'] = $__members[$d['uid']]['nickname'];
             }
-            log_message("debug", "Rstatus: **** " . json_encode($d));
+            //log_message("debug", "Rstatus: **** " . json_encode($d));
 
             $download_icon = '<span class="ui-icon ace-icon fa fa-download ' . 'blue' . '  tdown" data-id="' . $d['id'] . '"></span>';
 

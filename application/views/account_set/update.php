@@ -11,16 +11,6 @@
 <script src="/static/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 <script  type="text/javascript" src="/static/ace/js/date-time/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>
-<!-- <script type="text/javascript" src="/static/js/jquery.form.js"></script> -->
-<!-- <?php
-if($last_error) {
-?>
-<script type="text/javascript">
-	alert("<?php echo $last_error; ?>");
-</script>
-<?php
-}
-?> -->
 
 <div class="page-content">
 <div class="page-content-area">
@@ -36,9 +26,9 @@ if($last_error) {
                                 <input id="sob_name" maxlength="10" type="text" class="form-controller col-xs-12" name="sob_name" placeholder="输入帐套名"></div>
                         </div>
 
-                        
 
-                        
+
+
                         <label style="left:0;position: absolute;" class="col-sm-2 control-label no-padding-rigtht">类目</label>
                         <script type="text/javascript">
                             var _subSob = [];
@@ -94,7 +84,7 @@ if($last_error) {
                                                 text-align: center;
                                     }
                                     .drop-cata .caret {
-                                        
+
                                     }
                                     .addDrop {
                                             border-radius: 10px;
@@ -135,13 +125,13 @@ if($last_error) {
                                     </ul>
                                 </div>
                             </div>
-                            
+
                         </div>
                         <?php }?>
                         <div class="form-group">
-                            <div style="border-radius:10px;" onclick="addCate(this.parentNode)" class="col-sm-1 col-xs-1 col-sm-offset-2 col-xs-offset-2 btn-primary addDrop">添加+</div>    
+                            <div style="border-radius:10px;" onclick="addCate(this.parentNode)" class="col-sm-1 col-xs-1 col-sm-offset-2 col-xs-offset-2 btn-primary addDrop">添加+</div>
                         </div>
-                        
+
                         <label class="col-sm-2 control-label no-padding-rigtht" style="position:absolute;left:0px;">适用范围</label>
                         <div class="form-group">
                             <div class="col-xs-1 col-sm-1 col-sm-offset-2 col-xs-offset-2">
@@ -197,9 +187,9 @@ if($last_error) {
                                 <input type="radio" name="range" value="1" onclick="choseRange(this.value)" style="position:relative;top:7px"></div>
                             <div class="col-xs-4 col-sm-4">
                                 <select id="ranks" class="chosen-select range tag-input-style" multiple="multiple" name="ranks[]"  data-placeholder="请选择级别">
-                                
+
                                     <?php
-                                      
+
                                     foreach($ranks as $ug){
 				    if(in_array($ug['id'],$sob_ranks))
 				    {
@@ -215,7 +205,7 @@ if($last_error) {
                                         ">
                                         <?php echo $ug['name']; ?></option>
                                     <?php
-                                      
+
                                     }
 				    }
 
@@ -228,9 +218,9 @@ if($last_error) {
                                 <input type="radio" name="range" value="2" onclick="choseRange(this.value)" style="position:relative;top:7px"></div>
                             <div class="col-xs-4 col-sm-4">
                                 <select id="levels" class="chosen-select range tag-input-style" multiple="multiple" name="levels[]"  data-placeholder="请选择职位">
-                                 
+
                                     <?php
-                                    
+
                                     foreach($levels as $ug){
 				    if(in_array($ug['id'],$sob_levels))
 				    {
@@ -280,7 +270,7 @@ if($last_error) {
                             </div>
                             <label class="col-sm-1 control-label no-padding-rigtht" style="color:red">员工</label>
                         </div>
-                   
+
                 <input type="hidden" id="sob_id" name="sob_id" value="<?php echo $sob_id?>" />
                 <input type="hidden" id="renew" name="renew" value="0" />
                 <input type="reset" style="display:none;" id="reset">
@@ -328,7 +318,7 @@ if($last_error) {
             <input type="text" maxlength="10" id='update_cate_name' name='name' data-placeholder="请输入名称"></div>
         <div class="form-group">
             <label class="col-sm-2 control-label no-padding-rigtht">说明</label>
-                            
+
             <input id="note" type="text" name="note" placeholder="输入说明">
         </div>
 
@@ -369,20 +359,20 @@ if($last_error) {
                     <div class="col-sm-4"  style="padding:0;">
                         <select class="chosen-select-niu tag-input-style" style="width:95%;" id="alias_type" name="alias_type" data-placeholder="关联属性" >
                             <option value="0">无</option>
-<?php 
-                                    foreach($all_categories as $a) { 
+<?php
+                                    foreach($all_categories as $a) {
                                         if($a['id'] <= 0) continue;
 ?>
                             <option value="<?php echo $a['id']; ?>"><?php echo $a['name']; ?></option>
                             <?php } ?>
                         </select>
                     </div>
-                   
+
         </div>
 
         <div class="clearfix form-actions">
             <div class="col-md-offset-3 col-md-9">
-            
+
         <div class="btn btn-sm"  value="button" id="deleteSub">
             <i class="ace-icon fa fa-times"></i>
                 删除
@@ -418,10 +408,10 @@ if($last_error) {
             <input type="text" maxlength="10" id='create_cate_name' name='name' data-placeholder="请输入名称"></div>
         <div class="form-group">
             <label class="col-sm-2 control-label no-padding-rigtht">说明</label>
-                            
+
             <input id="note" type="text" name="note" placeholder="输入说明">
         </div>
-            
+
         <div class="form-group" style="height:30px">
             <label class="col-sm-2 col-xl-2">图片</label>
             <div class="dropdown col-sm-3 col-xl-3">
@@ -451,21 +441,21 @@ if($last_error) {
         <div class="form-group">
             <label class="col-sm-2 col-xl-2">类目代码</label>
             <input name="code" type="text" data-placeholder="请输入名称"></div>
-    
+
         <div class="form-group" style="height:30px;">
            <label class="col-sm-2 control-label no-padding-right">关联到:</label>
                     <div class="col-sm-4"  style="padding:0;">
                         <select class="chosen-select-niu tag-input-style" style="width:95%;" id="alias_type" name="alias_type" data-placeholder="关联属性" >
                             <option value="0">无</option>
-<?php 
-                                    foreach($all_categories as $a) { 
+<?php
+                                    foreach($all_categories as $a) {
                                         if($a['id'] <= 0) continue;
 ?>
                             <option value="<?php echo $a['id']; ?>"><?php echo $a['name']; ?></option>
                             <?php } ?>
                         </select>
                     </div>
-                   
+
         </div>
         </div>
     <div class="modal-footer">
@@ -533,7 +523,7 @@ var range = "<?php echo $range?>";
         });
     $("input[name=range]:eq("+range+")").attr('checked','checked');
     choseRange(range);
-  
+
         $.ajax({
             type:"get",
             url:__BASE+"category/getsobs",
@@ -563,7 +553,6 @@ var range = "<?php echo $range?>";
 
 
         $('.renew').click(function(){
-
             var sname = $('#sob_name').val();
             var sgroups = $('#group').val();
             //if(sname)
@@ -577,14 +566,7 @@ var range = "<?php echo $range?>";
                 show_notify("请输入用户名");
                 return false;
             }
-            /*if(sgroups == null)
-            {
-                $('#group').focus();
-                show_notify("请选择部门");
-                return false;
-            }*/
-
-                  $.ajax({
+            $.ajax({
                 type:"post",
                 url:__BASE+"category/update_sob",
                 data:{sob_name:$('#sob_name').val()
@@ -593,16 +575,16 @@ var range = "<?php echo $range?>";
                       ,ranks:$('#ranks').val()
                       ,levels:$('#levels').val()
                       ,member:$('#member').val()
-                      ,range:$("input[name='range']:checked").val()},
+                      ,range:$("input[name='range']:checked").val()
+                },
                 dataType:'json',
                 success:function(data){
-                       show_notify('保存成功');
-                       window.location.href=__BASE+"category/account_set";
+                    show_notify('保存成功');
+                    window.location.href=__BASE+"category/account_set";
                 },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    },            });
-     
-           }); 
+                error: function(XMLHttpRequest, textStatus, errorThrown) {},
+            });
+        });
         $(".chosen-select-niu").chosen({width:"95%"});
         $('.chosen-select').chosen({allow_single_deselect:true});
         $(window)
@@ -613,7 +595,7 @@ var range = "<?php echo $range?>";
                     $this.next().css({'width': $this.parent().width()});
                 })
             }).trigger('resize.chosen');
-       
+
         $('.cancel').click(function(){
             $('#sob_name').val(_sob_name);
             $("#group").val('');

@@ -65,7 +65,8 @@ class Reim_Show_Model extends Reim_Model {
         }
         log_message('debug','usergroup:' . json_encode($usergroups));
         return $usergroups;
-        }
+    }
+
     public function rank_level($type = 1)
     {
         $jwt = $this->session->userdata('jwt');
@@ -74,7 +75,7 @@ class Reim_Show_Model extends Reim_Model {
         $url = $this->get_url('rank/' . $type);
         $buf = $this->do_Get($url, $jwt);
 
-        log_message('debug','rank:' . json_encode($buf));
+        //log_message('debug','rank:' . json_encode($buf));
         return json_decode($buf, True);
     }
 }
