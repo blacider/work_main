@@ -115,10 +115,10 @@ class Report_Model extends Reim_Model {
 
     public function get_bills_by_status_and_query($status = 2, $keyword, $dept, $startdate, $enddate){
         $query = array(
-            'keyword='. $keyword,
-            'dept='. $dept,
-            'startdate='. $startdate,
-            'enddate='. $enddate
+            'keyword' => $keyword,
+            'dept' => $dept,
+            'startdate' => $startdate,
+            'enddate' => $enddate
         );
 
         return $this->api_get('bills/'.$status, null, $query);
