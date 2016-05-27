@@ -1,5 +1,5 @@
- <script src="/static/ace/js/chosen.jquery.min.js"></script>
- <link rel="stylesheet" href="/static/ace/css/chosen.css" />
+<script src="/static/ace/js/chosen.jquery.min.js"></script>
+<link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
 
 
@@ -14,7 +14,7 @@
 <script src="/static/ace/js/jquery.colorbox-min.js"></script>
 <script src="/static/ace/js/date-time/bootstrap-datetimepicker.min.js"></script>
 
- <style type="text/css">
+<style type="text/css">
      #searchBox {
     position: absolute;
       right: 20px;
@@ -38,7 +38,7 @@
       border: 0;
       color: white;
       height: 30px;
-      border-radius: 3px;   
+      border-radius: 3px;
       font-size: 12px;
       z-index: 9999
        }
@@ -64,7 +64,7 @@
       border: 0;
       color: white;
       height: 30px;
-      border-radius: 3px;   
+      border-radius: 3px;
       font-size: 12px;
        }
        #userGroupLab:hover {
@@ -78,7 +78,7 @@
         width: 262px;
         height: 30px;
         padding: 1px;
-        font-size: 0px !important; 
+        font-size: 0px !important;
         background: #DADADA;
        }
        #dataSelect span, #dataSelect_  span {
@@ -101,9 +101,9 @@
        #dataSelect button:hover, #dataSelect_  button:hover {
          background: #E63754 !important;
        }
-       #dataSelect button[disabled], 
+       #dataSelect button[disabled],
        #dataSelect_  button[disabled],
-       #dataSelect button[disabled]:hover, 
+       #dataSelect button[disabled]:hover,
        #dataSelect_ button[disabled]:hover {
         background: #B5B5B5 !important;
        }
@@ -136,15 +136,15 @@
          #dataSelect {
            left: 600px;
          }
-       
+
        }
 </style>
- 
+
 <!-- <label class="col-sm-2 control-label no-padding-right" id='userGroupLab'>适用范围</label> -->
 <div class="col-xs-2 col-sm-2" id="userGroup">
   <select class="chosen-select tag-input-style "  name="gids"  data-placeholder="请选择部门" placeholder="请选择部门">
     <option value='0'>公司</option>
-    <?php 
+    <?php
     foreach($usergroups as $g){
       if ($g['id'] != $query['dept']){
       ?>
@@ -156,7 +156,7 @@
         <?php
       }
     }
-    ?> 
+    ?>
   </select>
 </div>
 <div class="col-sm-3 col-xs-3" id="dataSelect">
@@ -189,7 +189,7 @@
         <h4 class="modal-title">支付以下报销单</h4>
       </div>
       <div class="modal-body">
-        <table id="grid-table-new"></table> 
+        <table id="grid-table-new"></table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -217,7 +217,7 @@
                         <input class="col-xs-4 col-sm-4" type="text" id="email" name="email" class="form-control" value="<?php if(array_key_exists('email',$profile)){ echo $profile['email'];}?>"/>
                         <input type="hidden" id="report_id" name="report_id" />
                       </div>
-                  </div>   
+                  </div>
                 </div>    <!-- row -->
               </div>    <!-- col-xs-12 -->
            </div> <!--- container -->
@@ -241,13 +241,13 @@ var __STATUS = "<?php echo $status; ?>";
 <?php
     $config = '';
     if(array_key_exists('config', $profile['group'])){
-        $config = $profile["group"]["config"]; 
+        $config = $profile["group"]["config"];
     }
 ?>
 var __CONFIG = '<?php echo $config; ?>';
 if(__CONFIG!='')
 {
-	var config = JSON.parse(__CONFIG);
+    var config = JSON.parse(__CONFIG);
 }
 var error = "<?php echo $error; ?>";
 </script>
@@ -257,7 +257,7 @@ var error = "<?php echo $error; ?>";
 $(document).ready(function(){
     if(error) show_notify(error);
 
-    $('.chosen-select').chosen({allow_single_deselect:true}); 
+    $('.chosen-select').chosen({allow_single_deselect:true});
     $(window)
         .off('resize.chosen')
         .on('resize.chosen', function() {
@@ -311,8 +311,6 @@ $('#send').click(function(){
 
 </script>
 <script type="text/javascript">
-  
-   
   $(document).ready(function() {
      var days = 30 *24* 3600* 1000;
     function format(date) {
@@ -331,7 +329,7 @@ $('#send').click(function(){
     if(_startdate && _enddate) {
       $('#dataSelect').find('button').attr('disabled', false);
     }
-    
+
 
     $('#date-timepicker1').datetimepicker({
         language: 'zh-cn',
@@ -360,7 +358,7 @@ $('#send').click(function(){
         if(d>+new Date(d2)) {
           return $('#date-timepicker2').val(format(+d + days)).datetimepicker('update');
         }
-        d = +d + days; 
+        d = +d + days;
 
         if(!d2) {
           $('#date-timepicker2').val(format(d)).datetimepicker('update');
@@ -386,7 +384,7 @@ $('#send').click(function(){
         if(d<+new Date(d2)) {
           return $('#date-timepicker1').val(format(+d - days)).datetimepicker('update');
         }
-        d = +d - days; 
+        d = +d - days;
         if(!d2) {
           $('#date-timepicker1').val(format(d)).datetimepicker('update');
         } else {
@@ -432,16 +430,16 @@ $('#send').click(function(){
         }
       })
   });
- 
-Date.prototype.Format = function (fmt) { //author: meizz 
+
+Date.prototype.Format = function (fmt) { //author: meizz
     var o = {
-        "M+": this.getMonth() + 1, //月份 
-        "d+": this.getDate(), //日 
-        "h+": this.getHours(), //小时 
-        "m+": this.getMinutes(), //分 
-        "s+": this.getSeconds(), //秒 
-        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
-        "S": this.getMilliseconds() //毫秒 
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
     };
     if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
     for (var k in o)
@@ -449,5 +447,6 @@ Date.prototype.Format = function (fmt) { //author: meizz
     return fmt;
 }
 </script>
-<script language="javascript" src="/static/js/base.js" ></script>
-<script language="javascript" src="/static/js/bills.js" ></script>
+
+<script language="javascript" src="/static/js/base.js"></script>
+<script language="javascript" src="<?= static_url("/static/js/bills.js") >?"></script>
