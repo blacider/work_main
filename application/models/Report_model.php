@@ -20,7 +20,7 @@ class Report_Model extends Reim_Model {
         $query = [
             'ids' => implode('|', $ids),
         ];
-        return $this->api_get('report_finance_flow/list/1', $query);
+        return $this->api_get('report_finance_flow/list/1', null, $query);
     }
 
     public function get_report_by_status_and_query(
