@@ -250,26 +250,28 @@
 
                                 },
                                 next: function(rs, index, list) {
-                                    // -100 ~ -119: 可继续错误
-                                    // 其中：-101：用户造成的错误（如用户姓名校验失败等）
+                                    // -110 ~ -119: 普通支付错误
+                                    // 其中:
+                                    // -110: 一般错误
+                                    // -111：用户姓名校验失败
 
-                                    // -120~ -139：不可继续的错误
-                                    // 其中： -121：公司造成的错误（如余额不足等）
+                                    // -120~ -129：严重支付错误
+                                    // 其中:
+                                    // -120: 一般错误
+                                    // -121：余额不足
 
-                                    // -100:普通可继续错误
-                                    // -120：普通不可继续错误
                                     var code = rs['code'];
                                     if (rs['status'] > 0) {
                                         statis_ok++;
                                         return true;
-                                    } else if (code <= -100 && code >= -119) {
+                                    } else if (code <= -110 && code >= -119) {
                                         show_notify(rs['data']['msg']);
                                         statis_next++;
-                                        if (code == -101) {
+                                        if (code == -111) {
                                             statis_check++;
                                         }
                                         return true;
-                                    } else if (code <= -120 && code >= -139) {
+                                    } else if (code <= -120 && code >= -129) {
                                         statis_error++;
                                         errorMsg = rs['data']['msg'];
                                         show_notify(errorMsg);
