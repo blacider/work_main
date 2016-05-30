@@ -150,6 +150,7 @@
                 doPayOneByOne(index, data, opts);
             } else {
                 opts.error(index, data, opts);
+                opts.done(index, list);
             }
         });
     };
