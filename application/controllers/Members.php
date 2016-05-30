@@ -540,9 +540,6 @@ class Members extends REIM_Controller {
         if($oper == "edit"){
             die($this->groups->update_profile($nickname, $email, $phone, $credit_card, $admin, $id));
         }
-
-
-
     }
 
     public function listdata(){
@@ -577,23 +574,6 @@ class Members extends REIM_Controller {
         die(json_encode($gmember));
     }
 
-    public function setadmin($uid = 0, $type = 0){
-        $error = $this->session->userdata('last_error');
-        // 获取当前所属的组
-        $this->session->unset_userdata('last_error');
-        //$ids = $this->input->post('data');
-
-        if($type == 0){
-            $type = 2;
-        } else {
-            $type = 1;
-        }
-        $_ids = implode(',', array($uid));
-        //$_type = $this->input->post('type');
-        $info = $this->groups->setadmin($_ids, $type);
-        die($info);
-    }
-
     public function create(){
         $name = $this->input->post('groupname');
         $info = $this->groups->create_group($name);
@@ -603,14 +583,6 @@ class Members extends REIM_Controller {
             $this->session->set_userdata('last_error', '创建失败');
         }
         redirect(base_url('members'));
-    }
-
-    public function show_exports(){
-        $this->load->model('items_model', 'items');
-        $obj = $this->items->get_exports(2, 'tianyu.an@rushucloud.com');
-        if($obj && $obj['status']){
-            $data = $obj['data'];
-        }
     }
 
     public function show() {
