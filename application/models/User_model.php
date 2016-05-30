@@ -101,12 +101,6 @@ class User_Model extends Reim_Model {
         return $this->api_get("register/company/", null, ['name' => $name]);
     }
 
-    public function del_email($email)
-    {
-        $data = array('emails' => $email);
-        return $this->api_post('staff', $data);
-    }
-
     public function reim_get_info($uid){
         $obj = $this->api_get('users/' . $uid);
         //log_message("debug", "Get: " . json_encode($obj));

@@ -4,111 +4,52 @@ class Group_Model extends Reim_Model {
 
     public function batch_del($members)
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-
-        $url = $this->get_url('load');
-
         $data = array('members' => $members);
-
-        $buf = $this->do_Delete($url,$data,$jwt);
-        log_message('debug','batch_del_back:' . $buf);
-
-        return json_decode($buf,true);
+        return $this->api_delete('load', $data);
     }
 
     public function set_managers($persons)
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-
-        $url = $this->get_url('load');
         $data = array();
-        //$data = $persons;
-        log_message('debug','persons:' . json_encode($persons));
         foreach($persons as $p){
             array_push($data, $p);
         }
-
         $data = array('relations' => json_encode($data));
-
-        //log_message('debug','xxx set_managers:' . json_encode($data));
-        $buf = $this->do_Put($url,$data,$jwt);
-
-        log_message('debug','set_managers_data:' . json_encode($data));
-        log_message('debug','set_managers:' . $buf);
-        return json_decode($buf,True);
+        return $this->api_put('load', $data);
     }
 
     public function reim_imports($data)
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-
-        $url = $this->get_url('load');
-        $buf = $this->do_Post($url,$data,$jwt);
-
-        log_message('debug','imports_back:' . $buf);
-        return json_decode($buf,True);
+        return $this->api_post('load', $data);
     }
+
     public function update_rank_level($rank,$id,$name)
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-
-        $url = $this->get_url('rank');
-        $data = array
-            (
-                'name' => $name
-                ,'rank' => $rank
-                ,'id' => $id
-            );
-        $buf = $this->do_Put($url,$data,$jwt);
-        log_message('debug','update_rank_level : ' . json_encode($buf));
-
-        return json_decode($buf,True);
-
+        $data = array (
+            'name' => $name,
+            'rank' => $rank,
+            'id' => $id
+        );
+        return $this->api_put('rank', $data);
     }
 
     public function del_rank_level($rank,$id)
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-
-        $url = $this->get_url('rank/' . $id . '/'  . $rank);
-        $buf = $this->do_Delete($url,array(),$jwt);
-
-        log_message('debug','delete_rank:' . json_encode($buf));
-
-        return json_decode($buf,True);
+        return $this->api_delete('rank/' . $id . '/' . $rank);
     }
+
     public function get_rank_level($rank)
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-
-        $url = $this->get_url('rank/' . $rank);
-        $buf = $this->do_Get($url,$jwt);
-
-        log_message('debug','rank:' . json_encode($buf));
-        return json_decode($buf,True);
+        return $this->api_get('rank/' . $rank);
     }
 
     public function create_rank_level($rank,$name,$uids='')
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-
-        $url = $this->get_url('rank');
-        $data = array
-        (
-          'name' => $name
-          ,'rank' => $rank
+        $data = array (
+            'name' => $name,
+            'rank' => $rank
         );
-        $buf = $this->do_Post($url,$data,$jwt);
-        log_message('debug','create_rank_level : ' . json_encode($buf));
-
-        return json_decode($buf,True);
+        return $this->api_post('rank');
     }
 
 
@@ -120,95 +61,12 @@ class Group_Model extends Reim_Model {
         return $this->api_get('groups/0');
     }
 
-
-    public function doimports($username, $nickname, $phone, $admin, $groups, $account, $cardno, $cardbank, $cardloc, $manager, $rank = 0,  $level = 0){
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $data = array('users' => json_encode(
-            array(
-                array(
-                    'email' => $username
-                    ,'phone' => $phone
-                    ,'name' => $nickname
-                    ,'admin' => $admin
-                    ,'groups' => $groups
-                    ,'account' => $account
-                    ,'cardno' => $cardno
-                    ,'cardbank' => $cardbank
-                    ,'cardloc' => $cardloc
-                    ,'manager_id' => $manager
-                    ,'rank' => $rank
-                    ,'level' => $level
-                )
-            )
-        ));
-        $url = $this->get_url('imports');
-        $buf = $this->do_Post($url, $data, $jwt);
-        log_message("debug", "model:" . $buf);
-        $obj = json_decode($buf, true);
-        return $obj;
-    }
-
-    public function setadmin($uid, $_type){
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $data = array('admin' => $_type, 'uid' => $uid);
-        $url = $this->get_url('set_admin');
-        log_message("debug", "Admin Data:" . json_encode($data));
-        $buf = $this->do_Post($url, $data, $jwt);
-        log_message("debug", "model:" . $buf);
-        return $buf;
-    }
-
-    public function create_group($name){
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $data = array('name' => $name);
-        $url = $this->get_url('groups');
-        $buf = $this->do_Post($url, $data, $jwt);
-        log_message("debug", "model:" . $buf);
-        return $buf;
-    }
-
-
-    public function update_profile($nickname, $email, $phone, $credit_card, $admin, $id){
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $data = array('admin' => $admin, 'uid' => $id, 'credit_card' => $credit_card, 'email' => $email, 'phone' => $phone);
-        $url = $this->get_url('users');
-        log_message("debug", "Admin Data:" . json_encode($data));
-        $buf = $this->do_Put($url, $data, $jwt);
-        log_message("debug", "model:" . $buf);
-        return $buf;
-    }
-
-    public function get_by_id($gid){
-        log_message("debug", "Reim Get Group by id");
-        $jwt = $this->session->userdata('jwt');
-        $url = $this->get_url('groups/' . $gid);
-        $buf = $this->do_Get($url, $jwt);
-        log_message("debug", $buf);
-        $obj = json_decode($buf, true);
-        return $obj;
-    }
-
-
     public function remove_user($uid = 0){
-        log_message("debug", "Reim Get Group by id");
-        $jwt = $this->session->userdata('jwt');
-        $url = $this->get_url('staff/' . $uid);
-        $buf = $this->do_Delete($url, array(), $jwt);
-        log_message("debug", $buf);
-        $obj = json_decode($buf, true);
-        return $obj;
+        return $this->api_delete('staff/' . $uid);
     }
+
     public function delete_group($id) {
-        $jwt = $this->session->userdata('jwt');
-        $url = $this->get_url('user_group/' . $id);
-        $buf = $this->do_Delete($url, array(), $jwt);
-        log_message("debug", $buf);
-        $obj = json_decode($buf, true);
-        return $obj;
+        return $this->api_delete('user_group/' . $id);
     }
 }
 

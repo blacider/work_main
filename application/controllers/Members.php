@@ -646,7 +646,6 @@ class Members extends REIM_Controller {
         array_push($input,base64_encode(json_encode($data)));
 
         $info = $this->groups->reim_imports(array('members'=>json_encode($input)));
-        //$info = $this->groups->doimports($email, $nickname, $phone, $admin, $groups, $account, $cardno, $cardbank, $cardloc , $manager, $rank, $level);
         if($info['status']) {
             $key = $email . "|" . $phone;
             if (array_key_exists($key, $info["data"])) {
@@ -685,6 +684,7 @@ class Members extends REIM_Controller {
             )
         );
     }
+
     public function export(){
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
