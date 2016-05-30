@@ -1237,7 +1237,7 @@ if(in_array($profile['admin'],[1,3,4])){
             }
             var data = rs['data'];
             if(!data['company_opened']) {  //企业未开通
-                $("#weixin-wallet").parent().remove();
+                $(".weixin-row").remove();
                 return
             } else if(data['company_opened']) { //企业开通
                 if(data['employee_opened']) {

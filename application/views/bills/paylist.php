@@ -68,7 +68,7 @@
                 <div style="text-align: right" ng-if="reportArray.length">总额：￥{{getReportArrayAmount(reportArray)}}</div>
                 <div class="description" ng-init="forTextAreaId = 'textareaDesc'" ng-if="reportArray.length">
                     <label for="{{textareaDesc}}">付款说明</label>
-                    <textarea name="" ng-model="desc" id="{{textareaDesc}}" cols="30" rows="10"></textarea>
+                    <textarea name="" ng-model="desc" id="{{textareaDesc}}" cols="30" rows="10" placeholder="报销转账"></textarea>
                 </div>
             </div>
         </div>

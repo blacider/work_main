@@ -139,7 +139,7 @@
         var itemData = {
             report_id: item,
             payway: 'wechat_pub',
-            description: data.desc || '批量进行企业向员工微信钱包支付（串行）',
+            description: data.desc || "报销转账",
             company_payhead_id: _COMPANY_PAYHEAD_['wechat_pub']['payhead_id'],
         }
         doPayItem(itemData, data.token).done(function(rs) {
@@ -240,6 +240,7 @@
 
                         var statis_ok = 0,
                             statis_next = 0,
+                            statis_no_money = 0,
                             statis_error = 0,
                             statis_check = 0;
                         var errorMsg = '';
@@ -276,35 +277,45 @@
                                         return true;
                                     } else if (code <= -110 && code >= -119) {
                                         show_notify(rs['data']['msg']);
-                                        statis_next++;
                                         if (code == -111) {
                                             statis_check++;
+                                        } else {
+                                            statis_next++;
                                         }
                                         return true;
                                     } else if (code <= -120 && code >= -129) {
-                                        statis_error++;
-                                        errorMsg = rs['data']['msg'];
+                                        // errorMsg = rs['data']['msg'];
+                                        errorMsg = '系统错误';
                                         show_notify(errorMsg);
                                         if (code == -121) {
                                             errorMsg = '余额不足';
+                                            statis_no_money++;
+                                        } else {
+                                            statis_error++;
                                         }
                                         return false;
                                     }
                                 },
                                 done: function(index, list) {
                                     var str = '';
-                                    // ok
-                                    if (statis_ok == list.length) {
+                                    // 1. 仅仅只有实名校验失败的错误，弹实名校验失败
+                                    // 2. 混合错误，弹系统错误＋紧紧是一般性可继续错误
+                                    // 3. 仅仅终止性错误，弹终止性错误
+                                    // 4. 仅仅余额不足，弹终余额不足
+                                    // 仅仅余额不足
+                                    if(statis_no_money == 1 && (statis_next==0 && statis_check==0)) {
+                                        str = errorMsg + '，' + statis_no_money + '笔报销单支付失败。<br />请充值后重新支付。<a target="_blank" href="http://kf.qq.com/faq/140225MveaUz150107fqeQBj.html?pass_ticket=mczQUvfhw2FPVPPVvwW68vP%2B98vdiRQ5LHDNWWTpkQiSKarE3GQ51K0KPyT888Rs">了解如何充值</a>';
+                                    // 仅仅只有实名校验失败的错误，弹实名校验失败
+                                    } else if(statis_check && statis_next == 0 && statis_no_money==0 && statis_error==0) {
+                                        str = '错误，' + statis_check + '笔报销实名校验失败。<br />请核实员工，或联系<a class="btn-open-meiqia" href="javascript:void(0);">云报销客服</a>';
+                                    // 混合型错误
+                                    } else if(statis_next || statis_error) {
+                                        str = '系统错误，' + (statis_error + statis_next + statis_check) + '笔报销支付失败。<br />请稍后重试，或联系<a class="btn-open-meiqia" href="javascript:void(0);">云报销客服</a>';
+                                    // 全部OK
+                                    } else {
                                         str = '已成功发起微信转账，预计2小时内到账。<br />请到［流水查询］中查看转账记录。';
-                                    } else if (statis_next) {
-                                        str = '系统错误，' + statis_next + '笔支付失败。<br />请稍后重试，或联系<a class="btn-open-meiqia" href="javascript:void(0);">云报销客服</a>';
-                                        // '<%= statis_check  %>笔支付实名校验失败失败',
-                                    } else if (statis_check) {
-                                        str = '系统错误，' + statis_check + '笔支付实名校验失败失败。<br />请核实员工，或联系<a class="btn-open-meiqia" href="javascript:void(0);">云报销客服</a>';
-                                    } else if (statis_error) {
-                                        str = errorMsg + '，' + (list.length - statis_ok) + '笔支付失败。<br />请充值后重试。<a target="_blank" href="http://kf.qq.com/faq/140225MveaUz150107fqeQBj.html?pass_ticket=mczQUvfhw2FPVPPVvwW68vP%2B98vdiRQ5LHDNWWTpkQiSKarE3GQ51K0KPyT888Rs">了解如何充值</a>';
                                     }
-                                    // str = '系统错误，' + statis_next + '笔支付失败。<br />请稍后重试，或联系<a class="btn-open-meiqia" href="javascript:void(0);" >云报销客服</a>';
+
                                     var dialog = new CloudDialog({
                                         content: str,
                                         cancelValue: '确认',
