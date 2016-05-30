@@ -73,21 +73,14 @@ class User_Model extends Reim_Model {
     }
 
     public function reset_password($data = array()){
-        $url = $this->get_url('resetpwd');
-        log_message("debug","url:" . $url);
-        log_message("debug","data:" . json_encode($data));
-        $buf = $this->do_Put($url,$data,'');
-
-        log_message("debug","reset_password_back:" . $buf);
-        return json_decode($buf,true);
+        return $this->api_put('resetpwd');
     }
 
     public function check_user($addr = 'email', $user_addr = '')
     {
         if($addr == 'weixin') {
             $data = $user_addr;
-        }
-        else {
+        } else {
             $data = array(
                 $addr => $user_addr
             );

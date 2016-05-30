@@ -18,10 +18,6 @@ class Reim_Model extends CI_Model {
         $this->api_url_base = $this->config->item('api_url_base');
     }
 
-    public function get_url($part){
-        return $part;
-    }
-
     private function get_user_agent() {
         $this->load->library('user_agent');
         $ua_str = $this->agent->agent_string();
@@ -75,22 +71,6 @@ class Reim_Model extends CI_Model {
             log_message('error', "api call err: $err");
         }
         return $result;
-    }
-
-    public function do_Post($url, $fields, $extraheader = array(), $force_bin = 0){
-        return $this->api_call('POST', $url, $fields, null, $extraheader, false);
-    }
-
-    public function do_Get($url, $extraheader=array()) {
-        return $this->api_call('GET', $url, null, null, $extraheader, false);
-    }
-
-    public function do_Put($url, $fields, $extraheader = array()){
-        return $this->api_call('PUT', $url, $fields, null, $extraheader, false);
-    }
-
-    public function do_Delete($url, $fields, $extraheader = array()){
-        return $this->api_call('DELETE', $url, $fields, null, $extraheader, false);
     }
 
     public function get_curl_upload_field($file_path  = '') {
