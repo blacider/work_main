@@ -38,7 +38,6 @@ class User_Model extends Reim_Model {
         }
         $d = $ret['data'];
         $this->session->set_userdata("oauth2_ak", $d['access_token']);
-        $this->session->set_userdata("jwt", ['X-REIM-JWT: placebo']);
         //$this->session->set_userdata("oauth2_expires_in", $d['expires_in']);
         return true;
     }
