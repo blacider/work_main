@@ -561,12 +561,12 @@ class Company extends REIM_Controller {
     {
 
     }
+
     public function delete_approve($pid)
     {
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
-        $buf = $this->company->delete_approve($pid);
-        log_message("debug","###delte:".json_encode($buf));
+        $this->company->delete_approve($pid);
         return redirect(base_url('company/show_approve'));
 
     }
@@ -705,27 +705,27 @@ class Company extends REIM_Controller {
 
         $total_amount_limit = $this->input->post('frequency_unlimit');
         $total_amount = $this->input->post('total_amount');
-    $_ranks = $this->input->post('ranks');
-    $ranks = '';
-    $_levels = $this->input->post('levels');
-    $levels = '';
-    $_groups = $this->input->post('groups');
-    $groups = '';
+        $_ranks = $this->input->post('ranks');
+        $ranks = '';
+        $_levels = $this->input->post('levels');
+        $levels = '';
+        $_groups = $this->input->post('groups');
+        $groups = '';
 
-    if($_ranks)
-    {
-        $ranks = implode(',',$_ranks);
-    }
+        if($_ranks)
+        {
+            $ranks = implode(',',$_ranks);
+        }
 
-    if($_levels)
-    {
-        $levels = implode(',',$_levels);
-    }
+        if($_levels)
+        {
+            $levels = implode(',',$_levels);
+        }
 
-    if($_groups)
-    {
-        $groups = implode(',',$_groups);
-    }
+        if($_groups)
+        {
+            $groups = implode(',',$_groups);
+        }
 
         if($total_amount_limit == 1)
         {
@@ -743,24 +743,17 @@ class Company extends REIM_Controller {
             $members = -1;
         }
 
-        //  $all_able = $this->input->post('allow_all_category');
         $allow_all_category = $this->input->post('all_able');
-        //  $all_able = json_decode($all_able);
-        //  log_message("debug","@@@@@:all_able:".$choose);
-
-
-        //  log_message("debug","######:".json_encode($all_able));
-        //  $allow_all_category = $this->input->post('all_all_category');
         $allow_category_ids = $this->input->post('allow_category_ids');
         $allow_category_ids = json_decode($allow_category_ids);
         $allow_category_amounts = $this->input->post('allow_category_amounts');
         $allow_category_amounts = json_decode($allow_category_amounts);
         $defaults = $this->input->post('defaults');
         $defaults = json_decode($defaults);
-        log_message("debug","%%%%".json_encode($defaults));
+        //log_message("debug","%%%%".json_encode($defaults));
 
         $deny_category_ids = $this->input->post('deny_category_ids');
-        log_message("debug","@@@@@".$deny_category_ids);
+        //log_message("debug","@@@@@".$deny_category_ids);
         $deny_category_ids = json_decode($deny_category_ids);
         $deny_category_amounts = $this->input->post('deny_category_amounts');
         $deny_category_amounts = json_decode($deny_category_amounts);
@@ -817,8 +810,7 @@ class Company extends REIM_Controller {
         //  $info = array('category'=>$category_id,'amount'=>$amount);
         //  $policy =array(array('category'=>$category_id,'amount'=>$amount));
         //  array_push($policy,$info);
-        $buf = $this->company->create_approve($rname,$members,$total_amount,$allow_all_category,json_encode($policies),$pid,$ranks,$levels,$groups);
-        log_message('debug',"#######".json_encode($buf));
+        $this->company->create_approve($rname,$members,$total_amount,$allow_all_category,json_encode($policies),$pid,$ranks,$levels,$groups);
         return redirect(base_url('company/show_approve'));
 
     }
@@ -1030,15 +1022,13 @@ class Company extends REIM_Controller {
 
         $start_time = $this->input->post('sdt');
         $end_time = $this->input->post('edt');
-        $buf=$this->company->update_rule($id,$rname,$category_id,$frequency,$frequency_time,$all_members,implode(',',$groups),implode(',',$members));   
-        log_message("debug","####CREATE:".json_encode($buf));
+        $this->company->update_rule($id,$rname,$category_id,$frequency,$frequency_time,$all_members,implode(',',$groups),implode(',',$members));   
         return redirect(base_url('company/show'));
     }
     public function delete_rule($pid)
     {
         $error = $this->session->userdata('last_error');
-        $buf = $this->company->delete_rule($pid);
-        log_message("debug","###delte:".json_encode($buf));
+        $this->company->delete_rule($pid);
         return redirect(base_url('company/show'));
     }
 
@@ -1052,15 +1042,15 @@ class Company extends REIM_Controller {
         $_categories_id = $this->input->post('categories');
         $category_ids = json_decode($_categories_id,True);
 
-    $_freq_counts = $this->input->post('freq_counts');
-    $freq_counts = json_decode($_freq_counts,True);
-    $_freq_periods = $this->input->post('freq_periods');
-    $freq_periods = json_decode($_freq_periods,True);
-    $_freq_unlimits = $this->input->post('freq_unlimits');
-    $freq_unlimits = json_decode($_freq_unlimits,True);
+        $_freq_counts = $this->input->post('freq_counts');
+        $freq_counts = json_decode($_freq_counts,True);
+        $_freq_periods = $this->input->post('freq_periods');
+        $freq_periods = json_decode($_freq_periods,True);
+        $_freq_unlimits = $this->input->post('freq_unlimits');
+        $freq_unlimits = json_decode($_freq_unlimits,True);
     
         $id = $this->input->post('rid');
-    log_message('debug','data:' . json_encode(array('categories'=>$_categories_id,'freq_counts'=>$_freq_counts,'freq_periods'=>$_freq_periods,'freq_unlimits'=>$_freq_unlimits)));
+        log_message('debug','data:' . json_encode(array('categories'=>$_categories_id,'freq_counts'=>$_freq_counts,'freq_periods'=>$_freq_periods,'freq_unlimits'=>$_freq_unlimits)));
 
     
         $amount = $this->input->post('rule_amount');
@@ -1073,34 +1063,34 @@ class Company extends REIM_Controller {
         $frequency_time = 1;
 
         $_groups = $this->input->post('gids');
-    $groups = '';
+        $groups = '';
         $_members = $this->input->post('uids');
-    $members = '';
+        $members = '';
 
         $all_members = $this->input->post('all_members');
-    $_ranks = $this->input->post('ranks');
-    $_levels = $this->input->post('levels');
-    $ranks = '';
-    $levels ='';
+        $_ranks = $this->input->post('ranks');
+        $_levels = $this->input->post('levels');
+        $ranks = '';
+        $levels ='';
 
-    if($_groups)
-    {
-        $groups = implode(',',$_groups);
-    }
-    if($_members)
-    {
-        $members = implode(',',$_members);
-    }
+        if($_groups)
+        {
+            $groups = implode(',',$_groups);
+        }
+        if($_members)
+        {
+            $members = implode(',',$_members);
+        }
 
-    if($_ranks)
-    {
-        $ranks = implode(',',$_ranks);
-    }
+        if($_ranks)
+        {
+            $ranks = implode(',',$_ranks);
+        }
 
-    if($_levels)
-    {
-        $levels = implode(',',$_levels);
-    }
+        if($_levels)
+        {
+            $levels = implode(',',$_levels);
+        }
 
         if($frequency == '')
         {
@@ -1126,30 +1116,21 @@ class Company extends REIM_Controller {
             $groups = '';
             $members = '';
         }
-    log_message('debug','ranks:' . $ranks);
-    log_message('debug','levels:' . $levels);
+        log_message('debug','ranks:' . $ranks);
+        log_message('debug','levels:' . $levels);
 
         $policies = array();
-    $len = count($category_ids);
-    for($i = 0 ; $i < $len ; $i++)
-    {
-        if($freq_unlimits[$i] == 1)
-            $freq_counts[$i] = 0;
-        array_push($policies,array('category'=>$category_ids[$i],'freq_count' => $freq_counts[$i] , 'freq_period' => $freq_periods[$i]));
-    }
+        $len = count($category_ids);
+        for($i = 0 ; $i < $len ; $i++)
+        {
+            if($freq_unlimits[$i] == 1)
+                $freq_counts[$i] = 0;
+            array_push($policies,array('category'=>$category_ids[$i],'freq_count' => $freq_counts[$i] , 'freq_period' => $freq_periods[$i]));
+        }
 
-    log_message('debug','policies:' . json_encode($policies));
-    log_message('debug','rule_id:' . $id);
-    if($id)
-    {
-        $buf = $this->company->create_update_rules($rname,$groups,$members,$levels,$ranks,json_encode($policies),$all_members,$id);
-    }
-    else
-    {
-        $buf = $this->company->create_update_rules($rname,$groups,$members,$levels,$ranks,json_encode($policies),$all_members);
-    }
-//        $buf=$this->company->create_rule($rname,$category_ids,$frequency,$frequency_time,$all_members,$groups,$members,$ranks,$levels);   
-        log_message("debug","####CREATE:".json_encode($buf));
+        log_message('debug','policies:' . json_encode($policies));
+        log_message('debug','rule_id:' . $id);
+        $this->company->create_update_rules($rname,$groups,$members,$levels,$ranks,json_encode($policies),$all_members,$id);
         return redirect(base_url('company/show'));
     }
 
@@ -1157,14 +1138,13 @@ class Company extends REIM_Controller {
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-        $buf = $this->company->show_rules();
-        $rules = json_decode($buf,true);
+        $rules = $this->company->show_rules();
         $_rules = array();
         if($rules['status'] > 0)
         {
             $_rules = $rules['data'];
         }
-    log_message('debug','rules:' . json_encode($_rules));
+        log_message('debug','rules:' . json_encode($_rules));
         $this->bsload('company/show',
             array(
                 'title'=>'新建规则'
