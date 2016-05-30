@@ -23,9 +23,9 @@ class Groups extends REIM_Controller {
         if($_images)
         {
             $images = $_images;
-        }        
+        }
         $info = $this->ug->create_group($manager,$uids, $name,$code,$pid,$images);
-        
+
         if($info['status'] > 0)
         {
             $this->session->set_userdata('last_error','创建部门成功');
@@ -111,21 +111,6 @@ class Groups extends REIM_Controller {
             }
             die(json_encode($group['data']));
         }
-    }
-
-    public function invite() {
-        $error = $this->session->userdata('last_error');
-        // 获取当前所属的组
-        $this->session->unset_userdata('last_error');
-        $this->need_group_it();
-        $name = $this->input->post('username');
-        $info = $this->groups->set_invite($name);
-        if($info && $info['status']) {
-            $this->session->set_userdata('last_error', '邀请发送成功');
-        } else {
-            $this->session->set_userdata('last_error', '邀请发送失败');
-        }
-        redirect(base_url('groups'));
     }
 
     public function setadmin($uid = 0){

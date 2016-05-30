@@ -109,38 +109,6 @@
     }
 
 
-    function make_invite(){
-        $('.data-maintainer').each(function(idx, val){
-            var _status = $(this).data('exist');
-            if(1 == _status) {
-                return;
-            }
-            var _member = $(this).val();
-            var _id = $(this).data('id');
-            $.ajax({
-                url : __BASE  + "members/import_single"
-                    ,method: 'POST'
-                    ,dataType: 'json'
-                    ,data : {'member' : _member, 'id' : _id}
-                    ,success : function(data){
-                        if(data.status) {
-                            var __id = data.id;
-                          
-                            $('#' + __id).removeClass('fa-times red').addClass('fa-check green');
-                        } else {
-                            var __id = data.id;
-                            $('#' + __id).innerHTML(data.msg);
-                        }
-                    }
-                    ,error:function(a,b,c)
-                    {
-
-                    }
-            });
-            
-        });
- 
-    }
 function travel(is_mail)
 {
     is_quiet_mail = is_mail;
@@ -385,6 +353,5 @@ $(document).ready(function(){
     $('#save_without_mail').click(function(){
         travel(1);
     });
-    //$('#resave').click(make_invite);
 });
 </script>

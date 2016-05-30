@@ -41,16 +41,6 @@ class Members extends REIM_Controller {
         }
         log_message('debug','set_success' . json_encode($set_success));
         die(json_encode(array('data'=>$set_success)));
-    /*
-    if($buf['status']>0)
-    {
-        die(json_encode(array('msg'=>'设置成功')));
-    }
-    else
-    {
-        die(json_encode(array('msg'=>'设置失败')));
-    }
-     */
     }
 
     public function members_del()
@@ -112,15 +102,13 @@ class Members extends REIM_Controller {
         }
 
         $buf = $this->ug->create_group(0,'',$name,'',0);
-        if($buf['status']>0)
-        {
+        if($buf['status']>0) {
             die(json_encode(array('msg' => '部门添加成功')));
-        }
-        else
-        {
+        } else {
             die(json_encode(array('msg' => $buf['data']['msg'])));
         }
     }
+
     public function imports_create_rank_level($rank)
     {
         $this->need_group_it();
@@ -589,20 +577,6 @@ class Members extends REIM_Controller {
         die(json_encode($gmember));
     }
 
-    public function invite() {
-        $error = $this->session->userdata('last_error');
-        // 获取当前所属的组
-        $this->session->unset_userdata('last_error');
-        $name = $this->input->post('username');
-        $info = $this->groups->set_invite($name);
-        if($info && $info['status']) {
-            $this->session->set_userdata('last_error', '邀请发送成功');
-        } else {
-            $this->session->set_userdata('last_error', '邀请发送失败');
-        }
-        redirect(base_url('groups'));
-    }
-
     public function setadmin($uid = 0, $type = 0){
         $error = $this->session->userdata('last_error');
         // 获取当前所属的组
@@ -681,8 +655,6 @@ class Members extends REIM_Controller {
             )
         );
     }
-
-
 
     public function listtreegroup(){
         $group = $this->ug->get_my_list();
@@ -901,10 +873,6 @@ class Members extends REIM_Controller {
             return redirect(base_url('members/index'));
         }
         return redirect(base_url('members/newmember'));
-
-        //print_r($info);
-        //$this->groups->set_invite($email, $nickname, $phone, $credit, $groups);
-        //die(json_encode(array('status' => true, 'id' => $id)));
     }
 
     public function batch_del(){
@@ -1625,7 +1593,6 @@ class Members extends REIM_Controller {
         if($id == 0) return redirect(base_url('members/index'));
         $this->groups->remove_user($id);
         return redirect(base_url('members/index'));
-
     }
 
     public function batch_load(){
@@ -1633,15 +1600,6 @@ class Members extends REIM_Controller {
         $quiet = $this->input->post('quiet');
         log_message("debug", "Member:" . json_encode($member));
         $info = $this->groups->reim_imports(array('quiet' => $quiet,'members' => json_encode($member)));
-        /*
-        $data = array();
-        if($info['status'] > 0)
-        {
-            $data = $info['data'];
-        }
-        log_message('debug','batch_load:' . json_encode($info));
-        //        die(json_encode(array('msg'=>"it works")));
-        //        */
         die(json_encode(array('data' => $info)));
     }
 

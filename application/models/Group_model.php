@@ -149,18 +149,6 @@ class Group_Model extends Reim_Model {
         return $obj;
     }
 
-    // type : -0 邮箱 1 手机
-    public function set_invite($username, $nickname, $phone, $credit, $groups){
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-        $data = array('name' => $username, 'phone' => $phone, 'nickname' => $nickname, 'credit_card' => $credit, 'groups' => $groups);
-        $url = $this->get_url('invite');
-        $buf = $this->do_Post($url, $data, $jwt);
-        log_message("debug", "model:" . $buf);
-        $obj = json_decode($buf, true);
-        return $obj;
-    }
-
     public function setadmin($uid, $_type){
         $jwt = $this->session->userdata('jwt');
         if(!$jwt) return false;
