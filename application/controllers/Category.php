@@ -67,9 +67,7 @@ class Category extends REIM_Controller {
         $__oid = json_decode($__oid,True);
         $fid = $this->input->post('fid');
         $pid = $this->input->post('pid');
-       // $gid = $this->input->post('gid');
         $_oid = $this->input->post('oid');
- //       $oname = $this->input->post('oname');
         $standalone = 0;
 
         $uids = $this->input->post('uids');
@@ -972,15 +970,11 @@ class Category extends REIM_Controller {
         $sid = $this->input->post('sid');
         $sob_name = $this->input->post('sob_name');
         $_groups = $this->input->post('groups');
-        //$_groups = json_decode($_groups,True);
 
         $_ranks = $this->input->post('ranks');
-        //$_ranks = json_decode($_ranks,True);
 
         $_levels = $this->input->post('levels');
-        //$_levels = json_decode($_levels,True);
         $_members = $this->input->post('member');
-        //$_members = json_decode($_members,True);
         $groups = '';
         $ranks = '';
         $levels = '';

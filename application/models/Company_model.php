@@ -2,12 +2,6 @@
 
 class Company_Model extends Reim_Model {
 
-    public function set_single_company_config($key,$value)
-    {
-        $data = array('key'=>$key,'value'=>$value);
-        return $this->get_put('company_config', $data);
-    }
-
     public function get_company_config()
     {
         return $this->api_get('company_config');
@@ -26,33 +20,6 @@ class Company_Model extends Reim_Model {
     public function get_report_finance_permission($rid)
     {
         return $this->api_get('report_finance_flow/check_permission/' . $rid);
-    }
-
-    public function report_property_delete($id)
-    {
-        return $this->api_delete('report_property/' . $id);
-    }
-
-    public function report_property_update($name,$config,$id)
-    {
-        $data = array('name' => $name, 'config' => $config);
-        return $this->api_put('report_property/' . $id, $data);
-    }
-
-    public function report_property_create($name,$config)
-    {
-        $data = array('name' => $name, 'config' => $config);
-        return $this->api_post('report_property', $data);
-    }
-
-    public function get_single_reports_settings($id)
-    {
-        return $this->api_get('report_property/' . $id);
-    }
-
-    public function get_reports_settings_list()
-    {
-        return $this->api_get('report_property/0');
     }
 
     public function delete_approve($pid)

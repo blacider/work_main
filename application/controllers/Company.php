@@ -14,14 +14,6 @@ class Company extends REIM_Controller {
         $this->load->model('item_customization_model');
     }
     
-    public function set_single_company_config(){
-        $this->need_group_it();
-        $key = $this->input->post('key');
-        $value = $this->input->post('value');
-        $ret = $this->company->set_single_company_config($key, $value);
-        die(json_encode($ret));
-    }
-
     public function dodelete_report_template($id)
     {
         $buf = $this->reports->delete_report_template($id); 
@@ -142,8 +134,6 @@ class Company extends REIM_Controller {
         {
             $this->session->userdata('last_error',$buf['data']['msg']);
         }
-
-//        return redirect(base_url('company/report_template_list'));
         die(json_encode(array('id'=>$id)));
     }
 
@@ -165,27 +155,13 @@ class Company extends REIM_Controller {
         {
             $report_template = $_report_template['data'];
         }
-//        $item_type_dic = $this->reim_show->
+
         $this->bsload('reports/update_report_template',
             array(
                     'title'=>'修改报销单模板',
                     'report_template' => $report_template
                     ,'item_type_dic' => $item_type_dic
                     ,'breadcrumbs'=> array(
-                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-                    ,array('url'=>'','name'=>'公司设置','class'=> '')
-                    ,array('url'=>'','name'=>'修改报销单模板','class'=>'')
-                ),
-            )
-        );
-    }
-
-    public function create_report_template()
-    {
-        $this->bsload('reports/create_report_template',
-            array(
-                    'title'=>'新建报销单模板',
-                    'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
                     ,array('url'=>'','name'=>'修改报销单模板','class'=>'')
@@ -285,143 +261,6 @@ class Company extends REIM_Controller {
         return redirect('company/get_item_type_name');
     }
 
-    public function report_settings_update($id)
-    {
-        $buf = $this->company->get_single_reports_settings($id); 
-        $setting = array();
-        if($buf['status'] > 0)
-        {
-            $setting = $buf['data'];
-        }
-        $_config = $setting['config'];
-        $config = json_decode($_config,true);
-        log_message('debug','logo:' . $config['logo']);
-        $this->bsload('company/report_settings_update',
-            array(
-                'images'=>$config['logo']
-                ,'title'=>'修改报销单模板'
-                ,'setting'=>$setting
-                ,'id'=>$id
-                ,'breadcrumbs'=> array(
-                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-                    ,array('url'=>'','name'=>'公司设置','class'=> '')
-                    ,array('url'=>'','name'=>'修改报销单模板','class'=>'')
-                ),
-            )
-        );
-    }
-
-    public function report_property_delete($id)
-    {
-        $buf = $this->company->report_property_delete($id); 
-
-        if($buf['status'] > 0)
-        {
-            $this->session->set_userdata('last_error','删除成功');
-        }
-        else
-        {
-            $this->session->set_userdata('last_error','删除失败');
-        }
-
-        return redirect('company/report_settings_list');
-    }
-    public function report_property_new($id=0)
-    {
-        $name = $this->input->post('report_property_name');
-        $borrowing = $this->input->post('borrowing');
-        $location = $this->input->post('location');
-        $period = $this->input->post('period');
-        $account = $this->input->post('account');
-        $payment = $this->input->post('payment');
-        $contract = $this->input->post('contract');
-        $note = $this->input->post('note');
-        $images = $this->input->post('images');
-
-        $config = array();
-        $config['borrowing'] = $borrowing;
-        $config['location'] = $location;
-        $config['period'] = $period;
-        $config['account'] = $account;
-        $config['payment'] = $payment;
-        $config['contract'] = $contract;
-        $config['note'] = $note;
-        $config['logo'] = $images;
-        log_message('debug', 'config : ' . json_encode($config));
-        foreach($config as $key => $value)
-        {
-            if($value == '')
-            {
-                $config[$key] = "0";
-            }
-        }
-        log_message('debug', 'config : ' . json_encode($config));
-        if($id == 0)
-        {
-            $buf = $this->company->report_property_create($name,json_encode($config));
-                if($buf['status'] > 0)
-                {
-                    $this->session->set_userdata('last_error','添加成功');
-                }
-                else
-                {
-                    $this->session->set_userdata('last_error','添加失败');
-                }
-        }
-        else
-        {
-            $buf = $this->company->report_property_update($name,json_encode($config),$id);
-                if($buf['status'] > 0)
-                {
-                    $this->session->set_userdata('last_error','修改成功');
-                }
-                else
-                {
-                    $this->session->set_userdata('last_error','修改失败');
-                }
-        }
-
-        return redirect('company/report_settings_list');
-    }
-    public function report_settings_new()
-    {
-        $this->bsload('company/report_settings_new',
-            array(
-                'title'=>'新建报销单模板'
-                ,'breadcrumbs'=> array(
-                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-                    ,array('url'=>'','name'=>'公司设置','class'=> '')
-                    ,array('url'=>'','name'=>'新建报销单模板','class'=>'')
-                ),
-            )
-        );
-    }
-
-    public function report_settings_list()
-    {
-        $settings = array();
-        $_settings = $this->company->get_reports_settings_list();
-        if($_settings['status'] > 0)
-        {
-            $settings = $_settings['data'];
-        }
-
-        $error = $this->session->userdata('last_error');
-        $this->session->unset_userdata('last_error');
-        $this->bsload('company/report_settings',
-            array(
-                'title'=>'报销单设置'
-                ,'report_settings'=>$settings
-                ,'error'=>$error
-                ,'breadcrumbs'=> array(
-                    array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
-                    ,array('url'=>'','name'=>'公司设置','class'=> '')
-                    ,array('url'=>'','name'=>'报销单设置','class'=>'')
-                ),
-            )
-        );
-    }
-
     public function flow_finance_update($fid)
     {
         $this->need_group_it();
@@ -456,20 +295,8 @@ class Company extends REIM_Controller {
         {
             die(json_encode(array('status'=>0)));
         }
-            
-        /*
-        if($buf['status'] > 0)
-        {
-            $this->session->set_userdata('last_error','更新成功');
-        }
-        else
-        {
-            $this->session->set_userdata('last_error','更新成功');
-        }
-        */
-        
-       // return redirect('/company/approval_flow');
     }
+
     public function flow_update($id = 0)
     {
         $_group = $this->groups->get_my_list();
@@ -557,18 +384,12 @@ class Company extends REIM_Controller {
         );
     }
 
-    public function update_approve()
-    {
-
-    }
-
     public function delete_approve($pid)
     {
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
         $this->company->delete_approve($pid);
         return redirect(base_url('company/show_approve'));
-
     }
 
     public function approve_update($pid)
@@ -576,8 +397,7 @@ class Company extends REIM_Controller {
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-        $buf = $this->company->show_approve();
-        $info=json_decode($buf,true);
+        $info = $this->company->show_approve();
         $_info = array();
         if($info['status']>0)
         {
@@ -596,7 +416,6 @@ class Company extends REIM_Controller {
         log_message('debug',"approve:".json_encode($own_rule));
         log_message("debug","categories:".json_encode($categories));
         log_message("debug","sobs:".json_encode($_sobs));
-        log_message("debug","#######buf".$buf);
         $approve_categories = $own_rule['categories'];
         $cate_arr = array();
         $flag = 1;
@@ -668,15 +487,11 @@ class Company extends REIM_Controller {
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-        $buf = $this->company->show_approve();
-        log_message("debug","APPRO".$buf);
-
-        $rules = json_decode($buf,true);
+        $rules = $this->company->show_approve();
         $_rules = $rules['data'];
         if(!$rules['status']) {
             $_rules = array();
         }
-        log_message("debug", "show approve:" . $buf);
         $this->bsload('company/show_approve',
             array(
                 'title'=>'审批规则'
@@ -866,20 +681,20 @@ class Company extends REIM_Controller {
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-    $_ranks = $this->groups->get_rank_level(1);
-    $_levels = $this->groups->get_rank_level(0);
-    
-    $ranks = array();
-    if($_ranks['status'] > 0)
-    {
-        $ranks = $_ranks['data'];
-    }
+        $_ranks = $this->groups->get_rank_level(1);
+        $_levels = $this->groups->get_rank_level(0);
 
-    $levels = array();
-    if($_levels['status'] > 0)
-    {
-        $levels = $_levels['data'];
-    }
+        $ranks = array();
+        if($_ranks['status'] > 0)
+        {
+            $ranks = $_ranks['data'];
+        }
+
+        $levels = array();
+        if($_levels['status'] > 0)
+        {
+            $levels = $_levels['data'];
+        }
     
         $group = $this->groups->get_my_list();
         $_gnames = $this->ug->get_my_list();
@@ -892,9 +707,8 @@ class Company extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-        $buf = $this->company->show_rules();
-        $info=json_decode($buf,true);
-        $_info=$info['data'];
+        $info = $this->company->show_rules();
+        $_info = $info['data'];
         $own_rule = array();
 
         $category = $this->category->get_list();
@@ -908,52 +722,19 @@ class Company extends REIM_Controller {
                 $own_rule = $item;
             }
         }
-    foreach($categories as $cate)
-    {
-        foreach($own_rule['cates'] as &$p)
+        foreach($categories as $cate)
         {
-            if($p['category'] == $cate['id'])
+            foreach($own_rule['cates'] as &$p)
             {
-                $p['sob_id'] = $cate['sob_id'];
+                if($p['category'] == $cate['id'])
+                {
+                    $p['sob_id'] = $cate['sob_id'];
+                }
             }
         }
-    }
-    log_message('debug','own_rule:' . json_encode($own_rule));
-    log_message('debug','_sobs:' . json_encode($_sobs));
-    log_message('debug','categories:' . json_encode($categories));
-    /*
-        $cate_arr = array();
-        $s_id = '';
-        foreach($categories as $c)
-        {
-            if($c['id'] == $own_rule['category'])
-            {
-                $c_name = $c['category_name'];
-                $s_id = $c['sob_id'];
-                $cate_arr[$own_rule['category']] = array('category_id' => $own_rule['category'],'category_name'=>$c['category_name'],'sob_id'=>$c['sob_id']);
-            }
-        }
-        foreach($_sobs as $s)
-        {
-            if($s['sob_id'] == $s_id)
-            {
-                $cate_arr[$own_rule['category']]['sob_name'] = $s['sob_name'];
-            }
-        }
-        log_message("debug","#####".json_encode($cate_arr));
-
-        $_group = $this->groups->get_my_list();
-        $_gnames = $this->ug->get_my_list();
-        $gnames = $_gnames['data']['group'];
-
-        $gmember = array();
-        if($_group) {
-            if(array_key_exists('gmember', $_group['data'])){
-                $gmember = $_group['data']['gmember'];
-            }
-            $gmember = $gmember ? $gmember : array();
-        }
-    */
+        log_message('debug','own_rule:' . json_encode($own_rule));
+        log_message('debug','_sobs:' . json_encode($_sobs));
+        log_message('debug','categories:' . json_encode($categories));
 
         $this->bsload('company/update',
             array(
@@ -961,10 +742,9 @@ class Company extends REIM_Controller {
                 ,'error'=>$error
                 ,'rule'=>$own_rule
                 ,'member'=>$gmember
-         //       ,'cate_arr'=>$cate_arr
                 ,'group'=>$gnames
-        ,'ranks' => $ranks
-        ,'levels' => $levels
+                ,'ranks' => $ranks
+                ,'levels' => $levels
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>'','name'=>'公司设置','class'=> '')
