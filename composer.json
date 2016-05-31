@@ -1,0 +1,10 @@
+{
+    "name": "rushu/reim",
+    "description": "reim api",
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
+    }
+}
