@@ -450,7 +450,7 @@ class Category extends REIM_Controller {
         $tmp_file = $_FILES['members']['tmp_name'];
 
         try {
-            $reader = IOFactory::createReader('Excel5');
+            $reader = PHPExcel_IOFactory::createReader('Excel5');
             $PHPExcel = $reader->load($tmp_file);
             $sheet = $PHPExcel->getSheet(0);
             $highestRow = $sheet->getHighestRow();

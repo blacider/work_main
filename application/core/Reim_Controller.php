@@ -11,8 +11,6 @@ class REIM_Controller extends CI_Controller{
     public function __construct(){
         parent::__construct();
         $this->load->library('user_agent');
-        $this->load->library('PHPExcel');
-        $this->load->library('PHPExcel/IOFactory');
         $this->load->model('user_model');
     }
 
@@ -221,7 +219,7 @@ class REIM_Controller extends CI_Controller{
         //
         $__excel->setActiveSheetIndex(0);
 
-        $objwriter = IOFactory::createWriter($__excel, 'Excel5');
+        $objwriter = PHPExcel_IOFactory::createWriter($__excel, 'Excel5');
         return  $objwriter;
     }
 
@@ -308,7 +306,7 @@ class REIM_Controller extends CI_Controller{
             }
         }
 
-        $objwriter = IOFactory::createWriter($Excel, 'Excel5');
+        $objwriter = PHPExcel_IOFactory::createWriter($Excel, 'Excel5');
         return $objwriter;
     }
 
