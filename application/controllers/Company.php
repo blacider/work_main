@@ -1292,28 +1292,7 @@ class Company extends REIM_Controller {
         $config = $company['data']['config'];
         die($config);
     }
-/*
-public function common(){
-        $error = $this->session->userdata('last_error');
-        // 获取当前所属的组
-        $_group = $this->groups->get_my_list();
-        $this->session->unset_userdata('last_error');
-        $company = $this->company->get();
-        $this->bsload('company/common',
-            array(
-                'title' => '公司设置'
-                ,'company' => $company
-                ,'error' => $error
-                ,'groups' => json_encode($_group)
-                    ,'breadcrumbs' => array(
-                        array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa home-icon')
-                        ,array('url'  => base_url('company/submit'), 'name' => '公司设置', 'class' => '')
-            ,array('url' => '','name' => '通用规则','class' => '')
-                    ),  
-            )
-        );
-    }
- */
+
     public function review(){
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
