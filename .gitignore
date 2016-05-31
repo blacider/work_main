@@ -7,5 +7,6 @@ application/config/testing
 application/config/production
 
 application/logs
+vendor/
 
 release

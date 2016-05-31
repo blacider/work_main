@@ -48,10 +48,6 @@ class Reim_Log extends CI_Log {
     }
 
     private function config_raven($dsn) {
-        if (!class_exists('Raven_Client')) {
-            require_once BASEDIR . '/vendor/raven-php/lib/Raven/Autoloader.php';
-            Raven_Autoloader::register();
-        }
         $this->_raven_client = new Raven_Client($dsn);
         $error_handler = new Raven_ErrorHandler($this->_raven_client);
         $error_handler->registerErrorHandler();

@@ -6,5 +6,8 @@
             "type": "composer",
             "url": "https://packagist.phpcomposer.com"
         }
+    },
+    "require": {
+        "sentry/sentry": "^0.19.0"
     }
 }

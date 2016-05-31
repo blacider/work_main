@@ -308,6 +308,11 @@ switch (ENVIRONMENT)
 
 	define('VIEWPATH', $view_folder.DIRECTORY_SEPARATOR);
 
+# setup Composer autoloader if exists
+if (file_exists(BASEDIR . '/vendor/autoload.php')) {
+    require_once(BASEDIR . '/vendor/autoload.php');
+}
+
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE
