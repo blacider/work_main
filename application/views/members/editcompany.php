@@ -145,6 +145,7 @@ uploader.on( 'uploadAccept', function( file, response ) {
     if ( response['status'] > 0 ) {
         // 通过return false来告诉组件，此文件上传有错。
         $("input[name='images']").val(response['data']['id']);
+        _image = response['data']['id'];
         return true;
     } else return false;
 });
@@ -184,7 +185,19 @@ $(document).ready(function(){
             $('#gname').focus();
             return false;
         }
-        $('#mainform').submit();
+        Utils.api('company', {
+            env: 'online',
+            method: 'put',
+            data: {
+                name: gname,
+                logo_id: $.trim(_image)
+            }
+        }).done(function (rs) {
+            if(rs['status']<=0) {
+                return show_notify(rs['data']['msg']);
+            }
+            window.location = '/members/index';
+        })
     });
     $('.cancel').click(function(){
         history.go(-1);

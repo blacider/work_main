@@ -10,28 +10,7 @@ class Members extends REIM_Controller {
         $this->load->model('reim_show_model','reim_show');
         $this->load->model('company_model','com');
     }
-    public function updatecompany() {
-        $profile = $this->session->userdata('profile');
-        $name = $this->input->post('gname');
-        $images = '';
-        $_images = $this->input->post('images');
-        if($_images)
-        {
-            $images = trim($_images);
-        }
-
-        $info = $this->com->update_data($name, $images);
-        log_message("debug","@@@@@@@@@".json_encode($info));
-        if($info['status'] > 0){
-            $this->session->set_userdata('last_error','修改成功');
-            $this->session->set_userdata('groupname',$name);
-        }
-        else
-        {
-            $this->session->set_userdata('last_error',$info['data']['msg']);
-        }
-        redirect(base_url('members/index'));
-    }
+    
     public function editcompany(){
         $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');

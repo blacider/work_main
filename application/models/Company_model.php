@@ -6,7 +6,10 @@ class Company_Model extends Reim_Model {
     public function __construct(){
         parent::__construct();
     }
-
+    public function get_data() {
+        return $this->api_get('company');
+    }
+    
     public function get_company_config()
     {
         return $this->api_get('company_config');
