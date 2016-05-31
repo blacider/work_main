@@ -86,7 +86,6 @@ var __BASE = "<?php echo $base_url;?>";
                 var member = $(this).val();
                 make_del(member);
             });
-           // make_invite();
         });
 
     });

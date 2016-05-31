@@ -3,7 +3,6 @@
 class Bills extends REIM_Controller {
     public function __construct() {
         parent::__construct();
-        $this->load->model('tags_model', 'tags');
         $this->load->model('group_model', 'groups');
         $this->load->model('report_model', 'reports');
         $this->load->model('usergroup_model','ug');
@@ -217,11 +216,8 @@ class Bills extends REIM_Controller {
 
     public function finance_flow($search = '')
     {
-
         $this->need_group_casher();
         $status = 1;
-        $error = $this->session->userdata('last_error');
-        // 获取当前所属的组
 
         $submit_startdate = $this->input->get('submit_startdate');
         $submit_enddate = $this->input->get('submit_enddate');
@@ -231,21 +227,16 @@ class Bills extends REIM_Controller {
             $submit_enddate = date('Y-m-d');
         }
 
+        $error = $this->session->userdata('last_error');
         $this->session->unset_userdata('last_error');
-        $_tags = $this->tags->get_list();
+
         $usergroups = $this->ug->get_my_list();
-        if($usergroups['status']>0)
-        {
+        if($usergroups['status']>0) {
             $_usergroups=$usergroups['data']['group'];
-        }
-        else
-        {
+        } else {
             $_usergroups = array();
         }
         // log_message('debug','usergroup:'.json_encode($usergroups));
-        if($_tags && array_key_exists('tags', $_tags['data'])){
-            $_tags = $_tags['data']['tags'];
-        }
         $_group = $this->groups->get_my_list();
 
         $gmember = array();
@@ -266,8 +257,7 @@ class Bills extends REIM_Controller {
                     ,array('url'  => base_url('bills/index'), 'name' => '财务核算', 'class' => '')
                     ,array('url' => '','name' => '待审批','class' => '')
                 )
-                ,'status' => 1/*$status*/
-                ,'category' => $_tags
+                ,'status' => 1
                 ,'search' => urldecode($search)
                 ,'error' => $error
                 ,'usergroups' => $_usergroups
@@ -379,9 +369,7 @@ class Bills extends REIM_Controller {
         $status = 2;
         $this->need_group_casher();
         $error = $this->session->userdata('last_error');
-        // 获取当前所属的组
         $this->session->unset_userdata('last_error');
-        $_tags = $this->tags->get_list();
         $usergroups = $this->ug->get_my_list();
         if($usergroups['status']>0) {
             $_usergroups=$usergroups['data']['group'];
@@ -389,13 +377,9 @@ class Bills extends REIM_Controller {
         else {
             $_usergroups = array();
         }
-        log_message('debug','usergroup:'.json_encode($usergroups));
-        if($_tags && array_key_exists('tags', $_tags['data'])){
-            $_tags = $_tags['data']['tags'];
-        }
+        //log_message('debug','usergroup:'.json_encode($usergroups));
 
         $_group = $this->groups->get_my_list();
-
         $gmember = array();
         if($_group) {
             if(array_key_exists('gmember', $_group['data'])){
@@ -415,7 +399,6 @@ class Bills extends REIM_Controller {
                         ,array('url' => '','name' => '已审批','class' => '')
                     )
                     ,'status' => $status
-                    ,'category' => $_tags
                     ,'error' => $error
                     ,'search' => urldecode('')
                     ,'usergroups' => $_usergroups

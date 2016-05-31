@@ -38,7 +38,6 @@ class User_Model extends Reim_Model {
         }
         $d = $ret['data'];
         $this->session->set_userdata("oauth2_ak", $d['access_token']);
-        $this->session->set_userdata("jwt", ['X-REIM-JWT: placebo']);
         //$this->session->set_userdata("oauth2_expires_in", $d['expires_in']);
         return true;
     }
@@ -74,21 +73,14 @@ class User_Model extends Reim_Model {
     }
 
     public function reset_password($data = array()){
-        $url = $this->get_url('resetpwd');
-        log_message("debug","url:" . $url);
-        log_message("debug","data:" . json_encode($data));
-        $buf = $this->do_Put($url,$data,'');
-
-        log_message("debug","reset_password_back:" . $buf);
-        return json_decode($buf,true);
+        return $this->api_put('resetpwd');
     }
 
     public function check_user($addr = 'email', $user_addr = '')
     {
         if($addr == 'weixin') {
             $data = $user_addr;
-        }
-        else {
+        } else {
             $data = array(
                 $addr => $user_addr
             );
@@ -99,12 +91,6 @@ class User_Model extends Reim_Model {
     public function check_company($name='')
     {
         return $this->api_get("register/company/", null, ['name' => $name]);
-    }
-
-    public function del_email($email)
-    {
-        $data = array('emails' => $email);
-        return $this->api_post('staff', $data);
     }
 
     public function reim_get_info($uid){

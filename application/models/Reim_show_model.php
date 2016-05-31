@@ -48,12 +48,7 @@ class Reim_Show_Model extends Reim_Model {
 
     public function usergroups()
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-
-        $url = $this->get_url('user_group/list');
-        $buf = $this->do_Get($url, $jwt);
-        $obj = json_decode($buf, true);
+        $obj = $this->api_get('user_group/list');
         $usergroups = array();
         if($obj['status']>0)
         {
@@ -61,7 +56,7 @@ class Reim_Show_Model extends Reim_Model {
             foreach($data as $g)
             {
                 array_push($usergroups,array('id' => $g['id'],'name' => $g['name']));
-                }
+            }
         }
         log_message('debug','usergroup:' . json_encode($usergroups));
         return $usergroups;
@@ -69,13 +64,6 @@ class Reim_Show_Model extends Reim_Model {
 
     public function rank_level($type = 1)
     {
-        $jwt = $this->session->userdata('jwt');
-        if(!$jwt) return false;
-
-        $url = $this->get_url('rank/' . $type);
-        $buf = $this->do_Get($url, $jwt);
-
-        //log_message('debug','rank:' . json_encode($buf));
-        return json_decode($buf, True);
+        return $this->api_get('rank/' . $type);
     }
 }
