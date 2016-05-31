@@ -4,7 +4,6 @@ class Category extends REIM_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('category_model', 'category');
-        $this->load->model('tags_model', 'tags');
         $this->load->model('group_model', 'groups');
         $this->load->model('usergroup_model','ug');
         $this->load->model('account_set_model','account_set');
@@ -1223,36 +1222,6 @@ class Category extends REIM_Controller {
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => base_url('category/index'), 'name' => '标签和分类', 'class' => '')
                     ,array('url'  => '', 'name' => '分类管理', 'class' => '')
-                ),
-            )
-        );
-    }
-
-    public function tags(){
-        $this->need_group_it();
-        $error = $this->session->userdata('last_error');
-        // 获取当前所属的组
-        $this->session->unset_userdata('last_error');
-        $tags = $this->tags->get_list();
-        if($tags['status'] > 0)
-        {
-            if($tags){
-                $tags = $tags['data']['tags'];
-            }
-        }
-        else
-        {
-            $tags = array();
-        }
-        $this->bsload('tags/index',
-            array(
-                'title' => '标签管理'
-                ,'category' => $tags
-                ,'error' => $error
-                ,'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa home-icon')
-                    ,array('url' => '','name' => '账套和标签','class' => '')
-                    ,array('url'  => '', 'name' => '标签管理', 'class' => '')
                 ),
             )
         );
