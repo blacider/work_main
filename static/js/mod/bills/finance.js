@@ -72,7 +72,7 @@
 
 				if(canPayArray.length==0) {
 					var dialog = new CloudDialog({
-						content: '当前无可微信支付的报销单',
+						content: '当前报销单无法进行支付',
 						ok: function (e) {
 							this.close();
 						}
