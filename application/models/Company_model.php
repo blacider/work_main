@@ -65,32 +65,6 @@ class Company_Model extends Reim_Model {
         return $this->api_get('commit_policy');
     }
 
-    public function update_rule($rid,$name,$category,$count,$period,$all_company,$groups,$members,$ranks,$levels)
-    {
-        if($all_company==1) {
-            $data=array(
-                'pid' => $rid,
-                'name'=>$name,
-                'category'=>$category,
-                'count'=>$count,
-                'period'=>$period,
-                'all_company'=>$all_company,
-            );
-        } else {
-            $data=array(
-                'pid'=>$rid,
-                'name'=>$name,
-                'category'=>$category,
-                'count'=>$count,
-                'period'=>$period,
-                'all_company'=>$all_company,
-                'groups'=>$groups,
-                'members'=>$members,
-            );
-        }
-        return $this->api_post('commit_policy', $data);
-    }
-
     public function create_update_rules($name,$ugids,$mems,$level,$rank,$policies,$all_company,$pid=0)
     {
         $data = array(
@@ -114,7 +88,7 @@ class Company_Model extends Reim_Model {
 
     public function profile($config, $maxlimit = 0) {
         $data = array('config' => json_encode($config),);
-        return $this->api_post('company_admin', $pdata);
+        return $this->api_post('company_admin', $data);
     }
 
     public function update($cid, $name, $pid, $prove_ahead = 0, $maxlimit = 0) {

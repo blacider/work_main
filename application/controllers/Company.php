@@ -619,7 +619,6 @@ class Company extends REIM_Controller {
             $allow_all_category = 0;
         }
 
-
         log_message("debug","accepted:".json_encode($policies));
         //  log_message("debug","accepted:".$category_amounts[0]);
         //  $info = array('category'=>$category_id,'amount'=>$amount);
@@ -627,7 +626,6 @@ class Company extends REIM_Controller {
         //  array_push($policy,$info);
         $this->company->create_approve($rname,$members,$total_amount,$allow_all_category,json_encode($policies),$pid,$ranks,$levels,$groups);
         return redirect(base_url('company/show_approve'));
-
     }
 
     public function approve()
@@ -646,26 +644,26 @@ class Company extends REIM_Controller {
             }
             $gmember = $gmember ? $gmember : array();
         }
-    $_ranks = $this->reim_show->rank_level(1);
-    $ranks =array();
-    $_levels = $this->reim_show->rank_level(0);
-    $levels = array();
-    if($_ranks['status']>0)
-    {
-        $ranks = $_ranks['data'];
-    }
-    if($_levels['status']>0)
-    {
-        $levels = $_levels['data'];
-    }
+        $_ranks = $this->reim_show->rank_level(1);
+        $ranks =array();
+        $_levels = $this->reim_show->rank_level(0);
+        $levels = array();
+        if($_ranks['status']>0)
+        {
+            $ranks = $_ranks['data'];
+        }
+        if($_levels['status']>0)
+        {
+            $levels = $_levels['data'];
+        }
         $this->bsload('company/approve',
             array(
                 'title'=>'新建审批规则'
                 ,'error'=>$error
                 ,'member'=>$gmember
                 ,'group'=>$gnames
-        ,'ranks' => $ranks
-        ,'levels' => $levels
+                ,'ranks' => $ranks
+                ,'levels' => $levels
                 ,'breadcrumbs'=> array(
                     array('url'=>base_url(),'name'=>'首页','class'=>'ace-icon fa home-icon')
                     ,array('url'=>base_url('company'),'name'=>'公司设置','class'=> '')
@@ -754,57 +752,6 @@ class Company extends REIM_Controller {
         );
     }
 
-    public function update_rule()
-    {
-        $this->need_group_it();
-        $error = $this->session->userdata('last_error');
-        $this->session->unset_userdata('last_error');
-        $id = $this->input->post('rid');
-        $rname = $this->input->post('rule_name');
-        $sob_id = $this->input->post('sobs');
-        $category_id = $this->input->post('category');
-
-        $amount = $this->input->post('rule_amount');
-        $amount_unlimit = $this->input->post('amount_unlimit');
-        $amount_time = $this->input->post('amount_time');
-
-        $frequency = $this->input->post('rule_frequency');
-        $frequency_unlimit = $this->input->post('frequency_unlimit');
-        //  $frequency_time = $this->input->post('frequency_time');
-        $frequency_time = 1;
-
-        $groups = $this->input->post('gids');
-        $members = $this->input->post('uids');
-        $all_members = $this->input->post('all_members');
-
-        if($frequency == '')
-        {
-            $frequency = 0;
-        }
-        if($frequency_unlimit == '')
-        {
-            $frequency_unlimit = 0;
-        }
-        if($all_members == '')
-        {
-            $all_members = 0;
-        }
-        if($frequency_unlimit == 1)
-        {
-            $frequency = -1;
-        }
-        if($all_members == 1)
-        {
-            $groups = array();
-            $members = array();
-        }
-        log_message('debug',"####:".json_encode($groups));
-
-        $start_time = $this->input->post('sdt');
-        $end_time = $this->input->post('edt');
-        $this->company->update_rule($id,$rname,$category_id,$frequency,$frequency_time,$all_members,implode(',',$groups),implode(',',$members));   
-        return redirect(base_url('company/show'));
-    }
     public function delete_rule($pid)
     {
         $error = $this->session->userdata('last_error');
@@ -832,7 +779,6 @@ class Company extends REIM_Controller {
         $id = $this->input->post('rid');
         log_message('debug','data:' . json_encode(array('categories'=>$_categories_id,'freq_counts'=>$_freq_counts,'freq_periods'=>$_freq_periods,'freq_unlimits'=>$_freq_unlimits)));
 
-    
         $amount = $this->input->post('rule_amount');
         $amount_unlimit = $this->input->post('amount_unlimit');
         $amount_time = $this->input->post('amount_time');
@@ -954,7 +900,6 @@ class Company extends REIM_Controller {
         );
     }
 
-
     public function create_finance_flow(){
         $name = $this->input->post('sob_name');
         $obj = $this->company->create_finance_policy($name);
@@ -969,6 +914,7 @@ class Company extends REIM_Controller {
         $rules = $this->company->drop_finance_policy($id);
         return redirect(base_url('company/approval_flow'));
     }
+
     public function approval_flow(){
         //$this->need_group_it();
         $error = $this->session->userdata('last_error');
@@ -993,6 +939,7 @@ class Company extends REIM_Controller {
             )
         );
     }
+
     public function create(){
         $this->need_group_it();
         $error = $this->session->userdata('last_error');
@@ -1056,8 +1003,6 @@ class Company extends REIM_Controller {
                 'title' => '公司设置'
                 ,'company' => $_config
                 ,'error' => $error
-
-                //,'company' => json_encode($_group)
                 ,'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
                     ,array('url'  => '', 'name' => '公司设置', 'class' => '')
@@ -1066,32 +1011,12 @@ class Company extends REIM_Controller {
             )
         );
     }
+
     public function getsetting()
     {
         $company = $this->company->get();
         $config = $company['data']['config'];
         die($config);
-    }
-
-    public function review(){
-        $this->need_group_it();
-        $error = $this->session->userdata('last_error');
-        // 获取当前所属的组
-        $this->session->unset_userdata('last_error');
-        $company = $this->company->get();
-        $this->bsload('company/review',
-            array(
-                'title' => '审核规则'
-                ,'company' => $company
-                ,'error' => $error
-                //,'company' => json_encode($_group)
-                ,'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => '', 'name' => '公司设置', 'class' => '')
-                    ,array('url'  => '', 'name' => '审核规则', 'class' => '')
-                ),
-            )
-        );
     }
 
     public function item_customization($action = 'list', $id = '0') {
@@ -1211,32 +1136,10 @@ class Company extends REIM_Controller {
         ));
     }
 
-    public function setting(){
-        $error = $this->session->userdata('last_error');
-        // 获取当前所属的组
-        $this->session->unset_userdata('last_error');
-        $company = $this->company->get();
-        $this->bsload('company/setting',
-            array(
-                'title' => '公司通用设置'
-                ,'company' => $company
-                ,'error' => $error
-                //,'company' => json_encode($_group)
-                ,'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => '', 'name' => '公司设置', 'class' => '')
-                    ,array('url'  => '', 'name' => '公司通用设置', 'class' => '')
-                ),
-            )
-        );
-    }
-
-
-    
     public function profile()
     {
         $company_config = $this->input->post('company_config');
-        log_message('debug',json_encode($company_config));
+        log_message('debug', json_encode($company_config));
         $this->company->profile($company_config);
         die(json_encode(array('msg'=>'保存成功')));
     }
