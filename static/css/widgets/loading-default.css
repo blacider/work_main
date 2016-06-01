@@ -100,3 +100,27 @@
 	border-left: 6px solid transparent;
 	border-top: 6px solid #000;
 }
+
+.ui-bubble-tip.down.right::after {
+	top: auto;
+	left: auto;
+	bottom: 3px;
+	right: -12px;
+	margin-left: 0;
+	border-bottom: 6px solid transparent;
+	border-right: 6px solid transparent;
+	border-top: 6px solid transparent;
+	border-left: 6px solid #000;
+}
+
+.ui-bubble-tip.up.right::after {
+	bottom: auto;
+	left: auto;
+	top: 3px;
+	right: -12px;
+	margin-left: 0;
+	border-bottom: 6px solid transparent;
+	border-right: 6px solid transparent;
+	border-top: 6px solid transparent;
+	border-left: 6px solid #000;
+}

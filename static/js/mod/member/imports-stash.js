@@ -410,22 +410,28 @@
 
                         $('table').on('mouseenter', '.field-tip', function (e) {
                             var offset = $(this).offset();
-                            var arrow = '';
 
                             offset['left'] = offset['left'];
                             offset['top'] = offset['top'] + 24;
 
-                            var $div = $('<div class="ui-bubble-tip">').text($(this).data('title'));
+                            var $div = $('<div class="ui-bubble-tip down">').text($(this).data('title'));
 
                             $div.appendTo(document.body);
 
-                            offset['margin-left'] = -$div.width()/2 - 6;
-
-                           
-                            if(offset['top']>$(window).height()/2) {
-                                arrow = 'up';
-                                offset['top'] = offset['top'] - $div.outerHeight() - 30;
-                                $div.addClass(arrow);
+                            // 先看左右
+                            if(offset['left'] + $div.outerWidth() + 30 > $(window).width()) {
+                                offset['left'] = offset['left'] - $div.outerWidth() - 12;
+                                $div.addClass('right');
+                                if(offset['top']>$(window).height()/2) {
+                                    $div.removeClass('down').addClass('up');
+                                }
+                            // 上下
+                            } else {
+                                offset['margin-left'] = -$div.width()/2 - 6;
+                                if(offset['top']>$(window).height()/2) {
+                                    offset['top'] = offset['top'] - $div.outerHeight() - 30;
+                                    $div.removeClass('down').addClass('up');
+                                }
                             }
 
 
@@ -434,7 +440,7 @@
                             e.stopPropagation();
 
                         }).on('mouseleave mouseout', '.field-tip', function () {
-                            $('.ui-bubble-tip').remove();
+                            // $('.ui-bubble-tip').remove();
                         });
 
                         $('table').on('click', 'td.field-error', function (e) {

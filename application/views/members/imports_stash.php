@@ -85,7 +85,7 @@ var _SERVER_GROUPS_ = <?php echo json_encode($groups)?>;
                             <td data-field="manager_id_3">
                                 <span class="field-value">{{item.manager_id_3}}</span>
                             </td>
-                            <td>
+                            <td ng-class="{'field-padding': item._status_tip_}">
                                 <span ng-class="{'can-import': item._status_==1}">
                                     {{item._status_text_ || '无法导入'}}
                                 </span>
@@ -162,7 +162,7 @@ var _SERVER_GROUPS_ = <?php echo json_encode($groups)?>;
                             <td data-field="manager_id_3">
                                 <span class="field-value">{{item.manager_id_3}}</span>
                             </td>
-                            <td>
+                            <td ng-class="{'field-padding': item._status_tip_}">
                                 <span ng-class="{'can-import': item._status_==1}">
                                     {{item._status_text_ || '无法导入'}}
                                 </span>
@@ -240,11 +240,11 @@ var _SERVER_GROUPS_ = <?php echo json_encode($groups)?>;
                             <td data-field="manager_id_3">
                                 <span class="field-value">{{item.manager_id_3}}</span>
                             </td>
-                            <td>
+                            <td ng-class="{'field-padding': item._status_tip_}">
                                 <span ng-class="{'can-import': item._status_==1}">
                                     {{item._status_text_ || '无法导入'}}
                                 </span>
-                                <i ng-if="item._status_tip_" class="field-tip" data-title="{{item._status_tip_}}">?</i>
+                                <i ng-if="item._status_tip_||true" class="field-tip" data-title="{{item._status_tip_||'12312d大放送'}}">?</i>
                             </td>
                         </tr> 
                     </tbody>

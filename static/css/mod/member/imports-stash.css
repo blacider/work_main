@@ -46,7 +46,7 @@ components css
 	top: 0;
 }
 
-.field-error {
+.field-error, .field-padding {
 	padding-right: 20px;
 }
 
