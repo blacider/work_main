@@ -3,13 +3,13 @@
         initialize: function() {
 
             var _CONST_INPUT_CODE_ = {
-                'NULL': '不能为空',
+                'NULL': '内容不能为空',
                 'LENGTH_LIMIT': '长度超过限制',
                 'EMAIL_ERROR': '邮箱格式不正确',
                 'PHONE_ERROR': '手机号需为11位数字',
-                'NOT_EQUAL_ONE': '手机号码与邮箱不是同一个人',
+                'NOT_EQUAL_ONE': '手机号码与邮箱不可以不是同一个人的信息',
                 'NUMBERIC_REQUIRED': '只能为数字格式',
-                'BANK_CARD_NUMBER_LENGTH': '银行卡号长度为12-100位数字',
+                'BANK_CARD_NUMBER_LENGTH': '银行卡号长度必须为12-100位数字',
                 'MODIFIED': '信息已修改',
                 'EMAIL_OR_PHONE_REQUIRED': '必须是邮箱或者手机号',
             };
@@ -407,12 +407,9 @@
 
                     // bind events executed
                     (function () {
-
+                        
                         $('table').on('mouseenter', '.field-tip', function (e) {
                             var offset = $(this).offset();
-
-                            offset['left'] = offset['left'];
-                            offset['top'] = offset['top'] + 24;
 
                             var $div = $('<div class="ui-bubble-tip down">').text($(this).data('title'));
 
@@ -421,28 +418,27 @@
                             // 先看左右
                             if(offset['left'] + $div.outerWidth() + 30 > $(window).width()) {
                                 offset['left'] = offset['left'] - $div.outerWidth() - 12;
+                                offset['top'] = offset['top'] - $div.outerHeight()/2 + 10;
                                 $div.addClass('right');
-                                if(offset['top']>$(window).height()/2) {
-                                    $div.removeClass('down').addClass('up');
-                                }
                             // 上下
                             } else {
-                                offset['margin-left'] = -$div.width()/2 - 6;
-                                if(offset['top']>$(window).height()/2) {
-                                    offset['top'] = offset['top'] - $div.outerHeight() - 30;
+                                offset['margin-left'] = -$div.width()/2 - 3;
+                                if(offset['top'] - $(window).scrollTop() - $div.outerHeight() < 0) {
+                                    offset['top'] = offset['top'] + 24;
                                     $div.removeClass('down').addClass('up');
+                                } else {
+                                    offset['top'] = offset['top'] - $div.outerHeight() - 10;
                                 }
                             }
-
 
                             $div.css(offset);
 
                             e.stopPropagation();
 
                         }).on('mouseleave mouseout', '.field-tip', function () {
-                            // $('.ui-bubble-tip').remove();
+                            $('.ui-bubble-tip').remove();
                         });
-
+ 
                         $('table').on('click', 'td.field-error', function (e) {
 
                             var hashKey = $(this).parent().data('id');

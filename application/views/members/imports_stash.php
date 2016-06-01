@@ -41,42 +41,52 @@ var _SERVER_GROUPS_ = <?php echo json_encode($groups)?>;
                         <tr data-id="{{item.$$hashKey}}" ng-repeat="item in errorArray">
                             <td data-field="id" ng-class="{'field-error':  item._v_.id}">
                                 <span class="field-value">{{item.id}}</span>
+                                <i ng-if="item._v_.id" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.id" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.id]}}">?</i>
                             </td>
                             <td data-field="nickname" ng-class="{'field-error':  item._v_.nickname}">
                                 <span class="field-value">{{item.nickname}}</span>
+                                <i ng-if="item._v_.nickname" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.nickname" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.nickname]}}">?</i>
                             </td>
                             <td data-field="email" ng-class="{'field-error':  item._v_.email}">
                                 <span class="field-value">{{item.email}}</span>
+                                <i ng-if="item._v_.email" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.email" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.email]}}">?</i>
                             </td>
                             <td data-field="phone" ng-class="{'field-error':  item._v_.phone}">
                                 <span class="field-value">{{item.phone}}</span>
+                                <i ng-if="item._v_.phone" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.phone" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.phone]}}">?</i>
                             </td>
                             <td data-field="cardno" ng-class="{'field-error':  item._v_.cardno}">
                                 <span class="field-value">{{item.cardno}}</span>
+                                <i ng-if="item._v_.cardno" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.cardno" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.cardno]}}">?</i>
                             </td>
                             <td data-field="bank" ng-class="{'field-error':  item._v_.bank}">
                                 <span class="field-value">{{item.bank}}</span>
+                                <i ng-if="item._v_.bank" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.bank" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.bank]}}">?</i>
                             </td>
                             <td data-field="gids" ng-class="{'field-error':  item._v_.gids}">
                                 <span class="field-value">{{item.gids}}</span>
+                                <i ng-if="item._v_.gids" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.gids" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.gids]}}">?</i>
                             </td>
                             <td data-field="level" ng-class="{'field-error':  item._v_.level}">
                                 <span class="field-value">{{item.level}}</span>
+                                <i ng-if="item._v_.level" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.level" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.level]}}">?</i>
                             </td>
                             <td data-field="rank" ng-class="{'field-error':  item._v_.rank}">
                                 <span class="field-value">{{item.rank}}</span>
+                                <i ng-if="item._v_.rank" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.rank" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.rank]}}">?</i>
                             </td>
                             <td data-field="manager_id" ng-class="{'field-error':  item._v_.manager_id}">
                                 <span class="field-value">{{item.manager_id}}</span>
+                                <i ng-if="item._v_.manager_id" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.manager_id" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.manager_id]}}">?</i>
                             </td>
                             <td data-field="manager_id_2">
@@ -119,42 +129,53 @@ var _SERVER_GROUPS_ = <?php echo json_encode($groups)?>;
                         <tr data-id="{{item.$$hashKey}}" ng-repeat="item in appenderArray">
                             <td data-field="id" ng-class="{'field-error':  item._v_.id}">
                                 <span class="field-value">{{item.id}}</span>
+                                <i ng-if="item._v_.id" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.id" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.id]}}">?</i>
                             </td>
                             <td data-field="nickname" ng-class="{'field-error':  item._v_.nickname}">
                                 <span class="field-value">{{item.nickname}}</span>
+                                <i ng-if="item._v_.nickname" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.nickname" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.nickname]}}">?</i>
                             </td>
                             <td data-field="email" ng-class="{'field-error':  item._v_.email}">
                                 <span class="field-value">{{item.email}}</span>
+                                <i ng-if="item._v_.email" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.email" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.email]}}">?</i>
                             </td>
                             <td data-field="phone" ng-class="{'field-error':  item._v_.phone}">
                                 <span class="field-value">{{item.phone}}</span>
+                                <i ng-if="item._v_.phone" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.phone" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.phone]}}">?</i>
                             </td>
                             <td data-field="cardno" ng-class="{'field-error':  item._v_.cardno}">
                                 <span class="field-value">{{item.cardno}}</span>
+                                <i ng-if="item._v_.cardno" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.cardno" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.cardno]}}">?</i>
                             </td>
                             <td data-field="bank" ng-class="{'field-error':  item._v_.bank}">
                                 <span class="field-value">{{item.bank}}</span>
+                                <i ng-if="item._v_.bank" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.bank" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.bank]}}">?</i>
                             </td>
                             <td data-field="gids" ng-class="{'field-error':  item._v_.gids}">
                                 <span class="field-value">{{item.gids}}</span>
+                                <i ng-if="item._v_.gids" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.gids" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.gids]}}">?</i>
                             </td>
                             <td data-field="level" ng-class="{'field-error':  item._v_.level}">
                                 <span class="field-value">{{item.level}}</span>
+                                <i ng-if="item._v_.level" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.level" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.level]}}">?</i>
                             </td>
                             <td data-field="rank" ng-class="{'field-error':  item._v_.rank}">
                                 <span class="field-value">{{item.rank}}</span>
+                                <i ng-if="item._v_.rank" class="btn-edit icon"></i>
                                 <i ng-if="item._v_.rank" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.rank]}}">?</i>
                             </td>
-                            <td data-field="manager_id">
+                            <td data-field="manager_id" ng-class="{'field-error':  item._v_.manager_id}">
                                 <span class="field-value">{{item.manager_id}}</span>
+                                <i ng-if="item._v_.manager_id" class="btn-edit icon"></i>
+                                <i ng-if="item._v_.manager_id" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.manager_id]}}">?</i>
                             </td>
                             <td data-field="manager_id_2">
                                 <span class="field-value">{{item.manager_id_2}}</span>
@@ -196,42 +217,52 @@ var _SERVER_GROUPS_ = <?php echo json_encode($groups)?>;
                         <tr data-id="{{item.$$hashKey}}" ng-repeat="item in modifierArray">
                             <td data-field="id" ng-class="{'field-error': item._v_.id!='MODIFIED' && item._v_.id, 'field-modified': item._v_.id=='MODIFIED'}">
                                 <span class="field-value">{{item.id}}</span>
+                                <i ng-if="item._v_.id && item._v_.id!='MODIFIED'"  class="btn-edit icon"></i>
                                 <i ng-if="item._v_.id && item._v_.id!='MODIFIED'" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.id]}}">?</i>
                             </td>
                             <td data-field="nickname" ng-class="{'field-error': item._v_.nickname!='MODIFIED' && item._v_.nickname, 'field-modified': item._v_.nickname=='MODIFIED'}">
                                 <span class="field-value">{{item.nickname}}</span>
+                                <i ng-if="item._v_.nickname && item._v_.nickname!='MODIFIED'"  class="btn-edit icon"></i>
                                 <i ng-if="item._v_.nickname && item._v_.nickname!='MODIFIED'" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.nickname]}}">?</i>
                             </td>
                             <td data-field="email" ng-class="{'field-error': item._v_.email!='MODIFIED' && item._v_.email, 'field-modified': item._v_.email=='MODIFIED'}">
                                 <span class="field-value">{{item.email}}</span>
+                                <i ng-if="item._v_.email && item._v_.email!='MODIFIED'"  class="btn-edit icon"></i>
                                 <i ng-if="item._v_.email && item._v_.email!='MODIFIED'" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.email]}}">?</i>
                             </td>
                             <td data-field="phone" ng-class="{'field-error': item._v_.phone!='MODIFIED' && item._v_.phone, 'field-modified': item._v_.phone=='MODIFIED'}">
                                 <span class="field-value">{{item.phone}}</span>
+                                <i ng-if="item._v_.phone && item._v_.phone!='MODIFIED'"  class="btn-edit icon"></i>
                                 <i ng-if="item._v_.phone && item._v_.phone!='MODIFIED'" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.phone]}}">?</i>
                             </td>
                             <td data-field="cardno" ng-class="{'field-error': item._v_.cardno!='MODIFIED' && item._v_.cardno, 'field-modified': item._v_.cardno=='MODIFIED'}">
                                 <span class="field-value">{{item.cardno}}</span>
+                                <i ng-if="item._v_.cardno && item._v_.cardno!='MODIFIED'"  class="btn-edit icon"></i>
                                 <i ng-if="item._v_.cardno && item._v_.cardno!='MODIFIED'" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.cardno]}}">?</i>
                             </td>
                             <td data-field="bank" ng-class="{'field-error': item._v_.bank!='MODIFIED' && item._v_.bank, 'field-modified': item._v_.bank=='MODIFIED'}">
                                 <span class="field-value">{{item.bank}}</span>
+                                <i ng-if="item._v_.bank && item._v_.bank!='MODIFIED'"  class="btn-edit icon"></i>
                                 <i ng-if="item._v_.bank && item._v_.bank!='MODIFIED'" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.bank]}}">?</i>
                             </td>
                             <td data-field="gids" ng-class="{'field-error': item._v_.gids!='MODIFIED' && item._v_.gids, 'field-modified': item._v_.gids=='MODIFIED'}">
                                 <span class="field-value">{{item.gids}}</span>
+                                <i ng-if="item._v_.gids && item._v_.gids!='MODIFIED'"  class="btn-edit icon"></i>
                                 <i ng-if="item._v_.gids && item._v_.gids!='MODIFIED'" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.gids]}}">?</i>
                             </td>
                             <td data-field="level" ng-class="{'field-error': item._v_.level!='MODIFIED' && item._v_.level, 'field-modified': item._v_.level=='MODIFIED'}">
                                 <span class="field-value">{{item.level}}</span>
+                                <i ng-if="item._v_.level && item._v_.level!='MODIFIED'"  class="btn-edit icon"></i>
                                 <i ng-if="item._v_.level && item._v_.level!='MODIFIED'" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.level]}}">?</i>
                             </td>
                             <td data-field="rank" ng-class="{'field-error': item._v_.rank!='MODIFIED' && item._v_.rank, 'field-modified': item._v_.rank=='MODIFIED'}">
                                 <span class="field-value">{{item.rank}}</span>
+                                <i ng-if="item._v_.rank && item._v_.rank!='MODIFIED'"  class="btn-edit icon"></i>
                                 <i ng-if="item._v_.rank && item._v_.rank!='MODIFIED'" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.rank]}}">?</i>
                             </td>
                             <td data-field="manager_id" ng-class="{'field-error': item._v_.manager_id!='MODIFIED' && item._v_.manager_id, 'field-modified': item._v_.manager_id=='MODIFIED'}">
                                 <span class="field-value">{{item.manager_id}}</span>
+                                <i ng-if="item._v_.manager_id && item._v_.manager_id!='MODIFIED'"  class="btn-edit icon"></i>
                                 <i ng-if="item._v_.manager_id && item._v_.manager_id!='MODIFIED'" class="field-tip" data-title="{{_CONST_INPUT_CODE_[item._v_.manager_id]}}">?</i>
                             </td>
                             <td data-field="manager_id_2">
@@ -244,7 +275,7 @@ var _SERVER_GROUPS_ = <?php echo json_encode($groups)?>;
                                 <span ng-class="{'can-import': item._status_==1}">
                                     {{item._status_text_ || '无法导入'}}
                                 </span>
-                                <i ng-if="item._status_tip_||true" class="field-tip" data-title="{{item._status_tip_||'12312d大放送'}}">?</i>
+                                <i ng-if="item._status_tip_" class="field-tip" data-title="{{item._status_tip_}}">?</i>
                             </td>
                         </tr> 
                     </tbody>
