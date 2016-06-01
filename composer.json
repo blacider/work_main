@@ -1,0 +1,14 @@
+{
+    "name": "rushu/reim",
+    "description": "reim api",
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
+    },
+    "require": {
+        "sentry/sentry": "^0.19.0",
+        "phpoffice/phpexcel": "^1.8"
+    }
+}
