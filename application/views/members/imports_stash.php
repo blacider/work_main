@@ -86,10 +86,7 @@ var _SERVER_GROUPS_ = <?php echo json_encode($groups)?>;
                                 <span class="field-value">{{item.manager_id_3}}</span>
                             </td>
                             <td>
-                                <span class="can-import" ng-if="item._status_==1">
-                                    待确认
-                                </span>
-                                <span ng-if="item._status_!=1">
+                                <span ng-class="{'can-import': item._status_==1}">
                                     {{item._status_text_ || '无法导入'}}
                                 </span>
                                 <i ng-if="item._status_tip_" class="field-tip" data-title="{{item._status_tip_}}">?</i>
@@ -166,10 +163,7 @@ var _SERVER_GROUPS_ = <?php echo json_encode($groups)?>;
                                 <span class="field-value">{{item.manager_id_3}}</span>
                             </td>
                             <td>
-                                <span class="can-import" ng-if="item._status_==1">
-                                    待确认
-                                </span>
-                                <span ng-if="item._status_!=1">
+                                <span ng-class="{'can-import': item._status_==1}">
                                     {{item._status_text_ || '无法导入'}}
                                 </span>
                                 <i ng-if="item._status_tip_" class="field-tip" data-title="{{item._status_tip_}}">?</i>
@@ -247,10 +241,7 @@ var _SERVER_GROUPS_ = <?php echo json_encode($groups)?>;
                                 <span class="field-value">{{item.manager_id_3}}</span>
                             </td>
                             <td>
-                                <span class="can-import" ng-if="item._status_==1">
-                                    待确认
-                                </span>
-                                <span ng-if="item._status_!=1">
+                                <span ng-class="{'can-import': item._status_==1}">
                                     {{item._status_text_ || '无法导入'}}
                                 </span>
                                 <i ng-if="item._status_tip_" class="field-tip" data-title="{{item._status_tip_}}">?</i>
@@ -260,8 +251,11 @@ var _SERVER_GROUPS_ = <?php echo json_encode($groups)?>;
                 </table>
             </div>
             <div style="text-align: right; padding-top: 12px;">
-                <button class="btn-submit ui-button">取消</button>
-                <button class="btn-submit ui-button" ng-click="onSubmit()">确定导入</button>
+                <label ng-if="!isSubmitDone" style="margin-right: 12px;">
+                    <input type="checkbox" ng-model="isSendEmail">
+                    给新导入的员工发送通知
+                </label>
+                <button class="btn-submit ui-button" ng-click="onSubmit(isSendEmail, $event)">{{isSubmitDone?'完成':'确定导入'}}</button>
             </div>
 
         </div>  

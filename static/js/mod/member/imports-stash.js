@@ -230,6 +230,15 @@
                 return item;
             }
 
+            function isItemEmpty(item) {
+                for(var pro in item) {
+                    if(item[pro]) {
+                        return false
+                    }
+                }
+                return true;
+            }
+
             // 将数据分成三组
             function groupFileArray(arr, members) {
 
@@ -241,21 +250,19 @@
 
                 for(var i=0;i<arr.length;i++) {
                     var item = arr[i];
+
+                    // 如果是空行跳过
+                    if(isItemEmpty(item)) {
+                        continue;
+                    }
+
                     var notIn = isNotFoundItem(item, members);
                     // console.log(item.email, item.phone, notIn);
                     if(notIn) {
                         var v = getItemValidator(item);
                         
                         if(v) {
-                            // 如果只是错的就是只是邮箱或者手机号中的一个，这个信息就是OK的
-                            if(_.size(v)==1 && (v['phone'] || v['email'])) {
-                                // 去掉错误提示，写程序如同画画，先画轮过，再雕琢细节
-                                v = false;
-                                rs.appender.push(item);
-                            } else {
-                                rs.error.push(item);
-                            }
-
+                            rs.error.push(item);
                         } else {
                             item._status_text_ = '待确认';
                             item_status_ = 1;
@@ -311,13 +318,24 @@
                     $scope.getItemValidator = getItemValidator;                    
                     $scope.getItemRedOrBlueMap = getItemRedOrBlueMap;
 
-                    $scope.onSubmit = function () {
+                    $scope.onSubmit = function (isSendEmail, e) {
+
+                        if($scope.isSubmitDone) {
+                            return window.location = '/members/index';
+                        }
+
+                        isSendEmail = 1 - ~~isSendEmail;
+                        if(!$scope.isLoaded) {
+                            return
+                        }
+
+                        $scope.isLoaded = false;
 
                         var data = [];
                         _.each([].concat($scope.errorArray, $scope.modifierArray), function (item) {
                             var validator = getItemValidator(item);
                             if(validator) {
-                                item._status_text_ = '无法导入' ;
+                                item._status_text_ = '导入失败' ;
                             } else {
                                 item._status_text_ = '待确认';
                                 var one = angular.copy(item);
@@ -346,13 +364,17 @@
                             method: 'post',
                             env: 'yuqi',
                             data: {
-                                // quiet: 1,
+                                quiet: isSendEmail,
                                 members: JSON.stringify(members)
                             }
                         }).done(function (rs) {
+                            $scope.isLoaded = true;
                             if(rs['status']<=0) {
+                                $scope.$apply();
                                 return show_notify(rs.data.msg);
                             }
+
+                            $scope.isSubmitDone = true;
 
                             var data = rs['data'];
                             for(var key in data) {
@@ -364,8 +386,8 @@
                                     var importData = data[key];
                                     var status = importData['status'];
                                     
-                                    if(status==1 || status==2) {
-                                        one['_status_text_'] = '已导入';
+                                    if(status>0 && status<4) {
+                                        one['_status_text_'] = '导入成功';
                                         one['_status_'] = 1;
                                     } else {
                                         delete one['_status_'];
@@ -449,18 +471,21 @@
                                         // 新增更新
                                         if(originalItem) {
                                             originalItem = syncItemFieldValue(originalItem);
-                                            one._v_ = getItemRedOrBlueMap(one, originalItem);
+                                            var v = getItemRedOrBlueMap(one, originalItem);
+                                            one._v_ = v;
+
+                                            if(isNotAllAsValue(v, 'MODIFIED')) {
+                                                one._status_text_ = '无法导入';
+                                            } else {
+                                                one._status_ = 1;
+                                                one._status_text_ = '待确认';
+                                            }
+
                                         // 错误更新
                                         } else {
                                             one._v_ = getItemValidator(one);
-                                        }
-
-                                        if(one._v_) {
                                             one._status_text_ = '无法导入' ;
                                             delete one._status_;
-                                        } else {
-                                            one._status_text_ = '待确认';
-                                            one._status_ = 1;
                                         }
 
                                         setTimeout(function () {

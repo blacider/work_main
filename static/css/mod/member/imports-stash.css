@@ -2,6 +2,12 @@
 	margin-top: 10px;
 }
 
+.ui-loading-layer {
+	background: #fff;
+	opacity: 0.620;
+	filter: alpha(opacity: 62);
+}
+
 .mod-imports-stash h2 {
 	font-size: 14px;
 }
@@ -65,5 +71,6 @@ components css
 }
 
 .can-import {
-	color: #00c500;
+	color: #00B100;
 }
+
