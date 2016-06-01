@@ -30,6 +30,13 @@
             // 全面过滤出来手机，邮箱，昵称为空的项目，如果不为空，还需要过滤非法
             function getItemValidator(item) {
                 var errorMap = {};
+
+                if(item.id) {
+                    if(!/^\d+$/.test(item.id)) {
+                        errorMap['id'] = 'NUMBERIC_REQUIRED'
+                    }
+                }
+
                 if(!item.nickname) {
                     errorMap['nickname'] = "NULL";
                 } else {
@@ -54,10 +61,12 @@
                     }
                 }
 
-                if(item.id) {
-                    if(!/^\d+$/.test(item.id)) {
-                        errorMap['id'] = 'NUMBERIC_REQUIRED'
-                    }
+                // 如果邮箱手机号2个，有一个填写了另一个为空是OK的
+                if(!errorMap['email'] && errorMap['phone']== 'NULL') {
+                    delete errorMap['phone']== 'NULL';
+                } 
+                if(!errorMap['phone'] && errorMap['email'] == "NULL") {
+                    delete errorMap['email']== 'NULL';
                 }
 
                 if(item.cardno) {
@@ -76,21 +85,11 @@
                     }
                 }
 
-                if(item.manager_id_2) {
-                    if(!isEmail(item.manager_id_2) && !isPhone(item.manager_id_2)) {
-                        errorMap['manager_id_2'] = 'EMAIL_OR_PHONE_REQUIRED';
-                    }
-                }
-
-                if(item.manager_id_3) {
-                    if(!isEmail(item.manager_id_3) && !isPhone(item.manager_id_3)) {
-                        errorMap['manager_id'] = 'EMAIL_OR_PHONE_REQUIRED';
-                    }
-                }
-
                 if(_.isEmpty(errorMap)) {
                     return false;
                 }
+
+                console.log(item, errorMap);
 
                 return errorMap;
             };
@@ -137,15 +136,35 @@
             };
 
             function getOriginalItem(item, members) {
-                var a = _.find(members, {
-                    phone: item.phone
-                });
-                var b = _.find(members, {
-                    email: item.email
-                });
+                var a = null;
+                if(item.phone) {
+                    a = _.find(members, {
+                        phone: item.phone
+                    });
+                }
+
+                var b = null;
+                if(item.email) {
+                    b = _.find(members, {
+                        email: item.email
+                    });
+                }
 
                 return a||b;
             };
+
+            function isEqualSet(a, b) {
+                if(a.length != b.length) {
+                    return false;
+                }
+                for(var i=0;i<a.length;i++) {
+                    var ele = a[i];
+                    if(b.indexOf(ele)==-1) {
+                        return false
+                    }
+                }
+                return true;
+            }
 
             // 查看哪些字段被更新了
             function getItemModifiedFields(item, original) {
@@ -155,11 +174,12 @@
                         rs.push(pro);
                     }
                 }
+                // console.log(rs, item, original)
                 return rs;
             };
 
-            function getItemRedOrBlueMap(item, members) {
-                var originalItem = getOriginalItem(item, members);
+            function getItemRedOrBlueMap(item, originalItem) {
+                
                 var fields = getItemModifiedFields(item, originalItem);
                 var errorValidator = getItemValidator(item);
                 var m = {};
@@ -178,6 +198,37 @@
                 }
                 return m;
             };
+
+            function syncItemFieldValue(item) {
+                var one = null;
+                one = _.find(_SERVER_RANKS_, {
+                    id: item.rank_id
+                });
+                if(one) {
+                    item.rank = one.name
+                }
+
+                one = _.find(_SERVER_LEVELS_, {
+                    id: item.level_id
+                });
+                if(one) {
+                    item.level = one.name
+                }
+
+                var members = _SERVER_MEMBERS_.data.gmember;
+                one = _.find(members, {
+                    id: item.manager_id
+                });
+
+                if(one) {
+                    item.manager_id = one.name
+                }
+
+                item.gids = item.d;
+                item.bank = item.bankname;
+
+                return item;
+            }
 
             // 将数据分成三组
             function groupFileArray(arr, members) {
@@ -221,7 +272,11 @@
                         }
 
                     } else {
-                        var v = getItemRedOrBlueMap(item, members);
+                        var originalItem = getOriginalItem(item, members);
+
+                        originalItem = syncItemFieldValue(originalItem);
+
+                        var v = getItemRedOrBlueMap(item, originalItem);
                         item._v_ = v;
                         rs.modifier.push(item);
                         if(isNotAllAsValue(v, 'MODIFIED')) {
@@ -309,7 +364,7 @@
                                     var importData = data[key];
                                     var status = importData['status'];
                                     
-                                    if(status==1) {
+                                    if(status==1 || status==2) {
                                         one['_status_text_'] = '已导入';
                                         one['_status_'] = 1;
                                     } else {
@@ -330,6 +385,36 @@
 
                     // bind events executed
                     (function () {
+
+                        $('table').on('mouseenter', '.field-tip', function (e) {
+                            var offset = $(this).offset();
+                            var arrow = '';
+
+                            offset['left'] = offset['left'];
+                            offset['top'] = offset['top'] + 24;
+
+                            var $div = $('<div class="ui-bubble-tip">').text($(this).data('title'));
+
+                            $div.appendTo(document.body);
+
+                            offset['margin-left'] = -$div.width()/2 - 6;
+
+                           
+                            if(offset['top']>$(window).height()/2) {
+                                arrow = 'up';
+                                offset['top'] = offset['top'] - $div.outerHeight() - 30;
+                                $div.addClass(arrow);
+                            }
+
+
+                            $div.css(offset);
+
+                            e.stopPropagation();
+
+                        }).on('mouseleave mouseout', '.field-tip', function () {
+                            $('.ui-bubble-tip').remove();
+                        });
+
                         $('table').on('click', 'td.field-error', function (e) {
 
                             var hashKey = $(this).parent().data('id');
@@ -360,8 +445,15 @@
                                     one[fieldName] = txt;
 
                                     if(one) {
-
-                                        one._v_ = getItemValidator(one);
+                                        var originalItem = getOriginalItem(one, members);
+                                        // 新增更新
+                                        if(originalItem) {
+                                            originalItem = syncItemFieldValue(originalItem);
+                                            one._v_ = getItemRedOrBlueMap(one, originalItem);
+                                        // 错误更新
+                                        } else {
+                                            one._v_ = getItemValidator(one);
+                                        }
 
                                         if(one._v_) {
                                             one._status_text_ = '无法导入' ;
@@ -392,29 +484,7 @@
 
                                     $(this.node).on('keyup', 'input', function (e) {
                                         if(e.keyCode==13) {
-                                            
-                                            var txt = $(_this.node).find('input').val();
-                                            txt = $.trim(txt);
-                                            one[fieldName] = txt;
-
-                                            if(one) {
-
-                                                one._v_ = getItemValidator(one);
-
-                                                if(one._v_) {
-                                                    one._status_text_ = '无法导入' ;
-                                                    delete one._status_;
-                                                } else {
-                                                    one._status_text_ = '待确认';
-                                                    one._status_ = 1;
-                                                }
-
-                                                setTimeout(function () {
-                                                   $scope.$apply();
-                                                   _this.close();
-                                                }, 1000/16);
-                                            }
-
+                                            $(_this.node).find('button:last').click();
                                         }
                                     });
                                 }

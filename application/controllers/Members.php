@@ -924,13 +924,23 @@ class Members extends REIM_Controller {
             array_push($data, $obj);
         }
 
+        $ranks = $this->groups->get_rank_level(1);
+        $ranks = $ranks['data'];
+
+        $levels = $this->groups->get_rank_level(0);
+        $levels = $levels['data'];
+
+        $profile = $this->session->userdata('profile');
+        $groups = $profile['usergroups'];
+
         $this->bsload('members/imports_stash',
             array(
                 'title' => '确认导入',
                 'locale_file_members'=>$data,
                 'server_members' => $this->groups->get_my_list(),
-                // 'no_ranks' => $no_ranks,
-                // 'no_levels' => $no_levels,
+                'ranks' => $ranks,
+                'groups' => $groups,
+                'levels' => $levels,
                 // 'no_groups' => $no_groups,
                 'breadcrumbs' => array(
                     array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon'),
