@@ -2,7 +2,7 @@
 
     function getFlowWithQuery(query) {
         return Utils.api('giro_transaction', {
-            env: 'miaiwu',
+            env: 'online',
             data: query
         });
     };
@@ -176,7 +176,7 @@
                             cancel: null
                         });
                         dialog.showModal();
-                        
+
                         var tmpl = [
                             '<div class="item-detail table-container">',
                             '    <table>',

@@ -12,7 +12,7 @@
         // payway 类型 - string, 描述 - 指定的支付方式。
         // description 类型 - string, 描述 - 支付描述信息。
         return Utils.api('giro_payhead/company_payheads', {
-            env: 'miaiwu'
+            env: 'online'
         }).done(function(rs) {
             if (rs['status'] <= 0) {
                 return;
@@ -31,7 +31,7 @@
     function getReportArray(rids) {
         return Utils.api('/reports', {
             method: 'post',
-            env: 'miaiwu',
+            env: 'online',
             data: {
                 ids: rids.join(',')
             }
@@ -40,7 +40,7 @@
 
     function getGroup(id) {
         return Utils.api('/groups/' + id, {
-            env: 'miaiwu'
+            env: 'online'
         });
     };
 
@@ -54,7 +54,7 @@
 
     function getUserPhone() {
         return Utils.api('/giro_transaction/get_safe_phone', {
-            env: 'miaiwu'
+            env: 'online'
         }).done(function(rs) {
             if (rs['status'] < 0) {
                 return show_notify('获取手机号码失败');
@@ -73,7 +73,7 @@
         // }
         return Utils.api('/giro_transaction/fetch_pay_vcode', {
             method: 'post',
-            env: 'miaiwu',
+            env: 'online',
         }).done(function(rs) {
             if (rs['status'] <= 0) {
                 return
@@ -84,7 +84,7 @@
     function getPayToken(vcode) {
         return Utils.api('giro_transaction/payment_auth', {
             method: 'post',
-            env: 'miaiwu',
+            env: 'online',
             data: {
                 vcode: vcode,
                 client_id: window.__CLIEN_ID__,
@@ -100,7 +100,7 @@
         // description 类型 - string, 描述 - 支付描述信息。
         return Utils.api('giro_transaction/pay_report', {
             method: 'post',
-            env: 'miaiwu',
+            env: 'online',
             data: data,
             token: pay_token,
         });

@@ -8,7 +8,7 @@
 		// payway 类型 - string, 描述 - 指定的支付方式。
 		// description 类型 - string, 描述 - 支付描述信息。
 		return Utils.api('giro_payhead/company_payheads', {
-			env: 'miaiwu'
+			env: 'online'
 		}).done(function (rs) {
 			if(rs['status']<=0) {
 				return;
@@ -33,7 +33,7 @@
 		// description 类型 - string, 描述 - 支付描述信息。
 		return Utils.api('giro_transaction/fetch_reports_payables', {
 			method: 'post',
-			env: 'miaiwu',
+			env: 'online',
 			data: data
 		}).done(function (rs) {
 			if(rs['status']<=0) {
