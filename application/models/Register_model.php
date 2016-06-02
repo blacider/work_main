@@ -16,7 +16,7 @@ class Register_Model extends Reim_Model {
         $data = array(
             $addr => $user_addr
         );
-        return $this->api_post('vcode/' . $scene);
+        return $this->api_post('vcode/' . $scene, $data);
     }
 
     public function register($data = array()) 
