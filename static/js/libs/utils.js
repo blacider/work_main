@@ -1,5 +1,4 @@
 (function(exports) {
-
 	// ie8 check
 	var CONST_LTE_IE8 = (function(userAgent) {
 	    if (/MSIE\s+(6|7|8)\.0/.test(userAgent)) {
@@ -107,12 +106,13 @@
                 url = '/' +  url;
             }
 
+            var token = (opts['token']) ? opts['token'] : window.__USER_ACCESS_TOKEN__;
             $.ajax({
                 type: opts['method'],
                 dataType: opts['dataType'],
                 url: url,
                 headers: {
-                    'Authorization': 'Bearer ' + window.__USER_ACCESS_TOKEN__,
+                    'Authorization': 'Bearer ' + token,
                     'X-admin-api': 1
                 },
                 data: opts['data'],

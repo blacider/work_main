@@ -12,6 +12,37 @@ class Bills extends REIM_Controller {
         $this->load->helper('report_view_utils');
     }
 
+    // 微信支付新开页面
+    public function paylist()
+    {
+        $custom_data = array();
+        $profile = $this->session->userdata('profile');
+        $custom_data['UID'] = $profile['id'];
+        $custom_data['user_access_token'] = $this->session->userdata('oauth2_ak');
+        $api_url_base = $this->config->item('api_url_base');
+        $client_id = $this->config->item('api_client_id');
+        $client_secret = $this->config->item('api_client_secret');
+        $custom_data['api_url_base'] = $api_url_base;
+        $custom_data['client_id'] = $client_id;
+        $custom_data['client_secret'] = $client_secret;
+        $this->load->view('/bills/paylist', $custom_data);
+    }
+
+    // 微信支付流水
+    public function payflow()
+    {
+        $this->bsload('/bills/pay_flow',
+            array(
+                'title' => '流水查询',
+                'error' => array(),
+                'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '待审核', 'class' => 'ace-icon fa  home-icon'),
+                    array('url'  => '/bills/finance_pay', 'name' => '流水查询', 'class' => '')
+                )
+            )
+        );
+    }
+
     public function report_finance_deny()
     {
            $rid = $this->input->post('rid');

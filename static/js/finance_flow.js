@@ -480,7 +480,7 @@ try {
 					height: 250,
 					multiselect: false,
 					loadtext: '',
-					colNames: ['提交日期', '报销单名', '条目数', '提交者', '金额', '状态', '操作'],
+					colNames: ['提交日期', '报销单名', '条目数', '提交者', '金额', '状态'],
 					loadonce: true,
 					caption: "费用审计",
 					editurl: __BASE + 'bills/save',
@@ -539,16 +539,6 @@ try {
 						name: 'status_str',
 						index: 'status_str',
 						width: 70,
-						editable: true,
-						edittype: "select",
-						editoptions: {
-							value: "4:通过;3:拒绝"
-						},
-						unformat: aceSwitch
-					}, {
-						name: 'options',
-						index: 'options',
-						width: 60,
 						editable: true,
 						edittype: "select",
 						editoptions: {

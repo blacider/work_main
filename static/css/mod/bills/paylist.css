@@ -1,0 +1,203 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+.mod-reim-paylist {
+	width: 960px;
+	margin: 12px auto;
+	color: #929292;
+}
+
+.mod-reim-paylist .sub-mod {
+	border: 1px solid #BBBBBB;
+	border-radius: 3px;
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+
+.mod-reim-paylist .sub-mod .head {
+	background: #67727D;
+	color: #fff;
+	padding: 8px 12px;
+}
+
+.mod-reim-paylist .sub-mod .content {
+	padding: 12px;
+}
+
+.btn-send-code, .btn-submit {
+	height: 32px;
+	padding: 0 12px;
+	line-height: 30px;
+	margin-left: 12px;
+	background: #ff575b;
+	color: #fff;
+	border-radius: 3px;
+	width: 96px;
+	border: none;
+	cursor: pointer;
+}
+
+.footer {
+	text-align: center;
+	padding: 20px;
+}
+
+.btn-submit {
+	line-height: 40px;
+	height: 42px;
+	font-size: 16px;
+	width: 160px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.waiting {
+	background: #A7A7A7
+}
+
+.one-time-password {
+	margin-bottom: 12px;
+}
+
+
+textarea {
+	margin: 0;
+	-webkit-appearance: none;
+	tap-highlight-color: rgba(255,255,255,0);
+	padding: .78571429em 1em;
+	background: #fff;
+	border: 1px solid rgba(34,36,38,.15);
+	outline: 0;
+	color: #4a4a4a;
+	border-radius: .28571429rem;
+	box-shadow: 0 0 0 0 transparent inset;
+	-webkit-transition: color .1s ease,border-color .1s ease;
+	transition: color .1s ease,border-color .1s ease;
+	font-size: 1em;
+	line-height: 1.2857;
+	resize: vertical;
+	max-height: 120px;
+	height: 40px;
+}
+textarea:focus {
+	border: 1px solid #ff575b;
+}
+.description {
+	display: table;
+	margin-top: 20px;
+}
+
+.description label, .description textarea {
+	display: table-cell;
+	vertical-align: top;
+}
+
+.description label {
+	padding-right: 12px;
+}
+
+.btn-remove {
+	text-decoration: none;
+	position: relative;
+}
+
+.btn-remove:hover {
+	text-decoration: underline;
+	color: blue;
+}
+
+.pay-done {
+	background: #ff575b;
+	padding: 4px;
+	color: #fff;
+	border-radius: 2px;
+}
+
+
+/*components here*/
+.field-input input {
+	height: 30px;
+	margin: 0;
+	padding: 0 12px;
+	border-radius: 2px;
+	outline: none;
+	font-size: 16px;
+	color: #4a4a4a;
+	width: 320px;
+	float: left;
+	opacity: 0.9;
+	border: 1px solid #929292;
+}
+
+.field-input input:focus {
+	border: 1px solid #ff575b;
+}
+
+.table-container {
+	border-top: 1px solid #ABABAB;
+	border: 1px solid #ABABAB;
+	border-radius: 3px;
+	border-right: none;
+	overflow: hidden;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	text-align: center;
+}
+table thead tr th {
+	height: 30px;
+	background-color: rgba(89, 102, 116, 0.8);
+	color: #fff;
+	text-align: center;
+	border-right: solid 1px #b9b9b9;
+}
+table tbody tr td {
+	height: 30px;
+	font-size: 14px;
+	color: #929292;
+	border-top: 1px solid #EEEEEE;
+	border-right: 1px solid #b9b9b9;
+}
+
+table tbody tr td.note {
+	max-width: 120px;
+	width: 120px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+table tfoot {
+	font-weight: border;
+	color: #4a4a4a;
+}
+
+.table-field table tfoot tr {
+	border-top: solid 1px #b9b9b9;
+    border-right: solid 1px #b9b9b9;
+}
+
+.table-field table tfoot td {
+	height: 30px;
+}
+.table-field table tfoot td.sum {
+	text-align: right;
+	padding: 0 12px;
+}
+
+
+.cloud-bx-dialog .dialog-header .close {
+	background: transparent;
+	border: none;
+	font-size: 24px;
+}
+
+
+.table-cell {
+	display: table-cell;
+	vertical-align: middle;
+}
+

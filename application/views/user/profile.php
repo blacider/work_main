@@ -13,11 +13,27 @@ text-align:center;
 padding:7px 0 0 0;
 font:bold 11px Arial, Helvetica, sans-serif;
 }
+
+#weixin-wallet {
+    position: relative;
+    line-height: 34px;
+}
+#weixin-wallet .logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 30px;
+    width: 30px;
+    margin-top: -15px;
+    margin-left: -15px;
+}
 </style>
 <link rel="stylesheet" href="/static/ace/css/chosen.css" />
 <link rel="stylesheet" href="/static/ace/css/dropzone.css" />
 <link rel="stylesheet" href="/static/ace/css/ace.min.css" id="main-ace-style" />
-
+<script>
+    var _is_self_ = <?php  if($self) {echo "1";} else {echo '0';}?>;
+</script>
 <div class="page-content">
     <div class="page-content-area">
         <form id="profile_form" class="form-horizontal" role="form" method="post" action="<?php echo base_url('users/update_profile'); ?>/<?php echo $isOther ?>/">
@@ -128,7 +144,7 @@ if(in_array($profile['admin'],[1,3,4])){
     if($open == 1) {
 ?>
                                         <select class="col-xs-6 col-sm-6 form-control chosen-select tag-input-style" name="manager" data-placeholder="请选择标签">
-<?php 
+<?php
     } else {
 ?>
                                         <select class="col-xs-6 col-sm-6 form-control chosen-select tag-input-style" name="manager" data-placeholder="请选择标签" disabled>
@@ -136,7 +152,7 @@ if(in_array($profile['admin'],[1,3,4])){
     }
 ?>
                                     <option value="0" >无</option>
-<?php 
+<?php
     foreach($gmember as $m){
         if($m['id'] == $manager_id)
         {
@@ -164,7 +180,7 @@ if(in_array($profile['admin'],[1,3,4])){
                                     <select class="chosen-select tag-input-style" name="rank" data-placeholder="级别" disabled>
 <?php } ?>
                                         <option value=0>无</option>
-<?php 
+<?php
 $rank = $pro['rank_id'];
 foreach($ranks as $m){
     if($m['id']==$rank && $rank!=0) {
@@ -184,7 +200,7 @@ foreach($ranks as $m){
                           <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right">职位</label>
                                 <div class="col-xs-6 col-sm-6">
-<?php 
+<?php
 if(in_array($profile['admin'],[1,3,4])){
 ?>
                                     <select class="col-xs-6 col-sm-6 chosen-select tag-input-style" name="level" data-placeholder="职位" >
@@ -194,7 +210,7 @@ if(in_array($profile['admin'],[1,3,4])){
                                     <select class="col-xs-6 col-sm-6 chosen-select tag-input-style" name="level" data-placeholder="职位" disabled>
 <?php } ?>
                                     <option value=0>无</option>
-<?php 
+<?php
     $level = $pro['level_id'];
     foreach($levels as $m){
         if($m['id']==$level && $level!=0) {
@@ -218,7 +234,7 @@ if(in_array($profile['admin'],[1,3,4])){
                                 <label class="col-sm-1 control-label no-padding-right">所属帐套</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" multiple="multiple" name="sobs[]" data-placeholder="帐套信息" disabled>
-<?php 
+<?php
     $sobs = $pro['sob'];
     foreach($sobs as $m){
 
@@ -248,7 +264,7 @@ if(in_array($profile['admin'],[1,3,4])){
 <?php
     }
 ?>
-<?php 
+<?php
     $usergroups = $pro['usergroups'];
     $in_groups = array();
     foreach($usergroups as $m){
@@ -287,7 +303,7 @@ if(in_array($profile['admin'],[1,3,4])){
                                 <label class="col-sm-1 control-label no-padding-right">提交规则</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" multiple="multiple" name="commits[]" data-placeholder="提交规则" disabled>
-<?php 
+<?php
     $commits = $pro['commits'];
     foreach($commits as $m){
 
@@ -305,7 +321,7 @@ if(in_array($profile['admin'],[1,3,4])){
                                 <label class="col-sm-1 control-label no-padding-right">审批规则</label>
                                 <div class="col-xs-6 col-sm-6">
                                     <select class="chosen-select tag-input-style" multiple="multiple" name="audits[]" data-placeholder="审批规则" disabled>
-<?php 
+<?php
     $audits = $pro['audits'];
     foreach($audits as $m){
 
@@ -328,26 +344,26 @@ if(in_array($profile['admin'],[1,3,4])){
                             <div class="col-xs-12 col-sm-12 "  style="margin-left:0px !important;padding-left:0px !important;" >
                                 <div class="btn-toolbar" id="btns">
 
-<?php 
+<?php
     foreach($member['banks'] as $b) {
 ?>
-<div class="btn-group" id="bank_<?php echo $b['id']; ?>" > 
+<div class="btn-group" id="bank_<?php echo $b['id']; ?>" >
     <button data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">
         <?php echo $b['account']; ?>
-        <i class="ace-icon fa fa-angle-down icon-on-right"></i> 
-    </button> 
-    <ul class="dropdown-menu"> 
-        <li> <a href="javascript:void(0)" data-id="<?php echo $b['id']; ?>" data-cardtype="<?php echo $b['cardtype']; ?>" data-bankname="<?php echo $b['bankname'];?>"  data-cardno="<?php echo $b['cardno'];?>" data-bankloc="<?php echo $b['bankloc'];?>" 
+        <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+    </button>
+    <ul class="dropdown-menu">
+        <li> <a href="javascript:void(0)" data-id="<?php echo $b['id']; ?>" data-cardtype="<?php echo $b['cardtype']; ?>" data-bankname="<?php echo $b['bankname'];?>"  data-cardno="<?php echo $b['cardno'];?>" data-bankloc="<?php echo $b['bankloc'];?>"
                 data-account="<?php echo $b['account'];?>" data-subbranch="<?php echo $b['subbranch'];?>" data-default="<?php echo $member['credit_card'];?>" class="edit_bank">修改</a> </li>
-        <li> <a href="javascript:void(0)" data-id="<?php echo $b['id']; ?>" data-cardtype="<?php echo $b['cardtype']; ?>" data-bankname="<?php echo $b['bankname'];?>"  data-cardno="<?php echo $b['cardno'];?>" data-bankloc="<?php echo $b['bankloc'];?>" 
-                data-account="<?php echo $b['account'];?>" data-subbranch="<?php echo $b['subbranch'];?>" data-default="<?php echo $member['credit_card'];?>" class="show_bank">展示</a> </li> 
-        <li class="divider"></li> 
-        <li> 
-        <a href="javascript:void(0)" data-id="<?php echo $b['id']; ?>" data-bankname="<?php echo $b['bankname'];?>"  data-cardno="<?php echo $b['cardno'];?>" data-bankloc="<?php echo $b['bankloc'];?>"  data-account="<?php echo $b['account'];?>" class="del_bank"> 删除</a> 
-        </li> 
-    </ul> 
+        <li> <a href="javascript:void(0)" data-id="<?php echo $b['id']; ?>" data-cardtype="<?php echo $b['cardtype']; ?>" data-bankname="<?php echo $b['bankname'];?>"  data-cardno="<?php echo $b['cardno'];?>" data-bankloc="<?php echo $b['bankloc'];?>"
+                data-account="<?php echo $b['account'];?>" data-subbranch="<?php echo $b['subbranch'];?>" data-default="<?php echo $member['credit_card'];?>" class="show_bank">展示</a> </li>
+        <li class="divider"></li>
+        <li>
+        <a href="javascript:void(0)" data-id="<?php echo $b['id']; ?>" data-bankname="<?php echo $b['bankname'];?>"  data-cardno="<?php echo $b['cardno'];?>" data-bankloc="<?php echo $b['bankloc'];?>"  data-account="<?php echo $b['account'];?>" class="del_bank"> 删除</a>
+        </li>
+    </ul>
 </div><!-- /.btn-group -->
-<?php 
+<?php
     }
 ?>
                                     <div class="btn-group">
@@ -361,28 +377,46 @@ if(in_array($profile['admin'],[1,3,4])){
                         </div>
                     </div>
 
+                    <!-- 微信绑定 -->
+                    <div class="form-group weixin-row">
+                        <label class="col-sm-1 control-label no-padding-right">微信钱包授权</label>
+                        <div class="col-xs-6 col-sm-6">
+                            <h2 class="weixin-wallet-tip" style="margin: 0;     margin-bottom: 15px; font-size: 11px; line-height: 34px;">支持财务人员将报销费用转账到您的微信钱包</h2>
+                            <div id="weixin-wallet">
 
-<?php 
+                                <div style="display: none;" class="weixin-wallet-authorized">
+                                    <span class="who"></span><span class="btn-cancel-weixin-auth">，您已经授权 <a href="javascript:void()">取消授权</a></span>
+                                </div>
+                            </div>
+                            <p class="weixin-wallet-tip" style="margin: 10px 0; font-size: 11px;">
+                                请使用微信扫一扫进行扫码
+                                <br>
+                                <span style="color: red">＊请确认为本人操作</span>
+                            </p>
+                            </div>
+                    </div>
+
+<?php
     if(in_array($profile['admin'], [1,2,3,4])){
 ?>
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">角色</label>
                                 <div class="col-xs-2 col-sm-2">
-                                 <select name="admin_new" id="admin_new" class="chosen-select tag-input-style" <?php if(!in_array($profile['admin'], [1,3])){echo "disabled";}?>> 
+                                 <select name="admin_new" id="admin_new" class="chosen-select tag-input-style" <?php if(!in_array($profile['admin'], [1,3])){echo "disabled";}?>>
                                    <?php
-                                            $chara = array(0 => "员工", 
+                                            $chara = array(0 => "员工",
                                                 1 => "管理员",
                                                 2 => "出纳",
                                                 3 => "IT人员",
                                                 4 => "部门管理员");
                                             if($profile['admin'] == 3) {
-                                                $chara = array(0 => "员工", 
+                                                $chara = array(0 => "员工",
                                                     2 => "出纳",
                                                     3 => "IT人员",
                                                     4 => "部门管理员");
                                             }
                                             foreach($chara as $val => $des) {
-                                                //for ($i=0; $i < 4; $i++) { 
+                                                //for ($i=0; $i < 4; $i++) {
                                                 $str1 = '<option value="' . $val . '"';
                                                 $select = 'selected="true"';
                                                 $str2 = '>' . $chara[$val] . "</option>";
@@ -397,14 +431,14 @@ if(in_array($profile['admin'],[1,3,4])){
                                 </div>
 
                               <div class="col-xs-4 col-sm-4" id="cashier_view" hidden>
-                                <select name="admin_groups_granted[]" id="admin_groups_granted" multiple="multiple" class="chosen-select tag-input-style" data-placeholder="请选择部门" <?php if($profile['admin']!=1){ echo "disabled";}?>> 
+                                <select name="admin_groups_granted[]" id="admin_groups_granted" multiple="multiple" class="chosen-select tag-input-style" data-placeholder="请选择部门" <?php if($profile['admin']!=1){ echo "disabled";}?>>
                              <?php
                                 $groups_granted = array();
                                 if($pro && array_key_exists('admin_groups_granted', $pro))
                                 {
                                     $groups_granted = explode(',',$pro['admin_groups_granted']);
                                 }
-                
+
                             ?>
                             <?php
                                 if(in_array(0, $groups_granted))
@@ -432,14 +466,14 @@ if(in_array($profile['admin'],[1,3,4])){
                                     {
                              ?>
                                      <option value="<?php echo $g['id']; ?>"><?php echo $g['name']; ?></option>
-                             <?php 
+                             <?php
                                     }
                                 }
                              ?>
                                  </select>
                               </div>
                     </div>
-<?php 
+<?php
 }
 ?>
 
@@ -489,7 +523,7 @@ if(in_array($profile['admin'],[1,3,4])){
                 <h4 class="modal-title">修改手机号</h4>
             </div>
             <div class="modal-body">
-            
+
                 <form id="phone_form" class="form-horizontal" role="form" method="post" action="<?php echo base_url('users/update_phone'); ?>">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
@@ -498,7 +532,7 @@ if(in_array($profile['admin'],[1,3,4])){
 
                                 if(isset($user_type) == false) {
                                     $updateWithoutVCode = false;
-                                } else if($user_type == 1 && !$is_self) {
+                                } else if($user_type == 1 && !$self) {
                                     $updateWithoutVCode = true;
                                 }
                                 $visibilityStyle = '';
@@ -549,21 +583,21 @@ if(in_array($profile['admin'],[1,3,4])){
                     <div class="col-sm-6">
                         <input type="text" class="form-control email" placeholder="新邮箱">
                     </div>
-                    
+
                     <div class="col-sm-2 align-right" style="<?php echo $visibilityStyle; ?>">
                         <button class="btn-get-email-code btn btn-primary btn-sm" type="submit">发送验证码</button>
                     </div>
-                    
+
                 </div>
                 <br>
-                
+
                 <div class="row" style="<?php echo $visibilityStyle; ?>">
                     <label class="col-sm-2 control-label align-right">验证码</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control vcode" placeholder="验证码">
                     </div>
                 </div>
-                
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -689,9 +723,12 @@ if(in_array($profile['admin'],[1,3,4])){
 <script src="/static/third-party/jfu/js/vendor/jquery.ui.widget.js"></script>
 <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
 <script src="/static/ace/js/chosen.jquery.min.js"></script>
-<script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script> 
-<script src="/static/js/libs/underscore-min.js"></script> 
+<script src="/static/js/libs/qrcodejs.min.js"></script>
+<script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script>
+<script src="/static/js/libs/underscore-min.js"></script>
 <script src="/static/js/widgets/input-suggestion.js"></script>
+<script src="/static/plugins/cloud-dialog/dialog.js"></script>
+<link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">
 <script>
     var __BASE = "<?php echo $base_url; ?>";
     var flag = 0;
@@ -847,7 +884,7 @@ if(in_array($profile['admin'],[1,3,4])){
             {
                 break;
             }
-        } while ($('select[name="province"]').val() == null); 
+        } while ($('select[name="province"]').val() == null);
         /*for(var i=1;i<=loc.length+1;i++)
             {
              $('select[name="province"]').val(loc.substr(0,i));
@@ -915,7 +952,7 @@ if(in_array($profile['admin'],[1,3,4])){
         if(__error) show_notify(__error);
         $('.chosen-select').each(function(){
         });
-        $('.chosen-select').chosen({allow_single_deselect:true}); 
+        $('.chosen-select').chosen({allow_single_deselect:true});
         $(window)
             .off('resize.chosen')
             .on('resize.chosen', function() {
@@ -1069,13 +1106,13 @@ if(in_array($profile['admin'],[1,3,4])){
                             $('#cardno').focus();
                             return false;
                         };
-                        
+
                         if (_bank == "" || _bank == null || _bank == undefined) {
                             show_notify('请选择银行卡开户行');
                             $('#cardbank').focus();
                             return false;
                         };
-                        
+
                         $.ajax({
                             url : __BASE + "users/new_credit",
                                 data : {
@@ -1100,8 +1137,8 @@ if(in_array($profile['admin'],[1,3,4])){
                                             $('#bank_' + _id).remove();
                                         }
                                         var buf = '<div class="btn-group" id="bank_' + _id + '"> '
-                                            + '<button data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">' 
-                                            + _account 
+                                            + '<button data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">'
+                                            + _account
                                             + '<i class="ace-icon fa fa-angle-down icon-on-right"></i> </button>'
                                             + '<ul class="dropdown-menu"> '
                                             + '<li> <a href="javascript:void(0)" data-cardtype="' + _card_type +'"  data-id="' + _id + '" data-bankname="' + _bank + '"  data-cardno="' + _no + '" data-bankloc="' + _loc+ '"  data-account="' + _account + '" data-subbranch="' + _subbranch + '"' + ' data-default="' + _default_id + '"' +' class="edit_bank" >修改</a> </li>'
@@ -1175,9 +1212,109 @@ if(in_array($profile['admin'],[1,3,4])){
     });
 
     });
-    
+
+    function unbindWeixinPay() {
+        return Utils.api('giro_auth/wxauth_rescind', {
+            method: 'post',
+            env: 'online',
+        }).done(function (rs) {
+            if(rs['status']<=0) {
+                return
+            }
+            window.location.reload();
+        });
+    };
+
+
+    // 添加二维码
+    // giro_auth/employee_wechat_info
+    if(__self == 1) {
+        Utils.api('giro_payhead/employee_wxpub_payhead', {
+            env: 'online'
+        }).done(function (rs) {
+            if(rs['status']<=0) {
+                return $("#weixin-wallet").text(rs['data']['msg']);
+            }
+            var data = rs['data'];
+            if(!data['company_opened']) {  //企业未开通
+                $(".weixin-row").remove();
+                return
+            } else if(data['company_opened']) { //企业开通
+                if(data['employee_opened']) {
+                    $("#weixin-wallet .who").text(data['wx_nickname']);
+                    $(".weixin-wallet-authorized").show();
+                    $('.weixin-wallet-tip').hide();
+                    $(".weixin-wallet-authorized a").on('click', function  (e) {
+                        var dialog = new CloudDialog({
+                            content: "确认取消授权？",
+                            ok: function () {
+                                unbindWeixinPay();
+                            }
+                        });
+                        dialog.showModal();
+                    });
+                } else {
+                    var qrcode = new QRCode(document.getElementById("weixin-wallet"), {
+                        // text: "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx068349d5d3a73855&redirect_uri=http%3A%2F%2Fdadmin.cloudbaoxiao.com%2Fmobile%2Fwallet&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect",
+                        text:data['auth_url'],
+                        width: 128,
+                        height: 128,
+                        colorDark : "#ff575b",
+                        colorLight : "#fff",
+                        correctLevel : QRCode.CorrectLevel.M
+                    });
+                    $("#weixin-wallet").removeAttr('title');
+
+                    // 轮训用户是否扫描，扫描后，重新载入页面
+                    function checkIfBind() {
+                        Utils.api('giro_payhead/employee_wxpub_payhead', {
+                            env: 'online',
+                            data: {
+                                ignore_auth_url: true
+                            }
+                        }).done(function (rs) {
+
+                            // 服务器出错就不用扫描了
+                            if(rs['status']<=0) {
+                                return
+                            }
+
+                            var data = rs['data'];
+                            if(data['employee_opened']) {
+                                window.location.reload();
+                            } else {
+                                setTimeout(function (argument) {
+                                    checkIfBind();
+                                }, 1000 * 6);
+                            }
+                        });
+                    };
+                    checkIfBind();
+                }
+            }
+        });
+    } else {
+        Utils.api('giro_payhead/company_employee_wxpub_payhead', {
+            env: 'online',
+            data: {
+                employee_id: $('input[name=uid]').val()
+            }
+        }).done(function (rs) {
+            if(rs['data']['company_opened']) {
+                var info = '员工未授权';
+                if(rs['data']['employee_opened']) {
+                    info = '员工已授权';
+                }
+                $("#weixin-wallet .who").text(info);
+                $(".btn-cancel-weixin-auth").remove();
+                $(".weixin-wallet-authorized").show();
+                $('.weixin-wallet-tip').hide();
+            } else {
+                $("#weixin-wallet").parents('.weixin-row').remove();
+            }
+        });
+    }
+
 
 </script>
 <script src="<?= static_url("/static/js/mod/user/profile.js") ?>"></script>
-
-

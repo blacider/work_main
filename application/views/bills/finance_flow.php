@@ -542,8 +542,9 @@ Date.prototype.Format = function (fmt) { //author: meizz
             </div>
             <div class="modal-footer">
                 <input type="hidden" id="pass" name="pass" value="0">
-                <input type="submit" class="btn btn-primary pass" value="确认结束">
                 <div class="btn btn-primary" onclick="cancel_modal_next_()">取消</div>
+                <input type="submit" class="btn btn-primary pass" value="确认结束">
+                <button type="button" style="display: none;" class="one btn btn-primary btn-pay">去支付</button>
             </div>
                 </form>
         </div><!-- /.modal-content -->
@@ -565,6 +566,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         <button type="button" class="btn btn-primary" onclick="exportExel()">下载汇总报表</button>
         <button type="button" class="btn btn-primary" onclick="finish()">确认结束</button>
+        <button type="button" style="display: none;" class="btn btn-primary btn-pay">去支付</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -721,3 +723,11 @@ function cancel_modal_next_()
 </script>
 <script src="<?= static_url("/static/js/base.js") ?>" ></script>
 <script src="<?= static_url("/static/js/finance_flow.js") ?>" ></script>
+
+<script src="<?= static_url("/static/js/mod/bills/finance.js") ?>"></script>
+
+<script src="/static/plugins/cloud-dialog/dialog.js"></script>
+<link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">
+
+<script src="/static/plugins/cloud-layer/layer.js"></script>
+<link rel="stylesheet" href="/static/plugins/cloud-layer/layer.css">

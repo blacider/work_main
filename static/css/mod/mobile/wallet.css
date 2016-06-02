@@ -1,0 +1,209 @@
+a {
+	display: block;
+}
+
+ul, ol, p, button, input {
+	margin: 0;
+	list-style: none;
+}
+
+h2 {
+	margin: 0;
+}
+
+input, button {
+	display: block;
+	outline: none;
+	border: none;
+}
+* {
+	box-sizing: border-box;
+}
+
+body {
+	padding: 0;
+	margin: 0;
+}
+
+.main {
+	margin: 15px auto;
+	text-align: center;
+	padding: 0 15px;
+}
+
+header {
+	background: rgb(245, 245, 244);
+
+	display: -webkit-flex ;
+	display: -o-flex ;
+	display: -moz-flex ;
+	display: -ms-flex ;
+	display: flex;
+
+}
+header img {
+	width: 80px;
+	height: 80px;
+	display: block;
+	margin: 15px;
+}
+
+header .declare {
+
+	text-align: left;
+
+	display: -webkit-box;
+	display: -moz-box;
+	display: -o-box;
+	display: -ms-box;
+	display: box;
+
+	-webkit-box-orient: vertical;
+	-o-box-orient: vertical;
+	-moz-box-orient: vertical;
+	-ms-box-orient: vertical;
+	box-orient: vertical;
+
+	-webkit-box-pack: center;
+	-moz-box-pack: center;
+	-o-box-pack: center;
+	-ms-box-pack: center;
+	box-pack: center;
+}
+header .declare h2 {
+	color: rgb(74, 74, 74);
+	font-size: 1rem;
+	margin-bottom: 16px;
+}
+
+header .declare p {
+	color: rgb( 255, 87, 91);
+	font-size: 14px;
+}
+
+.profile {
+	text-align: left;
+	padding: 0 15px;
+}
+.profile h2 {
+	color: rgb( 146, 146, 146);
+	font-size: 0.8rem;
+	margin-top: 30px;
+}
+
+.profile .row {
+	margin-left: -15px;
+	padding-top: 20px;
+}
+.profile .row.three .col {
+	float: left;
+	height: 18px;
+}
+.profile .row .col.line {
+    height: 14px;
+    width: 1px;
+    background: rgb(216, 216, 216);
+    position: relative;
+    top: 3px;
+    padding: 0;
+    margin-left: 15px;
+}
+.profile .row .col {
+	float: left;
+	color: rgb(151, 151, 151);
+	font-size: 0.8rem;
+	padding-left: 15px;
+}
+
+.profile .row .col:last-child {
+	border: none;
+}
+
+.profile .row::after {
+	clear: both;
+	display: block;
+	content: '';
+}
+.for-phone {
+	color: rgba(74, 74, 74);
+	text-align: left;
+	font-size: 15px;
+	line-height: 30px;
+	margin-top: 20px;
+}
+.code-input {
+	display: -webkit-flex ;
+	display: -o-flex ;
+	display: -moz-flex ;
+	display: -ms-flex ;
+	display: flex;
+
+	flex-direction: row;
+	margin-top: 10px;
+}
+
+.input {
+	-webkit-flex: 1;
+	-o-flex: 1;
+	-moz-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+
+	border: 1px solid  rgb(216, 216, 216);
+	padding: 8px;
+	margin-right: 12px;
+	
+	height: 44px;
+
+	border-radius: 3px;
+
+}
+.input input {
+	border: none;
+	position: relative;
+	height: 28px;
+	line-height: 28px;
+	/* width: 100%; */
+	font-size: 1rem;
+	display: block;
+	box-sizing: content-box;
+	display: block;
+	float: left;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+.btn-send-code,
+.btn-submit {
+	width: 99px;
+	text-align: center;
+	padding: 10px;
+	color: #fff;
+	height: 44px;
+	font-size: 14px;
+	border: 1px solid #ff575b;
+	background: #fff;
+	color: #ff575b;
+	border-radius: 4px;
+}
+
+.succ, .fail {
+	padding: 30px;
+	color: #ff575b;
+	display: none;
+}
+.fail {
+	color: #999;
+}
+.waiting {
+	background: #ABA8A8;
+	color: #fff;
+	border: none;
+}
+.btn-submit {
+	margin-top: 20px;
+	width: 100%;
+	background: #ff575b;
+	color: #fff;
+}

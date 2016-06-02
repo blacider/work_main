@@ -32,3 +32,36 @@
 	border: 0px !important;
 	background: url(../../images/loading.gif) !important;
 }
+
+/*opacity loading gif*/
+
+.cloud-bx-waiting {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: rgba(0,0,0,0.3);
+
+	/*IE8*/
+	background: #000\9;
+	filter: alpha(opacity: 30);
+}
+.cloud-bx-waiting .text {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 100px;
+	margin-left: -50px;
+	text-align: center;
+	border-radius: 2px;
+	color: #ff575b;
+}
+
+.cloud-bx-waiting img {
+	-webkit-animation-duration: 1.6s;
+	-moz-animation-duration: 1.6s;
+	-ms-animation-duration: 1.6s;
+	-o-animation-duration: 1.6s;
+	animation-duration: 1.6s;
+}

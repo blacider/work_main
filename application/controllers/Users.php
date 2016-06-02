@@ -61,7 +61,35 @@ class Users extends REIM_Controller
             }
             $gmember = $gmember ? $gmember : array();
         }
-        $this->bsload('user/profile', array('title' => '个人管理', 'member' => $profile, 'self' => 1, 'error' => $error, 'isOther' => 0, 'manager_id' => $manager_id, 'gmember' => $gmember, 'pid' => $uid, 'pro' => $profile, 'ug' => $ug, 'ranks' => $ranks, 'levels' => $levels, 'breadcrumbs' => array(array('url' => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon'), array('url' => '', 'name' => '修改资料', 'class' => '')),));
+
+        $this->bsload('user/profile',
+            array(
+                'title' => '个人管理',
+                'member' => $profile,
+                'self' => 1,
+                'error' => $error,
+                'isOther' => 0,
+                'manager_id' => $manager_id,
+                'gmember' => $gmember,
+                'pid' => $uid,
+                'pro' => $profile,
+                'ug' => $ug,
+                'ranks' => $ranks,
+                'levels' => $levels,
+                'breadcrumbs' => array(
+                    array(
+                        'url' => base_url(),
+                        'name' => '首页',
+                        'class' => 'ace-icon fa  home-icon'
+                    ),
+                    array(
+                        'url' => '',
+                        'name' => '修改资料',
+                        'class' => ''
+                    )
+                )
+            )
+        );
     }
 
     public function update_profile($isOther) {

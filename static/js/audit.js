@@ -191,11 +191,11 @@ jQuery(grid_selector).jqGrid({
         }
        
         if (status) {
-            if (jQuery.inArray(rowid,selectRows) == -1) {
-                selectRows.push(rowid);
+            if (jQuery.inArray(rowId,selectRows) == -1) {
+                selectRows.push(rowId);
             }
         } else {
-            selectRows.splice(jQuery.inArray(rowid,selectRows),1);
+            selectRows.splice(jQuery.inArray(rowId,selectRows),1);
         }
     },
 
