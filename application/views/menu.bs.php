@@ -132,7 +132,7 @@ try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
             <?php if(count($report_templates) > 1) { ?>
             <a href="javascript:void(0)"  class="dropdown-toggle">
                 <i class="menu-icon fa fa-caret-right"></i>
-                新建报销单 
+                新建报销单
                 <b class="arrow fa fa-angle-down"></b>
             </a>
             <?php } else if(count($report_templates) == 1) { ?>
@@ -329,7 +329,7 @@ if($user['admin'] == 1 || $user['admin'] == 3){
         <li class="hsub" id="show_approve">
         <a href="<?php echo base_url('company/show_approve'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 审批规则 </a>
           <b class="arrow"></b>
-        </li> 
+        </li>
         <li class="hsub" id="item_customization">
         <a href="<?php echo base_url('company/item_customization'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 消费设置 </a>
           <b class="arrow"></b>
@@ -337,7 +337,7 @@ if($user['admin'] == 1 || $user['admin'] == 3){
         <li class="hsub" id="report_template_list">
         <a href="<?php echo base_url('company/report_template_list'); ?>" > <i class="menu-icon fa fa-caret-right"></i> 报销单模板 </a>
           <b class="arrow"></b>
-        </li> 
+        </li>
 
         <li class="hsub" id="broadcast_index">
         <a href="<?php echo base_url('broadcast/index'); ?>" ><i class="menu-icon fa fa-caret-right"></i> 公司消息 </a>
@@ -413,15 +413,10 @@ if($user['admin'] == 1 || $user['admin'] == 2) {
 
         <b class="arrow"></b>
         </li>
-        <!-- 财务查询微信支付 -->
-        <li class="hsub" id="payflow">
-            <a href="/bills/payflow" >流水查询</a>
-            <b class="arrow"></b>
-        </li>
     </ul>
     </li>
 
-<?php  } 
+<?php  }
 }
 ?>
 
@@ -439,7 +434,7 @@ if($user['admin'] == 1 || $user['admin'] == 2) {
 try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
 </script>
 
-</div> 
+</div>
 
 <div class="main-content">
 
@@ -450,7 +445,7 @@ try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
 </script>
 
 <ul class="breadcrumb" style="margin-top: 10px;">
-<?php 
+<?php
 foreach($breadcrumbs as $b){
 ?>
 <?php if("" == $b['url']) { ?>
@@ -460,7 +455,7 @@ foreach($breadcrumbs as $b){
     <?php } ?>
     <?php if("" != $b['class']) { ?>
     <i class="<?php echo $b['class']; ?>"></i>
-    <?php  } 
+    <?php  }
     if("" != $b['url']) {
     ?>
     <a href="<?php echo $b['url']; ?>"><?php echo $b['name']; ?></a>
@@ -517,20 +512,20 @@ foreach($breadcrumbs as $b){
 <div class="modal fade" id="security_dialog" style="top:150px">
   <div class="modal-dialog" style="width: 376px;font-size: 13px;">
     <div class="modal-content" style="border-radius: 5px;padding-top: 13px;">
-    
+
 
         <div class="modal-body-item">
             <img style="margin: 15px;width: 46px;" src="/static/images/Bitmap@2x.png" alt="png">
-            <p style="text-align: left;">您现在的登录密码安全性较差，请修改登录密码后再进行报销。</p>    
-        
+            <p style="text-align: left;">您现在的登录密码安全性较差，请修改登录密码后再进行报销。</p>
+
 
         </div>
-      
+
         <hr style="margin: 0;">
         <div class="modal-body-item">
             <p onclick="$('#security_dialog').modal('hide');$('#security_reset').modal({'keyboard': false , 'backdrop':'static'});" style="cursor: pointer;text-align: center;color:red;margin:0;">好，去修改</p>
         </div>
-    
+
 
 
     </div><!-- /.modal-content -->
@@ -584,7 +579,7 @@ function checkNewPassword() {
             }
             is_click_submit = 0;
             return false;
-        } 
+        }
         if ($("#reNewPassword").val() != pwd) {
             if(is_click_submit)
             {
@@ -592,7 +587,7 @@ function checkNewPassword() {
             }
             is_click_submit = 0;
             return false;
-        } 
+        }
         if ($("#old_password").val() == "") {
             if(is_click_submit)
             {
@@ -618,7 +613,7 @@ function changePwdLevel(level) {
         $($(".form-line-2 label")[level]).css('border-top', '5px solid green');
         level--;
     }
-    
+
 }
 function resetPasswardSubmit() {
     is_click_submit = 1;
@@ -687,7 +682,7 @@ $(document).ready(function(){
     if(_security == 1) {
         $('#security_dialog').modal({
             'keyboard' : false
-                ,'backdrop' : 'static' 
+                ,'backdrop' : 'static'
         });
         /*
         $('#security_reset').modal({
@@ -712,7 +707,7 @@ $(document).ready(function(){
     {
         _report_id = buf[2];
     }
-    
+
     // 导入导出有步骤，合并在一起
 
     if(_method == "create_report_template" || _method == "update_report_template"){
