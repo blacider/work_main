@@ -485,7 +485,7 @@ if(in_array($profile['admin'],[1,3,4])){
                         <?php if ($self) {?>
                             <a class="btn btn-white btn-primary password" data-renew="1"><i class="ace-icon fa fa-key"></i>修改密码</a>
                         <?php } ?>
-                            <a class="btn btn-white btn-default renew" data-renew="0"><i class="ace-icon fa fa-sa v "></i>保存</a>
+                            <a class="btn btn-white btn-default renew" data-renew="0"><i class="ace-icon fa fa-save "></i>保存</a>
                         </div>
                     </div>
 
