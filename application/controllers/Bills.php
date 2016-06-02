@@ -16,7 +16,6 @@ class Bills extends REIM_Controller {
     public function paylist()
     {
         $custom_data = array();
-        $custom_data['CBX_UTOKEN'] = $this->session->userdata('jwt');
         $profile = $this->session->userdata('profile');
         $custom_data['UID'] = $profile['id'];
         $custom_data['user_access_token'] = $this->session->userdata('oauth2_ak');

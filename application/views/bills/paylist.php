@@ -5,7 +5,6 @@
     <title>云报销企业微信钱包转账</title>
     <!-- 数字证书 -->
     <script>
-        window.__CBX_UTOKEN__ = "<?php echo $CBX_UTOKEN['0']; ?>".replace('X-REIM-JWT: ', '');
         var _CONST_API_DOMAIN_ = "<?php echo $api_url_base; ?>";
         window.__UID__ = "<?php echo $UID; ?>";
         window.__USER_ACCESS_TOKEN__ = "<?= $user_access_token ?>";
