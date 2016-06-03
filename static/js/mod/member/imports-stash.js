@@ -224,6 +224,7 @@
                     item.manager_id = one.name
                 }
 
+                // alias
                 item.gids = item.d;
                 item.bank = item.bankname;
 
@@ -485,9 +486,17 @@
 
                                         // 错误更新
                                         } else {
-                                            one._v_ = getItemValidator(one);
-                                            one._status_text_ = '无法导入' ;
-                                            delete one._status_;
+                                            var v = getItemValidator(one);
+                                            if(v) {
+                                                one._status_text_ = '无法导入' ;
+                                                delete one._status_;
+                                            } else {
+                                                one._status_ = 1;
+                                                one._status_text_ = '待确认';
+                                            }
+
+                                            one._v_ = v;
+                                            
                                         }
 
                                         setTimeout(function () {
