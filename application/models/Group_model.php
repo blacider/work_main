@@ -49,7 +49,7 @@ class Group_Model extends Reim_Model {
             'name' => $name,
             'rank' => $rank
         );
-        return $this->api_post('rank');
+        return $this->api_post('rank', $data);
     }
 
 
