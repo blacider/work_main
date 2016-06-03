@@ -95,12 +95,16 @@ class Reim_Model extends CI_Model {
         }
         $headers[] = 'X-ADMIN-API: 1';
         $ret = $this->fire_api_call($method, $url, $data, $headers);
+        //log_message('debug', "api ret: $method $url --> $ret");
         $json_ret = json_decode($ret, true);
+        if ($json_ret === null) {
+            log_message('error', "api return decode error: $ret");
+        }
         if (is_array($json_ret) and
             intval(array_get($json_ret, 'status', 0)) <= 0 and
             intval(array_get($json_ret, 'code', 0)) === USER_AUTH_ERROR
         ) {
-            log_message('error', "api auth error while: $method $url");
+            log_message('error', "api auth error while: $method $url, $ret");
             //log_message('debug', "ret: $ret");
             $this->session->sess_destroy();
             throw new RequireLoginError();
