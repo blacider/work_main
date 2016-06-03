@@ -243,10 +243,7 @@ $(document).ready(function(){
                     $load_data['item'] = $item;
                     $load_data['sob_id'] = $sob_id;
                 }
-                // var_dump(json_encode($ic));
-                if($ic['type'] != '10') {
-                    get_sub_widget($item_type_view_dic[$ic['type']],$load_data);
-                }
+                get_sub_widget($item_type_view_dic[$ic['type']],$load_data);
             }
         }
     }
