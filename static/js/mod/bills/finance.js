@@ -7,6 +7,11 @@
 		// company_payhead_id 类型 - string, 描述 - 指定的公司支付户头ID。
 		// payway 类型 - string, 描述 - 指定的支付方式。
 		// description 类型 - string, 描述 - 支付描述信息。
+
+		if(window._COMPANY_CAN_PAY_==0) {
+			return;
+		}
+		
 		return Utils.api('giro_payhead/company_payheads', {
 			env: 'online'
 		}).done(function (rs) {

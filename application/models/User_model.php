@@ -57,7 +57,11 @@ class User_Model extends Reim_Model {
         if (empty($data)) {
             $data = $this->fetch_common();
         }
+
         $profile = $data['data']['profile'];
+        $company = $data['data']['company'];
+
+        $this->session->set_userdata('company', $company);
         $this->session->set_userdata('profile', $profile);
         $this->session->set_userdata("uid", $profile['id']);
         $this->session->set_userdata("groupname", $profile['group_name']);
@@ -69,6 +73,7 @@ class User_Model extends Reim_Model {
         if (empty($obj['status']) or empty($obj['data'])) {
             throw new Exception('invalid common data');
         }
+
         return $obj;
     }
 
