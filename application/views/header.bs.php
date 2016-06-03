@@ -47,6 +47,8 @@
         var __BASE = "<?php echo $base_url; ?>";
         window.__USER_ACCESS_TOKEN__ = "<?= $user_access_token ?>";
         window.__UID__ = "<?php echo $userId; ?>";
+        window._CONST_API_DOMAIN_ = "<?php echo $api_url_base; ?>";
+        window._COMPANY_CAN_PAY_ = "<?php echo $company_pay_data['switch']['can_pay']; ?>";
     </script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 
@@ -83,8 +85,6 @@
 
     <script type="text/javascript">
         if ('ontouchstart' in document.documentElement) document.write("<script src='/static/ace/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
-        var __BASE = "<?php echo base_url(); ?>";
-        var _CONST_API_DOMAIN_ = "<?php echo $api_url_base; ?>";
     </script>
 
 <!-- page specific plugin scripts -->

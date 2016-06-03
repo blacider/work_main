@@ -34,9 +34,9 @@ class REIM_Controller extends CI_Controller{
     public function bsload($view_name, $custom_data, $template_views=array()){
         $this->user_model->refresh_session();
         $profile = $this->session->userdata('profile');
+        $company_pay_data = $this->session->userdata('company');
         $uid = $this->session->userdata('uid');
         assert($profile and $uid);
-
         $report_template = array();
         $custom_data['company_config'] = array();
         if(array_key_exists('report_setting', $profile)) {
@@ -55,7 +55,7 @@ class REIM_Controller extends CI_Controller{
         if (isset($profile['group']['config'])) {
             $custom_data['company_config'] = json_decode($profile['group']['config'], TRUE);
         }
-
+        $custom_data['company_pay_data'] = $company_pay_data;
         $custom_data['groupname'] = $this->session->userdata('groupname');
         $custom_data['report_templates'] = $report_template;
 

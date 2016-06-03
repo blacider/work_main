@@ -413,6 +413,14 @@ if($user['admin'] == 1 || $user['admin'] == 2) {
 
         <b class="arrow"></b>
         </li>
+
+        <!-- 财务查询微信支付 -->
+        <?php if($company_pay_data['switch']['can_pay']==1) { ?>
+        <li class="hsub" id="payflow">
+            <a href="/bills/payflow" >流水查询</a>
+            <b class="arrow"></b>
+        </li>
+        <?php } ?>
     </ul>
     </li>
 
