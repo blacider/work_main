@@ -78,7 +78,7 @@ class User_Model extends Reim_Model {
     }
 
     public function reset_password($data = array()){
-        return $this->api_put('resetpwd');
+        return $this->api_put('resetpwd', $data);
     }
 
     public function check_user($addr = 'email', $user_addr = '')
