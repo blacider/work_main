@@ -227,6 +227,7 @@
                 // alias
                 item.gids = item.d;
                 item.bank = item.bankname;
+                item.id = item.client_id;
 
                 return item;
             }
