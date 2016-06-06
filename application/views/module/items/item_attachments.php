@@ -66,7 +66,7 @@ function loadFiles() {
     var __files = item_info['attachments'];
     for (var i = 0; i < __files.length; i++) {
         var file = __files[i];
-        var $li = $('<div id="FILE_' + file.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' + '<img style="width:128px">' + '<p style="text-align: center;margin: 0;max-width: 128px;">' + file.filename + '</p>' + '<div class="glyphicon glyphicon-trash red del-button_" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' + '<div class="ui-icon ace-icon fa fa-download blue download-button_" style="  position: absolute;right: 10px;bottom: 10px;cursor: pointer;"></div>' + '</div>'),
+        var $li = $('<div id="FILE_' + file.id + '" style="position:relative;float:left;border: 1px solid #ddd;border-radius: 4px;margin-right: 15px;padding: 5px;">' + '<img style="width:128px">' + '<p title="'+file.filename+'" style="text-align: center;margin: 0;max-width: 128px;    text-align: center; margin: 0; max-width: 128px; overflow: hidden; text-overflow: ellipsis; padding-right: 20px;">' + file.filename + '</p>' + '<div class="glyphicon glyphicon-trash red del-button_" style="  position: absolute;right: 10px;top: 10px;cursor: pointer;"></div>' + '<div class="ui-icon ace-icon fa fa-download blue download-button_" style="  position: absolute;right: 10px;bottom: 10px;cursor: pointer;"></div>' + '</div>'),
             $img = $li.find('img');
         // $list为容器jQuery实例
         $('#theList').append($li);
@@ -86,11 +86,7 @@ function loadFiles() {
 }
 // init upload
 $(document).ready(function() {
-    // 判断审批人
-    if(PAGE_TYPE !=0 && window.__UID__ != $('input[name=uid]')) {
-        $('#uploader-file').parent().remove();
-        return;
-    }
+    
     var uploader_file = WebUploader.create({
         auto: true,
         // swf文件路径
