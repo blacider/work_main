@@ -22,201 +22,198 @@
 ?>
 
 <?php
-  if($page_type != 0)
-  {
-    echo $html_item;
-    echo $html_sob_id;
-    echo $html_fee_afford_type;
-    echo $html_fee_afford_ids;
-    echo get_html_container($images,'html_images',true);
-    echo get_html_container($item_customization,'html_item_customization',true);
+    if($page_type != 0)
+    {
+        echo $html_item;
+        echo $html_sob_id;
+        echo $html_fee_afford_type;
+        echo $html_fee_afford_ids;
+        echo get_html_container($images,'html_images',true);
+        echo get_html_container($item_customization,'html_item_customization',true);
 ?>
 <input type="hidden" name="id" value="<?php echo $item['id']; ?>" />
-<input type="hidden" name="uid" value="<?php echo $item['uid']; ?>" />
+<input type="hidden" xxx name="uid" value="<?php echo $item['uid']; ?>" />
 <input type="hidden" name="rid" value="<?php echo $item['rid']; ?>" />
 <input type="hidden" name="from_report" value="<?php echo $from_report; ?>" />
-<?php
-    //新建消费中传入rid
-  } else{
-?>
+<?php } else { ?>
 <input type="hidden" name="rid" value="<?php echo $rid; ?>" />
-<?php
-  }
-?>
+<?php } ?>
 <script type="text/javascript">
 var ITEMS = [];
-function formValidate()
-{
+
+function formValidate() {
     var is_validate = true;
-    $('.need_check').each(function(){
-        if($(this).prop('required') == true && ($(this).val()=='' || $(this).val() == null))
-        {
+    $('.need_check').each(function() {
+        if ($(this).prop('required') == true && ($(this).val() == '' || $(this).val() == null)) {
             var tempTitle = $(this).data('title');
             $(this).focus();
             show_notify(tempTitle + '为必填项');
             is_validate = false;
-            return false ;
+            return false;
         }
     });
-
     return is_validate;
 }
 
-function is_ok(arrayList,category_id,category_parent_id)
-{
+function is_ok(arrayList, category_id, category_parent_id) {
     var is_ok_value = false;
-    if(arrayList.length == 1 && arrayList[0] == 0)
-    {
+    if (arrayList.length == 1 && arrayList[0] == 0) {
         is_ok_value = true;
     }
-    if(in_array(arrayList,category_id) || in_array(arrayList,category_parent_id))
-    {
+    if (in_array(arrayList, category_id) || in_array(arrayList, category_parent_id)) {
         is_ok_value = true;
     }
-
     return is_ok_value;
 }
 
-function is_show(item_array,form_node,category_id,category_parent_id)
-{
-    var is_show_value = is_ok(item_array,category_id,category_parent_id);
-    
-    if(is_show_value)
-    {
-        form_node.prop('hidden',false);
-        form_node.css('display','block');
+function is_show(item_array, form_node, category_id, category_parent_id) {
+    var is_show_value = is_ok(item_array, category_id, category_parent_id);
+    if (is_show_value) {
+        form_node.prop('hidden', false);
+        form_node.css('display', 'block');
+    } else {
+        form_node.prop('hidden', true);
+        form_node.css('display', 'none');
     }
-    else
-    {
-        form_node.prop('hidden',true);
-        form_node.css('display','none');
-    }
-
     var form_node_value = form_node.data('value');
     var item_type = form_node_value['type'];
-    if(item_type == 5)
-    {
-        if(form_node.prop('hidden') == true)
-        {
-            $('#time_form').prop('hidden',false);
-            $('#time_form').css('display','block');
-        }
-        else
-        {
-             $('#time_form').prop('hidden',true);
-             $('#time_form').css('display','none');
+    if (item_type == 5) {
+        if (form_node.prop('hidden') == true) {
+            $('#time_form').prop('hidden', false);
+            $('#time_form').css('display', 'block');
+        } else {
+            $('#time_form').prop('hidden', true);
+            $('#time_form').css('display', 'none');
         }
     }
 }
 
-function is_required(required_list,form_node,category_id,category_parent_id)
-{
-    var input_node = $('.need_check',form_node);
-    if(input_node.val() === undefined)
-    {
+function is_required(required_list, form_node, category_id, category_parent_id) {
+    var input_node = $('.need_check', form_node);
+    if (input_node.val() === undefined) {
         return;
     }
-    if(form_node.prop('hidden') == true)
-    {
-        input_node.prop('required',false);
+    if (form_node.prop('hidden') == true) {
+        input_node.prop('required', false);
         input_node.trigger('chosen:updated');
-        return ;
+        return;
     }
-
-    var is_required_value = is_ok(required_list,category_id,category_parent_id);
-    if(is_required_value)
-    {
-        input_node.prop('required',true);
+    var is_required_value = is_ok(required_list, category_id, category_parent_id);
+    if (is_required_value) {
+        input_node.prop('required', true);
         input_node.trigger('chosen:udpated');
-    }
-    else
-    {
-        input_node.prop('required',false);
+    } else {
+        input_node.prop('required', false);
         input_node.trigger('chosen:updated');
     }
 }
 
-function add_show_listener(item_array,form_node,required_list)
-{
-    $('#sob_category').on('change',function(){
+function add_show_listener(item_array, form_node, required_list) {
+    $('#sob_category').on('change', function() {
         var category_id = $('#sob_category').val();
-        var category_parent_id = $('option:selected','#sob_category').data('pid');
-        is_show(item_array,form_node,category_id,category_parent_id);
-        is_required(required_list,form_node,category_id,category_parent_id);
+        var category_parent_id = $('option:selected', '#sob_category').data('pid');
+        is_show(item_array, form_node, category_id, category_parent_id);
+        is_required(required_list, form_node, category_id, category_parent_id);
     });
 }
-
-$(document).ready(function(){
+$(document).ready(function() {
     //错误提示
     var error = $('#html_error').data('value');
-    if(error)
-    {
+    if (error) {
         show_notify(error);
     }
-
-    $('.customization_form').each(function(){
+    $('.customization_form').each(function() {
         var customization_form_node = $(this);
         var customization_form_val = $(this).data('value');
         var target = customization_form_val['target'];
         var required = customization_form_val['required'];
-        if(target != undefined)
-        {
-            add_show_listener(target,customization_form_node,required);
+        if (target != undefined) {
+            add_show_listener(target, customization_form_node, required);
         }
     });
 });
-
-</script>
-<script type="text/javascript">
-var simbol_dic = {'cny':'人民币','usd':'美元','eur':'欧元','hkd':'港币','mop':'澳门币','twd':'新台币','jpy':'日元','ker':'韩国元',
-                              'gbp':'英镑','rub':'卢布','sgd':'新加坡元','php':'菲律宾比索','idr':'印尼卢比','myr':'马来西亚元','thb':'泰铢','cad':'加拿大元',
-                              'aud':'澳大利亚元','nzd':'新西兰元','chf':'瑞士法郎','dkk':'丹麦克朗','nok':'挪威克朗','sek':'瑞典克朗','brl':'巴西里亚尔'
-                             }; 
-var icon_dic = {'cny':'￥','usd':'$','eur':'€','hkd':'$','mop':'$','twd':'$','jpy':'￥','ker':'₩',
-                              'gbp':'£','rub':'₽','sgd':'$','php':'₱','idr':'Rps','myr':'$','thb':'฿','cad':'$',
-                              'aud':'$','nzd':'$','chf':'₣','dkk':'Kr','nok':'Kr','sek':'Kr','brl':'$'
-                             }; 
+var simbol_dic = {
+    'cny': '人民币',
+    'usd': '美元',
+    'eur': '欧元',
+    'hkd': '港币',
+    'mop': '澳门币',
+    'twd': '新台币',
+    'jpy': '日元',
+    'ker': '韩国元',
+    'gbp': '英镑',
+    'rub': '卢布',
+    'sgd': '新加坡元',
+    'php': '菲律宾比索',
+    'idr': '印尼卢比',
+    'myr': '马来西亚元',
+    'thb': '泰铢',
+    'cad': '加拿大元',
+    'aud': '澳大利亚元',
+    'nzd': '新西兰元',
+    'chf': '瑞士法郎',
+    'dkk': '丹麦克朗',
+    'nok': '挪威克朗',
+    'sek': '瑞典克朗',
+    'brl': '巴西里亚尔'
+};
+var icon_dic = {
+    'cny': '￥',
+    'usd': '$',
+    'eur': '€',
+    'hkd': '$',
+    'mop': '$',
+    'twd': '$',
+    'jpy': '￥',
+    'ker': '₩',
+    'gbp': '£',
+    'rub': '₽',
+    'sgd': '$',
+    'php': '₱',
+    'idr': 'Rps',
+    'myr': '$',
+    'thb': '฿',
+    'cad': '$',
+    'aud': '$',
+    'nzd': '$',
+    'chf': '₣',
+    'dkk': 'Kr',
+    'nok': 'Kr',
+    'sek': 'Kr',
+    'brl': '$'
+};
 var typed_currency = [];
-
 var ifUp = 1;
-
 //定义页面类型，获取页面内容
-var PAGE_TYPE = "<?php echo $page_type; ?>";
-if(PAGE_TYPE != 0)
-{
-  var item_info = $('#item_info').data('value');
+var PAGE_TYPE = " <? php echo $page_type; ?> ";
+if (PAGE_TYPE != 0) {
+    var item_info = $('#item_info').data('value');
 }
-
-var __BASE = "<?php echo $base_url; ?>";
 var __config = $('#company_config').data('value');
-var subs = "<?php echo $profile['subs'];?>";
+var subs = " <? php echo $profile['subs']; ?> ";
 var __item_config = $('#item_config').data('value');
-
 var item_config = [];
-if(__item_config)
-{
+if (__item_config) {
     item_config = __item_config;
 }
-
 var _item_config = new Object();
-for(var i = 0 ; i < item_config.length; i++)
-{
-    if(item_config[i]['type']==2 || item_config[i]['type'] == 5 || item_config[i]['type'] == 1) {
+for (var i = 0; i < item_config.length; i++) {
+    if (item_config[i]['type'] == 2 || item_config[i]['type'] == 5 || item_config[i]['type'] == 1) {
         _item_config[item_config[i]['cid']] = item_config[i];
     }
 }
-
-
-$(document).ready(function(){
-  $('.chosen-select').chosen({allow_single_deselect:true}); 
-  $(window)
-  .off('resize.chosen')
-  .on('resize.chosen', function() {
-    $('.chosen-select').each(function() {
-      var $this = $(this);
-      $this.next().css({'width': $this.parent().width()});
-    })
-  }).trigger('resize.chosen');
+$(document).ready(function() {
+    $('.chosen-select').chosen({
+        allow_single_deselect: true
+    });
+    $(window).off('resize.chosen').on('resize.chosen', function() {
+        $('.chosen-select').each(function() {
+            var $this = $(this);
+            $this.next().css({
+                'width': $this.parent().width()
+            });
+        })
+    }).trigger('resize.chosen');
 });
 </script>
 

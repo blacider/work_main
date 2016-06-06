@@ -1,6 +1,6 @@
 // subl static/css/mod/report/add.css static/js/mod/report/add.js application/controllers/Reports.php:17 application/controllers/Reports.php
 (function() {
-    var _defaultTemplateName_ ='未命名报销单模板';
+    var _defaultTemplateName_ ='';
     return {
         initialize: function() {
             angular.module('reimApp', ['historyMembers', 'exchangeRate']).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce", "historyMembersManagerService", "exchangeRateService",

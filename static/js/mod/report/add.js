@@ -1,6 +1,6 @@
 (function() {
     var _templateNameLengthLimit_ = 10;
-    var _defaultTemplateName_ = '未命名报销单模板';
+    var _defaultTemplateName_ = '';
     return {
         initialize: function() {
             angular.module('reimApp', ['ng-dropdown', 'historyMembers', 'exchangeRate']).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce", "historyMembersManagerService", "exchangeRateService",
