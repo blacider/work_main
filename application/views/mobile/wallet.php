@@ -65,7 +65,7 @@
         </div>
         <div class="input-wrap">
             <div class="for-phone">
-                已向您的<span class="mode"></span>：<span class="receiver"></span>
+                发送验证码至：<span class="receiver"></span>
             </div>
             <div class="code-input">
                 <div class="input">
