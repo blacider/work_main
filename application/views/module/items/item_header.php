@@ -110,6 +110,7 @@ function is_required(required_list, form_node, category_id, category_parent_id) 
 
 function add_show_listener(item_array, form_node, required_list) {
     $('#sob_category').on('change', function() {
+        console.log(item_array, form_node, required_list)
         var category_id = $('#sob_category').val();
         var category_parent_id = $('option:selected', '#sob_category').data('pid');
         is_show(item_array, form_node, category_id, category_parent_id);
@@ -185,12 +186,12 @@ var icon_dic = {
 var typed_currency = [];
 var ifUp = 1;
 //定义页面类型，获取页面内容
-var PAGE_TYPE = " <? php echo $page_type; ?> ";
+var PAGE_TYPE = "<?php echo $page_type; ?>";
 if (PAGE_TYPE != 0) {
     var item_info = $('#item_info').data('value');
 }
 var __config = $('#company_config').data('value');
-var subs = " <? php echo $profile['subs']; ?> ";
+var subs = "<?php echo $profile['subs']; ?> ";
 var __item_config = $('#item_config').data('value');
 var item_config = [];
 if (__item_config) {
