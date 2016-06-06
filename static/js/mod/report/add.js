@@ -387,6 +387,14 @@
                                         };
                                         
                                         $scope.banks.push(b);
+
+                                        if ($scope.banks.length == 1) {
+                                            $scope.banks.unshift({
+                                                text: '其它',
+                                                id: -1
+                                            });
+                                        }
+
                                         $scope.$apply();
                                         _this.close();
                                     });
@@ -659,6 +667,19 @@
                         return rs;
                     };
 
+                    $scope.hasBankCard = function (banks) {
+
+                        if(banks.length==0) {
+                            return false
+                        }
+
+                        if(banks==1 && _.find(banks, {id: -1})) {
+                            return false;
+                        }
+
+                        return true;
+                    };
+
                     $scope.searchImmediate = function(keywords) {
                         return function(item) {
                             delete item.info_html;
@@ -875,7 +896,7 @@
                         text: '其它'
                     }];
                     $scope.onBankNumberChange = function() {
-                        var value = $scope.formBankNumber;
+                        var value = $scope.formBankNumber || '';
                         if (value.length < 6) {
                             return;
                         }

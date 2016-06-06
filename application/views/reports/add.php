@@ -120,7 +120,7 @@
                                     <div class="option-list-wrap">
                                         <div class="item" ng-repeat="item in banks" data-value="{{item.id}}">{{makeBankDropdown.itemFormat(item)['text']}}</div>
                                     </div>
-                                    <p class="line" ng-if="banks.length<=1"><span>0张银行卡</span></p>
+                                    <p class="line" ng-if="!hasBankCard(banks)"><span>0张银行卡</span></p>
                                     <button class="btn-add-bank ui-button-hover" ng-click="onAddBankCard($event)">
                                         <img src="/static/img/mod/report/36/icon-bank@2x.png" alt="" />
                                         添加银行卡
