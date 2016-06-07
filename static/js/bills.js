@@ -215,6 +215,9 @@ try {
             }
         },
         onSelectRow: function(rowId, status, e) {
+            if(!e) {
+                return
+            }
             var $target = $(e.target || e.toElement);
             if ($target.hasClass('tdetail')) {
                 var row = $(this).jqGrid('getRowData', rowId);

@@ -285,6 +285,9 @@
             }
         },
         onSelectRow: function(rowId, status, e) {
+            if(!e) {
+                return
+            }
             var $target = $(e.target || e.toElement);
             var row = $(this).jqGrid('getRowData', rowId);
             var arr = $(this).jqGrid('getGridParam', rowId);
