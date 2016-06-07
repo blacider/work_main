@@ -56,6 +56,12 @@ $(document).ready(function(){
         $('.afford_chose').trigger('chosen:updated');
     }
 
+
+    // 判断审批人
+    if(PAGE_TYPE !=0 && window.__UID__ != $('input[name=uid]').val()) {
+        $('.add_attach_pic_btn, .glyphicon-trash').remove();
+    }
+
     $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange'></i>");
     $('.renew').click(function(){
         var customization = [];

@@ -86,6 +86,7 @@
     if (uaObject['os']['family'] == 'iOS' && uaObject['os']['major'] < 8) {
         setTimeout(function() {
             var tips = '需要iOS8.0或更高版本才能下载并使用 云报销APP，请尝试升级系统版本或与云报销客服联系。';
+            $('.btn-download.android').remove();
             $('.btn-download').replaceWith(tips);
         }, 100)
     }

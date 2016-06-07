@@ -1,6 +1,6 @@
 (function() {
     var _templateNameLengthLimit_ = 10;
-    var _defaultTemplateName_ = '未命名报销单模板';
+    var _defaultTemplateName_ = '';
     return {
         initialize: function() {
             angular.module('reimApp', ['ng-dropdown', 'historyMembers', 'exchangeRate']).controller('ReportController', ["$http", "$scope", "$element", "$timeout", "$sce", "historyMembersManagerService", "exchangeRateService",
@@ -387,6 +387,14 @@
                                         };
                                         
                                         $scope.banks.push(b);
+
+                                        if ($scope.banks.length == 1) {
+                                            $scope.banks.unshift({
+                                                text: '其它',
+                                                id: -1
+                                            });
+                                        }
+
                                         $scope.$apply();
                                         _this.close();
                                     });
@@ -576,6 +584,7 @@
                             // 编辑无上级寻找上级
                             if ($scope.originalReport['receivers']['managers'].length == 0) {
                                 if(superior) {
+
                                     $scope.selectedMembers = [superior];
                                 }
                             }
@@ -657,6 +666,19 @@
                             });
                         }
                         return rs;
+                    };
+
+                    $scope.hasBankCard = function (banks) {
+
+                        if(banks.length==0) {
+                            return false
+                        }
+
+                        if(banks==1 && _.find(banks, {id: -1})) {
+                            return false;
+                        }
+
+                        return true;
                     };
 
                     $scope.searchImmediate = function(keywords) {
@@ -875,7 +897,7 @@
                         text: '其它'
                     }];
                     $scope.onBankNumberChange = function() {
-                        var value = $scope.formBankNumber;
+                        var value = $scope.formBankNumber || '';
                         if (value.length < 6) {
                             return;
                         }
@@ -1106,7 +1128,7 @@
                                 selectedMembers.push(one);
                             }
                         });
-                        $scope.selectedMembers = selectedMembers;
+                        $scope.selectedMembers = [].concat($scope.selectedMembers, selectedMembers);
                         var selectedMembersCC = [];
                         _.each($scope.originalReport['receivers']['cc'], function(item) {
                             var one = _.find($scope.originalMembers, {

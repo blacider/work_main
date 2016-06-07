@@ -275,7 +275,7 @@ try {
             form.attr("style", "display:none");
             form.attr("target", "");
             form.attr("method", "post");
-            form.attr("action", __BASE + "/reports/export_u8");
+            form.attr("action", "/reports/export_u8");
             //form.attr("action", __BASE + "/reports/exports");
             var input1 = $("<input>");
             input1.attr("type", "hidden");

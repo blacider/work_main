@@ -18,6 +18,6 @@
 
     function get_sub_widget($pathname,$data = array())
     {
-         extract($data);
-         include get_sub_module($pathname); 
+        extract($data);
+        include get_sub_module($pathname); 
     }

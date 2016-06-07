@@ -27,7 +27,6 @@ class Items extends REIM_Controller {
             '7' => 'item_fee_afford',
             '8' => 'item_seller',
             '9' => 'item_tags',
-            '10' => 'item_custom_types',
             '11' => 'item_notes',
             '12' => 'item_picture',
             '13' => 'item_attachments',
@@ -313,7 +312,6 @@ class Items extends REIM_Controller {
 
         //获取页面模板
         $item_type_view_dic = $this->get_item_type_view_dic();
-
         //页面种类(0 => 新建)
         $page_type = 0;
 
