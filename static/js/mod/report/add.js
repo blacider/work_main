@@ -584,6 +584,7 @@
                             // 编辑无上级寻找上级
                             if ($scope.originalReport['receivers']['managers'].length == 0) {
                                 if(superior) {
+
                                     $scope.selectedMembers = [superior];
                                 }
                             }
@@ -1127,7 +1128,7 @@
                                 selectedMembers.push(one);
                             }
                         });
-                        $scope.selectedMembers = selectedMembers;
+                        $scope.selectedMembers = [].concat($scope.selectedMembers, selectedMembers);
                         var selectedMembersCC = [];
                         _.each($scope.originalReport['receivers']['cc'], function(item) {
                             var one = _.find($scope.originalMembers, {
