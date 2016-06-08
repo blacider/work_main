@@ -8,8 +8,30 @@ class Members extends REIM_Controller {
         $this->load->model('user_model', 'users');
         $this->load->model('group_model', 'groups');
         $this->load->model('reim_show_model','reim_show');
+        $this->load->model('company_model','com');
     }
-
+    
+    public function editcompany(){
+        $error = $this->session->userdata('last_error');
+        $this->session->unset_userdata('last_error');
+        $profile = $this->session->userdata('profile');
+        $groups = $profile['group'];
+        $info = $this->com->get_data()['data'];
+        $this->bsload('members/editcompany',
+            array(
+                'title' => '编辑公司'
+                ,'error' => $error
+                ,'name' => $info['group_name']
+                ,'image' => $info['logo_id']
+                ,'image_url' => $info['logo_url']
+                ,'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
+                    ,array('url'  => base_url('members/index'), 'name' => '组织结构', 'class' => '')
+                    ,array('url'  => '', 'name' => '编辑公司', 'class' => '')
+                )
+            )
+        );
+    }
     public function set_managers()
     {
         $this->need_group_it();

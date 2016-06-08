@@ -410,7 +410,8 @@ function load_group(gid){
                     if(gid == -2){
                         var _member = data.data;
                         var _gname = '<?php echo $groupname;?> [ ' + _member.length + ' ]';
-                        $('#g_du').html('<a href="/members/newmember/"><button style="margin: -3px 20px auto auto;" class="form-button">添加员工</button></a>');
+                        $('#g_du').html('<a href="/members/editcompany/' + '"><button class="form-button form-button-right">编辑</button></a>' +
+                            '<a href="/members/newmember/"><button style="margin: -3px 20px auto auto;" class="form-button">添加员工</button></a>');
                     } else {
                         data = data.data;
                         var _group = data.group;
@@ -419,7 +420,7 @@ function load_group(gid){
                     }
                     
                     
-                        $('#gname').html(_gname);
+                    $('#gname').html(_gname);
                     
                     $('#gtable').html("");
 
