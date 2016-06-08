@@ -301,7 +301,9 @@
 
             angular.module('reimApp', []).controller('MemberImportsController', ["$scope",
                 function($scope) {
-
+                    $scope.sendEmail = {
+                        checked: false
+                    }
                     // init data
                     $scope.isLoaded = true;
 
@@ -320,13 +322,12 @@
                     $scope.getItemValidator = getItemValidator;                    
                     $scope.getItemRedOrBlueMap = getItemRedOrBlueMap;
 
-                    $scope.onSubmit = function (isSendEmail, e) {
-
+                    $scope.onSubmit = function (e) {
+                        isSendEmail = $scope.sendEmail.checked;
                         if($scope.isSubmitDone) {
                             return window.location = '/members/index';
                         }
 
-                        isSendEmail = 1 - ~~isSendEmail;
                         if(!$scope.isLoaded) {
                             return
                         }
@@ -366,7 +367,7 @@
                             method: 'post',
                             env: 'yuqi',
                             data: {
-                                quiet: isSendEmail,
+                                quiet: !isSendEmail,
                                 members: JSON.stringify(members)
                             }
                         }).done(function (rs) {

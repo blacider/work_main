@@ -283,10 +283,10 @@ var _SERVER_GROUPS_ = <?php echo json_encode($groups)?>;
             </div>
             <div style="text-align: right; padding-top: 12px;">
                 <label ng-if="!isSubmitDone" style="margin-right: 12px;">
-                    <input type="checkbox" ng-model="isSendEmail">
+                    <input type="checkbox" ng-model="sendEmail.checked">
                     给新导入的员工发送通知
                 </label>
-                <button class="btn-submit ui-button" ng-click="onSubmit(isSendEmail, $event)">{{isSubmitDone?'完成':'确定导入'}}</button>
+                <button class="btn-submit ui-button" ng-click="onSubmit($event)">{{isSubmitDone?'完成':'确定导入'}}</button>
             </div>
 
         </div>  
