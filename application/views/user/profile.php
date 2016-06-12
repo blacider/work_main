@@ -976,6 +976,7 @@ if(in_array($profile['admin'],[1,3,4])){
                             $('#avatar_src').attr( 'src', url);
                             $("#avatar-modal").modal('hide');
                             show_notify("保存成功");
+                            window.location.reload();
                             uploader.reset();
                         }
                     });
