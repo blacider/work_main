@@ -1257,8 +1257,8 @@ if(in_array($profile['admin'],[1,3,4])){
                     var qrcode = new QRCode(document.getElementById("weixin-wallet"), {
                         // text: "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx068349d5d3a73855&redirect_uri=http%3A%2F%2Fdadmin.cloudbaoxiao.com%2Fmobile%2Fwallet&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect",
                         text:data['auth_url'],
-                        width: 128,
-                        height: 128,
+                        width: 200,
+                        height: 200,
                         colorDark : "#ff575b",
                         colorLight : "#fff",
                         correctLevel : QRCode.CorrectLevel.M
