@@ -767,7 +767,7 @@ class Members extends REIM_Controller {
 
         }
         $data = array();
-        log_message("debug","######".json_encode($gmember));
+        log_message("info", "######".json_encode($gmember));
         foreach($gmember as $m){
             $obj = array();
             if(array_key_exists('client_id',$m))
@@ -798,31 +798,33 @@ class Members extends REIM_Controller {
             {
                 $obj['部门'] = $m['d'];
             }
-            if(array_key_exists('manager',$m))
-            {
-                $obj['上级姓名'] = '';
-                if('没有上级' != $m['manager'])
-                {
-                    $obj['上级姓名'] = $m['manager'];
-                }
-            }
+            
             if(array_key_exists('rank_id',$m) && $m['rank_id'] > 0 && array_key_exists($m['rank_id'],$ranks_dic))
             {
                 $obj['职级'] = $ranks_dic[$m['rank_id']];
-            }
-            else
-            {
+            } else {
                 $obj['职级'] = '';
             }
 
             if(array_key_exists('level_id',$m) && $m['level_id'] > 0 && array_key_exists($m['level_id'],$levels_dic))
             {
                 $obj['职位'] = $levels_dic[$m['level_id']];
-            }
-            else
-            {
+            } else {
                 $obj['职位'] = '';
             }
+
+            if(array_key_exists('manager',$m))
+            {
+                $obj['默认审批人邮箱或手机'] = '';
+                if('没有上级' != $m['manager'])
+                {
+                    $obj['默认审批人邮箱或手机'] = $m['manager'];
+                }
+            }
+
+            $obj['二级审批人邮箱或手机'] = '';
+            $obj['三级审批人邮箱或手机'] = '';
+
             array_push($data, $obj);
         }
         $this->render_to_download('人员', $data, 'members.xls');
