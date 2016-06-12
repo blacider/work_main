@@ -199,7 +199,33 @@
                 return m;
             };
 
+            // 实际上，用户传是手机号或者邮箱，这里服务器返回的是数据库ID，所以需要先获取数据的ID对应的mananger，然后映射相关field
+            function syncItemMananer(item, originalItem) {
+
+                if(originalItem.manager_id==0) {
+                    return originalItem;
+                }
+
+                var members = _SERVER_MEMBERS_.data.gmember;
+
+                var one = _.find(members, {
+                    id: originalItem.manager_id
+                });
+
+                if(isPhone(item.manager_id)) {
+                    if(one) {
+                        originalItem.manager_id = one.phone;
+                    }
+                } else if(isEmail(item.manager_id)) {
+                    if(one) {
+                        originalItem.manager_id = one.email;
+                    }
+                }
+                return originalItem;
+            }
+
             function syncItemFieldValue(item) {
+
                 var one = null;
                 one = _.find(_SERVER_RANKS_, {
                     id: item.rank_id
@@ -215,19 +241,9 @@
                     item.level = one.name
                 }
 
-                var members = _SERVER_MEMBERS_.data.gmember;
-                one = _.find(members, {
-                    id: item.manager_id
-                });
-
-                if(one) {
-                    item.manager_id = one.name
-                }
-
                 // alias
                 item.gids = item.d;
                 item.bank = item.bankname;
-                item.id = item.client_id;
 
                 return item;
             }
@@ -282,6 +298,8 @@
 
                     } else {
                         var originalItem = getOriginalItem(item, members);
+
+                        syncItemMananer(item, originalItem);
 
                         originalItem = syncItemFieldValue(originalItem);
 
@@ -362,6 +380,11 @@
                         });
 
                         var members = angular.copy(data);
+
+                        _.each(members, function (item) {
+                            item.manager = item.manager_id;
+                            delete item.manager_id; 
+                        });
 
                         Utils.api('load', {
                             method: 'post',
@@ -476,6 +499,7 @@
                                         // 新增更新
                                         if(originalItem) {
                                             originalItem = syncItemFieldValue(originalItem);
+                                            syncItemMananer(one, originalItem);
                                             var v = getItemRedOrBlueMap(one, originalItem);
                                             one._v_ = v;
 
