@@ -257,6 +257,12 @@
                 return true;
             }
 
+            function trimItem(item) {
+                for(var pro in item) {
+                    item[pro] = $.trim(item[pro]);
+                }
+            }
+
             // 将数据分成三组
             function groupFileArray(arr, members) {
 
@@ -268,6 +274,7 @@
 
                 for(var i=0;i<arr.length;i++) {
                     var item = arr[i];
+                    trimItem(item);
 
                     // 如果是空行跳过
                     if(isItemEmpty(item)) {
