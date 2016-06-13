@@ -99,31 +99,33 @@ class REIM_Controller extends CI_Controller{
     }
 
     public function render_to_download_2($filename, $data) {
-        if($this->agent->is_browser('Internet Explorer')) {
-            $filename = urlencode($filename);
-        }
         $writer = $this->build_excel($data);
-        header("Content-Type: application/vnd.ms-execl");
-        header('Content-Disposition: attachment;filename=' . $filename);
-        header("Content-Transfer-Encoding: binary");
-        header("Cache-Control: no-cache");
-        header("Expires: Mon, 26 Jul 1970 05:00:00 GMT");
-        $writer->save("php://output");
-        exit();
+        return $this->output_excel($filename, $writer);
     }
 
     public function render_to_download($title, $data, $excel_name, $title_2 = '', $data_2 = array(), $title_3 = '', $data_3 = array()){
-        if($this->agent->is_browser('Internet Explorer')) {
-            $excle_name = urlencode($excle_name);
+        $writer = $this->return_buf($title, $data, $title_2, $data_2, $title_3, $data_3);
+        return $this->output_excel($excel_name, $writer);
+    }
+
+    protected function encode_filename_hdval($filename) {
+        $filename = rawurlencode($filename);
+        $this->load->library('user_agent');
+        if ($this->agent->browser() == 'Internet Explorer' and
+            $this->agent->version() <= 8
+        ) {
+            return sprintf('attachment;filename=%s;charset=utf8', $filename);
+        } else {
+            return sprintf("attachment;filename*=UTF-8''%s", $filename);
         }
-        $objwriter = $this->return_buf($title, $data, $title_2, $data_2, $title_3, $data_3);
-        header("Pragma: public");
+    }
+
+    protected function output_excel ($filename, $writer) {
+        $fn_hdval = $this->encode_filename_hdval($filename);
         header("Content-Type: application/vnd.ms-execl");
-        header('Content-Disposition: attachment;filename=' . $excel_name);
-        header("Content-Transfer-Encoding: binary");
-        header("Expires: Mon, 26 Jul 1970 05:00:00 GMT");
-        header("Pragma: no-cache");
-        $objwriter->save("php://output");
+        header("Content-Disposition: $fn_hdval");
+        header("Cache-Control: no-cache");
+        $writer->save("php://output");
         exit();
     }
 
@@ -224,7 +226,6 @@ class REIM_Controller extends CI_Controller{
     }
 
     public function return_buf($title, $data, $title_2 = '', $data_2 = array(), $title_3 = '', $data_3 = array()) {
-
         $Excel = new PHPExcel();
         $Excel->getProperties()->setCreator("RushuCloud Ltd.co")
             ->setLastModifiedBy("RushuCloud.Ltd.co")
