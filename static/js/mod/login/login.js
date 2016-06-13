@@ -991,4 +991,11 @@ $(document).ready(function() {
 
         });
     }
+
+    // 3S 后移除气泡
+    (function () {
+        setTimeout(function () {
+            $('.error-bubble').remove();
+        }, 1000 * 3)
+    })();
 });
