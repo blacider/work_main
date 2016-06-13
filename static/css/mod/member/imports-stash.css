@@ -72,6 +72,8 @@ components css
 
 .field-value {
 	display: inline-block;
+	white-space: normal;
+	word-break: break-all;
 }
 
 .can-import {
