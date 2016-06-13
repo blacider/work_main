@@ -1,19 +1,17 @@
 <style>
 .webuploader-pick  {
-background:#fff !important;
-
+    background:#fff !important;
 }
 #loading{
-position:absolute;
-width:300px;
-top:0px;
-left:50%;
-margin-left:-150px;
-text-align:center;
-padding:7px 0 0 0;
-font:bold 11px Arial, Helvetica, sans-serif;
+    position:absolute;
+    width:300px;
+    top:0px;
+    left:50%;
+    margin-left:-150px;
+    text-align:center;
+    padding:7px 0 0 0;
+    font:bold 11px Arial, Helvetica, sans-serif;
 }
-
 #weixin-wallet {
     position: relative;
     line-height: 34px;
@@ -41,7 +39,7 @@ font:bold 11px Arial, Helvetica, sans-serif;
                 <div class="col-xs-12 col-sm-12">
                     <div class="form-group">
                         <label class="col-sm-1 control-label no-padding-right">头像</label>
-                        <div class="col-xs-6 col-sm-6 filePicker">
+                        <div class="col-xs-6 col-sm-6">
                             <?php $user = $member; ?>
                             <?php $disabled = $self == 1 ? '' : 'disabled'; ?>
                             <a id="btn_cimg" class="filePicker"  style="height:144px;width:155px" class="btn btn-primary btn-white">
@@ -705,6 +703,44 @@ if(in_array($profile['admin'],[1,3,4])){
         </div>
     </div>
 </div>
+<div class="modal fade" id="avatar-modal" aria-hidden="false" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="width: 640px;margin: 0 auto;">
+            <form class="avatar-form" action="crop.php" enctype="multipart/form-data" method="post">
+                <div class="modal-header" style="background-color: #F2F6FA;">
+                    <button class="close" data-dismiss="modal" type="button">&times;</button>
+                    <h4 class="modal-title" id="avatar-modal-label">编辑头像</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="avatar-body">
+
+                        <!-- Upload image and data -->
+                        <div class="avatar-upload">
+                            <input id="avatar-src" name="key" type="hidden"/>
+                            <input type="text" name="x" hidden>
+                            <input type="text" name="y" hidden>
+                            <input type="text" name="width" hidden>
+                            <input type="text" name="height" hidden>
+                        </div>
+
+                        <!-- Crop and preview -->
+                        <div class="cropper-content">
+                            <img id="cropper-img" src="" alt="">
+                        </div>
+                        <div class="cropper-footer">
+                            <a class="btn-upload ui-button"><img src="/static/img/mod/template/icon/cancel@2x.png" alt="">重新上传</a>
+                            <a href="javascript:void(0)" class="btn-save ui-button"><img src="/static/img/mod/template/icon/yes@2x.png" alt="">保存</a>
+                            <a href="javascript:void(0)" class="btn-cancel ui-button"><img src="/static/img/mod/template/icon/cancel@2x.png" alt="">取消</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="modal-footer">
+                  <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                </div> -->
+            </form>
+        </div>
+    </div>
+</div><!-- /.modal -->
 <div id="loading">
                     <img src="/static/images/loading.gif">
 </div>
@@ -713,7 +749,7 @@ if(in_array($profile['admin'],[1,3,4])){
 <!--  <script src="/static/third-party/jfu/js/jquery.iframe-transport.js"></script> -->
 <!-- <script src="/static/third-party/jfu/js/jquery.uploadfile.min.js"></script> -->
 <link rel="stylesheet" type="text/css" href="/static/third-party/webUploader/webuploader.css">
-
+<link rel="stylesheet" href="/static/third-party/cropper/cropper.min.css">
 <!--引入JS-->
 <script type="text/javascript" src="/static/third-party/webUploader/webuploader.js"></script>
 
@@ -729,6 +765,8 @@ if(in_array($profile['admin'],[1,3,4])){
 <script src="/static/js/widgets/input-suggestion.js"></script>
 <script src="/static/plugins/cloud-dialog/dialog.js"></script>
 <link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">
+<script src="/static/third-party/cropper/cropper.min.js"></script>
+<link rel="stylesheet" href="/static/css/profile.css">
 <script>
     var __BASE = "<?php echo $base_url; ?>";
     var flag = 0;
@@ -743,42 +781,6 @@ if(in_array($profile['admin'],[1,3,4])){
         $('#loading').hide();
         //$.nmTop().close();
     }
-    if(is_other == 0) {
-        var uploader = WebUploader.create({
-            // 选完文件后，是否自动上传。
-            auto: true,
-                // swf文件路径
-                swf: '/static/third-party/webUploader/Uploader.swf',
-                // 文件接收服务端。
-                server: '<?php echo base_url('items/images'); ?>',
-                // 选择文件的按钮。可选。
-                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-                pick: '.filePicker',
-                // 只允许选择图片文件。
-                accept: {
-                    title: 'Images',
-                        extensions: 'gif,jpg,jpeg,bmp,png',
-                        mimeTypes: 'image/*'
-                }
-
-        });
-
-        uploader.on( 'uploadProgress', function( file, percentage ) {
-            show_loading();
-        });
-        uploader.on( 'uploadSuccess', function( file, resp ) {
-            close_loading();
-            if(resp.status > 0) {
-                var _id = resp['data']['id'];
-                var _src = resp['data']['url'];
-                $('#avatar').val(_id);
-                $('#avatar_src').attr( 'src', _src);
-            }
-        });
-    }
-
-
-
     var __PROVINCE = Array();
     var _ifCreateCard = true;
     function get_province(){
@@ -948,6 +950,90 @@ if(in_array($profile['admin'],[1,3,4])){
 
 
     $(document).ready(function(){
+        if(is_other == 0) {
+            (function bindCroppClickEvent() {
+                $("#avatar-modal .btn-upload").click(function(event) {
+                    uploader.reset();
+                    $(".webuploader-element-invisible").click();
+                });
+                $("#avatar-modal .btn-cancel").click(function(event) {
+                    $("#avatar-modal").modal("hide");
+                });
+                $("#avatar-modal .btn-save").click(function(event) {
+                    var key = $('#avatar-src').val();
+                    var data = $('#cropper-img').closest("form").serialize();
+                    $.ajax({
+                        url: '/avatar/crop/' + key,
+                        type: 'POST',
+                        dataType: 'json',
+                        data: data,
+                    })
+                    .done(function(res) {
+                        if (+res.status) {
+                            var url = res['data']['url'];
+                            var id = res['data']['id'];
+                            $('#avatar').val(id);
+                            $('#avatar_src').attr( 'src', url);
+                            $("#avatar-modal").modal('hide');
+                            show_notify("保存成功");
+                            window.location.reload();
+                            uploader.reset();
+                        }
+                    });
+                });
+            })();
+            var active = false;
+            var uploader = WebUploader.create({
+                // 选完文件后，是否自动上传。
+                auto: true,
+                    // swf文件路径
+                    swf: '/static/third-party/webUploader/Uploader.swf',
+                    // 文件接收服务端。
+                    server: '<?php echo base_url('/avatar/upload'); ?>',
+                    // 选择文件的按钮。可选。
+                    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                    pick: '.filePicker',
+                    // 只允许选择图片文件。
+                    accept: {
+                        title: 'Images',
+                            extensions: 'gif,jpg,jpeg,bmp,png',
+                            mimeTypes: 'image/*'
+                    }
+
+            });
+
+            uploader.on( 'uploadProgress', function( file, percentage ) {
+                show_loading();
+            });
+            uploader.on( 'uploadSuccess', function( file, resp ) {
+                close_loading();
+                var _src = resp['url'];
+                var _id = _src.split("/")[3];
+                $('#avatar').val(_id);
+                $('#avatar-src').val(_id);
+                //$('#avatar_src').attr( 'src', _src);
+                if (active) {
+                    $('#cropper-img').cropper('replace', _src);
+                } else {
+                    $('#cropper-img').parent().empty().append('<img id = "cropper-img" src="' + _src + '">');
+                    $('#cropper-img').cropper({
+                      aspectRatio: 1,
+                      viewMode: 1,
+                      checkCrossOrigin:false,
+                      checkOrientation:false,
+                      crop:function(e) {
+                        $("input[name='x']").val(e.x);
+                        $("input[name='height']").val(e.height);
+                        $("input[name='y']").val(e.y);
+                        $("input[name='width']").val(e.width);
+                      }
+                    });
+                    $("#avatar-modal").modal({backdrop: 'static', keyboard: false});
+                }
+                avtive = true;
+                $("#avatar-modal").modal('show');
+            });
+        }
         get_province();
         if(__error) show_notify(__error);
         $('.chosen-select').each(function(){

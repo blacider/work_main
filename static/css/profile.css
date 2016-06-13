@@ -1,0 +1,73 @@
+.webuploader-pick  {
+background:#fff !important;
+
+}
+#loading{
+position:absolute;
+width:300px;
+top:0px;
+left:50%;
+margin-left:-150px;
+text-align:center;
+padding:7px 0 0 0;
+font:bold 11px Arial, Helvetica, sans-serif;
+}
+#avatar-modal a {
+    height: 45px;
+    width: 100px;
+    display: inline-block;
+    background: #fff;
+    color: #273e52;
+    border: 1px solid #273e52;
+    border-radius: 6px;
+}
+#avatar-modal a.btn-save {
+    border: none;
+    float: right;
+    color: #fff;
+    background: #596774;
+    border-bottom: 2px solid #273e52;
+}
+.btn-cancel {
+    float: right;
+    margin-right: 20px;
+}
+.ui-button {
+    display: inline-block;
+    width: 130px;
+    height: 45px;
+    background: #ff575b;
+    border-radius: 6px;
+    color: #fff;
+    text-align: center;
+    line-height: 45px;
+    font-size: 14px;
+    border-bottom: 2px solid #D33E42;
+    text-decoration: none;
+}
+.ui-button img {
+    height: 21px;
+    margin-right: 9px;
+}
+#cropper-img {
+    max-width: 100%;
+}
+.cropper-footer {
+    padding: 15px 25px;
+}
+.cropper-content {
+    width: 380px;
+    height: 380px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+#avatarInput {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
