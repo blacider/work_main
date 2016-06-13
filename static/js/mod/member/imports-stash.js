@@ -170,7 +170,11 @@
             function getItemModifiedFields(item, original) {
                 var rs = [];
                 for(var pro in item) {
-                    if(item[pro] && original[pro] !== item[pro] ) {
+                    if(pro == 'id') {
+                        if(item.id != original.client_id) {
+                            rs.push(pro);
+                        }
+                    } else if(item[pro] && original[pro] !== item[pro] ) {
                         rs.push(pro);
                     }
                 }
