@@ -408,6 +408,9 @@
 .table-consumptions tbody tr:hover {
 	cursor: pointer	
 } 
+.table-consumptions td.attatchments img {
+	width: 20px;
+}
 .table-consumptions tfoot {
 	font-weight: border;
 	color: #4a4a4a;
@@ -426,7 +429,6 @@
 	padding: 0 12px;
 }
     
-
 .flow h2 {
 	margin: 30px 0 10px 0;
 	font-size: 14px;
