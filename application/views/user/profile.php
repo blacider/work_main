@@ -1302,7 +1302,7 @@ if(in_array($profile['admin'],[1,3,4])){
     function unbindWeixinPay() {
         return Utils.api('giro_auth/wxauth_rescind', {
             method: 'post',
-            env: 'online',
+            cors: 1
         }).done(function (rs) {
             if(rs['status']<=0) {
                 return
@@ -1316,7 +1316,7 @@ if(in_array($profile['admin'],[1,3,4])){
     // giro_auth/employee_wechat_info
     if(__self == 1) {
         Utils.api('giro_payhead/employee_wxpub_payhead', {
-            env: 'online'
+            cors: 1
         }).done(function (rs) {
             if(rs['status']<=0) {
                 return $("#weixin-wallet").text(rs['data']['msg']);
@@ -1354,7 +1354,7 @@ if(in_array($profile['admin'],[1,3,4])){
                     // 轮训用户是否扫描，扫描后，重新载入页面
                     function checkIfBind() {
                         Utils.api('giro_payhead/employee_wxpub_payhead', {
-                            env: 'online',
+                            cors: 1,
                             data: {
                                 ignore_auth_url: true
                             }
@@ -1381,7 +1381,7 @@ if(in_array($profile['admin'],[1,3,4])){
         });
     } else {
         Utils.api('giro_payhead/company_employee_wxpub_payhead', {
-            env: 'online',
+            cors: 1,
             data: {
                 employee_id: $('input[name=uid]').val()
             }

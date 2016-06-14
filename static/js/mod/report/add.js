@@ -98,7 +98,7 @@
 
                     function getReportSnapshotData(id) {
                         return Utils.api('/report/'+id+'/snapshot', {
-                            env: 'online'
+                            cors: 1
                         }).done(function(rs) {
                             if (rs['status'] < 0) {
                                 return show_notify('找不到数据');
@@ -108,7 +108,7 @@
 
                     function getAvailableConsumptions() {
                         return Utils.api('/sync/0', {
-                            env: 'online'
+                            cors: 1
                         }).done(function(rs) {
                             if (rs['status'] < 0) {
                                 return show_notify('数据出错');
@@ -126,7 +126,7 @@
                         */
                         return Utils.api('/check_submit_flow', {
                             method: 'post',
-                            env: 'online',
+                            cors: 1,
                             data: data
                         }).done(function(rs) {
                             if (rs['status'] < 0) {
@@ -379,7 +379,7 @@
                                         'default': 0
                                     };
                                     Utils.api('/bank', {
-                                        env: 'online',
+                                        cors: 1,
                                         method: 'post',
                                         data: data
                                     }).done(function(rs) {
@@ -1338,7 +1338,7 @@
                         }
                         return Utils.api('/report/' + report_id, {
                             method: 'put',
-                            env: 'online',
+                            cors: 1,
                             data: {
                                 rid: report_id,
                                 comment: comment

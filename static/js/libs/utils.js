@@ -91,7 +91,7 @@
                 }
             }, opts);
 
-            if(opts['env']) { //true of false
+            if(opts['cors']) { //true of false
                 // ie8 XDomainRequest CORS不支持 headers 和 get post 之外的方法
                 if(!host) {
                 	return console.error(new Error('no api host is config'));
@@ -100,7 +100,7 @@
 	                url = [host, 'apiproxy', url].join('/');
                 } else {
                 	url = host + url;
-                	console.log('env', opts.env, url);
+                	console.log('cors', opts.cors, url);
                 }
             } else {
                 url = '/' +  url;

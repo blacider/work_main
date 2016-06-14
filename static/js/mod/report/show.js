@@ -120,7 +120,7 @@
 
                     function getReportSnapshotData(id) {
                         return Utils.api('/report/'+id+'/snapshot', {
-                            env: 'online'
+                            cors: 1
                         }).done(function(rs) {
                             if (rs['status'] < 0) {
                                 return show_notify('找不到数据');
@@ -188,7 +188,7 @@
                         }
                         return Utils.api(url, {
                             method: method,
-                            env: 'online',
+                            cors: 1,
                             data: data
                         }).done(function (rs) {
                             if(rs['status']>0) {
@@ -646,7 +646,7 @@
                         }
                         return Utils.api('/report/' + report_id, {
                             method: 'put',
-                            env: 'online',
+                            cors: 1,
                             data: {
                                 rid: report_id,
                                 comment: comment
@@ -759,7 +759,7 @@
 
                                 Utils.api(url, {
                                     method: method,
-                                    env: 'online',
+                                    cors: 1,
                                     data: {
                                         status: 3,
                                         comment: this.$el.find('textarea').val(),
@@ -791,7 +791,7 @@
                             content: '确认要撤回报销单吗？',
                             ok: function() {
                                 Utils.api("/revoke/" + report_id, {
-                                    env: 'online'
+                                    cors: 1
                                 }).done(function(rs) {
                                     if (rs['status'] <= 0) {
                                         return show_notify('操作失败');
@@ -814,7 +814,7 @@
                             content: '确认已经收款?',
                             ok: function() {
                                 Utils.api("/success", {
-                                    env: 'online',
+                                    cors: 1,
                                     data: {
                                         act: confirm,
                                         status: 2,
@@ -918,7 +918,7 @@
                         }
                         
                         Utils.api(approve_type + "/" + report_id, {
-                            env: 'online',
+                            cors: 1,
                             data: {
                                 rid: id
                             }

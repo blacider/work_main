@@ -524,7 +524,7 @@ function bind_event() {
         var id = $(this).data('id');
 
         Utils.api('/staff/'+id+'/deletable', {
-            env: 1
+            cors: 1
         }).done(function (rs) {
             if(rs['status']<=0) {
                 return show_notify(rs['data']['msg']);
@@ -545,7 +545,7 @@ function bind_event() {
                         ok: function () {
                             Utils.api('/staff/' + id, {
                                 method: 'delete',
-                                env: 1
+                                cors: 1
                             }).done(function (rs) {
                                 if(rs['status']<=0) {
                                     return show_notify(rs['data']['msg']);
@@ -561,7 +561,7 @@ function bind_event() {
                         ok: function () {
                             Utils.api('/staff/' + id, {
                                 method: 'delete',
-                                env: 1,
+                                cors: 1
                             }).done(function (rs) {
                                 if(rs['status']<=0) {
                                     return show_notify(rs['data']['msg']);

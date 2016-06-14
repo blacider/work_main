@@ -13,7 +13,7 @@
 		}
 		
 		return Utils.api('giro_payhead/company_payheads', {
-			env: 'online'
+			cors: 1
 		}).done(function (rs) {
 			if(rs['status']<=0) {
 				return;
@@ -38,7 +38,7 @@
 		// description 类型 - string, 描述 - 支付描述信息。
 		return Utils.api('giro_transaction/fetch_reports_payables', {
 			method: 'post',
-			env: 'online',
+			cors: 1,
 			data: data
 		}).done(function (rs) {
 			if(rs['status']<=0) {

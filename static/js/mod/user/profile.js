@@ -2,7 +2,7 @@
 
     function getCode(data) {
         return Utils.api('/vcode/bind', {
-            env: 'online',
+            cors: 1,
             method: 'post',
             data: data
         });
@@ -15,7 +15,7 @@
             // uid
         // }
         return Utils.api('/users', {
-            env: 'online',
+            cors: 1,
             method: 'put',
             data: data
         });
