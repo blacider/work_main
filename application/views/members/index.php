@@ -541,7 +541,18 @@ function bind_event() {
                 if(warnings.length>0) {
                     var d = new CloudDialog({
                         okValue: '删除',
-                        content: warnings.join('<br/>')
+                        content: warnings.join('<br/>'),
+                        ok: function () {
+                            Utils.api('/stuff/' + id, {
+                                method: 'delete',
+                                env: 1
+                            }).done(function (rs) {
+                                if(rs['status']<=0) {
+                                    return show_notify(rs['data']['msg']);
+                                }
+                                window.location.reload();
+                            });
+                        }
                     });
                     d.showModal();
                 } else {
@@ -549,7 +560,8 @@ function bind_event() {
                         content: '确定要删除当前用户？',
                         ok: function () {
                             Utils.api('/stuff/' + id, {
-                                env: 1
+                                method: 'delete',
+                                env: 1,
                             }).done(function (rs) {
                                 if(rs['status']<=0) {
                                     return show_notify(rs['data']['msg']);
