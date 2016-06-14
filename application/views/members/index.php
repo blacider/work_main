@@ -543,7 +543,7 @@ function bind_event() {
                         okValue: '删除',
                         content: warnings.join('<br/>'),
                         ok: function () {
-                            Utils.api('/stuff/' + id, {
+                            Utils.api('/staff/' + id, {
                                 method: 'delete',
                                 env: 1
                             }).done(function (rs) {
@@ -559,7 +559,7 @@ function bind_event() {
                     var d = new CloudDialog({
                         content: '确定要删除当前用户？',
                         ok: function () {
-                            Utils.api('/stuff/' + id, {
+                            Utils.api('/staff/' + id, {
                                 method: 'delete',
                                 env: 1,
                             }).done(function (rs) {
