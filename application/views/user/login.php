@@ -20,7 +20,7 @@
         <link rel="stylesheet" type="text/css" href="/static/ace/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="/static/ace/css/font-awesome.min.css" />
         <link rel="stylesheet" href="/static/third-party/jg/jquery.jgrowl.min.css"/>
-        <link rel="stylesheet" href="/static/css/mod/login/login.css">
+        <link rel="stylesheet" href="<?= static_url("/static/css/mod/login/login.css") ?>">
         <script src="/static/js/jquery.min.js"></script>
         <script src="/static/ace/js/bootstrap.min.js"></script>
         <script src="/static/js/libs/utils.js"></script>
@@ -233,12 +233,15 @@
                                     <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
                                 </div>
                                 <div class="form-line bottom-line relative-10">
-                                    <?php if($errors) { ?>
-                                    <div class="error-bubble">
-                                        <?php echo $errors;?>
-                                    </div>
-                                    <?php } ?>
-                                    <a class="weixin" href="javascript:void(0)">微信登录</a>
+                                    
+                                    <a class="weixin" href="javascript:void(0)">
+                                        微信登录
+                                        <?php if($errors) { ?>
+                                        <div class="error-bubble">
+                                            <?php echo $errors;?>
+                                        </div>
+                                        <?php } ?>
+                                    </a>
                                 </div>
                             </div>
                         </div>
