@@ -144,8 +144,8 @@
                                     <tr>
                                         <th>类目</th>
                                         <th>时间</th>
-                                        <th>商家 </th>
                                         <th>备注</th>
+                                        <th>附件 </th>
                                         <th>金额</th>
                                     </tr>
                                 </thead>
@@ -153,8 +153,15 @@
                                     <tr ng-repeat="c in selectedConsumptions" ng-class="{selected: c.isSelected}" ng-click="onSelectConsumption(c, $event)">
                                         <td>{{c['category_name']||'-'}}</td>
                                         <td >{{dateFormat(c.dt)||'-'}}</td>
-                                        <td>{{c.merchants||'-'}}</td>
                                         <td class="note">{{c.note||'-'}}</td>
+                                        <td class="attatchments" ng-click="$event.stopPropagation()">
+                                            <a target="_bank" ng-repeat="at in c.attachments" href="{{at.url}}">
+                                                <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='word'" src="/static/images/word.png" alt="">
+                                                <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='excel'" src="/static/images/excel.png" alt="">
+                                                <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='pdf'" src="/static/images/pdf.png" alt="">
+                                                <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='ppt'" src="/static/images/powerpoint.png" alt="">
+                                            </a>
+                                        </td>
                                         <td>{{exchangeRateMap[c.currency]}}{{c.amount}} </td>
                                     </tr> 
                                 </tbody>
@@ -284,8 +291,8 @@
                             <div class="t-row">
                                 <div class="col">类目</div>
                                 <div class="col dt">日期</div>
-                                <div class="col">商家</div>
                                 <div class="col">备注</div>
+                                <div class="col">附件</div>
                                 <div class="col">金额</div>
                             </div>
                         </div>
@@ -293,8 +300,15 @@
                             <div class="t-row c_{{c.id}}_rid{{c.rid}}" ng-if="c.rid==0 || c.rid == __report_id__" ng-repeat="c in consumptions" ng-class="{selected: c.isSelected}"   ng-click="onSelectConsumption(c, $event)">
                                 <div class="col">{{c['category_name']||'-'}}</div>
                                 <div class="col dt">{{dateFormat(c.dt)||'-'}}</div>
-                                <div class="col">{{c.merchants||'-'}}</div>
                                 <div class="col note">{{c.note||'-'}}</div>
+                                <div class="col attatchments">
+                                    <a target="_bank" ng-repeat="at in c.attachments" href="{{at.url}}">
+                                        <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='word'" src="/static/images/word.png" alt="">
+                                        <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='excel'" src="/static/images/excel.png" alt="">
+                                        <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='pdf'" src="/static/images/pdf.png" alt="">
+                                        <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='ppt'" src="/static/images/powerpoint.png" alt="">
+                                    </a>
+                                </div>
                                 <div class="col">{{exchangeRateMap[c.currency]}}{{c.amount}}</div>
                                 <div class="col btn-edit">
                                     <a class="icon" href="/items/edit/{{c.id}}">

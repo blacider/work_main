@@ -37,6 +37,21 @@
                     };
                     $scope.exchangeRateMap = exchangeRate.rateMap;
 
+                    $scope.getMimeType = function (str) {
+                        if(/word/.test(str)) {
+                            return 'word';
+                        }
+                        if(/excel|sheet|xsl/.test(str)) {
+                            return 'excel';
+                        }
+                        if(/pdf/.test(str)) {
+                            return 'pdf';
+                        }
+                        if(/powerpoint/.test(str)) {
+                            return 'ppt';
+                        }
+                    }
+
                     function getTemplateData() {
                         var query = Utils.queryString(location.search);
                         var id = query.tid;

@@ -625,6 +625,8 @@
 .consumptions table .note {
 	max-width: 130px;
 }
+
+
  
 .table-field .table-container {
 	border-top: 1px solid #ABABAB;
@@ -632,6 +634,10 @@
 	border-radius: 3px;
 	border-right: none;
 	overflow: hidden;
+}
+
+.attatchments img {
+	width: 20px;
 }
 
 .table-field table {
