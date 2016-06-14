@@ -133,8 +133,8 @@
                                         <th>类目</th>
                                         <th>时间</th>
                                         <th>备注</th>
-                                        <th>金额</th>
                                         <th>附件 </th>
+                                        <th>金额</th>
                                         <th>详情</th>
                                     </tr>
                                 </thead>
@@ -143,15 +143,15 @@
                                         <td>{{c['category_name']||'-'}}</td>
                                         <td >{{dateFormat(c.dt)}}</td>
                                         <td class="note">{{c.note}}</td>
-                                        <td>{{exchangeRateMap[c.currency]}}{{c.amount}}</td>
-                                        <td class="attatchments">
+                                        <td class="attatchments" ng-click="$event.stopPropagation()">
                                             <a target="_bank" ng-repeat="at in c.attachments" href="{{at.url}}">
-                                                <img title="{{at.filename}}" ng-if="at.mime.indexOf('word')>=0" src="/static/images/word.png" alt="">
-                                                <img title="{{at.filename}}" ng-if="at.mime.indexOf('excel')>=0" src="/static/images/excel.png" alt="">
-                                                <img title="{{at.filename}}" ng-if="at.mime.indexOf('pdf')>=0" src="/static/images/pdf.png" alt="">
-                                                <img title="{{at.filename}}" ng-if="at.mime.indexOf('powerpoint')>=0" src="/static/images/powerpoint.png" alt="">
+                                                <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='word'" src="/static/images/word.png" alt="">
+                                                <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='excel'" src="/static/images/excel.png" alt="">
+                                                <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='pdf'" src="/static/images/pdf.png" alt="">
+                                                <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='ppt'" src="/static/images/powerpoint.png" alt="">
                                             </a>
                                         </td>
+                                        <td>{{exchangeRateMap[c.currency]}}{{c.amount}}</td>
                                         <td><a ng-href="/items/show/{{c.id}}/1">详情</a></td>
                                     </tr>
                                 </tbody>

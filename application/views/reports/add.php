@@ -154,13 +154,12 @@
                                         <td>{{c['category_name']||'-'}}</td>
                                         <td >{{dateFormat(c.dt)||'-'}}</td>
                                         <td class="note">{{c.note||'-'}}</td>
-                                        <td class="attatchments">
-                                            {{cc(c)}}
+                                        <td class="attatchments" ng-click="$event.stopPropagation()">
                                             <a target="_bank" ng-repeat="at in c.attachments" href="{{at.url}}">
-                                                <img title="{{at.filename}}" ng-if="at.mime.indexOf('word')>=0" src="/static/images/word.png" alt="">
-                                                <img title="{{at.filename}}" ng-if="at.mime.indexOf('excel')>=0" src="/static/images/excel.png" alt="">
-                                                <img title="{{at.filename}}" ng-if="at.mime.indexOf('pdf')>=0" src="/static/images/pdf.png" alt="">
-                                                <img title="{{at.filename}}" ng-if="at.mime.indexOf('powerpoint')>=0" src="/static/images/powerpoint.png" alt="">
+                                                <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='word'" src="/static/images/word.png" alt="">
+                                                <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='excel'" src="/static/images/excel.png" alt="">
+                                                <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='pdf'" src="/static/images/pdf.png" alt="">
+                                                <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='ppt'" src="/static/images/powerpoint.png" alt="">
                                             </a>
                                         </td>
                                         <td>{{exchangeRateMap[c.currency]}}{{c.amount}} </td>
@@ -304,10 +303,10 @@
                                 <div class="col note">{{c.note||'-'}}</div>
                                 <div class="col attatchments">
                                     <a target="_bank" ng-repeat="at in c.attachments" href="{{at.url}}">
-                                        <img title="{{at.filename}}" ng-if="at.mime.indexOf('word')>=0" src="/static/images/word.png" alt="">
-                                        <img title="{{at.filename}}" ng-if="at.mime.indexOf('excel')>=0" src="/static/images/excel.png" alt="">
-                                        <img title="{{at.filename}}" ng-if="at.mime.indexOf('pdf')>=0" src="/static/images/pdf.png" alt="">
-                                        <img title="{{at.filename}}" ng-if="at.mime.indexOf('powerpoint')>=0" src="/static/images/powerpoint.png" alt="">
+                                        <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='word'" src="/static/images/word.png" alt="">
+                                        <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='excel'" src="/static/images/excel.png" alt="">
+                                        <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='pdf'" src="/static/images/pdf.png" alt="">
+                                        <img title="{{at.filename}}" ng-if="getMimeType(at.mime)=='ppt'" src="/static/images/powerpoint.png" alt="">
                                     </a>
                                 </div>
                                 <div class="col">{{exchangeRateMap[c.currency]}}{{c.amount}}</div>
