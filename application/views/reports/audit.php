@@ -245,9 +245,7 @@ $(document).ready(function(){
 <script type="text/javascript">
 $grid = $('#grid-table');
 $("#globalSearch").click(function () {
-    if ("<?php echo $search;?>" != $("#globalSearchText").val()) {
-        window.location.href = "/"+window.location.href.split('/')[3]+"/"+"audit_<?php echo $filter; ?>"+"/"+$("#globalSearchText").val();
-    }
+    doSearch()
 });
 function doSearch() {
     var rules = [], i, cm, postData = $grid.jqGrid("getGridParam", "postData"),
