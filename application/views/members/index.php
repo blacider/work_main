@@ -544,6 +544,7 @@ function bind_event() {
                         content: warnings.join('<br/>'),
                         ok: function () {
                             Utils.api('/stuff/' + id, {
+                                method: 'delete',
                                 env: 1
                             }).done(function (rs) {
                                 if(rs['status']<=0) {
@@ -559,7 +560,8 @@ function bind_event() {
                         content: '确定要删除当前用户？',
                         ok: function () {
                             Utils.api('/stuff/' + id, {
-                                env: 1
+                                method: 'delete',
+                                env: 1,
                             }).done(function (rs) {
                                 if(rs['status']<=0) {
                                     return show_notify(rs['data']['msg']);
