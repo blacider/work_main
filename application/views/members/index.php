@@ -541,7 +541,17 @@ function bind_event() {
                 if(warnings.length>0) {
                     var d = new CloudDialog({
                         okValue: '删除',
-                        content: warnings.join('<br/>')
+                        content: warnings.join('<br/>'),
+                        ok: function () {
+                            Utils.api('/stuff/' + id, {
+                                env: 1
+                            }).done(function (rs) {
+                                if(rs['status']<=0) {
+                                    return show_notify(rs['data']['msg']);
+                                }
+                                window.location.reload();
+                            });
+                        }
                     });
                     d.showModal();
                 } else {
