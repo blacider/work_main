@@ -104,7 +104,7 @@ class Reim_Model extends CI_Model {
             intval(array_get($json_ret, 'status', 0)) <= 0 and
             intval(array_get($json_ret, 'code', 0)) === USER_AUTH_ERROR
         ) {
-            log_message('error', "api auth error while: $method $url, $ret");
+            log_message('info', "api auth error while: $method $url, $ret");
             //log_message('debug', "ret: $ret");
             $this->session->sess_destroy();
             throw new RequireLoginError();
