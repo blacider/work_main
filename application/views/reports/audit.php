@@ -145,7 +145,7 @@ position: absolute;
             <div class="modal-footer">
                 <input type="hidden" id="pass" name="pass" value="0">
                 <input type="submit" class="btn btn-primary pass" value="确认结束">
-                <div class="btn btn-primary repass" onClick="chose_others(this.parentNode.parentNode.rid.value)">继续选择</div>
+                <div class="btn btn-primary repass">继续选择</div>
             </div>
                 </form>
         </div><!-- /.modal-content -->
