@@ -27,6 +27,12 @@
     }
 
     function bind_event() {
+
+        $('.modal-footer .repass').on('click', function (e) {
+            var rid = $('#rid').val()
+            chose_others(rid);
+        })
+
         $('.texport').each(function() {
             $(this).click(function() {
                 var _id = $(this).data('id');
