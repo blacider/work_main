@@ -136,6 +136,7 @@ img ,button{
     color: red;
     font-size: 13px;
     text-decoration: underline;
+    position: relative;
 }
 .bottom-line {
     width: 55px;
@@ -225,9 +226,9 @@ img ,button{
     position: absolute;
     font-size: 15px;
     color: white;
-    left: -100%;
-    top: -4px;
-    margin-left: -10px;
+    right: 100%;
+    top: -6px;
+    margin-right: 14px;
     border-radius: 4px;
     padding: 4px 10px;
     background-color: #FF575B;
