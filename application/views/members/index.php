@@ -520,10 +520,48 @@ function load_group(gid){
 }
 function bind_event() {
     $('.remove_user').click(function(){
-        if(confirm('删除后，用户当前的item也会被删掉，是否继续？') == true){
-            var _id = $(this).data('id');
-            location.href= __BASE + "/members/remove_member/" + _id;
-        }
+
+        var id = $(this).data('id');
+
+        Utils.api('/staff/'+id+'/deletable', {
+            env: 1
+        }).done(function (rs) {
+            if(rs['status']<=0) {
+                return show_notify(rs['data']['msg']);
+            }
+            var errors = rs['data']['error'];
+            var warnings = rs['data']['warning'];
+
+            if(errors.length>0) {
+                var d = new CloudDialog({
+                    content: errors.join('<br/>')
+                });
+                d.showModal();
+            } else {
+                if(warnings.length>0) {
+                    var d = new CloudDialog({
+                        okValue: '删除',
+                        content: warnings.join('<br/>')
+                    });
+                    d.showModal();
+                } else {
+                    var d = new CloudDialog({
+                        content: '确定要删除当前用户？',
+                        ok: function () {
+                            Utils.api('/stuff/' + id, {
+                                env: 1
+                            }).done(function (rs) {
+                                if(rs['status']<=0) {
+                                    return show_notify(rs['data']['msg']);
+                                }
+                                window.location.reload();
+                            });
+                        }
+                    });
+                    d.showModal();
+                }
+            }
+        });
     });
 }
 
@@ -761,3 +799,5 @@ setTimeout(function () {
 }, 1000)
 </script>
 
+<script src="/static/plugins/cloud-dialog/dialog.js"></script>
+<link rel="stylesheet" href="/static/plugins/cloud-dialog/dialog.css">
