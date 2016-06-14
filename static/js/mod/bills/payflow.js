@@ -2,7 +2,7 @@
 
     function getFlowWithQuery(query) {
         return Utils.api('giro_transaction', {
-            env: 'online',
+            cors: 1,
             data: query
         });
     };

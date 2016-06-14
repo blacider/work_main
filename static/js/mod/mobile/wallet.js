@@ -13,7 +13,7 @@
 	function getProfileByCodeAndState(query) {
 		return Utils.api('/giro_auth/wxauth_process', {
 			method: 'post',
-			env: 'online',
+			cors: 1,
 			data: {
 				'wx_code': query['code'],
 				'wx_state': query['state'],
@@ -55,7 +55,7 @@
 		// }
 		return Utils.api('/giro_auth/wxauth_bival_request', {
 			method: 'post',
-			env: 'online',
+			cors: 1,
 			token: token,
 		}).done(function (rs) {
 			if(rs['status']<=0) {
@@ -67,7 +67,7 @@
 	function doVerifyCode(data, token) {
 		return Utils.api('/giro_auth/wxauth_bival_validation', {
 			method: 'post',
-			env: 'online',
+			cors: 1,
 			data: data,
 			token: token,
 		}).done(function (rs) {

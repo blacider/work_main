@@ -186,7 +186,7 @@ $(document).ready(function(){
             return false;
         }
         Utils.api('company', {
-            env: 'online',
+            cors: 1,
             method: 'put',
             data: {
                 name: gname,
