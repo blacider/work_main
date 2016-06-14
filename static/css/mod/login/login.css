@@ -220,6 +220,30 @@ img ,button{
     padding: 6px 8px 6px 8px;
     border-radius: 3px;
 }
+
+.error-bubble {
+    position: absolute;
+    font-size: 15px;
+    color: white;
+    left: -100%;
+    top: -4px;
+    margin-left: -10px;
+    border-radius: 4px;
+    padding: 4px 10px;
+    background-color: #FF575B;
+}
+.error-bubble::after {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 0;
+    top: 12px;
+    right: -12px;
+    border-top: 4px solid transparent;
+    border-left: 8px solid #FF575B;
+    border-bottom: 4px solid transparent;
+    border-right: 4px solid transparent;
+}
 #main .error-text {
     padding: 8px 8px 7px 8px;
 }

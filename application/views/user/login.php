@@ -233,6 +233,11 @@
                                     <img class="action-icon rightd" src="/static/img/mod/login/right.png" alt="right" height="53" width="53">
                                 </div>
                                 <div class="form-line bottom-line relative-10">
+                                    <?php if($errors) { ?>
+                                    <div class="error-bubble">
+                                        <?php echo $errors;?>
+                                    </div>
+                                    <?php } ?>
                                     <a class="weixin" href="javascript:void(0)">微信登录</a>
                                 </div>
                             </div>
