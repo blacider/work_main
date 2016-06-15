@@ -1381,28 +1381,26 @@
                         //     manager_ids
                         //     template_id
                         //     extras
-
-                        if(!$scope.__edit__) {
-                            checkSubmit({
-                                iids: data['item_ids'],
-                                manager_ids: data['receiver_ids'],
-                                template_id: data['template_id'],
-                                extras: data['extras']
-                            }).done(function(rs) {
-                                if (rs['status'] <= 0) {
-                                    return;
-                                }
-                                var sugData = rs['data'];
-                                if (sugData.complete > 0) {
-                                    return doPostReport(data, isSubmitted);
-                                }
-                                var dialog = getSuggestionDialog(sugData, isSubmitted);
-                                dialog.showModal();
-                            });
-                        } else {
-                            doPostReport(data, isSubmitted);   
+                        // 不管是编辑还是新建，保存就不checkSubmit，提交就checkSubmit
+                        if(!isSubmitted) {
+                            return doPostReport(data, isSubmitted);
                         }
-                        
+                        checkSubmit({
+                            iids: data['item_ids'],
+                            manager_ids: data['receiver_ids'],
+                            template_id: data['template_id'],
+                            extras: data['extras']
+                        }).done(function(rs) {
+                            if (rs['status'] <= 0) {
+                                return;
+                            }
+                            var sugData = rs['data'];
+                            if (sugData.complete > 0) {
+                                return doPostReport(data, isSubmitted);
+                            }
+                            var dialog = getSuggestionDialog(sugData, isSubmitted);
+                            dialog.showModal();
+                        });
                     }
                 }
             ]);
