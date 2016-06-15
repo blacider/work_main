@@ -232,6 +232,7 @@ img ,button{
     border-radius: 4px;
     padding: 4px 10px;
     background-color: #FF575B;
+    white-space: nowrap;
 }
 .error-bubble::after {
     position: absolute;
