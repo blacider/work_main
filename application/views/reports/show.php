@@ -1,6 +1,6 @@
 <script src="<?= static_url("/app/libs/angular/angular.js") ?>"></script>
 <link rel="stylesheet" href="/static/css/mod/component/fields.css"/>
-<link rel="stylesheet" href="/static/css/mod/report/show.css"/>
+<link rel="stylesheet" href="<?= static_url("/static/css/mod/report/show.css") ?>"/>
 <link rel="stylesheet" href="/static/css/widgets/loading-default.css"/>
 <script>
 (function () {
