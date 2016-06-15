@@ -469,9 +469,10 @@ $(document).ready(function() {
                         is_r: "on"
                     }
                 }).done(function(rs) {
-                    if (rs['status'] > 0) {
-                        window.location.href = rs['url'];
+                    if(rs['status']<=0) {
+                        return show_notify(rs['data']['msg']);
                     }
+                    window.location = '/register/ok';
                 });
             } else {
                 if (rs["data"]["msg"] == "公司名称已存在") {

@@ -8,7 +8,6 @@
         <title> 云报销 - 对报销的怨言，到此为止。</title>
         <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <link rel="shortcut icon" href="favicon.ico" />
         <meta name="baidu-site-verification" content="74glnE71aV" />
         <meta name="description" content="最好用的财务报销审批系统。对报销的怨言，到此为止。">
         <meta name="keywords" content="云报销,报销,云报销,报销,财务审批,审批,财务,办公,发票,贴发票,贴票,成本,金额">
