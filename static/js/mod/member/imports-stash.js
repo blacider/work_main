@@ -399,7 +399,7 @@
 
                         Utils.api('load', {
                             method: 'post',
-                            env: 'yuqi',
+                            cors: 1,
                             data: {
                                 quiet: !isSendEmail,
                                 members: JSON.stringify(members)
