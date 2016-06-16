@@ -17,7 +17,11 @@ class Groups extends REIM_Controller {
         $uids = $this->input->post('uids');
         $pid = $this->input->post('pgroup');
         $manager = $this->input->post('manager');
-        $uids = implode(",", $uids);
+        if ($uids) {
+            $uids = implode(",", $uids);
+        } else {
+            $uids = '';
+        }
         $images = '';
         $_images = $this->input->post('images');
         if($_images)

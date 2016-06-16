@@ -9,12 +9,12 @@ class UserGroup_Model extends Reim_Model {
     public function create_group($manager,$uids,$name,$code,$pid,$images)
     {
         $data = array(
-            'name' => $name
-            ,'uids' => $uids
-            ,'pid' => $pid
-            ,'manager' => $manager
-            ,'code' => $code
-            ,'images' => $images
+            'name' => $name,
+            'uids' => $uids,
+            'pid' => $pid,
+            'manager' => $manager,
+            'code' => $code,
+            'images' => $images
         );
         log_message("debug", "create group with " . json_encode($data));
         return $this->api_post('user_group', $data);
