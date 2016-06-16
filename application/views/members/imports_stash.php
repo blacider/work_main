@@ -13,7 +13,7 @@ var _SERVER_GROUPS_ = <?php echo json_encode($groups)?>;
 
 <div class="mod mod-add-report" ng-app="reimApp">
     <div class="page-content-area" ng-controller="MemberImportsController">
-        <div class="ui-loading-layer" ng-if="!isLoaded">
+        <div class="ui-loading-layer" ng-if="!isLoaded" style="position: fixed;">
             <div class="ui-loading-icon"></div>
         </div>
         <div class="mod-imports-stash">
