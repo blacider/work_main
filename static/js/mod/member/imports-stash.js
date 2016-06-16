@@ -402,7 +402,7 @@
                             method: 'post',
                             cors: 1,
                             data: {
-                                quiet: !isSendEmail,
+                                quiet: ~~!isSendEmail,
                                 members: JSON.stringify(members)
                             }
                         }).done(function (rs) {
