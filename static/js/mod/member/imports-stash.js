@@ -357,11 +357,12 @@
                             return window.location = '/members/index';
                         }
 
-                        if(!$scope.isLoaded) {
+                        if($scope.isLoading) {
                             return
                         }
 
-                        $scope.isLoaded = false;
+                        $scope.isWaiting = true;
+                        var $loading = Utils.loading();
 
                         var data = [];
                         _.each([].concat($scope.errorArray, $scope.modifierArray), function (item) {
@@ -405,7 +406,8 @@
                                 members: JSON.stringify(members)
                             }
                         }).done(function (rs) {
-                            $scope.isLoaded = true;
+                            $scope.isWaiting = false;
+                            $loading.remove();
                             if(rs['status']<=0) {
                                 $scope.$apply();
                                 return show_notify(rs.data.msg);
