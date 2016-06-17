@@ -14,7 +14,7 @@ class REIM_Controller extends CI_Controller{
         $this->load->model('user_model');
     }
 
-    public function _remap($method,$params)
+    public function _remap($method, $params)
     {
         if (!$this->session->userdata('oauth2_ak')) {
             $controller = $this->uri->rsegment_array();
@@ -22,6 +22,9 @@ class REIM_Controller extends CI_Controller{
             if(!in_array($controller[1], $white_list)) {
                 redirect(base_url('/#login'));
             }
+        }
+        if (!method_exists($this, $method)) {
+            show_404('', false);
         }
         try {
             call_user_func_array(array($this, $method), $params);

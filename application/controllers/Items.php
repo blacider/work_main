@@ -723,6 +723,10 @@ class Items extends REIM_Controller {
             redirect(base_url('items'));
         }
         $item = $item['data'];
+        if (empty($item)) {
+            $this->session->set_userdata('last_error', '未找到对应的消费');
+            redirect(base_url('items'));
+        }
 
         //获取消费类型字典
         $item_type_dic = $this->reim_show->get_item_type_name();
