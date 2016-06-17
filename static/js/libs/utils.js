@@ -132,6 +132,33 @@
             });
             return def.promise();
         },
+        loading: function () {
+            var getLeftBySidebar = function () {
+                var $sidebar = $('#sidebar');
+                if($('#sidebar').height()==0 && $('.ui-loading-layer').css('position')=='fixed') {
+                    return 0;
+                } else {
+                    return $('#sidebar').width();
+                }
+            }
+            $(window).on('resize', function (e) {
+                $('.ui-loading-layer').css({left: getLeftBySidebar()});
+            });
+            var tmpl = [
+                '<div class="ui-loading-layer">',
+                '    <div class="ui-loading-icon"></div>',
+                '</div>'
+            ].join('');
+            $loading = $(tmpl);
+            $loading.css({
+                width: 'auto',
+                left: getLeftBySidebar(),
+                right: 0,
+                bottom: 0,
+                position: 'fixed'
+            });
+            return $loading.appendTo(document.body);
+        },
         // 判断一个对象是否包含全部的kv
         isObjectContained: function (obj, kv) {
             for(pro in kv) {

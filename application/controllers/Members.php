@@ -32,95 +32,6 @@ class Members extends REIM_Controller {
             )
         );
     }
-    public function set_managers()
-    {
-        $this->need_group_it();
-        $_members = $this->input->post('persons');
-        $members = json_decode($_members,True);
-        log_message('debug',"Person:" . json_encode($members));
-        $_members = array();
-        foreach($members as $m) {
-            if(array_key_exists('id', $m) && array_key_exists('manager', $m)) {
-                array_push($_members, $m);
-            }
-        }
-        $members = $_members;
-        log_message("debug", "Set Manager:" . json_encode($members));
-
-        $buf = $this->groups->set_managers($members);
-        $set_manager_back = array();
-        $set_success = array();
-        if($buf['status']>0)
-        {
-            $set_manager_back = $buf['data'];
-        }
-        foreach($set_manager_back as $back)
-        {
-            if($back['code'] == 0)
-            {
-                array_push($set_success,$back['id']);
-            }
-        }
-        log_message('debug','set_success' . json_encode($set_success));
-        die(json_encode(array('data'=>$set_success)));
-    }
-
-    public function imports_create_group()
-    {
-        $this->need_group_it();
-        $name=$this->input->post('name');
-        $ug = array();
-        $_ug = $this->ug->get_my_list();
-        if($_ug['status'] > 0)
-        {
-            $ug = $_ug['data']['group'];
-        }
-        foreach($ug as $u)
-        {
-            if($u['name'] == $name)
-            {
-                die(json_encode(array('msg' => '部门已经添加')));
-            }
-        }
-
-        $buf = $this->ug->create_group(0,'',$name,'',0);
-        if($buf['status']>0) {
-            die(json_encode(array('msg' => '部门添加成功')));
-        } else {
-            die(json_encode(array('msg' => $buf['data']['msg'])));
-        }
-    }
-
-    public function imports_create_rank_level($rank)
-    {
-        $this->need_group_it();
-        $name = $this->input->post('name');
-        $_ranks_levels = $this->reim_show->rank_level($rank);
-        $ranks_levels = array();
-        if($_ranks_levels['status']>0)
-        {
-            $ranks_levels = $_ranks_levels['data'];
-        }
-
-        foreach($ranks_levels as $rl)
-        {
-            if($rl['name'] == $name)
-            {
-                die(array('msg' => '职位已经添加'));
-            }
-        }
-
-        $buf = $this->groups->create_rank_level($rank,$name);
-        log_message('debug','name:' . $name);
-        if($buf['status'] > 0)
-        {
-            die(json_encode(array('msg' => '添加职位成功')));
-        }
-        else
-        {
-            die(json_encode(array('msg' => '添加职位失败')));
-        }
-    }
 
     public function update_rank_level($rank)
     {
@@ -767,7 +678,7 @@ class Members extends REIM_Controller {
 
         }
         $data = array();
-        log_message("debug","######".json_encode($gmember));
+        log_message("info", "######".json_encode($gmember));
         foreach($gmember as $m){
             $obj = array();
             if(array_key_exists('client_id',$m))
@@ -798,31 +709,33 @@ class Members extends REIM_Controller {
             {
                 $obj['部门'] = $m['d'];
             }
-            if(array_key_exists('manager',$m))
-            {
-                $obj['上级姓名'] = '';
-                if('没有上级' != $m['manager'])
-                {
-                    $obj['上级姓名'] = $m['manager'];
-                }
-            }
+            
             if(array_key_exists('rank_id',$m) && $m['rank_id'] > 0 && array_key_exists($m['rank_id'],$ranks_dic))
             {
                 $obj['职级'] = $ranks_dic[$m['rank_id']];
-            }
-            else
-            {
+            } else {
                 $obj['职级'] = '';
             }
 
             if(array_key_exists('level_id',$m) && $m['level_id'] > 0 && array_key_exists($m['level_id'],$levels_dic))
             {
                 $obj['职位'] = $levels_dic[$m['level_id']];
-            }
-            else
-            {
+            } else {
                 $obj['职位'] = '';
             }
+
+            if(array_key_exists('manager',$m))
+            {
+                $obj['默认审批人邮箱或手机'] = '';
+                if('没有上级' != $m['manager'])
+                {
+                    $obj['默认审批人邮箱或手机'] = $m['manager'];
+                }
+            }
+
+            $obj['二级审批人邮箱或手机'] = '';
+            $obj['三级审批人邮箱或手机'] = '';
+
             array_push($data, $obj);
         }
         $this->render_to_download('人员', $data, 'members.xls');
@@ -874,10 +787,12 @@ class Members extends REIM_Controller {
         );
     }
 
-    public function imports(){
+    public function imports()
+    {
         if(!array_key_exists('members', $_FILES)){
             redirect(base_url('members'));
         }
+
         $tmp_file = $_FILES['members']['tmp_name'];
 
         try {
@@ -890,254 +805,55 @@ class Members extends REIM_Controller {
             $this->session->set_userdata('last_error', '暂不支持当前的文件类型');
             return redirect(base_url('members/export'));
         }
-        $group = $this->groups->get_my_list();
-        $ginfo = array();
-        $gmember = array();
-        if($group) {
-            if(array_key_exists('ginfo', $group['data'])){
-                $ginfo = $group['data']['ginfo'];
-            }
-            if(array_key_exists('gmember', $group['data'])){
-                $gmember = $group['data']['gmember'];
-            }
-            $gmember = $gmember ? $gmember : array();
 
-        }
-        $_emails = array();
-        $_phones = array();
-        $_names = array();
-        $names = array();
-        $email_id_matrix = array();
-        foreach($gmember as $g){
-
-            $__email = $g['email'];
-            $__phone = $g['phone'];
-            $__name = $g['nickname'];
-            if(!in_array($__name,$_names))
-            {
-                $names[$__name]['count'] = 1;
-                $names[$__name]['ids']=array();
-                array_push($names[$__name]['ids'],$g['id']);
-            }
-            else
-            {
-                $names[$__name]['count'] += 1;
-                array_push($names[$__name]['ids'],$g['id']);
-            }
-            if($__email) {
-                array_push($_emails, $__email);
-                $email_id_matrix[$g['email']] = $g['id'];
-            }
-            if($__phone)
-                array_push($_phones, $__phone);
-            if($__name)
-                array_push($_names,$__name);
-        }
-
+        // 读取数据
         $data = array();
-        /** 循环读取每个单元格的数据 */
-        for ($row = 4; $row <= $highestRow; $row++){//行数是以第1行开始
+        $index = 0;
+        $m = array(
+            'id',
+            'nickname',
+            'email',
+            'phone',
+            'cardno',
+            'bank',
+            'gids',
+            'level',
+            'rank',
+            'manager_id',
+            'manager_id_2',
+            'manager_id_3'
+        );
+        for ($row = 3; $row <= $highestRow; $row++) { //行数是以第1行开始
+            $index++;
             $obj = Array();
-            $obj['id'] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue());
-            $obj['name'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue());
-            $obj['nickname'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue());
-            $obj['email'] = trim($sheet->getCellByColumnAndRow(2, $row)->getValue());
-            $obj['phone'] = trim($sheet->getCellByColumnAndRow(3, $row)->getValue());
-            $obj['accounts'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue()); ;
-            $obj['account'] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue()); ;
-            $obj['cardno'] = trim($sheet->getCellByColumnAndRow(4, $row)->getValue());
-            $obj['cardbank'] = trim($sheet->getCellByColumnAndRow(5, $row)->getValue());
-            $obj['bank'] = trim($sheet->getCellByColumnAndRow(5, $row)->getValue());
-            log_message('debug','alvayang cardno XXX:' . $sheet->getCellByColumnAndRow(4, $row)->getValue());
-            if(strlen($obj['cardno']) >= 128) {
-                $obj['cardno'] = substr($obj['cardno'],0,128);
-                log_message('debug','len:' . strlen($obj['cardno']));
+            foreach ($m as $index => $value) {
+                $obj[$value] =  trim($sheet->getCellByColumnAndRow($index, $row)->getValue()); 
             }
-            if(is_numeric($obj['cardno']) && substr($obj['cardno'],0,1)!=0) {
-                if(preg_match("/^([0-9]+(\.[0-9]+)?[e,E]\+[0-9]+)$/",$obj['cardno'])) {
-                    $obj['cardno'] = number_format((double)$obj['cardno'],0,'','');
-                    log_message('debug' , 'sc_num:' . $obj['cardno']);
-                }
-            }
-            else if(!$obj['cardno']) {
-                $obj['cardno'] = '';
-                $obj['accounts'] = '';
-                $obj['account'] = '';
-                $obj['cardbank'] = '';
-                $obj['bank'] = '';
-            }
-            $obj['cardloc'] = '';
-            $obj['group_name'] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue());
-            $obj['gids'] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue());
-            $obj['display_manager'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
-            $obj['manager'] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue());
-            $obj['rank'] = trim($sheet->getCellByColumnAndRow(10, $row)->getValue());
-            $obj['level'] = trim($sheet->getCellByColumnAndRow(11, $row)->getValue());
-            $obj['manager_id'] = "";/*trim($sheet->getCellByColumnAndRow(8, $row)->getValue());*/
-            $obj['manager_email'] = trim($sheet->getCellByColumnAndRow(12, $row)->getValue());
-            $obj['display_manager_email'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
-            $obj['second'] = trim($sheet->getCellByColumnAndRow(13, $row)->getValue());
-            $obj['third'] = trim($sheet->getCellByColumnAndRow(14, $row)->getValue());
-            $obj['fourth'] = trim($sheet->getCellByColumnAndRow(15, $row)->getValue());
-            $obj['fifth'] = trim($sheet->getCellByColumnAndRow(16, $row)->getValue());
-            $obj['display_manager_id'] = "";
-            if($obj['email']) {
-                $email_id_matrix[$obj['email']] = $obj['id'];
-            }
-            /*
-            $obj['level'] = trim($sheet->getCellByColumnAndRow(8, $row)->getValue());
-            $obj['rank'] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue());
-             */
-            if("" == $obj['email'] && "" == $obj['phone'] && "" == $obj['name']) continue;
-            $obj['status'] = 0;
-            if(in_array($obj['email'], $_emails)){
-                $obj['status'] = 1;
-            }
-            if (in_array($obj['phone'], $_phones)) {
-                $obj['status'] = 1;
-            }
-            log_message('debug','obj_name' . $obj['name']);
             array_push($data, $obj);
-            log_message('debug','objXXXXXXXXXXXXXX:' . json_encode($obj));
         }
-        $_ranks = $this->reim_show->rank_level(1);
-        $ranks = array();
-        $_levels = $this->reim_show->rank_level(0);
-        $levels = array();
-        if($_ranks['status']>0)
-        {
-            $ranks = $_ranks['data'];
-        }
-        if($_levels['status']>0)
-        {
-            $levels = $_levels['data'];
-        }
+        $ranks = $this->groups->get_rank_level(1);
+        $ranks = $ranks['data'];
 
-        $ranks_dic = array();
-        foreach($ranks as $r)
-        {
-            $ranks_dic[$r['name']] = $r['id'];
-        }
+        $levels = $this->groups->get_rank_level(0);
+        $levels = $levels['data'];
 
+        $profile = $this->session->userdata('profile');
+        $groups = $profile['usergroups'];
 
-        $levels_dic = array();
-        foreach($levels as $l)
-        {
-            $levels_dic[$l['name']] = $l['id'];
-        }
-        $ug = array();
-        $_ug = $this->ug->get_my_list();
-        if($_ug['status'] > 0)
-        {
-            $ug = $_ug['data']['group'];
-        }
-
-        $ug_dic = array();
-
-        foreach($ug as $u) {
-            if(array_key_exists($u['name'],$ug_dic))
-            {
-                array_push($ug_dic[$u['name']],$u['id']);
-            }
-            else
-            {
-                $ug_dic[$u['name']] = [$u['id']];
-            }
-        }
-
-        log_message('debug','name:' . json_encode($names));
-        $no_ranks = array();
-        $no_levels = array();
-        $no_groups = array();
-        log_message("debug", "Matrix:" . json_encode($email_id_matrix));
-        foreach($data as &$d)
-        {
-            $_e = $d['manager_email'];
-            $_de = $d['display_manager_email'];
-            $_i = $d['manager_id'];
-            log_message("debug", "Check Exists:" . json_encode($_e));
-            log_message("debug", "Check Exists:" . json_encode($_de));
-            log_message("debug", "Check Exists:" . json_encode($d));
-
-            if(array_key_exists($_de,$email_id_matrix))
-            {
-                $d['display_manager_id'] = $email_id_matrix[$_de];
-            }
-            else
-            {
-                $d['status'] += 4;
-            }
-
-            if(array_key_exists($_e, $email_id_matrix)){
-                $d['status'] += 0;
-                $d['manager_id'] = $email_id_matrix[$_e];
-            } else {
-                $d['status'] += 4;
-            }
-            //log_message('debug','isEq:' . in_array($d['name'],$_names));
-
-            $d['rank_id'] = 0;
-            if($d['rank'])
-            {
-                if(array_key_exists($d['rank'],$ranks_dic))
-                {
-                    $d['rank_id'] = $ranks_dic[$d['rank']];
-                }
-                else
-                {
-                    if(!in_array($d['rank'],$no_ranks))
-                        array_push($no_ranks,$d['rank']);
-                }
-            }
-            $d['level_id'] = 0;
-            if($d['level'])
-            {
-                if(array_key_exists($d['level'],$levels_dic))
-                {
-                    $d['level_id'] = $levels_dic[$d['level']];
-                }
-                else
-                {
-                    if(!in_array($d['level'],$no_levels))
-                        array_push($no_levels,$d['level']);
-                }
-            }
-            $groups = array();
-            $d['gid'] = 0;
-            if($d['group_name'])
-            {
-                if(array_key_exists($d['group_name'],$ug_dic))
-                {
-                    $d['gid'] = $ug_dic[$d['group_name']][0];
-                }
-                else
-                {
-                    if(!in_array($d['group_name'],$no_groups))
-                        array_push($no_groups,$d['group_name']);
-                }
-            }
-        }
-
-        log_message('debug','alvayang data:' . json_encode($data));
-        log_message('debug','rank_dic:' . json_encode($ranks_dic));
-        log_message('debug','level_dic:' . json_encode($levels_dic));
-        log_message('debug','ug_dic:' . json_encode($ug_dic));
-        log_message('debug','no_ranks:' . json_encode($no_ranks));
-        log_message('debug','no_levels:' . json_encode($no_levels));
-        log_message('debug','no_groups:' . json_encode($no_groups));
-
-        $this->bsload('members/imports',
+        $this->bsload('members/imports_stash',
             array(
                 'title' => '确认导入',
-                'members' => $data
-                ,'no_ranks' => $no_ranks
-                ,'no_levels' => $no_levels
-                ,'no_groups' => $no_groups
-                ,'breadcrumbs' => array(
-                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon')
-                    ,array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => '')
-                    ,array('url'  => base_url('members/export'), 'name' => '导入/导出员工', 'class' => '')
-                    ,array('url'  => '', 'name' => '确认导入', 'class' => '')
+                'locale_file_members'=>$data,
+                'server_members' => $this->groups->get_my_list(),
+                'ranks' => $ranks,
+                'groups' => $groups,
+                'levels' => $levels,
+                // 'no_groups' => $no_groups,
+                'breadcrumbs' => array(
+                    array('url'  => base_url(), 'name' => '首页', 'class' => 'ace-icon fa  home-icon'),
+                    array('url'  => base_url('members/index'), 'name' => '员工&部门', 'class' => ''),
+                    array('url'  => base_url('members/export'), 'name' => '导入/导出员工', 'class' => ''),
+                    array('url'  => '', 'name' => '确认导入', 'class' => '')
                 ),
             )
         );
@@ -1325,20 +1041,6 @@ class Members extends REIM_Controller {
                 ),
             )
         );
-    }
-
-    public function remove_member($id = 0){
-        if($id == 0) return redirect(base_url('members/index'));
-        $this->groups->remove_user($id);
-        return redirect(base_url('members/index'));
-    }
-
-    public function batch_load(){
-        $member = $this->input->post('member');
-        $quiet = $this->input->post('quiet');
-        log_message("debug", "Member:" . json_encode($member));
-        $info = $this->groups->reim_imports(array('quiet' => $quiet,'members' => json_encode($member)));
-        die(json_encode(array('data' => $info)));
     }
 
     public function excute_batch_del()

@@ -1,0 +1,102 @@
+.mod-imports-stash {
+	margin-top: 10px;
+}
+
+.ui-loading-layer {
+	background: #fff;
+}
+
+.mod-imports-stash h2 {
+	font-size: 14px;
+}
+
+
+.mod-imports-stash td {
+	position: relative;
+}
+
+/*
+components css
+ */
+.field-error {
+	color: #C20000 !important;
+}
+
+.field-error, .field-padding {
+	padding-right: 20px;
+}
+
+.field-error {
+	padding-right: 48px;
+}
+
+.field-error::after {
+
+}
+
+
+.field-modified {
+	color: #1D478E !important;
+}
+.field-error input,
+.field-modified input {
+	position: absolute;
+	color: #333 !important;
+	border: none;
+	outline: none;
+	margin: 0;
+	padding: 2px;
+	width: 100px;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	top: 0;
+}
+
+
+.field-tip {
+	height: 16px;
+	width: 16px;
+	display: inline-block;
+	text-align: center;
+	font: 10px/16px normal bolder;
+	background: #C20000;
+	color: #fff;
+	border-radius: 100%;
+	float: right;
+	top: 8px;
+	right: 4px;
+	position: absolute;
+	cursor: pointer;
+}
+
+.field-value {
+	display: inline-block;
+	white-space: normal;
+	word-break: break-all;
+}
+
+.can-import {
+	color: #00B100;
+}
+
+.btn-edit.icon {
+	width: 16px;
+	height: 16px;
+	position: absolute;
+	right: 26px;
+	top: 8px;
+	display: none;
+    /*ie 8*/
+    background: url('/static/img/mod/member/btn-edit16@1x.png') no-repeat;
+
+	background-image: -webkit-image-set(url('/static/img/mod/member/btn-edit16@1x.png') 1x, url('/static/img/mod/member/btn-edit16@2x.png') 2x);
+	background-image: -moz-image-set(url('/static/img/mod/member/btn-edit16@1x.png') 1x, url('/static/img/mod/member/btn-edit16@2x.png') 2x);
+	background-image: -ms-image-set(url('/static/img/mod/member/btn-edit16@1x.png') 1x, url('/static/img/mod/member/btn-edit16@2x.png') 2x);
+	background-image: -o-image-set(url('/static/img/mod/member/btn-edit16@1x.png') 1x, url('/static/img/mod/member/btn-edit16@2x.png') 2x);
+}
+
+td:hover .btn-edit.icon {
+	display: block;
+}
+

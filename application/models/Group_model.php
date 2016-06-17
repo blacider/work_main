@@ -8,16 +8,6 @@ class Group_Model extends Reim_Model {
         return $this->api_delete('load', $data);
     }
 
-    public function set_managers($persons)
-    {
-        $data = array();
-        foreach($persons as $p){
-            array_push($data, $p);
-        }
-        $data = array('relations' => json_encode($data));
-        return $this->api_put('load', $data);
-    }
-
     public function reim_imports($data)
     {
         return $this->api_post('load', $data);

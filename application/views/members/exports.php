@@ -1,6 +1,3 @@
-
-
-
 <div class="page-content">
     <div class="page-content-area">
         <form action="<?php echo base_url('members/imports'); ?>" method="post" enctype="multipart/form-data" id="imports" >
@@ -29,8 +26,8 @@
                     <div class="space-4"></div>
                     <div class="form-group">
                         <div class=" col-md-9">
-                                <input type="file" id="memebers" name="members" style="display:none;">
-                                <a class="btn btn-primary upload" data-renew="1"><i class="ace-icon glyphicon glyphicon-log-in bigger-110"></i>导入</a>
+                            <input type="file" id="memebers" name="members" style="display:none;">
+                            <a class="btn btn-primary upload" data-renew="1"><i class="ace-icon glyphicon glyphicon-log-in bigger-110"></i>导入</a>
                         </div>
                     </div>
                 </div>
@@ -38,24 +35,27 @@
         </form>
     </div>
 </div>
-
-<script language="javascript">
-    var __BASE = "<?php echo base_url(); ?>";
-    var _error = "<?php echo $error; ?>";
+<script>
+var _error = "<?php echo $error; ?>";
 $(document).ready(function(){
-    if(_error) show_notify(_error);
+
+    if(_error) {
+        show_notify(_error);
+    }
 
     $('#memebers').on('change', function(){
         $('#imports').submit();
     });
+
     $('.renew').click(function(){
-        location.href = __BASE + "members/exports";
+        location.href = "/members/exports";
     });
+
     $('.upload').click(function(){
-        try{
+        try {
             $('#memebers').click();
-        }catch(e){
-        }
+        } catch(e){}
     });
+    
 });
 </script>
