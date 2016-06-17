@@ -898,34 +898,28 @@ class Members extends REIM_Controller {
         // 读取数据
         $data = array();
         $index = 0;
+        $m = array(
+            'id',
+            'nickname',
+            'email',
+            'phone',
+            'cardno',
+            'bank',
+            'gids',
+            'level',
+            'rank',
+            'manager_id',
+            'manager_id_2',
+            'manager_id_3'
+        );
         for ($row = 3; $row <= $highestRow; $row++) { //行数是以第1行开始
             $index++;
             $obj = Array();
-            // $obj['uuid'] = "index_" . $index;
-            $obj["id"] =  trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 员工编号,
-            $obj["nickname"] = trim($sheet->getCellByColumnAndRow(1, $row)->getValue()); // 用户姓名,
-            $obj["email"] = trim($sheet->getCellByColumnAndRow(2, $row)->getValue()); // 邮箱,
-            $obj["phone"] = trim($sheet->getCellByColumnAndRow(3, $row)->getValue()); // 手机号码,
-
-            $obj["cardno"] = trim($sheet->getCellByColumnAndRow(4, $row)->getValue()); // 银行卡号,
-            // $obj["account"] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 银行账户,
-            // $obj["cardtype"] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 卡类型,
-            $obj["bank"] = trim($sheet->getCellByColumnAndRow(5, $row)->getValue()); // 银行名称,
-            // $obj["subbranch"] = trim($sheet->getCellByColumnAndRow(5, $row)->getValue()); // 支行名称,
-            // $obj["cardloc"] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 银行位置
-
-            $obj["gids"] = $obj["gids"] = trim($sheet->getCellByColumnAndRow(6, $row)->getValue()); // 所属部门名称（多部门用逗号分隔）,
-            // $obj["gids"] = '的身份';
-            $obj["level"] = trim($sheet->getCellByColumnAndRow(7, $row)->getValue()); // 员工级别,
-            $obj["rank"] = trim($sheet->getCellByColumnAndRow(8, $row)->getValue()); // 员工职位,
-            
-            $obj["manager_id"] = trim($sheet->getCellByColumnAndRow(9, $row)->getValue()); // 0,
-            $obj["manager_id_2"] = trim($sheet->getCellByColumnAndRow(10, $row)->getValue()); // 0,
-            $obj["manager_id_3"] = trim($sheet->getCellByColumnAndRow(11, $row)->getValue()); // 0,
-            // $obj["display_manager_id"] = trim($sheet->getCellByColumnAndRow(0, $row)->getValue()); // 0,
+            foreach ($m as $index => $value) {
+                $obj[$value] =  trim($sheet->getCellByColumnAndRow($index, $row)->getValue()); 
+            }
             array_push($data, $obj);
         }
-
         $ranks = $this->groups->get_rank_level(1);
         $ranks = $ranks['data'];
 
@@ -952,7 +946,6 @@ class Members extends REIM_Controller {
                 ),
             )
         );
-
     }
 
     public function singlegroup($gid = 0) {
