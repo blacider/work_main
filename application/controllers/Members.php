@@ -32,95 +32,6 @@ class Members extends REIM_Controller {
             )
         );
     }
-    public function set_managers()
-    {
-        $this->need_group_it();
-        $_members = $this->input->post('persons');
-        $members = json_decode($_members,True);
-        log_message('debug',"Person:" . json_encode($members));
-        $_members = array();
-        foreach($members as $m) {
-            if(array_key_exists('id', $m) && array_key_exists('manager', $m)) {
-                array_push($_members, $m);
-            }
-        }
-        $members = $_members;
-        log_message("debug", "Set Manager:" . json_encode($members));
-
-        $buf = $this->groups->set_managers($members);
-        $set_manager_back = array();
-        $set_success = array();
-        if($buf['status']>0)
-        {
-            $set_manager_back = $buf['data'];
-        }
-        foreach($set_manager_back as $back)
-        {
-            if($back['code'] == 0)
-            {
-                array_push($set_success,$back['id']);
-            }
-        }
-        log_message('debug','set_success' . json_encode($set_success));
-        die(json_encode(array('data'=>$set_success)));
-    }
-
-    public function imports_create_group()
-    {
-        $this->need_group_it();
-        $name=$this->input->post('name');
-        $ug = array();
-        $_ug = $this->ug->get_my_list();
-        if($_ug['status'] > 0)
-        {
-            $ug = $_ug['data']['group'];
-        }
-        foreach($ug as $u)
-        {
-            if($u['name'] == $name)
-            {
-                die(json_encode(array('msg' => '部门已经添加')));
-            }
-        }
-
-        $buf = $this->ug->create_group(0,'',$name,'',0);
-        if($buf['status']>0) {
-            die(json_encode(array('msg' => '部门添加成功')));
-        } else {
-            die(json_encode(array('msg' => $buf['data']['msg'])));
-        }
-    }
-
-    public function imports_create_rank_level($rank)
-    {
-        $this->need_group_it();
-        $name = $this->input->post('name');
-        $_ranks_levels = $this->reim_show->rank_level($rank);
-        $ranks_levels = array();
-        if($_ranks_levels['status']>0)
-        {
-            $ranks_levels = $_ranks_levels['data'];
-        }
-
-        foreach($ranks_levels as $rl)
-        {
-            if($rl['name'] == $name)
-            {
-                die(array('msg' => '职位已经添加'));
-            }
-        }
-
-        $buf = $this->groups->create_rank_level($rank,$name);
-        log_message('debug','name:' . $name);
-        if($buf['status'] > 0)
-        {
-            die(json_encode(array('msg' => '添加职位成功')));
-        }
-        else
-        {
-            die(json_encode(array('msg' => '添加职位失败')));
-        }
-    }
 
     public function update_rank_level($rank)
     {
@@ -1130,20 +1041,6 @@ class Members extends REIM_Controller {
                 ),
             )
         );
-    }
-
-    public function remove_member($id = 0){
-        if($id == 0) return redirect(base_url('members/index'));
-        $this->groups->remove_user($id);
-        return redirect(base_url('members/index'));
-    }
-
-    public function batch_load(){
-        $member = $this->input->post('member');
-        $quiet = $this->input->post('quiet');
-        log_message("debug", "Member:" . json_encode($member));
-        $info = $this->groups->reim_imports(array('quiet' => $quiet,'members' => json_encode($member)));
-        die(json_encode(array('data' => $info)));
     }
 
     public function excute_batch_del()
