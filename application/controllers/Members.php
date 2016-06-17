@@ -876,7 +876,7 @@ class Members extends REIM_Controller {
         );
     }
 
-    public function new_imports()
+    public function imports()
     {
         if(!array_key_exists('members', $_FILES)){
             redirect(base_url('members'));
