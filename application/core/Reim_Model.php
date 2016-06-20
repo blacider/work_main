@@ -1,7 +1,5 @@
 <?php
 
-define("PUBKEY", "1NDgzZGY1OWViOWRmNjI5ZT");
-
 define ('USER_AUTH_ERROR', -14);
 
 class Reim_Model extends CI_Model {
@@ -49,11 +47,7 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_USERAGENT, $this->get_user_agent());
-        if (!empty($fields)) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-        } else {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, null);
-        }
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
 
         $headers[] = 'X-Client-IP: ' . $this->input->ip_address();
         $current_url = current_url();
@@ -65,33 +59,29 @@ class Reim_Model extends CI_Model {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         //curl_setopt($ch, CURLOPT_VERBOSE, true);
-        $result = curl_exec($ch);
+        $ret = curl_exec($ch);
         $err = curl_error($ch);
         if (!empty($err)) {
             log_message('error', "api call err: $err");
         }
-        return $result;
+        return $ret;
     }
 
-    public function get_curl_upload_field($file_path  = '') {
-        if('' == $file_path) return '';
-        if (class_exists('CURLFile')) {
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $finfo = finfo_file($finfo, $file_path);
-            $cFile = new CURLFile($file_path, $finfo, basename($file_path));
-            return $cFile;
-        } else {
+    public function get_curl_upload_field($file_path) {
+        if (!class_exists('CURLFile')) {
             return '@' . realpath($file_path);
         }
-        return '';
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $finfo = finfo_file($finfo, $file_path);
+        $cFile = new CURLFile($file_path, $finfo, basename($file_path));
+        return $cFile;
     }
 
     private function api_call($method, $url, $data=null, $params=null, $headers=[], $decode_json=true) {
         $url = $this->api_url_base . build_url($url, $params);
         $access_token = $this->session->userdata('oauth2_ak');
         if (!empty($access_token)) {
-            $auth_header = "Authorization: Bearer $access_token";
-            $headers[] = $auth_header;
+            $headers[] = "Authorization: Bearer $access_token";
         }
         $headers[] = 'X-ADMIN-API: 1';
         $ret = $this->fire_api_call($method, $url, $data, $headers);
@@ -105,14 +95,13 @@ class Reim_Model extends CI_Model {
             intval(array_get($json_ret, 'code', 0)) === USER_AUTH_ERROR
         ) {
             log_message('info', "api auth error while: $method $url, $ret");
-            //log_message('debug', "ret: $ret");
             $this->session->sess_destroy();
             throw new RequireLoginError();
         }
-        if ($decode_json) {
-            return $json_ret;
+        if (!$decode_json) {
+            return $ret;
         }
-        return $ret;
+        return $json_ret;
     }
 
     public function __call($name, $args) {
