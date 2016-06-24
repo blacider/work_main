@@ -793,13 +793,6 @@
                             var id = $(item).parents('.field-item').data('id');
                             var bank = findOneInBanks(newValue, $scope.banks);
                             $scope.bankFieldMap[id] = bank;
-                        },
-                        onInitValue: function(item, el) {
-                            setTimeout(function() {
-                                var id = $(el).parents('.field-item').data('id');
-                                bank = findOneInBanks(item.value, $scope.banks);
-                                $scope.bankFieldMap[id] = bank;
-                            }, 100);
                         }
                     };
 
@@ -1093,22 +1086,27 @@
                                 var bank = $scope.bankFieldMap[id];
                                 if (isRequired) {
                                     if (!bank) {
-                                        inValidExtras = true;
-                                        setTimeout(function () {
-                                            $(item).find('.text').click();
-                                        }, 100);
-                                        show_notify('必填银行卡项目不能为空');
-                                        return null
+                                        if(!$scope.default_bank) {
+                                            inValidExtras = true;
+                                            setTimeout(function () {
+                                                $(item).find('.text').click();
+                                            }, 100);
+                                            show_notify('必填银行卡项目不能为空');
+                                            return null
+                                        } else {
+                                            bank = $scope.default_bank;
+                                        }
                                     }
                                 }
                                 if (!bank) {
-                                    bank = {
+                                    bank = $scope.default_bank || {
                                         "account": '',
                                         "cardno": '',
                                         "bankname": '',
                                         "bankloc": '',
                                         "subbranch": ''
                                     };
+                                    delete bank['$$hashKey']
                                 }
                                 data['value'] = JSON.stringify(bank);
                             }
