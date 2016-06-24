@@ -168,8 +168,8 @@
                                         <?php echo $m['d']; ?>
                                     </td>
                                     <td class="col-6">
-                                        <?php if (array_key_exists($m['level_id'],$levels)) {?>
-                                        <?php echo $levels[$m['level_id']]; }?>
+                                        <?php if (array_key_exists($m['rank_id'], $ranks)) {?>
+                                        <?php echo $ranks[$m['rank_id']]; }?>
                                     </td>
                                     <td class="col-7">
                                         <?php echo $m['manager']; ?>
