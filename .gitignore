@@ -10,3 +10,6 @@ application/logs
 vendor/
 
 release
+
+# docker volumes
+.volumes
