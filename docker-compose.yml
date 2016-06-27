@@ -1,0 +1,32 @@
+version: '2'
+services:
+  mysql-reimadmin:
+    image: mysql-5.5:reim
+    container_name: mysql-reimadmin
+    volumes:
+      - .volumes/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root_strong_password'
+      MYSQL_USER: reimadmin
+      MYSQL_PASSWORD: 'reimadmin_strong_password'
+      MYSQL_DATABASE: reimadmin
+
+  php-fpm-frontend:
+    image: php-fpm:reim
+    container_name: php-fpm-frontend
+    links:
+      - mysql-reimadmin
+    external_links:
+      - nginx-backend
+    volumes:
+      - /Users/yuqi/rushu/src/reimadmin:/src
+
+  nginx-frontend:
+    image: nginx:reim
+    container_name: nginx-frontend
+    ports:
+      - 8000:80
+    volumes:
+      - /Users/yuqi/rushu/src/reimadmin:/src
+    links:
+      - php-fpm-frontend:php-fpm
