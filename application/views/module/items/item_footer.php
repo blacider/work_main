@@ -68,35 +68,34 @@ $(document).ready(function(){
         $('.customization_type').each(function(){
             var _id = $(this).data('id');
             var _value = $(this).val();
-            if(_value instanceof Array)
-            {
+            if(_value instanceof Array) {
                 _value = _value.join(',');
             }
-            console.log(_value instanceof Array);
-            var temp = new Object();
+            var temp = {};
             temp['id'] = _id;
             temp['value'] = _value;
             customization.push(temp);
         });
         $('#customization').val(JSON.stringify(customization));
-
         var default_customization = [];
-        $('.default_custom').each(function(){
-            var _id = $(this).data('id');
-            var _value = $(this).val();
-            if(_value instanceof Array)
-            {
+        $('.default_custom').each(function(index, item){
+            if(!$(item).is(':visible') && !$(item).data('type')!='hidden') {
+                return;
+            }
+            var _id = $(item).data('id');
+            var _value = $(item).val();
+            if($(item).attr('id')=="start_dt") {
+                _id = $('#date-timepicker1[name=dt]').data('id');
+            }
+            if(_value instanceof Array) {
                 _value = _value.join(',');
             }
-            console.log(_value instanceof Array);
-            var temp = new Object();
+            var temp = {};
             temp['id'] = _id;
             temp['val'] = _value;
             default_customization.push(temp);
         });
         $('#default_customization').val(JSON.stringify(default_customization));
-
-        console.log(default_customization);
 
         var _affid = '';
         try {
@@ -114,12 +113,11 @@ $(document).ready(function(){
             return false;
         }
 
-        if($('#sob_category').val() == null)
-        {
+        if($('#sob_category').val() == null) {
             show_notify('请选择类目');
             return false;
         }
-
+        // http://alex.baidu.com:9999/items/edit/66069
         var _extra = [];
         $('.extra_textarea').each(function(idx, item) {
             var _type_id = $(item).data('type');
@@ -128,7 +126,6 @@ $(document).ready(function(){
         });
         $('#hidden_extra').val($.toJSON(_extra));
         $('#renew').val($(this).data('renew'));
-
         if(formValidate())
         {
             $('#itemform').submit();
