@@ -171,17 +171,17 @@ if(in_array($profile['admin'],[1,3,4])){
                                 <label class="col-sm-1 control-label no-padding-right">级别</label>
                                 <div class="col-xs-6 col-sm-6">
 <?php if(in_array($profile['admin'],[1,3,4])){ ?>
-                                    <select class="chosen-select tag-input-style" name="rank" data-placeholder="级别" >
+                                    <select class="chosen-select tag-input-style" name="level" data-placeholder="级别" >
 <?php } elseif($self) { ?>
-                                    <select class="chosen-select tag-input-style" name="rank" data-placeholder="级别" disabled>
+                                    <select class="chosen-select tag-input-style" name="level" data-placeholder="级别" disabled>
 <?php } else { ?>
-                                    <select class="chosen-select tag-input-style" name="rank" data-placeholder="级别" disabled>
+                                    <select class="chosen-select tag-input-style" name="level" data-placeholder="级别" disabled>
 <?php } ?>
                                         <option value=0>无</option>
 <?php
-$rank = $pro['rank_id'];
-foreach($ranks as $m){
-    if($m['id']==$rank && $rank!=0) {
+$level = $pro['level_id'];
+foreach($levels as $m){
+    if($m['id']==$level && $level!=0) {
 ?>
                                         <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
 <?php } else { ?>
@@ -201,17 +201,17 @@ foreach($ranks as $m){
 <?php
 if(in_array($profile['admin'],[1,3,4])){
 ?>
-                                    <select class="col-xs-6 col-sm-6 chosen-select tag-input-style" name="level" data-placeholder="职位" >
+                                    <select class="col-xs-6 col-sm-6 chosen-select tag-input-style" name="rank" data-placeholder="职位" >
 <?php } elseif($self) { ?>
-                                    <select class="col-xs-6 col-sm-6 chosen-select tag-input-style" name="level" data-placeholder="职位" disabled>
+                                    <select class="col-xs-6 col-sm-6 chosen-select tag-input-style" name="rank" data-placeholder="职位" disabled>
 <?php } else { ?>
-                                    <select class="col-xs-6 col-sm-6 chosen-select tag-input-style" name="level" data-placeholder="职位" disabled>
+                                    <select class="col-xs-6 col-sm-6 chosen-select tag-input-style" name="rank" data-placeholder="职位" disabled>
 <?php } ?>
                                     <option value=0>无</option>
 <?php
-    $level = $pro['level_id'];
-    foreach($levels as $m){
-        if($m['id']==$level && $level!=0) {
+    $rank = $pro['rank_id'];
+    foreach($ranks as $m){
+        if($m['id']==$rank && $rank!=0) {
 ?>
                                         <option selected value="<?php echo $m['id']; ?>"><?php echo $m['name']; ?></option>
 <?php } else { ?>
