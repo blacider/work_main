@@ -230,12 +230,8 @@ var admin_groups_granted = $('#admin_groups_granted').data("gids");
 var __BASE = "<?php echo $base_url; ?>";
 var error = "<?php echo $error;?>";
 console.log(error);
-var _levels_dic = '<?php echo json_encode($levels); ?>';
-var levels_dic = [];
-if(_levels_dic!='')
-{
-    levels_dic = JSON.parse(_levels_dic);
-}
+var levels_dic = <?php echo json_encode($levels); ?>;
+var ranks_dic = <?php echo json_encode($ranks); ?>;
 
 
 
@@ -477,11 +473,11 @@ function load_group(gid){
             
                     }
 
-        var _level_id = item.level_id;
-        var _level = '';
-        if(levels_dic[_level_id]!=undefined)
+        var rank_id = item.rank_id;
+        var rank = '';
+        if(ranks_dic[rank_id]!=undefined)
         {
-            _level = levels_dic[_level_id];
+            rank = ranks_dic[rank_id];
         }
                 _th = '<tr>'
                     + '<td class="col-1">' + item.client_id + '</a></td>'
@@ -489,7 +485,7 @@ function load_group(gid){
                     + '<td class="col-3">' + item.email + '</td>'
                     + '<td class="col-4">' + item.phone + '</td>'
                     + '<td class="col-5">' + item.d + '</td>'
-                    + '<td class="col-6">' + _level + '</td>'
+                    + '<td class="col-6">' + rank + '</td>'
                     + '<td class="col-7">' + item.manager + '</td>'
                     + '<td class="col-8"><a href="javascript:void(0)">' + _color + '</a>';
                     if(_admin == 1 || _admin == 3 || is_under_control){
