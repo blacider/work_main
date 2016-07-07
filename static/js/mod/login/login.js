@@ -125,6 +125,7 @@ $(document).ready(function() {
     function checkUser() {
         clearErrorLine();
         var user = $("#login input[name='user']").val();
+        user = $.trim(user);
         _userId = user;
         var userLine = $("#login").find('.user-line');
         if (user == "") {
