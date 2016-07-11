@@ -186,7 +186,7 @@ class User_Model extends Reim_Model {
     }
 
     public function del_credit($id, $uid){
-        return $this->api_delete("bank/${id}/$uid");
+        return $this->api_delete("bank/${id}/${uid}");
     }
 
     public function exchange_weixin_token($code) {
