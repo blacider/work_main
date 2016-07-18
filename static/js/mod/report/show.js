@@ -88,30 +88,17 @@
                                 return  show_notify('找不到数据');
                             }
                             var data = rs['data'];
+                            $scope._first_turn_amount_ = data.snapshot_amount;
                             if(data.has_snapshot) {
                                 getReportSnapshotData(id).done(function (sn) {
 
                                     $scope.snapshot = sn['data'];
-
-                                    $scope._first_turn_amount_ = $scope.getItemsAmount($scope.snapshot.items);
 
                                     $scope.$apply();
 
                                     def.resolve(rs, sn);
 
                                 });
-                            // 第二轮，老数据has_snapshot=0 也有可能是第二轮，遍历item.pa_amount总和
-                            } else if(data.pa_approval==1 && (data.prove_ahead==1 || data.prove_ahead==2)){
-                                $scope._first_turn_amount_ = (function (report) {
-                                    var sum = 0;
-                                    for(var i=0;i<report.items.length;i++) {
-                                        var item = report.items[i];
-                                        if(item.pa_amount) {
-                                            sum+= parseFloat(item.pa_amount);
-                                        }
-                                    }
-                                    return sum.toFixed(2);
-                                })(data);
                             }
                             return def.resolve(rs);
                         });
