@@ -88,7 +88,9 @@
                                 return  show_notify('找不到数据');
                             }
                             var data = rs['data'];
-                            $scope._first_turn_amount_ = data.snapshot_amount;
+                            var amount_num = new Number(data.snapshot_amount);
+                            amount_num = amount_num.toFixed(2);
+                            $scope._first_turn_amount_ = amount_num;
                             if(data.has_snapshot) {
                                 getReportSnapshotData(id).done(function (sn) {
 
