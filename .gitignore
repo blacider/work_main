@@ -1,7 +1,15 @@
 .DS_Store
 *.sw[opn]
 tags
-application/config/development/
-application/logs/*
-static/users_data/*
-release/*
+
+application/config/development
+application/config/testing
+application/config/production
+
+application/logs
+vendor/
+
+release
+
+# docker volumes
+.volumes

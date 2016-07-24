@@ -1,0 +1,3 @@
+--exclude=application/logs/*
+--exclude=vendor/*
+--exclude=composer.phar
